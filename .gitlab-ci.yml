@@ -1,0 +1,33 @@
+default:
+  image: $CI_REGISTRY/protonvpn/android/android-app-new:branch-compose
+
+stages:
+  - build
+  - test
+
+.build:
+  stage: build
+  tags:
+    - android
+  artifacts:
+    expire_in: 1 week
+
+build dev debug:
+  extends: .build
+  script:
+    - ./gradlew assembleDebug
+  artifacts:
+    paths:
+      - app/build/outputs/apk/dev/debug
+
+dev debug unit test:
+  stage: test
+  tags:
+    - android
+  script:
+    - ./gradlew testDebug
+  allow_failure: true
+  artifacts:
+    expire_in: 1 week
+    reports:
+      junit: app/build/test-results/testDebugUnitTest/TEST-*.xml
