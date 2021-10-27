@@ -1,0 +1,40 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  desc "Builds the debug code"
+  lane :buildDebug do
+    gradle(task: "assembleDebug")
+  end
+
+  desc "Builds the release code"
+  lane :buildRelease do
+    gradle(task: "assembleRelease")
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Internal Build to Play Store"
+  lane :internal do
+    upload_to_play_store(track: 'internal', apk: 'app/build/outputs/apk/release/app-release.apk')
+  end
+
+end
+

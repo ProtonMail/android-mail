@@ -1,33 +1,34 @@
 default:
-  image: $CI_REGISTRY/protonvpn/android/android-app-new:branch-compose
+  image: fabernovel/android:api-29-v1.4.1
 
 stages:
   - build
   - test
 
-.build:
+.build_job:
   stage: build
-  tags:
-    - android
-  artifacts:
-    expire_in: 1 week
-
-build dev debug:
-  extends: .build
-  script:
-    - ./gradlew assembleDebug
+  before_script:
+    - chmod +x gradlew
+    - bundle install
   artifacts:
     paths:
-      - app/build/outputs/apk/dev/debug
+      - app/build/outputs
 
-dev debug unit test:
-  stage: test
-  tags:
-    - android
+buildDebug:
+  extends: .build_job
   script:
-    - ./gradlew testDebug
-  allow_failure: true
-  artifacts:
-    expire_in: 1 week
-    reports:
-      junit: app/build/test-results/testDebugUnitTest/TEST-*.xml
+    - bundle exec fastlane buildDebug
+
+buildRelease:
+  extends: .build_job
+  script:
+    - bundle exec fastlane buildRelease
+
+testDebug:
+  stage: test
+  dependencies:
+    - buildDebug
+  script:
+    - chmod +x gradlew
+    - bundle exec fastlane test
+
