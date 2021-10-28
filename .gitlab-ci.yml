@@ -11,6 +11,8 @@ stages:
 
 .build_job:
   stage: build
+  tags:
+    - medium
   artifacts:
     paths:
       - app/build/outputs
@@ -27,6 +29,8 @@ buildRelease:
 
 testDebug:
   stage: test
+  tags:
+    - medium
   dependencies:
     - buildDebug
   script:
