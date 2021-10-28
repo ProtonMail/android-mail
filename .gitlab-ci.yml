@@ -1,5 +1,7 @@
 default:
   image: fabernovel/android:api-29-v1.4.1
+before_script:
+  - export JAVA_TOOL_OPTIONS="-Djava.net.useSystemProxies=true"
 
 stages:
   - build
