@@ -6,8 +6,10 @@ before_script:
   - bundle install
 
 stages:
+  - analyse
   - build
   - test
+
 
 .build_job:
   stage: build
@@ -16,6 +18,11 @@ stages:
   artifacts:
     paths:
       - app/build/outputs
+
+analyse:
+  stage: analyse
+  script:
+    - bundle exec fastlane analyse
 
 buildDebug:
   extends: .build_job
@@ -34,6 +41,5 @@ testDebug:
   dependencies:
     - buildDebug
   script:
-    - chmod +x gradlew
     - bundle exec fastlane test
 

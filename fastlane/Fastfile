@@ -16,6 +16,11 @@ default_platform(:android)
 
 platform :android do
 
+  desc "Execute static analysis"
+  lane :analyse do
+    gradle(task: "detekt")
+  end
+
   desc "Builds the debug code"
   lane :buildDebug do
     gradle(task: "assembleDebug")
