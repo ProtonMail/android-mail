@@ -51,7 +51,7 @@ object Dependencies {
         // add(Core.network)
         // add(Core.payment)
         // add(Core.plan)
-        // add(Core.presentation)
+        add(Core.presentation)
         // add(Core.user)
         // add(Core.userSettings)
         // add(Core.utilKotlin)
