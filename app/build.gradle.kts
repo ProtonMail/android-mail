@@ -5,6 +5,9 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
+configureJacoco(flavor = "dev")
+setAsHiltModule()
+
 android {
     compileSdk = Config.compileSdk
     buildToolsVersion = Config.buildTools
@@ -84,11 +87,12 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
     implementation(Dependencies.appLibs)
+
+    implementation(project(":mail-message"))
     debugImplementation(Dependencies.appDebug)
+
     kapt(Dependencies.appAnnotationProcessors)
+
     testImplementation(Dependencies.testLibs)
     androidTestImplementation(Dependencies.androidTestLibs)
 }
-
-configureJacoco(flavor = "dev")
-setAsHiltModule()

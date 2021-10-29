@@ -61,6 +61,30 @@ object Dependencies {
         add(Squareup.okhttp)
         add(Squareup.plumber)
     }
+
+    val moduleDataLibs = mutableListOf<String>().apply {
+        add(AndroidX.Room.ktx)
+        add(AndroidX.Work.runtimeKtx)
+        add(Core.data)
+        add(Core.dataRoom)
+        add(Core.domain)
+        add(Core.utilKotlin)
+        add(Squareup.okhttp)
+    }
+
+    val modulePresentationLibs = mutableListOf<String>().apply {
+        add(AndroidX.Activity.ktx)
+        addAll(composeLibs)
+        add(Core.presentation)
+        add(Core.utilKotlin)
+        add(Material.material)
+    }
+
+    val moduleDomainLibs = mutableListOf<String>().apply {
+        add(Core.domain)
+        add(Core.utilKotlin)
+    }
+
     val appAnnotationProcessors = mutableListOf<String>().apply {
         add(AndroidX.Room.compiler)
         addAll(hiltAnnotationProcessors)
