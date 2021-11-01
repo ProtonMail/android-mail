@@ -1,33 +1,45 @@
 default:
-  image: $CI_REGISTRY/protonvpn/android/android-app-new:branch-compose
+  image: fabernovel/android:api-29-v1.4.1
+before_script:
+  - chmod +x gradlew
+  - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
+  - bundle install
 
 stages:
+  - analyse
   - build
   - test
 
-.build:
+
+.build_job:
   stage: build
   tags:
-    - android
-  artifacts:
-    expire_in: 1 week
-
-build dev debug:
-  extends: .build
-  script:
-    - ./gradlew assembleDebug
+    - medium
   artifacts:
     paths:
-      - app/build/outputs/apk/dev/debug
+      - app/build/outputs
 
-dev debug unit test:
+analyse:
+  stage: analyse
+  script:
+    - bundle exec fastlane analyse
+
+buildDebug:
+  extends: .build_job
+  script:
+    - bundle exec fastlane buildDebug
+
+buildRelease:
+  extends: .build_job
+  script:
+    - bundle exec fastlane buildRelease
+
+testDebug:
   stage: test
   tags:
-    - android
+    - medium
+  dependencies:
+    - buildDebug
   script:
-    - ./gradlew testDebug
-  allow_failure: true
-  artifacts:
-    expire_in: 1 week
-    reports:
-      junit: app/build/test-results/testDebugUnitTest/TEST-*.xml
+    - bundle exec fastlane test
+
