@@ -21,17 +21,22 @@ platform :android do
     gradle(task: "detekt")
   end
 
-  desc "Builds the debug code"
-  lane :buildDebug do
+  desc "Assemble the debug apk"
+  lane :assembleDebug do
     gradle(task: "assembleDebug")
   end
 
-  desc "Builds the release code"
-  lane :buildRelease do
+  desc "Assemble the test apk"
+  lane :assembleTest do
+    gradle(task: "assembleDebugAndroidTest")
+  end
+
+  desc "Assemble the release apk"
+  lane :assembleRelease do
     gradle(task: "assembleRelease")
   end
 
-  desc "Runs all the tests"
+  desc "Runs Unit Tests"
   lane :test do
     gradle(task: "test")
   end

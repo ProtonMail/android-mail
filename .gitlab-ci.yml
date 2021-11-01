@@ -32,14 +32,15 @@ analyse:
 buildDebug:
   extends: .build_job
   script:
-    - bundle exec fastlane buildDebug
+    - bundle exec fastlane assembleDebug
+    - bundle exec fastlane assembleTest
 
 buildRelease:
   extends: .build_job
   script:
-    - bundle exec fastlane buildRelease
+    - bundle exec fastlane assembleRelease
 
-testDebug:
+unitTestDebug:
   stage: test
   tags:
     - medium
@@ -48,3 +49,54 @@ testDebug:
   script:
     - bundle exec fastlane test
 
+
+firebaseInstrumentationTests:
+  stage: test
+  dependencies:
+    - buildDebug
+  tags:
+    - medium
+  script:
+    - wget --quiet --output-document=/tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
+    - mkdir -p /opt
+    - tar zxf /tmp/google-cloud-sdk.tar.gz --directory /opt
+    - /opt/google-cloud-sdk/install.sh --quiet
+    - source /opt/google-cloud-sdk/path.bash.inc
+    - gcloud components update
+    - echo $CLOUD_PROJECT_ID_MAIL
+    - gcloud config set project $CLOUD_PROJECT_ID_MAIL
+    - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
+    - gcloud auth activate-service-account --key-file /tmp/service-account.json
+    - gcloud --quiet firebase test android run
+      --app app/build/outputs/apk/debug/app-debug.apk
+      --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+      --device model=Pixel2,version=28
+      --use-orchestrator
+      --num-flaky-test-attempts=1
+      --timeout 10m
+
+firebaseUiTests:
+  stage: test
+  dependencies:
+    - buildDebug
+  tags:
+    - medium
+  script:
+    - wget --quiet --output-document=/tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/google-cloud-sdk.tar.gz
+    - mkdir -p /opt
+    - tar zxf /tmp/google-cloud-sdk.tar.gz --directory /opt
+    - /opt/google-cloud-sdk/install.sh --quiet
+    - source /opt/google-cloud-sdk/path.bash.inc
+    - gcloud components update
+    - echo $CLOUD_PROJECT_ID_MAIL
+    - gcloud config set project $CLOUD_PROJECT_ID_MAIL
+    - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
+    - gcloud auth activate-service-account --key-file /tmp/service-account.json
+    - gcloud --quiet firebase test android run
+      --app app/build/outputs/apk/debug/app-debug.apk
+      --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+      --device model=Pixel2,version=28
+      --test-targets "class ch.protonmail.android.uitests.tests.suites.SmokeSuite"
+      --use-orchestrator
+      --num-flaky-test-attempts=1
+      --timeout 10m
