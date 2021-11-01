@@ -1,8 +1,9 @@
 default:
-  image: fabernovel/android:api-29-v1.4.1
+  image: $CI_REGISTRY/protonvpn/android/android-app-new:branch-compose
 before_script:
-  - chmod +x gradlew
+  - apt-get install -y ruby-dev make g++
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
+  - gem install bundler
   - bundle install
 
 variables:
