@@ -1,9 +1,7 @@
 default:
-  image: $CI_REGISTRY/protonvpn/android/android-app-new:branch-compose
+  image: $CI_REGISTRY/protonvpn/android/android-app-new:branch-mail-v6-ci-dockerfile
 before_script:
-  - apt-get install -y ruby-dev make g++
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
-  - gem install bundler
   - bundle install
 
 variables:
@@ -13,6 +11,7 @@ stages:
   - analyse
   - build
   - test
+  - deploy
 
 .build_job:
   stage: build
@@ -29,31 +28,31 @@ analyse:
   script:
     - bundle exec fastlane analyse
 
-buildDebug:
+build_debug:
   extends: .build_job
   script:
     - bundle exec fastlane assembleDebug
     - bundle exec fastlane assembleTest
 
-buildRelease:
+build_release:
   extends: .build_job
   script:
     - bundle exec fastlane assembleRelease
 
-unitTestDebug:
+run_unit_test:
   stage: test
   tags:
     - medium
   dependencies:
-    - buildDebug
+    - build_debug
   script:
-    - bundle exec fastlane test
+    - bundle exec fastlane unitTest
 
 
-firebaseInstrumentationTests:
+run_firebase_instrumentation_tests:
   stage: test
   dependencies:
-    - buildDebug
+    - build_debug
   tags:
     - medium
   script:
@@ -68,17 +67,18 @@ firebaseInstrumentationTests:
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
     - gcloud auth activate-service-account --key-file /tmp/service-account.json
     - gcloud --quiet firebase test android run
-      --app app/build/outputs/apk/debug/app-debug.apk
-      --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+      --app app/build/outputs/apk/dev/debug/app-dev-debug.apk
+      --test app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
+      --type=instrumentation
       --device model=Pixel2,version=28
       --use-orchestrator
       --num-flaky-test-attempts=1
       --timeout 10m
 
-firebaseUiTests:
+run_firebase_ui_tests:
   stage: test
   dependencies:
-    - buildDebug
+    - build_debug
   tags:
     - medium
   script:
@@ -93,10 +93,24 @@ firebaseUiTests:
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
     - gcloud auth activate-service-account --key-file /tmp/service-account.json
     - gcloud --quiet firebase test android run
-      --app app/build/outputs/apk/debug/app-debug.apk
-      --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+      --app app/build/outputs/apk/dev/debug/app-dev-debug.apk
+      --test app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
       --device model=Pixel2,version=28
       --test-targets "class ch.protonmail.android.uitests.tests.suites.SmokeSuite"
       --use-orchestrator
       --num-flaky-test-attempts=1
       --timeout 10m
+
+
+deploy_to_firebase:
+  stage: deploy
+  only:
+    - master
+  dependencies:
+    - build_debug
+  tags:
+    - small
+  script:
+    - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
+    - bundle exec fastlane deployToFirebase
+

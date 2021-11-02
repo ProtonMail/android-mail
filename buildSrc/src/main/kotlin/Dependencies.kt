@@ -102,6 +102,7 @@ object Dependencies {
         add(Test.coreKtx)
         add(Test.runner)
         add(Test.rules)
+        add(Test.espresso)
         add(AndroidX.Compose.uiTest)
         add(AndroidX.Compose.uiTestJUnit)
     }

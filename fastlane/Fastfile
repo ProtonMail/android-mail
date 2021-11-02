@@ -23,12 +23,12 @@ platform :android do
 
   desc "Assemble the debug apk"
   lane :assembleDebug do
-    gradle(task: "assembleDebug")
+    gradle(task: "assembleDevDebug")
   end
 
   desc "Assemble the test apk"
   lane :assembleTest do
-    gradle(task: "assembleDebugAndroidTest")
+    gradle(task: "assembleDevDebugAndroidTest")
   end
 
   desc "Assemble the release apk"
@@ -37,13 +37,24 @@ platform :android do
   end
 
   desc "Runs Unit Tests"
-  lane :test do
+  lane :unitTest do
     gradle(task: "test")
   end
 
-  desc "Submit a new Internal Build to Play Store"
-  lane :internal do
-    upload_to_play_store(track: 'internal', apk: 'app/build/outputs/apk/release/app-release.apk')
+  desc "Publish build to firebase app testing"
+  lane :deployToFirebase do
+    firebase_app_distribution(
+      app: '1:75309174866:android:1a431832c861474478cf8b',
+      android_artifact_path: 'app/build/outputs/apk/dev/debug/app-dev-debug.apk',
+      # Service account is created on the CI from an env var each run (destroyed when finishing)
+      service_credentials_file: '/tmp/service-account.json',
+      groups: 'v6-dev-builds-testers'
+    )
+  end
+
+  desc "Submit a new Closed-Testing Build in Alpha-v6 track to Play Store"
+  lane :deployToPlayStoreAlpha do
+    upload_to_play_store(track: 'alpha-v6', apk: 'app/build/outputs/apk/release/app-release.apk')
   end
 
 end

@@ -19,8 +19,8 @@ class LoginRobot {
      */
     class Verify {
 
-        fun protonMailTitleDisplayed(): LoginRobot {
-            onView(withText("ProtonMail")).check(matches(isDisplayed()))
+        fun appIsLaunchedCorrectly(): LoginRobot {
+            onView(withText("Hello World!")).check(matches(isDisplayed()))
             return LoginRobot()
         }
     }

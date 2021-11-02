@@ -23,7 +23,7 @@ class LoginTests {
     fun openEmptyApp() {
         loginRobot
             .launchApp()
-            .verify { protonMailTitleDisplayed() }
+            .verify { appIsLaunchedCorrectly() }
     }
 
 }
