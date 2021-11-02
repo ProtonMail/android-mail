@@ -2,10 +2,9 @@ ProtonMail for Android
 =======================
 Copyright (c) 2021 Proton Technologies AG
 
-
 ## Build instructions
 - [Install android sdk](https://android-doc.github.io/sdk/installing/index.html?pkg=tools)
-- Clone this repository
+- Clone this repository (Use `git clone --recurse-submodules [url]`.).
 - Execute `./gradlew assembleDebug` or open and build in Android Studio
 
 

@@ -5,22 +5,26 @@ before_script:
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
   - bundle install
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 stages:
   - analyse
   - build
   - test
 
-
 .build_job:
   stage: build
   tags:
-    - medium
+    - large
   artifacts:
     paths:
       - app/build/outputs
 
 analyse:
   stage: analyse
+  tags:
+    - medium
   script:
     - bundle exec fastlane analyse
 
