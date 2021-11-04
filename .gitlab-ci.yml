@@ -11,6 +11,7 @@ stages:
   - analyse
   - build
   - test
+  - report
   - deploy
 
 .build_job:
@@ -36,6 +37,7 @@ build_debug:
 
 build_release:
   extends: .build_job
+  when: manual
   script:
     - bundle exec fastlane assembleRelease
 
@@ -101,6 +103,20 @@ run_firebase_ui_tests:
       --num-flaky-test-attempts=1
       --timeout 10m
 
+
+coverage report:
+  stage: report
+  tags:
+    - large
+  script:
+    - ./gradlew coberturaCoverageReport
+  allow_failure: false
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - app/build/reports
+    reports:
+      cobertura: app/build/reports/cobertura-coverage.xml
 
 deploy_to_firebase:
   stage: deploy

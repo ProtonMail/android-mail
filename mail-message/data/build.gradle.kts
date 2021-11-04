@@ -23,8 +23,6 @@ plugins {
     kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
 
-configureJacoco()
-
 android {
     compileSdk = Config.compileSdk
     buildToolsVersion = Config.buildTools

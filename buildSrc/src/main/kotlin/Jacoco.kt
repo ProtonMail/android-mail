@@ -3,15 +3,15 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.Exec
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.withType
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
 import java.io.File
 import java.io.FileOutputStream
-import java.util.Locale
+import java.util.*
 
 fun Project.configureJacoco(flavor: String = "", srcFolder: String = "kotlin") {
     apply(plugin = "jacoco")
@@ -45,10 +45,7 @@ fun Project.configureJacoco(flavor: String = "", srcFolder: String = "kotlin") {
             "**/R$*.class",
             "**/BuildConfig.*",
             "**/Manifest*.*",
-            "**/*Test*.*",
-            "android/**/*.*",
-            "ch.protonmail.android.utils.nativelib",
-            "**/ch/protonmail/**",
+            "**/*Test*.*"
         )
 
         val debugTree = fileTree("$buildDir/tmp/kotlin-classes/$taskName") { exclude(fileFilter) }

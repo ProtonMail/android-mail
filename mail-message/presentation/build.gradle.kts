@@ -22,8 +22,6 @@ plugins {
     kotlin("kapt")
 }
 
-configureJacoco()
-
 android {
     compileSdk = Config.compileSdk
     buildToolsVersion = Config.buildTools
