@@ -71,6 +71,7 @@ run_firebase_instrumentation_tests:
       --test app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
       --type=instrumentation
       --device model=Pixel2,version=28
+      --test-targets "notPackage ch.protonmail.android.uitests"
       --use-orchestrator
       --num-flaky-test-attempts=1
       --timeout 10m
@@ -92,10 +93,9 @@ run_firebase_ui_tests:
     - gcloud config set project $CLOUD_PROJECT_ID_MAIL
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
     - gcloud auth activate-service-account --key-file /tmp/service-account.json
-    - gcloud --quiet firebase test android run
+    - gcloud --quiet firebase test android run firebase-device-config.yml:quickTest
       --app app/build/outputs/apk/dev/debug/app-dev-debug.apk
       --test app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
-      --device model=Pixel2,version=28
       --test-targets "class ch.protonmail.android.uitests.tests.suites.SmokeSuite"
       --use-orchestrator
       --num-flaky-test-attempts=1
