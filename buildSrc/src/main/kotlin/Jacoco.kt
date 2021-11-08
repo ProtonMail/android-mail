@@ -45,7 +45,8 @@ fun Project.configureJacoco(flavor: String = "", srcFolder: String = "kotlin") {
             "**/R$*.class",
             "**/BuildConfig.*",
             "**/Manifest*.*",
-            "**/*Test*.*"
+            "**/*Test*.*",
+            "android/**/*.*"
         )
 
         val debugTree = fileTree("$buildDir/tmp/kotlin-classes/$taskName") { exclude(fileFilter) }

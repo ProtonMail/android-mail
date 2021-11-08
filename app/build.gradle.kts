@@ -24,7 +24,7 @@ android {
     buildTypes {
         debug {
             isDebuggable = true
-            isTestCoverageEnabled = true
+            isTestCoverageEnabled = false
             postprocessing {
                 isObfuscate = false
                 isOptimizeCode = false

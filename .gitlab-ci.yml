@@ -68,7 +68,6 @@ run_firebase_instrumentation_tests:
     - gcloud config set project $CLOUD_PROJECT_ID_MAIL
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
     - gcloud auth activate-service-account --key-file /tmp/service-account.json
-    - export RANDOM_COVERAGE_NAME=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '')
     - gcloud firebase test android run
       --app app/build/outputs/apk/dev/debug/app-dev-debug.apk
       --test app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
@@ -78,10 +77,6 @@ run_firebase_instrumentation_tests:
       --use-orchestrator
       --num-flaky-test-attempts=1
       --timeout 10m
-      --environment-variables coverage=true,coverageFile="/sdcard/$RANDOM_COVERAGE_NAME$COVERAGE_FILE_NAME.ec"
-      --directories-to-pull /sdcard
-    - coverageFile=`gsutil ls gs://test-lab-zftd49xnby58w-i3p5ipzufy88x/**/$RANDOM_COVERAGE_NAME$COVERAGE_FILE_NAME.ec | tail -1`
-    - gsutil cp $coverageFile app/build/outputs/apk | true
 
 
 run_firebase_ui_tests:
