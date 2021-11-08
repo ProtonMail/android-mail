@@ -3,7 +3,7 @@ package ch.protonmail.android.uitests.tests.login
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.protonmail.android.MainActivity
-import ch.protonmail.android.uitests.robots.login.LoginRobot
+import ch.protonmail.android.uitests.login.LoginRobot
 import ch.protonmail.android.uitests.testsHelper.annotations.SmokeTest
 import org.junit.Rule
 import org.junit.Test

@@ -1,4 +1,4 @@
-package ch.protonmail.android.uitests.robots.login
+package ch.protonmail.android.uitests.login
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -10,9 +10,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
  */
 class LoginRobot {
 
-    fun launchApp(): LoginRobot {
-        return this
-    }
+    fun launchApp() = this
 
     /**
      * Contains all the validations that can be performed by [LoginRobot].
