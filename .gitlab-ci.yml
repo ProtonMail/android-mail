@@ -7,6 +7,12 @@ before_script:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
+cache:
+  - key: $CI_COMMIT_REF_SLUG
+    policy: pull
+    paths:
+      - .gradle
+
 stages:
   - analyse
   - build
@@ -24,6 +30,11 @@ stages:
 
 analyse:
   stage: analyse
+  cache:
+    - key: $CI_COMMIT_REF_SLUG
+      policy: pull-push
+      paths:
+        - .gradle
   tags:
     - medium
   script:
