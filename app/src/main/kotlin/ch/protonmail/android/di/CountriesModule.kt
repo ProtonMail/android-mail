@@ -16,18 +16,23 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android
+package ch.protonmail.android.di
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
+import android.content.Context
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import me.proton.core.country.data.repository.CountriesRepositoryImpl
+import me.proton.core.country.domain.repository.CountriesRepository
 
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+@Module
+@InstallIn(SingletonComponent::class)
+class CountriesModule {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.ProtonTheme_Mail)
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+    @Provides
+    fun provideCountriesRepository(
+        @ApplicationContext context: Context
+    ): CountriesRepository = CountriesRepositoryImpl(context)
 }

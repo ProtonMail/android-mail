@@ -19,6 +19,13 @@ android {
         versionCode = Config.versionCode
         versionName = Config.versionName
         testInstrumentationRunner = Config.testInstrumentationRunner
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
+                arguments["room.incremental"] = "true"
+            }
+        }
     }
 
     buildTypes {
@@ -50,8 +57,12 @@ android {
             applicationIdSuffix = ".dev"
             val gitHash = "git rev-parse --short HEAD".runCommand(workingDir = rootDir)
             versionNameSuffix = "-dev (${gitHash})"
+            buildConfigField("Boolean", "USE_DEFAULT_PINS", "false")
+            buildConfigField("String", "HOST", "\"proton.black\"")
         }
         create("prod") {
+            buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
+            buildConfigField("String", "HOST", "\"protonmail.ch\"")
         }
     }
 

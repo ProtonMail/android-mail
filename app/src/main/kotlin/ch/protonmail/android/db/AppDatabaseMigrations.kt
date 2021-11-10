@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021 Proton Technologies AG
- * This file is part of Proton Technologies AG and ProtonMail.
+ * This file is part of Proton Technologies AG and ProtonCore.
  *
  * ProtonCore is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,21 +13,19 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+ * along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android
+package ch.protonmail.android.db
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+object AppDatabaseMigrations {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.ProtonTheme_Mail)
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    val MIGRATION_1_2 = object : Migration(1, 2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            //NewDatabase.MIGRATION_0.migrate(database)
+        }
     }
 }

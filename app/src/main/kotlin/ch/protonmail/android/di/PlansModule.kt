@@ -16,18 +16,29 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android
+package ch.protonmail.android.di
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import me.proton.core.network.data.ApiProvider
+import me.proton.core.plan.data.repository.PlansRepositoryImpl
+import me.proton.core.plan.domain.SupportedPaidPlans
+import me.proton.core.plan.domain.repository.PlansRepository
+import javax.inject.Singleton
 
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+@Module
+@InstallIn(SingletonComponent::class)
+object PlansModule {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.ProtonTheme_Mail)
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+    @Provides
+    @SupportedPaidPlans
+    fun provideClientSupportedPaidPlanNames(): List<String> = listOf("plus")
+
+    @Provides
+    @Singleton
+    fun providePlansRepository(
+        apiProvider: ApiProvider
+    ): PlansRepository = PlansRepositoryImpl(apiProvider)
 }
