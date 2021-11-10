@@ -28,8 +28,9 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
+
             <meta-data
-                android:name="ch.protonmail.android.init.LoggerInitializer"
+                android:name="ch.protonmail.android.initializers.StrictModeInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>
