@@ -15,16 +15,6 @@
         android:taskAffinity=""
         android:theme="@style/ProtonTheme.Splash.Mail"
         tools:replace="android:theme,android:supportsRtl">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:launchMode="singleInstance">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -38,5 +28,49 @@
                 android:name="ch.protonmail.android.initializer.LoggerInitializer"
                 android:value="androidx.startup" />
         </provider>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="standard">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="me.proton.core.auth.presentation.ui.AddAccountActivity"
+            android:theme="@style/ProtonTheme.Mail.AddAccount" />
+        <activity
+            android:name="me.proton.core.auth.presentation.ui.AuthHelpActivity"
+            android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.auth.presentation.ui.ChooseAddressActivity"
+            android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.auth.presentation.ui.CreateAddressActivity"
+            android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.auth.presentation.ui.LoginActivity"
+            android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.auth.presentation.ui.signup.SignupActivity"
+            android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.auth.presentation.ui.TwoPassModeActivity"
+            android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.auth.presentation.ui.SecondFactorActivity"
+            android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.payment.presentation.ui.BillingActivity"
+            android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.payment.presentation.ui.PaymentOptionsActivity"
+            android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.payment.presentation.ui.PaymentTokenApprovalActivity"
+            android:theme="@style/ProtonTheme.Mail" />
     </application>
 </manifest>

@@ -24,3 +24,18 @@ tasks.register("clean", Delete::class) {
 plugins {
     id("me.proton.detekt") version Versions.Gradle.protonDetektPlugin
 }
+
+kotlinCompilerArgs(
+    // Enables experimental Coroutines (runBlockingTest).
+    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+    // Enables experimental Time (Turbine).
+    "-Xopt-in=kotlin.time.ExperimentalTime"
+)
+
+fun Project.kotlinCompilerArgs(vararg extraCompilerArgs: String) {
+    for (sub in subprojects) {
+        sub.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+            kotlinOptions { freeCompilerArgs = freeCompilerArgs + extraCompilerArgs }
+        }
+    }
+}

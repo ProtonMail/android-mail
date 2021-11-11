@@ -99,16 +99,20 @@ object Dependencies {
     }
 
     val testLibs = mutableListOf<String>().apply {
-        add(Test.junit)
+        add(Core.testKotlin)
+        add(KotlinX.coroutinesTest)
+        add(Junit.junit)
+        add(Mockk.mockk)
     }
     val androidTestLibs = mutableListOf<String>().apply {
-        add(Test.core)
-        add(Test.coreKtx)
-        add(Test.runner)
-        add(Test.rules)
-        add(Test.espresso)
         add(AndroidX.Compose.uiTest)
         add(AndroidX.Compose.uiTestJUnit)
+        add(AndroidX.Test.core)
+        add(AndroidX.Test.coreKtx)
+        add(AndroidX.Test.runner)
+        add(AndroidX.Test.rules)
+        add(AndroidX.Test.espresso)
+        add(Mockk.mockkAndroid)
     }
 }
 

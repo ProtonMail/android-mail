@@ -45,6 +45,15 @@ object AndroidX {
         const val work = "androidx.hilt:hilt-work:$version"
     }
 
+    object Lifecycle {
+        private const val version = Versions.AndroidX.lifecycle
+
+        const val viewmodelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
+        const val viewmodelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
+        const val process = "androidx.lifecycle:lifecycle-process:$version"
+        const val runtimeTesting = "androidx.lifecycle:lifecycle-runtime-testing:$version"
+    }
+
     object Navigation {
         private const val version = Versions.AndroidX.navigation
 
@@ -64,6 +73,17 @@ object AndroidX {
 
         const val ktx = "androidx.room:room-ktx:$version"
         const val compiler = "androidx.room:room-compiler:$version"
+    }
+
+    object Test {
+        private const val version = Versions.AndroidX.test
+
+        const val core = "androidx.test:core:$version"
+        const val coreKtx = "androidx.test:core-ktx:$version"
+        const val runner = "androidx.test:runner:$version"
+        const val rules = "androidx.test:rules:$version"
+        const val espresso = "androidx.test.espresso:espresso-core:${Versions.AndroidX.testEspresso}"
+        const val extJunit = "androidx.test.ext:junit:${Versions.AndroidX.testExtJunit}"
     }
 
     object Work {
@@ -94,6 +114,8 @@ object Core {
     val user = coreArtifact("user", Versions.Core.user)
     val userSettings = coreArtifact("user-settings", Versions.Core.userSettings)
     val utilKotlin = coreArtifact("util-kotlin", Versions.Core.utilKotlin)
+    val testKotlin = coreArtifact("test-kotlin", Versions.Core.testKotlin)
+    val testAndroid = coreArtifact("test-android", Versions.Core.testAndroid)
 }
 
 object Dagger {
@@ -111,6 +133,10 @@ object JakeWharton {
     const val timber = "com.jakewharton.timber:timber:${Versions.JakeWharton.timber}"
 }
 
+object Junit {
+    const val junit = "junit:junit:${Versions.Junit.junit}"
+}
+
 object Kotlin {
     private const val version = Versions.Kotlin.kotlin
 }
@@ -125,22 +151,16 @@ object Material {
     const val material = "com.google.android.material:material:${Versions.Android.material}"
 }
 
+object Mockk {
+    const val mockk = "io.mockk:mockk:${Versions.Mockk.mockk}"
+    const val mockkAndroid = "io.mockk:mockk-android:${Versions.Mockk.mockk}"
+}
+
 object Squareup {
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.Squareup.leakCanary}"
     const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.Squareup.okhttp}"
     const val plumber = "com.squareup.leakcanary:plumber-android:${Versions.Squareup.leakCanary}"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.Squareup.retrofit}"
-}
-
-object Test {
-    const val version = Versions.Test.test
-
-    const val junit = "junit:junit:${Versions.Test.junit}"
-    const val core = "androidx.test:core:$version"
-    const val coreKtx = "androidx.test:core-ktx:$version"
-    const val runner = "androidx.test:runner:$version"
-    const val rules = "androidx.test:rules:$version"
-    const val espresso = "androidx.test.espresso:espresso-core:${Versions.Test.espresso}"
 }
 
 object Sentry {

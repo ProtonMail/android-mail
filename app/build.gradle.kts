@@ -93,7 +93,7 @@ android {
 
     buildFeatures {
         compose = true
-        // viewBinding = true // required by Core presentation
+        viewBinding = true
     }
 
     composeOptions {
