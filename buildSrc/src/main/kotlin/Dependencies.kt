@@ -61,6 +61,7 @@ object Dependencies {
         add(Gotev.cookieStore)
         add(JakeWharton.timber)
         add(Material.material)
+        add(Sentry.sentry)
         add(Squareup.okhttp)
         add(Squareup.plumber)
     }

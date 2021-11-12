@@ -45,3 +45,9 @@ config/detekt
 # Fastlane
 fastlane/README.md
 fastlane/report.xml
+
+# Keystore
+keystore/*
+
+# Private properties
+private.properties

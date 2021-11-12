@@ -23,6 +23,9 @@ will show all the possible actions that are available.
 Each merge to `master` branch builds the branch's HEAD and deploy it to [firebase app distribution](https://firebase.google.com/docs/app-distribution)
 In order to someone as a tester for such builds, their email address needs to be added to the `v6-dev-builds-testers` group in Firebase.
 
+### Observability
+Crashes and errors that happen in `release` (non debuggable) builds are reported to Sentry in an anonymised form.
+The CI sets up the integration with Sentry by providing in the build environment a `private.properties` file that contains the secrets needed. This can as well be performed locally by creating a `private.properties` file (which will be ignored by git) and filling it with the needed secrets (eg. `SentryDSN`)
 
 ## Code style
 This project's code style and formatting is checked by detekt. The rule set is [ktlint's default one](https://github.com/pinterest/ktlint)

@@ -1,4 +1,4 @@
-package ch.protonmail.android.initializers
+package ch.protonmail.android.initializer
 
 import android.content.Context
 import android.os.StrictMode

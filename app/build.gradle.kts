@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.*
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -7,6 +10,17 @@ plugins {
 
 configureJacoco(flavor = "dev")
 setAsHiltModule()
+
+val privateProperties = Properties().apply {
+    try {
+        load(FileInputStream("private.properties"))
+    } catch (exception: java.io.FileNotFoundException) {
+        // Provide empty properties to allow the app to be built without secrets
+        Properties()
+    }
+}
+
+val sentryDNS: String = privateProperties.getProperty("sentryDNS", "null")
 
 android {
     compileSdk = Config.compileSdk
@@ -26,6 +40,8 @@ android {
                 arguments["room.incremental"] = "true"
             }
         }
+
+        buildConfigField("String", "SENTRY_DSN", sentryDNS)
     }
 
     buildTypes {

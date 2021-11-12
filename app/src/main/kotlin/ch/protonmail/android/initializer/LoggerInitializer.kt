@@ -16,13 +16,13 @@
  * along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.init
+package ch.protonmail.android.initializer
 
 import android.content.Context
-import android.util.Log
 import androidx.startup.Initializer
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.log.AppLogger
+import ch.protonmail.android.logging.SentryTree
 import me.proton.core.util.kotlin.CoreLogger
 import timber.log.Timber
 
@@ -32,7 +32,7 @@ class LoggerInitializer : Initializer<Unit> {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         } else {
-            Timber.plant(CrashReportingTree())
+            Timber.plant(SentryTree())
         }
 
         // Forward Core Logs to Timber, using AppLogger.
@@ -40,18 +40,11 @@ class LoggerInitializer : Initializer<Unit> {
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> {
-        return emptyList()
-    }
-
-    private class CrashReportingTree : Timber.Tree() {
-        override fun log(priority: Int, tag: String?, message: String, e: Throwable?) {
-            when (priority) {
-                Log.VERBOSE,
-                Log.DEBUG -> Unit
-                Log.ERROR -> Unit // CrashLibrary.logError()
-                Log.WARN -> Unit // CrashLibrary.logWarning()
-                else -> Unit // CrashLibrary.log()
-            }
+        return if (BuildConfig.DEBUG) {
+            emptyList()
+        } else {
+            listOf(SentryInitializer::class.java)
         }
     }
+
 }

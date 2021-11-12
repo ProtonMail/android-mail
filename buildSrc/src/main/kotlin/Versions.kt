@@ -90,4 +90,8 @@ object Versions {
         const val test = "1.4.0-beta02"
         const val espresso = "3.4.0"
     }
+
+    object Sentry {
+        const val sentry = "1.7.23"
+    }
 }

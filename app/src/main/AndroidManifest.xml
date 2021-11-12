@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ch.protonmail.android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="false"
@@ -30,7 +32,10 @@
             tools:node="merge">
 
             <meta-data
-                android:name="ch.protonmail.android.initializers.StrictModeInitializer"
+                android:name="ch.protonmail.android.initializer.StrictModeInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="ch.protonmail.android.initializer.LoggerInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>
