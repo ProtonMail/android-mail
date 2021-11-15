@@ -49,7 +49,8 @@ build_debug:
 
 build_release:
   extends: .build_job
-  when: manual
+  only:
+    - master
   script:
     - bundle exec fastlane assembleRelease
 
@@ -136,7 +137,7 @@ deploy_to_firebase:
   only:
     - master
   dependencies:
-    - build_debug
+    - build_release
   tags:
     - small
   script:
