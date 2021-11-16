@@ -40,6 +40,10 @@ analyse:
     - medium
   script:
     - bundle exec fastlane analyse
+  artifacts:
+    expire_in: 1 month
+    reports:
+      codequality: config/detekt/reports/mergedReport.json
 
 build_debug:
   extends: .build_job

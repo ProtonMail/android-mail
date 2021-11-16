@@ -18,7 +18,7 @@ platform :android do
 
   desc "Execute static analysis"
   lane :analyse do
-    gradle(task: "detekt")
+    gradle(task: "multiModuleDetekt")
   end
 
   desc "Assemble the debug apk"
