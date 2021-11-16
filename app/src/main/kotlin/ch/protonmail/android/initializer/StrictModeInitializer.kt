@@ -13,9 +13,7 @@ class StrictModeInitializer : Initializer<Unit> {
         }
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return emptyList()
-    }
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 
     private fun enableStrictMode() {
         val threadPolicyBuilder = StrictMode.ThreadPolicy.Builder()
@@ -29,5 +27,4 @@ class StrictModeInitializer : Initializer<Unit> {
         StrictMode.setThreadPolicy(threadPolicyBuilder.build())
         StrictMode.setVmPolicy(vmPolicyBuilder.build())
     }
-
 }

@@ -128,7 +128,6 @@ coverage report:
     - large
   script:
     - ./gradlew coberturaCoverageReport
-  allow_failure: false
   artifacts:
     expire_in: 1 week
     paths:

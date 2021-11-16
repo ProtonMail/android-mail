@@ -53,6 +53,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
+@Suppress("LongParameterList")
 object UserManagerModule {
 
     @Provides

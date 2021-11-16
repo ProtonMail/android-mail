@@ -20,6 +20,7 @@ package ch.protonmail.android.di
 
 import android.content.Context
 import android.os.Build
+import android.os.Build.VERSION
 import ch.protonmail.android.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -30,7 +31,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import me.proton.core.crypto.common.context.CryptoContext
-import me.proton.core.network.data.*
+import me.proton.core.network.data.ApiManagerFactory
+import me.proton.core.network.data.ApiProvider
+import me.proton.core.network.data.NetworkManager
+import me.proton.core.network.data.NetworkPrefs
+import me.proton.core.network.data.ProtonCookieStore
 import me.proton.core.network.data.client.ClientIdProviderImpl
 import me.proton.core.network.data.client.ExtraHeaderProviderImpl
 import me.proton.core.network.data.di.Constants
@@ -46,11 +51,14 @@ import me.proton.core.network.domain.session.SessionListener
 import me.proton.core.network.domain.session.SessionProvider
 import okhttp3.Cache
 import java.io.File
-import java.util.*
+import java.util.Locale
 import javax.inject.Singleton
+
+private const val TEN_MEGABYTES = 10L * 1024L * 1024L
 
 @Module
 @InstallIn(SingletonComponent::class)
+@Suppress("LongParameterList")
 object NetworkModule {
 
     const val HOST = BuildConfig.HOST
@@ -73,11 +81,13 @@ object NetworkModule {
         override val shouldUseDoh: Boolean
             get() = false
         override val userAgent: String
-            get() = "ProtonMail/${BuildConfig.VERSION_NAME} (Android " +
-                    "${Build.VERSION.RELEASE}; ${Build.MODEL}; ${Build.BRAND}; ${Build.DEVICE}; " +
-                    "${Locale.getDefault().language})"
+            get() = buildUserAgent()
 
         override fun forceUpdate(errorMessage: String) = Unit
+
+        private fun buildUserAgent() = "ProtonMail/${BuildConfig.VERSION_NAME} (Android " +
+                "${VERSION.RELEASE}; ${Build.MODEL}; ${Build.BRAND}; ${Build.DEVICE}; " +
+                "${Locale.getDefault().language})"
     }
 
     @Provides
@@ -151,7 +161,7 @@ object NetworkModule {
         {
             Cache(
                 directory = File(context.cacheDir, "http_cache"),
-                maxSize = 10L * 1024L * 1024L // 10 MiB
+                maxSize = TEN_MEGABYTES
             )
         },
         extraHeaderProvider,

@@ -49,6 +49,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
+@Suppress("LongParameterList")
 object EventManagerModule {
 
     @Provides

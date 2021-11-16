@@ -25,7 +25,7 @@ object AppDatabaseMigrations {
 
     val MIGRATION_1_2 = object : Migration(1, 2) {
         override fun migrate(database: SupportSQLiteDatabase) {
-            //NewDatabase.MIGRATION_0.migrate(database)
+            // NewDatabase.MIGRATION_0.migrate(database)
         }
     }
 }
