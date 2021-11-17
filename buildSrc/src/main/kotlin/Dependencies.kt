@@ -112,6 +112,7 @@ object Dependencies {
         add(AndroidX.Test.runner)
         add(AndroidX.Test.rules)
         add(AndroidX.Test.espresso)
+        add(Core.testAndroidInstrumented)
         add(Mockk.mockkAndroid)
     }
 }

@@ -1,3 +1,3 @@
-package ch.protonmail.android.uitests.testsHelper.annotations
+package ch.protonmail.android.uitests.annotations
 
 interface SmokeTest

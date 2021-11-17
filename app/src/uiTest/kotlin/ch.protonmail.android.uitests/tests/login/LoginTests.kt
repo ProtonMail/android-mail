@@ -1,29 +1,46 @@
 package ch.protonmail.android.uitests.tests.login
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import ch.protonmail.android.MainActivity
-import ch.protonmail.android.uitests.login.LoginRobot
-import ch.protonmail.android.uitests.testsHelper.annotations.SmokeTest
-import org.junit.Rule
+import ch.protonmail.android.uitests.BaseTest
+import ch.protonmail.android.uitests.annotations.SmokeTest
+import ch.protonmail.android.uitests.login.InboxRobot
+import me.proton.core.test.android.robots.auth.AddAccountRobot
+import me.proton.core.test.android.robots.auth.login.LoginRobot
+import me.proton.core.test.android.robots.auth.login.MailboxPasswordRobot
+import org.junit.Before
 import org.junit.Test
 import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class LoginTests {
+class LoginTests : BaseTest() {
 
-    @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
-
+    private val addAccountRobot = AddAccountRobot()
     private val loginRobot = LoginRobot()
 
-    @Category(SmokeTest::class)
-    @Test
-    fun openEmptyApp() {
-        loginRobot
-            .launchApp()
-            .verify { appIsLaunchedCorrectly() }
+    @Before
+    fun signIn() {
+        addAccountRobot
+            .signIn()
+            .verify { loginElementsDisplayed() }
     }
 
+    @Test
+    @Category(SmokeTest::class)
+    fun loginUserHappyPath() {
+        val user = users.getUser { it.name == "pro" }
+        loginRobot
+            .loginUser<InboxRobot>(user)
+            .verify { mailboxScreenDisplayed() }
+    }
+
+    @Test
+    @Category(SmokeTest::class)
+    fun loginUserWithSecondaryPasswordHappyPath() {
+        val user = users.getUser(usernameAndOnePass = false) { it.name == "twopasswords" }
+        loginRobot
+            .loginUser<MailboxPasswordRobot>(user)
+            .unlockMailbox<InboxRobot>(user)
+            .verify { mailboxScreenDisplayed() }
+    }
 }

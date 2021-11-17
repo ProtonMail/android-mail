@@ -50,6 +50,7 @@ object Versions {
         const val utilKotlin = "1.15.2"
         const val testKotlin = "1.15"
         const val testAndroid = "1.15.1"
+        const val testAndroidInstrumented = "1.15.5"
     }
 
     object Dagger {

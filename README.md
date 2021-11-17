@@ -27,6 +27,10 @@ In order to someone as a tester for such builds, their email address needs to be
 Crashes and errors that happen in `release` (non debuggable) builds are reported to Sentry in an anonymised form.
 The CI sets up the integration with Sentry by providing in the build environment a `private.properties` file that contains the secrets needed. This can as well be performed locally by creating a `private.properties` file (which will be ignored by git) and filling it with the needed secrets (eg. `SentryDSN`)
 
+### UI Tests
+UI tests are executed on firebase through the CI. Firebase test lab can be triggered also locally with `bundle exec fastlane uiTests` or tests can be run in a local emulator through android studio.
+The `app/src/uiTest/assets/users.json` file will be needed for UI tests to work, its value can be found on the CI
+
 ## Code style
 This project's code style and formatting is checked by detekt. The rule set is [ktlint's default one](https://github.com/pinterest/ktlint)
 

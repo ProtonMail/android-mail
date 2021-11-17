@@ -116,6 +116,10 @@ object Core {
     val utilKotlin = coreArtifact("util-kotlin", Versions.Core.utilKotlin)
     val testKotlin = coreArtifact("test-kotlin", Versions.Core.testKotlin)
     val testAndroid = coreArtifact("test-android", Versions.Core.testAndroid)
+    val testAndroidInstrumented = coreArtifact(
+        "test-android-instrumented",
+        Versions.Core.testAndroidInstrumented
+    )
 }
 
 object Dagger {
