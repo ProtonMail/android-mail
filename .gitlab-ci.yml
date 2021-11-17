@@ -40,6 +40,7 @@ analyse:
     - medium
   script:
     - bundle exec fastlane analyse
+    - cat config/detekt/reports/mergedReport.json | jq 'map(.severity = (.severity // ""))' | tee config/detekt/reports/mergedReport.json
   artifacts:
     expire_in: 1 month
     reports:
