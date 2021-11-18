@@ -1,5 +1,5 @@
 import java.io.FileInputStream
-import java.util.*
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -20,7 +20,8 @@ val privateProperties = Properties().apply {
     }
 }
 
-val sentryDNS: String = privateProperties.getProperty("sentryDNS", "null")
+val sentryDNS: String? = privateProperties.getProperty("sentryDNS")
+val proxyToken: String? = privateProperties.getProperty("PROXY_TOKEN")
 
 android {
     compileSdk = Config.compileSdk
@@ -41,7 +42,8 @@ android {
             }
         }
 
-        buildConfigField("String", "SENTRY_DSN", sentryDNS)
+        buildConfigField("String", "SENTRY_DSN", sentryDNS.toBuildConfigValue())
+        buildConfigField("String", "PROXY_TOKEN", proxyToken.toBuildConfigValue())
     }
 
     buildTypes {
@@ -129,4 +131,8 @@ dependencies {
 
     testImplementation(Dependencies.testLibs)
     androidTestImplementation(Dependencies.androidTestLibs)
+}
+
+fun String?.toBuildConfigValue(): String {
+    return if (this != null) "\"$this\"" else "null"
 }

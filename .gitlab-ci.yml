@@ -51,6 +51,7 @@ analyse:
 build_debug:
   extends: .build_job
   script:
+    - echo PROXY_TOKEN="$(curl -o - https://proxy.proton.black/token/get)" >> private.properties
     - bundle exec fastlane assembleDebug
     - bundle exec fastlane assembleTest
 

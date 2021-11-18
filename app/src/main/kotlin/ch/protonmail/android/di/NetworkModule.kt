@@ -49,6 +49,7 @@ import me.proton.core.network.domain.humanverification.HumanVerificationProvider
 import me.proton.core.network.domain.server.ServerTimeListener
 import me.proton.core.network.domain.session.SessionListener
 import me.proton.core.network.domain.session.SessionProvider
+import me.proton.core.util.kotlin.takeIfNotBlank
 import okhttp3.Cache
 import java.io.File
 import java.util.Locale
@@ -126,7 +127,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideExtraHeaderProvider(): ExtraHeaderProvider = ExtraHeaderProviderImpl()
+    fun provideExtraHeaderProvider(): ExtraHeaderProvider = ExtraHeaderProviderImpl().apply {
+        val proxyToken: String? = BuildConfig.PROXY_TOKEN
+        proxyToken?.takeIfNotBlank()?.let { addHeaders("X-atlas-secret" to it) }
+    }
 
     @Provides
     @Singleton
