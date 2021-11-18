@@ -20,12 +20,21 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
-
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+            <meta-data
+                android:name="ch.protonmail.android.initializer.WorkManagerInitializer"
+                android:value="androidx.startup" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.StrictModeInitializer"
                 android:value="androidx.startup" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.LoggerInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="ch.protonmail.android.initializer.EventManagerInitializer"
                 android:value="androidx.startup" />
         </provider>
 

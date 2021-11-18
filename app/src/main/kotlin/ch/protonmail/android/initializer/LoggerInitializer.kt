@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021 Proton Technologies AG
- * This file is part of Proton Technologies AG and ProtonCore.
+ * This file is part of Proton Technologies AG and ProtonMail.
  *
  * ProtonCore is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
+ * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package ch.protonmail.android.initializer
