@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.log
+package ch.protonmail.android.logging
 
 import me.proton.core.util.kotlin.Logger
 import me.proton.core.util.kotlin.LoggerLogTag

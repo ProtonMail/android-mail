@@ -21,7 +21,7 @@ package ch.protonmail.android.initializer
 import android.content.Context
 import androidx.startup.Initializer
 import ch.protonmail.android.BuildConfig
-import ch.protonmail.android.log.AppLogger
+import ch.protonmail.android.logging.AppLogger
 import ch.protonmail.android.logging.SentryTree
 import me.proton.core.util.kotlin.CoreLogger
 import timber.log.Timber
