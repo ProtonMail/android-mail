@@ -15,7 +15,6 @@
 bin/
 gen/
 releases/
-docs/
 config/detekt/reports/
 /new_releases.tmp
 
