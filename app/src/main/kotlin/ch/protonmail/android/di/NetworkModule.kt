@@ -169,6 +169,7 @@ object NetworkModule {
             )
         },
         extraHeaderProvider,
+        apiConnectionListener = null
     )
 
     @Provides
