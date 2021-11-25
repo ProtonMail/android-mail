@@ -19,23 +19,28 @@
 package ch.protonmail.android
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import ch.protonmail.android.databinding.ActivityMainBinding
 import ch.protonmail.android.feature.account.AccountViewModel
+import ch.protonmail.android.navigation.AppNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
 import me.proton.core.accountmanager.presentation.viewmodel.AccountSwitcherViewModel
 import me.proton.core.accountmanager.presentation.viewmodel.AccountSwitcherViewModel.Action
-import me.proton.core.presentation.ui.ProtonViewBindingActivity
 
 @AndroidEntryPoint
-class MainActivity : ProtonViewBindingActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+class MainActivity : FragmentActivity() {
 
     private val accountViewModel: AccountViewModel by viewModels()
     private val accountSwitcherViewModel: AccountSwitcherViewModel by viewModels()
@@ -44,8 +49,20 @@ class MainActivity : ProtonViewBindingActivity<ActivityMainBinding>(ActivityMain
         setTheme(R.style.ProtonTheme_Mail)
         super.onCreate(savedInstanceState)
         accountViewModel.setup(this)
-        binding.accountPrimaryView.setup(accountSwitcherViewModel)
+
+        setContent {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent)
+            ) {
+                AppNavGraph(::onAccountViewAdded)
+            }
+        }
     }
+
+    private fun onAccountViewAdded(accountView: AccountPrimaryView) =
+        accountView.setup(accountSwitcherViewModel)
 
     private fun AccountViewModel.setup(context: FragmentActivity) {
         register(context)

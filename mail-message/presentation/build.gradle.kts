@@ -62,6 +62,8 @@ dependencies {
     implementation(Dependencies.modulePresentationLibs)
     kapt(Dependencies.hiltAnnotationProcessors)
 
+    implementation(project(":mail-message:domain"))
+
     testImplementation(Dependencies.testLibs)
     androidTestImplementation(Dependencies.androidTestLibs)
 }

@@ -78,10 +78,14 @@ object Dependencies {
 
     val modulePresentationLibs = mutableListOf<String>().apply {
         add(AndroidX.Activity.ktx)
+        add(AndroidX.Hilt.navigationCompose)
         addAll(composeLibs)
         add(Material.material)
+        add(Proton.Core.accountManager)
+        add(Proton.Core.domain)
         add(Proton.Core.presentation)
         add(Proton.Core.utilKotlin)
+        add(JakeWharton.timber)
     }
 
     val moduleDomainLibs = mutableListOf<String>().apply {
