@@ -3,7 +3,7 @@ package ch.protonmail.android.uitests.tests.login
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.protonmail.android.uitests.BaseTest
 import ch.protonmail.android.uitests.annotations.SmokeTest
-import ch.protonmail.android.uitests.login.InboxRobot
+import ch.protonmail.android.uitests.robots.mailbox.inbox.InboxRobot
 import me.proton.core.test.android.robots.auth.AddAccountRobot
 import me.proton.core.test.android.robots.auth.login.LoginRobot
 import me.proton.core.test.android.robots.auth.login.MailboxPasswordRobot
