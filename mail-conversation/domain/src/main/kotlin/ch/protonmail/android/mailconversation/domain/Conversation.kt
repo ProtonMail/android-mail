@@ -16,23 +16,9 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation
+package ch.protonmail.android.mailconversation.domain
 
-import ch.protonmail.android.mailconversation.domain.ConversationId
-
-sealed class Destination(val route: String) {
-    object Launcher : Destination("launcher")
-
-    object Mailbox : Destination("mailbox")
-
-    object ConversationDetail : Destination("mailbox/conversation/{conversationId}") {
-        operator fun invoke(conversationId: ConversationId) =
-            "mailbox/conversation/${conversationId.id}"
-
-        const val CONVERSATION_ID_KEY = "conversationId"
-    }
-
-    object Dialog {
-        object SignOut : Destination("mailbox/signout")
-    }
-}
+data class Conversation(
+    val conversationId: ConversationId,
+    val subject: String
+)

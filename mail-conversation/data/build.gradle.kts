@@ -47,7 +47,5 @@ dependencies {
 
     implementation(Dependencies.moduleDataLibs)
 
-    implementation(project(":mail-message:domain"))
-
     testImplementation(Dependencies.testLibs)
 }

@@ -19,8 +19,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
 
 android {
@@ -31,23 +29,10 @@ android {
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
-
-    implementation(Dependencies.moduleDataLibs)
-
-    implementation(project(":mail-message:domain"))
-
-    testImplementation(Dependencies.testLibs)
+    api(project(":mail-conversation:data"))
+    api(project(":mail-conversation:domain"))
+    api(project(":mail-conversation:presentation"))
 }

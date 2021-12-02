@@ -30,6 +30,7 @@ android {
     defaultConfig {
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
+        testInstrumentationRunner = Config.testInstrumentationRunner
     }
 
     compileOptions {
@@ -40,14 +41,28 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.AndroidX.compose
+    }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/licenses/**")
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
+    }
 }
 
 dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
-    implementation(Dependencies.moduleDataLibs)
+    implementation(Dependencies.modulePresentationLibs)
 
-    implementation(project(":mail-message:domain"))
+    implementation(project(":mail-conversation:domain"))
 
     testImplementation(Dependencies.testLibs)
 }

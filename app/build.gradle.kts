@@ -125,6 +125,8 @@ dependencies {
     implementation(Dependencies.appLibs)
 
     implementation(project(":mail-message"))
+    implementation(project(":mail-conversation"))
+    implementation(project(":mail-mailbox"))
     debugImplementation(Dependencies.appDebug)
 
     kapt(Dependencies.appAnnotationProcessors)

@@ -67,4 +67,3 @@ dependencies {
     testImplementation(Dependencies.testLibs)
     androidTestImplementation(Dependencies.androidTestLibs)
 }
-

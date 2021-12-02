@@ -35,13 +35,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
-import ch.protonmail.android.mailmessage.presentation.mailbox.MailboxScreen
+import ch.protonmail.android.mailconversation.domain.ConversationId
+import ch.protonmail.android.mailconversation.presentation.ConversationDetail
+import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.navigation.common.require
 import ch.protonmail.android.navigation.drawer.NavigationDrawer
 import ch.protonmail.android.navigation.drawer.SignOutConfirmationDialog
 import ch.protonmail.android.navigation.launcher.LauncherScreen
-import ch.protonmail.conversation.domain.ConversationId
-import ch.protonmail.conversation.presentation.ConversationDetail
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
@@ -103,7 +103,7 @@ private fun NavGraphBuilder.addLauncher(navController: NavHostController) = comp
 private fun NavGraphBuilder.addMailbox(navController: NavHostController) = composable(
     route = Destination.Mailbox.route,
 ) {
-    MailboxScreen({ conversationId ->
+    MailboxScreen({ conversationId: ConversationId ->
         navController.navigate(Destination.ConversationDetail(conversationId))
     })
 }

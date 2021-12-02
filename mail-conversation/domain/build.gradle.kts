@@ -45,9 +45,7 @@ android {
 dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
-    implementation(Dependencies.moduleDataLibs)
-
-    implementation(project(":mail-message:domain"))
+    implementation(Dependencies.moduleDomainLibs)
 
     testImplementation(Dependencies.testLibs)
 }
