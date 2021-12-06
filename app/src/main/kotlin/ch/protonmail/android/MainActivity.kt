@@ -48,8 +48,6 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.ProtonTheme_Mail)
         super.onCreate(savedInstanceState)
-        accountViewModel.setup(this)
-
         setContent {
             Box(
                 Modifier
@@ -59,6 +57,8 @@ class MainActivity : FragmentActivity() {
                 AppNavGraph(::onAccountViewAdded)
             }
         }
+
+        accountViewModel.setup(this)
     }
 
     private fun onAccountViewAdded(accountView: AccountPrimaryView) =

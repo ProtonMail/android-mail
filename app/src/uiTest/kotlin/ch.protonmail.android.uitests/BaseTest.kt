@@ -18,22 +18,32 @@
 
 package ch.protonmail.android.uitests
 
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.di.AppDatabaseModule
 import kotlinx.coroutines.runBlocking
-import me.proton.core.test.android.instrumented.ProtonTest
+import me.proton.core.test.android.instrumented.ProtonTest.Companion.getTargetContext
 import me.proton.core.test.android.plugins.data.User.Users
 import org.junit.After
+import org.junit.Rule
+import org.junit.rules.RuleChain
+import org.junit.rules.TestName
 import timber.log.Timber
 
 open class BaseTest(
-    private val clearAppDatabaseOnTearDown: Boolean = true,
-    defaultTimeout: Long = 20_000L
-) : ProtonTest(MainActivity::class.java, defaultTimeout) {
+    private val clearAppDatabaseOnTearDown: Boolean = true
+) {
+
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    @Rule
+    @JvmField
+    val ruleChain: RuleChain = RuleChain
+        .outerRule(TestName())
+        .around(composeTestRule)
 
     @After
-    override fun tearDown() {
-        super.tearDown()
+    fun tearDown() {
         if (clearAppDatabaseOnTearDown) {
             runBlocking {
                 appDatabase.accountDao().deleteAll()

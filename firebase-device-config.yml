@@ -13,6 +13,8 @@ fullTest:
 quickTest:
   timeout: 30m
   device:
+    - model: flame
+      version: 29
     - model: Pixel2
       version: 28
     - model: Nexus5X

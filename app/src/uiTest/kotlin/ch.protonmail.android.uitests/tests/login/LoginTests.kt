@@ -31,7 +31,7 @@ class LoginTests : BaseTest() {
         val user = users.getUser { it.name == "pro" }
         loginRobot
             .loginUser<InboxRobot>(user)
-            .verify { mailboxScreenDisplayed() }
+            .verify { mailboxScreenDisplayed(composeTestRule) }
     }
 
     @Test
@@ -41,6 +41,6 @@ class LoginTests : BaseTest() {
         loginRobot
             .loginUser<MailboxPasswordRobot>(user)
             .unlockMailbox<InboxRobot>(user)
-            .verify { mailboxScreenDisplayed() }
+            .verify { mailboxScreenDisplayed(composeTestRule) }
     }
 }

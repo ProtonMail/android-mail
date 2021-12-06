@@ -35,10 +35,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailconversation.domain.ConversationId
+
+const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
 
 @Composable
 fun MailboxScreen(
@@ -49,12 +52,15 @@ fun MailboxScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Color.LightGray)
+            .testTag(TEST_TAG_MAILBOX_SCREEN)
     ) {
         val viewModel = hiltViewModel<MailboxViewModel>()
         val viewState = remember { viewModel.viewState }
             .collectAsState(initial = MailboxViewState.initialState)
 
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier
+        ) {
             itemsIndexed(viewState.value.mailboxItems) { _, item ->
                 MailboxItem(item) { conversationId ->
                     navigateToConversation(conversationId)

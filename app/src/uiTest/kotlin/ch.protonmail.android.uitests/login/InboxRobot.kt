@@ -18,16 +18,28 @@
 
 package ch.protonmail.android.uitests.login
 
-import ch.protonmail.android.R
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithTag
+import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_MAILBOX_SCREEN
 import me.proton.core.test.android.robots.CoreRobot
 import me.proton.core.test.android.robots.CoreVerify
 
 class InboxRobot : CoreRobot() {
 
-    class Verify : CoreVerify() {
-        fun mailboxScreenDisplayed() {
-            // Currently, mailbox screen only contains the account switcher
-            view.withId(R.id.account_name_textview).checkDisplayed()
+    inner class Verify : CoreVerify() {
+
+        fun mailboxScreenDisplayed(
+            composeRule: ComposeContentTestRule
+        ) {
+            composeRule.waitUntil(timeoutMillis = 60_000) {
+                composeRule.onAllNodesWithTag(TEST_TAG_MAILBOX_SCREEN)
+                    .fetchSemanticsNodes(false)
+                    .isNotEmpty()
+            }
+
+            composeRule.onNodeWithTag(TEST_TAG_MAILBOX_SCREEN).assertIsDisplayed()
         }
     }
 
