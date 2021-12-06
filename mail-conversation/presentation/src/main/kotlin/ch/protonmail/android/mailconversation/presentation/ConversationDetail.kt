@@ -20,7 +20,6 @@ package ch.protonmail.android.mailconversation.presentation
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import ch.protonmail.android.mailconversation.domain.ConversationId
 
 /*
@@ -44,8 +43,10 @@ import ch.protonmail.android.mailconversation.domain.ConversationId
 @Composable
 fun ConversationDetail(
     conversationId: ConversationId,
-    navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    Text("Conversation detail for conversation ID: ${conversationId.id}")
+    Text(
+        modifier = modifier,
+        text = "Conversation detail for conversation ID: ${conversationId.id}"
+    )
 }

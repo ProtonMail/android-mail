@@ -41,6 +41,7 @@ fun LauncherScreen(
 }
 
 @Composable
+@SuppressWarnings("UseIfInsteadOfWhen")
 internal fun Launcher(
     viewState: LauncherViewState,
     navigateToMailbox: (userId: UserId) -> Unit

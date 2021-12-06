@@ -19,9 +19,8 @@
 package ch.protonmail.android.di
 
 import android.content.Context
-import android.os.Build
-import android.os.Build.VERSION
 import ch.protonmail.android.BuildConfig
+import ch.protonmail.android.useragent.domain.BuildUserAgent
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,7 +51,6 @@ import me.proton.core.network.domain.session.SessionProvider
 import me.proton.core.util.kotlin.takeIfNotBlank
 import okhttp3.Cache
 import java.io.File
-import java.util.Locale
 import javax.inject.Singleton
 
 private const val TEN_MEGABYTES = 10L * 1024L * 1024L
@@ -74,7 +72,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiClient() = object : ApiClient {
+    fun provideApiClient(buildUserAgent: BuildUserAgent) = object : ApiClient {
         override val appVersionHeader: String
             get() = "Android_${BuildConfig.VERSION_NAME}"
         override val enableDebugLogging: Boolean
@@ -85,10 +83,6 @@ object NetworkModule {
             get() = buildUserAgent()
 
         override fun forceUpdate(errorMessage: String) = Unit
-
-        private fun buildUserAgent() = "ProtonMail/${BuildConfig.VERSION_NAME} (Android " +
-                "${VERSION.RELEASE}; ${Build.MODEL}; ${Build.BRAND}; ${Build.DEVICE}; " +
-                "${Locale.getDefault().language})"
     }
 
     @Provides

@@ -18,4 +18,4 @@
 
 package ch.protonmail.android.mailconversation.domain
 
-class ConversationId(val id: String)
+data class ConversationId(val id: String)

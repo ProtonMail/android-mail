@@ -26,10 +26,11 @@ sealed class Destination(val route: String) {
     object Mailbox : Destination("mailbox")
 
     object ConversationDetail : Destination("mailbox/conversation/{conversationId}") {
-        operator fun invoke(conversationId: ConversationId) =
-            "mailbox/conversation/${conversationId.id}"
 
         const val CONVERSATION_ID_KEY = "conversationId"
+
+        operator fun invoke(conversationId: ConversationId) =
+            "mailbox/conversation/${conversationId.id}"
     }
 
     object Dialog {

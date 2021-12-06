@@ -81,7 +81,7 @@ fun AppNavGraph(onAccountViewAdded: (AccountPrimaryView) -> Unit) {
             ) {
                 addLauncher(navController)
                 addMailbox(navController)
-                addConversationDetail(navController)
+                addConversationDetail()
                 addSignOutConfirmationDialog(navController)
             }
         }
@@ -109,7 +109,6 @@ private fun NavGraphBuilder.addMailbox(navController: NavHostController) = compo
 }
 
 private fun NavGraphBuilder.addConversationDetail(
-    navController: NavHostController,
     arguments: List<NamedNavArgument> = listOf(
         navArgument(Destination.ConversationDetail.CONVERSATION_ID_KEY) {
             type = NavType.StringType
@@ -122,7 +121,7 @@ private fun NavGraphBuilder.addConversationDetail(
     val rawConversationId: String = navBackStackEntry.require(
         Destination.ConversationDetail.CONVERSATION_ID_KEY
     )
-    ConversationDetail(ConversationId(rawConversationId), navController)
+    ConversationDetail(ConversationId(rawConversationId))
 }
 
 private fun NavGraphBuilder.addSignOutConfirmationDialog(navController: NavHostController) = dialog(

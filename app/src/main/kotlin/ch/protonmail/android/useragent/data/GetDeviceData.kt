@@ -16,21 +16,16 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.common
+package ch.protonmail.android.useragent.data
 
-import android.os.Bundle
-import androidx.navigation.NavBackStackEntry
+import android.os.Build
+import ch.protonmail.android.useragent.data.model.DeviceData
+import javax.inject.Inject
 
-fun NavBackStackEntry.requireArguments() = requireNotNull(arguments) { "arguments bundle is null" }
-
-fun <T> NavBackStackEntry.require(key: String, optionalBundle: Bundle? = null): T {
-    return requireNotNull(get(key, optionalBundle)) {
-        "$key is required"
-    }
-}
-
-@Suppress("UNCHECKED_CAST")
-fun <T> NavBackStackEntry.get(key: String, optionalBundle: Bundle? = null): T? {
-    val bundleArgs = requireArguments()
-    return bundleArgs.get(key) as? T ?: optionalBundle?.get(key) as? T
+class GetDeviceData @Inject constructor() {
+    operator fun invoke() = DeviceData(
+        Build.DEVICE,
+        Build.BRAND,
+        Build.MODEL
+    )
 }
