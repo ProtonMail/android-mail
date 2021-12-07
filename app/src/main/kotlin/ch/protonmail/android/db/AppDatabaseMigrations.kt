@@ -20,12 +20,17 @@ package ch.protonmail.android.db
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import me.proton.core.account.data.db.AccountDatabase
+import me.proton.core.user.data.db.AddressDatabase
+import me.proton.core.user.data.db.UserDatabase
 
 object AppDatabaseMigrations {
 
     val MIGRATION_1_2 = object : Migration(1, 2) {
         override fun migrate(database: SupportSQLiteDatabase) {
-            // NewDatabase.MIGRATION_0.migrate(database)
+            AccountDatabase.MIGRATION_4.migrate(database)
+            AddressDatabase.MIGRATION_3.migrate(database)
+            UserDatabase.MIGRATION_1.migrate(database)
         }
     }
 }

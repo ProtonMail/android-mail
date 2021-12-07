@@ -27,7 +27,7 @@ import dagger.hilt.components.SingletonComponent
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.auth.data.repository.AuthRepositoryImpl
 import me.proton.core.auth.domain.repository.AuthRepository
-import me.proton.core.auth.domain.usecase.SetupAccountCheck
+import me.proton.core.auth.domain.usecase.PostLoginAccountSetup
 import me.proton.core.auth.presentation.AuthOrchestrator
 import me.proton.core.auth.presentation.DefaultUserCheck
 import me.proton.core.crypto.android.srp.GOpenPGPSrpCrypto
@@ -59,7 +59,7 @@ object AuthModule {
         @ApplicationContext context: Context,
         accountManager: AccountManager,
         userManager: UserManager
-    ): SetupAccountCheck.UserCheck = DefaultUserCheck(
+    ): PostLoginAccountSetup.UserCheck = DefaultUserCheck(
         context,
         accountManager,
         userManager

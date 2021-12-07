@@ -38,29 +38,29 @@ object Dependencies {
         add(AndroidX.Room.ktx)
         add(AndroidX.Work.runtimeKtx)
         addAll(composeLibs)
-        add(Core.account)
-        add(Core.accountManager)
-        add(Core.auth)
-        add(Core.contact)
-        add(Core.country)
-        add(Core.crypto)
-        add(Core.data)
-        add(Core.dataRoom)
-        add(Core.domain)
-        add(Core.eventManager)
-        add(Core.humanVerification)
-        add(Core.key)
-        add(Core.mailSettings)
-        add(Core.network)
-        add(Core.payment)
-        add(Core.plan)
-        add(Core.presentation)
-        add(Core.user)
-        add(Core.userSettings)
-        add(Core.utilKotlin)
         add(Gotev.cookieStore)
         add(JakeWharton.timber)
         add(Material.material)
+        add(Proton.Core.account)
+        add(Proton.Core.accountManager)
+        add(Proton.Core.auth)
+        add(Proton.Core.contact)
+        add(Proton.Core.country)
+        add(Proton.Core.crypto)
+        add(Proton.Core.data)
+        add(Proton.Core.dataRoom)
+        add(Proton.Core.domain)
+        add(Proton.Core.eventManager)
+        add(Proton.Core.humanVerification)
+        add(Proton.Core.key)
+        add(Proton.Core.mailSettings)
+        add(Proton.Core.network)
+        add(Proton.Core.payment)
+        add(Proton.Core.plan)
+        add(Proton.Core.presentation)
+        add(Proton.Core.user)
+        add(Proton.Core.userSettings)
+        add(Proton.Core.utilKotlin)
         add(Sentry.sentry)
         add(Squareup.okhttp)
         add(Squareup.plumber)
@@ -69,24 +69,24 @@ object Dependencies {
     val moduleDataLibs = mutableListOf<String>().apply {
         add(AndroidX.Room.ktx)
         add(AndroidX.Work.runtimeKtx)
-        add(Core.data)
-        add(Core.dataRoom)
-        add(Core.domain)
-        add(Core.utilKotlin)
+        add(Proton.Core.data)
+        add(Proton.Core.dataRoom)
+        add(Proton.Core.domain)
+        add(Proton.Core.utilKotlin)
         add(Squareup.okhttp)
     }
 
     val modulePresentationLibs = mutableListOf<String>().apply {
         add(AndroidX.Activity.ktx)
         addAll(composeLibs)
-        add(Core.presentation)
-        add(Core.utilKotlin)
         add(Material.material)
+        add(Proton.Core.presentation)
+        add(Proton.Core.utilKotlin)
     }
 
     val moduleDomainLibs = mutableListOf<String>().apply {
-        add(Core.domain)
-        add(Core.utilKotlin)
+        add(Proton.Core.domain)
+        add(Proton.Core.utilKotlin)
     }
 
     val appAnnotationProcessors = mutableListOf<String>().apply {
@@ -99,10 +99,10 @@ object Dependencies {
     }
 
     val testLibs = mutableListOf<String>().apply {
-        add(Core.testKotlin)
         add(KotlinX.coroutinesTest)
         add(Junit.junit)
         add(Mockk.mockk)
+        add(Proton.Core.testKotlin)
     }
     val androidTestLibs = mutableListOf<String>().apply {
         add(AndroidX.Compose.uiTest)
@@ -112,8 +112,8 @@ object Dependencies {
         add(AndroidX.Test.runner)
         add(AndroidX.Test.rules)
         add(AndroidX.Test.espresso)
-        add(Core.testAndroidInstrumented)
         add(Mockk.mockkAndroid)
+        add(Proton.Core.testAndroidInstrumented)
     }
 }
 

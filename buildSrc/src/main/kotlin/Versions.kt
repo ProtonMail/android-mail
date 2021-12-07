@@ -27,10 +27,6 @@ object Versions {
         const val work = "2.6.0"
     }
 
-    object Core {
-        const val core = "2.0.0"
-    }
-
     object Dagger {
         const val dagger = "2.39.1"
     }
@@ -70,6 +66,10 @@ object Versions {
 
     object Mockk {
         const val mockk = "1.12.0"
+    }
+
+    object Proton {
+        const val core = "3.0.0"
     }
 
     object Squareup {

@@ -33,7 +33,6 @@ import me.proton.core.account.domain.entity.isDisabled
 import me.proton.core.account.domain.entity.isReady
 import me.proton.core.account.domain.entity.isStepNeeded
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.accountmanager.presentation.disableInitialNotReadyAccounts
 import me.proton.core.accountmanager.presentation.observe
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressFailed
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressNeeded
@@ -91,7 +90,6 @@ class AccountViewModel @Inject constructor(
         }
 
         accountManager.observe(context.lifecycle, Lifecycle.State.CREATED)
-            .disableInitialNotReadyAccounts()
             .onSessionForceLogout { userManager.lock(it.userId) }
             .onAccountTwoPassModeFailed { accountManager.disableAccount(it.userId) }
             .onAccountCreateAddressFailed { accountManager.disableAccount(it.userId) }

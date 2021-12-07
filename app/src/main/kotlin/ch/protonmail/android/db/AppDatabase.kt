@@ -21,7 +21,6 @@ package ch.protonmail.android.db
 import android.content.Context
 import androidx.room.Database
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
 import me.proton.core.account.data.db.AccountConverters
 import me.proton.core.account.data.db.AccountDatabase
 import me.proton.core.account.data.entity.AccountEntity
@@ -126,10 +125,10 @@ abstract class AppDatabase :
 
     companion object {
         const val name = "db-mail"
-        const val version = 1
+        const val version = 2
 
-        val migrations = listOf<Migration>(
-            // AppDatabaseMigrations.MIGRATION_1_2,
+        private val migrations = listOf(
+            AppDatabaseMigrations.MIGRATION_1_2,
         )
 
         fun buildDatabase(context: Context): AppDatabase =

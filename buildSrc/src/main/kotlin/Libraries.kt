@@ -93,35 +93,6 @@ object AndroidX {
     }
 }
 
-object Core {
-    val account = coreArtifact("account", Versions.Core.core)
-    val accountManager = coreArtifact("account-manager", Versions.Core.core)
-    val auth = coreArtifact("auth", Versions.Core.core)
-    val contact = coreArtifact("contact", Versions.Core.core)
-    val country = coreArtifact("country", Versions.Core.core)
-    val crypto = coreArtifact("crypto", Versions.Core.core)
-    val data = coreArtifact("data", Versions.Core.core)
-    val dataRoom = coreArtifact("data-room", Versions.Core.core)
-    val domain = coreArtifact("domain", Versions.Core.core)
-    val eventManager = coreArtifact("event-manager", Versions.Core.core)
-    val humanVerification = coreArtifact("human-verification", Versions.Core.core)
-    val key = coreArtifact("key", Versions.Core.core)
-    val mailSettings = coreArtifact("mail-settings", Versions.Core.core)
-    val network = coreArtifact("network", Versions.Core.core)
-    val payment = coreArtifact("payment", Versions.Core.core)
-    val plan = coreArtifact("plan", Versions.Core.core)
-    val presentation = coreArtifact("presentation", Versions.Core.core)
-    val user = coreArtifact("user", Versions.Core.core)
-    val userSettings = coreArtifact("user-settings", Versions.Core.core)
-    val utilKotlin = coreArtifact("util-kotlin", Versions.Core.core)
-    val testKotlin = coreArtifact("test-kotlin", Versions.Core.core)
-    val testAndroid = coreArtifact("test-android", Versions.Core.core)
-    val testAndroidInstrumented = coreArtifact(
-        "test-android-instrumented",
-        Versions.Core.core
-    )
-}
-
 object Dagger {
     private const val version = Versions.Dagger.dagger
 
@@ -158,6 +129,38 @@ object Material {
 object Mockk {
     const val mockk = "io.mockk:mockk:${Versions.Mockk.mockk}"
     const val mockkAndroid = "io.mockk:mockk-android:${Versions.Mockk.mockk}"
+}
+
+object Proton {
+
+    object Core {
+        val account = coreArtifact("account", Versions.Proton.core)
+        val accountManager = coreArtifact("account-manager", Versions.Proton.core)
+        val auth = coreArtifact("auth", Versions.Proton.core)
+        val contact = coreArtifact("contact", Versions.Proton.core)
+        val country = coreArtifact("country", Versions.Proton.core)
+        val crypto = coreArtifact("crypto", Versions.Proton.core)
+        val data = coreArtifact("data", Versions.Proton.core)
+        val dataRoom = coreArtifact("data-room", Versions.Proton.core)
+        val domain = coreArtifact("domain", Versions.Proton.core)
+        val eventManager = coreArtifact("event-manager", Versions.Proton.core)
+        val humanVerification = coreArtifact("human-verification", Versions.Proton.core)
+        val key = coreArtifact("key", Versions.Proton.core)
+        val mailSettings = coreArtifact("mail-settings", Versions.Proton.core)
+        val network = coreArtifact("network", Versions.Proton.core)
+        val payment = coreArtifact("payment", Versions.Proton.core)
+        val plan = coreArtifact("plan", Versions.Proton.core)
+        val presentation = coreArtifact("presentation", Versions.Proton.core)
+        val user = coreArtifact("user", Versions.Proton.core)
+        val userSettings = coreArtifact("user-settings", Versions.Proton.core)
+        val utilKotlin = coreArtifact("util-kotlin", Versions.Proton.core)
+        val testKotlin = coreArtifact("test-kotlin", Versions.Proton.core)
+        val testAndroid = coreArtifact("test-android", Versions.Proton.core)
+        val testAndroidInstrumented = coreArtifact(
+            "test-android-instrumented",
+            Versions.Proton.core
+        )
+    }
 }
 
 object Squareup {

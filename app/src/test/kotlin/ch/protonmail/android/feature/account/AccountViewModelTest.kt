@@ -36,7 +36,6 @@ import me.proton.core.account.domain.entity.AccountType
 import me.proton.core.account.domain.entity.SessionState
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.presentation.AccountManagerObserver
-import me.proton.core.accountmanager.presentation.disableInitialNotReadyAccounts
 import me.proton.core.accountmanager.presentation.observe
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressFailed
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressNeeded
@@ -260,7 +259,6 @@ class AccountViewModelTest : CoroutinesTest {
 
         // AccountManager
         mockkStatic(AccountManager::observe)
-        mockkStatic(AccountManagerObserver::disableInitialNotReadyAccounts)
         mockkStatic(AccountManagerObserver::onAccountCreateAddressFailed)
         mockkStatic(AccountManagerObserver::onAccountCreateAddressNeeded)
         mockkStatic(AccountManagerObserver::onAccountTwoPassModeFailed)
@@ -268,7 +266,6 @@ class AccountViewModelTest : CoroutinesTest {
         mockkStatic(AccountManagerObserver::onSessionForceLogout)
         mockkStatic(AccountManagerObserver::onSessionSecondFactorNeeded)
         val amObserver = mockk<AccountManagerObserver> {
-            every { disableInitialNotReadyAccounts() } returns this
             every { onAccountCreateAddressFailed(any(), any()) } returns this
             every { onAccountCreateAddressNeeded(any(), any()) } returns this
             every { onAccountTwoPassModeFailed(any(), any()) } returns this
@@ -291,7 +288,6 @@ class AccountViewModelTest : CoroutinesTest {
 
         // THEN
         // AccountManager
-        verify(exactly = 1) { amObserver.disableInitialNotReadyAccounts() }
         verify(exactly = 1) { amObserver.onAccountCreateAddressFailed(any(), any()) }
         verify(exactly = 1) { amObserver.onAccountCreateAddressNeeded(any(), any()) }
         verify(exactly = 1) { amObserver.onAccountTwoPassModeFailed(any(), any()) }
@@ -307,7 +303,7 @@ class AccountViewModelTest : CoroutinesTest {
         sessionState = sessionState,
         userId = user1UserId,
         username = user1Username,
-        details = AccountDetails(null),
+        details = AccountDetails(null, null),
         email = null,
         sessionId = null
     )

@@ -31,11 +31,10 @@ import dagger.hilt.components.SingletonComponent
 class WorkManagerInitializer : Initializer<WorkManager> {
 
     override fun create(context: Context): WorkManager {
-        val entryPoint = EntryPointAccessors.fromApplication(
+        val workerFactory = EntryPointAccessors.fromApplication(
             context.applicationContext,
             WorkManagerInitializerEntryPoint::class.java
-        )
-        val workerFactory = entryPoint.hiltWorkerFactory()
+        ).hiltWorkerFactory()
         val config = Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .build()
