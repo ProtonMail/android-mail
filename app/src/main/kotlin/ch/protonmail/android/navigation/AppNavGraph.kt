@@ -48,7 +48,10 @@ import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
 import timber.log.Timber
 
 @Composable
-fun AppNavGraph(onAccountViewAdded: (AccountPrimaryView) -> Unit) {
+fun AppNavGraph(
+    onAccountViewAdded: (AccountPrimaryView) -> Unit,
+    navigateToLogin: () -> Unit
+) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
 
@@ -79,7 +82,7 @@ fun AppNavGraph(onAccountViewAdded: (AccountPrimaryView) -> Unit) {
                 navController = navController,
                 startDestination = Destination.Launcher.route,
             ) {
-                addLauncher(navController)
+                addLauncher(navController, navigateToLogin)
                 addMailbox(navController)
                 addConversationDetail()
                 addSignOutConfirmationDialog(navController)
@@ -88,7 +91,10 @@ fun AppNavGraph(onAccountViewAdded: (AccountPrimaryView) -> Unit) {
     }
 }
 
-private fun NavGraphBuilder.addLauncher(navController: NavHostController) = composable(
+private fun NavGraphBuilder.addLauncher(
+    navController: NavHostController,
+    navigateToLogin: () -> Unit
+) = composable(
     route = Destination.Launcher.route,
 ) {
     LauncherScreen(
@@ -96,7 +102,8 @@ private fun NavGraphBuilder.addLauncher(navController: NavHostController) = comp
             navController.navigate(Destination.Mailbox.route) {
                 popUpTo(Destination.Launcher.route) { inclusive = true }
             }
-        }
+        },
+        navigateToLogin = navigateToLogin
     )
 }
 

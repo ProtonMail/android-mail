@@ -20,10 +20,13 @@ package ch.protonmail.android.testdata
 
 import me.proton.core.account.domain.entity.Account
 import me.proton.core.account.domain.entity.AccountDetails
+import me.proton.core.account.domain.entity.AccountState.Disabled
+import me.proton.core.account.domain.entity.AccountState.NotReady
 import me.proton.core.account.domain.entity.AccountState.Ready
 import me.proton.core.account.domain.entity.AccountType.Internal
 import me.proton.core.account.domain.entity.SessionDetails
 import me.proton.core.account.domain.entity.SessionState.Authenticated
+import me.proton.core.account.domain.entity.SessionState.SecondFactorNeeded
 import me.proton.core.network.domain.session.SessionId
 
 object AccountTestData {
@@ -39,6 +42,45 @@ object AccountTestData {
         sessionId = SessionId(UserIdTestData.userId.id),
         sessionState = Authenticated,
         details = AccountDetails(
+            null,
+            SessionDetails(
+                initialEventId = INITIAL_EVENT_ID,
+                requiredAccountType = Internal,
+                secondFactorEnabled = true,
+                twoPassModeEnabled = true,
+                password = null
+            )
+        )
+    )
+
+    val notReadyAccount = Account(
+        userId = UserIdTestData.userId,
+        username = RAW_USERNAME,
+        email = RAW_EMAIL,
+        state = NotReady,
+        sessionId = SessionId(UserIdTestData.userId.id),
+        sessionState = SecondFactorNeeded,
+        details = AccountDetails(
+            null,
+            SessionDetails(
+                initialEventId = INITIAL_EVENT_ID,
+                requiredAccountType = Internal,
+                secondFactorEnabled = true,
+                twoPassModeEnabled = true,
+                password = null
+            )
+        )
+    )
+
+    val disabledAccount = Account(
+        userId = UserIdTestData.userId,
+        username = RAW_USERNAME,
+        email = RAW_EMAIL,
+        state = Disabled,
+        sessionId = SessionId(UserIdTestData.userId.id),
+        sessionState = null,
+        details = AccountDetails(
+            null,
             SessionDetails(
                 initialEventId = INITIAL_EVENT_ID,
                 requiredAccountType = Internal,

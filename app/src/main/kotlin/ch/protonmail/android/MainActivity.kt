@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import ch.protonmail.android.feature.account.AccountViewModel
@@ -48,33 +47,24 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.ProtonTheme_Mail)
         super.onCreate(savedInstanceState)
+        accountViewModel.register(this)
         setContent {
             Box(
                 Modifier
                     .fillMaxSize()
                     .background(Color.Transparent)
             ) {
-                AppNavGraph(::onAccountViewAdded)
+                AppNavGraph(::onAccountViewAdded, ::navigateToLogin)
             }
         }
+    }
 
-        accountViewModel.setup(this)
+    private fun navigateToLogin() {
+        accountViewModel.addAccount()
     }
 
     private fun onAccountViewAdded(accountView: AccountPrimaryView) =
         accountView.setup(accountSwitcherViewModel)
-
-    private fun AccountViewModel.setup(context: FragmentActivity) {
-        register(context)
-        state.flowWithLifecycle(lifecycle, Lifecycle.State.CREATED).onEach {
-            when (it) {
-                AccountViewModel.State.Processing -> Unit
-                AccountViewModel.State.AccountNeeded -> accountViewModel.addAccount()
-                AccountViewModel.State.PrimaryExist -> Unit
-                AccountViewModel.State.StepNeeded -> Unit
-            }
-        }.launchIn(lifecycleScope)
-    }
 
     private fun AccountPrimaryView.setup(viewModel: AccountSwitcherViewModel) {
         setViewModel(viewModel)

@@ -20,6 +20,7 @@ package ch.protonmail.android.feature.account
 
 import androidx.fragment.app.FragmentActivity
 import app.cash.turbine.test
+import ch.protonmail.android.testdata.AccountTestData
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -29,11 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import me.proton.core.account.domain.entity.Account
-import me.proton.core.account.domain.entity.AccountDetails
-import me.proton.core.account.domain.entity.AccountState
-import me.proton.core.account.domain.entity.AccountState.Disabled
 import me.proton.core.account.domain.entity.AccountType
-import me.proton.core.account.domain.entity.SessionState
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.presentation.AccountManagerObserver
 import me.proton.core.accountmanager.presentation.observe
@@ -77,21 +74,6 @@ class AccountViewModelTest : CoroutinesTest {
     private val user1UserId = UserId("test")
     private val user1Username = "username"
 
-    private val disabledAccount = buildAccount(
-        accountState = Disabled,
-        sessionState = null
-    )
-
-    private val notReadyAccount = buildAccount(
-        accountState = AccountState.NotReady,
-        sessionState = SessionState.SecondFactorNeeded
-    )
-
-    private val readyAccount = buildAccount(
-        accountState = AccountState.Ready,
-        sessionState = SessionState.Authenticated
-    )
-
     private lateinit var viewModel: AccountViewModel
 
     @Before
@@ -122,7 +104,7 @@ class AccountViewModelTest : CoroutinesTest {
     @Test
     fun `when all accounts are disabled then AccountNeeded`() = runBlockingTest {
         // GIVEN
-        accountListFlow.emit(listOf(disabledAccount))
+        accountListFlow.emit(listOf(AccountTestData.disabledAccount))
         // WHEN
         viewModel.state.test {
             // THEN
@@ -134,7 +116,7 @@ class AccountViewModelTest : CoroutinesTest {
     @Test
     fun `when one ready account then PrimaryExist`() = runBlockingTest {
         // GIVEN
-        accountListFlow.emit(listOf(readyAccount))
+        accountListFlow.emit(listOf(AccountTestData.readyAccount))
         // WHEN
         viewModel.state.test {
             // THEN
@@ -152,10 +134,10 @@ class AccountViewModelTest : CoroutinesTest {
             // THEN
             assertEquals(AccountViewModel.State.AccountNeeded, awaitItem())
 
-            accountListFlow.emit(listOf(notReadyAccount))
+            accountListFlow.emit(listOf(AccountTestData.notReadyAccount))
             assertEquals(AccountViewModel.State.StepNeeded, awaitItem())
 
-            accountListFlow.emit(listOf(readyAccount))
+            accountListFlow.emit(listOf(AccountTestData.readyAccount))
             assertEquals(AccountViewModel.State.PrimaryExist, awaitItem())
 
             cancelAndIgnoreRemainingEvents()
@@ -165,14 +147,18 @@ class AccountViewModelTest : CoroutinesTest {
     @Test
     fun `when adding a second account PrimaryExist state do not change`() = runBlockingTest {
         // GIVEN
-        accountListFlow.emit(listOf(readyAccount))
+        accountListFlow.emit(listOf(AccountTestData.readyAccount))
         // WHEN
         viewModel.state.test {
             // THEN
             assertEquals(AccountViewModel.State.PrimaryExist, awaitItem())
 
-            accountListFlow.emit(listOf(readyAccount, notReadyAccount))
-            accountListFlow.emit(listOf(readyAccount, readyAccount))
+            accountListFlow.emit(
+                listOf(AccountTestData.readyAccount, AccountTestData.notReadyAccount)
+            )
+            accountListFlow.emit(
+                listOf(AccountTestData.readyAccount, AccountTestData.readyAccount)
+            )
 
             val events = cancelAndConsumeRemainingEvents()
             assertEquals(0, events.size)
@@ -198,7 +184,7 @@ class AccountViewModelTest : CoroutinesTest {
     @Test
     fun `when signIn with userId is called, startLoginWorkflow`() = runBlockingTest {
         // GIVEN
-        every { accountManager.getAccount(user1UserId) } returns flowOf(readyAccount)
+        every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.readyAccount)
         // WHEN
         viewModel.signIn(user1UserId)
         // THEN
@@ -228,7 +214,7 @@ class AccountViewModelTest : CoroutinesTest {
     @Test
     fun `when switch is called on disabled account, startLoginWorkflow`() = coroutinesTest {
         // GIVEN
-        every { accountManager.getAccount(user1UserId) } returns flowOf(disabledAccount)
+        every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.disabledAccount)
         // WHEN
         viewModel.switch(user1UserId)
         // THEN
@@ -238,7 +224,7 @@ class AccountViewModelTest : CoroutinesTest {
     @Test
     fun `when switch is called on ready account, setPrimary`() = coroutinesTest {
         // GIVEN
-        every { accountManager.getAccount(user1UserId) } returns flowOf(readyAccount)
+        every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.readyAccount)
         // WHEN
         viewModel.switch(user1UserId)
         // THEN
@@ -297,14 +283,4 @@ class AccountViewModelTest : CoroutinesTest {
         // HumanVerificationManager
         verify(exactly = 1) { hvObserver.onHumanVerificationNeeded(any(), any()) }
     }
-
-    private fun buildAccount(accountState: AccountState, sessionState: SessionState?) = Account(
-        state = accountState,
-        sessionState = sessionState,
-        userId = user1UserId,
-        username = user1Username,
-        details = AccountDetails(null, null),
-        email = null,
-        sessionId = null
-    )
 }

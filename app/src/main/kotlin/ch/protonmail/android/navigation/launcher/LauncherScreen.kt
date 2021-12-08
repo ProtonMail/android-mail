@@ -27,28 +27,32 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.feature.account.AccountViewModel
 import ch.protonmail.android.navigation.common.rememberFlowWithLifecycle
-import me.proton.core.domain.entity.UserId
 
 @Composable
 fun LauncherScreen(
-    navigateToMailbox: (userId: UserId) -> Unit
+    navigateToMailbox: () -> Unit,
+    navigateToLogin: () -> Unit,
+    accountViewModel: AccountViewModel = hiltViewModel()
 ) {
-    val launcherViewModel = hiltViewModel<LauncherViewModel>()
-    val viewState by rememberFlowWithLifecycle(launcherViewModel.viewState())
-        .collectAsState(initial = LauncherViewState.initialValue)
-    Launcher(viewState, navigateToMailbox)
+    val viewState by rememberFlowWithLifecycle(accountViewModel.state)
+        .collectAsState(initial = AccountViewModel.State.Processing)
+    Launcher(viewState, navigateToMailbox, navigateToLogin)
 }
 
 @Composable
 @SuppressWarnings("UseIfInsteadOfWhen")
 internal fun Launcher(
-    viewState: LauncherViewState,
-    navigateToMailbox: (userId: UserId) -> Unit
+    viewState: AccountViewModel.State,
+    navigateToMailbox: () -> Unit,
+    navigateToLogin: () -> Unit
 ) {
-    when (val state = viewState.primaryAccountState) {
-        is PrimaryAccountState.SignedIn -> navigateToMailbox(state.userId)
-        else -> CenteredProgress()
+    when (viewState) {
+        AccountViewModel.State.AccountNeeded -> navigateToLogin()
+        AccountViewModel.State.PrimaryExist -> navigateToMailbox()
+        AccountViewModel.State.Processing -> CenteredProgress()
+        AccountViewModel.State.StepNeeded -> Unit
     }
 }
 
