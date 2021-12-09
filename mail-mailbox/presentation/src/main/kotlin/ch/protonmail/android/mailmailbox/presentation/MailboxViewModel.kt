@@ -19,13 +19,17 @@
 package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.compose.Constants
 import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.stateIn
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
@@ -36,18 +40,29 @@ class MailboxViewModel @Inject constructor(
     accountManager: AccountManager,
 ) : ViewModel() {
 
+    @SuppressWarnings("UseIfInsteadOfWhen")
     val viewState: Flow<State> = accountManager.getPrimaryUserId()
         .flatMapLatest { userId ->
-            if (userId == null) return@flatMapLatest flowOf(State.initialState)
-            loadMailbox(userId = userId).mapLatest { messages ->
-                State(
-                    loading = false,
-                    mailboxItems = messages
-                )
+            when (userId) {
+                null -> flowOf(State.initialState)
+                else -> observeState(userId)
             }
         }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(Constants.VIEW_MODEL_STOP_STATE_EMISSION_DELAY),
+            State.initialState
+        )
 
-    private fun loadMailbox(userId: UserId): Flow<List<Conversation>> {
+    private fun observeState(userId: UserId): Flow<State> =
+        observeConversations(userId = userId).mapLatest { messages ->
+            State(
+                loading = false,
+                mailboxItems = messages
+            )
+        }
+
+    private fun observeConversations(userId: UserId): Flow<List<Conversation>> {
         Timber.d("Faking getting messages for userId $userId")
         return flowOf(
             listOf(

@@ -29,7 +29,13 @@ import kotlinx.coroutines.SupervisorJob
 import me.proton.core.account.data.db.AccountDatabase
 import me.proton.core.account.data.repository.AccountRepositoryImpl
 import me.proton.core.account.domain.repository.AccountRepository
-import me.proton.core.accountmanager.data.*
+import me.proton.core.accountmanager.data.AccountManagerImpl
+import me.proton.core.accountmanager.data.AccountMigratorImpl
+import me.proton.core.accountmanager.data.AccountStateHandler
+import me.proton.core.accountmanager.data.AccountStateHandlerCoroutineScope
+import me.proton.core.accountmanager.data.SessionListenerImpl
+import me.proton.core.accountmanager.data.SessionManagerImpl
+import me.proton.core.accountmanager.data.SessionProviderImpl
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.accountmanager.domain.migrator.AccountMigrator
@@ -81,7 +87,7 @@ object AccountManagerModule {
         accountRepository: AccountRepository,
         authRepository: AuthRepository,
         userManager: UserManager
-    ): AccountManagerImpl = AccountManagerImpl(
+    ) = AccountManagerImpl(
         product,
         accountRepository,
         authRepository,
