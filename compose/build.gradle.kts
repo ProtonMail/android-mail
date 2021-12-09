@@ -20,6 +20,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
 
 android {
@@ -60,9 +61,6 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.modulePresentationLibs)
-
-    implementation(project(":compose"))
-    implementation(project(":mail-conversation:domain"))
 
     testImplementation(Dependencies.testLibs)
 }

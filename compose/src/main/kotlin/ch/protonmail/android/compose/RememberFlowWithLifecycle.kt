@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.util
+package ch.protonmail.android.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

@@ -32,12 +32,12 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.compose.rememberFlowWithLifecycle
 import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailconversation.domain.ConversationId
 
@@ -55,7 +55,7 @@ fun MailboxScreen(
             .testTag(TEST_TAG_MAILBOX_SCREEN)
     ) {
         val viewModel = hiltViewModel<MailboxViewModel>()
-        val viewState = remember { viewModel.viewState }
+        val viewState = rememberFlowWithLifecycle(viewModel.viewState)
             .collectAsState(initial = MailboxViewModel.State.initialState)
 
         LazyColumn(

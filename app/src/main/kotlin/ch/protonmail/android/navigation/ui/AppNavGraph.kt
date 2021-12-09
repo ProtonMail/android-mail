@@ -18,14 +18,12 @@
 
 package ch.protonmail.android.navigation.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -35,12 +33,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import ch.protonmail.android.compose.require
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.Destination.Dialog.SignOut
-import ch.protonmail.android.navigation.util.require
 import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
 import timber.log.Timber
 
@@ -131,7 +129,3 @@ private fun NavGraphBuilder.addSignOutConfirmationDialog(navController: NavHostC
         onDismiss = { navController.popBackStack() }
     )
 }
-
-@Composable
-private fun isLandscape() =
-    LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
