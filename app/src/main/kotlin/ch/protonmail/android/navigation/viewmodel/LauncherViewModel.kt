@@ -1,27 +1,31 @@
 /*
- * Copyright (c) 2020 Proton Technologies AG
- * This file is part of Proton Technologies AG and ProtonCore.
+ * Copyright (c) 2021 Proton Technologies AG
+ * This file is part of Proton Technologies AG and ProtonMail.
  *
- * ProtonCore is free software: you can redistribute it and/or modify
+ * ProtonMail is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * ProtonCore is distributed in the hope that it will be useful,
+ * ProtonMail is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
+ * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.feature.account
+package ch.protonmail.android.navigation.viewmodel
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.navigation.viewmodel.LauncherViewModel.State.AccountNeeded
+import ch.protonmail.android.navigation.viewmodel.LauncherViewModel.State.PrimaryExist
+import ch.protonmail.android.navigation.viewmodel.LauncherViewModel.State.Processing
+import ch.protonmail.android.navigation.viewmodel.LauncherViewModel.State.StepNeeded
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull
@@ -52,7 +56,7 @@ import me.proton.core.user.domain.UserManager
 import javax.inject.Inject
 
 @HiltViewModel
-class AccountViewModel @Inject constructor(
+class LauncherViewModel @Inject constructor(
     private val product: Product,
     private val requiredAccountType: AccountType,
     private val accountManager: AccountManager,
@@ -65,16 +69,16 @@ class AccountViewModel @Inject constructor(
     val state = accountManager.getAccounts()
         .map { accounts ->
             when {
-                accounts.isEmpty() || accounts.all { it.isDisabled() } -> State.AccountNeeded
-                accounts.any { it.isReady() } -> State.PrimaryExist
-                accounts.any { it.isStepNeeded() } -> State.StepNeeded
-                else -> State.Processing
+                accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
+                accounts.any { it.isReady() } -> PrimaryExist
+                accounts.any { it.isStepNeeded() } -> StepNeeded
+                else -> Processing
             }
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
-            initialValue = State.Processing
+            initialValue = Processing
         )
 
     fun register(context: FragmentActivity) {

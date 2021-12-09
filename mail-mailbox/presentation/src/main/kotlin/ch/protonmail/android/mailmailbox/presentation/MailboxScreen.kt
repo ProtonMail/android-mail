@@ -56,7 +56,7 @@ fun MailboxScreen(
     ) {
         val viewModel = hiltViewModel<MailboxViewModel>()
         val viewState = remember { viewModel.viewState }
-            .collectAsState(initial = MailboxViewState.initialState)
+            .collectAsState(initial = MailboxViewModel.State.initialState)
 
         LazyColumn(
             modifier = Modifier

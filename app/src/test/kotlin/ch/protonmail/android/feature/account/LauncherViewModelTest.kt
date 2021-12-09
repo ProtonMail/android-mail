@@ -20,6 +20,7 @@ package ch.protonmail.android.feature.account
 
 import androidx.fragment.app.FragmentActivity
 import app.cash.turbine.test
+import ch.protonmail.android.navigation.viewmodel.LauncherViewModel
 import ch.protonmail.android.testdata.AccountTestData
 import io.mockk.coVerify
 import io.mockk.every
@@ -31,6 +32,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import me.proton.core.account.domain.entity.Account
 import me.proton.core.account.domain.entity.AccountType
+import me.proton.core.account.domain.entity.AccountType.Internal
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.presentation.AccountManagerObserver
 import me.proton.core.accountmanager.presentation.observe
@@ -42,6 +44,7 @@ import me.proton.core.accountmanager.presentation.onSessionForceLogout
 import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
 import me.proton.core.domain.entity.Product
+import me.proton.core.domain.entity.Product.Mail
 import me.proton.core.domain.entity.UserId
 import me.proton.core.humanverification.domain.HumanVerificationManager
 import me.proton.core.humanverification.presentation.HumanVerificationManagerObserver
@@ -54,7 +57,7 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class AccountViewModelTest : CoroutinesTest {
+class LauncherViewModelTest : CoroutinesTest {
 
     private val hvOrchestrator = mockk<HumanVerificationOrchestrator>(relaxUnitFun = true)
     private val authOrchestrator = mockk<AuthOrchestrator>(relaxUnitFun = true)
@@ -74,13 +77,13 @@ class AccountViewModelTest : CoroutinesTest {
     private val user1UserId = UserId("test")
     private val user1Username = "username"
 
-    private lateinit var viewModel: AccountViewModel
+    private lateinit var viewModel: LauncherViewModel
 
     @Before
     fun before() {
-        viewModel = AccountViewModel(
-            Product.Mail,
-            AccountType.Internal,
+        viewModel = LauncherViewModel(
+            Mail,
+            Internal,
             accountManager,
             userManager,
             humanVerificationManager,
@@ -96,7 +99,7 @@ class AccountViewModelTest : CoroutinesTest {
         // WHEN
         viewModel.state.test {
             // THEN
-            assertEquals(AccountViewModel.State.AccountNeeded, awaitItem())
+            assertEquals(LauncherViewModel.State.AccountNeeded, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -108,7 +111,7 @@ class AccountViewModelTest : CoroutinesTest {
         // WHEN
         viewModel.state.test {
             // THEN
-            assertEquals(AccountViewModel.State.AccountNeeded, awaitItem())
+            assertEquals(LauncherViewModel.State.AccountNeeded, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -120,7 +123,7 @@ class AccountViewModelTest : CoroutinesTest {
         // WHEN
         viewModel.state.test {
             // THEN
-            assertEquals(AccountViewModel.State.PrimaryExist, awaitItem())
+            assertEquals(LauncherViewModel.State.PrimaryExist, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -132,13 +135,13 @@ class AccountViewModelTest : CoroutinesTest {
         // WHEN
         viewModel.state.test {
             // THEN
-            assertEquals(AccountViewModel.State.AccountNeeded, awaitItem())
+            assertEquals(LauncherViewModel.State.AccountNeeded, awaitItem())
 
             accountListFlow.emit(listOf(AccountTestData.notReadyAccount))
-            assertEquals(AccountViewModel.State.StepNeeded, awaitItem())
+            assertEquals(LauncherViewModel.State.StepNeeded, awaitItem())
 
             accountListFlow.emit(listOf(AccountTestData.readyAccount))
-            assertEquals(AccountViewModel.State.PrimaryExist, awaitItem())
+            assertEquals(LauncherViewModel.State.PrimaryExist, awaitItem())
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -151,7 +154,7 @@ class AccountViewModelTest : CoroutinesTest {
         // WHEN
         viewModel.state.test {
             // THEN
-            assertEquals(AccountViewModel.State.PrimaryExist, awaitItem())
+            assertEquals(LauncherViewModel.State.PrimaryExist, awaitItem())
 
             accountListFlow.emit(
                 listOf(AccountTestData.readyAccount, AccountTestData.notReadyAccount)

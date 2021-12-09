@@ -36,11 +36,11 @@ class MailboxViewModel @Inject constructor(
     accountManager: AccountManager,
 ) : ViewModel() {
 
-    val viewState: Flow<MailboxViewState> = accountManager.getPrimaryUserId()
+    val viewState: Flow<State> = accountManager.getPrimaryUserId()
         .flatMapLatest { userId ->
-            if (userId == null) return@flatMapLatest flowOf(MailboxViewState.initialState)
+            if (userId == null) return@flatMapLatest flowOf(State.initialState)
             loadMailbox(userId = userId).mapLatest { messages ->
-                MailboxViewState(
+                State(
                     loading = false,
                     mailboxItems = messages
                 )
@@ -59,5 +59,17 @@ class MailboxViewModel @Inject constructor(
                 Conversation(ConversationId("6"), "Sixth message"),
             )
         )
+    }
+
+    data class State(
+        val loading: Boolean,
+        val mailboxItems: List<Conversation>
+    ) {
+        companion object {
+            val initialState = State(
+                loading = true,
+                mailboxItems = emptyList()
+            )
+        }
     }
 }

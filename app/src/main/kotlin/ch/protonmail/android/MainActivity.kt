@@ -29,8 +29,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import ch.protonmail.android.feature.account.LauncherViewModel
 import ch.protonmail.android.navigation.ui.AppNavGraph
+import ch.protonmail.android.navigation.viewmodel.LauncherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -41,13 +41,13 @@ import me.proton.core.accountmanager.presentation.viewmodel.AccountSwitcherViewM
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
 
-    private val accountViewModel: AccountViewModel by viewModels()
+    private val launcherViewModel: LauncherViewModel by viewModels()
     private val accountSwitcherViewModel: AccountSwitcherViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.ProtonTheme_Mail)
         super.onCreate(savedInstanceState)
-        accountViewModel.register(this)
+        launcherViewModel.register(this)
         setContent {
             Box(
                 Modifier
@@ -60,7 +60,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun navigateToLogin() {
-        accountViewModel.addAccount()
+        launcherViewModel.addAccount()
     }
 
     private fun onAccountViewAdded(accountView: AccountPrimaryView) =
@@ -70,11 +70,11 @@ class MainActivity : FragmentActivity() {
         setViewModel(viewModel)
         viewModel.onAction().flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                is Action.Add -> accountViewModel.signIn()
-                is Action.SignIn -> accountViewModel.signIn(it.account.userId)
-                is Action.SignOut -> accountViewModel.signOut(it.account.userId)
-                is Action.Remove -> accountViewModel.remove(it.account.userId)
-                is Action.SetPrimary -> accountViewModel.switch(it.account.userId)
+                is Action.Add -> launcherViewModel.signIn()
+                is Action.SignIn -> launcherViewModel.signIn(it.account.userId)
+                is Action.SignOut -> launcherViewModel.signOut(it.account.userId)
+                is Action.Remove -> launcherViewModel.remove(it.account.userId)
+                is Action.SetPrimary -> launcherViewModel.switch(it.account.userId)
             }
         }.launchIn(lifecycleScope)
     }

@@ -65,15 +65,7 @@ fun AppNavGraph(
         }
     ) { contentPadding ->
         Box(
-            Modifier
-                .padding(contentPadding)
-                .run {
-                    if (isLandscape()) {
-                        systemBarsPadding()
-                    } else {
-                        statusBarsPadding()
-                    }
-                }
+            Modifier.padding(contentPadding)
         ) {
             NavHost(
                 navController = navController,

@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.launcher
+package ch.protonmail.android.navigation.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,34 +27,33 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.feature.account.LauncherViewModel
-import ch.protonmail.android.navigation.util.rememberFlowWithLifecycle
+import ch.protonmail.android.compose.rememberFlowWithLifecycle
+import ch.protonmail.android.navigation.viewmodel.LauncherViewModel
 import me.proton.core.util.kotlin.exhaustive
 
 @Composable
 fun LauncherScreen(
     navigateToMailbox: () -> Unit,
     navigateToLogin: () -> Unit,
-    accountViewModel: AccountViewModel = hiltViewModel()
+    launcherViewModel: LauncherViewModel = hiltViewModel()
 ) {
-    val viewState by rememberFlowWithLifecycle(accountViewModel.state)
-        .collectAsState(initial = AccountViewModel.State.Processing)
+    val viewState by rememberFlowWithLifecycle(launcherViewModel.state)
+        .collectAsState(initial = LauncherViewModel.State.Processing)
     Launcher(viewState, navigateToMailbox, navigateToLogin)
 }
 
 @Composable
-@SuppressWarnings("UseIfInsteadOfWhen")
 internal fun Launcher(
-    viewState: AccountViewModel.State,
+    viewState: LauncherViewModel.State,
     navigateToMailbox: () -> Unit,
     navigateToLogin: () -> Unit
 ) {
     when (viewState) {
-        AccountViewModel.State.AccountNeeded -> navigateToLogin()
-        AccountViewModel.State.PrimaryExist -> navigateToMailbox()
-        AccountViewModel.State.Processing -> CenteredProgress()
-        AccountViewModel.State.StepNeeded -> Unit
-    }
+        LauncherViewModel.State.AccountNeeded -> navigateToLogin()
+        LauncherViewModel.State.PrimaryExist -> navigateToMailbox()
+        LauncherViewModel.State.Processing -> CenteredProgress()
+        LauncherViewModel.State.StepNeeded -> Unit
+    }.exhaustive
 }
 
 @Composable
