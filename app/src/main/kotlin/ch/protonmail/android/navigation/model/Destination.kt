@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation
+package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.mailconversation.domain.ConversationId
 

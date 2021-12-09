@@ -29,8 +29,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import ch.protonmail.android.feature.account.AccountViewModel
-import ch.protonmail.android.navigation.AppNavGraph
+import ch.protonmail.android.feature.account.LauncherViewModel
+import ch.protonmail.android.navigation.ui.AppNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.common
+package ch.protonmail.android.navigation.util
 
 import android.os.Bundle
 import androidx.navigation.NavBackStackEntry

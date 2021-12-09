@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.useragent.data.model
+package ch.protonmail.android.useragent.model
 
 data class DeviceData(
     val device: String,

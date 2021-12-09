@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation
+package ch.protonmail.android.navigation.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
@@ -38,12 +38,9 @@ import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
-import ch.protonmail.android.navigation.common.require
-import ch.protonmail.android.navigation.drawer.NavigationDrawer
-import ch.protonmail.android.navigation.drawer.SignOutConfirmationDialog
-import ch.protonmail.android.navigation.launcher.LauncherScreen
-import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.insets.systemBarsPadding
+import ch.protonmail.android.navigation.model.Destination
+import ch.protonmail.android.navigation.model.Destination.Dialog.SignOut
+import ch.protonmail.android.navigation.util.require
 import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
 import timber.log.Timber
 
@@ -61,7 +58,7 @@ fun AppNavGraph(
             NavigationDrawer(
                 scaffoldState.drawerState,
                 navigateToSigningOut = {
-                    navController.navigate(Destination.Dialog.SignOut.route)
+                    navController.navigate(SignOut.route)
                 },
                 onAccountViewAdded
             )

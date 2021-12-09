@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.launcher
+package ch.protonmail.android.navigation.model
 
 import me.proton.core.domain.entity.UserId
 

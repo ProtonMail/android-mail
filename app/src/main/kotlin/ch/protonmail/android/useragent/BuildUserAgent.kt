@@ -16,12 +16,8 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.useragent.domain
+package ch.protonmail.android.useragent
 
-import ch.protonmail.android.useragent.data.GetAndroidVersion
-import ch.protonmail.android.useragent.data.GetAppVersion
-import ch.protonmail.android.useragent.data.GetDefaultLocale
-import ch.protonmail.android.useragent.data.GetDeviceData
 import javax.inject.Inject
 
 class BuildUserAgent @Inject constructor(

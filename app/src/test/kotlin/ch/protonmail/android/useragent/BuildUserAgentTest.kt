@@ -18,12 +18,7 @@
 
 package ch.protonmail.android.useragent
 
-import ch.protonmail.android.useragent.data.GetAndroidVersion
-import ch.protonmail.android.useragent.data.GetAppVersion
-import ch.protonmail.android.useragent.data.GetDefaultLocale
-import ch.protonmail.android.useragent.data.GetDeviceData
-import ch.protonmail.android.useragent.data.model.DeviceData
-import ch.protonmail.android.useragent.domain.BuildUserAgent
+import ch.protonmail.android.useragent.model.DeviceData
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Before

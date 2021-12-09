@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.useragent.data
+package ch.protonmail.android.useragent
 
 import java.util.Locale
 import javax.inject.Inject

@@ -27,8 +27,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.feature.account.AccountViewModel
-import ch.protonmail.android.navigation.common.rememberFlowWithLifecycle
+import ch.protonmail.android.feature.account.LauncherViewModel
+import ch.protonmail.android.navigation.util.rememberFlowWithLifecycle
+import me.proton.core.util.kotlin.exhaustive
 
 @Composable
 fun LauncherScreen(

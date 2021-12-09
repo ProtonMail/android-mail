@@ -20,7 +20,7 @@ package ch.protonmail.android.di
 
 import android.content.Context
 import ch.protonmail.android.BuildConfig
-import ch.protonmail.android.useragent.domain.BuildUserAgent
+import ch.protonmail.android.useragent.BuildUserAgent
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -16,11 +16,11 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.useragent.data
+package ch.protonmail.android.useragent
 
-import ch.protonmail.android.BuildConfig
+import android.os.Build.VERSION
 import javax.inject.Inject
 
-class GetAppVersion @Inject constructor() {
-    operator fun invoke(): String = BuildConfig.VERSION_NAME
+class GetAndroidVersion @Inject constructor() {
+    operator fun invoke(): String = VERSION.RELEASE
 }

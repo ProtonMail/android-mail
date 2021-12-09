@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.drawer
+package ch.protonmail.android.navigation.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column

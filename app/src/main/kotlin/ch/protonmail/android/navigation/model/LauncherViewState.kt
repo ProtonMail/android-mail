@@ -16,16 +16,16 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.useragent.data
+package ch.protonmail.android.navigation.model
 
-import android.os.Build
-import ch.protonmail.android.useragent.data.model.DeviceData
-import javax.inject.Inject
+import androidx.compose.runtime.Immutable
+import ch.protonmail.android.navigation.model.PrimaryAccountState.SignedOut
 
-class GetDeviceData @Inject constructor() {
-    operator fun invoke() = DeviceData(
-        Build.DEVICE,
-        Build.BRAND,
-        Build.MODEL
-    )
+@Immutable
+data class LauncherViewState(
+    val primaryAccountState: PrimaryAccountState = SignedOut
+) {
+    companion object {
+        val initialValue = LauncherViewState()
+    }
 }
