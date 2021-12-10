@@ -24,28 +24,26 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import androidx.navigation.compose.NamedNavArgument
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
-import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import ch.protonmail.android.compose.require
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.navigation.model.Destination
-import ch.protonmail.android.navigation.model.Destination.Dialog.SignOut
 import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
 import timber.log.Timber
 
 @Composable
-fun AppNavGraph(
-    onAccountViewAdded: (AccountPrimaryView) -> Unit,
-    navigateToLogin: () -> Unit
+fun Home(
+    onAccountViewAdded: (AccountPrimaryView) -> Unit
 ) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
@@ -54,11 +52,9 @@ fun AppNavGraph(
         scaffoldState = scaffoldState,
         drawerContent = {
             NavigationDrawer(
-                scaffoldState.drawerState,
-                navigateToSigningOut = {
-                    navController.navigate(SignOut.route)
-                },
-                onAccountViewAdded
+                drawerState = scaffoldState.drawerState,
+                navigateToSigningOut = { navController.navigate(Destination.Dialog.SignOut.route) },
+                onAccountViewAdded = onAccountViewAdded
             )
         }
     ) { contentPadding ->
@@ -67,9 +63,8 @@ fun AppNavGraph(
         ) {
             NavHost(
                 navController = navController,
-                startDestination = Destination.Launcher.route,
+                startDestination = Destination.Mailbox.route,
             ) {
-                addLauncher(navController, navigateToLogin)
                 addMailbox(navController)
                 addConversationDetail()
                 addSignOutConfirmationDialog(navController)
@@ -78,28 +73,14 @@ fun AppNavGraph(
     }
 }
 
-private fun NavGraphBuilder.addLauncher(
-    navController: NavHostController,
-    navigateToLogin: () -> Unit
-) = composable(
-    route = Destination.Launcher.route,
-) {
-    LauncherScreen(
-        navigateToMailbox = {
-            navController.navigate(Destination.Mailbox.route) {
-                popUpTo(Destination.Launcher.route) { inclusive = true }
-            }
-        },
-        navigateToLogin = navigateToLogin
-    )
-}
-
 private fun NavGraphBuilder.addMailbox(navController: NavHostController) = composable(
     route = Destination.Mailbox.route,
 ) {
-    MailboxScreen({ conversationId: ConversationId ->
-        navController.navigate(Destination.ConversationDetail(conversationId))
-    })
+    MailboxScreen(
+        navigateToConversation = { conversationId: ConversationId ->
+            navController.navigate(Destination.ConversationDetail(conversationId))
+        }
+    )
 }
 
 private fun NavGraphBuilder.addConversationDetail(

@@ -32,6 +32,7 @@ object Dependencies {
         add(AndroidX.Hilt.compiler)
         add(AndroidX.Hilt.navigationCompose)
         add(AndroidX.Hilt.work)
+        add(AndroidX.Navigation.common)
         add(AndroidX.Navigation.compose)
         add(AndroidX.Paging.compose)
         add(AndroidX.Paging.runtime)

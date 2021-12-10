@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import ch.protonmail.android.navigation.ui.AppNavGraph
+import ch.protonmail.android.navigation.ui.Launcher
 import ch.protonmail.android.navigation.viewmodel.LauncherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -54,7 +54,7 @@ class MainActivity : FragmentActivity() {
                     .fillMaxSize()
                     .background(Color.Transparent)
             ) {
-                AppNavGraph(::onAccountViewAdded, ::navigateToLogin)
+                Launcher(::onAccountViewAdded, ::navigateToLogin)
             }
         }
     }

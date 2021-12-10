@@ -57,6 +57,7 @@ object AndroidX {
     object Navigation {
         private const val version = Versions.AndroidX.navigation
 
+        const val common = "androidx.navigation:navigation-common:${Versions.AndroidX.navigationCommon}"
         const val compose = "androidx.navigation:navigation-compose:${Versions.AndroidX.navigationCompose}"
     }
 

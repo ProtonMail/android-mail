@@ -12,12 +12,13 @@ object Versions {
         const val activity = "1.3.1"
         const val arch = "2.1.0"
         const val annotation = "1.2.0"
-        const val compose = "1.0.3"
+        const val compose = "1.0.5"
         const val hilt = "1.0.0"
-        const val hiltNavigationCompose = "1.0.0-alpha03"
+        const val hiltNavigationCompose = "1.0.0-beta01"
         const val lifecycle = "2.4.0"
         const val navigation = "2.3.5"
-        const val navigationCompose = "2.4.0-alpha04"
+        const val navigationCommon = "2.4.0-beta02"
+        const val navigationCompose = "2.4.0-beta02"
         const val paging = "3.0.1"
         const val pagingCompose = "1.0.0-alpha12"
         const val room = "2.3.0"
@@ -36,7 +37,7 @@ object Versions {
     }
 
     object Gradle {
-        const val androidGradlePlugin = "7.0.3"
+        const val androidGradlePlugin = "7.0.4"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
         const val protonDetektPlugin = "0.4"
@@ -56,7 +57,7 @@ object Versions {
     }
 
     object Kotlin {
-        const val kotlin = "1.5.30"
+        const val kotlin = "1.5.31"
     }
 
     object KotlinX {

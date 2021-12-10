@@ -18,48 +18,29 @@
 
 package ch.protonmail.android.navigation.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.compose.CenteredProgress
 import ch.protonmail.android.compose.rememberFlowWithLifecycle
 import ch.protonmail.android.navigation.viewmodel.LauncherViewModel
+import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
 import me.proton.core.util.kotlin.exhaustive
 
 @Composable
-fun LauncherScreen(
-    navigateToMailbox: () -> Unit,
+fun Launcher(
+    onAccountViewAdded: (AccountPrimaryView) -> Unit,
     navigateToLogin: () -> Unit,
     launcherViewModel: LauncherViewModel = hiltViewModel()
 ) {
     val viewState by rememberFlowWithLifecycle(launcherViewModel.state)
         .collectAsState(initial = LauncherViewModel.State.Processing)
-    Launcher(viewState, navigateToMailbox, navigateToLogin)
-}
 
-@Composable
-internal fun Launcher(
-    viewState: LauncherViewModel.State,
-    navigateToMailbox: () -> Unit,
-    navigateToLogin: () -> Unit
-) {
     when (viewState) {
         LauncherViewModel.State.AccountNeeded -> navigateToLogin()
-        LauncherViewModel.State.PrimaryExist -> navigateToMailbox()
-        LauncherViewModel.State.Processing -> CenteredProgress()
-        LauncherViewModel.State.StepNeeded -> Unit
+        LauncherViewModel.State.PrimaryExist -> Home(onAccountViewAdded)
+        LauncherViewModel.State.Processing,
+        LauncherViewModel.State.StepNeeded -> CenteredProgress()
     }.exhaustive
-}
-
-@Composable
-private fun CenteredProgress() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxWidth()
-    ) { CircularProgressIndicator() }
 }
