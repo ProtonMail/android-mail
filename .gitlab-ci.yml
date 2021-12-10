@@ -18,6 +18,7 @@ cache:
 
 stages:
   - analyse
+  - localise
   - build
   - test
   - report
@@ -30,6 +31,7 @@ stages:
   artifacts:
     paths:
       - app/build/outputs
+
 
 analyse:
   stage: analyse
@@ -48,6 +50,20 @@ analyse:
     reports:
       codequality: config/detekt/reports/mergedReportWithSeverity.json
 
+
+localise-sync-crowdin:
+  stage: localise
+  variables:
+      I18N_SYNC_CROWDIN_PROJECT: 'android-mail-new'
+  extends: .i18n-sync-crowdin-shared
+
+localise-commit-locales:
+  stage: localise
+  variables:
+      I18N_COMMIT_CROWDIN_PROJECT: 'android-mail-new'
+  extends: .i18n-commit-locales-shared
+
+
 build_debug:
   extends: .build_job
   script:
@@ -55,12 +71,14 @@ build_debug:
     - bundle exec fastlane assembleDebug
     - bundle exec fastlane assembleTest
 
+
 build_release:
   extends: .build_job
   only:
     - master
   script:
     - bundle exec fastlane assembleRelease
+
 
 run_unit_test:
   stage: test
@@ -139,6 +157,7 @@ coverage report:
     reports:
       cobertura: app/build/reports/cobertura-coverage.xml
 
+
 deploy_to_firebase:
   stage: deploy
   only:
@@ -151,3 +170,12 @@ deploy_to_firebase:
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
     - bundle exec fastlane deployToFirebase
 
+
+include:
+  - project: 'translations/generator'
+    ref: master
+    file: '/jobs/sync-crowdin.gitlab-ci.yml'
+
+  - project: 'translations/generator'
+    ref: master
+    file: '/jobs/commit-locales.gitlab-ci.yml'
