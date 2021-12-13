@@ -39,7 +39,6 @@ import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.navigation.model.Destination
 import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
-import timber.log.Timber
 
 @Composable
 fun Home(
@@ -103,10 +102,7 @@ private fun NavGraphBuilder.addSignOutConfirmationDialog(navController: NavHostC
     route = Destination.Dialog.SignOut.route
 ) {
     SignOutConfirmationDialog(
-        onRemove = {
-            Timber.i("Sign out request confirmed")
-            navController.popBackStack()
-        },
-        onDismiss = { navController.popBackStack() }
+        onSignedOut = { navController.popBackStack() },
+        onCancelled = { navController.popBackStack() }
     )
 }

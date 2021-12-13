@@ -18,32 +18,72 @@
 
 package ch.protonmail.android.navigation.ui
 
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.R
-import ch.protonmail.android.compose.Dimension.DialogWidth
+import ch.protonmail.android.compose.rememberFlowWithLifecycle
+import ch.protonmail.android.navigation.viewmodel.SignOutViewModel
+import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State
+import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State.Initial
+import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State.SignedOut
+import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State.SigningOut
+import me.proton.core.util.kotlin.exhaustive
 
 @Composable
 fun SignOutConfirmationDialog(
-    onRemove: () -> Unit,
-    onDismiss: () -> Unit,
+    onSignedOut: () -> Unit,
+    onCancelled: () -> Unit,
     modifier: Modifier = Modifier,
+    signOutViewModel: SignOutViewModel = hiltViewModel()
+) {
+    val viewState by rememberFlowWithLifecycle(flow = signOutViewModel.state)
+        .collectAsState(initial = Initial)
+
+    when (viewState) {
+        Initial -> Unit
+        SignedOut -> onSignedOut()
+        SigningOut -> Unit
+    }.exhaustive
+
+    SignoutDialog(
+        viewState = viewState,
+        onDismiss = onCancelled,
+        onSignOut = { signOutViewModel.signOut() },
+        modifier
+    )
+}
+
+@Composable
+private fun SignoutDialog(
+    viewState: State,
+    onDismiss: () -> Unit,
+    onSignOut: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     AlertDialog(
-        modifier = modifier
-            .width(DialogWidth),
+        modifier = modifier,
         onDismissRequest = onDismiss,
         title = { Text(text = stringResource(id = R.string.title_remove_account)) },
         text = { Text(text = stringResource(id = R.string.description_remove_account)) },
         confirmButton = {
-            TextButton(onClick = onRemove) {
-                Text(text = stringResource(id = R.string.title_remove))
-            }
+            TextButton(
+                onClick = onSignOut,
+                content = {
+                    when (viewState) {
+                        Initial,
+                        SignedOut -> Text(text = stringResource(id = R.string.title_remove))
+                        SigningOut -> CircularProgressIndicator()
+                    }.exhaustive
+                }
+            )
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
