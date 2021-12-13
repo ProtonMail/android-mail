@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.protonmail.android.compose
+package ch.protonmail.android.common
 
 /**
  * Holds constants shared by all the modules in this project

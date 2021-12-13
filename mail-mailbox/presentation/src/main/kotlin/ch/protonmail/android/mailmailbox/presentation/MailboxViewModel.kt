@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.compose.Constants
+import ch.protonmail.android.common.Constants
 import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import dagger.hilt.android.lifecycle.HiltViewModel

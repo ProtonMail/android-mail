@@ -53,7 +53,7 @@ fun Home(
         drawerContent = {
             NavigationDrawer(
                 drawerState = scaffoldState.drawerState,
-                navigateToSigningOut = { navController.navigate(Destination.Dialog.SignOut.route) },
+                onSignoutClicked = { navController.navigate(Destination.Dialog.SignOut.route) },
                 onAccountViewAdded = onAccountViewAdded
             )
         }

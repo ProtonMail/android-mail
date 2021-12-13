@@ -40,7 +40,7 @@ import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
 @Composable
 fun NavigationDrawer(
     drawerState: DrawerState,
-    navigateToSigningOut: () -> Unit,
+    onSignoutClicked: () -> Unit,
     onAccountViewAdded: (AccountPrimaryView) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -63,7 +63,7 @@ fun NavigationDrawer(
             )
 
             Button(
-                onClick = navigateToSigningOut,
+                onClick = onSignoutClicked,
                 modifier = Modifier.fillMaxWidth()
             ) { Text(stringResource(id = R.string.logout)) }
         }
@@ -75,7 +75,7 @@ fun NavigationDrawer(
 fun previewNavigationDrawer() {
     NavigationDrawer(
         drawerState = DrawerState(Open),
-        navigateToSigningOut = {},
+        onSignoutClicked = {},
         onAccountViewAdded = {}
     )
 }

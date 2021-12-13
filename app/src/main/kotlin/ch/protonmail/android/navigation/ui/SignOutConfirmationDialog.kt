@@ -25,8 +25,8 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import ch.protonmail.android.R
+import ch.protonmail.android.compose.Dimension.DialogWidth
 
 @Composable
 fun SignOutConfirmationDialog(
@@ -42,7 +42,7 @@ fun SignOutConfirmationDialog(
         text = { Text(text = stringResource(id = R.string.description_remove_account)) },
         confirmButton = {
             TextButton(onClick = onRemove) {
-                Text(text = stringResource(id = R.string.title_remove) + " - not implemented")
+                Text(text = stringResource(id = R.string.title_remove))
             }
         },
         dismissButton = {
@@ -52,5 +52,3 @@ fun SignOutConfirmationDialog(
         }
     )
 }
-
-val DialogWidth = 400.dp
