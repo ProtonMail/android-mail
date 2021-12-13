@@ -29,6 +29,7 @@ will show all the possible actions that are available.
 ## UI Tests
 UI tests are executed on firebase through the CI. Firebase test lab can be triggered also locally with `bundle exec fastlane uiTests` or tests can be run in a local emulator through android studio.
 The `app/src/uiTest/assets/users.json` file will be needed for UI tests to work, its value can be found in confluence or in the CI env vars
+**Currently, only the ui tests that are included in the `SmokeSuite` class are run on firebase**
 
 
 ## Deploy
@@ -45,10 +46,12 @@ The CI sets up the integration with Sentry by providing in the build environment
 
 
 ## Use core libraries from local git submodule
-It is possible to run the application getting the "core" libraries from the local submodule instead of gradle by enabling the following line in `settings.gradle` file:
+It is possible to run the application getting the "core" libraries from the local git submodule instead of gradle by setting the following flag to true in `gradle.properties` file:
+
 ```
-# includeBuild("proton-libs")
+useCoreGitSubmodule=true
 ```
+
 
 ## Code style
 This project's code style and formatting is checked by detekt. The rule set is [ktlint's default one](https://github.com/pinterest/ktlint)
