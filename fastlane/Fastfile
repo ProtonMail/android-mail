@@ -10,8 +10,6 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
-update_fastlane
-
 default_platform(:android)
 
 platform :android do
