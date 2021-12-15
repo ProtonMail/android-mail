@@ -1,15 +1,16 @@
 default:
   image: $CI_REGISTRY/protonvpn/android/android-app-new:branch-mail-v6-ci-dockerfile
+
 before_script:
+  - !reference [.checkout-core, before_script]
   - mkdir app/src/uiTest/assets
   - mkdir keystore
   - base64 -d - < "$TEST_USERS_CREDENTIALS_FILE" > app/src/uiTest/assets/users.json
   - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
   - bundle install
-
 variables:
-  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_STRATEGY: none
 
 cache:
   - key: $CI_COMMIT_REF_SLUG
@@ -182,3 +183,7 @@ include:
   - project: 'translations/generator'
     ref: master
     file: '/jobs/commit-locales.gitlab-ci.yml'
+
+  - project: 'proton/mobile/android/proton-libs'
+    ref: main
+    file: '/ci/templates/checkout-core.gitlab-ci.yml'
