@@ -1,13 +1,12 @@
 rootProject.name = "ProtonMail"
 
-// All Core modules are taken/overridden from the local Git submodule proton-libs.
-// Comment the includeBuild line below to switch to Core modules published artefacts.
-val coreCommitSha: String? = System.getenv("CORE_COMMIT_SHA")
-if (coreCommitSha?.isNotBlank() == true) {
-    println("Use core libs as included build with commit ref \'$coreCommitSha\'")
+// Use core libs from maven artifacts by default
+val useCoreGitSubmodule: Boolean = System.getenv("USE_CORE_GIT_SUBMODULE").toBoolean()
+if (useCoreGitSubmodule) {
+    println("Use core libs from git submodule \'./proton-libs\'")
     includeBuild("proton-libs")
 } else {
-    println("Use core libs binaries from Maven")
+    println("Use core libs from Maven artifacts")
 }
 
 include(":app")
