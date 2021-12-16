@@ -13,7 +13,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        maven("https://plugins.gradle.org/m2/")
+        mavenCentral()
     }
 }
 
@@ -22,7 +22,7 @@ tasks.register("clean", Delete::class) {
 }
 
 plugins {
-    id("me.proton.detekt") version Versions.Gradle.protonDetektPlugin
+    id("me.proton.core.gradle-plugins.detekt") version Versions.Gradle.protonDetektPlugin
 }
 
 kotlinCompilerArgs(

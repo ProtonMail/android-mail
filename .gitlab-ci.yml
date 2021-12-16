@@ -44,11 +44,10 @@ analyse:
     - medium
   script:
     - bundle exec fastlane analyse
-    - cat config/detekt/reports/mergedReport.json | jq 'map(.severity = (.severity // ""))' | tee config/detekt/reports/mergedReportWithSeverity.json
   artifacts:
     expire_in: 1 month
     reports:
-      codequality: config/detekt/reports/mergedReportWithSeverity.json
+      codequality: config/detekt/reports/mergedReport.json
 
 
 localise-sync-crowdin:

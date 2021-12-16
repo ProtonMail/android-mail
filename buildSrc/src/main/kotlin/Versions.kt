@@ -40,7 +40,7 @@ object Versions {
         const val androidGradlePlugin = "7.0.4"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
-        const val protonDetektPlugin = "0.4"
+        const val protonDetektPlugin = "1.0.0-alpha03"
         const val jacocoGradlePlugin = "0.8.7"
     }
 
