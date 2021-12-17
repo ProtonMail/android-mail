@@ -53,13 +53,15 @@ analyse:
 localise-sync-crowdin:
   stage: localise
   variables:
-      I18N_SYNC_CROWDIN_PROJECT: 'android-mail-new'
+    I18N_SYNC_CROWDIN_PROJECT: 'android-mail-new'
   extends: .i18n-sync-crowdin-shared
+  only:
+    - master
 
 localise-commit-locales:
   stage: localise
   variables:
-      I18N_COMMIT_CROWDIN_PROJECT: 'android-mail-new'
+    I18N_COMMIT_CROWDIN_PROJECT: 'android-mail-new'
   extends: .i18n-commit-locales-shared
 
 
