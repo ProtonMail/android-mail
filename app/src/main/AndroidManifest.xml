@@ -16,6 +16,10 @@
         android:theme="@style/ProtonTheme.Splash.Mail"
         tools:replace="android:theme,android:supportsRtl">
         <provider
+            android:name="io.sentry.android.core.SentryInitProvider"
+            android:authorities="io.sentry.android.core"
+            tools:node="remove" />
+        <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
@@ -35,6 +39,9 @@
                 android:value="androidx.startup" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.LoggerInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="ch.protonmail.android.initializer.SentryInitializer"
                 android:value="androidx.startup" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.EventManagerInitializer"

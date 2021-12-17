@@ -20,7 +20,7 @@ val privateProperties = Properties().apply {
     }
 }
 
-val sentryDNS: String? = privateProperties.getProperty("sentryDNS")
+val sentryDSN: String? = privateProperties.getProperty("sentryDSN")
 val proxyToken: String? = privateProperties.getProperty("PROXY_TOKEN")
 
 android {
@@ -42,7 +42,7 @@ android {
             }
         }
 
-        buildConfigField("String", "SENTRY_DSN", sentryDNS.toBuildConfigValue())
+        buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
         buildConfigField("String", "PROXY_TOKEN", proxyToken.toBuildConfigValue())
     }
 

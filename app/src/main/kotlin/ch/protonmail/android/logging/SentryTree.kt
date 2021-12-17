@@ -2,7 +2,6 @@ package ch.protonmail.android.logging
 
 import android.util.Log
 import io.sentry.Sentry
-import io.sentry.event.EventBuilder
 import timber.log.Timber
 
 class SentryTree : Timber.Tree() {
@@ -12,11 +11,6 @@ class SentryTree : Timber.Tree() {
             return
         }
 
-        val event = EventBuilder()
-            .withMessage(message)
-            .build()
-
-        Sentry.capture(event)
+        Sentry.captureMessage(message)
     }
-
 }

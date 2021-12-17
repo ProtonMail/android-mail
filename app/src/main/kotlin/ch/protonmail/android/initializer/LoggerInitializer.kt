@@ -46,5 +46,4 @@ class LoggerInitializer : Initializer<Unit> {
             listOf(SentryInitializer::class.java)
         }
     }
-
 }
