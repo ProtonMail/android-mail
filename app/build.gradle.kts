@@ -74,6 +74,7 @@ android {
                 isOptimizeCode = true
                 isRemoveUnusedCode = true
                 isRemoveUnusedResources = true
+                proguardFile("proguard-rules.pro")
             }
             signingConfig = signingConfigs["release"]
         }
