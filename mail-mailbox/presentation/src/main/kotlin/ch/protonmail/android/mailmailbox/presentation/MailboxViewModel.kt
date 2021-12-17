@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.common.Constants
 import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +30,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
@@ -50,7 +50,7 @@ class MailboxViewModel @Inject constructor(
         }
         .stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(Constants.VIEW_MODEL_STOP_STATE_EMISSION_DELAY),
+            SharingStarted.WhileSubscribed(stopTimeoutMillis),
             State.initialState
         )
 

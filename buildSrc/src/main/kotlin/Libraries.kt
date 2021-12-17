@@ -137,6 +137,7 @@ object Proton {
     object Core {
         val account = coreArtifact("account", Versions.Proton.core)
         val accountManager = coreArtifact("account-manager", Versions.Proton.core)
+        val accountManagerPresentationCompose = coreArtifact("account-manager-presentation-compose", Versions.Proton.core)
         val auth = coreArtifact("auth", Versions.Proton.core)
         val contact = coreArtifact("contact", Versions.Proton.core)
         val country = coreArtifact("country", Versions.Proton.core)
@@ -152,6 +153,7 @@ object Proton {
         val payment = coreArtifact("payment", Versions.Proton.core)
         val plan = coreArtifact("plan", Versions.Proton.core)
         val presentation = coreArtifact("presentation", Versions.Proton.core)
+        val presentationCompose = coreArtifact("presentation-compose", Versions.Proton.core)
         val user = coreArtifact("user", Versions.Proton.core)
         val userSettings = coreArtifact("user-settings", Versions.Proton.core)
         val utilKotlin = coreArtifact("util-kotlin", Versions.Proton.core)

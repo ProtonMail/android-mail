@@ -16,12 +16,13 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.ui
+package ch.protonmail.android.navigation
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue.Open
@@ -32,16 +33,22 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.viewinterop.AndroidView
 import ch.protonmail.android.R
 import kotlinx.coroutines.launch
-import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
+import me.proton.core.accountmanager.presentation.compose.AccountPrimaryItem
+import me.proton.core.compose.component.VerticalSpacer
+import me.proton.core.compose.theme.ProtonColors
+import me.proton.core.compose.theme.ProtonDimens
+import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.domain.entity.UserId
 
 @Composable
 fun NavigationDrawer(
     drawerState: DrawerState,
-    onSignoutClicked: () -> Unit,
-    onAccountViewAdded: (AccountPrimaryView) -> Unit,
+    onRemove: (UserId?) -> Unit,
+    onSignOut: (UserId) -> Unit,
+    onSignIn: (UserId?) -> Unit,
+    onSwitch: (UserId) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -50,32 +57,39 @@ fun NavigationDrawer(
         scope.launch { drawerState.close() }
     }
 
-    Surface(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(modifier) {
-            AndroidView(
-                factory = { context ->
-                    AccountPrimaryView(context)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                update = onAccountViewAdded
-            )
+    ProtonTheme(colors = ProtonColors.Sidebar) {
+        Surface(
+            modifier = modifier.fillMaxSize()
+        ) {
+            Column(Modifier.padding(ProtonDimens.SmallSpacing)) {
+                AccountPrimaryItem(
+                    onRemove = { onRemove(it) },
+                    onSignIn = { onSignIn(it) },
+                    onSignOut = { onSignOut(it) },
+                    onSwitch = { onSwitch(it) },
+                    modifier = Modifier.fillMaxWidth(),
+                    isDialogEnabled = true
+                )
 
-            Button(
-                onClick = onSignoutClicked,
-                modifier = Modifier.fillMaxWidth()
-            ) { Text(stringResource(id = R.string.logout)) }
+                VerticalSpacer()
+
+                Button(
+                    onClick = { onRemove(null) },
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text(stringResource(id = R.string.logout)) }
+            }
         }
     }
 }
 
 @Preview
 @Composable
-fun previewNavigationDrawer() {
+fun PreviewNavigationDrawer() {
     NavigationDrawer(
         drawerState = DrawerState(Open),
-        onSignoutClicked = {},
-        onAccountViewAdded = {}
+        onSignOut = {},
+        onSignIn = {},
+        onSwitch = {},
+        onRemove = {},
     )
 }

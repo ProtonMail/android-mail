@@ -123,7 +123,6 @@ dependencies {
     implementation(files("../proton-libs/gopenpgp/gopenpgp.aar"))
     implementation(Dependencies.appLibs)
 
-    implementation(project(":compose"))
     implementation(project(":mail-message"))
     implementation(project(":mail-conversation"))
     implementation(project(":mail-mailbox"))

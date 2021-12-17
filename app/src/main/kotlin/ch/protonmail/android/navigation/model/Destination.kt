@@ -19,21 +19,37 @@
 package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.mailconversation.domain.ConversationId
+import me.proton.core.domain.entity.UserId
 
 sealed class Destination(val route: String) {
-    object Launcher : Destination("launcher")
 
-    object Mailbox : Destination("mailbox")
+    object Screen {
+        object Mailbox : Destination("mailbox")
 
-    object ConversationDetail : Destination("mailbox/conversation/{conversationId}") {
+        object Conversation : Destination("mailbox/conversation/{key}") {
+            operator fun invoke(conversationId: ConversationId) =
+                "mailbox/conversation/${conversationId.id}"
 
-        const val CONVERSATION_ID_KEY = "conversationId"
-
-        operator fun invoke(conversationId: ConversationId) =
-            "mailbox/conversation/${conversationId.id}"
+            fun getConversationId(key: String) = ConversationId(key)
+        }
     }
 
     object Dialog {
-        object SignOut : Destination("mailbox/signout")
+        @SuppressWarnings("UseIfInsteadOfWhen")
+        object RemoveAccount : Destination("remove/{key}") {
+            operator fun invoke(userId: UserId?) = when (userId) {
+                null -> "remove/null"
+                else -> "remove/${userId.id}"
+            }
+
+            fun getUserId(key: String) = when (key) {
+                "null" -> null
+                else -> UserId(key)
+            }
+        }
+    }
+
+    companion object {
+        const val key = "key"
     }
 }

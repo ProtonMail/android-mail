@@ -16,31 +16,30 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.ui
+package ch.protonmail.android.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.compose.CenteredProgress
-import ch.protonmail.android.compose.rememberFlowWithLifecycle
-import ch.protonmail.android.navigation.viewmodel.LauncherViewModel
-import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
-import me.proton.core.util.kotlin.exhaustive
+import me.proton.core.compose.component.ProtonCenteredProgress
 
 @Composable
 fun Launcher(
-    onAccountViewAdded: (AccountPrimaryView) -> Unit,
-    navigateToLogin: () -> Unit,
     launcherViewModel: LauncherViewModel = hiltViewModel()
 ) {
-    val viewState by rememberFlowWithLifecycle(launcherViewModel.state)
-        .collectAsState(initial = LauncherViewModel.State.Processing)
+    val viewState by launcherViewModel.state.collectAsState(LauncherViewModel.State.Processing)
 
     when (viewState) {
-        LauncherViewModel.State.AccountNeeded -> navigateToLogin()
-        LauncherViewModel.State.PrimaryExist -> Home(onAccountViewAdded)
+        LauncherViewModel.State.AccountNeeded -> launcherViewModel.addAccount()
+        LauncherViewModel.State.PrimaryExist -> Home(
+            onSignIn = { launcherViewModel.signIn(it) },
+            onSignOut = { launcherViewModel.signOut(it) },
+            onSwitch = { launcherViewModel.switch(it) }
+        )
         LauncherViewModel.State.Processing,
-        LauncherViewModel.State.StepNeeded -> CenteredProgress()
-    }.exhaustive
+        LauncherViewModel.State.StepNeeded -> ProtonCenteredProgress(Modifier.fillMaxSize())
+    }
 }

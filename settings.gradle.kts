@@ -16,5 +16,3 @@ include(":mail-conversation:presentation")
 include(":mail-mailbox:data")
 include(":mail-mailbox:domain")
 include(":mail-mailbox:presentation")
-
-include(":compose")

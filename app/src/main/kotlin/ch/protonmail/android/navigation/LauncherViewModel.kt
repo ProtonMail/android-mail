@@ -16,16 +16,16 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.viewmodel
+package ch.protonmail.android.navigation
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.navigation.viewmodel.LauncherViewModel.State.AccountNeeded
-import ch.protonmail.android.navigation.viewmodel.LauncherViewModel.State.PrimaryExist
-import ch.protonmail.android.navigation.viewmodel.LauncherViewModel.State.Processing
-import ch.protonmail.android.navigation.viewmodel.LauncherViewModel.State.StepNeeded
+import ch.protonmail.android.navigation.LauncherViewModel.State.AccountNeeded
+import ch.protonmail.android.navigation.LauncherViewModel.State.PrimaryExist
+import ch.protonmail.android.navigation.LauncherViewModel.State.Processing
+import ch.protonmail.android.navigation.LauncherViewModel.State.StepNeeded
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull

@@ -16,77 +16,76 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.ui
+package ch.protonmail.android.feature.account
 
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.R
-import ch.protonmail.android.compose.rememberFlowWithLifecycle
-import ch.protonmail.android.navigation.viewmodel.SignOutViewModel
-import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State
-import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State.Initial
-import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State.SignedOut
-import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State.SigningOut
+import ch.protonmail.android.feature.account.RemoveAccountViewModel.State
+import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Initial
+import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Removed
+import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Removing
+import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.exhaustive
 
 @Composable
-fun SignOutConfirmationDialog(
-    onSignedOut: () -> Unit,
+fun RemoveAccountDialog(
+    onRemoved: () -> Unit,
     onCancelled: () -> Unit,
     modifier: Modifier = Modifier,
-    signOutViewModel: SignOutViewModel = hiltViewModel()
+    userId: UserId? = null,
+    removeAccountViewModel: RemoveAccountViewModel = hiltViewModel()
 ) {
-    val viewState by rememberFlowWithLifecycle(flow = signOutViewModel.state)
-        .collectAsState(initial = Initial)
+    val viewState by rememberAsState(removeAccountViewModel.state, Initial)
 
     when (viewState) {
         Initial -> Unit
-        SignedOut -> onSignedOut()
-        SigningOut -> Unit
+        Removed -> onRemoved()
+        Removing -> Unit
     }.exhaustive
 
-    SignoutDialog(
+    RemoveAccountDialog(
         viewState = viewState,
-        onDismiss = onCancelled,
-        onSignOut = { signOutViewModel.signOut() },
+        onCancelClicked = onCancelled,
+        onRemoveClicked = { removeAccountViewModel.remove(userId) },
         modifier
     )
 }
 
 @Composable
-private fun SignoutDialog(
+private fun RemoveAccountDialog(
     viewState: State,
-    onDismiss: () -> Unit,
-    onSignOut: () -> Unit,
+    onCancelClicked: () -> Unit,
+    onRemoveClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     AlertDialog(
         modifier = modifier,
-        onDismissRequest = onDismiss,
+        onDismissRequest = onCancelClicked,
         title = { Text(text = stringResource(id = R.string.title_remove_account)) },
         text = { Text(text = stringResource(id = R.string.description_remove_account)) },
         confirmButton = {
             TextButton(
-                onClick = onSignOut,
+                onClick = onRemoveClicked,
                 content = {
                     when (viewState) {
                         Initial,
-                        SignedOut -> Text(text = stringResource(id = R.string.title_remove))
-                        SigningOut -> CircularProgressIndicator()
+                        Removed -> Text(text = stringResource(id = R.string.title_remove))
+                        Removing -> CircularProgressIndicator()
                     }.exhaustive
                 }
             )
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onCancelClicked) {
                 Text(text = stringResource(id = R.string.presentation_alert_cancel))
             }
         }

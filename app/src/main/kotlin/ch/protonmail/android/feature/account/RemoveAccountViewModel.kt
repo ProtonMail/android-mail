@@ -16,13 +16,13 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.viewmodel
+package ch.protonmail.android.feature.account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State.Initial
-import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State.SignedOut
-import ch.protonmail.android.navigation.viewmodel.SignOutViewModel.State.SigningOut
+import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Initial
+import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Removed
+import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Removing
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,7 +33,7 @@ import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 @HiltViewModel
-class SignOutViewModel @Inject constructor(
+class RemoveAccountViewModel @Inject constructor(
     val accountManager: AccountManager
 ) : ViewModel() {
 
@@ -41,17 +41,17 @@ class SignOutViewModel @Inject constructor(
 
     val state = mutableState.asStateFlow()
 
-    fun signOut(userId: UserId? = null) = viewModelScope.launch {
-        mutableState.emit(SigningOut)
-        accountManager.disableAccount(requireNotNull(userId ?: getPrimaryUserIdOrNull()))
-        mutableState.emit(SignedOut)
+    fun remove(userId: UserId? = null) = viewModelScope.launch {
+        mutableState.emit(Removing)
+        accountManager.removeAccount(requireNotNull(userId ?: getPrimaryUserIdOrNull()))
+        mutableState.emit(Removed)
     }
 
     private suspend fun getPrimaryUserIdOrNull() = accountManager.getPrimaryUserId().firstOrNull()
 
     sealed class State {
         object Initial : State()
-        object SigningOut : State()
-        object SignedOut : State()
+        object Removing : State()
+        object Removed : State()
     }
 }

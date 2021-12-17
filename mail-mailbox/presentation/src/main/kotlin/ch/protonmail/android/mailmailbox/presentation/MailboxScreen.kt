@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,41 +26,37 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.compose.rememberFlowWithLifecycle
 import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailconversation.domain.ConversationId
+import me.proton.core.compose.flow.rememberAsState
 
 const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
 
 @Composable
 fun MailboxScreen(
     navigateToConversation: (ConversationId) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: MailboxViewModel = hiltViewModel()
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.LightGray)
             .testTag(TEST_TAG_MAILBOX_SCREEN)
     ) {
-        val viewModel = hiltViewModel<MailboxViewModel>()
-        val viewState = rememberFlowWithLifecycle(viewModel.viewState)
-            .collectAsState(initial = MailboxViewModel.State.initialState)
+        val viewState by rememberAsState(viewModel.viewState, MailboxViewModel.State.initialState)
 
         LazyColumn(
             modifier = Modifier
         ) {
-            itemsIndexed(viewState.value.mailboxItems) { _, item ->
+            itemsIndexed(viewState.mailboxItems) { _, item ->
                 MailboxItem(item) { conversationId ->
                     navigateToConversation(conversationId)
                 }
@@ -76,7 +71,6 @@ private fun MailboxItem(
     onMessageClicked: (ConversationId) -> Unit
 ) {
     Card(
-        shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()

@@ -50,7 +50,9 @@ class AppLogger : Logger {
         Timber.tag(tag).v(e, message)
 
     override fun log(tag: LoggerLogTag, message: String) = when (tag) {
-        me.proton.core.network.data.LogTag.API_CALL -> Timber.tag(tag.name).i(message)
+        me.proton.core.network.data.LogTag.API_ERROR -> Timber.tag(tag.name).d(message)
+        me.proton.core.network.data.LogTag.API_REQUEST -> Timber.tag(tag.name).d(message)
+        me.proton.core.network.data.LogTag.API_RESPONSE -> Timber.tag(tag.name).d(message)
         me.proton.core.network.data.LogTag.REFRESH_TOKEN -> Timber.tag(tag.name).d(message)
         me.proton.core.network.data.LogTag.SERVER_TIME_PARSE_ERROR -> Timber.tag(tag.name).e(message)
         else -> Timber.tag(tag.name).d(message)

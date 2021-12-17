@@ -61,7 +61,6 @@ dependencies {
 
     implementation(Dependencies.modulePresentationLibs)
 
-    implementation(project(":compose"))
     implementation(project(":mail-conversation:domain"))
 
     testImplementation(Dependencies.testLibs)

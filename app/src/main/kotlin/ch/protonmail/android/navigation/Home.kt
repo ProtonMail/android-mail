@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.ui
+package ch.protonmail.android.navigation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -24,36 +24,40 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NamedNavArgument
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import ch.protonmail.android.compose.require
+import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.navigation.model.Destination
-import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
+import me.proton.core.compose.navigation.require
+import me.proton.core.domain.entity.UserId
 
 @Composable
 fun Home(
-    onAccountViewAdded: (AccountPrimaryView) -> Unit
+    onSignIn: (UserId?) -> Unit,
+    onSignOut: (UserId) -> Unit,
+    onSwitch: (UserId) -> Unit
 ) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
         scaffoldState = scaffoldState,
+        drawerShape = RectangleShape,
         drawerContent = {
             NavigationDrawer(
                 drawerState = scaffoldState.drawerState,
-                onSignoutClicked = { navController.navigate(Destination.Dialog.SignOut.route) },
-                onAccountViewAdded = onAccountViewAdded
+                onRemove = { navController.navigate(Destination.Dialog.RemoveAccount(it)) },
+                onSignOut = onSignOut,
+                onSignIn = onSignIn,
+                onSwitch = onSwitch
             )
         }
     ) { contentPadding ->
@@ -62,47 +66,38 @@ fun Home(
         ) {
             NavHost(
                 navController = navController,
-                startDestination = Destination.Mailbox.route,
+                startDestination = Destination.Screen.Mailbox.route,
             ) {
                 addMailbox(navController)
                 addConversationDetail()
-                addSignOutConfirmationDialog(navController)
+                addRemoveAccountDialog(navController)
             }
         }
     }
 }
 
 private fun NavGraphBuilder.addMailbox(navController: NavHostController) = composable(
-    route = Destination.Mailbox.route,
+    route = Destination.Screen.Mailbox.route,
 ) {
     MailboxScreen(
         navigateToConversation = { conversationId: ConversationId ->
-            navController.navigate(Destination.ConversationDetail(conversationId))
+            navController.navigate(Destination.Screen.Conversation(conversationId))
         }
     )
 }
 
-private fun NavGraphBuilder.addConversationDetail(
-    arguments: List<NamedNavArgument> = listOf(
-        navArgument(Destination.ConversationDetail.CONVERSATION_ID_KEY) {
-            type = NavType.StringType
-        }
-    )
-) = composable(
-    route = Destination.ConversationDetail.route,
-    arguments = arguments
-) { navBackStackEntry ->
-    val rawConversationId: String = navBackStackEntry.require(
-        Destination.ConversationDetail.CONVERSATION_ID_KEY
-    )
-    ConversationDetail(ConversationId(rawConversationId))
-}
-
-private fun NavGraphBuilder.addSignOutConfirmationDialog(navController: NavHostController) = dialog(
-    route = Destination.Dialog.SignOut.route
+private fun NavGraphBuilder.addConversationDetail() = composable(
+    route = Destination.Screen.Conversation.route,
 ) {
-    SignOutConfirmationDialog(
-        onSignedOut = { navController.popBackStack() },
+    ConversationDetail(Destination.Screen.Conversation.getConversationId(it.require(Destination.key)))
+}
+
+private fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostController) = dialog(
+    route = Destination.Dialog.RemoveAccount.route,
+) {
+    RemoveAccountDialog(
+        userId = Destination.Dialog.RemoveAccount.getUserId(it.require(Destination.key)),
+        onRemoved = { navController.popBackStack() },
         onCancelled = { navController.popBackStack() }
     )
 }

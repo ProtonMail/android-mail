@@ -16,10 +16,9 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.usecase
+package ch.protonmail.android.feature.account
 
 import app.cash.turbine.test
-import ch.protonmail.android.navigation.viewmodel.SignOutViewModel
 import ch.protonmail.android.testdata.UserIdTestData
 import io.mockk.coVerify
 import io.mockk.every
@@ -34,17 +33,17 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class SignoutViewModelTest : CoroutinesTest {
+class RemoveAccountViewModelTest : CoroutinesTest {
 
     private val accountManager = mockk<AccountManager>(relaxUnitFun = true) {
         every { this@mockk.getPrimaryUserId() } returns flowOf(UserIdTestData.userId)
     }
 
-    lateinit var viewModel: SignOutViewModel
+    lateinit var viewModel: RemoveAccountViewModel
 
     @Before
     fun setUp() {
-        viewModel = SignOutViewModel(
+        viewModel = RemoveAccountViewModel(
             accountManager
         )
     }
@@ -54,7 +53,7 @@ class SignoutViewModelTest : CoroutinesTest {
         // WHEN
         val actual = viewModel.state.take(1).first()
         // THEN
-        assertEquals(SignOutViewModel.State.Initial, actual)
+        assertEquals(RemoveAccountViewModel.State.Initial, actual)
     }
 
     @Test
@@ -63,11 +62,11 @@ class SignoutViewModelTest : CoroutinesTest {
             // Initial state emitted
             awaitItem()
             // WHEN
-            viewModel.signOut()
+            viewModel.remove()
             // THEN
-            assertEquals(SignOutViewModel.State.SigningOut, awaitItem())
-            coVerify { accountManager.disableAccount(UserIdTestData.userId) }
-            assertEquals(SignOutViewModel.State.SignedOut, awaitItem())
+            assertEquals(RemoveAccountViewModel.State.Removing, awaitItem())
+            coVerify { accountManager.removeAccount(UserIdTestData.userId) }
+            assertEquals(RemoveAccountViewModel.State.Removed, awaitItem())
         }
     }
 }
