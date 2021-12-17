@@ -46,6 +46,15 @@ android {
         buildConfigField("String", "PROXY_TOKEN", proxyToken.toBuildConfigValue())
     }
 
+    signingConfigs {
+        register("release") {
+            storeFile = file("$rootDir/keystore/ProtonMail.keystore")
+            storePassword = "${privateProperties["keyStorePassword"]}"
+            keyAlias = "ProtonMail"
+            keyPassword = "${privateProperties["keyStoreKeyPassword"]}"
+        }
+    }
+
     buildTypes {
         debug {
             isDebuggable = true
@@ -66,6 +75,7 @@ android {
                 isRemoveUnusedCode = true
                 isRemoveUnusedResources = true
             }
+            signingConfig = signingConfigs["release"]
         }
     }
 
