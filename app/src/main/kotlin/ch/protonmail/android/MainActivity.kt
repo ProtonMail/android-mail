@@ -31,7 +31,6 @@ import kotlinx.coroutines.flow.onEach
 import me.proton.core.accountmanager.presentation.view.AccountPrimaryView
 import me.proton.core.accountmanager.presentation.viewmodel.AccountSwitcherViewModel
 import me.proton.core.accountmanager.presentation.viewmodel.AccountSwitcherViewModel.Action
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {

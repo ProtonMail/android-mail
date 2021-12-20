@@ -21,11 +21,16 @@ package ch.protonmail.android.navigation
 import androidx.fragment.app.FragmentActivity
 import app.cash.turbine.test
 import ch.protonmail.android.testdata.AccountTestData
+import ch.protonmail.android.testdata.UserIdTestData
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.slot
+import io.mockk.unmockkStatic
 import io.mockk.verify
+import io.sentry.Sentry
+import io.sentry.protocol.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
@@ -125,6 +130,23 @@ class LauncherViewModelTest : CoroutinesTest {
             assertEquals(LauncherViewModel.State.PrimaryExist, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    @Test
+    fun `when PrimaryExist then register userId for Sentry`() = runBlockingTest {
+        // GIVEN
+        accountListFlow.emit(listOf(AccountTestData.readyAccount))
+        mockkStatic(Sentry::class)
+        // WHEN
+        viewModel.state.test {
+            // THEN
+            assertEquals(LauncherViewModel.State.PrimaryExist, awaitItem())
+            val sentryUserSlot = slot<User>()
+            verify { Sentry.setUser(capture(sentryUserSlot)) }
+            assertEquals(UserIdTestData.userId.id, sentryUserSlot.captured.id)
+            cancelAndIgnoreRemainingEvents()
+        }
+        unmockkStatic(Sentry::class)
     }
 
     @Test

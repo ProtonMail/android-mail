@@ -27,11 +27,15 @@ import ch.protonmail.android.navigation.LauncherViewModel.State.PrimaryExist
 import ch.protonmail.android.navigation.LauncherViewModel.State.Processing
 import ch.protonmail.android.navigation.LauncherViewModel.State.StepNeeded
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.sentry.Sentry
+import io.sentry.protocol.User
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import me.proton.core.account.domain.entity.Account
 import me.proton.core.account.domain.entity.AccountType
 import me.proton.core.account.domain.entity.isDisabled
 import me.proton.core.account.domain.entity.isReady
@@ -66,11 +70,15 @@ class LauncherViewModel @Inject constructor(
     private var hvOrchestrator: HumanVerificationOrchestrator,
 ) : ViewModel() {
 
-    val state = accountManager.getAccounts()
+    val state: StateFlow<State> = accountManager.getAccounts()
         .map { accounts ->
             when {
                 accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
-                accounts.any { it.isReady() } -> PrimaryExist
+                accounts.any { it.isReady() } -> {
+                    val account = requireNotNull(accounts.find { it.isReady() })
+                    setupSentryClient(account)
+                    PrimaryExist
+                }
                 accounts.any { it.isStepNeeded() } -> StepNeeded
                 else -> Processing
             }
@@ -132,6 +140,11 @@ class LauncherViewModel @Inject constructor(
 
     private suspend fun getAccountOrNull(it: UserId) = accountManager.getAccount(it).firstOrNull()
     private suspend fun getPrimaryUserIdOrNull() = accountManager.getPrimaryUserId().firstOrNull()
+
+    private fun setupSentryClient(account: Account) {
+        val user = User().apply { id = account.userId.id }
+        Sentry.setUser(user)
+    }
 
     enum class State { Processing, AccountNeeded, PrimaryExist, StepNeeded }
 }
