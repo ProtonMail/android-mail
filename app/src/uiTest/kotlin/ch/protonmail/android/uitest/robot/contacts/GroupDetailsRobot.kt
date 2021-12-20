@@ -20,7 +20,6 @@ package ch.protonmail.android.uitest.robot.contacts
 
 import ch.protonmail.android.uitest.robot.contacts.ContactsRobot.ContactsGroupView
 
-
 /**
  * [GroupDetailsRobot] class contains actions and verifications for Contacts functionality.
  */
