@@ -23,7 +23,7 @@ import ch.protonmail.android.uitests.robots.mailbox.sent.SentRobot
 /**
  * [ViewHeadersRobot] class contains actions and verifications for View Headers functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class ViewHeadersRobot {
 
     /**
@@ -31,6 +31,7 @@ class ViewHeadersRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageHeadersDisplayed() {}
     }
 

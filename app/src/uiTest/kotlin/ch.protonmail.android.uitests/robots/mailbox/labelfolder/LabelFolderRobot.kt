@@ -24,7 +24,7 @@ import ch.protonmail.android.uitests.robots.mailbox.MailboxRobotInterface
  * [LabelFolderRobot] class implements [MailboxRobotInterface],
  * contains actions and verifications for Labels or Folders mailbox functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class LabelFolderRobot : MailboxRobotInterface {
 
     override fun refreshMessageList(): LabelFolderRobot {
@@ -36,7 +36,7 @@ class LabelFolderRobot : MailboxRobotInterface {
      * Contains all the validations that can be performed by [LabelFolderRobot].
      */
     open class Verify : MailboxRobotInterface.verify() {
-
+        @SuppressWarnings("EmptyFunctionBlock")
         fun withMessageSubjectAndLocationExists(subject: String, location: String) {}
     }
 

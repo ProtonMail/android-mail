@@ -30,7 +30,7 @@ import ch.protonmail.android.uitests.robots.mailbox.trash.TrashRobot
 /**
  * [MessageRobot] class contains actions and verifications for Message detail view functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "TooManyFunctions")
 class MessageRobot {
 
     fun selectFolder(folderName: String): MessageRobot {
@@ -145,10 +145,12 @@ class MessageRobot {
             return MessageRobot()
         }
 
+        @SuppressWarnings("EmptyFunctionBlock")
         private fun selectFolder(folderName: String) {}
 
         class Verify {
 
+            @SuppressWarnings("EmptyFunctionBlock")
             fun folderExistsInFoldersList(folderName: String) {}
         }
 
@@ -199,6 +201,7 @@ class MessageRobot {
 
         class Verify {
 
+            @SuppressWarnings("EmptyFunctionBlock")
             fun linkIsPresentInDialogMessage(link: String) {}
         }
 
@@ -207,34 +210,49 @@ class MessageRobot {
 
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun labelAdded(labelName: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun publicKeyIsAttached(publicKey: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageContainsAttachment() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageContainsOneAttachment() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageContainsTwoAttachments() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun quotedHeaderShown() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun attachmentsNotAdded() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun attachmentsAdded() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun pgpIconShown() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun pgpEncryptedMessageDecrypted() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun pgpSignedMessageDecrypted() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageWebViewContainerShown() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun loadEmbeddedImagesButtonIsGone() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun showRemoteContentButtonIsGone() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun intentWithActionFileNameAndMimeTypeSent(mimeType: String) {}
     }
 

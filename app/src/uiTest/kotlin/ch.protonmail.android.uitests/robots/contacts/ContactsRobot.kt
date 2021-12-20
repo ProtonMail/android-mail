@@ -25,7 +25,7 @@ import ch.protonmail.android.uitests.robots.mailbox.inbox.InboxRobot
 /**
  * [ContactsRobot] class contains actions and verifications for Contacts functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class ContactsRobot {
 
     fun addContact(): AddContactRobot {
@@ -91,9 +91,11 @@ class ContactsRobot {
 
         class Verify {
 
+            @SuppressWarnings("EmptyFunctionBlock")
             fun groupWithMembersCountExists(name: String, membersCount: String) {
             }
 
+            @SuppressWarnings("EmptyFunctionBlock")
             fun groupDoesNotExists(groupName: String, groupMembersCount: String) {
             }
         }
@@ -113,16 +115,16 @@ class ContactsRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun contactsOpened() {
-
         }
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun contactExists(name: String, email: String) {
-
         }
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun contactDoesNotExists(name: String, email: String) {
-
         }
     }
 

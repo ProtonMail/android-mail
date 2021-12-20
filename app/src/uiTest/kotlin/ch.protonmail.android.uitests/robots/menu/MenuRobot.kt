@@ -33,7 +33,7 @@ import ch.protonmail.android.uitests.robots.settings.SettingsRobot
 /**
  * [MenuRobot] class contains actions and verifications for menu functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "TooManyFunctions")
 class MenuRobot {
 
     fun archive(): ArchiveRobot {
@@ -85,8 +85,10 @@ class MenuRobot {
         return AccountPanelRobot()
     }
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun selectMenuItem(@IdRes menuItemName: String) {}
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun selectMenuLabelOrFolder(@IdRes labelOrFolderName: String) {}
 
     /**
@@ -94,8 +96,10 @@ class MenuRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun menuOpened() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun menuClosed() {}
     }
 

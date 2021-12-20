@@ -19,7 +19,7 @@
 
 package ch.protonmail.android.uitests.robots.settings.account.swipinggestures
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class ChooseSwipeActionRobot {
 
     fun chooseMessageArchivedAction(): ChooseSwipeActionRobot {
@@ -35,6 +35,7 @@ class ChooseSwipeActionRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageStarUpdatedIsSelected() {}
     }
 

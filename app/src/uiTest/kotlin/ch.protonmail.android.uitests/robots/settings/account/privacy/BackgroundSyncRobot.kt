@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.settings.account.privacy
 
 import androidx.appcompat.widget.SwitchCompat
 
-@Suppress("unused", "MemberVisibilityCanBePrivate", "ControlFlowWithEmptyBody")
+@Suppress("unused")
 class BackgroundSyncRobot {
 
     fun navigateUpToPrivacySettings(): PrivacySettingsRobot {
@@ -36,7 +36,7 @@ class BackgroundSyncRobot {
         return this
     }
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun toggleSwitch(state: Boolean, switch: SwitchCompat) {
-        when (state xor switch.isChecked) {}
     }
 }

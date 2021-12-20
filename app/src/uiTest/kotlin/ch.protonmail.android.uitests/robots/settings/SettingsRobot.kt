@@ -25,7 +25,7 @@ import ch.protonmail.android.uitests.robots.settings.autolock.AutoLockRobot
 /**
  * [SettingsRobot] class contains actions and verifications for Settings view.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class SettingsRobot {
 
     fun navigateUpToInbox(): InboxRobot {
@@ -48,6 +48,7 @@ class SettingsRobot {
         return AccountSettingsRobot()
     }
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun selectItemByHeader(header: String) {}
 
     /**
@@ -55,6 +56,7 @@ class SettingsRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun settingsOpened() {}
     }
 

@@ -26,7 +26,7 @@ import ch.protonmail.android.uitests.robots.mailbox.messagedetail.MessageRobot
 import ch.protonmail.android.uitests.robots.mailbox.search.SearchRobot
 import ch.protonmail.android.uitests.robots.menu.MenuRobot
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "TooManyFunctions")
 interface MailboxRobotInterface {
 
     fun swipeLeftMessageAtPosition(position: Int): Any {
@@ -77,42 +77,55 @@ interface MailboxRobotInterface {
     @Suppress("ClassName")
     open class verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageExists(messageSubject: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun draftWithAttachmentSaved(draftSubject: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageDeleted(subject: String, date: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun multipleMessagesDeleted(subjectMessageOne: String, subjectMessageTwo: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageWithSubjectExists(subject: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageWithSubjectHasRepliedFlag(subject: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageWithSubjectHasRepliedAllFlag(subject: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageWithSubjectHasForwardedFlag(subject: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageWithSubjectAndRecipientExists(subject: String, to: String) {}
     }
 
     private class SetLongClickMessage : (String, String) -> Unit {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         override fun invoke(subject: String, date: String) {}
     }
 
     private class SetSwipeLeftMessage : (String, String) -> Unit {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         override fun invoke(subject: String, date: String) {}
     }
 
     private class SetDeleteWithSwipeMessage : (String, String) -> Unit {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         override fun invoke(subject: String, date: String) {}
     }
 
     class SetSelectMessage : (String, String) -> Unit {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         override fun invoke(subject: String, date: String) {}
     }
 }

@@ -28,7 +28,7 @@ import ch.protonmail.android.uitests.robots.settings.account.swipinggestures.Swi
  * [AccountSettingsRobot] class contains actions and verifications for
  * Account settings functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class AccountSettingsRobot {
 
     fun subscription(): SubscriptionRobot {
@@ -59,6 +59,7 @@ class AccountSettingsRobot {
         return SwipingGesturesSettingsRobot()
     }
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun clickOnSettingsItemWithHeader(@IdRes stringId: Int) {}
 
     /**
@@ -66,6 +67,7 @@ class AccountSettingsRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun accountSettingsOpened() {}
     }
 

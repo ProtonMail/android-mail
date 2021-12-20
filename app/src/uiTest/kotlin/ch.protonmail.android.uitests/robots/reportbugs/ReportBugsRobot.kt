@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.reportbugs
 /**
  * [ReportBugsRobot] class contains actions and verifications for Bug report functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class ReportBugsRobot {
 
     /**
@@ -29,6 +29,7 @@ class ReportBugsRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun reportBugOpened() {}
     }
 

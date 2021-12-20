@@ -19,13 +19,12 @@
 package ch.protonmail.android.uitests.robots.mailbox.composer
 
 import androidx.annotation.IdRes
-import ch.protonmail.android.R
 
 /**
  * Class represents Message Attachments.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
-open class MessageAttachmentsRobot{
+@Suppress("unused")
+open class MessageAttachmentsRobot {
 
     fun addImageCaptureAttachment(@IdRes drawable: Int): ComposerRobot =
         mockCameraImageCapture(drawable)

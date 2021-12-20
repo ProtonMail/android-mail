@@ -7,7 +7,7 @@ import me.proton.core.test.android.robots.auth.login.LoginRobot
 /**
  * [AccountPanelRobot] class contains actions and verifications for Account Manager functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "TooManyFunctions")
 open class AccountPanelRobot {
 
     fun addAccount(): LoginRobot {
@@ -85,12 +85,16 @@ open class AccountPanelRobot {
             return AccountPanelRobot()
         }
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun accountAdded(email: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun accountLoggedOut(email: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun accountRemoved(username: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun switchedToAccount(username: String) {}
     }
 

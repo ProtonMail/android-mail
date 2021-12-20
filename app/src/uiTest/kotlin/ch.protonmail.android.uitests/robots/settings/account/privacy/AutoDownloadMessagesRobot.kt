@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.settings.account.privacy
 
 import androidx.appcompat.widget.SwitchCompat
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class AutoDownloadMessagesRobot {
 
     fun navigateUpToPrivacySettings(): PrivacySettingsRobot {
@@ -36,5 +36,6 @@ class AutoDownloadMessagesRobot {
         return this
     }
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun toggleSwitch(state: Boolean, switch: SwitchCompat) {}
 }

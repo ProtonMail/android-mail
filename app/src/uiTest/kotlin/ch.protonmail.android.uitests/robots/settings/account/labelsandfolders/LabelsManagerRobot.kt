@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.settings.account.labelsandfolders
 /**
  * [LabelsManagerRobot] class contains actions and verifications for Labels functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class LabelsManagerRobot {
 
     fun addLabel(name: String): LabelsManagerRobot {
@@ -51,7 +51,6 @@ class LabelsManagerRobot {
         return this
     }
 
-
     private fun selectLabel(name: String): LabelsManagerRobot {
         return this
     }
@@ -73,8 +72,10 @@ class LabelsManagerRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun labelWithNameShown(name: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun labelWithNameDoesNotExist(name: String) {}
     }
 

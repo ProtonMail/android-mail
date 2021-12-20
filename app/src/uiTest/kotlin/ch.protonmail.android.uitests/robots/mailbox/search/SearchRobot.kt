@@ -26,7 +26,7 @@ import ch.protonmail.android.uitests.robots.mailbox.messagedetail.MessageRobot
 /**
  * [SearchRobot] class contains actions and verifications for Search functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class SearchRobot {
 
     fun searchMessageText(subject: String): SearchRobot {
@@ -54,8 +54,10 @@ class SearchRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun searchedMessageFound() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun noSearchResults() {}
     }
 

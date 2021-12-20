@@ -23,7 +23,7 @@ import androidx.annotation.StringRes
 /**
  * Class represents Display name and Signature view.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused")
 class DisplayNameAndSignatureRobot {
 
     fun setSignatureToggleTo(state: Boolean): DisplayNameAndSignatureRobot {
@@ -54,5 +54,6 @@ class DisplayNameAndSignatureRobot {
 
     inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun switch(@StringRes tagId: Int) {}
 }

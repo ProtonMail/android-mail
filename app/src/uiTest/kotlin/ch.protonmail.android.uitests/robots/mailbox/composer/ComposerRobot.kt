@@ -18,18 +18,20 @@
  */
 package ch.protonmail.android.uitests.robots.mailbox.composer
 
-import ch.protonmail.android.uitests.robots.mailbox.inbox.InboxRobot
-import ch.protonmail.android.uitests.robots.contacts.ContactsRobot
-import ch.protonmail.android.uitests.robots.mailbox.messagedetail.MessageRobot
 import ch.protonmail.android.R
+import ch.protonmail.android.uitests.robots.contacts.ContactsRobot
+import ch.protonmail.android.uitests.robots.mailbox.composer.ComposerRobot.MessageExpirationRobot
+import ch.protonmail.android.uitests.robots.mailbox.composer.ComposerRobot.MessagePasswordRobot
 import ch.protonmail.android.uitests.robots.mailbox.drafts.DraftsRobot
+import ch.protonmail.android.uitests.robots.mailbox.inbox.InboxRobot
+import ch.protonmail.android.uitests.robots.mailbox.messagedetail.MessageRobot
 import ch.protonmail.android.uitests.robots.mailbox.sent.SentRobot
 
 /**
  * [ComposerRobot] class contains actions and verifications for email composer functionality.
  * Inner classes: [MessagePasswordRobot], [MessageExpirationRobot].
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "TooManyFunctions")
 class ComposerRobot {
 
     fun sendAndLaunchApp(to: String, subject: String, body: String): InboxRobot =
@@ -102,6 +104,7 @@ class ComposerRobot {
             .sendWithNotSupportedExpiryConfirmation()
             .sendAnyway()
 
+    @SuppressWarnings("LongParameterList")
     fun sendMessageEOAndExpiryTime(
         to: String,
         subject: String,
@@ -118,6 +121,7 @@ class ComposerRobot {
             .send()
     }
 
+    @SuppressWarnings("LongParameterList")
     fun sendMessageEOAndExpiryTimeWithConfirmation(
         to: String,
         subject: String,
@@ -135,6 +139,7 @@ class ComposerRobot {
             .sendAnyway()
     }
 
+    @SuppressWarnings("LongParameterList")
     fun sendMessageEOAndExpiryTimeWithAttachment(
         to: String,
         subject: String,
@@ -153,6 +158,7 @@ class ComposerRobot {
             .addImageCaptureAttachment(R.drawable.logo_mail)
             .send()
 
+    @SuppressWarnings("LongParameterList")
     fun sendMessageEOAndExpiryTimeWithAttachmentAndConfirmation(
         to: String,
         subject: String,
@@ -168,14 +174,14 @@ class ComposerRobot {
             .setExpirationInDays(days)
             .hideExpirationView()
             .attachments()
-            .addImageCaptureAttachment(ch.protonmail.android.R.drawable.logo_mail)
+            .addImageCaptureAttachment(R.drawable.logo_mail)
             .sendWithNotSupportedExpiryConfirmation()
             .sendAnyway()
 
     fun sendMessageCameraCaptureAttachment(to: String, subject: String, body: String): InboxRobot =
         composeMessage(to, subject, body)
             .attachments()
-            .addImageCaptureAttachment(ch.protonmail.android.R.drawable.logo_mail)
+            .addImageCaptureAttachment(R.drawable.logo_mail)
             .send()
 
     fun sendMessageWithFileAttachment(to: String, subject: String, body: String): InboxRobot =
@@ -245,12 +251,12 @@ class ComposerRobot {
             .body(body)
 
     fun recipients(email: String): ComposerRobot {
-
         return this
     }
 
     fun changeSenderTo(email: String): ComposerRobot = clickFromField().selectSender(email)
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun clickPositiveDialogButton() {}
 
     private fun clickFromField(): ComposerRobot {
@@ -337,6 +343,7 @@ class ComposerRobot {
         return MessageRobot()
     }
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun waitForConditionAndSend() {}
 
     /**
@@ -389,7 +396,7 @@ class ComposerRobot {
     /**
      * Class represents Message Expiration dialog.
      */
-    class NotSupportedExpirationRobot  {
+    class NotSupportedExpirationRobot {
 
         fun sendAnyway(): InboxRobot {
             return InboxRobot()
@@ -401,8 +408,10 @@ class ComposerRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageWithSubjectOpened(subject: String) {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun bodyWithText(text: String) {}
 
         fun fromEmailIs(email: String): DraftsRobot {

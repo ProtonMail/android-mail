@@ -26,7 +26,7 @@ import ch.protonmail.android.uitests.robots.menu.MenuRobot
  * [DraftsRobot] implements [MailboxRobotInterface],
  * contains actions and verifications for Drafts composer functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "TooManyFunctions")
 class DraftsRobot : MailboxRobotInterface {
 
     override fun swipeLeftMessageAtPosition(position: Int): DraftsRobot {
@@ -81,6 +81,7 @@ class DraftsRobot : MailboxRobotInterface {
      */
     class Verify : MailboxRobotInterface.verify() {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun folderEmpty() {}
 
         fun draftMessageSaved(draftSubject: String): DraftsRobot {

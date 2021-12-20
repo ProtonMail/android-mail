@@ -23,7 +23,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import ch.protonmail.android.uitests.robots.settings.account.AccountSettingsRobot
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "TooManyFunctions")
 class PrivacySettingsRobot {
 
     fun navigateUpToAccountSettings(): AccountSettingsRobot {
@@ -70,12 +70,15 @@ class PrivacySettingsRobot {
         return this
     }
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun selectSettingsItem(@StringRes title: Int) {
     }
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun toggleSwitchWithTitle(@IdRes titleId: Int, value: Boolean) {
     }
 
+    @SuppressWarnings("EmptyFunctionBlock")
     private fun switch(@StringRes tagId: Int) {
     }
 
@@ -84,10 +87,13 @@ class PrivacySettingsRobot {
      */
     class Verify {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun autoDownloadImagesIsEnabled() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun backgroundSyncIsEnabled() {}
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun takingScreenshotIsDisabled() {}
     }
 
