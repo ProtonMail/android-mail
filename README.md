@@ -19,19 +19,25 @@ bundle exec fastlane lanes
 ```
 will show all the possible actions that are available.
 
-### Master is continuously deployed
-Each merge to `master` branch builds the branch's HEAD and deploy it to [firebase app distribution](https://firebase.google.com/docs/app-distribution)
-In order to someone as a tester for such builds, their email address needs to be added to the `v6-dev-builds-testers` group in Firebase.
-
-### Observability
-Crashes and errors that happen in `release` (non debuggable) builds are reported to Sentry in an anonymised form.
-The CI sets up the integration with Sentry by providing in the build environment a `private.properties` file that contains the secrets needed. This can as well be performed locally by creating a `private.properties` file (which will be ignored by git) and filling it with the needed secrets (eg. `SentryDSN`)
-
 ### UI Tests
 UI tests are executed on firebase through the CI. Firebase test lab can be triggered also locally with `bundle exec fastlane uiTests` or tests can be run in a local emulator through android studio.
 The `app/src/uiTest/assets/users.json` file will be needed for UI tests to work, its value can be found in confluence or in the CI env vars
 
-### Use core libraries from local git submodule
+
+## Deploy
+Each merge to `master` branch builds the branch's HEAD and deploy it to [firebase app distribution](https://firebase.google.com/docs/app-distribution)
+In order to someone as a tester for such builds, their email address needs to be added to the `v6-dev-builds-testers` group in Firebase.
+
+### Signing
+All `release` builds done on CI are automatically singed with ProtonMail's keystore. In order to perform signing locally the keystore will need to be placed into `keystore/` directory and the creadentials will be read from `private.properties` file.
+
+
+## Observability
+Crashes and errors that happen in `release` (non debuggable) builds are reported to Sentry in an anonymised form.
+The CI sets up the integration with Sentry by providing in the build environment a `private.properties` file that contains the secrets needed. This can as well be performed locally by creating a `private.properties` file (which will be ignored by git) and filling it with the needed secrets (eg. `SentryDSN`)
+
+
+## Use core libraries from local git submodule
 It is possible to run the application getting the "core" libraries from the local submodule instead of gradle by enabling the following line in `settings.gradle` file:
 ```
 # includeBuild("proton-libs")
