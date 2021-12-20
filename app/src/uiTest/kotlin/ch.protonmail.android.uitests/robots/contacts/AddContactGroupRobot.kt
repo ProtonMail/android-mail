@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.contacts
 /**
  * [AddContactGroupRobot] class contains actions and verifications for Add/Edit Contact Groups.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "ExpressionBodySyntax")
 class AddContactGroupRobot {
 
     fun editNameAndSave(name: String): GroupDetailsRobot {

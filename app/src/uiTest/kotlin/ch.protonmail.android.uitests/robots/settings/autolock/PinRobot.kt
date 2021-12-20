@@ -22,7 +22,7 @@ package ch.protonmail.android.uitests.robots.settings.autolock
 import ch.protonmail.android.uitests.robots.mailbox.composer.ComposerRobot
 import ch.protonmail.android.uitests.robots.mailbox.inbox.InboxRobot
 
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 class PinRobot {
 
     fun setPin(pin: String): AutoLockRobot {

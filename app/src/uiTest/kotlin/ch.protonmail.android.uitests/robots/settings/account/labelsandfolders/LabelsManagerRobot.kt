@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.settings.account.labelsandfolders
 /**
  * [LabelsManagerRobot] class contains actions and verifications for Labels functionality.
  */
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 class LabelsManagerRobot {
 
     fun addLabel(name: String): LabelsManagerRobot {

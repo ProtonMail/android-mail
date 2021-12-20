@@ -22,7 +22,7 @@ package ch.protonmail.android.uitests.robots.settings.account.labelsandfolders
  * [LabelsAndFoldersRobot] class contains actions and verifications for
  * Labels & Folders functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "MemberVisibilityCanBePrivate", "ExpressionBodySyntax")
 class LabelsAndFoldersRobot {
 
     fun labelsManager(): LabelsManagerRobot {

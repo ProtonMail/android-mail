@@ -18,7 +18,6 @@
  */
 package ch.protonmail.android.uitests.robots.mailbox.search
 
-
 import ch.protonmail.android.uitests.robots.mailbox.composer.ComposerRobot
 import ch.protonmail.android.uitests.robots.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitests.robots.mailbox.messagedetail.MessageRobot
@@ -26,7 +25,7 @@ import ch.protonmail.android.uitests.robots.mailbox.messagedetail.MessageRobot
 /**
  * [SearchRobot] class contains actions and verifications for Search functionality.
  */
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 class SearchRobot {
 
     fun searchMessageText(subject: String): SearchRobot {

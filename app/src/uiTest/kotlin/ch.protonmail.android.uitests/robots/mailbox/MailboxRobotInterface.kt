@@ -26,7 +26,7 @@ import ch.protonmail.android.uitests.robots.mailbox.messagedetail.MessageRobot
 import ch.protonmail.android.uitests.robots.mailbox.search.SearchRobot
 import ch.protonmail.android.uitests.robots.menu.MenuRobot
 
-@Suppress("unused", "TooManyFunctions")
+@Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 interface MailboxRobotInterface {
 
     fun swipeLeftMessageAtPosition(position: Int): Any {

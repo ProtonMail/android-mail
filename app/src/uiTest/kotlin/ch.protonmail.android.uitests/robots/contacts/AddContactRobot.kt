@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.contacts
 /**
  * [AddContactRobot] class contains actions and verifications for Add/Edit Contacts.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "ExpressionBodySyntax")
 class AddContactRobot {
 
     fun setNameEmailAndSave(name: String, email: String): ContactsRobot {

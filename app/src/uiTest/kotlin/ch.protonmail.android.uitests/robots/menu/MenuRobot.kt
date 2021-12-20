@@ -33,7 +33,7 @@ import ch.protonmail.android.uitests.robots.settings.SettingsRobot
 /**
  * [MenuRobot] class contains actions and verifications for menu functionality.
  */
-@Suppress("unused", "TooManyFunctions")
+@Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 class MenuRobot {
 
     fun archive(): ArchiveRobot {

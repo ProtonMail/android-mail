@@ -28,7 +28,7 @@ import ch.protonmail.android.uitests.robots.settings.account.swipinggestures.Swi
  * [AccountSettingsRobot] class contains actions and verifications for
  * Account settings functionality.
  */
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 class AccountSettingsRobot {
 
     fun subscription(): SubscriptionRobot {

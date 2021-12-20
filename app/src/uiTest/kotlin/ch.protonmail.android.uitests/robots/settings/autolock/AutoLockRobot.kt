@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.settings.autolock
 
 import ch.protonmail.android.uitests.robots.settings.SettingsRobot
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "ExpressionBodySyntax")
 class AutoLockRobot {
 
     fun navigateUptToSettings(): SettingsRobot {

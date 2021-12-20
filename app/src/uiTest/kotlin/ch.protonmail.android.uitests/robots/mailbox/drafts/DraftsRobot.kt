@@ -26,7 +26,7 @@ import ch.protonmail.android.uitests.robots.menu.MenuRobot
  * [DraftsRobot] implements [MailboxRobotInterface],
  * contains actions and verifications for Drafts composer functionality.
  */
-@Suppress("unused", "TooManyFunctions")
+@Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 class DraftsRobot : MailboxRobotInterface {
 
     override fun swipeLeftMessageAtPosition(position: Int): DraftsRobot {

@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.settings.account.swipinggestures
 
 import ch.protonmail.android.uitests.robots.settings.account.AccountSettingsRobot
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "MemberVisibilityCanBePrivate", "ExpressionBodySyntax")
 class SwipingGesturesSettingsRobot {
 
     fun selectSwipeRight(): ChooseSwipeActionRobot {

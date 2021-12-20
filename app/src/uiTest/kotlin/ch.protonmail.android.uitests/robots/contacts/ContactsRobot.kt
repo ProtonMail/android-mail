@@ -25,7 +25,7 @@ import ch.protonmail.android.uitests.robots.mailbox.inbox.InboxRobot
 /**
  * [ContactsRobot] class contains actions and verifications for Contacts functionality.
  */
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 class ContactsRobot {
 
     fun addContact(): AddContactRobot {

@@ -23,7 +23,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import ch.protonmail.android.uitests.robots.settings.account.AccountSettingsRobot
 
-@Suppress("unused", "TooManyFunctions")
+@Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 class PrivacySettingsRobot {
 
     fun navigateUpToAccountSettings(): AccountSettingsRobot {

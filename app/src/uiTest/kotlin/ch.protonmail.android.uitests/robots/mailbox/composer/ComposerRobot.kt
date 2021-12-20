@@ -31,7 +31,7 @@ import ch.protonmail.android.uitests.robots.mailbox.sent.SentRobot
  * [ComposerRobot] class contains actions and verifications for email composer functionality.
  * Inner classes: [MessagePasswordRobot], [MessageExpirationRobot].
  */
-@Suppress("unused", "TooManyFunctions")
+@Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 class ComposerRobot {
 
     fun sendAndLaunchApp(to: String, subject: String, body: String): InboxRobot =

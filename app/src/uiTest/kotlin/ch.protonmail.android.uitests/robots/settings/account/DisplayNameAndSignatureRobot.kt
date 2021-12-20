@@ -23,7 +23,7 @@ import androidx.annotation.StringRes
 /**
  * Class represents Display name and Signature view.
  */
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 class DisplayNameAndSignatureRobot {
 
     fun setSignatureToggleTo(state: Boolean): DisplayNameAndSignatureRobot {

@@ -19,7 +19,7 @@
 
 package ch.protonmail.android.uitests.robots.settings.account.swipinggestures
 
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 class ChooseSwipeActionRobot {
 
     fun chooseMessageArchivedAction(): ChooseSwipeActionRobot {

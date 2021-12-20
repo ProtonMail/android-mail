@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.settings.account
 /**
  * Class represents Default Email Address view.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "ExpressionBodySyntax")
 class DefaultEmailAddressRobot {
 
     fun showAll(): DefaultEmailAddressRobot {

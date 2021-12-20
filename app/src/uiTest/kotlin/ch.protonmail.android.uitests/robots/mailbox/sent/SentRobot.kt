@@ -28,7 +28,7 @@ import ch.protonmail.android.uitests.robots.mailbox.inbox.InboxRobot
  * [SentRobot] class implements [MailboxRobotInterface],
  * contains actions and verifications for Sent mailbox functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "MemberVisibilityCanBePrivate", "ExpressionBodySyntax")
 class SentRobot : MailboxRobotInterface {
 
     override fun swipeLeftMessageAtPosition(position: Int): SentRobot {
@@ -117,6 +117,7 @@ class SentRobot : MailboxRobotInterface {
      */
     class Verify : MailboxRobotInterface.verify() {
 
+        @SuppressWarnings("EmptyFunctionBlock")
         fun messageStarred(subject: String) {}
     }
 

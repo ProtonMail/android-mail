@@ -18,7 +18,7 @@
  */
 package ch.protonmail.android.uitests.robots.mailbox
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "ExpressionBodySyntax")
 interface SelectionStateRobotInterface {
 
     fun exitMessageSelectionState(): Any {

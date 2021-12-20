@@ -7,7 +7,7 @@ import me.proton.core.test.android.robots.auth.login.LoginRobot
 /**
  * [AccountPanelRobot] class contains actions and verifications for Account Manager functionality.
  */
-@Suppress("unused", "TooManyFunctions")
+@Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 open class AccountPanelRobot {
 
     fun addAccount(): LoginRobot {

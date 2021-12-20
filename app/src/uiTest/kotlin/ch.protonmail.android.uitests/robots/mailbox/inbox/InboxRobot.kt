@@ -29,7 +29,7 @@ import ch.protonmail.android.uitests.robots.mailbox.SelectionStateRobotInterface
 import me.proton.core.test.android.robots.CoreRobot
 import me.proton.core.test.android.robots.CoreVerify
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "MemberVisibilityCanBePrivate", "ExpressionBodySyntax")
 class InboxRobot : CoreRobot(), MailboxRobotInterface {
 
     override fun swipeLeftMessageAtPosition(position: Int): InboxRobot {

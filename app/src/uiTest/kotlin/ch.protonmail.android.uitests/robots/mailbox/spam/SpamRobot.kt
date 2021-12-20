@@ -24,7 +24,7 @@ import ch.protonmail.android.uitests.robots.mailbox.MailboxRobotInterface
  * [SpamRobot] class implements [MailboxRobotInterface],
  * contains actions and verifications for Spam mailbox functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "ExpressionBodySyntax")
 open class SpamRobot : MailboxRobotInterface {
 
     override fun swipeLeftMessageAtPosition(position: Int): SpamRobot {

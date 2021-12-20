@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.contacts
 /**
  * [ContactDetailsRobot] class contains actions and verifications for Contacts functionality.
  */
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 open class ContactDetailsRobot {
 
     fun deleteContact(): ContactsRobot {

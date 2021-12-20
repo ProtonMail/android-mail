@@ -30,7 +30,7 @@ import ch.protonmail.android.uitests.robots.mailbox.trash.TrashRobot
 /**
  * [MessageRobot] class contains actions and verifications for Message detail view functionality.
  */
-@Suppress("unused", "TooManyFunctions")
+@Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 class MessageRobot {
 
     fun selectFolder(folderName: String): MessageRobot {

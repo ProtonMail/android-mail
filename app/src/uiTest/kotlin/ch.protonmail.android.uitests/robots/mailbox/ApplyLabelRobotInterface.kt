@@ -18,6 +18,7 @@
  */
 package ch.protonmail.android.uitests.robots.mailbox
 
+@Suppress("ExpressionBodySyntax")
 interface ApplyLabelRobotInterface {
 
     fun addLabel(name: String): Any {

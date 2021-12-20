@@ -22,7 +22,7 @@ package ch.protonmail.android.uitests.robots.contacts
 /**
  * [GroupDetailsRobot] class contains actions and verifications for Contacts functionality.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "ExpressionBodySyntax")
 open class GroupDetailsRobot {
 
     fun edit(): AddContactGroupRobot {

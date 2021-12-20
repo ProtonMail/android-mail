@@ -23,7 +23,7 @@ import androidx.annotation.IdRes
 /**
  * Class represents Message Attachments.
  */
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 open class MessageAttachmentsRobot {
 
     fun addImageCaptureAttachment(@IdRes drawable: Int): ComposerRobot =

@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.settings.account.labelsandfolders
 /**
  * [FoldersManagerRobot] class contains actions and verifications for Folders functionality.
  */
-@Suppress("unused", "TooManyFunctions")
+@Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 class FoldersManagerRobot {
 
     fun addFolder(name: String): FoldersManagerRobot {

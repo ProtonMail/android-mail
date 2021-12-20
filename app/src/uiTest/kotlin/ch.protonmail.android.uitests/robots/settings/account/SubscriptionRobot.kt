@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.settings.account
 /**
  * Class represents Subscription view.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "ExpressionBodySyntax")
 open class SubscriptionRobot {
 
     /**

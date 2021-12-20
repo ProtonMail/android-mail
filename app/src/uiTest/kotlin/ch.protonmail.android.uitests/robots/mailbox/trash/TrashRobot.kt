@@ -24,7 +24,7 @@ import ch.protonmail.android.uitests.robots.mailbox.MailboxRobotInterface
  * [TrashRobot] class implements [MailboxRobotInterface],
  * contains actions and verifications for Trash mailbox functionality.
  */
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 class TrashRobot : MailboxRobotInterface {
 
     override fun swipeLeftMessageAtPosition(position: Int): TrashRobot {

@@ -23,7 +23,7 @@ package ch.protonmail.android.uitests.robots.contacts
 /**
  * [ManageAddressesRobot] class contains actions and verifications for Adding a Contact to Group.
  */
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "ExpressionBodySyntax")
 class ManageAddressesRobot {
 
     fun addContactToGroup(withEmail: String): AddContactGroupRobot = selectAddress(withEmail).done()

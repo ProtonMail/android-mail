@@ -25,7 +25,7 @@ import ch.protonmail.android.uitests.robots.settings.autolock.AutoLockRobot
 /**
  * [SettingsRobot] class contains actions and verifications for Settings view.
  */
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 class SettingsRobot {
 
     fun navigateUpToInbox(): InboxRobot {

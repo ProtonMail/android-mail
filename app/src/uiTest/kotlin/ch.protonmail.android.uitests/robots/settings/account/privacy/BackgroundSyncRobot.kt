@@ -21,7 +21,7 @@ package ch.protonmail.android.uitests.robots.settings.account.privacy
 
 import androidx.appcompat.widget.SwitchCompat
 
-@Suppress("unused")
+@Suppress("unused", "ExpressionBodySyntax")
 class BackgroundSyncRobot {
 
     fun navigateUpToPrivacySettings(): PrivacySettingsRobot {

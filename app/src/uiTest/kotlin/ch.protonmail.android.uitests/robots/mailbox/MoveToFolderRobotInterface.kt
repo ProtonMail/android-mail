@@ -18,7 +18,7 @@
  */
 package ch.protonmail.android.uitests.robots.mailbox
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
+@Suppress("unused", "ExpressionBodySyntax")
 interface MoveToFolderRobotInterface {
 
     fun moveToExistingFolder(name: String): Any {
