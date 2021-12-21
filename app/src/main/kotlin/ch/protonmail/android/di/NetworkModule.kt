@@ -74,7 +74,7 @@ object NetworkModule {
     @Singleton
     fun provideApiClient(buildUserAgent: BuildUserAgent) = object : ApiClient {
         override val appVersionHeader: String
-            get() = "Android_${BuildConfig.VERSION_NAME}"
+            get() = "android-mail@${BuildConfig.VERSION_NAME}"
         override val enableDebugLogging: Boolean
             get() = true
         override val shouldUseDoh: Boolean

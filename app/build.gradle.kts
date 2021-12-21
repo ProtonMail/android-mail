@@ -74,7 +74,7 @@ android {
         create("dev") {
             applicationIdSuffix = ".dev"
             val gitHash = "git rev-parse --short HEAD".runCommand(workingDir = rootDir)
-            versionNameSuffix = "-dev (${gitHash})"
+            versionNameSuffix = ".dev+${gitHash}"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "false")
             buildConfigField("String", "HOST", "\"proton.black\"")
         }
