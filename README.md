@@ -26,7 +26,7 @@ The `app/src/uiTest/assets/users.json` file will be needed for UI tests to work,
 
 ## Deploy
 Each merge to `master` branch builds the branch's HEAD and deploy it to [firebase app distribution](https://firebase.google.com/docs/app-distribution)
-In order to someone as a tester for such builds, their email address needs to be added to the `v6-dev-builds-testers` group in Firebase.
+In order to someone as a tester for such builds, their email address needs to be added to the `v6-internal-alpha-testers` group in Firebase.
 
 ### Signing
 All `release` builds done on CI are automatically singed with ProtonMail's keystore. In order to perform signing locally the keystore will need to be placed into `keystore/` directory and the creadentials will be read from `private.properties` file.
