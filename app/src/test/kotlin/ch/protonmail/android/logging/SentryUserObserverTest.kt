@@ -30,7 +30,7 @@ import io.sentry.Sentry
 import io.sentry.protocol.User
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineScope
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.domain.getPrimaryAccount
 import org.junit.After
@@ -63,7 +63,7 @@ class SentryUserObserverTest {
     }
 
     @Test
-    fun `register userId in Sentry for valid primary account`() = runBlockingTest {
+    fun `register userId in Sentry for valid primary account`() = runTest {
         // WHEN
         sentryUserObserver.start()
         // THEN

@@ -26,7 +26,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.test.kotlin.CoroutinesTest
 import org.junit.Before
@@ -49,7 +49,7 @@ class RemoveAccountViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when initialized emits Initial state`() = runBlockingTest {
+    fun `when initialized emits Initial state`() = runTest {
         // WHEN
         val actual = viewModel.state.take(1).first()
         // THEN
@@ -57,7 +57,7 @@ class RemoveAccountViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when signout emits SigningOut and then SignedOut when completed`() = runBlockingTest {
+    fun `when signout emits SigningOut and then SignedOut when completed`() = runTest {
         viewModel.state.test {
             // Initial state emitted
             awaitItem()

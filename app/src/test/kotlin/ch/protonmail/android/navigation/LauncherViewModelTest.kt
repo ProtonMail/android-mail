@@ -28,7 +28,7 @@ import io.mockk.mockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import me.proton.core.account.domain.entity.Account
 import me.proton.core.account.domain.entity.AccountType
 import me.proton.core.account.domain.entity.AccountType.Internal
@@ -92,7 +92,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when no account then AccountNeeded`() = runBlockingTest {
+    fun `when no account then AccountNeeded`() = runTest {
         // GIVEN
         accountListFlow.emit(emptyList())
         // WHEN
@@ -104,7 +104,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when all accounts are disabled then AccountNeeded`() = runBlockingTest {
+    fun `when all accounts are disabled then AccountNeeded`() = runTest {
         // GIVEN
         accountListFlow.emit(listOf(AccountTestData.disabledAccount))
         // WHEN
@@ -116,7 +116,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when one ready account then PrimaryExist`() = runBlockingTest {
+    fun `when one ready account then PrimaryExist`() = runTest {
         // GIVEN
         accountListFlow.emit(listOf(AccountTestData.readyAccount))
         // WHEN
@@ -128,7 +128,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when adding first account`() = runBlockingTest {
+    fun `when adding first account`() = runTest {
         // GIVEN
         accountListFlow.emit(emptyList())
         // WHEN
@@ -147,7 +147,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when adding a second account PrimaryExist state do not change`() = runBlockingTest {
+    fun `when adding a second account PrimaryExist state do not change`() = runTest {
         // GIVEN
         accountListFlow.emit(listOf(AccountTestData.readyAccount))
         // WHEN
@@ -168,7 +168,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when addAccount is called, startAddAccountWorkflow`() = runBlockingTest {
+    fun `when addAccount is called, startAddAccountWorkflow`() = runTest {
         // WHEN
         viewModel.addAccount()
         // THEN
@@ -176,7 +176,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when signIn is called, startLoginWorkflow`() = runBlockingTest {
+    fun `when signIn is called, startLoginWorkflow`() = runTest {
         // WHEN
         viewModel.signIn()
         // THEN
@@ -184,7 +184,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when signIn with userId is called, startLoginWorkflow`() = runBlockingTest {
+    fun `when signIn with userId is called, startLoginWorkflow`() = runTest {
         // GIVEN
         every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.readyAccount)
         // WHEN
@@ -194,7 +194,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when signOut is called, disableAccount`() = coroutinesTest {
+    fun `when signOut is called, disableAccount`() = runTest {
         // GIVEN
         every { accountManager.getPrimaryUserId() } returns flowOf(user1UserId)
         // WHEN
@@ -205,7 +205,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when signOut with userId is called, disableAccount`() = coroutinesTest {
+    fun `when signOut with userId is called, disableAccount`() = runTest {
         // WHEN
         viewModel.signOut(user1UserId)
         // THEN
@@ -214,7 +214,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when switch is called on disabled account, startLoginWorkflow`() = coroutinesTest {
+    fun `when switch is called on disabled account, startLoginWorkflow`() = runTest {
         // GIVEN
         every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.disabledAccount)
         // WHEN
@@ -224,7 +224,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when switch is called on ready account, setPrimary`() = coroutinesTest {
+    fun `when switch is called on ready account, setPrimary`() = runTest {
         // GIVEN
         every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.readyAccount)
         // WHEN
@@ -234,7 +234,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when remove is called, removeAccount`() = coroutinesTest {
+    fun `when remove is called, removeAccount`() = runTest {
         // WHEN
         viewModel.remove(user1UserId)
         // THEN
@@ -242,7 +242,7 @@ class LauncherViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `when register is called, verify AccountManagerObserver subscriptions`() = coroutinesTest {
+    fun `when register is called, verify AccountManagerObserver subscriptions`() = runTest {
         // GIVEN
 
         // AccountManager
