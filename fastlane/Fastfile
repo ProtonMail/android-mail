@@ -42,8 +42,8 @@ platform :android do
   desc "Publish build to firebase app testing"
   lane :deployToFirebase do
     firebase_app_distribution(
-      app: '1:75309174866:android:1a431832c861474478cf8b',
-      android_artifact_path: 'app/build/outputs/apk/dev/release/app-dev-release.apk',
+      app: '1:75309174866:android:d354e9e5da9113aa78cf8b',
+      android_artifact_path: 'app/build/outputs/apk/alpha/release/app-alpha-release.apk',
       # Service account is created on the CI from an env var each run (destroyed when finishing)
       service_credentials_file: '/tmp/service-account.json',
       groups: 'v6-internal-alpha-testers'

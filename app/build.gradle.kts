@@ -89,6 +89,11 @@ android {
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "false")
             buildConfigField("String", "HOST", "\"proton.black\"")
         }
+        create("alpha") {
+            applicationIdSuffix = ".alpha"
+            buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
+            buildConfigField("String", "HOST", "\"protonmail.ch\"")
+        }
         create("prod") {
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
             buildConfigField("String", "HOST", "\"protonmail.ch\"")
