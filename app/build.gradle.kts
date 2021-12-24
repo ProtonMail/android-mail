@@ -91,6 +91,7 @@ android {
         }
         create("alpha") {
             applicationIdSuffix = ".alpha"
+            versionNameSuffix = ".alpha"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
             buildConfigField("String", "HOST", "\"protonmail.ch\"")
         }
@@ -132,6 +133,8 @@ android {
         getByName("test").java.srcDirs("src/test/kotlin")
         getByName("androidTest").java.srcDirs("src/androidTest/kotlin", "src/uiTest/kotlin")
         getByName("androidTest").assets.srcDirs("src/uiTest/assets")
+        getByName("dev").res.srcDirs("src/dev/res")
+        getByName("alpha").res.srcDirs("src/alpha/res")
     }
 }
 

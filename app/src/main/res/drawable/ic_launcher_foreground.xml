@@ -24,10 +24,17 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
     <group
-        android:scaleX="0.9818182"
-        android:scaleY="0.9818182">
-        <path
-            android:fillColor="@color/cornflower_blue"
-            android:pathData="M0,0h110v110h-110z" />
+        android:scaleX="0.10235203"
+        android:scaleY="0.10235203">
+        <group
+            android:translateX="389.9909"
+            android:translateY="334.1409">
+            <path
+                android:fillColor="#FFFFFF"
+                android:pathData="M215.7,169.9H59.4v-47c15.9,-62.9 78.1,-63.7 78.1,-63.7s62.3,0.9 78.1,63.7L215.7,169.9L215.7,169.9zM137.6,0C137.6,0 23.5,-3.7 0,122.8V209c0,0 1,9.2 26.9,28c25.9,18.7 93.1,71.5 110.7,71.5s84.8,-52.8 110.7,-71.5c25.9,-18.7 26.9,-28 26.9,-28v-86.2C251.7,-3.7 137.6,0 137.6,0" />
+            <path
+                android:fillColor="#FFFFFF"
+                android:pathData="M137.6,328c0,0 -17.7,-1.7 -31.5,-11.3C92.3,307.1 0,241.2 0,241.2v130.5c0,0 0.8,15.2 17.5,15.2s120.1,0 120.1,0s103.4,0 120.1,0s17.5,-15.2 17.5,-15.2V241.1c0,0 -92.3,65.9 -106.1,75.5C155.3,326.2 137.6,328 137.6,328" />
+        </group>
     </group>
 </vector>

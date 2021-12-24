@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="1.02"
+        android:scaleY="1.02"
+        android:translateX="-1.08"
+        android:translateY="-1.08">
+        <group
+            android:scaleX="1.12"
+            android:scaleY="1.12"
+            android:translateX="-6.48"
+            android:translateY="-6.48">
+            <group
+                android:scaleX="0.9818182"
+                android:scaleY="0.9818182">
+                <group
+                    android:translateX="0"
+                    android:translateY="35">
+
+                    <path
+                        android:fillColor="#ffffff"
+                        android:fillType="evenOdd"
+                        android:pathData="M66.491,17.944L57.333,24.898C56.662,25.407 55.843,25.683 55,25.683C54.158,25.683 53.338,25.407 52.667,24.898L43.508,17.944C43.35,17.824 43.222,17.669 43.134,17.492C43.046,17.314 43,17.118 43,16.92V11.735C43,8.623 44.236,5.638 46.437,3.437C48.638,1.236 51.623,0 54.735,0H55.26C58.373,0 61.357,1.236 63.558,3.437C65.759,5.638 66.995,8.623 66.995,11.735V16.92C66.996,17.118 66.951,17.313 66.863,17.49C66.776,17.668 66.648,17.823 66.491,17.944ZM55,4.784C55.924,4.784 56.84,4.966 57.693,5.32C58.547,5.674 59.323,6.192 59.976,6.845C60.63,7.499 61.148,8.275 61.502,9.128C61.855,9.982 62.037,10.897 62.037,11.821V14.04C62.037,14.21 61.97,14.374 61.849,14.495C61.729,14.615 61.565,14.683 61.394,14.683H48.606C48.436,14.683 48.272,14.615 48.152,14.495C48.031,14.374 47.963,14.21 47.963,14.04V11.821C47.963,9.955 48.705,8.165 50.024,6.845C51.344,5.526 53.134,4.784 55,4.784ZM51.511,26.566L43,20.135V31.432C43,31.943 43.203,32.434 43.565,32.796C43.927,33.158 44.417,33.361 44.929,33.361H65.071C65.583,33.361 66.073,33.158 66.435,32.796C66.797,32.434 67,31.943 67,31.432V20.135L58.489,26.566C57.484,27.325 56.259,27.736 55,27.736C53.741,27.736 52.516,27.325 51.511,26.566Z" />
+                    <path
+                        android:fillColor="#F2AC22"
+                        android:pathData="M0,39H110V76H0V39Z" />
+                    <path
+                        android:fillColor="#ffffff"
+                        android:pathData="M47.769,46.387H46.228L45.935,47.266H45L46.588,43H47.402L48.999,47.266H48.064L47.769,46.387ZM46.465,45.675H47.531L46.995,44.078L46.465,45.675Z" />
+                    <path
+                        android:fillColor="#ffffff"
+                        android:pathData="M50.576,46.56H52.443V47.266H49.697V43H50.576V46.56Z" />
+                    <path
+                        android:fillColor="#ffffff"
+                        android:pathData="M54.128,45.763V47.266H53.249V43H54.914C55.234,43 55.515,43.059 55.757,43.176C56.001,43.293 56.189,43.46 56.32,43.677C56.451,43.892 56.516,44.137 56.516,44.412C56.516,44.83 56.373,45.16 56.085,45.402C55.8,45.643 55.405,45.763 54.899,45.763H54.128ZM54.128,45.051H54.914C55.146,45.051 55.323,44.996 55.444,44.887C55.567,44.777 55.628,44.621 55.628,44.418C55.628,44.209 55.567,44.04 55.444,43.911C55.321,43.782 55.151,43.716 54.934,43.712H54.128V45.051Z" />
+                    <path
+                        android:fillColor="#ffffff"
+                        android:pathData="M60.894,47.266H60.015V45.438H58.301V47.266H57.423V43H58.301V44.729H60.015V43H60.894V47.266Z" />
+                    <path
+                        android:fillColor="#ffffff"
+                        android:pathData="M64.426,46.387H62.885L62.592,47.266H61.657L63.245,43H64.059L65.656,47.266H64.721L64.426,46.387ZM63.122,45.675H64.188L63.652,44.078L63.122,45.675Z" />
+                </group>
+            </group>
+        </group>
+    </group>
+</vector>
