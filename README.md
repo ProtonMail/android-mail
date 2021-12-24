@@ -3,9 +3,16 @@ ProtonMail for Android
 Copyright (c) 2021 Proton Technologies AG
 
 ## Build instructions
-- [Install android sdk](https://android-doc.github.io/sdk/installing/index.html?pkg=tools)
-- Clone this repository (Use `git clone --recurse-submodules [url]`.).
-- Execute `./gradlew assembleDebug`, open and build in Android Studio or use fastlane as defined below to build
+- Install and configure environment (two options available)
+    - [Android studio bundle](https://developer.android.com/studio/install) (Please use at least version 2021.1.1 "Bumblebee")
+    - [Standalone android sdk](https://android-doc.github.io/sdk/installing/index.html?pkg=tools)
+- Install and configure Java 11 (not needed for android studio bundle as it's included)
+    - Install java11 with `brew install java11` | `apt install openjdk-11-jdk`
+    - Check installed versions with `/usr/libexec/java_home -V`
+    - Set java 11 as the current version with `export JAVA_HOME=`/usr/libexec/java_home -v 11.x.x`
+- Clone this repository with submodules (Use `git clone --recurse-submodules [url]`.).
+    - If the project was already cloned use `git submodule init` and then `git pull --recurse-submodules`
+- Build with any of the following: Execute `./gradlew assembleDebug`, open and build in Android Studio or use fastlane as defined below to build
 
 ## CI / CD
 CI stages are defined in the `.gitlab-ci.yml` file and we rely on [fastlane](https://docs.fastlane.tools/) to implement most of them.
@@ -19,7 +26,7 @@ bundle exec fastlane lanes
 ```
 will show all the possible actions that are available.
 
-### UI Tests
+## UI Tests
 UI tests are executed on firebase through the CI. Firebase test lab can be triggered also locally with `bundle exec fastlane uiTests` or tests can be run in a local emulator through android studio.
 The `app/src/uiTest/assets/users.json` file will be needed for UI tests to work, its value can be found in confluence or in the CI env vars
 
@@ -28,7 +35,7 @@ The `app/src/uiTest/assets/users.json` file will be needed for UI tests to work,
 Each merge to `master` branch builds the branch's HEAD and deploy it to [firebase app distribution](https://firebase.google.com/docs/app-distribution)
 In order to someone as a tester for such builds, their email address needs to be added to the `v6-internal-alpha-testers` group in Firebase.
 
-### Signing
+## Signing
 All `release` builds done on CI are automatically singed with ProtonMail's keystore. In order to perform signing locally the keystore will need to be placed into `keystore/` directory and the creadentials will be read from `private.properties` file.
 
 
@@ -46,6 +53,9 @@ It is possible to run the application getting the "core" libraries from the loca
 ## Code style
 This project's code style and formatting is checked by detekt. The rule set is [ktlint's default one](https://github.com/pinterest/ktlint)
 
+
+## Troubleshooting
+- `goopenpgp.aar` library not found: submodule not properly setup, please follow steps in build instructions
 
 License
 -------
