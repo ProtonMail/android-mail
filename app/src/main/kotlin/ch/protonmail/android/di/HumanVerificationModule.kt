@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.di
 
+import ch.protonmail.android.BuildConfig
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -47,7 +48,7 @@ object HumanVerificationModule {
 
     @Provides
     @HumanVerificationApiHost
-    fun provideHumanVerificationApiHost(): String = NetworkModule.API_HOST
+    fun provideHumanVerificationApiHost(): String = "https://${BuildConfig.HUMAN_VERIFICATION_HOST}/"
 
     @Provides
     fun provideHumanVerificationOrchestrator(): HumanVerificationOrchestrator =

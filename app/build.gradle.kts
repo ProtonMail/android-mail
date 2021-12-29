@@ -44,6 +44,7 @@ android {
 
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
         buildConfigField("String", "PROXY_TOKEN", proxyToken.toBuildConfigValue())
+        buildConfigField("String", "HUMAN_VERIFICATION_HOST", "verify.protonmail.com".toBuildConfigValue())
     }
 
     signingConfigs {
@@ -88,6 +89,7 @@ android {
             versionNameSuffix = ".dev+${gitHash}"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "false")
             buildConfigField("String", "HOST", "\"proton.black\"")
+            buildConfigField("String", "HUMAN_VERIFICATION_HOST", "\"verify.proton.black\"")
         }
         create("alpha") {
             applicationIdSuffix = ".alpha"
