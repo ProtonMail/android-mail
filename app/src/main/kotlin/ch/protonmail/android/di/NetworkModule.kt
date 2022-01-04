@@ -29,6 +29,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import me.proton.core.auth.data.MissingScopeListenerImpl
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.humanverification.data.utils.NetworkRequestOverriderImpl
 import me.proton.core.humanverification.domain.utils.NetworkRequestOverrider
@@ -47,6 +48,7 @@ import me.proton.core.network.domain.client.ClientIdProvider
 import me.proton.core.network.domain.client.ExtraHeaderProvider
 import me.proton.core.network.domain.humanverification.HumanVerificationListener
 import me.proton.core.network.domain.humanverification.HumanVerificationProvider
+import me.proton.core.network.domain.scopes.MissingScopeListener
 import me.proton.core.network.domain.server.ServerTimeListener
 import me.proton.core.network.domain.session.SessionListener
 import me.proton.core.network.domain.session.SessionProvider
@@ -101,8 +103,13 @@ object NetworkModule {
     ): NetworkPrefs = NetworkPrefs(context)
 
     @Provides
-    fun provideNetworkRequestOverrider(): NetworkRequestOverrider =
-        NetworkRequestOverriderImpl(OkHttpClient())
+    fun provideNetworkRequestOverrider(
+        @ApplicationContext context: Context
+    ): NetworkRequestOverrider = NetworkRequestOverriderImpl(OkHttpClient(), context)
+
+    @Provides
+    @Singleton
+    fun provideMissingScopeListener(): MissingScopeListener = MissingScopeListenerImpl()
 
     @Provides
     @Singleton
@@ -142,6 +149,7 @@ object NetworkModule {
         serverTimeListener: ServerTimeListener,
         networkManager: NetworkManager,
         networkPrefs: NetworkPrefs,
+        missingScopeListener: MissingScopeListener,
         protonCookieStore: ProtonCookieStore,
         sessionProvider: SessionProvider,
         sessionListener: SessionListener,
@@ -159,6 +167,7 @@ object NetworkModule {
         sessionListener,
         humanVerificationProvider,
         humanVerificationListener,
+        missingScopeListener,
         protonCookieStore,
         CoroutineScope(Job() + Dispatchers.Default),
         certificatePins,

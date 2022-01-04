@@ -37,6 +37,7 @@ import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.navigation.model.Destination
 import me.proton.core.compose.navigation.require
+import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 
 @Composable
@@ -51,8 +52,9 @@ fun Home(
     Scaffold(
         scaffoldState = scaffoldState,
         drawerShape = RectangleShape,
+        drawerScrimColor = ProtonTheme.colors.blenderNorm,
         drawerContent = {
-            NavigationDrawer(
+            Sidebar(
                 drawerState = scaffoldState.drawerState,
                 onRemove = { navController.navigate(Destination.Dialog.RemoveAccount(it)) },
                 onSignOut = onSignOut,

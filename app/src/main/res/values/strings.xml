@@ -4,5 +4,20 @@
     <string name="title_remove_account">Remove Account</string>
     <string name="description_remove_account">You will sign out and remove all information associated with this account.</string>
     <string name="user_select_other_account_content_description">Select another account</string>
-    <string name="logout">Logout</string>
+
+    <string name="drawer_title_inbox">Inbox</string>
+    <string name="drawer_title_drafts">Drafts</string>
+    <string name="drawer_title_sent">Sent</string>
+    <string name="drawer_title_starred">Starred</string>
+    <string name="drawer_title_archive">Archive</string>
+    <string name="drawer_title_spam">Spam</string>
+    <string name="drawer_title_trash">Trash</string>
+    <string name="drawer_title_all_mail">All mail</string>
+    <string name="drawer_title_folders">Folders</string>
+    <string name="drawer_title_create_folder">Create folder</string>
+    <string name="drawer_title_labels">Labels</string>
+    <string name="drawer_title_create_label">Create label</string>
+    <string name="drawer_title_more">More</string>
+    <string name="drawer_title_contacts">Contacts</string>
+
 </resources>

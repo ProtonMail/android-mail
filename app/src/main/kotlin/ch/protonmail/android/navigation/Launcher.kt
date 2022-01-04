@@ -28,16 +28,16 @@ import me.proton.core.compose.component.ProtonCenteredProgress
 
 @Composable
 fun Launcher(
-    launcherViewModel: LauncherViewModel = hiltViewModel()
+    viewModel: LauncherViewModel = hiltViewModel()
 ) {
-    val viewState by launcherViewModel.state.collectAsState(LauncherViewModel.State.Processing)
+    val state by viewModel.state.collectAsState(LauncherViewModel.State.Processing)
 
-    when (viewState) {
-        LauncherViewModel.State.AccountNeeded -> launcherViewModel.addAccount()
+    when (state) {
+        LauncherViewModel.State.AccountNeeded -> viewModel.addAccount()
         LauncherViewModel.State.PrimaryExist -> Home(
-            onSignIn = { launcherViewModel.signIn(it) },
-            onSignOut = { launcherViewModel.signOut(it) },
-            onSwitch = { launcherViewModel.switch(it) }
+            onSignIn = { viewModel.signIn(it) },
+            onSignOut = { viewModel.signOut(it) },
+            onSwitch = { viewModel.switch(it) }
         )
         LauncherViewModel.State.Processing,
         LauncherViewModel.State.StepNeeded -> ProtonCenteredProgress(Modifier.fillMaxSize())
