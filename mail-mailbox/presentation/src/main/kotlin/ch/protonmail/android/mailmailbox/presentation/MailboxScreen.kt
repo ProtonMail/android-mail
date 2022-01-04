@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
+import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,18 +27,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailconversation.domain.ConversationId
+import ch.protonmail.android.mailmessage.domain.model.MailLocation
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonTheme
 
 const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
 
@@ -44,23 +50,45 @@ const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
 fun MailboxScreen(
     navigateToConversation: (ConversationId) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: MailboxViewModel = hiltViewModel()
+    location: MailLocation = MailLocation.Inbox,
+    viewModel: MailboxViewModel = hiltViewModel(),
 ) {
-    Column(
+    LaunchedEffect(location) {
+        viewModel.setLocations(setOf(location))
+    }
+
+    val mailboxState by rememberAsState(viewModel.state, MailboxState())
+
+    MailboxScreen(
+        navigateToConversation = navigateToConversation,
+        modifier = modifier,
+        mailboxState = mailboxState
+    )
+}
+
+@Composable
+private fun MailboxScreen(
+    navigateToConversation: (ConversationId) -> Unit,
+    modifier: Modifier = Modifier,
+    mailboxState: MailboxState = MailboxState(),
+) {
+    LazyColumn(
         modifier = modifier
+            .background(ProtonTheme.colors.backgroundNorm)
             .fillMaxSize()
             .testTag(TEST_TAG_MAILBOX_SCREEN)
     ) {
-        val viewState by rememberAsState(viewModel.viewState, MailboxViewModel.State.initialState)
-
-        LazyColumn(
-            modifier = Modifier
-        ) {
-            itemsIndexed(viewState.mailboxItems) { _, item ->
-                MailboxItem(item) { conversationId ->
-                    navigateToConversation(conversationId)
-                }
-            }
+        item {
+            Text("Header: Location: ${mailboxState.currentLocations}")
+        }
+        items(
+            items = mailboxState.currentLocationsItems,
+            key = { it.conversationId.id }
+        ) { item ->
+            MailboxItem(item) { navigateToConversation(it) }
+        }
+        item {
+            Text("Footer")
         }
     }
 }
@@ -68,13 +96,13 @@ fun MailboxScreen(
 @Composable
 private fun MailboxItem(
     item: Conversation,
-    onMessageClicked: (ConversationId) -> Unit
+    onItemClicked: (ConversationId) -> Unit,
 ) {
     Card(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .clickable { onMessageClicked(item.conversationId) }
+            .clickable { onItemClicked(item.conversationId) }
     ) {
         Box(
             modifier = Modifier.padding(16.dp)
@@ -84,5 +112,31 @@ private fun MailboxItem(
                 Text(item.subject)
             }
         }
+    }
+}
+
+@Preview(
+    name = "Sidebar in light mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true,
+)
+@Preview(
+    name = "Sidebar in dark mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
+@Composable
+fun PreviewMailbox() {
+    ProtonTheme {
+        MailboxScreen(
+            navigateToConversation = {},
+            mailboxState = MailboxState(
+                currentLocationsItems = listOf(
+                    Conversation(ConversationId("1"), "First message"),
+                    Conversation(ConversationId("2"), "Second message"),
+                ),
+                currentLocations = setOf(MailLocation.Inbox)
+            )
+        )
     }
 }

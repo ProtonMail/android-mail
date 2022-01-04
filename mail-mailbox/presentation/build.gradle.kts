@@ -61,6 +61,7 @@ dependencies {
 
     implementation(Dependencies.modulePresentationLibs)
 
+    implementation(project(":mail-message:domain"))
     implementation(project(":mail-conversation:domain"))
 
     testImplementation(Dependencies.testLibs)

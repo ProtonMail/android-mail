@@ -18,21 +18,19 @@
 
 package ch.protonmail.android.navigation
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
-import androidx.compose.material.DrawerState
-import androidx.compose.material.DrawerValue.Open
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.R
+import ch.protonmail.android.mailmessage.domain.model.MailLocation
 import me.proton.core.accountmanager.presentation.compose.AccountPrimaryItem
 import me.proton.core.compose.component.ProtonSidebarAppVersionItem
 import me.proton.core.compose.component.ProtonSidebarItem
@@ -40,102 +38,101 @@ import me.proton.core.compose.component.ProtonSidebarLazy
 import me.proton.core.compose.component.ProtonSidebarReportBugItem
 import me.proton.core.compose.component.ProtonSidebarSettingsItem
 import me.proton.core.compose.component.ProtonSidebarSignOutItem
-import me.proton.core.compose.flow.rememberAsState
-import me.proton.core.compose.theme.ProtonColors
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 
 @Composable
 fun Sidebar(
-    drawerState: DrawerState,
     onRemove: (UserId?) -> Unit,
     onSignOut: (UserId) -> Unit,
     onSignIn: (UserId?) -> Unit,
     onSwitch: (UserId) -> Unit,
+    onMailLocation: (MailLocation) -> Unit,
+    onFolder: (String) -> Unit,
+    onLabel: (String) -> Unit,
+    onSettings: () -> Unit,
+    onReportBug: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SidebarViewModel = hiltViewModel()
-) {
-    val viewState by rememberAsState(viewModel.state, SidebarViewModel.State())
-
-    Sidebar(
-        drawerState = drawerState,
-        onRemove = onRemove,
-        onSignOut = onSignOut,
-        onSignIn = onSignIn,
-        onSwitch = onSwitch,
-        modifier = modifier,
-        viewState = viewState
-    )
-}
-
-@Composable
-private fun Sidebar(
-    drawerState: DrawerState,
-    onRemove: (UserId?) -> Unit,
-    onSignOut: (UserId) -> Unit,
-    onSignIn: (UserId?) -> Unit,
-    onSwitch: (UserId) -> Unit,
-    modifier: Modifier = Modifier,
-    viewState: SidebarViewModel.State = SidebarViewModel.State()
+    sidebarState: SidebarState = rememberSidebarState(),
 ) {
     ProtonSidebarLazy(
         modifier = modifier,
-        drawerState = drawerState,
+        drawerState = sidebarState.drawerState,
     ) {
         item {
-            if (viewState.isAccountVisible) {
+            if (sidebarState.hasPrimaryAccount) {
                 AccountPrimaryItem(
-                    onRemove = { onRemove(it) },
-                    onSignIn = { onSignIn(it) },
-                    onSignOut = { onSignOut(it) },
-                    onSwitch = { onSwitch(it) },
+                    onRemove = {
+                        sidebarState.close()
+                        onRemove(it)
+                    },
+                    onSignIn = {
+                        sidebarState.close()
+                        onSignIn(it)
+                    },
+                    onSignOut = {
+                        sidebarState.close()
+                        onSignOut(it)
+                    },
+                    onSwitch = {
+                        sidebarState.close()
+                        onSwitch(it)
+                    },
                     modifier = Modifier
                         .padding(all = ProtonDimens.SmallSpacing)
                         .fillMaxWidth(),
                 )
             }
 
-            ProtonSidebarItem(
-                icon = R.drawable.ic_inbox,
-                text = R.string.drawer_title_inbox,
-                count = viewState.inboxCount
-            )
-            ProtonSidebarItem(
-                icon = R.drawable.ic_drafts,
-                text = R.string.drawer_title_drafts,
-                count = viewState.draftsCount
-            )
-            ProtonSidebarItem(
-                icon = R.drawable.ic_paper_plane,
-                text = R.string.drawer_title_sent,
-                count = viewState.sentCount
-            )
-            ProtonSidebarItem(
-                icon = R.drawable.ic_star,
-                text = R.string.drawer_title_starred,
-                count = viewState.starredCount
-            )
-            ProtonSidebarItem(
-                icon = R.drawable.ic_archive,
-                text = R.string.drawer_title_archive,
-                count = viewState.archiveCount
-            )
-            ProtonSidebarItem(
-                icon = R.drawable.ic_fire,
-                text = R.string.drawer_title_spam,
-                count = viewState.spamCount
-            )
-            ProtonSidebarItem(
-                icon = R.drawable.ic_trash,
-                text = R.string.drawer_title_trash,
-                count = viewState.trashCount
-            )
-            ProtonSidebarItem(
-                icon = R.drawable.ic_envelope_all_emails,
-                text = R.string.drawer_title_all_mail,
-                count = viewState.allMailCount
-            )
+            @Composable
+            fun ProtonSidebarMailLocationItem(location: MailLocation) {
+                ProtonSidebarItem(
+                    icon = when (location) {
+                        MailLocation.Inbox -> R.drawable.ic_inbox
+                        MailLocation.Drafts -> R.drawable.ic_drafts
+                        MailLocation.Sent -> R.drawable.ic_paper_plane
+                        MailLocation.Starred -> R.drawable.ic_star
+                        MailLocation.Archive -> R.drawable.ic_archive
+                        MailLocation.Spam -> R.drawable.ic_fire
+                        MailLocation.Trash -> R.drawable.ic_trash
+                        MailLocation.AllMail -> R.drawable.ic_envelope_all_emails
+                    },
+                    text = when (location) {
+                        MailLocation.Inbox -> R.string.drawer_title_inbox
+                        MailLocation.Drafts -> R.string.drawer_title_drafts
+                        MailLocation.Sent -> R.string.drawer_title_sent
+                        MailLocation.Starred -> R.string.drawer_title_starred
+                        MailLocation.Archive -> R.string.drawer_title_archive
+                        MailLocation.Spam -> R.string.drawer_title_spam
+                        MailLocation.Trash -> R.string.drawer_title_trash
+                        MailLocation.AllMail -> R.string.drawer_title_all_mail
+                    },
+                    count = when (location) {
+                        MailLocation.Inbox -> sidebarState.mailboxState.inboxUnreadCount
+                        MailLocation.Drafts -> sidebarState.mailboxState.draftsUnreadCount
+                        MailLocation.Sent -> sidebarState.mailboxState.sentUnreadCount
+                        MailLocation.Starred -> sidebarState.mailboxState.starredUnreadCount
+                        MailLocation.Archive -> sidebarState.mailboxState.archiveUnreadCount
+                        MailLocation.Spam -> sidebarState.mailboxState.spamUnreadCount
+                        MailLocation.Trash -> sidebarState.mailboxState.trashUnreadCount
+                        MailLocation.AllMail -> sidebarState.mailboxState.allMailUnreadCount
+                    },
+                    isSelected = sidebarState.mailboxState.isLocationSelected(location)
+                ) {
+                    sidebarState.close()
+                    onMailLocation(location)
+                }
+            }
+
+            ProtonSidebarMailLocationItem(MailLocation.Inbox)
+            ProtonSidebarMailLocationItem(MailLocation.Drafts)
+            ProtonSidebarMailLocationItem(MailLocation.Sent)
+            ProtonSidebarMailLocationItem(MailLocation.Starred)
+            ProtonSidebarMailLocationItem(MailLocation.Archive)
+            ProtonSidebarMailLocationItem(MailLocation.Spam)
+            ProtonSidebarMailLocationItem(MailLocation.Trash)
+            ProtonSidebarMailLocationItem(MailLocation.AllMail)
 
             Divider()
 
@@ -147,13 +144,16 @@ private fun Sidebar(
             }
         }
 
-        items(viewState.folders) {
+        items(sidebarState.mailboxState.folders) {
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_folder_filled),
                 text = it.text,
                 textColor = ProtonTheme.colors.textHint,
                 iconTint = it.color
-            )
+            ) {
+                sidebarState.close()
+                onFolder(it.id)
+            }
         }
 
         item {
@@ -168,13 +168,16 @@ private fun Sidebar(
             }
         }
 
-        items(viewState.labels) {
+        items(sidebarState.mailboxState.labels) {
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_label_filled),
                 text = it.text,
                 textColor = ProtonTheme.colors.textHint,
                 iconTint = it.color
-            )
+            ) {
+                sidebarState.close()
+                onLabel(it.id)
+            }
         }
 
         item {
@@ -186,41 +189,53 @@ private fun Sidebar(
                     color = ProtonTheme.colors.textHint
                 )
             }
-            ProtonSidebarSettingsItem()
-            ProtonSidebarReportBugItem()
-            ProtonSidebarSignOutItem { onRemove(null) }
+            ProtonSidebarSettingsItem {
+                sidebarState.close()
+                onSettings()
+            }
+            ProtonSidebarReportBugItem {
+                sidebarState.close()
+                onReportBug()
+            }
+            ProtonSidebarSignOutItem {
+                sidebarState.close()
+                onRemove(null)
+            }
 
-            ProtonSidebarAppVersionItem(name = viewState.appName, version = viewState.appVersion)
+            ProtonSidebarAppVersionItem(
+                name = sidebarState.appName,
+                version = sidebarState.appVersion
+            )
         }
     }
 }
 
-@Preview
+@Preview(
+    name = "Sidebar in light mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showBackground = true,
+)
+@Preview(
+    name = "Sidebar in dark mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+)
 @Composable
-fun PreviewSidebarLight() {
-    ProtonTheme(colors = ProtonColors.Light) {
+fun PreviewSidebar() {
+    ProtonTheme {
         Sidebar(
-            drawerState = DrawerState(Open),
             onSignOut = {},
             onSignIn = {},
             onSwitch = {},
             onRemove = {},
-            viewState = SidebarViewModel.State(),
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewSidebarDark() {
-    ProtonTheme(colors = ProtonColors.Dark) {
-        Sidebar(
-            drawerState = DrawerState(Open),
-            onSignOut = {},
-            onSignIn = {},
-            onSwitch = {},
-            onRemove = {},
-            viewState = SidebarViewModel.State(),
+            onMailLocation = {},
+            onFolder = {},
+            onLabel = {},
+            onSettings = {},
+            onReportBug = {},
+            sidebarState = SidebarState(
+                hasPrimaryAccount = false
+            ),
         )
     }
 }
