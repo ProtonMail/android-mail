@@ -52,6 +52,7 @@ fun Home(
     onSignIn: (UserId?) -> Unit,
     onSignOut: (UserId) -> Unit,
     onSwitch: (UserId) -> Unit,
+    onSubscription: () -> Unit,
     onReportBug: () -> Unit,
     mailboxViewModel: MailboxViewModel = hiltViewModel(),
 ) {
@@ -77,6 +78,7 @@ fun Home(
                 onFolder = { /*navController.navigate(...)*/ },
                 onLabel = { /*navController.navigate(...)*/ },
                 onSettings = { /*navController.navigate(Destination.Screen.Settings.route)*/ },
+                onSubscription = onSubscription,
                 onReportBug = onReportBug,
                 sidebarState = sidebarState,
             )

@@ -56,6 +56,7 @@ import me.proton.core.humanverification.presentation.HumanVerificationOrchestrat
 import me.proton.core.humanverification.presentation.observe
 import me.proton.core.humanverification.presentation.onHumanVerificationNeeded
 import me.proton.core.network.domain.scopes.MissingScopeListener
+import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.report.presentation.entity.BugReportInput
 import me.proton.core.user.domain.UserManager
@@ -70,6 +71,7 @@ class LauncherViewModel @Inject constructor(
     private val humanVerificationManager: HumanVerificationManager,
     private val authOrchestrator: AuthOrchestrator,
     private val hvOrchestrator: HumanVerificationOrchestrator,
+    private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
     private val missingScopeListener: MissingScopeListener,
 ) : ViewModel() {
@@ -92,6 +94,7 @@ class LauncherViewModel @Inject constructor(
     fun register(context: FragmentActivity) {
         authOrchestrator.register(context)
         hvOrchestrator.register(context)
+        plansOrchestrator.register(context)
         reportOrchestrator.register(context)
 
         authOrchestrator.onAddAccountResult { result ->
@@ -140,6 +143,12 @@ class LauncherViewModel @Inject constructor(
 
     fun remove(userId: UserId) = viewModelScope.launch {
         accountManager.removeAccount(userId)
+    }
+
+    fun subscription() = viewModelScope.launch {
+        getPrimaryUserIdOrNull()?.let {
+            plansOrchestrator.showCurrentPlanWorkflow(it)
+        }
     }
 
     fun report() = viewModelScope.launch {

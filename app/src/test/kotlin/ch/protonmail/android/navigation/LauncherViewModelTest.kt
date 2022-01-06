@@ -54,6 +54,7 @@ import me.proton.core.humanverification.presentation.HumanVerificationOrchestrat
 import me.proton.core.humanverification.presentation.observe
 import me.proton.core.humanverification.presentation.onHumanVerificationNeeded
 import me.proton.core.network.domain.scopes.MissingScopeListener
+import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.test.kotlin.CoroutinesTest
 import me.proton.core.user.domain.UserManager
@@ -65,6 +66,7 @@ class LauncherViewModelTest : CoroutinesTest {
 
     private val authOrchestrator = mockk<AuthOrchestrator>(relaxUnitFun = true)
     private val hvOrchestrator = mockk<HumanVerificationOrchestrator>(relaxUnitFun = true)
+    private val plansOrchestrator = mockk<PlansOrchestrator>(relaxUnitFun = true)
     private val reportOrchestrator = mockk<ReportOrchestrator>(relaxUnitFun = true)
     private val missingScopeListener = mockk<MissingScopeListener>(relaxUnitFun = true)
 
@@ -95,6 +97,7 @@ class LauncherViewModelTest : CoroutinesTest {
             humanVerificationManager,
             authOrchestrator,
             hvOrchestrator,
+            plansOrchestrator,
             reportOrchestrator,
             missingScopeListener
         )

@@ -38,6 +38,7 @@ fun Launcher(
             onSignIn = { viewModel.signIn(it) },
             onSignOut = { viewModel.signOut(it) },
             onSwitch = { viewModel.switch(it) },
+            onSubscription = { viewModel.subscription() },
             onReportBug = { viewModel.report() }
         )
         LauncherViewModel.State.Processing,

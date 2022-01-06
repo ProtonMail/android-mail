@@ -94,5 +94,8 @@
         <activity
             android:name="me.proton.core.payment.presentation.ui.PaymentTokenApprovalActivity"
             android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.plan.presentation.ui.UpgradeActivity"
+            android:theme="@style/ProtonTheme.Mail" />
     </application>
 </manifest>

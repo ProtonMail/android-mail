@@ -53,6 +53,7 @@ fun Sidebar(
     onFolder: (String) -> Unit,
     onLabel: (String) -> Unit,
     onSettings: () -> Unit,
+    onSubscription: () -> Unit,
     onReportBug: () -> Unit,
     modifier: Modifier = Modifier,
     sidebarState: SidebarState = rememberSidebarState(),
@@ -199,6 +200,10 @@ fun Sidebar(
                 sidebarState.close()
                 onSettings()
             }
+            ProtonSidebarSubscriptionItem {
+                sidebarState.close()
+                onSubscription()
+            }
             ProtonSidebarReportBugItem {
                 sidebarState.close()
                 onReportBug()
@@ -214,6 +219,22 @@ fun Sidebar(
             )
         }
     }
+}
+
+@Composable
+fun ProtonSidebarSubscriptionItem(
+    modifier: Modifier = Modifier,
+    isClickable: Boolean = true,
+    onClick: () -> Unit = {},
+) {
+    ProtonSidebarItem(
+        text = R.string.drawer_title_subscription,
+        icon = R.drawable.ic_pencil,
+        modifier = modifier,
+        onClick = onClick,
+        isClickable = isClickable,
+        isSelected = false
+    )
 }
 
 @Preview(
@@ -238,6 +259,7 @@ fun PreviewSidebar() {
             onFolder = {},
             onLabel = {},
             onSettings = {},
+            onSubscription = {},
             onReportBug = {},
             sidebarState = SidebarState(
                 mailboxState = MailboxState(
