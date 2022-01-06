@@ -50,6 +50,7 @@ import me.proton.core.humanverification.presentation.HumanVerificationManagerObs
 import me.proton.core.humanverification.presentation.HumanVerificationOrchestrator
 import me.proton.core.humanverification.presentation.observe
 import me.proton.core.humanverification.presentation.onHumanVerificationNeeded
+import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.test.kotlin.CoroutinesTest
 import me.proton.core.user.domain.UserManager
 import org.junit.Before
@@ -58,8 +59,9 @@ import kotlin.test.assertEquals
 
 class LauncherViewModelTest : CoroutinesTest {
 
-    private val hvOrchestrator = mockk<HumanVerificationOrchestrator>(relaxUnitFun = true)
     private val authOrchestrator = mockk<AuthOrchestrator>(relaxUnitFun = true)
+    private val hvOrchestrator = mockk<HumanVerificationOrchestrator>(relaxUnitFun = true)
+    private val reportOrchestrator = mockk<ReportOrchestrator>(relaxUnitFun = true)
 
     private val userManager = mockk<UserManager>()
     private val humanVerificationManager = mockk<HumanVerificationManager>()
@@ -87,7 +89,8 @@ class LauncherViewModelTest : CoroutinesTest {
             userManager,
             humanVerificationManager,
             authOrchestrator,
-            hvOrchestrator
+            hvOrchestrator,
+            reportOrchestrator
         )
     }
 

@@ -53,6 +53,8 @@ import me.proton.core.humanverification.domain.HumanVerificationManager
 import me.proton.core.humanverification.presentation.HumanVerificationOrchestrator
 import me.proton.core.humanverification.presentation.observe
 import me.proton.core.humanverification.presentation.onHumanVerificationNeeded
+import me.proton.core.report.presentation.ReportOrchestrator
+import me.proton.core.report.presentation.entity.BugReportInput
 import me.proton.core.user.domain.UserManager
 import javax.inject.Inject
 
@@ -64,7 +66,8 @@ class LauncherViewModel @Inject constructor(
     private val userManager: UserManager,
     private val humanVerificationManager: HumanVerificationManager,
     private val authOrchestrator: AuthOrchestrator,
-    private val hvOrchestrator: HumanVerificationOrchestrator
+    private val hvOrchestrator: HumanVerificationOrchestrator,
+    private val reportOrchestrator: ReportOrchestrator,
 ) : ViewModel() {
 
     val state: StateFlow<State> = accountManager.getAccounts()
@@ -85,6 +88,7 @@ class LauncherViewModel @Inject constructor(
     fun register(context: FragmentActivity) {
         authOrchestrator.register(context)
         hvOrchestrator.register(context)
+        reportOrchestrator.register(context)
 
         authOrchestrator.onAddAccountResult { result ->
             viewModelScope.launch {
@@ -129,6 +133,14 @@ class LauncherViewModel @Inject constructor(
 
     fun remove(userId: UserId) = viewModelScope.launch {
         accountManager.removeAccount(userId)
+    }
+
+    fun report() = viewModelScope.launch {
+        val userId = getPrimaryUserIdOrNull()
+        val user = userId?.let { userManager.getUser(it) }
+        val email = user?.email ?: "unknown"
+        val username = user?.name ?: "unknown (userId: $userId)"
+        reportOrchestrator.startBugReport(BugReportInput(email = email, username = username))
     }
 
     private suspend fun getAccountOrNull(it: UserId) = accountManager.getAccount(it).firstOrNull()

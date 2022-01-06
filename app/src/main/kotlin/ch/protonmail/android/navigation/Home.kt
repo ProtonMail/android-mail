@@ -52,6 +52,7 @@ fun Home(
     onSignIn: (UserId?) -> Unit,
     onSignOut: (UserId) -> Unit,
     onSwitch: (UserId) -> Unit,
+    onReportBug: () -> Unit,
     mailboxViewModel: MailboxViewModel = hiltViewModel(),
 ) {
     val navController = rememberNavController()
@@ -76,7 +77,7 @@ fun Home(
                 onFolder = { /*navController.navigate(...)*/ },
                 onLabel = { /*navController.navigate(...)*/ },
                 onSettings = { /*navController.navigate(Destination.Screen.Settings.route)*/ },
-                onReportBug = { /*navController.navigate(Destination.Screen.ReportBug.route)*/ },
+                onReportBug = onReportBug,
                 sidebarState = sidebarState,
             )
         }

@@ -37,7 +37,8 @@ fun Launcher(
         LauncherViewModel.State.PrimaryExist -> Home(
             onSignIn = { viewModel.signIn(it) },
             onSignOut = { viewModel.signOut(it) },
-            onSwitch = { viewModel.switch(it) }
+            onSwitch = { viewModel.switch(it) },
+            onReportBug = { viewModel.report() }
         )
         LauncherViewModel.State.Processing,
         LauncherViewModel.State.StepNeeded -> ProtonCenteredProgress(Modifier.fillMaxSize())
