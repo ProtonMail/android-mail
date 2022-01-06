@@ -29,28 +29,36 @@ import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.mailmailbox.presentation.MailboxState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import me.proton.core.accountmanager.presentation.compose.AccountPrimaryState
+import me.proton.core.accountmanager.presentation.compose.rememberAccountPrimaryState
 
 @Stable
 class SidebarState(
     val drawerState: DrawerState = DrawerState(DrawerValue.Closed),
     val mailboxState: MailboxState = MailboxState(),
+    val accountPrimaryState: AccountPrimaryState = AccountPrimaryState(),
     val hasPrimaryAccount: Boolean = true,
     val appName: String = "ProtonMail",
     val appVersion: String = BuildConfig.VERSION_NAME,
     val scope: CoroutineScope? = null,
 ) {
-    fun close() = scope?.launch { drawerState.close() }
+    fun close() = scope?.launch {
+        accountPrimaryState.dismissDialog()
+        drawerState.close()
+    }
 }
 
 @Composable
 fun rememberSidebarState(
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
+    accountPrimaryState: AccountPrimaryState = rememberAccountPrimaryState(),
     mailboxState: MailboxState = remember { MailboxState() },
     scope: CoroutineScope = rememberCoroutineScope(),
 ): SidebarState = remember(mailboxState) {
     SidebarState(
         drawerState = drawerState,
         mailboxState = mailboxState,
+        accountPrimaryState = accountPrimaryState,
         scope = scope
     )
 }

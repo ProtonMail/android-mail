@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.R
+import ch.protonmail.android.mailmailbox.presentation.MailboxState
 import ch.protonmail.android.mailmessage.domain.model.MailLocation
 import me.proton.core.accountmanager.presentation.compose.AccountPrimaryItem
 import me.proton.core.compose.component.ProtonSidebarAppVersionItem
@@ -82,11 +83,13 @@ fun Sidebar(
                     modifier = Modifier
                         .padding(all = ProtonDimens.SmallSpacing)
                         .fillMaxWidth(),
+                    viewState = sidebarState.accountPrimaryState
                 )
             }
 
             @Composable
             fun ProtonSidebarMailLocationItem(location: MailLocation) {
+                val isSelected = sidebarState.mailboxState.isLocationSelected(location)
                 ProtonSidebarItem(
                     icon = when (location) {
                         MailLocation.Inbox -> R.drawable.ic_inbox
@@ -118,7 +121,12 @@ fun Sidebar(
                         MailLocation.Trash -> sidebarState.mailboxState.trashUnreadCount
                         MailLocation.AllMail -> sidebarState.mailboxState.allMailUnreadCount
                     },
-                    isSelected = sidebarState.mailboxState.isLocationSelected(location)
+                    isSelected = isSelected,
+                    iconTint = if (isSelected) {
+                        ProtonTheme.colors.textNorm
+                    } else {
+                        ProtonTheme.colors.iconHint
+                    }
                 ) {
                     sidebarState.close()
                     onMailLocation(location)
@@ -148,7 +156,6 @@ fun Sidebar(
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_folder_filled),
                 text = it.text,
-                textColor = ProtonTheme.colors.textHint,
                 iconTint = it.color
             ) {
                 sidebarState.close()
@@ -172,7 +179,6 @@ fun Sidebar(
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_label_filled),
                 text = it.text,
-                textColor = ProtonTheme.colors.textHint,
                 iconTint = it.color
             ) {
                 sidebarState.close()
@@ -234,7 +240,10 @@ fun PreviewSidebar() {
             onSettings = {},
             onReportBug = {},
             sidebarState = SidebarState(
-                hasPrimaryAccount = false
+                mailboxState = MailboxState(
+                    currentLocations = setOf(MailLocation.Inbox)
+                ),
+                hasPrimaryAccount = false,
             ),
         )
     }
