@@ -46,6 +46,9 @@
             <meta-data
                 android:name="ch.protonmail.android.initializer.EventManagerInitializer"
                 android:value="androidx.startup" />
+            <meta-data
+                android:name="me.proton.core.crypto.validator.presentation.init.CryptoValidatorInitializer"
+                android:value="androidx.startup" />
         </provider>
 
         <activity
@@ -97,5 +100,8 @@
         <activity
             android:name="me.proton.core.plan.presentation.ui.UpgradeActivity"
             android:theme="@style/ProtonTheme.Mail" />
+        <activity
+            android:name="me.proton.core.crypto.validator.presentation.ui.CryptoValidatorErrorDialogActivity"
+            android:theme="@style/ProtonTheme.Transparent" />
     </application>
 </manifest>

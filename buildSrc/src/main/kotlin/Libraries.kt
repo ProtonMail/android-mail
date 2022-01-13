@@ -142,6 +142,7 @@ object Proton {
         val contact = coreArtifact("contact", Versions.Proton.core)
         val country = coreArtifact("country", Versions.Proton.core)
         val crypto = coreArtifact("crypto", Versions.Proton.core)
+        val cryptoValidator = coreArtifact("crypto-validator", Versions.Proton.core)
         val data = coreArtifact("data", Versions.Proton.core)
         val dataRoom = coreArtifact("data-room", Versions.Proton.core)
         val domain = coreArtifact("domain", Versions.Proton.core)

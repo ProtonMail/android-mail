@@ -49,6 +49,7 @@ object Dependencies {
         add(Proton.Core.contact)
         add(Proton.Core.country)
         add(Proton.Core.crypto)
+        add(Proton.Core.cryptoValidator)
         add(Proton.Core.data)
         add(Proton.Core.dataRoom)
         add(Proton.Core.domain)
