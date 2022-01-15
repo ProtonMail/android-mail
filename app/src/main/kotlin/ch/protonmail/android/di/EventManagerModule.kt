@@ -39,6 +39,7 @@ import me.proton.core.eventmanager.domain.EventListener
 import me.proton.core.eventmanager.domain.EventManagerProvider
 import me.proton.core.eventmanager.domain.repository.EventMetadataRepository
 import me.proton.core.eventmanager.domain.work.EventWorkerManager
+import me.proton.core.label.data.LabelEventListener
 import me.proton.core.mailsettings.data.MailSettingsEventListener
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.presentation.app.AppLifecycleProvider
@@ -91,6 +92,7 @@ object EventManagerModule {
         mailSettingsEventListener: MailSettingsEventListener,
         contactEventListener: ContactEventListener,
         contactEmailEventListener: ContactEmailEventListener,
+        labelEventListener: LabelEventListener,
     ): Set<EventListener<*, *>> = setOf(
         userEventListener,
         userAddressEventListener,
@@ -98,5 +100,6 @@ object EventManagerModule {
         mailSettingsEventListener,
         contactEventListener,
         contactEmailEventListener,
+        labelEventListener
     )
 }

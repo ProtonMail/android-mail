@@ -32,6 +32,7 @@ import me.proton.core.eventmanager.data.db.EventMetadataDatabase
 import me.proton.core.humanverification.data.db.HumanVerificationDatabase
 import me.proton.core.key.data.db.KeySaltDatabase
 import me.proton.core.key.data.db.PublicAddressDatabase
+import me.proton.core.label.data.local.LabelDatabase
 import me.proton.core.mailsettings.data.db.MailSettingsDatabase
 import me.proton.core.user.data.db.AddressDatabase
 import me.proton.core.user.data.db.UserDatabase
@@ -83,4 +84,7 @@ abstract class AppDatabaseBindsModule {
 
     @Binds
     abstract fun provideEventMetadataDatabase(appDatabase: AppDatabase): EventMetadataDatabase
+
+    @Binds
+    abstract fun provideLabelDatabase(appDatabase: AppDatabase): LabelDatabase
 }

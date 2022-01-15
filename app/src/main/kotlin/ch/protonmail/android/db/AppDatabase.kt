@@ -47,6 +47,8 @@ import me.proton.core.key.data.db.PublicAddressDatabase
 import me.proton.core.key.data.entity.KeySaltEntity
 import me.proton.core.key.data.entity.PublicAddressEntity
 import me.proton.core.key.data.entity.PublicAddressKeyEntity
+import me.proton.core.label.data.local.LabelDatabase
+import me.proton.core.label.data.local.LabelEntity
 import me.proton.core.mailsettings.data.db.MailSettingsDatabase
 import me.proton.core.mailsettings.data.entity.MailSettingsEntity
 import me.proton.core.user.data.db.AddressDatabase
@@ -95,6 +97,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         ContactEmailLabelEntity::class,
         // event-manager
         EventMetadataEntity::class,
+        // label
+        LabelEntity::class,
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -121,14 +125,16 @@ abstract class AppDatabase :
     UserSettingsDatabase,
     OrganizationDatabase,
     ContactDatabase,
-    EventMetadataDatabase {
+    EventMetadataDatabase,
+    LabelDatabase {
 
     companion object {
         const val name = "db-mail"
-        const val version = 2
+        const val version = 3
 
         private val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
+            AppDatabaseMigrations.MIGRATION_2_3,
         )
 
         fun buildDatabase(context: Context): AppDatabase =

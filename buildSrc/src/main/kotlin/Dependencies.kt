@@ -55,6 +55,7 @@ object Dependencies {
         add(Proton.Core.eventManager)
         add(Proton.Core.humanVerification)
         add(Proton.Core.key)
+        add(Proton.Core.label)
         add(Proton.Core.mailSettings)
         add(Proton.Core.network)
         add(Proton.Core.payment)

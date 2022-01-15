@@ -148,6 +148,7 @@ object Proton {
         val eventManager = coreArtifact("event-manager", Versions.Proton.core)
         val humanVerification = coreArtifact("human-verification", Versions.Proton.core)
         val key = coreArtifact("key", Versions.Proton.core)
+        val label = coreArtifact("label", Versions.Proton.core)
         val mailSettings = coreArtifact("mail-settings", Versions.Proton.core)
         val network = coreArtifact("network", Versions.Proton.core)
         val payment = coreArtifact("payment", Versions.Proton.core)
