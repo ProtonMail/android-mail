@@ -15,14 +15,6 @@ allprojects {
         google()
         mavenCentral()
     }
-
-    // Room 2.3 use a jdbc not compatible with arm so use the updated one to support
-    // arm build. Room 2.4 should fix this issue (not stable yet)
-    configurations.all {
-        resolutionStrategy {
-            force("org.xerial:sqlite-jdbc:3.34.0")
-        }
-    }
 }
 
 tasks.register("clean", Delete::class) {
@@ -31,6 +23,7 @@ tasks.register("clean", Delete::class) {
 
 plugins {
     id("me.proton.core.gradle-plugins.detekt") version Versions.Gradle.protonDetektPlugin
+    id("com.github.ben-manes.versions") version Versions.Gradle.benManesVersionsPlugin
 }
 
 kotlinCompilerArgs(
