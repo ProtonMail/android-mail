@@ -44,6 +44,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 
 @Composable
+@SuppressWarnings("LongParameterList", "ComplexMethod", "LongMethod")
 fun Sidebar(
     onRemove: (UserId?) -> Unit,
     onSignOut: (UserId) -> Unit,
