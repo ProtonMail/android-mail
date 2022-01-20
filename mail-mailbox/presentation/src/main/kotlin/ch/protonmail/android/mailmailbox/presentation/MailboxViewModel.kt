@@ -25,14 +25,11 @@ import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailmessage.domain.model.MailLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.transformLatest
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.domain.entity.UserId
@@ -42,9 +39,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MailboxViewModel @Inject constructor(
     accountManager: AccountManager,
+    private val selectedMailboxLocation: SelectedMailboxLocation
 ) : ViewModel() {
-
-    private val mutableLocationsFlow = MutableStateFlow<Set<MailLocation>>(emptySet())
 
     @SuppressWarnings("UseIfInsteadOfWhen")
     val state: Flow<MailboxState> = accountManager.getPrimaryUserId()
@@ -57,42 +53,32 @@ class MailboxViewModel @Inject constructor(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
-            initialValue = MailboxState()
+            initialValue = MailboxState(loading = true)
         )
 
-    fun setLocations(locations: Set<MailLocation>) {
-        mutableLocationsFlow.value = locations
-    }
-
     private fun observeState(userId: UserId): Flow<MailboxState> =
-        mutableLocationsFlow.transformLatest { locations ->
-            emit(MailboxState(loading = true, currentLocations = locations))
-            emitAll(
-                observeConversations(userId = userId, locations = locations)
-                    .mapLatest { items ->
-                        MailboxState(
-                            loading = false,
-                            currentLocations = locations,
-                            currentLocationsItems = items
-                        )
-                    }
+        selectedMailboxLocation.location.mapLatest { location ->
+            MailboxState(
+                loading = false,
+                currentLocations = setOf(location),
+                currentLocationsItems = observeConversations(
+                    userId = userId, locations = setOf(location)
+                )
             )
         }
 
     private fun observeConversations(
         userId: UserId,
         locations: Set<MailLocation>,
-    ): Flow<List<Conversation>> {
+    ): List<Conversation> {
         Timber.d("Faking getting messages for userId $userId")
-        return flowOf(
-            listOf(
-                Conversation(ConversationId("1"), "First message in $locations"),
-                Conversation(ConversationId("2"), "Second message"),
-                Conversation(ConversationId("3"), "Third message"),
-                Conversation(ConversationId("4"), "Fourth message"),
-                Conversation(ConversationId("5"), "Fifth message"),
-                Conversation(ConversationId("6"), "Sixth message"),
-            )
+        return listOf(
+            Conversation(ConversationId("1"), "First message in $locations"),
+            Conversation(ConversationId("2"), "Second message"),
+            Conversation(ConversationId("3"), "Third message"),
+            Conversation(ConversationId("4"), "Fourth message"),
+            Conversation(ConversationId("5"), "Fifth message"),
+            Conversation(ConversationId("6"), "Sixth message"),
         )
     }
 }

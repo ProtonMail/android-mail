@@ -16,15 +16,15 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.sidebar.model
 
-import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailconversation.domain.Conversation
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
-
-@Stable
-data class MailboxState(
-    val loading: Boolean = false,
-    val currentLocations: Set<MailLocation> = emptySet(),
-    val currentLocationsItems: List<Conversation> = emptyList()
+data class UnreadCounters(
+    val inbox: Int? = 1,
+    val drafts: Int? = null,
+    val sent: Int? = null,
+    val starred: Int? = 1,
+    val archive: Int? = null,
+    val spam: Int? = null,
+    val trash: Int? = null,
+    val allMail: Int? = 1
 )

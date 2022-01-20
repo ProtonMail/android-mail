@@ -16,15 +16,12 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.sidebar.model
 
-import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailconversation.domain.Conversation
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
+import androidx.compose.ui.graphics.Color
 
-@Stable
-data class MailboxState(
-    val loading: Boolean = false,
-    val currentLocations: Set<MailLocation> = emptySet(),
-    val currentLocationsItems: List<Conversation> = emptyList()
+data class LabelUiModel(
+    val id: String,
+    val text: String,
+    val color: Color,
 )

@@ -23,26 +23,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
-import ch.protonmail.android.mailmailbox.presentation.MailboxState
-import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
 import ch.protonmail.android.navigation.model.Destination
-import me.proton.core.compose.flow.rememberAsState
+import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
+import ch.protonmail.android.sidebar.Sidebar
 import me.proton.core.compose.navigation.require
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
@@ -53,16 +48,10 @@ fun Home(
     onSignOut: (UserId) -> Unit,
     onSwitch: (UserId) -> Unit,
     onSubscription: () -> Unit,
-    onReportBug: () -> Unit,
-    mailboxViewModel: MailboxViewModel = hiltViewModel(),
+    onReportBug: () -> Unit
 ) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
-    val mailboxState by rememberAsState(mailboxViewModel.state, MailboxState())
-    val sidebarState = rememberSidebarState(
-        drawerState = scaffoldState.drawerState,
-        mailboxState = mailboxState
-    )
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -70,17 +59,17 @@ fun Home(
         drawerScrimColor = ProtonTheme.colors.blenderNorm,
         drawerContent = {
             Sidebar(
-                onRemove = { navController.navigate(Destination.Dialog.RemoveAccount(it)) },
+                onRemove = { navController.navigate(RemoveAccount(it)) },
                 onSignOut = onSignOut,
                 onSignIn = onSignIn,
                 onSwitch = onSwitch,
-                onMailLocation = { navController.navigate(Destination.Screen.Mailbox(it)) },
+                onMailLocation = { /* stack screens? */ },
                 onFolder = { /*navController.navigate(...)*/ },
                 onLabel = { /*navController.navigate(...)*/ },
                 onSettings = { /*navController.navigate(Destination.Screen.Settings.route)*/ },
                 onSubscription = onSubscription,
                 onReportBug = onReportBug,
-                sidebarState = sidebarState,
+                drawerState = scaffoldState.drawerState
             )
         }
     ) { contentPadding ->
@@ -91,7 +80,7 @@ fun Home(
                 navController = navController,
                 startDestination = Destination.Screen.Mailbox.route,
             ) {
-                addMailbox(navController, mailboxViewModel)
+                addMailbox(navController)
                 addConversationDetail()
                 addRemoveAccountDialog(navController)
             }
@@ -100,18 +89,14 @@ fun Home(
 }
 
 private fun NavGraphBuilder.addMailbox(
-    navController: NavHostController,
-    mailboxViewModel: MailboxViewModel,
+    navController: NavHostController
 ) = composable(
-    route = Destination.Screen.Mailbox.route,
-    arguments = listOf(navArgument(Destination.key) { defaultValue = MailLocation.Inbox.name })
+    route = Destination.Screen.Mailbox.route
 ) {
     MailboxScreen(
-        location = Destination.Screen.Mailbox.getLocation(it.require(Destination.key)),
         navigateToConversation = { conversationId: ConversationId ->
             navController.navigate(Destination.Screen.Conversation(conversationId))
-        },
-        viewModel = mailboxViewModel,
+        }
     )
 }
 

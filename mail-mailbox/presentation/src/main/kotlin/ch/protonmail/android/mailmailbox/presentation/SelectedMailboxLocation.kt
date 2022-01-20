@@ -18,13 +18,22 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
-import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailmessage.domain.model.MailLocation
+import ch.protonmail.android.mailmessage.domain.model.MailLocation.Inbox
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-@Stable
-data class MailboxState(
-    val loading: Boolean = false,
-    val currentLocations: Set<MailLocation> = emptySet(),
-    val currentLocationsItems: List<Conversation> = emptyList()
-)
+@Singleton
+class SelectedMailboxLocation @Inject constructor() {
+
+    private val mutableCurrentLocation = MutableStateFlow(Inbox)
+
+    val location: StateFlow<MailLocation> = mutableCurrentLocation.asStateFlow()
+
+    fun set(location: MailLocation) {
+        mutableCurrentLocation.value = location
+    }
+}

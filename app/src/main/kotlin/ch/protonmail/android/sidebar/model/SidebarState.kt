@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation
+package ch.protonmail.android.sidebar.model
 
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue
@@ -24,41 +24,42 @@ import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.BuildConfig
-import ch.protonmail.android.mailmailbox.presentation.MailboxState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import ch.protonmail.android.mailmessage.domain.model.MailLocation
+import ch.protonmail.android.mailmessage.domain.model.MailLocation.Inbox
 import me.proton.core.accountmanager.presentation.compose.AccountPrimaryState
 import me.proton.core.accountmanager.presentation.compose.rememberAccountPrimaryState
 
 @Stable
-class SidebarState(
+data class SidebarState(
+    val selectedLocation: MailLocation = Inbox,
     val drawerState: DrawerState = DrawerState(DrawerValue.Closed),
-    val mailboxState: MailboxState = MailboxState(),
     val accountPrimaryState: AccountPrimaryState = AccountPrimaryState(),
     val hasPrimaryAccount: Boolean = true,
     val appName: String = "ProtonMail",
     val appVersion: String = BuildConfig.VERSION_NAME,
-    val scope: CoroutineScope? = null,
-) {
-    fun close() = scope?.launch {
-        accountPrimaryState.dismissDialog()
-        drawerState.close()
-    }
-}
+    val folderUiModels: List<FolderUiModel> = FAKE_FOLDERS,
+    val labelUiModels: List<LabelUiModel> = FAKE_LABELS,
+    val counters: UnreadCounters = UnreadCounters()
+)
+
+private val FAKE_FOLDERS = listOf(
+    FolderUiModel("1", "Folder 1", Color.Red)
+)
+
+private val FAKE_LABELS = listOf(
+    LabelUiModel("1", "Label 1", Color.Cyan),
+    LabelUiModel("2", "Label 2", Color.Yellow)
+)
 
 @Composable
 fun rememberSidebarState(
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
     accountPrimaryState: AccountPrimaryState = rememberAccountPrimaryState(),
-    mailboxState: MailboxState = remember { MailboxState() },
-    scope: CoroutineScope = rememberCoroutineScope(),
-): SidebarState = remember(mailboxState) {
+): SidebarState = remember {
     SidebarState(
         drawerState = drawerState,
-        mailboxState = mailboxState,
-        accountPrimaryState = accountPrimaryState,
-        scope = scope
+        accountPrimaryState = accountPrimaryState
     )
 }

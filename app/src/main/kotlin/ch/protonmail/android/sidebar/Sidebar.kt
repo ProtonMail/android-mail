@@ -16,22 +16,30 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation
+package ch.protonmail.android.sidebar
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
+import androidx.compose.material.DrawerState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.R
-import ch.protonmail.android.mailmailbox.presentation.MailboxState
 import ch.protonmail.android.mailmessage.domain.model.MailLocation
+import ch.protonmail.android.sidebar.SidebarViewModel.State.Disabled
+import ch.protonmail.android.sidebar.SidebarViewModel.State.Enabled
+import ch.protonmail.android.sidebar.model.SidebarState
+import ch.protonmail.android.sidebar.model.rememberSidebarState
+import kotlinx.coroutines.launch
 import me.proton.core.accountmanager.presentation.compose.AccountPrimaryItem
 import me.proton.core.compose.component.ProtonSidebarAppVersionItem
 import me.proton.core.compose.component.ProtonSidebarItem
@@ -39,6 +47,7 @@ import me.proton.core.compose.component.ProtonSidebarLazy
 import me.proton.core.compose.component.ProtonSidebarReportBugItem
 import me.proton.core.compose.component.ProtonSidebarSettingsItem
 import me.proton.core.compose.component.ProtonSidebarSignOutItem
+import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
@@ -56,8 +65,90 @@ fun Sidebar(
     onSettings: () -> Unit,
     onSubscription: () -> Unit,
     onReportBug: () -> Unit,
+    drawerState: DrawerState,
     modifier: Modifier = Modifier,
-    sidebarState: SidebarState = rememberSidebarState(),
+    viewModel: SidebarViewModel = hiltViewModel()
+) {
+    val scope = rememberCoroutineScope()
+    val sidebarState = rememberSidebarState(
+        drawerState = drawerState
+    )
+    val state by rememberAsState(viewModel.state, Enabled(MailLocation.Inbox))
+
+    fun close() = scope.launch {
+        sidebarState.accountPrimaryState.dismissDialog()
+        sidebarState.drawerState.close()
+    }
+
+    when (state) {
+        is Disabled -> Unit
+        is Enabled ->
+            Sidebar(
+                onRemove = {
+                    close()
+                    onRemove(it)
+                },
+                onSignOut = {
+                    close()
+                    onSignOut(it)
+                },
+                onSignIn = {
+                    close()
+                    onSignIn(it)
+                },
+                onSwitch = {
+                    close()
+                    onSwitch(it)
+                },
+                onMailLocation = {
+                    close()
+                    viewModel.onLocationSelected(it)
+                    onMailLocation(it)
+                },
+                onFolder = {
+                    close()
+                    onFolder(it)
+                },
+                onLabel = {
+                    close()
+                    onLabel(it)
+                },
+                onSettings = {
+                    close()
+                    onSettings()
+                },
+                onSubscription = {
+                    close()
+                    onSubscription()
+                },
+                onReportBug = {
+                    close()
+                    onReportBug()
+                },
+                sidebarState = sidebarState.copy(
+                    selectedLocation = (state as Enabled).selectedLocation
+                ),
+                modifier = modifier
+            )
+
+    }
+}
+
+@Composable
+@SuppressWarnings("LongParameterList", "ComplexMethod", "LongMethod")
+fun Sidebar(
+    onRemove: (UserId?) -> Unit,
+    onSignOut: (UserId) -> Unit,
+    onSignIn: (UserId?) -> Unit,
+    onSwitch: (UserId) -> Unit,
+    onMailLocation: (MailLocation) -> Unit,
+    onFolder: (String) -> Unit,
+    onLabel: (String) -> Unit,
+    onSettings: () -> Unit,
+    onSubscription: () -> Unit,
+    onReportBug: () -> Unit,
+    modifier: Modifier = Modifier,
+    sidebarState: SidebarState
 ) {
     ProtonSidebarLazy(
         modifier = modifier,
@@ -67,19 +158,15 @@ fun Sidebar(
             if (sidebarState.hasPrimaryAccount) {
                 AccountPrimaryItem(
                     onRemove = {
-                        sidebarState.close()
                         onRemove(it)
                     },
                     onSignIn = {
-                        sidebarState.close()
                         onSignIn(it)
                     },
                     onSignOut = {
-                        sidebarState.close()
                         onSignOut(it)
                     },
                     onSwitch = {
-                        sidebarState.close()
                         onSwitch(it)
                     },
                     modifier = Modifier
@@ -91,7 +178,7 @@ fun Sidebar(
 
             @Composable
             fun ProtonSidebarMailLocationItem(location: MailLocation) {
-                val isSelected = sidebarState.mailboxState.isLocationSelected(location)
+                val isSelected = sidebarState.selectedLocation == location
                 ProtonSidebarItem(
                     icon = when (location) {
                         MailLocation.Inbox -> R.drawable.ic_inbox
@@ -114,14 +201,14 @@ fun Sidebar(
                         MailLocation.AllMail -> R.string.drawer_title_all_mail
                     },
                     count = when (location) {
-                        MailLocation.Inbox -> sidebarState.mailboxState.inboxUnreadCount
-                        MailLocation.Drafts -> sidebarState.mailboxState.draftsUnreadCount
-                        MailLocation.Sent -> sidebarState.mailboxState.sentUnreadCount
-                        MailLocation.Starred -> sidebarState.mailboxState.starredUnreadCount
-                        MailLocation.Archive -> sidebarState.mailboxState.archiveUnreadCount
-                        MailLocation.Spam -> sidebarState.mailboxState.spamUnreadCount
-                        MailLocation.Trash -> sidebarState.mailboxState.trashUnreadCount
-                        MailLocation.AllMail -> sidebarState.mailboxState.allMailUnreadCount
+                        MailLocation.Inbox -> sidebarState.counters.inbox
+                        MailLocation.Drafts -> sidebarState.counters.drafts
+                        MailLocation.Sent -> sidebarState.counters.sent
+                        MailLocation.Starred -> sidebarState.counters.starred
+                        MailLocation.Archive -> sidebarState.counters.archive
+                        MailLocation.Spam -> sidebarState.counters.spam
+                        MailLocation.Trash -> sidebarState.counters.trash
+                        MailLocation.AllMail -> sidebarState.counters.allMail
                     },
                     isSelected = isSelected,
                     iconTint = if (isSelected) {
@@ -130,7 +217,6 @@ fun Sidebar(
                         ProtonTheme.colors.iconHint
                     }
                 ) {
-                    sidebarState.close()
                     onMailLocation(location)
                 }
             }
@@ -154,13 +240,12 @@ fun Sidebar(
             }
         }
 
-        items(sidebarState.mailboxState.folders) {
+        items(sidebarState.folderUiModels) {
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_folder_filled),
                 text = it.text,
                 iconTint = it.color
             ) {
-                sidebarState.close()
                 onFolder(it.id)
             }
         }
@@ -177,13 +262,12 @@ fun Sidebar(
             }
         }
 
-        items(sidebarState.mailboxState.labels) {
+        items(sidebarState.labelUiModels) {
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_label_filled),
                 text = it.text,
                 iconTint = it.color
             ) {
-                sidebarState.close()
                 onLabel(it.id)
             }
         }
@@ -198,19 +282,15 @@ fun Sidebar(
                 )
             }
             ProtonSidebarSettingsItem {
-                sidebarState.close()
                 onSettings()
             }
             ProtonSidebarSubscriptionItem {
-                sidebarState.close()
                 onSubscription()
             }
             ProtonSidebarReportBugItem {
-                sidebarState.close()
                 onReportBug()
             }
             ProtonSidebarSignOutItem {
-                sidebarState.close()
                 onRemove(null)
             }
 
@@ -241,12 +321,12 @@ fun ProtonSidebarSubscriptionItem(
 @Preview(
     name = "Sidebar in light mode",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showBackground = true,
+    showBackground = true
 )
 @Preview(
     name = "Sidebar in dark mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
+    showBackground = true
 )
 @Composable
 fun PreviewSidebar() {
@@ -263,10 +343,8 @@ fun PreviewSidebar() {
             onSubscription = {},
             onReportBug = {},
             sidebarState = SidebarState(
-                mailboxState = MailboxState(
-                    currentLocations = setOf(MailLocation.Inbox)
-                ),
-                hasPrimaryAccount = false,
+                selectedLocation = MailLocation.Inbox,
+                hasPrimaryAccount = false
             ),
         )
     }

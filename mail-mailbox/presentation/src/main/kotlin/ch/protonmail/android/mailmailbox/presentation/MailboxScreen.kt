@@ -31,7 +31,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -50,13 +49,8 @@ const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
 fun MailboxScreen(
     navigateToConversation: (ConversationId) -> Unit,
     modifier: Modifier = Modifier,
-    location: MailLocation = MailLocation.Inbox,
     viewModel: MailboxViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(location) {
-        viewModel.setLocations(setOf(location))
-    }
-
     val mailboxState by rememberAsState(viewModel.state, MailboxState())
 
     MailboxScreen(
