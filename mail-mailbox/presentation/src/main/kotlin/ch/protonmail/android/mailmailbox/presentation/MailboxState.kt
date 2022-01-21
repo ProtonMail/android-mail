@@ -22,9 +22,13 @@ import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailmessage.domain.model.MailLocation
 
+/**
+ * @param filteredLocations the locations to load mailbox items for
+ * @param mailboxItems the loaded mailbox items filtereed by given locations
+ */
 @Stable
 data class MailboxState(
     val loading: Boolean = false,
-    val currentLocations: Set<MailLocation> = emptySet(),
-    val currentLocationsItems: List<Conversation> = emptyList()
+    val filteredLocations: Set<MailLocation> = emptySet(),
+    val mailboxItems: List<Conversation> = emptyList()
 )

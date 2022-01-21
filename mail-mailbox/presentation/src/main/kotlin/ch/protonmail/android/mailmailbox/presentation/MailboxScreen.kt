@@ -73,10 +73,10 @@ private fun MailboxScreen(
             .testTag(TEST_TAG_MAILBOX_SCREEN)
     ) {
         item {
-            Text("Header: Location: ${mailboxState.currentLocations}")
+            Text("Header: Location: ${mailboxState.filteredLocations}")
         }
         items(
-            items = mailboxState.currentLocationsItems,
+            items = mailboxState.mailboxItems,
             key = { it.conversationId.id }
         ) { item ->
             MailboxItem(item) { navigateToConversation(it) }
@@ -125,11 +125,11 @@ fun PreviewMailbox() {
         MailboxScreen(
             navigateToConversation = {},
             mailboxState = MailboxState(
-                currentLocationsItems = listOf(
+                mailboxItems = listOf(
                     Conversation(ConversationId("1"), "First message"),
                     Conversation(ConversationId("2"), "Second message"),
                 ),
-                currentLocations = setOf(MailLocation.Inbox)
+                filteredLocations = setOf(MailLocation.Inbox)
             )
         )
     }

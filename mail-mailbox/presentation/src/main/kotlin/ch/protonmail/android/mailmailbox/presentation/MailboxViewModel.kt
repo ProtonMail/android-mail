@@ -60,8 +60,8 @@ class MailboxViewModel @Inject constructor(
         selectedMailboxLocation.location.mapLatest { location ->
             MailboxState(
                 loading = false,
-                currentLocations = setOf(location),
-                currentLocationsItems = observeConversations(
+                filteredLocations = setOf(location),
+                mailboxItems = observeConversations(
                     userId = userId, locations = setOf(location)
                 )
             )

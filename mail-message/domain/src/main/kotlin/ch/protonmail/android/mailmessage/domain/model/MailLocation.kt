@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.mailmessage.domain.model
 
+/**
+ * Represents the currently selected Mailbox location of the sidebar
+ */
 enum class MailLocation {
     Inbox,
     Drafts,
