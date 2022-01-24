@@ -26,9 +26,12 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import me.proton.core.account.domain.entity.Account
 import me.proton.core.account.domain.entity.AccountType
 import me.proton.core.account.domain.entity.AccountType.Internal
@@ -56,13 +59,12 @@ import me.proton.core.humanverification.presentation.onHumanVerificationNeeded
 import me.proton.core.network.domain.scopes.MissingScopeListener
 import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
-import me.proton.core.test.kotlin.CoroutinesTest
 import me.proton.core.user.domain.UserManager
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class LauncherViewModelTest : CoroutinesTest {
+class LauncherViewModelTest {
 
     private val authOrchestrator = mockk<AuthOrchestrator>(relaxUnitFun = true)
     private val hvOrchestrator = mockk<HumanVerificationOrchestrator>(relaxUnitFun = true)
@@ -89,6 +91,8 @@ class LauncherViewModelTest : CoroutinesTest {
 
     @Before
     fun before() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+
         viewModel = LauncherViewModel(
             Mail,
             Internal,

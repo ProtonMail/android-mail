@@ -16,8 +16,9 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+package ch.protonmail.android.mailmailbox.presentation
+
 import app.cash.turbine.test
-import ch.protonmail.android.mailmailbox.presentation.SelectedSidebarLocation
 import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
 import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Archive
 import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Drafts
