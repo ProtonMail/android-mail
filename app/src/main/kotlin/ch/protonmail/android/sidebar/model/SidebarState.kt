@@ -26,14 +26,14 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.BuildConfig
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
-import ch.protonmail.android.mailmessage.domain.model.MailLocation.Inbox
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Inbox
 import me.proton.core.accountmanager.presentation.compose.AccountPrimaryState
 import me.proton.core.accountmanager.presentation.compose.rememberAccountPrimaryState
 
 @Stable
 data class SidebarState(
-    val selectedLocation: MailLocation = Inbox,
+    val selectedLocation: SidebarLocation = Inbox,
     val drawerState: DrawerState = DrawerState(DrawerValue.Closed),
     val accountPrimaryState: AccountPrimaryState = AccountPrimaryState(),
     val hasPrimaryAccount: Boolean = true,

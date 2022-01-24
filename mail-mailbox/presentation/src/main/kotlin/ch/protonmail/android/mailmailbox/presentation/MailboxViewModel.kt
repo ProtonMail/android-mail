@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailconversation.domain.ConversationId
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -39,7 +39,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MailboxViewModel @Inject constructor(
     accountManager: AccountManager,
-    private val selectedMailboxLocation: SelectedMailboxLocation
+    private val selectedSidebarLocation: SelectedSidebarLocation
 ) : ViewModel() {
 
     @SuppressWarnings("UseIfInsteadOfWhen")
@@ -57,23 +57,27 @@ class MailboxViewModel @Inject constructor(
         )
 
     private fun observeState(userId: UserId): Flow<MailboxState> =
-        selectedMailboxLocation.location.mapLatest { location ->
-            MailboxState(
-                loading = false,
-                filteredLocations = setOf(location),
-                mailboxItems = observeConversations(
-                    userId = userId, locations = setOf(location)
+        selectedSidebarLocation.location
+            .mapLatest { location ->
+                MailboxState(
+                    loading = false,
+                    filteredLocations = setOf(location),
+                    mailboxItems = observeConversations(
+                        userId = userId, locations = setOf(location)
+                    )
                 )
-            )
-        }
+            }
 
     private fun observeConversations(
         userId: UserId,
-        locations: Set<MailLocation>,
+        locations: Set<SidebarLocation>,
     ): List<Conversation> {
         Timber.d("Faking getting messages for userId $userId")
         return listOf(
-            Conversation(ConversationId("1"), "First message in $locations"),
+            Conversation(
+                ConversationId("1"),
+                "First message in ${locations.map { it.javaClass.simpleName }}"
+            ),
             Conversation(ConversationId("2"), "Second message"),
             Conversation(ConversationId("3"), "Third message"),
             Conversation(ConversationId("4"), "Fourth message"),

@@ -20,9 +20,9 @@ package ch.protonmail.android.sidebar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailmailbox.presentation.SelectedMailboxLocation
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
-import ch.protonmail.android.mailmessage.domain.model.MailLocation.Inbox
+import ch.protonmail.android.mailmailbox.presentation.SelectedSidebarLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Inbox
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,10 +33,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SidebarViewModel @Inject constructor(
-    private val selectedMailboxLocation: SelectedMailboxLocation
+    private val selectedSidebarLocation: SelectedSidebarLocation
 ) : ViewModel() {
 
-    val state: Flow<State> = selectedMailboxLocation.location.mapLatest {
+    val state: Flow<State> = selectedSidebarLocation.location.mapLatest {
         State.Enabled(it)
     }.stateIn(
         viewModelScope,
@@ -44,12 +44,12 @@ class SidebarViewModel @Inject constructor(
         State.Enabled(Inbox)
     )
 
-    fun onLocationSelected(location: MailLocation) {
-        selectedMailboxLocation.set(location)
+    fun onSidebarItemSelected(location: SidebarLocation) {
+        selectedSidebarLocation.set(location)
     }
 
     sealed class State {
-        data class Enabled(val selectedLocation: MailLocation) : State()
+        data class Enabled(val selectedLocation: SidebarLocation) : State()
         object Disabled : State()
     }
 }

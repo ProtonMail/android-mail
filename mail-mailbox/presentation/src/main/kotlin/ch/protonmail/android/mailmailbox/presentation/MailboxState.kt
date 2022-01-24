@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailconversation.domain.Conversation
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
 
 /**
  * @param filteredLocations the locations to load mailbox items for
@@ -29,6 +29,6 @@ import ch.protonmail.android.mailmessage.domain.model.MailLocation
 @Stable
 data class MailboxState(
     val loading: Boolean = false,
-    val filteredLocations: Set<MailLocation> = emptySet(),
+    val filteredLocations: Set<SidebarLocation> = emptySet(),
     val mailboxItems: List<Conversation> = emptyList()
 )

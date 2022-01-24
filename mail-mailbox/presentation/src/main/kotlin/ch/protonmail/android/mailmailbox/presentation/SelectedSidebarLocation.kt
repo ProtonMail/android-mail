@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
-import ch.protonmail.android.mailmessage.domain.model.MailLocation.Inbox
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Inbox
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,13 +27,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SelectedMailboxLocation @Inject constructor() {
+class SelectedSidebarLocation @Inject constructor() {
 
-    private val mutableCurrentLocation = MutableStateFlow(Inbox)
+    private val mutableCurrentLocation = MutableStateFlow<SidebarLocation>(Inbox)
 
-    val location: StateFlow<MailLocation> = mutableCurrentLocation.asStateFlow()
+    val location: StateFlow<SidebarLocation> = mutableCurrentLocation.asStateFlow()
 
-    fun set(location: MailLocation) {
+    fun set(location: SidebarLocation) {
         mutableCurrentLocation.value = location
     }
 }

@@ -26,7 +26,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.DrawerState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,7 +33,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.R
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.AllMail
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Archive
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Drafts
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Inbox
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.MailLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Sent
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Spam
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Starred
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Trash
 import ch.protonmail.android.sidebar.SidebarViewModel.State.Disabled
 import ch.protonmail.android.sidebar.SidebarViewModel.State.Enabled
 import ch.protonmail.android.sidebar.model.SidebarState
@@ -73,7 +81,7 @@ fun Sidebar(
     val sidebarState = rememberSidebarState(
         drawerState = drawerState
     )
-    val state by rememberAsState(viewModel.state, Enabled(MailLocation.Inbox))
+    val state = rememberAsState(viewModel.state, Enabled(Inbox)).value
 
     fun close() = scope.launch {
         sidebarState.accountPrimaryState.dismissDialog()
@@ -102,15 +110,17 @@ fun Sidebar(
                 },
                 onMailLocation = {
                     close()
-                    viewModel.onLocationSelected(it)
+                    viewModel.onSidebarItemSelected(it)
                     onMailLocation(it)
                 },
                 onFolder = {
                     close()
+                    viewModel.onSidebarItemSelected(SidebarLocation.CustomFolder(it))
                     onFolder(it)
                 },
                 onLabel = {
                     close()
+                    viewModel.onSidebarItemSelected(SidebarLocation.CustomLabel(it))
                     onLabel(it)
                 },
                 onSettings = {
@@ -126,7 +136,7 @@ fun Sidebar(
                     onReportBug()
                 },
                 sidebarState = sidebarState.copy(
-                    selectedLocation = (state as Enabled).selectedLocation
+                    selectedLocation = state.selectedLocation
                 ),
                 modifier = modifier
             )
@@ -181,34 +191,34 @@ fun Sidebar(
                 val isSelected = sidebarState.selectedLocation == location
                 ProtonSidebarItem(
                     icon = when (location) {
-                        MailLocation.Inbox -> R.drawable.ic_inbox
-                        MailLocation.Drafts -> R.drawable.ic_drafts
-                        MailLocation.Sent -> R.drawable.ic_paper_plane
-                        MailLocation.Starred -> R.drawable.ic_star
-                        MailLocation.Archive -> R.drawable.ic_archive
-                        MailLocation.Spam -> R.drawable.ic_fire
-                        MailLocation.Trash -> R.drawable.ic_trash
-                        MailLocation.AllMail -> R.drawable.ic_envelope_all_emails
+                        Inbox -> R.drawable.ic_inbox
+                        Drafts -> R.drawable.ic_drafts
+                        Sent -> R.drawable.ic_paper_plane
+                        Starred -> R.drawable.ic_star
+                        Archive -> R.drawable.ic_archive
+                        Spam -> R.drawable.ic_fire
+                        Trash -> R.drawable.ic_trash
+                        AllMail -> R.drawable.ic_envelope_all_emails
                     },
                     text = when (location) {
-                        MailLocation.Inbox -> R.string.drawer_title_inbox
-                        MailLocation.Drafts -> R.string.drawer_title_drafts
-                        MailLocation.Sent -> R.string.drawer_title_sent
-                        MailLocation.Starred -> R.string.drawer_title_starred
-                        MailLocation.Archive -> R.string.drawer_title_archive
-                        MailLocation.Spam -> R.string.drawer_title_spam
-                        MailLocation.Trash -> R.string.drawer_title_trash
-                        MailLocation.AllMail -> R.string.drawer_title_all_mail
+                        Inbox -> R.string.drawer_title_inbox
+                        Drafts -> R.string.drawer_title_drafts
+                        Sent -> R.string.drawer_title_sent
+                        Starred -> R.string.drawer_title_starred
+                        Archive -> R.string.drawer_title_archive
+                        Spam -> R.string.drawer_title_spam
+                        Trash -> R.string.drawer_title_trash
+                        AllMail -> R.string.drawer_title_all_mail
                     },
                     count = when (location) {
-                        MailLocation.Inbox -> sidebarState.counters.inbox
-                        MailLocation.Drafts -> sidebarState.counters.drafts
-                        MailLocation.Sent -> sidebarState.counters.sent
-                        MailLocation.Starred -> sidebarState.counters.starred
-                        MailLocation.Archive -> sidebarState.counters.archive
-                        MailLocation.Spam -> sidebarState.counters.spam
-                        MailLocation.Trash -> sidebarState.counters.trash
-                        MailLocation.AllMail -> sidebarState.counters.allMail
+                        Inbox -> sidebarState.counters.inbox
+                        Drafts -> sidebarState.counters.drafts
+                        Sent -> sidebarState.counters.sent
+                        Starred -> sidebarState.counters.starred
+                        Archive -> sidebarState.counters.archive
+                        Spam -> sidebarState.counters.spam
+                        Trash -> sidebarState.counters.trash
+                        AllMail -> sidebarState.counters.allMail
                     },
                     isSelected = isSelected,
                     iconTint = if (isSelected) {
@@ -221,14 +231,14 @@ fun Sidebar(
                 }
             }
 
-            ProtonSidebarMailLocationItem(MailLocation.Inbox)
-            ProtonSidebarMailLocationItem(MailLocation.Drafts)
-            ProtonSidebarMailLocationItem(MailLocation.Sent)
-            ProtonSidebarMailLocationItem(MailLocation.Starred)
-            ProtonSidebarMailLocationItem(MailLocation.Archive)
-            ProtonSidebarMailLocationItem(MailLocation.Spam)
-            ProtonSidebarMailLocationItem(MailLocation.Trash)
-            ProtonSidebarMailLocationItem(MailLocation.AllMail)
+            ProtonSidebarMailLocationItem(Inbox)
+            ProtonSidebarMailLocationItem(Drafts)
+            ProtonSidebarMailLocationItem(Sent)
+            ProtonSidebarMailLocationItem(Starred)
+            ProtonSidebarMailLocationItem(Archive)
+            ProtonSidebarMailLocationItem(Spam)
+            ProtonSidebarMailLocationItem(Trash)
+            ProtonSidebarMailLocationItem(AllMail)
 
             Divider()
 
@@ -241,10 +251,12 @@ fun Sidebar(
         }
 
         items(sidebarState.folderUiModels) {
+            val isSelected = sidebarState.selectedLocation == SidebarLocation.CustomFolder(it.id)
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_folder_filled),
                 text = it.text,
-                iconTint = it.color
+                iconTint = it.color,
+                isSelected = isSelected
             ) {
                 onFolder(it.id)
             }
@@ -263,10 +275,12 @@ fun Sidebar(
         }
 
         items(sidebarState.labelUiModels) {
+            val isSelected = sidebarState.selectedLocation == SidebarLocation.CustomLabel(it.id)
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_label_filled),
                 text = it.text,
-                iconTint = it.color
+                iconTint = it.color,
+                isSelected = isSelected
             ) {
                 onLabel(it.id)
             }
@@ -343,7 +357,7 @@ fun PreviewSidebar() {
             onSubscription = {},
             onReportBug = {},
             sidebarState = SidebarState(
-                selectedLocation = MailLocation.Inbox,
+                selectedLocation = Inbox,
                 hasPrimaryAccount = false
             ),
         )

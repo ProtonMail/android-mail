@@ -17,38 +17,37 @@
  */
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailmailbox.presentation.SelectedMailboxLocation
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
-import ch.protonmail.android.mailmessage.domain.model.MailLocation.AllMail
-import ch.protonmail.android.mailmessage.domain.model.MailLocation.Archive
-import ch.protonmail.android.mailmessage.domain.model.MailLocation.Drafts
+import ch.protonmail.android.mailmailbox.presentation.SelectedSidebarLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Archive
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Drafts
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class SelectedMailboxLocationTest {
+class SelectedSidebarLocationTest {
 
-    private lateinit var selectedMailboxLocation: SelectedMailboxLocation
+    private lateinit var selectedSidebarLocation: SelectedSidebarLocation
 
     @Before
     fun setUp() {
-        selectedMailboxLocation = SelectedMailboxLocation()
+        selectedSidebarLocation = SelectedSidebarLocation()
     }
 
     @Test
     fun initialSelectedLocationIsInboxByDefault() = runTest {
-        selectedMailboxLocation.location.test {
-            assertEquals(MailLocation.Inbox, awaitItem())
+        selectedSidebarLocation.location.test {
+            assertEquals(SidebarLocation.Inbox, awaitItem())
         }
     }
 
     @Test
     fun emitsNewlySelectedLocationWhenItChanges() = runTest {
-        selectedMailboxLocation.location.test {
-            assertEquals(MailLocation.Inbox, awaitItem())
+        selectedSidebarLocation.location.test {
+            assertEquals(SidebarLocation.Inbox, awaitItem())
 
-            selectedMailboxLocation.set(Drafts)
+            selectedSidebarLocation.set(Drafts)
 
             assertEquals(Drafts, awaitItem())
         }
@@ -56,15 +55,15 @@ class SelectedMailboxLocationTest {
 
     @Test
     fun doesNotEmitSameLocationTwice() = runTest {
-        selectedMailboxLocation.location.test {
-            assertEquals(MailLocation.Inbox, awaitItem())
+        selectedSidebarLocation.location.test {
+            assertEquals(SidebarLocation.Inbox, awaitItem())
 
-            selectedMailboxLocation.set(Archive)
-            selectedMailboxLocation.set(Archive)
-            selectedMailboxLocation.set(AllMail)
+            selectedSidebarLocation.set(Archive)
+            selectedSidebarLocation.set(Archive)
+            selectedSidebarLocation.set(SidebarLocation.CustomLabel("label"))
 
             assertEquals(Archive, awaitItem())
-            assertEquals(AllMail, awaitItem())
+            assertEquals(SidebarLocation.CustomLabel("label"), awaitItem())
         }
     }
 }

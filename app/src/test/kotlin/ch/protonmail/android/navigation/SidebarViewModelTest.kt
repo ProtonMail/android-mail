@@ -19,8 +19,9 @@
 package ch.protonmail.android.navigation
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailmailbox.presentation.SelectedMailboxLocation
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
+import ch.protonmail.android.mailmailbox.presentation.SelectedSidebarLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Inbox
 import ch.protonmail.android.sidebar.SidebarViewModel
 import ch.protonmail.android.sidebar.SidebarViewModel.State.Enabled
 import io.mockk.every
@@ -33,22 +34,22 @@ import kotlin.test.assertEquals
 
 class SidebarViewModelTest {
 
-    private val selectedMailboxLocation = mockk<SelectedMailboxLocation> {
-        every { location } returns MutableStateFlow(MailLocation.Inbox)
+    private val selectedSidebarLocation = mockk<SelectedSidebarLocation> {
+        every { location } returns MutableStateFlow<SidebarLocation>(Inbox)
     }
 
     private lateinit var sidebarViewModel: SidebarViewModel
 
     @Before
     fun setUp() {
-        sidebarViewModel = SidebarViewModel(selectedMailboxLocation)
+        sidebarViewModel = SidebarViewModel(selectedSidebarLocation)
     }
 
     @Test
     fun emitsInitialSidebarState() = runTest {
         sidebarViewModel.state.test {
             val actual = awaitItem() as Enabled
-            val expected = MailLocation.Inbox
+            val expected = Inbox
 
             assertEquals(expected, actual.selectedLocation)
         }

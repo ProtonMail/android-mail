@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailconversation.domain.Conversation
 import ch.protonmail.android.mailconversation.domain.ConversationId
-import ch.protonmail.android.mailmessage.domain.model.MailLocation
+import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
 
@@ -73,7 +73,8 @@ private fun MailboxScreen(
             .testTag(TEST_TAG_MAILBOX_SCREEN)
     ) {
         item {
-            Text("Header: Location: ${mailboxState.filteredLocations}")
+            val locations = mailboxState.filteredLocations.map { it.javaClass.simpleName }
+            Text("Header: Location: $locations")
         }
         items(
             items = mailboxState.mailboxItems,
@@ -129,7 +130,7 @@ fun PreviewMailbox() {
                     Conversation(ConversationId("1"), "First message"),
                     Conversation(ConversationId("2"), "Second message"),
                 ),
-                filteredLocations = setOf(MailLocation.Inbox)
+                filteredLocations = setOf(SidebarLocation.Inbox)
             )
         )
     }

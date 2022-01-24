@@ -19,19 +19,24 @@
 package ch.protonmail.android.mailmessage.domain.model
 
 /**
- * Represents the currently selected Mailbox location of the sidebar
+ * Represents the currently selected item of the sidebar.
+ * Locations that navigate away from the sidebar when selected (eg. settings, subscriptions, logout)
+ * are not represented here as they do not need changing the sidebar's selected item
  */
-enum class MailLocation {
-    Inbox,
-    Drafts,
-    Sent,
-    Starred,
-    Archive,
-    Spam,
-    Trash,
-    AllMail;
+sealed class SidebarLocation {
 
-    companion object {
-        val map = values().associateBy { it.name }
-    }
+    sealed class MailLocation : SidebarLocation()
+
+    object Inbox : MailLocation()
+    object Drafts : MailLocation()
+    object Sent : MailLocation()
+    object Starred : MailLocation()
+    object Archive : MailLocation()
+    object Spam : MailLocation()
+    object Trash : MailLocation()
+    object AllMail : MailLocation()
+
+    data class CustomLabel(val id: String) : SidebarLocation()
+
+    data class CustomFolder(val id: String) : SidebarLocation()
 }
