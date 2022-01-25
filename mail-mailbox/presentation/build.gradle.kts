@@ -60,6 +60,7 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.modulePresentationLibs)
+    implementation(Proton.Core.label)
 
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-conversation:domain"))

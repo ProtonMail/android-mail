@@ -59,6 +59,7 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 
 @Composable
 @SuppressWarnings("LongParameterList", "ComplexMethod", "LongMethod")
@@ -68,8 +69,8 @@ fun Sidebar(
     onSignIn: (UserId?) -> Unit,
     onSwitch: (UserId) -> Unit,
     onMailLocation: (MailLocation) -> Unit,
-    onFolder: (String) -> Unit,
-    onLabel: (String) -> Unit,
+    onFolder: (LabelId) -> Unit,
+    onLabel: (LabelId) -> Unit,
     onSettings: () -> Unit,
     onSubscription: () -> Unit,
     onReportBug: () -> Unit,
@@ -152,8 +153,8 @@ fun Sidebar(
     onSignIn: (UserId?) -> Unit,
     onSwitch: (UserId) -> Unit,
     onMailLocation: (MailLocation) -> Unit,
-    onFolder: (String) -> Unit,
-    onLabel: (String) -> Unit,
+    onFolder: (LabelId) -> Unit,
+    onLabel: (LabelId) -> Unit,
     onSettings: () -> Unit,
     onSubscription: () -> Unit,
     onReportBug: () -> Unit,

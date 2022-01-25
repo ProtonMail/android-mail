@@ -30,6 +30,7 @@ import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
 import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Inbox
 import me.proton.core.accountmanager.presentation.compose.AccountPrimaryState
 import me.proton.core.accountmanager.presentation.compose.rememberAccountPrimaryState
+import me.proton.core.label.domain.entity.LabelId
 
 @Stable
 data class SidebarState(
@@ -45,12 +46,12 @@ data class SidebarState(
 )
 
 private val FAKE_FOLDERS = listOf(
-    SidebarFolderUiModel("1", "Folder 1", Color.Red)
+    SidebarFolderUiModel(LabelId("f1"), "Folder 1", Color.Red)
 )
 
 private val FAKE_LABELS = listOf(
-    SidebarLabelUiModel("1", "Label 1", Color.Cyan),
-    SidebarLabelUiModel("2", "Label 2", Color.Yellow)
+    SidebarLabelUiModel(LabelId("l1"), "Label 1", Color.Cyan),
+    SidebarLabelUiModel(LabelId("l2"), "Label 2", Color.Yellow)
 )
 
 @Composable

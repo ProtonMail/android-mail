@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmessage.domain.model
 
+import me.proton.core.label.domain.entity.LabelId
+
 /**
  * Represents the currently selected item of the sidebar.
  * Locations that navigate away from the sidebar when selected (eg. settings, subscriptions, logout)
@@ -36,7 +38,7 @@ sealed class SidebarLocation {
     object Trash : MailLocation()
     object AllMail : MailLocation()
 
-    data class CustomLabel(val id: String) : SidebarLocation()
+    data class CustomLabel(val id: LabelId) : SidebarLocation()
 
-    data class CustomFolder(val id: String) : SidebarLocation()
+    data class CustomFolder(val id: LabelId) : SidebarLocation()
 }

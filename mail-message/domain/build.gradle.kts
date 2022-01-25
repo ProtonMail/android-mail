@@ -44,6 +44,7 @@ android {
 
 dependencies {
     implementation(Dependencies.moduleDomainLibs)
+    implementation(Proton.Core.label)
 
     testImplementation(Dependencies.testLibs)
 }

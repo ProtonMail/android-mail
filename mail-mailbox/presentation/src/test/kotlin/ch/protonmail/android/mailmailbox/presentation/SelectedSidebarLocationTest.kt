@@ -23,6 +23,7 @@ import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
 import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Archive
 import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Drafts
 import kotlinx.coroutines.test.runTest
+import me.proton.core.label.domain.entity.LabelId
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -61,10 +62,10 @@ class SelectedSidebarLocationTest {
 
             selectedSidebarLocation.set(Archive)
             selectedSidebarLocation.set(Archive)
-            selectedSidebarLocation.set(SidebarLocation.CustomLabel("label"))
+            selectedSidebarLocation.set(SidebarLocation.CustomLabel(LabelId("lId1")))
 
             assertEquals(Archive, awaitItem())
-            assertEquals(SidebarLocation.CustomLabel("label"), awaitItem())
+            assertEquals(SidebarLocation.CustomLabel(LabelId("lId1")), awaitItem())
         }
     }
 }
