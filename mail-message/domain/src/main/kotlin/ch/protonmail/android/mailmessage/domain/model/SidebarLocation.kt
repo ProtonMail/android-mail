@@ -25,20 +25,20 @@ import me.proton.core.label.domain.entity.LabelId
  * Locations that navigate away from the sidebar when selected (eg. settings, subscriptions, logout)
  * are not represented here as they do not need changing the sidebar's selected item
  */
-sealed class SidebarLocation {
+sealed class SidebarLocation(open val labelId: LabelId) {
 
-    sealed class MailLocation : SidebarLocation()
+    sealed class MailLocation(override val labelId: LabelId) : SidebarLocation(labelId)
 
-    object Inbox : MailLocation()
-    object Drafts : MailLocation()
-    object Sent : MailLocation()
-    object Starred : MailLocation()
-    object Archive : MailLocation()
-    object Spam : MailLocation()
-    object Trash : MailLocation()
-    object AllMail : MailLocation()
+    object Inbox : MailLocation(LabelId("0"))
+    object Drafts : MailLocation(LabelId("8"))
+    object Sent : MailLocation(LabelId("7"))
+    object Starred : MailLocation(LabelId("10"))
+    object Archive : MailLocation(LabelId("6"))
+    object Spam : MailLocation(LabelId("4"))
+    object Trash : MailLocation(LabelId("3"))
+    object AllMail : MailLocation(LabelId("5"))
 
-    data class CustomLabel(val id: LabelId) : SidebarLocation()
+    data class CustomLabel(val id: LabelId) : SidebarLocation(LabelId(id.id))
 
-    data class CustomFolder(val id: LabelId) : SidebarLocation()
+    data class CustomFolder(val id: LabelId) : SidebarLocation(LabelId(id.id))
 }
