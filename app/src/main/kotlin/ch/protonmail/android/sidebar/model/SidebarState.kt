@@ -42,7 +42,19 @@ data class SidebarState(
     val appVersion: String = BuildConfig.VERSION_NAME,
     val sidebarFolderUiModels: List<SidebarFolderUiModel> = FAKE_FOLDERS,
     val sidebarLabelUiModels: List<SidebarLabelUiModel> = FAKE_LABELS,
-    val counters: UnreadCounters = UnreadCounters()
+    val unreadCounters: Map<LabelId, Int?> = FAKE_UNREAD_COUNTERS
+)
+
+val FAKE_UNREAD_COUNTERS: Map<LabelId, Int?> = mapOf(
+    Pair(LabelId("0"), 1),
+    Pair(LabelId("3"), null),
+    Pair(LabelId("4"), null),
+    Pair(LabelId("5"), 4),
+    Pair(LabelId("6"), null),
+    Pair(LabelId("7"), null),
+    Pair(LabelId("8"), null),
+    Pair(LabelId("10"), 1),
+    Pair(LabelId("f1"), 2)
 )
 
 private val FAKE_FOLDERS = listOf(

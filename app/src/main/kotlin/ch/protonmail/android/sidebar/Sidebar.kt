@@ -212,14 +212,14 @@ fun Sidebar(
                         AllMail -> R.string.drawer_title_all_mail
                     },
                     count = when (location) {
-                        Inbox -> sidebarState.counters.inbox
-                        Drafts -> sidebarState.counters.drafts
-                        Sent -> sidebarState.counters.sent
-                        Starred -> sidebarState.counters.starred
-                        Archive -> sidebarState.counters.archive
-                        Spam -> sidebarState.counters.spam
-                        Trash -> sidebarState.counters.trash
-                        AllMail -> sidebarState.counters.allMail
+                        Inbox -> sidebarState.unreadCounters[Inbox.labelId]
+                        Drafts -> sidebarState.unreadCounters[Drafts.labelId]
+                        Sent -> sidebarState.unreadCounters[Sent.labelId]
+                        Starred -> sidebarState.unreadCounters[Starred.labelId]
+                        Archive -> sidebarState.unreadCounters[Archive.labelId]
+                        Spam -> sidebarState.unreadCounters[Spam.labelId]
+                        Trash -> sidebarState.unreadCounters[Trash.labelId]
+                        AllMail -> sidebarState.unreadCounters[AllMail.labelId]
                     },
                     isSelected = isSelected,
                     iconTint = if (isSelected) {
