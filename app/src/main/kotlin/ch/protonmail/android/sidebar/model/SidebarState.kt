@@ -39,18 +39,18 @@ data class SidebarState(
     val hasPrimaryAccount: Boolean = true,
     val appName: String = "ProtonMail",
     val appVersion: String = BuildConfig.VERSION_NAME,
-    val folderUiModels: List<FolderUiModel> = FAKE_FOLDERS,
-    val labelUiModels: List<LabelUiModel> = FAKE_LABELS,
+    val sidebarFolderUiModels: List<SidebarFolderUiModel> = FAKE_FOLDERS,
+    val sidebarLabelUiModels: List<SidebarLabelUiModel> = FAKE_LABELS,
     val counters: UnreadCounters = UnreadCounters()
 )
 
 private val FAKE_FOLDERS = listOf(
-    FolderUiModel("1", "Folder 1", Color.Red)
+    SidebarFolderUiModel("1", "Folder 1", Color.Red)
 )
 
 private val FAKE_LABELS = listOf(
-    LabelUiModel("1", "Label 1", Color.Cyan),
-    LabelUiModel("2", "Label 2", Color.Yellow)
+    SidebarLabelUiModel("1", "Label 1", Color.Cyan),
+    SidebarLabelUiModel("2", "Label 2", Color.Yellow)
 )
 
 @Composable

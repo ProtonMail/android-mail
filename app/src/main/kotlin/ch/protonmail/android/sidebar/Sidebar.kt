@@ -250,7 +250,7 @@ fun Sidebar(
             }
         }
 
-        items(sidebarState.folderUiModels) {
+        items(sidebarState.sidebarFolderUiModels) {
             val isSelected = sidebarState.selectedLocation == SidebarLocation.CustomFolder(it.id)
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_folder_filled),
@@ -274,7 +274,7 @@ fun Sidebar(
             }
         }
 
-        items(sidebarState.labelUiModels) {
+        items(sidebarState.sidebarLabelUiModels) {
             val isSelected = sidebarState.selectedLocation == SidebarLocation.CustomLabel(it.id)
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_label_filled),

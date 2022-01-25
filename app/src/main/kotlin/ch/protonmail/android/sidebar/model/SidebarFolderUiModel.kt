@@ -20,7 +20,7 @@ package ch.protonmail.android.sidebar.model
 
 import androidx.compose.ui.graphics.Color
 
-data class LabelUiModel(
+data class SidebarFolderUiModel(
     val id: String,
     val text: String,
     val color: Color,

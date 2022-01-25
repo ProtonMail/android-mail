@@ -26,8 +26,11 @@ import ch.protonmail.android.sidebar.SidebarViewModel
 import ch.protonmail.android.sidebar.SidebarViewModel.State.Enabled
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -42,6 +45,8 @@ class SidebarViewModelTest {
 
     @Before
     fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+
         sidebarViewModel = SidebarViewModel(selectedSidebarLocation)
     }
 
