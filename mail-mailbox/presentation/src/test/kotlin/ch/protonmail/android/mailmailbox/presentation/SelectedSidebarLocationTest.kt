@@ -19,9 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
-import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Archive
-import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Drafts
+import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Before
@@ -49,9 +47,9 @@ class SelectedSidebarLocationTest {
         selectedSidebarLocation.location.test {
             assertEquals(SidebarLocation.Inbox, awaitItem())
 
-            selectedSidebarLocation.set(Drafts)
+            selectedSidebarLocation.set(SidebarLocation.Drafts)
 
-            assertEquals(Drafts, awaitItem())
+            assertEquals(SidebarLocation.Drafts, awaitItem())
         }
     }
 
@@ -60,11 +58,11 @@ class SelectedSidebarLocationTest {
         selectedSidebarLocation.location.test {
             assertEquals(SidebarLocation.Inbox, awaitItem())
 
-            selectedSidebarLocation.set(Archive)
-            selectedSidebarLocation.set(Archive)
+            selectedSidebarLocation.set(SidebarLocation.Archive)
+            selectedSidebarLocation.set(SidebarLocation.Archive)
             selectedSidebarLocation.set(SidebarLocation.CustomLabel(LabelId("lId1")))
 
-            assertEquals(Archive, awaitItem())
+            assertEquals(SidebarLocation.Archive, awaitItem())
             assertEquals(SidebarLocation.CustomLabel(LabelId("lId1")), awaitItem())
         }
     }

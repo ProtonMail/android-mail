@@ -29,8 +29,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.BuildConfig
-import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
-import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Inbox
+import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
+import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
 import me.proton.core.accountmanager.presentation.compose.AccountPrimaryState
 import me.proton.core.accountmanager.presentation.compose.rememberAccountPrimaryState
 import me.proton.core.label.domain.entity.LabelId

@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
-import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
-import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Inbox
+import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
+import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -46,6 +46,7 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.moduleDomainLibs)
+    implementation(Proton.Core.label)
 
     testImplementation(Dependencies.testLibs)
 }

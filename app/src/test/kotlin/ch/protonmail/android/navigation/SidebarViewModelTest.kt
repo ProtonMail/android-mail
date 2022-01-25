@@ -19,9 +19,9 @@
 package ch.protonmail.android.navigation
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
+import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
 import ch.protonmail.android.mailmailbox.presentation.SelectedSidebarLocation
-import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
-import ch.protonmail.android.mailmessage.domain.model.SidebarLocation.Inbox
 import ch.protonmail.android.sidebar.SidebarViewModel
 import ch.protonmail.android.sidebar.SidebarViewModel.State.Enabled
 import io.mockk.every

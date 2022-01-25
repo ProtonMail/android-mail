@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailconversation.domain.Conversation
-import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
+import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 
 /**
  * @param filteredLocations the locations to load mailbox items for
