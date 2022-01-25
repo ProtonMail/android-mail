@@ -1,7 +1,8 @@
 rootProject.name = "ProtonMail"
 
 // Use core libs from maven artifacts by default
-val useCoreGitSubmoduleAsBoolean: Boolean = extensions.extraProperties.properties["useCoreGitSubmodule"].toString().toBoolean()
+val useCoreGitSubmoduleAsBoolean: Boolean = extensions.extraProperties
+    .properties["useCoreGitSubmodule"].toString().toBoolean()
 if (useCoreGitSubmoduleAsBoolean) {
     println("Use core libs from git submodule \'./proton-libs\'")
     includeBuild("proton-libs")

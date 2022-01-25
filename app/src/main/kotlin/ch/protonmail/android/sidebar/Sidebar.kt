@@ -62,7 +62,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
 @Composable
-@SuppressWarnings("LongParameterList", "ComplexMethod", "LongMethod")
+@Suppress("ComplexMethod")
 fun Sidebar(
     onRemove: (UserId?) -> Unit,
     onSignOut: (UserId) -> Unit,
@@ -143,7 +143,7 @@ fun Sidebar(
 }
 
 @Composable
-@SuppressWarnings("LongParameterList", "ComplexMethod", "LongMethod")
+@Suppress("ComplexMethod")
 fun Sidebar(
     onRemove: (UserId?) -> Unit,
     onSignOut: (UserId) -> Unit,
