@@ -23,7 +23,10 @@ import androidx.compose.material.DrawerValue
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.mailmessage.domain.model.SidebarLocation
@@ -33,17 +36,22 @@ import me.proton.core.accountmanager.presentation.compose.rememberAccountPrimary
 import me.proton.core.label.domain.entity.LabelId
 
 @Stable
-data class SidebarState(
-    val selectedLocation: SidebarLocation = Inbox,
+class SidebarState(
+    selectedLocation: SidebarLocation = Inbox,
     val drawerState: DrawerState = DrawerState(DrawerValue.Closed),
     val accountPrimaryState: AccountPrimaryState = AccountPrimaryState(),
     val hasPrimaryAccount: Boolean = true,
     val appName: String = "ProtonMail",
     val appVersion: String = BuildConfig.VERSION_NAME,
-    val sidebarFolderUiModels: List<SidebarFolderUiModel> = FAKE_FOLDERS,
-    val sidebarLabelUiModels: List<SidebarLabelUiModel> = FAKE_LABELS,
-    val unreadCounters: Map<LabelId, Int?> = FAKE_UNREAD_COUNTERS
-)
+    sidebarFolderUiModels: List<SidebarFolderUiModel> = FAKE_FOLDERS,
+    sidebarLabelUiModels: List<SidebarLabelUiModel> = FAKE_LABELS,
+    unreadCounters: Map<LabelId, Int?> = FAKE_UNREAD_COUNTERS
+) {
+    var selectedLocation by mutableStateOf(selectedLocation)
+    var sidebarFolderUiModels by mutableStateOf(sidebarFolderUiModels)
+    var sidebarLabelUiModels by mutableStateOf(sidebarLabelUiModels)
+    var unreadCounters by mutableStateOf(unreadCounters)
+}
 
 val FAKE_UNREAD_COUNTERS: Map<LabelId, Int?> = mapOf(
     Pair(LabelId("0"), 1),

@@ -79,19 +79,18 @@ fun Sidebar(
     viewModel: SidebarViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
-    val sidebarState = rememberSidebarState(
+    val viewState = rememberSidebarState(
         drawerState = drawerState
     )
-    val state = rememberAsState(viewModel.state, Enabled(Inbox)).value
-
     fun close() = scope.launch {
-        sidebarState.accountPrimaryState.dismissDialog()
-        sidebarState.drawerState.close()
+        viewState.accountPrimaryState.dismissDialog()
+        viewState.drawerState.close()
     }
 
-    when (state) {
+    when (val viewModelState = rememberAsState(viewModel.state, Enabled(Inbox)).value) {
         is Disabled -> Unit
-        is Enabled ->
+        is Enabled -> {
+            viewState.selectedLocation = viewModelState.selectedLocation
             Sidebar(
                 onRemove = {
                     close()
@@ -136,12 +135,10 @@ fun Sidebar(
                     close()
                     onReportBug()
                 },
-                sidebarState = sidebarState.copy(
-                    selectedLocation = state.selectedLocation
-                ),
+                viewState = viewState,
                 modifier = modifier
             )
-
+        }
     }
 }
 
@@ -159,14 +156,14 @@ fun Sidebar(
     onSubscription: () -> Unit,
     onReportBug: () -> Unit,
     modifier: Modifier = Modifier,
-    sidebarState: SidebarState
+    viewState: SidebarState
 ) {
     ProtonSidebarLazy(
         modifier = modifier,
-        drawerState = sidebarState.drawerState,
+        drawerState = viewState.drawerState,
     ) {
         item {
-            if (sidebarState.hasPrimaryAccount) {
+            if (viewState.hasPrimaryAccount) {
                 AccountPrimaryItem(
                     onRemove = {
                         onRemove(it)
@@ -183,13 +180,13 @@ fun Sidebar(
                     modifier = Modifier
                         .padding(all = ProtonDimens.SmallSpacing)
                         .fillMaxWidth(),
-                    viewState = sidebarState.accountPrimaryState
+                    viewState = viewState.accountPrimaryState
                 )
             }
 
             @Composable
             fun ProtonSidebarMailLocationItem(location: MailLocation) {
-                val isSelected = sidebarState.selectedLocation == location
+                val isSelected = viewState.selectedLocation == location
                 ProtonSidebarItem(
                     icon = when (location) {
                         Inbox -> R.drawable.ic_inbox
@@ -212,14 +209,14 @@ fun Sidebar(
                         AllMail -> R.string.drawer_title_all_mail
                     },
                     count = when (location) {
-                        Inbox -> sidebarState.unreadCounters[Inbox.labelId]
-                        Drafts -> sidebarState.unreadCounters[Drafts.labelId]
-                        Sent -> sidebarState.unreadCounters[Sent.labelId]
-                        Starred -> sidebarState.unreadCounters[Starred.labelId]
-                        Archive -> sidebarState.unreadCounters[Archive.labelId]
-                        Spam -> sidebarState.unreadCounters[Spam.labelId]
-                        Trash -> sidebarState.unreadCounters[Trash.labelId]
-                        AllMail -> sidebarState.unreadCounters[AllMail.labelId]
+                        Inbox -> viewState.unreadCounters[Inbox.labelId]
+                        Drafts -> viewState.unreadCounters[Drafts.labelId]
+                        Sent -> viewState.unreadCounters[Sent.labelId]
+                        Starred -> viewState.unreadCounters[Starred.labelId]
+                        Archive -> viewState.unreadCounters[Archive.labelId]
+                        Spam -> viewState.unreadCounters[Spam.labelId]
+                        Trash -> viewState.unreadCounters[Trash.labelId]
+                        AllMail -> viewState.unreadCounters[AllMail.labelId]
                     },
                     isSelected = isSelected,
                     iconTint = if (isSelected) {
@@ -251,8 +248,8 @@ fun Sidebar(
             }
         }
 
-        items(sidebarState.sidebarFolderUiModels) {
-            val isSelected = sidebarState.selectedLocation == SidebarLocation.CustomFolder(it.id)
+        items(viewState.sidebarFolderUiModels) {
+            val isSelected = viewState.selectedLocation == SidebarLocation.CustomFolder(it.id)
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_folder_filled),
                 text = it.text,
@@ -275,8 +272,8 @@ fun Sidebar(
             }
         }
 
-        items(sidebarState.sidebarLabelUiModels) {
-            val isSelected = sidebarState.selectedLocation == SidebarLocation.CustomLabel(it.id)
+        items(viewState.sidebarLabelUiModels) {
+            val isSelected = viewState.selectedLocation == SidebarLocation.CustomLabel(it.id)
             ProtonSidebarItem(
                 icon = painterResource(id = R.drawable.ic_label_filled),
                 text = it.text,
@@ -310,8 +307,8 @@ fun Sidebar(
             }
 
             ProtonSidebarAppVersionItem(
-                name = sidebarState.appName,
-                version = sidebarState.appVersion
+                name = viewState.appName,
+                version = viewState.appVersion
             )
         }
     }
@@ -357,7 +354,7 @@ fun PreviewSidebar() {
             onSettings = {},
             onSubscription = {},
             onReportBug = {},
-            sidebarState = SidebarState(
+            viewState = SidebarState(
                 selectedLocation = Inbox,
                 hasPrimaryAccount = false
             ),
