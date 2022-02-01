@@ -32,18 +32,16 @@ class AccountStateHandlerInitializer : Initializer<Unit> {
         EntryPointAccessors.fromApplication(
             context.applicationContext,
             AccountStateHandlerInitializerEntryPoint::class.java
-        ).handler().start()
+        ).accountStateHandler().start()
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>?>> {
-        return listOf(
-            LoggerInitializer::class.java,
-        )
-    }
+    override fun dependencies(): List<Class<out Initializer<*>?>> = listOf(
+        LoggerInitializer::class.java,
+    )
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)
     interface AccountStateHandlerInitializerEntryPoint {
-        fun handler(): AccountStateHandler
+        fun accountStateHandler(): AccountStateHandler
     }
 }

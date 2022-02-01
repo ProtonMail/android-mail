@@ -20,6 +20,7 @@ package ch.protonmail.android.di
 
 import android.content.Context
 import ch.protonmail.android.BuildConfig
+import ch.protonmail.android.feature.forceupdate.ForceUpdateHandler
 import ch.protonmail.android.useragent.BuildUserAgent
 import dagger.Module
 import dagger.Provides
@@ -77,7 +78,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiClient(buildUserAgent: BuildUserAgent) = object : ApiClient {
+    fun provideApiClient(
+        buildUserAgent: BuildUserAgent,
+        forceUpdateHandler: ForceUpdateHandler,
+    ) = object : ApiClient {
         override val appVersionHeader: String
             get() = "android-mail@${BuildConfig.VERSION_NAME}"
         override val enableDebugLogging: Boolean
@@ -87,7 +91,9 @@ object NetworkModule {
         override val userAgent: String
             get() = buildUserAgent()
 
-        override fun forceUpdate(errorMessage: String) = Unit
+        override fun forceUpdate(errorMessage: String) {
+            forceUpdateHandler.onForceUpdate(errorMessage)
+        }
     }
 
     @Provides
