@@ -104,19 +104,22 @@ object AccountManagerModule {
 
     @Provides
     @Singleton
+    @Suppress("LongParameterList")
     fun provideAccountStateHandler(
         @AccountStateHandlerCoroutineScope
         scope: CoroutineScope,
         userManager: UserManager,
         accountManager: AccountManager,
         accountRepository: AccountRepository,
-        accountMigrator: AccountMigrator
+        accountMigrator: AccountMigrator,
+        product: Product,
     ): AccountStateHandler = AccountStateHandler(
         scope,
         userManager,
         accountManager,
         accountRepository,
-        accountMigrator
+        accountMigrator,
+        product
     )
 
     @Provides

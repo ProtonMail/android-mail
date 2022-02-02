@@ -20,7 +20,6 @@ package ch.protonmail.android.feature.forceupdate
 
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify

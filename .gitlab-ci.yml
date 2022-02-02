@@ -2,7 +2,6 @@ default:
   image: $CI_REGISTRY/protonvpn/android/android-app-new:branch-mail-v6-ci-dockerfile
 
 before_script:
-  - !reference [.checkout-core, before_script]
   - mkdir app/src/uiTest/assets
   - mkdir keystore
   - base64 -d - < "$TEST_USERS_CREDENTIALS_FILE" > app/src/uiTest/assets/users.json
@@ -10,7 +9,7 @@ before_script:
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
   - bundle install
 variables:
-  GIT_SUBMODULE_STRATEGY: none
+  GIT_SUBMODULE_STRATEGY: recursive
 
 cache:
   - key: $CI_COMMIT_REF_SLUG
@@ -87,7 +86,7 @@ build_release:
 run_unit_test:
   stage: test
   tags:
-    - medium
+    - large
   dependencies:
     - build_debug
   script:
