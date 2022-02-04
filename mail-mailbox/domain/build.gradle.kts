@@ -21,6 +21,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+    id("kotlin-parcelize")
 }
 
 android {
@@ -42,10 +43,13 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
-
     implementation(Dependencies.moduleDomainLibs)
+    implementation(Proton.Core.user)
     implementation(Proton.Core.label)
+
+    implementation(project(":mail-pagination:domain"))
+    implementation(project(":mail-conversation:domain"))
+    implementation(project(":mail-message:domain"))
 
     testImplementation(Dependencies.testLibs)
 }

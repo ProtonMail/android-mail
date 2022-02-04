@@ -20,6 +20,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -59,10 +60,14 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.modulePresentationLibs)
+    implementation(Proton.Core.account)
     implementation(Proton.Core.label)
 
+    implementation(project(":mail-pagination:presentation"))
+    implementation(project(":mail-pagination:domain"))
     implementation(project(":mail-mailbox:domain"))
     implementation(project(":mail-conversation:domain"))
+    implementation(project(":mail-message:domain"))
 
     testImplementation(Dependencies.testLibs)
 }

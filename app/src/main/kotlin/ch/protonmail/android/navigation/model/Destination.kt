@@ -41,7 +41,6 @@ sealed class Destination(val route: String) {
     }
 
     object Dialog {
-        @SuppressWarnings("UseIfInsteadOfWhen")
         object RemoveAccount : Destination("remove/{key}") {
             operator fun invoke(userId: UserId?) = when (userId) {
                 null -> "remove/null"

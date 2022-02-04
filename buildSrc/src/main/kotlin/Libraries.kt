@@ -43,11 +43,9 @@ object AndroidX {
 
     object Hilt {
         private const val version = Versions.AndroidX.hilt
-        private const val versionNavigationCompose = Versions.AndroidX.hiltNavigationCompose
 
         const val compiler = "androidx.hilt:hilt-compiler:$version"
-        const val navigationCompose =
-            "androidx.hilt:hilt-navigation-compose:$versionNavigationCompose"
+        const val navigationCompose = "androidx.hilt:hilt-navigation-compose:$version"
         const val work = "androidx.hilt:hilt-work:$version"
     }
 
@@ -63,8 +61,7 @@ object AndroidX {
     object Navigation {
         private const val version = Versions.AndroidX.navigation
 
-        const val common = "androidx.navigation:navigation-common:${Versions.AndroidX.navigationCommon}"
-        const val compose = "androidx.navigation:navigation-compose:${Versions.AndroidX.navigationCompose}"
+        const val compose = "androidx.navigation:navigation-compose:$version"
     }
 
     object Paging {

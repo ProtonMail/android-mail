@@ -34,6 +34,8 @@ import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.addConversationModeSettings
@@ -53,7 +55,7 @@ fun Home(
     onSignOut: (UserId) -> Unit,
     onSwitch: (UserId) -> Unit,
     onSubscription: () -> Unit,
-    onReportBug: () -> Unit
+    onReportBug: () -> Unit,
 ) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
@@ -101,13 +103,20 @@ fun Home(
 }
 
 private fun NavGraphBuilder.addMailbox(
-    navController: NavHostController
+    navController: NavHostController,
 ) = composable(
     route = Destination.Screen.Mailbox.route
 ) {
     MailboxScreen(
-        navigateToConversation = { conversationId: ConversationId ->
-            navController.navigate(Destination.Screen.Conversation(conversationId))
+        navigateToMailboxItem = { item: MailboxItem ->
+            navController.navigate(
+                when (item.type) {
+                    MailboxItemType.Message ->
+                        Destination.Screen.Conversation(ConversationId(item.id))
+                    MailboxItemType.Conversation ->
+                        Destination.Screen.Conversation(ConversationId(item.id))
+                }
+            )
         }
     )
 }

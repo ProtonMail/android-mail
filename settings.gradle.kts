@@ -16,6 +16,11 @@ if (includeCoreLibsHelper.exists()) {
 include(":app")
 include(":test-data")
 
+include(":mail-pagination:data")
+include(":mail-pagination:domain")
+include(":mail-pagination:presentation")
+
+include(":mail-message:dagger")
 include(":mail-message:data")
 include(":mail-message:domain")
 include(":mail-message:presentation")

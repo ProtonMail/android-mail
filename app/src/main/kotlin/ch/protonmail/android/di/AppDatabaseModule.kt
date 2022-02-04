@@ -19,7 +19,9 @@
 package ch.protonmail.android.di
 
 import android.content.Context
+import androidx.room.RoomDatabase
 import ch.protonmail.android.db.AppDatabase
+import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -54,6 +56,9 @@ object AppDatabaseModule {
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class AppDatabaseBindsModule {
+    @Binds
+    abstract fun provideRoomDatabase(appDatabase: AppDatabase): RoomDatabase
+
     @Binds
     abstract fun provideAccountDatabase(appDatabase: AppDatabase): AccountDatabase
 
@@ -95,4 +100,7 @@ abstract class AppDatabaseBindsModule {
 
     @Binds
     abstract fun provideChallengeDatabase(appDatabase: AppDatabase): ChallengeDatabase
+
+    @Binds
+    abstract fun provideMessageDatabase(appDatabase: AppDatabase): MessageDatabase
 }

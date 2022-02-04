@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,84 +28,172 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.mailconversation.domain.Conversation
-import ch.protonmail.android.mailconversation.domain.ConversationId
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
+import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.domain.entity.UserId
 
 const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
 
 @Composable
 fun MailboxScreen(
-    navigateToConversation: (ConversationId) -> Unit,
+    navigateToMailboxItem: (MailboxItem) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MailboxViewModel = hiltViewModel(),
 ) {
     val mailboxState by rememberAsState(viewModel.state, MailboxState())
 
-    MailboxScreen(
-        navigateToConversation = navigateToConversation,
-        modifier = modifier,
-        mailboxState = mailboxState
-    )
-}
-
-@Composable
-private fun MailboxScreen(
-    navigateToConversation: (ConversationId) -> Unit,
-    modifier: Modifier = Modifier,
-    mailboxState: MailboxState = MailboxState(),
-) {
-    LazyColumn(
+    Column(
         modifier = modifier
             .background(ProtonTheme.colors.backgroundNorm)
             .fillMaxSize()
             .testTag(TEST_TAG_MAILBOX_SCREEN)
     ) {
-        item {
-            val locations = mailboxState.filteredLocations.map { it.javaClass.simpleName }
-            Text("Header: Location: $locations")
-        }
-        items(
-            items = mailboxState.mailboxItems,
-            key = { it.conversationId.id }
-        ) { item ->
-            MailboxItem(item) { navigateToConversation(it) }
-        }
-        item {
-            Text("Footer")
+        MailboxHeader(
+            mailboxState = mailboxState,
+        )
+        MailboxList(
+            navigateToMailboxItem = navigateToMailboxItem,
+            onRefresh = { viewModel.onRefresh() },
+            modifier = modifier,
+            mailboxItems = viewModel.items
+        )
+    }
+}
+
+@Composable
+private fun MailboxHeader(
+    mailboxState: MailboxState,
+) {
+    val locationName = mailboxState.selectedLocation?.javaClass?.simpleName
+    Text(
+        text = "Location: $locationName (unread: ${mailboxState.unread})",
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun MailboxList(
+    navigateToMailboxItem: (MailboxItem) -> Unit,
+    onRefresh: () -> Unit,
+    modifier: Modifier = Modifier,
+    mailboxItems: Flow<PagingData<MailboxItem>>,
+) {
+    val items: LazyPagingItems<MailboxItem> = mailboxItems.collectAsLazyPagingItems()
+
+    val isRefreshing = when {
+        items.loadState.refresh is LoadState.Loading -> true
+        items.loadState.append is LoadState.Loading -> true
+        items.loadState.prepend is LoadState.Loading -> true
+        else -> false
+    }
+
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing),
+        onRefresh = { onRefresh(); items.refresh() },
+        modifier = modifier,
+    ) {
+        val listState = items.rememberLazyListState()
+
+        LazyColumn(
+            state = listState,
+            modifier = Modifier
+                .fillMaxSize()
+                .let { if (BuildConfig.DEBUG) it.verticalScrollbar(listState) else it }
+        ) {
+            items(
+                items = items,
+                key = { it.id }
+            ) { item ->
+                item?.let {
+                    MailboxItem(
+                        item = item,
+                        modifier = Modifier.animateItemPlacement()
+                    ) {
+                        navigateToMailboxItem(it)
+                    }
+                }
+            }
+            item {
+                when (items.loadState.append) {
+                    is LoadState.NotLoading -> Unit
+                    is LoadState.Loading -> ProtonCenteredProgress(Modifier.fillMaxWidth())
+                    is LoadState.Error -> Button(
+                        onClick = { items.retry() },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = "Retry")
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun MailboxItem(
-    item: Conversation,
-    onItemClicked: (ConversationId) -> Unit,
+    item: MailboxItem,
+    modifier: Modifier = Modifier,
+    onItemClicked: (MailboxItem) -> Unit,
 ) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .clickable { onItemClicked(item.conversationId) }
+            .clickable { onItemClicked(item) }
     ) {
         Box(
             modifier = Modifier.padding(16.dp)
         ) {
             Column {
-                Text("Message ID: ${item.conversationId.id}")
-                Text(item.subject)
+                val fontWeight = if (item.read) FontWeight.Normal else FontWeight.Bold
+                Text(
+                    text = "UserId: ${item.userId}",
+                    fontWeight = fontWeight,
+                    maxLines = 1,
+                    softWrap = false,
+                )
+                Text(
+                    text = "Sender: ${item.sender}",
+                    fontWeight = fontWeight,
+                    maxLines = 1
+                )
+                Text(
+                    text = "Subject: ${item.subject}",
+                    fontWeight = fontWeight,
+                    maxLines = 1
+                )
+                Text(
+                    text = "Labels: ${item.labels.map { it.name }}",
+                    fontWeight = fontWeight,
+                    maxLines = 1
+                )
+                Text(text = "Time: ${item.time}", fontWeight = fontWeight)
             }
         }
     }
@@ -123,14 +212,38 @@ private fun MailboxItem(
 @Composable
 fun PreviewMailbox() {
     ProtonTheme {
-        MailboxScreen(
-            navigateToConversation = {},
-            mailboxState = MailboxState(
-                mailboxItems = listOf(
-                    Conversation(ConversationId("1"), "First message"),
-                    Conversation(ConversationId("2"), "Second message"),
-                ),
-                filteredLocations = setOf(SidebarLocation.Inbox)
+        MailboxList(
+            navigateToMailboxItem = {},
+            onRefresh = {},
+            mailboxItems = flowOf(
+                PagingData.from(
+                    listOf(
+                        MailboxItem(
+                            type = MailboxItemType.Message,
+                            id = "1",
+                            userId = UserId("0"),
+                            sender = "Sender",
+                            subject = "First message",
+                            time = 0,
+                            size = 0,
+                            order = 0,
+                            read = false,
+                            keywords = ""
+                        ),
+                        MailboxItem(
+                            type = MailboxItemType.Message,
+                            id = "2",
+                            userId = UserId("0"),
+                            sender = "Sender",
+                            subject = "Second message",
+                            time = 0,
+                            size = 0,
+                            order = 0,
+                            read = true,
+                            keywords = ""
+                        ),
+                    )
+                )
             )
         )
     }

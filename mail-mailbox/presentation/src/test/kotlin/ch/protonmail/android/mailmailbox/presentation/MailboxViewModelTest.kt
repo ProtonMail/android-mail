@@ -19,10 +19,18 @@
 package ch.protonmail.android.mailmailbox.presentation
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Archive
+import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
+import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
+import io.mockk.Called
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,6 +45,7 @@ import kotlin.test.assertEquals
 
 class MailboxViewModelTest {
 
+    private val userId = UserId("userId")
     private val userIdFlow = MutableSharedFlow<UserId?>()
     private val accountManager = mockk<AccountManager> {
         every { this@mockk.getPrimaryUserId() } returns userIdFlow
@@ -46,6 +55,11 @@ class MailboxViewModelTest {
         every { this@mockk.location } returns MutableStateFlow<SidebarLocation>(Archive)
     }
 
+    private val markAsStaleMailboxItems = mockk<MarkAsStaleMailboxItems> {
+        coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit
+    }
+    private val pagingSourceFactory = mockk<MailboxItemPagingSourceFactory>(relaxed = true)
+
     private lateinit var mailboxViewModel: MailboxViewModel
 
     @Before
@@ -54,19 +68,23 @@ class MailboxViewModelTest {
 
         mailboxViewModel = MailboxViewModel(
             accountManager,
-            selectedSidebarLocation
+            selectedSidebarLocation,
+            markAsStaleMailboxItems,
+            pagingSourceFactory
         )
     }
 
     @Test
-    fun `emits initial loading mailbox state when initialized`() = runTest {
+    fun `emits initial mailbox state when initialized`() = runTest {
         // When
         mailboxViewModel.state.test {
             // Then
             val actual = awaitItem()
-            val expected = MailboxState(loading = true)
+            val expected = MailboxState()
 
             assertEquals(expected, actual)
+
+            verify { pagingSourceFactory wasNot Called }
         }
     }
 
@@ -76,13 +94,38 @@ class MailboxViewModelTest {
             awaitItem() // Initial item
 
             // When
-            userIdFlow.emit(UserId("userId"))
+            userIdFlow.emit(userId)
 
             // Then
             val actual = awaitItem()
-            assertEquals(false, actual.loading)
-            assertEquals(setOf(Archive), actual.filteredLocations)
+            assertEquals(Archive, actual.selectedLocation)
         }
     }
 
+    @Test
+    fun `emits mailbox items`() = runTest {
+        mailboxViewModel.items.test {
+            awaitItem() // Initial item
+
+            // When
+            userIdFlow.emit(userId)
+
+            // Then
+            awaitItem()
+
+            verify { pagingSourceFactory.create(listOf(userId), Archive, Message) }
+        }
+    }
+
+    @Test
+    fun `onRefresh call markAsStaleMailboxItems`() = runTest {
+        // Given
+        userIdFlow.emit(userId)
+
+        // When
+        mailboxViewModel.onRefresh()
+
+        // Then
+        coVerify { markAsStaleMailboxItems.invoke(listOf(userId), Message, Archive.labelId) }
+    }
 }

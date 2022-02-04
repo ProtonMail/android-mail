@@ -45,6 +45,10 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.moduleDataLibs)
+    implementation(Proton.Core.user)
+    implementation(Proton.Core.label)
+
+    implementation(project(":mail-conversation:domain"))
 
     testImplementation(Dependencies.testLibs)
 }

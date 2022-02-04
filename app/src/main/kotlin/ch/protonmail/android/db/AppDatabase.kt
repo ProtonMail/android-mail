@@ -21,6 +21,13 @@ package ch.protonmail.android.db
 import android.content.Context
 import androidx.room.Database
 import androidx.room.TypeConverters
+import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
+import ch.protonmail.android.mailpagination.data.local.entity.PageIntervalEntity
+import ch.protonmail.android.mailconversation.data.local.ConversationConverters
+import ch.protonmail.android.mailmessage.data.local.MessageConverters
+import ch.protonmail.android.mailmessage.data.local.MessageDatabase
+import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
+import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import me.proton.core.account.data.db.AccountConverters
 import me.proton.core.account.data.db.AccountDatabase
 import me.proton.core.account.data.entity.AccountEntity
@@ -105,8 +112,18 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         EventMetadataEntity::class,
         // label
         LabelEntity::class,
+        // feature-flag
         FeatureFlagEntity::class,
-        ChallengeFrameEntity::class
+        // challenge
+        ChallengeFrameEntity::class,
+        // mail-pagination
+        PageIntervalEntity::class,
+        // mail-message
+        MessageEntity::class,
+        MessageLabelEntity::class,
+        // mail-conversation
+        //ConversationEntity::class,
+        //ConversationLabelEntity::class,
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -121,7 +138,9 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
     ContactConverters::class,
     EventManagerConverters::class,
     LabelConverters::class,
-    ChallengeConverters::class
+    ChallengeConverters::class,
+    MessageConverters::class,
+    ConversationConverters::class,
 )
 abstract class AppDatabase :
     BaseDatabase(),
@@ -138,11 +157,13 @@ abstract class AppDatabase :
     EventMetadataDatabase,
     LabelDatabase,
     FeatureFlagDatabase,
-    ChallengeDatabase {
+    ChallengeDatabase,
+    PageIntervalDatabase,
+    MessageDatabase {
 
     companion object {
         const val name = "db-mail"
-        const val version = 6
+        const val version = 7
 
         private val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -150,6 +171,7 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_3_4,
             AppDatabaseMigrations.MIGRATION_4_5,
             AppDatabaseMigrations.MIGRATION_5_6,
+            AppDatabaseMigrations.MIGRATION_6_7,
         )
 
         fun buildDatabase(context: Context): AppDatabase =

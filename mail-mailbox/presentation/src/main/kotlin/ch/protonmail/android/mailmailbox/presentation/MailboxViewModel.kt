@@ -20,69 +20,102 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailconversation.domain.Conversation
-import ch.protonmail.android.mailconversation.domain.ConversationId
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
+import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.domain.entity.UserId
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MailboxViewModel @Inject constructor(
-    accountManager: AccountManager,
-    private val selectedSidebarLocation: SelectedSidebarLocation
+    private val accountManager: AccountManager,
+    private val selectedSidebarLocation: SelectedSidebarLocation,
+    private val markAsStaleMailboxItems: MarkAsStaleMailboxItems,
+    private val pagingSourceFactory: MailboxItemPagingSourceFactory,
 ) : ViewModel() {
 
-    @SuppressWarnings("UseIfInsteadOfWhen")
-    val state: Flow<MailboxState> = accountManager.getPrimaryUserId()
-        .flatMapLatest { userId ->
-            when (userId) {
-                null -> flowOf(MailboxState())
-                else -> observeState(userId)
-            }
-        }
+    private val mailboxItemType = observeMailboxItemType()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = MailboxItemType.Message
+        )
+
+    private val userIds = observeUserIds()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyList()
+        )
+
+    val items: Flow<PagingData<MailboxItem>> = observePagingData()
+        .cachedIn(viewModelScope)
+
+    val state: Flow<MailboxState> = observeState()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
-            initialValue = MailboxState(loading = true)
+            initialValue = MailboxState()
         )
 
-    private fun observeState(userId: UserId): Flow<MailboxState> =
-        selectedSidebarLocation.location
-            .mapLatest { location ->
-                MailboxState(
-                    loading = false,
-                    filteredLocations = setOf(location),
-                    mailboxItems = observeConversations(
-                        userId = userId, locations = setOf(location)
-                    )
+    fun onRefresh() = viewModelScope.launch {
+        markAsStaleMailboxItems(
+            userIds = userIds.value,
+            type = mailboxItemType.value,
+            labelId = selectedSidebarLocation.location.value.labelId
+        )
+    }
+
+    private fun observeMailboxItemType(): Flow<MailboxItemType> =
+        // We only support Message mode for now (to do: observeMailSettings).
+        flowOf(MailboxItemType.Message)
+
+    private fun observeUserIds(): Flow<List<UserId>> =
+        // We only support 1 userId for now (primary).
+        accountManager.getPrimaryUserId().map { listOfNotNull(it) }
+
+    private fun observePagingData(): Flow<PagingData<MailboxItem>> = combine(
+        userIds,
+        selectedSidebarLocation.location,
+    ) { userIds, location ->
+        when {
+            userIds.isEmpty() -> null
+            else -> Pager(PagingConfig(pageSize = PageKey.defaultPageSize)) {
+                pagingSourceFactory.create(
+                    userIds = userIds,
+                    location = location,
+                    type = mailboxItemType.value,
                 )
             }
+        }
+    }.flatMapLatest { pager ->
+        pager?.flow ?: flowOf(PagingData.empty())
+    }
 
-    private fun observeConversations(
-        userId: UserId,
-        locations: Set<SidebarLocation>,
-    ): List<Conversation> {
-        Timber.d("Faking getting messages for userId $userId")
-        return listOf(
-            Conversation(
-                ConversationId("1"),
-                "First message in ${locations.map { it.javaClass.simpleName }}"
-            ),
-            Conversation(ConversationId("2"), "Second message"),
-            Conversation(ConversationId("3"), "Third message"),
-            Conversation(ConversationId("4"), "Fourth message"),
-            Conversation(ConversationId("5"), "Fifth message"),
-            Conversation(ConversationId("6"), "Sixth message"),
-        )
+    private fun observeState(): Flow<MailboxState> = combine(
+        userIds,
+        selectedSidebarLocation.location,
+    ) { userIds, location ->
+        when {
+            userIds.isEmpty() -> MailboxState()
+            else -> MailboxState(selectedLocation = location, unread = 0)
+        }
     }
 }

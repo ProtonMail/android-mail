@@ -43,6 +43,12 @@ android {
 
 dependencies {
     implementation(Dependencies.moduleDomainLibs)
+    implementation(Proton.Core.user)
+    implementation(Proton.Core.label)
+    implementation(KotlinX.serializationJson)
+
+    implementation(project(":mail-pagination:domain"))
+    implementation(project(":mail-conversation:domain"))
 
     testImplementation(Dependencies.testLibs)
 }
