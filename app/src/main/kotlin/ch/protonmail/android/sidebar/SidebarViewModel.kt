@@ -20,28 +20,43 @@ package ch.protonmail.android.sidebar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.MailFeatureFlags.ShowSettings
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
 import ch.protonmail.android.mailmailbox.presentation.SelectedSidebarLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
+import me.proton.core.featureflag.domain.FeatureFlagManager
 import javax.inject.Inject
 
 @HiltViewModel
 class SidebarViewModel @Inject constructor(
-    private val selectedSidebarLocation: SelectedSidebarLocation
+    private val selectedSidebarLocation: SelectedSidebarLocation,
+    private val featureFlagManager: FeatureFlagManager,
+    accountManager: AccountManager
 ) : ViewModel() {
 
-    val state: Flow<State> = selectedSidebarLocation.location.mapLatest {
-        State.Enabled(it)
+    val state: Flow<State> = combine(
+        selectedSidebarLocation.location,
+        accountManager.getPrimaryUserId().filterNotNull().flatMapLatest { userId ->
+            featureFlagManager.observe(userId, ShowSettings.id)
+        }
+    ) { location, settingsFeature ->
+        State.Enabled(
+            selectedLocation = location,
+            isSettingsEnabled = settingsFeature?.isEnabled ?: ShowSettings.defaultLocalValue
+        )
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(stopTimeoutMillis),
-        State.Enabled(Inbox)
+        State.Enabled(Inbox, ShowSettings.defaultLocalValue)
     )
 
     fun onSidebarItemSelected(location: SidebarLocation) {
@@ -49,7 +64,11 @@ class SidebarViewModel @Inject constructor(
     }
 
     sealed class State {
-        data class Enabled(val selectedLocation: SidebarLocation) : State()
+        data class Enabled(
+            val selectedLocation: SidebarLocation,
+            val isSettingsEnabled: Boolean
+        ) : State()
+
         object Disabled : State()
     }
 }

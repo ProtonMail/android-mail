@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.MailFeatureFlags
 import ch.protonmail.android.R
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.AllMail
@@ -60,6 +61,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import timber.log.Timber
 
 @Composable
 @Suppress("ComplexMethod")
@@ -82,12 +84,14 @@ fun Sidebar(
     val viewState = rememberSidebarState(
         drawerState = drawerState
     )
+
     fun close() = scope.launch {
         viewState.accountPrimaryState.dismissDialog()
         viewState.drawerState.close()
     }
 
-    when (val viewModelState = rememberAsState(viewModel.state, Enabled(Inbox)).value) {
+    val initial = Enabled(Inbox, MailFeatureFlags.ShowSettings.defaultLocalValue)
+    when (val viewModelState = rememberAsState(viewModel.state, initial).value) {
         is Disabled -> Unit
         is Enabled -> {
             viewState.selectedLocation = viewModelState.selectedLocation
@@ -125,7 +129,10 @@ fun Sidebar(
                 },
                 onSettings = {
                     close()
-                    onSettings()
+                    Timber.d("Settings feature enabled = ${viewModelState.isSettingsEnabled}")
+                    if (viewModelState.isSettingsEnabled) {
+                        onSettings()
+                    }
                 },
                 onSubscription = {
                     close()

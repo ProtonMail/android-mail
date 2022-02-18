@@ -101,8 +101,7 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         EventMetadataEntity::class,
         // label
         LabelEntity::class,
-        // feature-flag
-        FeatureFlagEntity::class,
+        FeatureFlagEntity::class
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -115,7 +114,7 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
     HumanVerificationConverters::class,
     UserSettingsConverters::class,
     ContactConverters::class,
-    EventManagerConverters::class,
+    EventManagerConverters::class
 )
 abstract class AppDatabase :
     BaseDatabase(),
