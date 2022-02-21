@@ -25,7 +25,6 @@ val proxyToken: String? = privateProperties.getProperty("PROXY_TOKEN")
 
 android {
     compileSdk = Config.compileSdk
-    buildToolsVersion = Config.buildTools
 
     defaultConfig {
         applicationId = Config.applicationId
