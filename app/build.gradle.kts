@@ -146,6 +146,7 @@ dependencies {
     implementation(project(":mail-message"))
     implementation(project(":mail-conversation"))
     implementation(project(":mail-mailbox"))
+    implementation(project(":mail-settings"))
     debugImplementation(Dependencies.appDebug)
 
     kapt(Dependencies.appAnnotationProcessors)
@@ -154,6 +155,4 @@ dependencies {
     androidTestImplementation(Dependencies.androidTestLibs)
 }
 
-fun String?.toBuildConfigValue(): String {
-    return if (this != null) "\"$this\"" else "null"
-}
+fun String?.toBuildConfigValue() = if (this != null) "\"$this\"" else "null"

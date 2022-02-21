@@ -22,3 +22,7 @@ include(":mail-conversation:presentation")
 include(":mail-mailbox:data")
 include(":mail-mailbox:domain")
 include(":mail-mailbox:presentation")
+
+include(":mail-settings:data")
+include(":mail-settings:domain")
+include(":mail-settings:presentation")

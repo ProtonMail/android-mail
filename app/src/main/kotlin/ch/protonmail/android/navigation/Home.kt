@@ -35,6 +35,7 @@ import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
+import ch.protonmail.android.mailsettings.presentation.SettingsScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
 import ch.protonmail.android.sidebar.Sidebar
@@ -66,7 +67,7 @@ fun Home(
                 onMailLocation = { /* stack screens? */ },
                 onFolder = { /*navController.navigate(...)*/ },
                 onLabel = { /*navController.navigate(...)*/ },
-                onSettings = { /*navController.navigate(Destination.Screen.Settings.route)*/ },
+                onSettings = { navController.navigate(Destination.Screen.Settings.route) },
                 onSubscription = onSubscription,
                 onReportBug = onReportBug,
                 drawerState = scaffoldState.drawerState
@@ -83,6 +84,7 @@ fun Home(
                 addMailbox(navController)
                 addConversationDetail()
                 addRemoveAccountDialog(navController)
+                addSettings()
             }
         }
     }
@@ -114,4 +116,10 @@ private fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostControl
         onRemoved = { navController.popBackStack() },
         onCancelled = { navController.popBackStack() }
     )
+}
+
+fun NavGraphBuilder.addSettings() = composable(
+    route = Destination.Screen.Settings.route
+) {
+    SettingsScreen()
 }
