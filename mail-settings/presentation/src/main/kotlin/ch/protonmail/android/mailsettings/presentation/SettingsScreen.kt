@@ -25,23 +25,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailsettings.presentation.State.Data
+import ch.protonmail.android.mailsettings.presentation.State.Loading
 import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsScreen
+import me.proton.core.compose.flow.rememberAsState
 
 const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
 
 @Composable
 fun MainSettingsScreen(
     modifier: Modifier = Modifier,
-    onAccountClicked: () -> Unit
+    onAccountClicked: () -> Unit,
+    settingsViewModel: MainSettingsViewModel = hiltViewModel()
+) {
+    when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
+        is Data -> MainSettingsScreen(
+            modifier = modifier,
+            onAccountClicked = onAccountClicked,
+            state = settingsState
+        )
+        is Loading -> Unit
+    }
+}
+
+
+@Composable
+fun MainSettingsScreen(
+    modifier: Modifier = Modifier,
+    onAccountClicked: () -> Unit,
+    state: Data
 ) {
     ProtonSettingsScreen(modifier.testTag(TEST_TAG_SETTINGS_SCREEN)) {
         item { ProtonSettingsHeader(title = R.string.account_settings) }
         item {
             ProtonSettingsItem(
-                name = "Marino",
-                hint = "marino@proton.ch",
+                name = state.name,
+                hint = state.email,
                 onClick = onAccountClicked
             )
             Divider()
@@ -61,5 +83,5 @@ fun MainSettingsScreen(
 )
 @Composable
 fun previewSettings() {
-    MainSettingsScreen {}
+    MainSettingsScreen(onAccountClicked = {})
 }

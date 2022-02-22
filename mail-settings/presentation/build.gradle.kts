@@ -59,6 +59,7 @@ dependencies {
     debugImplementation(Dependencies.composeDebugLibs)
 
     implementation(Dependencies.modulePresentationLibs)
+    implementation(Proton.Core.account)
     kapt(Dependencies.hiltAnnotationProcessors)
 
     implementation(project(":mail-settings:domain"))
