@@ -18,30 +18,48 @@
 
 package ch.protonmail.android.mailsettings.presentation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Text
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import me.proton.core.compose.theme.ProtonTheme
+import androidx.compose.ui.tooling.preview.Preview
+import me.proton.core.compose.component.ProtonSettingsHeader
+import me.proton.core.compose.component.ProtonSettingsItem
+import me.proton.core.compose.component.ProtonSettingsScreen
 
 const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
 
 @Composable
-fun SettingsScreen(
-    modifier: Modifier = Modifier
+fun MainSettingsScreen(
+    modifier: Modifier = Modifier,
+    onAccountClicked: () -> Unit
 ) {
-    LazyColumn(
-        modifier = modifier
-            .background(ProtonTheme.colors.backgroundNorm)
-            .fillMaxSize()
-            .testTag(TEST_TAG_SETTINGS_SCREEN)
-    ) {
+    ProtonSettingsScreen(modifier.testTag(TEST_TAG_SETTINGS_SCREEN)) {
+        item { ProtonSettingsHeader(title = R.string.account_settings) }
         item {
-            Text("SETTINGS")
+            ProtonSettingsItem(
+                name = "Marino",
+                hint = "marino@proton.ch",
+                onClick = onAccountClicked
+            )
+            Divider()
         }
     }
 }
 
+@Preview(
+    name = "Main settings screen light mode",
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Main settings screen dark mode",
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES
+)
+@Composable
+fun previewSettings() {
+    MainSettingsScreen {}
+}

@@ -35,13 +35,14 @@ import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
-import ch.protonmail.android.mailsettings.presentation.SettingsScreen
+import ch.protonmail.android.mailsettings.presentation.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
 import ch.protonmail.android.sidebar.Sidebar
 import me.proton.core.compose.navigation.require
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 
 @Composable
 fun Home(
@@ -121,5 +122,9 @@ private fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostControl
 fun NavGraphBuilder.addSettings() = composable(
     route = Destination.Screen.Settings.route
 ) {
-    SettingsScreen()
+    MainSettingsScreen(
+        onAccountClicked = {
+            Timber.i("Account settings item clicked. Navigate to account settings.. [TODO]")
+        }
+    )
 }
