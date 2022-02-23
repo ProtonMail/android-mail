@@ -60,10 +60,13 @@ dependencies {
 
     implementation(Dependencies.modulePresentationLibs)
     implementation(Proton.Core.account)
+    implementation(Proton.Core.key)
+    implementation(Proton.Core.user)
     kapt(Dependencies.hiltAnnotationProcessors)
 
     implementation(project(":mail-settings:domain"))
 
     testImplementation(Dependencies.testLibs)
+    testImplementation(Proton.Core.network)
     androidTestImplementation(Dependencies.androidTestLibs)
 }

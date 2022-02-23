@@ -24,6 +24,7 @@ import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.presentation.State.Data
@@ -32,6 +33,7 @@ import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsScreen
 import me.proton.core.compose.flow.rememberAsState
+import timber.log.Timber
 
 const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
 
@@ -58,17 +60,33 @@ fun MainSettingsScreen(
     onAccountClicked: () -> Unit,
     state: Data
 ) {
+    Timber.d("Showing settings screen with $state")
     ProtonSettingsScreen(modifier.testTag(TEST_TAG_SETTINGS_SCREEN)) {
         item { ProtonSettingsHeader(title = R.string.account_settings) }
         item {
-            ProtonSettingsItem(
-                name = state.name,
-                hint = state.email,
-                onClick = onAccountClicked
+            AccountSettingsItem(
+                accountData = state.account,
+                onAccountClicked = onAccountClicked
             )
-            Divider()
         }
     }
+}
+
+@Composable
+fun AccountSettingsItem(
+    modifier: Modifier = Modifier,
+    accountData: AccountData?,
+    onAccountClicked: () -> Unit
+) {
+    val header = accountData?.name ?: stringResource(id = R.string.no_information_available)
+    val hint = accountData?.email
+
+    ProtonSettingsItem(
+        name = header,
+        hint = hint,
+        onClick = onAccountClicked
+    )
+    Divider()
 }
 
 @Preview(
@@ -82,6 +100,9 @@ fun MainSettingsScreen(
     uiMode = UI_MODE_NIGHT_YES
 )
 @Composable
-fun previewSettings() {
-    MainSettingsScreen(onAccountClicked = {})
+fun previewMainSettingsScreen() {
+    MainSettingsScreen(
+        onAccountClicked = { },
+        state = Data(AccountData("Marino", "marino@proton.ch"))
+    )
 }

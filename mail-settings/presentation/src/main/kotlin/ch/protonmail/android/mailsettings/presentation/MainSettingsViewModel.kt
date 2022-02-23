@@ -24,37 +24,49 @@ import ch.protonmail.android.mailsettings.presentation.State.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.accountmanager.domain.getPrimaryAccount
-import timber.log.Timber
+import me.proton.core.compose.viewmodel.stopTimeoutMillis
+import me.proton.core.domain.arch.mapSuccessValueOrNull
+import me.proton.core.user.domain.UserManager
+import me.proton.core.user.domain.entity.User
 import javax.inject.Inject
 
 @HiltViewModel
 class MainSettingsViewModel @Inject constructor(
-    accountManager: AccountManager
+    accountManager: AccountManager,
+    userManager: UserManager
 ) : ViewModel() {
 
-    val state = accountManager.getPrimaryAccount()
-        .filterNotNull()
-        .mapLatest { account ->
-            Timber.d("Loaded primary account ${account.username} email ${account.email}")
-            State.Data(account.username, account.email)
+    val state = accountManager.getPrimaryUserId().filterNotNull().flatMapLatest { userId ->
+        userManager.getUserFlow(userId).mapSuccessValueOrNull().mapLatest {
+            State.Data(buildAccountData(it))
         }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(),
-            Loading
-        )
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(stopTimeoutMillis),
+        Loading
+    )
+
+    private fun buildAccountData(user: User?) = if (user != null) {
+        AccountData(user.displayName.orEmpty(), user.email.orEmpty())
+    } else {
+        null
+    }
 
 }
 
 sealed class State {
     data class Data(
-        val name: String,
-        val email: String?
+        val account: AccountData?
     ) : State()
 
     object Loading : State()
 }
+
+data class AccountData(
+    val name: String,
+    val email: String
+)
