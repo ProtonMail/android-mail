@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.logging
 
-import ch.protonmail.android.testdata.AccountTestData
 import ch.protonmail.android.testdata.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -32,7 +31,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.accountmanager.domain.getPrimaryAccount
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -41,8 +39,7 @@ import kotlin.test.assertEquals
 class SentryUserObserverTest {
 
     private val accountManager = mockk<AccountManager> {
-        mockkStatic(this@mockk::getPrimaryAccount)
-        every { this@mockk.getPrimaryAccount() } returns flowOf(AccountTestData.readyAccount)
+        every { this@mockk.getPrimaryUserId() } returns flowOf(UserIdTestData.userId)
     }
 
     private lateinit var sentryUserObserver: SentryUserObserver
@@ -58,7 +55,6 @@ class SentryUserObserverTest {
 
     @After
     fun tearDown() {
-        unmockkStatic(accountManager::getPrimaryAccount)
         unmockkStatic(Sentry::class)
     }
 

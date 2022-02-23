@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import me.proton.core.accountmanager.data.AccountStateHandlerCoroutineScope
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.accountmanager.domain.getPrimaryAccount
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,9 +35,9 @@ class SentryUserObserver @Inject constructor(
     internal val accountManager: AccountManager,
 ) {
 
-    fun start() = accountManager.getPrimaryAccount()
-        .map { account ->
-            val user = User().apply { id = account?.userId?.id }
+    fun start() = accountManager.getPrimaryUserId()
+        .map { userId ->
+            val user = User().apply { id = userId?.id }
             Sentry.setUser(user)
         }
         .launchIn(scope)

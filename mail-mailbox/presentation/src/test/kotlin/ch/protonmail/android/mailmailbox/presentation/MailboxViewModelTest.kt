@@ -23,7 +23,6 @@ import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Archive
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +39,6 @@ class MailboxViewModelTest {
 
     private val userIdFlow = MutableSharedFlow<UserId?>()
     private val accountManager = mockk<AccountManager> {
-        mockkStatic(this@mockk::getPrimaryUserId)
         every { this@mockk.getPrimaryUserId() } returns userIdFlow
     }
 
