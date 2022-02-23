@@ -125,6 +125,22 @@ fun NavGraphBuilder.addSettings() = composable(
     MainSettingsScreen(
         onAccountClicked = {
             Timber.i("Account settings item clicked. Navigate to account settings.. [TODO]")
+        },
+        onPushNotificationsClick = {
+            Timber.i("Push Notifications setting clicked")
+        },
+        onAutoLockClick = {
+            Timber.i("Auto Lock setting clicked")
+        },
+        onAlternativeRoutingClick = {
+            Timber.i("Alternative routing setting clicked")
+        },
+        onAppLanguageClick = {
+            Timber.i("App language setting clicked")
+        },
+        onCombinedContactsClick = {
+            Timber.i("Combined contacts setting clicked")
         }
+
     )
 }

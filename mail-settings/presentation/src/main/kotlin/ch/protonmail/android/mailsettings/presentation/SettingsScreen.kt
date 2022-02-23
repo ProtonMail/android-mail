@@ -41,13 +41,24 @@ const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
 fun MainSettingsScreen(
     modifier: Modifier = Modifier,
     onAccountClicked: () -> Unit,
+    onPushNotificationsClick: () -> Unit,
+    onAutoLockClick: () -> Unit,
+    onAlternativeRoutingClick: () -> Unit,
+    onAppLanguageClick: () -> Unit,
+    onCombinedContactsClick: () -> Unit,
     settingsViewModel: MainSettingsViewModel = hiltViewModel()
 ) {
     when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
         is Data -> MainSettingsScreen(
             modifier = modifier,
-            onAccountClicked = onAccountClicked,
-            state = settingsState
+            state = settingsState,
+            onAccountClick = onAccountClicked,
+            onPushNotificationsClick = onPushNotificationsClick,
+            onAutoLockClick = onAutoLockClick,
+            onAlternativeRoutingClick = onAlternativeRoutingClick,
+            onAppLanguageClick = onAppLanguageClick,
+            onCombinedContactsClick = onCombinedContactsClick
+
         )
         is Loading -> Unit
     }
@@ -57,8 +68,13 @@ fun MainSettingsScreen(
 @Composable
 fun MainSettingsScreen(
     modifier: Modifier = Modifier,
-    onAccountClicked: () -> Unit,
-    state: Data
+    state: Data,
+    onAccountClick: () -> Unit,
+    onPushNotificationsClick: () -> Unit,
+    onAutoLockClick: () -> Unit,
+    onAlternativeRoutingClick: () -> Unit,
+    onAppLanguageClick: () -> Unit,
+    onCombinedContactsClick: () -> Unit
 ) {
     Timber.d("Showing settings screen with $state")
     ProtonSettingsList(modifier.testTag(TEST_TAG_SETTINGS_SCREEN)) {
@@ -66,8 +82,48 @@ fun MainSettingsScreen(
         item {
             AccountSettingsItem(
                 accountData = state.account,
-                onAccountClicked = onAccountClicked
+                onAccountClicked = onAccountClick
             )
+        }
+        item { ProtonSettingsHeader(title = R.string.app_settings) }
+        item {
+            ProtonSettingsItem(
+                name = stringResource(id = R.string.push_notifications),
+                onClick = onPushNotificationsClick
+            )
+            Divider()
+        }
+        item {
+            ProtonSettingsItem(
+                name = stringResource(id = R.string.auto_lock),
+                hint = stringResource(id = R.string.enabled),
+                onClick = onAutoLockClick
+            )
+            Divider()
+        }
+        item {
+            ProtonSettingsItem(
+                name = stringResource(id = R.string.alternative_routing),
+                hint = stringResource(id = R.string.allowed),
+                onClick = onAlternativeRoutingClick
+            )
+            Divider()
+        }
+        item {
+            ProtonSettingsItem(
+                name = stringResource(id = R.string.app_language),
+                hint = stringResource(id = R.string.auto_detect),
+                onClick = onAppLanguageClick
+            )
+            Divider()
+        }
+        item {
+            ProtonSettingsItem(
+                name = stringResource(id = R.string.combined_contacts),
+                hint = stringResource(id = R.string.disabled),
+                onClick = onCombinedContactsClick
+            )
+            Divider()
         }
     }
 }
@@ -103,7 +159,13 @@ fun AccountSettingsItem(
 @Composable
 fun previewMainSettingsScreen() {
     MainSettingsScreen(
-        onAccountClicked = { },
-        state = Data(AccountData("Marino", "marino@proton.ch"))
+        modifier = Modifier,
+        state = Data(AccountData("Marino", "marino@proton.ch")),
+        onAccountClick = { },
+        onPushNotificationsClick = {},
+        onAutoLockClick = {},
+        onAlternativeRoutingClick = {},
+        onAppLanguageClick = {},
+        onCombinedContactsClick = {}
     )
 }

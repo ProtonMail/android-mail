@@ -17,6 +17,20 @@
   -->
 
 <resources>
+    <!-- Settings items -->
     <string name="account_settings">Account settings</string>
+    <string name="app_settings">App settings</string>
+    <string name="push_notifications">Push notifications</string>
+    <string name="auto_lock">Auto Lock</string>
+    <string name="alternative_routing">Alternative routing</string>
+    <string name="app_language">App language</string>
+    <string name="combined_contacts">Combined contacts</string>
+
+    <!-- Settings item states -->
     <string name="no_information_available">No information available</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+    <string name="allowed">Allowed</string>
+    <string name="denied">Denied</string>
+    <string name="auto_detect">Auto-detect</string>
 </resources>
