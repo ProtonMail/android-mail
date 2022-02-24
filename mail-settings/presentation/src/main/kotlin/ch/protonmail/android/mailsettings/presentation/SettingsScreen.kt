@@ -27,13 +27,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailsettings.domain.model.AppSettings
+import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.State.Data
 import ch.protonmail.android.mailsettings.presentation.State.Loading
 import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
 import me.proton.core.compose.flow.rememberAsState
-import timber.log.Timber
 
 const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
 
@@ -41,11 +42,13 @@ const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
 fun MainSettingsScreen(
     modifier: Modifier = Modifier,
     onAccountClicked: () -> Unit,
+    onThemeClick: () -> Unit,
     onPushNotificationsClick: () -> Unit,
     onAutoLockClick: () -> Unit,
     onAlternativeRoutingClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
     onCombinedContactsClick: () -> Unit,
+    onSwipeActionsClick: () -> Unit,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
@@ -53,11 +56,13 @@ fun MainSettingsScreen(
             modifier = modifier,
             state = settingsState,
             onAccountClick = onAccountClicked,
+            onThemeClick = onThemeClick,
             onPushNotificationsClick = onPushNotificationsClick,
             onAutoLockClick = onAutoLockClick,
             onAlternativeRoutingClick = onAlternativeRoutingClick,
             onAppLanguageClick = onAppLanguageClick,
-            onCombinedContactsClick = onCombinedContactsClick
+            onCombinedContactsClick = onCombinedContactsClick,
+            onSwipeActionsClick = onSwipeActionsClick
 
         )
         is Loading -> Unit
@@ -70,13 +75,14 @@ fun MainSettingsScreen(
     modifier: Modifier = Modifier,
     state: Data,
     onAccountClick: () -> Unit,
+    onThemeClick: () -> Unit,
     onPushNotificationsClick: () -> Unit,
     onAutoLockClick: () -> Unit,
     onAlternativeRoutingClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
-    onCombinedContactsClick: () -> Unit
+    onCombinedContactsClick: () -> Unit,
+    onSwipeActionsClick: () -> Unit
 ) {
-    Timber.d("Showing settings screen with $state")
     ProtonSettingsList(modifier.testTag(TEST_TAG_SETTINGS_SCREEN)) {
         item { ProtonSettingsHeader(title = R.string.account_settings) }
         item {
@@ -88,44 +94,127 @@ fun MainSettingsScreen(
         item { ProtonSettingsHeader(title = R.string.app_settings) }
         item {
             ProtonSettingsItem(
+                name = stringResource(id = R.string.theme),
+                onClick = onThemeClick
+            )
+            Divider()
+        }
+        item {
+            ProtonSettingsItem(
                 name = stringResource(id = R.string.push_notifications),
                 onClick = onPushNotificationsClick
             )
             Divider()
         }
         item {
-            ProtonSettingsItem(
-                name = stringResource(id = R.string.auto_lock),
-                hint = stringResource(id = R.string.enabled),
-                onClick = onAutoLockClick
+            AutoLockSettingItem(
+                state = state,
+                onAutoLockClick = onAutoLockClick
             )
-            Divider()
+        }
+        item {
+            AlternativeRoutingSettingItem(
+                state = state,
+                onAlternativeRoutingClick = onAlternativeRoutingClick
+            )
+        }
+        item {
+            AppLanguageSettingItem(
+                state = state,
+                onAppLanguageClick = onAppLanguageClick
+            )
+        }
+        item {
+            CombinedContactsSettingItem(
+                state = state,
+                onCombinedContactsClick = onCombinedContactsClick
+            )
         }
         item {
             ProtonSettingsItem(
-                name = stringResource(id = R.string.alternative_routing),
-                hint = stringResource(id = R.string.allowed),
-                onClick = onAlternativeRoutingClick
-            )
-            Divider()
-        }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(id = R.string.app_language),
-                hint = stringResource(id = R.string.auto_detect),
-                onClick = onAppLanguageClick
-            )
-            Divider()
-        }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(id = R.string.combined_contacts),
-                hint = stringResource(id = R.string.disabled),
-                onClick = onCombinedContactsClick
+                name = stringResource(id = R.string.swipe_actions),
+                onClick = onSwipeActionsClick
             )
             Divider()
         }
     }
+}
+
+@Composable
+private fun CombinedContactsSettingItem(
+    modifier: Modifier = Modifier,
+    state: Data,
+    onCombinedContactsClick: () -> Unit
+) {
+    val hint = if (state.appSettings.hasCombinedContacts) {
+        stringResource(id = string.enabled)
+    } else {
+        stringResource(id = string.disabled)
+    }
+    ProtonSettingsItem(
+        modifier = modifier,
+        name = stringResource(id = string.combined_contacts),
+        hint = hint,
+        onClick = onCombinedContactsClick
+    )
+    Divider()
+}
+
+@Composable
+private fun AppLanguageSettingItem(
+    modifier: Modifier = Modifier,
+    state: Data,
+    onAppLanguageClick: () -> Unit
+) {
+    val appLanguage = state.appSettings.customAppLanguage
+        ?: stringResource(id = string.auto_detect)
+    ProtonSettingsItem(
+        modifier = modifier,
+        name = stringResource(id = string.app_language),
+        hint = appLanguage,
+        onClick = onAppLanguageClick
+    )
+    Divider()
+}
+
+@Composable
+private fun AlternativeRoutingSettingItem(
+    modifier: Modifier = Modifier,
+    state: Data,
+    onAlternativeRoutingClick: () -> Unit
+) {
+    val hint = if (state.appSettings.hasAlternativeRouting) {
+        stringResource(id = string.allowed)
+    } else {
+        stringResource(id = string.denied)
+    }
+    ProtonSettingsItem(
+        modifier = modifier,
+        name = stringResource(id = string.alternative_routing),
+        hint = hint,
+        onClick = onAlternativeRoutingClick
+    )
+    Divider()
+}
+
+@Composable
+private fun AutoLockSettingItem(
+    modifier: Modifier = Modifier,
+    state: Data,
+    onAutoLockClick: () -> Unit
+) {
+    val hint = if (state.appSettings.hasAutoLock) {
+        stringResource(id = string.enabled)
+    } else {
+        stringResource(id = string.disabled)
+    }
+    ProtonSettingsItem(
+        modifier = modifier,
+        name = stringResource(id = string.auto_lock),
+        hint = hint,
+        onClick = onAutoLockClick
+    )
+    Divider()
 }
 
 @Composable
@@ -160,12 +249,22 @@ fun AccountSettingsItem(
 fun previewMainSettingsScreen() {
     MainSettingsScreen(
         modifier = Modifier,
-        state = Data(AccountInfo("Marino", "marino@proton.ch")),
+        state = Data(
+            AccountInfo("Marino", "marino@proton.ch"),
+            AppSettings(
+                hasAutoLock = false,
+                hasAlternativeRouting = true,
+                customAppLanguage = null,
+                hasCombinedContacts = true
+            )
+        ),
         onAccountClick = { },
+        onThemeClick = {},
         onPushNotificationsClick = {},
         onAutoLockClick = {},
         onAlternativeRoutingClick = {},
         onAppLanguageClick = {},
-        onCombinedContactsClick = {}
+        onCombinedContactsClick = {},
+        onSwipeActionsClick = {}
     )
 }

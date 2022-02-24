@@ -18,9 +18,13 @@
 
 package ch.protonmail.android.mailsettings.presentation
 
+import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
+import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
+import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.presentation.State.Data
 import ch.protonmail.android.mailsettings.presentation.State.Loading
+import ch.protonmail.android.mailsettings.presentation.testdata.AppSettingsTestData
 import ch.protonmail.android.mailsettings.presentation.testdata.UserIdTestData
 import ch.protonmail.android.mailsettings.presentation.testdata.UserTestData
 import io.mockk.every
@@ -32,6 +36,8 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.arch.DataResult
+import me.proton.core.domain.arch.DataResult.Error
+import me.proton.core.domain.arch.DataResult.Success
 import me.proton.core.domain.arch.ResponseSource.Local
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.UserManager
@@ -54,6 +60,11 @@ class SettingsViewModelTest {
         every { this@mockk.getUserFlow(UserIdTestData.userId) } returns userFlow
     }
 
+    private val appSettingsFlow = MutableSharedFlow<AppSettings>()
+    private val observeAppSettings = mockk<ObserveAppSettings> {
+        every { this@mockk.invoke() } returns appSettingsFlow
+    }
+
     private lateinit var viewModel: SettingsViewModel
 
     @Before
@@ -62,7 +73,8 @@ class SettingsViewModelTest {
 
         viewModel = SettingsViewModel(
             accountManager,
-            userManager
+            userManager,
+            observeAppSettings
         )
     }
 
@@ -74,13 +86,15 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun stateHasAccountDataWhenUserManagerReturnsValidUser() = runTest {
+    fun stateHasAccountInfoWhenUserManagerReturnsValidUser() = runTest {
         viewModel.state.test {
-            awaitItem() as Loading // Initial state
+            // Given
+            initialStateEmitted()
+            appSettingsFlow.emit(AppSettingsTestData.appSettings)
 
             // When
-            userIdFlow.emit(UserIdTestData.userId)
-            userFlow.emit(DataResult.Success(Local, UserTestData.user))
+            primaryUserIdIs(UserIdTestData.userId)
+            userManagerSuccessfullyReturns(UserTestData.user)
 
             // Then
             val actual = awaitItem() as Data
@@ -93,17 +107,58 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun stateHasNullAccountDataWhenUserManagerReturnsAnError() = runTest {
+    fun stateHasNullAccountInfoWhenUserManagerReturnsAnError() = runTest {
         viewModel.state.test {
-            awaitItem() as Loading // Initial state
+            // Given
+            initialStateEmitted()
+            appSettingsFlow.emit(AppSettingsTestData.appSettings)
 
             // When
-            userIdFlow.emit(UserIdTestData.userId)
-            userFlow.emit(DataResult.Error.Local("Test-IOException", IOException("Test")))
+            primaryUserIdIs(UserIdTestData.userId)
+            userManagerReturnsError()
 
             // Then
             val actual = awaitItem() as Data
             assertNull(actual.account)
         }
+    }
+
+    @Test
+    fun stateHasAppSettingsInfoWhenGetAppSettingsUseCaseReturnsValidData() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            primaryUserIdIs(UserIdTestData.userId)
+            userManagerSuccessfullyReturns(UserTestData.user)
+
+            // When
+            appSettingsFlow.emit(AppSettingsTestData.appSettings)
+
+            // Then
+            val actual = awaitItem() as Data
+            val expected = AppSettings(
+                hasAutoLock = false,
+                hasAlternativeRouting = true,
+                customAppLanguage = null,
+                hasCombinedContacts = true
+            )
+            assertEquals(expected, actual.appSettings)
+        }
+    }
+
+    private suspend fun userManagerReturnsError() {
+        userFlow.emit(Error.Local("Test-IOException", IOException("Test")))
+    }
+
+    private suspend fun userManagerSuccessfullyReturns(user: User) {
+        userFlow.emit(Success(Local, user))
+    }
+
+    private suspend fun primaryUserIdIs(userId: UserId) {
+        userIdFlow.emit(userId)
+    }
+
+    private suspend fun FlowTurbine<State>.initialStateEmitted() {
+        awaitItem() as Loading
     }
 }

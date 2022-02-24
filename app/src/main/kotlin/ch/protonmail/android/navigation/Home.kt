@@ -126,6 +126,9 @@ fun NavGraphBuilder.addSettings() = composable(
         onAccountClicked = {
             Timber.i("Account settings item clicked. Navigate to account settings.. [TODO]")
         },
+        onThemeClick = {
+            Timber.i("Theme setting clicked")
+        },
         onPushNotificationsClick = {
             Timber.i("Push Notifications setting clicked")
         },
@@ -140,7 +143,9 @@ fun NavGraphBuilder.addSettings() = composable(
         },
         onCombinedContactsClick = {
             Timber.i("Combined contacts setting clicked")
+        },
+        onSwipeActionsClick = {
+            Timber.i("Swipe actions setting clicked")
         }
-
     )
 }

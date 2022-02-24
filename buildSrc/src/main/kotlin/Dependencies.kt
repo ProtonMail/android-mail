@@ -98,6 +98,8 @@ object Dependencies {
     }
 
     val moduleDomainLibs = mutableListOf<String>().apply {
+        add(JavaX.inject)
+        add(KotlinX.coroutinesCore)
         add(Proton.Core.domain)
         add(Proton.Core.utilKotlin)
     }

@@ -20,12 +20,14 @@ package ch.protonmail.android.mailsettings.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
+import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.presentation.State.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
@@ -37,18 +39,27 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     accountManager: AccountManager,
-    userManager: UserManager
+    userManager: UserManager,
+    observeAppSettings: ObserveAppSettings
 ) : ViewModel() {
 
-    val state = accountManager.getPrimaryUserId().filterNotNull().flatMapLatest { userId ->
-        userManager.getUserFlow(userId).mapSuccessValueOrNull().mapLatest {
-            State.Data(buildAccountData(it))
-        }
+    val state = combine(
+        observePrimaryUser(accountManager, userManager),
+        observeAppSettings()
+    ) { user, appSettings ->
+        State.Data(buildAccountData(user), appSettings)
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(stopTimeoutMillis),
         Loading
     )
+
+    private fun observePrimaryUser(
+        accountManager: AccountManager,
+        userManager: UserManager
+    ) = accountManager.getPrimaryUserId().filterNotNull().flatMapLatest { userId ->
+        userManager.getUserFlow(userId).mapSuccessValueOrNull()
+    }
 
     private fun buildAccountData(user: User?) = if (user != null) {
         AccountInfo(user.displayName.orEmpty(), user.email.orEmpty())
@@ -60,7 +71,8 @@ class SettingsViewModel @Inject constructor(
 
 sealed class State {
     data class Data(
-        val account: AccountInfo?
+        val account: AccountInfo?,
+        val appSettings: AppSettings
     ) : State()
 
     object Loading : State()

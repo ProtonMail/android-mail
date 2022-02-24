@@ -53,6 +53,10 @@ object Versions {
         const val timber = "5.0.1"
     }
 
+    object JavaX {
+        const val inject = "1"
+    }
+
     object Junit {
         const val junit = "4.13.2"
     }

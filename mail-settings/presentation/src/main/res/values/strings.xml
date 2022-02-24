@@ -20,11 +20,13 @@
     <!-- Settings items -->
     <string name="account_settings">Account settings</string>
     <string name="app_settings">App settings</string>
+    <string name="theme">Theme</string>
     <string name="push_notifications">Push notifications</string>
     <string name="auto_lock">Auto Lock</string>
     <string name="alternative_routing">Alternative routing</string>
     <string name="app_language">App language</string>
     <string name="combined_contacts">Combined contacts</string>
+    <string name="swipe_actions">Swipe actions</string>
 
     <!-- Settings item states -->
     <string name="no_information_available">No information available</string>

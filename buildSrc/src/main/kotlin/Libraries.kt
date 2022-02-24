@@ -109,6 +109,10 @@ object JakeWharton {
     const val timber = "com.jakewharton.timber:timber:${Versions.JakeWharton.timber}"
 }
 
+object JavaX {
+    const val inject = "javax.inject:javax.inject:${Versions.JavaX.inject}"
+}
+
 object Junit {
     const val junit = "junit:junit:${Versions.Junit.junit}"
 }
