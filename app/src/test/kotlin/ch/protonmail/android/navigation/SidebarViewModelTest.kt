@@ -29,6 +29,8 @@ import ch.protonmail.android.testdata.FeatureFlagTestData
 import ch.protonmail.android.testdata.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
+import io.mockk.unmockkObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,6 +41,7 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.featureflag.domain.FeatureFlagManager
 import me.proton.core.featureflag.domain.entity.FeatureFlag
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -63,21 +66,27 @@ class SidebarViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
+        mockkObject(MailFeatureFlags.ShowSettings)
 
-        sidebarViewModel = SidebarViewModel(
-            selectedSidebarLocation,
-            featureFlagManager,
-            accountManager
-        )
+        initViewModel()
+    }
+
+    @After
+    fun tearDown() {
+        unmockkObject(MailFeatureFlags.ShowSettings)
     }
 
     @Test
     fun emitsInitialSidebarStateWhenDataIsBeingLoaded() = runTest {
+        // Given
+        every { MailFeatureFlags.ShowSettings.defaultLocalValue } returns false
+        initViewModel()
+
         // When
         sidebarViewModel.state.test {
             // Then
             val actual = awaitItem() as Enabled
-            val expected = Enabled(Inbox, MailFeatureFlags.ShowSettings.defaultLocalValue)
+            val expected = Enabled(Inbox, false)
             assertEquals(expected, actual)
         }
     }
@@ -85,13 +94,16 @@ class SidebarViewModelTest {
     @Test
     fun emitsIsSettingsEnabledTrueWhenSettingsFeatureToggleIsEnabled() = runTest {
         // Given
+        every { MailFeatureFlags.ShowSettings.defaultLocalValue } returns true
+        initViewModel()
+
         sidebarViewModel.state.test {
             // When
             showSettingsFlagFlow.emit(FeatureFlagTestData.enabledShowSettings)
 
             // Then
             // Await one item only since it will be the same as the default value
-            // (true for debug builds) and this will not cause further emissions
+            // (true) and this test's "When" clause will not cause further emissions
             val actual = awaitItem() as Enabled
             val expected = Enabled(Inbox, true)
             assertEquals(expected, actual)
@@ -100,10 +112,12 @@ class SidebarViewModelTest {
 
     @Test
     fun emitsIsSettingsEnabledFalseWhenSettingsFeatureToggleIsDisabled() = runTest {
+        // Given
+        every { MailFeatureFlags.ShowSettings.defaultLocalValue } returns true
+        initViewModel()
+
         sidebarViewModel.state.test {
-            // First item is the default value, which is true as
-            // `MailFeatureFlags.localDefaultValue` is true by default for debug builds
-            awaitItem()
+            awaitItem() // First item is the default value with settingsEnabled=true
 
             // When
             showSettingsFlagFlow.emit(FeatureFlagTestData.disabledShowSettings)
@@ -113,5 +127,20 @@ class SidebarViewModelTest {
             val expected = Enabled(Inbox, false)
             assertEquals(expected, actual)
         }
+    }
+
+    /**
+     * Initialises the ViewModel (Subject of the test)
+     * This is useful as due to the nature of the viewModel's "state flow"
+     * some mocks are evaluated at init time (eg. `ShowSettings.defaultLocalValue`).
+     * Thus, if we want to run a test with a different value for such mock the
+     * VM has to be re-initialised
+     */
+    private fun initViewModel() {
+        sidebarViewModel = SidebarViewModel(
+            selectedSidebarLocation,
+            featureFlagManager,
+            accountManager
+        )
     }
 }
