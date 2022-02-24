@@ -46,7 +46,7 @@ fun MainSettingsScreen(
     onAlternativeRoutingClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
     onCombinedContactsClick: () -> Unit,
-    settingsViewModel: MainSettingsViewModel = hiltViewModel()
+    settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
         is Data -> MainSettingsScreen(
@@ -81,7 +81,7 @@ fun MainSettingsScreen(
         item { ProtonSettingsHeader(title = R.string.account_settings) }
         item {
             AccountSettingsItem(
-                accountData = state.account,
+                accountInfo = state.account,
                 onAccountClicked = onAccountClick
             )
         }
@@ -131,11 +131,11 @@ fun MainSettingsScreen(
 @Composable
 fun AccountSettingsItem(
     modifier: Modifier = Modifier,
-    accountData: AccountData?,
+    accountInfo: AccountInfo?,
     onAccountClicked: () -> Unit
 ) {
-    val header = accountData?.name ?: stringResource(id = R.string.no_information_available)
-    val hint = accountData?.email
+    val header = accountInfo?.name ?: stringResource(id = R.string.no_information_available)
+    val hint = accountInfo?.email
 
     ProtonSettingsItem(
         modifier = modifier,
@@ -160,7 +160,7 @@ fun AccountSettingsItem(
 fun previewMainSettingsScreen() {
     MainSettingsScreen(
         modifier = Modifier,
-        state = Data(AccountData("Marino", "marino@proton.ch")),
+        state = Data(AccountInfo("Marino", "marino@proton.ch")),
         onAccountClick = { },
         onPushNotificationsClick = {},
         onAutoLockClick = {},

@@ -35,7 +35,7 @@ import me.proton.core.user.domain.entity.User
 import javax.inject.Inject
 
 @HiltViewModel
-class MainSettingsViewModel @Inject constructor(
+class SettingsViewModel @Inject constructor(
     accountManager: AccountManager,
     userManager: UserManager
 ) : ViewModel() {
@@ -51,7 +51,7 @@ class MainSettingsViewModel @Inject constructor(
     )
 
     private fun buildAccountData(user: User?) = if (user != null) {
-        AccountData(user.displayName.orEmpty(), user.email.orEmpty())
+        AccountInfo(user.displayName.orEmpty(), user.email.orEmpty())
     } else {
         null
     }
@@ -60,13 +60,13 @@ class MainSettingsViewModel @Inject constructor(
 
 sealed class State {
     data class Data(
-        val account: AccountData?
+        val account: AccountInfo?
     ) : State()
 
     object Loading : State()
 }
 
-data class AccountData(
+data class AccountInfo(
     val name: String,
     val email: String
 )

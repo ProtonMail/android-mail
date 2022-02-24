@@ -42,7 +42,7 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 
-class MainSettingsViewModelTest {
+class SettingsViewModelTest {
 
     private val userIdFlow = MutableSharedFlow<UserId?>()
     private val accountManager = mockk<AccountManager> {
@@ -54,13 +54,13 @@ class MainSettingsViewModelTest {
         every { this@mockk.getUserFlow(UserIdTestData.userId) } returns userFlow
     }
 
-    private lateinit var viewModel: MainSettingsViewModel
+    private lateinit var viewModel: SettingsViewModel
 
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
-        viewModel = MainSettingsViewModel(
+        viewModel = SettingsViewModel(
             accountManager,
             userManager
         )
@@ -84,7 +84,7 @@ class MainSettingsViewModelTest {
 
             // Then
             val actual = awaitItem() as Data
-            val expected = AccountData(
+            val expected = AccountInfo(
                 UserTestData.USER_DISPLAY_NAME_RAW,
                 UserTestData.USER_EMAIL_RAW
             )
