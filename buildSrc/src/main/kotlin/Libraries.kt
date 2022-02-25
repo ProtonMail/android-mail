@@ -36,12 +36,19 @@ object AndroidX {
         const val annotation = "androidx.annotation:annotation:$version"
     }
 
+    object DataStore {
+        private const val version = Versions.AndroidX.datastore
+
+        const val preferences = "androidx.datastore:datastore-preferences:$version"
+    }
+
     object Hilt {
         private const val version = Versions.AndroidX.hilt
-        const val versionNavigationCompose = Versions.AndroidX.hiltNavigationCompose
+        private const val versionNavigationCompose = Versions.AndroidX.hiltNavigationCompose
 
         const val compiler = "androidx.hilt:hilt-compiler:$version"
-        const val navigationCompose = "androidx.hilt:hilt-navigation-compose:$versionNavigationCompose"
+        const val navigationCompose =
+            "androidx.hilt:hilt-navigation-compose:$versionNavigationCompose"
         const val work = "androidx.hilt:hilt-work:$version"
     }
 

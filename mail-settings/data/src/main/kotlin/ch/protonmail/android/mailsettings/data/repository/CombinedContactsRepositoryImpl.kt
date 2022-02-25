@@ -18,13 +18,26 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import ch.protonmail.android.mailsettings.data.DataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class CombinedContactsRepositoryImpl : CombinedContactsRepository {
+private const val DEFAULT_VALUE = false
+
+class CombinedContactsRepositoryImpl @Inject constructor(
+    private val dataStoreProvider: DataStoreProvider
+) : CombinedContactsRepository {
+
+    private val hasCombinedContactsKey = booleanPreferencesKey("hasCombinedContactsPrefKey")
 
     override fun observe(): Flow<CombinedContactsPreference> =
-        flowOf(CombinedContactsPreference(false))
+        dataStoreProvider.combinedContactsDataStore.data.map { prefs ->
+            val hasCombinedContacts = prefs[hasCombinedContactsKey] ?: DEFAULT_VALUE
+            CombinedContactsPreference(hasCombinedContacts)
+        }
+
 }

@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.di
 
+import android.content.Context
+import ch.protonmail.android.mailsettings.data.DataStoreProvider
 import ch.protonmail.android.mailsettings.data.repository.AlternativeRoutingRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
@@ -29,6 +31,7 @@ import ch.protonmail.android.mailsettings.domain.repository.CustomAppLanguageRep
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -38,17 +41,27 @@ object SettingsModule {
 
     @Provides
     @Singleton
-    fun provideAutoLockRepository(): AutoLockRepository = AutoLockRepositoryImpl()
+    fun provideDataStoreProvider(
+        @ApplicationContext context: Context
+    ): DataStoreProvider = DataStoreProvider(context)
 
     @Provides
     @Singleton
-    fun provideAlternativeRoutingRepository(): AlternativeRoutingRepository =
-        AlternativeRoutingRepositoryImpl()
+    fun provideAutoLockRepository(
+        dataStoreProvider: DataStoreProvider
+    ): AutoLockRepository = AutoLockRepositoryImpl(dataStoreProvider)
 
     @Provides
     @Singleton
-    fun provideCombinedContactsRepository(): CombinedContactsRepository =
-        CombinedContactsRepositoryImpl()
+    fun provideAlternativeRoutingRepository(
+        dataStoreProvider: DataStoreProvider
+    ): AlternativeRoutingRepository = AlternativeRoutingRepositoryImpl(dataStoreProvider)
+
+    @Provides
+    @Singleton
+    fun provideCombinedContactsRepository(
+        dataStoreProvider: DataStoreProvider
+    ): CombinedContactsRepository = CombinedContactsRepositoryImpl(dataStoreProvider)
 
     @Provides
     @Singleton

@@ -18,13 +18,26 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import ch.protonmail.android.mailsettings.data.DataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class AlternativeRoutingRepositoryImpl : AlternativeRoutingRepository {
+private const val DEFAULT_VALUE = true
+
+class AlternativeRoutingRepositoryImpl @Inject constructor(
+    private val dataStoreProvider: DataStoreProvider
+) : AlternativeRoutingRepository {
+
+    private val hasAlternativeRoutingKey = booleanPreferencesKey("hasAlternativeRoutingPrefKey")
 
     override fun observe(): Flow<AlternativeRoutingPreference> =
-        flowOf(AlternativeRoutingPreference(true))
+        dataStoreProvider.alternativeRoutingDataStore.data.map { prefs ->
+            val hasAlternativeRouting = prefs[hasAlternativeRoutingKey] ?: DEFAULT_VALUE
+            AlternativeRoutingPreference(hasAlternativeRouting)
+        }
+
 }

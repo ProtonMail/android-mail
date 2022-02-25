@@ -45,6 +45,7 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.moduleDataLibs)
+    implementation(Dagger.hiltAndroid)
 
     implementation(project(":mail-settings:domain"))
 

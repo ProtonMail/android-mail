@@ -18,18 +18,30 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
+import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.model.CustomAppLanguagePreference
 import ch.protonmail.android.mailsettings.domain.repository.CustomAppLanguageRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import javax.inject.Inject
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Test
 
-class CustomAppLanguageRepositoryImpl @Inject constructor() : CustomAppLanguageRepository {
+class CustomAppLanguageRepositoryImplTest {
 
-    /**
-     * TODO: defining how this data is store will be done in MAILANDR-95
-     */
-    override fun observe(): Flow<CustomAppLanguagePreference?> =
-        flowOf(CustomAppLanguagePreference("Auto-Detect"))
+    private lateinit var customLanguageRepository: CustomAppLanguageRepository
 
+    @Before
+    fun setUp() {
+        customLanguageRepository = CustomAppLanguageRepositoryImpl()
+    }
+
+    @Test
+    fun returnsAutoDetectWhenNoPreferenceIsStoredLocally() = runTest {
+        // When
+        customLanguageRepository.observe().test {
+            // Then
+            assertEquals(CustomAppLanguagePreference("Auto-Detect"), awaitItem())
+            awaitComplete()
+        }
+    }
 }

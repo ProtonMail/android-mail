@@ -18,12 +18,25 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import ch.protonmail.android.mailsettings.data.DataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.AutoLockPreference
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class AutoLockRepositoryImpl : AutoLockRepository {
+private const val DEFAULT_VALUE = false
 
-    override fun observe(): Flow<AutoLockPreference> = flowOf(AutoLockPreference(false))
+class AutoLockRepositoryImpl @Inject constructor(
+    private val dataStoreProvider: DataStoreProvider
+) : AutoLockRepository {
+
+    private val hasAutoLockKey = booleanPreferencesKey("hasAutoLockPrefKey")
+
+    override fun observe(): Flow<AutoLockPreference> =
+        dataStoreProvider.autoLockDataStore.data.map { prefs ->
+            val hasAutoLock = prefs[hasAutoLockKey] ?: DEFAULT_VALUE
+            AutoLockPreference(hasAutoLock)
+        }
 }

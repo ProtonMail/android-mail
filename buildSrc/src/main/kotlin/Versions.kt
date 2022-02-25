@@ -13,6 +13,7 @@ object Versions {
         const val arch = "2.1.0"
         const val annotation = "1.2.0"
         const val compose = "1.2.0-alpha01"
+        const val datastore = "1.0.0"
         const val hilt = "1.0.0"
         const val hiltNavigationCompose = "1.0.0-rc01"
         const val lifecycle = "2.4.0"
