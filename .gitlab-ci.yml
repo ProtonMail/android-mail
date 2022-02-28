@@ -94,11 +94,13 @@ build_debug:
 
 build_release:
   extends: .build_job
-  only:
-    - master
   script:
     - base64 -d - < "$PROTON_RELEASE_KEYSTORE_BASE64" > keystore/ProtonMail.keystore
     - bundle exec fastlane assembleRelease
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+      when: never
 
 
 run_unit_test:
@@ -140,8 +142,6 @@ coverage report:
 
 deploy_to_firebase:
   stage: deploy
-  only:
-    - master
   dependencies:
     - build_release
   tags:
@@ -149,6 +149,10 @@ deploy_to_firebase:
   script:
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
     - bundle exec fastlane deployToFirebase
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+      when: never
 
 
 include:
