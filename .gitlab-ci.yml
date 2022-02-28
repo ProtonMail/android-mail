@@ -9,8 +9,9 @@ before_script:
   - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
   - bundle install
+  - !reference [.checkout-core-submodule, before_script] # included from checkout-core.gitlab-ci.yml
 variables:
-  GIT_SUBMODULE_STRATEGY: recursive
+  ORG_GRADLE_PROJECT_useCoreGitSubmodule: "true" # see included checkout-core.gitlab-ci.yml for usage context
 
 cache:
   - key: $CI_COMMIT_REF_SLUG
@@ -26,8 +27,14 @@ stages:
   - report
   - deploy
 
+# See included checkout-core.gitlab-ci.yml for usage context
+.checkout_core_job:
+  variables:
+    CHECKOUT_CORE_SUBMODULE: "true"
+
 .build_job:
   stage: build
+  extends: .checkout_core_job
   tags:
     - xlarge-k8s
   artifacts:
@@ -46,6 +53,7 @@ stages:
 
 analyse:
   stage: analyse
+  extends: .checkout_core_job
   cache:
     - key: $CI_COMMIT_REF_SLUG
       policy: pull-push
@@ -95,6 +103,7 @@ build_release:
 
 run_unit_test:
   stage: test
+  extends: .checkout_core_job
   tags:
     - xlarge-k8s
   dependencies:
@@ -116,6 +125,7 @@ run_firebase_ui_tests:
 
 coverage report:
   stage: report
+  extends: .checkout_core_job
   tags:
     - xlarge-k8s
   script:

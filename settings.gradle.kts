@@ -1,14 +1,11 @@
 rootProject.name = "ProtonMail"
 
-// Use core libs from maven artifacts or from git submodule
-val useCoreGitSubmoduleAsBoolean: Boolean = extensions.extraProperties
-    .properties["useCoreGitSubmodule"].toString().toBoolean()
-if (useCoreGitSubmoduleAsBoolean) {
-    println("Use core libs from git submodule \'./proton-libs\'")
-    includeBuild("proton-libs")
-} else {
-    println("Use core libs from Maven artifacts")
-}
+// Use core libs from maven artifacts or from git submodule using Gradle's included build:
+// - to enable/disable locally: gradle.properties > useCoreGitSubmodule
+// - to enable/disable on CI: .gitlab-ci.yml > ORG_GRADLE_PROJECT_useCoreGitSubmodule
+val coreSubmoduleDir = rootDir.resolve("proton-libs")
+extra.set("coreSubmoduleDir", coreSubmoduleDir)
+apply(from = "${coreSubmoduleDir.path}/gradle/include-core-libs.gradle.kts")
 
 include(":app")
 include(":test-data")
