@@ -28,6 +28,7 @@ import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRe
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import ch.protonmail.android.mailsettings.domain.repository.CustomAppLanguageRepository
+import ch.protonmail.android.mailsettings.presentation.GetAppInformation
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,6 +39,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object SettingsModule {
+
+    @Provides
+    @Singleton
+    fun provideGetAppVersion(
+        @ApplicationContext context: Context
+    ): GetAppInformation = GetAppInformation(context)
 
     @Provides
     @Singleton

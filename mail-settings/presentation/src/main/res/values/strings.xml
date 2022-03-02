@@ -35,4 +35,6 @@
     <string name="allowed">Allowed</string>
     <string name="denied">Denied</string>
     <string name="auto_detect">Auto-detect</string>
+    <string name="app_information">App Information</string>
+    <string name="app_version">App version</string>
 </resources>

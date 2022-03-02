@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
+import ch.protonmail.android.mailsettings.domain.model.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.presentation.State.Data
 import ch.protonmail.android.mailsettings.presentation.State.Loading
@@ -65,6 +66,10 @@ class SettingsViewModelTest {
         every { this@mockk.invoke() } returns appSettingsFlow
     }
 
+    private val getAppInformation = mockk<GetAppInformation> {
+        every { this@mockk.invoke() } returns AppInformation("6.0.0-alpha")
+    }
+
     private lateinit var viewModel: SettingsViewModel
 
     @Before
@@ -74,7 +79,8 @@ class SettingsViewModelTest {
         viewModel = SettingsViewModel(
             accountManager,
             userManager,
-            observeAppSettings
+            observeAppSettings,
+            getAppInformation
         )
     }
 
@@ -143,6 +149,22 @@ class SettingsViewModelTest {
                 hasCombinedContacts = true
             )
             assertEquals(expected, actual.appSettings)
+        }
+    }
+
+    @Test
+    fun stateHasAppVersionInfoWhenGetAppInfoReturnsThem() = runTest {
+        viewModel.state.test {
+            // Given
+            every { getAppInformation() } returns AppInformation("6.0.0-alpha-01")
+            initialStateEmitted()
+            primaryUserIdIs(UserIdTestData.userId)
+            userManagerSuccessfullyReturns(UserTestData.user)
+            appSettingsFlow.emit(AppSettingsTestData.appSettings)
+
+            // Then
+            val actual = awaitItem() as Data
+            assertEquals(AppInformation("6.0.0-alpha-01"), actual.appInformation)
         }
     }
 

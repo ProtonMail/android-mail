@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailsettings.domain.model.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.State.Data
@@ -136,6 +137,14 @@ fun MainSettingsScreen(
                 onClick = onSwipeActionsClick
             )
             Divider()
+        }
+        item { ProtonSettingsHeader(title = R.string.app_information) }
+        item {
+            ProtonSettingsItem(
+                name = stringResource(id = R.string.app_version),
+                hint = state.appInformation.version,
+                isClickable = false
+            )
         }
     }
 }
@@ -256,7 +265,8 @@ fun previewMainSettingsScreen() {
                 hasAlternativeRouting = true,
                 customAppLanguage = null,
                 hasCombinedContacts = true
-            )
+            ),
+            AppInformation("6.0.0-alpha")
         ),
         onAccountClick = { },
         onThemeClick = {},

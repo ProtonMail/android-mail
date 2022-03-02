@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
+import ch.protonmail.android.mailsettings.domain.model.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.presentation.State.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,14 +41,19 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     accountManager: AccountManager,
     userManager: UserManager,
-    observeAppSettings: ObserveAppSettings
+    observeAppSettings: ObserveAppSettings,
+    getAppInformation: GetAppInformation
 ) : ViewModel() {
 
     val state = combine(
         observePrimaryUser(accountManager, userManager),
         observeAppSettings()
     ) { user, appSettings ->
-        State.Data(buildAccountData(user), appSettings)
+        State.Data(
+            buildAccountData(user),
+            appSettings,
+            getAppInformation()
+        )
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(stopTimeoutMillis),
@@ -72,7 +78,8 @@ class SettingsViewModel @Inject constructor(
 sealed class State {
     data class Data(
         val account: AccountInfo?,
-        val appSettings: AppSettings
+        val appSettings: AppSettings,
+        val appInformation: AppInformation
     ) : State()
 
     object Loading : State()
