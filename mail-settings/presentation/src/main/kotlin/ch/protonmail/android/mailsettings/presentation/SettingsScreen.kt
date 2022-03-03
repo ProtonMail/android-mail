@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.material.Divider
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -35,6 +36,7 @@ import ch.protonmail.android.mailsettings.presentation.State.Loading
 import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
+import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
 
 const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
@@ -50,6 +52,7 @@ fun MainSettingsScreen(
     onAppLanguageClick: () -> Unit,
     onCombinedContactsClick: () -> Unit,
     onSwipeActionsClick: () -> Unit,
+    onBackClick: () -> Unit,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
@@ -63,8 +66,8 @@ fun MainSettingsScreen(
             onAlternativeRoutingClick = onAlternativeRoutingClick,
             onAppLanguageClick = onAppLanguageClick,
             onCombinedContactsClick = onCombinedContactsClick,
-            onSwipeActionsClick = onSwipeActionsClick
-
+            onSwipeActionsClick = onSwipeActionsClick,
+            onBackClick = onBackClick
         )
         is Loading -> Unit
     }
@@ -82,71 +85,83 @@ fun MainSettingsScreen(
     onAlternativeRoutingClick: () -> Unit,
     onAppLanguageClick: () -> Unit,
     onCombinedContactsClick: () -> Unit,
-    onSwipeActionsClick: () -> Unit
+    onSwipeActionsClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
-    ProtonSettingsList(modifier.testTag(TEST_TAG_SETTINGS_SCREEN)) {
-        item { ProtonSettingsHeader(title = R.string.account_settings) }
-        item {
-            AccountSettingsItem(
-                accountInfo = state.account,
-                onAccountClicked = onAccountClick
+    Scaffold(
+        modifier = modifier.testTag(TEST_TAG_SETTINGS_SCREEN),
+        topBar = {
+            ProtonSettingsTopBar(
+                title = stringResource(id = R.string.settings),
+                onBackClick = onBackClick
             )
+        },
+        content = {
+            ProtonSettingsList {
+                item { ProtonSettingsHeader(title = R.string.account_settings) }
+                item {
+                    AccountSettingsItem(
+                        accountInfo = state.account,
+                        onAccountClicked = onAccountClick
+                    )
+                }
+                item { ProtonSettingsHeader(title = R.string.app_settings) }
+                item {
+                    ProtonSettingsItem(
+                        name = stringResource(id = R.string.theme),
+                        onClick = onThemeClick
+                    )
+                    Divider()
+                }
+                item {
+                    ProtonSettingsItem(
+                        name = stringResource(id = R.string.push_notifications),
+                        onClick = onPushNotificationsClick
+                    )
+                    Divider()
+                }
+                item {
+                    AutoLockSettingItem(
+                        state = state,
+                        onAutoLockClick = onAutoLockClick
+                    )
+                }
+                item {
+                    AlternativeRoutingSettingItem(
+                        state = state,
+                        onAlternativeRoutingClick = onAlternativeRoutingClick
+                    )
+                }
+                item {
+                    AppLanguageSettingItem(
+                        state = state,
+                        onAppLanguageClick = onAppLanguageClick
+                    )
+                }
+                item {
+                    CombinedContactsSettingItem(
+                        state = state,
+                        onCombinedContactsClick = onCombinedContactsClick
+                    )
+                }
+                item {
+                    ProtonSettingsItem(
+                        name = stringResource(id = R.string.swipe_actions),
+                        onClick = onSwipeActionsClick
+                    )
+                    Divider()
+                }
+                item { ProtonSettingsHeader(title = R.string.app_information) }
+                item {
+                    ProtonSettingsItem(
+                        name = stringResource(id = R.string.app_version),
+                        hint = state.appInformation.version,
+                        isClickable = false
+                    )
+                }
+            }
         }
-        item { ProtonSettingsHeader(title = R.string.app_settings) }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(id = R.string.theme),
-                onClick = onThemeClick
-            )
-            Divider()
-        }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(id = R.string.push_notifications),
-                onClick = onPushNotificationsClick
-            )
-            Divider()
-        }
-        item {
-            AutoLockSettingItem(
-                state = state,
-                onAutoLockClick = onAutoLockClick
-            )
-        }
-        item {
-            AlternativeRoutingSettingItem(
-                state = state,
-                onAlternativeRoutingClick = onAlternativeRoutingClick
-            )
-        }
-        item {
-            AppLanguageSettingItem(
-                state = state,
-                onAppLanguageClick = onAppLanguageClick
-            )
-        }
-        item {
-            CombinedContactsSettingItem(
-                state = state,
-                onCombinedContactsClick = onCombinedContactsClick
-            )
-        }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(id = R.string.swipe_actions),
-                onClick = onSwipeActionsClick
-            )
-            Divider()
-        }
-        item { ProtonSettingsHeader(title = R.string.app_information) }
-        item {
-            ProtonSettingsItem(
-                name = stringResource(id = R.string.app_version),
-                hint = state.appInformation.version,
-                isClickable = false
-            )
-        }
-    }
+    )
 }
 
 @Composable
@@ -275,6 +290,7 @@ fun previewMainSettingsScreen() {
         onAlternativeRoutingClick = {},
         onAppLanguageClick = {},
         onCombinedContactsClick = {},
-        onSwipeActionsClick = {}
+        onSwipeActionsClick = {},
+        onBackClick = {}
     )
 }

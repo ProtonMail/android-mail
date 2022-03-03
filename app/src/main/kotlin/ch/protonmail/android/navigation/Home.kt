@@ -85,7 +85,7 @@ fun Home(
                 addMailbox(navController)
                 addConversationDetail()
                 addRemoveAccountDialog(navController)
-                addSettings()
+                addSettings(navController)
             }
         }
     }
@@ -119,7 +119,7 @@ private fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostControl
     )
 }
 
-fun NavGraphBuilder.addSettings() = composable(
+fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
     route = Destination.Screen.Settings.route
 ) {
     MainSettingsScreen(
@@ -146,6 +146,9 @@ fun NavGraphBuilder.addSettings() = composable(
         },
         onSwipeActionsClick = {
             Timber.i("Swipe actions setting clicked")
+        },
+        onBackClick = {
+            navController.popBackStack()
         }
     )
 }

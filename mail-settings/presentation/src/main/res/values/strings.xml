@@ -17,6 +17,7 @@
   -->
 
 <resources>
+    <string name="settings">Settings</string>
     <!-- Settings items -->
     <string name="account_settings">Account settings</string>
     <string name="app_settings">App settings</string>
