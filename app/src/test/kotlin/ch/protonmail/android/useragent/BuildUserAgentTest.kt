@@ -60,7 +60,7 @@ class BuildUserAgentTest {
     }
 
     @Test
-    fun buildsUserAgentCorrectly() {
+    fun `builds user agent correctly`() {
         val actual = buildUserAgent()
 
         val protonMail = "ProtonMail/$versionName"

@@ -50,7 +50,7 @@ class CombinedContactsRepositoryImplTest {
     }
 
     @Test
-    fun returnsFalseWhenNoPreferenceIsStoredLocally() = runTest {
+    fun `returns false when no preference is stored locally`() = runTest {
         // Given
         coEvery { preferences.get<Boolean>(any()) } returns null
         // When
@@ -62,7 +62,7 @@ class CombinedContactsRepositoryImplTest {
     }
 
     @Test
-    fun returnsLocallyStoredPreferenceFromDataStoreWhenAvailable() = runTest {
+    fun `returns locally stored preference from data store when available`() = runTest {
         // Given
         coEvery { preferences[booleanPreferencesKey("hasCombinedContactsPrefKey")] } returns true
         // When

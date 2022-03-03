@@ -64,7 +64,7 @@ class ObserveAppSettingsTest {
     }
 
     @Test
-    fun autoLockValueIsReturnedFromAutoLockRepository() = runTest {
+    fun `auto lock value is returned from auto lock repository`() = runTest {
         // Given
         every { autoLockRepository.observe() } returns flowOf(AutoLockPreference(true))
 
@@ -84,29 +84,30 @@ class ObserveAppSettingsTest {
     }
 
     @Test
-    fun hasAlternativeRoutingValueIsReturnedFromAlternativeRoutingRepository() = runTest {
-        // Given
-        every { alternativeRoutingRepository.observe() } returns flowOf(
-            AlternativeRoutingPreference(false)
-        )
-
-        // When
-        observeAppSettings().test {
-            // Then
-            val expected = AppSettings(
-                hasAutoLock = false,
-                hasAlternativeRouting = false,
-                customAppLanguage = null,
-                hasCombinedContacts = true
+    fun `has alternative routing value is returned from alternative routing repository`() =
+        runTest {
+            // Given
+            every { alternativeRoutingRepository.observe() } returns flowOf(
+                AlternativeRoutingPreference(false)
             )
-            assertEquals(expected, awaitItem())
 
-            awaitComplete()
+            // When
+            observeAppSettings().test {
+                // Then
+                val expected = AppSettings(
+                    hasAutoLock = false,
+                    hasAlternativeRouting = false,
+                    customAppLanguage = null,
+                    hasCombinedContacts = true
+                )
+                assertEquals(expected, awaitItem())
+
+                awaitComplete()
+            }
         }
-    }
 
     @Test
-    fun customAppLanguageValueIsReturnedFromCustomAppLanguageRepository() = runTest {
+    fun `custom app language value is returned from custom app language repository`() = runTest {
         // Given
         every { customAppLanguageRepository.observe() } returns flowOf(
             CustomAppLanguagePreference("en-EN")
@@ -128,27 +129,28 @@ class ObserveAppSettingsTest {
     }
 
     @Test
-    fun nullCustomAppLanguageIsReturnedWhenCustomAppLanguageRepositoryIsEmpty() = runTest {
-        // Given
-        every { customAppLanguageRepository.observe() } returns flowOf(null)
+    fun `null custom app language is returned when custom app language repository is empty`() =
+        runTest {
+            // Given
+            every { customAppLanguageRepository.observe() } returns flowOf(null)
 
-        // When
-        observeAppSettings().test {
-            // Then
-            val expected = AppSettings(
-                hasAutoLock = false,
-                hasAlternativeRouting = true,
-                customAppLanguage = null,
-                hasCombinedContacts = true
-            )
-            assertEquals(expected, awaitItem())
+            // When
+            observeAppSettings().test {
+                // Then
+                val expected = AppSettings(
+                    hasAutoLock = false,
+                    hasAlternativeRouting = true,
+                    customAppLanguage = null,
+                    hasCombinedContacts = true
+                )
+                assertEquals(expected, awaitItem())
 
-            awaitComplete()
+                awaitComplete()
+            }
         }
-    }
 
     @Test
-    fun hasCombinedContactsIsReturnedFromCombinedContactsRepository() = runTest {
+    fun `has combined contacts is returned from combined contacts repository`() = runTest {
         // Given
         every { combinedContactsRepository.observe() } returns flowOf(
             CombinedContactsPreference(false)

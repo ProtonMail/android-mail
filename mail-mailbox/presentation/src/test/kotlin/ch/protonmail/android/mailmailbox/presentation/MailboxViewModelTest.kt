@@ -59,7 +59,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun emitsInitialLoadingMailboxStateWhenInitialized() = runTest {
+    fun `emits initial loading mailbox state when initialized`() = runTest {
         // When
         mailboxViewModel.state.test {
             // Then
@@ -71,7 +71,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun emitsMailboxStateWithCurrentLocation() = runTest {
+    fun `emits mailbox state with current location`() = runTest {
         mailboxViewModel.state.test {
             awaitItem() // Initial item
 

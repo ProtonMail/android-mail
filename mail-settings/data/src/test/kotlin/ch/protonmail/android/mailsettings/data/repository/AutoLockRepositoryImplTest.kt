@@ -49,7 +49,7 @@ class AutoLockRepositoryImplTest {
     }
 
     @Test
-    fun returnsFalseWhenNoPreferenceIsStoredLocally() = runTest {
+    fun `returns false when no preference is stored locally`() = runTest {
         // Given
         coEvery { preferences.get<Boolean>(any()) } returns null
         // When
@@ -61,7 +61,7 @@ class AutoLockRepositoryImplTest {
     }
 
     @Test
-    fun returnsLocallyStoredPreferenceFromDataStoreWhenAvailable() = runTest {
+    fun `returns locally stored preference from data store when available`() = runTest {
         // Given
         coEvery { preferences[booleanPreferencesKey("hasAutoLockPrefKey")] } returns true
         // When

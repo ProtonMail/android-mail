@@ -85,14 +85,14 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun emitsLoadingStateWhenInitialised() = runTest {
+    fun `emits loading state when initialised`() = runTest {
         viewModel.state.test {
             assertEquals(Loading, awaitItem())
         }
     }
 
     @Test
-    fun stateHasAccountInfoWhenUserManagerReturnsValidUser() = runTest {
+    fun `state has account info when user manager returns valid user`() = runTest {
         viewModel.state.test {
             // Given
             initialStateEmitted()
@@ -113,7 +113,7 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun stateHasNullAccountInfoWhenUserManagerReturnsAnError() = runTest {
+    fun `state has null account info when user manager returns an error`() = runTest {
         viewModel.state.test {
             // Given
             initialStateEmitted()
@@ -130,30 +130,31 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun stateHasAppSettingsInfoWhenGetAppSettingsUseCaseReturnsValidData() = runTest {
-        viewModel.state.test {
-            // Given
-            initialStateEmitted()
-            primaryUserIdIs(UserIdTestData.userId)
-            userManagerSuccessfullyReturns(UserTestData.user)
+    fun `state has app settings info when get app settings use case returns valid data`() =
+        runTest {
+            viewModel.state.test {
+                // Given
+                initialStateEmitted()
+                primaryUserIdIs(UserIdTestData.userId)
+                userManagerSuccessfullyReturns(UserTestData.user)
 
-            // When
-            appSettingsFlow.emit(AppSettingsTestData.appSettings)
+                // When
+                appSettingsFlow.emit(AppSettingsTestData.appSettings)
 
-            // Then
-            val actual = awaitItem() as Data
-            val expected = AppSettings(
-                hasAutoLock = false,
-                hasAlternativeRouting = true,
-                customAppLanguage = null,
-                hasCombinedContacts = true
-            )
-            assertEquals(expected, actual.appSettings)
+                // Then
+                val actual = awaitItem() as Data
+                val expected = AppSettings(
+                    hasAutoLock = false,
+                    hasAlternativeRouting = true,
+                    customAppLanguage = null,
+                    hasCombinedContacts = true
+                )
+                assertEquals(expected, actual.appSettings)
+            }
         }
-    }
 
     @Test
-    fun stateHasAppVersionInfoWhenGetAppInfoReturnsThem() = runTest {
+    fun `state has app version info when get app info returns them`() = runTest {
         viewModel.state.test {
             // Given
             every { getAppInformation() } returns AppInformation("6.0.0-alpha-01")

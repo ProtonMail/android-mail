@@ -36,7 +36,7 @@ class CustomAppLanguageRepositoryImplTest {
     }
 
     @Test
-    fun returnsAutoDetectWhenNoPreferenceIsStoredLocally() = runTest {
+    fun `returns auto detect when no preference is stored locally`() = runTest {
         // When
         customLanguageRepository.observe().test {
             // Then

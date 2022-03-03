@@ -77,7 +77,7 @@ class SidebarViewModelTest {
     }
 
     @Test
-    fun emitsInitialSidebarStateWhenDataIsBeingLoaded() = runTest {
+    fun `emits initial sidebar state when data is being loaded`() = runTest {
         // Given
         every { MailFeatureFlags.ShowSettings.defaultLocalValue } returns false
         initViewModel()
@@ -92,7 +92,7 @@ class SidebarViewModelTest {
     }
 
     @Test
-    fun emitsIsSettingsEnabledTrueWhenSettingsFeatureToggleIsEnabled() = runTest {
+    fun `emits is settings enabled true when settings feature toggle is enabled`() = runTest {
         // Given
         every { MailFeatureFlags.ShowSettings.defaultLocalValue } returns true
         initViewModel()
@@ -111,7 +111,7 @@ class SidebarViewModelTest {
     }
 
     @Test
-    fun emitsIsSettingsEnabledFalseWhenSettingsFeatureToggleIsDisabled() = runTest {
+    fun `emits is settings enabled false when settings feature toggle is disabled`() = runTest {
         // Given
         every { MailFeatureFlags.ShowSettings.defaultLocalValue } returns true
         initViewModel()

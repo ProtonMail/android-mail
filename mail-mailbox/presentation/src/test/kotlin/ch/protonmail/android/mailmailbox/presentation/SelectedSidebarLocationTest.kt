@@ -36,14 +36,14 @@ class SelectedSidebarLocationTest {
     }
 
     @Test
-    fun initialSelectedLocationIsInboxByDefault() = runTest {
+    fun `initial selected location is inbox by default`() = runTest {
         selectedSidebarLocation.location.test {
             assertEquals(SidebarLocation.Inbox, awaitItem())
         }
     }
 
     @Test
-    fun emitsNewlySelectedLocationWhenItChanges() = runTest {
+    fun `emits newly selected location when it changes`() = runTest {
         selectedSidebarLocation.location.test {
             assertEquals(SidebarLocation.Inbox, awaitItem())
 
@@ -54,7 +54,7 @@ class SelectedSidebarLocationTest {
     }
 
     @Test
-    fun doesNotEmitSameLocationTwice() = runTest {
+    fun `does not emit same location twice`() = runTest {
         selectedSidebarLocation.location.test {
             assertEquals(SidebarLocation.Inbox, awaitItem())
 
