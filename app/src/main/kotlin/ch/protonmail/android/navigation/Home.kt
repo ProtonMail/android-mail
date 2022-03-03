@@ -35,6 +35,7 @@ import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
+import ch.protonmail.android.mailsettings.presentation.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
@@ -86,6 +87,7 @@ fun Home(
                 addConversationDetail()
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
+                addAccountSettings(navController)
             }
         }
     }
@@ -124,7 +126,8 @@ fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
 ) {
     MainSettingsScreen(
         onAccountClicked = {
-            Timber.i("Account settings item clicked. Navigate to account settings.. [TODO]")
+            Timber.d("Account settings item clicked. Navigating to account settings..")
+            navController.navigate(Destination.Screen.AccountSettings.route)
         },
         onThemeClick = {
             Timber.i("Theme setting clicked")
@@ -149,6 +152,47 @@ fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
         },
         onBackClick = {
             navController.popBackStack()
+        }
+    )
+}
+
+fun NavGraphBuilder.addAccountSettings(navController: NavHostController) = composable(
+    route = Destination.Screen.AccountSettings.route
+) {
+    AccountSettingScreen(
+        onBackClick = { navController.popBackStack() },
+        onSubscriptionClick = {
+            Timber.i("Subscription setting clicked")
+        },
+        onPasswordManagementClick = {
+            Timber.i("Password management setting clicked")
+        },
+        onRecoveryEmailClick = {
+            Timber.i("Recovery email setting clicked")
+        },
+        onConversationModeClick = {
+            Timber.i("Conversation mode setting clicked")
+        },
+        onDefaultEmailAddressClick = {
+            Timber.i("Default email address setting clicked")
+        },
+        onDisplayNameClick = {
+            Timber.i("Display name setting clicked")
+        },
+        onPrivacyClick = {
+            Timber.i("Privacy setting clicked")
+        },
+        onSearchMessageContentClick = {
+            Timber.i("Search message content setting clicked")
+        },
+        onLabelsFoldersClick = {
+            Timber.i("Labels folders setting clicked")
+        },
+        onLocalStorageClick = {
+            Timber.i("Local storage setting clicked")
+        },
+        onSnoozeNotificationsClick = {
+            Timber.i("Snooze notification setting clicked")
         }
     )
 }

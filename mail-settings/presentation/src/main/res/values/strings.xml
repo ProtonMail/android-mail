@@ -38,4 +38,22 @@
     <string name="auto_detect">Auto-detect</string>
     <string name="app_information">App Information</string>
     <string name="app_version">App version</string>
+    <string name="account">Account</string>
+
+    <!-- Account Settings items -->
+    <string name="subscription">Subscription</string>
+    <string name="password_management">Password management</string>
+    <string name="recovery_email">Recovery email</string>
+    <string name="mailbox_size">Mailbox size</string>
+    <string name="addresses">Addresses</string>
+    <string name="default_email_address">Default email address</string>
+    <string name="display_name_and_signature">Display name and signature</string>
+    <string name="mailbox">Mailbox</string>
+    <string name="privacy">Privacy</string>
+    <string name="search_message_content">Search message content</string>
+    <string name="labels_and_folders">Labels and folders</string>
+    <string name="local_storage">Local storage</string>
+    <string name="snooze">Snooze</string>
+    <string name="snooze_notifications">Snooze notifications</string>
+    <string name="conversation_mode">Conversation mode</string>
 </resources>

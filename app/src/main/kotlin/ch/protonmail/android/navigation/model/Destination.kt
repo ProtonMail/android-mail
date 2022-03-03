@@ -34,6 +34,7 @@ sealed class Destination(val route: String) {
         }
 
         object Settings : Destination("settings")
+        object AccountSettings : Destination("settings/account")
         object ReportBug : Destination("report")
     }
 
