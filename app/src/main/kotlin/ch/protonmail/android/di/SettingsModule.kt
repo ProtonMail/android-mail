@@ -28,7 +28,7 @@ import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRe
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import ch.protonmail.android.mailsettings.domain.repository.CustomAppLanguageRepository
-import ch.protonmail.android.mailsettings.presentation.GetAppInformation
+import ch.protonmail.android.mailsettings.presentation.settings.GetAppInformation
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation
+package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.Modifier.Companion
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import ch.protonmail.android.mailsettings.presentation.R
 import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList

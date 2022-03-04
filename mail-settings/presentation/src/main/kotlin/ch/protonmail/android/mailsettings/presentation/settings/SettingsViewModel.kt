@@ -16,14 +16,13 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation
+package ch.protonmail.android.mailsettings.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
-import ch.protonmail.android.mailsettings.domain.model.AppInformation
-import ch.protonmail.android.mailsettings.domain.model.AppSettings
-import ch.protonmail.android.mailsettings.presentation.State.Loading
+import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
+import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -49,7 +48,7 @@ class SettingsViewModel @Inject constructor(
         observePrimaryUser(accountManager, userManager),
         observeAppSettings()
     ) { user, appSettings ->
-        State.Data(
+        Data(
             buildAccountData(user),
             appSettings,
             getAppInformation()
@@ -75,17 +74,3 @@ class SettingsViewModel @Inject constructor(
 
 }
 
-sealed class State {
-    data class Data(
-        val account: AccountInfo?,
-        val appSettings: AppSettings,
-        val appInformation: AppInformation
-    ) : State()
-
-    object Loading : State()
-}
-
-data class AccountInfo(
-    val name: String,
-    val email: String
-)

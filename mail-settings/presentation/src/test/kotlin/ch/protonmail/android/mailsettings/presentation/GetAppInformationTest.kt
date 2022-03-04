@@ -21,7 +21,8 @@ package ch.protonmail.android.mailsettings.presentation
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import ch.protonmail.android.mailsettings.domain.model.AppInformation
+import ch.protonmail.android.mailsettings.presentation.settings.AppInformation
+import ch.protonmail.android.mailsettings.presentation.settings.GetAppInformation
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals

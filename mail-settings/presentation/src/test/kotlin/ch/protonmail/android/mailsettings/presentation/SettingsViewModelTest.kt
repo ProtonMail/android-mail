@@ -21,10 +21,14 @@ package ch.protonmail.android.mailsettings.presentation
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
-import ch.protonmail.android.mailsettings.domain.model.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
-import ch.protonmail.android.mailsettings.presentation.State.Data
-import ch.protonmail.android.mailsettings.presentation.State.Loading
+import ch.protonmail.android.mailsettings.presentation.settings.AccountInfo
+import ch.protonmail.android.mailsettings.presentation.settings.AppInformation
+import ch.protonmail.android.mailsettings.presentation.settings.GetAppInformation
+import ch.protonmail.android.mailsettings.presentation.settings.SettingsState
+import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
+import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
+import ch.protonmail.android.mailsettings.presentation.settings.SettingsViewModel
 import ch.protonmail.android.mailsettings.presentation.testdata.AppSettingsTestData
 import ch.protonmail.android.mailsettings.presentation.testdata.UserIdTestData
 import ch.protonmail.android.mailsettings.presentation.testdata.UserTestData
@@ -181,7 +185,7 @@ class SettingsViewModelTest {
         userIdFlow.emit(userId)
     }
 
-    private suspend fun FlowTurbine<State>.initialStateEmitted() {
+    private suspend fun FlowTurbine<SettingsState>.initialStateEmitted() {
         awaitItem() as Loading
     }
 }

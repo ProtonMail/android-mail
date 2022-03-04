@@ -16,6 +16,23 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain.model
+package ch.protonmail.android.mailsettings.presentation.settings
+
+import ch.protonmail.android.mailsettings.domain.model.AppSettings
+
+sealed class SettingsState {
+    data class Data(
+        val account: AccountInfo?,
+        val appSettings: AppSettings,
+        val appInformation: AppInformation
+    ) : SettingsState()
+
+    object Loading : SettingsState()
+}
+
+data class AccountInfo(
+    val name: String,
+    val email: String
+)
 
 data class AppInformation(val version: String)

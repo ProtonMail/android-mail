@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation
+package ch.protonmail.android.mailsettings.presentation.settings
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -28,11 +28,11 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.mailsettings.domain.model.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
+import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
-import ch.protonmail.android.mailsettings.presentation.State.Data
-import ch.protonmail.android.mailsettings.presentation.State.Loading
+import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
+import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
 import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
@@ -55,7 +55,8 @@ fun MainSettingsScreen(
     onBackClick: () -> Unit,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
-    when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
+    when (val settingsState =
+        rememberAsState(flow = settingsViewModel.state, Loading).value) {
         is Data -> MainSettingsScreen(
             modifier = modifier,
             state = settingsState,

@@ -16,11 +16,10 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation
+package ch.protonmail.android.mailsettings.presentation.settings
 
 import android.content.Context
 import android.content.pm.PackageManager
-import ch.protonmail.android.mailsettings.domain.model.AppInformation
 import javax.inject.Inject
 
 class GetAppInformation @Inject constructor(private val context: Context) {
