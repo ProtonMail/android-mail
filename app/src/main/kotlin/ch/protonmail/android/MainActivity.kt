@@ -21,6 +21,7 @@ package ch.protonmail.android
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import ch.protonmail.android.navigation.Launcher
 import ch.protonmail.android.navigation.LauncherViewModel
@@ -33,7 +34,9 @@ class MainActivity : FragmentActivity() {
     private val launcherViewModel: LauncherViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.ProtonTheme_Mail)
+        installSplashScreen().setKeepOnScreenCondition {
+            launcherViewModel.state.value != LauncherViewModel.State.PrimaryExist
+        }
         super.onCreate(savedInstanceState)
 
         // Register activities for result.

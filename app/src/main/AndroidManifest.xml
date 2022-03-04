@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:taskAffinity=""
-        android:theme="@style/ProtonTheme.Splash.Mail"
+        android:theme="@style/ProtonTheme.Mail"
         tools:replace="android:theme,android:supportsRtl">
         <provider
             android:name="io.sentry.android.core.SentryInitProvider"
@@ -54,7 +54,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="standard">
+            android:launchMode="standard"
+            android:theme="@style/ProtonTheme.Splash.Mail">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -106,5 +107,9 @@
         <activity
             android:name="me.proton.core.presentation.ui.alert.ForceUpdateActivity"
             android:excludeFromRecents="true" />
+        <activity
+            android:name="me.proton.core.report.presentation.ui.BugReportActivity"
+            android:theme="@style/ProtonTheme.Mail"
+            tools:replace="android:theme" />
     </application>
 </manifest>

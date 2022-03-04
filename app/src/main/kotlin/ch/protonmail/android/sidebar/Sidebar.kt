@@ -227,11 +227,6 @@ fun Sidebar(
                         AllMail -> viewState.unreadCounters[AllMail.labelId]
                     },
                     isSelected = isSelected,
-                    iconTint = if (isSelected) {
-                        ProtonTheme.colors.textNorm
-                    } else {
-                        ProtonTheme.colors.iconHint
-                    }
                 ) {
                     onMailLocation(location)
                 }

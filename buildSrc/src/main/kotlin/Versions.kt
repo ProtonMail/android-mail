@@ -23,6 +23,7 @@ object Versions {
         const val paging = "3.1.0"
         const val pagingCompose = "1.0.0-alpha14"
         const val room = "2.4.1"
+        const val splashscreen = "1.0.0-beta01"
         const val test = "1.4.0"
         const val testEspresso = "3.4.0"
         const val testExtJunit = "1.1.3"

@@ -31,9 +31,8 @@ object AndroidX {
     }
 
     object Core {
-        private const val version = Versions.AndroidX.annotation
-
-        const val annotation = "androidx.annotation:annotation:$version"
+        const val annotation = "androidx.annotation:annotation:${Versions.AndroidX.annotation}"
+        const val splashscreen = "androidx.core:core-splashscreen:${Versions.AndroidX.splashscreen}"
     }
 
     object DataStore {
