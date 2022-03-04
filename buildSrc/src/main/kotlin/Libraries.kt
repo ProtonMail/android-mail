@@ -147,6 +147,7 @@ object Proton {
         val dataRoom = coreArtifact("data-room", Versions.Proton.core)
         val domain = coreArtifact("domain", Versions.Proton.core)
         val eventManager = coreArtifact("event-manager", Versions.Proton.core)
+        val featureFlag = coreArtifact("feature-flag", Versions.Proton.core)
         val humanVerification = coreArtifact("human-verification", Versions.Proton.core)
         val key = coreArtifact("key", Versions.Proton.core)
         val label = coreArtifact("label", Versions.Proton.core)

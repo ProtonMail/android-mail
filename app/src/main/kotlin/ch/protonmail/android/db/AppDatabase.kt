@@ -39,6 +39,8 @@ import me.proton.core.data.room.db.CommonConverters
 import me.proton.core.eventmanager.data.db.EventManagerConverters
 import me.proton.core.eventmanager.data.db.EventMetadataDatabase
 import me.proton.core.eventmanager.data.entity.EventMetadataEntity
+import me.proton.core.featureflag.data.db.FeatureFlagDatabase
+import me.proton.core.featureflag.data.entity.FeatureFlagEntity
 import me.proton.core.humanverification.data.db.HumanVerificationConverters
 import me.proton.core.humanverification.data.db.HumanVerificationDatabase
 import me.proton.core.humanverification.data.entity.HumanVerificationEntity
@@ -99,6 +101,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         EventMetadataEntity::class,
         // label
         LabelEntity::class,
+        // feature-flag
+        FeatureFlagEntity::class,
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -126,15 +130,17 @@ abstract class AppDatabase :
     OrganizationDatabase,
     ContactDatabase,
     EventMetadataDatabase,
-    LabelDatabase {
+    LabelDatabase,
+    FeatureFlagDatabase {
 
     companion object {
         const val name = "db-mail"
-        const val version = 3
+        const val version = 4
 
         private val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
             AppDatabaseMigrations.MIGRATION_2_3,
+            AppDatabaseMigrations.MIGRATION_3_4,
         )
 
         fun buildDatabase(context: Context): AppDatabase =
