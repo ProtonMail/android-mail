@@ -43,6 +43,8 @@ android {
 
 dependencies {
     implementation(Dependencies.moduleDomainLibs)
+    implementation(Proton.Core.userSettings)
+    implementation(Proton.Core.accountManager)
 
     testImplementation(Dependencies.testLibs)
 }

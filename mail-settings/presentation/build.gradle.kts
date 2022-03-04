@@ -56,13 +56,14 @@ android {
 }
 
 dependencies {
+    kapt(Dependencies.hiltAnnotationProcessors)
     debugImplementation(Dependencies.composeDebugLibs)
 
     implementation(Dependencies.modulePresentationLibs)
     implementation(Proton.Core.account)
     implementation(Proton.Core.key)
     implementation(Proton.Core.user)
-    kapt(Dependencies.hiltAnnotationProcessors)
+    implementation(Proton.Core.userSettings)
 
     implementation(project(":mail-settings:domain"))
 
