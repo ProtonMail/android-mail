@@ -64,6 +64,7 @@ dependencies {
     implementation(Proton.Core.key)
     implementation(Proton.Core.user)
     implementation(Proton.Core.userSettings)
+    implementation(Proton.Core.mailSettings)
 
     implementation(project(":mail-settings:domain"))
 

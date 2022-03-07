@@ -16,17 +16,23 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.accountsettings
+package ch.protonmail.android.mailsettings.domain
 
-sealed class AccountSettingsState {
-    data class Data(
-        val currentPlan: String?,
-        val recoveryEmail: String?,
-        val mailboxSize: Long?,
-        val mailboxUsedSpace: Long?,
-        val defaultEmail: String?,
-        val isConversationMode: Boolean?
-    ) : AccountSettingsState()
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.domain.arch.mapSuccessValueOrNull
+import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
+import javax.inject.Inject
 
-    object Loading : AccountSettingsState()
+class ObserveMailSettings @Inject constructor(
+    private val accountManager: AccountManager,
+    private val mailSettingsRepository: MailSettingsRepository
+) {
+
+    operator fun invoke() = accountManager.getPrimaryUserId()
+        .filterNotNull()
+        .flatMapLatest {
+            mailSettingsRepository.getMailSettingsFlow(it).mapSuccessValueOrNull()
+        }
 }

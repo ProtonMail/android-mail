@@ -46,6 +46,7 @@ dependencies {
     implementation(Proton.Core.user)
     implementation(Proton.Core.userSettings)
     implementation(Proton.Core.accountManager)
+    implementation(Proton.Core.mailSettings)
 
     testImplementation(Dependencies.testLibs)
 }

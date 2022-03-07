@@ -20,10 +20,12 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
+import ch.protonmail.android.mailsettings.domain.ObserveMailSettings
 import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.ObservePrimaryUserSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
+import ch.protonmail.android.mailsettings.presentation.testdata.MailSettingsTestData
 import ch.protonmail.android.mailsettings.presentation.testdata.UserSettingsTestData
 import ch.protonmail.android.mailsettings.presentation.testdata.UserTestData
 import io.mockk.every
@@ -33,6 +35,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.user.domain.entity.User
 import me.proton.core.usersettings.domain.entity.UserSettings
 import org.junit.Assert.assertEquals
@@ -52,6 +55,11 @@ class AccountSettingsViewModelTest {
         every { this@mockk.invoke() } returns userSettingsFlow
     }
 
+    private val mailSettingsFlow = MutableSharedFlow<MailSettings?>()
+    private val observeMailSettings = mockk<ObserveMailSettings> {
+        every { this@mockk.invoke() } returns mailSettingsFlow
+    }
+
     private lateinit var viewModel: AccountSettingsViewModel
 
     @Before
@@ -60,7 +68,8 @@ class AccountSettingsViewModelTest {
 
         viewModel = AccountSettingsViewModel(
             observePrimaryUser,
-            observePrimaryUserSettings
+            observePrimaryUserSettings,
+            observeMailSettings
         )
     }
 
@@ -77,6 +86,7 @@ class AccountSettingsViewModelTest {
             // Given
             initialStateEmitted()
             primaryUserExists()
+            mailSettingsExist()
 
             // When
             userSettingsFlow.emit(UserSettingsTestData.userSettings)
@@ -94,6 +104,7 @@ class AccountSettingsViewModelTest {
             // Given
             initialStateEmitted()
             primaryUserExists()
+            mailSettingsExist()
 
             // When
             userSettingsFlow.emit(UserSettingsTestData.emptyUserSettings)
@@ -110,6 +121,7 @@ class AccountSettingsViewModelTest {
             // Given
             initialStateEmitted()
             userSettingsExist()
+            mailSettingsExist()
 
             // When
             userFlow.emit(UserTestData.user)
@@ -127,6 +139,7 @@ class AccountSettingsViewModelTest {
             // Given
             initialStateEmitted()
             userSettingsExist()
+            mailSettingsExist()
 
             // When
             userFlow.emit(null)
@@ -143,6 +156,7 @@ class AccountSettingsViewModelTest {
             // Given
             initialStateEmitted()
             userSettingsExist()
+            mailSettingsExist()
 
             // When
             userFlow.emit(UserTestData.user)
@@ -160,6 +174,7 @@ class AccountSettingsViewModelTest {
             // Given
             initialStateEmitted()
             userSettingsExist()
+            mailSettingsExist()
 
             // When
             userFlow.emit(null)
@@ -168,6 +183,40 @@ class AccountSettingsViewModelTest {
             val actual = awaitItem() as Data
             assertNull(actual.mailboxSize)
             assertNull(actual.mailboxUsedSpace)
+        }
+    }
+
+    @Test
+    fun `state has conversation mode flag when use case returns a valid mail settings`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            primaryUserExists()
+            userSettingsExist()
+
+            // When
+            mailSettingsFlow.emit(MailSettingsTestData.mailSettings)
+
+            // Then
+            val actual = awaitItem() as Data
+            assertEquals(false, actual.isConversationMode)
+        }
+    }
+
+    @Test
+    fun `state has null conversation mode when use case returns invalid mail settings`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            primaryUserExists()
+            userSettingsExist()
+
+            // When
+            mailSettingsFlow.emit(null)
+
+            // Then
+            val actual = awaitItem() as Data
+            assertNull(actual.isConversationMode)
         }
     }
 
@@ -181,5 +230,9 @@ class AccountSettingsViewModelTest {
 
     private suspend fun userSettingsExist() {
         userSettingsFlow.emit(UserSettingsTestData.userSettings)
+    }
+
+    private suspend fun mailSettingsExist() {
+        mailSettingsFlow.emit(MailSettingsTestData.mailSettings)
     }
 }

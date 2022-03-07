@@ -113,7 +113,8 @@ fun AccountSettingScreen(
                 item {
                     ProtonSettingsItem(
                         name = stringResource(id = R.string.subscription),
-                        hint = state.currentPlan,
+                        hint = state.currentPlan
+                            ?: stringResource(id = string.no_information_available),
                         onClick = onSubscriptionClick
                     )
                     Divider()
@@ -226,11 +227,13 @@ private fun ConversationModeSettingItem(
     state: Data,
     onConversationModeClick: () -> Unit
 ) {
-    val hint = if (state.isConversationMode) {
-        stringResource(id = R.string.enabled)
-    } else {
-        stringResource(id = R.string.disabled)
-    }
+    val hint = state.isConversationMode?.let { isConversationEnabled ->
+        if (isConversationEnabled) {
+            stringResource(id = R.string.enabled)
+        } else {
+            stringResource(id = R.string.disabled)
+        }
+    } ?: stringResource(id = string.no_information_available)
     ProtonSettingsItem(
         modifier = modifier,
         name = stringResource(id = R.string.conversation_mode),

@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailsettings.domain.ObserveMailSettings
 import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.ObservePrimaryUserSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
@@ -29,26 +30,29 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
+import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.usersettings.domain.entity.UserSettings
 import javax.inject.Inject
 
 @HiltViewModel
 class AccountSettingsViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
-    observePrimaryUserSettings: ObservePrimaryUserSettings
+    observePrimaryUserSettings: ObservePrimaryUserSettings,
+    observeMailSettings: ObserveMailSettings
 ) : ViewModel() {
 
     val state = combine(
         observePrimaryUser(),
-        observePrimaryUserSettings()
-    ) { user, userSettings ->
+        observePrimaryUserSettings(),
+        observeMailSettings()
+    ) { user, userSettings, mailSettings ->
         Data(
-            "Visionary [hardcoded]",
+            null,
             getRecoveryEmail(userSettings),
             user?.maxSpace,
             user?.usedSpace,
             user?.email,
-            true
+            mailSettings?.viewMode?.enum?.let { it == ConversationGrouping }
         )
 
     }.stateIn(
