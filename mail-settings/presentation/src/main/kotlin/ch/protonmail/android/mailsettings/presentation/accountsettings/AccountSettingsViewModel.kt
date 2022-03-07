@@ -45,7 +45,8 @@ class AccountSettingsViewModel @Inject constructor(
         Data(
             "Visionary [hardcoded]",
             getRecoveryEmail(userSettings),
-            "MailboxSize",
+            user?.maxSpace,
+            user?.usedSpace,
             user?.email,
             true
         )

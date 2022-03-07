@@ -24,6 +24,8 @@ import me.proton.core.user.domain.entity.User
 
 object UserTestData {
 
+    const val MAX_SPACE_RAW = 20_000L
+    const val USED_SPACE_RAW = 5000L
     const val USER_EMAIL_RAW = "userEmail"
     const val USER_DISPLAY_NAME_RAW = "userDisplayName"
 
@@ -34,8 +36,8 @@ object UserTestData {
         name = null,
         currency = "CHF",
         credit = 1,
-        usedSpace = 1,
-        maxSpace = 1,
+        usedSpace = USED_SPACE_RAW,
+        maxSpace = MAX_SPACE_RAW,
         maxUpload = 1,
         role = NoOrganization,
         private = true,

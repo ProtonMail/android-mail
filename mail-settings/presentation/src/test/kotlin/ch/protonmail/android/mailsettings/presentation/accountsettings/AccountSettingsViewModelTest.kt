@@ -137,6 +137,40 @@ class AccountSettingsViewModelTest {
         }
     }
 
+    @Test
+    fun `state has mailbox sizes when use case returns a valid user`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            userSettingsExist()
+
+            // When
+            userFlow.emit(UserTestData.user)
+
+            // Then
+            val actual = awaitItem() as Data
+            assertEquals(UserTestData.MAX_SPACE_RAW, actual.mailboxSize)
+            assertEquals(UserTestData.USED_SPACE_RAW, actual.mailboxUsedSpace)
+        }
+    }
+
+    @Test
+    fun `state has null mailbox sizes when use case returns an invalid user`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            userSettingsExist()
+
+            // When
+            userFlow.emit(null)
+
+            // Then
+            val actual = awaitItem() as Data
+            assertNull(actual.mailboxSize)
+            assertNull(actual.mailboxUsedSpace)
+        }
+    }
+
     private suspend fun FlowTurbine<AccountSettingsState>.initialStateEmitted() {
         awaitItem() as Loading
     }

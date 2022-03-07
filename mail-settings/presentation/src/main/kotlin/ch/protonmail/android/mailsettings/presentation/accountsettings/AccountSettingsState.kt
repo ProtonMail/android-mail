@@ -22,7 +22,8 @@ sealed class AccountSettingsState {
     data class Data(
         val currentPlan: String,
         val recoveryEmail: String?,
-        val mailboxSize: String,
+        val mailboxSize: Long?,
+        val mailboxUsedSpace: Long?,
         val defaultEmail: String?,
         val isConversationMode: Boolean
     ) : AccountSettingsState()

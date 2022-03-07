@@ -18,10 +18,12 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings
 
+import android.text.format.Formatter.formatShortFileSize
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -132,12 +134,7 @@ fun AccountSettingScreen(
                     Divider()
                 }
                 item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = R.string.mailbox_size),
-                        hint = state.mailboxSize,
-                        isClickable = false
-                    )
-                    Divider()
+                    MailboxSizeItem(state)
                 }
                 item {
                     ConversationModeSettingItem(
@@ -209,6 +206,21 @@ fun AccountSettingScreen(
 }
 
 @Composable
+private fun MailboxSizeItem(state: Data) {
+    val formattedSize = if (state.mailboxUsedSpace != null && state.mailboxSize != null) {
+        "${formatFileSize(state.mailboxUsedSpace)} / ${formatFileSize(state.mailboxSize)}"
+    } else {
+        stringResource(id = string.no_information_available)
+    }
+    ProtonSettingsItem(
+        name = stringResource(id = string.mailbox_size),
+        hint = formattedSize,
+        isClickable = false
+    )
+    Divider()
+}
+
+@Composable
 private fun ConversationModeSettingItem(
     modifier: Modifier = Modifier,
     state: Data,
@@ -227,3 +239,9 @@ private fun ConversationModeSettingItem(
     )
     Divider()
 }
+
+@Composable
+private fun formatFileSize(mailboxUsedSpace: Long) = formatShortFileSize(
+    LocalContext.current,
+    mailboxUsedSpace
+)
