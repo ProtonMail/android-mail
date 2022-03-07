@@ -31,7 +31,7 @@ import ch.protonmail.android.mailsettings.presentation.State.Data
 import ch.protonmail.android.mailsettings.presentation.State.Loading
 import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
-import me.proton.core.compose.component.ProtonSettingsScreen
+import me.proton.core.compose.component.ProtonSettingsList
 import me.proton.core.compose.flow.rememberAsState
 import timber.log.Timber
 
@@ -61,7 +61,7 @@ fun MainSettingsScreen(
     state: Data
 ) {
     Timber.d("Showing settings screen with $state")
-    ProtonSettingsScreen(modifier.testTag(TEST_TAG_SETTINGS_SCREEN)) {
+    ProtonSettingsList(modifier.testTag(TEST_TAG_SETTINGS_SCREEN)) {
         item { ProtonSettingsHeader(title = R.string.account_settings) }
         item {
             AccountSettingsItem(
@@ -82,6 +82,7 @@ fun AccountSettingsItem(
     val hint = accountData?.email
 
     ProtonSettingsItem(
+        modifier = modifier,
         name = header,
         hint = hint,
         onClick = onAccountClicked

@@ -51,7 +51,7 @@ class SidebarViewModel @Inject constructor(
     ) { location, settingsFeature ->
         State.Enabled(
             selectedLocation = location,
-            isSettingsEnabled = settingsFeature?.isEnabled ?: ShowSettings.defaultLocalValue
+            isSettingsEnabled = settingsFeature?.value ?: ShowSettings.defaultLocalValue
         )
     }.stateIn(
         viewModelScope,
