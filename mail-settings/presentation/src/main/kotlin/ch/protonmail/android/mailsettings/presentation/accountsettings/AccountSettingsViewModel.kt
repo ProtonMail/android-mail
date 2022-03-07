@@ -42,7 +42,7 @@ class AccountSettingsViewModel @Inject constructor(
         flowOf(true)
     ) { userSettings, bool ->
         Data(
-            "Visionary",
+            "Visionary [hardcoded]",
             getRecoveryEmail(userSettings),
             "MailboxSize",
             "default@proton.ch",

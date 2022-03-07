@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
+import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.presentation.settings.AccountInfo
 import ch.protonmail.android.mailsettings.presentation.settings.AppInformation
@@ -30,7 +31,6 @@ import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Da
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsViewModel
 import ch.protonmail.android.mailsettings.presentation.testdata.AppSettingsTestData
-import ch.protonmail.android.mailsettings.presentation.testdata.UserIdTestData
 import ch.protonmail.android.mailsettings.presentation.testdata.UserTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -39,30 +39,17 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.domain.arch.DataResult
-import me.proton.core.domain.arch.DataResult.Error
-import me.proton.core.domain.arch.DataResult.Success
-import me.proton.core.domain.arch.ResponseSource.Local
-import me.proton.core.domain.entity.UserId
-import me.proton.core.user.domain.UserManager
 import me.proton.core.user.domain.entity.User
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
-import java.io.IOException
 
 class SettingsViewModelTest {
 
-    private val userIdFlow = MutableSharedFlow<UserId?>()
-    private val accountManager = mockk<AccountManager> {
-        every { this@mockk.getPrimaryUserId() } returns userIdFlow
-    }
-
-    private val userFlow = MutableSharedFlow<DataResult<User?>>()
-    private val userManager = mockk<UserManager> {
-        every { this@mockk.getUserFlow(UserIdTestData.userId) } returns userFlow
+    private val userFlow = MutableSharedFlow<User?>()
+    private val observePrimaryUser = mockk<ObservePrimaryUser> {
+        every { this@mockk.invoke() } returns userFlow
     }
 
     private val appSettingsFlow = MutableSharedFlow<AppSettings>()
@@ -81,8 +68,7 @@ class SettingsViewModelTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
         viewModel = SettingsViewModel(
-            accountManager,
-            userManager,
+            observePrimaryUser,
             observeAppSettings,
             getAppInformation
         )
@@ -96,15 +82,14 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun `state has account info when user manager returns valid user`() = runTest {
+    fun `state has account info when there is a valid primary user`() = runTest {
         viewModel.state.test {
             // Given
             initialStateEmitted()
             appSettingsFlow.emit(AppSettingsTestData.appSettings)
 
             // When
-            primaryUserIdIs(UserIdTestData.userId)
-            userManagerSuccessfullyReturns(UserTestData.user)
+            userFlow.emit(UserTestData.user)
 
             // Then
             val actual = awaitItem() as Data
@@ -117,15 +102,14 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun `state has null account info when user manager returns an error`() = runTest {
+    fun `state has null account info when there is no valid primary user`() = runTest {
         viewModel.state.test {
             // Given
             initialStateEmitted()
             appSettingsFlow.emit(AppSettingsTestData.appSettings)
 
             // When
-            primaryUserIdIs(UserIdTestData.userId)
-            userManagerReturnsError()
+            userFlow.emit(null)
 
             // Then
             val actual = awaitItem() as Data
@@ -139,8 +123,7 @@ class SettingsViewModelTest {
             viewModel.state.test {
                 // Given
                 initialStateEmitted()
-                primaryUserIdIs(UserIdTestData.userId)
-                userManagerSuccessfullyReturns(UserTestData.user)
+                userFlow.emit(UserTestData.user)
 
                 // When
                 appSettingsFlow.emit(AppSettingsTestData.appSettings)
@@ -163,26 +146,13 @@ class SettingsViewModelTest {
             // Given
             every { getAppInformation() } returns AppInformation("6.0.0-alpha-01")
             initialStateEmitted()
-            primaryUserIdIs(UserIdTestData.userId)
-            userManagerSuccessfullyReturns(UserTestData.user)
+            userFlow.emit(UserTestData.user)
             appSettingsFlow.emit(AppSettingsTestData.appSettings)
 
             // Then
             val actual = awaitItem() as Data
             assertEquals(AppInformation("6.0.0-alpha-01"), actual.appInformation)
         }
-    }
-
-    private suspend fun userManagerReturnsError() {
-        userFlow.emit(Error.Local("Test-IOException", IOException("Test")))
-    }
-
-    private suspend fun userManagerSuccessfullyReturns(user: User) {
-        userFlow.emit(Success(Local, user))
-    }
-
-    private suspend fun primaryUserIdIs(userId: UserId) {
-        userIdFlow.emit(userId)
     }
 
     private suspend fun FlowTurbine<SettingsState>.initialStateEmitted() {

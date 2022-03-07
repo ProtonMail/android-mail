@@ -21,31 +21,26 @@ package ch.protonmail.android.mailsettings.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
+import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
-import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
-import me.proton.core.domain.arch.mapSuccessValueOrNull
-import me.proton.core.user.domain.UserManager
 import me.proton.core.user.domain.entity.User
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    accountManager: AccountManager,
-    userManager: UserManager,
+    observePrimaryUser: ObservePrimaryUser,
     observeAppSettings: ObserveAppSettings,
     getAppInformation: GetAppInformation
 ) : ViewModel() {
 
     val state = combine(
-        observePrimaryUser(accountManager, userManager),
+        observePrimaryUser(),
         observeAppSettings()
     ) { user, appSettings ->
         Data(
@@ -58,13 +53,6 @@ class SettingsViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(stopTimeoutMillis),
         Loading
     )
-
-    private fun observePrimaryUser(
-        accountManager: AccountManager,
-        userManager: UserManager
-    ) = accountManager.getPrimaryUserId().filterNotNull().flatMapLatest { userId ->
-        userManager.getUserFlow(userId).mapSuccessValueOrNull()
-    }
 
     private fun buildAccountData(user: User?) = if (user != null) {
         AccountInfo(user.displayName.orEmpty(), user.email.orEmpty())
