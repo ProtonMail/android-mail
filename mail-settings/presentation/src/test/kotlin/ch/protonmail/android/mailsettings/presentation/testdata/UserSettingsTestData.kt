@@ -23,19 +23,19 @@ import me.proton.core.usersettings.domain.entity.RecoverySetting
 import me.proton.core.usersettings.domain.entity.UserSettings
 
 object UserSettingsTestData {
-    const val recoverEmailRawValue = "recoveryemail@proton.ch"
-    private const val recoverPhoneRawValue = "+346527847362"
+    const val RECOVERY_EMAIL_RAW = "recoveryemail@proton.ch"
+    private const val RECOVERY_PHONE_RAW = "+346527847362"
 
     val userSettings = UserSettings(
         UserIdTestData.userId,
         email = RecoverySetting(
-            value = recoverEmailRawValue,
+            value = RECOVERY_EMAIL_RAW,
             status = null,
             notify = false,
             reset = false
         ),
         phone = RecoverySetting(
-            value = recoverPhoneRawValue,
+            value = RECOVERY_PHONE_RAW,
             status = null,
             notify = false,
             reset = false

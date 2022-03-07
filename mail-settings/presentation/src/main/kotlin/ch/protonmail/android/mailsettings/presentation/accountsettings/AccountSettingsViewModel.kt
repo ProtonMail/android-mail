@@ -20,13 +20,13 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.ObservePrimaryUserSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.usersettings.domain.entity.UserSettings
@@ -34,18 +34,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountSettingsViewModel @Inject constructor(
+    observePrimaryUser: ObservePrimaryUser,
     observePrimaryUserSettings: ObservePrimaryUserSettings
 ) : ViewModel() {
 
     val state = combine(
-        observePrimaryUserSettings(),
-        flowOf(true)
-    ) { userSettings, bool ->
+        observePrimaryUser(),
+        observePrimaryUserSettings()
+    ) { user, userSettings ->
         Data(
             "Visionary [hardcoded]",
             getRecoveryEmail(userSettings),
             "MailboxSize",
-            "default@proton.ch",
+            user?.email,
             true
         )
 

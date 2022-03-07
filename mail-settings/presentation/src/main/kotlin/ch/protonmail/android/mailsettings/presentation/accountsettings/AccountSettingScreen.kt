@@ -22,11 +22,11 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.Modifier.Companion
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
 import me.proton.core.compose.component.ProtonSettingsHeader
@@ -39,7 +39,7 @@ const val TEST_TAG_ACCOUNT_SETTINGS_SCREEN = "AccountSettingsScreenTestTag"
 
 @Composable
 fun AccountSettingScreen(
-    modifier: Modifier = Companion,
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onSubscriptionClick: () -> Unit,
     onPasswordManagementClick: () -> Unit,
@@ -61,6 +61,7 @@ fun AccountSettingScreen(
         ).value
     ) {
         is Data -> AccountSettingScreen(
+            modifier = modifier,
             onBackClick = onBackClick,
             onSubscriptionClick = onSubscriptionClick,
             onPasswordManagementClick = onPasswordManagementClick,
@@ -81,7 +82,7 @@ fun AccountSettingScreen(
 
 @Composable
 fun AccountSettingScreen(
-    modifier: Modifier = Companion,
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onSubscriptionClick: () -> Unit,
     onPasswordManagementClick: () -> Unit,
@@ -149,7 +150,8 @@ fun AccountSettingScreen(
                 item {
                     ProtonSettingsItem(
                         name = stringResource(id = R.string.default_email_address),
-                        hint = state.defaultEmail,
+                        hint = state.defaultEmail
+                            ?: stringResource(id = string.no_information_available),
                         onClick = onDefaultEmailAddressClick
                     )
                     Divider()

@@ -55,8 +55,7 @@ fun MainSettingsScreen(
     onBackClick: () -> Unit,
     settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
-    when (val settingsState =
-        rememberAsState(flow = settingsViewModel.state, Loading).value) {
+    when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
         is Data -> MainSettingsScreen(
             modifier = modifier,
             state = settingsState,

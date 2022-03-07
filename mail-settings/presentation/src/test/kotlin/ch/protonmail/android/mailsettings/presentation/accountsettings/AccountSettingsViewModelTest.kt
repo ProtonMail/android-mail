@@ -20,10 +20,12 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
+import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.ObservePrimaryUserSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
 import ch.protonmail.android.mailsettings.presentation.testdata.UserSettingsTestData
+import ch.protonmail.android.mailsettings.presentation.testdata.UserTestData
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +33,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.user.domain.entity.User
 import me.proton.core.usersettings.domain.entity.UserSettings
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -38,6 +41,11 @@ import org.junit.Before
 import org.junit.Test
 
 class AccountSettingsViewModelTest {
+
+    private val userFlow = MutableSharedFlow<User?>()
+    private val observePrimaryUser = mockk<ObservePrimaryUser> {
+        every { this@mockk.invoke() } returns userFlow
+    }
 
     private val userSettingsFlow = MutableSharedFlow<UserSettings?>()
     private val observePrimaryUserSettings = mockk<ObservePrimaryUserSettings> {
@@ -51,6 +59,7 @@ class AccountSettingsViewModelTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
         viewModel = AccountSettingsViewModel(
+            observePrimaryUser,
             observePrimaryUserSettings
         )
     }
@@ -63,26 +72,28 @@ class AccountSettingsViewModelTest {
     }
 
     @Test
-    fun `state has recovery email when use case returns a valid one`() = runTest {
+    fun `state has recovery email when use case returns valid user settings`() = runTest {
         viewModel.state.test {
             // Given
             initialStateEmitted()
+            primaryUserExists()
 
             // When
             userSettingsFlow.emit(UserSettingsTestData.userSettings)
 
             // Then
             val actual = awaitItem() as Data
-            val expected = UserSettingsTestData.recoverEmailRawValue
+            val expected = UserSettingsTestData.RECOVERY_EMAIL_RAW
             assertEquals(expected, actual.recoveryEmail)
         }
     }
 
     @Test
-    fun `state has null recovery email when use case returns an invalid one`() = runTest {
+    fun `state has null recovery email when use case returns invalid user settings`() = runTest {
         viewModel.state.test {
             // Given
             initialStateEmitted()
+            primaryUserExists()
 
             // When
             userSettingsFlow.emit(UserSettingsTestData.emptyUserSettings)
@@ -93,7 +104,48 @@ class AccountSettingsViewModelTest {
         }
     }
 
+    @Test
+    fun `state has default email when use case returns a valid user`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            userSettingsExist()
+
+            // When
+            userFlow.emit(UserTestData.user)
+
+            // Then
+            val actual = awaitItem() as Data
+            val expected = UserTestData.USER_EMAIL_RAW
+            assertEquals(expected, actual.defaultEmail)
+        }
+    }
+
+    @Test
+    fun `state has null default email when use case returns an invalid user`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            userSettingsExist()
+
+            // When
+            userFlow.emit(null)
+
+            // Then
+            val actual = awaitItem() as Data
+            assertNull(actual.defaultEmail)
+        }
+    }
+
     private suspend fun FlowTurbine<AccountSettingsState>.initialStateEmitted() {
         awaitItem() as Loading
+    }
+
+    private suspend fun primaryUserExists() {
+        userFlow.emit(UserTestData.user)
+    }
+
+    private suspend fun userSettingsExist() {
+        userSettingsFlow.emit(UserSettingsTestData.userSettings)
     }
 }
