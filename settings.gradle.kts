@@ -26,3 +26,12 @@ include(":mail-settings:dagger")
 include(":mail-settings:data")
 include(":mail-settings:domain")
 include(":mail-settings:presentation")
+
+buildCache {
+    local {
+        if (System.getenv("CI") == "true") {
+            directory = rootDir.resolve("build").resolve("gradle-build-cache")
+        }
+        removeUnusedEntriesAfterDays = 3
+    }
+}

@@ -13,11 +13,21 @@ before_script:
 variables:
   ORG_GRADLE_PROJECT_useCoreGitSubmodule: "true" # see included checkout-core.gitlab-ci.yml for usage context
 
+.gradle-build-cache: &gradle-build-cache
+  key:
+    prefix: gradle-build-cache
+    files:
+      - gradle/wrapper/gradle-wrapper.properties
+  paths:
+    - ${CI_PROJECT_DIR}/build/gradle-build-cache
+  policy: pull
+
 cache:
   - key: $CI_COMMIT_REF_SLUG
     policy: pull
     paths:
       - .gradle
+  - <<: *gradle-build-cache
 
 stages:
   - analyse
@@ -40,6 +50,9 @@ stages:
   artifacts:
     paths:
       - app/build/outputs
+  cache:
+    - <<: *gradle-build-cache
+      policy: pull-push
 
 .firebase_test_job:
   stage: test
