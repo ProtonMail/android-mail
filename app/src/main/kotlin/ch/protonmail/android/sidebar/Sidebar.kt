@@ -28,6 +28,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,6 +63,8 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import timber.log.Timber
+
+const val TEST_TAG_SIDEBAR_MENU = "SidebarMenuTestTag"
 
 @Composable
 @Suppress("ComplexMethod")
@@ -166,7 +169,7 @@ fun Sidebar(
     viewState: SidebarState
 ) {
     ProtonSidebarLazy(
-        modifier = modifier,
+        modifier = modifier.testTag(TEST_TAG_SIDEBAR_MENU),
         drawerState = viewState.drawerState,
     ) {
         item {

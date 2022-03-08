@@ -19,6 +19,11 @@
 package ch.protonmail.android.uitest.robot.settings.account
 
 import androidx.annotation.IdRes
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithTag
+import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_SCREEN
 import ch.protonmail.android.uitest.robot.settings.SettingsRobot
 import ch.protonmail.android.uitest.robot.settings.account.labelsandfolders.LabelsAndFoldersRobot
 import ch.protonmail.android.uitest.robot.settings.account.privacy.PrivacySettingsRobot
@@ -29,7 +34,9 @@ import ch.protonmail.android.uitest.robot.settings.account.swipinggestures.Swipi
  * Account settings functionality.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-class AccountSettingsRobot {
+class AccountSettingsRobot(
+    private val composeTestRule: ComposeContentTestRule? = null
+) {
 
     fun subscription(): SubscriptionRobot {
         return SubscriptionRobot()
@@ -67,8 +74,17 @@ class AccountSettingsRobot {
      */
     class Verify {
 
-        @SuppressWarnings("EmptyFunctionBlock")
-        fun accountSettingsOpened() {}
+        fun accountSettingsOpened(composeRule: ComposeContentTestRule) {
+            composeRule.waitUntil(timeoutMillis = 5000) {
+                composeRule
+                    .onAllNodesWithTag(TEST_TAG_ACCOUNT_SETTINGS_SCREEN)
+                    .fetchSemanticsNodes(false)
+                    .isNotEmpty()
+            }
+            composeRule
+                .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_SCREEN)
+                .assertIsDisplayed()
+        }
     }
 
     inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)

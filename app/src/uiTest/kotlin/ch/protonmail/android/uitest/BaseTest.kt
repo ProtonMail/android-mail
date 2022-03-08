@@ -18,13 +18,21 @@
 
 package ch.protonmail.android.uitest
 
+import android.app.Application
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.di.AppDatabaseModule
+import ch.protonmail.android.test.BuildConfig
 import kotlinx.coroutines.runBlocking
+import me.proton.core.auth.presentation.testing.ProtonTestEntryPoint
 import me.proton.core.test.android.instrumented.ProtonTest.Companion.getTargetContext
+import me.proton.core.test.android.instrumented.utils.Shell.setupDeviceForAutomation
+import me.proton.core.test.android.plugins.Quark
+import me.proton.core.test.android.plugins.data.User
 import me.proton.core.test.android.plugins.data.User.Users
 import org.junit.After
+import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.rules.RuleChain
 import org.junit.rules.TestName
@@ -43,17 +51,33 @@ open class BaseTest(
         .around(composeTestRule)
 
     @After
-    fun tearDown() {
+    fun cleanup() {
         if (clearAppDatabaseOnTearDown) {
+            Timber.d("Finishing Testing: Clearing all database tables")
             runBlocking {
                 appDatabase.accountDao().deleteAll()
             }
         }
-        Timber.d("Finishing Testing: Clearing all database tables")
+    }
+
+    fun login(user: User) {
+        Timber.d("Login user: ${user.name}")
+        authHelper.login(user.name, user.password)
     }
 
     companion object {
         val users = Users("users.json")
+        val quark = Quark(BuildConfig.HOST, BuildConfig.PROXY_TOKEN, "internal_api.json")
         val appDatabase = AppDatabaseModule.provideAppDatabase(getTargetContext())
+        val authHelper = ProtonTestEntryPoint.provide(
+            ApplicationProvider.getApplicationContext<Application>()
+        )
+
+        @JvmStatic
+        @BeforeClass
+        fun prepare() {
+            setupDeviceForAutomation(true)
+            authHelper.logoutAll()
+        }
     }
 }

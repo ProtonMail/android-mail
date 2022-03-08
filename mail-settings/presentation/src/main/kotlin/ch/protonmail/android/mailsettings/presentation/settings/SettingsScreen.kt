@@ -40,6 +40,7 @@ import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
 
 const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
+const val TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM = "AccountSettingsItemTestTag"
 
 @Composable
 fun MainSettingsScreen(
@@ -101,6 +102,7 @@ fun MainSettingsScreen(
                 item { ProtonSettingsHeader(title = R.string.account_settings) }
                 item {
                     AccountSettingsItem(
+                        modifier = Modifier.testTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM),
                         accountInfo = state.account,
                         onAccountClicked = onAccountClick
                     )

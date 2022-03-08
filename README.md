@@ -28,7 +28,7 @@ will show all the possible actions that are available.
 
 ## UI Tests
 UI tests are executed on firebase through the CI. Firebase test lab can be triggered also locally with `bundle exec fastlane uiTests` or tests can be run in a local emulator through android studio.
-The `app/src/uiTest/assets/users.json` file will be needed for UI tests to work, its value can be found in confluence or in the CI env vars
+The `app/src/uiTest/assets/users.json` and  `app/src/uiTest/assets/internal_api.json` files will be needed for UI tests to work, their value can be found in confluence or in the CI env vars
 **Currently, only the ui tests that are included in the `SmokeSuite` class are run on firebase**
 
 

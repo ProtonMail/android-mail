@@ -18,6 +18,10 @@
  */
 package ch.protonmail.android.uitest.robot.settings
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import ch.protonmail.android.mailsettings.presentation.settings.TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.settings.account.AccountSettingsRobot
 import ch.protonmail.android.uitest.robot.settings.autolock.AutoLockRobot
@@ -26,7 +30,9 @@ import ch.protonmail.android.uitest.robot.settings.autolock.AutoLockRobot
  * [SettingsRobot] class contains actions and verifications for Settings view.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-class SettingsRobot {
+class SettingsRobot(
+    private val composeTestRule: ComposeContentTestRule? = null
+) {
 
     fun navigateUpToInbox(): InboxRobot {
         return InboxRobot()
@@ -37,7 +43,10 @@ class SettingsRobot {
     }
 
     fun openUserAccountSettings(): AccountSettingsRobot {
-        return AccountSettingsRobot()
+        composeTestRule!!
+            .onNodeWithTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM)
+            .performClick()
+        return AccountSettingsRobot(composeTestRule)
     }
 
     fun selectAutoLock(): AutoLockRobot {

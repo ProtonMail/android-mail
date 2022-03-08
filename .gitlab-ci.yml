@@ -5,6 +5,7 @@ before_script:
   - mkdir app/src/uiTest/assets
   - mkdir keystore
   - base64 -d - < "$TEST_USERS_CREDENTIALS_FILE" > app/src/uiTest/assets/users.json
+  - base64 -d - < "$INTERNAL_API_FILE" > app/src/uiTest/assets/internal_api.json
   - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
   - bundle install

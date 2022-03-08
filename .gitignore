@@ -50,3 +50,4 @@ private.properties
 
 # Test users credentials
 **/users.json
+**/internal_api.json
