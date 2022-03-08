@@ -31,7 +31,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Da
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsViewModel
 import ch.protonmail.android.mailsettings.presentation.testdata.AppSettingsTestData
-import ch.protonmail.android.mailsettings.presentation.testdata.UserTestData
+import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

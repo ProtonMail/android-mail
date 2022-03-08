@@ -26,7 +26,7 @@ import ch.protonmail.android.mailmailbox.presentation.SelectedSidebarLocation
 import ch.protonmail.android.sidebar.SidebarViewModel
 import ch.protonmail.android.sidebar.SidebarViewModel.State.Enabled
 import ch.protonmail.android.testdata.FeatureFlagTestData
-import ch.protonmail.android.testdata.UserIdTestData
+import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject

@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.logging
 
-import ch.protonmail.android.testdata.UserIdTestData
+import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic

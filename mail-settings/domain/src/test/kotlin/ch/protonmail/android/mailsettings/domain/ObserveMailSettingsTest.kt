@@ -19,8 +19,8 @@
 package ch.protonmail.android.mailsettings.domain
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailsettings.domain.testdata.MailSettingsTestData
-import ch.protonmail.android.mailsettings.domain.testdata.UserIdTestData
+import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
+import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow

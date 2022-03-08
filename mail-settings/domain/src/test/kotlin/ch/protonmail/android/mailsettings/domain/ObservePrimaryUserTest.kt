@@ -16,10 +16,11 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain.testdata
+package ch.protonmail.android.mailsettings.domain
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
+import ch.protonmail.android.testdata.user.UserIdTestData
+import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow

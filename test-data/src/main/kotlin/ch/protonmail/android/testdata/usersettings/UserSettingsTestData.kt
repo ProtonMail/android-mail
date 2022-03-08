@@ -16,8 +16,9 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.testdata
+package ch.protonmail.android.testdata.usersettings
 
+import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.usersettings.domain.entity.PasswordSetting
 import me.proton.core.usersettings.domain.entity.RecoverySetting
 import me.proton.core.usersettings.domain.entity.UserSettings

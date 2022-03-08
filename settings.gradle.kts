@@ -11,6 +11,8 @@ if (useCoreGitSubmoduleAsBoolean) {
 }
 
 include(":app")
+include(":test-data")
+
 include(":mail-message:data")
 include(":mail-message:domain")
 include(":mail-message:presentation")

@@ -19,8 +19,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
 
 android {
@@ -30,24 +28,14 @@ android {
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
 }
 
 dependencies {
-    implementation(Dependencies.moduleDomainLibs)
+    implementation(Proton.Core.account)
+    implementation(Proton.Core.domain)
+    implementation(Proton.Core.featureFlag)
+    implementation(Proton.Core.mailSettings)
+    implementation(Proton.Core.network)
     implementation(Proton.Core.user)
     implementation(Proton.Core.userSettings)
-    implementation(Proton.Core.accountManager)
-    implementation(Proton.Core.mailSettings)
-
-    testImplementation(Dependencies.testLibs)
-    testImplementation(project(":test-data"))
 }

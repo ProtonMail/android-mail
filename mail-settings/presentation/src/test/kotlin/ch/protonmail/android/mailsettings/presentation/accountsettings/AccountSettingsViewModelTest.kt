@@ -25,9 +25,9 @@ import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.ObservePrimaryUserSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
-import ch.protonmail.android.mailsettings.presentation.testdata.MailSettingsTestData
-import ch.protonmail.android.mailsettings.presentation.testdata.UserSettingsTestData
-import ch.protonmail.android.mailsettings.presentation.testdata.UserTestData
+import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
+import ch.protonmail.android.testdata.user.UserTestData
+import ch.protonmail.android.testdata.usersettings.UserSettingsTestData
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

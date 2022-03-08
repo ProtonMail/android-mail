@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.testdata
 
+import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.account.domain.entity.Account
 import me.proton.core.account.domain.entity.AccountDetails
 import me.proton.core.account.domain.entity.AccountState.Disabled

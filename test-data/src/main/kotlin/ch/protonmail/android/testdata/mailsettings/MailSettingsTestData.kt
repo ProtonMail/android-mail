@@ -16,8 +16,9 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.testdata
+package ch.protonmail.android.testdata.mailsettings
 
+import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.domain.type.StringEnum
 import me.proton.core.mailsettings.domain.entity.ComposerMode

@@ -152,6 +152,8 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     testImplementation(Dependencies.testLibs)
+    testImplementation(project(":test-data"))
+
     androidTestImplementation(Dependencies.androidTestLibs)
 }
 

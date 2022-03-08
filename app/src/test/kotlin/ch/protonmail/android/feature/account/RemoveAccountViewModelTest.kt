@@ -19,7 +19,7 @@
 package ch.protonmail.android.feature.account
 
 import app.cash.turbine.test
-import ch.protonmail.android.testdata.UserIdTestData
+import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk

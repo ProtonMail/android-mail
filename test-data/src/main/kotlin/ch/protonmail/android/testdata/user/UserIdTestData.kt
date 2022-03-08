@@ -16,11 +16,10 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata
+package ch.protonmail.android.testdata.user
 
 import me.proton.core.domain.entity.UserId
 
 object UserIdTestData {
-    private const val RAW_USER_ID = "user_id"
-    val userId = UserId(RAW_USER_ID)
+    val userId = UserId("userId")
 }
