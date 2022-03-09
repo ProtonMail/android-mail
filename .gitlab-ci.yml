@@ -40,6 +40,7 @@ stages:
   tags:
     - small
   before_script:
+    - bundle install
     - ./buildSrc/setup_firebase_gcloud.sh
 
 analyse:
@@ -104,12 +105,12 @@ run_firebase_instrumentation_tests:
   extends: .firebase_test_job
   stage: test
   script:
-    - ./buildSrc/run_firebase_instrumentation_tests.sh
+    - bundle exec fastlane instrumentedTest
 
 run_firebase_ui_tests:
   extends: .firebase_test_job
   script:
-    - ./buildSrc/run_firebase_ui_tests.sh
+    - bundle exec fastlane uiTest
 
 
 coverage report:
@@ -117,7 +118,7 @@ coverage report:
   tags:
     - xlarge-k8s
   script:
-    - ./gradlew coberturaCoverageReport
+    - bundle exec fastlane coverageReport
   artifacts:
     expire_in: 1 week
     paths:

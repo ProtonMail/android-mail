@@ -39,6 +39,21 @@ platform :android do
     gradle(task: "test")
   end
 
+  desc "Runs Instrumented Tests on Firebase"
+  lane :instrumentedTest do
+    sh("../buildSrc/run_firebase_instrumentation_tests.sh")
+  end
+
+  desc "Runs UI Tests on Firebase"
+  lane :uiTest do
+    sh("../buildSrc/run_firebase_ui_tests.sh")
+  end
+
+  desc "Generate test coverage report"
+  lane :coverageReport do
+    gradle(task: "coberturaCoverageReport")
+  end
+
   desc "Publish build to firebase app testing"
   lane :deployToFirebase do
     firebase_app_distribution(
