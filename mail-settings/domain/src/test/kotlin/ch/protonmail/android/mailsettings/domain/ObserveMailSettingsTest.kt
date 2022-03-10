@@ -35,10 +35,8 @@ import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
-import org.junit.function.ThrowingRunnable
 import java.io.IOException
 
 class ObserveMailSettingsTest {
@@ -93,17 +91,13 @@ class ObserveMailSettingsTest {
     }
 
     @Test
-    fun `returns nothing when there is no valid userId`() = runTest {
+    fun `returns null when there is no valid userId`() = runTest {
         observeMailSettings.invoke().test {
             // Given
             primaryUserIdIs(null)
 
             // Then
-            val thrownError = assertThrows(
-                AssertionError::class.java,
-                ThrowingRunnable { expectMostRecentItem() }
-            )
-            assertEquals("No item was found", thrownError.message)
+            assertNull(awaitItem())
         }
     }
 

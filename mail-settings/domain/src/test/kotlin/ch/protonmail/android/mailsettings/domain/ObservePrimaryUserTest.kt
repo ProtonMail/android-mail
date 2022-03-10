@@ -35,10 +35,8 @@ import me.proton.core.user.domain.UserManager
 import me.proton.core.user.domain.entity.User
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
-import org.junit.function.ThrowingRunnable
 import java.io.IOException
 
 class ObservePrimaryUserTest {
@@ -88,23 +86,18 @@ class ObservePrimaryUserTest {
             userManagerReturnsError()
 
             // Then
-            val actual = awaitItem()
-            assertNull(actual)
+            assertNull(awaitItem())
         }
     }
 
     @Test
-    fun `returns nothing when there is no valid userId`() = runTest {
+    fun `returns null when there is no valid userId`() = runTest {
         observeUser.invoke().test {
             // Given
             primaryUserIdIs(null)
 
             // Then
-            val thrownError = assertThrows(
-                AssertionError::class.java,
-                ThrowingRunnable { expectMostRecentItem() }
-            )
-            assertEquals("No item was found", thrownError.message)
+            assertNull(awaitItem())
         }
     }
 

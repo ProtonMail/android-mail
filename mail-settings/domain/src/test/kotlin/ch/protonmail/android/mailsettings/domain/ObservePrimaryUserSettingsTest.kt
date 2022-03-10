@@ -88,7 +88,18 @@ class ObservePrimaryUserSettingsTest {
         }
     }
 
-    private suspend fun primaryUserIdIs(userId: UserId) {
+    @Test
+    fun `returns null when there is no valid userId`() = runTest {
+        observeUserSettings.invoke().test {
+            // Given
+            primaryUserIdIs(null)
+
+            // Then
+            assertNull(awaitItem())
+        }
+    }
+
+    private suspend fun primaryUserIdIs(userId: UserId?) {
         userIdFlow.emit(userId)
     }
 }

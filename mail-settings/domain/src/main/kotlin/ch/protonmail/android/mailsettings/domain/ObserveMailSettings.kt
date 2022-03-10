@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.mailsettings.domain
 
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.arch.mapSuccessValueOrNull
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
@@ -31,8 +31,10 @@ class ObserveMailSettings @Inject constructor(
 ) {
 
     operator fun invoke() = accountManager.getPrimaryUserId()
-        .filterNotNull()
-        .flatMapLatest {
-            mailSettingsRepository.getMailSettingsFlow(it).mapSuccessValueOrNull()
+        .flatMapLatest { userId ->
+            if (userId == null) {
+                return@flatMapLatest flowOf(null)
+            }
+            mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull()
         }
 }
