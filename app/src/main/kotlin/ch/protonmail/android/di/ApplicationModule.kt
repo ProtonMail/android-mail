@@ -31,11 +31,16 @@ import me.proton.core.auth.domain.ClientSecret
 import me.proton.core.domain.entity.Product
 import me.proton.core.presentation.app.AppLifecycleObserver
 import me.proton.core.presentation.app.AppLifecycleProvider
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object ApplicationModule {
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class LocalDiskOpCoroutineScope
 
     @Provides
     @Singleton

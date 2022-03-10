@@ -20,6 +20,8 @@ package ch.protonmail.android.di
 
 import android.content.Context
 import ch.protonmail.android.BuildConfig
+import ch.protonmail.android.di.ApplicationModule.LocalDiskOpCoroutineScope
+import ch.protonmail.android.feature.alternativerouting.HasAlternativeRouting
 import ch.protonmail.android.feature.forceupdate.ForceUpdateHandler
 import ch.protonmail.android.useragent.BuildUserAgent
 import dagger.Module
@@ -30,6 +32,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import me.proton.core.auth.data.MissingScopeListenerImpl
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.humanverification.data.utils.NetworkRequestOverriderImpl
@@ -81,13 +84,14 @@ object NetworkModule {
     fun provideApiClient(
         buildUserAgent: BuildUserAgent,
         forceUpdateHandler: ForceUpdateHandler,
+        hasAlternativeRouting: HasAlternativeRouting
     ) = object : ApiClient {
         override val appVersionHeader: String
             get() = "android-mail@${BuildConfig.VERSION_NAME}"
         override val enableDebugLogging: Boolean
             get() = true
         override val shouldUseDoh: Boolean
-            get() = false
+            get() = hasAlternativeRouting().value.isEnabled
         override val userAgent: String
             get() = buildUserAgent()
 
@@ -95,6 +99,12 @@ object NetworkModule {
             forceUpdateHandler.onForceUpdate(errorMessage)
         }
     }
+
+    @Provides
+    @Singleton
+    @LocalDiskOpCoroutineScope
+    fun provideLocalDiskOpCoroutineScope(): CoroutineScope =
+        CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     @Provides
     @Singleton
