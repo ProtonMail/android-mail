@@ -1,11 +1,13 @@
 fullTest:
   device:
-    - model: walleye
+    - model: f2q
+      version: 30
+    - model: a10
+      version: 29
+    - model: phoenix_sprout
       version: 28
     - model: walleye
       version: 27
-    - model: flame
-      version: 29
     - model: G8142
       version: 25
     - model: Nexus5X
@@ -13,7 +15,7 @@ fullTest:
 quickTest:
   timeout: 30m
   device:
-    - model: flame
+    - model: x1q
       version: 29
     - model: Pixel2
       version: 28
