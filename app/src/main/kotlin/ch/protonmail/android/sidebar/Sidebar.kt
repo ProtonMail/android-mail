@@ -62,7 +62,6 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
-import timber.log.Timber
 
 const val TEST_TAG_SIDEBAR_MENU = "SidebarMenuTestTag"
 
@@ -132,7 +131,6 @@ fun Sidebar(
                 },
                 onSettings = {
                     close()
-                    Timber.d("Settings feature enabled = ${viewModelState.isSettingsEnabled}")
                     if (viewModelState.isSettingsEnabled) {
                         onSettings()
                     }

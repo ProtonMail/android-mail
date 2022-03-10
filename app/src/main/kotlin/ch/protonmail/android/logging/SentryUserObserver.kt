@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.logging
 
+import android.provider.Settings
 import io.sentry.Sentry
 import io.sentry.protocol.User
 import kotlinx.coroutines.CoroutineScope
@@ -37,7 +38,7 @@ class SentryUserObserver @Inject constructor(
 
     fun start() = accountManager.getPrimaryUserId()
         .map { userId ->
-            val user = User().apply { id = userId?.id }
+            val user = User().apply { id = userId?.id ?: Settings.Secure.ANDROID_ID }
             Sentry.setUser(user)
         }
         .launchIn(scope)
