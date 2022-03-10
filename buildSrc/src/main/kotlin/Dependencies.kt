@@ -75,9 +75,9 @@ object Dependencies {
     }
 
     val moduleDataLibs = mutableListOf<String>().apply {
+        add(AndroidX.DataStore.preferences)
         add(AndroidX.Room.ktx)
         add(AndroidX.Work.runtimeKtx)
-        add(AndroidX.DataStore.preferences)
         add(Proton.Core.data)
         add(Proton.Core.dataRoom)
         add(Proton.Core.domain)

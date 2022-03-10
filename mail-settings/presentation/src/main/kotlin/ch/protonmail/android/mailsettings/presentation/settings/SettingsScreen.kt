@@ -93,13 +93,13 @@ fun MainSettingsScreen(
         modifier = modifier.testTag(TEST_TAG_SETTINGS_SCREEN),
         topBar = {
             ProtonSettingsTopBar(
-                title = stringResource(id = R.string.settings),
+                title = stringResource(id = R.string.mail_settings_settings),
                 onBackClick = onBackClick
             )
         },
         content = {
             ProtonSettingsList {
-                item { ProtonSettingsHeader(title = R.string.account_settings) }
+                item { ProtonSettingsHeader(title = R.string.mail_settings_account_settings) }
                 item {
                     AccountSettingsItem(
                         modifier = Modifier.testTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM),
@@ -107,56 +107,56 @@ fun MainSettingsScreen(
                         onAccountClicked = onAccountClick
                     )
                 }
-                item { ProtonSettingsHeader(title = R.string.app_settings) }
+                item { ProtonSettingsHeader(title = R.string.mail_settings_app_settings) }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.theme),
+                        name = stringResource(id = R.string.mail_settings_theme),
                         onClick = onThemeClick
                     )
                     Divider()
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.push_notifications),
+                        name = stringResource(id = R.string.mail_settings_push_notifications),
                         onClick = onPushNotificationsClick
                     )
                     Divider()
                 }
                 item {
                     AutoLockSettingItem(
-                        state = state,
+                        appSettings = state.appSettings,
                         onAutoLockClick = onAutoLockClick
                     )
                 }
                 item {
                     AlternativeRoutingSettingItem(
-                        state = state,
+                        appSettings = state.appSettings,
                         onAlternativeRoutingClick = onAlternativeRoutingClick
                     )
                 }
                 item {
                     AppLanguageSettingItem(
-                        state = state,
+                        appSettings = state.appSettings,
                         onAppLanguageClick = onAppLanguageClick
                     )
                 }
                 item {
                     CombinedContactsSettingItem(
-                        state = state,
+                        appSettings = state.appSettings,
                         onCombinedContactsClick = onCombinedContactsClick
                     )
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.swipe_actions),
+                        name = stringResource(id = R.string.mail_settings_swipe_actions),
                         onClick = onSwipeActionsClick
                     )
                     Divider()
                 }
-                item { ProtonSettingsHeader(title = R.string.app_information) }
+                item { ProtonSettingsHeader(title = R.string.mail_settings_app_information) }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.app_version),
+                        name = stringResource(id = R.string.mail_settings_app_version),
                         hint = state.appInformation.version,
                         isClickable = false
                     )
@@ -169,17 +169,17 @@ fun MainSettingsScreen(
 @Composable
 private fun CombinedContactsSettingItem(
     modifier: Modifier = Modifier,
-    state: Data,
+    appSettings: AppSettings,
     onCombinedContactsClick: () -> Unit
 ) {
-    val hint = if (state.appSettings.hasCombinedContacts) {
-        stringResource(id = string.enabled)
+    val hint = if (appSettings.hasCombinedContacts) {
+        stringResource(id = string.mail_settings_enabled)
     } else {
-        stringResource(id = string.disabled)
+        stringResource(id = string.mail_settings_disabled)
     }
     ProtonSettingsItem(
         modifier = modifier,
-        name = stringResource(id = string.combined_contacts),
+        name = stringResource(id = string.mail_settings_combined_contacts),
         hint = hint,
         onClick = onCombinedContactsClick
     )
@@ -189,14 +189,14 @@ private fun CombinedContactsSettingItem(
 @Composable
 private fun AppLanguageSettingItem(
     modifier: Modifier = Modifier,
-    state: Data,
+    appSettings: AppSettings,
     onAppLanguageClick: () -> Unit
 ) {
-    val appLanguage = state.appSettings.customAppLanguage
-        ?: stringResource(id = string.auto_detect)
+    val appLanguage = appSettings.customAppLanguage
+        ?: stringResource(id = string.mail_settings_auto_detect)
     ProtonSettingsItem(
         modifier = modifier,
-        name = stringResource(id = string.app_language),
+        name = stringResource(id = string.mail_settings_app_language),
         hint = appLanguage,
         onClick = onAppLanguageClick
     )
@@ -206,17 +206,17 @@ private fun AppLanguageSettingItem(
 @Composable
 private fun AlternativeRoutingSettingItem(
     modifier: Modifier = Modifier,
-    state: Data,
+    appSettings: AppSettings,
     onAlternativeRoutingClick: () -> Unit
 ) {
-    val hint = if (state.appSettings.hasAlternativeRouting) {
-        stringResource(id = string.allowed)
+    val hint = if (appSettings.hasAlternativeRouting) {
+        stringResource(id = string.mail_settings_allowed)
     } else {
-        stringResource(id = string.denied)
+        stringResource(id = string.mail_settings_denied)
     }
     ProtonSettingsItem(
         modifier = modifier,
-        name = stringResource(id = string.alternative_routing),
+        name = stringResource(id = string.mail_settings_alternative_routing),
         hint = hint,
         onClick = onAlternativeRoutingClick
     )
@@ -226,17 +226,17 @@ private fun AlternativeRoutingSettingItem(
 @Composable
 private fun AutoLockSettingItem(
     modifier: Modifier = Modifier,
-    state: Data,
+    appSettings: AppSettings,
     onAutoLockClick: () -> Unit
 ) {
-    val hint = if (state.appSettings.hasAutoLock) {
-        stringResource(id = string.enabled)
+    val hint = if (appSettings.hasAutoLock) {
+        stringResource(id = string.mail_settings_enabled)
     } else {
-        stringResource(id = string.disabled)
+        stringResource(id = string.mail_settings_disabled)
     }
     ProtonSettingsItem(
         modifier = modifier,
-        name = stringResource(id = string.auto_lock),
+        name = stringResource(id = string.mail_settings_auto_lock),
         hint = hint,
         onClick = onAutoLockClick
     )
@@ -249,7 +249,8 @@ fun AccountSettingsItem(
     accountInfo: AccountInfo?,
     onAccountClicked: () -> Unit
 ) {
-    val header = accountInfo?.name ?: stringResource(id = R.string.no_information_available)
+    val header = accountInfo?.name
+        ?: stringResource(id = R.string.mail_settings_no_information_available)
     val hint = accountInfo?.email
 
     ProtonSettingsItem(
@@ -276,7 +277,7 @@ fun previewMainSettingsScreen() {
     MainSettingsScreen(
         modifier = Modifier,
         state = Data(
-            AccountInfo("Marino", "marino@proton.ch"),
+            AccountInfo("ProtonUser", "user@proton.ch"),
             AppSettings(
                 hasAutoLock = false,
                 hasAlternativeRouting = true,

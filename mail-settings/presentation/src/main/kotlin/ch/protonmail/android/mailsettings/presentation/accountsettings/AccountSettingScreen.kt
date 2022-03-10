@@ -103,33 +103,34 @@ fun AccountSettingScreen(
         modifier = modifier.testTag(TEST_TAG_ACCOUNT_SETTINGS_SCREEN),
         topBar = {
             ProtonSettingsTopBar(
-                title = stringResource(id = R.string.account_settings),
+                title = stringResource(id = R.string.mail_settings_account_settings),
                 onBackClick = onBackClick
             )
         },
         content = {
             ProtonSettingsList {
-                item { ProtonSettingsHeader(title = R.string.account) }
+                item { ProtonSettingsHeader(title = R.string.mail_settings_account) }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.subscription),
+                        name = stringResource(id = R.string.mail_settings_subscription),
                         hint = state.currentPlan
-                            ?: stringResource(id = string.no_information_available),
+                            ?: stringResource(id = string.mail_settings_no_information_available),
                         onClick = onSubscriptionClick
                     )
                     Divider()
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.password_management),
+                        name = stringResource(id = R.string.mail_settings_password_management),
                         onClick = onPasswordManagementClick
                     )
                     Divider()
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.recovery_email),
-                        hint = state.recoveryEmail ?: stringResource(id = R.string.not_set),
+                        name = stringResource(id = R.string.mail_settings_recovery_email),
+                        hint = state.recoveryEmail
+                            ?: stringResource(id = R.string.mail_settings_not_set),
                         onClick = onRecoveryEmailClick
                     )
                     Divider()
@@ -144,58 +145,58 @@ fun AccountSettingScreen(
                     )
                 }
 
-                item { ProtonSettingsHeader(title = R.string.addresses) }
+                item { ProtonSettingsHeader(title = R.string.mail_settings_addresses) }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.default_email_address),
+                        name = stringResource(id = R.string.mail_settings_default_email_address),
                         hint = state.defaultEmail
-                            ?: stringResource(id = string.no_information_available),
+                            ?: stringResource(id = string.mail_settings_no_information_available),
                         onClick = onDefaultEmailAddressClick
                     )
                     Divider()
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.display_name_and_signature),
+                        name = stringResource(id = R.string.mail_settings_display_name_and_signature),
                         onClick = onDisplayNameClick
                     )
                     Divider()
                 }
 
-                item { ProtonSettingsHeader(title = R.string.mailbox) }
+                item { ProtonSettingsHeader(title = R.string.mail_settings_mailbox) }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.privacy),
+                        name = stringResource(id = R.string.mail_settings_privacy),
                         onClick = onPrivacyClick
                     )
                     Divider()
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.search_message_content),
+                        name = stringResource(id = R.string.mail_settings_search_message_content),
                         onClick = onSearchMessageContentClick
                     )
                     Divider()
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.labels_and_folders),
+                        name = stringResource(id = R.string.mail_settings_labels_and_folders),
                         onClick = onLabelsFoldersClick
                     )
                     Divider()
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.local_storage),
+                        name = stringResource(id = R.string.mail_settings_local_storage),
                         onClick = onLocalStorageClick
                     )
                     Divider()
                 }
 
-                item { ProtonSettingsHeader(title = R.string.snooze) }
+                item { ProtonSettingsHeader(title = R.string.mail_settings_snooze) }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.snooze_notifications),
+                        name = stringResource(id = R.string.mail_settings_snooze_notifications),
                         hint = "(Off)",
                         onClick = onSnoozeNotificationsClick
                     )
@@ -211,10 +212,10 @@ private fun MailboxSizeItem(state: Data) {
     val formattedSize = if (state.mailboxUsedSpace != null && state.mailboxSize != null) {
         "${formatFileSize(state.mailboxUsedSpace)} / ${formatFileSize(state.mailboxSize)}"
     } else {
-        stringResource(id = string.no_information_available)
+        stringResource(id = string.mail_settings_no_information_available)
     }
     ProtonSettingsItem(
-        name = stringResource(id = string.mailbox_size),
+        name = stringResource(id = string.mail_settings_mailbox_size),
         hint = formattedSize,
         isClickable = false
     )
@@ -229,14 +230,14 @@ private fun ConversationModeSettingItem(
 ) {
     val hint = state.isConversationMode?.let { isConversationEnabled ->
         if (isConversationEnabled) {
-            stringResource(id = R.string.enabled)
+            stringResource(id = R.string.mail_settings_enabled)
         } else {
-            stringResource(id = R.string.disabled)
+            stringResource(id = R.string.mail_settings_disabled)
         }
-    } ?: stringResource(id = string.no_information_available)
+    } ?: stringResource(id = string.mail_settings_no_information_available)
     ProtonSettingsItem(
         modifier = modifier,
-        name = stringResource(id = R.string.conversation_mode),
+        name = stringResource(id = R.string.mail_settings_conversation_mode),
         hint = hint,
         onClick = onConversationModeClick
     )
