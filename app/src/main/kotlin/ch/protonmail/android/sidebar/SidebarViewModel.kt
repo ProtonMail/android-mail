@@ -40,14 +40,12 @@ import javax.inject.Inject
 class SidebarViewModel @Inject constructor(
     private val selectedSidebarLocation: SelectedSidebarLocation,
     private val featureFlagManager: FeatureFlagManager,
-    accountManager: AccountManager
+    private val accountManager: AccountManager
 ) : ViewModel() {
 
     val state: Flow<State> = combine(
         selectedSidebarLocation.location,
-        accountManager.getPrimaryUserId().filterNotNull().flatMapLatest { userId ->
-            featureFlagManager.observe(userId, ShowSettings.id)
-        }
+        observePrimaryUserFeatureFlag()
     ) { location, settingsFeature ->
         State.Enabled(
             selectedLocation = location,
@@ -62,6 +60,12 @@ class SidebarViewModel @Inject constructor(
     fun onSidebarItemSelected(location: SidebarLocation) {
         selectedSidebarLocation.set(location)
     }
+
+    private fun observePrimaryUserFeatureFlag() = accountManager.getPrimaryUserId()
+        .filterNotNull()
+        .flatMapLatest { userId ->
+            featureFlagManager.observe(userId, ShowSettings.id)
+        }
 
     sealed class State {
         data class Enabled(
