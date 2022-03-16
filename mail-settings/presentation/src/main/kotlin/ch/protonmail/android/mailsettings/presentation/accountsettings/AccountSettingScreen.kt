@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.text.format.Formatter.formatShortFileSize
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
@@ -26,9 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.presentation.R
-import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
 import me.proton.core.compose.component.ProtonSettingsHeader
@@ -38,6 +40,7 @@ import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
 
 const val TEST_TAG_ACCOUNT_SETTINGS_SCREEN = "AccountSettingsScreenTestTag"
+const val TEST_TAG_ACCOUNT_SETTINGS_LIST = "AccountSettingsListTestTag"
 
 @Composable
 fun AccountSettingScreen(
@@ -108,13 +111,13 @@ fun AccountSettingScreen(
             )
         },
         content = {
-            ProtonSettingsList {
+            ProtonSettingsList(modifier.testTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)) {
                 item { ProtonSettingsHeader(title = R.string.mail_settings_account) }
                 item {
                     ProtonSettingsItem(
                         name = stringResource(id = R.string.mail_settings_subscription),
                         hint = state.currentPlan
-                            ?: stringResource(id = string.mail_settings_no_information_available),
+                            ?: stringResource(id = R.string.mail_settings_no_information_available),
                         onClick = onSubscriptionClick
                     )
                     Divider()
@@ -150,7 +153,7 @@ fun AccountSettingScreen(
                     ProtonSettingsItem(
                         name = stringResource(id = R.string.mail_settings_default_email_address),
                         hint = state.defaultEmail
-                            ?: stringResource(id = string.mail_settings_no_information_available),
+                            ?: stringResource(id = R.string.mail_settings_no_information_available),
                         onClick = onDefaultEmailAddressClick
                     )
                     Divider()
@@ -212,10 +215,10 @@ private fun MailboxSizeItem(state: Data) {
     val formattedSize = if (state.mailboxUsedSpace != null && state.mailboxSize != null) {
         "${formatFileSize(state.mailboxUsedSpace)} / ${formatFileSize(state.mailboxSize)}"
     } else {
-        stringResource(id = string.mail_settings_no_information_available)
+        stringResource(id = R.string.mail_settings_no_information_available)
     }
     ProtonSettingsItem(
-        name = stringResource(id = string.mail_settings_mailbox_size),
+        name = stringResource(id = R.string.mail_settings_mailbox_size),
         hint = formattedSize,
         isClickable = false
     )
@@ -234,7 +237,7 @@ private fun ConversationModeSettingItem(
         } else {
             stringResource(id = R.string.mail_settings_disabled)
         }
-    } ?: stringResource(id = string.mail_settings_no_information_available)
+    } ?: stringResource(id = R.string.mail_settings_no_information_available)
     ProtonSettingsItem(
         modifier = modifier,
         name = stringResource(id = R.string.mail_settings_conversation_mode),
@@ -249,3 +252,39 @@ private fun formatFileSize(mailboxUsedSpace: Long) = formatShortFileSize(
     LocalContext.current,
     mailboxUsedSpace
 )
+
+@Preview(
+    name = "Account settings screen light mode",
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Account settings screen dark mode",
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES
+)
+@Composable
+fun previewAccountSettingsScreen() {
+    AccountSettingScreen(
+        onBackClick = {},
+        onSubscriptionClick = {},
+        onPasswordManagementClick = {},
+        onRecoveryEmailClick = {},
+        onConversationModeClick = {},
+        onDefaultEmailAddressClick = {},
+        onDisplayNameClick = {},
+        onPrivacyClick = {},
+        onSearchMessageContentClick = {},
+        onLabelsFoldersClick = {},
+        onLocalStorageClick = {},
+        onSnoozeNotificationsClick = {},
+        state = Data(
+            currentPlan = "Visionary",
+            recoveryEmail = "recovery@protonmail.com",
+            mailboxSize = 20_000,
+            mailboxUsedSpace = 4000,
+            defaultEmail = "hello@protonmail.ch",
+            isConversationMode = true
+        )
+    )
+}

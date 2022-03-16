@@ -10,7 +10,7 @@ import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class SettingsTest : BaseTest(clearAppDatabaseOnTearDown = false) {
+class SettingsFlowTest : BaseTest(clearAppDatabaseOnTearDown = false) {
 
     private val user = quark.userCreate()
     private val menuRobot = MenuRobot(composeTestRule)

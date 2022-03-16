@@ -13,7 +13,7 @@ import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class LoginTests : BaseTest() {
+class LoginFlowTests : BaseTest() {
 
     private val addAccountRobot = AddAccountRobot()
     private val loginRobot = LoginRobot()

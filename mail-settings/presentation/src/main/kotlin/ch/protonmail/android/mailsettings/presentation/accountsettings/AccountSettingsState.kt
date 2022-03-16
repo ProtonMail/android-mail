@@ -19,6 +19,10 @@
 package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 sealed class AccountSettingsState {
+    /**
+     * @param mailboxSize max mailbox size in Bytes
+     * @param mailboxUsedSpace Mailbox used space in Bytes
+     */
     data class Data(
         val currentPlan: String?,
         val recoveryEmail: String?,
