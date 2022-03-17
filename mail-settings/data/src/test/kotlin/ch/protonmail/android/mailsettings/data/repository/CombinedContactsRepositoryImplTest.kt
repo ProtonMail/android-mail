@@ -21,7 +21,7 @@ package ch.protonmail.android.mailsettings.data.repository
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import app.cash.turbine.test
-import ch.protonmail.android.mailsettings.data.DataStoreProvider
+import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import io.mockk.coEvery
@@ -36,7 +36,7 @@ import org.junit.Test
 class CombinedContactsRepositoryImplTest {
 
     private val preferences = mockk<Preferences>()
-    private val dataStoreProvider = mockk<DataStoreProvider> {
+    private val dataStoreProvider = mockk<MailSettingsDataStoreProvider> {
         every { this@mockk.combinedContactsDataStore } returns mockk dataStore@{
             every { this@dataStore.data } returns flowOf(preferences)
         }

@@ -24,7 +24,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import javax.inject.Inject
 
-class DataStoreProvider @Inject constructor(
+class MailSettingsDataStoreProvider @Inject constructor(
     context: Context
 ) {
 

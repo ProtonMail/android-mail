@@ -21,7 +21,7 @@ package ch.protonmail.android.mailsettings.data.repository
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import app.cash.turbine.test
-import ch.protonmail.android.mailsettings.data.DataStoreProvider
+import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.AutoLockPreference
 import io.mockk.coEvery
 import io.mockk.every
@@ -35,7 +35,7 @@ import org.junit.Test
 class AutoLockRepositoryImplTest {
 
     private val preferences = mockk<Preferences>()
-    private val dataStoreProvider = mockk<DataStoreProvider> {
+    private val dataStoreProvider = mockk<MailSettingsDataStoreProvider> {
         every { this@mockk.autoLockDataStore } returns mockk dataStore@{
             every { this@dataStore.data } returns flowOf(preferences)
         }

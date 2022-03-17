@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailsettings.dagger
 
 import android.content.Context
-import ch.protonmail.android.mailsettings.data.DataStoreProvider
+import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.data.repository.AlternativeRoutingRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
@@ -50,24 +50,24 @@ object SettingsModule {
     @Singleton
     fun provideDataStoreProvider(
         @ApplicationContext context: Context
-    ): DataStoreProvider = DataStoreProvider(context)
+    ): MailSettingsDataStoreProvider = MailSettingsDataStoreProvider(context)
 
     @Provides
     @Singleton
     fun provideAutoLockRepository(
-        dataStoreProvider: DataStoreProvider
+        dataStoreProvider: MailSettingsDataStoreProvider
     ): AutoLockRepository = AutoLockRepositoryImpl(dataStoreProvider)
 
     @Provides
     @Singleton
     fun provideAlternativeRoutingRepository(
-        dataStoreProvider: DataStoreProvider
+        dataStoreProvider: MailSettingsDataStoreProvider
     ): AlternativeRoutingRepository = AlternativeRoutingRepositoryImpl(dataStoreProvider)
 
     @Provides
     @Singleton
     fun provideCombinedContactsRepository(
-        dataStoreProvider: DataStoreProvider
+        dataStoreProvider: MailSettingsDataStoreProvider
     ): CombinedContactsRepository = CombinedContactsRepositoryImpl(dataStoreProvider)
 
     @Provides
