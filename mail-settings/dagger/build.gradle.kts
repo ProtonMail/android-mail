@@ -19,6 +19,8 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -31,8 +33,10 @@ android {
 }
 
 dependencies {
-    api(project(":mail-settings:dagger"))
-    api(project(":mail-settings:data"))
-    api(project(":mail-settings:domain"))
-    api(project(":mail-settings:presentation"))
+    implementation(project(":mail-settings:data"))
+    implementation(project(":mail-settings:domain"))
+    implementation(project(":mail-settings:presentation"))
+
+    implementation(Dagger.hiltAndroid)
+    kapt(Dagger.hiltDaggerCompiler)
 }

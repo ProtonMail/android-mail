@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.di
+package ch.protonmail.android.mailsettings.dagger
 
 import android.content.Context
 import ch.protonmail.android.mailsettings.data.DataStoreProvider
@@ -42,7 +42,7 @@ object SettingsModule {
 
     @Provides
     @Singleton
-    fun provideGetAppVersion(
+    fun provideGetAppInformation(
         @ApplicationContext context: Context
     ): GetAppInformation = GetAppInformation(context)
 
