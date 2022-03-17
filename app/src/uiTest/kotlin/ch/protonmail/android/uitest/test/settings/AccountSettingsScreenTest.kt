@@ -29,8 +29,8 @@ class AccountSettingsScreenTest {
     private val settingsState = Data(
         currentPlan = "Visionary",
         recoveryEmail = "recovery-email@protonmail.com",
-        mailboxSize = 200_000,
-        mailboxUsedSpace = 75_000,
+        mailboxSize = 20_000,
+        mailboxUsedSpace = 15_000,
         defaultEmail = "contact@protonmail.ch",
         isConversationMode = true
     )
@@ -93,9 +93,14 @@ class AccountSettingsScreenTest {
             .assertTextContains("recovery-email@protonmail.com")
             .assertIsDisplayed()
 
+        // Assert values individually as android's `Formatter.formatShortFileSize` method
+        // adds many non-printable BiDi chars when executing on some virtual devices
+        // so checking for "1 kB / 2 kB" would not find a match
         composeTestRule
             .onNodeWithText("Mailbox size")
-            .assertTextContains("75 kB / 200 kB")
+            .assertTextContains(value = "15", substring = true)
+            .assertTextContains(value = "20", substring = true)
+            .assertTextContains(value = "kB", substring = true, ignoreCase = true)
             .assertIsDisplayed()
 
         composeTestRule
