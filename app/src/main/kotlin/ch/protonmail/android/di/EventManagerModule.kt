@@ -29,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import me.proton.core.contact.data.ContactEmailEventListener
 import me.proton.core.contact.data.ContactEventListener
+import me.proton.core.eventmanager.data.EventManagerConfigProviderImpl
 import me.proton.core.eventmanager.data.EventManagerCoroutineScope
 import me.proton.core.eventmanager.data.EventManagerFactory
 import me.proton.core.eventmanager.data.EventManagerProviderImpl
@@ -36,6 +37,7 @@ import me.proton.core.eventmanager.data.db.EventMetadataDatabase
 import me.proton.core.eventmanager.data.repository.EventMetadataRepositoryImpl
 import me.proton.core.eventmanager.data.work.EventWorkerManagerImpl
 import me.proton.core.eventmanager.domain.EventListener
+import me.proton.core.eventmanager.domain.EventManagerConfigProvider
 import me.proton.core.eventmanager.domain.EventManagerProvider
 import me.proton.core.eventmanager.domain.repository.EventMetadataRepository
 import me.proton.core.eventmanager.domain.work.EventWorkerManager
@@ -61,11 +63,22 @@ object EventManagerModule {
 
     @Provides
     @Singleton
+    fun provideEventManagerConfigProvider(
+        eventMetadataRepository: EventMetadataRepository
+    ): EventManagerConfigProvider = EventManagerConfigProviderImpl(eventMetadataRepository)
+
+    @Provides
+    @Singleton
     @JvmSuppressWildcards
     fun provideEventManagerProvider(
         eventManagerFactory: EventManagerFactory,
+        eventManagerConfigProvider: EventManagerConfigProvider,
         eventListeners: Set<EventListener<*, *>>
-    ): EventManagerProvider = EventManagerProviderImpl(eventManagerFactory, eventListeners)
+    ): EventManagerProvider = EventManagerProviderImpl(
+        eventManagerFactory,
+        eventManagerConfigProvider,
+        eventListeners
+    )
 
     @Provides
     @Singleton

@@ -330,7 +330,7 @@ fun ProtonSidebarSubscriptionItem(
 ) {
     ProtonSidebarItem(
         text = R.string.drawer_title_subscription,
-        icon = R.drawable.ic_pencil,
+        icon = R.drawable.ic_proton_pencil,
         modifier = modifier,
         onClick = onClick,
         isClickable = isClickable,

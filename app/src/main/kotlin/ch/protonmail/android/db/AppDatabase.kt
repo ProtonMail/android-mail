@@ -49,6 +49,7 @@ import me.proton.core.key.data.db.PublicAddressDatabase
 import me.proton.core.key.data.entity.KeySaltEntity
 import me.proton.core.key.data.entity.PublicAddressEntity
 import me.proton.core.key.data.entity.PublicAddressKeyEntity
+import me.proton.core.label.data.local.LabelConverters
 import me.proton.core.label.data.local.LabelDatabase
 import me.proton.core.label.data.local.LabelEntity
 import me.proton.core.mailsettings.data.db.MailSettingsDatabase
@@ -114,7 +115,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
     HumanVerificationConverters::class,
     UserSettingsConverters::class,
     ContactConverters::class,
-    EventManagerConverters::class
+    EventManagerConverters::class,
+    LabelConverters::class
 )
 abstract class AppDatabase :
     BaseDatabase(),
