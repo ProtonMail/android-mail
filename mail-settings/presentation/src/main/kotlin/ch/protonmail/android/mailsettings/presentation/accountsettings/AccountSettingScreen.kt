@@ -247,6 +247,15 @@ private fun ConversationModeSettingItem(
     Divider()
 }
 
+/**
+ * Formats the given parameter to a suitable file size measurement.
+ * Please note that this will yield different values depending on the
+ * android version it is invoked on, since on android N and earlier
+ * the calculation is done considering `1kB = 1024B`
+ * while on newer versions it's done using `1kB = 1000B`
+ *
+ * See [formatShortFileSize] docs for more details
+ */
 @Composable
 private fun formatFileSize(mailboxUsedSpace: Long) = formatShortFileSize(
     LocalContext.current,
