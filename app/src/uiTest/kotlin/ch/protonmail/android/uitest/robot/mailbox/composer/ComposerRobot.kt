@@ -155,7 +155,7 @@ class ComposerRobot {
             .setExpirationInDays(days)
             .hideExpirationView()
             .attachments()
-            .addImageCaptureAttachment(R.drawable.logo_mail)
+            .addImageCaptureAttachment(R.drawable.ic_fire)
             .send()
 
     @SuppressWarnings("LongParameterList")
@@ -174,32 +174,32 @@ class ComposerRobot {
             .setExpirationInDays(days)
             .hideExpirationView()
             .attachments()
-            .addImageCaptureAttachment(R.drawable.logo_mail)
+            .addImageCaptureAttachment(R.drawable.ic_fire)
             .sendWithNotSupportedExpiryConfirmation()
             .sendAnyway()
 
     fun sendMessageCameraCaptureAttachment(to: String, subject: String, body: String): InboxRobot =
         composeMessage(to, subject, body)
             .attachments()
-            .addImageCaptureAttachment(R.drawable.logo_mail)
+            .addImageCaptureAttachment(R.drawable.ic_fire)
             .send()
 
     fun sendMessageWithFileAttachment(to: String, subject: String, body: String): InboxRobot =
         composeMessage(to, subject, body)
             .attachments()
-            .addFileAttachment(R.drawable.logo_mail)
+            .addFileAttachment(R.drawable.ic_fire)
             .send()
 
     fun sendMessageTwoImageCaptureAttachments(to: String, subject: String, body: String): InboxRobot =
         composeMessage(to, subject, body)
             .attachments()
-            .addTwoImageCaptureAttachments(R.drawable.logo_mail, R.drawable.logo_proton)
+            .addTwoImageCaptureAttachments(R.drawable.ic_fire, R.drawable.ic_envelope_all_emails)
             .send()
 
     fun addAndRemoveAttachmentAndSend(to: String, subject: String, body: String): InboxRobot =
         composeMessage(to, subject, body)
             .attachments()
-            .addFileAttachment(R.drawable.logo_mail)
+            .addFileAttachment(R.drawable.ic_fire)
             .removeLastAttachment()
             .send()
 
@@ -219,7 +219,7 @@ class ComposerRobot {
     fun draftSubjectBodyAttachment(to: String, messageSubject: String, body: String): ComposerRobot {
         return draftToSubjectBody(to, messageSubject, body)
             .attachments()
-            .addImageCaptureAttachment(R.drawable.logo_mail)
+            .addImageCaptureAttachment(R.drawable.ic_fire)
     }
 
     fun editBodyAndReply(newBody: String): MessageRobot =
