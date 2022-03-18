@@ -82,17 +82,17 @@ android {
 
     flavorDimensions.add("default")
     productFlavors {
+        val gitHash = "git rev-parse --short HEAD".runCommand(workingDir = rootDir)
         create("dev") {
             applicationIdSuffix = ".dev"
-            val gitHash = "git rev-parse --short HEAD".runCommand(workingDir = rootDir)
-            versionNameSuffix = ".dev+${gitHash}"
+            versionNameSuffix = "-dev+$gitHash"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "false")
             buildConfigField("String", "HOST", "\"proton.black\"")
             buildConfigField("String", "HUMAN_VERIFICATION_HOST", "\"verify.proton.black\"")
         }
         create("alpha") {
             applicationIdSuffix = ".alpha"
-            versionNameSuffix = ".alpha"
+            versionNameSuffix = "-alpha.${Config.versionCode}+$gitHash"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
             buildConfigField("String", "HOST", "\"protonmail.ch\"")
         }
