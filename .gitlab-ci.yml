@@ -1,5 +1,5 @@
 default:
-  image: $CI_REGISTRY/protonvpn/android/android-app-new:branch-mail-v6-ci-dockerfile
+  image: $CI_REGISTRY/android/shared/docker-android:v1.0.0
 
 before_script:
   - mkdir app/src/uiTest/assets
@@ -28,7 +28,7 @@ stages:
 .build_job:
   stage: build
   tags:
-    - large
+    - xlarge-k8s
   artifacts:
     paths:
       - app/build/outputs
@@ -94,7 +94,7 @@ build_release:
 run_unit_test:
   stage: test
   tags:
-    - large
+    - xlarge-k8s
   dependencies:
     - build_debug
   script:
@@ -115,7 +115,7 @@ run_firebase_ui_tests:
 coverage report:
   stage: report
   tags:
-    - large
+    - xlarge-k8s
   script:
     - ./gradlew coberturaCoverageReport
   artifacts:
