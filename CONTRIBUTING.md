@@ -29,11 +29,11 @@ MAILAND-123
 
 ### Architecture
 
-Every change must follow the target **architecture of the project**: a complete example can be found in the `labels` folder of the `app` module.
+Every change must follow the target **architecture of the project**.
 
 ### Tests
 
-Every change must be **widely covered by Unit Tests**.
+We expect any change to be accompanied with an **appropriate suite of automated tests**.
 
 ### Code style
 
