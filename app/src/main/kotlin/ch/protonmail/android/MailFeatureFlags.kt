@@ -20,6 +20,9 @@ package ch.protonmail.android
 
 import me.proton.core.featureflag.domain.entity.FeatureId
 
+private const val IS_DEV_OR_ALPHA_BUILD =
+    BuildConfig.FLAVOR == "dev" || BuildConfig.FLAVOR == "alpha"
+
 /**
  * This class contains all the feature flags that are used by the Mail client.
  * @param defaultLocalValue will be true for debug builds and false for any other build type
@@ -31,5 +34,5 @@ enum class MailFeatureFlags(val id: FeatureId, val defaultLocalValue: Boolean = 
     ConversationMode(FeatureId("ThreadingAndroid")),
 
     // Local only flag (unknown to remote API)
-    ShowSettings(FeatureId("ShowSettings"));
+    ShowSettings(id = FeatureId("ShowSettings"), defaultLocalValue = IS_DEV_OR_ALPHA_BUILD),
 }
