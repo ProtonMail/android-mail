@@ -18,11 +18,15 @@
  */
 package ch.protonmail.android.uitest.robot.settings.account
 
-import androidx.annotation.IdRes
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
+import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_LIST
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_SCREEN
 import ch.protonmail.android.uitest.robot.settings.SettingsRobot
 import ch.protonmail.android.uitest.robot.settings.account.labelsandfolders.LabelsAndFoldersRobot
@@ -66,8 +70,14 @@ class AccountSettingsRobot(
         return SwipingGesturesSettingsRobot()
     }
 
-    @SuppressWarnings("EmptyFunctionBlock")
-    private fun clickOnSettingsItemWithHeader(@IdRes stringId: Int) {}
+    fun conversationMode(): ConversationModeRobot {
+        composeTestRule!!
+            .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
+            .onChild()
+            .performScrollToNode(hasText("Conversation mode"))
+            .performClick()
+        return ConversationModeRobot(composeTestRule)
+    }
 
     /**
      * Contains all the validations that can be performed by [AccountSettingsRobot].
