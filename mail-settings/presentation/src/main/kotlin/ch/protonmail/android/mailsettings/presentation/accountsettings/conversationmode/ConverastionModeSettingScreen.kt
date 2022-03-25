@@ -50,6 +50,7 @@ fun ConversationModeSettingScreen(
             ConversationModeSettingScreen(
                 modifier = modifier,
                 onBackClick = onBackClick,
+                onConversationModeToggled = viewModel::onConversationToggled,
                 state = state
             )
         }
@@ -61,6 +62,7 @@ fun ConversationModeSettingScreen(
 fun ConversationModeSettingScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    onConversationModeToggled: (Boolean) -> Unit,
     state: Data
 ) {
     Scaffold(
@@ -75,7 +77,8 @@ fun ConversationModeSettingScreen(
             ProtonSettingsToggleItem(
                 name = stringResource(id = R.string.mail_settings_conversation_mode),
                 hint = stringResource(id = R.string.mail_settings_conversation_mode_hint),
-                value = state.isEnabled ?: false
+                value = state.isEnabled,
+                onToggle = onConversationModeToggled
             )
         }
     )

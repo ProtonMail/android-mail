@@ -25,14 +25,22 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.conversat
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
+import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
+import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class ConversationModeSettingViewModel @Inject constructor(
+    private val accountManager: AccountManager,
+    private val mailSettingsRepository: MailSettingsRepository,
     observeMailSettings: ObserveMailSettings
 ) : ViewModel() {
 
@@ -43,4 +51,16 @@ class ConversationModeSettingViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(stopTimeoutMillis),
         Loading
     )
+
+    fun onConversationToggled(isEnabled: Boolean) = accountManager.getPrimaryUserId()
+        .filterNotNull()
+        .mapLatest { userId ->
+            mailSettingsRepository.updateViewMode(userId, viewModeFrom(isEnabled))
+        }.launchIn(viewModelScope)
+
+    private fun viewModeFrom(isEnabled: Boolean) = if (isEnabled) {
+        ConversationGrouping
+    } else {
+        NoConversationGrouping
+    }
 }
