@@ -24,19 +24,47 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
+import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
 import me.proton.core.compose.component.ProtonSettingsToggleItem
 import me.proton.core.compose.component.ProtonSettingsTopBar
+import me.proton.core.compose.flow.rememberAsState
 
-const val TEST_TAG_CONVO_MODE_SETTINGS_SCREEN = "AccountConvoModeTestTag"
+const val TEST_TAG_CONV_MODE_SETTINGS_SCREEN = "AccountConvoModeTestTag"
 
 @Composable
 fun ConversationModeSettingScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    viewModel: ConversationModeSettingViewModel = hiltViewModel()
+) {
+    when (
+        val state = rememberAsState(
+            flow = viewModel.state,
+            initial = Loading
+        ).value
+    ) {
+        is Data -> {
+            ConversationModeSettingScreen(
+                modifier = modifier,
+                onBackClick = onBackClick,
+                state = state
+            )
+        }
+        is Loading -> Unit
+    }
+}
+
+@Composable
+fun ConversationModeSettingScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    state: Data
 ) {
     Scaffold(
-        modifier = modifier.testTag(TEST_TAG_CONVO_MODE_SETTINGS_SCREEN),
+        modifier = modifier.testTag(TEST_TAG_CONV_MODE_SETTINGS_SCREEN),
         topBar = {
             ProtonSettingsTopBar(
                 title = stringResource(id = R.string.mail_settings_conversation_mode),
@@ -47,7 +75,7 @@ fun ConversationModeSettingScreen(
             ProtonSettingsToggleItem(
                 name = stringResource(id = R.string.mail_settings_conversation_mode),
                 hint = stringResource(id = R.string.mail_settings_conversation_mode_hint),
-                value = false
+                value = state.isEnabled ?: false
             )
         }
     )
