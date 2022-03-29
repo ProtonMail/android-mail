@@ -2,9 +2,10 @@ package ch.protonmail.android.uitest.test.suite
 
 import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.test.login.LoginFlowTests
-import ch.protonmail.android.uitest.test.settings.AccountSettingsScreenTest
 import ch.protonmail.android.uitest.test.settings.SettingsFlowTest
-import ch.protonmail.android.uitest.test.settings.SettingsScreenTest
+import ch.protonmail.android.uitest.test.settings.account.AccountSettingsScreenTest
+import ch.protonmail.android.uitest.test.settings.account.conversationmode.ConversationModeSettingScreenTest
+import ch.protonmail.android.uitest.test.settings.appsettings.SettingsScreenTest
 import org.junit.experimental.categories.Categories
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
@@ -15,6 +16,7 @@ import org.junit.runners.Suite
     LoginFlowTests::class,
     SettingsFlowTest::class,
     SettingsScreenTest::class,
-    AccountSettingsScreenTest::class
+    AccountSettingsScreenTest::class,
+    ConversationModeSettingScreenTest::class
 )
 class SmokeSuite

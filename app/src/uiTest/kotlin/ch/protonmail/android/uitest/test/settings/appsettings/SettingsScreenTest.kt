@@ -1,4 +1,4 @@
-package ch.protonmail.android.uitest.test.settings
+package ch.protonmail.android.uitest.test.settings.appsettings
 
 import androidx.compose.ui.test.assertHasNoClickAction
 import androidx.compose.ui.test.assertIsDisplayed

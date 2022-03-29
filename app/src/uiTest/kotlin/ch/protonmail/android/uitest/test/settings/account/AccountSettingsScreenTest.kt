@@ -1,4 +1,4 @@
-package ch.protonmail.android.uitest.test.settings
+package ch.protonmail.android.uitest.test.settings.account
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
