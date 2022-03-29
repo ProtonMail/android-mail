@@ -8,7 +8,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
-import kotlin.test.Ignore
 
 @RunWith(AndroidJUnit4::class)
 class SettingsFlowTest : BaseTest() {
@@ -32,7 +31,6 @@ class SettingsFlowTest : BaseTest() {
 
     @Test
     @Category(SmokeTest::class)
-    @Ignore("Enable once MAILANDR-111 is complete")
     fun openConversationModeSetting() {
         menuRobot
             .settings()

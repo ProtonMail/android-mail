@@ -21,7 +21,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 
 /**
  * Class represents Change Conversation Mode view.
@@ -38,7 +39,9 @@ class ConversationModeRobot(
 
         fun conversationModeToggleShown(composeRule: ComposeContentTestRule) {
             composeRule
-                .onNodeWithText("Conversation mode")
+                .onAllNodesWithText("Conversation mode")
+                // Take first as both "toolbar" and "switch" node are matching the same text
+                .onFirst()
                 .assertTextContains("Group emails in the same conversation together in your inbox or display them separately")
                 .assertIsDisplayed()
                 .assertIsEnabled()
