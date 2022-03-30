@@ -24,6 +24,7 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_LIST
@@ -75,7 +76,12 @@ class AccountSettingsRobot(
             .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
             .onChild()
             .performScrollToNode(hasText("Conversation mode"))
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithText("Conversation mode")
             .performClick()
+        composeTestRule.waitForIdle()
         return ConversationModeRobot(composeTestRule)
     }
 

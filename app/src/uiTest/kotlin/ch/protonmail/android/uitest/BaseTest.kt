@@ -53,7 +53,7 @@ open class BaseTest(
     @After
     fun cleanup() {
         if (clearAppDatabaseOnTearDown) {
-            Timber.d("Finishing Testing: Clearing all database tables")
+            Timber.d("Finishing Testing: Clearing all users from database")
             runBlocking {
                 appDatabase.accountDao().deleteAll()
             }

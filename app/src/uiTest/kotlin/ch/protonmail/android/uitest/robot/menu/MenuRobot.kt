@@ -69,6 +69,8 @@ class MenuRobot(
             .onNodeWithText("Settings")
             .performClick()
 
+        composeTestRule.waitForIdle()
+
         return SettingsRobot(composeTestRule)
     }
 

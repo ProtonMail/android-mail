@@ -46,6 +46,8 @@ class SettingsRobot(
         composeTestRule!!
             .onNodeWithTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM)
             .performClick()
+        composeTestRule.waitForIdle()
+
         return AccountSettingsRobot(composeTestRule)
     }
 
