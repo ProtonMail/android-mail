@@ -43,12 +43,14 @@ import me.proton.core.network.data.NetworkManager
 import me.proton.core.network.data.NetworkPrefs
 import me.proton.core.network.data.ProtonCookieStore
 import me.proton.core.network.data.client.ClientIdProviderImpl
+import me.proton.core.network.data.client.ClientVersionValidatorImpl
 import me.proton.core.network.data.client.ExtraHeaderProviderImpl
 import me.proton.core.network.data.di.Constants
 import me.proton.core.network.domain.ApiClient
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkPrefs
 import me.proton.core.network.domain.client.ClientIdProvider
+import me.proton.core.network.domain.client.ClientVersionValidator
 import me.proton.core.network.domain.client.ExtraHeaderProvider
 import me.proton.core.network.domain.humanverification.HumanVerificationListener
 import me.proton.core.network.domain.humanverification.HumanVerificationProvider
@@ -171,31 +173,33 @@ object NetworkModule {
         sessionListener: SessionListener,
         humanVerificationProvider: HumanVerificationProvider,
         humanVerificationListener: HumanVerificationListener,
-        extraHeaderProvider: ExtraHeaderProvider
+        extraHeaderProvider: ExtraHeaderProvider,
+        clientVersionValidator: ClientVersionValidator
     ): ApiManagerFactory = ApiManagerFactory(
-        BASE_URL,
-        apiClient,
-        clientIdProvider,
-        serverTimeListener,
-        networkManager,
-        networkPrefs,
-        sessionProvider,
-        sessionListener,
-        humanVerificationProvider,
-        humanVerificationListener,
-        missingScopeListener,
-        protonCookieStore,
-        CoroutineScope(Job() + Dispatchers.Default),
-        certificatePins,
-        alternativeApiPins,
-        {
+        baseUrl = BASE_URL,
+        apiClient = apiClient,
+        clientIdProvider = clientIdProvider,
+        serverTimeListener = serverTimeListener,
+        networkManager = networkManager,
+        prefs = networkPrefs,
+        sessionProvider = sessionProvider,
+        sessionListener = sessionListener,
+        humanVerificationProvider = humanVerificationProvider,
+        humanVerificationListener = humanVerificationListener,
+        missingScopeListener = missingScopeListener,
+        cookieStore = protonCookieStore,
+        scope = CoroutineScope(Job() + Dispatchers.Default),
+        certificatePins = certificatePins,
+        alternativeApiPins = alternativeApiPins,
+        cache = {
             Cache(
                 directory = File(context.cacheDir, "http_cache"),
                 maxSize = TEN_MEGABYTES
             )
         },
-        extraHeaderProvider,
-        apiConnectionListener = null
+        extraHeaderProvider = extraHeaderProvider,
+        clientVersionValidator = clientVersionValidator,
+        dohAlternativesListener = null
     )
 
     @Provides
@@ -204,4 +208,7 @@ object NetworkModule {
         apiManagerFactory: ApiManagerFactory,
         sessionProvider: SessionProvider
     ): ApiProvider = ApiProvider(apiManagerFactory, sessionProvider)
+
+    @Provides
+    fun provideClientVersionValidator(): ClientVersionValidator = ClientVersionValidatorImpl()
 }

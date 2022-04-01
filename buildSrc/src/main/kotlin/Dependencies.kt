@@ -47,6 +47,7 @@ object Dependencies {
         add(Proton.Core.accountManager)
         add(Proton.Core.accountManagerPresentationCompose)
         add(Proton.Core.auth)
+        add(Proton.Core.challenge)
         add(Proton.Core.contact)
         add(Proton.Core.country)
         add(Proton.Core.crypto)
