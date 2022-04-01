@@ -197,14 +197,14 @@ fun Sidebar(
                 val isSelected = viewState.selectedLocation == location
                 ProtonSidebarItem(
                     icon = when (location) {
-                        Inbox -> R.drawable.ic_inbox
-                        Drafts -> R.drawable.ic_drafts
-                        Sent -> R.drawable.ic_paper_plane
-                        Starred -> R.drawable.ic_star
-                        Archive -> R.drawable.ic_archive
-                        Spam -> R.drawable.ic_fire
-                        Trash -> R.drawable.ic_trash
-                        AllMail -> R.drawable.ic_envelope_all_emails
+                        Inbox -> R.drawable.ic_proton_inbox
+                        Drafts -> R.drawable.ic_proton_file_lines
+                        Sent -> R.drawable.ic_proton_paper_plane
+                        Starred -> R.drawable.ic_proton_star
+                        Archive -> R.drawable.ic_proton_archive_box
+                        Spam -> R.drawable.ic_proton_fire
+                        Trash -> R.drawable.ic_proton_trash
+                        AllMail -> R.drawable.ic_proton_envelopes
                     },
                     text = when (location) {
                         Inbox -> R.string.drawer_title_inbox
@@ -254,7 +254,7 @@ fun Sidebar(
         items(viewState.sidebarFolderUiModels) {
             val isSelected = viewState.selectedLocation == SidebarLocation.CustomFolder(it.id)
             ProtonSidebarItem(
-                icon = painterResource(id = R.drawable.ic_folder_filled),
+                icon = painterResource(id = R.drawable.ic_proton_folder_filled),
                 text = it.text,
                 iconTint = it.color,
                 isSelected = isSelected
@@ -278,7 +278,7 @@ fun Sidebar(
         items(viewState.sidebarLabelUiModels) {
             val isSelected = viewState.selectedLocation == SidebarLocation.CustomLabel(it.id)
             ProtonSidebarItem(
-                icon = painterResource(id = R.drawable.ic_label_filled),
+                icon = painterResource(id = R.drawable.ic_proton_circle_filled),
                 text = it.text,
                 iconTint = it.color,
                 isSelected = isSelected
