@@ -24,10 +24,12 @@ import ch.protonmail.android.mailsettings.data.repository.AlternativeRoutingRepo
 import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CustomAppLanguageRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.ThemeRepositoryImpl
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import ch.protonmail.android.mailsettings.domain.repository.CustomAppLanguageRepository
+import ch.protonmail.android.mailsettings.domain.repository.ThemeRepository
 import ch.protonmail.android.mailsettings.presentation.settings.GetAppInformation
 import dagger.Module
 import dagger.Provides
@@ -74,4 +76,10 @@ object SettingsModule {
     @Singleton
     fun provideCustomLanguageRepository(): CustomAppLanguageRepository =
         CustomAppLanguageRepositoryImpl()
+
+    @Provides
+    @Singleton
+    fun provideThemeRepository(
+        dataStoreProvider: MailSettingsDataStoreProvider
+    ): ThemeRepository = ThemeRepositoryImpl(dataStoreProvider)
 }

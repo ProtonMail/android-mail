@@ -80,6 +80,7 @@ object Dependencies {
         add(AndroidX.DataStore.preferences)
         add(AndroidX.Room.ktx)
         add(AndroidX.Work.runtimeKtx)
+        add(JakeWharton.timber)
         add(Proton.Core.data)
         add(Proton.Core.dataRoom)
         add(Proton.Core.domain)

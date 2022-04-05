@@ -25,10 +25,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsState.Data
+import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsState.Loading
 import me.proton.core.compose.component.ProtonSettingsRadioItem
 import me.proton.core.compose.component.ProtonSettingsTopBar
-import timber.log.Timber
+import me.proton.core.compose.flow.rememberAsState
 
 const val TEST_TAG_THEME_SETTINGS_SCREEN = "ThemeSettingsScreenTestTag"
 
@@ -36,6 +40,32 @@ const val TEST_TAG_THEME_SETTINGS_SCREEN = "ThemeSettingsScreenTestTag"
 fun ThemeSettingsScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    viewModel: ThemeSettingsViewModel = hiltViewModel()
+) {
+    when (
+        val state = rememberAsState(
+            flow = viewModel.state,
+            initial = Loading
+        ).value
+    ) {
+        is Data -> {
+            ThemeSettingsScreen(
+                modifier = modifier,
+                onBackClick = onBackClick,
+                onThemeSelected = viewModel::onThemeSelected,
+                state = state
+            )
+        }
+        is Loading -> Unit
+    }
+}
+
+@Composable
+fun ThemeSettingsScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    onThemeSelected: (Theme) -> Unit,
+    state: Data
 ) {
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_THEME_SETTINGS_SCREEN),
@@ -46,17 +76,12 @@ fun ThemeSettingsScreen(
             )
         },
         content = {
-            val themeOptions = listOf(
-                stringResource(id = R.string.mail_settings_system_default),
-                stringResource(id = R.string.mail_settings_theme_light),
-                stringResource(id = R.string.mail_settings_theme_dark)
-            )
             Column {
-                themeOptions.forEach { option ->
+                state.themes.forEach { theme ->
                     ProtonSettingsRadioItem(
-                        name = option,
-                        isSelected = option == "System default",
-                        onItemSelected = { Timber.d("Theme selected: $it") }
+                        name = stringResource(id = theme.name),
+                        isSelected = theme.isSelected,
+                        onItemSelected = { onThemeSelected(theme.id) }
                     )
                 }
             }
@@ -66,8 +91,12 @@ fun ThemeSettingsScreen(
 
 @Preview(name = "Theme settings screen")
 @Composable
-fun previewConversationModeSettingsScreen() {
+fun previewThemeSettingsScreen() {
     ThemeSettingsScreen(
-        onBackClick = {}
+        onBackClick = {},
+        onThemeSelected = {},
+        state = Data(
+            listOf()
+        )
     )
 }
