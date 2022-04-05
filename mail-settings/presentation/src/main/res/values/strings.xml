@@ -29,6 +29,11 @@
     <string name="mail_settings_combined_contacts">Combined contacts</string>
     <string name="mail_settings_swipe_actions">Swipe actions</string>
 
+    <!-- Theme settings -->
+    <string name="mail_settings_system_default">System default</string>
+    <string name="mail_settings_theme_light">Light</string>
+    <string name="mail_settings_theme_dark">Dark</string>
+
     <!-- Settings item states -->
     <string name="mail_settings_no_information_available">No information available</string>
     <string name="mail_settings_enabled">Enabled</string>

@@ -38,6 +38,7 @@ import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
+import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
 import ch.protonmail.android.sidebar.Sidebar
@@ -90,6 +91,7 @@ fun Home(
                 addSettings(navController)
                 addAccountSettings(navController)
                 addConversationModeSettings(navController)
+                addThemeSettings(navController)
             }
         }
     }
@@ -128,11 +130,12 @@ fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
 ) {
     MainSettingsScreen(
         onAccountClicked = {
-            Timber.d("Account settings item clicked. Navigating to account settings..")
+            Timber.d("Navigating to account settings")
             navController.navigate(Destination.Screen.AccountSettings.route)
         },
         onThemeClick = {
-            Timber.i("Theme setting clicked")
+            Timber.d("Navigating to theme settings")
+            navController.navigate(Destination.Screen.ThemeSettings.route)
         },
         onPushNotificationsClick = {
             Timber.i("Push Notifications setting clicked")
@@ -173,7 +176,7 @@ fun NavGraphBuilder.addAccountSettings(navController: NavHostController) = compo
             Timber.i("Recovery email setting clicked")
         },
         onConversationModeClick = {
-            Timber.i("Conversation mode setting clicked")
+            Timber.d("Navigating to conversation mode settings")
             navController.navigate(Destination.Screen.ConversationModeSettings.route)
         },
         onDefaultEmailAddressClick = {
@@ -204,6 +207,15 @@ fun NavGraphBuilder.addConversationModeSettings(navController: NavHostController
     route = Destination.Screen.ConversationModeSettings.route
 ) {
     ConversationModeSettingScreen(
+        modifier = Modifier,
+        onBackClick = { navController.popBackStack() }
+    )
+}
+
+fun NavGraphBuilder.addThemeSettings(navController: NavHostController) = composable(
+    route = Destination.Screen.ThemeSettings.route
+) {
+    ThemeSettingsScreen(
         modifier = Modifier,
         onBackClick = { navController.popBackStack() }
     )
