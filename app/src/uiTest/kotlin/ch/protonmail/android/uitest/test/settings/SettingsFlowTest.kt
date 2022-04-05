@@ -5,6 +5,7 @@ import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
@@ -37,5 +38,19 @@ class SettingsFlowTest : BaseTest() {
             .openUserAccountSettings()
             .conversationMode()
             .verify { conversationModeToggleShown(composeTestRule) }
+    }
+
+    @Test
+    @Category(SmokeTest::class)
+    @Ignore("Disabled till MAILANDR-112 is done")
+    fun openAndChangeThemeSetting() {
+        val themeSettingsRobot = menuRobot
+            .settings()
+            .selectThemeSettings()
+
+        themeSettingsRobot.verify { defaultThemeSettingShown(composeTestRule) }
+        themeSettingsRobot
+            .selectDarkTheme()
+            .verify { darkThemeSelected(composeTestRule) }
     }
 }

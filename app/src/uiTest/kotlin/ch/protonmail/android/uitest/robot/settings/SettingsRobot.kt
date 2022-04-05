@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.robot.settings
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.presentation.settings.TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
@@ -49,6 +50,15 @@ class SettingsRobot(
         composeTestRule.waitForIdle()
 
         return AccountSettingsRobot(composeTestRule)
+    }
+
+    fun selectThemeSettings(): ThemeRobot {
+        composeTestRule!!
+            .onNodeWithText("Theme")
+            .performClick()
+        composeTestRule.waitForIdle()
+
+        return ThemeRobot(composeTestRule)
     }
 
     fun selectAutoLock(): AutoLockRobot {
