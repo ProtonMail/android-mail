@@ -38,11 +38,11 @@ import org.junit.Test
 
 class ThemeRepositoryImplTest {
     private val preferences = mockk<Preferences>()
-    private val themeDataStoreMock = spyk<DataStore<Preferences>> {
+    private val themeDataStoreSpy = spyk<DataStore<Preferences>> {
         every { this@spyk.data } returns flowOf(preferences)
     }
     private val dataStoreProvider = mockk<MailSettingsDataStoreProvider> {
-        every { this@mockk.themeDataStore } returns themeDataStoreMock
+        every { this@mockk.themeDataStore } returns themeDataStoreSpy
     }
 
     private lateinit var themeRepository: ThemeRepository
@@ -88,9 +88,18 @@ class ThemeRepositoryImplTest {
             // When
             themeRepository.observe().test {
                 // Then
-                coVerify { themeDataStoreMock.updateData(any()) }
+                coVerify { themeDataStoreSpy.updateData(any()) }
                 assertEquals(Theme.SYSTEM_DEFAULT, awaitItem())
                 awaitComplete()
             }
         }
+
+    @Test
+    fun `update value stored in data store when update is called`() = runTest {
+        // When
+        themeRepository.update(Theme.DARK)
+
+        // Then
+        coVerify { themeDataStoreSpy.updateData(any()) }
+    }
 }

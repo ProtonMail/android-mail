@@ -27,7 +27,10 @@ import ch.protonmail.android.mailsettings.domain.model.Theme.SYSTEM_DEFAULT
 import ch.protonmail.android.mailsettings.domain.repository.ThemeRepository
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsState.Loading
+import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -99,25 +102,70 @@ class ThemeSettingsViewModelTest {
         }
 
     @Test
-    fun `state returns themes with Dark selected when saved theme preference is DARK`() =
-        runTest {
-            viewModel.state.test {
-                // Given
-                initialStateEmitted()
+    fun `state returns themes with Dark selected when saved theme preference is DARK`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
 
-                // When
-                themePreferenceFlow.emit(DARK)
+            // When
+            themePreferenceFlow.emit(DARK)
 
-                // Then
-                val expectedThemes = listOf(
-                    systemDefaultTheme(),
-                    lightTheme(),
-                    darkTheme(true)
-                )
-                assertEquals(ThemeSettingsState.Data(expectedThemes), awaitItem())
-            }
+            // Then
+            val expectedThemes = listOf(
+                systemDefaultTheme(),
+                lightTheme(),
+                darkTheme(true)
+            )
+            assertEquals(ThemeSettingsState.Data(expectedThemes), awaitItem())
         }
+    }
 
+    @Test
+    fun `state is updated when repository emits an updated theme preference`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            // When
+            themePreferenceFlow.emit(DARK)
+            // Then
+            assertEquals(
+                ThemeSettingsState.Data(
+                    listOf(
+                        systemDefaultTheme(),
+                        lightTheme(),
+                        darkTheme(true)
+                    )
+                ),
+                awaitItem()
+            )
+
+            // When
+            themePreferenceFlow.emit(LIGHT)
+            // Then
+            assertEquals(
+                ThemeSettingsState.Data(
+                    listOf(
+                        systemDefaultTheme(),
+                        lightTheme(true),
+                        darkTheme()
+                    )
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `updates theme on repository when themeSelected`() = runTest {
+        // Given
+        coEvery { themeRepository.update(any()) } just Runs
+
+        // When
+        viewModel.onThemeSelected(Theme.LIGHT)
+
+        // Then
+        coVerify { themeRepository.update(Theme.LIGHT) }
+    }
 
     private fun systemDefaultTheme(isCurrent: Boolean = false) = ThemeUiModel(
         SYSTEM_DEFAULT,

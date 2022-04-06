@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import javax.inject.Inject
 
@@ -57,8 +58,8 @@ class ThemeSettingsViewModel @Inject constructor(
             Loading
         )
 
-    fun onThemeSelected(theme: Theme) {
-        // TODO
+    fun onThemeSelected(theme: Theme) = viewModelScope.launch {
+        themeRepository.update(theme)
     }
 
     private fun nameStringResourceBy(theme: Theme) = when (theme) {

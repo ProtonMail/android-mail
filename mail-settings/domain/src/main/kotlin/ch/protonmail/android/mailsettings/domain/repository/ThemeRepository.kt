@@ -23,4 +23,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ThemeRepository {
     fun observe(): Flow<Theme>
+    suspend fun update(theme: Theme)
 }

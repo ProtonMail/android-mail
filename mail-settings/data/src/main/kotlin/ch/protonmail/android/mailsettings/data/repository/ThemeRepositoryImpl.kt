@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
+import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.Theme
@@ -39,17 +40,24 @@ class ThemeRepositoryImpl @Inject constructor(
             try {
                 Theme.valueOf(themePreference)
             } catch (exception: IllegalArgumentException) {
-                Timber.e("Saved theme pref. could not be resolved as a Theme enum constant")
-                removeStoredPreference()
+                Timber.e(
+                    exception,
+                    "Saved theme pref. could not be resolved as a Theme enum constant"
+                )
+                clearThemePreference()
                 Theme.SYSTEM_DEFAULT
             }
         }
 
-    private suspend fun removeStoredPreference() {
-        dataStoreProvider.themeDataStore.updateData {
-            val mutablePrefs = it.toMutablePreferences()
+    override suspend fun update(theme: Theme) {
+        dataStoreProvider.themeDataStore.edit { mutablePrefs ->
+            mutablePrefs[themePreferenceKey] = theme.name
+        }
+    }
+
+    private suspend fun clearThemePreference() {
+        dataStoreProvider.themeDataStore.edit { mutablePrefs ->
             mutablePrefs.clear()
-            mutablePrefs
         }
     }
 }
