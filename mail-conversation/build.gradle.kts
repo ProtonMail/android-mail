@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    api(project(":mail-conversation:dagger"))
     api(project(":mail-conversation:data"))
     api(project(":mail-conversation:domain"))
     api(project(":mail-conversation:presentation"))

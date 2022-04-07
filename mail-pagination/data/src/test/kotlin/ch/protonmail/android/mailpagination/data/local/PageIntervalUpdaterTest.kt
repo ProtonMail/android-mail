@@ -172,14 +172,14 @@ class PageIntervalUpdaterTest {
                 FakeItem(id = "7", time = 7000),
                 FakeItem(id = "8", time = 8000),
                 FakeItem(id = "9", time = 9000),
-                FakeItem(id = "10", time = 10000),
+                FakeItem(id = "10", time = 10_000),
             )
         )
 
         val actual = dao.getAll(userId, type, orderBy, labelId, keyword, read)
 
         val expected = listOf(
-            getInterval(minValue = Long.MIN_VALUE, maxValue = 10000, maxId = "10")
+            getInterval(minValue = Long.MIN_VALUE, maxValue = 10_000, maxId = "10")
         )
 
         // Then
@@ -203,14 +203,14 @@ class PageIntervalUpdaterTest {
                 FakeItem(id = "7", time = 7000),
                 FakeItem(id = "8", time = 8000),
                 FakeItem(id = "9", time = 9000),
-                FakeItem(id = "10", time = 10000),
+                FakeItem(id = "10", time = 10_000),
             )
         )
 
         val actual = dao.getAll(userId, type, orderBy, labelId, keyword, read)
 
         val expected = listOf(
-            getInterval(minValue = 1000, maxValue = 10000, maxId = "10")
+            getInterval(minValue = 1000, maxValue = 10_000, maxId = "10")
         )
 
         // Then
@@ -240,14 +240,14 @@ class PageIntervalUpdaterTest {
                 FakeItem(id = "7", time = 7000),
                 FakeItem(id = "8", time = 8000),
                 FakeItem(id = "9", time = 9000),
-                FakeItem(id = "10", time = 10000),
+                FakeItem(id = "10", time = 10_000),
             )
         )
 
         val actual = dao.getAll(userId, type, orderBy, labelId, keyword, read)
 
         val expected = listOf(
-            getInterval(minValue = 0L, maxValue = 10000L, maxId = "10")
+            getInterval(minValue = 0L, maxValue = 10_000L, maxId = "10")
         )
 
         // Then

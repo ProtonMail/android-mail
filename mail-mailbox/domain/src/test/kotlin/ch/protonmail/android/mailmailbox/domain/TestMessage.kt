@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.mailmailbox.domain
 
-import ch.protonmail.android.mailconversation.domain.ConversationId
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.Sender
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.AddressId
@@ -42,7 +42,7 @@ fun getMessage(
     labelIds = labelIds.map { LabelId(it) },
     subject = "subject",
     unread = false,
-    sender = Sender("address", "name"),
+    sender = Recipient("address", "name"),
     toList = emptyList(),
     ccList = emptyList(),
     bccList = emptyList(),

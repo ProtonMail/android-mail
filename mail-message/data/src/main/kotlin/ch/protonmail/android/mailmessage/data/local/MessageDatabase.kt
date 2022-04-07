@@ -23,8 +23,10 @@ import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
 import me.proton.core.data.room.db.Database
+import me.proton.core.data.room.db.extension.addTableColumn
 import me.proton.core.data.room.db.migration.DatabaseMigration
 
+@Suppress("MaxLineLength")
 interface MessageDatabase : Database, PageIntervalDatabase {
     fun messageDao(): MessageDao
     fun messageLabelDao(): MessageLabelDao
@@ -44,6 +46,18 @@ interface MessageDatabase : Database, PageIntervalDatabase {
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_messageId` ON `MessageLabelEntity` (`messageId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_labelId` ON `MessageLabelEntity` (`labelId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_userId_messageId` ON `MessageLabelEntity` (`userId`, `messageId`)")
+            }
+        }
+
+        val MIGRATION_1 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Added MessageEntity.sender_group.
+                database.addTableColumn(
+                    table = "MessageEntity",
+                    column = "sender_group",
+                    type = "TEXT",
+                    defaultValue = null,
+                )
             }
         }
     }

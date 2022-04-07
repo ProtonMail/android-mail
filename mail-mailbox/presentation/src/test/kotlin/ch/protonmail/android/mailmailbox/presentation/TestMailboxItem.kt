@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
+import ch.protonmail.android.mailconversation.domain.entity.Recipient
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
@@ -31,7 +33,7 @@ fun getMailboxItem(
     order: Long = 1000,
     time: Long = 1000,
     labels: List<Label> = listOf(getLabel(userId, LabelType.MessageLabel, "0")),
-) = ch.protonmail.android.mailmailbox.domain.model.MailboxItem(
+) = MailboxItem(
     type = type,
     id = id,
     userId = userId,
@@ -39,10 +41,10 @@ fun getMailboxItem(
     size = 1000,
     order = order,
     read = false,
-    keywords = "subject ...",
     labels = labels,
     subject = "subject",
-    sender = "sender",
+    senders = listOf(Recipient("address", "name")),
+    recipients = emptyList()
 )
 
 fun getLabel(

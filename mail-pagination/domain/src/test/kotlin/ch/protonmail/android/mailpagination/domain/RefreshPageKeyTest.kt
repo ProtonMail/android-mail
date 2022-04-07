@@ -59,7 +59,7 @@ class RefreshPageKeyTest {
             FakeItem(id = "7", time = 7000L),
             FakeItem(id = "8", time = 8000L),
             FakeItem(id = "9", time = 9000L),
-            FakeItem(id = "10", time = 10000L),
+            FakeItem(id = "10", time = 10_000L),
         )
         val lowest = items.first()
         val highest = items.last()
@@ -87,7 +87,7 @@ class RefreshPageKeyTest {
             size = 10
         )
         val items = listOf<PageItem>(
-            FakeItem(id = "10", time = 10000L),
+            FakeItem(id = "10", time = 10_000L),
             FakeItem(id = "9", time = 9000L),
             FakeItem(id = "8", time = 8000L),
             FakeItem(id = "7", time = 7000L),
@@ -133,7 +133,7 @@ class RefreshPageKeyTest {
             FakeItem(id = "7", time = 7000L),
             FakeItem(id = "8", time = 8000L),
             FakeItem(id = "9", time = 9000L),
-            FakeItem(id = "10", time = 10000L),
+            FakeItem(id = "10", time = 10_000L),
         )
         val lowest = items.first()
         val highest = items.last()

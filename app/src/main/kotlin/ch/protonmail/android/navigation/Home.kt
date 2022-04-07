@@ -32,7 +32,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.feature.account.RemoveAccountDialog
-import ch.protonmail.android.mailconversation.domain.ConversationId
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType

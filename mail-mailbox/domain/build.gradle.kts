@@ -46,10 +46,12 @@ dependencies {
     implementation(Dependencies.moduleDomainLibs)
     implementation(Proton.Core.user)
     implementation(Proton.Core.label)
+    implementation(Proton.Core.mailSettings)
 
     implementation(project(":mail-pagination:domain"))
     implementation(project(":mail-conversation:domain"))
     implementation(project(":mail-message:domain"))
+    implementation(project(":mail-settings:domain"))
 
     testImplementation(Dependencies.testLibs)
 }

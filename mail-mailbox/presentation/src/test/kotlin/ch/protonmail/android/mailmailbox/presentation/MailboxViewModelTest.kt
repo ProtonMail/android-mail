@@ -23,9 +23,9 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Archive
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import io.mockk.Called
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -34,6 +34,7 @@ import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -58,6 +59,9 @@ class MailboxViewModelTest {
     private val markAsStaleMailboxItems = mockk<MarkAsStaleMailboxItems> {
         coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit
     }
+    private val observeMailboxItemType = mockk<ObserveMailboxItemType> {
+        coEvery { this@mockk.invoke() } returns flowOf(Message)
+    }
     private val pagingSourceFactory = mockk<MailboxItemPagingSourceFactory>(relaxed = true)
 
     private lateinit var mailboxViewModel: MailboxViewModel
@@ -70,6 +74,7 @@ class MailboxViewModelTest {
             accountManager,
             selectedSidebarLocation,
             markAsStaleMailboxItems,
+            observeMailboxItemType,
             pagingSourceFactory
         )
     }

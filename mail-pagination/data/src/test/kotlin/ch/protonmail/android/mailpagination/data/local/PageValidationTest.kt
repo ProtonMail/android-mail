@@ -284,7 +284,7 @@ class PageValidationTest {
         localIntervals.addAll(
             listOf(
                 // Should not happen as overlapping intervals must be merged.
-                getInterval(minValue = 0, maxValue = 10000),
+                getInterval(minValue = 0, maxValue = 10_000),
                 getInterval(minValue = 1000, maxValue = 6000)
             )
         )
@@ -293,7 +293,7 @@ class PageValidationTest {
         val actual = dao.isLocalPageValid(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = 20000),
+            pageKey = getPageKey(minTime = 0, maxTime = 20_000),
             items = listOf(
                 FakeItem(id = "1", time = 1000),
                 FakeItem(id = "2", time = 2000),
@@ -345,7 +345,7 @@ class PageValidationTest {
         val actual = dao.isLocalPageValid(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = 20000),
+            pageKey = getPageKey(minTime = 0, maxTime = 20_000),
             items = listOf(
                 FakeItem(id = "1", time = 1000),
                 FakeItem(id = "2", time = 2000, order = 2000), // <- Same time, ok order.

@@ -18,14 +18,16 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
-import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailmailbox.domain.getConversation
 import ch.protonmail.android.mailmailbox.domain.getLabel
 import ch.protonmail.android.mailmailbox.domain.getMailboxItem
 import ch.protonmail.android.mailmailbox.domain.getMessage
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -56,6 +58,20 @@ class GetMultiUserMailboxItemsTest {
             getMessage(userId2, "3", time = 3000, labelIds = listOf("0", "1")),
         )
     }
+    private val conversationRepository = mockk<ConversationRepository> {
+        coEvery { getConversations(userId1, any()) } returns listOf(
+            // userId1
+            getConversation(userId1, "1", time = 1000, labelIds = listOf("0")),
+            getConversation(userId1, "2", time = 2000, labelIds = listOf("4")),
+            getConversation(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
+        )
+        coEvery { getConversations(userId2, any()) } returns listOf(
+            // userId1
+            getConversation(userId2, "1", time = 1000, labelIds = listOf("0")),
+            getConversation(userId2, "2", time = 2000, labelIds = listOf("4")),
+            getConversation(userId2, "3", time = 3000, labelIds = listOf("0", "1")),
+        )
+    }
     private val labelRepository = mockk<LabelRepository> {
         coEvery { this@mockk.getLabels(userId1, any()) } returns listOf(
             getLabel(userId1, LabelType.MessageLabel, "0"),
@@ -77,7 +93,9 @@ class GetMultiUserMailboxItemsTest {
 
     @Before
     fun setUp() {
-        usecase = GetMultiUserMailboxItems(GetMailboxItems(messageRepository, labelRepository))
+        usecase = GetMultiUserMailboxItems(
+            GetMailboxItems(labelRepository, messageRepository, conversationRepository)
+        )
     }
 
     @Test
@@ -107,7 +125,7 @@ class GetMultiUserMailboxItemsTest {
         assertEquals(expected = mailboxItemsOrderedByTimeAscending, actual = mailboxItems)
     }
 
-    @Test(expected = NotImplementedError::class)
+    @Test
     fun `invoke for Conversation, getLabels and getConversations`() = runTest {
         // Given
         val pageKey = PageKey(orderDirection = OrderDirection.Ascending, size = 6)
@@ -121,11 +139,11 @@ class GetMultiUserMailboxItemsTest {
         coVerify { labelRepository.getLabels(userId2, LabelType.MessageLabel) }
         coVerify { labelRepository.getLabels(userId1, LabelType.MessageFolder) }
         coVerify { labelRepository.getLabels(userId2, LabelType.MessageFolder) }
-        //coVerify { conversationRepository.getConversations(userId1, pageKey) }
-        //coVerify { conversationRepository.getConversations(userId2, pageKey) }
+        coVerify { conversationRepository.getConversations(userId1, pageKey) }
+        coVerify { conversationRepository.getConversations(userId2, pageKey) }
         val mailboxItemsOrderedByTimeAscending = listOf(
-            getMailboxItem(userId1, "1", time = 1000, labelIds = emptyList(), type = MailboxItemType.Conversation),
-            getMailboxItem(userId2, "1", time = 1000, labelIds = emptyList(), type = MailboxItemType.Conversation),
+            getMailboxItem(userId1, "1", time = 1000, labelIds = listOf("0"), type = MailboxItemType.Conversation),
+            getMailboxItem(userId2, "1", time = 1000, labelIds = listOf("0"), type = MailboxItemType.Conversation),
             getMailboxItem(userId1, "2", time = 2000, labelIds = listOf("4"), type = MailboxItemType.Conversation),
             getMailboxItem(userId2, "2", time = 2000, labelIds = listOf("4"), type = MailboxItemType.Conversation),
             getMailboxItem(userId1, "3", time = 3000, labelIds = listOf("0", "1"), type = MailboxItemType.Conversation),

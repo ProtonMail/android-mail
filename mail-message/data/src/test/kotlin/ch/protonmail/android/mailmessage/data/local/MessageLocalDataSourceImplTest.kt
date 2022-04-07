@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.data.local;
+package ch.protonmail.android.mailmessage.data.local
 
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
@@ -51,7 +51,7 @@ class MessageLocalDataSourceImplTest {
         coEvery { this@mockk.insertOrIgnore(entities = anyVararg()) } just Runs
         coEvery { this@mockk.deleteAll(any()) } just Runs
     }
-    private val labelDao = mockk<MessageLabelDao>{
+    private val labelDao = mockk<MessageLabelDao> {
         coEvery { this@mockk.insertOrUpdate(entities = anyVararg()) } just Runs
         coEvery { this@mockk.insertOrIgnore(entities = anyVararg()) } just Runs
         coEvery { this@mockk.deleteAll(any(), any()) } just Runs

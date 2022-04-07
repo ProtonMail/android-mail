@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
+import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import io.mockk.Runs
@@ -41,12 +42,15 @@ class MarkAsStaleMailboxItemsTest {
     private val messageRepository = mockk<MessageRepository> {
         coEvery { this@mockk.markAsStale(any(), any()) } just Runs
     }
+    private val conversationRepository = mockk<ConversationRepository> {
+        coEvery { this@mockk.markAsStale(any(), any()) } just Runs
+    }
 
     private lateinit var usecase: MarkAsStaleMailboxItems
 
     @Before
     fun setUp() {
-        usecase = MarkAsStaleMailboxItems(messageRepository)
+        usecase = MarkAsStaleMailboxItems(messageRepository, conversationRepository)
     }
 
     @Test
@@ -59,13 +63,13 @@ class MarkAsStaleMailboxItemsTest {
         coVerify { messageRepository.markAsStale(userId2, labelId) }
     }
 
-    @Test(expected = NotImplementedError::class)
+    @Test
     fun `invoke for Conversation, markAsStale Conversation`() = runTest {
         // When
         usecase.invoke(userIds, MailboxItemType.Conversation, labelId)
 
         // Then
-        //coVerify { conversationRepository.markAsStale(userId1, labelId) }
-        //coVerify { conversationRepository.markAsStale(userId2, labelId) }
+        coVerify { conversationRepository.markAsStale(userId1, labelId) }
+        coVerify { conversationRepository.markAsStale(userId2, labelId) }
     }
 }

@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.navigation.model
 
-import ch.protonmail.android.mailconversation.domain.ConversationId
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import me.proton.core.domain.entity.UserId
 
 sealed class Destination(val route: String) {

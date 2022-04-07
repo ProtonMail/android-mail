@@ -18,7 +18,8 @@
 
 package ch.protonmail.android.mailmessage.data.remote.resource
 
-import ch.protonmail.android.mailconversation.domain.ConversationId
+import ch.protonmail.android.mailconversation.data.remote.resource.RecipientResource
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MailTo
 import ch.protonmail.android.mailmessage.domain.entity.Message
@@ -48,7 +49,7 @@ data class MessageWithBodyResource(
     @SerialName("Unread")
     val unread: Int,
     @SerialName("Sender")
-    val sender: SenderResource,
+    val sender: RecipientResource,
     @SerialName("ToList")
     val toList: List<RecipientResource>,
     @SerialName("CCList")
@@ -91,9 +92,9 @@ data class MessageWithBodyResource(
     @SerialName("SpamScore")
     val spamScore: String,
     @SerialName("ReplyTo")
-    val replyTo: SenderResource,
+    val replyTo: RecipientResource,
     @SerialName("ReplyTos")
-    val replyTos: List<SenderResource>,
+    val replyTos: List<RecipientResource>,
     @SerialName("UnsubscribeMethods")
     val unsubscribeMethods: List<UnsubscribeMethodResource>? = null,
 ) {
@@ -105,7 +106,7 @@ data class MessageWithBodyResource(
             order = order,
             subject = subject,
             unread = unread.toBooleanOrFalse(),
-            sender = sender.toSender(),
+            sender = sender.toRecipient(),
             toList = toList.map { it.toRecipient() },
             ccList = ccList.map { it.toRecipient() },
             bccList = bccList.map { it.toRecipient() },
@@ -130,8 +131,8 @@ data class MessageWithBodyResource(
             attachments = attachments.map { it.toMessageAttachment() },
             mimeType = mimeType,
             spamScore = spamScore,
-            replyTo = replyTo.toSender(),
-            replyTos = replyTos.map { it.toSender() },
+            replyTo = replyTo.toRecipient(),
+            replyTos = replyTos.map { it.toRecipient() },
             unsubscribeMethods = unsubscribeMethods?.map { it.toUnsubscribeMethod() }
         )
     )

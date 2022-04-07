@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.mailmessage.data
 
+import ch.protonmail.android.mailconversation.data.remote.resource.RecipientResource
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageResource
-import ch.protonmail.android.mailmessage.data.remote.resource.SenderResource
 import me.proton.core.domain.entity.UserId
 
 fun getMessageResource(
@@ -33,7 +33,7 @@ fun getMessageResource(
     conversationId = "1",
     subject = "subject",
     unread = 0,
-    sender = SenderResource(
+    sender = RecipientResource(
         address = "email@domain.com",
         name = "name"
     ),

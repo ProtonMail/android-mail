@@ -19,6 +19,7 @@
 package ch.protonmail.android.di
 
 import androidx.work.WorkManager
+import ch.protonmail.android.mailconversation.data.ConversationEventListener
 import ch.protonmail.android.mailmessage.data.MessageEventListener
 import dagger.Module
 import dagger.Provides
@@ -107,7 +108,8 @@ object EventManagerModule {
         contactEventListener: ContactEventListener,
         contactEmailEventListener: ContactEmailEventListener,
         labelEventListener: LabelEventListener,
-        messageEventListener: MessageEventListener
+        messageEventListener: MessageEventListener,
+        conversationEventListener: ConversationEventListener
     ): Set<EventListener<*, *>> = setOf(
         userEventListener,
         userAddressEventListener,
@@ -117,5 +119,6 @@ object EventManagerModule {
         contactEmailEventListener,
         labelEventListener,
         messageEventListener,
+        conversationEventListener,
     )
 }

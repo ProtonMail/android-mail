@@ -18,15 +18,15 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
+import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.repository.MessageLocalDataSource
 import ch.protonmail.android.mailpagination.data.local.getClippedPageKey
 import ch.protonmail.android.mailpagination.data.local.isLocalPageValid
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.entity.PageItemType
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
-import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.repository.MessageLocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
@@ -42,60 +42,56 @@ class MessageLocalDataSourceImpl @Inject constructor(
     private val messageLabelDao = db.messageLabelDao()
     private val pageIntervalDao = db.pageIntervalDao()
 
-    override fun observeMessages(userId: UserId, pageKey: PageKey): Flow<List<Message>> =
-        messageDao.observeAll(userId, pageKey).mapLatest { list -> list.map { it.toMessage() } }
+    override fun observeMessages(
+        userId: UserId,
+        pageKey: PageKey,
+    ): Flow<List<Message>> = messageDao
+        .observeAll(userId, pageKey)
+        .mapLatest { list -> list.map { it.toMessage() } }
 
-    override suspend fun getMessages(userId: UserId, pageKey: PageKey): List<Message> =
-        observeMessages(userId, pageKey).first()
+    override suspend fun getMessages(
+        userId: UserId,
+        pageKey: PageKey,
+    ): List<Message> = observeMessages(userId, pageKey).first()
 
-    override suspend fun upsertMessages(userId: UserId, pageKey: PageKey, messages: List<Message>) =
-        db.inTransaction {
-            upsertMessages(messages)
-            upsertPageInterval(userId, pageKey, messages)
-        }
+    override suspend fun upsertMessages(
+        userId: UserId,
+        pageKey: PageKey,
+        items: List<Message>,
+    ) = db.inTransaction {
+        upsertMessages(items)
+        upsertPageInterval(userId, pageKey, items)
+    }
 
-    override suspend fun upsertMessages(messages: List<Message>) =
-        db.inTransaction {
-            // Group Messages by userId.
-            val messagesByUserId =
-                messages.fold(mutableMapOf<UserId, MutableList<Message>>()) { acc, message ->
-                    acc.apply { getOrPut(message.userId) { mutableListOf() }.add(message) }
-                }
-            // Delete all previous MessageLabel.
-            messagesByUserId.entries.forEach { (userId, messages) ->
-                messageLabelDao.deleteAll(userId, messages.map { it.messageId })
-            }
-            // Insert or Update all messages at once.
-            messageDao.insertOrUpdate(*messages.map { it.toEntity() }.toTypedArray())
-            // For each List<Message> by userId, add a Message Label relation.
-            messagesByUserId.entries.forEach { (userId, messages) ->
-                messages.forEach { message ->
-                    message.labelIds.forEach { labelId ->
-                        messageLabelDao.insertOrUpdate(
-                            MessageLabelEntity(userId, labelId, message.messageId)
-                        )
-                    }
-                }
-            }
-        }
+    override suspend fun upsertMessages(
+        items: List<Message>,
+    ) = db.inTransaction {
+        messageDao.insertOrUpdate(*items.map { it.toEntity() }.toTypedArray())
+        updateLabels(items)
+    }
 
-    override suspend fun deleteMessage(userId: UserId, messageIds: List<MessageId>) =
-        messageDao.delete(userId, messageIds.map { it.id })
+    override suspend fun deleteMessage(
+        userId: UserId,
+        ids: List<MessageId>,
+    ) = messageDao.delete(userId, ids.map { it.id })
 
-    override suspend fun deleteAllMessages(userId: UserId) =
-        db.inTransaction {
-            messageDao.deleteAll(userId)
-            pageIntervalDao.deleteAll(userId, PageItemType.Message)
-        }
+    override suspend fun deleteAllMessages(
+        userId: UserId,
+    ) = db.inTransaction {
+        messageDao.deleteAll(userId)
+        pageIntervalDao.deleteAll(userId, PageItemType.Message)
+    }
 
-    override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
-        pageIntervalDao.deleteAll(userId, PageItemType.Message, labelId)
+    override suspend fun markAsStale(
+        userId: UserId,
+        labelId: LabelId
+    ) = pageIntervalDao.deleteAll(userId, PageItemType.Message, labelId)
 
     override suspend fun isLocalPageValid(
         userId: UserId,
         pageKey: PageKey,
-        messages: List<Message>,
-    ): Boolean = pageIntervalDao.isLocalPageValid(userId, PageItemType.Message, pageKey, messages)
+        items: List<Message>,
+    ): Boolean = pageIntervalDao.isLocalPageValid(userId, PageItemType.Message, pageKey, items)
 
     override suspend fun getClippedPageKey(
         userId: UserId,
@@ -107,4 +103,35 @@ class MessageLocalDataSourceImpl @Inject constructor(
         pageKey: PageKey,
         messages: List<Message>,
     ) = pageIntervalDao.upsertPageInterval(userId, PageItemType.Message, pageKey, messages)
+
+    private suspend fun updateLabels(
+        messages: List<Message>,
+    ) = with(groupByUserId(messages)) {
+        deleteLabels()
+        insertLabels()
+    }
+
+    private fun groupByUserId(messages: List<Message>) = messages.fold(
+        mutableMapOf<UserId, MutableList<Message>>()
+    ) { acc, message ->
+        acc.apply { getOrPut(message.userId) { mutableListOf() }.add(message) }
+    }.toMap()
+
+    private suspend fun Map<UserId, MutableList<Message>>.insertLabels() {
+        entries.forEach { (userId, messages) ->
+            messages.forEach { message ->
+                message.labelIds.forEach { labelId ->
+                    messageLabelDao.insertOrUpdate(
+                        MessageLabelEntity(userId, labelId, message.messageId)
+                    )
+                }
+            }
+        }
+    }
+
+    private suspend fun Map<UserId, MutableList<Message>>.deleteLabels() {
+        entries.forEach { (userId, messages) ->
+            messageLabelDao.deleteAll(userId, messages.map { it.messageId })
+        }
+    }
 }

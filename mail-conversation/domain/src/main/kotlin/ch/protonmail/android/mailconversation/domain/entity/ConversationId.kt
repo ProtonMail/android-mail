@@ -16,6 +16,6 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.domain
+package ch.protonmail.android.mailconversation.domain.entity
 
 data class ConversationId(val id: String)

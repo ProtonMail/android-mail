@@ -24,6 +24,9 @@ import androidx.room.TypeConverters
 import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import ch.protonmail.android.mailpagination.data.local.entity.PageIntervalEntity
 import ch.protonmail.android.mailconversation.data.local.ConversationConverters
+import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
+import ch.protonmail.android.mailconversation.data.local.entity.ConversationEntity
+import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailmessage.data.local.MessageConverters
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
@@ -122,8 +125,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         MessageEntity::class,
         MessageLabelEntity::class,
         // mail-conversation
-        //ConversationEntity::class,
-        //ConversationLabelEntity::class,
+        ConversationEntity::class,
+        ConversationLabelEntity::class,
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -159,11 +162,12 @@ abstract class AppDatabase :
     FeatureFlagDatabase,
     ChallengeDatabase,
     PageIntervalDatabase,
-    MessageDatabase {
+    MessageDatabase,
+    ConversationDatabase {
 
     companion object {
         const val name = "db-mail"
-        const val version = 7
+        const val version = 8
 
         private val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -172,6 +176,7 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_4_5,
             AppDatabaseMigrations.MIGRATION_5_6,
             AppDatabaseMigrations.MIGRATION_6_7,
+            AppDatabaseMigrations.MIGRATION_7_8,
         )
 
         fun buildDatabase(context: Context): AppDatabase =

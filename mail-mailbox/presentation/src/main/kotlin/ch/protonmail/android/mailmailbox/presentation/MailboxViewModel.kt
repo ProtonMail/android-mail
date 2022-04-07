@@ -27,6 +27,7 @@ import androidx.paging.cachedIn
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,6 +49,7 @@ class MailboxViewModel @Inject constructor(
     private val accountManager: AccountManager,
     private val selectedSidebarLocation: SelectedSidebarLocation,
     private val markAsStaleMailboxItems: MarkAsStaleMailboxItems,
+    private val observeMailboxItemType: ObserveMailboxItemType,
     private val pagingSourceFactory: MailboxItemPagingSourceFactory,
 ) : ViewModel() {
 
@@ -83,25 +85,22 @@ class MailboxViewModel @Inject constructor(
         )
     }
 
-    private fun observeMailboxItemType(): Flow<MailboxItemType> =
-        // We only support Message mode for now (to do: observeMailSettings).
-        flowOf(MailboxItemType.Message)
-
     private fun observeUserIds(): Flow<List<UserId>> =
         // We only support 1 userId for now (primary).
         accountManager.getPrimaryUserId().map { listOfNotNull(it) }
 
     private fun observePagingData(): Flow<PagingData<MailboxItem>> = combine(
         userIds,
+        mailboxItemType,
         selectedSidebarLocation.location,
-    ) { userIds, location ->
+    ) { userIds, mailboxItemType, location ->
         when {
             userIds.isEmpty() -> null
             else -> Pager(PagingConfig(pageSize = PageKey.defaultPageSize)) {
                 pagingSourceFactory.create(
                     userIds = userIds,
                     location = location,
-                    type = mailboxItemType.value,
+                    type = mailboxItemType,
                 )
             }
         }

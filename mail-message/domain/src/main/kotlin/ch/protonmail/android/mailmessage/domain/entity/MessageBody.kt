@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.domain.entity
 
+import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import kotlinx.serialization.json.JsonElement
 import me.proton.core.domain.entity.UserId
 
@@ -30,8 +31,8 @@ data class MessageBody(
     val attachments: List<MessageAttachment>,
     val mimeType: String,
     val spamScore: String,
-    val replyTo: Sender,
-    val replyTos: List<Sender>,
+    val replyTo: Recipient,
+    val replyTos: List<Recipient>,
     val unsubscribeMethods: List<UnsubscribeMethod>?,
 )
 

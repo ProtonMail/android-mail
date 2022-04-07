@@ -30,6 +30,7 @@ import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
+@Suppress("LongParameterList")
 @Dao
 abstract class PageIntervalDao : BaseDao<PageIntervalEntity>() {
 

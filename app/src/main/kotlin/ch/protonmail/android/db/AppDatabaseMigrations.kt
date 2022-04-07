@@ -21,6 +21,7 @@ package ch.protonmail.android.db
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
+import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import me.proton.core.account.data.db.AccountDatabase
 import me.proton.core.challenge.data.db.ChallengeDatabase
@@ -70,6 +71,13 @@ object AppDatabaseMigrations {
         override fun migrate(database: SupportSQLiteDatabase) {
             MessageDatabase.MIGRATION_0.migrate(database)
             PageIntervalDatabase.MIGRATION_0.migrate(database)
+        }
+    }
+
+    val MIGRATION_7_8 = object : Migration(7, 8) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            MessageDatabase.MIGRATION_1.migrate(database)
+            ConversationDatabase.MIGRATION_0.migrate(database)
         }
     }
 }

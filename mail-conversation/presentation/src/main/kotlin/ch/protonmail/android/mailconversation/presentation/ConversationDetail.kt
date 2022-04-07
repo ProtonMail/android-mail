@@ -20,7 +20,7 @@ package ch.protonmail.android.mailconversation.presentation
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ch.protonmail.android.mailconversation.domain.ConversationId
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 
 @Composable
 fun ConversationDetail(

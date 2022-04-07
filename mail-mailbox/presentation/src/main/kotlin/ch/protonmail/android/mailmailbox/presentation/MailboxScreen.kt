@@ -44,6 +44,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
@@ -179,7 +180,7 @@ private fun MailboxItem(
                     softWrap = false,
                 )
                 Text(
-                    text = "Sender: ${item.sender}",
+                    text = "Senders: ${item.senders}",
                     fontWeight = fontWeight,
                     maxLines = 1
                 )
@@ -189,7 +190,10 @@ private fun MailboxItem(
                     maxLines = 1
                 )
                 Text(
-                    text = "Labels: ${item.labels.map { it.name }}",
+                    text = when (item.type) {
+                        MailboxItemType.Message -> "Message "
+                        MailboxItemType.Conversation -> "Conversation "
+                    } + "Labels: ${item.labels.map { it.name }}",
                     fontWeight = fontWeight,
                     maxLines = 1
                 )
@@ -222,25 +226,25 @@ fun PreviewMailbox() {
                             type = MailboxItemType.Message,
                             id = "1",
                             userId = UserId("0"),
-                            sender = "Sender",
+                            senders = listOf(Recipient("address", "name")),
+                            recipients = emptyList(),
                             subject = "First message",
                             time = 0,
                             size = 0,
                             order = 0,
                             read = false,
-                            keywords = ""
                         ),
                         MailboxItem(
                             type = MailboxItemType.Message,
                             id = "2",
                             userId = UserId("0"),
-                            sender = "Sender",
+                            senders = listOf(Recipient("address", "name")),
+                            recipients = emptyList(),
                             subject = "Second message",
                             time = 0,
                             size = 0,
                             order = 0,
                             read = true,
-                            keywords = ""
                         ),
                     )
                 )

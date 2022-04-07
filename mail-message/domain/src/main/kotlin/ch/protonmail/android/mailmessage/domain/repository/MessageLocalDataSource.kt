@@ -49,22 +49,22 @@ interface MessageLocalDataSource {
     suspend fun upsertMessages(
         userId: UserId,
         pageKey: PageKey,
-        messages: List<Message>,
+        items: List<Message>,
     )
 
     /**
      * Update or insert [Message].
      */
     suspend fun upsertMessages(
-        messages: List<Message>,
+        items: List<Message>,
     )
 
     /**
-     * Delete Message(s) for [userId], by [messageIds].
+     * Delete Message(s) for [userId], by [ids].
      */
     suspend fun deleteMessage(
         userId: UserId,
-        messageIds: List<MessageId>,
+        ids: List<MessageId>,
     )
 
     /**
@@ -88,7 +88,7 @@ interface MessageLocalDataSource {
     suspend fun isLocalPageValid(
         userId: UserId,
         pageKey: PageKey,
-        messages: List<Message>,
+        items: List<Message>,
     ): Boolean
 
     /**

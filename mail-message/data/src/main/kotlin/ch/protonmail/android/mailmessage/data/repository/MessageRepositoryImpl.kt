@@ -26,7 +26,6 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRemoteDataSour
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.min
@@ -73,6 +72,6 @@ class MessageRepositoryImpl @Inject constructor(
     ) = localDataSource.upsertMessages(
         userId = userId,
         pageKey = pageKey,
-        messages = messages
+        items = messages
     )
 }

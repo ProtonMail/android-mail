@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.domain
 
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
@@ -40,4 +42,19 @@ fun getLabel(
     isNotified = null,
     isExpanded = null,
     isSticky = null
+)
+
+fun getConversationLabel(
+    conversationId: String,
+    labelId: String,
+    time: Long = 1000,
+    size: Long = 1000,
+) = ConversationLabel(
+    conversationId = ConversationId(conversationId),
+    labelId = LabelId(labelId),
+    contextTime = time,
+    contextSize = size,
+    contextNumMessages = 0,
+    contextNumUnread = 0,
+    contextNumAttachments = 0
 )

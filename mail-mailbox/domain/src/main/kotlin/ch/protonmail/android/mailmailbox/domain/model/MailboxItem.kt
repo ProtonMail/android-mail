@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailmailbox.domain.model
 
 import ch.protonmail.android.mailpagination.domain.entity.PageItem
+import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
@@ -37,24 +39,39 @@ data class MailboxItem(
     override val size: Long,
     override val order: Long,
     override val read: Boolean,
-    override val keywords: String,
     val labels: List<Label> = emptyList(),
     val subject: String,
-    val sender: String,
+    val senders: List<Recipient>,
+    val recipients: List<Recipient>
 ) : PageItem {
     override val labelIds: List<LabelId> = labels.map { it.labelId }
+    override val keywords: String by lazy { subject + senders + recipients }
 }
 
 fun Message.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     type = MailboxItemType.Message,
     id = messageId.id,
     userId = userId,
-    sender = sender.name,
+    senders = listOf(sender),
+    recipients = toList + ccList + bccList,
     subject = subject,
     labels = labelIds.mapNotNull { labels[it] },
     time = time,
     size = size,
     order = order,
-    read = !unread,
-    keywords = keywords
+    read = read,
+)
+
+fun Conversation.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
+    type = MailboxItemType.Conversation,
+    id = conversationId.id,
+    userId = userId,
+    senders = senders,
+    recipients = recipients,
+    subject = subject,
+    labels = labelIds.mapNotNull { labels[it] },
+    time = time,
+    size = size,
+    order = order,
+    read = read,
 )

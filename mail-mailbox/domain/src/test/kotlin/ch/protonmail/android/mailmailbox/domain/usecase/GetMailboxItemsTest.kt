@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
+import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailmailbox.domain.getConversation
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailmailbox.domain.getLabel
@@ -47,6 +49,14 @@ class GetMailboxItemsTest {
             getMessage(userId, "3", time = 3000, labelIds = listOf("0", "1")),
         )
     }
+    private val conversationRepository = mockk<ConversationRepository> {
+        coEvery { getConversations(any(), any()) } returns listOf(
+            // userId1
+            getConversation(userId, "1", time = 1000, labelIds = listOf("0")),
+            getConversation(userId, "2", time = 2000, labelIds = listOf("4")),
+            getConversation(userId, "3", time = 3000, labelIds = listOf("0", "1")),
+        )
+    }
     private val labelRepository = mockk<LabelRepository> {
         coEvery { getLabels(any(), any()) } returns listOf(
             getLabel(userId, LabelType.MessageLabel, "0"),
@@ -61,7 +71,7 @@ class GetMailboxItemsTest {
 
     @Before
     fun setUp() {
-        usecase = GetMailboxItems(messageRepository, labelRepository)
+        usecase = GetMailboxItems(labelRepository, messageRepository, conversationRepository)
     }
 
     @Test
@@ -87,7 +97,7 @@ class GetMailboxItemsTest {
         }
     }
 
-    @Test(expected = NotImplementedError::class)
+    @Test
     fun `invoke for Conversation, getLabels and getConversations`() = runTest {
         // Given
         val pageKey = PageKey(orderDirection = OrderDirection.Ascending, size = 3)
@@ -98,9 +108,9 @@ class GetMailboxItemsTest {
         // Then
         coVerify { labelRepository.getLabels(userId, LabelType.MessageLabel) }
         coVerify { labelRepository.getLabels(userId, LabelType.MessageFolder) }
-        //coVerify { conversationRepository.getConversations(userId, pageKey) }
+        coVerify { conversationRepository.getConversations(userId, pageKey) }
         assertEquals(3, mailboxItems.size)
-        assertEquals(0, mailboxItems[0].labels.size)
+        assertEquals(1, mailboxItems[0].labels.size)
         assertEquals(1, mailboxItems[1].labels.size)
         assertEquals(2, mailboxItems[2].labels.size)
         var previous = mailboxItems.first()

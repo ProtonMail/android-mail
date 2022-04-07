@@ -21,8 +21,9 @@ package ch.protonmail.android.mailconversation.data.local.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import ch.protonmail.android.mailconversation.domain.ConversationId
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.data.entity.UserEntity
 
 @Entity(
@@ -58,9 +59,11 @@ import me.proton.core.user.data.entity.UserEntity
 )
 data class ConversationLabelEntity(
     val userId: UserId,
-    val labelId: String,
     val conversationId: ConversationId,
-    val numMessages: Int,
-    val numUnread: Int,
-    val numAttachments: Int,
+    val labelId: LabelId,
+    val contextTime: Long,
+    val contextSize: Long,
+    val contextNumMessages: Int,
+    val contextNumUnread: Int,
+    val contextNumAttachments: Int,
 )

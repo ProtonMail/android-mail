@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.data.remote;
+package ch.protonmail.android.mailmessage.data.remote
 
 import ch.protonmail.android.mailpagination.domain.entity.OrderBy
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
@@ -35,6 +35,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiManagerFactory
 import me.proton.core.network.data.ApiProvider
+import me.proton.core.network.domain.session.SessionId
 import me.proton.core.network.domain.session.SessionProvider
 import me.proton.core.test.android.api.TestApiManager
 import org.junit.Before
@@ -46,13 +47,15 @@ class MessageRemoteDataSourceImplTest {
 
     private val userId = UserId("1")
 
-    private val sessionProvider = mockk<SessionProvider>(relaxed = true)
+    private val sessionProvider = mockk<SessionProvider> {
+        coEvery { getSessionId(userId) } returns SessionId("testSessionId")
+    }
 
-    private val messageApi = mockk<MessageApi>(relaxed = true) {
-        coEvery { getMessages() } returns GetMessagesResponse(
+    private val messageApi = mockk<MessageApi> {
+        coEvery { getMessages(allAny()) } returns GetMessagesResponse(
             code = 1000,
             total = 0,
-            messages = listOf(),
+            messages = emptyList(),
             stale = 0
         )
     }

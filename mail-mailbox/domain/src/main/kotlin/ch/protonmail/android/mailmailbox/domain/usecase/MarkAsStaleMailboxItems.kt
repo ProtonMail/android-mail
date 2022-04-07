@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
+import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
@@ -27,6 +28,7 @@ import javax.inject.Inject
 
 class MarkAsStaleMailboxItems @Inject constructor(
     private val messageRepository: MessageRepository,
+    private val conversationRepository: ConversationRepository,
 ) {
     suspend operator fun invoke(
         userIds: List<UserId>,
@@ -35,7 +37,7 @@ class MarkAsStaleMailboxItems @Inject constructor(
     ) = userIds.forEachAsync { userId ->
         when (type) {
             MailboxItemType.Message -> messageRepository.markAsStale(userId, labelId)
-            MailboxItemType.Conversation -> TODO()
+            MailboxItemType.Conversation -> conversationRepository.markAsStale(userId, labelId)
         }
     }
 }

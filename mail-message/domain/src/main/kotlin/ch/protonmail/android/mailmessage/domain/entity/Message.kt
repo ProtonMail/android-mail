@@ -19,8 +19,8 @@
 package ch.protonmail.android.mailmessage.domain.entity
 
 import ch.protonmail.android.mailpagination.domain.entity.PageItem
-import ch.protonmail.android.mailconversation.domain.ConversationId
-import kotlinx.serialization.Serializable
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.AddressId
@@ -37,7 +37,7 @@ data class Message(
     override val labelIds: List<LabelId>,
     val subject: String,
     val unread: Boolean,
-    val sender: Sender,
+    val sender: Recipient,
     val toList: List<Recipient>,
     val ccList: List<Recipient>,
     val bccList: List<Recipient>,
@@ -51,19 +51,6 @@ data class Message(
     val flags: Int,
 ) : PageItem {
     override val id: String = messageId.id
-    override val read: Boolean = !unread
-    override val keywords: String = subject + sender + toList + ccList + bccList
+    override val read: Boolean by lazy { !unread }
+    override val keywords: String by lazy { subject + sender + toList + ccList + bccList }
 }
-
-@Serializable
-data class Sender(
-    val address: String,
-    val name: String,
-)
-
-@Serializable
-data class Recipient(
-    val address: String,
-    val name: String,
-    val group: String,
-)

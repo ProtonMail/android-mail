@@ -18,11 +18,10 @@
 
 package ch.protonmail.android.mailmessage.data.remote.resource
 
-import ch.protonmail.android.mailconversation.domain.ConversationId
+import ch.protonmail.android.mailconversation.data.remote.resource.RecipientResource
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.Sender
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import me.proton.core.domain.entity.UserId
@@ -43,7 +42,7 @@ data class MessageResource(
     @SerialName("Unread")
     val unread: Int,
     @SerialName("Sender")
-    val sender: SenderResource,
+    val sender: RecipientResource,
     @SerialName("ToList")
     val toList: List<RecipientResource>,
     @SerialName("CCList")
@@ -80,7 +79,7 @@ data class MessageResource(
         order = order,
         subject = subject,
         unread = unread.toBooleanOrFalse(),
-        sender = sender.toSender(),
+        sender = sender.toRecipient(),
         toList = toList.map { it.toRecipient() },
         ccList = ccList.map { it.toRecipient() },
         bccList = bccList.map { it.toRecipient() },
@@ -95,34 +94,5 @@ data class MessageResource(
         externalId = externalId,
         numAttachments = numAttachments,
         flags = flags,
-    )
-}
-
-@Serializable
-data class RecipientResource(
-    @SerialName("Address")
-    val address: String,
-    @SerialName("Name")
-    val name: String,
-    @SerialName("Group")
-    val group: String,
-) {
-    fun toRecipient() = Recipient(
-        address = address,
-        name = name,
-        group = group
-    )
-}
-
-@Serializable
-data class SenderResource(
-    @SerialName("Address")
-    val address: String,
-    @SerialName("Name")
-    val name: String,
-) {
-    fun toSender() = Sender(
-        address = address,
-        name = name,
     )
 }

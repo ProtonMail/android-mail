@@ -45,10 +45,16 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.moduleDataLibs)
+
+    implementation(Dagger.hiltAndroid)
     implementation(Proton.Core.user)
     implementation(Proton.Core.label)
+    implementation(Proton.Core.eventManager)
 
+    api(project(":mail-pagination:domain"))
+    implementation(project(":mail-pagination:data"))
     implementation(project(":mail-conversation:domain"))
 
     testImplementation(Dependencies.testLibs)
+    testImplementation(Proton.Core.testAndroid)
 }

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItem
@@ -34,8 +35,9 @@ import javax.inject.Inject
  * @see GetMultiUserMailboxItems
  */
 class GetMailboxItems @Inject constructor(
-    private val messageRepository: MessageRepository,
     private val labelRepository: LabelRepository,
+    private val messageRepository: MessageRepository,
+    private val conversationRepository: ConversationRepository,
 ) {
     suspend operator fun invoke(
         userId: UserId,
@@ -49,7 +51,9 @@ class GetMailboxItems @Inject constructor(
             MailboxItemType.Message -> messageRepository.getMessages(userId, pageKey).map {
                 it.toMailboxItem(labelsMaps)
             }
-            MailboxItemType.Conversation -> TODO()
+            MailboxItemType.Conversation -> conversationRepository.getConversations(userId, pageKey).map {
+                it.toMailboxItem(labelsMaps)
+            }
         }
     }
 
