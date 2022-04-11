@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProtonMail</string>
+    <string name="title_remove">Supprimer</string>
+    <string name="title_remove_account">Supprimer le compte</string>
+    <string name="description_remove_account">Vous allez vous déconnecter et supprimer toutes les informations associées à ce compte.</string>
+    <string name="user_select_other_account_content_description">Sélectionner un autre compte</string>
+    <string name="drawer_title_inbox">Boîte de réception</string>
+    <string name="drawer_title_drafts">Brouillons</string>
+    <string name="drawer_title_sent">Envoyés</string>
+    <string name="drawer_title_starred">Favoris</string>
+    <string name="drawer_title_archive">Archives</string>
+    <string name="drawer_title_spam">Indésirables</string>
+    <string name="drawer_title_trash">Corbeille</string>
+    <string name="drawer_title_all_mail">Tous les messages</string>
+    <string name="drawer_title_folders">Dossiers</string>
+    <string name="drawer_title_create_folder">Créer un dossier</string>
+    <string name="drawer_title_labels">Labels</string>
+    <string name="drawer_title_create_label">Créer un label</string>
+    <string name="drawer_title_more">Plus</string>
+    <string name="drawer_title_contacts">Contacts</string>
+    <string name="drawer_title_subscription">Abonnement</string>
+</resources>

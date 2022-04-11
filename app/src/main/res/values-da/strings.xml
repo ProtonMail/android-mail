@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProtonMail</string>
+    <string name="title_remove">Fjern</string>
+    <string name="title_remove_account">Fjern konto</string>
+    <string name="description_remove_account">Du logger ud og fjerner alle oplysninger, der er knyttet til denne konto.</string>
+    <string name="user_select_other_account_content_description">Vælg en anden konto</string>
+    <string name="drawer_title_inbox">Indbakke</string>
+    <string name="drawer_title_drafts">Kladder</string>
+    <string name="drawer_title_sent">Sendt</string>
+    <string name="drawer_title_starred">Stjernemarkeret</string>
+    <string name="drawer_title_archive">Arkiv</string>
+    <string name="drawer_title_spam">Spam</string>
+    <string name="drawer_title_trash">Papirkurv</string>
+    <string name="drawer_title_all_mail">Alle e-mails</string>
+    <string name="drawer_title_folders">Mapper</string>
+    <string name="drawer_title_create_folder">Opret mappe</string>
+    <string name="drawer_title_labels">Etiketter</string>
+    <string name="drawer_title_create_label">Opret etiket</string>
+    <string name="drawer_title_more">Mere</string>
+    <string name="drawer_title_contacts">Kontakter</string>
+    <string name="drawer_title_subscription">Abonnement</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProtonMail</string>
+    <string name="title_remove">刪除</string>
+    <string name="title_remove_account">刪除帳戶</string>
+    <string name="description_remove_account">您將登出，與此帳戶關聯的所有訊息將會被移除</string>
+    <string name="user_select_other_account_content_description">選擇另一個帳戶</string>
+    <string name="drawer_title_inbox">收件匣</string>
+    <string name="drawer_title_drafts">草稿</string>
+    <string name="drawer_title_sent">已傳送</string>
+    <string name="drawer_title_starred">已加星號</string>
+    <string name="drawer_title_archive">封存</string>
+    <string name="drawer_title_spam">垃圾郵件</string>
+    <string name="drawer_title_trash">垃圾桶</string>
+    <string name="drawer_title_all_mail">所有郵件</string>
+    <string name="drawer_title_folders">資料夾</string>
+    <string name="drawer_title_create_folder">新增資料夾</string>
+    <string name="drawer_title_labels">標籤</string>
+    <string name="drawer_title_create_label">建立新標籤</string>
+    <string name="drawer_title_more">更多</string>
+    <string name="drawer_title_contacts">聯絡人</string>
+    <string name="drawer_title_subscription">訂閲</string>
+</resources>

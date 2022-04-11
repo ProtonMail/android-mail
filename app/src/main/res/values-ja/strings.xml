@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProtonMail</string>
+    <string name="title_remove">削除</string>
+    <string name="title_remove_account">アカウントの削除</string>
+    <string name="description_remove_account">サインアウトしてこのアカウントに関連付けられているすべて情報の情報を削除します。</string>
+    <string name="user_select_other_account_content_description">別のアカウントを選択</string>
+    <string name="drawer_title_inbox">受信箱</string>
+    <string name="drawer_title_drafts">下書き</string>
+    <string name="drawer_title_sent">送信済み</string>
+    <string name="drawer_title_starred">スター付き</string>
+    <string name="drawer_title_archive">アーカイブ</string>
+    <string name="drawer_title_spam">迷惑メール</string>
+    <string name="drawer_title_trash">ごみ箱</string>
+    <string name="drawer_title_all_mail">すべてのメール</string>
+    <string name="drawer_title_folders">フォルダー</string>
+    <string name="drawer_title_create_folder">フォルダーを作成</string>
+    <string name="drawer_title_labels">ラベル</string>
+    <string name="drawer_title_create_label">ラベルを作成</string>
+    <string name="drawer_title_more">その他</string>
+    <string name="drawer_title_contacts">連絡先</string>
+    <string name="drawer_title_subscription">サブスクリプション</string>
+</resources>
