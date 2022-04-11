@@ -20,6 +20,18 @@ package ch.protonmail.android
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application()
+class App : Application() {
+
+    @Inject
+    lateinit var themeObserver: ThemeObserver
+
+    override fun onCreate() {
+        super.onCreate()
+        themeObserver.start()
+    }
+
+
+}

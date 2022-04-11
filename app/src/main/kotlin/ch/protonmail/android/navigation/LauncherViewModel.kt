@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
@@ -91,7 +92,7 @@ class LauncherViewModel @Inject constructor(
             initialValue = Processing
         )
 
-    fun register(context: FragmentActivity) {
+    fun register(context: AppCompatActivity) {
         authOrchestrator.register(context)
         hvOrchestrator.register(context)
         plansOrchestrator.register(context)

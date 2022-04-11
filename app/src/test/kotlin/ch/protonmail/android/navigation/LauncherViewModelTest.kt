@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import app.cash.turbine.test
 import ch.protonmail.android.testdata.AccountTestData
@@ -80,7 +81,7 @@ class LauncherViewModelTest {
         every { getAccounts() } returns accountListFlow
     }
 
-    private val context = mockk<FragmentActivity> {
+    private val context = mockk<AppCompatActivity> {
         every { lifecycle } returns mockk()
     }
 
