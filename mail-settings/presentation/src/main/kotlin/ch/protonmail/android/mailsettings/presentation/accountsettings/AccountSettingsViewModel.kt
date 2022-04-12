@@ -47,7 +47,6 @@ class AccountSettingsViewModel @Inject constructor(
         observeMailSettings()
     ) { user, userSettings, mailSettings ->
         Data(
-            null,
             getRecoveryEmail(userSettings),
             user?.maxSpace,
             user?.usedSpace,

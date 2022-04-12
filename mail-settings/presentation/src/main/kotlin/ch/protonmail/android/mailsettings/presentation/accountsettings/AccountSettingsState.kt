@@ -24,7 +24,6 @@ sealed class AccountSettingsState {
      * @param mailboxUsedSpace Mailbox used space in Bytes
      */
     data class Data(
-        val currentPlan: String?,
         val recoveryEmail: String?,
         val mailboxSize: Long?,
         val mailboxUsedSpace: Long?,

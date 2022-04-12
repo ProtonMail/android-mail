@@ -27,7 +27,6 @@ class AccountSettingsScreenTest {
     val composeTestRule = createComposeRule()
 
     private val settingsState = Data(
-        currentPlan = "Visionary",
         recoveryEmail = "recovery-email@protonmail.com",
         mailboxSize = 20_000,
         mailboxUsedSpace = 15_000,
@@ -41,7 +40,6 @@ class AccountSettingsScreenTest {
             ProtonTheme {
                 AccountSettingScreen(
                     onBackClick = {},
-                    onSubscriptionClick = {},
                     onPasswordManagementClick = {},
                     onRecoveryEmailClick = {},
                     onConversationModeClick = {},
@@ -74,11 +72,6 @@ class AccountSettingsScreenTest {
     @Test
     @Category(SmokeTest::class)
     fun testSettingsScreenDisplayStateCorrectly() {
-        composeTestRule
-            .onNodeWithText("Subscription")
-            .assertTextContains("Visionary")
-            .assertIsDisplayed()
-
         composeTestRule
             .onNodeWithText("Recovery email")
             .assertTextContains("recovery-email@protonmail.com")

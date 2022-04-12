@@ -46,7 +46,6 @@ const val TEST_TAG_ACCOUNT_SETTINGS_LIST = "AccountSettingsListTestTag"
 fun AccountSettingScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onSubscriptionClick: () -> Unit,
     onPasswordManagementClick: () -> Unit,
     onRecoveryEmailClick: () -> Unit,
     onConversationModeClick: () -> Unit,
@@ -68,7 +67,6 @@ fun AccountSettingScreen(
         is Data -> AccountSettingScreen(
             modifier = modifier,
             onBackClick = onBackClick,
-            onSubscriptionClick = onSubscriptionClick,
             onPasswordManagementClick = onPasswordManagementClick,
             onRecoveryEmailClick = onRecoveryEmailClick,
             onConversationModeClick = onConversationModeClick,
@@ -89,7 +87,6 @@ fun AccountSettingScreen(
 fun AccountSettingScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onSubscriptionClick: () -> Unit,
     onPasswordManagementClick: () -> Unit,
     onRecoveryEmailClick: () -> Unit,
     onConversationModeClick: () -> Unit,
@@ -113,15 +110,6 @@ fun AccountSettingScreen(
         content = {
             ProtonSettingsList(modifier.testTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)) {
                 item { ProtonSettingsHeader(title = R.string.mail_settings_account) }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_subscription),
-                        hint = state.currentPlan
-                            ?: stringResource(id = R.string.mail_settings_no_information_available),
-                        onClick = onSubscriptionClick
-                    )
-                    Divider()
-                }
                 item {
                     ProtonSettingsItem(
                         name = stringResource(id = R.string.mail_settings_password_management),
@@ -276,7 +264,6 @@ private fun formatFileSize(mailboxUsedSpace: Long) = formatShortFileSize(
 fun previewAccountSettingsScreen() {
     AccountSettingScreen(
         onBackClick = {},
-        onSubscriptionClick = {},
         onPasswordManagementClick = {},
         onRecoveryEmailClick = {},
         onConversationModeClick = {},
@@ -288,7 +275,6 @@ fun previewAccountSettingsScreen() {
         onLocalStorageClick = {},
         onSnoozeNotificationsClick = {},
         state = Data(
-            currentPlan = "Visionary",
             recoveryEmail = "recovery@protonmail.com",
             mailboxSize = 20_000,
             mailboxUsedSpace = 4000,

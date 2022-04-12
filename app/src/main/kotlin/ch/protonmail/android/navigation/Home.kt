@@ -166,9 +166,6 @@ fun NavGraphBuilder.addAccountSettings(navController: NavHostController) = compo
 ) {
     AccountSettingScreen(
         onBackClick = { navController.popBackStack() },
-        onSubscriptionClick = {
-            Timber.i("Subscription setting clicked")
-        },
         onPasswordManagementClick = {
             Timber.i("Password management setting clicked")
         },
