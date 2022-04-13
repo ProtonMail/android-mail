@@ -22,7 +22,10 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onSibling
+import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 
 /**
@@ -32,10 +35,19 @@ class ThemeRobot(
     private val composeTestRule: ComposeContentTestRule? = null
 ) {
 
+    fun selectSystemDefault(): ThemeRobot {
+        composeTestRule!!
+            .onNodeWithText("System default")
+            .performClick()
+        composeTestRule.waitForIdle()
+        return this
+    }
+
     fun selectDarkTheme(): ThemeRobot {
         composeTestRule!!
             .onNodeWithText("Dark")
             .performClick()
+        composeTestRule.waitForIdle()
         return this
     }
 
@@ -47,6 +59,7 @@ class ThemeRobot(
         fun darkThemeSelected(composeRule: ComposeContentTestRule) {
             composeRule
                 .onNodeWithText("Dark")
+                .onChild() // selects the radio button node
                 .assertIsSelected()
         }
 
@@ -57,16 +70,19 @@ class ThemeRobot(
 
             composeRule
                 .onNodeWithText("System default")
+                .onChild()
                 .assertIsDisplayed()
                 .assertIsSelected()
 
             composeRule
                 .onNodeWithText("Light")
+                .onChild()
                 .assertIsDisplayed()
                 .assertIsNotSelected()
 
             composeRule
                 .onNodeWithText("Dark")
+                .onChild()
                 .assertIsDisplayed()
                 .assertIsNotSelected()
         }
