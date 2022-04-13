@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
@@ -41,6 +42,7 @@ import me.proton.core.compose.flow.rememberAsState
 
 const val TEST_TAG_ACCOUNT_SETTINGS_SCREEN = "AccountSettingsScreenTestTag"
 const val TEST_TAG_ACCOUNT_SETTINGS_LIST = "AccountSettingsListTestTag"
+const val TEST_TAG_ACCOUNT_SETTINGS_PROGRESS = "AccountSettingsProgressTestTag"
 
 @Composable
 fun AccountSettingScreen(
@@ -79,7 +81,9 @@ fun AccountSettingScreen(
             onSnoozeNotificationsClick = onSnoozeNotificationsClick,
             state = settingsState
         )
-        is Loading -> Unit
+        is Loading -> ProtonCenteredProgress(
+            modifier = Modifier.testTag( TEST_TAG_ACCOUNT_SETTINGS_PROGRESS)
+        )
     }
 }
 

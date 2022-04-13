@@ -18,10 +18,12 @@
  */
 package ch.protonmail.android.uitest.robot.settings
 
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_PROGRESS
 import ch.protonmail.android.mailsettings.presentation.settings.TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.settings.account.AccountSettingsRobot
@@ -47,7 +49,8 @@ class SettingsRobot(
         composeTestRule!!
             .onNodeWithTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM)
             .performClick()
-        composeTestRule.waitForIdle()
+
+        composeTestRule.waitUntil { progressIsHidden(composeTestRule) }
 
         return AccountSettingsRobot(composeTestRule)
     }
@@ -71,6 +74,17 @@ class SettingsRobot(
 
     @SuppressWarnings("EmptyFunctionBlock")
     private fun selectItemByHeader(header: String) {}
+
+    private fun progressIsHidden(composeTestRule: ComposeContentTestRule): Boolean {
+        try {
+            composeTestRule
+                .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_PROGRESS)
+                .assertIsNotDisplayed()
+        } catch (error: AssertionError) {
+            return true
+        }
+        return false
+    }
 
     /**
      * Contains all the validations that can be performed by [SettingsRobot].
