@@ -246,7 +246,7 @@ fun Sidebar(
             ProtonSidebarItem(isClickable = false) {
                 Text(
                     text = stringResource(R.string.drawer_title_folders),
-                    color = ProtonTheme.colors.textHint
+                    color = ProtonTheme.colors.textWeak
                 )
             }
         }
@@ -269,7 +269,7 @@ fun Sidebar(
             ProtonSidebarItem(isClickable = false) {
                 Text(
                     text = stringResource(R.string.drawer_title_labels),
-                    color = ProtonTheme.colors.textHint,
+                    color = ProtonTheme.colors.textWeak,
                     modifier = Modifier.weight(1f, fill = true)
                 )
             }
@@ -293,7 +293,7 @@ fun Sidebar(
             ProtonSidebarItem(isClickable = false) {
                 Text(
                     text = stringResource(R.string.drawer_title_more),
-                    color = ProtonTheme.colors.textHint
+                    color = ProtonTheme.colors.textWeak
                 )
             }
             ProtonSidebarSettingsItem {
