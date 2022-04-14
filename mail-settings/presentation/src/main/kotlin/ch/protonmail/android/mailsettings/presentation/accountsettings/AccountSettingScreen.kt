@@ -82,7 +82,7 @@ fun AccountSettingScreen(
             state = settingsState
         )
         is Loading -> ProtonCenteredProgress(
-            modifier = Modifier.testTag( TEST_TAG_ACCOUNT_SETTINGS_PROGRESS)
+            modifier = Modifier.testTag(TEST_TAG_ACCOUNT_SETTINGS_PROGRESS)
         )
     }
 }

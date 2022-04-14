@@ -72,9 +72,10 @@ class SettingsRobot(
         return AccountSettingsRobot()
     }
 
-    @SuppressWarnings("EmptyFunctionBlock")
+    @Suppress("EmptyFunctionBlock")
     private fun selectItemByHeader(header: String) {}
 
+    @Suppress("SwallowedException")
     private fun progressIsHidden(composeTestRule: ComposeContentTestRule): Boolean {
         try {
             composeTestRule
@@ -91,7 +92,7 @@ class SettingsRobot(
      */
     class Verify {
 
-        @SuppressWarnings("EmptyFunctionBlock")
+        @Suppress("EmptyFunctionBlock")
         fun settingsOpened() {}
     }
 

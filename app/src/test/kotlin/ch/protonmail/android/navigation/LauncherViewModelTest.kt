@@ -19,7 +19,6 @@
 package ch.protonmail.android.navigation
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import app.cash.turbine.test
 import ch.protonmail.android.testdata.AccountTestData
 import io.mockk.coVerify

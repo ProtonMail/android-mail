@@ -24,8 +24,6 @@ import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onSibling
-import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 
 /**

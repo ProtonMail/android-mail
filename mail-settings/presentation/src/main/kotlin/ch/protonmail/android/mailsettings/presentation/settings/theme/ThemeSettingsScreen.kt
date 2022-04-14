@@ -96,7 +96,23 @@ fun previewThemeSettingsScreen() {
         onBackClick = {},
         onThemeSelected = {},
         state = Data(
-            listOf()
+            listOf(
+                ThemeUiModel(
+                    Theme.SYSTEM_DEFAULT,
+                    R.string.mail_settings_system_default,
+                    true
+                ),
+                ThemeUiModel(
+                    Theme.LIGHT,
+                    R.string.mail_settings_theme_light,
+                    false
+                ),
+                ThemeUiModel(
+                    Theme.DARK,
+                    R.string.mail_settings_theme_dark,
+                    false
+                )
+            )
         )
     )
 }

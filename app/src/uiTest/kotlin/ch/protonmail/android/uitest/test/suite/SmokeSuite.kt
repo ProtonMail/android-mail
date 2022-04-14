@@ -6,6 +6,7 @@ import ch.protonmail.android.uitest.test.settings.SettingsFlowTest
 import ch.protonmail.android.uitest.test.settings.account.AccountSettingsScreenTest
 import ch.protonmail.android.uitest.test.settings.account.conversationmode.ConversationModeSettingScreenTest
 import ch.protonmail.android.uitest.test.settings.appsettings.SettingsScreenTest
+import ch.protonmail.android.uitest.test.settings.appsettings.theme.ThemeSettingScreenTest
 import org.junit.experimental.categories.Categories
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
@@ -17,6 +18,7 @@ import org.junit.runners.Suite
     SettingsFlowTest::class,
     SettingsScreenTest::class,
     AccountSettingsScreenTest::class,
-    ConversationModeSettingScreenTest::class
+    ConversationModeSettingScreenTest::class,
+    ThemeSettingScreenTest::class
 )
 class SmokeSuite
