@@ -40,6 +40,7 @@ import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.addConversationModeSettings
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
+import ch.protonmail.android.mailsettings.presentation.settings.language.addLanguageSettings
 import ch.protonmail.android.mailsettings.presentation.settings.theme.addThemeSettings
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
@@ -97,6 +98,7 @@ fun Home(
                     Destination.Screen.ConversationModeSettings.route
                 )
                 addThemeSettings(navController, Destination.Screen.ThemeSettings.route)
+                addLanguageSettings(navController, Destination.Screen.LanguageSettings.route)
             }
         }
     }
@@ -159,7 +161,8 @@ fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
             Timber.i("Alternative routing setting clicked")
         },
         onAppLanguageClick = {
-            Timber.i("App language setting clicked")
+            Timber.d("Navigating to language settings")
+            navController.navigate(Destination.Screen.LanguageSettings.route)
         },
         onCombinedContactsClick = {
             Timber.i("Combined contacts setting clicked")

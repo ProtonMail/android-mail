@@ -37,6 +37,7 @@ sealed class Destination(val route: String) {
         object AccountSettings : Destination("settings/account")
         object ConversationModeSettings : Destination("settings/account/conversationMode")
         object ThemeSettings : Destination("settings/theme")
+        object LanguageSettings : Destination("settings/appLanguage")
         object ReportBug : Destination("report")
     }
 
