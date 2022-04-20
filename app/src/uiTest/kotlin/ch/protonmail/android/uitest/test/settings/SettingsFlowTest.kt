@@ -5,6 +5,7 @@ import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.experimental.categories.Category
 import org.junit.runner.RunWith
@@ -42,7 +43,7 @@ class SettingsFlowTest : BaseTest() {
 
     @Test
     @Category(SmokeTest::class)
-    fun openAndChangeThemeSetting() {
+    fun openSettingAndChangePreferredTheme() {
         val themeSettingsRobot = menuRobot
             .settings()
             .selectThemeSettings()
@@ -53,5 +54,24 @@ class SettingsFlowTest : BaseTest() {
         themeSettingsRobot
             .selectDarkTheme()
             .verify { darkThemeSelected(composeTestRule) }
+    }
+
+    @Test
+    @Category(SmokeTest::class)
+    @Ignore("Ignoring till feature is done (MAILANDR-95)")
+    fun openSettingAndChangePreferredLanguage() {
+        val languageSettingsRobot = menuRobot
+            .settings()
+            .selectLanguageSettings()
+
+        languageSettingsRobot
+            .selectSystemDefault()
+            .verify { defaultLanguagesScreenIsShown(composeTestRule) }
+        languageSettingsRobot
+            .selectSpanish()
+            .verify {
+                spanishLanguageSelected(composeTestRule)
+                appLanguageChangedToSpanish(composeTestRule)
+            }
     }
 }

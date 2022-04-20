@@ -64,6 +64,15 @@ class SettingsRobot(
         return ThemeRobot(composeTestRule)
     }
 
+    fun selectLanguageSettings(): LanguageRobot {
+        composeTestRule!!
+            .onNodeWithText("App language")
+            .performClick()
+        composeTestRule.waitForIdle()
+
+        return LanguageRobot(composeTestRule)
+    }
+
     fun selectAutoLock(): AutoLockRobot {
         return AutoLockRobot()
     }
