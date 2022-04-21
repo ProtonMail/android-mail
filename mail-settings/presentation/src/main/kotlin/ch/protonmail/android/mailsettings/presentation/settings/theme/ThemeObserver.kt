@@ -16,13 +16,12 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android
+package ch.protonmail.android.mailsettings.presentation.settings.theme
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
-import ch.protonmail.android.di.ApplicationModule.LocalDiskOpCoroutineScope
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.domain.model.Theme.DARK
 import ch.protonmail.android.mailsettings.domain.model.Theme.LIGHT
@@ -31,19 +30,19 @@ import ch.protonmail.android.mailsettings.domain.repository.ThemeRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ThemeObserver @Inject constructor(
     private val themeRepository: ThemeRepository,
-    @LocalDiskOpCoroutineScope
+    @ThemeObserverCoroutineScope
     private val coroutineScope: CoroutineScope
 ) {
 
     fun start() {
         themeRepository.observe()
-            .map { applyDefaultTheme(it) }
+            .onEach { applyDefaultTheme(it) }
             .launchIn(coroutineScope)
     }
 

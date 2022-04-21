@@ -20,7 +20,7 @@ package ch.protonmail.android.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import ch.protonmail.android.ThemeObserver
+import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeObserver
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors

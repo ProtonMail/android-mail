@@ -31,11 +31,15 @@ import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepo
 import ch.protonmail.android.mailsettings.domain.repository.CustomAppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.ThemeRepository
 import ch.protonmail.android.mailsettings.presentation.settings.GetAppInformation
+import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeObserverCoroutineScope
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 @Module
@@ -82,4 +86,10 @@ object SettingsModule {
     fun provideThemeRepository(
         dataStoreProvider: MailSettingsDataStoreProvider
     ): ThemeRepository = ThemeRepositoryImpl(dataStoreProvider)
+
+    @Provides
+    @Singleton
+    @ThemeObserverCoroutineScope
+    fun provideThemeObserverCoroutineScope(): CoroutineScope =
+        CoroutineScope(Dispatchers.IO + SupervisorJob())
 }

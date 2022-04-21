@@ -38,5 +38,6 @@ dependencies {
     implementation(project(":mail-settings:presentation"))
 
     implementation(Dagger.hiltAndroid)
+    implementation(KotlinX.coroutinesCore)
     kapt(Dagger.hiltDaggerCompiler)
 }
