@@ -91,6 +91,7 @@ object Dependencies {
     val modulePresentationLibs = mutableListOf<String>().apply {
         add(AndroidX.Activity.ktx)
         add(AndroidX.Hilt.navigationCompose)
+        add(AndroidX.Navigation.compose)
         addAll(composeLibs)
         add(Material.material)
         add(Proton.Core.accountManager)

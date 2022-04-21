@@ -36,9 +36,9 @@ import ch.protonmail.android.mailconversation.domain.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
-import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
+import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.addConversationModeSettings
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
-import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsScreen
+import ch.protonmail.android.mailsettings.presentation.settings.theme.addThemeSettings
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
 import ch.protonmail.android.sidebar.Sidebar
@@ -90,8 +90,11 @@ fun Home(
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
                 addAccountSettings(navController)
-                addConversationModeSettings(navController)
-                addThemeSettings(navController)
+                addConversationModeSettings(
+                    navController,
+                    Destination.Screen.ConversationModeSettings.route
+                )
+                addThemeSettings(navController, Destination.Screen.ThemeSettings.route)
             }
         }
     }
@@ -197,23 +200,5 @@ fun NavGraphBuilder.addAccountSettings(navController: NavHostController) = compo
         onSnoozeNotificationsClick = {
             Timber.i("Snooze notification setting clicked")
         }
-    )
-}
-
-fun NavGraphBuilder.addConversationModeSettings(navController: NavHostController) = composable(
-    route = Destination.Screen.ConversationModeSettings.route
-) {
-    ConversationModeSettingScreen(
-        modifier = Modifier,
-        onBackClick = { navController.popBackStack() }
-    )
-}
-
-fun NavGraphBuilder.addThemeSettings(navController: NavHostController) = composable(
-    route = Destination.Screen.ThemeSettings.route
-) {
-    ThemeSettingsScreen(
-        modifier = Modifier,
-        onBackClick = { navController.popBackStack() }
     )
 }

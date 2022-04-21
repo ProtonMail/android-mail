@@ -25,6 +25,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
@@ -91,3 +94,17 @@ fun previewConversationModeSettingsScreen() {
         onBackClick = {}
     )
 }
+
+/**
+ * Adds to this [NavGraphBuilder] a screen which allows to change conversation mode.
+ * @param navController the NavHostController which hosts this screen. Used to popBackStack when
+ * back button is pressed
+ * @param route the route this composable will be added at
+ */
+fun NavGraphBuilder.addConversationModeSettings(navController: NavHostController, route: String) =
+    composable(route = route) {
+        ConversationModeSettingScreen(
+            modifier = Modifier,
+            onBackClick = { navController.popBackStack() }
+        )
+    }
