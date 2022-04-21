@@ -21,5 +21,10 @@ package ch.protonmail.android.mailsettings.domain.model
 enum class Theme {
     SYSTEM_DEFAULT,
     LIGHT,
-    DARK
+    DARK;
+
+    companion object {
+        private val map = values().associateBy { it.name }
+        fun enumOf(value: String?): Theme = map[value] ?: SYSTEM_DEFAULT
+    }
 }

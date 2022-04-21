@@ -25,7 +25,6 @@ import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.domain.repository.ThemeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 import javax.inject.Inject
 
 class ThemeRepositoryImpl @Inject constructor(
@@ -36,28 +35,12 @@ class ThemeRepositoryImpl @Inject constructor(
 
     override fun observe(): Flow<Theme> =
         dataStoreProvider.themeDataStore.data.map { pref ->
-            val themePreference = pref[themePreferenceKey] ?: Theme.SYSTEM_DEFAULT.name
-            try {
-                Theme.valueOf(themePreference)
-            } catch (exception: IllegalArgumentException) {
-                Timber.e(
-                    exception,
-                    "Saved theme pref. could not be resolved as a Theme enum constant"
-                )
-                clearThemePreference()
-                Theme.SYSTEM_DEFAULT
-            }
+            Theme.enumOf(pref[themePreferenceKey])
         }
 
     override suspend fun update(theme: Theme) {
         dataStoreProvider.themeDataStore.edit { mutablePrefs ->
             mutablePrefs[themePreferenceKey] = theme.name
-        }
-    }
-
-    private suspend fun clearThemePreference() {
-        dataStoreProvider.themeDataStore.edit { mutablePrefs ->
-            mutablePrefs.clear()
         }
     }
 }

@@ -79,7 +79,7 @@ class ThemeRepositoryImplTest {
     }
 
     @Test
-    fun `clear stored preference and fallback to System Default when saved preference cannot be mapped to a Theme enum constant`() =
+    fun `fallback to System Default when saved preference cannot be mapped to a Theme enum constant`() =
         runTest {
             // Given
             coEvery {
@@ -88,7 +88,6 @@ class ThemeRepositoryImplTest {
             // When
             themeRepository.observe().test {
                 // Then
-                coVerify { themeDataStoreSpy.updateData(any()) }
                 assertEquals(Theme.SYSTEM_DEFAULT, awaitItem())
                 awaitComplete()
             }
