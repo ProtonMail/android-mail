@@ -49,6 +49,9 @@
             <meta-data
                 android:name="me.proton.core.crypto.validator.presentation.init.CryptoValidatorInitializer"
                 android:value="androidx.startup" />
+            <meta-data
+                android:name="ch.protonmail.android.initializer.ThemeObserverInitializer"
+                android:value="androidx.startup" />
         </provider>
 
         <activity
