@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailsettings.domain.repository
 
-import ch.protonmail.android.mailsettings.domain.model.CustomAppLanguagePreference
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import kotlinx.coroutines.flow.Flow
 
-interface CustomAppLanguageRepository {
-    fun observe(): Flow<CustomAppLanguagePreference?>
+interface AppLanguageRepository {
+    fun observe(): Flow<AppLanguage?>
 }

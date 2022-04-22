@@ -21,14 +21,14 @@ package ch.protonmail.android.mailsettings.dagger
 import android.content.Context
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.data.repository.AlternativeRoutingRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.AppLanguageRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
-import ch.protonmail.android.mailsettings.data.repository.CustomAppLanguageRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.ThemeRepositoryImpl
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
+import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
-import ch.protonmail.android.mailsettings.domain.repository.CustomAppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.ThemeRepository
 import ch.protonmail.android.mailsettings.presentation.settings.GetAppInformation
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeObserverCoroutineScope
@@ -78,8 +78,8 @@ object SettingsModule {
 
     @Provides
     @Singleton
-    fun provideCustomLanguageRepository(): CustomAppLanguageRepository =
-        CustomAppLanguageRepositoryImpl()
+    fun provideAppLanguageRepository(): AppLanguageRepository =
+        AppLanguageRepositoryImpl()
 
     @Provides
     @Singleton

@@ -20,14 +20,14 @@ package ch.protonmail.android.mailsettings.domain
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.AutoLockPreference
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
-import ch.protonmail.android.mailsettings.domain.model.CustomAppLanguagePreference
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
+import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
-import ch.protonmail.android.mailsettings.domain.repository.CustomAppLanguageRepository
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -41,7 +41,7 @@ class ObserveAppSettingsTest {
     private val combinedContactsRepository = mockk<CombinedContactsRepository> {
         every { this@mockk.observe() } returns flowOf(CombinedContactsPreference(true))
     }
-    private val customAppLanguageRepository = mockk<CustomAppLanguageRepository> {
+    private val customAppLanguageRepository = mockk<AppLanguageRepository> {
         every { this@mockk.observe() } returns flowOf(null)
     }
     private val alternativeRoutingRepository = mockk<AlternativeRoutingRepository> {
@@ -110,7 +110,7 @@ class ObserveAppSettingsTest {
     fun `custom app language value is returned from custom app language repository`() = runTest {
         // Given
         every { customAppLanguageRepository.observe() } returns flowOf(
-            CustomAppLanguagePreference("en-EN")
+            AppLanguage("en-EN")
         )
 
         // When

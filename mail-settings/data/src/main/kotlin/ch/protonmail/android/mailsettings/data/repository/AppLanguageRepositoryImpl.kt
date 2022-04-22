@@ -16,8 +16,20 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain.model
+package ch.protonmail.android.mailsettings.data.repository
 
-data class CustomAppLanguagePreference(
-    val languageTag: String
-)
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage
+import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
+
+class AppLanguageRepositoryImpl @Inject constructor() : AppLanguageRepository {
+
+    /**
+     * TODO: defining how this data is store will be done in MAILANDR-95
+     */
+    override fun observe(): Flow<AppLanguage?> =
+        flowOf(AppLanguage("Auto-Detect"))
+
+}

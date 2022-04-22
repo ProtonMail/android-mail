@@ -19,28 +19,28 @@
 package ch.protonmail.android.mailsettings.data.repository
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailsettings.domain.model.CustomAppLanguagePreference
-import ch.protonmail.android.mailsettings.domain.repository.CustomAppLanguageRepository
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage
+import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class CustomAppLanguageRepositoryImplTest {
+class AppLanguageRepositoryImplTest {
 
-    private lateinit var customLanguageRepository: CustomAppLanguageRepository
+    private lateinit var languageRepository: AppLanguageRepository
 
     @Before
     fun setUp() {
-        customLanguageRepository = CustomAppLanguageRepositoryImpl()
+        languageRepository = AppLanguageRepositoryImpl()
     }
 
     @Test
     fun `returns auto detect when no preference is stored locally`() = runTest {
         // When
-        customLanguageRepository.observe().test {
+        languageRepository.observe().test {
             // Then
-            assertEquals(CustomAppLanguagePreference("Auto-Detect"), awaitItem())
+            assertEquals(AppLanguage("Auto-Detect"), awaitItem())
             awaitComplete()
         }
     }

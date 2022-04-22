@@ -20,9 +20,9 @@ package ch.protonmail.android.mailsettings.domain
 
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
+import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
-import ch.protonmail.android.mailsettings.domain.repository.CustomAppLanguageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -30,14 +30,14 @@ import javax.inject.Inject
 class ObserveAppSettings @Inject constructor(
     private val autoLockRepository: AutoLockRepository,
     private val alternativeRoutingRepository: AlternativeRoutingRepository,
-    private val customAppLanguageRepository: CustomAppLanguageRepository,
+    private val appLanguageRepository: AppLanguageRepository,
     private val combinedContactsRepository: CombinedContactsRepository
 ) {
 
     operator fun invoke(): Flow<AppSettings> = combine(
         autoLockRepository.observe(),
         alternativeRoutingRepository.observe(),
-        customAppLanguageRepository.observe(),
+        appLanguageRepository.observe(),
         combinedContactsRepository.observe()
     ) { autoLockPref, alternativeRouting, customLanguage, combinedContacts ->
         AppSettings(
