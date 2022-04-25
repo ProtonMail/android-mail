@@ -18,11 +18,12 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.language
 
-import androidx.annotation.StringRes
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 
 sealed class LanguageSettingsState {
 
     data class Data(
+        val isSystemDefault: Boolean,
         val languages: List<LanguageUiModel>
     ) : LanguageSettingsState()
 
@@ -30,7 +31,7 @@ sealed class LanguageSettingsState {
 }
 
 data class LanguageUiModel(
-    val id: String,
-    @StringRes val name: Int,
-    val isSelected: Boolean
+    val language: AppLanguage,
+    val isSelected: Boolean,
+    val name: String
 )

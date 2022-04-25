@@ -43,7 +43,7 @@ class ObserveAppSettings @Inject constructor(
         AppSettings(
             hasAutoLock = autoLockPref.isEnabled,
             hasAlternativeRouting = alternativeRouting.isEnabled,
-            customAppLanguage = customLanguage?.languageTag,
+            customAppLanguage = customLanguage?.langName,
             hasCombinedContacts = combinedContacts.isEnabled
         )
     }

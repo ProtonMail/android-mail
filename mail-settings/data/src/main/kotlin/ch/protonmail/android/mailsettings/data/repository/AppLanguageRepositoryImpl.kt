@@ -29,7 +29,6 @@ class AppLanguageRepositoryImpl @Inject constructor() : AppLanguageRepository {
     /**
      * TODO: defining how this data is store will be done in MAILANDR-95
      */
-    override fun observe(): Flow<AppLanguage?> =
-        flowOf(AppLanguage("Auto-Detect"))
+    override fun observe(): Flow<AppLanguage?> = flowOf(null)
 
 }

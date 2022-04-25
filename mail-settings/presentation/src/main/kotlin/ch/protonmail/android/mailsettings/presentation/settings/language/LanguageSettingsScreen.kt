@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailsettings.presentation.settings.language
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,6 +32,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsState.Loading
 import me.proton.core.compose.component.ProtonSettingsRadioItem
@@ -55,6 +58,7 @@ fun LanguageSettingsScreen(
                 modifier = modifier,
                 onBackClick = onBackClick,
                 onLanguageSelected = viewModel::onLanguageSelected,
+                onSystemDefaultSelected = viewModel::onSystemDefaultSelected,
                 state = state
             )
         }
@@ -66,7 +70,8 @@ fun LanguageSettingsScreen(
 fun LanguageSettingsScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onLanguageSelected: (String) -> Unit,
+    onLanguageSelected: (LanguageUiModel) -> Unit,
+    onSystemDefaultSelected: () -> Unit,
     state: Data
 ) {
     Scaffold(
@@ -78,12 +83,20 @@ fun LanguageSettingsScreen(
             )
         },
         content = {
-            Column {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                ProtonSettingsRadioItem(
+                    name = stringResource(id = string.mail_settings_system_default),
+                    isSelected = state.isSystemDefault,
+                    onItemSelected = { onSystemDefaultSelected() }
+                )
+
                 state.languages.forEach { language ->
                     ProtonSettingsRadioItem(
-                        name = stringResource(id = language.name),
+                        name = language.name,
                         isSelected = language.isSelected,
-                        onItemSelected = { onLanguageSelected(language.id) }
+                        onItemSelected = { onLanguageSelected(language) }
                     )
                 }
             }
@@ -97,8 +110,10 @@ fun previewThemeSettingsScreen() {
     LanguageSettingsScreen(
         onBackClick = {},
         onLanguageSelected = {},
+        onSystemDefaultSelected = {},
         state = Data(
-            listOf()
+            isSystemDefault = true,
+            languages = listOf()
         )
     )
 }
