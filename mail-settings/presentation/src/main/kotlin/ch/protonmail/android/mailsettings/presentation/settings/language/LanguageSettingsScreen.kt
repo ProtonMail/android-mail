@@ -41,6 +41,7 @@ import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
 
 const val TEST_TAG_LANGUAGE_SETTINGS_SCREEN = "LanguageSettingsScreenTestTag"
+const val TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL = "LanguageSettingsScreenColumnTestTag"
 
 @Composable
 fun LanguageSettingsScreen(
@@ -85,7 +86,9 @@ fun LanguageSettingsScreen(
         },
         content = {
             Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
+                modifier = Modifier
+                    .testTag(TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL)
+                    .verticalScroll(rememberScrollState())
             ) {
                 ProtonSettingsRadioItem(
                     name = stringResource(id = string.mail_settings_system_default),

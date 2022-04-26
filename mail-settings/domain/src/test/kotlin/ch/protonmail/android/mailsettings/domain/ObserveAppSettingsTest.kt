@@ -125,7 +125,7 @@ class ObserveAppSettingsTest {
 
                 awaitComplete()
             }
-    }
+        }
 
     @Test
     fun `null app language is returned in appSettings when app language repository is empty`() =

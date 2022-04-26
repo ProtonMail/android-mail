@@ -21,10 +21,15 @@ package ch.protonmail.android.uitest.robot.settings
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onChild
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToNode
+import ch.protonmail.android.mailsettings.presentation.settings.language.TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL
 
 /**
  * [LanguageRobot] class contains actions and verifications for LanguageSettingsScreen
@@ -36,6 +41,7 @@ class LanguageRobot(
     fun selectSystemDefault(): LanguageRobot {
         composeTestRule!!
             .onNodeWithText("System default")
+            .performScrollTo()
             .performClick()
         composeTestRule.waitForIdle()
         return this
@@ -49,29 +55,42 @@ class LanguageRobot(
         return this
     }
 
+    fun selectPortuguese(): LanguageRobot {
+        composeTestRule!!
+            .onNodeWithTag(TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL)
+            .performScrollToNode(hasText("Português (Portugal)"))
+
+        composeTestRule
+            .onNodeWithText("Português (Portugal)")
+            .performClick()
+
+        composeTestRule.waitForIdle()
+        return this
+    }
+
     /**
      * Contains all the validations that can be performed by [LanguageRobot].
      */
     class Verify {
 
         fun spanishLanguageSelected(composeRule: ComposeContentTestRule) {
-            composeRule
-                .onNodeWithText("Español (España)")
-                .onChild() // selects the radio button node
-                .assertIsSelected()
+            verifyLanguageSelected(composeRule, "Español (España)")
+        }
+
+        fun portugueseLanguageSelected(composeRule: ComposeContentTestRule) {
+            verifyLanguageSelected(composeRule, "Português (Portugal)")
         }
 
         fun appLanguageChangedToSpanish(composeRule: ComposeContentTestRule) {
-            composeRule
-                .onNodeWithText("Idioma de la aplicación")
-                .onChild() // selects the radio button node
-                .assertIsSelected()
+            verifyScreenTitle(composeRule, "Idioma de la aplicación")
+        }
+
+        fun appLanguageChangedToPortuguese(composeRule: ComposeContentTestRule) {
+            verifyScreenTitle(composeRule, "Idioma do aplicativo")
         }
 
         fun defaultLanguagesScreenIsShown(composeRule: ComposeContentTestRule) {
-            composeRule
-                .onNodeWithText("App language")
-                .assertIsDisplayed()
+            verifyScreenTitle(composeRule, "App language")
 
             composeRule
                 .onNodeWithText("System default")
@@ -79,8 +98,28 @@ class LanguageRobot(
                 .assertIsDisplayed()
                 .assertIsSelected()
 
-            val languages = listOf("Català", "Čeština", "Deutsch", "English")
+            val languages = listOf("Català", "Dansk", "Deutsch", "English", "Français")
             assertLanguagesAreShownButUnselected(composeRule, languages)
+        }
+
+
+        private fun verifyLanguageSelected(
+            composeRule: ComposeContentTestRule,
+            text: String
+        ) {
+            composeRule
+                .onNodeWithText(text)
+                .onChild() // selects the radio button node
+                .assertIsSelected()
+        }
+
+        private fun verifyScreenTitle(
+            composeRule: ComposeContentTestRule,
+            text: String
+        ) {
+            composeRule
+                .onNodeWithText(text)
+                .assertIsDisplayed()
         }
 
         private fun assertLanguagesAreShownButUnselected(
