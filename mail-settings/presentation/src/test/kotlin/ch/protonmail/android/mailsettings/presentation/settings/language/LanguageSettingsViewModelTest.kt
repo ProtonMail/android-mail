@@ -21,11 +21,11 @@ package ch.protonmail.android.mailsettings.presentation.settings.language
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
-import ch.protonmail.android.mailsettings.domain.model.AppLanguage.CATALAN
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsState.Loading
 import io.mockk.coEvery
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -77,16 +77,36 @@ class LanguageSettingsViewModelTest {
                 initialStateEmitted()
 
                 // When
-                languagePreferenceFlow.emit(CATALAN)
+                languagePreferenceFlow.emit(AppLanguage.CATALAN)
 
                 // Then
-                val expected = allAppLanguagesWithSelected(CATALAN)
+                val expected = allAppLanguagesWithSelected(AppLanguage.CATALAN)
                 assertEquals(LanguageSettingsState.Data(false, expected), awaitItem())
             }
         }
 
+    @Test
+    fun `onLanguageSelected saves selected lang in repository`() =
+        runTest {
+            // When
+            viewModel.onLanguageSelected(AppLanguage.DANISH)
+
+            // Then
+            verify { languageRepository.save(AppLanguage.DANISH) }
+        }
+
+    @Test
+    fun `onDefaultSelected deletes previous language preference from repository`() =
+        runTest {
+            // When
+            viewModel.onSystemDefaultSelected()
+
+            // Then
+            verify { languageRepository.clear() }
+        }
+
     private fun allAppLanguagesWithSelected(selectedLang: AppLanguage?) =
-        alphabeticallySortedAppLanguages().map { language ->
+        appLanguagesSortedByLangNameAlphabetically().map { language ->
             LanguageUiModel(
                 language = language,
                 isSelected = language == selectedLang,
@@ -94,10 +114,7 @@ class LanguageSettingsViewModelTest {
             )
         }
 
-    /*
-     * Returns a list of AppLanguages sorted by their langName
-     */
-    private fun alphabeticallySortedAppLanguages() = listOf(
+    private fun appLanguagesSortedByLangNameAlphabetically() = listOf(
         AppLanguage.INDONESIAN,
         AppLanguage.CATALAN,
         AppLanguage.DANISH,

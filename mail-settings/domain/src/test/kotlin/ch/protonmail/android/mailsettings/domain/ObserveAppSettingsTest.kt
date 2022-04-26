@@ -41,7 +41,7 @@ class ObserveAppSettingsTest {
     private val combinedContactsRepository = mockk<CombinedContactsRepository> {
         every { this@mockk.observe() } returns flowOf(CombinedContactsPreference(true))
     }
-    private val customAppLanguageRepository = mockk<AppLanguageRepository> {
+    private val appLanguageRepository = mockk<AppLanguageRepository> {
         every { this@mockk.observe() } returns flowOf(null)
     }
     private val alternativeRoutingRepository = mockk<AlternativeRoutingRepository> {
@@ -58,7 +58,7 @@ class ObserveAppSettingsTest {
         observeAppSettings = ObserveAppSettings(
             autoLockRepository,
             alternativeRoutingRepository,
-            customAppLanguageRepository,
+            appLanguageRepository,
             combinedContactsRepository
         )
     }
@@ -107,32 +107,31 @@ class ObserveAppSettingsTest {
         }
 
     @Test
-    fun `custom app language value is returned from custom app language repository`() = runTest {
-        // Given
-        every { customAppLanguageRepository.observe() } returns flowOf(
-            AppLanguage("en-EN")
-        )
+    fun `language name is returned in appSettings when app language repository returns a preferred language`() =
+        runTest {
+            // Given
+            every { appLanguageRepository.observe() } returns flowOf(AppLanguage.ITALIAN)
 
-        // When
-        observeAppSettings().test {
-            // Then
-            val expected = AppSettings(
-                hasAutoLock = false,
-                hasAlternativeRouting = true,
-                customAppLanguage = "en-EN",
-                hasCombinedContacts = true
-            )
-            assertEquals(expected, awaitItem())
+            // When
+            observeAppSettings().test {
+                // Then
+                val expected = AppSettings(
+                    hasAutoLock = false,
+                    hasAlternativeRouting = true,
+                    customAppLanguage = "Italiano",
+                    hasCombinedContacts = true
+                )
+                assertEquals(expected, awaitItem())
 
-            awaitComplete()
-        }
+                awaitComplete()
+            }
     }
 
     @Test
-    fun `null custom app language is returned when custom app language repository is empty`() =
+    fun `null app language is returned in appSettings when app language repository is empty`() =
         runTest {
             // Given
-            every { customAppLanguageRepository.observe() } returns flowOf(null)
+            every { appLanguageRepository.observe() } returns flowOf(null)
 
             // When
             observeAppSettings().test {

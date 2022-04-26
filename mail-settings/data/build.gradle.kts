@@ -46,6 +46,7 @@ dependencies {
 
     implementation(Dependencies.moduleDataLibs)
     implementation(Dagger.hiltAndroid)
+    implementation(AndroidX.AppCompat.appCompat)
 
     implementation(project(":mail-settings:domain"))
 

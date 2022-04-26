@@ -23,4 +23,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AppLanguageRepository {
     fun observe(): Flow<AppLanguage?>
+    fun save(language: AppLanguage)
+    fun clear()
 }

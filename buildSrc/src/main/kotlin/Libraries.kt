@@ -16,6 +16,12 @@ object AndroidX {
         const val compose = "androidx.activity:activity-compose:$version"
     }
 
+    object AppCompat {
+        private const val version = Versions.AndroidX.appCompat
+
+        const val appCompat = "androidx.appcompat:appcompat:$version"
+    }
+
     object Compose {
         private const val version = Versions.AndroidX.compose
 

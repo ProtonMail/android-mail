@@ -29,6 +29,7 @@ object Dependencies {
         add(Accompanist.pager)
         add(Accompanist.systemUiController)
         add(AndroidX.Activity.ktx)
+        add(AndroidX.AppCompat.appCompat)
         add(AndroidX.Core.splashscreen)
         add(AndroidX.Hilt.compiler)
         add(AndroidX.Hilt.navigationCompose)

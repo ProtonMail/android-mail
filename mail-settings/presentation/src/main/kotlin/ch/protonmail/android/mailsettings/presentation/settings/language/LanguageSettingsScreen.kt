@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsState.Data
@@ -70,7 +71,7 @@ fun LanguageSettingsScreen(
 fun LanguageSettingsScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onLanguageSelected: (LanguageUiModel) -> Unit,
+    onLanguageSelected: (AppLanguage) -> Unit,
     onSystemDefaultSelected: () -> Unit,
     state: Data
 ) {
@@ -96,7 +97,7 @@ fun LanguageSettingsScreen(
                     ProtonSettingsRadioItem(
                         name = language.name,
                         isSelected = language.isSelected,
-                        onItemSelected = { onLanguageSelected(language) }
+                        onItemSelected = { onLanguageSelected(language.language) }
                     )
                 }
             }

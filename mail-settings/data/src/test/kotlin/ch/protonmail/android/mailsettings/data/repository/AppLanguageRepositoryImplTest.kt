@@ -18,13 +18,28 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage.BRAZILIAN
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage.CHINESE_TRADITIONAL
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage.FRENCH
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
+import java.util.Locale
 
 class AppLanguageRepositoryImplTest {
 
@@ -32,16 +47,91 @@ class AppLanguageRepositoryImplTest {
 
     @Before
     fun setUp() {
+        mockkStatic(AppCompatDelegate::class)
+        every { AppCompatDelegate.setApplicationLocales(any()) } just Runs
+
         languageRepository = AppLanguageRepositoryImpl()
     }
 
+    @After
+    fun tearDown() {
+        unmockkStatic(AppCompatDelegate::class)
+        // LocaleListCompat is statically mocked by some specific tests.
+        // Unmocked here to ensure this happens independently from those tests' result
+        unmockkStatic(LocaleListCompat::class)
+    }
+
     @Test
-    fun `returns auto detect when no preference is stored locally`() = runTest {
+    fun `emits null when there is no saved preference`() = runTest {
         // When
         languageRepository.observe().test {
             // Then
-            assertEquals(AppLanguage("Auto-Detect"), awaitItem())
-            awaitComplete()
+            assertNull(awaitItem())
         }
     }
+
+    @Test
+    fun `setApplicationLocales on AppCompatDelegate when a new preference is saved`() = runTest {
+        // When
+        languageRepository.save(FRENCH)
+        // Then
+        val expected = LocaleListCompat.create(Locale.FRENCH)
+        verify { AppCompatDelegate.setApplicationLocales(expected) }
+    }
+
+    @Test
+    fun `setApplicationLocales on AppCompatDelegate when a new preference is saved for language with subtag`() =
+        runTest {
+            // When
+            languageRepository.save(CHINESE_TRADITIONAL)
+            // Then
+            val expected = LocaleListCompat.create(Locale.TRADITIONAL_CHINESE)
+            verify { AppCompatDelegate.setApplicationLocales(expected) }
+        }
+
+    @Test
+    fun `emits new appLanguage when a new preference is saved`() = runTest {
+        languageRepository.observe().test {
+            // Given (initial state is null, no preference saved)
+            assertNull(awaitItem())
+            // When
+            languageRepository.save(BRAZILIAN)
+            // Then
+            assertEquals(BRAZILIAN, awaitItem())
+        }
+    }
+
+    @Test
+    fun `clearAppLanguage calls AppCompatDelegate with an empty locale list`() = runTest {
+        // Given
+        mockkStatic(LocaleListCompat::class)
+        val emptyLocaleList = mockk<LocaleListCompat>()
+        every { LocaleListCompat.getEmptyLocaleList() } returns emptyLocaleList
+
+        // When
+        languageRepository.clear()
+        // Then
+        // IMPORTANT!! The "empty locale" to remove the saved preference
+        // needs to be generated using `LocaleListCompat.getEmptyLocaleList()`
+        // As generating it otherwise (ie. `LocaleCompat.create()`) **causes the app
+        // to enter a restart loop** !!
+        verify { LocaleListCompat.getEmptyLocaleList() }
+        verify { AppCompatDelegate.setApplicationLocales(emptyLocaleList) }
+    }
+
+    @Test
+    fun `emits null appLanguage when language preference is cleared`() = runTest {
+        // Given (initial state is GERMAN)
+        every { AppCompatDelegate.getApplicationLocales() } returns LocaleListCompat.create(Locale.GERMAN)
+
+        languageRepository.observe().test {
+            // Given (initial state emitted is GERMAN)
+            assertEquals(AppLanguage.GERMAN, awaitItem())
+            // When
+            languageRepository.clear()
+            // Then
+            assertNull(awaitItem())
+        }
+    }
+
 }

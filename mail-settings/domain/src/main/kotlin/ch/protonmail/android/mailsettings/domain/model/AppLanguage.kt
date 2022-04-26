@@ -19,35 +19,36 @@
 package ch.protonmail.android.mailsettings.domain.model
 
 enum class AppLanguage(val langName: String, val langTag: String) {
-    ENGLISH("English", "en_EN"),
-    CATALAN("Català", "ca_ES"),
-    CZECH("Čeština", "cs_CS"),
-    DANISH("Dansk", "da_DA"),
-    GERMAN("Deutsch", "de_DE"),
-    GREEK("Ελληνικά", "el_EL"),
-    SPANISH("Español", "es_ES"),
-    FRENCH("Français", "fr_FR"),
-    CROATIAN("Hrvatski", "hr_HR"),
-    HUNGARIAN("Magyar", "hu_HU"),
-    INDONESIAN("Bahasa (Indonesia)", "in_IN"),
-    ICELANDIC("íslenska", "is_IS"),
-    ITALIAN("Italiano", "it_IT"),
-    JAPANESE("日本語", "ja_JA"),
-    KABYLIAN("Taqbaylit", "kab_KAB"),
-    DUTCH("Nederlands", "nl_NL"),
-    POLISH("Polski", "pl_PL"),
-    PORTUGUESE("Português (Portugal)", "pt_PT"),
-    BRAZILIAN("Português (Brasil)", "pt_BR"),
-    ROMANIAN("Română", "ro_RO"),
-    RUSSIAN("Русский", "ru_RU"),
-    SWEDISH("Svenska", "sv_SE"),
-    TURKISH("Türkçe", "tr_TR"),
-    UKRAINIAN("Українська", "uk_UK"),
-    CHINESE_TRADITIONAL("繁體中文", "zh_TW"),
-    CHINESE_SIMPLIFIED("简体中文", "zh_CN");
+
+    BRAZILIAN("Português (Brasil)", "pt-BR"),
+    CATALAN("Català", "ca-ES"),
+    CHINESE_SIMPLIFIED("简体中文", "zh-CN"),
+    CHINESE_TRADITIONAL("繁體中文", "zh-TW"),
+    CROATIAN("Hrvatski", "hr"),
+    CZECH("Čeština", "cs"),
+    DANISH("Dansk", "da"),
+    DUTCH("Nederlands", "nl"),
+    ENGLISH("English", "en"),
+    FRENCH("Français", "fr"),
+    GERMAN("Deutsch", "de"),
+    GREEK("Ελληνικά", "el"),
+    HUNGARIAN("Magyar", "hu-HU"),
+    ICELANDIC("íslenska", "is-IS"),
+    INDONESIAN("Bahasa (Indonesia)", "in"),
+    ITALIAN("Italiano", "it"),
+    JAPANESE("日本語", "ja"),
+    KABYLIAN("Taqbaylit", "kab"),
+    POLISH("Polski", "pl"),
+    PORTUGUESE("Português (Portugal)", "pt"),
+    ROMANIAN("Română", "ro"),
+    RUSSIAN("Русский", "ru"),
+    SPANISH("Español (España)", "es-ES"),
+    SWEDISH("Svenska", "sv-SE"),
+    TURKISH("Türkçe", "tr"),
+    UKRAINIAN("Українська", "uk");
 
     companion object {
-        private val map = values().associateBy { it.name }
-        fun enumOf(value: String?): AppLanguage? = map[value]
+        private val map = values().associateBy { it.langTag }
+        fun fromTag(tag: String?): AppLanguage? = map[tag]
     }
 }

@@ -34,7 +34,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LanguageSettingsViewModel @Inject constructor(
-    languageRepository: AppLanguageRepository
+    private val languageRepository: AppLanguageRepository
 ) : ViewModel() {
 
     val state: Flow<LanguageSettingsState> = languageRepository.observe()
@@ -48,10 +48,12 @@ class LanguageSettingsViewModel @Inject constructor(
             Loading
         )
 
-    fun onLanguageSelected(language: LanguageUiModel) = viewModelScope.launch {
+    fun onLanguageSelected(language: AppLanguage) = viewModelScope.launch {
+        languageRepository.save(language)
     }
 
     fun onSystemDefaultSelected() = viewModelScope.launch {
+        languageRepository.clear()
     }
 
     private fun getAppLanguageUiModels(selectedAppLanguage: AppLanguage?) =
