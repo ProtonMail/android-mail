@@ -1,3 +1,5 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+
 buildscript {
     repositories {
         google()
@@ -17,14 +19,16 @@ allprojects {
     }
 }
 
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
-}
-
 plugins {
     id("me.proton.core.gradle-plugins.detekt") version Versions.Gradle.protonDetektPlugin
     id("com.github.ben-manes.versions") version Versions.Gradle.benManesVersionsPlugin
 }
+
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
+}
+
+setupDependenciesPlugin()
 
 kotlinCompilerArgs(
     // Enables experimental Coroutines (runBlockingTest).
@@ -39,4 +43,20 @@ fun Project.kotlinCompilerArgs(vararg extraCompilerArgs: String) {
             kotlinOptions { freeCompilerArgs = freeCompilerArgs + extraCompilerArgs }
         }
     }
+}
+
+fun Project.setupDependenciesPlugin() {
+    // https://github.com/ben-manes/gradle-versions-plugin
+    tasks.withType<DependencyUpdatesTask> {
+        rejectVersionIf {
+            isNonStable(candidate.version) && !isNonStable(currentVersion)
+        }
+    }
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
 }
