@@ -32,10 +32,6 @@ object Versions {
         const val dagger = "2.41"
     }
 
-    object Gotev {
-        const val cookieStore = "1.5.0"
-    }
-
     object Gradle {
         const val androidGradlePlugin = "7.1.3"
         const val benManesVersionsPlugin = "0.42.0"

@@ -40,7 +40,6 @@ object Dependencies {
         add(AndroidX.Room.ktx)
         add(AndroidX.Work.runtimeKtx)
         addAll(composeLibs)
-        add(Gotev.cookieStore)
         add(JakeWharton.timber)
         add(Material.material)
         add(Proton.Core.account)

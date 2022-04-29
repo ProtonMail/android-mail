@@ -110,10 +110,6 @@ object Dagger {
     const val hiltDaggerCompiler = "com.google.dagger:hilt-compiler:$version"
 }
 
-object Gotev {
-    const val cookieStore = "net.gotev:cookie-store:${Versions.Gotev.cookieStore}"
-}
-
 object JakeWharton {
     const val timber = "com.jakewharton.timber:timber:${Versions.JakeWharton.timber}"
 }
