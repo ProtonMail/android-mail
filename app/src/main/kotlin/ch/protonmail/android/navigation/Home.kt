@@ -38,10 +38,10 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
-import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.addConversationModeSettings
+import ch.protonmail.android.mailsettings.presentation.addConversationModeSettings
+import ch.protonmail.android.mailsettings.presentation.addLanguageSettings
+import ch.protonmail.android.mailsettings.presentation.addThemeSettings
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
-import ch.protonmail.android.mailsettings.presentation.settings.language.addLanguageSettings
-import ch.protonmail.android.mailsettings.presentation.settings.theme.addThemeSettings
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
 import ch.protonmail.android.sidebar.Sidebar

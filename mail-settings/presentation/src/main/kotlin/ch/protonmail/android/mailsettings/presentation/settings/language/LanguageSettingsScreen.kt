@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.presentation.settings.language
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
@@ -28,9 +29,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
@@ -84,9 +82,10 @@ fun LanguageSettingsScreen(
                 onBackClick = onBackClick
             )
         },
-        content = {
+        content = { paddingValues ->
             Column(
                 modifier = Modifier
+                    .padding(paddingValues)
                     .testTag(TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL)
                     .verticalScroll(rememberScrollState())
             ) {
@@ -121,13 +120,3 @@ fun previewThemeSettingsScreen() {
         )
     )
 }
-
-fun NavGraphBuilder.addLanguageSettings(navController: NavHostController, route: String) =
-    composable(
-        route = route
-    ) {
-        LanguageSettingsScreen(
-            modifier = Modifier,
-            onBackClick = { navController.popBackStack() }
-        )
-    }

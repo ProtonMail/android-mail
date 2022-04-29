@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.presentation.settings.theme
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,9 +27,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsState.Data
@@ -78,8 +76,10 @@ fun ThemeSettingsScreen(
                 onBackClick = onBackClick
             )
         },
-        content = {
-            Column {
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier.padding(paddingValues)
+            ) {
                 state.themes.forEach { theme ->
                     ProtonSettingsRadioItem(
                         name = stringResource(id = theme.name),
@@ -117,20 +117,5 @@ fun previewThemeSettingsScreen() {
                 )
             )
         )
-    )
-}
-
-/**
- * Adds to this [NavGraphBuilder] a screen which allows to change theme.
- * @param navController the NavHostController which hosts this screen. Used to popBackStack when
- * back button is pressed
- * @param route the route this composable will be added at
- */
-fun NavGraphBuilder.addThemeSettings(navController: NavHostController, route: String) = composable(
-    route = route
-) {
-    ThemeSettingsScreen(
-        modifier = Modifier,
-        onBackClick = { navController.popBackStack() }
     )
 }
