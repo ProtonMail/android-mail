@@ -29,7 +29,7 @@ object Versions {
     }
 
     object Dagger {
-        const val dagger = "2.40.5"
+        const val dagger = "2.41"
     }
 
     object Gotev {

@@ -23,6 +23,8 @@ plugins {
     id("kotlin-parcelize")
 }
 
+setAsHiltModule()
+
 android {
     compileSdk = Config.compileSdk
 

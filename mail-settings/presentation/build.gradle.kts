@@ -22,6 +22,8 @@ plugins {
     kotlin("kapt")
 }
 
+setAsHiltModule()
+
 android {
     compileSdk = Config.compileSdk
 
@@ -56,7 +58,6 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.hiltAnnotationProcessors)
     debugImplementation(Dependencies.composeDebugLibs)
 
     implementation(Dependencies.modulePresentationLibs)

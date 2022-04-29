@@ -20,8 +20,9 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    id("dagger.hilt.android.plugin")
 }
+
+setAsHiltModule()
 
 android {
     compileSdk = Config.compileSdk
@@ -37,7 +38,5 @@ dependencies {
     implementation(project(":mail-settings:domain"))
     implementation(project(":mail-settings:presentation"))
 
-    implementation(Dagger.hiltAndroid)
     implementation(KotlinX.coroutinesCore)
-    kapt(Dagger.hiltDaggerCompiler)
 }
