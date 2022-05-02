@@ -21,18 +21,21 @@ package ch.protonmail.android.mailmailbox.presentation
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -53,6 +56,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
@@ -63,26 +67,47 @@ const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
 @Composable
 fun MailboxScreen(
     navigateToMailboxItem: (MailboxItem) -> Unit,
+    openDrawerMenu: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MailboxViewModel = hiltViewModel(),
 ) {
-    val mailboxState by rememberAsState(viewModel.state, MailboxState())
+    val scope = rememberCoroutineScope()
+    val mailboxState by rememberAsState(viewModel.state, MailboxState.Loading)
+    val mailboxListItems: LazyPagingItems<MailboxItem> = viewModel.items.collectAsLazyPagingItems()
+    val mailboxListState: LazyListState = mailboxListItems.rememberLazyListState()
 
-    Column(
-        modifier = modifier
-            .background(ProtonTheme.colors.backgroundNorm)
-            .fillMaxSize()
-            .testTag(TEST_TAG_MAILBOX_SCREEN)
+    Scaffold(
+        modifier = modifier.testTag(TEST_TAG_MAILBOX_SCREEN),
+        topBar = {
+            MailboxTopAppBar(
+                state = mailboxState.topAppBar,
+                onOpenMenu = openDrawerMenu,
+                onCloseSelectionMode = { viewModel.submit(MailboxViewModel.Action.CloseSelectionMode) },
+                onCloseSearchMode = {},
+                onTitleClick = { scope.launch { mailboxListState.animateScrollToItem(0) } },
+                onOpenSearchMode = {},
+                onSearch = {},
+                onOpenCompose = {}
+            )
+        }
     ) {
-        MailboxHeader(
-            mailboxState = mailboxState,
-        )
-        MailboxList(
-            navigateToMailboxItem = navigateToMailboxItem,
-            onRefresh = { viewModel.onRefresh() },
-            modifier = modifier,
-            mailboxItems = viewModel.items
-        )
+        Column(
+            modifier = Modifier.padding(it)
+                .background(ProtonTheme.colors.backgroundNorm)
+                .fillMaxSize()
+        ) {
+            MailboxHeader(
+                mailboxState = mailboxState,
+            )
+            MailboxList(
+                navigateToMailboxItem = navigateToMailboxItem,
+                onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
+                onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.OpenSelectionMode) },
+                modifier = modifier,
+                items = mailboxListItems,
+                listState = mailboxListState
+            )
+        }
     }
 }
 
@@ -102,10 +127,11 @@ private fun MailboxHeader(
 private fun MailboxList(
     navigateToMailboxItem: (MailboxItem) -> Unit,
     onRefresh: () -> Unit,
+    onOpenSelectionMode: () -> Unit,
     modifier: Modifier = Modifier,
-    mailboxItems: Flow<PagingData<MailboxItem>>,
+    items: LazyPagingItems<MailboxItem>,
+    listState: LazyListState
 ) {
-    val items: LazyPagingItems<MailboxItem> = mailboxItems.collectAsLazyPagingItems()
 
     val isRefreshing = when {
         items.loadState.refresh is LoadState.Loading -> true
@@ -119,7 +145,6 @@ private fun MailboxList(
         onRefresh = { onRefresh(); items.refresh() },
         modifier = modifier,
     ) {
-        val listState = items.rememberLazyListState()
 
         LazyColumn(
             state = listState,
@@ -134,10 +159,10 @@ private fun MailboxList(
                 item?.let {
                     MailboxItem(
                         item = item,
-                        modifier = Modifier.animateItemPlacement()
-                    ) {
-                        navigateToMailboxItem(it)
-                    }
+                        modifier = Modifier.animateItemPlacement(),
+                        onItemClicked = navigateToMailboxItem,
+                        onOpenSelectionMode = onOpenSelectionMode
+                    )
                 }
             }
             item {
@@ -156,17 +181,19 @@ private fun MailboxList(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MailboxItem(
     item: MailboxItem,
     modifier: Modifier = Modifier,
     onItemClicked: (MailboxItem) -> Unit,
+    onOpenSelectionMode: () -> Unit
 ) {
     Card(
         modifier = modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .clickable { onItemClicked(item) }
+            .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
     ) {
         Box(
             modifier = Modifier.padding(16.dp)
@@ -215,40 +242,46 @@ private fun MailboxItem(
 )
 @Composable
 fun PreviewMailbox() {
+    val items = flowOf(
+        PagingData.from(
+            listOf(
+                MailboxItem(
+                    type = MailboxItemType.Message,
+                    id = "1",
+                    userId = UserId("0"),
+                    senders = listOf(Recipient("address", "name")),
+                    recipients = emptyList(),
+                    subject = "First message",
+                    time = 0,
+                    size = 0,
+                    order = 0,
+                    read = false,
+
+                ),
+                MailboxItem(
+                    type = MailboxItemType.Message,
+                    id = "2",
+                    userId = UserId("0"),
+                    senders = listOf(Recipient("address", "name")),
+                    recipients = emptyList(),
+                    subject = "Second message",
+                    time = 0,
+                    size = 0,
+                    order = 0,
+                    read = true,
+
+                ),
+            )
+        )
+    ).collectAsLazyPagingItems()
+
     ProtonTheme {
         MailboxList(
             navigateToMailboxItem = {},
             onRefresh = {},
-            mailboxItems = flowOf(
-                PagingData.from(
-                    listOf(
-                        MailboxItem(
-                            type = MailboxItemType.Message,
-                            id = "1",
-                            userId = UserId("0"),
-                            senders = listOf(Recipient("address", "name")),
-                            recipients = emptyList(),
-                            subject = "First message",
-                            time = 0,
-                            size = 0,
-                            order = 0,
-                            read = false,
-                        ),
-                        MailboxItem(
-                            type = MailboxItemType.Message,
-                            id = "2",
-                            userId = UserId("0"),
-                            senders = listOf(Recipient("address", "name")),
-                            recipients = emptyList(),
-                            subject = "Second message",
-                            time = 0,
-                            size = 0,
-                            order = 0,
-                            read = true,
-                        ),
-                    )
-                )
-            )
+            onOpenSelectionMode = {},
+            items = items,
+            listState = items.rememberLazyListState()
         )
     }
 }

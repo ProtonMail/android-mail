@@ -17,6 +17,9 @@
   -->
 
 <resources>
+
+    <string name="x_toolbar_menu_button_content_description">Menu button</string>
+
     <string name="drawer_title_inbox">Inbox</string>
     <string name="drawer_title_drafts">Drafts</string>
     <string name="drawer_title_sent">Sent</string>
@@ -32,5 +35,8 @@
     <string name="drawer_title_more">More</string>
     <string name="drawer_title_contacts">Contacts</string>
     <string name="drawer_title_subscription">Subscription</string>
+
+    <string name="mailbox_toolbar_selected_count">%d Selected</string>
+    <string name="mailbox_toolbar_close_selection_mode_button_content_description">Close selection mode</string>
 
 </resources>

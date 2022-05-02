@@ -20,9 +20,21 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
+import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 
 @Stable
 data class MailboxState(
-    val selectedLocation: SidebarLocation? = null,
-    val unread: Int = 0,
-)
+    val topAppBar: MailboxTopAppBarState,
+    val selectedLocation: SidebarLocation?,
+    val unread: Int,
+) {
+
+    companion object {
+
+        val Loading = MailboxState(
+            topAppBar = MailboxTopAppBarState.Loading,
+            selectedLocation = null,
+            unread = 0
+        )
+    }
+}

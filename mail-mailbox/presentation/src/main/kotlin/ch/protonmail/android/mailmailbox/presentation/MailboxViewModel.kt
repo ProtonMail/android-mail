@@ -28,11 +28,13 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxItemType
+import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -70,14 +72,25 @@ class MailboxViewModel @Inject constructor(
     val items: Flow<PagingData<MailboxItem>> = observePagingData()
         .cachedIn(viewModelScope)
 
-    val state: Flow<MailboxState> = observeState()
+    val state: StateFlow<MailboxState> = observeState()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
-            initialValue = MailboxState()
+            initialValue = MailboxState.Loading
         )
 
-    fun onRefresh() = viewModelScope.launch {
+    fun submit(action: Action) {
+        when (action) {
+            Action.CloseSelectionMode -> onCloseSelectionMode()
+            Action.Refresh -> onRefresh()
+        }
+    }
+
+    private fun onCloseSelectionMode() {
+
+    }
+
+    private fun onRefresh() = viewModelScope.launch {
         markAsStaleMailboxItems(
             userIds = userIds.value,
             type = mailboxItemType.value,
@@ -113,8 +126,24 @@ class MailboxViewModel @Inject constructor(
         selectedSidebarLocation.location,
     ) { userIds, location ->
         when {
-            userIds.isEmpty() -> MailboxState()
-            else -> MailboxState(selectedLocation = location, unread = 0)
+            userIds.isEmpty() -> MailboxState.Loading
+            else -> {
+                val locationName = checkNotNull(location::class.simpleName) { "null location name" }
+                val newTopAppBarState = when (val topAppBarState = state.value.topAppBar) {
+                    MailboxTopAppBarState.Loading ->
+                        MailboxTopAppBarState.Data.DefaultMode(currentLabelName = locationName)
+                    is MailboxTopAppBarState.Data.DefaultMode -> topAppBarState.copy(currentLabelName = locationName)
+                    is MailboxTopAppBarState.Data.SearchMode -> topAppBarState.copy(currentLabelName = locationName)
+                    is MailboxTopAppBarState.Data.SelectionMode -> topAppBarState.copy(currentLabelName = locationName)
+                }
+                state.value.copy(topAppBar = newTopAppBarState, selectedLocation = location)
+            }
         }
+    }
+
+    sealed interface Action {
+
+        object CloseSelectionMode : Action
+        object Refresh : Action
     }
 }

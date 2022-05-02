@@ -38,7 +38,7 @@ sealed class SidebarLocation(open val labelId: LabelId) {
     object Trash : MailLocation(LabelId("3"))
     object AllMail : MailLocation(LabelId("5"))
 
-    data class CustomLabel(val id: LabelId) : SidebarLocation(LabelId(id.id))
+    data class CustomLabel(val id: LabelId) : SidebarLocation(id)
 
-    data class CustomFolder(val id: LabelId) : SidebarLocation(LabelId(id.id))
+    data class CustomFolder(val id: LabelId) : SidebarLocation(id)
 }

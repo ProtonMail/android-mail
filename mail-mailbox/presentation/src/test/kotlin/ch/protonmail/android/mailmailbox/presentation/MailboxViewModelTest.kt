@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Archive
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxItemType
+import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import io.mockk.Called
 import io.mockk.coEvery
@@ -42,7 +43,7 @@ import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.entity.UserId
 import org.junit.Before
 import org.junit.Test
-import kotlin.test.assertEquals
+import kotlin.test.*
 
 class MailboxViewModelTest {
 
@@ -85,11 +86,26 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
             // Then
             val actual = awaitItem()
-            val expected = MailboxState()
+            val expected = MailboxState.Loading
 
             assertEquals(expected, actual)
 
             verify { pagingSourceFactory wasNot Called }
+        }
+    }
+
+    @Test
+    fun `emits default TopAppBar state as soon as the label name is available`() = runTest {
+        // Given
+        val expected = MailboxTopAppBarState.Data.DefaultMode(Archive::class.simpleName!!)
+
+        // When
+        mailboxViewModel.state.test {
+            assertEquals(MailboxState.Loading, awaitItem())
+            userIdFlow.emit(userId)
+
+            // Then
+            assertEquals(expected, awaitItem().topAppBar)
         }
     }
 
@@ -128,7 +144,7 @@ class MailboxViewModelTest {
         userIdFlow.emit(userId)
 
         // When
-        mailboxViewModel.onRefresh()
+        mailboxViewModel.submit(MailboxViewModel.Action.Refresh)
 
         // Then
         coVerify { markAsStaleMailboxItems.invoke(listOf(userId), Message, Archive.labelId) }

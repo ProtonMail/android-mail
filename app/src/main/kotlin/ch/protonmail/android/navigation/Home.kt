@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.navigation.NavGraphBuilder
@@ -45,6 +46,8 @@ import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScre
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.mailmailbox.presentation.Sidebar
 import ch.protonmail.android.navigation.model.Destination.*
+import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
+import kotlinx.coroutines.launch
 import me.proton.core.compose.navigation.require
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
@@ -60,6 +63,7 @@ fun Home(
 ) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -88,7 +92,10 @@ fun Home(
                 navController = navController,
                 startDestination = Screen.Mailbox.route,
             ) {
-                addMailbox(navController)
+                addMailbox(
+                    navController,
+                    openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } }
+                )
                 addConversationDetail()
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
@@ -103,6 +110,7 @@ fun Home(
 
 private fun NavGraphBuilder.addMailbox(
     navController: NavHostController,
+    openDrawerMenu: () -> Unit
 ) = composable(
     route = Screen.Mailbox.route
 ) {
@@ -114,7 +122,8 @@ private fun NavGraphBuilder.addMailbox(
                     MailboxItemType.Conversation -> Screen.Conversation(ConversationId(item.id))
                 }
             )
-        }
+        },
+        openDrawerMenu = openDrawerMenu
     )
 }
 
