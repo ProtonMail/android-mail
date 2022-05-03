@@ -18,16 +18,14 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
@@ -51,56 +49,48 @@ internal fun MailboxTopAppBar(
         MailboxTopAppBarState.Loading -> UiModel.Empty to {}
         is MailboxTopAppBarState.Data.DefaultMode -> UiModel(
             title = state.currentLabelName,
-            navigationIcon = Icons.Filled.Menu,
+            navigationIconRes = R.drawable.ic_proton_hamburger,
             navigationIconContentDescription = stringResource(id = R.string.x_toolbar_menu_button_content_description),
             shouldShowActions = true
         ) to onOpenMenu
         is MailboxTopAppBarState.Data.SelectionMode -> UiModel(
             title = stringResource(id = R.string.mailbox_toolbar_selected_count, state.selectedCount),
-            navigationIcon = Icons.Filled.ArrowBack,
+            navigationIconRes = R.drawable.ic_proton_arrow_left,
             navigationIconContentDescription =
             stringResource(id = R.string.mailbox_toolbar_close_selection_mode_button_content_description),
             shouldShowActions = false
         ) to onCloseSelectionMode
         is MailboxTopAppBarState.Data.SearchMode -> UiModel.Empty.copy(
-            navigationIcon = Icons.Filled.ArrowBack
+            navigationIconRes = R.drawable.ic_proton_arrow_left,
         ) to onCloseSearchMode
     }
-    
+
     ProtonTopAppBar(
         modifier = modifier,
         title = { Text(modifier = Modifier.clickable(onClick = onTitleClick), text = uiModel.title) },
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
                 Icon(
-                    imageVector = uiModel.navigationIcon,
+                    painter = painterResource(id = uiModel.navigationIconRes),
                     contentDescription = uiModel.navigationIconContentDescription
                 )
             }
         },
         actions = {
-            if (uiModel.shouldShowActions) {
-                Text(text = "TODO")
-            }
-        }
-    )
-}
 
-@Composable
-private fun DefaultMailboxTopAppBar(
-    modifier: Modifier = Modifier,
-    labelName: String,
-    onOpenMenu: () -> Unit
-) {
-    ProtonTopAppBar(
-        modifier = modifier,
-        title = { Text(text = labelName) },
-        navigationIcon = {
-            IconButton(onClick = onOpenMenu) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = stringResource(id = R.string.x_toolbar_menu_button_content_description)
-                )
+            if (uiModel.shouldShowActions) {
+                IconButton(onClick = onOpenSearchMode) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_magnifier),
+                        contentDescription = stringResource(id = R.string.x_toolbar_search_button_content_description)
+                    )
+                }
+                IconButton(onClick = onOpenCompose) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_pen_square),
+                        contentDescription = stringResource(id = R.string.mailbox_toolbar_compose_button_content_description)
+                    )
+                }
             }
         }
     )
@@ -108,7 +98,7 @@ private fun DefaultMailboxTopAppBar(
 
 private data class UiModel(
     val title: String,
-    val navigationIcon: ImageVector,
+    @DrawableRes val navigationIconRes: Int,
     val navigationIconContentDescription: String,
     val shouldShowActions: Boolean
 ) {
@@ -117,7 +107,7 @@ private data class UiModel(
         
         val Empty = UiModel(
             title = EMPTY_STRING,
-            navigationIcon = Icons.Filled.Menu,
+            navigationIconRes = R.drawable.ic_proton_hamburger,
             navigationIconContentDescription = EMPTY_STRING,
             shouldShowActions = false
         )
@@ -126,7 +116,7 @@ private data class UiModel(
 
 @Composable
 @Preview
-private fun LoadingMailboxTopAppBarPreview() {
+fun LoadingMailboxTopAppBarPreview() {
     val state = MailboxTopAppBarState.Loading
     
     MailboxTopAppBar(
