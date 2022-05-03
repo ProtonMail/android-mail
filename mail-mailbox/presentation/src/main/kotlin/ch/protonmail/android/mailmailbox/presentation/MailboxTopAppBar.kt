@@ -69,7 +69,7 @@ internal fun MailboxTopAppBar(
         modifier = modifier,
         title = { Text(text = uiModel.title) },
         navigationIcon = {
-            IconButton(onClick = onOpenMenu) {
+            IconButton(onClick = onNavigationIconClick) {
                 Icon(
                     imageVector = uiModel.navigationIcon,
                     contentDescription = uiModel.navigationIconContentDescription

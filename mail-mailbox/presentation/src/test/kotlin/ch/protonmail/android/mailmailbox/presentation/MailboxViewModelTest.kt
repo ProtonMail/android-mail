@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Archive
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxItemType
+import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel.Action
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import io.mockk.Called
@@ -103,6 +104,45 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
             assertEquals(MailboxState.Loading, awaitItem())
             userIdFlow.emit(userId)
+
+            // Then
+            assertEquals(expected, awaitItem().topAppBar)
+        }
+    }
+
+    @Test
+    fun `when selection mode is not open and the right Action is submitted, selection mode is opened`() = runTest {
+        // Given
+        val expected = MailboxTopAppBarState.Data.SelectionMode(Archive::class.simpleName!!, selectedCount = 0)
+
+        mailboxViewModel.state.test {
+            assertEquals(MailboxState.Loading, awaitItem())
+            userIdFlow.emit(userId)
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(Action.OpenSelectionMode)
+
+            // Then
+            assertEquals(expected, awaitItem().topAppBar)
+        }
+    }
+
+    @Test
+    fun `when selection mode is open and the right Action is submitted, selection mode is closed`() = runTest {
+        // Given
+        val expected = MailboxTopAppBarState.Data.DefaultMode(Archive::class.simpleName!!)
+
+        mailboxViewModel.state.test {
+            assertEquals(MailboxState.Loading, awaitItem())
+            userIdFlow.emit(userId)
+            awaitItem() // First emission for selected user
+
+            mailboxViewModel.submit(Action.OpenSelectionMode)
+            awaitItem() // Selection Mode has been opened
+
+            // When
+            mailboxViewModel.submit(Action.CloseSelectionMode)
 
             // Then
             assertEquals(expected, awaitItem().topAppBar)

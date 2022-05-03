@@ -28,6 +28,7 @@ sealed interface MailboxTopAppBarState {
 
         val currentLabelName: String
 
+        fun toDefaultMode() = DefaultMode(currentLabelName)
         fun toSelectionMode() = SelectionMode(currentLabelName, selectedCount = 0)
         fun toSearchMode() = SearchMode(currentLabelName, searchQuery = EMPTY_STRING)
 
