@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -40,6 +41,7 @@ internal fun MailboxTopAppBar(
     onOpenMenu: () -> Unit,
     onCloseSelectionMode: () -> Unit,
     onCloseSearchMode: () -> Unit,
+    onTitleClick: () -> Unit,
     onOpenSearchMode: () -> Unit,
     onSearch: (query: String) -> Unit,
     onOpenCompose: () -> Unit
@@ -67,7 +69,7 @@ internal fun MailboxTopAppBar(
     
     ProtonTopAppBar(
         modifier = modifier,
-        title = { Text(text = uiModel.title) },
+        title = { Text(modifier = Modifier.clickable(onClick = onTitleClick), text = uiModel.title) },
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
                 Icon(
@@ -132,6 +134,7 @@ private fun LoadingMailboxTopAppBarPreview() {
         onOpenMenu = {},
         onCloseSelectionMode = {},
         onCloseSearchMode = {},
+        onTitleClick = {},
         onOpenSearchMode = {},
         onSearch = {},
         onOpenCompose = {}

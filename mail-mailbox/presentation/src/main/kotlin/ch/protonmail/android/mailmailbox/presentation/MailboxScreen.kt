@@ -54,7 +54,6 @@ import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyList
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -73,8 +72,8 @@ fun MailboxScreen(
 ) {
     val scope = rememberCoroutineScope()
     val mailboxState by rememberAsState(viewModel.state, MailboxState.Loading)
-    val mailboxListItems: LazyPagingItems<MailboxItem> = viewModel.items.collectAsLazyPagingItems()
-    val mailboxListState: LazyListState = mailboxListItems.rememberLazyListState()
+    val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
+    val mailboxListState = mailboxListItems.rememberLazyListState()
 
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_MAILBOX_SCREEN),
