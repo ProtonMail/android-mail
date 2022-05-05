@@ -71,7 +71,7 @@ class AccountSettingsScreenTest {
 
     @Test
     @Category(SmokeTest::class)
-    fun testSettingsScreenDisplayStateCorrectly() {
+    fun testAccountSettingsScreenDisplayStateCorrectly() {
         composeTestRule
             .onNodeWithText("Recovery email")
             .assertTextContains("recovery-email@protonmail.com")

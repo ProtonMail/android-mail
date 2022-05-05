@@ -66,7 +66,11 @@ class SettingsScreenTest {
     fun testSettingsScreenContainsAllExpectedSections() {
         composeTestRule.onNodeWithText("Account settings").assertIsDisplayed()
         composeTestRule.onNodeWithText("App settings").assertIsDisplayed()
-        composeTestRule.onNodeWithText("App Information").assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag(TEST_TAG_SETTINGS_LIST)
+            .onChild()
+            .performScrollToNode(hasText("App Information"))
+            .assertIsDisplayed()
     }
 
     @Test
@@ -106,7 +110,9 @@ class SettingsScreenTest {
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText("Swipe actions")
+            .onNodeWithTag(TEST_TAG_SETTINGS_LIST)
+            .onChild()
+            .performScrollToNode(hasText("Swipe actions"))
             .assertIsDisplayed()
 
         composeTestRule
