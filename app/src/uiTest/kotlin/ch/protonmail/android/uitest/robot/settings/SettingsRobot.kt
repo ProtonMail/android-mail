@@ -84,13 +84,12 @@ class SettingsRobot(
     @Suppress("EmptyFunctionBlock")
     private fun selectItemByHeader(header: String) {}
 
-    @Suppress("SwallowedException")
     private fun progressIsHidden(composeTestRule: ComposeContentTestRule): Boolean {
         try {
             composeTestRule
                 .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_PROGRESS)
                 .assertIsNotDisplayed()
-        } catch (error: AssertionError) {
+        } catch (ignored: AssertionError) {
             return true
         }
         return false

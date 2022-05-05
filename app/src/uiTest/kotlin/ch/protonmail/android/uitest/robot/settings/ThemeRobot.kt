@@ -37,7 +37,7 @@ class ThemeRobot(
         composeTestRule!!
             .onNodeWithText("System default")
             .performClick()
-        composeTestRule.waitForIdle()
+        composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, "System default") }
         return this
     }
 
@@ -45,8 +45,23 @@ class ThemeRobot(
         composeTestRule!!
             .onNodeWithText("Dark")
             .performClick()
-        composeTestRule.waitForIdle()
+        composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, "Dark") }
         return this
+    }
+
+    private fun optionWithTextIsSelected(
+        composeTestRule: ComposeContentTestRule,
+        text: String
+    ): Boolean {
+        try {
+            composeTestRule
+                .onNodeWithText(text)
+                .onChild()
+                .assertIsSelected()
+        } catch (ignored: AssertionError) {
+            return false
+        }
+        return true
     }
 
     /**

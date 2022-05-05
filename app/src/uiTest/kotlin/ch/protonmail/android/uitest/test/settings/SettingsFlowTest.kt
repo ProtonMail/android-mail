@@ -36,8 +36,9 @@ class SettingsFlowTest : BaseTest() {
         menuRobot
             .settings()
             .openUserAccountSettings()
+            .also { it.verify { accountSettingsOpened(composeTestRule) } }
             .conversationMode()
-            .verify { conversationModeToggleShown(composeTestRule) }
+            .also { it.verify { conversationModeToggleShown(composeTestRule) } }
     }
 
     @Test
