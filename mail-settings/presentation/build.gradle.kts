@@ -68,6 +68,7 @@ dependencies {
     implementation(Proton.Core.mailSettings)
 
     implementation(project(":mail-settings:domain"))
+    implementation(project(":mail-common:domain"))
 
     testImplementation(Dependencies.testLibs)
     testImplementation(Proton.Core.network)

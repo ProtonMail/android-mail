@@ -44,7 +44,6 @@ object Dependencies {
         add(Material.material)
         add(Proton.Core.account)
         add(Proton.Core.accountManager)
-        add(Proton.Core.accountManagerPresentationCompose)
         add(Proton.Core.auth)
         add(Proton.Core.challenge)
         add(Proton.Core.contact)

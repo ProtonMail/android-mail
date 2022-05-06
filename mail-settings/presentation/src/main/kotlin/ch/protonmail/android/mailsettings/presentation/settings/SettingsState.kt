@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings
 
+import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 
 sealed class SettingsState {
@@ -34,5 +35,3 @@ data class AccountInfo(
     val name: String,
     val email: String
 )
-
-data class AppInformation(val version: String)

@@ -5,19 +5,4 @@
     <string name="title_remove_account">Fiók törlése</string>
     <string name="description_remove_account">Ki fog jelentkezni és elfog távolítani minden ezen fiókkal összefüggő adatot.</string>
     <string name="user_select_other_account_content_description">Másik fiók kiválasztása</string>
-    <string name="drawer_title_inbox">Beérkezett üzenetek</string>
-    <string name="drawer_title_drafts">Piszkozatok</string>
-    <string name="drawer_title_sent">Elküldött</string>
-    <string name="drawer_title_starred">Csillagozott</string>
-    <string name="drawer_title_archive">Archívum</string>
-    <string name="drawer_title_spam">Levélszemét</string>
-    <string name="drawer_title_trash">Lomtár</string>
-    <string name="drawer_title_all_mail">Összes levél</string>
-    <string name="drawer_title_folders">Mappák</string>
-    <string name="drawer_title_create_folder">Mappa létrehozása</string>
-    <string name="drawer_title_labels">Címkék</string>
-    <string name="drawer_title_create_label">Címke létrehozása</string>
-    <string name="drawer_title_more">Továbbiak</string>
-    <string name="drawer_title_contacts">Névjegyek</string>
-    <string name="drawer_title_subscription">Előfizetés</string>
 </resources>

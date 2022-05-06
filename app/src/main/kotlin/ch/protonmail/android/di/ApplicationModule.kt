@@ -20,6 +20,8 @@ package ch.protonmail.android.di
 
 import android.content.Context
 import androidx.work.WorkManager
+import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.BuildConfig
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -47,6 +49,17 @@ object ApplicationModule {
     fun provideProduct(): Product = Product.Mail
 
     @Provides
+    @Singleton
+    fun provideAppInfo(): AppInformation = AppInformation(
+        appName = "Proton Mail",
+        appVersionName = BuildConfig.VERSION_NAME,
+        appVersionCode = BuildConfig.VERSION_CODE,
+        appBuildType = BuildConfig.BUILD_TYPE,
+        appBuildFlavor = BuildConfig.FLAVOR,
+        appHost = BuildConfig.HOST
+    )
+
+    @Provides
     @ClientSecret
     fun provideClientSecret(): String = ""
 
@@ -61,7 +74,7 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideWorkManager(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): WorkManager = WorkManager.getInstance(context)
 }
 

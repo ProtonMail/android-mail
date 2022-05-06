@@ -30,7 +30,6 @@ import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepositor
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import ch.protonmail.android.mailsettings.domain.repository.ThemeRepository
-import ch.protonmail.android.mailsettings.presentation.settings.GetAppInformation
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeObserverCoroutineScope
 import dagger.Module
 import dagger.Provides
@@ -45,12 +44,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object SettingsModule {
-
-    @Provides
-    @Singleton
-    fun provideGetAppInformation(
-        @ApplicationContext context: Context
-    ): GetAppInformation = GetAppInformation(context)
 
     @Provides
     @Singleton

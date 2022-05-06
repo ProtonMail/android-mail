@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_title_inbox">Kotak Masuk</string>
+    <string name="drawer_title_drafts">Draf</string>
+    <string name="drawer_title_sent">Terkirim</string>
+    <string name="drawer_title_starred">Dibintangi</string>
+    <string name="drawer_title_archive">Arsip</string>
+    <string name="drawer_title_spam">Spam</string>
+    <string name="drawer_title_trash">Sampah</string>
+    <string name="drawer_title_all_mail">Semua surat</string>
+    <string name="drawer_title_folders">Folder</string>
+    <string name="drawer_title_create_folder">Buat folder</string>
+    <string name="drawer_title_labels">Label</string>
+    <string name="drawer_title_create_label">Buat label</string>
+    <string name="drawer_title_more">Lainnya</string>
+    <string name="drawer_title_contacts">Kontak</string>
+    <string name="drawer_title_subscription">Langganan</string>
+</resources>

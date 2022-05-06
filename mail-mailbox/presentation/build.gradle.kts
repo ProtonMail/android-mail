@@ -63,9 +63,14 @@ dependencies {
 
     implementation(Dependencies.modulePresentationLibs)
     implementation(Proton.Core.account)
+    implementation(Proton.Core.accountManagerPresentationCompose)
+    implementation(Proton.Core.featureFlag)
     implementation(Proton.Core.label)
     implementation(Proton.Core.mailSettings)
 
+    testImplementation(project(":test-data"))
+
+    implementation(project(":mail-common:domain"))
     implementation(project(":mail-pagination:presentation"))
     implementation(project(":mail-pagination:domain"))
     implementation(project(":mail-mailbox:domain"))

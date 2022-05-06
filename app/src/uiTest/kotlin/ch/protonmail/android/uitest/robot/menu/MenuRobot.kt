@@ -30,7 +30,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
-import ch.protonmail.android.sidebar.TEST_TAG_SIDEBAR_MENU
+import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_SIDEBAR_MENU
 import ch.protonmail.android.uitest.robot.contacts.ContactsRobot
 import ch.protonmail.android.uitest.robot.mailbox.archive.ArchiveRobot
 import ch.protonmail.android.uitest.robot.mailbox.drafts.DraftsRobot

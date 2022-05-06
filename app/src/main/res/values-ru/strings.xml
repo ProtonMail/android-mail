@@ -5,19 +5,4 @@
     <string name="title_remove_account">Удалить аккаунт</string>
     <string name="description_remove_account">Вы выйдете и удалите всю информацию, связанную с этим аккаунтом.</string>
     <string name="user_select_other_account_content_description">Выбрать другой аккаунт</string>
-    <string name="drawer_title_inbox">Входящие</string>
-    <string name="drawer_title_drafts">Черновики</string>
-    <string name="drawer_title_sent">Отправленные</string>
-    <string name="drawer_title_starred">Со звёздами</string>
-    <string name="drawer_title_archive">Архив</string>
-    <string name="drawer_title_spam">Спам</string>
-    <string name="drawer_title_trash">Корзина</string>
-    <string name="drawer_title_all_mail">Вся почта</string>
-    <string name="drawer_title_folders">Папки</string>
-    <string name="drawer_title_create_folder">Создать папку</string>
-    <string name="drawer_title_labels">Ярлыки</string>
-    <string name="drawer_title_create_label">Создать ярлык</string>
-    <string name="drawer_title_more">Ещё</string>
-    <string name="drawer_title_contacts">Контакты</string>
-    <string name="drawer_title_subscription">Подписка</string>
 </resources>

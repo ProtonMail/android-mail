@@ -5,19 +5,4 @@
     <string name="title_remove_account">Usuń konto</string>
     <string name="description_remove_account">Zostaniesz wylogowany i wszystkie dane powiązane z tym kontem zostaną usunięte.</string>
     <string name="user_select_other_account_content_description">Wybierz inne konto</string>
-    <string name="drawer_title_inbox">Odebrane</string>
-    <string name="drawer_title_drafts">Szkice</string>
-    <string name="drawer_title_sent">Wysłane</string>
-    <string name="drawer_title_starred">Wyróżnione</string>
-    <string name="drawer_title_archive">Archiwum</string>
-    <string name="drawer_title_spam">Spam</string>
-    <string name="drawer_title_trash">Kosz</string>
-    <string name="drawer_title_all_mail">Wszystkie wiadomości</string>
-    <string name="drawer_title_folders">Foldery</string>
-    <string name="drawer_title_create_folder">Utwórz folder</string>
-    <string name="drawer_title_labels">Etykiety</string>
-    <string name="drawer_title_create_label">Utwórz etykietę</string>
-    <string name="drawer_title_more">Więcej</string>
-    <string name="drawer_title_contacts">Kontakty</string>
-    <string name="drawer_title_subscription">Subskrypcja</string>
 </resources>

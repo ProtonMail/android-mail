@@ -38,4 +38,6 @@ dependencies {
     implementation(Proton.Core.network)
     implementation(Proton.Core.user)
     implementation(Proton.Core.userSettings)
+
+    implementation(project(":mail-common"))
 }

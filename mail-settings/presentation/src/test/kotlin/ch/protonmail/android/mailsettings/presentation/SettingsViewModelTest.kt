@@ -20,12 +20,11 @@ package ch.protonmail.android.mailsettings.presentation
 
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
 import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.presentation.settings.AccountInfo
-import ch.protonmail.android.mailsettings.presentation.settings.AppInformation
-import ch.protonmail.android.mailsettings.presentation.settings.GetAppInformation
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
@@ -57,9 +56,7 @@ class SettingsViewModelTest {
         every { this@mockk.invoke() } returns appSettingsFlow
     }
 
-    private val getAppInformation = mockk<GetAppInformation> {
-        every { this@mockk.invoke() } returns AppInformation("6.0.0-alpha")
-    }
+    private val appInformation = AppInformation(appVersionName = "6.0.0-alpha")
 
     private lateinit var viewModel: SettingsViewModel
 
@@ -68,9 +65,9 @@ class SettingsViewModelTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
         viewModel = SettingsViewModel(
+            appInformation,
             observePrimaryUser,
             observeAppSettings,
-            getAppInformation
         )
     }
 
@@ -139,21 +136,6 @@ class SettingsViewModelTest {
                 assertEquals(expected, actual.appSettings)
             }
         }
-
-    @Test
-    fun `state has app version info when get app info returns them`() = runTest {
-        viewModel.state.test {
-            // Given
-            every { getAppInformation() } returns AppInformation("6.0.0-alpha-01")
-            initialStateEmitted()
-            userFlow.emit(UserTestData.user)
-            appSettingsFlow.emit(AppSettingsTestData.appSettings)
-
-            // Then
-            val actual = awaitItem() as Data
-            assertEquals(AppInformation("6.0.0-alpha-01"), actual.appInformation)
-        }
-    }
 
     private suspend fun FlowTurbine<SettingsState>.initialStateEmitted() {
         awaitItem() as Loading

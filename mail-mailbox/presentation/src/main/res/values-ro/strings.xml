@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_title_inbox">Mesaje primite</string>
+    <string name="drawer_title_drafts">Ciorne</string>
+    <string name="drawer_title_sent">Trimise</string>
+    <string name="drawer_title_starred">Cu stea</string>
+    <string name="drawer_title_archive">Arhivă</string>
+    <string name="drawer_title_spam">Nedorite</string>
+    <string name="drawer_title_trash">Gunoi</string>
+    <string name="drawer_title_all_mail">Toate mesajele</string>
+    <string name="drawer_title_folders">Foldere</string>
+    <string name="drawer_title_create_folder">Creare folder</string>
+    <string name="drawer_title_labels">Etichete</string>
+    <string name="drawer_title_create_label">Creare etichetă</string>
+    <string name="drawer_title_more">Detalii</string>
+    <string name="drawer_title_contacts">Contacte</string>
+    <string name="drawer_title_subscription">Abonament</string>
+</resources>

@@ -5,19 +5,4 @@
     <string name="title_remove_account">Konto entfernen</string>
     <string name="description_remove_account">Du wirst abgemeldet und alle mit diesem Konto verbundenen Informationen werden gelöscht.</string>
     <string name="user_select_other_account_content_description">Wähle ein anderes Konto</string>
-    <string name="drawer_title_inbox">Posteingang</string>
-    <string name="drawer_title_drafts">Entwürfe</string>
-    <string name="drawer_title_sent">Gesendet</string>
-    <string name="drawer_title_starred">Gekennzeichnet</string>
-    <string name="drawer_title_archive">Archiv</string>
-    <string name="drawer_title_spam">Spam</string>
-    <string name="drawer_title_trash">Papierkorb</string>
-    <string name="drawer_title_all_mail">Alle Nachrichten</string>
-    <string name="drawer_title_folders">Ordner</string>
-    <string name="drawer_title_create_folder">Ordner erstellen</string>
-    <string name="drawer_title_labels">Kategorien</string>
-    <string name="drawer_title_create_label">Kategorie erstellen</string>
-    <string name="drawer_title_more">Mehr</string>
-    <string name="drawer_title_contacts">Kontakte</string>
-    <string name="drawer_title_subscription">Abonnement</string>
 </resources>

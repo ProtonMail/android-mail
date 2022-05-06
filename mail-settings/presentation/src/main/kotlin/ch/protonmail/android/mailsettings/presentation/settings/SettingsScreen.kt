@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.settings
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
@@ -55,7 +57,7 @@ fun MainSettingsScreen(
     onCombinedContactsClick: () -> Unit,
     onSwipeActionsClick: () -> Unit,
     onBackClick: () -> Unit,
-    settingsViewModel: SettingsViewModel = hiltViewModel()
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
 ) {
     when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
         is Data -> MainSettingsScreen(
@@ -88,90 +90,93 @@ fun MainSettingsScreen(
     onAppLanguageClick: () -> Unit,
     onCombinedContactsClick: () -> Unit,
     onSwipeActionsClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_SETTINGS_SCREEN),
         topBar = {
             ProtonSettingsTopBar(
-                title = stringResource(id = R.string.mail_settings_settings),
+                title = stringResource(id = string.mail_settings_settings),
                 onBackClick = onBackClick
             )
-        },
-        content = {
-            ProtonSettingsList(modifier.testTag(TEST_TAG_SETTINGS_LIST)) {
-                item { ProtonSettingsHeader(title = R.string.mail_settings_account_settings) }
-                item {
-                    AccountSettingsItem(
-                        modifier = Modifier.testTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM),
-                        accountInfo = state.account,
-                        onAccountClicked = onAccountClick
-                    )
-                }
-                item { ProtonSettingsHeader(title = R.string.mail_settings_app_settings) }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_theme),
-                        onClick = onThemeClick
-                    )
-                    Divider()
-                }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_push_notifications),
-                        onClick = onPushNotificationsClick
-                    )
-                    Divider()
-                }
-                item {
-                    AutoLockSettingItem(
-                        appSettings = state.appSettings,
-                        onAutoLockClick = onAutoLockClick
-                    )
-                }
-                item {
-                    AlternativeRoutingSettingItem(
-                        appSettings = state.appSettings,
-                        onAlternativeRoutingClick = onAlternativeRoutingClick
-                    )
-                }
-                item {
-                    AppLanguageSettingItem(
-                        appSettings = state.appSettings,
-                        onAppLanguageClick = onAppLanguageClick
-                    )
-                }
-                item {
-                    CombinedContactsSettingItem(
-                        appSettings = state.appSettings,
-                        onCombinedContactsClick = onCombinedContactsClick
-                    )
-                }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_swipe_actions),
-                        onClick = onSwipeActionsClick
-                    )
-                    Divider()
-                }
-                item { ProtonSettingsHeader(title = R.string.mail_settings_app_information) }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_app_version),
-                        hint = state.appInformation.version,
-                        isClickable = false
-                    )
-                }
+        }
+    ) { contentPadding ->
+        ProtonSettingsList(
+            modifier = modifier
+                .testTag(TEST_TAG_SETTINGS_LIST)
+                .padding(contentPadding)
+        ) {
+            item { ProtonSettingsHeader(title = string.mail_settings_account_settings) }
+            item {
+                AccountSettingsItem(
+                    modifier = Modifier.testTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM),
+                    accountInfo = state.account,
+                    onAccountClicked = onAccountClick
+                )
+            }
+            item { ProtonSettingsHeader(title = string.mail_settings_app_settings) }
+            item {
+                ProtonSettingsItem(
+                    name = stringResource(id = string.mail_settings_theme),
+                    onClick = onThemeClick
+                )
+                Divider()
+            }
+            item {
+                ProtonSettingsItem(
+                    name = stringResource(id = string.mail_settings_push_notifications),
+                    onClick = onPushNotificationsClick
+                )
+                Divider()
+            }
+            item {
+                AutoLockSettingItem(
+                    appSettings = state.appSettings,
+                    onAutoLockClick = onAutoLockClick
+                )
+            }
+            item {
+                AlternativeRoutingSettingItem(
+                    appSettings = state.appSettings,
+                    onAlternativeRoutingClick = onAlternativeRoutingClick
+                )
+            }
+            item {
+                AppLanguageSettingItem(
+                    appSettings = state.appSettings,
+                    onAppLanguageClick = onAppLanguageClick
+                )
+            }
+            item {
+                CombinedContactsSettingItem(
+                    appSettings = state.appSettings,
+                    onCombinedContactsClick = onCombinedContactsClick
+                )
+            }
+            item {
+                ProtonSettingsItem(
+                    name = stringResource(id = string.mail_settings_swipe_actions),
+                    onClick = onSwipeActionsClick
+                )
+                Divider()
+            }
+            item { ProtonSettingsHeader(title = string.mail_settings_app_information) }
+            item {
+                ProtonSettingsItem(
+                    name = stringResource(id = string.mail_settings_app_version),
+                    hint = state.appInformation.appVersionName,
+                    isClickable = false
+                )
             }
         }
-    )
+    }
 }
 
 @Composable
 private fun CombinedContactsSettingItem(
     modifier: Modifier = Modifier,
     appSettings: AppSettings,
-    onCombinedContactsClick: () -> Unit
+    onCombinedContactsClick: () -> Unit,
 ) {
     val hint = if (appSettings.hasCombinedContacts) {
         stringResource(id = string.mail_settings_enabled)
@@ -191,7 +196,7 @@ private fun CombinedContactsSettingItem(
 private fun AppLanguageSettingItem(
     modifier: Modifier = Modifier,
     appSettings: AppSettings,
-    onAppLanguageClick: () -> Unit
+    onAppLanguageClick: () -> Unit,
 ) {
     val appLanguage = appSettings.customAppLanguage
         ?: stringResource(id = string.mail_settings_auto_detect)
@@ -208,7 +213,7 @@ private fun AppLanguageSettingItem(
 private fun AlternativeRoutingSettingItem(
     modifier: Modifier = Modifier,
     appSettings: AppSettings,
-    onAlternativeRoutingClick: () -> Unit
+    onAlternativeRoutingClick: () -> Unit,
 ) {
     val hint = if (appSettings.hasAlternativeRouting) {
         stringResource(id = string.mail_settings_allowed)
@@ -228,7 +233,7 @@ private fun AlternativeRoutingSettingItem(
 private fun AutoLockSettingItem(
     modifier: Modifier = Modifier,
     appSettings: AppSettings,
-    onAutoLockClick: () -> Unit
+    onAutoLockClick: () -> Unit,
 ) {
     val hint = if (appSettings.hasAutoLock) {
         stringResource(id = string.mail_settings_enabled)
@@ -248,7 +253,7 @@ private fun AutoLockSettingItem(
 fun AccountSettingsItem(
     modifier: Modifier = Modifier,
     accountInfo: AccountInfo?,
-    onAccountClicked: () -> Unit
+    onAccountClicked: () -> Unit,
 ) {
     val header = accountInfo?.name
         ?: stringResource(id = R.string.mail_settings_no_information_available)
@@ -274,7 +279,7 @@ fun AccountSettingsItem(
     uiMode = UI_MODE_NIGHT_YES
 )
 @Composable
-fun previewMainSettingsScreen() {
+fun PreviewMainSettingsScreen() {
     MainSettingsScreen(
         modifier = Modifier,
         state = Data(
@@ -285,7 +290,7 @@ fun previewMainSettingsScreen() {
                 customAppLanguage = null,
                 hasCombinedContacts = true
             ),
-            AppInformation("6.0.0-alpha")
+            AppInformation(appVersionName = "6.0.0-alpha")
         ),
         onAccountClick = { },
         onThemeClick = {},

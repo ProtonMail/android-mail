@@ -5,19 +5,4 @@
     <string name="title_remove_account">Ta bort konto</string>
     <string name="description_remove_account">Du kommer att logga ut och ta bort all information som är associerat till detta konto.</string>
     <string name="user_select_other_account_content_description">Välj annat konto</string>
-    <string name="drawer_title_inbox">Inkorg</string>
-    <string name="drawer_title_drafts">Utkast</string>
-    <string name="drawer_title_sent">Skickat</string>
-    <string name="drawer_title_starred">Stjärnmärkt</string>
-    <string name="drawer_title_archive">Arkiv</string>
-    <string name="drawer_title_spam">Skräppost</string>
-    <string name="drawer_title_trash">Papperskorg</string>
-    <string name="drawer_title_all_mail">All e-post</string>
-    <string name="drawer_title_folders">Mappar</string>
-    <string name="drawer_title_create_folder">Skapa mapp</string>
-    <string name="drawer_title_labels">Etiketter</string>
-    <string name="drawer_title_create_label">Skapa etikett</string>
-    <string name="drawer_title_more">Mer</string>
-    <string name="drawer_title_contacts">Kontakter</string>
-    <string name="drawer_title_subscription">Prenumeration</string>
 </resources>

@@ -5,19 +5,4 @@
     <string name="title_remove_account">Odstranit účet</string>
     <string name="description_remove_account">Odhlásíte se a odstraníte všechny informace spojené s tímto účtem.</string>
     <string name="user_select_other_account_content_description">Vybrat jiný účet</string>
-    <string name="drawer_title_inbox">Příchozí</string>
-    <string name="drawer_title_drafts">Koncepty</string>
-    <string name="drawer_title_sent">Odeslané</string>
-    <string name="drawer_title_starred">Oblíbené</string>
-    <string name="drawer_title_archive">Archiv</string>
-    <string name="drawer_title_spam">Spam</string>
-    <string name="drawer_title_trash">Koš</string>
-    <string name="drawer_title_all_mail">Všechny zprávy</string>
-    <string name="drawer_title_folders">Složky</string>
-    <string name="drawer_title_create_folder">Vytvořit složku</string>
-    <string name="drawer_title_labels">Štítky</string>
-    <string name="drawer_title_create_label">Vytvořit štítek</string>
-    <string name="drawer_title_more">Více</string>
-    <string name="drawer_title_contacts">Kontakty</string>
-    <string name="drawer_title_subscription">Předplatné</string>
 </resources>

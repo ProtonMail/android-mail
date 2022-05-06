@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_title_inbox">Εισερχόμενα</string>
+    <string name="drawer_title_drafts">Πρόχειρα</string>
+    <string name="drawer_title_sent">Απεσταλμένα</string>
+    <string name="drawer_title_starred">Με αστέρι</string>
+    <string name="drawer_title_archive">Αρχειοθετημένα</string>
+    <string name="drawer_title_spam">Ενοχλητικά</string>
+    <string name="drawer_title_trash">Διαγραμμένα</string>
+    <string name="drawer_title_all_mail">Όλα τα μηνύματα</string>
+    <string name="drawer_title_folders">Φάκελοι</string>
+    <string name="drawer_title_create_folder">Δημιουργία φακέλου</string>
+    <string name="drawer_title_labels">Ετικέτες</string>
+    <string name="drawer_title_create_label">Δημιουργία ετικέτας</string>
+    <string name="drawer_title_more">Περισσότερα</string>
+    <string name="drawer_title_contacts">Επαφές</string>
+    <string name="drawer_title_subscription">Συνδρομή</string>
+</resources>

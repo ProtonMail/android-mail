@@ -43,8 +43,8 @@ import ch.protonmail.android.mailsettings.presentation.addLanguageSettings
 import ch.protonmail.android.mailsettings.presentation.addThemeSettings
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
-import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
-import ch.protonmail.android.sidebar.Sidebar
+import ch.protonmail.android.mailmailbox.presentation.Sidebar
+import ch.protonmail.android.navigation.model.Destination.*
 import me.proton.core.compose.navigation.require
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
@@ -67,14 +67,14 @@ fun Home(
         drawerScrimColor = ProtonTheme.colors.blenderNorm,
         drawerContent = {
             Sidebar(
-                onRemove = { navController.navigate(RemoveAccount(it)) },
+                onRemove = { navController.navigate(Dialog.RemoveAccount(it)) },
                 onSignOut = onSignOut,
                 onSignIn = onSignIn,
                 onSwitch = onSwitch,
                 onMailLocation = { /* stack screens? */ },
                 onFolder = { /*navController.navigate(...)*/ },
                 onLabel = { /*navController.navigate(...)*/ },
-                onSettings = { navController.navigate(Destination.Screen.Settings.route) },
+                onSettings = { navController.navigate(Screen.Settings.route) },
                 onSubscription = onSubscription,
                 onReportBug = onReportBug,
                 drawerState = scaffoldState.drawerState
@@ -86,19 +86,16 @@ fun Home(
         ) {
             NavHost(
                 navController = navController,
-                startDestination = Destination.Screen.Mailbox.route,
+                startDestination = Screen.Mailbox.route,
             ) {
                 addMailbox(navController)
                 addConversationDetail()
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
                 addAccountSettings(navController)
-                addConversationModeSettings(
-                    navController,
-                    Destination.Screen.ConversationModeSettings.route
-                )
-                addThemeSettings(navController, Destination.Screen.ThemeSettings.route)
-                addLanguageSettings(navController, Destination.Screen.LanguageSettings.route)
+                addConversationModeSettings(navController, Screen.ConversationModeSettings.route)
+                addThemeSettings(navController, Screen.ThemeSettings.route)
+                addLanguageSettings(navController, Screen.LanguageSettings.route)
             }
         }
     }
@@ -107,16 +104,14 @@ fun Home(
 private fun NavGraphBuilder.addMailbox(
     navController: NavHostController,
 ) = composable(
-    route = Destination.Screen.Mailbox.route
+    route = Screen.Mailbox.route
 ) {
     MailboxScreen(
         navigateToMailboxItem = { item: MailboxItem ->
             navController.navigate(
                 when (item.type) {
-                    MailboxItemType.Message ->
-                        Destination.Screen.Conversation(ConversationId(item.id))
-                    MailboxItemType.Conversation ->
-                        Destination.Screen.Conversation(ConversationId(item.id))
+                    MailboxItemType.Message -> Screen.Conversation(ConversationId(item.id))
+                    MailboxItemType.Conversation -> Screen.Conversation(ConversationId(item.id))
                 }
             )
         }
@@ -124,32 +119,32 @@ private fun NavGraphBuilder.addMailbox(
 }
 
 private fun NavGraphBuilder.addConversationDetail() = composable(
-    route = Destination.Screen.Conversation.route,
+    route = Screen.Conversation.route,
 ) {
-    ConversationDetail(Destination.Screen.Conversation.getConversationId(it.require(Destination.key)))
+    ConversationDetail(Screen.Conversation.getConversationId(it.require(Destination.key)))
 }
 
 private fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostController) = dialog(
-    route = Destination.Dialog.RemoveAccount.route,
+    route = Dialog.RemoveAccount.route,
 ) {
     RemoveAccountDialog(
-        userId = Destination.Dialog.RemoveAccount.getUserId(it.require(Destination.key)),
+        userId = Dialog.RemoveAccount.getUserId(it.require(Destination.key)),
         onRemoved = { navController.popBackStack() },
         onCancelled = { navController.popBackStack() }
     )
 }
 
 fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
-    route = Destination.Screen.Settings.route
+    route = Screen.Settings.route
 ) {
     MainSettingsScreen(
         onAccountClicked = {
             Timber.d("Navigating to account settings")
-            navController.navigate(Destination.Screen.AccountSettings.route)
+            navController.navigate(Screen.AccountSettings.route)
         },
         onThemeClick = {
             Timber.d("Navigating to theme settings")
-            navController.navigate(Destination.Screen.ThemeSettings.route)
+            navController.navigate(Screen.ThemeSettings.route)
         },
         onPushNotificationsClick = {
             Timber.i("Push Notifications setting clicked")
@@ -162,7 +157,7 @@ fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
         },
         onAppLanguageClick = {
             Timber.d("Navigating to language settings")
-            navController.navigate(Destination.Screen.LanguageSettings.route)
+            navController.navigate(Screen.LanguageSettings.route)
         },
         onCombinedContactsClick = {
             Timber.i("Combined contacts setting clicked")
@@ -177,7 +172,7 @@ fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
 }
 
 fun NavGraphBuilder.addAccountSettings(navController: NavHostController) = composable(
-    route = Destination.Screen.AccountSettings.route
+    route = Screen.AccountSettings.route
 ) {
     AccountSettingScreen(
         onBackClick = { navController.popBackStack() },
@@ -189,7 +184,7 @@ fun NavGraphBuilder.addAccountSettings(navController: NavHostController) = compo
         },
         onConversationModeClick = {
             Timber.d("Navigating to conversation mode settings")
-            navController.navigate(Destination.Screen.ConversationModeSettings.route)
+            navController.navigate(Screen.ConversationModeSettings.route)
         },
         onDefaultEmailAddressClick = {
             Timber.i("Default email address setting clicked")

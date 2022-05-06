@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_title_inbox">Posta in arrivo</string>
+    <string name="drawer_title_drafts">Bozze</string>
+    <string name="drawer_title_sent">Inviata</string>
+    <string name="drawer_title_starred">Preferito</string>
+    <string name="drawer_title_archive">Archivio</string>
+    <string name="drawer_title_spam">Spam</string>
+    <string name="drawer_title_trash">Cestino</string>
+    <string name="drawer_title_all_mail">Tutte le mail</string>
+    <string name="drawer_title_folders">Cartelle</string>
+    <string name="drawer_title_create_folder">Crea cartella</string>
+    <string name="drawer_title_labels">Etichette</string>
+    <string name="drawer_title_create_label">Crea etichetta</string>
+    <string name="drawer_title_more">Altro</string>
+    <string name="drawer_title_contacts">Contatti</string>
+    <string name="drawer_title_subscription">Abbonamento</string>
+</resources>

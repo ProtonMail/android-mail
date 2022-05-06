@@ -10,9 +10,9 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToNode
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.presentation.settings.AccountInfo
-import ch.protonmail.android.mailsettings.presentation.settings.AppInformation
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.TEST_TAG_SETTINGS_LIST
@@ -38,7 +38,7 @@ class SettingsScreenTest {
             customAppLanguage = null,
             hasCombinedContacts = true
         ),
-        AppInformation("6.0.0-alpha-adf8373a")
+        AppInformation(appVersionName = "6.0.0-alpha-adf8373a")
     )
 
     @Before

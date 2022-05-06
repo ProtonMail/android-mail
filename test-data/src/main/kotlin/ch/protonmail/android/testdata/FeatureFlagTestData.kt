@@ -18,13 +18,13 @@
 
 package ch.protonmail.android.testdata
 
+import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import me.proton.core.featureflag.domain.entity.FeatureFlag
-import me.proton.core.featureflag.domain.entity.FeatureId
 
 object FeatureFlagTestData {
 
-    val showSettingsId = FeatureId("ShowSettings")
+    val showSettingsId = MailFeatureId.ShowSettings
 
-    val enabledShowSettings = FeatureFlag(showSettingsId, true)
-    val disabledShowSettings = FeatureFlag(showSettingsId, false)
+    val enabledShowSettings = FeatureFlag(showSettingsId.id, true)
+    val disabledShowSettings = FeatureFlag(showSettingsId.id, false)
 }

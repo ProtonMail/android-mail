@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
 import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
@@ -34,9 +35,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
+    appInformation: AppInformation,
     observePrimaryUser: ObservePrimaryUser,
     observeAppSettings: ObserveAppSettings,
-    getAppInformation: GetAppInformation
 ) : ViewModel() {
 
     val state = combine(
@@ -46,7 +47,7 @@ class SettingsViewModel @Inject constructor(
         Data(
             buildAccountData(user),
             appSettings,
-            getAppInformation()
+            appInformation,
         )
     }.stateIn(
         viewModelScope,
@@ -54,11 +55,10 @@ class SettingsViewModel @Inject constructor(
         Loading
     )
 
-    private fun buildAccountData(user: User?) = if (user != null) {
-        AccountInfo(user.displayName.orEmpty(), user.email.orEmpty())
-    } else {
-        null
+    private fun buildAccountData(user: User?) = user?.let {
+        AccountInfo(
+            name = it.displayName.orEmpty(),
+            email = it.email.orEmpty()
+        )
     }
-
 }
-
