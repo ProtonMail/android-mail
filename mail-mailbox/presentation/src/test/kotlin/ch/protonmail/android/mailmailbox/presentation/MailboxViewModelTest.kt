@@ -121,7 +121,7 @@ class MailboxViewModelTest {
             awaitItem() // First emission for selected user
 
             // When
-            mailboxViewModel.submit(Action.OpenSelectionMode)
+            mailboxViewModel.submit(Action.EnterSelectionMode)
 
             // Then
             assertEquals(expected, awaitItem().topAppBar)
@@ -138,11 +138,11 @@ class MailboxViewModelTest {
             userIdFlow.emit(userId)
             awaitItem() // First emission for selected user
 
-            mailboxViewModel.submit(Action.OpenSelectionMode)
+            mailboxViewModel.submit(Action.EnterSelectionMode)
             awaitItem() // Selection Mode has been opened
 
             // When
-            mailboxViewModel.submit(Action.CloseSelectionMode)
+            mailboxViewModel.submit(Action.ExitSelectionMode)
 
             // Then
             assertEquals(expected, awaitItem().topAppBar)

@@ -37,10 +37,10 @@ internal fun MailboxTopAppBar(
     modifier: Modifier = Modifier,
     state: MailboxTopAppBarState,
     onOpenMenu: () -> Unit,
-    onCloseSelectionMode: () -> Unit,
-    onCloseSearchMode: () -> Unit,
+    onExitSelectionMode: () -> Unit,
+    onExitSearchMode: () -> Unit,
     onTitleClick: () -> Unit,
-    onOpenSearchMode: () -> Unit,
+    onEnterSearchMode: () -> Unit,
     onSearch: (query: String) -> Unit,
     onOpenCompose: () -> Unit
 ) {
@@ -57,12 +57,12 @@ internal fun MailboxTopAppBar(
             title = stringResource(id = R.string.mailbox_toolbar_selected_count, state.selectedCount),
             navigationIconRes = R.drawable.ic_proton_arrow_left,
             navigationIconContentDescription =
-            stringResource(id = R.string.mailbox_toolbar_close_selection_mode_button_content_description),
+            stringResource(id = R.string.mailbox_toolbar_exit_selection_mode_button_content_description),
             shouldShowActions = false
-        ) to onCloseSelectionMode
+        ) to onExitSelectionMode
         is MailboxTopAppBarState.Data.SearchMode -> UiModel.Empty.copy(
             navigationIconRes = R.drawable.ic_proton_arrow_left,
-        ) to onCloseSearchMode
+        ) to onExitSearchMode
     }
 
     ProtonTopAppBar(
@@ -79,7 +79,7 @@ internal fun MailboxTopAppBar(
         actions = {
 
             if (uiModel.shouldShowActions) {
-                IconButton(onClick = onOpenSearchMode) {
+                IconButton(onClick = onEnterSearchMode) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_magnifier),
                         contentDescription = stringResource(id = R.string.x_toolbar_search_button_content_description)
@@ -122,10 +122,10 @@ fun LoadingMailboxTopAppBarPreview() {
     MailboxTopAppBar(
         state = state,
         onOpenMenu = {},
-        onCloseSelectionMode = {},
-        onCloseSearchMode = {},
+        onExitSelectionMode = {},
+        onExitSearchMode = {},
         onTitleClick = {},
-        onOpenSearchMode = {},
+        onEnterSearchMode = {},
         onSearch = {},
         onOpenCompose = {}
     )

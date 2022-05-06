@@ -81,10 +81,10 @@ fun MailboxScreen(
             MailboxTopAppBar(
                 state = mailboxState.topAppBar,
                 onOpenMenu = openDrawerMenu,
-                onCloseSelectionMode = { viewModel.submit(MailboxViewModel.Action.CloseSelectionMode) },
-                onCloseSearchMode = {},
+                onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
+                onExitSearchMode = {},
                 onTitleClick = { scope.launch { mailboxListState.animateScrollToItem(0) } },
-                onOpenSearchMode = {},
+                onEnterSearchMode = {},
                 onSearch = {},
                 onOpenCompose = {}
             )
@@ -101,7 +101,7 @@ fun MailboxScreen(
             MailboxList(
                 navigateToMailboxItem = navigateToMailboxItem,
                 onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
-                onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.OpenSelectionMode) },
+                onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
                 modifier = modifier,
                 items = mailboxListItems,
                 listState = mailboxListState

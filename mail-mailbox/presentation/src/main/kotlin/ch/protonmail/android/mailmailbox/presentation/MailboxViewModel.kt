@@ -106,8 +106,8 @@ class MailboxViewModel @Inject constructor(
     fun submit(action: Action) {
         viewModelScope.launch {
             when (action) {
-                Action.OpenSelectionMode -> onOpenSelectionMode()
-                Action.CloseSelectionMode -> onCloseSelectionMode()
+                Action.EnterSelectionMode -> onOpenSelectionMode()
+                Action.ExitSelectionMode -> onCloseSelectionMode()
                 Action.Refresh -> onRefresh()
             }
         }
@@ -162,8 +162,8 @@ class MailboxViewModel @Inject constructor(
 
     sealed interface Action {
 
-        object CloseSelectionMode : Action
-        object OpenSelectionMode : Action
+        object EnterSelectionMode : Action
+        object ExitSelectionMode : Action
         object Refresh : Action
     }
 }
