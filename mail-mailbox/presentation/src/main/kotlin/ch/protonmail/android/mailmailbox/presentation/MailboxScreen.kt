@@ -91,7 +91,7 @@ fun MailboxScreen(
         }
     ) {
         Column(
-            modifier = Modifier.padding(it)
+            modifier = modifier.padding(it)
                 .background(ProtonTheme.colors.backgroundNorm)
                 .fillMaxSize()
         ) {
