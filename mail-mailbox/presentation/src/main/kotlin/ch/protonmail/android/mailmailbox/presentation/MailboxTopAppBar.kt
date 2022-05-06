@@ -33,7 +33,7 @@ import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.util.kotlin.EMPTY_STRING
 
 @Composable
-internal fun MailboxTopAppBar(
+fun MailboxTopAppBar(
     modifier: Modifier = Modifier,
     state: MailboxTopAppBarState,
     onOpenMenu: () -> Unit,
