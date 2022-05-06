@@ -254,8 +254,7 @@ fun PreviewMailbox() {
                     time = 0,
                     size = 0,
                     order = 0,
-                    read = false,
-
+                    read = false
                 ),
                 MailboxItem(
                     type = MailboxItemType.Message,
@@ -267,8 +266,7 @@ fun PreviewMailbox() {
                     time = 0,
                     size = 0,
                     order = 0,
-                    read = true,
-
+                    read = true
                 ),
             )
         )

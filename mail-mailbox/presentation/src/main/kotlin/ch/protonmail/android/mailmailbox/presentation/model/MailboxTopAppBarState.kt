@@ -22,6 +22,14 @@ import me.proton.core.util.kotlin.EMPTY_STRING
 
 sealed interface MailboxTopAppBarState {
 
+    fun withCurrentLabelName(currentLabelName: String) =
+        when (this) {
+            Loading -> Data.DefaultMode(currentLabelName = currentLabelName)
+            is Data.DefaultMode -> copy(currentLabelName = currentLabelName)
+            is Data.SearchMode -> copy(currentLabelName = currentLabelName)
+            is Data.SelectionMode -> copy(currentLabelName = currentLabelName)
+        }
+
     object Loading : MailboxTopAppBarState
 
     sealed interface Data : MailboxTopAppBarState {
@@ -34,16 +42,16 @@ sealed interface MailboxTopAppBarState {
 
         data class DefaultMode(
             override val currentLabelName: String
-        ) : MailboxTopAppBarState.Data
+        ) : Data
 
         data class SelectionMode(
             override val currentLabelName: String,
             val selectedCount: Int
-        ) : MailboxTopAppBarState.Data
+        ) : Data
 
         data class SearchMode(
             override val currentLabelName: String,
             val searchQuery: String
-        ) : MailboxTopAppBarState.Data
+        ) : Data
     }
 }

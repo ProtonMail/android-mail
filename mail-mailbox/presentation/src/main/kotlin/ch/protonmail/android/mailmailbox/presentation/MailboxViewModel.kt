@@ -35,16 +35,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.domain.entity.UserId
+import me.proton.core.util.kotlin.EMPTY_STRING
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,7 +53,7 @@ class MailboxViewModel @Inject constructor(
     private val accountManager: AccountManager,
     private val selectedSidebarLocation: SelectedSidebarLocation,
     private val markAsStaleMailboxItems: MarkAsStaleMailboxItems,
-    private val observeMailboxItemType: ObserveMailboxItemType,
+    observeMailboxItemType: ObserveMailboxItemType,
     private val pagingSourceFactory: MailboxItemPagingSourceFactory,
 ) : ViewModel() {
 
@@ -70,38 +71,14 @@ class MailboxViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
+    private val topAppBarState: MutableStateFlow<MailboxTopAppBarState> =
+        MutableStateFlow(MailboxTopAppBarState.Loading)
+
     val items: Flow<PagingData<MailboxItem>> = observePagingData()
         .cachedIn(viewModelScope)
 
-    val state: MutableStateFlow<MailboxState> =
-        MutableStateFlow(MailboxState.Loading)
-
-    init {
-        combine(
-            userIds,
-            selectedSidebarLocation.location
-        ) { userIds, location ->
-            when {
-                userIds.isEmpty() -> MailboxState.Loading
-                else -> {
-                    val locationName = checkNotNull(location::class.simpleName) { "null location name" }
-                    val newTopAppBarState = when (val topAppBarState = state.value.topAppBar) {
-                        MailboxTopAppBarState.Loading ->
-                            MailboxTopAppBarState.Data.DefaultMode(currentLabelName = locationName)
-                        is MailboxTopAppBarState.Data.DefaultMode ->
-                            topAppBarState.copy(currentLabelName = locationName)
-                        is MailboxTopAppBarState.Data.SearchMode ->
-                            topAppBarState.copy(currentLabelName = locationName)
-                        is MailboxTopAppBarState.Data.SelectionMode ->
-                            topAppBarState.copy(currentLabelName = locationName)
-                    }
-                    state.value.copy(topAppBar = newTopAppBarState, selectedLocation = location)
-                }
-            }
-        }
-            .onEach(state::emit)
-            .launchIn(viewModelScope)
-    }
+    val state: StateFlow<MailboxState> = observeState()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis), MailboxState.Loading)
 
     fun submit(action: Action) {
         viewModelScope.launch {
@@ -114,19 +91,17 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun onCloseSelectionMode() {
-        val newAppBarState = (state.value.topAppBar as? MailboxTopAppBarState.Data)
-            ?.toDefaultMode()
-            ?: return
-        val newState = state.value.copy(topAppBar = newAppBarState)
-        state.emit(newState)
+        when (val currentState = state.value.topAppBar) {
+            MailboxTopAppBarState.Loading -> return
+            is MailboxTopAppBarState.Data -> topAppBarState.emit(currentState.toDefaultMode())
+        }
     }
 
     private suspend fun onOpenSelectionMode() {
-        val newAppBarState = (state.value.topAppBar as? MailboxTopAppBarState.Data)
-            ?.toSelectionMode()
-            ?: return
-        val newState = state.value.copy(topAppBar = newAppBarState)
-        state.emit(newState)
+        when (val currentState = state.value.topAppBar) {
+            MailboxTopAppBarState.Loading -> return
+            is MailboxTopAppBarState.Data -> topAppBarState.emit(currentState.toSelectionMode())
+        }
     }
 
     private suspend fun onRefresh() {
@@ -158,6 +133,21 @@ class MailboxViewModel @Inject constructor(
         }
     }.flatMapLatest { pager ->
         pager?.flow ?: flowOf(PagingData.empty())
+    }
+
+    private fun observeState() = combine(
+        userIds,
+        topAppBarState,
+        selectedSidebarLocation.location
+    ) { userIds, topAppBarState, location ->
+        when {
+            userIds.isEmpty() -> MailboxState.Loading
+            else -> {
+                val currentLabelName = location::class.simpleName ?: EMPTY_STRING
+                val newTopAppBarState = topAppBarState.withCurrentLabelName(currentLabelName)
+                MailboxState(topAppBar = newTopAppBarState, selectedLocation = location, unread = 0)
+            }
+        }
     }
 
     sealed interface Action {

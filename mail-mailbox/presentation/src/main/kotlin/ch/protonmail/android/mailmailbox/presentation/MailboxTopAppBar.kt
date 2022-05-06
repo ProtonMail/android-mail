@@ -45,24 +45,30 @@ fun MailboxTopAppBar(
     onOpenCompose: () -> Unit
 ) {
 
-    val (uiModel, onNavigationIconClick) = when (state) {
-        MailboxTopAppBarState.Loading -> UiModel.Empty to {}
+    val uiModel = when (state) {
+        MailboxTopAppBarState.Loading -> UiModel.Empty
         is MailboxTopAppBarState.Data.DefaultMode -> UiModel(
             title = state.currentLabelName,
             navigationIconRes = R.drawable.ic_proton_hamburger,
             navigationIconContentDescription = stringResource(id = R.string.x_toolbar_menu_button_content_description),
             shouldShowActions = true
-        ) to onOpenMenu
+        )
         is MailboxTopAppBarState.Data.SelectionMode -> UiModel(
             title = stringResource(id = R.string.mailbox_toolbar_selected_count, state.selectedCount),
             navigationIconRes = R.drawable.ic_proton_arrow_left,
             navigationIconContentDescription =
             stringResource(id = R.string.mailbox_toolbar_exit_selection_mode_button_content_description),
             shouldShowActions = false
-        ) to onExitSelectionMode
+        )
         is MailboxTopAppBarState.Data.SearchMode -> UiModel.Empty.copy(
             navigationIconRes = R.drawable.ic_proton_arrow_left,
-        ) to onExitSearchMode
+        )
+    }
+
+    val onNavigationIconClick = when (state) {
+        MailboxTopAppBarState.Loading, is MailboxTopAppBarState.Data.DefaultMode -> onOpenMenu
+        is MailboxTopAppBarState.Data.SelectionMode -> onExitSelectionMode
+        is MailboxTopAppBarState.Data.SearchMode -> onExitSearchMode
     }
 
     ProtonTopAppBar(

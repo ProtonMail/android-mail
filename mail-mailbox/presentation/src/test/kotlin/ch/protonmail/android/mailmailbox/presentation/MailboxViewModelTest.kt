@@ -97,24 +97,19 @@ class MailboxViewModelTest {
 
     @Test
     fun `emits default TopAppBar state as soon as the label name is available`() = runTest {
-        // Given
-        val expected = MailboxTopAppBarState.Data.DefaultMode(Archive::class.simpleName!!)
-
         // When
         mailboxViewModel.state.test {
             assertEquals(MailboxState.Loading, awaitItem())
             userIdFlow.emit(userId)
 
             // Then
+            val expected = MailboxTopAppBarState.Data.DefaultMode(Archive::class.simpleName!!)
             assertEquals(expected, awaitItem().topAppBar)
         }
     }
 
     @Test
     fun `when selection mode is not open and the right Action is submitted, selection mode is opened`() = runTest {
-        // Given
-        val expected = MailboxTopAppBarState.Data.SelectionMode(Archive::class.simpleName!!, selectedCount = 0)
-
         mailboxViewModel.state.test {
             assertEquals(MailboxState.Loading, awaitItem())
             userIdFlow.emit(userId)
@@ -124,15 +119,13 @@ class MailboxViewModelTest {
             mailboxViewModel.submit(Action.EnterSelectionMode)
 
             // Then
+            val expected = MailboxTopAppBarState.Data.SelectionMode(Archive::class.simpleName!!, selectedCount = 0)
             assertEquals(expected, awaitItem().topAppBar)
         }
     }
 
     @Test
     fun `when selection mode is open and the right Action is submitted, selection mode is closed`() = runTest {
-        // Given
-        val expected = MailboxTopAppBarState.Data.DefaultMode(Archive::class.simpleName!!)
-
         mailboxViewModel.state.test {
             assertEquals(MailboxState.Loading, awaitItem())
             userIdFlow.emit(userId)
@@ -145,6 +138,7 @@ class MailboxViewModelTest {
             mailboxViewModel.submit(Action.ExitSelectionMode)
 
             // Then
+            val expected = MailboxTopAppBarState.Data.DefaultMode(Archive::class.simpleName!!)
             assertEquals(expected, awaitItem().topAppBar)
         }
     }
@@ -184,7 +178,7 @@ class MailboxViewModelTest {
         userIdFlow.emit(userId)
 
         // When
-        mailboxViewModel.submit(MailboxViewModel.Action.Refresh)
+        mailboxViewModel.submit(Action.Refresh)
 
         // Then
         coVerify { markAsStaleMailboxItems.invoke(listOf(userId), Message, Archive.labelId) }
