@@ -63,4 +63,16 @@
     <string name="mail_settings_conversation_mode">Conversation mode</string>
     <string name="mail_settings_not_set">Not set</string>
     <string name="mail_settings_conversation_mode_hint">Group emails in the same conversation together in your inbox or display them separately</string>
+
+    <!-- Swipe Actions -->
+    <string name="mail_settings_swipe_action_archive_title">Archive</string>
+    <string name="mail_settings_swipe_action_read_title">Unread</string>
+    <string name="mail_settings_swipe_action_spam_title">Spam</string>
+    <string name="mail_settings_swipe_action_star_title">Star</string>
+    <string name="mail_settings_swipe_action_trash_title">Trash</string>
+    <string name="mail_settings_swipe_action_archive_description">Move to archive</string>
+    <string name="mail_settings_swipe_action_read_description">Mark as unread/read</string>
+    <string name="mail_settings_swipe_action_spam_description">Move to spam</string>
+    <string name="mail_settings_swipe_action_star_description">Star/unstar</string>
+    <string name="mail_settings_swipe_action_trash_description">Trash</string>
 </resources>

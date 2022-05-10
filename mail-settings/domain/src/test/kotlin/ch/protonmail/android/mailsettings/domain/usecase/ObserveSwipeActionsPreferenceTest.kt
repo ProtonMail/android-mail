@@ -28,7 +28,8 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.entity.SwipeAction
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 internal class ObserveSwipeActionsPreferenceTest {
 
@@ -44,10 +45,10 @@ internal class ObserveSwipeActionsPreferenceTest {
             swipeLeft = swipeLeft,
             swipeRight = swipeRight
         )
-        every { observeMailSettings(userId) } returns flowOf(mailSettings)
+        every { observeMailSettings() } returns flowOf(mailSettings)
 
         // when
-        observeSwipeActionsPreference(userId).test {
+        observeSwipeActionsPreference().test {
 
             // then
             val expected = SwipeActionsPreference(
@@ -62,10 +63,10 @@ internal class ObserveSwipeActionsPreferenceTest {
     @Test
     fun `throws exception when Mail Settings is null`() = runTest {
         // given
-        every { observeMailSettings(userId) } returns flowOf(null)
+        every { observeMailSettings() } returns flowOf(null)
 
         // when
-        observeSwipeActionsPreference(userId).test {
+        observeSwipeActionsPreference().test {
 
             // then
             val expectedMessage = "Error occurred while getting MailSettings"
@@ -82,10 +83,10 @@ internal class ObserveSwipeActionsPreferenceTest {
             swipeLeft = null,
             swipeRight = SwipeAction.Archive
         )
-        every { observeMailSettings(userId) } returns flowOf(mailSettings)
+        every { observeMailSettings() } returns flowOf(mailSettings)
 
         // when
-        observeSwipeActionsPreference(userId).test {
+        observeSwipeActionsPreference().test {
 
             // then
             val expectedMessage = "Swipe Left is null"
@@ -102,10 +103,10 @@ internal class ObserveSwipeActionsPreferenceTest {
             swipeLeft = SwipeAction.MarkRead,
             swipeRight = null
         )
-        every { observeMailSettings(userId) } returns flowOf(mailSettings)
+        every { observeMailSettings() } returns flowOf(mailSettings)
 
         // when
-        observeSwipeActionsPreference(userId).test {
+        observeSwipeActionsPreference().test {
 
             // then
             val expectedMessage = "Swipe Right is null"
