@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue
+import androidx.compose.material.DrawerValue.Closed
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -39,17 +40,19 @@ import me.proton.core.label.domain.entity.LabelId
 class SidebarState(
     selectedLocation: SidebarLocation = Inbox,
     val appInformation: AppInformation = AppInformation(),
-    val drawerState: DrawerState = DrawerState(DrawerValue.Closed),
+    val drawerState: DrawerState = DrawerState(Closed),
     val accountPrimaryState: AccountPrimaryState = AccountPrimaryState(),
     val hasPrimaryAccount: Boolean = true,
     sidebarFolderUiModels: List<SidebarFolderUiModel> = FAKE_FOLDERS,
     sidebarLabelUiModels: List<SidebarLabelUiModel> = FAKE_LABELS,
-    unreadCounters: Map<LabelId, Int?> = FAKE_UNREAD_COUNTERS
+    unreadCounters: Map<LabelId, Int?> = FAKE_UNREAD_COUNTERS,
+    shouldDisplaySubscription: Boolean = true
 ) {
     var selectedLocation by mutableStateOf(selectedLocation)
     var sidebarFolderUiModels by mutableStateOf(sidebarFolderUiModels)
     var sidebarLabelUiModels by mutableStateOf(sidebarLabelUiModels)
     var unreadCounters by mutableStateOf(unreadCounters)
+    var shouldDisplaySubscription by mutableStateOf(shouldDisplaySubscription)
 }
 
 val FAKE_UNREAD_COUNTERS: Map<LabelId, Int?> = mapOf(
@@ -82,6 +85,6 @@ fun rememberSidebarState(
     SidebarState(
         appInformation = appInformation,
         drawerState = drawerState,
-        accountPrimaryState = accountPrimaryState,
+        accountPrimaryState = accountPrimaryState
     )
 }

@@ -355,7 +355,8 @@ fun PreviewSidebar() {
             onReportBug = {},
             viewState = SidebarState(
                 selectedLocation = Inbox,
-                hasPrimaryAccount = false
+                hasPrimaryAccount = false,
+                shouldDisplaySubscription = true
             ),
         )
     }

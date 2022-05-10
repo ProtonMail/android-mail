@@ -157,6 +157,7 @@ dependencies {
     testImplementation(project(":test-data"))
 
     androidTestImplementation(Dependencies.androidTestLibs)
+    androidTestImplementation(Proton.Core.accountManagerPresentationCompose)
 }
 
 fun String?.toBuildConfigValue() = if (this != null) "\"$this\"" else "null"
