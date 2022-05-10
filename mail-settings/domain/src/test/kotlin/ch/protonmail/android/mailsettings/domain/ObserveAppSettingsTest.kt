@@ -28,6 +28,7 @@ import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRe
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAppSettings
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf

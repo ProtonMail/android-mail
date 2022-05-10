@@ -20,7 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings.conversa
 
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
-import ch.protonmail.android.mailsettings.domain.ObserveMailSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData

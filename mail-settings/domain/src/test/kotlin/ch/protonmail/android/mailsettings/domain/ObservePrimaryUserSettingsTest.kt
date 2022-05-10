@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.domain
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailsettings.domain.usecase.ObservePrimaryUserSettings
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.usersettings.UserSettingsTestData
 import io.mockk.every

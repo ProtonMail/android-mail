@@ -20,7 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings.conversa
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailsettings.domain.ObserveMailSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel

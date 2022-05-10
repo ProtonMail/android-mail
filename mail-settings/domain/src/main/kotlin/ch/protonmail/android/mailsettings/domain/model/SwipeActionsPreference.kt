@@ -16,22 +16,11 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.usecase
+package ch.protonmail.android.mailsettings.domain.model
 
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
-import kotlinx.coroutines.flow.mapLatest
-import me.proton.core.mailsettings.domain.entity.ViewMode
-import javax.inject.Inject
+import me.proton.core.mailsettings.domain.entity.SwipeAction
 
-class ObserveMailboxItemType @Inject constructor(
-    private val observeMailSettings: ObserveMailSettings,
-) {
-
-    operator fun invoke() = observeMailSettings().mapLatest {
-        when (it?.viewMode?.enum) {
-            ViewMode.ConversationGrouping -> MailboxItemType.Conversation
-            else -> MailboxItemType.Message
-        }
-    }
-}
+data class SwipeActionsPreference(
+    val swipeLeft: SwipeAction,
+    val swipeRight: SwipeAction
+)

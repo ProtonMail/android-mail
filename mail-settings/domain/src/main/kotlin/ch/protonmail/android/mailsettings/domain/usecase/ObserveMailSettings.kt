@@ -16,27 +16,25 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain
+package ch.protonmail.android.mailsettings.domain.usecase
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.arch.mapSuccessValueOrNull
-import me.proton.core.usersettings.domain.entity.UserSettings
-import me.proton.core.usersettings.domain.repository.UserSettingsRepository
+import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
-class ObservePrimaryUserSettings @Inject constructor(
+class ObserveMailSettings @Inject constructor(
     private val accountManager: AccountManager,
-    private val userSettingsRepository: UserSettingsRepository
+    private val mailSettingsRepository: MailSettingsRepository
 ) {
 
-    operator fun invoke(): Flow<UserSettings?> = accountManager.getPrimaryUserId()
+    operator fun invoke() = accountManager.getPrimaryUserId()
         .flatMapLatest { userId ->
             if (userId == null) {
                 return@flatMapLatest flowOf(null)
             }
-            userSettingsRepository.getUserSettingsFlow(userId).mapSuccessValueOrNull()
+            mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull()
         }
 }
