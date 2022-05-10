@@ -62,6 +62,8 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.modulePresentationLibs)
+    implementation(Proton.Core.key)
+    implementation(Proton.Core.user)
     implementation(Proton.Core.account)
     implementation(Proton.Core.accountManagerPresentationCompose)
     implementation(Proton.Core.featureFlag)

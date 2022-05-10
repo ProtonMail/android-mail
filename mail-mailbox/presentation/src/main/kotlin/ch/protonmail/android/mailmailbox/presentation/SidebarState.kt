@@ -46,13 +46,13 @@ class SidebarState(
     sidebarFolderUiModels: List<SidebarFolderUiModel> = FAKE_FOLDERS,
     sidebarLabelUiModels: List<SidebarLabelUiModel> = FAKE_LABELS,
     unreadCounters: Map<LabelId, Int?> = FAKE_UNREAD_COUNTERS,
-    shouldDisplaySubscription: Boolean = true
+    isSubscriptionVisible: Boolean = true
 ) {
     var selectedLocation by mutableStateOf(selectedLocation)
     var sidebarFolderUiModels by mutableStateOf(sidebarFolderUiModels)
     var sidebarLabelUiModels by mutableStateOf(sidebarLabelUiModels)
     var unreadCounters by mutableStateOf(unreadCounters)
-    var shouldDisplaySubscription by mutableStateOf(shouldDisplaySubscription)
+    var isSubscriptionVisible by mutableStateOf(isSubscriptionVisible)
 }
 
 val FAKE_UNREAD_COUNTERS: Map<LabelId, Int?> = mapOf(

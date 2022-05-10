@@ -23,10 +23,12 @@ import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
 import ch.protonmail.android.mailmailbox.presentation.SidebarViewModel.State.Enabled
 import ch.protonmail.android.testdata.FeatureFlagTestData
+import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +38,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.featureflag.domain.entity.FeatureFlag
+import me.proton.core.user.domain.entity.User
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -54,6 +57,10 @@ class SidebarViewModelTest {
     private val observeMailFeature = mockk<ObserveMailFeature> {
         every { this@mockk.invoke(FeatureFlagTestData.showSettingsId) } returns showSettings
     }
+    private val primaryUser = MutableSharedFlow<User?>()
+    private val observePrimaryUser = mockk<ObservePrimaryUser> {
+        every { this@mockk.invoke() } returns primaryUser
+    }
 
     private lateinit var sidebarViewModel: SidebarViewModel
 
@@ -65,6 +72,7 @@ class SidebarViewModelTest {
             selectedSidebarLocation,
             mailFeatureDefault,
             observeMailFeature,
+            observePrimaryUser
         )
     }
 
@@ -74,37 +82,79 @@ class SidebarViewModelTest {
         sidebarViewModel.state.test {
             // Then
             val actual = awaitItem() as Enabled
-            val expected = Enabled(Inbox, false)
+            val expected = Enabled(Inbox, isSettingsEnabled = false, canChangeSubscription = true)
             assertEquals(expected, actual)
         }
     }
 
     @Test
     fun `emits is settings enabled true when settings feature toggle is enabled`() = runTest {
-        // Given
         sidebarViewModel.state.test {
-            // When
+            // Given
             showSettings.emit(FeatureFlagTestData.enabledShowSettings)
+            primaryUser.emit(UserTestData.user)
 
             // Then
             awaitItem() // First item is the default value (false).
             val actual = awaitItem() as Enabled
-            val expected = Enabled(Inbox, true)
+            val expected = Enabled(Inbox, isSettingsEnabled = true, canChangeSubscription = true)
             assertEquals(expected, actual)
         }
     }
 
     @Test
     fun `emits is settings enabled false when settings feature toggle is disabled`() = runTest {
-        // Given
         sidebarViewModel.state.test {
-            // When
+            // Given
             showSettings.emit(FeatureFlagTestData.disabledShowSettings)
 
             // Then
             // Await one item only since it will be the same as the default value (false).
             val actual = awaitItem() as Enabled
-            val expected = Enabled(Inbox, false)
+            val expected = Enabled(Inbox, isSettingsEnabled = false, canChangeSubscription = true)
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `state is can change subscriptions when user is free`() = runTest {
+        sidebarViewModel.state.test {
+            // Given
+            showSettings.emit(FeatureFlagTestData.disabledShowSettings)
+            primaryUser.emit(UserTestData.user)
+
+            // Then
+            val actual = awaitItem() as Enabled
+            val expected = Enabled(Inbox, isSettingsEnabled = false, canChangeSubscription = true)
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `state is can change subscriptions when user is admin`() = runTest {
+        sidebarViewModel.state.test {
+            // Given
+            showSettings.emit(FeatureFlagTestData.disabledShowSettings)
+            primaryUser.emit(UserTestData.adminUser)
+
+            // Then
+            val actual = awaitItem() as Enabled
+            val expected = Enabled(Inbox, isSettingsEnabled = false, canChangeSubscription = true)
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `state is can't change subscription when user is organization member`() = runTest {
+        sidebarViewModel.state.test {
+            // Given
+            showSettings.emit(FeatureFlagTestData.disabledShowSettings)
+            primaryUser.emit(UserTestData.orgMemberUser)
+
+            // Then
+            awaitItem() // First emitted item is the initial value
+            val actual = awaitItem() as Enabled
+            val expected = Enabled(Inbox, isSettingsEnabled = false, canChangeSubscription = false)
             assertEquals(expected, actual)
         }
     }

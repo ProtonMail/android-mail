@@ -16,11 +16,12 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.user
+package ch.protonmail.android.mailcommon.domain.extension
 
-import me.proton.core.domain.entity.UserId
+import me.proton.core.user.domain.entity.Role
+import me.proton.core.user.domain.entity.User
 
-object UserIdTestData {
-    val userId = UserId("userId")
-    val userId1 = UserId("userId1")
-}
+/**
+ * @return true if the user has rights to change subscription data
+ */
+fun User.canChangeSubscription() = role == Role.OrganizationAdmin || role == Role.NoOrganization

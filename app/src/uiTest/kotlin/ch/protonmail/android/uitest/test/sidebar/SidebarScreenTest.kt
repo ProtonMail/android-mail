@@ -18,23 +18,26 @@
 
 package ch.protonmail.android.uitest.test.sidebar
 
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToNode
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
 import ch.protonmail.android.mailmailbox.presentation.Sidebar
 import ch.protonmail.android.mailmailbox.presentation.SidebarState
 import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_SIDEBAR_MENU
 import me.proton.core.compose.theme.ProtonTheme
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+
+private const val APP_VERSION_FOOTER = "Proton Mail 6.0.0-alpha+test"
 
 @RunWith(AndroidJUnit4::class)
 class SidebarScreenTest {
@@ -46,35 +49,42 @@ class SidebarScreenTest {
     fun subscriptionIsShownWhenSidebarStateIsDisplaySubscription() {
         setupScreenWithState(showSubscriptionSidebarState())
 
+        scrollToSidebarBottom()
+
         composeTestRule
-            .onNodeWithTag(TEST_TAG_SIDEBAR_MENU)
-            .onChild()
-            .performScrollToNode(hasText("Subscription"))
+            .onNodeWithText("Subscription")
             .assertIsDisplayed()
     }
 
     @Test
-    @Ignore("Acceptance test disabled till completion of feature MAILANDR-122")
     fun subscriptionIsHiddenWhenSidebarStateIsHideSubscription() {
         setupScreenWithState(hideSubscriptionSidebarState())
 
+        scrollToSidebarBottom()
         composeTestRule
-            .onNodeWithTag(TEST_TAG_SIDEBAR_MENU)
-            .onChild()
-            .performScrollToNode(hasText("Subscription"))
-            .assertIsNotDisplayed()
+            .onNodeWithText("Subscription")
+            .assertDoesNotExist()
     }
 
-    private fun showSubscriptionSidebarState() = SidebarState(
-        selectedLocation = Inbox,
-        shouldDisplaySubscription = true,
-        hasPrimaryAccount = false
-    )
+    private fun scrollToSidebarBottom(): SemanticsNodeInteraction {
+        return composeTestRule
+            .onNodeWithTag(TEST_TAG_SIDEBAR_MENU)
+            .onChild()
+            .performScrollToNode(hasText(APP_VERSION_FOOTER, true))
+    }
 
-    private fun hideSubscriptionSidebarState() = SidebarState(
+    private fun showSubscriptionSidebarState() = buildSidebarState(true)
+
+    private fun hideSubscriptionSidebarState() = buildSidebarState(false)
+
+    private fun buildSidebarState(isSubscriptionVisible: Boolean) = SidebarState(
         selectedLocation = Inbox,
-        shouldDisplaySubscription = false,
-        hasPrimaryAccount = false
+        isSubscriptionVisible = isSubscriptionVisible,
+        hasPrimaryAccount = false,
+        appInformation = AppInformation(
+            appName = "Proton Mail",
+            appVersionName = "6.0.0-alpha+test"
+        )
     )
 
     private fun setupScreenWithState(state: SidebarState) {

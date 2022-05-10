@@ -20,6 +20,8 @@ package ch.protonmail.android.testdata.user
 
 import me.proton.core.user.domain.entity.Delinquent.None
 import me.proton.core.user.domain.entity.Role.NoOrganization
+import me.proton.core.user.domain.entity.Role.OrganizationAdmin
+import me.proton.core.user.domain.entity.Role.OrganizationMember
 import me.proton.core.user.domain.entity.User
 
 object UserTestData {
@@ -40,6 +42,42 @@ object UserTestData {
         maxSpace = MAX_SPACE_RAW,
         maxUpload = 1,
         role = NoOrganization,
+        private = true,
+        services = 1,
+        subscribed = 1,
+        delinquent = None,
+        keys = emptyList()
+    )
+
+    val adminUser = User(
+        userId = UserIdTestData.userId1,
+        email = USER_EMAIL_RAW,
+        displayName = USER_DISPLAY_NAME_RAW,
+        name = null,
+        currency = "CHF",
+        credit = 1,
+        usedSpace = USED_SPACE_RAW,
+        maxSpace = MAX_SPACE_RAW,
+        maxUpload = 1,
+        role = OrganizationAdmin,
+        private = true,
+        services = 1,
+        subscribed = 1,
+        delinquent = None,
+        keys = emptyList()
+    )
+
+    val orgMemberUser = User(
+        userId = UserIdTestData.userId1,
+        email = USER_EMAIL_RAW,
+        displayName = USER_DISPLAY_NAME_RAW,
+        name = null,
+        currency = "CHF",
+        credit = 1,
+        usedSpace = USED_SPACE_RAW,
+        maxSpace = MAX_SPACE_RAW,
+        maxUpload = 1,
+        role = OrganizationMember,
         private = true,
         services = 1,
         subscribed = 1,

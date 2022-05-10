@@ -93,6 +93,7 @@ fun Sidebar(
         is Disabled -> Unit
         is Enabled -> {
             viewState.selectedLocation = viewModelState.selectedLocation
+            viewState.isSubscriptionVisible = viewModelState.canChangeSubscription
             Sidebar(
                 onRemove = {
                     close()
@@ -295,8 +296,10 @@ fun Sidebar(
             ProtonSidebarSettingsItem {
                 onSettings()
             }
-            ProtonSidebarSubscriptionItem {
-                onSubscription()
+            if (viewState.isSubscriptionVisible) {
+                ProtonSidebarSubscriptionItem {
+                    onSubscription()
+                }
             }
             ProtonSidebarReportBugItem {
                 onReportBug()
@@ -356,7 +359,7 @@ fun PreviewSidebar() {
             viewState = SidebarState(
                 selectedLocation = Inbox,
                 hasPrimaryAccount = false,
-                shouldDisplaySubscription = true
+                isSubscriptionVisible = true
             ),
         )
     }

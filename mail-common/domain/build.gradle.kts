@@ -46,6 +46,7 @@ android {
 dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
+    implementation(Proton.Core.key)
     implementation(Proton.Core.user)
     implementation(Proton.Core.accountManager)
     implementation(Proton.Core.featureFlag)

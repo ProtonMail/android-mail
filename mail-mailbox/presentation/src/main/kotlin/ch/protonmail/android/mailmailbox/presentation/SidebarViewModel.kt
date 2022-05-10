@@ -22,8 +22,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
-import ch.protonmail.android.mailcommon.domain.MailFeatureId.*
+import ch.protonmail.android.mailcommon.domain.MailFeatureId.ShowSettings
+import ch.protonmail.android.mailcommon.domain.extension.canChangeSubscription
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,17 +42,24 @@ class SidebarViewModel @Inject constructor(
     private val selectedSidebarLocation: SelectedSidebarLocation,
     private val mailFeatureDefault: MailFeatureDefault,
     observeMailFeature: ObserveMailFeature,
+    observePrimaryUser: ObservePrimaryUser
 ) : ViewModel() {
 
-    val initialState = State.Enabled(Inbox, mailFeatureDefault[ShowSettings])
+    val initialState = State.Enabled(
+        selectedLocation = Inbox,
+        isSettingsEnabled = mailFeatureDefault[ShowSettings],
+        canChangeSubscription = true
+    )
 
     val state: Flow<State> = combine(
         selectedSidebarLocation.location,
         observeMailFeature(ShowSettings),
-    ) { location, settingsFeature ->
+        observePrimaryUser()
+    ) { location, settingsFeature, user ->
         State.Enabled(
             selectedLocation = location,
-            isSettingsEnabled = settingsFeature?.value ?: mailFeatureDefault[ShowSettings]
+            isSettingsEnabled = settingsFeature?.value ?: mailFeatureDefault[ShowSettings],
+            canChangeSubscription = user?.canChangeSubscription() ?: false
         )
     }.stateIn(
         viewModelScope,
@@ -66,6 +75,7 @@ class SidebarViewModel @Inject constructor(
         data class Enabled(
             val selectedLocation: SidebarLocation,
             val isSettingsEnabled: Boolean,
+            val canChangeSubscription: Boolean
         ) : State()
 
         object Disabled : State()
