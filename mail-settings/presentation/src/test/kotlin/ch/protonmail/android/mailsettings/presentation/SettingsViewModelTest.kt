@@ -21,8 +21,8 @@ package ch.protonmail.android.mailsettings.presentation
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
-import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.presentation.settings.AccountInfo
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState

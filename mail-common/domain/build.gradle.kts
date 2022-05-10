@@ -46,10 +46,12 @@ android {
 dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
+    implementation(Proton.Core.user)
     implementation(Proton.Core.accountManager)
     implementation(Proton.Core.featureFlag)
 
     implementation(Dependencies.moduleDomainLibs)
 
     testImplementation(Dependencies.testLibs)
+    testImplementation(project(":test-data"))
 }

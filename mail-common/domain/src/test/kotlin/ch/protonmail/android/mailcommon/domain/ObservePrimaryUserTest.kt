@@ -16,9 +16,10 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain
+package ch.protonmail.android.mailcommon.domain
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.every

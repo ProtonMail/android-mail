@@ -21,8 +21,8 @@ package ch.protonmail.android.mailsettings.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.ObserveAppSettings
-import ch.protonmail.android.mailsettings.domain.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
 import dagger.hilt.android.lifecycle.HiltViewModel
