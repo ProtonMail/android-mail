@@ -85,6 +85,7 @@ analyse:
 localise-sync-crowdin:
   stage: localise
   variables:
+    I18N_FILTER_OUT_ITEMS: 'proton-libs'
     I18N_SYNC_CROWDIN_PROJECT: 'android-mail-new'
     I18N_SYNC_BRANCH: 'master'
   extends: .i18n-sync-crowdin-shared
