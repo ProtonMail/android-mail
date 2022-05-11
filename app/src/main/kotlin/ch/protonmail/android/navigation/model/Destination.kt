@@ -39,6 +39,7 @@ sealed class Destination(val route: String) {
         object ThemeSettings : Destination("settings/theme")
         object LanguageSettings : Destination("settings/appLanguage")
         object ReportBug : Destination("report")
+        object SwipeActionsSettings : Destination("settings/swipeActions")
     }
 
     object Dialog {

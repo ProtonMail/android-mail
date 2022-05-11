@@ -16,15 +16,19 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.accountsettings.swipeactions
+package ch.protonmail.android.mailsettings.presentation.settings.swipeactions
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.presentation.R
+import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.arch.Mapper
 import me.proton.core.mailsettings.domain.entity.SwipeAction
 import javax.inject.Inject
 
-class SwipeActionPreferenceUiModelMapper @Inject constructor() : Mapper<SwipeActionsPreference, SwipeActionsPreferenceUiModel> {
+class SwipeActionPreferenceUiModelMapper @Inject constructor() :
+    Mapper<SwipeActionsPreference, SwipeActionsPreferenceUiModel> {
 
     fun toUiModel(swipeActionsPreference: SwipeActionsPreference) = SwipeActionsPreferenceUiModel(
         left = toUiModel(swipeActionsPreference.swipeLeft),
@@ -34,7 +38,8 @@ class SwipeActionPreferenceUiModelMapper @Inject constructor() : Mapper<SwipeAct
     private fun toUiModel(swipeAction: SwipeAction) = SwipeActionPreferenceUiModel(
         imageRes = getImageRes(swipeAction),
         titleRes = getTitleRes(swipeAction),
-        descriptionRes = getDescriptionRes(swipeAction)
+        descriptionRes = getDescriptionRes(swipeAction),
+        getColor = getColorGetter(swipeAction)
     )
 
     private fun getImageRes(swipeAction: SwipeAction) = when (swipeAction) {
@@ -59,5 +64,15 @@ class SwipeActionPreferenceUiModelMapper @Inject constructor() : Mapper<SwipeAct
         SwipeAction.Star -> R.string.mail_settings_swipe_action_star_description
         SwipeAction.Archive -> R.string.mail_settings_swipe_action_archive_description
         SwipeAction.MarkRead -> R.string.mail_settings_swipe_action_read_description
+    }
+
+    private fun getColorGetter(swipeAction: SwipeAction): @Composable () -> Color = {
+        when (swipeAction) {
+            SwipeAction.Trash -> ProtonTheme.colors.notificationError
+            SwipeAction.Spam -> ProtonTheme.colors.iconHint
+            SwipeAction.Star -> ProtonTheme.colors.notificationWarning
+            SwipeAction.Archive -> ProtonTheme.colors.iconHint
+            SwipeAction.MarkRead -> ProtonTheme.colors.interactionNorm
+        }
     }
 }

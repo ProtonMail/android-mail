@@ -34,7 +34,13 @@ import me.proton.core.mailsettings.domain.entity.ViewLayout
 import me.proton.core.mailsettings.domain.entity.ViewMode
 
 object MailSettingsTestData {
-    val mailSettings = MailSettings(
+
+    val mailSettings = buildMailSettings()
+
+    fun buildMailSettings(
+        swipeLeft: SwipeAction? = null,
+        swipeRight: SwipeAction? = null
+    ) = MailSettings(
         userId = UserIdTestData.userId,
         displayName = "displayName",
         signature = "Signature",
@@ -45,8 +51,8 @@ object MailSettingsTestData {
         showMoved = IntEnum(1, ShowMoved.Drafts),
         viewMode = IntEnum(1, ViewMode.NoConversationGrouping),
         viewLayout = IntEnum(1, ViewLayout.Row),
-        swipeLeft = IntEnum(1, SwipeAction.Spam),
-        swipeRight = IntEnum(1, SwipeAction.Spam),
+        swipeLeft = swipeLeft?.let { IntEnum(it.value, it) },
+        swipeRight = swipeRight?.let { IntEnum(it.value, it) },
         shortcuts = true,
         pmSignature = IntEnum(1, PMSignature.Disabled),
         numMessagePerPage = 1,

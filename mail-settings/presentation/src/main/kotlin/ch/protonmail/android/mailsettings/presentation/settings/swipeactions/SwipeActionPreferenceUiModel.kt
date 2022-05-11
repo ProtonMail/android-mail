@@ -16,12 +16,16 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.accountsettings.swipeactions
+package ch.protonmail.android.mailsettings.presentation.settings.swipeactions
 
-import androidx.compose.runtime.Stable
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
-@Stable
-data class SwipeActionsPreferenceUiModel(
-    val left: SwipeActionPreferenceUiModel,
-    val right: SwipeActionPreferenceUiModel
+data class SwipeActionPreferenceUiModel(
+    @DrawableRes val imageRes: Int,
+    @StringRes val titleRes: Int,
+    @StringRes val descriptionRes: Int,
+    val getColor: @Composable () -> Color
 )

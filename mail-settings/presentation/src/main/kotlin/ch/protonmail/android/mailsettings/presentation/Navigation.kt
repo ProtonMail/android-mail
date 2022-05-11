@@ -24,6 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsScreen
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceScreen
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsScreen
 
 /**
@@ -70,3 +71,21 @@ fun NavGraphBuilder.addThemeSettings(navController: NavHostController, route: St
         onBackClick = { navController.popBackStack() }
     )
 }
+
+/**
+ * Adds to this [NavGraphBuilder] a screen which allows to change the Swipe Actions.
+ * @param navController the NavHostController which hosts this screen. Used to popBackStack when
+ * back button is pressed
+ * @param route the route this composable will be added at
+ */
+fun NavGraphBuilder.addSwipeActionsSettings(navController: NavHostController, route: String) =
+    composable(
+        route = route
+    ) {
+        SwipeActionsPreferenceScreen(
+            modifier = Modifier,
+            onBackClick = { navController.popBackStack() },
+            onChangeSwipeRightClick = {},
+            onChangeSwipeLeftClick = {}
+        )
+    }

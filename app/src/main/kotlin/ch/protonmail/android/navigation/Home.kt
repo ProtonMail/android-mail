@@ -38,15 +38,16 @@ import ch.protonmail.android.mailconversation.presentation.ConversationDetail
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
+import ch.protonmail.android.mailmailbox.presentation.Sidebar
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.addConversationModeSettings
 import ch.protonmail.android.mailsettings.presentation.addLanguageSettings
+import ch.protonmail.android.mailsettings.presentation.addSwipeActionsSettings
 import ch.protonmail.android.mailsettings.presentation.addThemeSettings
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
-import ch.protonmail.android.mailmailbox.presentation.Sidebar
-import ch.protonmail.android.navigation.model.Destination.*
-import ch.protonmail.android.navigation.model.Destination.Dialog.RemoveAccount
+import ch.protonmail.android.navigation.model.Destination.Dialog
+import ch.protonmail.android.navigation.model.Destination.Screen
 import kotlinx.coroutines.launch
 import me.proton.core.compose.navigation.require
 import me.proton.core.compose.theme.ProtonTheme
@@ -103,6 +104,7 @@ fun Home(
                 addConversationModeSettings(navController, Screen.ConversationModeSettings.route)
                 addThemeSettings(navController, Screen.ThemeSettings.route)
                 addLanguageSettings(navController, Screen.LanguageSettings.route)
+                addSwipeActionsSettings(navController, Screen.SwipeActionsSettings.route)
             }
         }
     }
@@ -172,7 +174,8 @@ fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
             Timber.i("Combined contacts setting clicked")
         },
         onSwipeActionsClick = {
-            Timber.i("Swipe actions setting clicked")
+            Timber.d("Swipe actions setting clicked")
+            navController.navigate(Screen.SwipeActionsSettings.route)
         },
         onBackClick = {
             navController.popBackStack()

@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.accountsettings.swipeactions
+package ch.protonmail.android.mailsettings.presentation.settings.swipeactions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,11 +36,13 @@ class SwipeActionsPreferenceViewModel @Inject constructor(
     private val swipeActionPreferenceUiModelMapper: SwipeActionPreferenceUiModelMapper
 ) : ViewModel() {
 
+    val initialState = SwipeActionsPreferenceState.Loading
+
     val state: StateFlow<SwipeActionsPreferenceState> =
         observeState().stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
-            initialValue = SwipeActionsPreferenceState.Loading
+            initialValue = initialState
         )
 
     private fun observeState(): Flow<SwipeActionsPreferenceState.Data> =

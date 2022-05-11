@@ -17,7 +17,10 @@
   -->
 
 <resources>
+
     <string name="mail_settings_settings">Settings</string>
+    <string name="mail_settings_toolbar_button_content_description">Navigate to previous screen</string>
+
     <!-- Settings items -->
     <string name="mail_settings_account_settings">Account settings</string>
     <string name="mail_settings_app_settings">App settings</string>
@@ -65,6 +68,15 @@
     <string name="mail_settings_conversation_mode_hint">Group emails in the same conversation together in your inbox or display them separately</string>
 
     <!-- Swipe Actions -->
+    <string name="mail_settings_swipe_actions_title">Swipe actions</string>
+    <string name="mail_settings_swipe_actions_subtitle">Set up swipe gestures to access most used actions.</string>
+
+    <string name="mail_settings_swipe_info_icon_content_description">Info icon</string>
+    <string name="mail_settings_swipe_chevron_content_description">Change swipe action</string>
+
+    <string name="mail_settings_swipe_right_name">Left to right</string>
+    <string name="mail_settings_swipe_left_name">Right to left</string>
+
     <string name="mail_settings_swipe_action_archive_title">Archive</string>
     <string name="mail_settings_swipe_action_read_title">Unread</string>
     <string name="mail_settings_swipe_action_spam_title">Spam</string>

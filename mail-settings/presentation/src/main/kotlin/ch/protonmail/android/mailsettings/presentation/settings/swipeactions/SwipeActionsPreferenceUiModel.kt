@@ -16,12 +16,12 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.accountsettings.swipeactions
+package ch.protonmail.android.mailsettings.presentation.settings.swipeactions
 
-sealed interface SwipeActionsPreferenceState {
+import androidx.compose.runtime.Stable
 
-    object Loading : SwipeActionsPreferenceState
-    data class Data(
-        val model: SwipeActionsPreferenceUiModel
-    ) : SwipeActionsPreferenceState
-}
+@Stable
+data class SwipeActionsPreferenceUiModel(
+    val left: SwipeActionPreferenceUiModel,
+    val right: SwipeActionPreferenceUiModel
+)

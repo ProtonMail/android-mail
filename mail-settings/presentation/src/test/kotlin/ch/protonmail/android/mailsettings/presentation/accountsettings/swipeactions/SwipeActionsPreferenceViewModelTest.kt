@@ -18,14 +18,21 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings.swipeactions
 
+import androidx.compose.ui.graphics.Color
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionPreferenceUiModel
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionPreferenceUiModelMapper
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceUiModel
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceViewModel
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import kotlin.test.BeforeTest
@@ -54,8 +61,12 @@ internal class SwipeActionsPreferenceViewModelTest {
 
     @Test
     fun `on start emits Loading`() = runTest {
+        // given
+        givenDataIsDelayed()
+
         // when
         viewModel.state.test {
+
             // then
             assertEquals(SwipeActionsPreferenceState.Loading, awaitItem())
         }
@@ -65,19 +76,38 @@ internal class SwipeActionsPreferenceViewModelTest {
     fun `emits correct data`() = runTest {
         // when
         viewModel.state.test {
-            assertEquals(SwipeActionsPreferenceState.Loading, awaitItem())
 
             // then
-            advanceUntilIdle()
             assertEquals(SwipeActionsPreferenceState.Data(uiModel), awaitItem())
         }
+    }
+
+    private fun givenDataIsDelayed() {
+        every { observeSwipeActionsPreference() } returns flow {
+            delay(1)
+            mockk()
+        }
+        viewModel = SwipeActionsPreferenceViewModel(
+            observeSwipeActionsPreference = observeSwipeActionsPreference,
+            swipeActionPreferenceUiModelMapper = swipeActionPreferenceUiModelMapper
+        )
     }
 
     private companion object TestData {
 
         val uiModel = SwipeActionsPreferenceUiModel(
-            left = SwipeActionPreferenceUiModel(0, 1, 2),
-            right = SwipeActionPreferenceUiModel(3, 4, 5)
+            left = SwipeActionPreferenceUiModel(
+                imageRes = 0,
+                titleRes = 1,
+                descriptionRes = 2,
+                getColor = { Color.Black }
+            ),
+            right = SwipeActionPreferenceUiModel(
+                imageRes = 3,
+                titleRes = 4,
+                descriptionRes = 5,
+                getColor = { Color.Black }
+            )
         )
     }
 }
