@@ -1,0 +1,35 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="FunctionName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="namePattern" value="[a-zA-Z][A-Za-z\d]*" />
+    </inspection_tool>
+    <inspection_tool class="ObjectPropertyName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="namePattern" value="[A-Za-z][- _A-Za-z\d]*" />
+    </inspection_tool>
+    <inspection_tool class="PreviewAnnotationInFunctionWithParameters" enabled="true" level="ERROR" enabled_by_default="true">
+      <option name="previewFile" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PreviewDimensionRespectsLimit" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="previewFile" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PreviewMultipleParameterProviders" enabled="true" level="ERROR" enabled_by_default="true">
+      <option name="previewFile" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PreviewMustBeTopLevelFunction" enabled="true" level="ERROR" enabled_by_default="true">
+      <option name="previewFile" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PreviewNeedsComposableAnnotation" enabled="true" level="ERROR" enabled_by_default="true">
+      <option name="previewFile" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PropertyName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="namePattern" value="[a-zA-Z][A-Za-z\d]*" />
+    </inspection_tool>
+    <inspection_tool class="ShellCheck" enabled="true" level="ERROR" enabled_by_default="true">
+      <shellcheck_settings value="SC2155" />
+    </inspection_tool>
+    <inspection_tool class="TestFunctionName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="namePattern" value="[a-zA-Z][A-Za-z_\d]*" />
+    </inspection_tool>
+  </profile>
+</component>
