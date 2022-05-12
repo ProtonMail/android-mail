@@ -18,6 +18,14 @@
 
 package ch.protonmail.android.mailmailbox.domain.model
 
+import ch.protonmail.android.mailmailbox.domain.model.SystemLabelId.ALL_MAIL
+import ch.protonmail.android.mailmailbox.domain.model.SystemLabelId.ARCHIVE
+import ch.protonmail.android.mailmailbox.domain.model.SystemLabelId.DRAFT
+import ch.protonmail.android.mailmailbox.domain.model.SystemLabelId.INBOX
+import ch.protonmail.android.mailmailbox.domain.model.SystemLabelId.SENT
+import ch.protonmail.android.mailmailbox.domain.model.SystemLabelId.SPAM
+import ch.protonmail.android.mailmailbox.domain.model.SystemLabelId.STARRED
+import ch.protonmail.android.mailmailbox.domain.model.SystemLabelId.TRASH
 import me.proton.core.label.domain.entity.LabelId
 
 /**
@@ -27,16 +35,16 @@ import me.proton.core.label.domain.entity.LabelId
  */
 sealed class SidebarLocation(open val labelId: LabelId) {
 
-    sealed class MailLocation(override val labelId: LabelId) : SidebarLocation(labelId)
+    sealed class MailLocation(systemLabelId: SystemLabelId) : SidebarLocation(systemLabelId.asLabelId())
 
-    object Inbox : MailLocation(LabelId("0"))
-    object Drafts : MailLocation(LabelId("8"))
-    object Sent : MailLocation(LabelId("7"))
-    object Starred : MailLocation(LabelId("10"))
-    object Archive : MailLocation(LabelId("6"))
-    object Spam : MailLocation(LabelId("4"))
-    object Trash : MailLocation(LabelId("3"))
-    object AllMail : MailLocation(LabelId("5"))
+    object Inbox : MailLocation(INBOX)
+    object Drafts : MailLocation(DRAFT)
+    object Sent : MailLocation(SENT)
+    object Starred : MailLocation(STARRED)
+    object Archive : MailLocation(ARCHIVE)
+    object Spam : MailLocation(SPAM)
+    object Trash : MailLocation(TRASH)
+    object AllMail : MailLocation(ALL_MAIL)
 
     data class CustomLabel(val id: LabelId) : SidebarLocation(id)
 

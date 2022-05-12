@@ -57,7 +57,8 @@ class MailboxViewModel @Inject constructor(
     private val pagingSourceFactory: MailboxItemPagingSourceFactory,
 ) : ViewModel() {
 
-    private val mailboxItemType = observeMailboxItemType()
+    private val mailboxItemType: StateFlow<MailboxItemType> = selectedSidebarLocation.location
+        .flatMapLatest { sidebarLocation -> observeMailboxItemType(sidebarLocation) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,

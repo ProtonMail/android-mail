@@ -62,7 +62,7 @@ class MailboxViewModelTest {
         coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit
     }
     private val observeMailboxItemType = mockk<ObserveMailboxItemType> {
-        coEvery { this@mockk.invoke() } returns flowOf(Message)
+        coEvery { this@mockk.invoke(any()) } returns flowOf(Message)
     }
     private val pagingSourceFactory = mockk<MailboxItemPagingSourceFactory>(relaxed = true)
 
