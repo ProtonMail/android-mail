@@ -19,7 +19,13 @@
 package ch.protonmail.android.mailmailbox.presentation
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
+import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Archive
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
@@ -27,6 +33,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel.Action
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -44,14 +51,15 @@ import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.entity.UserId
 import org.junit.Before
 import org.junit.Test
-import kotlin.test.*
+import kotlin.test.Ignore
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class MailboxViewModelTest {
 
-    private val userId = UserId("userId")
     private val userIdFlow = MutableSharedFlow<UserId?>()
     private val accountManager = mockk<AccountManager> {
-        every { this@mockk.getPrimaryUserId() } returns userIdFlow
+        every { getPrimaryUserId() } returns flowOf(userId)
     }
 
     private val selectedSidebarLocation = mockk<SelectedSidebarLocation> {
@@ -62,17 +70,13 @@ class MailboxViewModelTest {
         coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit
     }
     private val observeMailboxItemType = mockk<ObserveMailboxItemType> {
+        coEvery { this@mockk.invoke() } returns flowOf(Message)
         coEvery { this@mockk.invoke(any()) } returns flowOf(Message)
     }
     private val pagingSourceFactory = mockk<MailboxItemPagingSourceFactory>(relaxed = true)
 
-    private lateinit var mailboxViewModel: MailboxViewModel
-
-    @Before
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-
-        mailboxViewModel = MailboxViewModel(
+    private val mailboxViewModel by lazy {
+        MailboxViewModel(
             accountManager,
             selectedSidebarLocation,
             markAsStaleMailboxItems,
@@ -81,10 +85,19 @@ class MailboxViewModelTest {
         )
     }
 
+    @Before
+    fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+    }
+
     @Test
     fun `emits initial mailbox state when initialized`() = runTest {
+        // given
+        givenUserNotLoggedIn()
+
         // When
         mailboxViewModel.state.test {
+
             // Then
             val actual = awaitItem()
             val expected = MailboxState.Loading
@@ -99,8 +112,6 @@ class MailboxViewModelTest {
     fun `emits default TopAppBar state as soon as the label name is available`() = runTest {
         // When
         mailboxViewModel.state.test {
-            assertEquals(MailboxState.Loading, awaitItem())
-            userIdFlow.emit(userId)
 
             // Then
             val expected = MailboxTopAppBarState.Data.DefaultMode(Archive::class.simpleName!!)
@@ -110,9 +121,8 @@ class MailboxViewModelTest {
 
     @Test
     fun `when selection mode is not open and the right Action is submitted, selection mode is opened`() = runTest {
+        // given
         mailboxViewModel.state.test {
-            assertEquals(MailboxState.Loading, awaitItem())
-            userIdFlow.emit(userId)
             awaitItem() // First emission for selected user
 
             // When
@@ -126,9 +136,8 @@ class MailboxViewModelTest {
 
     @Test
     fun `when selection mode is open and the right Action is submitted, selection mode is closed`() = runTest {
+        // given
         mailboxViewModel.state.test {
-            assertEquals(MailboxState.Loading, awaitItem())
-            userIdFlow.emit(userId)
             awaitItem() // First emission for selected user
 
             mailboxViewModel.submit(Action.EnterSelectionMode)
@@ -146,10 +155,6 @@ class MailboxViewModelTest {
     @Test
     fun `emits mailbox state with current location`() = runTest {
         mailboxViewModel.state.test {
-            awaitItem() // Initial item
-
-            // When
-            userIdFlow.emit(userId)
 
             // Then
             val actual = awaitItem()
@@ -160,14 +165,9 @@ class MailboxViewModelTest {
     @Test
     fun `emits mailbox items`() = runTest {
         mailboxViewModel.items.test {
-            awaitItem() // Initial item
-
-            // When
-            userIdFlow.emit(userId)
 
             // Then
             awaitItem()
-
             verify { pagingSourceFactory.create(listOf(userId), Archive, Message) }
         }
     }
@@ -182,5 +182,97 @@ class MailboxViewModelTest {
 
         // Then
         coVerify { markAsStaleMailboxItems.invoke(listOf(userId), Message, Archive.labelId) }
+    }
+
+    @Test
+    fun `open item details actions generates a request to open Message details for a Message while in Message mode`() =
+        runTest {
+
+            // given
+            val item = buildMailboxItem(Message)
+            every { observeMailboxItemType() } returns flowOf(Message)
+
+            // when
+            mailboxViewModel.submit(Action.OpenItemDetails(item))
+            mailboxViewModel.state.test {
+
+                // then
+                val expected = OpenMailboxItemRequest(MailboxItemId(item.id), Message)
+                assertEquals(expected, awaitItem().openItemEffect.consume())
+            }
+        }
+
+    @Test
+    fun `open item details actions generates a request to open Conversation details for a Conversation while in Conversation mode`() =
+        runTest {
+
+            // given
+            val item = buildMailboxItem(Conversation)
+            every { observeMailboxItemType() } returns flowOf(Conversation)
+
+            // when
+            mailboxViewModel.submit(Action.OpenItemDetails(item))
+            mailboxViewModel.state.test {
+
+                // then
+                val expected = OpenMailboxItemRequest(MailboxItemId(item.id), Conversation)
+                assertEquals(expected, awaitItem().openItemEffect.consume())
+            }
+        }
+
+    @Test
+    fun `open item details actions generates a request to open Conversation details for a Message while in Conversation mode`() =
+        runTest {
+
+            // given
+            val item = buildMailboxItem(Message)
+            every { observeMailboxItemType() } returns flowOf(Conversation)
+
+            // when
+            mailboxViewModel.submit(Action.OpenItemDetails(item))
+            mailboxViewModel.state.test {
+
+                // then
+                val expected = OpenMailboxItemRequest(MailboxItemId(item.id), Conversation)
+                assertEquals(expected, awaitItem().openItemEffect.consume())
+            }
+        }
+
+    @Test
+    @Ignore("Failing to catch the exception")
+    fun `open item details actions throws an exception when trying to open details for a Conversation while in Message mode`() =
+        runTest {
+
+            // given
+            val item = buildMailboxItem(Conversation)
+            every { observeMailboxItemType() } returns flowOf(Message)
+
+            // when - then
+            val expectedMessage = "Item type is $Conversation, but mailbox type is $Message"
+            assertFailsWith<IllegalStateException>(expectedMessage) {
+                mailboxViewModel.submit(Action.OpenItemDetails(item))
+            }
+        }
+
+    private fun givenUserNotLoggedIn() {
+        every { accountManager.getPrimaryUserId() } returns userIdFlow
+    }
+
+    private companion object TestData {
+
+        fun buildMailboxItem(type: MailboxItemType) = MailboxItem(
+            type = type,
+            id = "id",
+            userId = userId,
+            time = 0,
+            size = 0,
+            order = 0,
+            read = false,
+            conversationId = ConversationId("id"),
+            labels = emptyList(),
+            subject = "subject",
+            senders = emptyList(),
+            recipients = emptyList(),
+        )
     }
 }

@@ -18,10 +18,11 @@
 
 package ch.protonmail.android.mailmailbox.domain.model
 
-import ch.protonmail.android.mailpagination.domain.entity.PageItem
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailpagination.domain.entity.PageItem
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
@@ -39,6 +40,7 @@ data class MailboxItem(
     override val size: Long,
     override val order: Long,
     override val read: Boolean,
+    val conversationId: ConversationId,
     val labels: List<Label> = emptyList(),
     val subject: String,
     val senders: List<Recipient>,
@@ -51,6 +53,7 @@ data class MailboxItem(
 fun Message.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     type = MailboxItemType.Message,
     id = messageId.id,
+    conversationId = conversationId,
     userId = userId,
     senders = listOf(sender),
     recipients = toList + ccList + bccList,
@@ -65,6 +68,7 @@ fun Message.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
 fun Conversation.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     type = MailboxItemType.Conversation,
     id = conversationId.id,
+    conversationId = conversationId,
     userId = userId,
     senders = senders,
     recipients = recipients,

@@ -24,8 +24,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import ch.protonmail.android.mailcommon.domain.Effect
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
@@ -46,6 +49,7 @@ import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.EMPTY_STRING
+import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,7 +61,14 @@ class MailboxViewModel @Inject constructor(
     private val pagingSourceFactory: MailboxItemPagingSourceFactory,
 ) : ViewModel() {
 
-    private val mailboxItemType: StateFlow<MailboxItemType> = selectedSidebarLocation.location
+    private val mailboxItemTypeBySettings = observeMailboxItemType()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = MailboxItemType.Message
+        )
+
+    private val mailboxItemTypeByLocation: StateFlow<MailboxItemType> = selectedSidebarLocation.location
         .flatMapLatest { sidebarLocation -> observeMailboxItemType(sidebarLocation) }
         .stateIn(
             scope = viewModelScope,
@@ -71,6 +82,9 @@ class MailboxViewModel @Inject constructor(
             started = SharingStarted.Eagerly,
             initialValue = emptyList()
         )
+
+    private val openItemDetailEffect: MutableStateFlow<Effect<OpenMailboxItemRequest>> =
+        MutableStateFlow(Effect.empty())
 
     private val topAppBarState: MutableStateFlow<MailboxTopAppBarState> =
         MutableStateFlow(MailboxTopAppBarState.Loading)
@@ -86,8 +100,9 @@ class MailboxViewModel @Inject constructor(
             when (action) {
                 Action.EnterSelectionMode -> onOpenSelectionMode()
                 Action.ExitSelectionMode -> onCloseSelectionMode()
+                is Action.OpenItemDetails -> onOpenItemDetails(action.item)
                 Action.Refresh -> onRefresh()
-            }
+            }.exhaustive
         }
     }
 
@@ -105,10 +120,23 @@ class MailboxViewModel @Inject constructor(
         }
     }
 
+    private suspend fun onOpenItemDetails(item: MailboxItem) {
+        val request = when (val mailboxItemType = mailboxItemTypeBySettings.value) {
+            MailboxItemType.Conversation -> {
+                OpenMailboxItemRequest(MailboxItemId(item.conversationId.id), mailboxItemType)
+            }
+            MailboxItemType.Message -> {
+                if (item.type == MailboxItemType.Message) OpenMailboxItemRequest(MailboxItemId(item.id), item.type)
+                else throw IllegalStateException("Item type is ${item.type}, but mailbox type is $mailboxItemType")
+            }
+        }
+        openItemDetailEffect.emit(Effect(request))
+    }
+
     private suspend fun onRefresh() {
         markAsStaleMailboxItems(
             userIds = userIds.value,
-            type = mailboxItemType.value,
+            type = mailboxItemTypeByLocation.value,
             labelId = selectedSidebarLocation.location.value.labelId
         )
     }
@@ -119,7 +147,7 @@ class MailboxViewModel @Inject constructor(
 
     private fun observePagingData(): Flow<PagingData<MailboxItem>> = combine(
         userIds,
-        mailboxItemType,
+        mailboxItemTypeByLocation,
         selectedSidebarLocation.location,
     ) { userIds, mailboxItemType, location ->
         when {
@@ -137,16 +165,22 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun observeState() = combine(
-        userIds,
+        openItemDetailEffect,
+        selectedSidebarLocation.location,
         topAppBarState,
-        selectedSidebarLocation.location
-    ) { userIds, topAppBarState, location ->
+        userIds,
+    ) { openItemDetailEffect, location, topAppBarState, userIds ->
         when {
             userIds.isEmpty() -> MailboxState.Loading
             else -> {
                 val currentLabelName = location::class.simpleName ?: EMPTY_STRING
                 val newTopAppBarState = topAppBarState.withCurrentLabelName(currentLabelName)
-                MailboxState(topAppBar = newTopAppBarState, selectedLocation = location, unread = 0)
+                MailboxState(
+                    topAppBar = newTopAppBarState,
+                    selectedLocation = location,
+                    unread = 0,
+                    openItemEffect = openItemDetailEffect
+                )
             }
         }
     }
@@ -155,6 +189,7 @@ class MailboxViewModel @Inject constructor(
 
         object EnterSelectionMode : Action
         object ExitSelectionMode : Action
+        data class OpenItemDetails(val item: MailboxItem): Action
         object Refresh : Action
     }
 }

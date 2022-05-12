@@ -16,29 +16,24 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.mailcommon.domain
 
-import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailcommon.domain.Effect
-import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
-import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
+/**
+ * This is a container for single-use state.
+ * Use this when you don't want an event to be repeated, for example while emitting an error to the ViewModel
+ *
+ * You usually wanna consume this into a `LaunchedEffect` block
+ */
+class Effect<T>(private var event: T?) {
 
-@Stable
-data class MailboxState(
-    val topAppBar: MailboxTopAppBarState,
-    val selectedLocation: SidebarLocation?,
-    val unread: Int,
-    val openItemEffect: Effect<OpenMailboxItemRequest>
-) {
+    /**
+     * @return the [event] if not consumed, `null` otherwise
+     */
+    fun consume(): T? = event
+        .also { event = null }
 
     companion object {
 
-        val Loading = MailboxState(
-            topAppBar = MailboxTopAppBarState.Loading,
-            selectedLocation = null,
-            unread = 0,
-            openItemEffect = Effect.empty()
-        )
+        fun <T> empty() = Effect<T>(null)
     }
 }

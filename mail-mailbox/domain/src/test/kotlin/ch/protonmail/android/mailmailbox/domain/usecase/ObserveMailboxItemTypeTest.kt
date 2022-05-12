@@ -23,7 +23,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.CustomFolder
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.CustomLabel
-import ch.protonmail.android.mailsettings.domain.ObserveMailSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf

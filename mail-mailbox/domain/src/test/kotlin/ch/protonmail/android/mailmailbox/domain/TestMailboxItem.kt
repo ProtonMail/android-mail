@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.domain
 
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -32,6 +33,7 @@ fun getMailboxItem(
 ) = MailboxItem(
     type = type,
     id = id,
+    conversationId = ConversationId(id),
     userId = userId,
     time = time,
     size = 1000,

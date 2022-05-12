@@ -47,9 +47,11 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -65,7 +67,7 @@ const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
 
 @Composable
 fun MailboxScreen(
-    navigateToMailboxItem: (MailboxItem) -> Unit,
+    navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
     openDrawerMenu: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MailboxViewModel = hiltViewModel(),
@@ -74,6 +76,10 @@ fun MailboxScreen(
     val mailboxState by rememberAsState(viewModel.state, MailboxState.Loading)
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val mailboxListState = mailboxListItems.rememberLazyListState()
+
+    mailboxState.openItemEffect.consume()?.let { itemId ->
+        navigateToMailboxItem(itemId)
+    }
 
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_MAILBOX_SCREEN),
@@ -91,7 +97,8 @@ fun MailboxScreen(
         }
     ) {
         Column(
-            modifier = modifier.padding(it)
+            modifier = modifier
+                .padding(it)
                 .background(ProtonTheme.colors.backgroundNorm)
                 .fillMaxSize()
         ) {
@@ -99,7 +106,7 @@ fun MailboxScreen(
                 mailboxState = mailboxState,
             )
             MailboxList(
-                navigateToMailboxItem = navigateToMailboxItem,
+                navigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
                 onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
                 onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
                 modifier = modifier,
@@ -247,6 +254,7 @@ fun PreviewMailbox() {
                 MailboxItem(
                     type = MailboxItemType.Message,
                     id = "1",
+                    conversationId = ConversationId("2"),
                     userId = UserId("0"),
                     senders = listOf(Recipient("address", "name")),
                     recipients = emptyList(),
@@ -259,6 +267,7 @@ fun PreviewMailbox() {
                 MailboxItem(
                     type = MailboxItemType.Message,
                     id = "2",
+                    conversationId = ConversationId("2"),
                     userId = UserId("0"),
                     senders = listOf(Recipient("address", "name")),
                     recipients = emptyList(),

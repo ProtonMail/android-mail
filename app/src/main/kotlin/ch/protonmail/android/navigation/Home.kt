@@ -35,7 +35,6 @@ import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetailScreen
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.mailmailbox.presentation.Sidebar
@@ -121,11 +120,11 @@ private fun NavGraphBuilder.addMailbox(
     route = Screen.Mailbox.route
 ) {
     MailboxScreen(
-        navigateToMailboxItem = { item: MailboxItem ->
+        navigateToMailboxItem = { request ->
             navController.navigate(
-                when (item.type) {
-                    MailboxItemType.Message -> Screen.Message(MessageId(item.id))
-                    MailboxItemType.Conversation -> Screen.Conversation(ConversationId(item.id))
+                when (request.itemType) {
+                    MailboxItemType.Message -> Screen.Message(MessageId(request.itemId.value))
+                    MailboxItemType.Conversation -> Screen.Conversation(ConversationId(request.itemId.value))
                 }
             )
         },
