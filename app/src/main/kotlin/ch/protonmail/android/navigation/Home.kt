@@ -34,11 +34,14 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
-import ch.protonmail.android.mailconversation.presentation.ConversationDetail
+import ch.protonmail.android.mailconversation.presentation.ConversationDetailScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.mailmailbox.presentation.Sidebar
+import ch.protonmail.android.mailmailbox.presentation.Sidebar
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.presentation.MessageDetailScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.addConversationModeSettings
 import ch.protonmail.android.mailsettings.presentation.addLanguageSettings
@@ -98,6 +101,7 @@ fun Home(
                     openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } }
                 )
                 addConversationDetail()
+                addMessageDetail()
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
                 addAccountSettings(navController)
@@ -120,7 +124,7 @@ private fun NavGraphBuilder.addMailbox(
         navigateToMailboxItem = { item: MailboxItem ->
             navController.navigate(
                 when (item.type) {
-                    MailboxItemType.Message -> Screen.Conversation(ConversationId(item.id))
+                    MailboxItemType.Message -> Screen.Message(MessageId(item.id))
                     MailboxItemType.Conversation -> Screen.Conversation(ConversationId(item.id))
                 }
             )
@@ -132,7 +136,13 @@ private fun NavGraphBuilder.addMailbox(
 private fun NavGraphBuilder.addConversationDetail() = composable(
     route = Screen.Conversation.route,
 ) {
-    ConversationDetail(Screen.Conversation.getConversationId(it.require(Destination.key)))
+    ConversationDetailScreen(Screen.Conversation.getConversationId(it.require(Destination.key)))
+}
+
+private fun NavGraphBuilder.addMessageDetail() = composable(
+    route = Screen.Message.route,
+) {
+    MessageDetailScreen(Screen.Message.getMessageId(it.require(Destination.key)))
 }
 
 private fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostController) = dialog(

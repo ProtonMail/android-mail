@@ -19,6 +19,7 @@
 package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.domain.entity.UserId
 
 sealed class Destination(val route: String) {
@@ -31,6 +32,13 @@ sealed class Destination(val route: String) {
                 "mailbox/conversation/${conversationId.id}"
 
             fun getConversationId(key: String) = ConversationId(key)
+        }
+
+        object Message : Destination("mailbox/message/{key}") {
+            operator fun invoke(messageId: MessageId) =
+                "mailbox/message/${messageId.id}"
+
+            fun getMessageId(key: String) = MessageId(key)
         }
 
         object Settings : Destination("settings")

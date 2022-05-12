@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 
 @Composable
-fun ConversationDetail(
+fun ConversationDetailScreen(
     conversationId: ConversationId,
     modifier: Modifier = Modifier
 ) {
