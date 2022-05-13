@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.CustomFolder
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.CustomLabel
@@ -39,21 +38,21 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
-internal class ObserveMailboxItemTypeTest(
+internal class ObserveCurrentViewModeTest(
     @Suppress("UNUSED_PARAMETER") _testName: String,
     private val input: Params.Input,
-    private val expected: MailboxItemType
+    private val expected: ViewMode
 ) {
 
     private val observeMailSettings: ObserveMailSettings = mockk {
         every { this@mockk() } returns
             flowOf(buildMailSettings(isConversationSettingEnabled = input.isConversationSettingEnabled))
     }
-    private val observeMailboxItemType = ObserveMailboxItemType(observeMailSettings)
+    private val observeCurrentViewMode = ObserveCurrentViewMode(observeMailSettings)
 
     @Test
     fun test() = runTest {
-        observeMailboxItemType(input.location).test {
+        observeCurrentViewMode(input.location).test {
             assertEquals(expected, awaitItem())
             awaitComplete()
         }
@@ -62,7 +61,7 @@ internal class ObserveMailboxItemTypeTest(
     data class Params(
         val testName: String,
         val input: Input,
-        val expected: MailboxItemType
+        val expected: ViewMode
     ) {
 
         data class Input(
@@ -120,121 +119,121 @@ internal class ObserveMailboxItemTypeTest(
             Params(
                 testName = "conversation enabled in Inbox",
                 input = Params.Input(isConversationSettingEnabled = true, SidebarLocation.Inbox),
-                expected = MailboxItemType.Conversation
+                expected = ViewMode.ConversationGrouping
             ),
 
             Params(
                 testName = "conversation enabled in Drafts",
                 input = Params.Input(isConversationSettingEnabled = true, SidebarLocation.Drafts),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation enabled in Sent",
                 input = Params.Input(isConversationSettingEnabled = true, SidebarLocation.Sent),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation enabled in Starred",
                 input = Params.Input(isConversationSettingEnabled = true, SidebarLocation.Starred),
-                expected = MailboxItemType.Conversation
+                expected = ViewMode.ConversationGrouping
             ),
 
             Params(
                 testName = "conversation enabled in Archive",
                 input = Params.Input(isConversationSettingEnabled = true, SidebarLocation.Archive),
-                expected = MailboxItemType.Conversation
+                expected = ViewMode.ConversationGrouping
             ),
 
             Params(
                 testName = "conversation enabled in Spam",
                 input = Params.Input(isConversationSettingEnabled = true, SidebarLocation.Spam),
-                expected = MailboxItemType.Conversation
+                expected = ViewMode.ConversationGrouping
             ),
 
             Params(
                 testName = "conversation enabled in Trash",
                 input = Params.Input(isConversationSettingEnabled = true, SidebarLocation.Trash),
-                expected = MailboxItemType.Conversation
+                expected = ViewMode.ConversationGrouping
             ),
 
             Params(
                 testName = "conversation enabled in AllMail",
                 input = Params.Input(isConversationSettingEnabled = true, SidebarLocation.AllMail),
-                expected = MailboxItemType.Conversation
+                expected = ViewMode.ConversationGrouping
             ),
 
             Params(
                 testName = "conversation enabled in CustomLabel",
                 input = Params.Input(isConversationSettingEnabled = true, CustomLabel(LabelId("0"))),
-                expected = MailboxItemType.Conversation
+                expected = ViewMode.ConversationGrouping
             ),
 
             Params(
                 testName = "conversation enabled in CustomFolder",
                 input = Params.Input(isConversationSettingEnabled = true, CustomFolder(LabelId("0"))),
-                expected = MailboxItemType.Conversation
+                expected = ViewMode.ConversationGrouping
             ),
 
             Params(
                 testName = "conversation disabled in Inbox",
                 input = Params.Input(isConversationSettingEnabled = false, SidebarLocation.Inbox),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation disabled in Drafts",
                 input = Params.Input(isConversationSettingEnabled = false, SidebarLocation.Drafts),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation disabled in Sent",
                 input = Params.Input(isConversationSettingEnabled = false, SidebarLocation.Sent),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation disabled in Starred",
                 input = Params.Input(isConversationSettingEnabled = false, SidebarLocation.Starred),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation disabled in Archive",
                 input = Params.Input(isConversationSettingEnabled = false, SidebarLocation.Archive),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation disabled in Spam",
                 input = Params.Input(isConversationSettingEnabled = false, SidebarLocation.Spam),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation disabled in Trash",
                 input = Params.Input(isConversationSettingEnabled = false, SidebarLocation.Trash),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation disabled in AllMail",
                 input = Params.Input(isConversationSettingEnabled = false, SidebarLocation.AllMail),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation disabled in CustomLabel",
                 input = Params.Input(isConversationSettingEnabled = false, CustomLabel(LabelId("0"))),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             ),
 
             Params(
                 testName = "conversation disabled in CustomFolder",
                 input = Params.Input(isConversationSettingEnabled = false, CustomFolder(LabelId("0"))),
-                expected = MailboxItemType.Message
+                expected = ViewMode.NoConversationGrouping
             )
 
         ).map { arrayOf(it.testName, it.input, it.expected) }

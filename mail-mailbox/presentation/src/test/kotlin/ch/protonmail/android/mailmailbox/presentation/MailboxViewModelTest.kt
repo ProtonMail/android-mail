@@ -29,7 +29,7 @@ import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Archive
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveMailboxItemType
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel.Action
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
@@ -41,23 +41,21 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.domain.entity.UserId
+import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
+import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
 import org.junit.Before
 import org.junit.Test
-import kotlin.test.Ignore
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class MailboxViewModelTest {
 
-    private val userIdFlow = MutableSharedFlow<UserId?>()
     private val accountManager = mockk<AccountManager> {
         every { getPrimaryUserId() } returns flowOf(userId)
     }
@@ -69,9 +67,9 @@ class MailboxViewModelTest {
     private val markAsStaleMailboxItems = mockk<MarkAsStaleMailboxItems> {
         coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit
     }
-    private val observeMailboxItemType = mockk<ObserveMailboxItemType> {
-        coEvery { this@mockk.invoke() } returns flowOf(Message)
-        coEvery { this@mockk.invoke(any()) } returns flowOf(Message)
+    private val observeCurrentViewMode = mockk<ObserveCurrentViewMode> {
+        coEvery { this@mockk.invoke() } returns flowOf(NoConversationGrouping)
+        coEvery { this@mockk.invoke(any()) } returns flowOf(NoConversationGrouping)
     }
     private val pagingSourceFactory = mockk<MailboxItemPagingSourceFactory>(relaxed = true)
 
@@ -80,7 +78,7 @@ class MailboxViewModelTest {
             accountManager,
             selectedSidebarLocation,
             markAsStaleMailboxItems,
-            observeMailboxItemType,
+            observeCurrentViewMode,
             pagingSourceFactory
         )
     }
@@ -174,9 +172,6 @@ class MailboxViewModelTest {
 
     @Test
     fun `onRefresh call markAsStaleMailboxItems`() = runTest {
-        // Given
-        userIdFlow.emit(userId)
-
         // When
         mailboxViewModel.submit(Action.Refresh)
 
@@ -190,7 +185,7 @@ class MailboxViewModelTest {
 
             // given
             val item = buildMailboxItem(Message)
-            every { observeMailboxItemType() } returns flowOf(Message)
+            every { observeCurrentViewMode() } returns flowOf(NoConversationGrouping)
 
             // when
             mailboxViewModel.submit(Action.OpenItemDetails(item))
@@ -208,7 +203,7 @@ class MailboxViewModelTest {
 
             // given
             val item = buildMailboxItem(Conversation)
-            every { observeMailboxItemType() } returns flowOf(Conversation)
+            every { observeCurrentViewMode() } returns flowOf(ConversationGrouping)
 
             // when
             mailboxViewModel.submit(Action.OpenItemDetails(item))
@@ -226,7 +221,7 @@ class MailboxViewModelTest {
 
             // given
             val item = buildMailboxItem(Message)
-            every { observeMailboxItemType() } returns flowOf(Conversation)
+            every { observeCurrentViewMode() } returns flowOf(ConversationGrouping)
 
             // when
             mailboxViewModel.submit(Action.OpenItemDetails(item))
@@ -238,24 +233,8 @@ class MailboxViewModelTest {
             }
         }
 
-    @Test
-    @Ignore("Failing to catch the exception")
-    fun `open item details actions throws an exception when trying to open details for a Conversation while in Message mode`() =
-        runTest {
-
-            // given
-            val item = buildMailboxItem(Conversation)
-            every { observeMailboxItemType() } returns flowOf(Message)
-
-            // when - then
-            val expectedMessage = "Item type is $Conversation, but mailbox type is $Message"
-            assertFailsWith<IllegalStateException>(expectedMessage) {
-                mailboxViewModel.submit(Action.OpenItemDetails(item))
-            }
-        }
-
     private fun givenUserNotLoggedIn() {
-        every { accountManager.getPrimaryUserId() } returns userIdFlow
+        every { accountManager.getPrimaryUserId() } returns emptyFlow()
     }
 
     private companion object TestData {

@@ -18,18 +18,18 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.domain.model.SystemLabelId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
-class ObserveMailboxItemType @Inject constructor(
+class ObserveCurrentViewMode @Inject constructor(
     private val observeMailSettings: ObserveMailSettings,
 ) {
 
@@ -40,14 +40,16 @@ class ObserveMailboxItemType @Inject constructor(
         SystemLabelId.ALL_SENT
     ).map { it.asLabelId() }
 
-    operator fun invoke(location: SidebarLocation): Flow<MailboxItemType> =
-        if (location.labelId in messagesOnlyLabelsIds) flowOf(MailboxItemType.Message)
+    operator fun invoke(location: SidebarLocation): Flow<ViewMode> =
+        if (location.labelId in messagesOnlyLabelsIds) flowOf(ViewMode.NoConversationGrouping)
         else invoke()
 
-    operator fun invoke(): Flow<MailboxItemType> = observeMailSettings().mapLatest {
-        when (it?.viewMode?.enum) {
-            ViewMode.ConversationGrouping -> MailboxItemType.Conversation
-            else -> MailboxItemType.Message
-        }
+    operator fun invoke(): Flow<ViewMode> = observeMailSettings()
+        .mapLatest { it?.viewMode?.enum ?: DefaultViewMode }
+        .distinctUntilChanged()
+
+    companion object {
+
+        val DefaultViewMode = ViewMode.NoConversationGrouping
     }
 }

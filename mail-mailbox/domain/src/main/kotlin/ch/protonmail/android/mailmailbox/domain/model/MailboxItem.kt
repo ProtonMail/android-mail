@@ -26,6 +26,7 @@ import ch.protonmail.android.mailpagination.domain.entity.PageItem
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.mailsettings.domain.entity.ViewMode
 
 enum class MailboxItemType {
     Message,
@@ -79,3 +80,8 @@ fun Conversation.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     order = order,
     read = read,
 )
+
+fun ViewMode.toMailboxItemType() = when (this) {
+    ViewMode.ConversationGrouping -> MailboxItemType.Conversation
+    ViewMode.NoConversationGrouping -> MailboxItemType.Message
+}
