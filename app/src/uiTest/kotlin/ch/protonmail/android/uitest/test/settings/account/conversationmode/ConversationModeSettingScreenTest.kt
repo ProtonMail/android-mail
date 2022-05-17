@@ -7,7 +7,6 @@ import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
 import ch.protonmail.android.uitest.annotation.SmokeTest
@@ -15,9 +14,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.experimental.categories.Category
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
 class ConversationModeSettingScreenTest {
 
     @get:Rule

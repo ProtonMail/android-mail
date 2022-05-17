@@ -7,7 +7,6 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.domain.model.Theme.DARK
 import ch.protonmail.android.mailsettings.domain.model.Theme.LIGHT
@@ -21,11 +20,9 @@ import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.experimental.categories.Category
-import org.junit.runner.RunWith
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-@RunWith(AndroidJUnit4::class)
 class ThemeSettingScreenTest {
 
     @get:Rule

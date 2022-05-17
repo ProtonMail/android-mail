@@ -50,7 +50,7 @@ object UserTestData {
     )
 
     val adminUser = User(
-        userId = UserIdTestData.userId1,
+        userId = UserIdTestData.adminUserId,
         email = USER_EMAIL_RAW,
         displayName = USER_DISPLAY_NAME_RAW,
         name = null,
@@ -68,7 +68,7 @@ object UserTestData {
     )
 
     val orgMemberUser = User(
-        userId = UserIdTestData.userId1,
+        userId = UserIdTestData.adminUserId,
         email = USER_EMAIL_RAW,
         displayName = USER_DISPLAY_NAME_RAW,
         name = null,

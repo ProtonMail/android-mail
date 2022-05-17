@@ -19,7 +19,6 @@
 package ch.protonmail.android.feature.forceupdate
 
 import android.content.Context
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -28,9 +27,7 @@ import me.proton.core.presentation.app.AppLifecycleObserver
 import me.proton.core.presentation.app.AppLifecycleProvider
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
 class ForceUpdateHandlerTest {
 
     private val context = mockk<Context>(relaxed = true)

@@ -26,7 +26,6 @@ import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToNode
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
 import ch.protonmail.android.mailmailbox.presentation.Sidebar
@@ -35,11 +34,9 @@ import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_SIDEBAR_MENU
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
 private const val APP_VERSION_FOOTER = "Proton Mail 6.0.0-alpha+test"
 
-@RunWith(AndroidJUnit4::class)
 class SidebarScreenTest {
 
     @get:Rule

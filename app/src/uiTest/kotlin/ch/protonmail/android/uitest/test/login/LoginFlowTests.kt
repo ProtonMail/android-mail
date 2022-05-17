@@ -1,6 +1,5 @@
 package ch.protonmail.android.uitest.test.login
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
@@ -10,9 +9,7 @@ import me.proton.core.test.android.robots.auth.login.MailboxPasswordRobot
 import org.junit.Before
 import org.junit.Test
 import org.junit.experimental.categories.Category
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
 class LoginFlowTests : BaseTest() {
 
     private val addAccountRobot = AddAccountRobot()
