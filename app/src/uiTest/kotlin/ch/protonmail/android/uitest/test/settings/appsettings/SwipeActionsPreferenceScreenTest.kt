@@ -18,26 +18,20 @@
 
 package ch.protonmail.android.uitest.test.settings.appsettings
 
-import android.content.Context
-import androidx.annotation.StringRes
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertAny
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onParent
-import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionPreferenceUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceScreen
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Loading
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceUiModel
 import ch.protonmail.android.uitest.annotation.SmokeTest
+import ch.protonmail.android.uitest.util.hasText
+import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
@@ -47,8 +41,6 @@ import ch.protonmail.android.mailsettings.presentation.R as SettingsR
 import me.proton.core.presentation.R as CoreR
 
 class SwipeActionsPreferenceScreenTest {
-
-    private val context = ApplicationProvider.getApplicationContext<Context>()
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -69,18 +61,18 @@ class SwipeActionsPreferenceScreenTest {
         setContentWithState(swipeActionsData)
 
         composeTestRule
-            .onNodeWithTextRes(SettingsR.string.mail_settings_swipe_right_name)
+            .onNodeWithText(SettingsR.string.mail_settings_swipe_right_name)
             .onParent()
             .onChildren()
-            .assertAny(hasTextRes(swipeActionsData.model.right.titleRes))
-            .assertAny(hasTextRes(swipeActionsData.model.right.descriptionRes))
+            .assertAny(hasText(swipeActionsData.model.right.titleRes))
+            .assertAny(hasText(swipeActionsData.model.right.descriptionRes))
 
         composeTestRule
-            .onNodeWithTextRes(SettingsR.string.mail_settings_swipe_left_name)
+            .onNodeWithText(SettingsR.string.mail_settings_swipe_left_name)
             .onParent()
             .onChildren()
-            .assertAny(hasTextRes(swipeActionsData.model.left.titleRes))
-            .assertAny(hasTextRes(swipeActionsData.model.left.descriptionRes))
+            .assertAny(hasText(swipeActionsData.model.left.titleRes))
+            .assertAny(hasText(swipeActionsData.model.left.descriptionRes))
     }
 
     private fun setContentWithState(state: SwipeActionsPreferenceState) {
@@ -95,19 +87,6 @@ class SwipeActionsPreferenceScreenTest {
             }
         }
     }
-
-    private fun SemanticsNodeInteractionsProvider.onNodeWithTextRes(
-        @StringRes textRes: Int,
-        substring: Boolean = false,
-        ignoreCase: Boolean = false,
-        useUnmergedTree: Boolean = false
-    ): SemanticsNodeInteraction = onNodeWithText(context.getString(textRes, substring, ignoreCase), useUnmergedTree)
-
-    private fun hasTextRes(
-        @StringRes textRes: Int,
-        substring: Boolean = false,
-        ignoreCase: Boolean = false
-    ): SemanticsMatcher = hasText(context.getString(textRes), substring, ignoreCase)
 
     private companion object TestData {
 
