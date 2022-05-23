@@ -1,30 +1,27 @@
 /*
- * Copyright (c) 2020 Proton Technologies AG
- * 
- * This file is part of ProtonMail.
- * 
+ * Copyright (c) 2021 Proton Technologies AG
+ * This file is part of Proton Technologies AG and ProtonMail.
+ *
  * ProtonMail is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * ProtonMail is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+ * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 package ch.protonmail.android.uitest.robot.menu
 
 import androidx.annotation.IdRes
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
@@ -41,6 +38,9 @@ import ch.protonmail.android.uitest.robot.mailbox.trash.TrashRobot
 import ch.protonmail.android.uitest.robot.manageaccounts.AccountPanelRobot
 import ch.protonmail.android.uitest.robot.reportbugs.ReportBugsRobot
 import ch.protonmail.android.uitest.robot.settings.SettingsRobot
+import ch.protonmail.android.uitest.util.hasText
+import ch.protonmail.android.uitest.util.onNodeWithText
+import me.proton.core.presentation.compose.R.string
 
 /**
  * [MenuRobot] class contains actions and verifications for menu functionality.
@@ -62,11 +62,11 @@ class MenuRobot(
         composeTestRule
             .onNodeWithTag(TEST_TAG_SIDEBAR_MENU)
             .onChild()
-            .performScrollToNode(hasText("Settings"))
+            .performScrollToNode(hasText(string.presentation_menu_item_title_settings))
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText("Settings")
+            .onNodeWithText(string.presentation_menu_item_title_settings)
             .performClick()
 
         composeTestRule.waitForIdle()

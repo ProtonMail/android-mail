@@ -18,13 +18,15 @@
 
 package ch.protonmail.android.uitest.robot.settings
 
+import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onChild
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import ch.protonmail.android.mailsettings.presentation.R.string
+import ch.protonmail.android.uitest.util.onNodeWithText
 
 /**
  * [ThemeRobot] class contains actions and verifications for ThemeSettingScreen
@@ -35,23 +37,23 @@ class ThemeRobot(
 
     fun selectSystemDefault(): ThemeRobot {
         composeTestRule!!
-            .onNodeWithText("System default")
+            .onNodeWithText(string.mail_settings_system_default)
             .performClick()
-        composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, "System default") }
+        composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, string.mail_settings_system_default) }
         return this
     }
 
     fun selectDarkTheme(): ThemeRobot {
         composeTestRule!!
-            .onNodeWithText("Dark")
+            .onNodeWithText(string.mail_settings_theme_dark)
             .performClick()
-        composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, "Dark") }
+        composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, string.mail_settings_theme_dark) }
         return this
     }
 
     private fun optionWithTextIsSelected(
         composeTestRule: ComposeContentTestRule,
-        text: String
+        @StringRes text: Int
     ): Boolean {
         try {
             composeTestRule
@@ -71,30 +73,30 @@ class ThemeRobot(
 
         fun darkThemeSelected(composeRule: ComposeContentTestRule) {
             composeRule
-                .onNodeWithText("Dark")
+                .onNodeWithText(string.mail_settings_theme_dark)
                 .onChild() // selects the radio button node
                 .assertIsSelected()
         }
 
         fun defaultThemeSettingShown(composeRule: ComposeContentTestRule) {
             composeRule
-                .onNodeWithText("Theme")
+                .onNodeWithText(string.mail_settings_theme)
                 .assertIsDisplayed()
 
             composeRule
-                .onNodeWithText("System default")
+                .onNodeWithText(string.mail_settings_system_default)
                 .onChild()
                 .assertIsDisplayed()
                 .assertIsSelected()
 
             composeRule
-                .onNodeWithText("Light")
+                .onNodeWithText(string.mail_settings_theme_light)
                 .onChild()
                 .assertIsDisplayed()
                 .assertIsNotSelected()
 
             composeRule
-                .onNodeWithText("Dark")
+                .onNodeWithText(string.mail_settings_theme_dark)
                 .onChild()
                 .assertIsDisplayed()
                 .assertIsNotSelected()

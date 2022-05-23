@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.robot.settings
 
+import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
@@ -29,7 +30,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
+import ch.protonmail.android.mailsettings.domain.model.AppLanguage
+import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.language.TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL
+import ch.protonmail.android.uitest.util.onNodeWithText
 
 /**
  * [LanguageRobot] class contains actions and verifications for LanguageSettingsScreen
@@ -40,7 +44,7 @@ class LanguageRobot(
 
     fun selectSystemDefault(): LanguageRobot {
         composeTestRule!!
-            .onNodeWithText("System default")
+            .onNodeWithText(string.mail_settings_system_default)
             .performScrollTo()
             .performClick()
         composeTestRule.waitForIdle()
@@ -49,7 +53,7 @@ class LanguageRobot(
 
     fun selectSpanish(): LanguageRobot {
         composeTestRule!!
-            .onNodeWithText("Español (España)")
+            .onNodeWithText(AppLanguage.SPANISH.langName)
             .performClick()
         composeTestRule.waitForIdle()
         return this
@@ -58,10 +62,10 @@ class LanguageRobot(
     fun selectPortuguese(): LanguageRobot {
         composeTestRule!!
             .onNodeWithTag(TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL)
-            .performScrollToNode(hasText("Português (Portugal)"))
+            .performScrollToNode(hasText(AppLanguage.PORTUGUESE.langName))
 
         composeTestRule
-            .onNodeWithText("Português (Portugal)")
+            .onNodeWithText(AppLanguage.PORTUGUESE.langName)
             .performClick()
 
         composeTestRule.waitForIdle()
@@ -74,11 +78,11 @@ class LanguageRobot(
     class Verify {
 
         fun spanishLanguageSelected(composeRule: ComposeContentTestRule) {
-            verifyLanguageSelected(composeRule, "Español (España)")
+            verifyLanguageSelected(composeRule, AppLanguage.SPANISH.langName)
         }
 
         fun portugueseLanguageSelected(composeRule: ComposeContentTestRule) {
-            verifyLanguageSelected(composeRule, "Português (Portugal)")
+            verifyLanguageSelected(composeRule, AppLanguage.PORTUGUESE.langName)
         }
 
         fun appLanguageChangedToSpanish(composeRule: ComposeContentTestRule) {
@@ -90,10 +94,10 @@ class LanguageRobot(
         }
 
         fun defaultLanguagesScreenIsShown(composeRule: ComposeContentTestRule) {
-            verifyScreenTitle(composeRule, "App language")
+            verifyScreenTitle(composeRule, string.mail_settings_app_language)
 
             composeRule
-                .onNodeWithText("System default")
+                .onNodeWithText(string.mail_settings_system_default)
                 .onChild()
                 .assertIsDisplayed()
                 .assertIsSelected()
@@ -116,6 +120,15 @@ class LanguageRobot(
         private fun verifyScreenTitle(
             composeRule: ComposeContentTestRule,
             text: String
+        ) {
+            composeRule
+                .onNodeWithText(text)
+                .assertIsDisplayed()
+        }
+
+        private fun verifyScreenTitle(
+            composeRule: ComposeContentTestRule,
+            @StringRes text: Int
         ) {
             composeRule
                 .onNodeWithText(text)

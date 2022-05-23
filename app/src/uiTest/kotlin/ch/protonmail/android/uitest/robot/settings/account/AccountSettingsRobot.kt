@@ -1,38 +1,38 @@
 /*
- * Copyright (c) 2020 Proton Technologies AG
- * 
- * This file is part of ProtonMail.
- * 
+ * Copyright (c) 2021 Proton Technologies AG
+ * This file is part of Proton Technologies AG and ProtonMail.
+ *
  * ProtonMail is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * ProtonMail is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with ProtonMail. If not, see https://www.gnu.org/licenses/.
+ * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 package ch.protonmail.android.uitest.robot.settings.account
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_LIST
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_SCREEN
 import ch.protonmail.android.uitest.robot.settings.SettingsRobot
 import ch.protonmail.android.uitest.robot.settings.account.labelsandfolders.LabelsAndFoldersRobot
 import ch.protonmail.android.uitest.robot.settings.account.privacy.PrivacySettingsRobot
 import ch.protonmail.android.uitest.robot.settings.account.swipinggestures.SwipingGesturesSettingsRobot
+import ch.protonmail.android.uitest.util.hasText
+import ch.protonmail.android.uitest.util.onNodeWithText
 
 /**
  * [AccountSettingsRobot] class contains actions and verifications for
@@ -75,11 +75,11 @@ class AccountSettingsRobot(
         composeTestRule!!
             .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
             .onChild()
-            .performScrollToNode(hasText("Conversation mode"))
+            .performScrollToNode(hasText(string.mail_settings_conversation_mode))
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText("Conversation mode")
+            .onNodeWithText(string.mail_settings_conversation_mode)
             .performClick()
         composeTestRule.waitForIdle()
         return ConversationModeRobot(composeTestRule)

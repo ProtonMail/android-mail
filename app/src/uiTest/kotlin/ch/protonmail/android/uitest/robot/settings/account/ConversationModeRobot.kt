@@ -19,10 +19,12 @@ package ch.protonmail.android.uitest.robot.settings.account
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.mailsettings.presentation.R.string
+import ch.protonmail.android.uitest.util.assertTextContains
+import ch.protonmail.android.uitest.util.onAllNodesWithText
 
 /**
  * Class represents Change Conversation Mode view.
@@ -39,10 +41,10 @@ class ConversationModeRobot(
 
         fun conversationModeToggleShown(composeRule: ComposeContentTestRule) {
             composeRule
-                .onAllNodesWithText("Conversation mode")
+                .onAllNodesWithText(R.string.mail_settings_conversation_mode)
                 // Take first as both "toolbar" and "switch" node are matching the same text
                 .onFirst()
-                .assertTextContains("Group emails in the same conversation together in your inbox or display them separately")
+                .assertTextContains(string.mail_settings_conversation_mode_hint)
                 .assertIsDisplayed()
                 .assertIsEnabled()
         }

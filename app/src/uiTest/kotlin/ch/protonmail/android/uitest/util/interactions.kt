@@ -20,8 +20,17 @@ package ch.protonmail.android.uitest.util
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.SemanticsNodeInteractionCollection
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
+
+fun SemanticsNodeInteractionsProvider.onAllNodesWithText(
+    @StringRes textRes: Int,
+    substring: Boolean = false,
+    ignoreCase: Boolean = false,
+    useUnmergedTree: Boolean = false
+): SemanticsNodeInteractionCollection = onAllNodesWithText(getString(textRes, substring, ignoreCase), useUnmergedTree)
 
 fun SemanticsNodeInteractionsProvider.onNodeWithText(
     @StringRes textRes: Int,

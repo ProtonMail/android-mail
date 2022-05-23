@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.text.format.Formatter.formatShortFileSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -42,7 +43,6 @@ import me.proton.core.compose.flow.rememberAsState
 
 const val TEST_TAG_ACCOUNT_SETTINGS_SCREEN = "AccountSettingsScreenTestTag"
 const val TEST_TAG_ACCOUNT_SETTINGS_LIST = "AccountSettingsListTestTag"
-const val TEST_TAG_ACCOUNT_SETTINGS_PROGRESS = "AccountSettingsProgressTestTag"
 
 @Composable
 fun AccountSettingScreen(
@@ -81,9 +81,7 @@ fun AccountSettingScreen(
             onSnoozeNotificationsClick = onSnoozeNotificationsClick,
             state = settingsState
         )
-        is Loading -> ProtonCenteredProgress(
-            modifier = Modifier.testTag(TEST_TAG_ACCOUNT_SETTINGS_PROGRESS)
-        )
+        is Loading -> ProtonCenteredProgress()
     }
 }
 
@@ -111,8 +109,8 @@ fun AccountSettingScreen(
                 onBackClick = onBackClick
             )
         },
-        content = {
-            ProtonSettingsList(modifier.testTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)) {
+        content = { paddingValues ->
+            ProtonSettingsList(modifier.padding(paddingValues).testTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)) {
                 item { ProtonSettingsHeader(title = R.string.mail_settings_account) }
                 item {
                     ProtonSettingsItem(

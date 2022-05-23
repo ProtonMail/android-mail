@@ -24,13 +24,14 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
+import ch.protonmail.android.mailmailbox.presentation.R.string
 import ch.protonmail.android.mailmailbox.presentation.Sidebar
 import ch.protonmail.android.mailmailbox.presentation.SidebarState
 import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_SIDEBAR_MENU
+import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
@@ -49,7 +50,7 @@ class SidebarScreenTest {
         scrollToSidebarBottom()
 
         composeTestRule
-            .onNodeWithText("Subscription")
+            .onNodeWithText(string.drawer_title_subscription)
             .assertIsDisplayed()
     }
 
@@ -59,7 +60,7 @@ class SidebarScreenTest {
 
         scrollToSidebarBottom()
         composeTestRule
-            .onNodeWithText("Subscription")
+            .onNodeWithText(string.drawer_title_subscription)
             .assertDoesNotExist()
     }
 
