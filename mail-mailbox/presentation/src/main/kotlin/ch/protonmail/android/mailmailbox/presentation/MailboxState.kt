@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailcommon.domain.Effect
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState

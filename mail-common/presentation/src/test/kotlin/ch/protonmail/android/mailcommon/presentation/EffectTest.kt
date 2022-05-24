@@ -16,24 +16,33 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain
+package ch.protonmail.android.mailcommon.presentation
 
-/**
- * This is a container for single-use state.
- * Use this when you don't want an event to be repeated, for example while emitting an error to the ViewModel
- *
- * You usually wanna consume this into a `LaunchedEffect` block
- */
-class Effect<T>(private var event: T?) {
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
-    /**
-     * @return the [event] if not consumed, `null` otherwise
-     */
-    fun consume(): T? = event
-        .also { event = null }
+internal class EffectTest {
 
-    companion object {
+    @Test
+    fun `event is returned correctly on consume`() {
+        // given
+        val event = "hello"
+        val effect = Effect.of(event)
 
-        fun <T> empty() = Effect<T>(null)
+        // when - then
+        assertEquals(event, effect.consume())
+    }
+
+    @Test
+    fun `event is cleared on consume`() {
+        // given
+        val effect = Effect.of("hello")
+
+        // when
+        effect.consume()
+
+        // then
+        assertNull(effect.consume())
     }
 }

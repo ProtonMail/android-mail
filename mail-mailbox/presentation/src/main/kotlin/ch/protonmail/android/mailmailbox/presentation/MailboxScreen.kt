@@ -47,6 +47,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
@@ -77,7 +78,7 @@ fun MailboxScreen(
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val mailboxListState = mailboxListItems.rememberLazyListState()
 
-    mailboxState.openItemEffect.consume()?.let { itemId ->
+    ConsumableLaunchedEffect(mailboxState.openItemEffect) { itemId ->
         navigateToMailboxItem(itemId)
     }
 

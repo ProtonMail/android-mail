@@ -24,7 +24,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import ch.protonmail.android.mailcommon.domain.Effect
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -130,7 +130,7 @@ class MailboxViewModel @Inject constructor(
                 else throw IllegalStateException("Item type is ${item.type}, but mailbox type is $mailboxItemType")
             }
         }
-        openItemDetailEffect.emit(Effect(request))
+        openItemDetailEffect.emit(Effect.of(request))
     }
 
     private suspend fun onRefresh() {
