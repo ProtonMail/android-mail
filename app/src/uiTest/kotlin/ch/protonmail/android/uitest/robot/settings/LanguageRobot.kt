@@ -59,13 +59,13 @@ class LanguageRobot(
         return this
     }
 
-    fun selectPortuguese(): LanguageRobot {
+    fun selectBrazilianPortuguese(): LanguageRobot {
         composeTestRule!!
             .onNodeWithTag(TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL)
-            .performScrollToNode(hasText(AppLanguage.PORTUGUESE.langName))
+            .performScrollToNode(hasText(AppLanguage.BRAZILIAN.langName))
 
         composeTestRule
-            .onNodeWithText(AppLanguage.PORTUGUESE.langName)
+            .onNodeWithText(AppLanguage.BRAZILIAN.langName)
             .performClick()
 
         composeTestRule.waitForIdle()
@@ -81,8 +81,8 @@ class LanguageRobot(
             verifyLanguageSelected(composeRule, AppLanguage.SPANISH.langName)
         }
 
-        fun portugueseLanguageSelected(composeRule: ComposeContentTestRule) {
-            verifyLanguageSelected(composeRule, AppLanguage.PORTUGUESE.langName)
+        fun brazilianPortugueseLanguageSelected(composeRule: ComposeContentTestRule) {
+            verifyLanguageSelected(composeRule, AppLanguage.BRAZILIAN.langName)
         }
 
         fun appLanguageChangedToSpanish(composeRule: ComposeContentTestRule) {
