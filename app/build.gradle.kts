@@ -142,14 +142,15 @@ android {
 dependencies {
     implementation(files("../proton-libs/gopenpgp/gopenpgp.aar"))
     implementation(Dependencies.appLibs)
+    debugImplementation(Dependencies.appDebug)
 
     implementation(project(":mail-common"))
-    implementation(project(":mail-pagination"))
-    implementation(project(":mail-message"))
     implementation(project(":mail-conversation"))
+    implementation(project(":mail-label"))
     implementation(project(":mail-mailbox"))
+    implementation(project(":mail-message"))
+    implementation(project(":mail-pagination"))
     implementation(project(":mail-settings"))
-    debugImplementation(Dependencies.appDebug)
 
     kapt(Dependencies.appAnnotationProcessors)
 

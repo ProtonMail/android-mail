@@ -26,6 +26,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
+import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState.Data
 import ch.protonmail.android.uitest.annotation.SmokeTest
 import me.proton.core.compose.theme.ProtonTheme
@@ -43,7 +45,7 @@ internal class MailboxTopAppBarTest {
     @Test
     @Category(SmokeTest::class)
     fun hamburgerIconIsShownInDefaultMode() {
-        setupScreenWithDefaultMode(LABEL_INBOX)
+        setupScreenWithDefaultMode(MAIL_LABEL_INBOX)
 
         composeTestRule
             .onHamburgerIconButton()
@@ -54,17 +56,17 @@ internal class MailboxTopAppBarTest {
     @Test
     @Category(SmokeTest::class)
     fun labelNameIsShownInDefaultMode() {
-        setupScreenWithDefaultMode(LABEL_INBOX)
+        setupScreenWithDefaultMode(MAIL_LABEL_INBOX)
 
         composeTestRule
-            .onNodeWithText(LABEL_INBOX)
+            .onNodeWithText(MAIL_LABEL_INBOX_TEXT)
             .assertIsDisplayed()
     }
 
     @Test
     @Category(SmokeTest::class)
     fun actionsAreShownInDefaultMode() {
-        setupScreenWithDefaultMode(LABEL_INBOX)
+        setupScreenWithDefaultMode(MAIL_LABEL_INBOX)
 
         composeTestRule
             .onSearchIconButton()
@@ -80,7 +82,7 @@ internal class MailboxTopAppBarTest {
     @Test
     @Category(SmokeTest::class)
     fun backIconIsShownInSelectionMode() {
-        setupScreenWithSelectionMode(LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
+        setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
 
         composeTestRule
             .onExitSelectionModeIconButton()
@@ -91,7 +93,7 @@ internal class MailboxTopAppBarTest {
     @Test
     @Category(SmokeTest::class)
     fun correctCountIsShownInSelectionMode() {
-        setupScreenWithSelectionMode(LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
+        setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
 
         composeTestRule
             .onNodeWithText(context.getString(R.string.mailbox_toolbar_selected_count, SELECTED_COUNT_TEN))
@@ -101,7 +103,7 @@ internal class MailboxTopAppBarTest {
     @Test
     @Category(SmokeTest::class)
     fun actionsAreHiddenInSelectionMode() {
-        setupScreenWithSelectionMode(LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
+        setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
 
         composeTestRule
             .onSearchIconButton()
@@ -129,18 +131,18 @@ internal class MailboxTopAppBarTest {
         }
     }
 
-    private fun setupScreenWithDefaultMode(currentLabelName: String) {
-        val state = Data.DefaultMode(currentLabelName = currentLabelName)
+    private fun setupScreenWithDefaultMode(currentMailLabel: MailLabel) {
+        val state = Data.DefaultMode(currentMailLabel = currentMailLabel)
         setupScreenWithState(state)
     }
 
-    private fun setupScreenWithSelectionMode(currentLabelName: String, selectedCount: Int) {
-        val state = Data.SelectionMode(currentLabelName = currentLabelName, selectedCount = selectedCount)
+    private fun setupScreenWithSelectionMode(currentMailLabel: MailLabel, selectedCount: Int) {
+        val state = Data.SelectionMode(currentMailLabel = currentMailLabel, selectedCount = selectedCount)
         setupScreenWithState(state)
     }
 
-    private fun setupScreenWithSearchMode(currentLabelName: String, searchQuery: String) {
-        val state = Data.SearchMode(currentLabelName = currentLabelName, searchQuery = searchQuery)
+    private fun setupScreenWithSearchMode(currentMailLabel: MailLabel, searchQuery: String) {
+        val state = Data.SearchMode(currentMailLabel = currentMailLabel, searchQuery = searchQuery)
         setupScreenWithState(state)
     }
 
@@ -160,7 +162,8 @@ internal class MailboxTopAppBarTest {
 
     private companion object TestData {
 
-        const val LABEL_INBOX = "Inbox"
+        val MAIL_LABEL_INBOX = MailLabel.System(MailLabelId.System.Inbox)
+        const val MAIL_LABEL_INBOX_TEXT = "Inbox"
         const val SELECTED_COUNT_TEN = 10
     }
 }

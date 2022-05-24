@@ -20,15 +20,15 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 
 @Stable
 data class MailboxState(
     val topAppBar: MailboxTopAppBarState,
-    val selectedLocation: SidebarLocation?,
-    val unread: Int,
+    val currentMailLabel: MailLabel?,
     val openItemEffect: Effect<OpenMailboxItemRequest>
 ) {
 
@@ -36,8 +36,7 @@ data class MailboxState(
 
         val Loading = MailboxState(
             topAppBar = MailboxTopAppBarState.Loading,
-            selectedLocation = null,
-            unread = 0,
+            currentMailLabel = null,
             openItemEffect = Effect.empty()
         )
     }

@@ -24,20 +24,36 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
+import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Archive
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Inbox
+import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.UpdateLabelExpandedState
+import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
+import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Collapse
+import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Expand
+import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Select
+import ch.protonmail.android.mailmailbox.presentation.SidebarViewModel.Action.LabelAction
+import ch.protonmail.android.mailmailbox.presentation.SidebarViewModel.State.Disabled
 import ch.protonmail.android.mailmailbox.presentation.SidebarViewModel.State.Enabled
+import ch.protonmail.android.mailsettings.domain.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.FeatureFlagTestData
 import ch.protonmail.android.testdata.user.UserTestData
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.entity.FeatureFlag
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.User
 import org.junit.Before
 import org.junit.Test
@@ -46,20 +62,35 @@ import kotlin.test.assertEquals
 class SidebarViewModelTest {
 
     private val appInformation = mockk<AppInformation>()
-    private val selectedSidebarLocation = mockk<SelectedSidebarLocation> {
-        every { location } returns MutableStateFlow<SidebarLocation>(Inbox)
+
+    private val selectedMailLabelId = mockk<SelectedMailLabelId> {
+        every { this@mockk.flow } returns MutableStateFlow<MailLabelId>(Inbox)
+        every { this@mockk.set(any()) } returns Unit
     }
 
-    private val showSettings = MutableSharedFlow<FeatureFlag>()
     private val mailFeatureDefault = mockk<MailFeatureDefault> {
         every { this@mockk[MailFeatureId.ShowSettings] } returns false
     }
+
+    private val showSettings = MutableStateFlow(FeatureFlag(FeatureFlagTestData.showSettingsId.id, false))
     private val observeMailFeature = mockk<ObserveMailFeature> {
         every { this@mockk.invoke(FeatureFlagTestData.showSettingsId) } returns showSettings
     }
-    private val primaryUser = MutableSharedFlow<User?>()
+    private val primaryUser = MutableStateFlow<User?>(null)
     private val observePrimaryUser = mockk<ObservePrimaryUser> {
         every { this@mockk.invoke() } returns primaryUser
+    }
+
+    private val mailboxLabels = MutableStateFlow(MailLabels.Initial)
+    private val observeMailboxLabels = mockk<ObserveMailLabels> {
+        every { this@mockk.invoke(any<UserId>()) } returns mailboxLabels
+    }
+
+    private val updateLabelExpandedState = mockk<UpdateLabelExpandedState>(relaxUnitFun = true)
+
+    private val folderColorSettings = MutableStateFlow(FolderColorSettings())
+    private val observeFolderColors = mockk<ObserveFolderColorSettings> {
+        every { this@mockk.invoke(any()) } returns folderColorSettings
     }
 
     private lateinit var sidebarViewModel: SidebarViewModel
@@ -69,10 +100,13 @@ class SidebarViewModelTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         sidebarViewModel = SidebarViewModel(
             appInformation,
-            selectedSidebarLocation,
+            selectedMailLabelId,
             mailFeatureDefault,
+            updateLabelExpandedState,
             observeMailFeature,
-            observePrimaryUser
+            observePrimaryUser,
+            observeFolderColors,
+            observeMailboxLabels,
         )
     }
 
@@ -80,9 +114,20 @@ class SidebarViewModelTest {
     fun `emits initial sidebar state when data is being loaded`() = runTest {
         // When
         sidebarViewModel.state.test {
+            // Initial state is Disabled.
+            assertEquals(Disabled, awaitItem())
+
+            // Given
+            primaryUser.emit(UserTestData.user)
+
             // Then
             val actual = awaitItem() as Enabled
-            val expected = Enabled(Inbox, isSettingsEnabled = false, canChangeSubscription = true)
+            val expected = Enabled(
+                selectedMailLabelId = Inbox,
+                isSettingsEnabled = false,
+                canChangeSubscription = true,
+                mailLabels = MailLabelsUiModel.Loading
+            )
             assertEquals(expected, actual)
         }
     }
@@ -90,14 +135,21 @@ class SidebarViewModelTest {
     @Test
     fun `emits is settings enabled true when settings feature toggle is enabled`() = runTest {
         sidebarViewModel.state.test {
+            // Initial state is Disabled.
+            assertEquals(Disabled, awaitItem())
+
             // Given
             showSettings.emit(FeatureFlagTestData.enabledShowSettings)
             primaryUser.emit(UserTestData.user)
 
             // Then
-            awaitItem() // First item is the default value (false).
             val actual = awaitItem() as Enabled
-            val expected = Enabled(Inbox, isSettingsEnabled = true, canChangeSubscription = true)
+            val expected = Enabled(
+                selectedMailLabelId = Inbox,
+                isSettingsEnabled = true,
+                canChangeSubscription = true,
+                mailLabels = MailLabelsUiModel.Loading
+            )
             assertEquals(expected, actual)
         }
     }
@@ -105,13 +157,21 @@ class SidebarViewModelTest {
     @Test
     fun `emits is settings enabled false when settings feature toggle is disabled`() = runTest {
         sidebarViewModel.state.test {
+            // Initial state is Disabled.
+            assertEquals(Disabled, awaitItem())
+
             // Given
+            primaryUser.emit(UserTestData.user)
             showSettings.emit(FeatureFlagTestData.disabledShowSettings)
 
             // Then
-            // Await one item only since it will be the same as the default value (false).
             val actual = awaitItem() as Enabled
-            val expected = Enabled(Inbox, isSettingsEnabled = false, canChangeSubscription = true)
+            val expected = Enabled(
+                selectedMailLabelId = Inbox,
+                isSettingsEnabled = false,
+                canChangeSubscription = true,
+                mailLabels = MailLabelsUiModel.Loading
+            )
             assertEquals(expected, actual)
         }
     }
@@ -119,13 +179,20 @@ class SidebarViewModelTest {
     @Test
     fun `state is can change subscriptions when user is free`() = runTest {
         sidebarViewModel.state.test {
+            // Initial state is Disabled.
+            assertEquals(Disabled, awaitItem())
+
             // Given
-            showSettings.emit(FeatureFlagTestData.disabledShowSettings)
             primaryUser.emit(UserTestData.user)
 
             // Then
             val actual = awaitItem() as Enabled
-            val expected = Enabled(Inbox, isSettingsEnabled = false, canChangeSubscription = true)
+            val expected = Enabled(
+                selectedMailLabelId = Inbox,
+                isSettingsEnabled = false,
+                canChangeSubscription = true,
+                mailLabels = MailLabelsUiModel.Loading
+            )
             assertEquals(expected, actual)
         }
     }
@@ -133,13 +200,20 @@ class SidebarViewModelTest {
     @Test
     fun `state is can change subscriptions when user is admin`() = runTest {
         sidebarViewModel.state.test {
+            // Initial state is Disabled.
+            assertEquals(Disabled, awaitItem())
+
             // Given
-            showSettings.emit(FeatureFlagTestData.disabledShowSettings)
             primaryUser.emit(UserTestData.adminUser)
 
             // Then
             val actual = awaitItem() as Enabled
-            val expected = Enabled(Inbox, isSettingsEnabled = false, canChangeSubscription = true)
+            val expected = Enabled(
+                selectedMailLabelId = Inbox,
+                isSettingsEnabled = false,
+                canChangeSubscription = true,
+                mailLabels = MailLabelsUiModel.Loading
+            )
             assertEquals(expected, actual)
         }
     }
@@ -147,15 +221,56 @@ class SidebarViewModelTest {
     @Test
     fun `state is can't change subscription when user is organization member`() = runTest {
         sidebarViewModel.state.test {
+            // Initial state is Disabled.
+            assertEquals(Disabled, awaitItem())
+
             // Given
-            showSettings.emit(FeatureFlagTestData.disabledShowSettings)
             primaryUser.emit(UserTestData.orgMemberUser)
 
             // Then
-            awaitItem() // First emitted item is the initial value
             val actual = awaitItem() as Enabled
-            val expected = Enabled(Inbox, isSettingsEnabled = false, canChangeSubscription = false)
+            val expected = Enabled(
+                selectedMailLabelId = Inbox,
+                isSettingsEnabled = false,
+                canChangeSubscription = false,
+                mailLabels = MailLabelsUiModel.Loading
+            )
             assertEquals(expected, actual)
         }
+    }
+
+    @Test
+    fun `onSidebarLabelAction Select Archive, set selectedMailLabelId`() = runTest {
+        // When
+        sidebarViewModel.submit(LabelAction(Select(Archive)))
+
+        // Then
+        verify { selectedMailLabelId.set(Archive) }
+    }
+
+    @Test
+    fun `onSidebarLabelAction Collapse, call updateLabelExpandedState`() = runTest {
+        // Given
+        val mailLabelId = MailLabelId.Custom.Folder(LabelId("folder"))
+        primaryUser.emit(UserTestData.user)
+
+        // When
+        sidebarViewModel.submit(LabelAction(Collapse(mailLabelId)))
+
+        // Then
+        coVerify { updateLabelExpandedState.invoke(UserTestData.user.userId, mailLabelId, false) }
+    }
+
+    @Test
+    fun `onSidebarLabelAction Expand, call updateLabelExpandedState`() = runTest {
+        // Given
+        val mailLabelId = MailLabelId.Custom.Folder(LabelId("folder"))
+        primaryUser.emit(UserTestData.user)
+
+        // When
+        sidebarViewModel.submit(LabelAction(Expand(mailLabelId)))
+
+        // Then
+        coVerify { updateLabelExpandedState.invoke(UserTestData.user.userId, mailLabelId, true) }
     }
 }

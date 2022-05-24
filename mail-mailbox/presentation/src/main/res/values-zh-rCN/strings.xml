@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="drawer_title_inbox">收件箱</string>
-    <string name="drawer_title_drafts">草稿</string>
-    <string name="drawer_title_sent">已发送</string>
-    <string name="drawer_title_starred">星标邮件</string>
-    <string name="drawer_title_archive">存档</string>
-    <string name="drawer_title_spam">垃圾邮件</string>
-    <string name="drawer_title_trash">垃圾箱</string>
-    <string name="drawer_title_all_mail">所有邮件</string>
-    <string name="drawer_title_folders">文件夹</string>
-    <string name="drawer_title_create_folder">创建文件夹</string>
-    <string name="drawer_title_labels">标签</string>
-    <string name="drawer_title_create_label">创建标签</string>
     <string name="drawer_title_more">更多</string>
     <string name="drawer_title_contacts">联系人</string>
-    <string name="drawer_title_subscription">订阅</string>
 </resources>

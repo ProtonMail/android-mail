@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="drawer_title_inbox">Gelen kutusu</string>
-    <string name="drawer_title_drafts">Taslaklar</string>
-    <string name="drawer_title_sent">Gönderilmiş</string>
-    <string name="drawer_title_starred">Yıldızlı</string>
-    <string name="drawer_title_archive">Arşiv</string>
-    <string name="drawer_title_spam">İstenmeyen</string>
-    <string name="drawer_title_trash">Çöp kutusu</string>
-    <string name="drawer_title_all_mail">Tüm e-postalar</string>
-    <string name="drawer_title_folders">Klasörler</string>
-    <string name="drawer_title_create_folder">Klasör oluştur</string>
-    <string name="drawer_title_labels">Etiketler</string>
-    <string name="drawer_title_create_label">Etiket oluştur</string>
     <string name="drawer_title_more">Diğer</string>
     <string name="drawer_title_contacts">Kişiler</string>
-    <string name="drawer_title_subscription">Abonelik</string>
 </resources>

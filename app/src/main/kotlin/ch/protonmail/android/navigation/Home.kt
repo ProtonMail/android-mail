@@ -79,10 +79,8 @@ fun Home(
                 onSignOut = onSignOut,
                 onSignIn = onSignIn,
                 onSwitch = onSwitch,
-                onMailLocation = { /* stack screens? */ },
-                onFolder = { /*navController.navigate(...)*/ },
-                onLabel = { /*navController.navigate(...)*/ },
                 onSettings = { navController.navigate(Screen.Settings.route) },
+                onLabelsSettings = { /*navController.navigate(...)*/ },
                 onSubscription = onSubscription,
                 onReportBug = onReportBug,
                 drawerState = scaffoldState.drawerState

@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="drawer_title_inbox">Caixa de entrada</string>
-    <string name="drawer_title_drafts">Rascunhos</string>
-    <string name="drawer_title_sent">Enviado</string>
-    <string name="drawer_title_starred">Com estrela</string>
-    <string name="drawer_title_archive">Arquivo</string>
-    <string name="drawer_title_spam">Spam</string>
-    <string name="drawer_title_trash">Lixeira</string>
-    <string name="drawer_title_all_mail">Todos e-mails</string>
-    <string name="drawer_title_folders">Pastas</string>
-    <string name="drawer_title_create_folder">Criar pasta</string>
-    <string name="drawer_title_labels">Marcadores</string>
-    <string name="drawer_title_create_label">Criar marcador</string>
     <string name="drawer_title_more">Mais</string>
     <string name="drawer_title_contacts">Contatos</string>
-    <string name="drawer_title_subscription">Assinatura</string>
 </resources>

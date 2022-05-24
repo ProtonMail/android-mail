@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcommon.domain
 
+import java.io.IOException
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -27,18 +28,14 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.domain.arch.DataResult
-import me.proton.core.domain.arch.DataResult.Error
-import me.proton.core.domain.arch.DataResult.Success
-import me.proton.core.domain.arch.ResponseSource.Local
 import me.proton.core.domain.entity.UserId
+import me.proton.core.test.kotlin.assertIs
 import me.proton.core.user.domain.UserManager
 import me.proton.core.user.domain.entity.User
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
-import java.io.IOException
 
 class ObservePrimaryUserTest {
 
@@ -47,9 +44,9 @@ class ObservePrimaryUserTest {
         every { this@mockk.getPrimaryUserId() } returns userIdFlow
     }
 
-    private val userFlow = MutableSharedFlow<DataResult<User?>>()
+    private val userFlow = MutableSharedFlow<User?>()
     private val userManager = mockk<UserManager> {
-        every { this@mockk.getUserFlow(UserIdTestData.userId) } returns userFlow
+        every { this@mockk.observeUser(UserIdTestData.userId) } returns userFlow
     }
 
     private lateinit var observeUser: ObservePrimaryUser
@@ -78,16 +75,16 @@ class ObservePrimaryUserTest {
     }
 
     @Test
-    fun `returns null when user manager returns an error`() = runTest {
+    fun `returns exception when user manager returns an error`() = runTest {
         observeUser.invoke().test {
             // Given
-            primaryUserIdIs(UserIdTestData.userId)
+            every { userManager.observeUser(UserIdTestData.userId) } throws IOException("Test")
 
             // When
-            userManagerReturnsError()
+            primaryUserIdIs(UserIdTestData.userId)
 
             // Then
-            assertNull(awaitItem())
+            assertIs<IOException>(awaitError())
         }
     }
 
@@ -107,10 +104,6 @@ class ObservePrimaryUserTest {
     }
 
     private suspend fun userManagerSuccessfullyReturns(user: User) {
-        userFlow.emit(Success(Local, user))
-    }
-
-    private suspend fun userManagerReturnsError() {
-        userFlow.emit(Error.Local("Test-IOException", IOException("Test")))
+        userFlow.emit(user)
     }
 }

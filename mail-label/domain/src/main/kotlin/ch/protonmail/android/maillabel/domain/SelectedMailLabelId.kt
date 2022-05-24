@@ -16,22 +16,24 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.model
+package ch.protonmail.android.maillabel.domain
 
-import me.proton.core.label.domain.entity.LabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-enum class SystemLabelId(val labelIdInt: Int) {
+@Singleton
+class SelectedMailLabelId @Inject constructor() {
 
-    INBOX(labelIdInt = 0),
-    ALL_DRAFT(labelIdInt = 1),
-    ALL_SENT(labelIdInt = 2),
-    TRASH(labelIdInt = 3),
-    SPAM(labelIdInt = 4),
-    ALL_MAIL(labelIdInt = 5),
-    ARCHIVE(labelIdInt = 6),
-    SENT(labelIdInt = 7),
-    DRAFT(labelIdInt = 8),
-    STARRED(labelIdInt = 10);
+    private val selectedMailLabelId = MutableStateFlow<MailLabelId>(System.Inbox)
 
-    fun asLabelId() = LabelId(labelIdInt.toString())
+    val flow: StateFlow<MailLabelId> = selectedMailLabelId.asStateFlow()
+
+    fun set(value: MailLabelId) {
+        selectedMailLabelId.value = value
+    }
 }

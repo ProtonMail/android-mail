@@ -39,7 +39,9 @@ object MailSettingsTestData {
 
     fun buildMailSettings(
         swipeLeft: SwipeAction? = null,
-        swipeRight: SwipeAction? = null
+        swipeRight: SwipeAction? = null,
+        enableFolderColor: Boolean = true,
+        inheritParentFolderColor: Boolean = true,
     ) = MailSettings(
         userId = UserIdTestData.userId,
         displayName = "displayName",
@@ -59,8 +61,8 @@ object MailSettingsTestData {
         draftMimeType = StringEnum("text/plain", MimeType.PlainText),
         receiveMimeType = StringEnum("text/plain", MimeType.PlainText),
         showMimeType = StringEnum("text/plain", MimeType.PlainText),
-        enableFolderColor = true,
-        inheritParentFolderColor = true,
+        enableFolderColor = enableFolderColor,
+        inheritParentFolderColor = inheritParentFolderColor,
         rightToLeft = true,
         attachPublicKey = true,
         sign = true,

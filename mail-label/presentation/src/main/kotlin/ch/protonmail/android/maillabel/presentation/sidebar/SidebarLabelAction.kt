@@ -16,24 +16,14 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.maillabel.presentation.sidebar
 
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import javax.inject.Singleton
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import me.proton.core.label.domain.entity.LabelType
 
-@Singleton
-class SelectedSidebarLocation @Inject constructor() {
-
-    private val mutableCurrentLocation = MutableStateFlow<SidebarLocation>(Inbox)
-
-    val location: StateFlow<SidebarLocation> = mutableCurrentLocation.asStateFlow()
-
-    fun set(location: SidebarLocation) {
-        mutableCurrentLocation.value = location
-    }
+sealed interface SidebarLabelAction {
+    data class Add(val type: LabelType) : SidebarLabelAction
+    data class Select(val labelId: MailLabelId) : SidebarLabelAction
+    data class Collapse(val labelId: MailLabelId) : SidebarLabelAction
+    data class Expand(val labelId: MailLabelId) : SidebarLabelAction
 }

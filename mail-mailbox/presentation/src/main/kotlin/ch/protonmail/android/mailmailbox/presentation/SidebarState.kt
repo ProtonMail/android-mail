@@ -28,53 +28,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.domain.AppInformation
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
+import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import me.proton.core.accountmanager.presentation.compose.AccountPrimaryState
 import me.proton.core.accountmanager.presentation.compose.rememberAccountPrimaryState
-import me.proton.core.label.domain.entity.LabelId
 
 @Stable
 class SidebarState(
-    selectedLocation: SidebarLocation = Inbox,
     val appInformation: AppInformation = AppInformation(),
     val drawerState: DrawerState = DrawerState(Closed),
     val accountPrimaryState: AccountPrimaryState = AccountPrimaryState(),
     val hasPrimaryAccount: Boolean = true,
-    sidebarFolderUiModels: List<SidebarFolderUiModel> = FAKE_FOLDERS,
-    sidebarLabelUiModels: List<SidebarLabelUiModel> = FAKE_LABELS,
-    unreadCounters: Map<LabelId, Int?> = FAKE_UNREAD_COUNTERS,
-    isSubscriptionVisible: Boolean = true
+    mailLabels: MailLabelsUiModel = MailLabelsUiModel.Loading,
+    isSubscriptionVisible: Boolean = true,
 ) {
-    var selectedLocation by mutableStateOf(selectedLocation)
-    var sidebarFolderUiModels by mutableStateOf(sidebarFolderUiModels)
-    var sidebarLabelUiModels by mutableStateOf(sidebarLabelUiModels)
-    var unreadCounters by mutableStateOf(unreadCounters)
+
+    var mailLabels by mutableStateOf(mailLabels)
     var isSubscriptionVisible by mutableStateOf(isSubscriptionVisible)
 }
-
-val FAKE_UNREAD_COUNTERS: Map<LabelId, Int?> = mapOf(
-    Pair(LabelId("0"), 1),
-    Pair(LabelId("3"), null),
-    Pair(LabelId("4"), null),
-    Pair(LabelId("5"), 4),
-    Pair(LabelId("6"), null),
-    Pair(LabelId("7"), null),
-    Pair(LabelId("8"), null),
-    Pair(LabelId("10"), 1),
-    Pair(LabelId("f1"), 2)
-)
-
-private val FAKE_FOLDERS = listOf(
-    SidebarFolderUiModel(LabelId("f1"), "Folder 1", Color.Red)
-)
-
-private val FAKE_LABELS = listOf(
-    SidebarLabelUiModel(LabelId("l1"), "Label 1", Color.Cyan),
-    SidebarLabelUiModel(LabelId("l2"), "Label 2", Color.Yellow)
-)
 
 @Composable
 fun rememberSidebarState(

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_title_inbox">Kotak Masuk</string>
+    <string name="label_title_drafts">Draf</string>
+    <string name="label_title_sent">Terkirim</string>
+    <string name="label_title_starred">Dibintangi</string>
+    <string name="label_title_archive">Arsip</string>
+    <string name="label_title_spam">Spam</string>
+    <string name="label_title_trash">Sampah</string>
+    <string name="label_title_all_mail">Semua surat</string>
+</resources>

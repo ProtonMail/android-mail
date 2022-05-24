@@ -28,6 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.model.string
+import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.util.kotlin.EMPTY_STRING
@@ -48,7 +51,7 @@ fun MailboxTopAppBar(
     val uiModel = when (state) {
         MailboxTopAppBarState.Loading -> UiModel.Empty
         is MailboxTopAppBarState.Data.DefaultMode -> UiModel(
-            title = state.currentLabelName,
+            title = state.currentMailLabel.text().string(),
             navigationIconRes = R.drawable.ic_proton_hamburger,
             navigationIconContentDescription = stringResource(id = R.string.mailbox_toolbar_menu_button_content_description),
             shouldShowActions = true
@@ -108,9 +111,9 @@ private data class UiModel(
     val navigationIconContentDescription: String,
     val shouldShowActions: Boolean
 ) {
-    
+
     companion object {
-        
+
         val Empty = UiModel(
             title = EMPTY_STRING,
             navigationIconRes = R.drawable.ic_proton_hamburger,
@@ -124,7 +127,7 @@ private data class UiModel(
 @Preview
 fun LoadingMailboxTopAppBarPreview() {
     val state = MailboxTopAppBarState.Loading
-    
+
     MailboxTopAppBar(
         state = state,
         onOpenMenu = {},

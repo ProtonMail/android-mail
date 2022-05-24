@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="drawer_title_inbox">Safata d\'entrada</string>
-    <string name="drawer_title_drafts">Esborranys</string>
-    <string name="drawer_title_sent">Enviats</string>
-    <string name="drawer_title_starred">Destacats</string>
-    <string name="drawer_title_archive">Arxiu</string>
-    <string name="drawer_title_spam">Correu brossa</string>
-    <string name="drawer_title_trash">Paperera</string>
-    <string name="drawer_title_all_mail">Tot el correu</string>
-    <string name="drawer_title_folders">Carpetes</string>
-    <string name="drawer_title_create_folder">Crea una carpeta</string>
-    <string name="drawer_title_labels">Etiquetes</string>
-    <string name="drawer_title_create_label">Crea una etiqueta</string>
     <string name="drawer_title_more">Més</string>
     <string name="drawer_title_contacts">Contactes</string>
-    <string name="drawer_title_subscription">Subscripció</string>
 </resources>

@@ -26,59 +26,107 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureId.ShowSettings
 import ch.protonmail.android.mailcommon.domain.extension.canChangeSubscription
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
+import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.UpdateLabelExpandedState
+import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
+import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction
+import ch.protonmail.android.maillabel.presentation.toUiModels
+import ch.protonmail.android.mailsettings.domain.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
+import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 @HiltViewModel
 class SidebarViewModel @Inject constructor(
     val appInformation: AppInformation,
-    private val selectedSidebarLocation: SelectedSidebarLocation,
+    private val selectedMailLabelId: SelectedMailLabelId,
     private val mailFeatureDefault: MailFeatureDefault,
+    private val updateLabelExpandedState: UpdateLabelExpandedState,
     observeMailFeature: ObserveMailFeature,
-    observePrimaryUser: ObservePrimaryUser
+    observePrimaryUser: ObservePrimaryUser,
+    observeFolderColors: ObserveFolderColorSettings,
+    observeMailLabels: ObserveMailLabels,
 ) : ViewModel() {
 
-    val initialState = State.Enabled(
-        selectedLocation = Inbox,
-        isSettingsEnabled = mailFeatureDefault[ShowSettings],
-        canChangeSubscription = true
+    private val primaryUser = observePrimaryUser().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = null
     )
 
-    val state: Flow<State> = combine(
-        selectedSidebarLocation.location,
-        observeMailFeature(ShowSettings),
-        observePrimaryUser()
-    ) { location, settingsFeature, user ->
-        State.Enabled(
-            selectedLocation = location,
-            isSettingsEnabled = settingsFeature?.value ?: mailFeatureDefault[ShowSettings],
-            canChangeSubscription = user?.canChangeSubscription() ?: false
-        )
+    val initialState = State.Disabled
+
+    val state: Flow<State> = primaryUser.flatMapLatest { user ->
+        when (user) {
+            null -> flowOf(State.Disabled)
+            else -> combine(
+                selectedMailLabelId.flow,
+                observeMailFeature(ShowSettings),
+                observeFolderColors(user.userId),
+                observeMailLabels(user.userId),
+            ) { selectedMailLabelId, settingsFeature, folderColors, mailLabels ->
+                State.Enabled(
+                    selectedMailLabelId = selectedMailLabelId,
+                    isSettingsEnabled = settingsFeature?.value ?: mailFeatureDefault[ShowSettings],
+                    canChangeSubscription = user.canChangeSubscription(),
+                    mailLabels = mailLabels.toUiModels(folderColors, emptyMap(), selectedMailLabelId),
+                )
+            }
+        }
     }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(stopTimeoutMillis),
-        initialState
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
+        initialValue = initialState
     )
 
-    fun onSidebarItemSelected(location: SidebarLocation) {
-        selectedSidebarLocation.set(location)
+    fun submit(action: Action) {
+        viewModelScope.launch {
+            when (action) {
+                is Action.LabelAction -> onSidebarLabelAction(action.action)
+            }.exhaustive
+        }
+    }
+
+    private fun onSidebarLabelAction(action: SidebarLabelAction) {
+        when (action) {
+            is SidebarLabelAction.Add -> Unit
+            is SidebarLabelAction.Collapse -> onUpdateLabelExpandedState(action.labelId, false)
+            is SidebarLabelAction.Expand -> onUpdateLabelExpandedState(action.labelId, true)
+            is SidebarLabelAction.Select -> selectedMailLabelId.set(action.labelId)
+        }
+    }
+
+    private fun onUpdateLabelExpandedState(
+        labelId: MailLabelId,
+        isExpanded: Boolean,
+    ) = viewModelScope.launch {
+        primaryUser.value?.let {
+            updateLabelExpandedState(it.userId, labelId, isExpanded)
+        }
     }
 
     sealed class State {
         data class Enabled(
-            val selectedLocation: SidebarLocation,
+            val selectedMailLabelId: MailLabelId,
             val isSettingsEnabled: Boolean,
-            val canChangeSubscription: Boolean
+            val canChangeSubscription: Boolean,
+            val mailLabels: MailLabelsUiModel,
         ) : State()
 
         object Disabled : State()
     }
-}
 
+    sealed interface Action {
+        data class LabelAction(val action: SidebarLabelAction) : Action
+    }
+}

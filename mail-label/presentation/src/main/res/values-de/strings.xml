@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_title_inbox">Posteingang</string>
+    <string name="label_title_drafts">Entwürfe</string>
+    <string name="label_title_sent">Gesendet</string>
+    <string name="label_title_starred">Gekennzeichnet</string>
+    <string name="label_title_archive">Archiv</string>
+    <string name="label_title_spam">Spam</string>
+    <string name="label_title_trash">Papierkorb</string>
+    <string name="label_title_all_mail">Alle Nachrichten</string>
+</resources>

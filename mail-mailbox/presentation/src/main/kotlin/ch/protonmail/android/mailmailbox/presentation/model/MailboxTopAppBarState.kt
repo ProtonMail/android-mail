@@ -18,39 +18,40 @@
 
 package ch.protonmail.android.mailmailbox.presentation.model
 
+import ch.protonmail.android.maillabel.domain.model.MailLabel
 import me.proton.core.util.kotlin.EMPTY_STRING
 
 sealed interface MailboxTopAppBarState {
 
-    fun withCurrentLabelName(currentLabelName: String) =
+    fun withCurrentMailLabel(currentMailLabel: MailLabel) =
         when (this) {
-            Loading -> Data.DefaultMode(currentLabelName = currentLabelName)
-            is Data.DefaultMode -> copy(currentLabelName = currentLabelName)
-            is Data.SearchMode -> copy(currentLabelName = currentLabelName)
-            is Data.SelectionMode -> copy(currentLabelName = currentLabelName)
+            Loading -> Data.DefaultMode(currentMailLabel = currentMailLabel)
+            is Data.DefaultMode -> copy(currentMailLabel = currentMailLabel)
+            is Data.SearchMode -> copy(currentMailLabel = currentMailLabel)
+            is Data.SelectionMode -> copy(currentMailLabel = currentMailLabel)
         }
 
     object Loading : MailboxTopAppBarState
 
     sealed interface Data : MailboxTopAppBarState {
 
-        val currentLabelName: String
+        val currentMailLabel: MailLabel
 
-        fun toDefaultMode() = DefaultMode(currentLabelName)
-        fun toSelectionMode() = SelectionMode(currentLabelName, selectedCount = 0)
-        fun toSearchMode() = SearchMode(currentLabelName, searchQuery = EMPTY_STRING)
+        fun toDefaultMode() = DefaultMode(currentMailLabel)
+        fun toSelectionMode() = SelectionMode(currentMailLabel, selectedCount = 0)
+        fun toSearchMode() = SearchMode(currentMailLabel, searchQuery = EMPTY_STRING)
 
         data class DefaultMode(
-            override val currentLabelName: String
+            override val currentMailLabel: MailLabel
         ) : Data
 
         data class SelectionMode(
-            override val currentLabelName: String,
+            override val currentMailLabel: MailLabel,
             val selectedCount: Int
         ) : Data
 
         data class SearchMode(
-            override val currentLabelName: String,
+            override val currentMailLabel: MailLabel,
             val searchQuery: String
         ) : Data
     }

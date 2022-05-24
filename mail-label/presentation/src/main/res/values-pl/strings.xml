@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_title_inbox">Odebrane</string>
+    <string name="label_title_drafts">Szkice</string>
+    <string name="label_title_sent">Wysłane</string>
+    <string name="label_title_starred">Wyróżnione</string>
+    <string name="label_title_archive">Archiwum</string>
+    <string name="label_title_spam">Spam</string>
+    <string name="label_title_trash">Kosz</string>
+    <string name="label_title_all_mail">Wszystkie wiadomości</string>
+</resources>

@@ -16,13 +16,21 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.maillabel.presentation
 
-import androidx.compose.ui.graphics.Color
-import me.proton.core.label.domain.entity.LabelId
+import androidx.annotation.StringRes
+import me.proton.core.label.domain.entity.LabelType
 
-data class SidebarFolderUiModel(
-    val id: LabelId,
-    val text: String,
-    val color: Color,
-)
+@StringRes
+fun LabelType.labelTitleRes() = when (this) {
+    LabelType.ContactGroup -> 0
+    LabelType.MessageLabel -> R.string.label_title_labels
+    LabelType.MessageFolder -> R.string.label_title_folders
+}
+
+@StringRes
+fun LabelType.labelAddTitleRes() = when (this) {
+    LabelType.ContactGroup -> 0
+    LabelType.MessageLabel -> R.string.label_title_add_label
+    LabelType.MessageFolder -> R.string.label_title_add_folder
+}

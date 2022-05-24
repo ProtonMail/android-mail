@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="drawer_title_inbox">Beérkezett üzenetek</string>
-    <string name="drawer_title_drafts">Piszkozatok</string>
-    <string name="drawer_title_sent">Elküldött</string>
-    <string name="drawer_title_starred">Csillagozott</string>
-    <string name="drawer_title_archive">Archívum</string>
-    <string name="drawer_title_spam">Levélszemét</string>
-    <string name="drawer_title_trash">Lomtár</string>
-    <string name="drawer_title_all_mail">Összes levél</string>
-    <string name="drawer_title_folders">Mappák</string>
-    <string name="drawer_title_create_folder">Mappa létrehozása</string>
-    <string name="drawer_title_labels">Címkék</string>
-    <string name="drawer_title_create_label">Címke létrehozása</string>
     <string name="drawer_title_more">Továbbiak</string>
     <string name="drawer_title_contacts">Névjegyek</string>
-    <string name="drawer_title_subscription">Előfizetés</string>
 </resources>

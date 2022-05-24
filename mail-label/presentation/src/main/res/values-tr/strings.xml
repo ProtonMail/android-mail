@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_title_inbox">Gelen kutusu</string>
+    <string name="label_title_drafts">Taslaklar</string>
+    <string name="label_title_sent">Gönderilmiş</string>
+    <string name="label_title_starred">Yıldızlı</string>
+    <string name="label_title_archive">Arşiv</string>
+    <string name="label_title_spam">İstenmeyen</string>
+    <string name="label_title_trash">Çöp kutusu</string>
+    <string name="label_title_all_mail">Tüm e-postalar</string>
+</resources>

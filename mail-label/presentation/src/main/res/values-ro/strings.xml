@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_title_inbox">Mesaje primite</string>
+    <string name="label_title_drafts">Ciorne</string>
+    <string name="label_title_sent">Trimise</string>
+    <string name="label_title_starred">Cu stea</string>
+    <string name="label_title_archive">Arhivă</string>
+    <string name="label_title_spam">Nedorite</string>
+    <string name="label_title_trash">Gunoi</string>
+    <string name="label_title_all_mail">Toate mesajele</string>
+</resources>

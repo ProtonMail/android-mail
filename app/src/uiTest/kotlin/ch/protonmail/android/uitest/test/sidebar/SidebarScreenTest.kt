@@ -18,23 +18,34 @@
 
 package ch.protonmail.android.uitest.test.sidebar
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.domain.AppInformation
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
-import ch.protonmail.android.mailmailbox.presentation.R.string
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
+import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
+import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.Sidebar
 import ch.protonmail.android.mailmailbox.presentation.SidebarState
 import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_SIDEBAR_MENU
+import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.label.domain.entity.LabelId
 import org.junit.Rule
 import org.junit.Test
+import org.junit.experimental.categories.Category
+import ch.protonmail.android.maillabel.R as label
+import me.proton.core.presentation.compose.R as core
 
 private const val APP_VERSION_FOOTER = "Proton Mail 6.0.0-alpha+test"
 
@@ -44,24 +55,62 @@ class SidebarScreenTest {
     val composeTestRule = createComposeRule()
 
     @Test
+    @Category(SmokeTest::class)
     fun subscriptionIsShownWhenSidebarStateIsDisplaySubscription() {
         setupScreenWithState(showSubscriptionSidebarState())
 
         scrollToSidebarBottom()
 
         composeTestRule
-            .onNodeWithText(string.drawer_title_subscription)
+            .onNodeWithText(core.string.presentation_menu_item_title_subscription)
             .assertIsDisplayed()
     }
 
     @Test
+    @Category(SmokeTest::class)
     fun subscriptionIsHiddenWhenSidebarStateIsHideSubscription() {
         setupScreenWithState(hideSubscriptionSidebarState())
 
         scrollToSidebarBottom()
         composeTestRule
-            .onNodeWithText(string.drawer_title_subscription)
+            .onNodeWithText(core.string.presentation_menu_item_title_subscription)
             .assertDoesNotExist()
+    }
+
+    @Test
+    @Category(SmokeTest::class)
+    fun labelsAreOnlyDisplayingTitleEmptyItemsAndAddItem() {
+        setupScreenWithState(emptyLabelsSidebarState())
+
+        listOf(
+            label.string.label_title_labels,
+            label.string.label_title_folders,
+            label.string.label_title_add_folder,
+            label.string.label_title_add_label
+        ).forEach {
+            composeTestRule
+                .onNodeWithText(it)
+                .assertIsDisplayed()
+        }
+    }
+
+    @Test
+    @Category(SmokeTest::class)
+    fun labelsAndFoldersAreDisplayed() {
+        setupScreenWithState(someLabelsSidebarState())
+
+        listOf(
+            "Folder1",
+            "Folder2",
+            "Folder3",
+            "Label1",
+            "Label2",
+            "Label3"
+        ).forEach {
+            composeTestRule
+                .onNodeWithText(it)
+                .assertIsDisplayed()
+        }
     }
 
     private fun scrollToSidebarBottom(): SemanticsNodeInteraction {
@@ -71,18 +120,60 @@ class SidebarScreenTest {
             .performScrollToNode(hasText(APP_VERSION_FOOTER, true))
     }
 
-    private fun showSubscriptionSidebarState() = buildSidebarState(true)
+    private fun showSubscriptionSidebarState() = buildSidebarState(isSubscriptionVisible = true)
+    private fun hideSubscriptionSidebarState() = buildSidebarState(isSubscriptionVisible = false)
+    private fun emptyLabelsSidebarState() = buildSidebarState(mailLabels = MailLabelsUiModel.Loading)
+    private fun someLabelsSidebarState() = buildSidebarState(
+        mailLabels = MailLabelsUiModel(
+            systems = emptyList(),
+            folders = listOf(
+                buildMailLabelFolderUiModel("Folder1"),
+                buildMailLabelFolderUiModel("Folder2"),
+                buildMailLabelFolderUiModel("Folder3"),
+            ),
+            labels = listOf(
+                buildMailLabelLabelUiModel("Label1"),
+                buildMailLabelLabelUiModel("Label2"),
+                buildMailLabelLabelUiModel("Label3"),
+            )
+        )
+    )
 
-    private fun hideSubscriptionSidebarState() = buildSidebarState(false)
+    private fun buildMailLabelFolderUiModel(text: String) = MailLabelUiModel.Custom(
+        id = MailLabelId.Custom.Folder(LabelId(text)),
+        text = TextUiModel.Text(text),
+        icon = R.drawable.ic_proton_folder_filled,
+        iconTint = Color(0),
+        isSelected = false,
+        count = 0,
+        isVisible = true,
+        isExpanded = false,
+        iconPaddingStart = 0.dp
+    )
 
-    private fun buildSidebarState(isSubscriptionVisible: Boolean) = SidebarState(
-        selectedLocation = Inbox,
+    private fun buildMailLabelLabelUiModel(text: String) = MailLabelUiModel.Custom(
+        id = MailLabelId.Custom.Label(LabelId(text)),
+        text = TextUiModel.Text(text),
+        icon = R.drawable.ic_proton_circle_filled,
+        iconTint = Color(0),
+        isSelected = false,
+        count = 0,
+        isVisible = true,
+        isExpanded = false,
+        iconPaddingStart = 0.dp
+    )
+
+    private fun buildSidebarState(
+        isSubscriptionVisible: Boolean = true,
+        mailLabels: MailLabelsUiModel = MailLabelsUiModel.Loading,
+    ) = SidebarState(
         isSubscriptionVisible = isSubscriptionVisible,
         hasPrimaryAccount = false,
         appInformation = AppInformation(
             appName = "Proton Mail",
             appVersionName = "6.0.0-alpha+test"
-        )
+        ),
+        mailLabels = mailLabels
     )
 
     private fun setupScreenWithState(state: SidebarState) {
@@ -93,9 +184,7 @@ class SidebarScreenTest {
                     onSignOut = {},
                     onSignIn = {},
                     onSwitch = {},
-                    onMailLocation = {},
-                    onFolder = {},
-                    onLabel = {},
+                    onLabelAction = {},
                     onSettings = {},
                     onSubscription = {},
                     onReportBug = {},

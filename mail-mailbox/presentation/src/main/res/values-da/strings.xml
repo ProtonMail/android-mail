@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="drawer_title_inbox">Indbakke</string>
-    <string name="drawer_title_drafts">Kladder</string>
-    <string name="drawer_title_sent">Sendt</string>
-    <string name="drawer_title_starred">Stjernemarkeret</string>
-    <string name="drawer_title_archive">Arkiv</string>
-    <string name="drawer_title_spam">Spam</string>
-    <string name="drawer_title_trash">Papirkurv</string>
-    <string name="drawer_title_all_mail">Alle e-mails</string>
-    <string name="drawer_title_folders">Mapper</string>
-    <string name="drawer_title_create_folder">Opret mappe</string>
-    <string name="drawer_title_labels">Etiketter</string>
-    <string name="drawer_title_create_label">Opret etiket</string>
     <string name="drawer_title_more">Mere</string>
     <string name="drawer_title_contacts">Kontakter</string>
-    <string name="drawer_title_subscription">Abonnement</string>
 </resources>

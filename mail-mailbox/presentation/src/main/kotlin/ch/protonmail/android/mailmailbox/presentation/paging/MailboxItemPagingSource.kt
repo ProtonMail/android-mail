@@ -18,32 +18,33 @@
 
 package ch.protonmail.android.mailmailbox.presentation.paging
 
+import java.io.IOException
 import androidx.paging.PagingState
 import androidx.room.RoomDatabase
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
+import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
 import ch.protonmail.android.mailpagination.domain.entity.PageFilter
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailpagination.domain.getAdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.getRefreshPageKey
 import ch.protonmail.android.mailpagination.presentation.paging.InvalidationTrackerPagingSource
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation
-import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
-import java.io.IOException
 import kotlin.math.max
 
 @AssistedFactory
 interface MailboxItemPagingSourceFactory {
+
     fun create(
         userIds: List<UserId>,
-        location: SidebarLocation,
+        selectedMailLabelId: MailLabelId,
         type: MailboxItemType,
     ): MailboxItemPagingSource
 }
@@ -52,7 +53,7 @@ class MailboxItemPagingSource @AssistedInject constructor(
     roomDatabase: RoomDatabase,
     private val getMailboxItems: GetMultiUserMailboxItems,
     @Assisted private val userIds: List<UserId>,
-    @Assisted private val location: SidebarLocation,
+    @Assisted private val selectedMailLabelId: MailLabelId,
     @Assisted private val type: MailboxItemType,
 ) : InvalidationTrackerPagingSource<MailboxPageKey, MailboxItem>(
     db = roomDatabase,
@@ -61,7 +62,7 @@ class MailboxItemPagingSource @AssistedInject constructor(
 
     private val initialPageKey = MailboxPageKey(
         userIds = userIds,
-        pageKey = PageKey(filter = PageFilter(labelId = location.labelId))
+        pageKey = PageKey(filter = PageFilter(labelId = selectedMailLabelId.labelId))
     )
 
     override suspend fun loadPage(

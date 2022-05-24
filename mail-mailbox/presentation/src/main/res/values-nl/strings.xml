@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="drawer_title_inbox">Inbox</string>
-    <string name="drawer_title_drafts">Concepten</string>
-    <string name="drawer_title_sent">Verzonden</string>
-    <string name="drawer_title_starred">Met ster</string>
-    <string name="drawer_title_archive">Archief</string>
-    <string name="drawer_title_spam">Spam</string>
-    <string name="drawer_title_trash">Prullenbak</string>
-    <string name="drawer_title_all_mail">Alle berichten</string>
-    <string name="drawer_title_folders">Mappen</string>
-    <string name="drawer_title_create_folder">Map maken</string>
-    <string name="drawer_title_labels">Labels</string>
-    <string name="drawer_title_create_label">Label maken</string>
     <string name="drawer_title_more">Meer</string>
     <string name="drawer_title_contacts">Contacten</string>
-    <string name="drawer_title_subscription">Abonnement</string>
 </resources>

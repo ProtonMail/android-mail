@@ -81,7 +81,7 @@ fun MailboxScreen(
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val mailboxListState = mailboxListItems.rememberLazyListState()
 
-    LaunchedEffect(mailboxState.selectedLocation) {
+    LaunchedEffect(mailboxState.currentMailLabel) {
          mailboxListState.animateScrollToItem(0)
     }
 
@@ -110,9 +110,6 @@ fun MailboxScreen(
                 .background(ProtonTheme.colors.backgroundNorm)
                 .fillMaxSize()
         ) {
-            MailboxHeader(
-                mailboxState = mailboxState,
-            )
             MailboxList(
                 navigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
                 onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
@@ -123,17 +120,6 @@ fun MailboxScreen(
             )
         }
     }
-}
-
-@Composable
-private fun MailboxHeader(
-    mailboxState: MailboxState,
-) {
-    val locationName = mailboxState.selectedLocation?.javaClass?.simpleName
-    Text(
-        text = "Location: $locationName (unread: ${mailboxState.unread})",
-        modifier = Modifier.fillMaxWidth()
-    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)

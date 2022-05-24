@@ -27,7 +27,6 @@ import androidx.room.getQueryDispatcher
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
-import ch.protonmail.android.mailmailbox.domain.model.SidebarLocation.Inbox
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
 import ch.protonmail.android.mailmailbox.presentation.getMailboxItem
 import ch.protonmail.android.mailpagination.domain.entity.OrderBy
@@ -49,6 +48,7 @@ import me.proton.core.label.domain.entity.LabelId
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Inbox
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
@@ -84,7 +84,7 @@ class MailboxItemPagingSourceTest {
             roomDatabase = roomDatabase,
             getMailboxItems = getMailboxItems,
             userIds = listOf(userId),
-            location = Inbox,
+            selectedMailLabelId = Inbox,
             type = MailboxItemType.Message
         )
     }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_title_inbox">Příchozí</string>
+    <string name="label_title_drafts">Koncepty</string>
+    <string name="label_title_sent">Odeslané</string>
+    <string name="label_title_starred">Oblíbené</string>
+    <string name="label_title_archive">Archiv</string>
+    <string name="label_title_spam">Spam</string>
+    <string name="label_title_trash">Koš</string>
+    <string name="label_title_all_mail">Všechny zprávy</string>
+</resources>

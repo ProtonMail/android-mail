@@ -16,13 +16,14 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.mailcommon.domain.usecase
 
-import androidx.compose.ui.graphics.Color
-import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.accountmanager.domain.AccountManager
+import javax.inject.Inject
 
-data class SidebarLabelUiModel(
-    val id: LabelId,
-    val text: String,
-    val color: Color,
-)
+class ObservePrimaryUserId @Inject constructor(
+    val accountManager: AccountManager,
+) {
+
+    operator fun invoke() = accountManager.getPrimaryUserId()
+}

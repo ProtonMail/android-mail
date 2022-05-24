@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcommon.domain.usecase
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.domain.arch.mapSuccessValueOrNull
 import me.proton.core.user.domain.UserManager
 import javax.inject.Inject
 
@@ -32,9 +31,9 @@ class ObservePrimaryUser @Inject constructor(
 
     operator fun invoke() = accountManager.getPrimaryUserId()
         .flatMapLatest { userId ->
-            if (userId == null) {
-                return@flatMapLatest flowOf(null)
+            when (userId) {
+                null -> flowOf(null)
+                else -> userManager.observeUser(userId)
             }
-            userManager.getUserFlow(userId).mapSuccessValueOrNull()
         }
 }

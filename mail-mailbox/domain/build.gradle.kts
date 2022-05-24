@@ -48,6 +48,7 @@ dependencies {
     implementation(Proton.Core.label)
     implementation(Proton.Core.mailSettings)
 
+    implementation(project(":mail-label:domain"))
     implementation(project(":mail-pagination:domain"))
     implementation(project(":mail-conversation:domain"))
     implementation(project(":mail-message:domain"))

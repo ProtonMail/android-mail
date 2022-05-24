@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_title_inbox">Вхідні</string>
+    <string name="label_title_drafts">Чернетки</string>
+    <string name="label_title_sent">Надіслані</string>
+    <string name="label_title_starred">Із зірочкою</string>
+    <string name="label_title_archive">Архів</string>
+    <string name="label_title_spam">Спам</string>
+    <string name="label_title_trash">Смітник</string>
+    <string name="label_title_all_mail">Уся пошта</string>
+</resources>
