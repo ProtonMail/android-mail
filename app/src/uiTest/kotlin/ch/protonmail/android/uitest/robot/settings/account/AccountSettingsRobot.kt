@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.uitest.robot.settings.account
 
+import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -33,6 +34,7 @@ import ch.protonmail.android.uitest.robot.settings.account.privacy.PrivacySettin
 import ch.protonmail.android.uitest.robot.settings.account.swipinggestures.SwipingGesturesSettingsRobot
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
+import me.proton.core.test.android.robots.settings.PasswordManagementRobot
 
 /**
  * [AccountSettingsRobot] class contains actions and verifications for
@@ -42,10 +44,6 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 class AccountSettingsRobot(
     private val composeTestRule: ComposeContentTestRule? = null
 ) {
-
-    fun subscription(): SubscriptionRobot {
-        return SubscriptionRobot()
-    }
 
     fun privacy(): PrivacySettingsRobot {
         return PrivacySettingsRobot()
@@ -71,18 +69,27 @@ class AccountSettingsRobot(
         return SwipingGesturesSettingsRobot()
     }
 
+    fun passwordManagement(): PasswordManagementRobot {
+        clickOnAccountListItemNamed(string.mail_settings_password_management)
+        return PasswordManagementRobot()
+    }
+
     fun conversationMode(): ConversationModeRobot {
+        clickOnAccountListItemNamed(string.mail_settings_conversation_mode)
+        return ConversationModeRobot(composeTestRule)
+    }
+
+    private fun clickOnAccountListItemNamed(@StringRes itemNameRes: Int) {
         composeTestRule!!
             .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
             .onChild()
-            .performScrollToNode(hasText(string.mail_settings_conversation_mode))
+            .performScrollToNode(hasText(itemNameRes))
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText(string.mail_settings_conversation_mode)
+            .onNodeWithText(itemNameRes)
             .performClick()
         composeTestRule.waitForIdle()
-        return ConversationModeRobot(composeTestRule)
     }
 
     /**
