@@ -30,12 +30,31 @@ object UserTestData {
     const val USED_SPACE_RAW = 5000L
     const val USER_EMAIL_RAW = "userEmail"
     const val USER_DISPLAY_NAME_RAW = "userDisplayName"
+    const val USER_NAME_RAW = "username"
 
     val user = User(
         userId = UserIdTestData.userId,
         email = USER_EMAIL_RAW,
         displayName = USER_DISPLAY_NAME_RAW,
         name = null,
+        currency = "CHF",
+        credit = 1,
+        usedSpace = USED_SPACE_RAW,
+        maxSpace = MAX_SPACE_RAW,
+        maxUpload = 1,
+        role = NoOrganization,
+        private = true,
+        services = 1,
+        subscribed = 1,
+        delinquent = None,
+        keys = emptyList()
+    )
+
+    val emptyDisplayNameUser = User(
+        userId = UserIdTestData.userId,
+        email = USER_EMAIL_RAW,
+        displayName = "",
+        name = USER_NAME_RAW,
         currency = "CHF",
         credit = 1,
         usedSpace = USED_SPACE_RAW,

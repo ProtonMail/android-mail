@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.user.domain.entity.User
+import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,8 +58,12 @@ class SettingsViewModel @Inject constructor(
 
     private fun buildAccountData(user: User?) = user?.let {
         AccountInfo(
-            name = it.displayName.orEmpty(),
+            name = getUsername(it),
             email = it.email.orEmpty()
         )
     }
+
+    // For Mail product, we know that user.name will always be non-null, non-empty and non-blank.
+    private fun getUsername(user: User) = user.displayName?.takeIfNotEmpty() ?: requireNotNull(user.name)
+
 }

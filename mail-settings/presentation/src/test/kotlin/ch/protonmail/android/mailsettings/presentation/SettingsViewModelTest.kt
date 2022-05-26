@@ -99,6 +99,26 @@ class SettingsViewModelTest {
     }
 
     @Test
+    fun `state has user name info when primary user display name is empty`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            appSettingsFlow.emit(AppSettingsTestData.appSettings)
+
+            // When
+            userFlow.emit(UserTestData.emptyDisplayNameUser)
+
+            // Then
+            val actual = awaitItem() as Data
+            val expected = AccountInfo(
+                UserTestData.USER_NAME_RAW,
+                UserTestData.USER_EMAIL_RAW
+            )
+            assertEquals(expected, actual.account)
+        }
+    }
+
+    @Test
     fun `state has null account info when there is no valid primary user`() = runTest {
         viewModel.state.test {
             // Given
