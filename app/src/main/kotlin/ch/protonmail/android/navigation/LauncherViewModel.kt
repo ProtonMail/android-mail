@@ -60,6 +60,7 @@ import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.report.presentation.entity.BugReportInput
 import me.proton.core.user.domain.UserManager
+import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
 import javax.inject.Inject
 
 @HiltViewModel
@@ -73,6 +74,7 @@ class LauncherViewModel @Inject constructor(
     private val hvOrchestrator: HumanVerificationOrchestrator,
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
+    private val userSettingsOrchestrator: UserSettingsOrchestrator,
     private val missingScopeListener: MissingScopeListener,
 ) : ViewModel() {
 
@@ -96,6 +98,7 @@ class LauncherViewModel @Inject constructor(
         hvOrchestrator.register(context)
         plansOrchestrator.register(context)
         reportOrchestrator.register(context)
+        userSettingsOrchestrator.register(context)
 
         authOrchestrator.onAddAccountResult { result ->
             viewModelScope.launch {
@@ -157,6 +160,12 @@ class LauncherViewModel @Inject constructor(
         val email = user?.email ?: "unknown"
         val username = user?.name ?: "unknown (userId: $userId)"
         reportOrchestrator.startBugReport(BugReportInput(email = email, username = username))
+    }
+
+    fun passwordManagement() = viewModelScope.launch {
+        getPrimaryUserIdOrNull()?.let {
+            userSettingsOrchestrator.startPasswordManagementWorkflow(it)
+        }
     }
 
     private suspend fun getAccountOrNull(it: UserId) = accountManager.getAccount(it).firstOrNull()

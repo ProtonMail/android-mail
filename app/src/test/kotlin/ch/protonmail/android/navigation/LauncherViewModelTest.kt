@@ -60,6 +60,7 @@ import me.proton.core.network.domain.scopes.MissingScopeListener
 import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.user.domain.UserManager
+import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -70,6 +71,7 @@ class LauncherViewModelTest {
     private val hvOrchestrator = mockk<HumanVerificationOrchestrator>(relaxUnitFun = true)
     private val plansOrchestrator = mockk<PlansOrchestrator>(relaxUnitFun = true)
     private val reportOrchestrator = mockk<ReportOrchestrator>(relaxUnitFun = true)
+    private val userSettingsOrchestrator = mockk<UserSettingsOrchestrator>(relaxUnitFun = true)
     private val missingScopeListener = mockk<MissingScopeListener>(relaxUnitFun = true)
 
     private val userManager = mockk<UserManager>()
@@ -103,6 +105,7 @@ class LauncherViewModelTest {
             hvOrchestrator,
             plansOrchestrator,
             reportOrchestrator,
+            userSettingsOrchestrator,
             missingScopeListener
         )
     }
@@ -263,36 +266,17 @@ class LauncherViewModelTest {
 
         // AccountManager
         mockkStatic(AccountManager::observe)
-        mockkStatic(AccountManagerObserver::onAccountCreateAddressFailed)
-        mockkStatic(AccountManagerObserver::onAccountCreateAddressNeeded)
-        mockkStatic(AccountManagerObserver::onAccountTwoPassModeFailed)
-        mockkStatic(AccountManagerObserver::onAccountTwoPassModeNeeded)
-        mockkStatic(AccountManagerObserver::onSessionForceLogout)
-        mockkStatic(AccountManagerObserver::onSessionSecondFactorNeeded)
-        val amObserver = mockk<AccountManagerObserver> {
-            every { onAccountCreateAddressFailed(any(), any()) } returns this
-            every { onAccountCreateAddressNeeded(any(), any()) } returns this
-            every { onAccountTwoPassModeFailed(any(), any()) } returns this
-            every { onAccountTwoPassModeNeeded(any(), any()) } returns this
-            every { onSessionForceLogout(any(), any()) } returns this
-            every { onSessionSecondFactorNeeded(any(), any()) } returns this
-        }
+        val amObserver = mockAccountManagerObserver()
         every { accountManager.observe(any(), any()) } returns amObserver
 
         // HumanVerificationManager
         mockkStatic(HumanVerificationManager::observe)
-        mockkStatic(HumanVerificationManagerObserver::onHumanVerificationNeeded)
-        val hvObserver = mockk<HumanVerificationManagerObserver> {
-            every { onHumanVerificationNeeded(any(), any()) } returns this
-        }
+        val hvObserver = mockHumanVerificationManagerObserver()
         every { humanVerificationManager.observe(any(), any()) } returns hvObserver
 
         // MissingScopeListener
         mockkStatic(MissingScopeListener::observe)
-        mockkStatic(MissingScopeObserver::onConfirmPasswordNeeded)
-        val missingScopeObserver = mockk<MissingScopeObserver> {
-            every { onConfirmPasswordNeeded(any()) } returns this
-        }
+        val missingScopeObserver = mockMissingScopeObserver()
         every { missingScopeListener.observe(any(), any()) } returns missingScopeObserver
 
         // WHEN
@@ -310,5 +294,72 @@ class LauncherViewModelTest {
         verify(exactly = 1) { hvObserver.onHumanVerificationNeeded(any(), any()) }
         // MissingScopeListener
         verify(exactly = 1) { missingScopeObserver.onConfirmPasswordNeeded(any()) }
+    }
+
+    @Test
+    fun `when register is called userSettingsOrchestrator is registered`() = runTest {
+        // GIVEN
+        mockkStatic(AccountManager::observe)
+        val amObserver = mockAccountManagerObserver()
+        every { accountManager.observe(any(), any()) } returns amObserver
+
+        mockkStatic(HumanVerificationManager::observe)
+        val hvObserver = mockHumanVerificationManagerObserver()
+        every { humanVerificationManager.observe(any(), any()) } returns hvObserver
+
+        mockkStatic(MissingScopeListener::observe)
+        val missingScopeObserver = mockMissingScopeObserver()
+        every { missingScopeListener.observe(any(), any()) } returns missingScopeObserver
+
+        // WHEN
+        viewModel.register(context)
+
+        // THEN
+        verify { userSettingsOrchestrator.register(context) }
+    }
+
+    @Test
+    fun `when passwordManagement is called then startPasswordManagementWorkflow`() = runTest {
+        // GIVEN
+        every { accountManager.getPrimaryUserId() } returns flowOf(user1UserId)
+
+        // WHEN
+        viewModel.passwordManagement()
+
+        // THEN
+        verify { userSettingsOrchestrator.startPasswordManagementWorkflow(user1UserId) }
+    }
+
+    private fun mockMissingScopeObserver(): MissingScopeObserver {
+        mockkStatic(MissingScopeObserver::onConfirmPasswordNeeded)
+        val missingScopeObserver = mockk<MissingScopeObserver> {
+            every { onConfirmPasswordNeeded(any()) } returns this
+        }
+        return missingScopeObserver
+    }
+
+    private fun mockHumanVerificationManagerObserver(): HumanVerificationManagerObserver {
+        mockkStatic(HumanVerificationManagerObserver::onHumanVerificationNeeded)
+        val hvObserver = mockk<HumanVerificationManagerObserver> {
+            every { onHumanVerificationNeeded(any(), any()) } returns this
+        }
+        return hvObserver
+    }
+
+    private fun mockAccountManagerObserver(): AccountManagerObserver {
+        mockkStatic(AccountManagerObserver::onAccountCreateAddressFailed)
+        mockkStatic(AccountManagerObserver::onAccountCreateAddressNeeded)
+        mockkStatic(AccountManagerObserver::onAccountTwoPassModeFailed)
+        mockkStatic(AccountManagerObserver::onAccountTwoPassModeNeeded)
+        mockkStatic(AccountManagerObserver::onSessionForceLogout)
+        mockkStatic(AccountManagerObserver::onSessionSecondFactorNeeded)
+        return mockk {
+            every { onAccountCreateAddressFailed(any(), any()) } returns this
+            every { onAccountCreateAddressNeeded(any(), any()) } returns this
+            every { onAccountTwoPassModeFailed(any(), any()) } returns this
+            every { onAccountTwoPassModeNeeded(any(), any()) } returns this
+            every { onSessionForceLogout(any(), any()) } returns this
+            every { onSessionSecondFactorNeeded(any(), any()) } returns this
+        }
     }
 }

@@ -63,6 +63,7 @@ fun Home(
     onSwitch: (UserId) -> Unit,
     onSubscription: () -> Unit,
     onReportBug: () -> Unit,
+    onPasswordManagement: () -> Unit
 ) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
@@ -103,7 +104,7 @@ fun Home(
                 addMessageDetail()
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
-                addAccountSettings(navController)
+                addAccountSettings(navController, onPasswordManagement)
                 addConversationModeSettings(navController, Screen.ConversationModeSettings.route)
                 addThemeSettings(navController, Screen.ThemeSettings.route)
                 addLanguageSettings(navController, Screen.LanguageSettings.route)
@@ -159,11 +160,9 @@ fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
 ) {
     MainSettingsScreen(
         onAccountClicked = {
-            Timber.d("Navigating to account settings")
             navController.navigate(Screen.AccountSettings.route)
         },
         onThemeClick = {
-            Timber.d("Navigating to theme settings")
             navController.navigate(Screen.ThemeSettings.route)
         },
         onPushNotificationsClick = {
@@ -192,19 +191,21 @@ fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
     )
 }
 
-fun NavGraphBuilder.addAccountSettings(navController: NavHostController) = composable(
+fun NavGraphBuilder.addAccountSettings(
+    navController: NavHostController,
+    onPasswordManagement: () -> Unit
+) = composable(
     route = Screen.AccountSettings.route
 ) {
     AccountSettingScreen(
         onBackClick = { navController.popBackStack() },
         onPasswordManagementClick = {
-            Timber.i("Password management setting clicked")
+            onPasswordManagement()
         },
         onRecoveryEmailClick = {
             Timber.i("Recovery email setting clicked")
         },
         onConversationModeClick = {
-            Timber.d("Navigating to conversation mode settings")
             navController.navigate(Screen.ConversationModeSettings.route)
         },
         onDefaultEmailAddressClick = {

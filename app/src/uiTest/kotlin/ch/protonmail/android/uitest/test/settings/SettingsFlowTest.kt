@@ -22,7 +22,6 @@ import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.experimental.categories.Category
 
@@ -104,7 +103,6 @@ class SettingsFlowTest : BaseTest() {
 
     @Test
     @Category(SmokeTest::class)
-    @Ignore("Ignored till functionality from MAILANDR-102 is implemented")
     fun openPasswordManagementSettings() {
         menuRobot
             .settings()

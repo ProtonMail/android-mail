@@ -39,7 +39,8 @@ fun Launcher(
             onSignOut = { viewModel.signOut(it) },
             onSwitch = { viewModel.switch(it) },
             onSubscription = { viewModel.subscription() },
-            onReportBug = { viewModel.report() }
+            onReportBug = { viewModel.report() },
+            onPasswordManagement = { viewModel.passwordManagement() }
         )
         LauncherViewModel.State.Processing,
         LauncherViewModel.State.StepNeeded -> ProtonCenteredProgress(Modifier.fillMaxSize())
