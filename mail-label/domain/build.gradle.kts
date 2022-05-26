@@ -52,5 +52,7 @@ dependencies {
 
     implementation(Dependencies.moduleDomainLibs)
 
+    implementation(project(":mail-common:domain"))
+
     testImplementation(Dependencies.testLibs)
 }

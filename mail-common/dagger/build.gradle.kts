@@ -19,7 +19,10 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
 }
+
+setAsHiltModule()
 
 android {
     compileSdk = Config.compileSdk
@@ -31,8 +34,10 @@ android {
 }
 
 dependencies {
-    api(project(":mail-common:dagger"))
-    api(project(":mail-common:data"))
-    api(project(":mail-common:domain"))
-    api(project(":mail-common:presentation"))
+    implementation(KotlinX.coroutinesCore)
+    implementation(Proton.Core.label)
+
+    implementation(project(":mail-common:data"))
+    implementation(project(":mail-common:domain"))
+    implementation(project(":mail-common:presentation"))
 }

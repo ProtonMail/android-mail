@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maillabel.domain.usecase
 
+import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
@@ -37,7 +38,8 @@ import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class ObserveMailLabels @Inject constructor(
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default,
+    @DefaultDispatcher
+    private val dispatcher: CoroutineDispatcher,
     private val labelRepository: LabelRepository,
 ) {
 

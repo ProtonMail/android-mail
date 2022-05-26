@@ -16,12 +16,18 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maillabel.dagger
+package ch.protonmail.android.mailcommon.domain.coroutines
 
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import javax.inject.Qualifier
 
-@Module
-@InstallIn(SingletonComponent::class)
-object MailLabelModule
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class DefaultDispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IODispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class MainDispatcher

@@ -16,6 +16,7 @@ if (includeCoreLibsHelper.exists()) {
 include(":app")
 include(":test-data")
 
+include(":mail-common:dagger")
 include(":mail-common:data")
 include(":mail-common:domain")
 include(":mail-common:presentation")

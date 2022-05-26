@@ -16,12 +16,31 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maillabel.dagger
+package ch.protonmail.android.mailcommon.dagger
 
+import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
+import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
+import ch.protonmail.android.mailcommon.domain.coroutines.MainDispatcher
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 @Module
 @InstallIn(SingletonComponent::class)
-object MailLabelModule
+object MailCommonModule {
+
+    @Provides
+    @DefaultDispatcher
+    fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
+
+    @Provides
+    @IODispatcher
+    fun provideIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+    @Provides
+    @MainDispatcher
+    fun provideMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+}
