@@ -19,13 +19,13 @@
 package ch.protonmail.android.maillabel.domain.usecase
 
 import android.graphics.Color
-import ch.protonmail.android.maillabel.domain.getLabel
-import ch.protonmail.android.maillabel.domain.getMailFolder
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
+import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
+import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockkStatic
@@ -87,9 +87,9 @@ class MailLabelBuilderTest {
     fun `return correct simple folders`() = runTest {
         // Given
         val items = listOf(
-            getLabel(userId, LabelType.MessageFolder, "0", order = 0),
-            getLabel(userId, LabelType.MessageFolder, "1", order = 1),
-            getLabel(userId, LabelType.MessageFolder, "2", order = 2),
+            buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
+            buildLabel(userId, LabelType.MessageFolder, "1", order = 1),
+            buildLabel(userId, LabelType.MessageFolder, "2", order = 2),
         )
 
         // When
@@ -97,9 +97,9 @@ class MailLabelBuilderTest {
 
         // Then
         val expected = listOf(
-            getMailFolder("0", order = 0),
-            getMailFolder("1", order = 1),
-            getMailFolder("2", order = 2),
+            buildCustomFolder("0", order = 0),
+            buildCustomFolder("1", order = 1),
+            buildCustomFolder("2", order = 2),
         )
         assertEquals(expected, actual)
     }
@@ -108,22 +108,22 @@ class MailLabelBuilderTest {
     fun `return correct folders with parent`() = runTest {
         // Given
         val items = listOf(
-            getLabel(userId, LabelType.MessageFolder, "0", order = 0),
-            getLabel(userId, LabelType.MessageFolder, "0.1", order = 0, parentId = "0"),
-            getLabel(userId, LabelType.MessageFolder, "0.2", order = 1, parentId = "0"),
-            getLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2"),
-            getLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2"),
+            buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
+            buildLabel(userId, LabelType.MessageFolder, "0.1", order = 0, parentId = "0"),
+            buildLabel(userId, LabelType.MessageFolder, "0.2", order = 1, parentId = "0"),
+            buildLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2"),
+            buildLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2"),
         )
 
         // When
         val actual = items.toMailLabelCustom()
 
         // Then
-        val f0 = getMailFolder("0", level = 0, order = 0, parent = null, children = listOf("0.1", "0.2"))
-        val f01 = getMailFolder("0.1", level = 1, order = 0, parent = f0)
-        val f02 = getMailFolder("0.2", level = 1, order = 1, parent = f0, children = listOf("0.2.1", "0.2.2"))
-        val f021 = getMailFolder("0.2.1", level = 2, order = 0, parent = f02)
-        val f022 = getMailFolder("0.2.2", level = 2, order = 1, parent = f02)
+        val f0 = buildCustomFolder("0", level = 0, order = 0, parent = null, children = listOf("0.1", "0.2"))
+        val f01 = buildCustomFolder("0.1", level = 1, order = 0, parent = f0)
+        val f02 = buildCustomFolder("0.2", level = 1, order = 1, parent = f0, children = listOf("0.2.1", "0.2.2"))
+        val f021 = buildCustomFolder("0.2.1", level = 2, order = 0, parent = f02)
+        val f022 = buildCustomFolder("0.2.2", level = 2, order = 1, parent = f02)
         val expected = listOf(f0, f01, f02, f021, f022)
 
         assertEquals(expected, actual)
@@ -133,22 +133,22 @@ class MailLabelBuilderTest {
     fun `return correct ordered folders`() = runTest {
         // Given
         val items = listOf(
-            getLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2"),
-            getLabel(userId, LabelType.MessageFolder, "0.2", order = 1, parentId = "0"),
-            getLabel(userId, LabelType.MessageFolder, "0.1", order = 0, parentId = "0"),
-            getLabel(userId, LabelType.MessageFolder, "0", order = 0),
-            getLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2"),
+            buildLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2"),
+            buildLabel(userId, LabelType.MessageFolder, "0.2", order = 1, parentId = "0"),
+            buildLabel(userId, LabelType.MessageFolder, "0.1", order = 0, parentId = "0"),
+            buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
+            buildLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2"),
         )
 
         // When
         val actual = items.toMailLabelCustom()
 
         // Then
-        val f0 = getMailFolder("0", level = 0, order = 0, parent = null, children = listOf("0.1", "0.2"))
-        val f01 = getMailFolder("0.1", level = 1, order = 0, parent = f0)
-        val f02 = getMailFolder("0.2", level = 1, order = 1, parent = f0, children = listOf("0.2.1", "0.2.2"))
-        val f021 = getMailFolder("0.2.1", level = 2, order = 0, parent = f02)
-        val f022 = getMailFolder("0.2.2", level = 2, order = 1, parent = f02)
+        val f0 = buildCustomFolder("0", level = 0, order = 0, parent = null, children = listOf("0.1", "0.2"))
+        val f01 = buildCustomFolder("0.1", level = 1, order = 0, parent = f0)
+        val f02 = buildCustomFolder("0.2", level = 1, order = 1, parent = f0, children = listOf("0.2.1", "0.2.2"))
+        val f021 = buildCustomFolder("0.2.1", level = 2, order = 0, parent = f02)
+        val f022 = buildCustomFolder("0.2.2", level = 2, order = 1, parent = f02)
         val expected = listOf(f0, f01, f02, f021, f022)
 
         assertEquals(expected, actual)

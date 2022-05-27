@@ -16,31 +16,35 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain
+package ch.protonmail.android.testdata.mailbox
 
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import me.proton.core.domain.entity.UserId
 
-fun getMailboxItem(
-    userId: UserId,
-    id: String,
-    time: Long,
-    labelIds: List<String>,
-    type: MailboxItemType,
-) = MailboxItem(
-    type = type,
-    id = id,
-    conversationId = ConversationId(id),
-    userId = userId,
-    time = time,
-    size = 1000,
-    order = 1000,
-    read = true,
-    subject = "subject",
-    senders = listOf(Recipient("address", "name")),
-    recipients = emptyList(),
-    labels = labelIds.map { getLabel(userId = userId, id = it) }
-)
+object MailboxTestData {
+
+    fun buildMailboxItem(
+        userId: UserId,
+        id: String,
+        time: Long,
+        labelIds: List<String>,
+        type: MailboxItemType,
+    ) = MailboxItem(
+        type = type,
+        id = id,
+        conversationId = ConversationId(id),
+        userId = userId,
+        time = time,
+        size = 1000,
+        order = 1000,
+        read = true,
+        subject = "subject",
+        senders = listOf(Recipient("address", "name")),
+        recipients = emptyList(),
+        labels = labelIds.map { buildLabel(userId = userId, id = it) }
+    )
+}

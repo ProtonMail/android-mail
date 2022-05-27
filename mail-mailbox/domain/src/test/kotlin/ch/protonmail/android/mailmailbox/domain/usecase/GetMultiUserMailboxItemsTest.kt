@@ -19,21 +19,23 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import ch.protonmail.android.mailmailbox.domain.getConversation
-import ch.protonmail.android.mailmailbox.domain.getLabel
-import ch.protonmail.android.mailmailbox.domain.getMailboxItem
-import ch.protonmail.android.mailmailbox.domain.getMessage
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.testdata.conversation.ConversationTestData.buildConversation
+import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
+import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
+import ch.protonmail.android.testdata.message.MessageTestData.buildMessage
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
+import me.proton.core.label.domain.entity.LabelType.MessageLabel
 import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Before
 import org.junit.Test
@@ -47,45 +49,45 @@ class GetMultiUserMailboxItemsTest {
     private val messageRepository = mockk<MessageRepository> {
         coEvery { this@mockk.getMessages(userId1, any()) } returns listOf(
             // userId1
-            getMessage(userId1, "1", time = 1000, labelIds = emptyList()),
-            getMessage(userId1, "2", time = 2000, labelIds = listOf("4")),
-            getMessage(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildMessage(userId1, "1", time = 1000, labelIds = emptyList()),
+            buildMessage(userId1, "2", time = 2000, labelIds = listOf("4")),
+            buildMessage(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
         )
         coEvery { this@mockk.getMessages(userId2, any()) } returns listOf(
             // userId1
-            getMessage(userId2, "1", time = 1000, labelIds = emptyList()),
-            getMessage(userId2, "2", time = 2000, labelIds = listOf("4")),
-            getMessage(userId2, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildMessage(userId2, "1", time = 1000, labelIds = emptyList()),
+            buildMessage(userId2, "2", time = 2000, labelIds = listOf("4")),
+            buildMessage(userId2, "3", time = 3000, labelIds = listOf("0", "1")),
         )
     }
     private val conversationRepository = mockk<ConversationRepository> {
         coEvery { getConversations(userId1, any()) } returns listOf(
             // userId1
-            getConversation(userId1, "1", time = 1000, labelIds = listOf("0")),
-            getConversation(userId1, "2", time = 2000, labelIds = listOf("4")),
-            getConversation(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildConversation(userId1, "1", time = 1000, labelIds = listOf("0")),
+            buildConversation(userId1, "2", time = 2000, labelIds = listOf("4")),
+            buildConversation(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
         )
         coEvery { getConversations(userId2, any()) } returns listOf(
             // userId1
-            getConversation(userId2, "1", time = 1000, labelIds = listOf("0")),
-            getConversation(userId2, "2", time = 2000, labelIds = listOf("4")),
-            getConversation(userId2, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildConversation(userId2, "1", time = 1000, labelIds = listOf("0")),
+            buildConversation(userId2, "2", time = 2000, labelIds = listOf("4")),
+            buildConversation(userId2, "3", time = 3000, labelIds = listOf("0", "1")),
         )
     }
     private val labelRepository = mockk<LabelRepository> {
         coEvery { this@mockk.getLabels(userId1, any()) } returns listOf(
-            getLabel(userId1, LabelType.MessageLabel, "0"),
-            getLabel(userId1, LabelType.MessageLabel, "1"),
-            getLabel(userId1, LabelType.MessageLabel, "2"),
-            getLabel(userId1, LabelType.MessageLabel, "3"),
-            getLabel(userId1, LabelType.MessageLabel, "4"),
+            buildLabel(userId1, MessageLabel, "0"),
+            buildLabel(userId1, MessageLabel, "1"),
+            buildLabel(userId1, MessageLabel, "2"),
+            buildLabel(userId1, MessageLabel, "3"),
+            buildLabel(userId1, MessageLabel, "4"),
         )
         coEvery { this@mockk.getLabels(userId2, any()) } returns listOf(
-            getLabel(userId2, LabelType.MessageLabel, "0"),
-            getLabel(userId2, LabelType.MessageLabel, "1"),
-            getLabel(userId2, LabelType.MessageLabel, "2"),
-            getLabel(userId2, LabelType.MessageLabel, "3"),
-            getLabel(userId2, LabelType.MessageLabel, "4"),
+            buildLabel(userId2, MessageLabel, "0"),
+            buildLabel(userId2, MessageLabel, "1"),
+            buildLabel(userId2, MessageLabel, "2"),
+            buildLabel(userId2, MessageLabel, "3"),
+            buildLabel(userId2, MessageLabel, "4"),
         )
     }
 
@@ -105,22 +107,22 @@ class GetMultiUserMailboxItemsTest {
         val mailboxPageKey = MailboxPageKey(listOf(userId1, userId2), pageKey)
 
         // When
-        val mailboxItems = usecase.invoke(MailboxItemType.Message, mailboxPageKey)
+        val mailboxItems = usecase.invoke(Message, mailboxPageKey)
 
         // Then
-        coVerify { labelRepository.getLabels(userId1, LabelType.MessageLabel) }
-        coVerify { labelRepository.getLabels(userId2, LabelType.MessageLabel) }
+        coVerify { labelRepository.getLabels(userId1, MessageLabel) }
+        coVerify { labelRepository.getLabels(userId2, MessageLabel) }
         coVerify { labelRepository.getLabels(userId1, LabelType.MessageFolder) }
         coVerify { labelRepository.getLabels(userId2, LabelType.MessageFolder) }
         coVerify { messageRepository.getMessages(userId1, pageKey) }
         coVerify { messageRepository.getMessages(userId2, pageKey) }
         val mailboxItemsOrderedByTimeAscending = listOf(
-            getMailboxItem(userId1, "1", time = 1000, labelIds = emptyList(), type = MailboxItemType.Message),
-            getMailboxItem(userId2, "1", time = 1000, labelIds = emptyList(), type = MailboxItemType.Message),
-            getMailboxItem(userId1, "2", time = 2000, labelIds = listOf("4"), type = MailboxItemType.Message),
-            getMailboxItem(userId2, "2", time = 2000, labelIds = listOf("4"), type = MailboxItemType.Message),
-            getMailboxItem(userId1, "3", time = 3000, labelIds = listOf("0", "1"), type = MailboxItemType.Message),
-            getMailboxItem(userId2, "3", time = 3000, labelIds = listOf("0", "1"), type = MailboxItemType.Message)
+            buildMailboxItem(userId1, "1", time = 1000, labelIds = emptyList(), type = Message),
+            buildMailboxItem(userId2, "1", time = 1000, labelIds = emptyList(), type = Message),
+            buildMailboxItem(userId1, "2", time = 2000, labelIds = listOf("4"), type = Message),
+            buildMailboxItem(userId2, "2", time = 2000, labelIds = listOf("4"), type = Message),
+            buildMailboxItem(userId1, "3", time = 3000, labelIds = listOf("0", "1"), type = Message),
+            buildMailboxItem(userId2, "3", time = 3000, labelIds = listOf("0", "1"), type = Message)
         )
         assertEquals(expected = mailboxItemsOrderedByTimeAscending, actual = mailboxItems)
     }
@@ -132,22 +134,22 @@ class GetMultiUserMailboxItemsTest {
         val mailboxPageKey = MailboxPageKey(listOf(userId1, userId2), pageKey)
 
         // When
-        val mailboxItems = usecase.invoke(MailboxItemType.Conversation, mailboxPageKey)
+        val mailboxItems = usecase.invoke(Conversation, mailboxPageKey)
 
         // Then
-        coVerify { labelRepository.getLabels(userId1, LabelType.MessageLabel) }
-        coVerify { labelRepository.getLabels(userId2, LabelType.MessageLabel) }
+        coVerify { labelRepository.getLabels(userId1, MessageLabel) }
+        coVerify { labelRepository.getLabels(userId2, MessageLabel) }
         coVerify { labelRepository.getLabels(userId1, LabelType.MessageFolder) }
         coVerify { labelRepository.getLabels(userId2, LabelType.MessageFolder) }
         coVerify { conversationRepository.getConversations(userId1, pageKey) }
         coVerify { conversationRepository.getConversations(userId2, pageKey) }
         val mailboxItemsOrderedByTimeAscending = listOf(
-            getMailboxItem(userId1, "1", time = 1000, labelIds = listOf("0"), type = MailboxItemType.Conversation),
-            getMailboxItem(userId2, "1", time = 1000, labelIds = listOf("0"), type = MailboxItemType.Conversation),
-            getMailboxItem(userId1, "2", time = 2000, labelIds = listOf("4"), type = MailboxItemType.Conversation),
-            getMailboxItem(userId2, "2", time = 2000, labelIds = listOf("4"), type = MailboxItemType.Conversation),
-            getMailboxItem(userId1, "3", time = 3000, labelIds = listOf("0", "1"), type = MailboxItemType.Conversation),
-            getMailboxItem(userId2, "3", time = 3000, labelIds = listOf("0", "1"), type = MailboxItemType.Conversation)
+            buildMailboxItem(userId1, "1", time = 1000, labelIds = listOf("0"), type = Conversation),
+            buildMailboxItem(userId2, "1", time = 1000, labelIds = listOf("0"), type = Conversation),
+            buildMailboxItem(userId1, "2", time = 2000, labelIds = listOf("4"), type = Conversation),
+            buildMailboxItem(userId2, "2", time = 2000, labelIds = listOf("4"), type = Conversation),
+            buildMailboxItem(userId1, "3", time = 3000, labelIds = listOf("0", "1"), type = Conversation),
+            buildMailboxItem(userId2, "3", time = 3000, labelIds = listOf("0", "1"), type = Conversation)
         )
         assertEquals(expected = mailboxItemsOrderedByTimeAscending, actual = mailboxItems)
     }

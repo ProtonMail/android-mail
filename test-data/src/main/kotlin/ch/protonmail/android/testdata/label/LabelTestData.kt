@@ -16,45 +16,35 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain
+package ch.protonmail.android.testdata.label
 
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
-import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 
-fun getLabel(
-    userId: UserId,
-    type: LabelType = LabelType.MessageLabel,
-    id: String,
-    name: String = id,
-) = Label(
-    userId = userId,
-    labelId = LabelId(id),
-    parentId = null,
-    name = name,
-    type = type,
-    path = id,
-    color = "color",
-    order = 0,
-    isNotified = null,
-    isExpanded = null,
-    isSticky = null
-)
+object LabelTestData {
 
-fun getConversationLabel(
-    conversationId: String,
-    labelId: String,
-    time: Long = 1000,
-    size: Long = 1000,
-) = ConversationLabel(
-    conversationId = ConversationId(conversationId),
-    labelId = LabelId(labelId),
-    contextTime = time,
-    contextSize = size,
-    contextNumMessages = 0,
-    contextNumUnread = 0,
-    contextNumAttachments = 0
-)
+    fun buildLabel(
+        userId: UserId,
+        type: LabelType = LabelType.MessageLabel,
+        id: String,
+        name: String = id,
+        order: Int = 0,
+        color: String = "#338AF3",
+        parentId: String? = null,
+        isExpanded: Boolean? = null
+    ) = Label(
+        userId = userId,
+        labelId = LabelId(id),
+        parentId = parentId?.let { LabelId(it) },
+        name = name,
+        type = type,
+        path = id,
+        color = color,
+        order = order,
+        isNotified = null,
+        isExpanded = isExpanded,
+        isSticky = null
+    )
+}

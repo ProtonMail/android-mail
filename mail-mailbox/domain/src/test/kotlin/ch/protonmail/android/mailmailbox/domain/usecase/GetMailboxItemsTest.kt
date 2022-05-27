@@ -19,13 +19,13 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import ch.protonmail.android.mailmailbox.domain.getConversation
-import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.mailmailbox.domain.getLabel
-import ch.protonmail.android.mailmailbox.domain.getMessage
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.testdata.conversation.ConversationTestData.buildConversation
+import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
+import ch.protonmail.android.testdata.message.MessageTestData.buildMessage
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -44,26 +44,26 @@ class GetMailboxItemsTest {
     private val messageRepository = mockk<MessageRepository> {
         coEvery { getMessages(any(), any()) } returns listOf(
             // userId1
-            getMessage(userId, "1", time = 1000, labelIds = emptyList()),
-            getMessage(userId, "2", time = 2000, labelIds = listOf("4")),
-            getMessage(userId, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildMessage(userId, "1", time = 1000, labelIds = emptyList()),
+            buildMessage(userId, "2", time = 2000, labelIds = listOf("4")),
+            buildMessage(userId, "3", time = 3000, labelIds = listOf("0", "1")),
         )
     }
     private val conversationRepository = mockk<ConversationRepository> {
         coEvery { getConversations(any(), any()) } returns listOf(
             // userId1
-            getConversation(userId, "1", time = 1000, labelIds = listOf("0")),
-            getConversation(userId, "2", time = 2000, labelIds = listOf("4")),
-            getConversation(userId, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildConversation(userId, "1", time = 1000, labelIds = listOf("0")),
+            buildConversation(userId, "2", time = 2000, labelIds = listOf("4")),
+            buildConversation(userId, "3", time = 3000, labelIds = listOf("0", "1")),
         )
     }
     private val labelRepository = mockk<LabelRepository> {
         coEvery { getLabels(any(), any()) } returns listOf(
-            getLabel(userId, LabelType.MessageLabel, "0"),
-            getLabel(userId, LabelType.MessageLabel, "1"),
-            getLabel(userId, LabelType.MessageLabel, "2"),
-            getLabel(userId, LabelType.MessageLabel, "3"),
-            getLabel(userId, LabelType.MessageLabel, "4"),
+            buildLabel(userId, LabelType.MessageLabel, "0"),
+            buildLabel(userId, LabelType.MessageLabel, "1"),
+            buildLabel(userId, LabelType.MessageLabel, "2"),
+            buildLabel(userId, LabelType.MessageLabel, "3"),
+            buildLabel(userId, LabelType.MessageLabel, "4"),
         )
     }
 

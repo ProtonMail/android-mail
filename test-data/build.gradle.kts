@@ -34,10 +34,15 @@ dependencies {
     implementation(Proton.Core.account)
     implementation(Proton.Core.domain)
     implementation(Proton.Core.featureFlag)
+    implementation(Proton.Core.label)
     implementation(Proton.Core.mailSettings)
     implementation(Proton.Core.network)
     implementation(Proton.Core.user)
     implementation(Proton.Core.userSettings)
 
     implementation(project(":mail-common"))
+    implementation(project(":mail-conversation"))
+    implementation(project(":mail-label"))
+    implementation(project(":mail-mailbox"))
+    implementation(project(":mail-message"))
 }

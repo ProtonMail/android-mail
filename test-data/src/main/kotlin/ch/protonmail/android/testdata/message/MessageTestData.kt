@@ -16,7 +16,7 @@
  * along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain
+package ch.protonmail.android.testdata.message
 
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
@@ -26,32 +26,35 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.AddressId
 
-fun getMessage(
-    userId: UserId,
-    id: String,
-    order: Long = 1000,
-    time: Long = 1000,
-    labelIds: List<String> = listOf("0"),
-) = Message(
-    userId = userId,
-    messageId = MessageId(id),
-    conversationId = ConversationId(id),
-    time = time,
-    size = 1000,
-    order = order,
-    labelIds = labelIds.map { LabelId(it) },
-    subject = "subject",
-    unread = false,
-    sender = Recipient("address", "name"),
-    toList = emptyList(),
-    ccList = emptyList(),
-    bccList = emptyList(),
-    expirationTime = 1000,
-    isReplied = false,
-    isRepliedAll = false,
-    isForwarded = false,
-    addressId = AddressId("1"),
-    externalId = null,
-    numAttachments = 0,
-    flags = 0
-)
+object MessageTestData {
+
+    fun buildMessage(
+        userId: UserId,
+        id: String,
+        order: Long = 1000,
+        time: Long = 1000,
+        labelIds: List<String> = listOf("0"),
+    ) = Message(
+        userId = userId,
+        messageId = MessageId(id),
+        conversationId = ConversationId(id),
+        time = time,
+        size = 1000,
+        order = order,
+        labelIds = labelIds.map { LabelId(it) },
+        subject = "subject",
+        unread = false,
+        sender = Recipient("address", "name"),
+        toList = emptyList(),
+        ccList = emptyList(),
+        bccList = emptyList(),
+        expirationTime = 1000,
+        isReplied = false,
+        isRepliedAll = false,
+        isForwarded = false,
+        addressId = AddressId("1"),
+        externalId = null,
+        numAttachments = 0,
+        flags = 0
+    )
+}
