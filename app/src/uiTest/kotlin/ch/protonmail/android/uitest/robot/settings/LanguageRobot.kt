@@ -72,6 +72,15 @@ class LanguageRobot(
         return this
     }
 
+    fun fromBrazilianToSystemDefault(): LanguageRobot {
+        composeTestRule!!
+            .onNodeWithText("Padrão do sistema")
+            .performScrollTo()
+            .performClick()
+        composeTestRule.waitForIdle()
+        return this
+    }
+
     /**
      * Contains all the validations that can be performed by [LanguageRobot].
      */

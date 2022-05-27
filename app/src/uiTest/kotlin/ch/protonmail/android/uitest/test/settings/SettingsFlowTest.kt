@@ -96,8 +96,16 @@ class SettingsFlowTest : BaseTest() {
                 appLanguageChangedToPortuguese(composeTestRule)
             }
 
+        composeTestRule.waitForIdle()
+
+        /*
+         * Once Brazilian was selected, we can't just use `selectSystemDefault` to go back to default language,
+         * since the values returned from `string.mail_settings_system_default` are still the default language ones
+         * while the app is now in Brazilian, which causes a failure as "System default" string is not found.
+         * The assumption is that this happens because the Instrumentation's context is not updated when changing lang
+         */
         languageSettingsRobot
-            .selectSystemDefault()
+            .fromBrazilianToSystemDefault()
             .verify { defaultLanguagesScreenIsShown(composeTestRule) }
     }
 
