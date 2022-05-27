@@ -139,6 +139,8 @@ object Dependencies {
         add(AndroidX.Test.runner)
         add(AndroidX.Test.rules)
         add(AndroidX.Test.espresso)
+        add(AndroidX.Test.uiautomator)
+        add(Kotlin.test)
         add(Mockk.mockkAndroid)
         add(Proton.Core.testAndroidInstrumented)
     }
