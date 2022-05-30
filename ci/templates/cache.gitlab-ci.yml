@@ -1,0 +1,9 @@
+.ruby-cache:
+  cache:
+    - key:
+        prefix: ruby-cache
+        files:
+          - Gemfile.lock
+      paths:
+        - ${BUNDLE_GEM_PATH}
+      policy: pull-push
