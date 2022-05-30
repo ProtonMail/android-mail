@@ -17,10 +17,11 @@ object Dependencies {
         add(AndroidX.Compose.material)
         add(AndroidX.Compose.runtime)
         add(AndroidX.Compose.ui)
-        add(AndroidX.Compose.uiTooling)
+        add(AndroidX.Compose.uiToolingPreview)
     }
 
     val composeDebugLibs = mutableListOf<String>().apply {
+        add(AndroidX.Compose.uiTooling)
         add(AndroidX.Compose.uiTestManifest)
     }
 

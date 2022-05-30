@@ -31,6 +31,7 @@ object AndroidX {
         const val runtime = "androidx.compose.runtime:runtime:$version"
         const val ui = "androidx.compose.ui:ui:$version"
         const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
+        const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview:$version"
         const val uiTest = "androidx.compose.ui:ui-test:$version"
         const val uiTestJUnit = "androidx.compose.ui:ui-test-junit4:$version"
         const val uiTestManifest = "androidx.compose.ui:ui-test-manifest:$version"
