@@ -34,6 +34,8 @@ import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -78,6 +80,10 @@ fun MailboxScreen(
     val mailboxState by rememberAsState(viewModel.state, MailboxState.Loading)
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val mailboxListState = mailboxListItems.rememberLazyListState()
+
+    LaunchedEffect(mailboxState.selectedLocation) {
+         mailboxListState.animateScrollToItem(0)
+    }
 
     ConsumableLaunchedEffect(mailboxState.openItemEffect) { itemId ->
         navigateToMailboxItem(itemId)
