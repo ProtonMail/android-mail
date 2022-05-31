@@ -123,7 +123,7 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun onOpenItemDetails(item: MailboxItem) {
-        val request = when (val viewMode = viewModeBySettings.value) {
+        val request = when (viewModeBySettings.value) {
             ViewMode.ConversationGrouping -> {
                 OpenMailboxItemRequest(MailboxItemId(item.conversationId.id), MailboxItemType.Conversation)
             }

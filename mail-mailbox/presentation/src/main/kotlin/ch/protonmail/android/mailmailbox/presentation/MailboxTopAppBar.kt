@@ -50,7 +50,7 @@ fun MailboxTopAppBar(
         is MailboxTopAppBarState.Data.DefaultMode -> UiModel(
             title = state.currentLabelName,
             navigationIconRes = R.drawable.ic_proton_hamburger,
-            navigationIconContentDescription = stringResource(id = R.string.x_toolbar_menu_button_content_description),
+            navigationIconContentDescription = stringResource(id = R.string.mailbox_toolbar_menu_button_content_description),
             shouldShowActions = true
         )
         is MailboxTopAppBarState.Data.SelectionMode -> UiModel(
@@ -88,7 +88,7 @@ fun MailboxTopAppBar(
                 IconButton(onClick = onEnterSearchMode) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_magnifier),
-                        contentDescription = stringResource(id = R.string.x_toolbar_search_button_content_description)
+                        contentDescription = stringResource(id = R.string.mailbox_toolbar_search_button_content_description)
                     )
                 }
                 IconButton(onClick = onOpenCompose) {

@@ -38,6 +38,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -180,7 +181,7 @@ private fun MailboxList(
                         onClick = { items.retry() },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(text = "Retry")
+                        Text(text = stringResource(id = R.string.retry))
                     }
                 }
             }

@@ -145,7 +145,7 @@ internal class MailboxTopAppBarTest {
     }
 
     private fun SemanticsNodeInteractionsProvider.onHamburgerIconButton() =
-        onNodeWithContentDescription(context.getString(R.string.x_toolbar_menu_button_content_description))
+        onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_menu_button_content_description))
 
     private fun SemanticsNodeInteractionsProvider.onExitSelectionModeIconButton() =
         onNodeWithContentDescription(
@@ -153,7 +153,7 @@ internal class MailboxTopAppBarTest {
         )
 
     private fun SemanticsNodeInteractionsProvider.onSearchIconButton() =
-        onNodeWithContentDescription(context.getString(R.string.x_toolbar_search_button_content_description))
+        onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_search_button_content_description))
 
     private fun SemanticsNodeInteractionsProvider.onComposeIconButton() =
         onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_compose_button_content_description))
