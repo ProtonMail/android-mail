@@ -61,6 +61,7 @@ private.properties
 .idea/**/dictionaries/**
 # Do not exclude project Dictionary
 !.idea/**/dictionaries/project.xml
+.idea/androidTestResultsUserPreferences.xml
 .idea/assetWizardSettings.xml
 .idea/deploymentTargetDropDown.xml
 .idea/vcs.xml
