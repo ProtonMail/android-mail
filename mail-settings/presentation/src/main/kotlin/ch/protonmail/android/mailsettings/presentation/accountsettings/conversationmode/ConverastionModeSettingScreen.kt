@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.NotLoggedIn
@@ -36,8 +36,9 @@ import me.proton.core.compose.component.ProtonSettingsToggleItem
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.util.kotlin.exhaustive
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
-const val TEST_TAG_CONV_MODE_SETTINGS_SCREEN = "AccountConvoModeTestTag"
+const val TEST_TAG_CONV_MODE_SETTINGS_SCREEN = "AccountConvModeTestTag"
 
 @Composable
 fun ConversationModeSettingScreen(
@@ -60,7 +61,7 @@ fun ConversationModeSettingScreen(
             )
         }
         Loading -> ProtonCenteredProgress()
-        NotLoggedIn -> ProtonErrorMessage(errorMessage = "Not logged in")
+        NotLoggedIn -> ProtonErrorMessage(errorMessage = stringResource(id = commonString.x_error_not_logged_in))
     }.exhaustive
 }
 
@@ -75,15 +76,15 @@ fun ConversationModeSettingScreen(
         modifier = modifier.testTag(TEST_TAG_CONV_MODE_SETTINGS_SCREEN),
         topBar = {
             ProtonSettingsTopBar(
-                title = stringResource(id = R.string.mail_settings_conversation_mode),
+                title = stringResource(id = string.mail_settings_conversation_mode),
                 onBackClick = onBackClick
             )
         },
         content = { paddingValues ->
             ProtonSettingsToggleItem(
                 modifier = Modifier.padding(paddingValues),
-                name = stringResource(id = R.string.mail_settings_conversation_mode),
-                hint = stringResource(id = R.string.mail_settings_conversation_mode_hint),
+                name = stringResource(id = string.mail_settings_conversation_mode),
+                hint = stringResource(id = string.mail_settings_conversation_mode_hint),
                 value = state.isEnabled,
                 onToggle = onConversationModeToggled
             )
@@ -93,7 +94,7 @@ fun ConversationModeSettingScreen(
 
 @Preview(name = "Conversation mode settings screen")
 @Composable
-fun previewConversationModeSettingsScreen() {
+fun ConversationModeSettingsScreenPreview() {
     ConversationModeSettingScreen(
         onBackClick = {}
     )

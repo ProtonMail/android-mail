@@ -69,6 +69,7 @@ import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
 
@@ -80,7 +81,7 @@ fun MailboxScreen(
     viewModel: MailboxViewModel = hiltViewModel(),
 ) {
     val scope = rememberCoroutineScope()
-    val mailboxState by rememberAsState(viewModel.state, MailboxState.Loading)
+    val mailboxState by rememberAsState(viewModel.state, Loading)
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val mailboxListState = mailboxListItems.rememberLazyListState()
 
@@ -123,7 +124,7 @@ fun MailboxScreen(
                     listState = mailboxListState
                 )
                 Loading -> ProtonCenteredProgress()
-                NotLoggedIn -> ProtonErrorMessage(errorMessage = "Not logged in")
+                NotLoggedIn -> ProtonErrorMessage(errorMessage = stringResource(commonString.x_error_not_logged_in))
             }
         }
     }

@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Loading
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.NotLoggedIn
@@ -64,6 +65,7 @@ import me.proton.core.compose.theme.captionHint
 import me.proton.core.compose.theme.default
 import me.proton.core.compose.theme.defaultWeak
 import me.proton.core.mailsettings.domain.entity.SwipeAction
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
 fun SwipeActionsPreferenceScreen(
@@ -109,7 +111,7 @@ fun SwipeActionsPreferenceScreen(
                     onChangeSwipeLeftClick = onChangeSwipeLeftClick
                 )
                 Loading -> ProtonCenteredProgress()
-                NotLoggedIn -> ProtonErrorMessage(errorMessage = "Not logged in")
+                NotLoggedIn -> ProtonErrorMessage(errorMessage = stringResource(commonString.x_error_not_logged_in))
             }
         }
     }
@@ -132,25 +134,25 @@ private fun SwipeActionsPreferenceContent(
             Icon(
                 modifier = Modifier.size(ProtonDimens.SmallIconSize),
                 painter = painterResource(id = R.drawable.ic_proton_info_circle),
-                contentDescription = stringResource(id = R.string.mail_settings_swipe_info_icon_content_description),
+                contentDescription = stringResource(id = string.mail_settings_swipe_info_icon_content_description),
                 tint = ProtonTheme.colors.iconHint
             )
             Text(
                 modifier = Modifier.padding(start = ProtonDimens.SmallSpacing),
-                text = stringResource(id = R.string.mail_settings_swipe_actions_subtitle),
+                text = stringResource(id = string.mail_settings_swipe_actions_subtitle),
                 style = ProtonTheme.typography.captionHint
             )
         }
         SwipeActionItem(
             model = uiModel.right,
             actionDirection = SwipeActionDirection.RIGHT,
-            actionNameRes = R.string.mail_settings_swipe_right_name,
+            actionNameRes = string.mail_settings_swipe_right_name,
             onChangeClick = onChangeSwipeRightClick
         )
         SwipeActionItem(
             model = uiModel.left,
             actionDirection = SwipeActionDirection.LEFT,
-            actionNameRes = R.string.mail_settings_swipe_left_name,
+            actionNameRes = string.mail_settings_swipe_left_name,
             onChangeClick = onChangeSwipeLeftClick
         )
     }
@@ -181,7 +183,7 @@ private fun SwipeActionItem(
                 Text(text = stringResource(id = model.descriptionRes), style = ProtonTheme.typography.defaultWeak)
                 Icon(
                     painter = painterResource(id = R.drawable.ic_proton_chevron_right),
-                    contentDescription = stringResource(id = R.string.mail_settings_swipe_chevron_content_description)
+                    contentDescription = stringResource(id = string.mail_settings_swipe_chevron_content_description)
                 )
             }
         }
@@ -289,12 +291,12 @@ private fun ContentIllustration(modifier: Modifier) {
 @Composable
 private fun Toolbar(onBack: () -> Unit) {
     ProtonTopAppBar(
-        title = { Text(text = stringResource(id = R.string.mail_settings_swipe_actions_title)) },
+        title = { Text(text = stringResource(id = string.mail_settings_swipe_actions_title)) },
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_proton_arrow_left),
-                    contentDescription = stringResource(id = R.string.mail_settings_toolbar_button_content_description)
+                    contentDescription = stringResource(id = string.mail_settings_toolbar_button_content_description)
                 )
             }
         }
