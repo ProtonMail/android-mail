@@ -55,9 +55,6 @@ import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.presentation.MailboxState.Data
-import ch.protonmail.android.mailmailbox.presentation.MailboxState.Loading
-import ch.protonmail.android.mailmailbox.presentation.MailboxState.NotLoggedIn
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -81,12 +78,12 @@ fun MailboxScreen(
     viewModel: MailboxViewModel = hiltViewModel(),
 ) {
     val scope = rememberCoroutineScope()
-    val mailboxState by rememberAsState(viewModel.state, Loading)
+    val mailboxState by rememberAsState(viewModel.state, MailboxState.Loading)
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val mailboxListState = mailboxListItems.rememberLazyListState()
 
     LaunchedEffect(mailboxState.currentMailLabel) {
-         mailboxListState.animateScrollToItem(0)
+        mailboxListState.animateScrollToItem(0)
     }
 
     ConsumableLaunchedEffect(mailboxState.openItemEffect) { itemId ->
@@ -98,13 +95,15 @@ fun MailboxScreen(
         topBar = {
             MailboxTopAppBar(
                 state = mailboxState.topAppBar,
-                onOpenMenu = openDrawerMenu,
-                onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
-                onExitSearchMode = {},
-                onTitleClick = { scope.launch { mailboxListState.animateScrollToItem(0) } },
-                onEnterSearchMode = {},
-                onSearch = {},
-                onOpenCompose = {}
+                actions = MailboxTopAppBar.Actions(
+                    onOpenMenu = openDrawerMenu,
+                    onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
+                    onExitSearchMode = {},
+                    onTitleClick = { scope.launch { mailboxListState.animateScrollToItem(0) } },
+                    onEnterSearchMode = {},
+                    onSearch = {},
+                    onOpenCompose = {}
+                )
             )
         }
     ) {
@@ -114,8 +113,8 @@ fun MailboxScreen(
                 .background(ProtonTheme.colors.backgroundNorm)
                 .fillMaxSize()
         ) {
-            when (val state = mailboxState) {
-                is Data -> MailboxList(
+            when (mailboxState) {
+                is MailboxState.Data -> MailboxList(
                     navigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
                     onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
                     onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
@@ -123,8 +122,8 @@ fun MailboxScreen(
                     items = mailboxListItems,
                     listState = mailboxListState
                 )
-                Loading -> ProtonCenteredProgress()
-                NotLoggedIn -> ProtonErrorMessage(errorMessage = stringResource(commonString.x_error_not_logged_in))
+                MailboxState.Loading -> ProtonCenteredProgress()
+                MailboxState.NotLoggedIn -> ProtonErrorMessage(errorMessage = stringResource(commonString.x_error_not_logged_in))
             }
         }
     }

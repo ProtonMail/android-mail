@@ -31,9 +31,7 @@ class ObservePrimaryUser @Inject constructor(
 
     operator fun invoke() = accountManager.getPrimaryUserId()
         .flatMapLatest { userId ->
-            when (userId) {
-                null -> flowOf(null)
-                else -> userManager.observeUser(userId)
-            }
+            if (userId == null) flowOf(null)
+            else userManager.observeUser(userId)
         }
 }

@@ -48,9 +48,10 @@ class AccountSettingsViewModel @Inject constructor(
     private val observeMailSettings: ObserveMailSettings
 ) : ViewModel() {
 
-    val state: StateFlow<AccountSettingsState> = accountManager.getPrimaryUserId().flatMapLatest { _userId ->
-        val userId = _userId
-            ?: return@flatMapLatest flowOf(NotLoggedIn)
+    val state: StateFlow<AccountSettingsState> = accountManager.getPrimaryUserId().flatMapLatest { userId ->
+        if (userId == null) {
+            return@flatMapLatest flowOf(NotLoggedIn)
+        }
 
         combine(
             observeUser(userId),

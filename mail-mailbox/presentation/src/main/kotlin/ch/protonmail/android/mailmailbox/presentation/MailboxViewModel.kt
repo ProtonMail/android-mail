@@ -58,20 +58,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MailboxViewModel @Inject constructor(
-    private val selectedSidebarLocation: SelectedSidebarLocation,
     private val markAsStaleMailboxItems: MarkAsStaleMailboxItems,
     private val pagingSourceFactory: MailboxItemPagingSourceFactory,
     private val observeCurrentViewMode: ObserveCurrentViewMode,
-    private val observePrimaryUserId: ObservePrimaryUserId,
+    observePrimaryUserId: ObservePrimaryUserId,
     private val observeMailLabels: ObserveMailLabels,
     private val selectedMailLabelId: SelectedMailLabelId,
 ) : ViewModel() {
 
-    private val primaryUserMailLabels = observePrimaryUserId().flatMapLatest { userId ->
-        when (userId) {
-            null -> flowOf(MailLabels.Initial)
-            else -> observeMailLabels(userId)
-        }
+    private val primaryUserId = observePrimaryUserId()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
+            initialValue = null
+        )
+
+    private val primaryUserMailLabels = primaryUserId.flatMapLatest { userId ->
+        if (userId == null) flowOf(MailLabels.Initial)
+        else observeMailLabels(userId)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
@@ -89,32 +93,23 @@ class MailboxViewModel @Inject constructor(
         initialValue = null
     )
 
-    private val viewModeBySettings: StateFlow<ViewMode> = observePrimaryUserId().flatMapLatest { _userId ->
-        val userId = _userId
-            ?: return@flatMapLatest flowOf(ObserveCurrentViewMode.DefaultViewMode)
-
-        observeCurrentViewMode(userId)
+    private val viewModeBySettings: StateFlow<ViewMode> = primaryUserId.flatMapLatest { userId ->
+        if (userId == null) flowOf(ObserveCurrentViewMode.DefaultViewMode)
+        else observeCurrentViewMode(userId)
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
+        started = SharingStarted.Eagerly,
         initialValue = ObserveCurrentViewMode.DefaultViewMode
     )
 
-    private val viewModeByLocation: StateFlow<ViewMode> = combine(
-        observePrimaryUserId(),
-        selectedMailLabelId.flow
-    ) { userId, mailLabelId -> userId to mailLabelId }
-        .flatMapLatest { (_userId, mailLabelId) ->
-            val userId = _userId
-                ?: return@flatMapLatest flowOf(ObserveCurrentViewMode.DefaultViewMode)
-
-            observeCurrentViewMode(userId, mailLabelId)
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = ObserveCurrentViewMode.DefaultViewMode
-        )
+    private val viewModeByLocation: StateFlow<ViewMode> = primaryUserId.flatMapLatest { userId ->
+        if (userId == null) flowOf(ObserveCurrentViewMode.DefaultViewMode)
+        else selectedMailLabelId.flow.flatMapLatest { observeCurrentViewMode(userId, it) }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = ObserveCurrentViewMode.DefaultViewMode
+    )
 
     private val userIds: StateFlow<List<UserId>> = observeUserIds()
         .stateIn(
@@ -182,22 +177,20 @@ class MailboxViewModel @Inject constructor(
 
     private fun observeUserIds(): Flow<List<UserId>> =
         // We only support 1 userId for now (primary).
-        observePrimaryUserId().map { listOfNotNull(it) }
+        primaryUserId.map { listOfNotNull(it) }
 
     private fun observePagingData(): Flow<PagingData<MailboxItem>> = combine(
         selectedMailLabelId.flow,
         userIds,
         viewModeByLocation
     ) { selectedMailLabelId, userIds, viewMode ->
-        when {
-            userIds.isEmpty() -> null
-            else -> Pager(PagingConfig(pageSize = PageKey.defaultPageSize)) {
-                pagingSourceFactory.create(
-                    userIds = userIds,
-                    selectedMailLabelId = selectedMailLabelId,
-                    type = viewMode.toMailboxItemType(),
-                )
-            }
+        if (userIds.isEmpty()) null
+        else Pager(PagingConfig(pageSize = PageKey.defaultPageSize)) {
+            pagingSourceFactory.create(
+                userIds = userIds,
+                selectedMailLabelId = selectedMailLabelId,
+                type = viewMode.toMailboxItemType(),
+            )
         }
     }.flatMapLatest { pager ->
         pager?.flow ?: flowOf(PagingData.empty())
@@ -214,9 +207,9 @@ class MailboxViewModel @Inject constructor(
 
         val newTopAppBarState = topAppBarState.withCurrentMailLabel(currentMailLabel)
         MailboxState.Data(
-            topAppBar = newTopAppBarState,
             currentMailLabel = currentMailLabel,
-            openItemEffect = openItemDetailEffect
+            openItemEffect = openItemDetailEffect,
+            topAppBar = newTopAppBarState
         )
     }
 
@@ -224,7 +217,7 @@ class MailboxViewModel @Inject constructor(
 
         object EnterSelectionMode : Action
         object ExitSelectionMode : Action
-        data class OpenItemDetails(val item: MailboxItem): Action
+        data class OpenItemDetails(val item: MailboxItem) : Action
         object Refresh : Action
     }
 }

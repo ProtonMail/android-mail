@@ -18,12 +18,15 @@
 
 package ch.protonmail.android.mailcommon.domain.usecase
 
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class ObservePrimaryUserId @Inject constructor(
     val accountManager: AccountManager,
 ) {
 
-    operator fun invoke() = accountManager.getPrimaryUserId()
+    operator fun invoke(): Flow<UserId?> =
+        accountManager.getPrimaryUserId()
 }

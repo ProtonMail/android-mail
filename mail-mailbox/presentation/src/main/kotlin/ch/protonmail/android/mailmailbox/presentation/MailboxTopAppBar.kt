@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
@@ -39,21 +38,16 @@ import me.proton.core.util.kotlin.EMPTY_STRING
 fun MailboxTopAppBar(
     modifier: Modifier = Modifier,
     state: MailboxTopAppBarState,
-    onOpenMenu: () -> Unit,
-    onExitSelectionMode: () -> Unit,
-    onExitSearchMode: () -> Unit,
-    onTitleClick: () -> Unit,
-    onEnterSearchMode: () -> Unit,
-    onSearch: (query: String) -> Unit,
-    onOpenCompose: () -> Unit
+    actions: MailboxTopAppBar.Actions
 ) {
-
     val uiModel = when (state) {
         MailboxTopAppBarState.Loading -> UiModel.Empty
         is MailboxTopAppBarState.Data.DefaultMode -> UiModel(
             title = state.currentMailLabel.text().string(),
             navigationIconRes = R.drawable.ic_proton_hamburger,
-            navigationIconContentDescription = stringResource(id = R.string.mailbox_toolbar_menu_button_content_description),
+            navigationIconContentDescription = stringResource(
+                id = R.string.mailbox_toolbar_menu_button_content_description
+            ),
             shouldShowActions = true
         )
         is MailboxTopAppBarState.Data.SelectionMode -> UiModel(
@@ -69,14 +63,14 @@ fun MailboxTopAppBar(
     }
 
     val onNavigationIconClick = when (state) {
-        MailboxTopAppBarState.Loading, is MailboxTopAppBarState.Data.DefaultMode -> onOpenMenu
-        is MailboxTopAppBarState.Data.SelectionMode -> onExitSelectionMode
-        is MailboxTopAppBarState.Data.SearchMode -> onExitSearchMode
+        MailboxTopAppBarState.Loading, is MailboxTopAppBarState.Data.DefaultMode -> actions.onOpenMenu
+        is MailboxTopAppBarState.Data.SelectionMode -> actions.onExitSelectionMode
+        is MailboxTopAppBarState.Data.SearchMode -> actions.onExitSearchMode
     }
 
     ProtonTopAppBar(
         modifier = modifier,
-        title = { Text(modifier = Modifier.clickable(onClick = onTitleClick), text = uiModel.title) },
+        title = { Text(modifier = Modifier.clickable(onClick = actions.onTitleClick), text = uiModel.title) },
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
                 Icon(
@@ -88,20 +82,37 @@ fun MailboxTopAppBar(
         actions = {
 
             if (uiModel.shouldShowActions) {
-                IconButton(onClick = onEnterSearchMode) {
+                IconButton(onClick = actions.onEnterSearchMode) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_magnifier),
-                        contentDescription = stringResource(id = R.string.mailbox_toolbar_search_button_content_description)
+                        contentDescription = stringResource(
+                            id = R.string.mailbox_toolbar_search_button_content_description
+                        )
                     )
                 }
-                IconButton(onClick = onOpenCompose) {
+                IconButton(onClick = actions.onOpenCompose) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_pen_square),
-                        contentDescription = stringResource(id = R.string.mailbox_toolbar_compose_button_content_description)
+                        contentDescription = stringResource(
+                            id = R.string.mailbox_toolbar_compose_button_content_description
+                        )
                     )
                 }
             }
         }
+    )
+}
+
+object MailboxTopAppBar {
+
+    data class Actions(
+        val onOpenMenu: () -> Unit,
+        val onExitSelectionMode: () -> Unit,
+        val onExitSearchMode: () -> Unit,
+        val onTitleClick: () -> Unit,
+        val onEnterSearchMode: () -> Unit,
+        val onSearch: (query: String) -> Unit,
+        val onOpenCompose: () -> Unit
     )
 }
 
@@ -130,12 +141,14 @@ fun LoadingMailboxTopAppBarPreview() {
 
     MailboxTopAppBar(
         state = state,
-        onOpenMenu = {},
-        onExitSelectionMode = {},
-        onExitSearchMode = {},
-        onTitleClick = {},
-        onEnterSearchMode = {},
-        onSearch = {},
-        onOpenCompose = {}
+        actions = MailboxTopAppBar.Actions(
+            onOpenMenu = {},
+            onExitSelectionMode = {},
+            onExitSearchMode = {},
+            onTitleClick = {},
+            onEnterSearchMode = {},
+            onSearch = {},
+            onOpenCompose = {}
+        )
     )
 }

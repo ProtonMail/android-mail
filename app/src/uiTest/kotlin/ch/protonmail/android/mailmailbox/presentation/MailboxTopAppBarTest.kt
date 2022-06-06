@@ -119,13 +119,15 @@ internal class MailboxTopAppBarTest {
             ProtonTheme {
                 MailboxTopAppBar(
                     state = state,
-                    onOpenMenu = {},
-                    onExitSelectionMode = {},
-                    onExitSearchMode = {},
-                    onTitleClick = {},
-                    onEnterSearchMode = {},
-                    onSearch = {},
-                    onOpenCompose = {}
+                    actions = MailboxTopAppBar.Actions(
+                        onOpenMenu = {},
+                        onExitSelectionMode = {},
+                        onExitSearchMode = {},
+                        onTitleClick = {},
+                        onEnterSearchMode = {},
+                        onSearch = {},
+                        onOpenCompose = {}
+                    )
                 )
             }
         }

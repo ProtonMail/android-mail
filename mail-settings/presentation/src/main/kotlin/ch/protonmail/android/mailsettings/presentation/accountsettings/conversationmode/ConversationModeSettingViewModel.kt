@@ -25,6 +25,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.conversat
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.NotLoggedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -36,6 +37,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
+import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
@@ -49,13 +51,9 @@ class ConversationModeSettingViewModel @Inject constructor(
 ) : ViewModel() {
 
     val state: StateFlow<ConversationModeSettingState> =
-        accountManager.getPrimaryUserId().flatMapLatest { _userId ->
-            val userId = _userId
-                ?: return@flatMapLatest flowOf(NotLoggedIn)
-
-            observeMailSettings(userId).map { mailSettings ->
-                Data(mailSettings?.viewMode?.enum?.let { it == ConversationGrouping })
-            }
+        accountManager.getPrimaryUserId().flatMapLatest { userId ->
+            if (userId == null) flowOf(NotLoggedIn)
+            else observeMailSettings(userId).mapToState()
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(stopTimeoutMillis),
@@ -73,4 +71,7 @@ class ConversationModeSettingViewModel @Inject constructor(
     } else {
         NoConversationGrouping
     }
+
+    private fun Flow<MailSettings?>.mapToState(): Flow<Data> =
+        map { mailSettings -> Data(mailSettings?.viewMode?.enum?.let { it == ConversationGrouping }) }
 }

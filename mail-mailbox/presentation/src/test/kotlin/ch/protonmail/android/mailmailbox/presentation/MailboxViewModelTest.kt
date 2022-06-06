@@ -40,7 +40,6 @@ import ch.protonmail.android.mailmailbox.presentation.MailboxState.Loading
 import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel.Action
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
-import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
 import io.mockk.coEvery
@@ -54,7 +53,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
 import org.junit.Before
@@ -64,10 +62,8 @@ import kotlin.test.assertIs
 
 class MailboxViewModelTest {
 
-    private val userId = UserIdTestData.userId
-    private val userIdFlow = MutableStateFlow<UserId?>(null)
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
-        every { this@mockk.invoke() } returns userIdFlow
+        every { this@mockk.invoke() } returns flowOf(userId)
     }
 
     private val selectedMailLabelId = mockk<SelectedMailLabelId> {
@@ -98,12 +94,12 @@ class MailboxViewModelTest {
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
-            markAsStaleMailboxItems,
-            pagingSourceFactory,
-            observeCurrentViewMode,
-            observePrimaryUserId,
-            observeMailLabels,
-            selectedMailLabelId,
+            markAsStaleMailboxItems = markAsStaleMailboxItems,
+            pagingSourceFactory = pagingSourceFactory,
+            observeCurrentViewMode = observeCurrentViewMode,
+            observePrimaryUserId = observePrimaryUserId,
+            observeMailLabels = observeMailLabels,
+            selectedMailLabelId = selectedMailLabelId,
         )
     }
 
@@ -133,10 +129,6 @@ class MailboxViewModelTest {
     @Test
     fun `emits default TopAppBar state as soon as the label name is available`() = runTest {
         mailboxViewModel.state.test {
-            assertEquals(MailboxState.Loading, awaitItem())
-
-            // Given
-            givenUserLoggedIn()
 
             // Then
             val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive))
@@ -149,10 +141,6 @@ class MailboxViewModelTest {
     @Test
     fun `emits mailbox state with current mail label`() = runTest {
         mailboxViewModel.state.test {
-            assertEquals(MailboxState.Loading, awaitItem())
-
-            // Given
-            givenUserLoggedIn()
 
             // Then
             assertEquals(MailLabel.System(Archive), awaitItem().currentMailLabel)
@@ -162,10 +150,8 @@ class MailboxViewModelTest {
     @Test
     fun `when selection mode is not open and the right Action is submitted, selection mode is opened`() = runTest {
         mailboxViewModel.state.test {
-            assertEquals(MailboxState.Loading, awaitItem())
 
             // Given
-            givenUserLoggedIn()
             awaitItem() // First emission for selected user
 
             // When
@@ -183,10 +169,7 @@ class MailboxViewModelTest {
     fun `when selection mode is open and the right Action is submitted, selection mode is closed`() = runTest {
         // Given
         mailboxViewModel.state.test {
-            assertEquals(MailboxState.Loading, awaitItem())
 
-            // Given
-            givenUserLoggedIn()
             awaitItem() // First emission for selected user
 
             mailboxViewModel.submit(Action.EnterSelectionMode)
@@ -205,22 +188,19 @@ class MailboxViewModelTest {
 
     @Test
     fun `emits mailbox state with current location`() = runTest {
+
         mailboxViewModel.state.test {
 
             // Then
             val actual = awaitItem()
             assertIs<Data>(actual)
-            assertEquals(Archive, actual.selectedLocation)
+            assertEquals(Archive.toMailLabel(), actual.currentMailLabel)
         }
     }
 
     @Test
     fun `emits mailbox items`() = runTest {
         mailboxViewModel.items.test {
-            awaitItem() // Initial item
-
-            // Given
-            givenUserLoggedIn()
 
             // Then
             awaitItem()
@@ -230,8 +210,6 @@ class MailboxViewModelTest {
 
     @Test
     fun `onRefresh call markAsStaleMailboxItems`() = runTest {
-        // Given
-        givenUserLoggedIn()
 
         // When
         mailboxViewModel.submit(Action.Refresh)
@@ -245,7 +223,6 @@ class MailboxViewModelTest {
         runTest {
 
             // Given
-            givenUserLoggedIn()
             val item = buildMailboxItem(Message)
             every { observeCurrentViewMode(userId) } returns flowOf(NoConversationGrouping)
 
@@ -266,7 +243,6 @@ class MailboxViewModelTest {
         runTest {
 
             // Given
-            givenUserLoggedIn()
             val item = buildMailboxItem(Conversation)
             every { observeCurrentViewMode(userId) } returns flowOf(ConversationGrouping)
 
@@ -287,9 +263,8 @@ class MailboxViewModelTest {
         runTest {
 
             // Given
-            givenUserLoggedIn()
             val item = buildMailboxItem(Message)
-            every { observeCurrentViewMode(userId) } returns flowOf(ConversationGrouping)
+            every { observeCurrentViewMode(userId = any()) } returns flowOf(ConversationGrouping)
 
             // When
             mailboxViewModel.submit(Action.OpenItemDetails(item))
@@ -303,12 +278,8 @@ class MailboxViewModelTest {
             }
         }
 
-    private suspend fun givenUserLoggedIn() {
-        userIdFlow.emit(userId)
-    }
-
-    private suspend fun givenUserNotLoggedIn() {
-        userIdFlow.emit(null)
+    private fun givenUserNotLoggedIn() {
+        every { observePrimaryUserId() } returns flowOf(null)
     }
 
     private companion object TestData {

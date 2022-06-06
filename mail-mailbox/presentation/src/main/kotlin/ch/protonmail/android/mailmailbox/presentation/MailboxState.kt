@@ -27,17 +27,20 @@ import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarStat
 @Stable
 sealed interface MailboxState {
 
-    val topAppBar: MailboxTopAppBarState
-        get() = MailboxTopAppBarState.Loading
+    val currentMailLabel: MailLabel?
+        get() = null
 
     val openItemEffect: Effect<OpenMailboxItemRequest>
         get() = Effect.empty()
 
+    val topAppBar: MailboxTopAppBarState
+        get() = MailboxTopAppBarState.Loading
+
     @Stable
     data class Data(
-        override val topAppBar: MailboxTopAppBarState,
-        val currentMailLabel: MailLabel?,
-        override val openItemEffect: Effect<OpenMailboxItemRequest>
+        override val currentMailLabel: MailLabel?,
+        override val openItemEffect: Effect<OpenMailboxItemRequest>,
+        override val topAppBar: MailboxTopAppBarState
     ) : MailboxState
 
     object Loading : MailboxState

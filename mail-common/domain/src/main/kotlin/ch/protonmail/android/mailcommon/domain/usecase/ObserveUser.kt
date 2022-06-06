@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailcommon.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
-import me.proton.core.domain.arch.mapSuccessValueOrNull
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.UserManager
 import me.proton.core.user.domain.entity.User
@@ -30,5 +29,5 @@ class ObserveUser @Inject constructor(
 ) {
 
     operator fun invoke(userId: UserId): Flow<User?> =
-        userManager.getUserFlow(userId).mapSuccessValueOrNull()
+        userManager.observeUser(userId)
 }

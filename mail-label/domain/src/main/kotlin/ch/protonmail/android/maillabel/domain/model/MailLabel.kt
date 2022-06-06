@@ -39,6 +39,8 @@ sealed class MailLabelId(
         object Drafts : System(SystemLabelId.Drafts)
         object Outbox : System(SystemLabelId.Outbox)
         object Starred : System(SystemLabelId.Starred)
+
+        fun toMailLabel() = MailLabel.System(id = this)
     }
 
     sealed class Custom(

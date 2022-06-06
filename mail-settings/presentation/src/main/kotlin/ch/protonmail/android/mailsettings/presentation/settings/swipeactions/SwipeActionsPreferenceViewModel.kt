@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.swipeactions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Loading
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.NotLoggedIn
@@ -52,11 +53,11 @@ class SwipeActionsPreferenceViewModel @Inject constructor(
         )
 
     private fun observeState(): Flow<SwipeActionsPreferenceState> =
-        accountManager.getPrimaryUserId().flatMapLatest { _userId ->
-            val userId = _userId
-                ?: return@flatMapLatest flowOf(NotLoggedIn)
-
-            observeSwipeActionsPreference(userId)
-                .map { SwipeActionsPreferenceState.Data(swipeActionPreferenceUiModelMapper.toUiModel(it)) }
+        accountManager.getPrimaryUserId().flatMapLatest { userId ->
+            if (userId == null) flowOf(NotLoggedIn)
+            else observeSwipeActionsPreference(userId).mapToState()
         }
+
+    private fun Flow<SwipeActionsPreference>.mapToState() =
+        map { SwipeActionsPreferenceState.Data(swipeActionPreferenceUiModelMapper.toUiModel(it)) }
 }

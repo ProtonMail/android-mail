@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
 import ch.protonmail.android.mailcommon.domain.MailFeatureId.ShowSettings
 import ch.protonmail.android.mailcommon.domain.extension.canChangeSubscription
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
@@ -41,14 +42,12 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 @HiltViewModel
 class SidebarViewModel @Inject constructor(
-    accountManager: AccountManager,
     val appInformation: AppInformation,
     private val selectedMailLabelId: SelectedMailLabelId,
     private val mailFeatureDefault: MailFeatureDefault,
@@ -67,24 +66,23 @@ class SidebarViewModel @Inject constructor(
         initialValue = null
     )
 
-    val initialState = State.Disabled
-
     val state: Flow<State> = primaryUser.flatMapLatest { user ->
-        when (user) {
-            null -> flowOf(State.Disabled)
-            else -> combine(
-                selectedMailLabelId.flow,
-                observeMailFeature(ShowSettings),
-                observeFolderColors(user.userId),
-                observeMailLabels(user.userId),
-            ) { selectedMailLabelId, settingsFeature, folderColors, mailLabels ->
-                State.Enabled(
-                    selectedMailLabelId = selectedMailLabelId,
-                    isSettingsEnabled = settingsFeature?.value ?: mailFeatureDefault[ShowSettings],
-                    canChangeSubscription = user.canChangeSubscription(),
-                    mailLabels = mailLabels.toUiModels(folderColors, emptyMap(), selectedMailLabelId),
-                )
-            }
+        if (user == null) {
+            return@flatMapLatest flowOf(State.Disabled)
+        }
+
+        combine(
+            selectedMailLabelId.flow,
+            observeMailFeature(user.userId, ShowSettings),
+            observeFolderColors(user.userId),
+            observeMailLabels(user.userId),
+        ) { selectedMailLabelId, settingsFeature, folderColors, mailLabels ->
+            State.Enabled(
+                selectedMailLabelId = selectedMailLabelId,
+                isSettingsEnabled = settingsFeature?.value ?: mailFeatureDefault[ShowSettings],
+                canChangeSubscription = user.canChangeSubscription(),
+                mailLabels = mailLabels.toUiModels(folderColors, emptyMap(), selectedMailLabelId),
+            )
         }
     }.stateIn(
         scope = viewModelScope,
