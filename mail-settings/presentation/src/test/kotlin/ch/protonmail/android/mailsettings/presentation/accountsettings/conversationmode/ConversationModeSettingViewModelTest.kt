@@ -24,7 +24,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
-import ch.protonmail.android.testdata.user.UserIdTestData
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -39,39 +39,37 @@ import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class ConversationModeSettingViewModelTest {
 
     private val accountManager = mockk<AccountManager> {
-        every { this@mockk.getPrimaryUserId() } returns flowOf(UserIdTestData.userId)
+        every { getPrimaryUserId() } returns flowOf(userId)
     }
 
     private val mailSettingsFlow = MutableSharedFlow<MailSettings?>()
     private val observeMailSettings = mockk<ObserveMailSettings> {
-        every { this@mockk.invoke() } returns mailSettingsFlow
+        every { this@mockk(userId) } returns mailSettingsFlow
     }
 
     private val mailSettingsRepository = mockk<MailSettingsRepository>() {
-        coEvery {
-            this@mockk.updateViewMode(any(), any())
-        } returns MailSettingsTestData.mailSettings
+        coEvery { updateViewMode(any(), any()) } returns MailSettingsTestData.mailSettings
     }
 
-    private lateinit var viewModel: ConversationModeSettingViewModel
-
-    @Before
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-
-        viewModel = ConversationModeSettingViewModel(
+    private val viewModel by lazy {
+        ConversationModeSettingViewModel(
             accountManager,
             mailSettingsRepository,
             observeMailSettings
         )
+    }
+
+    @BeforeTest
+    fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
     }
 
     @Test
@@ -105,18 +103,34 @@ class ConversationModeSettingViewModelTest {
     }
 
     @Test
+    fun `emits right state when no user is logged in`() = runTest {
+        // given
+        givenNoLoggedInUser()
+
+        // when
+        viewModel.state.test {
+
+            // then
+            assertEquals(ConversationModeSettingState.NotLoggedIn, awaitItem())
+        }
+    }
+
+    @Test
     fun `conversation mode preference is updated on mailSettings when onConversationToggled`() =
         runTest {
             viewModel.onConversationToggled(false)
 
             coVerify {
                 mailSettingsRepository.updateViewMode(
-                    UserIdTestData.userId,
+                    userId,
                     NoConversationGrouping
                 )
             }
         }
 
+    private fun givenNoLoggedInUser() {
+        every { accountManager.getPrimaryUserId() } returns flowOf(null)
+    }
 
     private suspend fun FlowTurbine<ConversationModeSettingState>.initialStateEmitted() {
         awaitItem() as Loading

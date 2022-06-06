@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings
 
-sealed class AccountSettingsState {
+sealed interface AccountSettingsState {
     /**
      * @param mailboxSize max mailbox size in Bytes
      * @param mailboxUsedSpace Mailbox used space in Bytes
@@ -29,7 +29,8 @@ sealed class AccountSettingsState {
         val mailboxUsedSpace: Long?,
         val defaultEmail: String?,
         val isConversationMode: Boolean?
-    ) : AccountSettingsState()
+    ) : AccountSettingsState
 
-    object Loading : AccountSettingsState()
+    object Loading : AccountSettingsState
+    object NotLoggedIn : AccountSettingsState
 }

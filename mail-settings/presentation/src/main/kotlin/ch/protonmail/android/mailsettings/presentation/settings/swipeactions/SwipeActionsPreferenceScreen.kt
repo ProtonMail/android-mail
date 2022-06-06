@@ -49,9 +49,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Data
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Loading
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.NotLoggedIn
 import ch.protonmail.android.mailsettings.presentation.settings.theme.SettingsDimens
 import ch.protonmail.android.mailsettings.presentation.settings.theme.SwipeActionIllustrationDimens
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
@@ -99,12 +103,13 @@ fun SwipeActionsPreferenceScreen(
                 .fillMaxSize()
         ) {
             when (state) {
-                is SwipeActionsPreferenceState.Data -> SwipeActionsPreferenceContent(
+                is Data -> SwipeActionsPreferenceContent(
                     uiModel = state.model,
                     onChangeSwipeRightClick = onChangeSwipeRightClick,
                     onChangeSwipeLeftClick = onChangeSwipeLeftClick
                 )
-                SwipeActionsPreferenceState.Loading -> ProtonCenteredProgress()
+                Loading -> ProtonCenteredProgress()
+                NotLoggedIn -> ProtonErrorMessage(errorMessage = "Not logged in")
             }
         }
     }

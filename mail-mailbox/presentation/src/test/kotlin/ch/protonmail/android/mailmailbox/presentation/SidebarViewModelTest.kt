@@ -23,7 +23,7 @@ import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Archive
@@ -41,6 +41,7 @@ import ch.protonmail.android.mailmailbox.presentation.SidebarViewModel.State.Ena
 import ch.protonmail.android.mailsettings.domain.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.FeatureFlagTestData
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coVerify
 import io.mockk.every
@@ -48,9 +49,11 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.label.domain.entity.LabelId
@@ -61,6 +64,9 @@ import kotlin.test.assertEquals
 
 class SidebarViewModelTest {
 
+    private val accountManager: AccountManager = mockk {
+        every { getPrimaryUserId() } returns flowOf(userId)
+    }
     private val appInformation = mockk<AppInformation>()
 
     private val selectedMailLabelId = mockk<SelectedMailLabelId> {
@@ -74,11 +80,11 @@ class SidebarViewModelTest {
 
     private val showSettings = MutableStateFlow(FeatureFlag(FeatureFlagTestData.showSettingsId.id, false))
     private val observeMailFeature = mockk<ObserveMailFeature> {
-        every { this@mockk.invoke(FeatureFlagTestData.showSettingsId) } returns showSettings
+        every { this@mockk(userId, FeatureFlagTestData.showSettingsId) } returns showSettings
     }
     private val primaryUser = MutableStateFlow<User?>(null)
-    private val observePrimaryUser = mockk<ObservePrimaryUser> {
-        every { this@mockk.invoke() } returns primaryUser
+    private val observeUser = mockk<ObserveUser> {
+        every { this@mockk(userId) } returns primaryUser
     }
 
     private val mailboxLabels = MutableStateFlow(MailLabels.Initial)
@@ -99,6 +105,7 @@ class SidebarViewModelTest {
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         sidebarViewModel = SidebarViewModel(
+            accountManager = accountManager,
             appInformation,
             selectedMailLabelId,
             mailFeatureDefault,

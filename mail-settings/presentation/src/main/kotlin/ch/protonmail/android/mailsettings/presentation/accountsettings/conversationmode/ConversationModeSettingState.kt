@@ -18,10 +18,12 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode
 
-sealed class ConversationModeSettingState {
+sealed interface ConversationModeSettingState {
+
     data class Data(
         val isEnabled: Boolean?
-    ) : ConversationModeSettingState()
+    ) : ConversationModeSettingState
 
-    object Loading : ConversationModeSettingState()
+    object Loading : ConversationModeSettingState
+    object NotLoggedIn : ConversationModeSettingState
 }

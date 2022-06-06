@@ -21,11 +21,11 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 import app.cash.turbine.test
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.entity.UserId
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.mailsettings.domain.entity.MailSettings
@@ -43,14 +43,14 @@ internal class ObserveCurrentViewModeTest(
 ) {
 
     private val observeMailSettings: ObserveMailSettings = mockk {
-        every { this@mockk() } returns
+        every { this@mockk(userId) } returns
             flowOf(buildMailSettings(isConversationSettingEnabled = input.isConversationSettingEnabled))
     }
     private val observeCurrentViewMode = ObserveCurrentViewMode(observeMailSettings)
 
     @Test
     fun test() = runTest {
-        observeCurrentViewMode(input.selectedMailLabelId).test {
+        observeCurrentViewMode(userId, input.selectedMailLabelId).test {
             assertEquals(expected, awaitItem())
             awaitComplete()
         }
@@ -69,8 +69,6 @@ internal class ObserveCurrentViewModeTest(
     }
 
     private companion object TestData {
-
-        val userId = UserId("user")
 
         fun buildMailSettings(isConversationSettingEnabled: Boolean) = MailSettings(
             userId = userId,

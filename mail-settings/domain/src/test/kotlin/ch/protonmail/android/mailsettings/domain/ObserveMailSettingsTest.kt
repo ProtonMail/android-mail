@@ -18,54 +18,46 @@
 
 package ch.protonmail.android.mailsettings.domain
 
+import java.io.IOException
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
-import ch.protonmail.android.testdata.user.UserIdTestData
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.runTest
-import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.arch.DataResult.Error
 import me.proton.core.domain.arch.DataResult.Success
 import me.proton.core.domain.arch.ResponseSource.Local
-import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Before
-import org.junit.Test
-import java.io.IOException
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class ObserveMailSettingsTest {
-    private val userIdFlow by lazy { MutableSharedFlow<UserId?>() }
-    private val accountManager = mockk<AccountManager> {
-        every { this@mockk.getPrimaryUserId() } returns userIdFlow
-    }
 
     private val mailSettingsFlow = MutableSharedFlow<DataResult<MailSettings>>()
     private val mailSettingsRepository = mockk<MailSettingsRepository> {
-        every { this@mockk.getMailSettingsFlow(UserIdTestData.userId) } returns mailSettingsFlow
+        every { this@mockk.getMailSettingsFlow(userId) } returns mailSettingsFlow
     }
 
     private lateinit var observeMailSettings: ObserveMailSettings
 
-    @Before
+    @BeforeTest
     fun setUp() {
         observeMailSettings = ObserveMailSettings(
-            accountManager,
             mailSettingsRepository
         )
     }
 
     @Test
     fun `returns mail settings when repository returns valid mail settings`() = runTest {
-        observeMailSettings.invoke().test {
-            // Given
-            primaryUserIdIs(UserIdTestData.userId)
+        // Given
+        observeMailSettings(userId).test {
 
             // When
             mailSettingsFlow.emit(Success(Local, MailSettingsTestData.mailSettings))
@@ -78,9 +70,8 @@ class ObserveMailSettingsTest {
 
     @Test
     fun `returns null when repository returns an error`() = runTest {
-        observeMailSettings.invoke().test {
-            // Given
-            primaryUserIdIs(UserIdTestData.userId)
+        // Given
+        observeMailSettings(userId).test {
 
             // When
             mailSettingsFlow.emit(Error.Local("Test-IOException", IOException("Test")))
@@ -90,21 +81,4 @@ class ObserveMailSettingsTest {
             assertNull(actual)
         }
     }
-
-    @Test
-    fun `returns null when there is no valid userId`() = runTest {
-        observeMailSettings.invoke().test {
-            // Given
-            primaryUserIdIs(null)
-
-            // Then
-            assertNull(awaitItem())
-        }
-    }
-
-
-    private suspend fun primaryUserIdIs(userId: UserId?) {
-        userIdFlow.emit(userId)
-    }
-
 }

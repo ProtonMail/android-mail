@@ -20,57 +20,65 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
-import ch.protonmail.android.mailsettings.domain.usecase.ObservePrimaryUserSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveUserSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
+import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.NotLoggedIn
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import ch.protonmail.android.testdata.user.UserTestData
 import ch.protonmail.android.testdata.usersettings.UserSettingsTestData
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.user.domain.entity.User
 import me.proton.core.usersettings.domain.entity.UserSettings
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class AccountSettingsViewModelTest {
 
     private val userFlow = MutableSharedFlow<User?>()
-    private val observePrimaryUser = mockk<ObservePrimaryUser> {
-        every { this@mockk.invoke() } returns userFlow
+    private val accountManager: AccountManager = mockk {
+        every { getPrimaryUserId() } returns flowOf(userId)
+    }
+    private val observeUser = mockk<ObserveUser> {
+        every { this@mockk(userId) } returns userFlow
     }
 
     private val userSettingsFlow = MutableSharedFlow<UserSettings?>()
-    private val observePrimaryUserSettings = mockk<ObservePrimaryUserSettings> {
-        every { this@mockk.invoke() } returns userSettingsFlow
+    private val observeUserSettings = mockk<ObserveUserSettings> {
+        every { this@mockk(userId) } returns userSettingsFlow
     }
 
     private val mailSettingsFlow = MutableSharedFlow<MailSettings?>()
     private val observeMailSettings = mockk<ObserveMailSettings> {
-        every { this@mockk.invoke() } returns mailSettingsFlow
+        every { this@mockk(userId) } returns mailSettingsFlow
     }
 
-    private lateinit var viewModel: AccountSettingsViewModel
+    private val viewModel by lazy {
+        AccountSettingsViewModel(
+            accountManager = accountManager,
+            observeUser = observeUser,
+            observeUserSettings = observeUserSettings,
+            observeMailSettings = observeMailSettings
+        )
+    }
 
-    @Before
+    @BeforeTest
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-
-        viewModel = AccountSettingsViewModel(
-            observePrimaryUser,
-            observePrimaryUserSettings,
-            observeMailSettings
-        )
     }
 
     @Test
@@ -218,6 +226,23 @@ class AccountSettingsViewModelTest {
             val actual = awaitItem() as Data
             assertNull(actual.isConversationMode)
         }
+    }
+
+    @Test
+    fun `emits right state when no user is logged in`() = runTest {
+        // given
+        givenNoLoggedInUser()
+
+        // when
+        viewModel.state.test {
+
+            // then
+            assertEquals(NotLoggedIn, awaitItem())
+        }
+    }
+
+    private fun givenNoLoggedInUser() {
+        every { accountManager.getPrimaryUserId() } returns flowOf(null)
     }
 
     private suspend fun FlowTurbine<AccountSettingsState>.initialStateEmitted() {

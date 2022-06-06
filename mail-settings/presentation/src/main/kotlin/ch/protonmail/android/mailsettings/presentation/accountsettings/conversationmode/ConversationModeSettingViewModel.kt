@@ -23,9 +23,13 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
+import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.NotLoggedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
@@ -44,13 +48,19 @@ class ConversationModeSettingViewModel @Inject constructor(
     observeMailSettings: ObserveMailSettings
 ) : ViewModel() {
 
-    val state = observeMailSettings().map { mailSettings ->
-        Data(mailSettings?.viewMode?.enum?.let { it == ConversationGrouping })
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(stopTimeoutMillis),
-        Loading
-    )
+    val state: StateFlow<ConversationModeSettingState> =
+        accountManager.getPrimaryUserId().flatMapLatest { _userId ->
+            val userId = _userId
+                ?: return@flatMapLatest flowOf(NotLoggedIn)
+
+            observeMailSettings(userId).map { mailSettings ->
+                Data(mailSettings?.viewMode?.enum?.let { it == ConversationGrouping })
+            }
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(stopTimeoutMillis),
+            Loading
+        )
 
     fun onConversationToggled(isEnabled: Boolean) = accountManager.getPrimaryUserId()
         .filterNotNull()

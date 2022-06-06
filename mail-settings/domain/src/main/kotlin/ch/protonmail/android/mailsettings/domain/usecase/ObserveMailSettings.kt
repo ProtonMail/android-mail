@@ -18,23 +18,17 @@
 
 package ch.protonmail.android.mailsettings.domain.usecase
 
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
-import me.proton.core.accountmanager.domain.AccountManager
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.arch.mapSuccessValueOrNull
+import me.proton.core.domain.entity.UserId
+import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
 class ObserveMailSettings @Inject constructor(
-    private val accountManager: AccountManager,
     private val mailSettingsRepository: MailSettingsRepository
 ) {
 
-    operator fun invoke() = accountManager.getPrimaryUserId()
-        .flatMapLatest { userId ->
-            if (userId == null) {
-                return@flatMapLatest flowOf(null)
-            }
-            mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull()
-        }
+    operator fun invoke(userId: UserId): Flow<MailSettings?> =
+        mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull()
 }

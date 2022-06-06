@@ -21,14 +21,15 @@ package ch.protonmail.android.mailsettings.domain.usecase
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class ObserveSwipeActionsPreference @Inject constructor(
     private val observeMailSettings: ObserveMailSettings
 ) {
 
-    operator fun invoke(): Flow<SwipeActionsPreference> =
-        observeMailSettings().transform { mailSettings ->
+    operator fun invoke(userId: UserId): Flow<SwipeActionsPreference> =
+        observeMailSettings(userId).transform { mailSettings ->
             if (mailSettings != null) {
                 val preference = SwipeActionsPreference(
                     swipeLeft = checkNotNull(mailSettings.swipeLeft?.enum) { "Swipe Left is null" },

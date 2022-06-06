@@ -29,9 +29,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Loading
+import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.NotLoggedIn
+import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSettingsToggleItem
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.util.kotlin.exhaustive
 
 const val TEST_TAG_CONV_MODE_SETTINGS_SCREEN = "AccountConvoModeTestTag"
 
@@ -55,8 +59,9 @@ fun ConversationModeSettingScreen(
                 state = state
             )
         }
-        is Loading -> Unit
-    }
+        Loading -> ProtonCenteredProgress()
+        NotLoggedIn -> ProtonErrorMessage(errorMessage = "Not logged in")
+    }.exhaustive
 }
 
 @Composable

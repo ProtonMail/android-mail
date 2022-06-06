@@ -35,7 +35,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -56,6 +55,9 @@ import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.presentation.MailboxState.Data
+import ch.protonmail.android.mailmailbox.presentation.MailboxState.Loading
+import ch.protonmail.android.mailmailbox.presentation.MailboxState.NotLoggedIn
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -63,6 +65,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
@@ -110,14 +113,18 @@ fun MailboxScreen(
                 .background(ProtonTheme.colors.backgroundNorm)
                 .fillMaxSize()
         ) {
-            MailboxList(
-                navigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
-                onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
-                onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
-                modifier = modifier,
-                items = mailboxListItems,
-                listState = mailboxListState
-            )
+            when (val state = mailboxState) {
+                is Data -> MailboxList(
+                    navigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
+                    onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
+                    onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
+                    modifier = modifier,
+                    items = mailboxListItems,
+                    listState = mailboxListState
+                )
+                Loading -> ProtonCenteredProgress()
+                NotLoggedIn -> ProtonErrorMessage(errorMessage = "Not logged in")
+            }
         }
     }
 }

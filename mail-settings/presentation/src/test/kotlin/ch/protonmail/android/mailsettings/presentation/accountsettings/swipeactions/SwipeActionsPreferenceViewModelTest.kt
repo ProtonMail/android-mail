@@ -26,6 +26,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.Swi
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceViewModel
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -35,14 +36,18 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.accountmanager.domain.AccountManager
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class SwipeActionsPreferenceViewModelTest {
 
+    private val accountManager: AccountManager = mockk {
+        every { getPrimaryUserId() } returns flowOf(userId)
+    }
     private val observeSwipeActionsPreference: ObserveSwipeActionsPreference = mockk {
-        every { this@mockk() } returns flowOf(mockk())
+        every { this@mockk(any()) } returns flowOf(mockk())
     }
     private val swipeActionPreferenceUiModelMapper: SwipeActionPreferenceUiModelMapper = mockk {
         every { toUiModel(any()) } returns uiModel
@@ -54,6 +59,7 @@ internal class SwipeActionsPreferenceViewModelTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
         viewModel = SwipeActionsPreferenceViewModel(
+            accountManager = accountManager,
             observeSwipeActionsPreference = observeSwipeActionsPreference,
             swipeActionPreferenceUiModelMapper = swipeActionPreferenceUiModelMapper
         )
@@ -83,11 +89,12 @@ internal class SwipeActionsPreferenceViewModelTest {
     }
 
     private fun givenDataIsDelayed() {
-        every { observeSwipeActionsPreference() } returns flow {
+        every { observeSwipeActionsPreference(any()) } returns flow {
             delay(1)
             mockk()
         }
         viewModel = SwipeActionsPreferenceViewModel(
+            accountManager = accountManager,
             observeSwipeActionsPreference = observeSwipeActionsPreference,
             swipeActionPreferenceUiModelMapper = swipeActionPreferenceUiModelMapper
         )

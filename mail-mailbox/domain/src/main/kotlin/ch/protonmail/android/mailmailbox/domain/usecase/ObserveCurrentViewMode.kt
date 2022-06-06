@@ -18,13 +18,14 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapLatest
+import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
@@ -39,13 +40,11 @@ class ObserveCurrentViewMode @Inject constructor(
         SystemLabelId.AllSent
     ).map { it.labelId }
 
-    operator fun invoke(selectedMailLabelId: MailLabelId): Flow<ViewMode> =
-        when (selectedMailLabelId.labelId) {
-            in messagesOnlyLabelsIds -> flowOf(ViewMode.NoConversationGrouping)
-            else -> invoke()
-        }
+    operator fun invoke(userId: UserId, selectedMailLabelId: MailLabelId): Flow<ViewMode> =
+        if (selectedMailLabelId.labelId in messagesOnlyLabelsIds) flowOf(ViewMode.NoConversationGrouping)
+        else invoke(userId)
 
-    operator fun invoke(): Flow<ViewMode> = observeMailSettings()
+    operator fun invoke(userId: UserId): Flow<ViewMode> = observeMailSettings(userId)
         .mapLatest { it?.viewMode?.enum ?: DefaultViewMode }
         .distinctUntilChanged()
 

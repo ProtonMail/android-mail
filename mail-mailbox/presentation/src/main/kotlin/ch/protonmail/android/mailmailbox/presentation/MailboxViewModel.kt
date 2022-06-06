@@ -58,6 +58,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MailboxViewModel @Inject constructor(
+    private val selectedSidebarLocation: SelectedSidebarLocation,
     private val markAsStaleMailboxItems: MarkAsStaleMailboxItems,
     private val pagingSourceFactory: MailboxItemPagingSourceFactory,
     private val observeCurrentViewMode: ObserveCurrentViewMode,
@@ -88,22 +89,34 @@ class MailboxViewModel @Inject constructor(
         initialValue = null
     )
 
-    private val viewModeBySettings: StateFlow<ViewMode> = observeCurrentViewMode()
+    private val viewModeBySettings: StateFlow<ViewMode> = observePrimaryUserId().flatMapLatest { _userId ->
+        val userId = _userId
+            ?: return@flatMapLatest flowOf(ObserveCurrentViewMode.DefaultViewMode)
+
+        observeCurrentViewMode(userId)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
+        initialValue = ObserveCurrentViewMode.DefaultViewMode
+    )
+
+    private val viewModeByLocation: StateFlow<ViewMode> = combine(
+        observePrimaryUserId(),
+        selectedMailLabelId.flow
+    ) { userId, mailLabelId -> userId to mailLabelId }
+        .flatMapLatest { (_userId, mailLabelId) ->
+            val userId = _userId
+                ?: return@flatMapLatest flowOf(ObserveCurrentViewMode.DefaultViewMode)
+
+            observeCurrentViewMode(userId, mailLabelId)
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
             initialValue = ObserveCurrentViewMode.DefaultViewMode
         )
 
-    private val viewModeByLocation: StateFlow<ViewMode> = selectedMailLabelId.flow
-        .flatMapLatest { mailLabelId -> observeCurrentViewMode(mailLabelId) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = ObserveCurrentViewMode.DefaultViewMode
-        )
-
-    private val userIds = observeUserIds()
+    private val userIds: StateFlow<List<UserId>> = observeUserIds()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
@@ -125,10 +138,10 @@ class MailboxViewModel @Inject constructor(
     fun submit(action: Action) {
         viewModelScope.launch {
             when (action) {
-                is Action.EnterSelectionMode -> onOpenSelectionMode()
-                is Action.ExitSelectionMode -> onCloseSelectionMode()
+                Action.EnterSelectionMode -> onOpenSelectionMode()
+                Action.ExitSelectionMode -> onCloseSelectionMode()
                 is Action.OpenItemDetails -> onOpenItemDetails(action.item)
-                is Action.Refresh -> onRefresh()
+                Action.Refresh -> onRefresh()
             }.exhaustive
         }
     }
@@ -172,10 +185,10 @@ class MailboxViewModel @Inject constructor(
         observePrimaryUserId().map { listOfNotNull(it) }
 
     private fun observePagingData(): Flow<PagingData<MailboxItem>> = combine(
-        userIds,
-        viewModeByLocation,
         selectedMailLabelId.flow,
-    ) { userIds, viewMode, selectedMailLabelId ->
+        userIds,
+        viewModeByLocation
+    ) { selectedMailLabelId, userIds, viewMode ->
         when {
             userIds.isEmpty() -> null
             else -> Pager(PagingConfig(pageSize = PageKey.defaultPageSize)) {
@@ -191,22 +204,20 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun observeState() = combine(
-        openItemDetailEffect,
         currentMailLabel,
+        openItemDetailEffect,
         topAppBarState,
         userIds,
-    ) { openItemDetailEffect, currentMailLabel, topAppBarState, userIds ->
-        when {
-            userIds.isEmpty() || currentMailLabel == null -> MailboxState.Loading
-            else -> {
-                val newTopAppBarState = topAppBarState.withCurrentMailLabel(currentMailLabel)
-                MailboxState(
-                    topAppBar = newTopAppBarState,
-                    currentMailLabel = currentMailLabel,
-                    openItemEffect = openItemDetailEffect
-                )
-            }
-        }
+    ) { currentMailLabel, openItemDetailEffect, topAppBarState, userIds ->
+        if (userIds.isEmpty() || currentMailLabel == null)
+            return@combine MailboxState.Loading
+
+        val newTopAppBarState = topAppBarState.withCurrentMailLabel(currentMailLabel)
+        MailboxState.Data(
+            topAppBar = newTopAppBarState,
+            currentMailLabel = currentMailLabel,
+            openItemEffect = openItemDetailEffect
+        )
     }
 
     sealed interface Action {

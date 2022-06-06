@@ -20,48 +20,58 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
-import ch.protonmail.android.mailsettings.domain.usecase.ObservePrimaryUserSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveUserSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
+import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.NotLoggedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
+import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.usersettings.domain.entity.UserSettings
+import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 @HiltViewModel
 class AccountSettingsViewModel @Inject constructor(
-    observePrimaryUser: ObservePrimaryUser,
-    observePrimaryUserSettings: ObservePrimaryUserSettings,
-    observeMailSettings: ObserveMailSettings
+    accountManager: AccountManager,
+    private val observeUser: ObserveUser,
+    private val observeUserSettings: ObserveUserSettings,
+    private val observeMailSettings: ObserveMailSettings
 ) : ViewModel() {
 
-    val state = combine(
-        observePrimaryUser(),
-        observePrimaryUserSettings(),
-        observeMailSettings()
-    ) { user, userSettings, mailSettings ->
-        Data(
-            getRecoveryEmail(userSettings),
-            user?.maxSpace,
-            user?.usedSpace,
-            user?.email,
-            mailSettings?.viewMode?.enum?.let { it == ConversationGrouping }
-        )
+    val state: StateFlow<AccountSettingsState> = accountManager.getPrimaryUserId().flatMapLatest { _userId ->
+        val userId = _userId
+            ?: return@flatMapLatest flowOf(NotLoggedIn)
 
+        combine(
+            observeUser(userId),
+            observeUserSettings(userId),
+            observeMailSettings(userId)
+        ) { user, userSettings, mailSettings ->
+            Data(
+                getRecoveryEmail(userSettings),
+                user?.maxSpace,
+                user?.usedSpace,
+                user?.email,
+                mailSettings?.viewMode?.enum?.let { it == ConversationGrouping }
+            )
+        }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(stopTimeoutMillis),
         Loading
     )
 
-    private fun getRecoveryEmail(userSettings: UserSettings?) = userSettings?.email?.value.let {
-        if (it.isNullOrBlank()) null else it
-    }
+    private fun getRecoveryEmail(userSettings: UserSettings?) =
+        userSettings?.email?.value?.takeIfNotBlank()
 
 }

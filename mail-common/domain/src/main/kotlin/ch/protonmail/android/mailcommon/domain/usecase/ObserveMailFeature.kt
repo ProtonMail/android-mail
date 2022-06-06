@@ -19,17 +19,16 @@
 package ch.protonmail.android.mailcommon.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
-import kotlinx.coroutines.flow.flatMapLatest
-import me.proton.core.accountmanager.domain.AccountManager
+import kotlinx.coroutines.flow.Flow
+import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.FeatureFlagManager
+import me.proton.core.featureflag.domain.entity.FeatureFlag
 import javax.inject.Inject
 
 class ObserveMailFeature @Inject constructor(
-    private val accountManager: AccountManager,
     private val featureFlagManager: FeatureFlagManager,
 ) {
-    operator fun invoke(feature: MailFeatureId) = accountManager.getPrimaryUserId()
-        .flatMapLatest { userId ->
-            featureFlagManager.observe(userId, feature.id)
-        }
+
+    operator fun invoke(userId: UserId, feature: MailFeatureId): Flow<FeatureFlag?> =
+        featureFlagManager.observe(userId, feature.id)
 }

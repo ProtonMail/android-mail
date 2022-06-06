@@ -35,6 +35,8 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
+import ch.protonmail.android.mailmailbox.presentation.MailboxState.Data
+import ch.protonmail.android.mailmailbox.presentation.MailboxState.Loading
 import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel.Action
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
@@ -58,6 +60,7 @@ import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
 
 class MailboxViewModelTest {
 
@@ -83,12 +86,12 @@ class MailboxViewModelTest {
     }
 
     private val markAsStaleMailboxItems = mockk<MarkAsStaleMailboxItems> {
-        coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit
+        coEvery { this@mockk(any(), any(), any()) } returns Unit
     }
 
     private val observeCurrentViewMode = mockk<ObserveCurrentViewMode> {
-        coEvery { this@mockk.invoke() } returns flowOf(NoConversationGrouping)
-        coEvery { this@mockk.invoke(any()) } returns flowOf(NoConversationGrouping)
+        coEvery { this@mockk(userId = any()) } returns flowOf(NoConversationGrouping)
+        coEvery { this@mockk(any(), any()) } returns flowOf(NoConversationGrouping)
     }
 
     private val pagingSourceFactory = mockk<MailboxItemPagingSourceFactory>(relaxed = true)
@@ -119,7 +122,7 @@ class MailboxViewModelTest {
 
             // Then
             val actual = awaitItem()
-            val expected = MailboxState.Loading
+            val expected = Loading
 
             assertEquals(expected, actual)
 
@@ -137,7 +140,9 @@ class MailboxViewModelTest {
 
             // Then
             val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive))
-            assertEquals(expected, awaitItem().topAppBar)
+            val actual = awaitItem()
+            assertIs<Data>(actual)
+            assertEquals(expected, actual.topAppBar)
         }
     }
 
@@ -168,7 +173,9 @@ class MailboxViewModelTest {
 
             // Then
             val expected = MailboxTopAppBarState.Data.SelectionMode(MailLabel.System(Archive), selectedCount = 0)
-            assertEquals(expected, awaitItem().topAppBar)
+            val actual = awaitItem()
+            assertIs<Data>(actual)
+            assertEquals(expected, actual.topAppBar)
         }
     }
 
@@ -190,7 +197,20 @@ class MailboxViewModelTest {
 
             // Then
             val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive))
-            assertEquals(expected, awaitItem().topAppBar)
+            val actual = awaitItem()
+            assertIs<Data>(actual)
+            assertEquals(expected, actual.topAppBar)
+        }
+    }
+
+    @Test
+    fun `emits mailbox state with current location`() = runTest {
+        mailboxViewModel.state.test {
+
+            // Then
+            val actual = awaitItem()
+            assertIs<Data>(actual)
+            assertEquals(Archive, actual.selectedLocation)
         }
     }
 
@@ -227,7 +247,7 @@ class MailboxViewModelTest {
             // Given
             givenUserLoggedIn()
             val item = buildMailboxItem(Message)
-            every { observeCurrentViewMode() } returns flowOf(NoConversationGrouping)
+            every { observeCurrentViewMode(userId) } returns flowOf(NoConversationGrouping)
 
             // When
             mailboxViewModel.submit(Action.OpenItemDetails(item))
@@ -235,7 +255,9 @@ class MailboxViewModelTest {
 
                 // Then
                 val expected = OpenMailboxItemRequest(MailboxItemId(item.id), Message)
-                assertEquals(expected, awaitItem().openItemEffect.consume())
+                val actual = awaitItem()
+                assertIs<Data>(actual)
+                assertEquals(expected, actual.openItemEffect.consume())
             }
         }
 
@@ -246,7 +268,7 @@ class MailboxViewModelTest {
             // Given
             givenUserLoggedIn()
             val item = buildMailboxItem(Conversation)
-            every { observeCurrentViewMode() } returns flowOf(ConversationGrouping)
+            every { observeCurrentViewMode(userId) } returns flowOf(ConversationGrouping)
 
             // When
             mailboxViewModel.submit(Action.OpenItemDetails(item))
@@ -254,7 +276,9 @@ class MailboxViewModelTest {
 
                 // Then
                 val expected = OpenMailboxItemRequest(MailboxItemId(item.id), Conversation)
-                assertEquals(expected, awaitItem().openItemEffect.consume())
+                val actual = awaitItem()
+                assertIs<Data>(actual)
+                assertEquals(expected, actual.openItemEffect.consume())
             }
         }
 
@@ -265,7 +289,7 @@ class MailboxViewModelTest {
             // Given
             givenUserLoggedIn()
             val item = buildMailboxItem(Message)
-            every { observeCurrentViewMode() } returns flowOf(ConversationGrouping)
+            every { observeCurrentViewMode(userId) } returns flowOf(ConversationGrouping)
 
             // When
             mailboxViewModel.submit(Action.OpenItemDetails(item))
@@ -273,7 +297,9 @@ class MailboxViewModelTest {
 
                 // Then
                 val expected = OpenMailboxItemRequest(MailboxItemId(item.id), Conversation)
-                assertEquals(expected, awaitItem().openItemEffect.consume())
+                val actual = awaitItem()
+                assertIs<Data>(actual)
+                assertEquals(expected, actual.openItemEffect.consume())
             }
         }
 

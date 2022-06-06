@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
 import ch.protonmail.android.mailcommon.domain.MailFeatureId.ShowSettings
 import ch.protonmail.android.mailcommon.domain.extension.canChangeSubscription
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
@@ -42,12 +41,14 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 @HiltViewModel
 class SidebarViewModel @Inject constructor(
+    accountManager: AccountManager,
     val appInformation: AppInformation,
     private val selectedMailLabelId: SelectedMailLabelId,
     private val mailFeatureDefault: MailFeatureDefault,
@@ -57,6 +58,8 @@ class SidebarViewModel @Inject constructor(
     observeFolderColors: ObserveFolderColorSettings,
     observeMailLabels: ObserveMailLabels,
 ) : ViewModel() {
+
+    val initialState = State.Disabled
 
     private val primaryUser = observePrimaryUser().stateIn(
         scope = viewModelScope,

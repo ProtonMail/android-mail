@@ -20,8 +20,11 @@ package ch.protonmail.android.mailsettings.presentation.settings.swipeactions
 
 sealed interface SwipeActionsPreferenceState {
 
-    object Loading : SwipeActionsPreferenceState
     data class Data(
         val model: SwipeActionsPreferenceUiModel
     ) : SwipeActionsPreferenceState
+
+    object Loading : SwipeActionsPreferenceState
+
+    object NotLoggedIn : SwipeActionsPreferenceState
 }

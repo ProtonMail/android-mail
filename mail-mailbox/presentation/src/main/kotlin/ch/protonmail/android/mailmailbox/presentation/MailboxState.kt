@@ -21,23 +21,26 @@ package ch.protonmail.android.mailmailbox.presentation
 import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.model.MailLabel
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 
 @Stable
-data class MailboxState(
-    val topAppBar: MailboxTopAppBarState,
-    val currentMailLabel: MailLabel?,
+sealed interface MailboxState {
+
+    val topAppBar: MailboxTopAppBarState
+        get() = MailboxTopAppBarState.Loading
+
     val openItemEffect: Effect<OpenMailboxItemRequest>
-) {
+        get() = Effect.empty()
 
-    companion object {
+    @Stable
+    data class Data(
+        override val topAppBar: MailboxTopAppBarState,
+        val currentMailLabel: MailLabel?,
+        override val openItemEffect: Effect<OpenMailboxItemRequest>
+    ) : MailboxState
 
-        val Loading = MailboxState(
-            topAppBar = MailboxTopAppBarState.Loading,
-            currentMailLabel = null,
-            openItemEffect = Effect.empty()
-        )
-    }
+    object Loading : MailboxState
+
+    object NotLoggedIn : MailboxState
 }
