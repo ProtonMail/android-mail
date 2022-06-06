@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
 <resources>
-    <string name="label_title_inbox">Caixa de entrada</string>
-    <string name="label_title_drafts">Rascunhos</string>
-    <string name="label_title_sent">Enviado</string>
-    <string name="label_title_starred">Com estrela</string>
-    <string name="label_title_archive">Arquivo</string>
-    <string name="label_title_spam">Spam</string>
-    <string name="label_title_trash">Lixeira</string>
-    <string name="label_title_all_mail">Todos e-mails</string>
+  <string name="label_title_inbox">Caixa de entrada</string>
+  <string name="label_title_drafts">Rascunhos</string>
+  <string name="label_title_sent">Enviados</string>
+  <string name="label_title_starred">Favorito</string>
+  <string name="label_title_archive">Arquivo</string>
+  <string name="label_title_spam">Spam</string>
+  <string name="label_title_trash">Lixeira</string>
+  <string name="label_title_outbox">Caixa de saída</string>
+  <string name="label_title_all_mail">Todos os e-mails</string>
+  <string name="label_title_all_drafts">Todos os rascunho</string>
+  <string name="label_title_all_sent">Todos os enviados</string>
+  <string name="label_title_folders">Pastas</string>
+  <string name="label_title_labels">Marcadores</string>
+  <string name="label_title_add_folder">Adicionar pasta</string>
+  <string name="label_title_add_label">Adicionar marcador</string>
 </resources>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ProtonMail</string>
-    <string name="title_remove">Odstranit</string>
-    <string name="title_remove_account">Odstranit účet</string>
-    <string name="description_remove_account">Odhlásíte se a odstraníte všechny informace spojené s tímto účtem.</string>
-    <string name="user_select_other_account_content_description">Vybrat jiný účet</string>
+  <string name="app_name">Proton Mail</string>
+  <string name="title_remove">Odstranit</string>
+  <string name="title_remove_account">Odstranit účet</string>
+  <string name="description_remove_account">Odhlásíte se a odstraníte všechny informace spojené s tímto účtem.</string>
+  <string name="user_select_other_account_content_description">Vybrat jiný účet</string>
 </resources>

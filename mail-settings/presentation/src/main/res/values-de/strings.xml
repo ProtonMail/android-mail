@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">Einstellungen</string>
+  <string name="mail_settings_toolbar_button_content_description">Zum vorherigen Bildschirm zurückkehren</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">Kontoeinstellungen</string>
+  <string name="mail_settings_app_settings">App-Einstellungen</string>
+  <string name="mail_settings_theme">Farbschema</string>
+  <string name="mail_settings_push_notifications">Push-Mitteilungen</string>
+  <string name="mail_settings_auto_lock">Automatisch sperren</string>
+  <string name="mail_settings_alternative_routing">Alternatives Routing</string>
+  <string name="mail_settings_app_language">Sprache der App</string>
+  <string name="mail_settings_combined_contacts">Zusammengeführte Kontakte</string>
+  <string name="mail_settings_swipe_actions">Wischgesten</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">Systemstandard</string>
+  <string name="mail_settings_theme_light">Hell</string>
+  <string name="mail_settings_theme_dark">Dunkel</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">Keine Informationen verfügbar</string>
+  <string name="mail_settings_enabled">Aktiviert</string>
+  <string name="mail_settings_disabled">Deaktiviert</string>
+  <string name="mail_settings_allowed">Zugelassen</string>
+  <string name="mail_settings_denied">Abgelehnt</string>
+  <string name="mail_settings_auto_detect">Automatisch erkennen</string>
+  <string name="mail_settings_app_information">App-Informationen</string>
+  <string name="mail_settings_app_version">App-Version</string>
+  <string name="mail_settings_account">Konto</string>
+  <!-- Account Settings items -->
+  <string name="mail_settings_subscription">Abonnement</string>
+  <string name="mail_settings_password_management">Passwortverwaltung</string>
+  <string name="mail_settings_recovery_email">Wiederherstellungs-E-Mail-Adresse</string>
+  <string name="mail_settings_mailbox_size">Größe des Postfachs</string>
+  <string name="mail_settings_addresses">E-Mail-Adressen</string>
+  <string name="mail_settings_default_email_address">Standard-E-Mail-Adresse</string>
+  <string name="mail_settings_display_name_and_signature">Anzeigename und Signatur</string>
+  <string name="mail_settings_mailbox">Postfach</string>
+  <string name="mail_settings_privacy">Datenschutz</string>
+  <string name="mail_settings_search_message_content">Nachrichteninhalt durchsuchen</string>
+  <string name="mail_settings_labels_and_folders">Kategorien und Ordner</string>
+  <string name="mail_settings_local_storage">Lokaler Speicher</string>
+  <string name="mail_settings_snooze">Zurückstellen</string>
+  <string name="mail_settings_snooze_notifications">Später erinnern</string>
+  <string name="mail_settings_conversation_mode">Themenmodus</string>
+  <string name="mail_settings_not_set">Nicht festgelegt</string>
+  <string name="mail_settings_conversation_mode_hint">Gruppiere E-Mails zum gleichen Thema in deinem Posteingang oder zeige diese getrennt an</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">Wischgesten</string>
+  <string name="mail_settings_swipe_actions_subtitle">Richten Sie Wischgesten für den Zugriff auf die am häufigsten verwendeten Aktionen ein.</string>
+  <string name="mail_settings_swipe_info_icon_content_description">Infosymbol</string>
+  <string name="mail_settings_swipe_chevron_content_description">Wischengeste ändern</string>
+  <string name="mail_settings_swipe_right_name">Von links nach rechts</string>
+  <string name="mail_settings_swipe_left_name">Von rechts nach links</string>
+  <string name="mail_settings_swipe_action_archive_title">Archivieren</string>
+  <string name="mail_settings_swipe_action_read_title">Ungelesen</string>
+  <string name="mail_settings_swipe_action_spam_title">Spam</string>
+  <string name="mail_settings_swipe_action_star_title">Kennzeichnen</string>
+  <string name="mail_settings_swipe_action_trash_title">Papierkorb</string>
+  <string name="mail_settings_swipe_action_archive_description">In Archiv verschieben</string>
+  <string name="mail_settings_swipe_action_read_description">Als „Gelesen”/„Ungelesen” kennzeichnen</string>
+  <string name="mail_settings_swipe_action_spam_description">In Spam-Ordner verschieben</string>
+  <string name="mail_settings_swipe_action_star_description">Kennzeichnen/Kennzeichnung aufheben</string>
+  <string name="mail_settings_swipe_action_trash_description">Papierkorb</string>
+</resources>

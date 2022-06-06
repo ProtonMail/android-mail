@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">Налаштування</string>
+  <string name="mail_settings_toolbar_button_content_description">Перейти на попередній екран</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">Налаштування облікового запису</string>
+  <string name="mail_settings_app_settings">Налаштування програми</string>
+  <string name="mail_settings_theme">Тема</string>
+  <string name="mail_settings_push_notifications">Push-сповіщення</string>
+  <string name="mail_settings_auto_lock">Автозамкнення</string>
+  <string name="mail_settings_alternative_routing">Альтернативна маршрутизація</string>
+  <string name="mail_settings_app_language">Мова програми</string>
+  <string name="mail_settings_combined_contacts">Об\'єднані контакти</string>
+  <string name="mail_settings_swipe_actions">Жести посування</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">Системна</string>
+  <string name="mail_settings_theme_light">Світла</string>
+  <string name="mail_settings_theme_dark">Темна</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">Немає доступних відомостей</string>
+  <string name="mail_settings_enabled">Увімкнено</string>
+  <string name="mail_settings_disabled">Вимкнено</string>
+  <string name="mail_settings_allowed">Дозволено</string>
+  <string name="mail_settings_denied">Заборонено</string>
+  <string name="mail_settings_auto_detect">Автовизначення</string>
+  <string name="mail_settings_app_information">Інформація про програму</string>
+  <string name="mail_settings_app_version">Версія програми</string>
+  <string name="mail_settings_account">Обліковий запис</string>
+  <!-- Account Settings items -->
+  <string name="mail_settings_subscription">Передплата</string>
+  <string name="mail_settings_password_management">Керування паролями</string>
+  <string name="mail_settings_recovery_email">Пошта для відновлення доступу</string>
+  <string name="mail_settings_mailbox_size">Розмір поштової скриньки</string>
+  <string name="mail_settings_addresses">Адреси</string>
+  <string name="mail_settings_default_email_address">Типова електронна адреса</string>
+  <string name="mail_settings_display_name_and_signature">Ім\'я та підпис</string>
+  <string name="mail_settings_mailbox">Поштова скринька</string>
+  <string name="mail_settings_privacy">Приватність</string>
+  <string name="mail_settings_search_message_content">Пошук вмісту повідомлень</string>
+  <string name="mail_settings_labels_and_folders">Мітки й теки</string>
+  <string name="mail_settings_local_storage">Локальне сховище</string>
+  <string name="mail_settings_snooze">Відкласти</string>
+  <string name="mail_settings_snooze_notifications">Відкласти сповіщення</string>
+  <string name="mail_settings_conversation_mode">Режим розмов</string>
+  <string name="mail_settings_not_set">Не встановлено</string>
+  <string name="mail_settings_conversation_mode_hint">Групуйте електронні листи в одній розмові або переглядайте їх окремо</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">Жести посування</string>
+  <string name="mail_settings_swipe_actions_subtitle">Налаштуйте жести посування для найуживаніших швидких дій.</string>
+  <string name="mail_settings_swipe_info_icon_content_description">Інформаційна піктограма</string>
+  <string name="mail_settings_swipe_chevron_content_description">Змінити дію посування</string>
+  <string name="mail_settings_swipe_right_name">Зліва направо</string>
+  <string name="mail_settings_swipe_left_name">Справа наліво</string>
+  <string name="mail_settings_swipe_action_archive_title">Архів</string>
+  <string name="mail_settings_swipe_action_read_title">Непрочитані</string>
+  <string name="mail_settings_swipe_action_spam_title">Спам</string>
+  <string name="mail_settings_swipe_action_star_title">Зірочка</string>
+  <string name="mail_settings_swipe_action_trash_title">Смітник</string>
+  <string name="mail_settings_swipe_action_archive_description">Перемістити до архіву</string>
+  <string name="mail_settings_swipe_action_read_description">Позначити прочитаним/непрочитаним</string>
+  <string name="mail_settings_swipe_action_spam_description">Перемістити до спаму</string>
+  <string name="mail_settings_swipe_action_star_description">Позначити/Прибрати зірочку</string>
+  <string name="mail_settings_swipe_action_trash_description">Смітник</string>
+</resources>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ProtonMail</string>
-    <string name="title_remove">刪除</string>
-    <string name="title_remove_account">刪除帳戶</string>
-    <string name="description_remove_account">您將登出，與此帳戶關聯的所有訊息將會被移除</string>
-    <string name="user_select_other_account_content_description">選擇另一個帳戶</string>
+  <string name="app_name">Proton Mail</string>
+  <string name="title_remove">移除</string>
+  <string name="title_remove_account">移除帳號</string>
+  <string name="description_remove_account">您將登出，與此帳號相關的所有資訊都會被移除。</string>
+  <string name="user_select_other_account_content_description">選取其他帳號</string>
 </resources>

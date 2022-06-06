@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">Indstillinger</string>
+  <string name="mail_settings_toolbar_button_content_description">Gå til forrige skærm</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">Kontoindstillinger</string>
+  <string name="mail_settings_app_settings">App-indstillinger</string>
+  <string name="mail_settings_theme">Tema</string>
+  <string name="mail_settings_push_notifications">Push-notifikationer</string>
+  <string name="mail_settings_auto_lock">Autolås</string>
+  <string name="mail_settings_alternative_routing">Alternativ routing</string>
+  <string name="mail_settings_app_language">App-sprog</string>
+  <string name="mail_settings_combined_contacts">Kombinerede kontakter</string>
+  <string name="mail_settings_swipe_actions">Strygehandlinger</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">Systemstandard</string>
+  <string name="mail_settings_theme_light">Lys</string>
+  <string name="mail_settings_theme_dark">Mørk</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">Ingen oplysninger tilgængelige</string>
+  <string name="mail_settings_enabled">Aktiveret</string>
+  <string name="mail_settings_disabled">Deativeret</string>
+  <string name="mail_settings_allowed">Tilladt</string>
+  <string name="mail_settings_denied">Afvist</string>
+  <string name="mail_settings_auto_detect">Autoregistrér</string>
+  <string name="mail_settings_app_information">App-information</string>
+  <string name="mail_settings_app_version">App-version</string>
+  <string name="mail_settings_account">Konto</string>
+  <!-- Account Settings items -->
+  <string name="mail_settings_subscription">Abonnement</string>
+  <string name="mail_settings_password_management">Adgangskodehåndtering</string>
+  <string name="mail_settings_recovery_email">E-mail til gendanelse</string>
+  <string name="mail_settings_mailbox_size">Postkassestørrelse</string>
+  <string name="mail_settings_addresses">Adresser</string>
+  <string name="mail_settings_default_email_address">Standard e-mailadresse</string>
+  <string name="mail_settings_display_name_and_signature">Visningsnavn og signatur</string>
+  <string name="mail_settings_mailbox">Postkasse</string>
+  <string name="mail_settings_privacy">Privatliv</string>
+  <string name="mail_settings_search_message_content">Søg i beskedindhold</string>
+  <string name="mail_settings_labels_and_folders">Etiketter og mapper</string>
+  <string name="mail_settings_local_storage">Lokalt lager</string>
+  <string name="mail_settings_snooze">Udsæt</string>
+  <string name="mail_settings_snooze_notifications">Udsæt notifikationer</string>
+  <string name="mail_settings_conversation_mode">Samtaletilstand</string>
+  <string name="mail_settings_not_set">Ikke indstillet</string>
+  <string name="mail_settings_conversation_mode_hint">Gruppér e-mails i den samme samtale sammen i din indbakke, eller vis dem hver for sig</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">Strygehandlinger</string>
+  <string name="mail_settings_swipe_actions_subtitle">Indstil strygebevægelser som adgang til de mest brugte handlinger.</string>
+  <string name="mail_settings_swipe_info_icon_content_description">Infoikon</string>
+  <string name="mail_settings_swipe_chevron_content_description">Ændr strygehandling</string>
+  <string name="mail_settings_swipe_right_name">Venstre mod højre</string>
+  <string name="mail_settings_swipe_left_name">Højre mod venstre</string>
+  <string name="mail_settings_swipe_action_archive_title">Arkivér</string>
+  <string name="mail_settings_swipe_action_read_title">Ulæst</string>
+  <string name="mail_settings_swipe_action_spam_title">Spam</string>
+  <string name="mail_settings_swipe_action_star_title">Stjernemarkér</string>
+  <string name="mail_settings_swipe_action_trash_title">Papirkurv</string>
+  <string name="mail_settings_swipe_action_archive_description">Flyt til arkiv</string>
+  <string name="mail_settings_swipe_action_read_description">Markér som ulæst/læst</string>
+  <string name="mail_settings_swipe_action_spam_description">Flyt til spam</string>
+  <string name="mail_settings_swipe_action_star_description">Tilføj eller fjern stjerne</string>
+  <string name="mail_settings_swipe_action_trash_description">Flyt til papirkurv</string>
+</resources>

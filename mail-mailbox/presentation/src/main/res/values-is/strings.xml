@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
 <resources>
-    <string name="drawer_title_more">More</string>
-    <string name="drawer_title_contacts">Contacts</string>
+  <string name="drawer_title_more">Meira</string>
+  <string name="drawer_title_contacts">Tengiliðir</string>
+  <string name="drawer_title_subscription">Áskrift</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Compose new message</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Exit selection mode</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Menu button</string>
+  <string name="mailbox_toolbar_search_button_content_description">Search button</string>
+  <string name="mailbox_toolbar_selected_count">%d valið</string>
 </resources>

@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
 <resources>
-    <string name="label_title_inbox">Mesaje primite</string>
-    <string name="label_title_drafts">Ciorne</string>
-    <string name="label_title_sent">Trimise</string>
-    <string name="label_title_starred">Cu stea</string>
-    <string name="label_title_archive">Arhivă</string>
-    <string name="label_title_spam">Nedorite</string>
-    <string name="label_title_trash">Gunoi</string>
-    <string name="label_title_all_mail">Toate mesajele</string>
+  <string name="label_title_inbox">Primite</string>
+  <string name="label_title_drafts">Ciorne</string>
+  <string name="label_title_sent">Trimise</string>
+  <string name="label_title_starred">Cu stea</string>
+  <string name="label_title_archive">Arhivă</string>
+  <string name="label_title_spam">Nedorite</string>
+  <string name="label_title_trash">Gunoi</string>
+  <string name="label_title_outbox">De trimis</string>
+  <string name="label_title_all_mail">Toate mesajele</string>
+  <string name="label_title_all_drafts">Toate ciornele</string>
+  <string name="label_title_all_sent">Toate trimise</string>
+  <string name="label_title_folders">Foldere</string>
+  <string name="label_title_labels">Etichete</string>
+  <string name="label_title_add_folder">Adăugare folder</string>
+  <string name="label_title_add_label">Adăugare etichetă</string>
 </resources>

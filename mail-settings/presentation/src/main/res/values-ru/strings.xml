@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">Настройки</string>
+  <string name="mail_settings_toolbar_button_content_description">Переход к предыдущему экрану</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">Настройки аккаунта</string>
+  <string name="mail_settings_app_settings">Настройки приложения</string>
+  <string name="mail_settings_theme">Тема</string>
+  <string name="mail_settings_push_notifications">Push-уведомления</string>
+  <string name="mail_settings_auto_lock">Автоблокировка</string>
+  <string name="mail_settings_alternative_routing">Альтернативная маршрутизация</string>
+  <string name="mail_settings_app_language">Язык приложения</string>
+  <string name="mail_settings_combined_contacts">Объединенные контакты</string>
+  <string name="mail_settings_swipe_actions">Жесты пролистывания</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">Системная по умолчанию</string>
+  <string name="mail_settings_theme_light">Светлая</string>
+  <string name="mail_settings_theme_dark">Темная</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">Информация отсутствует</string>
+  <string name="mail_settings_enabled">Включено</string>
+  <string name="mail_settings_disabled">Отключено</string>
+  <string name="mail_settings_allowed">Разрешено</string>
+  <string name="mail_settings_denied">Запрещено</string>
+  <string name="mail_settings_auto_detect">Автоопределение</string>
+  <string name="mail_settings_app_information">Информация о приложении</string>
+  <string name="mail_settings_app_version">Версия приложения</string>
+  <string name="mail_settings_account">Аккаунт</string>
+  <!-- Account Settings items -->
+  <string name="mail_settings_subscription">Подписка</string>
+  <string name="mail_settings_password_management">Управление паролями</string>
+  <string name="mail_settings_recovery_email">Резервный адрес электронной почты</string>
+  <string name="mail_settings_mailbox_size">Объем почтового ящика</string>
+  <string name="mail_settings_addresses">Адреса</string>
+  <string name="mail_settings_default_email_address">Адрес электронной почты по умолчанию</string>
+  <string name="mail_settings_display_name_and_signature">Отображаемое имя и подпись</string>
+  <string name="mail_settings_mailbox">Почтовый ящик</string>
+  <string name="mail_settings_privacy">Конфиденциальность</string>
+  <string name="mail_settings_search_message_content">Поиск содержимого сообщения</string>
+  <string name="mail_settings_labels_and_folders">Ярлыки и папки</string>
+  <string name="mail_settings_local_storage">Локальное хранилище</string>
+  <string name="mail_settings_snooze">Отложить</string>
+  <string name="mail_settings_snooze_notifications">Отложить уведомления</string>
+  <string name="mail_settings_conversation_mode">Режим цепочки писем</string>
+  <string name="mail_settings_not_set">Не задано</string>
+  <string name="mail_settings_conversation_mode_hint">Группировать сообщения, относящиеся к одной теме в папке \"Входящие\" или отображать их отдельно</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">Действия жестов</string>
+  <string name="mail_settings_swipe_actions_subtitle">Настройте жесты для доступа к наиболее используемым действиям.</string>
+  <string name="mail_settings_swipe_info_icon_content_description">Значок информации</string>
+  <string name="mail_settings_swipe_chevron_content_description">Изменение действия жестов</string>
+  <string name="mail_settings_swipe_right_name">Слева направо</string>
+  <string name="mail_settings_swipe_left_name">Справа налево</string>
+  <string name="mail_settings_swipe_action_archive_title">Архив</string>
+  <string name="mail_settings_swipe_action_read_title">Непрочитанные</string>
+  <string name="mail_settings_swipe_action_spam_title">Спам</string>
+  <string name="mail_settings_swipe_action_star_title">Важное</string>
+  <string name="mail_settings_swipe_action_trash_title">Корзина</string>
+  <string name="mail_settings_swipe_action_archive_description">Отправить в архив</string>
+  <string name="mail_settings_swipe_action_read_description">Пометить как непрочитанное/прочитанное</string>
+  <string name="mail_settings_swipe_action_spam_description">Отправить в спам</string>
+  <string name="mail_settings_swipe_action_star_description">Важное/неважное</string>
+  <string name="mail_settings_swipe_action_trash_description">Корзина</string>
+</resources>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">Instellingen</string>
+  <string name="mail_settings_toolbar_button_content_description">Navigeer naar vorig venster</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">Accountinstellingen</string>
+  <string name="mail_settings_app_settings">App instellingen</string>
+  <string name="mail_settings_theme">Thema</string>
+  <string name="mail_settings_push_notifications">Pushmeldingen</string>
+  <string name="mail_settings_auto_lock">Automatisch vergrendelen</string>
+  <string name="mail_settings_alternative_routing">Alternatieve routing</string>
+  <string name="mail_settings_app_language">App-taal</string>
+  <string name="mail_settings_combined_contacts">Gecombineerde contacten</string>
+  <string name="mail_settings_swipe_actions">Veegacties</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">Systeemstandaard</string>
+  <string name="mail_settings_theme_light">Licht</string>
+  <string name="mail_settings_theme_dark">Donker</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">Geen informatie beschikbaar</string>
+  <string name="mail_settings_enabled">Ingeschakeld</string>
+  <string name="mail_settings_disabled">Uitgeschakeld</string>
+  <string name="mail_settings_allowed">Toegestaan</string>
+  <string name="mail_settings_denied">Geweigerd</string>
+  <string name="mail_settings_auto_detect">Automatisch detecteren</string>
+  <string name="mail_settings_app_information">App gegevens</string>
+  <string name="mail_settings_app_version">App versie</string>
+  <string name="mail_settings_account">Account</string>
+  <!-- Account Settings items -->
+  <string name="mail_settings_subscription">Abonnement</string>
+  <string name="mail_settings_password_management">Wachtwoordbeheer</string>
+  <string name="mail_settings_recovery_email">Herstel-e-mailadres</string>
+  <string name="mail_settings_mailbox_size">Mailboxgrootte</string>
+  <string name="mail_settings_addresses">Adressen</string>
+  <string name="mail_settings_default_email_address">Standaard e-mailadres</string>
+  <string name="mail_settings_display_name_and_signature">Weergavenaam en handtekening</string>
+  <string name="mail_settings_mailbox">Mailbox</string>
+  <string name="mail_settings_privacy">Privacy</string>
+  <string name="mail_settings_search_message_content">Doorzoek berichtinhoud</string>
+  <string name="mail_settings_labels_and_folders">Labels en mappen</string>
+  <string name="mail_settings_local_storage">Lokale opslag</string>
+  <string name="mail_settings_snooze">Uitstellen</string>
+  <string name="mail_settings_snooze_notifications">Snooze meldingen</string>
+  <string name="mail_settings_conversation_mode">Gespreksmodus</string>
+  <string name="mail_settings_not_set">Niet ingesteld</string>
+  <string name="mail_settings_conversation_mode_hint">Groepeer e-mails in hetzelfde gesprek samen in uw inbox of geef ze apart weer</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">Veegacties</string>
+  <string name="mail_settings_swipe_actions_subtitle">Stel veeg gebaren in om toegang te krijgen tot de meest gebruikte acties.</string>
+  <string name="mail_settings_swipe_info_icon_content_description">Info</string>
+  <string name="mail_settings_swipe_chevron_content_description">Wijzig veegactie</string>
+  <string name="mail_settings_swipe_right_name">Links naar rechts</string>
+  <string name="mail_settings_swipe_left_name">Rechts naar links</string>
+  <string name="mail_settings_swipe_action_archive_title">Archiveren</string>
+  <string name="mail_settings_swipe_action_read_title">Ongelezen</string>
+  <string name="mail_settings_swipe_action_spam_title">Spam</string>
+  <string name="mail_settings_swipe_action_star_title">Ster</string>
+  <string name="mail_settings_swipe_action_trash_title">Prullenbak</string>
+  <string name="mail_settings_swipe_action_archive_description">Naar archief verplaatsen</string>
+  <string name="mail_settings_swipe_action_read_description">Markeren als ongelezen/gelezen</string>
+  <string name="mail_settings_swipe_action_spam_description">Verplaatsen naar spam</string>
+  <string name="mail_settings_swipe_action_star_description">Ster/verwijder ster</string>
+  <string name="mail_settings_swipe_action_trash_description">Prullenbak</string>
+</resources>

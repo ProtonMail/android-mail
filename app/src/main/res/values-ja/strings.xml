@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ProtonMail</string>
-    <string name="title_remove">削除</string>
-    <string name="title_remove_account">アカウントの削除</string>
-    <string name="description_remove_account">サインアウトしてこのアカウントに関連付けられているすべて情報の情報を削除します。</string>
-    <string name="user_select_other_account_content_description">別のアカウントを選択</string>
+  <string name="app_name">ProtonMail</string>
+  <string name="title_remove">削除</string>
+  <string name="title_remove_account">アカウントの削除</string>
+  <string name="description_remove_account">サインアウトしてこのアカウントに関連付けられているすべて情報の情報を削除します。</string>
+  <string name="user_select_other_account_content_description">別のアカウントを選択</string>
 </resources>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ProtonMail</string>
-    <string name="title_remove">Verwijderen</string>
-    <string name="title_remove_account">Account Verwijderen</string>
-    <string name="description_remove_account">U zal worden afgemeld en verwijdert alle informatie verbonden met dit account.</string>
-    <string name="user_select_other_account_content_description">Kies een ander account</string>
+  <string name="app_name">ProtonMail</string>
+  <string name="title_remove">Verwijderen</string>
+  <string name="title_remove_account">Account Verwijderen</string>
+  <string name="description_remove_account">U zal worden afgemeld en verwijdert alle informatie verbonden met dit account.</string>
+  <string name="user_select_other_account_content_description">Kies een ander account</string>
 </resources>

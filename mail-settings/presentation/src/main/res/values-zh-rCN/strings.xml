@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">设置</string>
+  <string name="mail_settings_toolbar_button_content_description">返回前一界面</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">账户设置</string>
+  <string name="mail_settings_app_settings">程序设置</string>
+  <string name="mail_settings_theme">配色</string>
+  <string name="mail_settings_push_notifications">推送通知</string>
+  <string name="mail_settings_auto_lock">自动锁定</string>
+  <string name="mail_settings_alternative_routing">备用线路</string>
+  <string name="mail_settings_app_language">语言</string>
+  <string name="mail_settings_combined_contacts">共用通讯录</string>
+  <string name="mail_settings_swipe_actions">滑动操作</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">跟随系统</string>
+  <string name="mail_settings_theme_light">浅色</string>
+  <string name="mail_settings_theme_dark">深色</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">无信息</string>
+  <string name="mail_settings_enabled">开启</string>
+  <string name="mail_settings_disabled">关闭</string>
+  <string name="mail_settings_allowed">允许</string>
+  <string name="mail_settings_denied">不允许</string>
+  <string name="mail_settings_auto_detect">自动检测</string>
+  <string name="mail_settings_app_information">程序信息</string>
+  <string name="mail_settings_app_version">程序版本</string>
+  <string name="mail_settings_account">账户</string>
+  <!-- Account Settings items -->
+  <string name="mail_settings_subscription">账户等级</string>
+  <string name="mail_settings_password_management">密码管理</string>
+  <string name="mail_settings_recovery_email">密保邮箱</string>
+  <string name="mail_settings_mailbox_size">邮箱容量</string>
+  <string name="mail_settings_addresses">地址</string>
+  <string name="mail_settings_default_email_address">首选邮箱地址</string>
+  <string name="mail_settings_display_name_and_signature">对外名称与落款</string>
+  <string name="mail_settings_mailbox">邮箱</string>
+  <string name="mail_settings_privacy">隐私</string>
+  <string name="mail_settings_search_message_content">搜索邮件全文</string>
+  <string name="mail_settings_labels_and_folders">标签和文件夹</string>
+  <string name="mail_settings_local_storage">本机存储空间</string>
+  <string name="mail_settings_snooze">免打扰</string>
+  <string name="mail_settings_snooze_notifications">免打扰</string>
+  <string name="mail_settings_conversation_mode">会话模式</string>
+  <string name="mail_settings_not_set">未设置</string>
+  <string name="mail_settings_conversation_mode_hint">将收件箱中同一主题关联的往来邮件合并或单独显示</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">滑动操作</string>
+  <string name="mail_settings_swipe_actions_subtitle">设置滑动手势来执行常用操作。</string>
+  <string name="mail_settings_swipe_info_icon_content_description">信息图标</string>
+  <string name="mail_settings_swipe_chevron_content_description">更改滑动操作</string>
+  <string name="mail_settings_swipe_right_name">从左向右</string>
+  <string name="mail_settings_swipe_left_name">从右向左</string>
+  <string name="mail_settings_swipe_action_archive_title">存档</string>
+  <string name="mail_settings_swipe_action_read_title">标为未读</string>
+  <string name="mail_settings_swipe_action_spam_title">标为垃圾邮件</string>
+  <string name="mail_settings_swipe_action_star_title">加星标</string>
+  <string name="mail_settings_swipe_action_trash_title">移至废件箱</string>
+  <string name="mail_settings_swipe_action_archive_description">移至存档</string>
+  <string name="mail_settings_swipe_action_read_description">标为未读/已读</string>
+  <string name="mail_settings_swipe_action_spam_description">归为垃圾邮件</string>
+  <string name="mail_settings_swipe_action_star_description">星标/取消星标</string>
+  <string name="mail_settings_swipe_action_trash_description">移至废件箱</string>
+</resources>

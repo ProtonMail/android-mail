@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
 <resources>
-    <string name="label_title_inbox">Kotak Masuk</string>
-    <string name="label_title_drafts">Draf</string>
-    <string name="label_title_sent">Terkirim</string>
-    <string name="label_title_starred">Dibintangi</string>
-    <string name="label_title_archive">Arsip</string>
-    <string name="label_title_spam">Spam</string>
-    <string name="label_title_trash">Sampah</string>
-    <string name="label_title_all_mail">Semua surat</string>
+  <string name="label_title_inbox">Kotak masuk</string>
+  <string name="label_title_drafts">Draf</string>
+  <string name="label_title_sent">Terkirim</string>
+  <string name="label_title_starred">Dibintangi</string>
+  <string name="label_title_archive">Arsip</string>
+  <string name="label_title_spam">Spam</string>
+  <string name="label_title_trash">Sampah</string>
+  <string name="label_title_outbox">Kotak keluar</string>
+  <string name="label_title_all_mail">Semua surat</string>
+  <string name="label_title_all_drafts">Semua draf</string>
+  <string name="label_title_all_sent">Semua surat terkirim</string>
+  <string name="label_title_folders">Folder</string>
+  <string name="label_title_labels">Label</string>
+  <string name="label_title_add_folder">Tambah folder</string>
+  <string name="label_title_add_label">Tambah label</string>
 </resources>

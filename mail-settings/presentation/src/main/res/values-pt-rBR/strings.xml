@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and ProtonMail.
+  ~
+  ~ ProtonMail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ ProtonMail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="mail_settings_settings">Configurações</string>
+  <string name="mail_settings_toolbar_button_content_description">Navegar para a tela anterior</string>
+  <!-- Settings items -->
+  <string name="mail_settings_account_settings">Configurações da conta</string>
+  <string name="mail_settings_app_settings">Configurações do aplicativo</string>
+  <string name="mail_settings_theme">Tema</string>
+  <string name="mail_settings_push_notifications">Notificações via push</string>
+  <string name="mail_settings_auto_lock">Bloqueio automático</string>
+  <string name="mail_settings_alternative_routing">Roteamento alternativo</string>
+  <string name="mail_settings_app_language">Idioma do aplicativo</string>
+  <string name="mail_settings_combined_contacts">Contatos combinados</string>
+  <string name="mail_settings_swipe_actions">Ações de deslizar</string>
+  <!-- Theme settings -->
+  <string name="mail_settings_system_default">Padrão do sistema</string>
+  <string name="mail_settings_theme_light">Claro</string>
+  <string name="mail_settings_theme_dark">Escuro</string>
+  <!-- Settings item states -->
+  <string name="mail_settings_no_information_available">No information available</string>
+  <string name="mail_settings_enabled">Ativado</string>
+  <string name="mail_settings_disabled">Desativado</string>
+  <string name="mail_settings_allowed">Permitido</string>
+  <string name="mail_settings_denied">Negado</string>
+  <string name="mail_settings_auto_detect">Detectar automaticamente</string>
+  <string name="mail_settings_app_information">Informações do aplicativo</string>
+  <string name="mail_settings_app_version">Versão do aplicativo</string>
+  <string name="mail_settings_account">Conta</string>
+  <!-- Account Settings items -->
+  <string name="mail_settings_subscription">Assinatura</string>
+  <string name="mail_settings_password_management">Gerenciamento de senhas</string>
+  <string name="mail_settings_recovery_email">E-mail de recuperação</string>
+  <string name="mail_settings_mailbox_size">Tamanho da caixa de correio</string>
+  <string name="mail_settings_addresses">Endereços</string>
+  <string name="mail_settings_default_email_address">Endereço de e-mail padrão</string>
+  <string name="mail_settings_display_name_and_signature">Nome de exibição e assinatura</string>
+  <string name="mail_settings_mailbox">Caixa de correio</string>
+  <string name="mail_settings_privacy">Privacidade</string>
+  <string name="mail_settings_search_message_content">Pesquisar conteúdo da mensagem</string>
+  <string name="mail_settings_labels_and_folders">Marcadores e pastas</string>
+  <string name="mail_settings_local_storage">Total de armazenamento</string>
+  <string name="mail_settings_snooze">Adiar</string>
+  <string name="mail_settings_snooze_notifications">Adiar notificações</string>
+  <string name="mail_settings_conversation_mode">Modo de conversa</string>
+  <string name="mail_settings_not_set">Não definido</string>
+  <string name="mail_settings_conversation_mode_hint">Agrupe e-mails na mesma conversa junto em sua caixa de Entrada ou os exiba separadamente</string>
+  <!-- Swipe Actions -->
+  <string name="mail_settings_swipe_actions_title">Ações de deslizar</string>
+  <string name="mail_settings_swipe_actions_subtitle">Configure gestos de deslize para acessar as ações mais usadas.</string>
+  <string name="mail_settings_swipe_info_icon_content_description">Info icon</string>
+  <string name="mail_settings_swipe_chevron_content_description">Alterar a ação de deslizar</string>
+  <string name="mail_settings_swipe_right_name">Da esquerda para a direita</string>
+  <string name="mail_settings_swipe_left_name">Da direita para a esquerda</string>
+  <string name="mail_settings_swipe_action_archive_title">Arquivar</string>
+  <string name="mail_settings_swipe_action_read_title">Não lida</string>
+  <string name="mail_settings_swipe_action_spam_title">Spam</string>
+  <string name="mail_settings_swipe_action_star_title">Favorito</string>
+  <string name="mail_settings_swipe_action_trash_title">Lixeira</string>
+  <string name="mail_settings_swipe_action_archive_description">Mover para arquivo</string>
+  <string name="mail_settings_swipe_action_read_description">Marcar como não lida/lida</string>
+  <string name="mail_settings_swipe_action_spam_description">Mover para spam</string>
+  <string name="mail_settings_swipe_action_star_description">Atribuir/retirar estrela</string>
+  <string name="mail_settings_swipe_action_trash_description">Lixeira</string>
+</resources>
