@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.uitest.test.mailbox
 
 import android.content.Context
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
@@ -28,6 +28,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailmailbox.presentation.MailboxTopAppBar
+import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState.Data
 import ch.protonmail.android.uitest.annotation.SmokeTest
 import me.proton.core.compose.theme.ProtonTheme
