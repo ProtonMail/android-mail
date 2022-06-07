@@ -16,15 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.test.suite
+package ch.protonmail.android.uitest.suite
 
 import ch.protonmail.android.uitest.annotation.SmokeTest
-import ch.protonmail.android.uitest.test.login.LoginFlowTests
-import ch.protonmail.android.uitest.test.settings.SettingsFlowTest
-import ch.protonmail.android.uitest.test.settings.account.AccountSettingsScreenTest
-import ch.protonmail.android.uitest.test.settings.account.conversationmode.ConversationModeSettingScreenTest
-import ch.protonmail.android.uitest.test.settings.appsettings.SettingsScreenTest
-import ch.protonmail.android.uitest.test.settings.appsettings.theme.ThemeSettingScreenTest
+import ch.protonmail.android.uitest.e2e.login.LoginFlowTests
+import ch.protonmail.android.uitest.e2e.settings.SettingsFlowTest
+import ch.protonmail.android.uitest.screen.settings.account.AccountSettingsScreenTest
+import ch.protonmail.android.uitest.screen.settings.account.conversationmode.ConversationModeSettingScreenTest
+import ch.protonmail.android.uitest.screen.settings.appsettings.SettingsScreenTest
+import ch.protonmail.android.uitest.screen.settings.appsettings.theme.ThemeSettingScreenTest
 import org.junit.experimental.categories.Categories
 import org.junit.runner.RunWith
 import org.junit.runners.Suite

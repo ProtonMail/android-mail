@@ -23,7 +23,7 @@ set -e
 gcloud --quiet firebase test android run ../firebase-device-config.yml:quickTest \
   --app ../app/build/outputs/apk/dev/debug/app-dev-debug.apk \
   --test ../app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk \
-  --test-targets "class ch.protonmail.android.uitest.test.suite.SmokeSuite" \
+  --test-targets "class ch.protonmail.android.uitest.suite.SmokeSuite" \
   --use-orchestrator \
   --num-flaky-test-attempts=1 \
   --timeout 30m

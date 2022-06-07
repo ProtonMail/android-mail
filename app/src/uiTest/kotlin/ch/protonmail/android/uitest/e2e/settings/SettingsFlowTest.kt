@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.test.settings
+package ch.protonmail.android.uitest.e2e.settings
 
 import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.annotation.SmokeTest

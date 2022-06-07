@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.test.mailbox
+package ch.protonmail.android.uitest.screen.mailbox
 
 import android.content.Context
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
