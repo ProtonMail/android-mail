@@ -8,7 +8,7 @@ before_script:
   - base64 -d - < "$INTERNAL_API_FILE" > app/src/uiTest/assets/internal_api.json
   - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
-  - bundle install
+  - !reference [.ruby, before_script]
   - !reference [.checkout-core-submodule, before_script] # included from checkout-core.gitlab-ci.yml
 variables:
   ORG_GRADLE_PROJECT_useCoreGitSubmodule: "true" # see included checkout-core.gitlab-ci.yml for usage context
@@ -36,6 +36,7 @@ cache:
     policy: pull
     paths:
       - .gradle
+  - !reference [.ruby, cache]
   - <<: *gradle-build-cache
 
 stages:
@@ -94,7 +95,6 @@ analyse:
 
 danger-review:
   stage: danger-review
-  extends: .ruby-job
   tags:
     - small
   when: always
@@ -211,4 +211,4 @@ include:
     ref: main
     file: '/ci/templates/checkout-core.gitlab-ci.yml'
 
-  - local: '/ci/templates/base-job.gitlab-ci.yml'
+  - local: '/ci/templates/ruby.gitlab-ci.yml'
