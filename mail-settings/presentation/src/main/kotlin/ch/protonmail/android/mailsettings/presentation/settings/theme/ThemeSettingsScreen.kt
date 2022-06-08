@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.theme
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -78,7 +79,9 @@ fun ThemeSettingsScreen(
         },
         content = { paddingValues ->
             Column(
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier
+                    .selectableGroup()
+                    .padding(paddingValues)
             ) {
                 state.themes.forEach { theme ->
                     ProtonSettingsRadioItem(

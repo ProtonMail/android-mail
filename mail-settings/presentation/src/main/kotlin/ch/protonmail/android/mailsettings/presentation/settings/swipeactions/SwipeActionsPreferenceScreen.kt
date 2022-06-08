@@ -44,6 +44,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -127,14 +130,15 @@ private fun SwipeActionsPreferenceContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(ProtonDimens.DefaultSpacing),
+                .padding(ProtonDimens.DefaultSpacing)
+                .semantics(mergeDescendants = true) {},
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             Icon(
                 modifier = Modifier.size(ProtonDimens.SmallIconSize),
                 painter = painterResource(id = R.drawable.ic_proton_info_circle),
-                contentDescription = stringResource(id = string.mail_settings_swipe_info_icon_content_description),
+                contentDescription = NO_CONTENT_DESCRIPTION,
                 tint = ProtonTheme.colors.iconHint
             )
             Text(
@@ -165,7 +169,16 @@ private fun SwipeActionItem(
     @StringRes actionNameRes: Int,
     onChangeClick: () -> Unit
 ) {
-    Column(modifier = Modifier.clickable(onClick = onChangeClick)) {
+    val actionName = stringResource(id = actionNameRes)
+    val actionDescription = stringResource(id = model.descriptionRes)
+
+    Column(
+        modifier = Modifier
+            .clickable(onClick = onChangeClick)
+            .clearAndSetSemantics {
+                this.contentDescription = "$actionName, $actionDescription"
+            }
+    ) {
         Box(
             modifier = Modifier
                 .height(2.dp)
@@ -178,12 +191,12 @@ private fun SwipeActionItem(
                 .padding(ProtonDimens.DefaultSpacing),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = stringResource(id = actionNameRes), style = ProtonTheme.typography.default)
+            Text(text = actionName, style = ProtonTheme.typography.default)
             Row {
-                Text(text = stringResource(id = model.descriptionRes), style = ProtonTheme.typography.defaultWeak)
+                Text(text = actionDescription, style = ProtonTheme.typography.defaultWeak)
                 Icon(
                     painter = painterResource(id = R.drawable.ic_proton_chevron_right),
-                    contentDescription = stringResource(id = string.mail_settings_swipe_chevron_content_description)
+                    contentDescription = NO_CONTENT_DESCRIPTION
                 )
             }
         }
@@ -237,7 +250,7 @@ private fun SwipeActionIcon(
     ) {
         Icon(
             painter = painterResource(id = model.imageRes),
-            contentDescription = stringResource(id = model.descriptionRes),
+            contentDescription = NO_CONTENT_DESCRIPTION,
             tint = ProtonTheme.colors.iconInverted
         )
         Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
@@ -306,6 +319,8 @@ private fun Toolbar(onBack: () -> Unit) {
 private enum class SwipeActionDirection {
     RIGHT, LEFT
 }
+
+private val NO_CONTENT_DESCRIPTION: String? = null
 
 @Composable
 @Preview

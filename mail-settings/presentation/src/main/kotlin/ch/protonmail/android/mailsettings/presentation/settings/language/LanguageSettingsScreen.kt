@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.language
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -85,6 +86,7 @@ fun LanguageSettingsScreen(
         content = { paddingValues ->
             Column(
                 modifier = Modifier
+                    .selectableGroup()
                     .padding(paddingValues)
                     .testTag(TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL)
                     .verticalScroll(rememberScrollState())
