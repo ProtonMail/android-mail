@@ -21,10 +21,13 @@ package ch.protonmail.android.uitest.robot.mailbox.inbox
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_MAILBOX_SCREEN
+import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_UNREAD_FILTER
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.MoveToFolderRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.SelectionStateRobotInterface
@@ -63,6 +66,7 @@ class InboxRobot(
 
         return this
     }
+
 
     class SelectionStateRobot(
         private val composeRule: ComposeContentTestRule
@@ -116,6 +120,20 @@ class InboxRobot(
             }
 
             composeRule.onNodeWithTag(TEST_TAG_MAILBOX_SCREEN).assertIsDisplayed()
+        }
+
+        fun unreadFilterIsDisplayed() {
+            composeRule
+                .onNodeWithTag(TEST_TAG_UNREAD_FILTER)
+                .assertIsDisplayed()
+                .assertIsNotSelected()
+        }
+
+        fun unreadFilterIsSelected() {
+            composeRule
+                .onNodeWithTag(TEST_TAG_UNREAD_FILTER)
+                .assertIsDisplayed()
+                .assertIsSelected()
         }
     }
 

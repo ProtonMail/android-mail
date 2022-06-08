@@ -17,9 +17,6 @@
  */
 package ch.protonmail.android.uitest.robot.mailbox.drafts
 
-import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
-import ch.protonmail.android.uitest.robot.mailbox.composer.ComposerRobot
-import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onFirst
@@ -87,6 +84,13 @@ class DraftsRobot : MailboxRobotInterface {
      * Contains all the validations that can be performed by [MenuRobot].
      */
     class Verify : MailboxRobotInterface.verify() {
+
+        fun draftsScreenDisplayed(composeRule: ComposeContentTestRule) {
+            composeRule
+                .onAllNodesWithText(R.string.label_title_drafts)
+                .onFirst() // "Drafts" string has matches in both topbar and sidebar. Only topbar one is displayed.
+                .assertIsDisplayed()
+        }
 
         @SuppressWarnings("EmptyFunctionBlock")
         fun folderEmpty() {}

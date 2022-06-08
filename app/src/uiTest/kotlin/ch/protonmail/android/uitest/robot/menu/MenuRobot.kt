@@ -18,6 +18,7 @@
 package ch.protonmail.android.uitest.robot.menu
 
 import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onChild
@@ -29,6 +30,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_SIDEBAR_MENU
 import ch.protonmail.android.uitest.robot.contacts.ContactsRobot
+import ch.protonmail.android.uitest.robot.mailbox.allmail.AllMailRobot
 import ch.protonmail.android.uitest.robot.mailbox.archive.ArchiveRobot
 import ch.protonmail.android.uitest.robot.mailbox.drafts.DraftsRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
@@ -41,6 +43,7 @@ import ch.protonmail.android.uitest.robot.settings.SettingsRobot
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.presentation.compose.R.string
+import ch.protonmail.android.maillabel.presentation.R.string as mailLabelStrings
 
 /**
  * [MenuRobot] class contains actions and verifications for menu functionality.
@@ -67,14 +70,19 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
         return ContactsRobot(composeTestRule)
     }
 
-    @Suppress("unused", "ExpressionBodySyntax")
     fun openDrafts(): DraftsRobot {
+        openSidebarItemWithText(mailLabelStrings.label_title_drafts)
         return DraftsRobot()
     }
 
     @Suppress("unused", "ExpressionBodySyntax")
     fun openInbox(): InboxRobot {
         return InboxRobot(composeTestRule)
+    }
+
+    fun openAllMail(): AllMailRobot {
+        openSidebarItemWithText(mailLabelStrings.label_title_all_mail)
+        return AllMailRobot(composeTestRule)
     }
 
     @Suppress("unused")
@@ -94,22 +102,7 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
     }
 
     fun openSettings(): SettingsRobot {
-        composeTestRule
-            .onRoot()
-            .performTouchInput { swipeRight() }
-
-        composeTestRule
-            .onNodeWithTag(TEST_TAG_SIDEBAR_MENU)
-            .onChild()
-            .performScrollToNode(hasText(string.presentation_menu_item_title_settings))
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithText(string.presentation_menu_item_title_settings)
-            .performClick()
-
-        composeTestRule.waitForIdle()
-
+        openSidebarItemWithText(string.presentation_menu_item_title_settings)
         return SettingsRobot(composeTestRule)
     }
 
