@@ -31,100 +31,77 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.mailsettings.presentation.R
-import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
-import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
+import ch.protonmail.android.mailsettings.presentation.R.string
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.util.kotlin.exhaustive
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 const val TEST_TAG_ACCOUNT_SETTINGS_SCREEN = "AccountSettingsScreenTestTag"
 const val TEST_TAG_ACCOUNT_SETTINGS_LIST = "AccountSettingsListTestTag"
 
+
 @Composable
 fun AccountSettingScreen(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
-    onPasswordManagementClick: () -> Unit,
-    onRecoveryEmailClick: () -> Unit,
-    onConversationModeClick: () -> Unit,
-    onDefaultEmailAddressClick: () -> Unit,
-    onDisplayNameClick: () -> Unit,
-    onPrivacyClick: () -> Unit,
-    onSearchMessageContentClick: () -> Unit,
-    onLabelsFoldersClick: () -> Unit,
-    onLocalStorageClick: () -> Unit,
-    onSnoozeNotificationsClick: () -> Unit,
+    actions: AccountSettingScreen.Actions,
     accountSettingsViewModel: AccountSettingsViewModel = hiltViewModel()
 ) {
     when (
         val settingsState = rememberAsState(
             flow = accountSettingsViewModel.state,
-            Loading
+            AccountSettingsState.Loading
         ).value
     ) {
-        is Data -> AccountSettingScreen(
+        is AccountSettingsState.Data -> AccountSettingScreen(
             modifier = modifier,
-            onBackClick = onBackClick,
-            onPasswordManagementClick = onPasswordManagementClick,
-            onRecoveryEmailClick = onRecoveryEmailClick,
-            onConversationModeClick = onConversationModeClick,
-            onDefaultEmailAddressClick = onDefaultEmailAddressClick,
-            onDisplayNameClick = onDisplayNameClick,
-            onPrivacyClick = onPrivacyClick,
-            onSearchMessageContentClick = onSearchMessageContentClick,
-            onLabelsFoldersClick = onLabelsFoldersClick,
-            onLocalStorageClick = onLocalStorageClick,
-            onSnoozeNotificationsClick = onSnoozeNotificationsClick,
-            state = settingsState
+            state = settingsState,
+            actions = actions
         )
-        is Loading -> ProtonCenteredProgress()
-    }
+        AccountSettingsState.Loading -> ProtonCenteredProgress()
+        AccountSettingsState.NotLoggedIn ->
+            ProtonErrorMessage(errorMessage = stringResource(id = commonString.x_error_not_logged_in))
+    }.exhaustive
 }
 
 @Composable
 fun AccountSettingScreen(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
-    onPasswordManagementClick: () -> Unit,
-    onRecoveryEmailClick: () -> Unit,
-    onConversationModeClick: () -> Unit,
-    onDefaultEmailAddressClick: () -> Unit,
-    onDisplayNameClick: () -> Unit,
-    onPrivacyClick: () -> Unit,
-    onSearchMessageContentClick: () -> Unit,
-    onLabelsFoldersClick: () -> Unit,
-    onLocalStorageClick: () -> Unit,
-    onSnoozeNotificationsClick: () -> Unit,
-    state: Data
+    state: AccountSettingsState.Data,
+    actions: AccountSettingScreen.Actions
 ) {
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_ACCOUNT_SETTINGS_SCREEN),
         topBar = {
             ProtonSettingsTopBar(
-                title = stringResource(id = R.string.mail_settings_account_settings),
-                onBackClick = onBackClick
+                title = stringResource(id = string.mail_settings_account_settings),
+                onBackClick = actions.onBackClick
             )
         },
         content = { paddingValues ->
-            ProtonSettingsList(modifier.padding(paddingValues).testTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)) {
-                item { ProtonSettingsHeader(title = R.string.mail_settings_account) }
+            ProtonSettingsList(
+                modifier
+                    .padding(paddingValues)
+                    .testTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)) {
+                item { ProtonSettingsHeader(title = string.mail_settings_account) }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_password_management),
-                        onClick = onPasswordManagementClick
+                        name = stringResource(id = string.mail_settings_password_management),
+                        onClick = actions.onPasswordManagementClick
                     )
                     Divider()
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_recovery_email),
+                        name = stringResource(id = string.mail_settings_recovery_email),
                         hint = state.recoveryEmail
-                            ?: stringResource(id = R.string.mail_settings_not_set),
-                        onClick = onRecoveryEmailClick
+                            ?: stringResource(id = string.mail_settings_not_set),
+                        onClick = actions.onRecoveryEmailClick
                     )
                     Divider()
                 }
@@ -134,64 +111,64 @@ fun AccountSettingScreen(
                 item {
                     ConversationModeSettingItem(
                         state = state,
-                        onConversationModeClick = onConversationModeClick
+                        onConversationModeClick = actions.onConversationModeClick
                     )
                 }
 
-                item { ProtonSettingsHeader(title = R.string.mail_settings_addresses) }
+                item { ProtonSettingsHeader(title = string.mail_settings_addresses) }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_default_email_address),
+                        name = stringResource(id = string.mail_settings_default_email_address),
                         hint = state.defaultEmail
-                            ?: stringResource(id = R.string.mail_settings_no_information_available),
-                        onClick = onDefaultEmailAddressClick
+                            ?: stringResource(id = string.mail_settings_no_information_available),
+                        onClick = actions.onDefaultEmailAddressClick
                     )
                     Divider()
                 }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_display_name_and_signature),
-                        onClick = onDisplayNameClick
-                    )
-                    Divider()
-                }
-
-                item { ProtonSettingsHeader(title = R.string.mail_settings_mailbox) }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_privacy),
-                        onClick = onPrivacyClick
-                    )
-                    Divider()
-                }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_search_message_content),
-                        onClick = onSearchMessageContentClick
-                    )
-                    Divider()
-                }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_labels_and_folders),
-                        onClick = onLabelsFoldersClick
-                    )
-                    Divider()
-                }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_local_storage),
-                        onClick = onLocalStorageClick
+                        name = stringResource(id = string.mail_settings_display_name_and_signature),
+                        onClick = actions.onDisplayNameClick
                     )
                     Divider()
                 }
 
-                item { ProtonSettingsHeader(title = R.string.mail_settings_snooze) }
+                item { ProtonSettingsHeader(title = string.mail_settings_mailbox) }
                 item {
                     ProtonSettingsItem(
-                        name = stringResource(id = R.string.mail_settings_snooze_notifications),
+                        name = stringResource(id = string.mail_settings_privacy),
+                        onClick = actions.onPrivacyClick
+                    )
+                    Divider()
+                }
+                item {
+                    ProtonSettingsItem(
+                        name = stringResource(id = string.mail_settings_search_message_content),
+                        onClick = actions.onSearchMessageContentClick
+                    )
+                    Divider()
+                }
+                item {
+                    ProtonSettingsItem(
+                        name = stringResource(id = string.mail_settings_labels_and_folders),
+                        onClick = actions.onLabelsFoldersClick
+                    )
+                    Divider()
+                }
+                item {
+                    ProtonSettingsItem(
+                        name = stringResource(id = string.mail_settings_local_storage),
+                        onClick = actions.onLocalStorageClick
+                    )
+                    Divider()
+                }
+
+                item { ProtonSettingsHeader(title = string.mail_settings_snooze) }
+                item {
+                    ProtonSettingsItem(
+                        name = stringResource(id = string.mail_settings_snooze_notifications),
                         hint = "(Off)",
-                        onClick = onSnoozeNotificationsClick
+                        onClick = actions.onSnoozeNotificationsClick
                     )
                     Divider()
                 }
@@ -201,14 +178,14 @@ fun AccountSettingScreen(
 }
 
 @Composable
-private fun MailboxSizeItem(state: Data) {
+private fun MailboxSizeItem(state: AccountSettingsState.Data) {
     val formattedSize = if (state.mailboxUsedSpace != null && state.mailboxSize != null) {
         "${formatFileSize(state.mailboxUsedSpace)} / ${formatFileSize(state.mailboxSize)}"
     } else {
-        stringResource(id = R.string.mail_settings_no_information_available)
+        stringResource(id = string.mail_settings_no_information_available)
     }
     ProtonSettingsItem(
-        name = stringResource(id = R.string.mail_settings_mailbox_size),
+        name = stringResource(id = string.mail_settings_mailbox_size),
         hint = formattedSize,
         isClickable = false
     )
@@ -218,19 +195,19 @@ private fun MailboxSizeItem(state: Data) {
 @Composable
 private fun ConversationModeSettingItem(
     modifier: Modifier = Modifier,
-    state: Data,
+    state: AccountSettingsState.Data,
     onConversationModeClick: () -> Unit
 ) {
     val hint = state.isConversationMode?.let { isConversationEnabled ->
         if (isConversationEnabled) {
-            stringResource(id = R.string.mail_settings_enabled)
+            stringResource(id = string.mail_settings_enabled)
         } else {
-            stringResource(id = R.string.mail_settings_disabled)
+            stringResource(id = string.mail_settings_disabled)
         }
-    } ?: stringResource(id = R.string.mail_settings_no_information_available)
+    } ?: stringResource(id = string.mail_settings_no_information_available)
     ProtonSettingsItem(
         modifier = modifier,
-        name = stringResource(id = R.string.mail_settings_conversation_mode),
+        name = stringResource(id = string.mail_settings_conversation_mode),
         hint = hint,
         onClick = onConversationModeClick
     )
@@ -252,6 +229,23 @@ private fun formatFileSize(mailboxUsedSpace: Long) = formatShortFileSize(
     mailboxUsedSpace
 )
 
+object AccountSettingScreen {
+
+    data class Actions(
+        val onBackClick: () -> Unit,
+        val onPasswordManagementClick: () -> Unit,
+        val onRecoveryEmailClick: () -> Unit,
+        val onConversationModeClick: () -> Unit,
+        val onDefaultEmailAddressClick: () -> Unit,
+        val onDisplayNameClick: () -> Unit,
+        val onPrivacyClick: () -> Unit,
+        val onSearchMessageContentClick: () -> Unit,
+        val onLabelsFoldersClick: () -> Unit,
+        val onLocalStorageClick: () -> Unit,
+        val onSnoozeNotificationsClick: () -> Unit
+    )
+}
+
 @Preview(
     name = "Account settings screen light mode",
     showBackground = true,
@@ -263,25 +257,27 @@ private fun formatFileSize(mailboxUsedSpace: Long) = formatShortFileSize(
     uiMode = UI_MODE_NIGHT_YES
 )
 @Composable
-fun previewAccountSettingsScreen() {
+fun AccountSettingsScreenPreview() {
     AccountSettingScreen(
-        onBackClick = {},
-        onPasswordManagementClick = {},
-        onRecoveryEmailClick = {},
-        onConversationModeClick = {},
-        onDefaultEmailAddressClick = {},
-        onDisplayNameClick = {},
-        onPrivacyClick = {},
-        onSearchMessageContentClick = {},
-        onLabelsFoldersClick = {},
-        onLocalStorageClick = {},
-        onSnoozeNotificationsClick = {},
-        state = Data(
+        state = AccountSettingsState.Data(
             recoveryEmail = "recovery@protonmail.com",
             mailboxSize = 20_000,
             mailboxUsedSpace = 4000,
             defaultEmail = "hello@protonmail.ch",
             isConversationMode = true
+        ),
+        actions = AccountSettingScreen.Actions(
+            onBackClick = {},
+            onPasswordManagementClick = {},
+            onRecoveryEmailClick = {},
+            onConversationModeClick = {},
+            onDefaultEmailAddressClick = {},
+            onDisplayNameClick = {},
+            onPrivacyClick = {},
+            onSearchMessageContentClick = {},
+            onLabelsFoldersClick = {},
+            onLocalStorageClick = {},
+            onSnoozeNotificationsClick = {}
         )
     )
 }

@@ -56,18 +56,20 @@ class AccountSettingsScreenTest {
         composeTestRule.setContent {
             ProtonTheme {
                 AccountSettingScreen(
-                    onBackClick = {},
-                    onPasswordManagementClick = {},
-                    onRecoveryEmailClick = {},
-                    onConversationModeClick = {},
-                    onDefaultEmailAddressClick = {},
-                    onDisplayNameClick = {},
-                    onPrivacyClick = {},
-                    onSearchMessageContentClick = {},
-                    onLabelsFoldersClick = {},
-                    onLocalStorageClick = {},
-                    onSnoozeNotificationsClick = {},
-                    state = settingsState
+                    state = settingsState,
+                    actions = AccountSettingScreen.Actions(
+                        onBackClick = {},
+                        onPasswordManagementClick = {},
+                        onRecoveryEmailClick = {},
+                        onConversationModeClick = {},
+                        onDefaultEmailAddressClick = {},
+                        onDisplayNameClick = {},
+                        onPrivacyClick = {},
+                        onSearchMessageContentClick = {},
+                        onLabelsFoldersClick = {},
+                        onLocalStorageClick = {},
+                        onSnoozeNotificationsClick = {}
+                    )
                 )
             }
         }
