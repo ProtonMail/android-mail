@@ -56,14 +56,7 @@ import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 
 @Composable
-fun Home(
-    onSignIn: (UserId?) -> Unit,
-    onSignOut: (UserId) -> Unit,
-    onSwitch: (UserId) -> Unit,
-    onSubscription: () -> Unit,
-    onReportBug: () -> Unit,
-    onPasswordManagement: () -> Unit
-) {
+fun Home(actions: Home.Actions) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -75,13 +68,13 @@ fun Home(
         drawerContent = {
             Sidebar(
                 onRemove = { navController.navigate(Dialog.RemoveAccount(it)) },
-                onSignOut = onSignOut,
-                onSignIn = onSignIn,
-                onSwitch = onSwitch,
+                onSignOut = actions.onSignOut,
+                onSignIn = actions.onSignIn,
+                onSwitch = actions.onSwitch,
                 onSettings = { navController.navigate(Screen.Settings.route) },
                 onLabelsSettings = { /*navController.navigate(...)*/ },
-                onSubscription = onSubscription,
-                onReportBug = onReportBug,
+                onSubscription = actions.onSubscription,
+                onReportBug = actions.onReportBug,
                 drawerState = scaffoldState.drawerState
             )
         }
@@ -101,7 +94,7 @@ fun Home(
                 addMessageDetail()
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
-                addAccountSettings(navController, onPasswordManagement)
+                addAccountSettings(navController, actions)
                 addConversationModeSettings(navController, Screen.ConversationModeSettings.route)
                 addThemeSettings(navController, Screen.ThemeSettings.route)
                 addLanguageSettings(navController, Screen.LanguageSettings.route)
@@ -190,16 +183,14 @@ fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
 
 fun NavGraphBuilder.addAccountSettings(
     navController: NavHostController,
-    onPasswordManagement: () -> Unit
+    actions: Home.Actions
 ) = composable(
     route = Screen.AccountSettings.route
 ) {
     AccountSettingScreen(
         actions = AccountSettingScreen.Actions(
             onBackClick = { navController.popBackStack() },
-            onPasswordManagementClick = {
-                onPasswordManagement()
-            },
+            onPasswordManagementClick = actions.onPasswordManagement,
             onRecoveryEmailClick = {
                 Timber.i("Recovery email setting clicked")
             },
@@ -228,5 +219,18 @@ fun NavGraphBuilder.addAccountSettings(
                 Timber.i("Snooze notification setting clicked")
             }
         )
+    )
+}
+
+object Home {
+
+    data class Actions(
+        val onSignIn: (UserId?) -> Unit,
+        val onSignOut: (UserId) -> Unit,
+        val onSwitch: (UserId) -> Unit,
+        val onSubscription: () -> Unit,
+        val onReportBug: () -> Unit,
+        val onPasswordManagement: () -> Unit,
+        val onRecoveryEmail: () -> Unit
     )
 }

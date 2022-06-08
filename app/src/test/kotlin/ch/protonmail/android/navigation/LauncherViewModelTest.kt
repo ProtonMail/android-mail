@@ -189,7 +189,7 @@ class LauncherViewModelTest {
     @Test
     fun `when addAccount is called, startAddAccountWorkflow`() = runTest {
         // WHEN
-        viewModel.addAccount()
+        viewModel.submit(LauncherViewModel.Action.AddAccount)
         // THEN
         verify { authOrchestrator.startAddAccountWorkflow(AccountType.Internal, Product.Mail) }
     }
@@ -197,7 +197,7 @@ class LauncherViewModelTest {
     @Test
     fun `when signIn is called, startLoginWorkflow`() = runTest {
         // WHEN
-        viewModel.signIn()
+        viewModel.submit(LauncherViewModel.Action.SignIn(userId = null))
         // THEN
         verify { authOrchestrator.startLoginWorkflow(AccountType.Internal, any(), any()) }
     }
@@ -207,7 +207,7 @@ class LauncherViewModelTest {
         // GIVEN
         every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.readyAccount)
         // WHEN
-        viewModel.signIn(user1UserId)
+        viewModel.submit(LauncherViewModel.Action.SignIn(user1UserId))
         // THEN
         verify { authOrchestrator.startLoginWorkflow(AccountType.Internal, user1Username) }
     }
@@ -217,7 +217,7 @@ class LauncherViewModelTest {
         // GIVEN
         every { accountManager.getPrimaryUserId() } returns flowOf(user1UserId)
         // WHEN
-        viewModel.signOut()
+        viewModel.submit(LauncherViewModel.Action.SignOut(userId = null))
         // THEN
         coVerify { accountManager.disableAccount(user1UserId) }
         verify(exactly = 1) { accountManager.getPrimaryUserId() }
@@ -226,7 +226,7 @@ class LauncherViewModelTest {
     @Test
     fun `when signOut with userId is called, disableAccount`() = runTest {
         // WHEN
-        viewModel.signOut(user1UserId)
+        viewModel.submit(LauncherViewModel.Action.SignOut(user1UserId))
         // THEN
         coVerify { accountManager.disableAccount(user1UserId) }
         verify(exactly = 0) { accountManager.getPrimaryUserId() }
@@ -237,7 +237,7 @@ class LauncherViewModelTest {
         // GIVEN
         every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.disabledAccount)
         // WHEN
-        viewModel.switch(user1UserId)
+        viewModel.submit(LauncherViewModel.Action.Switch(user1UserId))
         // THEN
         verify { authOrchestrator.startLoginWorkflow(AccountType.Internal, user1Username) }
     }
@@ -247,7 +247,7 @@ class LauncherViewModelTest {
         // GIVEN
         every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.readyAccount)
         // WHEN
-        viewModel.switch(user1UserId)
+        viewModel.submit(LauncherViewModel.Action.Switch(user1UserId))
         // THEN
         coVerify { accountManager.setAsPrimary(user1UserId) }
     }
@@ -255,7 +255,7 @@ class LauncherViewModelTest {
     @Test
     fun `when remove is called, removeAccount`() = runTest {
         // WHEN
-        viewModel.remove(user1UserId)
+        viewModel.submit(LauncherViewModel.Action.Remove(user1UserId))
         // THEN
         coVerify { accountManager.removeAccount(user1UserId) }
     }
@@ -324,7 +324,7 @@ class LauncherViewModelTest {
         every { accountManager.getPrimaryUserId() } returns flowOf(user1UserId)
 
         // WHEN
-        viewModel.passwordManagement()
+        viewModel.submit(LauncherViewModel.Action.OpenPasswordManagement)
 
         // THEN
         verify { userSettingsOrchestrator.startPasswordManagementWorkflow(user1UserId) }

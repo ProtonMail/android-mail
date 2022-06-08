@@ -61,6 +61,7 @@ import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.report.presentation.entity.BugReportInput
 import me.proton.core.user.domain.UserManager
 import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
+import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 @HiltViewModel
@@ -123,38 +124,32 @@ class LauncherViewModel @Inject constructor(
             .onConfirmPasswordNeeded { authOrchestrator.startConfirmPasswordWorkflow(it) }
     }
 
-    fun addAccount() = viewModelScope.launch {
+    fun submit(action: Action) {
+        viewModelScope.launch {
+            when (action) {
+                Action.AddAccount -> onAddAccount()
+                Action.OpenPasswordManagement -> onOpenPasswordManagement()
+                Action.OpenReport -> onOpenReport()
+                Action.OpenSubscription -> onOpenSubscription()
+                is Action.Remove -> onRemove(action.userId)
+                is Action.SignIn -> onSignIn(action.userId)
+                is Action.SignOut -> onSignOut(action.userId)
+                is Action.Switch -> onSwitch(action.userId)
+            }.exhaustive
+        }
+    }
+
+    private suspend fun onAddAccount() {
         authOrchestrator.startAddAccountWorkflow(requiredAccountType, product)
     }
 
-    fun signIn(userId: UserId? = null) = viewModelScope.launch {
-        val account = userId?.let { getAccountOrNull(it) }
-        authOrchestrator.startLoginWorkflow(requiredAccountType, username = account?.username)
-    }
-
-    fun signOut(userId: UserId? = null) = viewModelScope.launch {
-        accountManager.disableAccount(requireNotNull(userId ?: getPrimaryUserIdOrNull()))
-    }
-
-    fun switch(userId: UserId) = viewModelScope.launch {
-        val account = getAccountOrNull(userId) ?: return@launch
-        when {
-            account.isDisabled() -> signIn(userId)
-            account.isReady() -> accountManager.setAsPrimary(userId)
-        }
-    }
-
-    fun remove(userId: UserId) = viewModelScope.launch {
-        accountManager.removeAccount(userId)
-    }
-
-    fun subscription() = viewModelScope.launch {
+    private suspend fun onOpenPasswordManagement() {
         getPrimaryUserIdOrNull()?.let {
-            plansOrchestrator.showCurrentPlanWorkflow(it)
+            userSettingsOrchestrator.startPasswordManagementWorkflow(it)
         }
     }
 
-    fun report() = viewModelScope.launch {
+    private suspend fun onOpenReport() {
         val userId = getPrimaryUserIdOrNull()
         val user = userId?.let { userManager.getUser(it) }
         val email = user?.email ?: "unknown"
@@ -162,9 +157,30 @@ class LauncherViewModel @Inject constructor(
         reportOrchestrator.startBugReport(BugReportInput(email = email, username = username))
     }
 
-    fun passwordManagement() = viewModelScope.launch {
+    private suspend fun onOpenSubscription() {
         getPrimaryUserIdOrNull()?.let {
-            userSettingsOrchestrator.startPasswordManagementWorkflow(it)
+            plansOrchestrator.showCurrentPlanWorkflow(it)
+        }
+    }
+
+    private suspend fun onRemove(userId: UserId) {
+        accountManager.removeAccount(userId)
+    }
+
+    private suspend fun onSignIn(userId: UserId?) {
+        val account = userId?.let { getAccountOrNull(it) }
+        authOrchestrator.startLoginWorkflow(requiredAccountType, username = account?.username)
+    }
+
+    private suspend fun onSignOut(userId: UserId?) {
+        accountManager.disableAccount(requireNotNull(userId ?: getPrimaryUserIdOrNull()))
+    }
+
+    private suspend fun onSwitch(userId: UserId) {
+        val account = getAccountOrNull(userId) ?: return
+        when {
+            account.isDisabled() -> onSignIn(userId)
+            account.isReady() -> accountManager.setAsPrimary(userId)
         }
     }
 
@@ -172,4 +188,16 @@ class LauncherViewModel @Inject constructor(
     private suspend fun getPrimaryUserIdOrNull() = accountManager.getPrimaryUserId().firstOrNull()
 
     enum class State { Processing, AccountNeeded, PrimaryExist, StepNeeded }
+
+    sealed interface Action {
+
+        object AddAccount : Action
+        object OpenPasswordManagement : Action
+        object OpenReport : Action
+        object OpenSubscription : Action
+        data class Remove(val userId: UserId): Action
+        data class SignIn(val userId: UserId?): Action
+        data class SignOut(val userId: UserId?): Action
+        data class Switch(val userId: UserId): Action
+    }
 }

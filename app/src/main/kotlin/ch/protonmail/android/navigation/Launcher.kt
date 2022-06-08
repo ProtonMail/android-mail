@@ -33,14 +33,17 @@ fun Launcher(
     val state by viewModel.state.collectAsState(LauncherViewModel.State.Processing)
 
     when (state) {
-        LauncherViewModel.State.AccountNeeded -> viewModel.addAccount()
+        LauncherViewModel.State.AccountNeeded -> viewModel.submit(LauncherViewModel.Action.AddAccount)
         LauncherViewModel.State.PrimaryExist -> Home(
-            onSignIn = { viewModel.signIn(it) },
-            onSignOut = { viewModel.signOut(it) },
-            onSwitch = { viewModel.switch(it) },
-            onSubscription = { viewModel.subscription() },
-            onReportBug = { viewModel.report() },
-            onPasswordManagement = { viewModel.passwordManagement() }
+            actions = Home.Actions(
+                onPasswordManagement = { viewModel.submit(LauncherViewModel.Action.OpenPasswordManagement) },
+                onRecoveryEmail = { TODO() },
+                onReportBug = { viewModel.submit(LauncherViewModel.Action.OpenReport) },
+                onSignIn = { viewModel.submit(LauncherViewModel.Action.SignIn(it)) },
+                onSignOut = { viewModel.submit(LauncherViewModel.Action.SignOut(it)) },
+                onSubscription = { viewModel.submit(LauncherViewModel.Action.OpenSubscription) },
+                onSwitch = { viewModel.submit(LauncherViewModel.Action.Switch(it)) }
+            )
         )
         LauncherViewModel.State.Processing,
         LauncherViewModel.State.StepNeeded -> ProtonCenteredProgress(Modifier.fillMaxSize())
