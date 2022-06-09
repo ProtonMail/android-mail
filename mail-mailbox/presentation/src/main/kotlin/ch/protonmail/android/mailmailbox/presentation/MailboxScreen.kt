@@ -22,8 +22,10 @@ import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,6 +38,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -49,12 +53,14 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import androidx.viewbinding.BuildConfig
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.presentation.model.FilterUnreadState
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -64,6 +70,7 @@ import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
@@ -93,22 +100,40 @@ fun MailboxScreen(
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_MAILBOX_SCREEN),
         topBar = {
-            MailboxTopAppBar(
-                state = mailboxState.topAppBar,
-                actions = MailboxTopAppBar.Actions(
-                    onOpenMenu = openDrawerMenu,
-                    onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
-                    onExitSearchMode = {},
-                    onTitleClick = { scope.launch { mailboxListState.animateScrollToItem(0) } },
-                    onEnterSearchMode = {},
-                    onSearch = {},
-                    onOpenCompose = {}
+            Column {
+                MailboxTopAppBar(
+                    state = mailboxState.topAppBar,
+                    actions = MailboxTopAppBar.Actions(
+                        onOpenMenu = openDrawerMenu,
+                        onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
+                        onExitSearchMode = {},
+                        onTitleClick = { scope.launch { mailboxListState.animateScrollToItem(0) } },
+                        onEnterSearchMode = {},
+                        onSearch = {},
+                        onOpenCompose = {}
+                    )
                 )
-            )
+
+                val unreadFilterState = remember {
+                    mutableStateOf<FilterUnreadState>(FilterUnreadState.Data(1, false))
+                }
+                MailboxStickyHeader(
+                    modifier = Modifier,
+                    state = unreadFilterState.value,
+                    onFilterEnabled = {
+                        val currentState = unreadFilterState.value as FilterUnreadState.Data
+                        unreadFilterState.value = currentState.copy(isFilterEnabled = true)
+                    },
+                    onFilterDisabled = {
+                        val currentState = unreadFilterState.value as FilterUnreadState.Data
+                        unreadFilterState.value = currentState.copy(isFilterEnabled = false)
+                    }
+                )
+            }
         }
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .padding(it)
                 .background(ProtonTheme.colors.backgroundNorm)
                 .fillMaxSize()
@@ -118,14 +143,36 @@ fun MailboxScreen(
                     navigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
                     onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
                     onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
-                    modifier = modifier,
+                    modifier = Modifier,
                     items = mailboxListItems,
                     listState = mailboxListState
                 )
                 MailboxState.Loading -> ProtonCenteredProgress()
-                MailboxState.NotLoggedIn -> ProtonErrorMessage(errorMessage = stringResource(commonString.x_error_not_logged_in))
+                MailboxState.NotLoggedIn -> ProtonErrorMessage(stringResource(commonString.x_error_not_logged_in))
             }
         }
+    }
+}
+
+@Composable
+private fun MailboxStickyHeader(
+    modifier: Modifier = Modifier,
+    state: FilterUnreadState,
+    onFilterEnabled: () -> Unit,
+    onFilterDisabled: () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = ProtonDimens.SmallSpacing),
+        horizontalArrangement = Arrangement.End
+    ) {
+        FilterUnreadItemsButton(
+            modifier = Modifier,
+            state = state,
+            onFilterEnabled = onFilterEnabled,
+            onFilterDisabled = onFilterDisabled
+        )
     }
 }
 
@@ -180,7 +227,7 @@ private fun MailboxList(
                         onClick = { items.retry() },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(text = stringResource(id = R.string.retry))
+                        Text(text = stringResource(id = commonString.retry))
                     }
                 }
             }
@@ -238,12 +285,12 @@ private fun MailboxItem(
 }
 
 @Preview(
-    name = "Sidebar in light mode",
+    name = "Mailbox in light mode",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     showBackground = true,
 )
 @Preview(
-    name = "Sidebar in dark mode",
+    name = "Mailbox in dark mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true,
 )

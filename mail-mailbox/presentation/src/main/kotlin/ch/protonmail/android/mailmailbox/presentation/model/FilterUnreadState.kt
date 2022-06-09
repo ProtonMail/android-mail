@@ -16,26 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.presentation
+package ch.protonmail.android.mailmailbox.presentation.model
 
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+sealed interface FilterUnreadState {
 
-@Composable
-fun MessageDetailScreen(
-    messageId: MessageId,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        modifier = modifier,
-        text = "Message detail for message ID: ${messageId.id}"
-    )
+    data class Data(
+        val numUnread: Int,
+        val isFilterEnabled: Boolean
+    ) : FilterUnreadState
+
+    object Loading : FilterUnreadState
 }
 
-object MessageDetailScreen {
-
-    const val MESSAGE_ID_KEY = "message id"
-}
