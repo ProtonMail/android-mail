@@ -60,6 +60,14 @@ object AndroidX {
         const val splashscreen = "androidx.core:core-splashscreen:${Versions.AndroidX.splashscreen}"
     }
 
+    // https://issuetracker.google.com/issues/227767363
+    object CustomView {
+        private const val poolingContainerVersion = Versions.AndroidX.customViewPoolingContainer
+
+        const val customView = "androidx.customview:customview:${Versions.AndroidX.customView}"
+        const val poolingContainer = "androidx.customview:customview-poolingcontainer:$poolingContainerVersion"
+    }
+
     object DataStore {
         private const val version = Versions.AndroidX.datastore
 

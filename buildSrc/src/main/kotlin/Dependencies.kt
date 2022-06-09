@@ -41,6 +41,9 @@ object Dependencies {
     val composeDebugLibs = mutableListOf<String>().apply {
         add(AndroidX.Compose.uiTooling)
         add(AndroidX.Compose.uiTestManifest)
+        // CustomView: https://issuetracker.google.com/issues/227767363
+        add(AndroidX.CustomView.customView)
+        add(AndroidX.CustomView.poolingContainer)
     }
 
     val appLibs = mutableListOf<String>().apply {

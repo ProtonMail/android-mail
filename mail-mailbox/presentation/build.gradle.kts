@@ -60,6 +60,7 @@ android {
 
 dependencies {
     kapt(Dependencies.appAnnotationProcessors)
+    debugImplementation(Dependencies.composeDebugLibs)
 
     implementation(Dependencies.modulePresentationLibs)
     implementation(Proton.Core.key)
@@ -69,8 +70,6 @@ dependencies {
     implementation(Proton.Core.featureFlag)
     implementation(Proton.Core.label)
     implementation(Proton.Core.mailSettings)
-
-    testImplementation(project(":test-data"))
 
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
@@ -84,4 +83,5 @@ dependencies {
     implementation(project(":mail-settings:domain"))
 
     testImplementation(Dependencies.testLibs)
+    testImplementation(project(":test-data"))
 }
