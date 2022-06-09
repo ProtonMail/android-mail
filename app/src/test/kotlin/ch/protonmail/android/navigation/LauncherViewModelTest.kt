@@ -21,10 +21,12 @@ package ch.protonmail.android.navigation
 import androidx.appcompat.app.AppCompatActivity
 import app.cash.turbine.test
 import ch.protonmail.android.testdata.AccountTestData
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,7 +52,6 @@ import me.proton.core.auth.presentation.observe
 import me.proton.core.auth.presentation.onConfirmPasswordNeeded
 import me.proton.core.domain.entity.Product
 import me.proton.core.domain.entity.Product.Mail
-import me.proton.core.domain.entity.UserId
 import me.proton.core.humanverification.domain.HumanVerificationManager
 import me.proton.core.humanverification.presentation.HumanVerificationManagerObserver
 import me.proton.core.humanverification.presentation.HumanVerificationOrchestrator
@@ -61,8 +62,9 @@ import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.user.domain.UserManager
 import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class LauncherViewModelTest {
@@ -86,12 +88,11 @@ class LauncherViewModelTest {
         every { lifecycle } returns mockk()
     }
 
-    private val user1UserId = UserId("test")
     private val user1Username = "username"
 
     private lateinit var viewModel: LauncherViewModel
 
-    @Before
+    @BeforeTest
     fun before() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
@@ -107,6 +108,15 @@ class LauncherViewModelTest {
             reportOrchestrator,
             userSettingsOrchestrator,
             missingScopeListener
+        )
+    }
+
+    @AfterTest
+    fun teardown() {
+        unmockkStatic(
+            AccountManagerObserver::class,
+            HumanVerificationManagerObserver::class,
+            MissingScopeObserver::class
         )
     }
 
@@ -205,9 +215,9 @@ class LauncherViewModelTest {
     @Test
     fun `when signIn with userId is called, startLoginWorkflow`() = runTest {
         // GIVEN
-        every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.readyAccount)
+        every { accountManager.getAccount(userId) } returns flowOf(AccountTestData.readyAccount)
         // WHEN
-        viewModel.submit(LauncherViewModel.Action.SignIn(user1UserId))
+        viewModel.submit(LauncherViewModel.Action.SignIn(userId))
         // THEN
         verify { authOrchestrator.startLoginWorkflow(AccountType.Internal, user1Username) }
     }
@@ -215,29 +225,29 @@ class LauncherViewModelTest {
     @Test
     fun `when signOut is called, disableAccount`() = runTest {
         // GIVEN
-        every { accountManager.getPrimaryUserId() } returns flowOf(user1UserId)
+        every { accountManager.getPrimaryUserId() } returns flowOf(userId)
         // WHEN
         viewModel.submit(LauncherViewModel.Action.SignOut(userId = null))
         // THEN
-        coVerify { accountManager.disableAccount(user1UserId) }
+        coVerify { accountManager.disableAccount(userId) }
         verify(exactly = 1) { accountManager.getPrimaryUserId() }
     }
 
     @Test
     fun `when signOut with userId is called, disableAccount`() = runTest {
         // WHEN
-        viewModel.submit(LauncherViewModel.Action.SignOut(user1UserId))
+        viewModel.submit(LauncherViewModel.Action.SignOut(userId))
         // THEN
-        coVerify { accountManager.disableAccount(user1UserId) }
+        coVerify { accountManager.disableAccount(userId) }
         verify(exactly = 0) { accountManager.getPrimaryUserId() }
     }
 
     @Test
     fun `when switch is called on disabled account, startLoginWorkflow`() = runTest {
         // GIVEN
-        every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.disabledAccount)
+        every { accountManager.getAccount(userId) } returns flowOf(AccountTestData.disabledAccount)
         // WHEN
-        viewModel.submit(LauncherViewModel.Action.Switch(user1UserId))
+        viewModel.submit(LauncherViewModel.Action.Switch(userId))
         // THEN
         verify { authOrchestrator.startLoginWorkflow(AccountType.Internal, user1Username) }
     }
@@ -245,19 +255,19 @@ class LauncherViewModelTest {
     @Test
     fun `when switch is called on ready account, setPrimary`() = runTest {
         // GIVEN
-        every { accountManager.getAccount(user1UserId) } returns flowOf(AccountTestData.readyAccount)
+        every { accountManager.getAccount(userId) } returns flowOf(AccountTestData.readyAccount)
         // WHEN
-        viewModel.submit(LauncherViewModel.Action.Switch(user1UserId))
+        viewModel.submit(LauncherViewModel.Action.Switch(userId))
         // THEN
-        coVerify { accountManager.setAsPrimary(user1UserId) }
+        coVerify { accountManager.setAsPrimary(userId) }
     }
 
     @Test
     fun `when remove is called, removeAccount`() = runTest {
         // WHEN
-        viewModel.submit(LauncherViewModel.Action.Remove(user1UserId))
+        viewModel.submit(LauncherViewModel.Action.Remove(userId))
         // THEN
-        coVerify { accountManager.removeAccount(user1UserId) }
+        coVerify { accountManager.removeAccount(userId) }
     }
 
     @Test
@@ -321,13 +331,25 @@ class LauncherViewModelTest {
     @Test
     fun `when passwordManagement is called then startPasswordManagementWorkflow`() = runTest {
         // GIVEN
-        every { accountManager.getPrimaryUserId() } returns flowOf(user1UserId)
+        every { accountManager.getPrimaryUserId() } returns flowOf(userId)
 
         // WHEN
         viewModel.submit(LauncherViewModel.Action.OpenPasswordManagement)
 
         // THEN
-        verify { userSettingsOrchestrator.startPasswordManagementWorkflow(user1UserId) }
+        verify { userSettingsOrchestrator.startPasswordManagementWorkflow(userId) }
+    }
+
+    @Test
+    fun `when change recovery email is called, correct workflow is launched`() = runTest {
+        // given
+        every { accountManager.getPrimaryUserId() } returns flowOf(userId)
+
+        // when
+        viewModel.submit(LauncherViewModel.Action.OpenRecoveryEmail)
+
+        // then
+        verify { userSettingsOrchestrator.startUpdateRecoveryEmailWorkflow(userId) }
     }
 
     private fun mockMissingScopeObserver(): MissingScopeObserver {

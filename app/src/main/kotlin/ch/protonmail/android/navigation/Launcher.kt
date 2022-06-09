@@ -37,7 +37,7 @@ fun Launcher(
         LauncherViewModel.State.PrimaryExist -> Home(
             actions = Home.Actions(
                 onPasswordManagement = { viewModel.submit(LauncherViewModel.Action.OpenPasswordManagement) },
-                onRecoveryEmail = { TODO() },
+                onRecoveryEmail = { viewModel.submit(LauncherViewModel.Action.OpenRecoveryEmail) },
                 onReportBug = { viewModel.submit(LauncherViewModel.Action.OpenReport) },
                 onSignIn = { viewModel.submit(LauncherViewModel.Action.SignIn(it)) },
                 onSignOut = { viewModel.submit(LauncherViewModel.Action.SignOut(it)) },

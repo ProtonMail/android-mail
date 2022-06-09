@@ -191,9 +191,7 @@ fun NavGraphBuilder.addAccountSettings(
         actions = AccountSettingScreen.Actions(
             onBackClick = { navController.popBackStack() },
             onPasswordManagementClick = actions.onPasswordManagement,
-            onRecoveryEmailClick = {
-                Timber.i("Recovery email setting clicked")
-            },
+            onRecoveryEmailClick = actions.onRecoveryEmail,
             onConversationModeClick = {
                 navController.navigate(Screen.ConversationModeSettings.route)
             },

@@ -129,6 +129,7 @@ class LauncherViewModel @Inject constructor(
             when (action) {
                 Action.AddAccount -> onAddAccount()
                 Action.OpenPasswordManagement -> onOpenPasswordManagement()
+                Action.OpenRecoveryEmail -> onOpenRecoveryEmail()
                 Action.OpenReport -> onOpenReport()
                 Action.OpenSubscription -> onOpenSubscription()
                 is Action.Remove -> onRemove(action.userId)
@@ -146,6 +147,12 @@ class LauncherViewModel @Inject constructor(
     private suspend fun onOpenPasswordManagement() {
         getPrimaryUserIdOrNull()?.let {
             userSettingsOrchestrator.startPasswordManagementWorkflow(it)
+        }
+    }
+
+    private suspend fun onOpenRecoveryEmail() {
+        getPrimaryUserIdOrNull()?.let {
+            userSettingsOrchestrator.startUpdateRecoveryEmailWorkflow(it)
         }
     }
 
@@ -193,6 +200,7 @@ class LauncherViewModel @Inject constructor(
 
         object AddAccount : Action
         object OpenPasswordManagement : Action
+        object OpenRecoveryEmail : Action
         object OpenReport : Action
         object OpenSubscription : Action
         data class Remove(val userId: UserId): Action
