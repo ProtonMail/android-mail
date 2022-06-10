@@ -52,11 +52,10 @@ import ch.protonmail.android.navigation.model.Destination.Screen
 import kotlinx.coroutines.launch
 import me.proton.core.compose.navigation.require
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 
 @Composable
-fun Home(actions: Home.Actions) {
+fun Home(launcherActions: Launcher.Actions) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -67,15 +66,8 @@ fun Home(actions: Home.Actions) {
         drawerScrimColor = ProtonTheme.colors.blenderNorm,
         drawerContent = {
             Sidebar(
-                onRemove = { navController.navigate(Dialog.RemoveAccount(it)) },
-                onSignOut = actions.onSignOut,
-                onSignIn = actions.onSignIn,
-                onSwitch = actions.onSwitch,
-                onSettings = { navController.navigate(Screen.Settings.route) },
-                onLabelsSettings = { /*navController.navigate(...)*/ },
-                onSubscription = actions.onSubscription,
-                onReportBug = actions.onReportBug,
-                drawerState = scaffoldState.drawerState
+                drawerState = scaffoldState.drawerState,
+                actions = buildSidebarActions(navController, launcherActions)
             )
         }
     ) { contentPadding ->
@@ -94,7 +86,7 @@ fun Home(actions: Home.Actions) {
                 addMessageDetail()
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
-                addAccountSettings(navController, actions)
+                addAccountSettings(navController, launcherActions)
                 addConversationModeSettings(navController, Screen.ConversationModeSettings.route)
                 addThemeSettings(navController, Screen.ThemeSettings.route)
                 addLanguageSettings(navController, Screen.LanguageSettings.route)
@@ -107,128 +99,110 @@ fun Home(actions: Home.Actions) {
 private fun NavGraphBuilder.addMailbox(
     navController: NavHostController,
     openDrawerMenu: () -> Unit
-) = composable(
-    route = Screen.Mailbox.route
 ) {
-    MailboxScreen(
-        navigateToMailboxItem = { request ->
-            navController.navigate(
-                when (request.itemType) {
-                    MailboxItemType.Message -> Screen.Message(MessageId(request.itemId.value))
-                    MailboxItemType.Conversation -> Screen.Conversation(ConversationId(request.itemId.value))
+    composable(route = Screen.Mailbox.route) {
+        MailboxScreen(
+            navigateToMailboxItem = { request ->
+                navController.navigate(
+                    when (request.itemType) {
+                        MailboxItemType.Message -> Screen.Message(MessageId(request.itemId.value))
+                        MailboxItemType.Conversation -> Screen.Conversation(ConversationId(request.itemId.value))
+                    }
+                )
+            },
+            openDrawerMenu = openDrawerMenu
+        )
+    }
+}
+
+private fun NavGraphBuilder.addConversationDetail() {
+    composable(route = Screen.Conversation.route) {
+        ConversationDetailScreen(Screen.Conversation.getConversationId(it.require(Destination.key)))
+    }
+}
+
+private fun NavGraphBuilder.addMessageDetail() {
+    composable(route = Screen.Message.route) {
+        MessageDetailScreen(Screen.Message.getMessageId(it.require(Destination.key)))
+    }
+}
+
+private fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostController) {
+    dialog(route = Dialog.RemoveAccount.route) {
+        RemoveAccountDialog(
+            userId = Dialog.RemoveAccount.getUserId(it.require(Destination.key)),
+            onRemoved = { navController.popBackStack() },
+            onCancelled = { navController.popBackStack() }
+        )
+    }
+}
+
+fun NavGraphBuilder.addSettings(navController: NavHostController) {
+    composable(route = Screen.Settings.route) {
+        MainSettingsScreen(
+            actions = MainSettingsScreen.Actions(
+                onAccountClick = {
+                    navController.navigate(Screen.AccountSettings.route)
+                },
+                onThemeClick = {
+                    navController.navigate(Screen.ThemeSettings.route)
+                },
+                onPushNotificationsClick = {
+                    Timber.i("Push Notifications setting clicked")
+                },
+                onAutoLockClick = {
+                    Timber.i("Auto Lock setting clicked")
+                },
+                onAlternativeRoutingClick = {
+                    Timber.i("Alternative routing setting clicked")
+                },
+                onAppLanguageClick = {
+                    Timber.d("Navigating to language settings")
+                    navController.navigate(Screen.LanguageSettings.route)
+                },
+                onCombinedContactsClick = {
+                    Timber.i("Combined contacts setting clicked")
+                },
+                onSwipeActionsClick = {
+                    Timber.d("Swipe actions setting clicked")
+                    navController.navigate(Screen.SwipeActionsSettings.route)
+                },
+                onBackClick = {
+                    navController.popBackStack()
                 }
             )
-        },
-        openDrawerMenu = openDrawerMenu
-    )
-}
-
-private fun NavGraphBuilder.addConversationDetail() = composable(
-    route = Screen.Conversation.route,
-) {
-    ConversationDetailScreen(Screen.Conversation.getConversationId(it.require(Destination.key)))
-}
-
-private fun NavGraphBuilder.addMessageDetail() = composable(
-    route = Screen.Message.route,
-) {
-    MessageDetailScreen(Screen.Message.getMessageId(it.require(Destination.key)))
-}
-
-private fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostController) = dialog(
-    route = Dialog.RemoveAccount.route,
-) {
-    RemoveAccountDialog(
-        userId = Dialog.RemoveAccount.getUserId(it.require(Destination.key)),
-        onRemoved = { navController.popBackStack() },
-        onCancelled = { navController.popBackStack() }
-    )
-}
-
-fun NavGraphBuilder.addSettings(navController: NavHostController) = composable(
-    route = Screen.Settings.route
-) {
-    MainSettingsScreen(
-        onAccountClicked = {
-            navController.navigate(Screen.AccountSettings.route)
-        },
-        onThemeClick = {
-            navController.navigate(Screen.ThemeSettings.route)
-        },
-        onPushNotificationsClick = {
-            Timber.i("Push Notifications setting clicked")
-        },
-        onAutoLockClick = {
-            Timber.i("Auto Lock setting clicked")
-        },
-        onAlternativeRoutingClick = {
-            Timber.i("Alternative routing setting clicked")
-        },
-        onAppLanguageClick = {
-            Timber.d("Navigating to language settings")
-            navController.navigate(Screen.LanguageSettings.route)
-        },
-        onCombinedContactsClick = {
-            Timber.i("Combined contacts setting clicked")
-        },
-        onSwipeActionsClick = {
-            Timber.d("Swipe actions setting clicked")
-            navController.navigate(Screen.SwipeActionsSettings.route)
-        },
-        onBackClick = {
-            navController.popBackStack()
-        }
-    )
-}
-
-fun NavGraphBuilder.addAccountSettings(
-    navController: NavHostController,
-    actions: Home.Actions
-) = composable(
-    route = Screen.AccountSettings.route
-) {
-    AccountSettingScreen(
-        actions = AccountSettingScreen.Actions(
-            onBackClick = { navController.popBackStack() },
-            onPasswordManagementClick = actions.onPasswordManagement,
-            onRecoveryEmailClick = actions.onRecoveryEmail,
-            onConversationModeClick = {
-                navController.navigate(Screen.ConversationModeSettings.route)
-            },
-            onDefaultEmailAddressClick = {
-                Timber.i("Default email address setting clicked")
-            },
-            onDisplayNameClick = {
-                Timber.i("Display name setting clicked")
-            },
-            onPrivacyClick = {
-                Timber.i("Privacy setting clicked")
-            },
-            onSearchMessageContentClick = {
-                Timber.i("Search message content setting clicked")
-            },
-            onLabelsFoldersClick = {
-                Timber.i("Labels folders setting clicked")
-            },
-            onLocalStorageClick = {
-                Timber.i("Local storage setting clicked")
-            },
-            onSnoozeNotificationsClick = {
-                Timber.i("Snooze notification setting clicked")
-            }
         )
-    )
+    }
 }
 
-object Home {
-
-    data class Actions(
-        val onSignIn: (UserId?) -> Unit,
-        val onSignOut: (UserId) -> Unit,
-        val onSwitch: (UserId) -> Unit,
-        val onSubscription: () -> Unit,
-        val onReportBug: () -> Unit,
-        val onPasswordManagement: () -> Unit,
-        val onRecoveryEmail: () -> Unit
-    )
+fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launcherActions: Launcher.Actions) {
+    composable(route = Screen.AccountSettings.route) {
+        AccountSettingScreen(actions = AccountSettingScreen.Actions(
+            onBackClick = { navController.popBackStack() },
+            onPasswordManagementClick = launcherActions.onPasswordManagement,
+            onRecoveryEmailClick = launcherActions.onRecoveryEmail,
+            onConversationModeClick = { navController.navigate(Screen.ConversationModeSettings.route) },
+            onDefaultEmailAddressClick = { Timber.i("Default email address setting clicked") },
+            onDisplayNameClick = { Timber.i("Display name setting clicked") },
+            onPrivacyClick = { Timber.i("Privacy setting clicked") },
+            onSearchMessageContentClick = { Timber.i("Search message content setting clicked") },
+            onLabelsFoldersClick = { Timber.i("Labels folders setting clicked") },
+            onLocalStorageClick = { Timber.i("Local storage setting clicked") },
+            onSnoozeNotificationsClick = { Timber.i("Snooze notification setting clicked") }
+        ))
+    }
 }
+
+private fun buildSidebarActions(
+    navController: NavHostController,
+    launcherActions: Launcher.Actions
+) = Sidebar.Actions(
+    onSignIn = launcherActions.onSignIn,
+    onSignOut = launcherActions.onSignOut,
+    onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
+    onSwitchAccount = launcherActions.onSwitchAccount,
+    onSettings = { navController.navigate(Screen.Settings.route) },
+    onLabelsSettings = { /*navController.navigate(...)*/ },
+    onSubscription = launcherActions.onSubscription,
+    onReportBug = launcherActions.onReportBug
+)

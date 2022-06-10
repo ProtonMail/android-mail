@@ -48,8 +48,8 @@ const val TEST_TAG_ACCOUNT_SETTINGS_LIST = "AccountSettingsListTestTag"
 
 @Composable
 fun AccountSettingScreen(
-    modifier: Modifier = Modifier,
     actions: AccountSettingScreen.Actions,
+    modifier: Modifier = Modifier,
     accountSettingsViewModel: AccountSettingsViewModel = hiltViewModel()
 ) {
     when (

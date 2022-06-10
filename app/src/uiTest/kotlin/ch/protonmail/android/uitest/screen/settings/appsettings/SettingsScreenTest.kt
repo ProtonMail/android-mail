@@ -65,15 +65,17 @@ class SettingsScreenTest {
             ProtonTheme {
                 MainSettingsScreen(
                     state = settingsState,
-                    onAccountClick = {},
-                    onThemeClick = {},
-                    onPushNotificationsClick = {},
-                    onAutoLockClick = {},
-                    onAlternativeRoutingClick = {},
-                    onAppLanguageClick = {},
-                    onCombinedContactsClick = {},
-                    onSwipeActionsClick = {},
-                    onBackClick = {}
+                    actions = MainSettingsScreen.Actions(
+                        onAccountClick = {},
+                        onThemeClick = {},
+                        onPushNotificationsClick = {},
+                        onAutoLockClick = {},
+                        onAlternativeRoutingClick = {},
+                        onAppLanguageClick = {},
+                        onCombinedContactsClick = {},
+                        onSwipeActionsClick = {},
+                        onBackClick = {}
+                    )
                 )
             }
         }

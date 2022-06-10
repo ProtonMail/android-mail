@@ -48,30 +48,14 @@ const val TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM = "AccountSettingsItemTestTag"
 @Composable
 fun MainSettingsScreen(
     modifier: Modifier = Modifier,
-    onAccountClicked: () -> Unit,
-    onThemeClick: () -> Unit,
-    onPushNotificationsClick: () -> Unit,
-    onAutoLockClick: () -> Unit,
-    onAlternativeRoutingClick: () -> Unit,
-    onAppLanguageClick: () -> Unit,
-    onCombinedContactsClick: () -> Unit,
-    onSwipeActionsClick: () -> Unit,
-    onBackClick: () -> Unit,
+    actions: MainSettingsScreen.Actions,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
 ) {
     when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
         is Data -> MainSettingsScreen(
             modifier = modifier,
             state = settingsState,
-            onAccountClick = onAccountClicked,
-            onThemeClick = onThemeClick,
-            onPushNotificationsClick = onPushNotificationsClick,
-            onAutoLockClick = onAutoLockClick,
-            onAlternativeRoutingClick = onAlternativeRoutingClick,
-            onAppLanguageClick = onAppLanguageClick,
-            onCombinedContactsClick = onCombinedContactsClick,
-            onSwipeActionsClick = onSwipeActionsClick,
-            onBackClick = onBackClick
+            actions = actions
         )
         is Loading -> Unit
     }
@@ -80,24 +64,16 @@ fun MainSettingsScreen(
 
 @Composable
 fun MainSettingsScreen(
-    modifier: Modifier = Modifier,
     state: Data,
-    onAccountClick: () -> Unit,
-    onThemeClick: () -> Unit,
-    onPushNotificationsClick: () -> Unit,
-    onAutoLockClick: () -> Unit,
-    onAlternativeRoutingClick: () -> Unit,
-    onAppLanguageClick: () -> Unit,
-    onCombinedContactsClick: () -> Unit,
-    onSwipeActionsClick: () -> Unit,
-    onBackClick: () -> Unit,
+    actions: MainSettingsScreen.Actions,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_SETTINGS_SCREEN),
         topBar = {
             ProtonSettingsTopBar(
                 title = stringResource(id = string.mail_settings_settings),
-                onBackClick = onBackClick
+                onBackClick = actions.onBackClick
             )
         }
     ) { contentPadding ->
@@ -111,52 +87,52 @@ fun MainSettingsScreen(
                 AccountSettingsItem(
                     modifier = Modifier.testTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM),
                     accountInfo = state.account,
-                    onAccountClicked = onAccountClick
+                    onAccountClicked = actions.onAccountClick
                 )
             }
             item { ProtonSettingsHeader(title = string.mail_settings_app_settings) }
             item {
                 ProtonSettingsItem(
                     name = stringResource(id = string.mail_settings_theme),
-                    onClick = onThemeClick
+                    onClick = actions.onThemeClick
                 )
                 Divider()
             }
             item {
                 ProtonSettingsItem(
                     name = stringResource(id = string.mail_settings_push_notifications),
-                    onClick = onPushNotificationsClick
+                    onClick = actions.onPushNotificationsClick
                 )
                 Divider()
             }
             item {
                 AutoLockSettingItem(
                     appSettings = state.appSettings,
-                    onAutoLockClick = onAutoLockClick
+                    onAutoLockClick = actions.onAutoLockClick
                 )
             }
             item {
                 AlternativeRoutingSettingItem(
                     appSettings = state.appSettings,
-                    onAlternativeRoutingClick = onAlternativeRoutingClick
+                    onAlternativeRoutingClick = actions.onAlternativeRoutingClick
                 )
             }
             item {
                 AppLanguageSettingItem(
                     appSettings = state.appSettings,
-                    onAppLanguageClick = onAppLanguageClick
+                    onAppLanguageClick = actions.onAppLanguageClick
                 )
             }
             item {
                 CombinedContactsSettingItem(
                     appSettings = state.appSettings,
-                    onCombinedContactsClick = onCombinedContactsClick
+                    onCombinedContactsClick = actions.onCombinedContactsClick
                 )
             }
             item {
                 ProtonSettingsItem(
                     name = stringResource(id = string.mail_settings_swipe_actions),
-                    onClick = onSwipeActionsClick
+                    onClick = actions.onSwipeActionsClick
                 )
                 Divider()
             }
@@ -268,6 +244,21 @@ fun AccountSettingsItem(
     Divider()
 }
 
+object MainSettingsScreen {
+
+    data class Actions(
+        val onAccountClick: () -> Unit,
+        val onThemeClick: () -> Unit,
+        val onPushNotificationsClick: () -> Unit,
+        val onAutoLockClick: () -> Unit,
+        val onAlternativeRoutingClick: () -> Unit,
+        val onAppLanguageClick: () -> Unit,
+        val onCombinedContactsClick: () -> Unit,
+        val onSwipeActionsClick: () -> Unit,
+        val onBackClick: () -> Unit,
+    )
+}
+
 @Preview(
     name = "Main settings screen light mode",
     showBackground = true,
@@ -281,7 +272,6 @@ fun AccountSettingsItem(
 @Composable
 fun PreviewMainSettingsScreen() {
     MainSettingsScreen(
-        modifier = Modifier,
         state = Data(
             AccountInfo("ProtonUser", "user@proton.ch"),
             AppSettings(
@@ -292,14 +282,16 @@ fun PreviewMainSettingsScreen() {
             ),
             AppInformation(appVersionName = "6.0.0-alpha")
         ),
-        onAccountClick = { },
-        onThemeClick = {},
-        onPushNotificationsClick = {},
-        onAutoLockClick = {},
-        onAlternativeRoutingClick = {},
-        onAppLanguageClick = {},
-        onCombinedContactsClick = {},
-        onSwipeActionsClick = {},
-        onBackClick = {}
+        actions = MainSettingsScreen.Actions(
+            onAccountClick = { },
+            onThemeClick = {},
+            onPushNotificationsClick = {},
+            onAutoLockClick = {},
+            onAlternativeRoutingClick = {},
+            onAppLanguageClick = {},
+            onCombinedContactsClick = {},
+            onSwipeActionsClick = {},
+            onBackClick = {}
+        )
     )
 }

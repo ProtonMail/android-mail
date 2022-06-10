@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.navigation.model.LauncherState
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.domain.entity.UserId
 
 @Composable
 fun Launcher(
@@ -33,20 +34,37 @@ fun Launcher(
 ) {
     val state by viewModel.state.collectAsState(LauncherState.Processing)
 
+
     when (state) {
         LauncherState.AccountNeeded -> viewModel.submit(LauncherViewModel.Action.AddAccount)
         LauncherState.PrimaryExist -> Home(
-            actions = Home.Actions(
+            launcherActions = Launcher.Actions(
                 onPasswordManagement = { viewModel.submit(LauncherViewModel.Action.OpenPasswordManagement) },
                 onRecoveryEmail = { viewModel.submit(LauncherViewModel.Action.OpenRecoveryEmail) },
                 onReportBug = { viewModel.submit(LauncherViewModel.Action.OpenReport) },
                 onSignIn = { viewModel.submit(LauncherViewModel.Action.SignIn(it)) },
                 onSignOut = { viewModel.submit(LauncherViewModel.Action.SignOut(it)) },
                 onSubscription = { viewModel.submit(LauncherViewModel.Action.OpenSubscription) },
-                onSwitch = { viewModel.submit(LauncherViewModel.Action.Switch(it)) }
+                onSwitchAccount = { viewModel.submit(LauncherViewModel.Action.Switch(it)) }
             )
         )
         LauncherState.Processing,
         LauncherState.StepNeeded -> ProtonCenteredProgress(Modifier.fillMaxSize())
     }
+}
+
+object Launcher {
+
+    /**
+     * A set of actions that can be executed in the scope of Core's Orchestrators
+     */
+    data class Actions(
+        val onSignIn: (UserId?) -> Unit,
+        val onSignOut: (UserId) -> Unit,
+        val onSwitchAccount: (UserId) -> Unit,
+        val onSubscription: () -> Unit,
+        val onReportBug: () -> Unit,
+        val onPasswordManagement: () -> Unit,
+        val onRecoveryEmail: () -> Unit
+    )
 }

@@ -60,15 +60,8 @@ const val TEST_TAG_SIDEBAR_MENU = "SidebarMenuTestTag"
 @Composable
 @Suppress("ComplexMethod")
 fun Sidebar(
-    onRemove: (UserId?) -> Unit,
-    onSignOut: (UserId) -> Unit,
-    onSignIn: (UserId?) -> Unit,
-    onSwitch: (UserId) -> Unit,
-    onSettings: () -> Unit,
-    onLabelsSettings: () -> Unit,
-    onSubscription: () -> Unit,
-    onReportBug: () -> Unit,
     drawerState: DrawerState,
+    actions: Sidebar.Actions,
     modifier: Modifier = Modifier,
     viewModel: SidebarViewModel = hiltViewModel(),
 ) {
@@ -91,25 +84,25 @@ fun Sidebar(
             Sidebar(
                 onRemove = {
                     close()
-                    onRemove(it)
+                    actions.onRemoveAccount(it)
                 },
                 onSignOut = {
                     close()
-                    onSignOut(it)
+                    actions.onSignOut(it)
                 },
                 onSignIn = {
                     close()
-                    onSignIn(it)
+                    actions.onSignIn(it)
                 },
                 onSwitch = {
                     close()
-                    onSwitch(it)
+                    actions.onSwitchAccount(it)
                 },
                 onLabelAction = {
                     when (it) {
                         is SidebarLabelAction.Add -> {
                             close()
-                            onLabelsSettings()
+                            actions.onLabelsSettings()
                         }
                         is SidebarLabelAction.Select -> {
                             close()
@@ -122,16 +115,16 @@ fun Sidebar(
                 onSettings = {
                     close()
                     if (viewModelState.isSettingsEnabled) {
-                        onSettings()
+                        actions.onSettings()
                     }
                 },
                 onSubscription = {
                     close()
-                    onSubscription()
+                    actions.onSubscription()
                 },
                 onReportBug = {
                     close()
-                    onReportBug()
+                    actions.onReportBug()
                 },
                 viewState = viewState,
                 modifier = modifier
@@ -215,6 +208,20 @@ private fun SidebarAppVersionItem(
     ProtonSidebarAppVersionItem(
         name = appInformation.appName,
         version = appInformation.appVersionName
+    )
+}
+
+object Sidebar {
+
+    data class Actions(
+        val onSignIn: (UserId?) -> Unit,
+        val onSignOut: (UserId) -> Unit,
+        val onRemoveAccount: (UserId?) -> Unit,
+        val onSwitchAccount: (UserId) -> Unit,
+        val onSettings: () -> Unit,
+        val onLabelsSettings: () -> Unit,
+        val onSubscription: () -> Unit,
+        val onReportBug: () -> Unit
     )
 }
 
