@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation
 
 import androidx.appcompat.app.AppCompatActivity
 import app.cash.turbine.test
+import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.testdata.AccountTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coVerify
@@ -127,7 +128,7 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.state.test {
             // THEN
-            assertEquals(LauncherViewModel.State.AccountNeeded, awaitItem())
+            assertEquals(LauncherState.AccountNeeded, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -139,7 +140,7 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.state.test {
             // THEN
-            assertEquals(LauncherViewModel.State.AccountNeeded, awaitItem())
+            assertEquals(LauncherState.AccountNeeded, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -151,7 +152,7 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.state.test {
             // THEN
-            assertEquals(LauncherViewModel.State.PrimaryExist, awaitItem())
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -163,13 +164,13 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.state.test {
             // THEN
-            assertEquals(LauncherViewModel.State.AccountNeeded, awaitItem())
+            assertEquals(LauncherState.AccountNeeded, awaitItem())
 
             accountListFlow.emit(listOf(AccountTestData.notReadyAccount))
-            assertEquals(LauncherViewModel.State.StepNeeded, awaitItem())
+            assertEquals(LauncherState.StepNeeded, awaitItem())
 
             accountListFlow.emit(listOf(AccountTestData.readyAccount))
-            assertEquals(LauncherViewModel.State.PrimaryExist, awaitItem())
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -182,7 +183,7 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.state.test {
             // THEN
-            assertEquals(LauncherViewModel.State.PrimaryExist, awaitItem())
+            assertEquals(LauncherState.PrimaryExist, awaitItem())
 
             accountListFlow.emit(
                 listOf(AccountTestData.readyAccount, AccountTestData.notReadyAccount)

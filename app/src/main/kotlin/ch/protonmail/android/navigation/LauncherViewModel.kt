@@ -22,10 +22,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.navigation.LauncherViewModel.State.AccountNeeded
-import ch.protonmail.android.navigation.LauncherViewModel.State.PrimaryExist
-import ch.protonmail.android.navigation.LauncherViewModel.State.Processing
-import ch.protonmail.android.navigation.LauncherViewModel.State.StepNeeded
+import ch.protonmail.android.navigation.model.LauncherState
+import ch.protonmail.android.navigation.model.LauncherState.AccountNeeded
+import ch.protonmail.android.navigation.model.LauncherState.PrimaryExist
+import ch.protonmail.android.navigation.model.LauncherState.Processing
+import ch.protonmail.android.navigation.model.LauncherState.StepNeeded
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -79,7 +80,7 @@ class LauncherViewModel @Inject constructor(
     private val missingScopeListener: MissingScopeListener,
 ) : ViewModel() {
 
-    val state: StateFlow<State> = accountManager.getAccounts()
+    val state: StateFlow<LauncherState> = accountManager.getAccounts()
         .map { accounts ->
             when {
                 accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
@@ -140,7 +141,7 @@ class LauncherViewModel @Inject constructor(
         }
     }
 
-    private suspend fun onAddAccount() {
+    private fun onAddAccount() {
         authOrchestrator.startAddAccountWorkflow(requiredAccountType, product)
     }
 
@@ -193,8 +194,6 @@ class LauncherViewModel @Inject constructor(
 
     private suspend fun getAccountOrNull(it: UserId) = accountManager.getAccount(it).firstOrNull()
     private suspend fun getPrimaryUserIdOrNull() = accountManager.getPrimaryUserId().firstOrNull()
-
-    enum class State { Processing, AccountNeeded, PrimaryExist, StepNeeded }
 
     sealed interface Action {
 

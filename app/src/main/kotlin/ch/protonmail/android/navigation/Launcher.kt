@@ -24,17 +24,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.navigation.model.LauncherState
 import me.proton.core.compose.component.ProtonCenteredProgress
 
 @Composable
 fun Launcher(
     viewModel: LauncherViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsState(LauncherViewModel.State.Processing)
+    val state by viewModel.state.collectAsState(LauncherState.Processing)
 
     when (state) {
-        LauncherViewModel.State.AccountNeeded -> viewModel.submit(LauncherViewModel.Action.AddAccount)
-        LauncherViewModel.State.PrimaryExist -> Home(
+        LauncherState.AccountNeeded -> viewModel.submit(LauncherViewModel.Action.AddAccount)
+        LauncherState.PrimaryExist -> Home(
             actions = Home.Actions(
                 onPasswordManagement = { viewModel.submit(LauncherViewModel.Action.OpenPasswordManagement) },
                 onRecoveryEmail = { viewModel.submit(LauncherViewModel.Action.OpenRecoveryEmail) },
@@ -45,7 +46,7 @@ fun Launcher(
                 onSwitch = { viewModel.submit(LauncherViewModel.Action.Switch(it)) }
             )
         )
-        LauncherViewModel.State.Processing,
-        LauncherViewModel.State.StepNeeded -> ProtonCenteredProgress(Modifier.fillMaxSize())
+        LauncherState.Processing,
+        LauncherState.StepNeeded -> ProtonCenteredProgress(Modifier.fillMaxSize())
     }
 }

@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import ch.protonmail.android.navigation.Launcher
 import ch.protonmail.android.navigation.LauncherViewModel
+import ch.protonmail.android.navigation.model.LauncherState
 import dagger.hilt.android.AndroidEntryPoint
 import me.proton.core.compose.theme.ProtonTheme
 
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().setKeepOnScreenCondition {
-            launcherViewModel.state.value != LauncherViewModel.State.PrimaryExist
+            launcherViewModel.state.value != LauncherState.PrimaryExist
         }
         super.onCreate(savedInstanceState)
 
