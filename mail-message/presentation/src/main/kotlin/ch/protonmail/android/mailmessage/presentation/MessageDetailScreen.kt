@@ -33,3 +33,8 @@ fun MessageDetailScreen(
         text = "Message detail for message ID: ${messageId.id}"
     )
 }
+
+object MessageDetailScreen {
+
+    const val MESSAGE_ID_KEY = "message id"
+}

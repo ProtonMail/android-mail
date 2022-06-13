@@ -15,25 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.protonmail.android.mailconversation.presentation
 
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+package ch.protonmail.android.mailsettings.domain.model
 
-@Composable
-fun ConversationDetailScreen(
-    conversationId: ConversationId,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        modifier = modifier,
-        text = "Conversation detail for conversation ID: ${conversationId.id}"
-    )
-}
+import me.proton.core.util.kotlin.equalsNoCase
 
-object ConversationDetailScreen {
+enum class SwipeActionDirection {
+    RIGHT,
+    LEFT;
 
-    const val CONVERSATION_ID_KEY = "conversation id"
+    companion object {
+
+        operator fun invoke(name: String): SwipeActionDirection =
+            values().first { it.name equalsNoCase name }
+    }
 }

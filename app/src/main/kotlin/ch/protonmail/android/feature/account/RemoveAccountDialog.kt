@@ -91,3 +91,8 @@ private fun RemoveAccountDialog(
         }
     )
 }
+
+object RemoveAccountDialog {
+
+    const val USER_ID_KEY = "user id"
+}

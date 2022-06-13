@@ -15,25 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.protonmail.android.mailconversation.presentation
 
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+package ch.protonmail.android.mailsettings.presentation.settings.swipeactions
 
-@Composable
-fun ConversationDetailScreen(
-    conversationId: ConversationId,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        modifier = modifier,
-        text = "Conversation detail for conversation ID: ${conversationId.id}"
-    )
-}
+sealed interface EditSwipeActionPreferenceState {
 
-object ConversationDetailScreen {
+    data class Data(
+        val items: List<EditSwipeActionPreferenceItemUiModel>
+    ) : EditSwipeActionPreferenceState
 
-    const val CONVERSATION_ID_KEY = "conversation id"
+    object Loading : EditSwipeActionPreferenceState
+
+    object NotLoggedIn : EditSwipeActionPreferenceState
 }

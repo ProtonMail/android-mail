@@ -22,13 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsScreen
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceScreen
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsScreen
 import ch.protonmail.android.navigation.Launcher
 import ch.protonmail.android.navigation.model.Destination.Screen
+import me.proton.core.compose.navigation.require
 import timber.log.Timber
 
 fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launcherActions: Launcher.Actions) {
@@ -60,6 +64,16 @@ internal fun NavGraphBuilder.addConversationModeSettings(navController: NavHostC
     }
 }
 
+internal fun NavGraphBuilder.addEditSwipeActionsSettings(navController: NavHostController) {
+    composable(route = Screen.EditSwipeActionSettings.route) {
+        EditSwipeActionPreferenceScreen(
+            modifier = Modifier,
+            direction = SwipeActionDirection(it.require(SWIPE_DIRECTION_KEY)),
+            onBack = { navController.popBackStack() }
+        )
+    }
+}
+
 internal fun NavGraphBuilder.addLanguageSettings(navController: NavHostController) {
     composable(route = Screen.LanguageSettings.route) {
         LanguageSettingsScreen(
@@ -75,8 +89,12 @@ internal fun NavGraphBuilder.addSwipeActionsSettings(navController: NavHostContr
             modifier = Modifier,
             actions = SwipeActionsPreferenceScreen.Actions(
                 onBackClick = { navController.popBackStack() },
-                onChangeSwipeLeftClick = {},
-                onChangeSwipeRightClick = {}
+                onChangeSwipeLeftClick = {
+                    navController.navigate(Screen.EditSwipeActionSettings(SwipeActionDirection.LEFT))
+                },
+                onChangeSwipeRightClick = {
+                    navController.navigate(Screen.EditSwipeActionSettings(SwipeActionDirection.RIGHT))
+                }
             )
         )
     }

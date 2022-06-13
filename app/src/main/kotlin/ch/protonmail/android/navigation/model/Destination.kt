@@ -18,8 +18,13 @@
 
 package ch.protonmail.android.navigation.model
 
+import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+import ch.protonmail.android.mailconversation.presentation.ConversationDetailScreen.CONVERSATION_ID_KEY
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.presentation.MessageDetailScreen.MESSAGE_ID_KEY
+import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
 import me.proton.core.domain.entity.UserId
 
 sealed class Destination(val route: String) {
@@ -27,18 +32,14 @@ sealed class Destination(val route: String) {
     object Screen {
         object Mailbox : Destination("mailbox")
 
-        object Conversation : Destination("mailbox/conversation/{$key}") {
+        object Conversation : Destination("mailbox/conversation/${CONVERSATION_ID_KEY.wrap()}") {
             operator fun invoke(conversationId: ConversationId) =
-                "mailbox/conversation/${conversationId.id}"
-
-            fun getConversationId(key: String) = ConversationId(key)
+                route.replace(CONVERSATION_ID_KEY.wrap(), conversationId.id)
         }
 
-        object Message : Destination("mailbox/message/{$key}") {
+        object Message : Destination("mailbox/message/${MESSAGE_ID_KEY.wrap()}") {
             operator fun invoke(messageId: MessageId) =
-                "mailbox/message/${messageId.id}"
-
-            fun getMessageId(key: String) = MessageId(key)
+                route.replace(MESSAGE_ID_KEY.wrap(), messageId.id)
         }
 
         object Settings : Destination("settings")
@@ -48,22 +49,22 @@ sealed class Destination(val route: String) {
         object LanguageSettings : Destination("settings/appLanguage")
         object ReportBug : Destination("report")
         object SwipeActionsSettings : Destination("settings/swipeActions")
-    }
-
-    object Dialog {
-        object RemoveAccount : Destination("remove/{key}") {
-
-            operator fun invoke(userId: UserId?) =
-                if (userId == null) "remove/null"
-                else "remove/${userId.id}"
-
-            fun getUserId(key: String) =
-                if (key == "null") null
-                else UserId(key)
+        object EditSwipeActionSettings : Destination("settings/swipeActions/edit/${SWIPE_DIRECTION_KEY.wrap()}") {
+            operator fun invoke(direction: SwipeActionDirection) =
+                route.replace(SWIPE_DIRECTION_KEY.wrap(), direction.name)
         }
     }
 
-    companion object {
-        const val key = "key"
+    object Dialog {
+        object RemoveAccount : Destination("remove/${USER_ID_KEY.wrap()}") {
+
+            operator fun invoke(userId: UserId?) =
+                route.replace(USER_ID_KEY.wrap(), userId?.id ?: " ")
+        }
     }
 }
+
+/**
+ * Wrap a key in the format required by the Navigation framework: `{key_name}`
+ */
+private fun String.wrap() = "{$this}"

@@ -23,20 +23,26 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog
+import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.presentation.ConversationDetailScreen
+import ch.protonmail.android.mailconversation.presentation.ConversationDetailScreen.CONVERSATION_ID_KEY
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.presentation.MessageDetailScreen
+import ch.protonmail.android.mailmessage.presentation.MessageDetailScreen.MESSAGE_ID_KEY
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
+import me.proton.core.compose.navigation.get
 import me.proton.core.compose.navigation.require
+import me.proton.core.domain.entity.UserId
+import me.proton.core.util.kotlin.takeIfNotBlank
 import timber.log.Timber
 
 internal fun NavGraphBuilder.addConversationDetail() {
     composable(route = Destination.Screen.Conversation.route) {
-        ConversationDetailScreen(Destination.Screen.Conversation.getConversationId(it.require(Destination.key)))
+        ConversationDetailScreen(ConversationId(it.require(CONVERSATION_ID_KEY)))
     }
 }
 
@@ -62,14 +68,14 @@ internal fun NavGraphBuilder.addMailbox(
 
 internal fun NavGraphBuilder.addMessageDetail() {
     composable(route = Destination.Screen.Message.route) {
-        MessageDetailScreen(Destination.Screen.Message.getMessageId(it.require(Destination.key)))
+        MessageDetailScreen(MessageId(it.require(MESSAGE_ID_KEY)))
     }
 }
 
 internal fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostController) {
     dialog(route = Destination.Dialog.RemoveAccount.route) {
         RemoveAccountDialog(
-            userId = Destination.Dialog.RemoveAccount.getUserId(it.require(Destination.key)),
+            userId = it.get<String>(USER_ID_KEY)?.takeIfNotBlank()?.let(::UserId),
             onRemoved = { navController.popBackStack() },
             onCancelled = { navController.popBackStack() }
         )

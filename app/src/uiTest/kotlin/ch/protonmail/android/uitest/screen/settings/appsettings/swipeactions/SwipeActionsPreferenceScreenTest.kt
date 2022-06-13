@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.screen.settings.appsettings
+package ch.protonmail.android.uitest.screen.settings.appsettings.swipeactions
 
 import androidx.compose.ui.test.assertAny
 import androidx.compose.ui.test.assertIsDisplayed

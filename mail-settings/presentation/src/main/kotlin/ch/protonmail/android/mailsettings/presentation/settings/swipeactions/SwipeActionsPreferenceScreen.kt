@@ -50,12 +50,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
-import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Data
-import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Loading
-import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.NotLoggedIn
 import ch.protonmail.android.mailsettings.presentation.settings.theme.SettingsDimens
 import ch.protonmail.android.mailsettings.presentation.settings.theme.SwipeActionIllustrationDimens
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -309,10 +307,6 @@ private fun Toolbar(onBack: () -> Unit) {
             }
         }
     )
-}
-
-private enum class SwipeActionDirection {
-    RIGHT, LEFT
 }
 
 object SwipeActionsPreferenceScreen {
