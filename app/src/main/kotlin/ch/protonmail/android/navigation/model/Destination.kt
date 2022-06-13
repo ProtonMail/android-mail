@@ -27,14 +27,14 @@ sealed class Destination(val route: String) {
     object Screen {
         object Mailbox : Destination("mailbox")
 
-        object Conversation : Destination("mailbox/conversation/{key}") {
+        object Conversation : Destination("mailbox/conversation/{$key}") {
             operator fun invoke(conversationId: ConversationId) =
                 "mailbox/conversation/${conversationId.id}"
 
             fun getConversationId(key: String) = ConversationId(key)
         }
 
-        object Message : Destination("mailbox/message/{key}") {
+        object Message : Destination("mailbox/message/{$key}") {
             operator fun invoke(messageId: MessageId) =
                 "mailbox/message/${messageId.id}"
 
@@ -52,15 +52,14 @@ sealed class Destination(val route: String) {
 
     object Dialog {
         object RemoveAccount : Destination("remove/{key}") {
-            operator fun invoke(userId: UserId?) = when (userId) {
-                null -> "remove/null"
-                else -> "remove/${userId.id}"
-            }
 
-            fun getUserId(key: String) = when (key) {
-                "null" -> null
-                else -> UserId(key)
-            }
+            operator fun invoke(userId: UserId?) =
+                if (userId == null) "remove/null"
+                else "remove/${userId.id}"
+
+            fun getUserId(key: String) =
+                if (key == "null") null
+                else UserId(key)
         }
     }
 

@@ -73,9 +73,7 @@ import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 @Composable
 fun SwipeActionsPreferenceScreen(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
-    onChangeSwipeRightClick: () -> Unit,
-    onChangeSwipeLeftClick: () -> Unit,
+    actions: SwipeActionsPreferenceScreen.Actions,
     viewModel: SwipeActionsPreferenceViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = viewModel.initialState)
@@ -83,9 +81,7 @@ fun SwipeActionsPreferenceScreen(
     SwipeActionsPreferenceScreen(
         modifier = modifier,
         state = state,
-        onBackClick = onBackClick,
-        onChangeSwipeRightClick = onChangeSwipeRightClick,
-        onChangeSwipeLeftClick = onChangeSwipeLeftClick
+        actions = actions
     )
 }
 
@@ -93,14 +89,12 @@ fun SwipeActionsPreferenceScreen(
 fun SwipeActionsPreferenceScreen(
     modifier: Modifier = Modifier,
     state: SwipeActionsPreferenceState,
-    onBackClick: () -> Unit,
-    onChangeSwipeRightClick: () -> Unit,
-    onChangeSwipeLeftClick: () -> Unit,
+    actions: SwipeActionsPreferenceScreen.Actions
 ) {
 
     Scaffold(
         modifier = modifier,
-        topBar = { Toolbar(onBackClick) }
+        topBar = { Toolbar(actions.onBackClick) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -108,13 +102,14 @@ fun SwipeActionsPreferenceScreen(
                 .fillMaxSize()
         ) {
             when (state) {
-                is Data -> SwipeActionsPreferenceContent(
+                is SwipeActionsPreferenceState.Data -> SwipeActionsPreferenceContent(
                     uiModel = state.model,
-                    onChangeSwipeRightClick = onChangeSwipeRightClick,
-                    onChangeSwipeLeftClick = onChangeSwipeLeftClick
+                    onChangeSwipeRightClick = actions.onChangeSwipeRightClick,
+                    onChangeSwipeLeftClick = actions.onChangeSwipeLeftClick
                 )
-                Loading -> ProtonCenteredProgress()
-                NotLoggedIn -> ProtonErrorMessage(errorMessage = stringResource(commonString.x_error_not_logged_in))
+                SwipeActionsPreferenceState.Loading -> ProtonCenteredProgress()
+                SwipeActionsPreferenceState.NotLoggedIn ->
+                    ProtonErrorMessage(errorMessage = stringResource(commonString.x_error_not_logged_in))
             }
         }
     }
@@ -320,17 +315,51 @@ private enum class SwipeActionDirection {
     RIGHT, LEFT
 }
 
+object SwipeActionsPreferenceScreen {
+
+    data class Actions(
+        val onBackClick: () -> Unit,
+        val onChangeSwipeRightClick: () -> Unit,
+        val onChangeSwipeLeftClick: () -> Unit
+    )
+}
+
 private val NO_CONTENT_DESCRIPTION: String? = null
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun SwipeActionsPreferenceContentPreview() {
     val actions = SwipeActionsPreference(
-        swipeLeft = SwipeAction.Archive,
-        swipeRight = SwipeAction.Spam
+        swipeLeft = SwipeAction.Spam,
+        swipeRight = SwipeAction.MarkRead
     )
     val uiModel = SwipeActionPreferenceUiModelMapper().toUiModel(actions)
     ProtonTheme {
-        SwipeActionsPreferenceContent(uiModel, {}, {})
+        SwipeActionsPreferenceContent(
+            uiModel = uiModel,
+            onChangeSwipeRightClick = {},
+            onChangeSwipeLeftClick = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun SwipeActionsPreferenceScreenPreview() {
+    val actions = SwipeActionsPreference(
+        swipeLeft = SwipeAction.Trash,
+        swipeRight = SwipeAction.Star
+    )
+    val uiModel = SwipeActionPreferenceUiModelMapper().toUiModel(actions)
+    val state = SwipeActionsPreferenceState.Data(uiModel)
+    ProtonTheme {
+        SwipeActionsPreferenceScreen(
+            state = state,
+            actions = SwipeActionsPreferenceScreen.Actions(
+                onBackClick = {},
+                onChangeSwipeRightClick = {},
+                onChangeSwipeLeftClick = {}
+            )
+        )
     }
 }

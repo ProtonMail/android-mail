@@ -26,33 +26,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
-import ch.protonmail.android.feature.account.RemoveAccountDialog
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
-import ch.protonmail.android.mailconversation.presentation.ConversationDetailScreen
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailmailbox.presentation.MailboxScreen
 import ch.protonmail.android.mailmailbox.presentation.Sidebar
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.presentation.MessageDetailScreen
-import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
-import ch.protonmail.android.mailsettings.presentation.addConversationModeSettings
-import ch.protonmail.android.mailsettings.presentation.addLanguageSettings
-import ch.protonmail.android.mailsettings.presentation.addSwipeActionsSettings
-import ch.protonmail.android.mailsettings.presentation.addThemeSettings
-import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
-import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
+import ch.protonmail.android.navigation.route.addAccountSettings
+import ch.protonmail.android.navigation.route.addConversationDetail
+import ch.protonmail.android.navigation.route.addConversationModeSettings
+import ch.protonmail.android.navigation.route.addLanguageSettings
+import ch.protonmail.android.navigation.route.addMailbox
+import ch.protonmail.android.navigation.route.addMessageDetail
+import ch.protonmail.android.navigation.route.addRemoveAccountDialog
+import ch.protonmail.android.navigation.route.addSettings
+import ch.protonmail.android.navigation.route.addSwipeActionsSettings
+import ch.protonmail.android.navigation.route.addThemeSettings
 import kotlinx.coroutines.launch
-import me.proton.core.compose.navigation.require
 import me.proton.core.compose.theme.ProtonTheme
-import timber.log.Timber
 
 @Composable
 fun Home(launcherActions: Launcher.Actions) {
@@ -78,120 +69,26 @@ fun Home(launcherActions: Launcher.Actions) {
                 navController = navController,
                 startDestination = Screen.Mailbox.route,
             ) {
+                // home
+                addConversationDetail()
                 addMailbox(
                     navController,
                     openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } }
                 )
-                addConversationDetail()
                 addMessageDetail()
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
+                // settings
                 addAccountSettings(navController, launcherActions)
-                addConversationModeSettings(navController, Screen.ConversationModeSettings.route)
-                addThemeSettings(navController, Screen.ThemeSettings.route)
-                addLanguageSettings(navController, Screen.LanguageSettings.route)
-                addSwipeActionsSettings(navController, Screen.SwipeActionsSettings.route)
+                addConversationModeSettings(navController)
+                addLanguageSettings(navController)
+                addSwipeActionsSettings(navController)
+                addThemeSettings(navController)
             }
         }
     }
 }
 
-private fun NavGraphBuilder.addMailbox(
-    navController: NavHostController,
-    openDrawerMenu: () -> Unit
-) {
-    composable(route = Screen.Mailbox.route) {
-        MailboxScreen(
-            navigateToMailboxItem = { request ->
-                navController.navigate(
-                    when (request.itemType) {
-                        MailboxItemType.Message -> Screen.Message(MessageId(request.itemId.value))
-                        MailboxItemType.Conversation -> Screen.Conversation(ConversationId(request.itemId.value))
-                    }
-                )
-            },
-            openDrawerMenu = openDrawerMenu
-        )
-    }
-}
-
-private fun NavGraphBuilder.addConversationDetail() {
-    composable(route = Screen.Conversation.route) {
-        ConversationDetailScreen(Screen.Conversation.getConversationId(it.require(Destination.key)))
-    }
-}
-
-private fun NavGraphBuilder.addMessageDetail() {
-    composable(route = Screen.Message.route) {
-        MessageDetailScreen(Screen.Message.getMessageId(it.require(Destination.key)))
-    }
-}
-
-private fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostController) {
-    dialog(route = Dialog.RemoveAccount.route) {
-        RemoveAccountDialog(
-            userId = Dialog.RemoveAccount.getUserId(it.require(Destination.key)),
-            onRemoved = { navController.popBackStack() },
-            onCancelled = { navController.popBackStack() }
-        )
-    }
-}
-
-fun NavGraphBuilder.addSettings(navController: NavHostController) {
-    composable(route = Screen.Settings.route) {
-        MainSettingsScreen(
-            actions = MainSettingsScreen.Actions(
-                onAccountClick = {
-                    navController.navigate(Screen.AccountSettings.route)
-                },
-                onThemeClick = {
-                    navController.navigate(Screen.ThemeSettings.route)
-                },
-                onPushNotificationsClick = {
-                    Timber.i("Push Notifications setting clicked")
-                },
-                onAutoLockClick = {
-                    Timber.i("Auto Lock setting clicked")
-                },
-                onAlternativeRoutingClick = {
-                    Timber.i("Alternative routing setting clicked")
-                },
-                onAppLanguageClick = {
-                    Timber.d("Navigating to language settings")
-                    navController.navigate(Screen.LanguageSettings.route)
-                },
-                onCombinedContactsClick = {
-                    Timber.i("Combined contacts setting clicked")
-                },
-                onSwipeActionsClick = {
-                    Timber.d("Swipe actions setting clicked")
-                    navController.navigate(Screen.SwipeActionsSettings.route)
-                },
-                onBackClick = {
-                    navController.popBackStack()
-                }
-            )
-        )
-    }
-}
-
-fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launcherActions: Launcher.Actions) {
-    composable(route = Screen.AccountSettings.route) {
-        AccountSettingScreen(actions = AccountSettingScreen.Actions(
-            onBackClick = { navController.popBackStack() },
-            onPasswordManagementClick = launcherActions.onPasswordManagement,
-            onRecoveryEmailClick = launcherActions.onRecoveryEmail,
-            onConversationModeClick = { navController.navigate(Screen.ConversationModeSettings.route) },
-            onDefaultEmailAddressClick = { Timber.i("Default email address setting clicked") },
-            onDisplayNameClick = { Timber.i("Display name setting clicked") },
-            onPrivacyClick = { Timber.i("Privacy setting clicked") },
-            onSearchMessageContentClick = { Timber.i("Search message content setting clicked") },
-            onLabelsFoldersClick = { Timber.i("Labels folders setting clicked") },
-            onLocalStorageClick = { Timber.i("Local storage setting clicked") },
-            onSnoozeNotificationsClick = { Timber.i("Snooze notification setting clicked") }
-        ))
-    }
-}
 
 private fun buildSidebarActions(
     navController: NavHostController,

@@ -80,9 +80,11 @@ class SwipeActionsPreferenceScreenTest {
             ProtonTheme {
                 SwipeActionsPreferenceScreen(
                     state = state,
-                    onBackClick = {},
-                    onChangeSwipeRightClick = {},
-                    onChangeSwipeLeftClick = {}
+                    actions = SwipeActionsPreferenceScreen.Actions(
+                        onBackClick = {},
+                        onChangeSwipeRightClick = {},
+                        onChangeSwipeLeftClick = {}
+                    )
                 )
             }
         }
