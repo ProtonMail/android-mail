@@ -25,6 +25,7 @@ import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Archive
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Sent
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
@@ -35,11 +36,14 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.MailboxState.Data
 import ch.protonmail.android.mailmailbox.presentation.MailboxState.Loading
 import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel.Action
+import ch.protonmail.android.mailmailbox.presentation.model.FilterUnreadState
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
+import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
 import io.mockk.coEvery
@@ -72,7 +76,7 @@ class MailboxViewModelTest {
 
     private val mailLabels = MutableStateFlow(
         MailLabels(
-            systems = listOf(MailLabel.System(Archive)),
+            systems = listOf(MailLabel.System(Sent), MailLabel.System(Archive)),
             folders = emptyList(),
             labels = emptyList(),
         )
@@ -90,6 +94,10 @@ class MailboxViewModelTest {
         coEvery { this@mockk(any(), any()) } returns flowOf(NoConversationGrouping)
     }
 
+    private val observeUnreadCounters = mockk<ObserveUnreadCounters> {
+        coEvery { this@mockk(userId = any()) } returns flowOf(UnreadCountersTestData.systemUnreadCounters)
+    }
+
     private val pagingSourceFactory = mockk<MailboxItemPagingSourceFactory>(relaxed = true)
 
     private val mailboxViewModel by lazy {
@@ -100,6 +108,7 @@ class MailboxViewModelTest {
             observePrimaryUserId = observePrimaryUserId,
             observeMailLabels = observeMailLabels,
             selectedMailLabelId = selectedMailLabelId,
+            observeUnreadCounters = observeUnreadCounters
         )
     }
 
@@ -199,6 +208,20 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `emits mailbox state with unread filter state based on current location`() = runTest {
+        // Given
+        every { selectedMailLabelId.flow } returns MutableStateFlow<MailLabelId>(Sent)
+
+        mailboxViewModel.state.test {
+
+            // Then
+            val actualFilterUnreadState = awaitItem().filterUnread
+            assertIs<FilterUnreadState.Data>(actualFilterUnreadState)
+            assertEquals(3, actualFilterUnreadState.numUnread)
+        }
+    }
+
+    @Test
     fun `emits mailbox items`() = runTest {
         mailboxViewModel.items.test {
 
@@ -219,7 +242,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `open item details actions generates a request to open Message details for a Message while in Message mode`() =
+    fun `open item details action generates a request to open Message details for a Message while in Message mode`() =
         runTest {
 
             // Given
@@ -239,7 +262,7 @@ class MailboxViewModelTest {
         }
 
     @Test
-    fun `open item details actions generates a request to open Conversation details for a Conversation while in Conversation mode`() =
+    fun `open item details action generates a request to open Conversation details for a Conversation while in Conversation mode`() =
         runTest {
 
             // Given
@@ -259,7 +282,7 @@ class MailboxViewModelTest {
         }
 
     @Test
-    fun `open item details actions generates a request to open Conversation details for a Message while in Conversation mode`() =
+    fun `open item details action generates a request to open Conversation details for a Message while in Conversation mode`() =
         runTest {
 
             // Given
@@ -277,6 +300,32 @@ class MailboxViewModelTest {
                 assertEquals(expected, actual.openItemEffect.consume())
             }
         }
+
+    @Test
+    fun `enableUnreadFilter action emits a new state with FilterUnreadState enabled`() = runTest {
+        // When
+        mailboxViewModel.submit(Action.EnableUnreadFilter)
+        mailboxViewModel.state.test {
+
+            // Then
+            val expected = FilterUnreadState.Data(5, true)
+            val actual = awaitItem().filterUnread
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `disableUnreadFilter action emits a new state with FilterUnreadState disabled`() = runTest {
+        // When
+        mailboxViewModel.submit(Action.DisableUnreadFilter)
+        mailboxViewModel.state.test {
+
+            // Then
+            val expected = FilterUnreadState.Data(5, false)
+            val actual = awaitItem().filterUnread
+            assertEquals(expected, actual)
+        }
+    }
 
     private fun givenUserNotLoggedIn() {
         every { observePrimaryUserId() } returns flowOf(null)

@@ -34,9 +34,12 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
+import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.presentation.model.FilterUnreadState
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
@@ -65,9 +68,12 @@ class MailboxViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMailLabels: ObserveMailLabels,
     private val selectedMailLabelId: SelectedMailLabelId,
+    private val observeUnreadCounters: ObserveUnreadCounters
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
+
+    private val isFilterUnreadEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     private val openItemDetailEffect: MutableStateFlow<Effect<OpenMailboxItemRequest>> =
         MutableStateFlow(Effect.empty())
@@ -88,6 +94,8 @@ class MailboxViewModel @Inject constructor(
                 Action.ExitSelectionMode -> onCloseSelectionMode()
                 is Action.OpenItemDetails -> onOpenItemDetails(action.item)
                 Action.Refresh -> onRefresh()
+                Action.DisableUnreadFilter -> isFilterUnreadEnabled.emit(false)
+                Action.EnableUnreadFilter -> isFilterUnreadEnabled.emit(true)
             }.exhaustive
         }
     }
@@ -145,12 +153,25 @@ class MailboxViewModel @Inject constructor(
         pager?.flow ?: flowOf(PagingData.empty())
     }
 
+    private fun unreadFilterState(): Flow<FilterUnreadState> = combine(
+        selectedMailLabelId.flow,
+        isFilterUnreadEnabled,
+        observeUnreadCounters()
+    ) { mailLabelId, isEnabled, counters ->
+        val currentLocationUnreadCount = counters.find { it.labelId == mailLabelId.labelId }?.count ?: 0
+        FilterUnreadState.Data(
+            numUnread = currentLocationUnreadCount,
+            isFilterEnabled = isEnabled
+        )
+    }
+
     private fun observeState() = combine(
         observeCurrentMailLabel(),
         openItemDetailEffect,
         topAppBarState,
         primaryUserId,
-    ) { currentMailLabel, openItemDetailEffect, topAppBarState, userId ->
+        unreadFilterState()
+    ) { currentMailLabel, openItemDetailEffect, topAppBarState, userId, unreadFilterState ->
         if (userId == null || currentMailLabel == null) {
             return@combine MailboxState.Loading
         }
@@ -159,8 +180,14 @@ class MailboxViewModel @Inject constructor(
         MailboxState.Data(
             currentMailLabel = currentMailLabel,
             openItemEffect = openItemDetailEffect,
-            topAppBar = newTopAppBarState
+            topAppBar = newTopAppBarState,
+            filterUnread = unreadFilterState
         )
+    }
+
+    private fun observeUnreadCounters(): Flow<List<UnreadCounter>> = primaryUserId.flatMapLatest { userId ->
+        if (userId == null) flowOf(emptyList())
+        else observeUnreadCounters(userId)
     }
 
     private fun observeViewModeByLocation(): Flow<ViewMode> = primaryUserId.flatMapLatest { userId ->
@@ -200,5 +227,7 @@ class MailboxViewModel @Inject constructor(
         object ExitSelectionMode : Action
         data class OpenItemDetails(val item: MailboxItem) : Action
         object Refresh : Action
+        object EnableUnreadFilter : Action
+        object DisableUnreadFilter : Action
     }
 }

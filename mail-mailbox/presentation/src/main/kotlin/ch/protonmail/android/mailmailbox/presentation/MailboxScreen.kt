@@ -38,8 +38,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -114,20 +112,11 @@ fun MailboxScreen(
                     )
                 )
 
-                val unreadFilterState = remember {
-                    mutableStateOf<FilterUnreadState>(FilterUnreadState.Data(1, false))
-                }
                 MailboxStickyHeader(
                     modifier = Modifier,
-                    state = unreadFilterState.value,
-                    onFilterEnabled = {
-                        val currentState = unreadFilterState.value as FilterUnreadState.Data
-                        unreadFilterState.value = currentState.copy(isFilterEnabled = true)
-                    },
-                    onFilterDisabled = {
-                        val currentState = unreadFilterState.value as FilterUnreadState.Data
-                        unreadFilterState.value = currentState.copy(isFilterEnabled = false)
-                    }
+                    state = mailboxState.filterUnread,
+                    onFilterEnabled = { viewModel.submit(MailboxViewModel.Action.EnableUnreadFilter) },
+                    onFilterDisabled = { viewModel.submit(MailboxViewModel.Action.DisableUnreadFilter) }
                 )
             }
         }
