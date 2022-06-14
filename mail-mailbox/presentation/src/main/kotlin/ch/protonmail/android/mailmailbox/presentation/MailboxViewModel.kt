@@ -27,12 +27,14 @@ import androidx.paging.cachedIn
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.extension.firstOrDefault
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
@@ -42,7 +44,9 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.model.FilterUnreadState
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
+import ch.protonmail.android.mailpagination.domain.entity.PageFilter
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,6 +60,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
+import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
@@ -134,19 +139,37 @@ class MailboxViewModel @Inject constructor(
         )
     }
 
+    private fun mailboxPageKey(
+        isFilterUnread: Boolean,
+        selectedMailLabelId: MailLabelId,
+        userId: UserId
+    ): MailboxPageKey {
+        val readStatus = if (isFilterUnread) ReadStatus.Unread else ReadStatus.All
+        val pageFilter = PageFilter(
+            labelId = selectedMailLabelId.labelId,
+            read = readStatus
+        )
+        return MailboxPageKey(userIds = listOf(userId), pageKey = PageKey(pageFilter))
+    }
+
     private fun observePagingData(): Flow<PagingData<MailboxItem>> = combine(
         selectedMailLabelId.flow,
         primaryUserId,
-        observeViewModeByLocation()
-    ) { selectedMailLabelId, userId, viewMode ->
+        observeViewModeByLocation(),
+        isFilterUnreadEnabled
+    ) { selectedMailLabelId, userId, viewMode, isFilterUnread ->
         if (userId == null) {
             return@combine null
         }
-        Pager(PagingConfig(pageSize = PageKey.defaultPageSize)) {
+
+        Pager(
+            config = PagingConfig(PageKey.defaultPageSize),
+            initialKey = mailboxPageKey(isFilterUnread, selectedMailLabelId, userId)
+        ) {
             pagingSourceFactory.create(
                 userIds = listOf(userId),
                 selectedMailLabelId = selectedMailLabelId,
-                type = viewMode.toMailboxItemType(),
+                type = viewMode.toMailboxItemType()
             )
         }
     }.flatMapLatest { pager ->
