@@ -86,10 +86,6 @@ fun MailboxScreen(
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val mailboxListState = mailboxListItems.rememberLazyListState()
 
-    ConsumableLaunchedEffect(mailboxState.openItemEffect) { itemId ->
-        navigateToMailboxItem(itemId)
-    }
-
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_MAILBOX_SCREEN),
         topBar = {
@@ -125,10 +121,17 @@ fun MailboxScreen(
             when (mailboxState) {
                 is MailboxState.Data -> {
 
-                    // TODO!!!!!!!
-                    // This hacks breaks when moving it from the top of this function to here.
+                    /* TODO!!!!!!!
+                    * This "hack" to scroll to top when changing location
+                    * breaks when moving it from the top of this function to here
+                    * (which was done as part of improving `MailboxState` encapsulation)
+                    */
                     LaunchedEffect(mailboxState.currentMailLabel) {
                         mailboxListState.animateScrollToItem(0)
+                    }
+
+                    ConsumableLaunchedEffect(mailboxState.openItemEffect) { itemId ->
+                        navigateToMailboxItem(itemId)
                     }
 
                     MailboxList(

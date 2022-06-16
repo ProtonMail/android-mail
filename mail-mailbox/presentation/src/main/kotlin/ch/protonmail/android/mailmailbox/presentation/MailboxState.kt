@@ -28,9 +28,6 @@ import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 @Stable
 sealed interface MailboxState {
 
-    val openItemEffect: Effect<OpenMailboxItemRequest>
-        get() = Effect.empty()
-
     val topAppBar: MailboxTopAppBarState
         get() = MailboxTopAppBarState.Loading
 
@@ -40,7 +37,7 @@ sealed interface MailboxState {
     @Stable
     data class Data(
         val currentMailLabel: MailLabel?,
-        override val openItemEffect: Effect<OpenMailboxItemRequest>,
+        val openItemEffect: Effect<OpenMailboxItemRequest>,
         override val topAppBar: MailboxTopAppBarState,
         override val unreadFilterState: UnreadFilterState
     ) : MailboxState
