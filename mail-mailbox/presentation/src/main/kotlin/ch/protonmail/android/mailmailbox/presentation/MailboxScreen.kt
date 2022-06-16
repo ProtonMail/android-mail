@@ -71,20 +71,57 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
+import me.proton.core.util.kotlin.exhaustive
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
 
 @Composable
 fun MailboxScreen(
+    modifier: Modifier = Modifier,
     navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
     openDrawerMenu: () -> Unit,
-    modifier: Modifier = Modifier,
     viewModel: MailboxViewModel = hiltViewModel(),
 ) {
-    val scope = rememberCoroutineScope()
     val mailboxState = rememberAsState(viewModel.state, MailboxState.Initializing).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
+
+    when (mailboxState) {
+        is MailboxState.Initializing -> ProtonCenteredProgress()
+        is MailboxState.Error -> ProtonErrorMessage(stringResource(commonString.x_error_not_logged_in))
+        is MailboxState.Ready -> {
+            MailboxScreen(
+                modifier = modifier,
+                mailboxState = mailboxState,
+                navigateToMailboxItem = navigateToMailboxItem,
+                openDrawerMenu = openDrawerMenu,
+                mailboxListItems = mailboxListItems,
+                onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
+                onEnableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.EnableUnreadFilter) },
+                onDisableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.DisableUnreadFilter) },
+                onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
+                onRefreshList = { viewModel.submit(MailboxViewModel.Action.Refresh) }
+            ) { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) }
+        }
+    }.exhaustive
+
+}
+
+@Composable
+fun MailboxScreen(
+    modifier: Modifier = Modifier,
+    mailboxState: MailboxState.Ready,
+    navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
+    openDrawerMenu: () -> Unit,
+    mailboxListItems: LazyPagingItems<MailboxItem>,
+    onExitSelectionMode: () -> Unit,
+    onEnableUnreadFilter: () -> Unit,
+    onDisableUnreadFilter: () -> Unit,
+    onNavigateToMailboxItem: (MailboxItem) -> Unit,
+    onRefreshList: () -> Unit,
+    onOpenSelectionMode: () -> Unit
+) {
+    val scope = rememberCoroutineScope()
     val listViewState = mailboxListItems.rememberLazyListState()
 
     Scaffold(
@@ -95,7 +132,7 @@ fun MailboxScreen(
                     state = mailboxState.topAppBarState,
                     actions = MailboxTopAppBar.Actions(
                         onOpenMenu = openDrawerMenu,
-                        onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
+                        onExitSelectionMode = onExitSelectionMode,
                         onExitSearchMode = {},
                         onTitleClick = { scope.launch { listViewState.animateScrollToItem(0) } },
                         onEnterSearchMode = {},
@@ -107,8 +144,8 @@ fun MailboxScreen(
                 MailboxStickyHeader(
                     modifier = Modifier,
                     state = mailboxState.unreadFilterState,
-                    onFilterEnabled = { viewModel.submit(MailboxViewModel.Action.EnableUnreadFilter) },
-                    onFilterDisabled = { viewModel.submit(MailboxViewModel.Action.DisableUnreadFilter) }
+                    onFilterEnabled = onEnableUnreadFilter,
+                    onFilterDisabled = onDisableUnreadFilter
                 )
             }
         }
@@ -119,38 +156,32 @@ fun MailboxScreen(
                 .background(ProtonTheme.colors.backgroundNorm)
                 .fillMaxSize()
         ) {
-            when (mailboxState) {
-                is MailboxState.Ready -> {
+            when (val mailboxListState = mailboxState.mailboxListState) {
+                is MailboxListState.Data -> {
 
-                    val mailboxListState = mailboxState.mailboxListState
-                    if (mailboxListState is MailboxListState.Data) {
-                        /* TODO!!!!!!!
-                        * This "hack" to scroll to top when changing location
-                        * breaks when moving it from the top of this function to here
-                        * (which was done as part of improving `MailboxState` encapsulation)
-                        */
-                        LaunchedEffect(mailboxListState.currentMailLabel) {
-                            listViewState.animateScrollToItem(0)
-                        }
+                    /* TODO!!!!!!!
+                    * This "hack" to scroll to top when changing location
+                    * breaks when moving it from the top of this function to here
+                    * (which was done as part of improving `MailboxState` encapsulation)
+                    */
+                    LaunchedEffect(mailboxListState.currentMailLabel) {
+                        listViewState.animateScrollToItem(0)
+                    }
 
-                        ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
-                            navigateToMailboxItem(itemId)
-                        }
+                    ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
+                        navigateToMailboxItem(itemId)
                     }
 
                     MailboxList(
-                        navigateToMailboxItem = { item ->
-                            viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item))
-                        },
-                        onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
-                        onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
+                        navigateToMailboxItem = onNavigateToMailboxItem,
+                        onRefresh = onRefreshList,
+                        onOpenSelectionMode = onOpenSelectionMode,
                         modifier = Modifier,
                         items = mailboxListItems,
                         listState = listViewState
                     )
                 }
-                MailboxState.Initializing -> ProtonCenteredProgress()
-                MailboxState.Error -> ProtonErrorMessage(stringResource(commonString.x_error_not_logged_in))
+                MailboxListState.Loading -> ProtonCenteredProgress()
             }
         }
     }

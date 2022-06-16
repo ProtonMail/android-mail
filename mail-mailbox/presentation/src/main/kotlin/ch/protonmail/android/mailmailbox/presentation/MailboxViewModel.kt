@@ -107,17 +107,26 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun onCloseSelectionMode() {
-        when (val currentState = state.value.topAppBarState) {
-            MailboxTopAppBarState.Loading -> return
-            is MailboxTopAppBarState.Data -> topAppBarState.emit(currentState.toDefaultMode())
+        givenCurrentStateIsReady { currentState ->
+            when (val currentTopBarState = currentState.topAppBarState) {
+                MailboxTopAppBarState.Loading -> return@givenCurrentStateIsReady
+                is MailboxTopAppBarState.Data -> topAppBarState.emit(currentTopBarState.toDefaultMode())
+            }
         }
     }
 
     private suspend fun onOpenSelectionMode() {
-        when (val currentState = state.value.topAppBarState) {
-            MailboxTopAppBarState.Loading -> return
-            is MailboxTopAppBarState.Data -> topAppBarState.emit(currentState.toSelectionMode())
+        givenCurrentStateIsReady { currentState ->
+            when (val currentTopBarState = currentState.topAppBarState) {
+                MailboxTopAppBarState.Loading -> return@givenCurrentStateIsReady
+                is MailboxTopAppBarState.Data -> topAppBarState.emit(currentTopBarState.toSelectionMode())
+            }
         }
+    }
+
+    private suspend fun givenCurrentStateIsReady(block: suspend (MailboxState.Ready) -> Unit) {
+        val currentState = state.value
+        if (currentState is MailboxState.Ready) { block(currentState) }
     }
 
     private suspend fun onOpenItemDetails(item: MailboxItem) {
