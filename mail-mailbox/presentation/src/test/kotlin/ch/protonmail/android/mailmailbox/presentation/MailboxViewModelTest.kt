@@ -152,7 +152,9 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
 
             // Then
-            assertEquals(MailLabel.System(Archive), awaitItem().currentMailLabel)
+            val actual = awaitItem()
+            assertIs<Data>(actual)
+            assertEquals(MailLabel.System(Archive), actual.currentMailLabel)
         }
     }
 

@@ -37,7 +37,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -83,13 +82,9 @@ fun MailboxScreen(
     viewModel: MailboxViewModel = hiltViewModel(),
 ) {
     val scope = rememberCoroutineScope()
-    val mailboxState by rememberAsState(viewModel.state, MailboxState.Loading)
+    val mailboxState = rememberAsState(viewModel.state, MailboxState.Loading).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val mailboxListState = mailboxListItems.rememberLazyListState()
-
-    LaunchedEffect(mailboxState.currentMailLabel) {
-        mailboxListState.animateScrollToItem(0)
-    }
 
     ConsumableLaunchedEffect(mailboxState.openItemEffect) { itemId ->
         navigateToMailboxItem(itemId)
@@ -128,14 +123,25 @@ fun MailboxScreen(
                 .fillMaxSize()
         ) {
             when (mailboxState) {
-                is MailboxState.Data -> MailboxList(
-                    navigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
-                    onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
-                    onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
-                    modifier = Modifier,
-                    items = mailboxListItems,
-                    listState = mailboxListState
-                )
+                is MailboxState.Data -> {
+
+                    // TODO!!!!!!!
+                    // This hacks breaks when moving it from the top of this function to here.
+                    LaunchedEffect(mailboxState.currentMailLabel) {
+                        mailboxListState.animateScrollToItem(0)
+                    }
+
+                    MailboxList(
+                        navigateToMailboxItem = { item ->
+                            viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item))
+                        },
+                        onRefresh = { viewModel.submit(MailboxViewModel.Action.Refresh) },
+                        onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
+                        modifier = Modifier,
+                        items = mailboxListItems,
+                        listState = mailboxListState
+                    )
+                }
                 MailboxState.Loading -> ProtonCenteredProgress()
                 MailboxState.NotLoggedIn -> ProtonErrorMessage(stringResource(commonString.x_error_not_logged_in))
             }
