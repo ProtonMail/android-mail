@@ -43,6 +43,7 @@ import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel.Action
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
+import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
@@ -74,15 +75,14 @@ class MailboxViewModelTest {
         every { this@mockk.flow } returns MutableStateFlow<MailLabelId>(Archive)
     }
 
-    private val mailLabels = MutableStateFlow(
-        MailLabels(
-            systems = listOf(MailLabel.System(Sent), MailLabel.System(Archive)),
-            folders = emptyList(),
-            labels = emptyList(),
-        )
-    )
     private val observeMailLabels = mockk<ObserveMailLabels> {
-        every { this@mockk.invoke(any()) } returns mailLabels
+        every { this@mockk.invoke(any()) } returns MutableStateFlow(
+            MailLabels(
+                systems = LabelTestData.systemLabels,
+                folders = emptyList(),
+                labels = emptyList(),
+            )
+        )
     }
 
     private val markAsStaleMailboxItems = mockk<MarkAsStaleMailboxItems> {
@@ -215,9 +215,36 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
 
             // Then
-            val actualUnreadFilterState = awaitItem().unreadFilterState
-            assertIs<UnreadFilterState.Data>(actualUnreadFilterState)
-            assertEquals(3, actualUnreadFilterState.numUnread)
+            val actual = awaitItem().unreadFilterState
+            assertIs<UnreadFilterState.Data>(actual)
+            assertEquals(3, actual.numUnread)
+        }
+    }
+
+    @Test
+    fun `topBarState is updated when current location changes`() = runTest {
+        // Given
+        // - Current location is Inbox
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+
+        mailboxViewModel.state.test {
+            // Then
+            val initialState = awaitItem().topAppBar
+            assertIs<MailboxTopAppBarState.Data>(initialState)
+            assertEquals(MailLabel.System(MailLabelId.System.Inbox), initialState.currentMailLabel)
+
+            // When
+            currentLocationFlow.emit(MailLabelId.System.Starred)
+
+            // Then
+            val actual = awaitItem().topAppBar
+            assertIs<MailboxTopAppBarState.Data>(actual)
+            assertEquals(MailLabel.System(MailLabelId.System.Starred), actual.currentMailLabel)
+
+            // Due to the current structure of state, when location is changed multiple
+            // multiple emissions of the same state are caused.
+            cancelAndIgnoreRemainingEvents()
         }
     }
 

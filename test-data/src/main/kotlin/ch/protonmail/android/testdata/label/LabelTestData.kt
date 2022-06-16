@@ -18,12 +18,28 @@
 
 package ch.protonmail.android.testdata.label
 
+import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 
 object LabelTestData {
+
+    val systemLabels = listOf(
+        MailLabel.System(MailLabelId.System.Inbox),
+        MailLabel.System(MailLabelId.System.AllDrafts),
+        MailLabel.System(MailLabelId.System.AllSent),
+        MailLabel.System(MailLabelId.System.Trash),
+        MailLabel.System(MailLabelId.System.Spam),
+        MailLabel.System(MailLabelId.System.AllMail),
+        MailLabel.System(MailLabelId.System.Archive),
+        MailLabel.System(MailLabelId.System.Sent),
+        MailLabel.System(MailLabelId.System.Drafts),
+        MailLabel.System(MailLabelId.System.Outbox),
+        MailLabel.System(MailLabelId.System.Starred)
+    )
 
     fun buildLabel(
         userId: UserId,
