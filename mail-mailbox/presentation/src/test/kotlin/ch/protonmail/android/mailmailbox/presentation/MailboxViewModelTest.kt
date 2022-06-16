@@ -143,7 +143,7 @@ class MailboxViewModelTest {
             val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive))
             val actual = awaitItem()
             assertIs<Data>(actual)
-            assertEquals(expected, actual.topAppBar)
+            assertEquals(expected, actual.topAppBarState)
         }
     }
 
@@ -172,7 +172,7 @@ class MailboxViewModelTest {
             val expected = MailboxTopAppBarState.Data.SelectionMode(MailLabel.System(Archive), selectedCount = 0)
             val actual = awaitItem()
             assertIs<Data>(actual)
-            assertEquals(expected, actual.topAppBar)
+            assertEquals(expected, actual.topAppBarState)
         }
     }
 
@@ -193,7 +193,7 @@ class MailboxViewModelTest {
             val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive))
             val actual = awaitItem()
             assertIs<Data>(actual)
-            assertEquals(expected, actual.topAppBar)
+            assertEquals(expected, actual.topAppBarState)
         }
     }
 
@@ -232,7 +232,7 @@ class MailboxViewModelTest {
 
         mailboxViewModel.state.test {
             // Then
-            val initialState = awaitItem().topAppBar
+            val initialState = awaitItem().topAppBarState
             assertIs<MailboxTopAppBarState.Data>(initialState)
             assertEquals(MailLabel.System(MailLabelId.System.Inbox), initialState.currentMailLabel)
 
@@ -240,7 +240,7 @@ class MailboxViewModelTest {
             currentLocationFlow.emit(MailLabelId.System.Starred)
 
             // Then
-            val actual = awaitItem().topAppBar
+            val actual = awaitItem().topAppBarState
             assertIs<MailboxTopAppBarState.Data>(actual)
             assertEquals(MailLabel.System(MailLabelId.System.Starred), actual.currentMailLabel)
 

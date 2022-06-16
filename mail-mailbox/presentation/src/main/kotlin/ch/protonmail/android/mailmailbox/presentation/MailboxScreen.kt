@@ -91,7 +91,7 @@ fun MailboxScreen(
         topBar = {
             Column {
                 MailboxTopAppBar(
-                    state = mailboxState.topAppBar,
+                    state = mailboxState.topAppBarState,
                     actions = MailboxTopAppBar.Actions(
                         onOpenMenu = openDrawerMenu,
                         onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
