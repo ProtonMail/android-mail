@@ -35,14 +35,14 @@ sealed interface MailboxState {
         get() = UnreadFilterState.Loading
 
     @Stable
-    data class Data(
+    data class Ready(
         val currentMailLabel: MailLabel?,
         val openItemEffect: Effect<OpenMailboxItemRequest>,
         override val topAppBarState: MailboxTopAppBarState,
         override val unreadFilterState: UnreadFilterState
     ) : MailboxState
 
-    object Loading : MailboxState
+    object Initializing : MailboxState
 
-    object NotLoggedIn : MailboxState
+    object Error : MailboxState
 }

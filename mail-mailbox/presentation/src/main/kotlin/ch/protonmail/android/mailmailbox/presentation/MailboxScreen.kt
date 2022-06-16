@@ -82,7 +82,7 @@ fun MailboxScreen(
     viewModel: MailboxViewModel = hiltViewModel(),
 ) {
     val scope = rememberCoroutineScope()
-    val mailboxState = rememberAsState(viewModel.state, MailboxState.Loading).value
+    val mailboxState = rememberAsState(viewModel.state, MailboxState.Initializing).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val mailboxListState = mailboxListItems.rememberLazyListState()
 
@@ -119,7 +119,7 @@ fun MailboxScreen(
                 .fillMaxSize()
         ) {
             when (mailboxState) {
-                is MailboxState.Data -> {
+                is MailboxState.Ready -> {
 
                     /* TODO!!!!!!!
                     * This "hack" to scroll to top when changing location
@@ -145,8 +145,8 @@ fun MailboxScreen(
                         listState = mailboxListState
                     )
                 }
-                MailboxState.Loading -> ProtonCenteredProgress()
-                MailboxState.NotLoggedIn -> ProtonErrorMessage(stringResource(commonString.x_error_not_logged_in))
+                MailboxState.Initializing -> ProtonCenteredProgress()
+                MailboxState.Error -> ProtonErrorMessage(stringResource(commonString.x_error_not_logged_in))
             }
         }
     }

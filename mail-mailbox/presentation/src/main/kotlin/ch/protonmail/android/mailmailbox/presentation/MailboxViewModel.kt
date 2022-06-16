@@ -90,7 +90,7 @@ class MailboxViewModel @Inject constructor(
         .cachedIn(viewModelScope)
 
     val state: StateFlow<MailboxState> = observeState()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis), MailboxState.Loading)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis), MailboxState.Initializing)
 
     fun submit(action: Action) {
         viewModelScope.launch {
@@ -196,11 +196,11 @@ class MailboxViewModel @Inject constructor(
         unreadFilterState()
     ) { currentMailLabel, openItemDetailEffect, topAppBarState, userId, unreadFilterState ->
         if (userId == null || currentMailLabel == null) {
-            return@combine MailboxState.Loading
+            return@combine MailboxState.Initializing
         }
 
         val newTopAppBarState = topAppBarState.withCurrentMailLabel(currentMailLabel)
-        MailboxState.Data(
+        MailboxState.Ready(
             currentMailLabel = currentMailLabel,
             openItemEffect = openItemDetailEffect,
             topAppBarState = newTopAppBarState,
