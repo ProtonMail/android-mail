@@ -23,7 +23,6 @@ import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.experimental.categories.Category
 
@@ -58,7 +57,6 @@ class MailboxFlowTest : BaseTest() {
      */
     @Test
     @Category(SmokeTest::class)
-    @Ignore("This test will be enabled once 'filter unread messages' feature (MAILANDR-134) is done")
     fun filterUnreadMessages() {
         mailboxRobot.verify { unreadFilterIsDisplayed() }
 

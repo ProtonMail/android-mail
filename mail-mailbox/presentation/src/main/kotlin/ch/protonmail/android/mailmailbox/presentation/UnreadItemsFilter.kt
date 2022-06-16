@@ -27,11 +27,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
+
+const val TEST_TAG_UNREAD_FILTER = "UnreadFilterScreenTestTag"
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -45,7 +48,7 @@ fun UnreadItemsFilter(
         is UnreadFilterState.Loading -> ProtonCenteredProgress(modifier)
         is UnreadFilterState.Data -> {
             FilterChip(
-                modifier = modifier,
+                modifier = modifier.testTag(TEST_TAG_UNREAD_FILTER),
                 colors = chipColors(),
                 selected = state.isFilterEnabled,
                 onClick = {
