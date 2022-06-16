@@ -41,8 +41,8 @@ import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
-import ch.protonmail.android.mailmailbox.presentation.model.FilterUnreadState
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
+import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import ch.protonmail.android.mailpagination.domain.entity.PageFilter
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
@@ -78,7 +78,7 @@ class MailboxViewModel @Inject constructor(
 
     private val primaryUserId = observePrimaryUserId()
 
-    private val isFilterUnreadEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val isUnreadFilterEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     private val openItemDetailEffect: MutableStateFlow<Effect<OpenMailboxItemRequest>> =
         MutableStateFlow(Effect.empty())
@@ -99,8 +99,8 @@ class MailboxViewModel @Inject constructor(
                 Action.ExitSelectionMode -> onCloseSelectionMode()
                 is Action.OpenItemDetails -> onOpenItemDetails(action.item)
                 Action.Refresh -> onRefresh()
-                Action.DisableUnreadFilter -> isFilterUnreadEnabled.emit(false)
-                Action.EnableUnreadFilter -> isFilterUnreadEnabled.emit(true)
+                Action.DisableUnreadFilter -> isUnreadFilterEnabled.emit(false)
+                Action.EnableUnreadFilter -> isUnreadFilterEnabled.emit(true)
             }.exhaustive
         }
     }
@@ -140,11 +140,11 @@ class MailboxViewModel @Inject constructor(
     }
 
     private fun mailboxPageKey(
-        isFilterUnread: Boolean,
+        hasUnreadFilter: Boolean,
         selectedMailLabelId: MailLabelId,
         userId: UserId
     ): MailboxPageKey {
-        val readStatus = if (isFilterUnread) ReadStatus.Unread else ReadStatus.All
+        val readStatus = if (hasUnreadFilter) ReadStatus.Unread else ReadStatus.All
         val pageFilter = PageFilter(
             labelId = selectedMailLabelId.labelId,
             read = readStatus
@@ -156,15 +156,15 @@ class MailboxViewModel @Inject constructor(
         selectedMailLabelId.flow,
         primaryUserId,
         observeViewModeByLocation(),
-        isFilterUnreadEnabled
-    ) { selectedMailLabelId, userId, viewMode, isFilterUnread ->
+        isUnreadFilterEnabled
+    ) { selectedMailLabelId, userId, viewMode, hasUnreadFilter ->
         if (userId == null) {
             return@combine null
         }
 
         Pager(
             config = PagingConfig(PageKey.defaultPageSize),
-            initialKey = mailboxPageKey(isFilterUnread, selectedMailLabelId, userId)
+            initialKey = mailboxPageKey(hasUnreadFilter, selectedMailLabelId, userId)
         ) {
             pagingSourceFactory.create(
                 userIds = listOf(userId),
@@ -176,13 +176,13 @@ class MailboxViewModel @Inject constructor(
         pager?.flow ?: flowOf(PagingData.empty())
     }
 
-    private fun unreadFilterState(): Flow<FilterUnreadState> = combine(
+    private fun unreadFilterState(): Flow<UnreadFilterState> = combine(
         selectedMailLabelId.flow,
-        isFilterUnreadEnabled,
+        isUnreadFilterEnabled,
         observeUnreadCounters()
     ) { mailLabelId, isEnabled, counters ->
         val currentLocationUnreadCount = counters.find { it.labelId == mailLabelId.labelId }?.count ?: 0
-        FilterUnreadState.Data(
+        UnreadFilterState.Data(
             numUnread = currentLocationUnreadCount,
             isFilterEnabled = isEnabled
         )
@@ -204,7 +204,7 @@ class MailboxViewModel @Inject constructor(
             currentMailLabel = currentMailLabel,
             openItemEffect = openItemDetailEffect,
             topAppBar = newTopAppBarState,
-            filterUnread = unreadFilterState
+            unreadFilterState = unreadFilterState
         )
     }
 

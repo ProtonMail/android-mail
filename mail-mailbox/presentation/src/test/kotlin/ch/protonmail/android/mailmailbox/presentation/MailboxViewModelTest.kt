@@ -40,8 +40,8 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.MailboxState.Data
 import ch.protonmail.android.mailmailbox.presentation.MailboxState.Loading
 import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel.Action
-import ch.protonmail.android.mailmailbox.presentation.model.FilterUnreadState
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
+import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -215,9 +215,9 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
 
             // Then
-            val actualFilterUnreadState = awaitItem().filterUnread
-            assertIs<FilterUnreadState.Data>(actualFilterUnreadState)
-            assertEquals(3, actualFilterUnreadState.numUnread)
+            val actualUnreadFilterState = awaitItem().unreadFilterState
+            assertIs<UnreadFilterState.Data>(actualUnreadFilterState)
+            assertEquals(3, actualUnreadFilterState.numUnread)
         }
     }
 
@@ -302,27 +302,27 @@ class MailboxViewModelTest {
         }
 
     @Test
-    fun `enableUnreadFilter action emits a new state with FilterUnreadState enabled`() = runTest {
+    fun `enableUnreadFilter action emits a new state with UnreadFilterState enabled`() = runTest {
         // When
         mailboxViewModel.submit(Action.EnableUnreadFilter)
         mailboxViewModel.state.test {
 
             // Then
-            val expected = FilterUnreadState.Data(5, true)
-            val actual = awaitItem().filterUnread
+            val expected = UnreadFilterState.Data(5, true)
+            val actual = awaitItem().unreadFilterState
             assertEquals(expected, actual)
         }
     }
 
     @Test
-    fun `disableUnreadFilter action emits a new state with FilterUnreadState disabled`() = runTest {
+    fun `disableUnreadFilter action emits a new state with UnreadFilterState disabled`() = runTest {
         // When
         mailboxViewModel.submit(Action.DisableUnreadFilter)
         mailboxViewModel.state.test {
 
             // Then
-            val expected = FilterUnreadState.Data(5, false)
-            val actual = awaitItem().filterUnread
+            val expected = UnreadFilterState.Data(5, false)
+            val actual = awaitItem().unreadFilterState
             assertEquals(expected, actual)
         }
     }

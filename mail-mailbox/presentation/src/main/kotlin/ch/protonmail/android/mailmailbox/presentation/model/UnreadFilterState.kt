@@ -18,13 +18,13 @@
 
 package ch.protonmail.android.mailmailbox.presentation.model
 
-sealed interface FilterUnreadState {
+sealed interface UnreadFilterState {
 
     data class Data(
         val numUnread: Int,
         val isFilterEnabled: Boolean
-    ) : FilterUnreadState
+    ) : UnreadFilterState
 
-    object Loading : FilterUnreadState
+    object Loading : UnreadFilterState
 }
 

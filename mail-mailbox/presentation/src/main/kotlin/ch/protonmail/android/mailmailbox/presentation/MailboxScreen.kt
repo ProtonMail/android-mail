@@ -58,7 +58,7 @@ import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.presentation.model.FilterUnreadState
+import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -114,7 +114,7 @@ fun MailboxScreen(
 
                 MailboxStickyHeader(
                     modifier = Modifier,
-                    state = mailboxState.filterUnread,
+                    state = mailboxState.unreadFilterState,
                     onFilterEnabled = { viewModel.submit(MailboxViewModel.Action.EnableUnreadFilter) },
                     onFilterDisabled = { viewModel.submit(MailboxViewModel.Action.DisableUnreadFilter) }
                 )
@@ -146,7 +146,7 @@ fun MailboxScreen(
 @Composable
 private fun MailboxStickyHeader(
     modifier: Modifier = Modifier,
-    state: FilterUnreadState,
+    state: UnreadFilterState,
     onFilterEnabled: () -> Unit,
     onFilterDisabled: () -> Unit
 ) {
@@ -156,7 +156,7 @@ private fun MailboxStickyHeader(
             .padding(horizontal = ProtonDimens.SmallSpacing),
         horizontalArrangement = Arrangement.End
     ) {
-        FilterUnreadItemsButton(
+        UnreadItemsFilter(
             modifier = Modifier,
             state = state,
             onFilterEnabled = onFilterEnabled,

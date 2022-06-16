@@ -29,21 +29,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import ch.protonmail.android.mailmailbox.presentation.model.FilterUnreadState
+import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun FilterUnreadItemsButton(
+fun UnreadItemsFilter(
     modifier: Modifier = Modifier,
-    state: FilterUnreadState,
+    state: UnreadFilterState,
     onFilterEnabled: () -> Unit,
     onFilterDisabled: () -> Unit
 ) {
     when (state) {
-        is FilterUnreadState.Loading -> ProtonCenteredProgress(modifier)
-        is FilterUnreadState.Data -> {
+        is UnreadFilterState.Loading -> ProtonCenteredProgress(modifier)
+        is UnreadFilterState.Data -> {
             FilterChip(
                 modifier = modifier,
                 colors = chipColors(),
@@ -77,8 +77,8 @@ private fun chipColors() = ChipDefaults.filterChipColors(
 @Preview
 @Composable
 fun InactiveUnreadFilterButtonPreview() {
-    FilterUnreadItemsButton(
-        state = FilterUnreadState.Data(4, false),
+    UnreadItemsFilter(
+        state = UnreadFilterState.Data(4, false),
         onFilterEnabled = {},
         onFilterDisabled = {}
     )
@@ -87,8 +87,8 @@ fun InactiveUnreadFilterButtonPreview() {
 @Preview
 @Composable
 fun ActiveUnreadFilterButtonPreview() {
-    FilterUnreadItemsButton(
-        state = FilterUnreadState.Data(4, true),
+    UnreadItemsFilter(
+        state = UnreadFilterState.Data(4, true),
         onFilterEnabled = {},
         onFilterDisabled = {}
     )
