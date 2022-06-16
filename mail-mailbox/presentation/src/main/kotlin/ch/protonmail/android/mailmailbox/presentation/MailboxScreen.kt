@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -149,40 +148,33 @@ fun MailboxScreen(
                 )
             }
         }
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(it)
-                .background(ProtonTheme.colors.backgroundNorm)
-                .fillMaxSize()
-        ) {
-            when (val mailboxListState = mailboxState.mailboxListState) {
-                is MailboxListState.Data -> {
+    ) { paddingValues ->
+        when (val mailboxListState = mailboxState.mailboxListState) {
+            is MailboxListState.Data -> {
 
-                    /* TODO!!!!!!!
-                    * This "hack" to scroll to top when changing location
-                    * breaks when moving it from the top of this function to here
-                    * (which was done as part of improving `MailboxState` encapsulation)
-                    */
-                    LaunchedEffect(mailboxListState.currentMailLabel) {
-                        listViewState.animateScrollToItem(0)
-                    }
-
-                    ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
-                        navigateToMailboxItem(itemId)
-                    }
-
-                    MailboxList(
-                        navigateToMailboxItem = onNavigateToMailboxItem,
-                        onRefresh = onRefreshList,
-                        onOpenSelectionMode = onOpenSelectionMode,
-                        modifier = Modifier,
-                        items = mailboxListItems,
-                        listState = listViewState
-                    )
+                /* TODO!!!!!!!
+                * This "hack" to scroll to top when changing location
+                * breaks when moving it from the top of this function to here
+                * (which was done as part of improving `MailboxState` encapsulation)
+                */
+                LaunchedEffect(mailboxListState.currentMailLabel) {
+                    listViewState.animateScrollToItem(0)
                 }
-                MailboxListState.Loading -> ProtonCenteredProgress()
+
+                ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
+                    navigateToMailboxItem(itemId)
+                }
+
+                MailboxList(
+                    modifier = Modifier.padding(paddingValues),
+                    navigateToMailboxItem = onNavigateToMailboxItem,
+                    onRefresh = onRefreshList,
+                    onOpenSelectionMode = onOpenSelectionMode,
+                    items = mailboxListItems,
+                    listState = listViewState
+                )
             }
+            MailboxListState.Loading -> ProtonCenteredProgress(Modifier.padding(paddingValues))
         }
     }
 }
@@ -212,10 +204,10 @@ private fun MailboxStickyHeader(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MailboxList(
+    modifier: Modifier = Modifier,
     navigateToMailboxItem: (MailboxItem) -> Unit,
     onRefresh: () -> Unit,
     onOpenSelectionMode: () -> Unit,
-    modifier: Modifier = Modifier,
     items: LazyPagingItems<MailboxItem>,
     listState: LazyListState
 ) {
