@@ -19,9 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.maillabel.domain.model.MailLabel
-import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.presentation.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 
@@ -34,10 +32,12 @@ sealed interface MailboxState {
     val unreadFilterState: UnreadFilterState
         get() = UnreadFilterState.Loading
 
+    val mailboxListState: MailboxListState
+        get() = MailboxListState.Loading
+
     @Stable
     data class Ready(
-        val currentMailLabel: MailLabel?,
-        val openItemEffect: Effect<OpenMailboxItemRequest>,
+        override val mailboxListState: MailboxListState,
         override val topAppBarState: MailboxTopAppBarState,
         override val unreadFilterState: UnreadFilterState
     ) : MailboxState

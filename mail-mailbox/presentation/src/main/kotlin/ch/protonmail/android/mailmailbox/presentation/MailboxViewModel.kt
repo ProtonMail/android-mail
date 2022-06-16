@@ -41,6 +41,7 @@ import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.presentation.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
@@ -200,9 +201,12 @@ class MailboxViewModel @Inject constructor(
         }
 
         val newTopAppBarState = topAppBarState.withCurrentMailLabel(currentMailLabel)
-        MailboxState.Ready(
+        val mailboxListState = MailboxListState.Data(
             currentMailLabel = currentMailLabel,
-            openItemEffect = openItemDetailEffect,
+            openItemEffect = openItemDetailEffect
+        )
+        MailboxState.Ready(
+            mailboxListState = mailboxListState,
             topAppBarState = newTopAppBarState,
             unreadFilterState = unreadFilterState
         )

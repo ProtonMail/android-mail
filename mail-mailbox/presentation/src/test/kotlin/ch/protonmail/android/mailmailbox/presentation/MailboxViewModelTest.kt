@@ -40,6 +40,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.MailboxState.Initializing
 import ch.protonmail.android.mailmailbox.presentation.MailboxState.Ready
 import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel.Action
+import ch.protonmail.android.mailmailbox.presentation.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
@@ -152,9 +153,9 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
 
             // Then
-            val actual = awaitItem()
-            assertIs<Ready>(actual)
-            assertEquals(MailLabel.System(Archive), actual.currentMailLabel)
+            val actual = assertIs<Ready>(awaitItem())
+            val mailboxListState = assertIs<MailboxListState.Data>(actual.mailboxListState)
+            assertEquals(MailLabel.System(Archive), mailboxListState.currentMailLabel)
         }
     }
 
@@ -203,9 +204,9 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
 
             // Then
-            val actual = awaitItem()
-            assertIs<Ready>(actual)
-            assertEquals(Archive.toMailLabel(), actual.currentMailLabel)
+            val actual = assertIs<Ready>(awaitItem())
+            val mailboxListState = assertIs<MailboxListState.Data>(actual.mailboxListState)
+            assertEquals(Archive.toMailLabel(), mailboxListState.currentMailLabel)
         }
     }
 
@@ -284,9 +285,9 @@ class MailboxViewModelTest {
 
                 // Then
                 val expected = OpenMailboxItemRequest(MailboxItemId(item.id), Message)
-                val actual = awaitItem()
-                assertIs<Ready>(actual)
-                assertEquals(expected, actual.openItemEffect.consume())
+                val actual = assertIs<Ready>(awaitItem())
+                val mailboxListState = assertIs<MailboxListState.Data>(actual.mailboxListState)
+                assertEquals(expected, mailboxListState.openItemEffect.consume())
             }
         }
 
@@ -304,9 +305,9 @@ class MailboxViewModelTest {
 
                 // Then
                 val expected = OpenMailboxItemRequest(MailboxItemId(item.id), Conversation)
-                val actual = awaitItem()
-                assertIs<Ready>(actual)
-                assertEquals(expected, actual.openItemEffect.consume())
+                val actual = assertIs<Ready>(awaitItem())
+                val mailboxListState = assertIs<MailboxListState.Data>(actual.mailboxListState)
+                assertEquals(expected, mailboxListState.openItemEffect.consume())
             }
         }
 
@@ -324,9 +325,9 @@ class MailboxViewModelTest {
 
                 // Then
                 val expected = OpenMailboxItemRequest(MailboxItemId(item.id), Conversation)
-                val actual = awaitItem()
-                assertIs<Ready>(actual)
-                assertEquals(expected, actual.openItemEffect.consume())
+                val actual = assertIs<Ready>(awaitItem())
+                val mailboxListState = assertIs<MailboxListState.Data>(actual.mailboxListState)
+                assertEquals(expected, mailboxListState.openItemEffect.consume())
             }
         }
 

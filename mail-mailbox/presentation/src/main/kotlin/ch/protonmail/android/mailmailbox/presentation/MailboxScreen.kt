@@ -57,6 +57,7 @@ import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.presentation.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
@@ -84,7 +85,7 @@ fun MailboxScreen(
     val scope = rememberCoroutineScope()
     val mailboxState = rememberAsState(viewModel.state, MailboxState.Initializing).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
-    val mailboxListState = mailboxListItems.rememberLazyListState()
+    val listViewState = mailboxListItems.rememberLazyListState()
 
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_MAILBOX_SCREEN),
@@ -96,7 +97,7 @@ fun MailboxScreen(
                         onOpenMenu = openDrawerMenu,
                         onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
                         onExitSearchMode = {},
-                        onTitleClick = { scope.launch { mailboxListState.animateScrollToItem(0) } },
+                        onTitleClick = { scope.launch { listViewState.animateScrollToItem(0) } },
                         onEnterSearchMode = {},
                         onSearch = {},
                         onOpenCompose = {}
@@ -121,17 +122,20 @@ fun MailboxScreen(
             when (mailboxState) {
                 is MailboxState.Ready -> {
 
-                    /* TODO!!!!!!!
-                    * This "hack" to scroll to top when changing location
-                    * breaks when moving it from the top of this function to here
-                    * (which was done as part of improving `MailboxState` encapsulation)
-                    */
-                    LaunchedEffect(mailboxState.currentMailLabel) {
-                        mailboxListState.animateScrollToItem(0)
-                    }
+                    val mailboxListState = mailboxState.mailboxListState
+                    if (mailboxListState is MailboxListState.Data) {
+                        /* TODO!!!!!!!
+                        * This "hack" to scroll to top when changing location
+                        * breaks when moving it from the top of this function to here
+                        * (which was done as part of improving `MailboxState` encapsulation)
+                        */
+                        LaunchedEffect(mailboxListState.currentMailLabel) {
+                            listViewState.animateScrollToItem(0)
+                        }
 
-                    ConsumableLaunchedEffect(mailboxState.openItemEffect) { itemId ->
-                        navigateToMailboxItem(itemId)
+                        ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
+                            navigateToMailboxItem(itemId)
+                        }
                     }
 
                     MailboxList(
@@ -142,7 +146,7 @@ fun MailboxScreen(
                         onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
                         modifier = Modifier,
                         items = mailboxListItems,
-                        listState = mailboxListState
+                        listState = listViewState
                     )
                 }
                 MailboxState.Initializing -> ProtonCenteredProgress()
