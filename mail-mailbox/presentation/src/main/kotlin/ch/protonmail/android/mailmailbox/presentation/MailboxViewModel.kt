@@ -93,10 +93,10 @@ class MailboxViewModel @Inject constructor(
                 val currentMailLabel = mailLabels.allById[currentMailLabelId]
 
                 if (userId == null) {
-                    return@combine // TODO no user logged in?! handle error
+                    return@combine
                 }
                 if (currentMailLabel == null) {
-                    return@combine // TODO no currently selected label?
+                    return@combine
                 }
 
                 val count = unreadCounters.find { it.labelId == currentMailLabelId.labelId }?.count ?: 0
@@ -147,7 +147,7 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun onCloseSelectionMode() {
         when (val currentState = state.value.topAppBarState) {
-            is MailboxTopAppBarState.Loading -> return // TODO is this illegal?
+            is MailboxTopAppBarState.Loading -> return
             is MailboxTopAppBarState.Data -> _mutableState.emit(
                 state.value.copy(topAppBarState = currentState.toDefaultMode())
             )
@@ -173,7 +173,7 @@ class MailboxViewModel @Inject constructor(
             }
         }
         when (val currentListState = state.value.mailboxListState) {
-            is MailboxListState.Loading -> throw IllegalStateException("Can't open item while list is loading") // TODO any better way around?
+            is MailboxListState.Loading -> throw IllegalStateException("Can't open item while list is loading")
             is MailboxListState.Data -> _mutableState.emit(
                 state.value.copy(
                     mailboxListState = currentListState.copy(openItemEffect = Effect.of(request))

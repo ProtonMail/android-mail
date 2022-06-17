@@ -144,11 +144,6 @@ fun MailboxScreen(
         when (val mailboxListState = mailboxState.mailboxListState) {
             is MailboxListState.Data -> {
 
-                /* TODO!!!!!!!
-                * This "hack" to scroll to top when changing location
-                * breaks when moving it from the top of this function to here
-                * (which was done as part of improving `MailboxState` encapsulation)
-                */
                 LaunchedEffect(mailboxListState.currentMailLabel) {
                     listViewState.animateScrollToItem(0)
                 }
