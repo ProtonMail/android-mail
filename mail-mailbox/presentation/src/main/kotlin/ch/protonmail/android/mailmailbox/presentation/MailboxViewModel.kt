@@ -100,11 +100,11 @@ class MailboxViewModel @Inject constructor(
                 }
 
                 val count = unreadCounters.find { it.labelId == currentMailLabelId.labelId }?.count ?: 0
-
                 val unreadFilterState = when (val currentState = state.value.unreadFilterState) {
                     is UnreadFilterState.Loading -> UnreadFilterState.Data(count, false)
                     is UnreadFilterState.Data -> currentState.copy(count)
                 }
+
                 val topAppBarState = when (val currentState = state.value.topAppBarState) {
                     MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel)
                     is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel)
@@ -128,20 +128,21 @@ class MailboxViewModel @Inject constructor(
                 is Action.ExitSelectionMode -> onCloseSelectionMode()
                 is Action.OpenItemDetails -> onOpenItemDetails(action.item)
                 is Action.Refresh -> onRefresh()
-                is Action.DisableUnreadFilter -> toggleUnreadFilter(false)
-                is Action.EnableUnreadFilter -> toggleUnreadFilter(true)
+                is Action.DisableUnreadFilter -> toggleUnreadFilter(isEnabled = false)
+                is Action.EnableUnreadFilter -> toggleUnreadFilter(isEnabled = true)
             }.exhaustive
         }
     }
 
-    private suspend fun toggleUnreadFilter(enabled: Boolean) {
+    private suspend fun toggleUnreadFilter(isEnabled: Boolean) {
         when (val currentState = state.value.unreadFilterState) {
             is UnreadFilterState.Loading -> return
             is UnreadFilterState.Data -> _mutableState.emit(
-                state.value.copy(unreadFilterState = currentState.copy(isFilterEnabled = enabled))
+                state.value.copy(
+                    unreadFilterState = currentState.copy(isFilterEnabled = isEnabled)
+                )
             )
         }
-
     }
 
     private suspend fun onCloseSelectionMode() {
@@ -189,19 +190,6 @@ class MailboxViewModel @Inject constructor(
         )
     }
 
-    private fun mailboxPageKey(
-        hasUnreadFilter: Boolean,
-        selectedMailLabelId: MailLabelId,
-        userId: UserId
-    ): MailboxPageKey {
-        val readStatus = if (hasUnreadFilter) ReadStatus.Unread else ReadStatus.All
-        val pageFilter = PageFilter(
-            labelId = selectedMailLabelId.labelId,
-            read = readStatus
-        )
-        return MailboxPageKey(userIds = listOf(userId), pageKey = PageKey(pageFilter))
-    }
-
     private fun observePagingData(): Flow<PagingData<MailboxItem>> = combine(
         primaryUserId,
         state,
@@ -222,7 +210,7 @@ class MailboxViewModel @Inject constructor(
 
         Pager(
             config = PagingConfig(PageKey.defaultPageSize),
-            initialKey = mailboxPageKey(unreadFilterEnabled, selectedMailLabelId, userId)
+            initialKey = buildMailboxPageKey(unreadFilterEnabled, selectedMailLabelId, userId)
         ) {
             pagingSourceFactory.create(
                 userIds = listOf(userId),
@@ -234,10 +222,27 @@ class MailboxViewModel @Inject constructor(
         pager?.flow ?: flowOf(PagingData.empty())
     }
 
+    private fun buildMailboxPageKey(
+        isUnreadFilterEnabled: Boolean,
+        selectedMailLabelId: MailLabelId,
+        userId: UserId
+    ): MailboxPageKey = MailboxPageKey(
+        userIds = listOf(userId),
+        pageKey = PageKey(
+            PageFilter(
+                labelId = selectedMailLabelId.labelId,
+                read = if (isUnreadFilterEnabled) ReadStatus.Unread else ReadStatus.All
+            )
+        )
+    )
+
 
     private fun observeUnreadCounters(): Flow<List<UnreadCounter>> = primaryUserId.flatMapLatest { userId ->
-        if (userId == null) flowOf(emptyList())
-        else observeUnreadCounters(userId)
+        if (userId == null) {
+            flowOf(emptyList())
+        } else {
+            observeUnreadCounters(userId)
+        }
     }
 
     private fun observeViewModeByLocation(): Flow<ViewMode> = primaryUserId.flatMapLatest { userId ->
@@ -267,7 +272,6 @@ class MailboxViewModel @Inject constructor(
     }
 
     sealed interface Action {
-
         object EnterSelectionMode : Action
         object ExitSelectionMode : Action
         data class OpenItemDetails(val item: MailboxItem) : Action

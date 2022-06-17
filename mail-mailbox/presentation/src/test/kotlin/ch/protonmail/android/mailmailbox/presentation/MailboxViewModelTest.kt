@@ -333,9 +333,9 @@ class MailboxViewModelTest {
 
     @Test
     fun `disableUnreadFilter action emits a new state with UnreadFilterState disabled`() = runTest {
-        // When
-        mailboxViewModel.submit(Action.DisableUnreadFilter)
         mailboxViewModel.state.test {
+            // When
+            mailboxViewModel.submit(Action.DisableUnreadFilter)
 
             // Then
             val expected = UnreadFilterState.Data(5, false)
