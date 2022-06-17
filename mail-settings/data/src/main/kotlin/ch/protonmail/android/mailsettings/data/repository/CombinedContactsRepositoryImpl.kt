@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.data.repository
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
@@ -40,4 +41,9 @@ class CombinedContactsRepositoryImpl @Inject constructor(
             CombinedContactsPreference(hasCombinedContacts)
         }
 
+    override suspend fun save(combinedContactsPreference: CombinedContactsPreference) {
+        dataStoreProvider.combinedContactsDataStore.edit { mutablePreferences ->
+            mutablePreferences[hasCombinedContactsKey] = combinedContactsPreference.isEnabled
+        }
+    }
 }

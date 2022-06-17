@@ -22,5 +22,8 @@ import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreferenc
 import kotlinx.coroutines.flow.Flow
 
 interface CombinedContactsRepository {
+
     fun observe(): Flow<CombinedContactsPreference>
+
+    suspend fun save(combinedContactsPreference: CombinedContactsPreference)
 }

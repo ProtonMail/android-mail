@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import app.cash.turbine.test
@@ -25,29 +26,27 @@ import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.spyk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
 
 class CombinedContactsRepositoryImplTest {
 
     private val preferences = mockk<Preferences>()
+    private val combinedContactsDataStoreSpy = spyk<DataStore<Preferences>> {
+        every { this@spyk.data } returns flowOf(preferences)
+    }
     private val dataStoreProvider = mockk<MailSettingsDataStoreProvider> {
-        every { this@mockk.combinedContactsDataStore } returns mockk dataStore@{
-            every { this@dataStore.data } returns flowOf(preferences)
-        }
+        every { this@mockk.combinedContactsDataStore } returns combinedContactsDataStoreSpy
     }
 
-    private lateinit var combinedContactsRepository: CombinedContactsRepository
-
-    @Before
-    fun setUp() {
-        combinedContactsRepository = CombinedContactsRepositoryImpl(dataStoreProvider)
-    }
+    private val combinedContactsRepository: CombinedContactsRepository =
+        CombinedContactsRepositoryImpl(dataStoreProvider)
 
     @Test
     fun `returns false when no preference is stored locally`() = runTest {
@@ -71,5 +70,17 @@ class CombinedContactsRepositoryImplTest {
             assertEquals(CombinedContactsPreference(true), awaitItem())
             awaitComplete()
         }
+    }
+
+    @Test
+    fun `should save combined contacts preference`() = runTest {
+        // Given
+        val combinedContactsPreference = CombinedContactsPreference(isEnabled = true)
+
+        // When
+        combinedContactsRepository.save(combinedContactsPreference)
+
+        // Then
+        coVerify { combinedContactsDataStoreSpy.updateData(any()) }
     }
 }
