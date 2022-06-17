@@ -23,13 +23,12 @@ import me.proton.core.util.kotlin.EMPTY_STRING
 
 sealed interface MailboxTopAppBarState {
 
-    fun withCurrentMailLabel(currentMailLabel: MailLabel) =
-        when (this) {
-            Loading -> Data.DefaultMode(currentMailLabel = currentMailLabel)
-            is Data.DefaultMode -> copy(currentMailLabel = currentMailLabel)
-            is Data.SearchMode -> copy(currentMailLabel = currentMailLabel)
-            is Data.SelectionMode -> copy(currentMailLabel = currentMailLabel)
-        }
+    fun with(currentMailLabel: MailLabel) = when (this) {
+        Loading -> Data.DefaultMode(currentMailLabel = currentMailLabel)
+        is Data.DefaultMode -> copy(currentMailLabel = currentMailLabel)
+        is Data.SearchMode -> copy(currentMailLabel = currentMailLabel)
+        is Data.SelectionMode -> copy(currentMailLabel = currentMailLabel)
+    }
 
     object Loading : MailboxTopAppBarState
 

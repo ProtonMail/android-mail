@@ -51,16 +51,15 @@ import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.util.kotlin.exhaustive
@@ -81,12 +80,6 @@ class MailboxViewModel @Inject constructor(
 
     private val isUnreadFilterEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    private val openItemDetailEffect: MutableStateFlow<Effect<OpenMailboxItemRequest>> =
-        MutableStateFlow(Effect.empty())
-
-    private val topAppBarState: MutableStateFlow<MailboxTopAppBarState> =
-        MutableStateFlow(MailboxTopAppBarState.Loading)
-
     val items: Flow<PagingData<MailboxItem>> = observePagingData()
         .cachedIn(viewModelScope)
 
@@ -95,8 +88,48 @@ class MailboxViewModel @Inject constructor(
         topAppBarState = MailboxTopAppBarState.Loading,
         unreadFilterState = UnreadFilterState.Loading
     )
-    val state: StateFlow<MailboxState> = observeState()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis), initialState)
+
+    private val _mutableState = MutableStateFlow(initialState)
+    val state: StateFlow<MailboxState> = _mutableState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            combine(
+                primaryUserId,
+                selectedMailLabelId.flow,
+                observeUnreadCounters(),
+                observeMailLabels()
+            ) { userId, currentMailLabelId, unreadCounters, mailLabels ->
+                val currentMailLabel = mailLabels.allById[currentMailLabelId]
+
+                if (userId == null) {
+                    return@combine // TODO no user logged in?! handle error
+                }
+                if (currentMailLabel == null) {
+                    return@combine // TODO no currently selected label?
+                }
+
+                val count = unreadCounters.find { it.labelId == currentMailLabelId.labelId }?.count ?: 0
+
+                val unreadFilterState = when (val currentState = state.value.unreadFilterState) {
+                    is UnreadFilterState.Loading -> UnreadFilterState.Data(count, false)
+                    is UnreadFilterState.Data -> currentState.copy(count)
+                }
+                val topAppBarState = when (val currentState = state.value.topAppBarState) {
+                    MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel)
+                    is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel)
+                }
+
+                val mailboxListState = when (val currentState = state.value.mailboxListState) {
+                    is MailboxListState.Loading -> MailboxListState.Data(currentMailLabel, Effect.empty())
+                    is MailboxListState.Data -> currentState.copy(currentMailLabel = currentMailLabel)
+                }
+
+                _mutableState.emit(MailboxState(mailboxListState, topAppBarState, unreadFilterState))
+
+            }.collect()
+        }
+    }
 
     fun submit(action: Action) {
         viewModelScope.launch {
@@ -105,23 +138,39 @@ class MailboxViewModel @Inject constructor(
                 Action.ExitSelectionMode -> onCloseSelectionMode()
                 is Action.OpenItemDetails -> onOpenItemDetails(action.item)
                 Action.Refresh -> onRefresh()
-                Action.DisableUnreadFilter -> isUnreadFilterEnabled.emit(false)
-                Action.EnableUnreadFilter -> isUnreadFilterEnabled.emit(true)
+                Action.DisableUnreadFilter -> toggleUnreadFilter(false)
+                Action.EnableUnreadFilter -> toggleUnreadFilter(true)
             }.exhaustive
         }
     }
 
+    private suspend fun toggleUnreadFilter(enabled: Boolean) {
+        isUnreadFilterEnabled.emit(enabled)
+
+        when (val currentState = state.value.unreadFilterState) {
+            is UnreadFilterState.Loading -> return
+            is UnreadFilterState.Data -> _mutableState.emit(
+                state.value.copy(unreadFilterState = currentState.copy(isFilterEnabled = enabled))
+            )
+        }
+
+    }
+
     private suspend fun onCloseSelectionMode() {
-        when (val currentTopBarState = state.value.topAppBarState) {
-            MailboxTopAppBarState.Loading -> return
-            is MailboxTopAppBarState.Data -> topAppBarState.emit(currentTopBarState.toDefaultMode())
+        when (val currentState = state.value.topAppBarState) {
+            is MailboxTopAppBarState.Loading -> return // TODO is this illegal?
+            is MailboxTopAppBarState.Data -> _mutableState.emit(
+                state.value.copy(topAppBarState = currentState.toDefaultMode())
+            )
         }
     }
 
     private suspend fun onOpenSelectionMode() {
-        when (val currentTopBarState = state.value.topAppBarState) {
-            MailboxTopAppBarState.Loading -> return
-            is MailboxTopAppBarState.Data -> topAppBarState.emit(currentTopBarState.toSelectionMode())
+        when (val currentState = state.value.topAppBarState) {
+            is MailboxTopAppBarState.Loading -> return
+            is MailboxTopAppBarState.Data -> _mutableState.emit(
+                state.value.copy(topAppBarState = currentState.toSelectionMode())
+            )
         }
     }
 
@@ -134,7 +183,14 @@ class MailboxViewModel @Inject constructor(
                 OpenMailboxItemRequest(MailboxItemId(item.id), item.type)
             }
         }
-        openItemDetailEffect.emit(Effect.of(request))
+        when (val currentListState = state.value.mailboxListState) {
+            is MailboxListState.Loading -> throw IllegalStateException("Can't open item while list is loading") // TODO any better way around?
+            is MailboxListState.Data -> _mutableState.emit(
+                state.value.copy(
+                    mailboxListState = currentListState.copy(openItemEffect = Effect.of(request))
+                )
+            )
+        }
     }
 
     private suspend fun onRefresh() {
@@ -158,6 +214,7 @@ class MailboxViewModel @Inject constructor(
         return MailboxPageKey(userIds = listOf(userId), pageKey = PageKey(pageFilter))
     }
 
+    // TODO can this be moved to observing the state only?
     private fun observePagingData(): Flow<PagingData<MailboxItem>> = combine(
         selectedMailLabelId.flow,
         primaryUserId,
@@ -182,40 +239,6 @@ class MailboxViewModel @Inject constructor(
         pager?.flow ?: flowOf(PagingData.empty())
     }
 
-    private fun unreadFilterState(): Flow<UnreadFilterState> = combine(
-        selectedMailLabelId.flow,
-        isUnreadFilterEnabled,
-        observeUnreadCounters()
-    ) { mailLabelId, isEnabled, counters ->
-        val currentLocationUnreadCount = counters.find { it.labelId == mailLabelId.labelId }?.count ?: 0
-        UnreadFilterState.Data(
-            numUnread = currentLocationUnreadCount,
-            isFilterEnabled = isEnabled
-        )
-    }
-
-    private fun observeState() = combine(
-        observeCurrentMailLabel(),
-        openItemDetailEffect,
-        topAppBarState,
-        primaryUserId,
-        unreadFilterState()
-    ) { currentMailLabel, openItemDetailEffect, topAppBarState, userId, unreadFilterState ->
-        if (userId == null || currentMailLabel == null) {
-            return@combine initialState
-        }
-
-        val newTopAppBarState = topAppBarState.withCurrentMailLabel(currentMailLabel)
-        val mailboxListState = MailboxListState.Data(
-            currentMailLabel = currentMailLabel,
-            openItemEffect = openItemDetailEffect
-        )
-        MailboxState(
-            mailboxListState = mailboxListState,
-            topAppBarState = newTopAppBarState,
-            unreadFilterState = unreadFilterState
-        )
-    }
 
     private fun observeUnreadCounters(): Flow<List<UnreadCounter>> = primaryUserId.flatMapLatest { userId ->
         if (userId == null) flowOf(emptyList())
@@ -229,11 +252,6 @@ class MailboxViewModel @Inject constructor(
             selectedMailLabelId.flow.flatMapLatest { observeCurrentViewMode(userId, it) }
         }
     }
-
-    private fun observeCurrentMailLabel() = combine(
-        selectedMailLabelId.flow,
-        observeMailLabels()
-    ) { selectedMailLabelId, primaryMailLabels -> primaryMailLabels.allById[selectedMailLabelId] }
 
     private fun observeMailLabels() = primaryUserId.flatMapLatest { userId ->
         if (userId == null) {

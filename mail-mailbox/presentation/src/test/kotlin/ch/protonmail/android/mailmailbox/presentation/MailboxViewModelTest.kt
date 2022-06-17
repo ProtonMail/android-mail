@@ -238,10 +238,6 @@ class MailboxViewModelTest {
             // Then
             val secondUnreadFilterState = assertIs<MailboxTopAppBarState.Data>(awaitItem().topAppBarState)
             assertEquals(MailLabel.System(MailLabelId.System.Starred), secondUnreadFilterState.currentMailLabel)
-
-            // Due to the current structure of state, when location is changed multiple
-            // multiple emissions of the same state are caused.
-            cancelAndIgnoreRemainingEvents()
         }
     }
 
