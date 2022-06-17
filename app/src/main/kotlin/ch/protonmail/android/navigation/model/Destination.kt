@@ -44,15 +44,15 @@ sealed class Destination(val route: String) {
 
         object Settings : Destination("settings")
         object AccountSettings : Destination("settings/account")
+        object CombinedContactsSettings : Destination("settings/combinedContacts")
         object ConversationModeSettings : Destination("settings/account/conversationMode")
-        object ThemeSettings : Destination("settings/theme")
         object LanguageSettings : Destination("settings/appLanguage")
-        object ReportBug : Destination("report")
         object SwipeActionsSettings : Destination("settings/swipeActions")
         object EditSwipeActionSettings : Destination("settings/swipeActions/edit/${SWIPE_DIRECTION_KEY.wrap()}") {
             operator fun invoke(direction: SwipeActionDirection) =
                 route.replace(SWIPE_DIRECTION_KEY.wrap(), direction.name)
         }
+        object ThemeSettings : Destination("settings/theme")
     }
 
     object Dialog {

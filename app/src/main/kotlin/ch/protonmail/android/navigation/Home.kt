@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.route.addAccountSettings
+import ch.protonmail.android.navigation.route.addCombinedContactsSetting
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
@@ -81,6 +82,7 @@ fun Home(launcherActions: Launcher.Actions) {
                 addSettings(navController)
                 // settings
                 addAccountSettings(navController, launcherActions)
+                addCombinedContactsSetting(navController)
                 addConversationModeSettings(navController)
                 addEditSwipeActionsSettings(navController)
                 addLanguageSettings(navController)

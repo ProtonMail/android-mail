@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
+import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
@@ -51,6 +52,15 @@ fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launche
                 onLocalStorageClick = { Timber.i("Local storage setting clicked") },
                 onSnoozeNotificationsClick = { Timber.i("Snooze notification setting clicked") }
             )
+        )
+    }
+}
+
+internal fun NavGraphBuilder.addCombinedContactsSetting(navController: NavHostController) {
+    composable(route = Screen.CombinedContactsSettings.route) {
+        CombinedContactsSettingScreen(
+            modifier = Modifier,
+            onBackClick = { navController.popBackStack() }
         )
     }
 }

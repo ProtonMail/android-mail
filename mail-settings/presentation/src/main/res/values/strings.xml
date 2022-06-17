@@ -31,6 +31,7 @@
     <string name="mail_settings_app_language">App language</string>
     <string name="mail_settings_combined_contacts">Combined contacts</string>
     <string name="mail_settings_swipe_actions">Swipe actions</string>
+    <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.</string>
 
     <!-- Theme settings -->
     <string name="mail_settings_system_default">System default</string>

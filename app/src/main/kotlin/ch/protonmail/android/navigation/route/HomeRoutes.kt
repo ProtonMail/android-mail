@@ -106,7 +106,7 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
                     navController.navigate(Destination.Screen.LanguageSettings.route)
                 },
                 onCombinedContactsClick = {
-                    Timber.i("Combined contacts setting clicked")
+                    navController.navigate(Destination.Screen.CombinedContactsSettings.route)
                 },
                 onSwipeActionsClick = {
                     Timber.d("Swipe actions setting clicked")
