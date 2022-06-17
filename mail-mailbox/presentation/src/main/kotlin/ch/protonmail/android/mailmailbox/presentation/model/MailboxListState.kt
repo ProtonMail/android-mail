@@ -25,7 +25,7 @@ import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 sealed interface MailboxListState {
 
     data class Data(
-        val currentMailLabel: MailLabel?,
+        val currentMailLabel: MailLabel,
         val openItemEffect: Effect<OpenMailboxItemRequest>,
     ) : MailboxListState
 

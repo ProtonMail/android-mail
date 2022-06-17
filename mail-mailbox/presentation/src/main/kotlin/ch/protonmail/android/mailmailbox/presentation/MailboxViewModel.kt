@@ -77,20 +77,10 @@ class MailboxViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
-
-    private val isUnreadFilterEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
-
-    val items: Flow<PagingData<MailboxItem>> = observePagingData()
-        .cachedIn(viewModelScope)
-
-    val initialState = MailboxState(
-        mailboxListState = MailboxListState.Loading,
-        topAppBarState = MailboxTopAppBarState.Loading,
-        unreadFilterState = UnreadFilterState.Loading
-    )
-
     private val _mutableState = MutableStateFlow(initialState)
+
     val state: StateFlow<MailboxState> = _mutableState.asStateFlow()
+    val items: Flow<PagingData<MailboxItem>> = observePagingData().cachedIn(viewModelScope)
 
     init {
         viewModelScope.launch {
@@ -134,19 +124,17 @@ class MailboxViewModel @Inject constructor(
     fun submit(action: Action) {
         viewModelScope.launch {
             when (action) {
-                Action.EnterSelectionMode -> onOpenSelectionMode()
-                Action.ExitSelectionMode -> onCloseSelectionMode()
+                is Action.EnterSelectionMode -> onOpenSelectionMode()
+                is Action.ExitSelectionMode -> onCloseSelectionMode()
                 is Action.OpenItemDetails -> onOpenItemDetails(action.item)
-                Action.Refresh -> onRefresh()
-                Action.DisableUnreadFilter -> toggleUnreadFilter(false)
-                Action.EnableUnreadFilter -> toggleUnreadFilter(true)
+                is Action.Refresh -> onRefresh()
+                is Action.DisableUnreadFilter -> toggleUnreadFilter(false)
+                is Action.EnableUnreadFilter -> toggleUnreadFilter(true)
             }.exhaustive
         }
     }
 
     private suspend fun toggleUnreadFilter(enabled: Boolean) {
-        isUnreadFilterEnabled.emit(enabled)
-
         when (val currentState = state.value.unreadFilterState) {
             is UnreadFilterState.Loading -> return
             is UnreadFilterState.Data -> _mutableState.emit(
@@ -214,20 +202,27 @@ class MailboxViewModel @Inject constructor(
         return MailboxPageKey(userIds = listOf(userId), pageKey = PageKey(pageFilter))
     }
 
-    // TODO can this be moved to observing the state only?
     private fun observePagingData(): Flow<PagingData<MailboxItem>> = combine(
-        selectedMailLabelId.flow,
         primaryUserId,
+        state,
         observeViewModeByLocation(),
-        isUnreadFilterEnabled
-    ) { selectedMailLabelId, userId, viewMode, hasUnreadFilter ->
+    ) { userId, mailboxState, viewMode ->
         if (userId == null) {
             return@combine null
         }
 
+        val unreadFilterEnabled = when (val filterState = mailboxState.unreadFilterState) {
+            is UnreadFilterState.Data -> filterState.isFilterEnabled
+            is UnreadFilterState.Loading -> false
+        }
+        val selectedMailLabelId = when (val listState = mailboxState.mailboxListState) {
+            is MailboxListState.Data -> listState.currentMailLabel.id
+            is MailboxListState.Loading -> MailLabelId.System.Inbox
+        }
+
         Pager(
             config = PagingConfig(PageKey.defaultPageSize),
-            initialKey = mailboxPageKey(hasUnreadFilter, selectedMailLabelId, userId)
+            initialKey = mailboxPageKey(unreadFilterEnabled, selectedMailLabelId, userId)
         ) {
             pagingSourceFactory.create(
                 userIds = listOf(userId),
@@ -279,5 +274,13 @@ class MailboxViewModel @Inject constructor(
         object Refresh : Action
         object EnableUnreadFilter : Action
         object DisableUnreadFilter : Action
+    }
+
+    companion object {
+        val initialState = MailboxState(
+            mailboxListState = MailboxListState.Loading,
+            topAppBarState = MailboxTopAppBarState.Loading,
+            unreadFilterState = UnreadFilterState.Loading
+        )
     }
 }

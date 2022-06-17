@@ -65,12 +65,10 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
-import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
-import me.proton.core.util.kotlin.exhaustive
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
@@ -82,7 +80,7 @@ fun MailboxScreen(
     openDrawerMenu: () -> Unit,
     viewModel: MailboxViewModel = hiltViewModel(),
 ) {
-    val mailboxState = rememberAsState(viewModel.state, viewModel.initialState).value
+    val mailboxState = rememberAsState(viewModel.state, MailboxViewModel.initialState).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
 
     MailboxScreen(
