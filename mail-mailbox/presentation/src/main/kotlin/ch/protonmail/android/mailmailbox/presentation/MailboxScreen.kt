@@ -82,34 +82,28 @@ fun MailboxScreen(
     openDrawerMenu: () -> Unit,
     viewModel: MailboxViewModel = hiltViewModel(),
 ) {
-    val mailboxState = rememberAsState(viewModel.state, MailboxState.Initializing).value
+    val mailboxState = rememberAsState(viewModel.state, viewModel.initialState).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
 
-    when (mailboxState) {
-        is MailboxState.Initializing -> ProtonCenteredProgress()
-        is MailboxState.Error -> ProtonErrorMessage(stringResource(commonString.x_error_not_logged_in))
-        is MailboxState.Ready -> {
-            MailboxScreen(
-                modifier = modifier,
-                mailboxState = mailboxState,
-                navigateToMailboxItem = navigateToMailboxItem,
-                openDrawerMenu = openDrawerMenu,
-                mailboxListItems = mailboxListItems,
-                onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
-                onEnableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.EnableUnreadFilter) },
-                onDisableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.DisableUnreadFilter) },
-                onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
-                onRefreshList = { viewModel.submit(MailboxViewModel.Action.Refresh) }
-            ) { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) }
-        }
-    }.exhaustive
+    MailboxScreen(
+        modifier = modifier,
+        mailboxState = mailboxState,
+        navigateToMailboxItem = navigateToMailboxItem,
+        openDrawerMenu = openDrawerMenu,
+        mailboxListItems = mailboxListItems,
+        onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
+        onEnableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.EnableUnreadFilter) },
+        onDisableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.DisableUnreadFilter) },
+        onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
+        onRefreshList = { viewModel.submit(MailboxViewModel.Action.Refresh) }
+    ) { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) }
 
 }
 
 @Composable
 fun MailboxScreen(
     modifier: Modifier = Modifier,
-    mailboxState: MailboxState.Ready,
+    mailboxState: MailboxState,
     navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
     openDrawerMenu: () -> Unit,
     mailboxListItems: LazyPagingItems<MailboxItem>,

@@ -90,8 +90,13 @@ class MailboxViewModel @Inject constructor(
     val items: Flow<PagingData<MailboxItem>> = observePagingData()
         .cachedIn(viewModelScope)
 
+    val initialState = MailboxState(
+        mailboxListState = MailboxListState.Loading,
+        topAppBarState = MailboxTopAppBarState.Loading,
+        unreadFilterState = UnreadFilterState.Loading
+    )
     val state: StateFlow<MailboxState> = observeState()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis), MailboxState.Initializing)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis), initialState)
 
     fun submit(action: Action) {
         viewModelScope.launch {
@@ -107,26 +112,17 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun onCloseSelectionMode() {
-        givenCurrentStateIsReady { currentState ->
-            when (val currentTopBarState = currentState.topAppBarState) {
-                MailboxTopAppBarState.Loading -> return@givenCurrentStateIsReady
-                is MailboxTopAppBarState.Data -> topAppBarState.emit(currentTopBarState.toDefaultMode())
-            }
+        when (val currentTopBarState = state.value.topAppBarState) {
+            MailboxTopAppBarState.Loading -> return
+            is MailboxTopAppBarState.Data -> topAppBarState.emit(currentTopBarState.toDefaultMode())
         }
     }
 
     private suspend fun onOpenSelectionMode() {
-        givenCurrentStateIsReady { currentState ->
-            when (val currentTopBarState = currentState.topAppBarState) {
-                MailboxTopAppBarState.Loading -> return@givenCurrentStateIsReady
-                is MailboxTopAppBarState.Data -> topAppBarState.emit(currentTopBarState.toSelectionMode())
-            }
+        when (val currentTopBarState = state.value.topAppBarState) {
+            MailboxTopAppBarState.Loading -> return
+            is MailboxTopAppBarState.Data -> topAppBarState.emit(currentTopBarState.toSelectionMode())
         }
-    }
-
-    private suspend fun givenCurrentStateIsReady(block: suspend (MailboxState.Ready) -> Unit) {
-        val currentState = state.value
-        if (currentState is MailboxState.Ready) { block(currentState) }
     }
 
     private suspend fun onOpenItemDetails(item: MailboxItem) {
@@ -206,7 +202,7 @@ class MailboxViewModel @Inject constructor(
         unreadFilterState()
     ) { currentMailLabel, openItemDetailEffect, topAppBarState, userId, unreadFilterState ->
         if (userId == null || currentMailLabel == null) {
-            return@combine MailboxState.Initializing
+            return@combine initialState
         }
 
         val newTopAppBarState = topAppBarState.withCurrentMailLabel(currentMailLabel)
@@ -214,7 +210,7 @@ class MailboxViewModel @Inject constructor(
             currentMailLabel = currentMailLabel,
             openItemEffect = openItemDetailEffect
         )
-        MailboxState.Ready(
+        MailboxState(
             mailboxListState = mailboxListState,
             topAppBarState = newTopAppBarState,
             unreadFilterState = unreadFilterState

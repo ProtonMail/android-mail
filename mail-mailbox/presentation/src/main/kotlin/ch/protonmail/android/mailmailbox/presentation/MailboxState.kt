@@ -24,15 +24,8 @@ import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarStat
 import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 
 @Stable
-sealed interface MailboxState {
-
-    data class Ready(
-        val mailboxListState: MailboxListState,
-        val topAppBarState: MailboxTopAppBarState,
-        val unreadFilterState: UnreadFilterState
-    ) : MailboxState
-
-    object Initializing : MailboxState
-
-    object Error : MailboxState
-}
+data class MailboxState(
+    val mailboxListState: MailboxListState,
+    val topAppBarState: MailboxTopAppBarState,
+    val unreadFilterState: UnreadFilterState
+)
