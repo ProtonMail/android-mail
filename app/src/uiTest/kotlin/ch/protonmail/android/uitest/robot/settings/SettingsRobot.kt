@@ -102,6 +102,15 @@ class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
         return this
     }
 
+    fun openCombinedContactsSettings(): CombinedContactsRobot {
+        composeTestRule
+            .onNodeWithText(string.mail_settings_combined_contacts)
+            .performClick()
+        composeTestRule.waitForIdle()
+
+        return CombinedContactsRobot(composeTestRule)
+    }
+
     @Suppress("unused", "ExpressionBodySyntax")
     fun selectSettingsItemByValue(value: String): AccountSettingsRobot {
         return AccountSettingsRobot(composeTestRule)

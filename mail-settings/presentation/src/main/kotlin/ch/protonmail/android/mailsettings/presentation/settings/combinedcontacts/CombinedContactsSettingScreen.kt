@@ -22,12 +22,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.presentation.R
 import me.proton.core.compose.component.ProtonSettingsToggleItem
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
+
+const val TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM = "CombinedContactsToggleItem"
 
 @Composable
 fun CombinedContactsSettingScreen(
@@ -70,7 +73,9 @@ fun CombinedContactsSettingScreen(
         },
         content = { paddingValues ->
             ProtonSettingsToggleItem(
-                modifier = Modifier.padding(paddingValues),
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .testTag(TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM),
                 name = stringResource(id = R.string.mail_settings_combined_contacts),
                 hint = stringResource(id = R.string.mail_settings_combined_contacts_hint),
                 value = state.isEnabled,

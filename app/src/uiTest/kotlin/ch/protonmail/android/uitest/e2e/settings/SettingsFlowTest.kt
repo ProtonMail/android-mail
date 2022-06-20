@@ -124,4 +124,12 @@ class SettingsFlowTest : BaseTest() {
             .verify { swipeRight { isMarkRead() } }
     }
 
+    @Test
+    fun openSettingsAndChangeCombinedContactsSetting() {
+        menuRobot
+            .openSettings()
+            .openCombinedContactsSettings()
+            .turnOnCombinedContacts()
+            .verify { combinedContactsSettingIsToggled() }
+    }
 }
