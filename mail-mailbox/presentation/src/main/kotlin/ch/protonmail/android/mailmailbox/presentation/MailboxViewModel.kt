@@ -77,9 +77,9 @@ class MailboxViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
-    private val _mutableState = MutableStateFlow(initialState)
+    private val mutableState = MutableStateFlow(initialState)
 
-    val state: StateFlow<MailboxState> = _mutableState.asStateFlow()
+    val state: StateFlow<MailboxState> = mutableState.asStateFlow()
     val items: Flow<PagingData<MailboxItem>> = observePagingData().cachedIn(viewModelScope)
 
     init {
@@ -115,7 +115,7 @@ class MailboxViewModel @Inject constructor(
                     is MailboxListState.Data -> currentState.copy(currentMailLabel = currentMailLabel)
                 }
 
-                _mutableState.emit(MailboxState(mailboxListState, topAppBarState, unreadFilterState))
+                mutableState.emit(MailboxState(mailboxListState, topAppBarState, unreadFilterState))
 
             }.collect()
         }
@@ -137,7 +137,7 @@ class MailboxViewModel @Inject constructor(
     private suspend fun toggleUnreadFilter(isEnabled: Boolean) {
         when (val currentState = state.value.unreadFilterState) {
             is UnreadFilterState.Loading -> return
-            is UnreadFilterState.Data -> _mutableState.emit(
+            is UnreadFilterState.Data -> mutableState.emit(
                 state.value.copy(
                     unreadFilterState = currentState.copy(isFilterEnabled = isEnabled)
                 )
@@ -148,7 +148,7 @@ class MailboxViewModel @Inject constructor(
     private suspend fun onCloseSelectionMode() {
         when (val currentState = state.value.topAppBarState) {
             is MailboxTopAppBarState.Loading -> return
-            is MailboxTopAppBarState.Data -> _mutableState.emit(
+            is MailboxTopAppBarState.Data -> mutableState.emit(
                 state.value.copy(topAppBarState = currentState.toDefaultMode())
             )
         }
@@ -157,7 +157,7 @@ class MailboxViewModel @Inject constructor(
     private suspend fun onOpenSelectionMode() {
         when (val currentState = state.value.topAppBarState) {
             is MailboxTopAppBarState.Loading -> return
-            is MailboxTopAppBarState.Data -> _mutableState.emit(
+            is MailboxTopAppBarState.Data -> mutableState.emit(
                 state.value.copy(topAppBarState = currentState.toSelectionMode())
             )
         }
@@ -174,7 +174,7 @@ class MailboxViewModel @Inject constructor(
         }
         when (val currentListState = state.value.mailboxListState) {
             is MailboxListState.Loading -> throw IllegalStateException("Can't open item while list is loading")
-            is MailboxListState.Data -> _mutableState.emit(
+            is MailboxListState.Data -> mutableState.emit(
                 state.value.copy(
                     mailboxListState = currentListState.copy(openItemEffect = Effect.of(request))
                 )

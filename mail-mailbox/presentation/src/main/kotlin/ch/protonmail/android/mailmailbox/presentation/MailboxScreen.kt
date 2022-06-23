@@ -113,7 +113,7 @@ fun MailboxScreen(
     onOpenSelectionMode: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val listViewState = mailboxListItems.rememberLazyListState()
+    val lazyListState = mailboxListItems.rememberLazyListState()
 
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_MAILBOX_SCREEN),
@@ -125,7 +125,7 @@ fun MailboxScreen(
                         onOpenMenu = openDrawerMenu,
                         onExitSelectionMode = onExitSelectionMode,
                         onExitSearchMode = {},
-                        onTitleClick = { scope.launch { listViewState.animateScrollToItem(0) } },
+                        onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
                         onEnterSearchMode = {},
                         onSearch = {},
                         onOpenCompose = {}
@@ -145,7 +145,7 @@ fun MailboxScreen(
             is MailboxListState.Data -> {
 
                 LaunchedEffect(mailboxListState.currentMailLabel) {
-                    listViewState.animateScrollToItem(0)
+                    lazyListState.animateScrollToItem(0)
                 }
 
                 ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
@@ -158,7 +158,7 @@ fun MailboxScreen(
                     onRefresh = onRefreshList,
                     onOpenSelectionMode = onOpenSelectionMode,
                     items = mailboxListItems,
-                    listState = listViewState
+                    listState = lazyListState
                 )
             }
             MailboxListState.Loading -> ProtonCenteredProgress(Modifier.padding(paddingValues))

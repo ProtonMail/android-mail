@@ -25,6 +25,7 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 
+@Suppress("unused")
 class AllMailRobot(
     override val composeTestRule: ComposeContentTestRule
 ) : MailboxRobotInterface {
