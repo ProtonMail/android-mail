@@ -26,9 +26,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -36,7 +38,7 @@ import me.proton.core.compose.theme.ProtonTheme
 
 const val TEST_TAG_UNREAD_FILTER = "UnreadFilterScreenTestTag"
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun UnreadItemsFilter(
     modifier: Modifier = Modifier,
@@ -61,7 +63,11 @@ fun UnreadItemsFilter(
                 selectedIcon = { Icon(imageVector = Icons.Filled.Close, contentDescription = null) }
             ) {
                 Text(
-                    text = stringResource(id = R.string.filter_unread_button_text, state.numUnread)
+                    text = pluralStringResource(
+                        id = R.plurals.filter_unread_button_text,
+                        count = state.numUnread,
+                        state.numUnread
+                    )
                 )
             }
         }
