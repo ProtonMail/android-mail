@@ -216,7 +216,6 @@ object Proton {
         val presentation = coreArtifact("presentation", Versions.Proton.core)
         val presentationCompose = coreArtifact("presentation-compose", Versions.Proton.core)
         val report = coreArtifact("report", Versions.Proton.core)
-        val reportDagger = coreArtifact("report-dagger", Versions.Proton.core)
         val user = coreArtifact("user", Versions.Proton.core)
         val userSettings = coreArtifact("user-settings", Versions.Proton.core)
         val utilAndroidDagger = coreArtifact("util-android-dagger", Versions.Proton.core)

@@ -89,7 +89,6 @@ object Dependencies {
         add(Proton.Core.presentation)
         add(Proton.Core.presentationCompose)
         add(Proton.Core.report)
-        add(Proton.Core.reportDagger)
         add(Proton.Core.user)
         add(Proton.Core.userSettings)
         add(Proton.Core.utilAndroidDagger)
