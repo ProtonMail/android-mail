@@ -20,8 +20,8 @@ package ch.protonmail.android.mailsettings.presentation.settings.combinedcontact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
-import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveCombinedContactsSetting
+import ch.protonmail.android.mailsettings.domain.usecase.SaveCombinedContactsSetting
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,10 +33,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CombinedContactsSettingViewModel @Inject constructor(
-    private val combinedContactsRepository: CombinedContactsRepository
+    observeCombinedContactsSetting: ObserveCombinedContactsSetting,
+    private val saveCombinedContactsSetting: SaveCombinedContactsSetting
 ) : ViewModel() {
 
-    val state: Flow<CombinedContactsSettingState> = combinedContactsRepository.observe()
+    val state: Flow<CombinedContactsSettingState> = observeCombinedContactsSetting()
         .mapLatest { combinedContactsPreference ->
             CombinedContactsSettingState.Data(
                 isEnabled = combinedContactsPreference.isEnabled
@@ -48,6 +49,6 @@ class CombinedContactsSettingViewModel @Inject constructor(
         )
 
     fun saveCombinedContactsPreference(combinedContactsPreference: Boolean) = viewModelScope.launch {
-        combinedContactsRepository.save(CombinedContactsPreference(combinedContactsPreference))
+        saveCombinedContactsSetting(combinedContactsPreference)
     }
 }

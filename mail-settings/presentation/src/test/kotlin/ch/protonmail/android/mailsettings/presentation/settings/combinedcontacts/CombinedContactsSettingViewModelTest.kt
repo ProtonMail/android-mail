@@ -20,12 +20,12 @@ package ch.protonmail.android.mailsettings.presentation.settings.combinedcontact
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
-import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
-import io.mockk.coEvery
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveCombinedContactsSetting
+import ch.protonmail.android.mailsettings.domain.usecase.SaveCombinedContactsSetting
 import io.mockk.coVerify
-import io.mockk.just
+import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
-import io.mockk.runs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -37,15 +37,21 @@ import kotlin.test.assertEquals
 
 class CombinedContactsSettingViewModelTest {
 
+    private val combinedContactsPreference = true
     private val combinedContactsPreferenceFlow = MutableSharedFlow<CombinedContactsPreference>()
 
-    private val combinedContactsRepository: CombinedContactsRepository = mockk {
-        coEvery { observe() } returns combinedContactsPreferenceFlow
+    private val observeCombinedContactsSetting: ObserveCombinedContactsSetting = mockk {
+        every { this@mockk() } returns combinedContactsPreferenceFlow
+    }
+
+    private val saveCombinedContactsSetting: SaveCombinedContactsSetting = mockk {
+        justRun { this@mockk invoke "invoke" withArguments listOf(combinedContactsPreference) }
     }
 
     private val combinedContactsSettingViewModel by lazy {
         CombinedContactsSettingViewModel(
-            combinedContactsRepository
+            observeCombinedContactsSetting,
+            saveCombinedContactsSetting
         )
     }
 
@@ -82,14 +88,10 @@ class CombinedContactsSettingViewModelTest {
 
     @Test
     fun `should call repository save method when saving combined contacts preference`() = runTest {
-        // Given
-        val combinedContactsPreference = CombinedContactsPreference(true)
-        coEvery { combinedContactsRepository.save(combinedContactsPreference) } just runs
-
         // When
-        combinedContactsSettingViewModel.saveCombinedContactsPreference(true)
+        combinedContactsSettingViewModel.saveCombinedContactsPreference(combinedContactsPreference)
 
         // Then
-        coVerify { combinedContactsRepository.save(combinedContactsPreference) }
+        coVerify { saveCombinedContactsSetting(combinedContactsPreference) }
     }
 }
