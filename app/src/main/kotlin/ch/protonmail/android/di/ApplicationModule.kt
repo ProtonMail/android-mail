@@ -69,18 +69,7 @@ object ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideAppLifecycleObserver(): AppLifecycleObserver = AppLifecycleObserver()
-
-    @Provides
-    @Singleton
     fun provideWorkManager(
         @ApplicationContext context: Context,
     ): WorkManager = WorkManager.getInstance(context)
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class ApplicationBindsModule {
-    @Binds
-    abstract fun provideAppLifecycleStateProvider(observer: AppLifecycleObserver): AppLifecycleProvider
 }

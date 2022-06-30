@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.di
 
-import android.content.Context
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.di.ApplicationModule.LocalDiskOpCoroutineScope
 import ch.protonmail.android.feature.alternativerouting.HasAlternativeRouting
@@ -27,44 +26,23 @@ import ch.protonmail.android.useragent.BuildUserAgent
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import me.proton.core.auth.data.MissingScopeListenerImpl
-import me.proton.core.crypto.common.context.CryptoContext
-import me.proton.core.humanverification.data.utils.NetworkRequestOverriderImpl
-import me.proton.core.humanverification.domain.utils.NetworkRequestOverrider
-import me.proton.core.network.data.ApiManagerFactory
-import me.proton.core.network.data.ApiProvider
-import me.proton.core.network.data.NetworkManager
-import me.proton.core.network.data.NetworkPrefs
-import me.proton.core.network.data.ProtonCookieStore
-import me.proton.core.network.data.client.ClientIdProviderImpl
-import me.proton.core.network.data.client.ClientVersionValidatorImpl
 import me.proton.core.network.data.client.ExtraHeaderProviderImpl
+import me.proton.core.network.data.di.AlternativeApiPins
+import me.proton.core.network.data.di.BaseProtonApiUrl
+import me.proton.core.network.data.di.CertificatePins
 import me.proton.core.network.data.di.Constants
+import me.proton.core.network.data.di.DohProviderUrls
 import me.proton.core.network.domain.ApiClient
-import me.proton.core.network.domain.NetworkManager
-import me.proton.core.network.domain.NetworkPrefs
-import me.proton.core.network.domain.client.ClientIdProvider
-import me.proton.core.network.domain.client.ClientVersionValidator
 import me.proton.core.network.domain.client.ExtraHeaderProvider
-import me.proton.core.network.domain.humanverification.HumanVerificationListener
-import me.proton.core.network.domain.humanverification.HumanVerificationProvider
-import me.proton.core.network.domain.scopes.MissingScopeListener
-import me.proton.core.network.domain.server.ServerTimeListener
-import me.proton.core.network.domain.session.SessionListener
-import me.proton.core.network.domain.session.SessionProvider
+import me.proton.core.network.domain.serverconnection.DohAlternativesListener
 import me.proton.core.util.kotlin.takeIfNotBlank
-import okhttp3.Cache
-import okhttp3.OkHttpClient
-import java.io.File
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import javax.inject.Singleton
-
-private const val TEN_MEGABYTES = 10L * 1024L * 1024L
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -75,11 +53,9 @@ object NetworkModule {
     const val API_HOST = "api.$HOST"
     const val BASE_URL = "https://$API_HOST"
 
-    private val certificatePins: Array<String> =
-        Constants.DEFAULT_SPKI_PINS.takeIf { BuildConfig.USE_DEFAULT_PINS } ?: emptyArray()
-
-    private val alternativeApiPins: List<String> =
-        Constants.ALTERNATIVE_API_SPKI_PINS.takeIf { BuildConfig.USE_DEFAULT_PINS } ?: emptyList()
+    @Provides
+    @BaseProtonApiUrl
+    fun provideProtonApiUrl(): HttpUrl = BASE_URL.toHttpUrl()
 
     @Provides
     @Singleton
@@ -110,103 +86,26 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNetworkManager(
-        @ApplicationContext context: Context
-    ): NetworkManager = NetworkManager(context)
-
-    @Provides
-    @Singleton
-    fun provideNetworkPrefs(
-        @ApplicationContext context: Context
-    ): NetworkPrefs = NetworkPrefs(context)
-
-    @Provides
-    fun provideNetworkRequestOverrider(): NetworkRequestOverrider = NetworkRequestOverriderImpl(OkHttpClient())
-
-    @Provides
-    @Singleton
-    fun provideMissingScopeListener(): MissingScopeListener = MissingScopeListenerImpl()
-
-    @Provides
-    @Singleton
-    fun provideProtonCookieStore(
-        @ApplicationContext context: Context
-    ): ProtonCookieStore = ProtonCookieStore(context)
-
-    @Provides
-    @Singleton
-    fun provideClientIdProvider(
-        protonCookieStore: ProtonCookieStore
-    ): ClientIdProvider = ClientIdProviderImpl(BASE_URL, protonCookieStore)
-
-    @Provides
-    @Singleton
-    fun provideServerTimeListener(
-        context: CryptoContext
-    ): ServerTimeListener = object : ServerTimeListener {
-        override fun onServerTimeUpdated(epochSeconds: Long) {
-            context.pgpCrypto.updateTime(epochSeconds)
-        }
-    }
-
-    @Provides
-    @Singleton
     fun provideExtraHeaderProvider(): ExtraHeaderProvider = ExtraHeaderProviderImpl().apply {
         val proxyToken: String? = BuildConfig.PROXY_TOKEN
         proxyToken?.takeIfNotBlank()?.let { addHeaders("X-atlas-secret" to it) }
     }
 
+    @DohProviderUrls
     @Provides
-    @Singleton
-    fun provideApiFactory(
-        @ApplicationContext context: Context,
-        apiClient: ApiClient,
-        clientIdProvider: ClientIdProvider,
-        serverTimeListener: ServerTimeListener,
-        networkManager: NetworkManager,
-        networkPrefs: NetworkPrefs,
-        missingScopeListener: MissingScopeListener,
-        protonCookieStore: ProtonCookieStore,
-        sessionProvider: SessionProvider,
-        sessionListener: SessionListener,
-        humanVerificationProvider: HumanVerificationProvider,
-        humanVerificationListener: HumanVerificationListener,
-        extraHeaderProvider: ExtraHeaderProvider,
-        clientVersionValidator: ClientVersionValidator
-    ): ApiManagerFactory = ApiManagerFactory(
-        baseUrl = BASE_URL,
-        apiClient = apiClient,
-        clientIdProvider = clientIdProvider,
-        serverTimeListener = serverTimeListener,
-        networkManager = networkManager,
-        prefs = networkPrefs,
-        sessionProvider = sessionProvider,
-        sessionListener = sessionListener,
-        humanVerificationProvider = humanVerificationProvider,
-        humanVerificationListener = humanVerificationListener,
-        missingScopeListener = missingScopeListener,
-        cookieStore = protonCookieStore,
-        scope = CoroutineScope(Job() + Dispatchers.Default),
-        certificatePins = certificatePins,
-        alternativeApiPins = alternativeApiPins,
-        cache = {
-            Cache(
-                directory = File(context.cacheDir, "http_cache"),
-                maxSize = TEN_MEGABYTES
-            )
-        },
-        extraHeaderProvider = extraHeaderProvider,
-        clientVersionValidator = clientVersionValidator,
-        dohAlternativesListener = null
-    )
+    fun provideDohProviderUrls(): Array<String> = Constants.DOH_PROVIDERS_URLS
+
+    @CertificatePins
+    @Provides
+    fun provideCertificatePins(): Array<String> =
+        Constants.DEFAULT_SPKI_PINS.takeIf { BuildConfig.USE_DEFAULT_PINS } ?: emptyArray()
+
+    @AlternativeApiPins
+    @Provides
+    fun provideAlternativeApiPins(): List<String> =
+        Constants.ALTERNATIVE_API_SPKI_PINS.takeIf { BuildConfig.USE_DEFAULT_PINS } ?: emptyList()
 
     @Provides
     @Singleton
-    fun provideApiProvider(
-        apiManagerFactory: ApiManagerFactory,
-        sessionProvider: SessionProvider
-    ): ApiProvider = ApiProvider(apiManagerFactory, sessionProvider)
-
-    @Provides
-    fun provideClientVersionValidator(): ClientVersionValidator = ClientVersionValidatorImpl()
+    fun provideDohAlternativesListener(): DohAlternativesListener? = null
 }

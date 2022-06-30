@@ -92,6 +92,7 @@ object Dependencies {
         add(Proton.Core.reportDagger)
         add(Proton.Core.user)
         add(Proton.Core.userSettings)
+        add(Proton.Core.utilAndroidDagger)
         add(Proton.Core.utilKotlin)
         add(Sentry.sentry)
         add(Sentry.compose)

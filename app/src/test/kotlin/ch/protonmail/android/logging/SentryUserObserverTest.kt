@@ -28,9 +28,9 @@ import io.mockk.verify
 import io.sentry.Sentry
 import io.sentry.protocol.User
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -48,7 +48,7 @@ class SentryUserObserverTest {
     fun setUp() {
         mockkStatic(Sentry::class)
         sentryUserObserver = SentryUserObserver(
-            TestCoroutineScope(),
+            TestCoroutineScopeProvider,
             accountManager
         )
     }

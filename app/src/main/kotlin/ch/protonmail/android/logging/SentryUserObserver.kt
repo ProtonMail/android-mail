@@ -21,18 +21,16 @@ package ch.protonmail.android.logging
 import android.provider.Settings
 import io.sentry.Sentry
 import io.sentry.protocol.User
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import me.proton.core.accountmanager.data.AccountStateHandlerCoroutineScope
 import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SentryUserObserver @Inject constructor(
-    @AccountStateHandlerCoroutineScope
-    internal val scope: CoroutineScope,
+    internal val scopeProvider: CoroutineScopeProvider,
     internal val accountManager: AccountManager,
 ) {
 
@@ -41,5 +39,5 @@ class SentryUserObserver @Inject constructor(
             val user = User().apply { id = userId?.id ?: Settings.Secure.ANDROID_ID }
             Sentry.setUser(user)
         }
-        .launchIn(scope)
+        .launchIn(scopeProvider.GlobalDefaultSupervisedScope)
 }
