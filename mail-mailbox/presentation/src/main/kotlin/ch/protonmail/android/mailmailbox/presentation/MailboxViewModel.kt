@@ -103,17 +103,17 @@ class MailboxViewModel @Inject constructor(
                 val unreadFilterState = when (val currentState = state.value.unreadFilterState) {
                     is UnreadFilterState.Loading -> UnreadFilterState.Data(count, false)
                     is UnreadFilterState.Data -> currentState.copy(count)
-                }
+                }.exhaustive
 
                 val topAppBarState = when (val currentState = state.value.topAppBarState) {
                     MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel)
                     is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel)
-                }
+                }.exhaustive
 
                 val mailboxListState = when (val currentState = state.value.mailboxListState) {
                     is MailboxListState.Loading -> MailboxListState.Data(currentMailLabel, Effect.empty())
                     is MailboxListState.Data -> currentState.copy(currentMailLabel = currentMailLabel)
-                }
+                }.exhaustive
 
                 mutableState.emit(MailboxState(mailboxListState, topAppBarState, unreadFilterState))
 
@@ -142,7 +142,7 @@ class MailboxViewModel @Inject constructor(
                     unreadFilterState = currentState.copy(isFilterEnabled = isEnabled)
                 )
             )
-        }
+        }.exhaustive
     }
 
     private suspend fun onCloseSelectionMode() {
@@ -151,7 +151,7 @@ class MailboxViewModel @Inject constructor(
             is MailboxTopAppBarState.Data -> mutableState.emit(
                 state.value.copy(topAppBarState = currentState.toDefaultMode())
             )
-        }
+        }.exhaustive
     }
 
     private suspend fun onOpenSelectionMode() {
@@ -160,7 +160,7 @@ class MailboxViewModel @Inject constructor(
             is MailboxTopAppBarState.Data -> mutableState.emit(
                 state.value.copy(topAppBarState = currentState.toSelectionMode())
             )
-        }
+        }.exhaustive
     }
 
     private suspend fun onOpenItemDetails(item: MailboxItem) {
@@ -171,7 +171,7 @@ class MailboxViewModel @Inject constructor(
             ViewMode.NoConversationGrouping -> {
                 OpenMailboxItemRequest(MailboxItemId(item.id), item.type)
             }
-        }
+        }.exhaustive
         when (val currentListState = state.value.mailboxListState) {
             is MailboxListState.Loading -> throw IllegalStateException("Can't open item while list is loading")
             is MailboxListState.Data -> mutableState.emit(
@@ -179,7 +179,7 @@ class MailboxViewModel @Inject constructor(
                     mailboxListState = currentListState.copy(openItemEffect = Effect.of(request))
                 )
             )
-        }
+        }.exhaustive
     }
 
     private suspend fun onRefresh() {
@@ -202,11 +202,11 @@ class MailboxViewModel @Inject constructor(
         val unreadFilterEnabled = when (val filterState = mailboxState.unreadFilterState) {
             is UnreadFilterState.Data -> filterState.isFilterEnabled
             is UnreadFilterState.Loading -> false
-        }
+        }.exhaustive
         val selectedMailLabelId = when (val listState = mailboxState.mailboxListState) {
             is MailboxListState.Data -> listState.currentMailLabel.id
             is MailboxListState.Loading -> MailLabelId.System.Inbox
-        }
+        }.exhaustive
 
         Pager(
             config = PagingConfig(PageKey.defaultPageSize),

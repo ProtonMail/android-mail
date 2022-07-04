@@ -221,7 +221,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `topBarState is updated when current location changes`() = runTest {
+    fun `top bar state is updated when current location changes`() = runTest {
         // Given
         // - Current location is Inbox
         val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
