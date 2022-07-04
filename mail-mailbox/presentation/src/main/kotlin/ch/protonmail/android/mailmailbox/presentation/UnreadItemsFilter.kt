@@ -60,7 +60,7 @@ fun UnreadItemsFilter(
                         onFilterEnabled()
                     }
                 },
-                selectedIcon = { Icon(imageVector = Icons.Filled.Close, contentDescription = null) }
+                trailingIcon = addCloseIconForEnabledState(state)
             ) {
                 Text(
                     text = pluralStringResource(
@@ -71,6 +71,15 @@ fun UnreadItemsFilter(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun addCloseIconForEnabledState(state: UnreadFilterState.Data): @Composable (() -> Unit)? {
+    return if (state.isFilterEnabled) {
+        { Icon(imageVector = Icons.Filled.Close, contentDescription = null) }
+    } else {
+        null
     }
 }
 
