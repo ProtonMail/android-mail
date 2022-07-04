@@ -111,12 +111,18 @@ class MailboxViewModel @Inject constructor(
                 }.exhaustive
 
                 val mailboxListState = when (val currentState = state.value.mailboxListState) {
-                    is MailboxListState.Loading -> MailboxListState.Data(currentMailLabel, Effect.empty())
-                    is MailboxListState.Data -> currentState.copy(currentMailLabel = currentMailLabel)
+                    is MailboxListState.Loading -> MailboxListState.Data(
+                        currentMailLabel,
+                        Effect.empty(),
+                        Effect.empty()
+                    )
+                    is MailboxListState.Data -> currentState.copy(
+                        currentMailLabel = currentMailLabel,
+                        scrollToMailboxTop = Effect.of(currentMailLabelId)
+                    )
                 }.exhaustive
 
                 mutableState.emit(MailboxState(mailboxListState, topAppBarState, unreadFilterState))
-
             }.collect()
         }
     }

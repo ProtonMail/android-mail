@@ -27,6 +27,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Archive
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Sent
 import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
@@ -34,6 +35,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
@@ -341,6 +343,51 @@ class MailboxViewModelTest {
             val expected = UnreadFilterState.Data(5, false)
             val actual = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
             assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `mailbox is scrolled to top when location changes`() = runTest {
+        // Given
+        // - Current location is Inbox
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+
+        mailboxViewModel.state.test {
+            // Then
+            val initialState = assertIs<MailboxListState.Data>(awaitItem().mailboxListState)
+            assertEquals(null, initialState.scrollToMailboxTop.consume())
+
+            // When
+            currentLocationFlow.emit(MailLabelId.System.Starred)
+
+            // Then
+            val actual = assertIs<MailboxListState.Data>(awaitItem().mailboxListState)
+            assertEquals(MailLabelId.System.Starred, actual.scrollToMailboxTop.consume())
+        }
+    }
+
+
+    @Test
+    fun `mailbox is not scrolled to top when something changes but location didn't change`() = runTest {
+        // Given
+        // - Current location is All Mail
+        every { selectedMailLabelId.flow } returns MutableStateFlow<MailLabelId>(MailLabelId.System.AllMail)
+        // - Unread counters is
+        val unreadCountersFlow = MutableStateFlow(UnreadCountersTestData.systemUnreadCounters)
+        coEvery { observeUnreadCounters(userId = any()) } returns unreadCountersFlow
+
+        mailboxViewModel.state.test {
+            // Then
+            val initialState = assertIs<MailboxListState.Data>(awaitItem().mailboxListState)
+            assertEquals(null, initialState.scrollToMailboxTop.consume())
+
+            // When
+            unreadCountersFlow.emit(listOf(UnreadCounter(SystemLabelId.AllMail.labelId, 1)))
+
+            // Then
+            val actual = assertIs<MailboxListState.Data>(awaitItem().mailboxListState)
+            assertEquals(null, actual.scrollToMailboxTop.consume())
         }
     }
 

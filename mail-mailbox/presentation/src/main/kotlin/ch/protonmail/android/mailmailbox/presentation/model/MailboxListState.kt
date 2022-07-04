@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 
 sealed interface MailboxListState {
@@ -27,6 +28,7 @@ sealed interface MailboxListState {
     data class Data(
         val currentMailLabel: MailLabel,
         val openItemEffect: Effect<OpenMailboxItemRequest>,
+        val scrollToMailboxTop: Effect<MailLabelId>
     ) : MailboxListState
 
     object Loading : MailboxListState

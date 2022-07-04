@@ -35,7 +35,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -144,7 +143,7 @@ fun MailboxScreen(
         when (val mailboxListState = mailboxState.mailboxListState) {
             is MailboxListState.Data -> {
 
-                LaunchedEffect(mailboxListState.currentMailLabel) {
+                ConsumableLaunchedEffect(mailboxListState.scrollToMailboxTop) {
                     lazyListState.animateScrollToItem(0)
                 }
 
