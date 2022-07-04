@@ -25,5 +25,5 @@ interface CombinedContactsRepository {
 
     fun observe(): Flow<CombinedContactsPreference>
 
-    suspend fun save(combinedContactsPreference: CombinedContactsPreference)
+    suspend fun save(combinedContactsPreference: CombinedContactsPreference): Result<Unit>
 }

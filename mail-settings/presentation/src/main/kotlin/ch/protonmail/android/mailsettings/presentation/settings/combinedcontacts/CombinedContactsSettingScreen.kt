@@ -20,17 +20,23 @@ package ch.protonmail.android.mailsettings.presentation.settings.combinedcontact
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailsettings.presentation.R
 import me.proton.core.compose.component.ProtonSettingsToggleItem
 import me.proton.core.compose.component.ProtonSettingsTopBar
+import me.proton.core.compose.component.ProtonSnackbarHost
+import me.proton.core.compose.component.ProtonSnackbarHostState
+import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
 
 const val TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM = "CombinedContactsToggleItem"
+const val TEST_TAG_COMBINED_CONTACTS_SNACKBAR = "CombinedContactsSnackbar"
 
 @Composable
 fun CombinedContactsSettingScreen(
@@ -63,8 +69,16 @@ fun CombinedContactsSettingScreen(
     onToggle: (Boolean) -> Unit,
     state: CombinedContactsSettingState.Data
 ) {
+    val scaffoldState = rememberScaffoldState()
+    val errorMessage = stringResource(id = R.string.mail_settings_generic_error_message)
+
+    ConsumableLaunchedEffect(state.combinedContactsSettingErrorEffect) {
+        scaffoldState.snackbarHostState.showSnackbar(errorMessage)
+    }
+
     Scaffold(
         modifier = modifier,
+        scaffoldState = scaffoldState,
         topBar = {
             ProtonSettingsTopBar(
                 title = stringResource(id = R.string.mail_settings_combined_contacts),
@@ -80,6 +94,12 @@ fun CombinedContactsSettingScreen(
                 hint = stringResource(id = R.string.mail_settings_combined_contacts_hint),
                 value = state.isEnabled,
                 onToggle = { onToggle(!state.isEnabled) }
+            )
+        },
+        snackbarHost = { snackbarHostState ->
+            ProtonSnackbarHost(
+                hostState = ProtonSnackbarHostState(snackbarHostState, ProtonSnackbarType.ERROR),
+                modifier = Modifier.testTag(TEST_TAG_COMBINED_CONTACTS_SNACKBAR)
             )
         }
     )

@@ -85,4 +85,7 @@
     <string name="mail_settings_swipe_action_spam_description">Move to spam</string>
     <string name="mail_settings_swipe_action_star_description">Star/unstar</string>
     <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
+
+    <!-- Error messages -->
+    <string name="mail_settings_generic_error_message">An error occurred. Try again.</string>
 </resources>

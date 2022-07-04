@@ -20,12 +20,14 @@ package ch.protonmail.android.mailsettings.presentation.settings.combinedcontact
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveCombinedContactsSetting
 import ch.protonmail.android.mailsettings.domain.usecase.SaveCombinedContactsSetting
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
@@ -37,18 +39,24 @@ class CombinedContactsSettingViewModel @Inject constructor(
     private val saveCombinedContactsSetting: SaveCombinedContactsSetting
 ) : ViewModel() {
 
-    val state: Flow<CombinedContactsSettingState> = observeCombinedContactsSetting()
-        .mapLatest { combinedContactsPreference ->
-            CombinedContactsSettingState.Data(
-                isEnabled = combinedContactsPreference.isEnabled
-            )
-        }.stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(stopTimeoutMillis),
-            CombinedContactsSettingState.Loading
+    private val combinedContactsSettingErrorFlow: MutableStateFlow<Effect<Throwable>> = MutableStateFlow(Effect.empty())
+
+    val state: Flow<CombinedContactsSettingState> = combine(
+        observeCombinedContactsSetting(),
+        combinedContactsSettingErrorFlow
+    ) { combinedContactsPreference, combinedContactsSettingErrorEffect ->
+        CombinedContactsSettingState.Data(
+            isEnabled = combinedContactsPreference.isEnabled,
+            combinedContactsSettingErrorEffect = combinedContactsSettingErrorEffect
         )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis),
+        initialValue = CombinedContactsSettingState.Loading
+    )
 
     fun saveCombinedContactsPreference(combinedContactsPreference: Boolean) = viewModelScope.launch {
         saveCombinedContactsSetting(combinedContactsPreference)
+            .onFailure { combinedContactsSettingErrorFlow.tryEmit(Effect.of(it)) }
     }
 }

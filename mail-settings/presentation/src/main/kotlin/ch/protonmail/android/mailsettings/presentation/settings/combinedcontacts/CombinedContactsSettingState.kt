@@ -18,10 +18,13 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts
 
+import ch.protonmail.android.mailcommon.presentation.Effect
+
 sealed class CombinedContactsSettingState {
 
     data class Data(
-        val isEnabled: Boolean
+        val isEnabled: Boolean,
+        val combinedContactsSettingErrorEffect: Effect<Throwable>
     ) : CombinedContactsSettingState()
 
     object Loading : CombinedContactsSettingState()

@@ -18,14 +18,18 @@
 
 package ch.protonmail.android.uitest.screen.settings.appsettings.combinedcontacts
 
+import java.io.IOException
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingState
+import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.TEST_TAG_COMBINED_CONTACTS_SNACKBAR
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
@@ -39,7 +43,7 @@ class CombinedContactsSettingScreenTest {
     @Test
     fun testSwitchIsCheckedIfCombinedContactsSettingIsEnabled() {
         setupScreenWithState(
-            CombinedContactsSettingState.Data(isEnabled = true)
+            CombinedContactsSettingState.Data(isEnabled = true, combinedContactsSettingErrorEffect = Effect.empty())
         )
 
         composeTestRule
@@ -50,7 +54,7 @@ class CombinedContactsSettingScreenTest {
     @Test
     fun testSwitchIsNotCheckedIfCombinedContactsSettingIsNotEnabled() {
         setupScreenWithState(
-            CombinedContactsSettingState.Data(isEnabled = false)
+            CombinedContactsSettingState.Data(isEnabled = false, combinedContactsSettingErrorEffect = Effect.empty())
         )
 
         composeTestRule
@@ -62,7 +66,10 @@ class CombinedContactsSettingScreenTest {
     fun testCallbackIsInvokedWhenSwitchIsToggled() {
         var isEnabled = false
         setupScreenWithState(
-            state = CombinedContactsSettingState.Data(isEnabled = false),
+            state = CombinedContactsSettingState.Data(
+                isEnabled = false,
+                combinedContactsSettingErrorEffect = Effect.empty()
+            ),
             onToggle = { isEnabled = !isEnabled }
         )
 
@@ -71,6 +78,20 @@ class CombinedContactsSettingScreenTest {
             .performClick()
 
         assertEquals(true, isEnabled)
+    }
+
+    @Test
+    fun testErrorSnackbarIsShownWhenStateContainsThrowableEffect() {
+        setupScreenWithState(
+            CombinedContactsSettingState.Data(
+                isEnabled = false,
+                combinedContactsSettingErrorEffect = Effect.of(IOException())
+            )
+        )
+
+        composeTestRule
+            .onNodeWithTag(TEST_TAG_COMBINED_CONTACTS_SNACKBAR)
+            .assertIsDisplayed()
     }
 
     private fun setupScreenWithState(

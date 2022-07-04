@@ -18,13 +18,14 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts
 
+import java.io.IOException
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveCombinedContactsSetting
 import ch.protonmail.android.mailsettings.domain.usecase.SaveCombinedContactsSetting
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.justRun
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -34,19 +35,20 @@ import kotlinx.coroutines.test.setMain
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class CombinedContactsSettingViewModelTest {
 
-    private val combinedContactsPreference = true
+    private val combinedContactsPreference = CombinedContactsPreference(true)
     private val combinedContactsPreferenceFlow = MutableSharedFlow<CombinedContactsPreference>()
 
     private val observeCombinedContactsSetting: ObserveCombinedContactsSetting = mockk {
         every { this@mockk() } returns combinedContactsPreferenceFlow
     }
 
-    private val saveCombinedContactsSetting: SaveCombinedContactsSetting = mockk {
-        justRun { this@mockk invoke "invoke" withArguments listOf(combinedContactsPreference) }
-    }
+    private val saveCombinedContactsSetting: SaveCombinedContactsSetting = mockk()
 
     private val combinedContactsSettingViewModel by lazy {
         CombinedContactsSettingViewModel(
@@ -63,7 +65,7 @@ class CombinedContactsSettingViewModelTest {
     @Test
     fun `should return loading state before the repository emits any value`() = runTest {
         combinedContactsSettingViewModel.state.test {
-            val loadingState = awaitItem() as CombinedContactsSettingState.Loading
+            val loadingState = awaitItem()
             assertEquals(CombinedContactsSettingState.Loading, loadingState)
         }
     }
@@ -71,27 +73,56 @@ class CombinedContactsSettingViewModelTest {
     @Test
     fun `state should contain correct data when repository emits the preference`() = runTest {
         // Given
-        val expectedResult = CombinedContactsSettingState.Data(isEnabled = true)
-        val combinedContactsPreference = CombinedContactsPreference(isEnabled = true)
+        coEvery {
+            saveCombinedContactsSetting(combinedContactsPreference.isEnabled)
+        } returns Result.success(Unit)
 
         combinedContactsSettingViewModel.state.test {
-            awaitItem() as CombinedContactsSettingState.Loading
+            assertIs<CombinedContactsSettingState.Loading>(awaitItem())
 
             // When
             combinedContactsPreferenceFlow.emit(combinedContactsPreference)
 
             // Then
-            val dataState = awaitItem() as CombinedContactsSettingState.Data
-            assertEquals(expectedResult, dataState)
+            val dataState = assertIs<CombinedContactsSettingState.Data>(awaitItem())
+            assertTrue(dataState.isEnabled)
+            assertNull(dataState.combinedContactsSettingErrorEffect.consume())
         }
     }
 
     @Test
     fun `should call repository save method when saving combined contacts preference`() = runTest {
+        // Given
+        coEvery {
+            saveCombinedContactsSetting(combinedContactsPreference.isEnabled)
+        } returns Result.success(Unit)
+
         // When
-        combinedContactsSettingViewModel.saveCombinedContactsPreference(combinedContactsPreference)
+        combinedContactsSettingViewModel.saveCombinedContactsPreference(combinedContactsPreference.isEnabled)
 
         // Then
-        coVerify { saveCombinedContactsSetting(combinedContactsPreference) }
+        coVerify { saveCombinedContactsSetting(combinedContactsPreference.isEnabled) }
+    }
+
+    @Test
+    fun `state should emit error data when an exception is thrown during saving combined contacts preference`() = runTest {
+        // Given
+        val ioException = IOException()
+        coEvery {
+            saveCombinedContactsSetting(combinedContactsPreference.isEnabled)
+        } returns Result.failure(ioException)
+
+        // When
+        combinedContactsSettingViewModel.saveCombinedContactsPreference(combinedContactsPreference.isEnabled)
+
+        // Then
+        combinedContactsSettingViewModel.state.test {
+            assertIs<CombinedContactsSettingState.Loading>(awaitItem())
+
+            combinedContactsPreferenceFlow.emit(combinedContactsPreference)
+
+            val dataState = assertIs<CombinedContactsSettingState.Data>(awaitItem())
+            assertEquals(ioException, dataState.combinedContactsSettingErrorEffect.consume())
+        }
     }
 }

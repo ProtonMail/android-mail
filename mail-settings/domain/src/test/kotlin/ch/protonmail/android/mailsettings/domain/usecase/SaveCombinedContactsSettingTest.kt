@@ -18,33 +18,49 @@
 
 package ch.protonmail.android.mailsettings.domain.usecase
 
+import java.io.IOException
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.just
 import io.mockk.mockk
-import io.mockk.runs
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class SaveCombinedContactsSettingTest {
 
-    private val combinedContactsRepository: CombinedContactsRepository = mockk {
-        coEvery { save(any()) } just runs
-    }
+    private val combinedContactsPreference = CombinedContactsPreference(isEnabled = true)
+
+    private val combinedContactsRepository: CombinedContactsRepository = mockk()
 
     private val saveCombinedContactsSetting = SaveCombinedContactsSetting(combinedContactsRepository)
 
     @Test
-    fun `should call save method from repository when use case is invoked`() = runTest {
-        // given
-        val combinedContactsPreference = CombinedContactsPreference(isEnabled = true)
+    fun `should return success when preference is saved successfully`() = runTest {
+        // Given
+        val expectedResult = Result.success(Unit)
+        coEvery { combinedContactsRepository.save(combinedContactsPreference) } returns expectedResult
 
-        // when
-        saveCombinedContactsSetting(combinedContactsPreference.isEnabled)
+        // When
+        val result = saveCombinedContactsSetting(combinedContactsPreference.isEnabled)
 
-        // then
+        // Then
         coVerify { combinedContactsRepository.save(combinedContactsPreference) }
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `should return failure when preference is not saved successfully`() = runTest {
+        // Given
+        val ioException = IOException()
+        val expectedResult = Result.failure<Unit>(ioException)
+        coEvery { combinedContactsRepository.save(combinedContactsPreference) } returns expectedResult
+
+        // When
+        val result = saveCombinedContactsSetting(combinedContactsPreference.isEnabled)
+
+        // Then
+        assertEquals(expectedResult, result)
     }
 }
