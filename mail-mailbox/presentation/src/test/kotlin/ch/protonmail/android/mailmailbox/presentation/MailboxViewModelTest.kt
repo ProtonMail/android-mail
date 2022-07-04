@@ -247,7 +247,7 @@ class MailboxViewModelTest {
 
             // Then
             awaitItem()
-            verify { pagingSourceFactory.create(listOf(userId), Archive, Message) }
+            verify { pagingSourceFactory.create(listOf(userId), Archive, false, Message) }
         }
     }
 

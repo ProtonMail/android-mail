@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
 import ch.protonmail.android.mailpagination.domain.entity.PageFilter
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
 import ch.protonmail.android.mailpagination.domain.getAdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.getRefreshPageKey
 import ch.protonmail.android.mailpagination.presentation.paging.InvalidationTrackerPagingSource
@@ -45,6 +46,7 @@ interface MailboxItemPagingSourceFactory {
     fun create(
         userIds: List<UserId>,
         selectedMailLabelId: MailLabelId,
+        filterUnread: Boolean,
         type: MailboxItemType,
     ): MailboxItemPagingSource
 }
@@ -54,6 +56,7 @@ class MailboxItemPagingSource @AssistedInject constructor(
     private val getMailboxItems: GetMultiUserMailboxItems,
     @Assisted private val userIds: List<UserId>,
     @Assisted private val selectedMailLabelId: MailLabelId,
+    @Assisted private val filterUnread: Boolean,
     @Assisted private val type: MailboxItemType,
 ) : InvalidationTrackerPagingSource<MailboxPageKey, MailboxItem>(
     db = roomDatabase,
@@ -62,7 +65,12 @@ class MailboxItemPagingSource @AssistedInject constructor(
 
     private val initialPageKey = MailboxPageKey(
         userIds = userIds,
-        pageKey = PageKey(filter = PageFilter(labelId = selectedMailLabelId.labelId))
+        pageKey = PageKey(
+            filter = PageFilter(
+                labelId = selectedMailLabelId.labelId,
+                read = if (filterUnread) ReadStatus.Unread else ReadStatus.All
+            )
+        )
     )
 
     override suspend fun loadPage(
@@ -75,7 +83,7 @@ class MailboxItemPagingSource @AssistedInject constructor(
             val items = getMailboxItems(type, key.copy(pageKey = key.pageKey.copy(size = size)))
             Timber.d("loadItems: ${items.size}/$size -> ${key.pageKey}")
 
-            val adjacentKeys = items.getAdjacentPageKeys(key.pageKey, initialPageKey.pageKey.size)
+            val adjacentKeys = items.getAdjacentPageKeys(key.pageKey, size)
             val prev = key.copy(pageKey = adjacentKeys.prev)
             val next = key.copy(pageKey = adjacentKeys.next)
             return LoadResult.Page(

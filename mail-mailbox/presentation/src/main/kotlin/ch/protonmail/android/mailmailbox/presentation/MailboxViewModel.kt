@@ -215,6 +215,7 @@ class MailboxViewModel @Inject constructor(
             pagingSourceFactory.create(
                 userIds = listOf(userId),
                 selectedMailLabelId = selectedMailLabelId,
+                filterUnread = unreadFilterEnabled,
                 type = viewMode.toMailboxItemType()
             )
         }

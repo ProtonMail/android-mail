@@ -18,12 +18,15 @@
 
 package ch.protonmail.android.mailmailbox.presentation.paging
 
+import java.io.IOException
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.room.InvalidationTracker
 import androidx.room.RoomDatabase
 import androidx.room.getQueryDispatcher
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Inbox
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
@@ -45,10 +48,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
-import org.junit.Before
 import org.junit.Test
-import java.io.IOException
-import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Inbox
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
@@ -76,15 +76,16 @@ class MailboxItemPagingSourceTest {
         coEvery { this@mockk.invoke(type = any(), pageKey = any()) } returns emptyList()
     }
 
-    private lateinit var pagingSource: MailboxItemPagingSource
+    private var isFilterUnreadEnabled = false
+    private var selectedLabelId: MailLabelId = Inbox
 
-    @Before
-    fun setUp() {
-        pagingSource = MailboxItemPagingSource(
+    private val pagingSource by lazy {
+        MailboxItemPagingSource(
             roomDatabase = roomDatabase,
             getMailboxItems = getMailboxItems,
             userIds = listOf(userId),
-            selectedMailLabelId = Inbox,
+            selectedMailLabelId = selectedLabelId,
+            filterUnread = isFilterUnreadEnabled,
             type = MailboxItemType.Message
         )
     }
@@ -192,19 +193,7 @@ class MailboxItemPagingSourceTest {
         // When
         val refreshKey = pagingSource.getRefreshKey(
             PagingState(
-                pages = listOf(
-                    PagingSource.LoadResult.Page(
-                        data = listOf(
-                            getMailboxItem(userId, "5", time = 5000),
-                            getMailboxItem(userId, "4", time = 4000),
-                            getMailboxItem(userId, "3", time = 3000),
-                            getMailboxItem(userId, "2", time = 2000),
-                            getMailboxItem(userId, "1", time = 1000),
-                        ),
-                        prevKey = null,
-                        nextKey = null
-                    )
-                ),
+                pages = buildMockPages(),
                 anchorPosition = null,
                 config = PagingConfig(pageSize = 5, initialLoadSize = 15),
                 leadingPlaceholderCount = 0
@@ -235,4 +224,60 @@ class MailboxItemPagingSourceTest {
             actual = refreshKey
         )
     }
+
+    @Test
+    fun `pagingSource getRefreshKey returns key which maintains existing PageFilter`() = runTest {
+        // Given
+        isFilterUnreadEnabled = true
+        selectedLabelId = MailLabelId.System.Archive
+
+        // When
+        val refreshKey = pagingSource.getRefreshKey(
+            PagingState(
+                pages = buildMockPages(),
+                anchorPosition = null,
+                config = PagingConfig(pageSize = 5, initialLoadSize = 15),
+                leadingPlaceholderCount = 0
+            )
+        )
+
+        // Then
+        assertEquals(
+            expected = MailboxPageKey(
+                userIds = listOf(userId),
+                pageKey = PageKey(
+                    filter = PageFilter(
+                        labelId = LabelId("6"),
+                        keyword = "",
+                        read = ReadStatus.Unread,
+                        minTime = 1000,
+                        maxTime = 5000,
+                        minOrder = 1000,
+                        maxOrder = 1000,
+                        minId = null,
+                        maxId = null
+                    ),
+                    orderBy = OrderBy.Time,
+                    orderDirection = OrderDirection.Descending,
+                    size = 25
+                )
+            ),
+            actual = refreshKey
+        )
+    }
+
+    private fun buildMockPages(): List<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>> =
+        listOf(
+            PagingSource.LoadResult.Page(
+                data = listOf(
+                    getMailboxItem(userId, "5", time = 5000),
+                    getMailboxItem(userId, "4", time = 4000),
+                    getMailboxItem(userId, "3", time = 3000),
+                    getMailboxItem(userId, "2", time = 2000),
+                    getMailboxItem(userId, "1", time = 1000),
+                ),
+                prevKey = null,
+                nextKey = null
+            )
+        )
 }
