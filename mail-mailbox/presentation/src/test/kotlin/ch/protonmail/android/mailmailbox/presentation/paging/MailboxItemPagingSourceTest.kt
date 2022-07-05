@@ -32,6 +32,8 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
 import ch.protonmail.android.mailmailbox.presentation.getMailboxItem
+import ch.protonmail.android.mailpagination.domain.AdjacentPageKeys
+import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.entity.OrderBy
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageFilter
@@ -44,6 +46,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.verify
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -76,6 +79,10 @@ class MailboxItemPagingSourceTest {
         coEvery { this@mockk.invoke(type = any(), pageKey = any()) } returns emptyList()
     }
 
+    private val getAdjacentPageKeys = mockk<GetAdjacentPageKeys> {
+        every { this@mockk.invoke(any(), any(), any()) } returns AdjacentPageKeys(PageKey(), PageKey(), PageKey())
+    }
+
     private var isFilterUnreadEnabled = false
     private var selectedLabelId: MailLabelId = Inbox
 
@@ -83,6 +90,7 @@ class MailboxItemPagingSourceTest {
         MailboxItemPagingSource(
             roomDatabase = roomDatabase,
             getMailboxItems = getMailboxItems,
+            getAdjacentPageKeys = getAdjacentPageKeys,
             userIds = listOf(userId),
             selectedMailLabelId = selectedLabelId,
             filterUnread = isFilterUnreadEnabled,
@@ -264,6 +272,29 @@ class MailboxItemPagingSourceTest {
             ),
             actual = refreshKey
         )
+    }
+
+    @Test
+    fun `adjacent page keys are loaded using initial page size`() = runTest {
+        // Paging implementation params.loadSize is by default 3x the (initial) pageSize,
+        // for the first load. We take the max to respect this value.
+        // For adjacent pages, we just want to normal pageSize.
+
+        // Given
+        val items = listOf(
+            getMailboxItem(userId, "2", time = 2000),
+            getMailboxItem(userId, "1", time = 1000)
+        )
+        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns items
+
+        // When
+        pagingSource.loadPage(
+            PagingSource.LoadParams.Refresh(key = null, loadSize = 100, false)
+        )
+
+        // Then
+        val initialPageKeySize = 25 // PageKey.defaultPageSize
+        verify { getAdjacentPageKeys(items, any(), initialPageKeySize) }
     }
 
     private fun buildMockPages(): List<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>> =

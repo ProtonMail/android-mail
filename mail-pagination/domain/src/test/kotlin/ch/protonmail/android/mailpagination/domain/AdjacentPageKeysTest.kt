@@ -31,16 +31,7 @@ import kotlin.test.assertEquals
 
 class AdjacentPageKeysTest {
 
-    data class FakeItem(
-        override val userId: UserId = UserId("userId"),
-        override val id: String,
-        override val time: Long,
-        override val size: Long = 1000,
-        override val order: Long = time,
-        override val read: Boolean = false,
-        override val labelIds: List<LabelId> = emptyList(),
-        override val keywords: String = "",
-    ) : PageItem
+    val getAdjacentPageKeys = GetAdjacentPageKeys()
 
     @Test
     fun `return correct prev, current and next keys`() = runTest {
@@ -88,7 +79,7 @@ class AdjacentPageKeysTest {
         )
 
         // When
-        val actual = items.getAdjacentPageKeys(current, current.size)
+        val actual = getAdjacentPageKeys(items, current, current.size)
         // Then
         assertEquals(expected, actual)
     }
@@ -139,7 +130,7 @@ class AdjacentPageKeysTest {
         )
 
         // When
-        val actual = items.getAdjacentPageKeys(current, current.size)
+        val actual = getAdjacentPageKeys(items, current, current.size)
         // Then
         assertEquals(expected, actual)
     }
@@ -190,8 +181,19 @@ class AdjacentPageKeysTest {
         )
 
         // When
-        val actual = items.getAdjacentPageKeys(current, current.size)
+        val actual = getAdjacentPageKeys(items, current, current.size)
         // Then
         assertEquals(expected, actual)
     }
+
+    data class FakeItem(
+        override val userId: UserId = UserId("userId"),
+        override val id: String,
+        override val time: Long,
+        override val size: Long = 1000,
+        override val order: Long = time,
+        override val read: Boolean = false,
+        override val labelIds: List<LabelId> = emptyList(),
+        override val keywords: String = "",
+    ) : PageItem
 }

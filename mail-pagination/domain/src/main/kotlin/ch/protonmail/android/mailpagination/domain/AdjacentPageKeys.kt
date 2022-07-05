@@ -21,57 +21,65 @@ package ch.protonmail.android.mailpagination.domain
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageItem
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import javax.inject.Inject
+
+class GetAdjacentPageKeys @Inject constructor() {
+
+    /**
+     * Return [AdjacentPageKeys] to get the adjacent previous and next pages.
+     */
+    operator fun invoke(
+        items: List<PageItem>,
+        current: PageKey,
+        size: Int
+    ): AdjacentPageKeys {
+        // Get top and bottom items to compute prev/next keys.
+        val topItem = items.firstOrNull()
+        val bottomItem = items.lastOrNull()
+        val (minItem, maxItem) = when (current.orderDirection) {
+            OrderDirection.Ascending -> topItem to bottomItem
+            OrderDirection.Descending -> bottomItem to topItem
+        }
+        val lessThanMinItemKey = current.copy(
+            filter = current.filter.copy(
+                minTime = Long.MIN_VALUE,
+                minOrder = Long.MIN_VALUE,
+                minId = null,
+                maxTime = minItem?.time ?: Long.MAX_VALUE,
+                // Make sure we don't get the same item (minus(1)) in the adjacent page.
+                maxOrder = minItem?.order?.minus(1) ?: Long.MAX_VALUE,
+                // Make sure we don't get the same item from BE.
+                maxId = minItem?.id
+            ),
+            size = size
+        )
+        val greaterThenMaxItemKey = current.copy(
+            filter = current.filter.copy(
+                minTime = maxItem?.time ?: Long.MIN_VALUE,
+                // Make sure we don't get the same item (plus(1)).
+                minOrder = maxItem?.order?.plus(1) ?: Long.MIN_VALUE,
+                // Make sure we don't get the same item from BE.
+                minId = maxItem?.id,
+                maxTime = Long.MAX_VALUE,
+                maxOrder = Long.MAX_VALUE,
+                maxId = null,
+            ),
+            size = size
+        )
+        val (prev, next) = when (current.orderDirection) {
+            OrderDirection.Ascending -> lessThanMinItemKey to greaterThenMaxItemKey
+            OrderDirection.Descending -> greaterThenMaxItemKey to lessThanMinItemKey
+        }
+        return AdjacentPageKeys(
+            prev = prev,
+            current = current,
+            next = next
+        )
+    }
+}
 
 data class AdjacentPageKeys(
     val prev: PageKey,
     val current: PageKey,
     val next: PageKey,
 )
-
-/**
- * Return [AdjacentPageKeys] to get the adjacent previous and next pages.
- */
-fun List<PageItem>.getAdjacentPageKeys(current: PageKey, size: Int): AdjacentPageKeys {
-    // Get top and bottom items to compute prev/next keys.
-    val topItem = firstOrNull()
-    val bottomItem = lastOrNull()
-    val (minItem, maxItem) = when (current.orderDirection) {
-        OrderDirection.Ascending -> topItem to bottomItem
-        OrderDirection.Descending -> bottomItem to topItem
-    }
-    val lessThanMinItemKey = current.copy(
-        filter = current.filter.copy(
-            minTime = Long.MIN_VALUE,
-            minOrder = Long.MIN_VALUE,
-            minId = null,
-            maxTime = minItem?.time ?: Long.MAX_VALUE,
-            // Make sure we don't get the same item (minus(1)) in the adjacent page.
-            maxOrder = minItem?.order?.minus(1) ?: Long.MAX_VALUE,
-            // Make sure we don't get the same item from BE.
-            maxId = minItem?.id
-        ),
-        size = size
-    )
-    val greaterThenMaxItemKey = current.copy(
-        filter = current.filter.copy(
-            minTime = maxItem?.time ?: Long.MIN_VALUE,
-            // Make sure we don't get the same item (plus(1)).
-            minOrder = maxItem?.order?.plus(1) ?: Long.MIN_VALUE,
-            // Make sure we don't get the same item from BE.
-            minId = maxItem?.id,
-            maxTime = Long.MAX_VALUE,
-            maxOrder = Long.MAX_VALUE,
-            maxId = null,
-        ),
-        size = size
-    )
-    val (prev, next) = when (current.orderDirection) {
-        OrderDirection.Ascending -> lessThanMinItemKey to greaterThenMaxItemKey
-        OrderDirection.Descending -> greaterThenMaxItemKey to lessThanMinItemKey
-    }
-    return AdjacentPageKeys(
-        prev = prev,
-        current = current,
-        next = next
-    )
-}
