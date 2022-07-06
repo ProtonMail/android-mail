@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Beállítások</string>
-  <string name="mail_settings_toolbar_button_content_description">Navigate to previous screen</string>
+  <string name="mail_settings_toolbar_button_content_description">Vissza</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Fiók beállítások</string>
   <string name="mail_settings_app_settings">Alkalmazás beállításai</string>
@@ -62,20 +62,18 @@
   <string name="mail_settings_not_set">Nincs megadva</string>
   <string name="mail_settings_conversation_mode_hint">A levelező csoportosítsa az e-maileket beszélgetésenként vagy jelenítse meg külön</string>
   <!-- Swipe Actions -->
-  <string name="mail_settings_swipe_actions_title">Swipe actions</string>
-  <string name="mail_settings_swipe_actions_subtitle">Set up swipe gestures to access most used actions.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Info icon</string>
-  <string name="mail_settings_swipe_chevron_content_description">Change swipe action</string>
-  <string name="mail_settings_swipe_right_name">Left to right</string>
-  <string name="mail_settings_swipe_left_name">Right to left</string>
-  <string name="mail_settings_swipe_action_archive_title">Archive</string>
-  <string name="mail_settings_swipe_action_read_title">Unread</string>
-  <string name="mail_settings_swipe_action_spam_title">Spam</string>
-  <string name="mail_settings_swipe_action_star_title">Star</string>
-  <string name="mail_settings_swipe_action_trash_title">Trash</string>
-  <string name="mail_settings_swipe_action_archive_description">Move to archive</string>
-  <string name="mail_settings_swipe_action_read_description">Mark as unread/read</string>
-  <string name="mail_settings_swipe_action_spam_description">Move to spam</string>
-  <string name="mail_settings_swipe_action_star_description">Star/unstar</string>
-  <string name="mail_settings_swipe_action_trash_description">Trash</string>
+  <string name="mail_settings_swipe_actions_title">Csúsztatási műveletek</string>
+  <string name="mail_settings_swipe_actions_subtitle">A leggyakrabban használt műveletekhez állítson be csúsztatás műveletet.</string>
+  <string name="mail_settings_swipe_right_name">Balról jobbra</string>
+  <string name="mail_settings_swipe_left_name">Jobbról balra</string>
+  <string name="mail_settings_swipe_action_archive_title">Archiválás</string>
+  <string name="mail_settings_swipe_action_read_title">Olvasatlan</string>
+  <string name="mail_settings_swipe_action_spam_title">Levélszemét</string>
+  <string name="mail_settings_swipe_action_star_title">Csillagozás</string>
+  <string name="mail_settings_swipe_action_trash_title">Lomtár</string>
+  <string name="mail_settings_swipe_action_archive_description">Áthelyezés az archívumba</string>
+  <string name="mail_settings_swipe_action_read_description">Megjelölés olvasatlanként/olvasottként</string>
+  <string name="mail_settings_swipe_action_spam_description">Áthelyezés a levélszeméthez</string>
+  <string name="mail_settings_swipe_action_star_description">Csillagozás/Vagy nem</string>
+  <string name="mail_settings_swipe_action_trash_description">Lomtár</string>
 </resources>

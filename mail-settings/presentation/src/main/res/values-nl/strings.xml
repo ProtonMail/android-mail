@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Instellingen</string>
-  <string name="mail_settings_toolbar_button_content_description">Navigeer naar vorig venster</string>
+  <string name="mail_settings_toolbar_button_content_description">Terug</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Accountinstellingen</string>
   <string name="mail_settings_app_settings">App instellingen</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Veegacties</string>
   <string name="mail_settings_swipe_actions_subtitle">Stel veeg gebaren in om toegang te krijgen tot de meest gebruikte acties.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Info</string>
-  <string name="mail_settings_swipe_chevron_content_description">Wijzig veegactie</string>
   <string name="mail_settings_swipe_right_name">Links naar rechts</string>
   <string name="mail_settings_swipe_left_name">Rechts naar links</string>
   <string name="mail_settings_swipe_action_archive_title">Archiveren</string>

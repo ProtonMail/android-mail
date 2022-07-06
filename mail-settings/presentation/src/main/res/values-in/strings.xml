@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Pengaturan</string>
-  <string name="mail_settings_toolbar_button_content_description">Pindah ke layar sebelumnya</string>
+  <string name="mail_settings_toolbar_button_content_description">Kembali</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Pengaturan akun</string>
   <string name="mail_settings_app_settings">Pengaturan aplikasi</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Tindakan usap</string>
   <string name="mail_settings_swipe_actions_subtitle">Atur gestur usap untuk mengakses tindakan yang paling sering digunakan.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Ikon info</string>
-  <string name="mail_settings_swipe_chevron_content_description">Ubah tindakan usap</string>
   <string name="mail_settings_swipe_right_name">Kiri ke kanan</string>
   <string name="mail_settings_swipe_left_name">Kanan ke kiri</string>
   <string name="mail_settings_swipe_action_archive_title">Arsip</string>

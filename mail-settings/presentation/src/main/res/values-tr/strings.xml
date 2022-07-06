@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Ayarlar</string>
-  <string name="mail_settings_toolbar_button_content_description">Önceki ekrana git</string>
+  <string name="mail_settings_toolbar_button_content_description">Geri</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Hesap ayarları</string>
   <string name="mail_settings_app_settings">Uygulama ayarları</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Kaydırma işlemleri</string>
   <string name="mail_settings_swipe_actions_subtitle">Sık kullanılan işlemler için kaydırma hareketlerini ayarlayın.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Bilgiler simgesi</string>
-  <string name="mail_settings_swipe_chevron_content_description">Kaydırma işlemini değiştir</string>
   <string name="mail_settings_swipe_right_name">Soldan sağa</string>
   <string name="mail_settings_swipe_left_name">Sağdan sola</string>
   <string name="mail_settings_swipe_action_archive_title">Arşiv</string>

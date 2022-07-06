@@ -16,11 +16,10 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
-
 <resources>
   <string name="app_name">ProtonMail</string>
-  <string name="title_remove">Entfernen</string>
-  <string name="title_remove_account">Konto entfernen</string>
+  <string name="title_remove">Löschen</string>
+  <string name="title_remove_account">Konto löschen</string>
   <string name="description_remove_account">Du wirst abgemeldet und alle mit diesem Konto verbundenen Informationen werden gelöscht.</string>
   <string name="user_select_other_account_content_description">Anderes Konto auswählen</string>
 </resources>

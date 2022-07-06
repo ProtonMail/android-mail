@@ -22,7 +22,7 @@
   <string name="drawer_title_subscription">Předplatné</string>
   <string name="mailbox_toolbar_compose_button_content_description">Napsat novou zprávu</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončit režim výběru</string>
-  <string name="mailbox_toolbar_menu_button_content_description">Tlačítko Menu</string>
-  <string name="mailbox_toolbar_search_button_content_description">Tlačítko Hledat</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
+  <string name="mailbox_toolbar_search_button_content_description">Vyhledat</string>
   <string name="mailbox_toolbar_selected_count">Vybráno: %d</string>
 </resources>

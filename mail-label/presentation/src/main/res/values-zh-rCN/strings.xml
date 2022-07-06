@@ -17,19 +17,19 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="label_title_inbox">Inbox</string>
-  <string name="label_title_drafts">Drafts</string>
-  <string name="label_title_sent">Sent</string>
-  <string name="label_title_starred">Starred</string>
-  <string name="label_title_archive">Archive</string>
-  <string name="label_title_spam">Spam</string>
-  <string name="label_title_trash">Trash</string>
-  <string name="label_title_outbox">Outbox</string>
-  <string name="label_title_all_mail">All mail</string>
-  <string name="label_title_all_drafts">All drafts</string>
-  <string name="label_title_all_sent">All sent</string>
-  <string name="label_title_folders">Folders</string>
-  <string name="label_title_labels">Labels</string>
-  <string name="label_title_add_folder">Add folder</string>
-  <string name="label_title_add_label">Add label</string>
+  <string name="label_title_inbox">收件箱</string>
+  <string name="label_title_drafts">草稿</string>
+  <string name="label_title_sent">已发送</string>
+  <string name="label_title_starred">星标邮件</string>
+  <string name="label_title_archive">存档</string>
+  <string name="label_title_spam">垃圾邮件</string>
+  <string name="label_title_trash">废件箱</string>
+  <string name="label_title_outbox">发件箱</string>
+  <string name="label_title_all_mail">所有邮件</string>
+  <string name="label_title_all_drafts">所有草稿</string>
+  <string name="label_title_all_sent">所有已发送</string>
+  <string name="label_title_folders">文件夹</string>
+  <string name="label_title_labels">标签</string>
+  <string name="label_title_add_folder">创建文件夹</string>
+  <string name="label_title_add_label">创建标签</string>
 </resources>

@@ -17,19 +17,19 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="label_title_inbox">Inbox</string>
-  <string name="label_title_drafts">Drafts</string>
-  <string name="label_title_sent">Sent</string>
-  <string name="label_title_starred">Starred</string>
-  <string name="label_title_archive">Archive</string>
+  <string name="label_title_inbox">Doručená pošta</string>
+  <string name="label_title_drafts">Koncepty</string>
+  <string name="label_title_sent">Odeslané</string>
+  <string name="label_title_starred">S hvězdičkou</string>
+  <string name="label_title_archive">Archiv</string>
   <string name="label_title_spam">Spam</string>
-  <string name="label_title_trash">Trash</string>
-  <string name="label_title_outbox">Outbox</string>
-  <string name="label_title_all_mail">All mail</string>
-  <string name="label_title_all_drafts">All drafts</string>
-  <string name="label_title_all_sent">All sent</string>
-  <string name="label_title_folders">Folders</string>
-  <string name="label_title_labels">Labels</string>
-  <string name="label_title_add_folder">Add folder</string>
-  <string name="label_title_add_label">Add label</string>
+  <string name="label_title_trash">Koš</string>
+  <string name="label_title_outbox">K odeslání</string>
+  <string name="label_title_all_mail">Všechny zprávy</string>
+  <string name="label_title_all_drafts">Všechny koncepty</string>
+  <string name="label_title_all_sent">Všechny odeslané</string>
+  <string name="label_title_folders">Složky</string>
+  <string name="label_title_labels">Štítky</string>
+  <string name="label_title_add_folder">Přidat složku</string>
+  <string name="label_title_add_label">Přidat štítek</string>
 </resources>

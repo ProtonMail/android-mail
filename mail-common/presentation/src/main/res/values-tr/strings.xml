@@ -18,4 +18,5 @@
   -->
 <resources>
   <string name="retry">Yeniden dene</string>
+  <string name="x_error_not_logged_in">Oturum açılmamış</string>
 </resources>

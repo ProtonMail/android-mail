@@ -22,7 +22,7 @@
   <string name="drawer_title_subscription">Abbonamento</string>
   <string name="mailbox_toolbar_compose_button_content_description">Componi nuovo messaggio</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Esci dalla modalità di selezione</string>
-  <string name="mailbox_toolbar_menu_button_content_description">Pulsante menu</string>
-  <string name="mailbox_toolbar_search_button_content_description">Pulsante ricerca</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
+  <string name="mailbox_toolbar_search_button_content_description">Ricerca</string>
   <string name="mailbox_toolbar_selected_count">%d Selezionato</string>
 </resources>

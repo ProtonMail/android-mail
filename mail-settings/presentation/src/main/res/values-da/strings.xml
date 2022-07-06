@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Indstillinger</string>
-  <string name="mail_settings_toolbar_button_content_description">Gå til forrige skærm</string>
+  <string name="mail_settings_toolbar_button_content_description">Tilbage</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Kontoindstillinger</string>
   <string name="mail_settings_app_settings">App-indstillinger</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Strygehandlinger</string>
   <string name="mail_settings_swipe_actions_subtitle">Indstil strygebevægelser som adgang til de mest brugte handlinger.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Infoikon</string>
-  <string name="mail_settings_swipe_chevron_content_description">Ændr strygehandling</string>
   <string name="mail_settings_swipe_right_name">Venstre mod højre</string>
   <string name="mail_settings_swipe_left_name">Højre mod venstre</string>
   <string name="mail_settings_swipe_action_archive_title">Arkivér</string>

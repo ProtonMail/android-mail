@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">設定</string>
-  <string name="mail_settings_toolbar_button_content_description">前のスクリーンへナビゲート</string>
+  <string name="mail_settings_toolbar_button_content_description">戻る</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">アカウントの設定</string>
   <string name="mail_settings_app_settings">アプリの設定</string>
@@ -64,14 +64,12 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">スワイプ操作</string>
   <string name="mail_settings_swipe_actions_subtitle">スワイプ操作を登録するとよく使う機能に簡単にアクセスできます。</string>
-  <string name="mail_settings_swipe_info_icon_content_description">情報アイコン</string>
-  <string name="mail_settings_swipe_chevron_content_description">スワイプ操作時のアクションを変更</string>
   <string name="mail_settings_swipe_right_name">左から右</string>
   <string name="mail_settings_swipe_left_name">右から左</string>
   <string name="mail_settings_swipe_action_archive_title">アーカイブ</string>
   <string name="mail_settings_swipe_action_read_title">未読</string>
   <string name="mail_settings_swipe_action_spam_title">迷惑メール</string>
-  <string name="mail_settings_swipe_action_star_title">星印</string>
+  <string name="mail_settings_swipe_action_star_title">星印を付ける</string>
   <string name="mail_settings_swipe_action_trash_title">ごみ箱</string>
   <string name="mail_settings_swipe_action_archive_description">アーカイブに移動</string>
   <string name="mail_settings_swipe_action_read_description">既読と未読を入れ替える</string>

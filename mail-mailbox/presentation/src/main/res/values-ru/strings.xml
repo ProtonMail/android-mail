@@ -22,7 +22,7 @@
   <string name="drawer_title_subscription">Подписка</string>
   <string name="mailbox_toolbar_compose_button_content_description">Написать новое сообщение</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Выход из режима выбора</string>
-  <string name="mailbox_toolbar_menu_button_content_description">Кнопка меню</string>
-  <string name="mailbox_toolbar_search_button_content_description">Кнопка поиска</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
+  <string name="mailbox_toolbar_search_button_content_description">Поиск</string>
   <string name="mailbox_toolbar_selected_count">Выбрано %d</string>
 </resources>

@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Paramètres</string>
-  <string name="mail_settings_toolbar_button_content_description">Naviguer vers l\'écran précédent</string>
+  <string name="mail_settings_toolbar_button_content_description">Retour</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Paramètres du compte</string>
   <string name="mail_settings_app_settings">Paramètres de l\'application</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Actions de balayage</string>
   <string name="mail_settings_swipe_actions_subtitle">Configurez des gestes de balayage pour accéder aux actions les plus utilisées.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Info</string>
-  <string name="mail_settings_swipe_chevron_content_description">Changer l\'action de balayage</string>
   <string name="mail_settings_swipe_right_name">De gauche à droite</string>
   <string name="mail_settings_swipe_left_name">De droite à gauche</string>
   <string name="mail_settings_swipe_action_archive_title">Archiver</string>

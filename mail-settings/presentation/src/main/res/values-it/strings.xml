@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Impostazioni</string>
-  <string name="mail_settings_toolbar_button_content_description">Passa alla schermata precedente</string>
+  <string name="mail_settings_toolbar_button_content_description">Indietro</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Impostazioni account</string>
   <string name="mail_settings_app_settings">Impostazioni applicazione</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Azioni di scorrimento</string>
   <string name="mail_settings_swipe_actions_subtitle">Configura i gesti di scorrimento per accedere alle azioni più usate.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Icona info</string>
-  <string name="mail_settings_swipe_chevron_content_description">Modifica azione di scorrimento</string>
   <string name="mail_settings_swipe_right_name">Da sinistra a destra</string>
   <string name="mail_settings_swipe_left_name">Da destra a sinistra</string>
   <string name="mail_settings_swipe_action_archive_title">Archivio</string>

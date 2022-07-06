@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Ρυθμίσεις</string>
-  <string name="mail_settings_toolbar_button_content_description">Μετάβαση στην προηγούμενη οθόνη</string>
+  <string name="mail_settings_toolbar_button_content_description">Πίσω</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Ρυθμίσεις λογαριασμού</string>
   <string name="mail_settings_app_settings">Ρυθμίσεις εφαρμογής</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Swipe actions</string>
   <string name="mail_settings_swipe_actions_subtitle">Set up swipe gestures to access most used actions.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Info icon</string>
-  <string name="mail_settings_swipe_chevron_content_description">Change swipe action</string>
   <string name="mail_settings_swipe_right_name">Αριστερά προς δεξιά</string>
   <string name="mail_settings_swipe_left_name">Δεξιά προς αριστερά</string>
   <string name="mail_settings_swipe_action_archive_title">Αρχειοθετημένα</string>

@@ -22,7 +22,7 @@
   <string name="drawer_title_subscription">Abonament</string>
   <string name="mailbox_toolbar_compose_button_content_description">Compunere mesaj</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ieșire din modul de selecție</string>
-  <string name="mailbox_toolbar_menu_button_content_description">Buton meniu</string>
-  <string name="mailbox_toolbar_search_button_content_description">Buton de căutare</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Meniu</string>
+  <string name="mailbox_toolbar_search_button_content_description">Căutare</string>
   <string name="mailbox_toolbar_selected_count">Selectate: %d</string>
 </resources>

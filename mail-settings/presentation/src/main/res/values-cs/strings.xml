@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Nastavení</string>
-  <string name="mail_settings_toolbar_button_content_description">Přejít na předchozí obrazovku</string>
+  <string name="mail_settings_toolbar_button_content_description">Zpět</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Nastavení účtu</string>
   <string name="mail_settings_app_settings">Nastavení aplikace</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Akce po přejetí prstem</string>
   <string name="mail_settings_swipe_actions_subtitle">Nastavte gesta pro přístup k nejpoužívanějším akcím.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Informace</string>
-  <string name="mail_settings_swipe_chevron_content_description">Změnit akci po přejetí prstem</string>
   <string name="mail_settings_swipe_right_name">Zleva doprava</string>
   <string name="mail_settings_swipe_left_name">Zprava doleva</string>
   <string name="mail_settings_swipe_action_archive_title">Archiv</string>

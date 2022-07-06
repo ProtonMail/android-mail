@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Einstellungen</string>
-  <string name="mail_settings_toolbar_button_content_description">Zum vorherigen Bildschirm zurückkehren</string>
+  <string name="mail_settings_toolbar_button_content_description">Zurück</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Kontoeinstellungen</string>
   <string name="mail_settings_app_settings">App-Einstellungen</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Wischgesten</string>
   <string name="mail_settings_swipe_actions_subtitle">Richten Sie Wischgesten für den Zugriff auf die am häufigsten verwendeten Aktionen ein.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Infosymbol</string>
-  <string name="mail_settings_swipe_chevron_content_description">Wischengeste ändern</string>
   <string name="mail_settings_swipe_right_name">Von links nach rechts</string>
   <string name="mail_settings_swipe_left_name">Von rechts nach links</string>
   <string name="mail_settings_swipe_action_archive_title">Archivieren</string>

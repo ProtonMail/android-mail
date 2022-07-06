@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">设置</string>
-  <string name="mail_settings_toolbar_button_content_description">返回前一界面</string>
+  <string name="mail_settings_toolbar_button_content_description">返回</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">账户设置</string>
   <string name="mail_settings_app_settings">程序设置</string>
@@ -50,7 +50,7 @@
   <string name="mail_settings_mailbox_size">邮箱容量</string>
   <string name="mail_settings_addresses">地址</string>
   <string name="mail_settings_default_email_address">首选邮箱地址</string>
-  <string name="mail_settings_display_name_and_signature">对外名称与落款</string>
+  <string name="mail_settings_display_name_and_signature">称呼与落款</string>
   <string name="mail_settings_mailbox">邮箱</string>
   <string name="mail_settings_privacy">隐私</string>
   <string name="mail_settings_search_message_content">搜索邮件全文</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">滑动操作</string>
   <string name="mail_settings_swipe_actions_subtitle">设置滑动手势来执行常用操作。</string>
-  <string name="mail_settings_swipe_info_icon_content_description">信息图标</string>
-  <string name="mail_settings_swipe_chevron_content_description">更改滑动操作</string>
   <string name="mail_settings_swipe_right_name">从左向右</string>
   <string name="mail_settings_swipe_left_name">从右向左</string>
   <string name="mail_settings_swipe_action_archive_title">存档</string>

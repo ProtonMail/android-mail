@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Postavke</string>
-  <string name="mail_settings_toolbar_button_content_description">Idite na prethodni zaslon</string>
+  <string name="mail_settings_toolbar_button_content_description">Back</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Postavke računa</string>
   <string name="mail_settings_app_settings">Postavke aplikacije</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Swipe akcije</string>
   <string name="mail_settings_swipe_actions_subtitle">Postavite pokrete povlačenja za pristup najčešće korištenim radnjama.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Info ikona</string>
-  <string name="mail_settings_swipe_chevron_content_description">Odaberite radnje prelaska prstom</string>
   <string name="mail_settings_swipe_right_name">S lijeva na desno</string>
   <string name="mail_settings_swipe_left_name">S desna na lijevo</string>
   <string name="mail_settings_swipe_action_archive_title">Arhiva</string>

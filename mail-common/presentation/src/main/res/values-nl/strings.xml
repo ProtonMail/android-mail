@@ -18,4 +18,5 @@
   -->
 <resources>
   <string name="retry">Opnieuw proberen</string>
+  <string name="x_error_not_logged_in">Niet aangemeld</string>
 </resources>

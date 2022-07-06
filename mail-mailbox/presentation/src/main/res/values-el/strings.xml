@@ -22,7 +22,7 @@
   <string name="drawer_title_subscription">Συνδρομή</string>
   <string name="mailbox_toolbar_compose_button_content_description">Σύνταξη νέου μηνύματος</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Exit selection mode</string>
-  <string name="mailbox_toolbar_menu_button_content_description">Κουμπί μενού</string>
-  <string name="mailbox_toolbar_search_button_content_description">Κουμπί αναζήτησης</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Μενού</string>
+  <string name="mailbox_toolbar_search_button_content_description">Αναζήτηση</string>
   <string name="mailbox_toolbar_selected_count">%d Επιλεγμένο</string>
 </resources>

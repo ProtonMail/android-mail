@@ -17,19 +17,19 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="label_title_inbox">Inbox</string>
-  <string name="label_title_drafts">Drafts</string>
-  <string name="label_title_sent">Sent</string>
-  <string name="label_title_starred">Starred</string>
-  <string name="label_title_archive">Archive</string>
-  <string name="label_title_spam">Spam</string>
-  <string name="label_title_trash">Trash</string>
-  <string name="label_title_outbox">Outbox</string>
-  <string name="label_title_all_mail">All mail</string>
-  <string name="label_title_all_drafts">All drafts</string>
-  <string name="label_title_all_sent">All sent</string>
-  <string name="label_title_folders">Folders</string>
-  <string name="label_title_labels">Labels</string>
-  <string name="label_title_add_folder">Add folder</string>
-  <string name="label_title_add_label">Add label</string>
+  <string name="label_title_inbox">Bandeja de entrada</string>
+  <string name="label_title_drafts">Borradores</string>
+  <string name="label_title_sent">Enviados</string>
+  <string name="label_title_starred">Destacados</string>
+  <string name="label_title_archive">Archivar</string>
+  <string name="label_title_spam">Correo no deseado</string>
+  <string name="label_title_trash">Papelera</string>
+  <string name="label_title_outbox">Bandeja de salida</string>
+  <string name="label_title_all_mail">Todos los correos</string>
+  <string name="label_title_all_drafts">Todos los borradores</string>
+  <string name="label_title_all_sent">Todos los correos enviados</string>
+  <string name="label_title_folders">Carpetas</string>
+  <string name="label_title_labels">Etiquetas</string>
+  <string name="label_title_add_folder">Añadir carpeta</string>
+  <string name="label_title_add_label">Añadir etiqueta</string>
 </resources>

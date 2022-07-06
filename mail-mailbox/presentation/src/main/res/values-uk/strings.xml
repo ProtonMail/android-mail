@@ -22,7 +22,7 @@
   <string name="drawer_title_subscription">Передплата</string>
   <string name="mailbox_toolbar_compose_button_content_description">Створити повідомлення</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Вийти з режиму вибору</string>
-  <string name="mailbox_toolbar_menu_button_content_description">Кнопка меню</string>
-  <string name="mailbox_toolbar_search_button_content_description">Кнопка пошуку</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
+  <string name="mailbox_toolbar_search_button_content_description">Пошук</string>
   <string name="mailbox_toolbar_selected_count">%d вибрано</string>
 </resources>

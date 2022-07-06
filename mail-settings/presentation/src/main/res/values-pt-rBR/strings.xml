@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Configurações</string>
-  <string name="mail_settings_toolbar_button_content_description">Navegar para a tela anterior</string>
+  <string name="mail_settings_toolbar_button_content_description">Voltar</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Configurações da conta</string>
   <string name="mail_settings_app_settings">Configurações do aplicativo</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Ações de deslizar</string>
   <string name="mail_settings_swipe_actions_subtitle">Configure gestos de deslize para acessar as ações mais usadas.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Info icon</string>
-  <string name="mail_settings_swipe_chevron_content_description">Alterar a ação de deslizar</string>
   <string name="mail_settings_swipe_right_name">Da esquerda para a direita</string>
   <string name="mail_settings_swipe_left_name">Da direita para a esquerda</string>
   <string name="mail_settings_swipe_action_archive_title">Arquivar</string>

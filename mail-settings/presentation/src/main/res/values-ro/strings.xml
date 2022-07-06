@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Setări</string>
-  <string name="mail_settings_toolbar_button_content_description">Navigare la ecranul anterior</string>
+  <string name="mail_settings_toolbar_button_content_description">Înapoi</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Setări cont</string>
   <string name="mail_settings_app_settings">Setări aplicație</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Acțiuni de glisare</string>
   <string name="mail_settings_swipe_actions_subtitle">Configurare gesturi de glisare pentru a accesa cele mai utilizate acțiuni.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Informații</string>
-  <string name="mail_settings_swipe_chevron_content_description">Schimbare acțiune glisare</string>
   <string name="mail_settings_swipe_right_name">De la stânga la dreapta</string>
   <string name="mail_settings_swipe_left_name">De la dreapta la stânga</string>
   <string name="mail_settings_swipe_action_archive_title">Arhivă</string>

@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Налаштування</string>
-  <string name="mail_settings_toolbar_button_content_description">Перейти на попередній екран</string>
+  <string name="mail_settings_toolbar_button_content_description">Назад</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Налаштування облікового запису</string>
   <string name="mail_settings_app_settings">Налаштування програми</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Жести посування</string>
   <string name="mail_settings_swipe_actions_subtitle">Налаштуйте жести посування для найуживаніших швидких дій.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Інформаційна піктограма</string>
-  <string name="mail_settings_swipe_chevron_content_description">Змінити дію посування</string>
   <string name="mail_settings_swipe_right_name">Зліва направо</string>
   <string name="mail_settings_swipe_left_name">Справа наліво</string>
   <string name="mail_settings_swipe_action_archive_title">Архів</string>

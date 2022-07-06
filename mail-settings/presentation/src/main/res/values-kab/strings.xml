@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Iɣewwaṛen</string>
-  <string name="mail_settings_toolbar_button_content_description">Inig ɣer ugdil yezrin</string>
+  <string name="mail_settings_toolbar_button_content_description">Ɣer deffir</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Iɣewwaren n umiḍan</string>
   <string name="mail_settings_app_settings">Iɣewwaṛen n usnas</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Tigawin n uḍummu</string>
   <string name="mail_settings_swipe_actions_subtitle">Sbadu isillifen n uzuɣer akken ad tkecmeḍ ɣer tigawin i yettwaseqdacen s waṭas.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Tignit n telɣut</string>
-  <string name="mail_settings_swipe_chevron_content_description">Beddel tigawt n uzuɣer</string>
   <string name="mail_settings_swipe_right_name">Seg uzelmaḍ s ayeffus</string>
   <string name="mail_settings_swipe_left_name">Seg uyeffus s azelmaḍ</string>
   <string name="mail_settings_swipe_action_archive_title">Taṛcivt</string>

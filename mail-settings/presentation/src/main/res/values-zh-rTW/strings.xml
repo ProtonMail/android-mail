@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="mail_settings_settings">設定</string>
-  <string name="mail_settings_toolbar_button_content_description">回到前一個畫面</string>
+  <string name="mail_settings_toolbar_button_content_description">返回</string>
   <!-- Settings items -->
-  <string name="mail_settings_account_settings">帳戶設定</string>
+  <string name="mail_settings_account_settings">帳號設定</string>
   <string name="mail_settings_app_settings">應用程式設定</string>
   <string name="mail_settings_theme">佈景主題</string>
   <string name="mail_settings_push_notifications">推播通知</string>
@@ -42,14 +42,14 @@
   <string name="mail_settings_auto_detect">自動偵測</string>
   <string name="mail_settings_app_information">應用程式資訊</string>
   <string name="mail_settings_app_version">應用程式版本</string>
-  <string name="mail_settings_account">帳戶</string>
+  <string name="mail_settings_account">帳號</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">訂閲</string>
   <string name="mail_settings_password_management">密碼管理</string>
-  <string name="mail_settings_recovery_email">備援電子郵件</string>
+  <string name="mail_settings_recovery_email">復原電郵</string>
   <string name="mail_settings_mailbox_size">信箱大小</string>
   <string name="mail_settings_addresses">電郵位址</string>
-  <string name="mail_settings_default_email_address">預設電郵地址</string>
+  <string name="mail_settings_default_email_address">預設電郵位址</string>
   <string name="mail_settings_display_name_and_signature">顯示名稱與簽名</string>
   <string name="mail_settings_mailbox">郵箱</string>
   <string name="mail_settings_privacy">隱私</string>
@@ -60,12 +60,10 @@
   <string name="mail_settings_snooze_notifications">延後通知</string>
   <string name="mail_settings_conversation_mode">會話群组模式</string>
   <string name="mail_settings_not_set">未設定</string>
-  <string name="mail_settings_conversation_mode_hint">收件匣可將同一對話的電郵，以群組或單獨方式陳列顯示。</string>
+  <string name="mail_settings_conversation_mode_hint">收件匣可將同一對話的電郵，以群組或單獨方式陳列顯示</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">滑動動作</string>
   <string name="mail_settings_swipe_actions_subtitle">設定滑動手勢以存取最常用動作。</string>
-  <string name="mail_settings_swipe_info_icon_content_description">資訊圖示</string>
-  <string name="mail_settings_swipe_chevron_content_description">變更滑動動作</string>
   <string name="mail_settings_swipe_right_name">由左至右</string>
   <string name="mail_settings_swipe_left_name">從右至左</string>
   <string name="mail_settings_swipe_action_archive_title">封存</string>

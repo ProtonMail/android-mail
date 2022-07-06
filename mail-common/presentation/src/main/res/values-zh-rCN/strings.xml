@@ -18,4 +18,5 @@
   -->
 <resources>
   <string name="retry">重试</string>
+  <string name="x_error_not_logged_in">未登录</string>
 </resources>

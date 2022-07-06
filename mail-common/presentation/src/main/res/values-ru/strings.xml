@@ -18,4 +18,5 @@
   -->
 <resources>
   <string name="retry">Повторить</string>
+  <string name="x_error_not_logged_in">Вход не выполнен</string>
 </resources>

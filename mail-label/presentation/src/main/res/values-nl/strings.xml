@@ -18,18 +18,18 @@
   -->
 <resources>
   <string name="label_title_inbox">Inbox</string>
-  <string name="label_title_drafts">Drafts</string>
-  <string name="label_title_sent">Sent</string>
-  <string name="label_title_starred">Starred</string>
-  <string name="label_title_archive">Archive</string>
+  <string name="label_title_drafts">Concepten</string>
+  <string name="label_title_sent">Verzonden</string>
+  <string name="label_title_starred">Met ster</string>
+  <string name="label_title_archive">Archiveren</string>
   <string name="label_title_spam">Spam</string>
-  <string name="label_title_trash">Trash</string>
-  <string name="label_title_outbox">Outbox</string>
-  <string name="label_title_all_mail">All mail</string>
-  <string name="label_title_all_drafts">All drafts</string>
-  <string name="label_title_all_sent">All sent</string>
-  <string name="label_title_folders">Folders</string>
+  <string name="label_title_trash">Prullenbak</string>
+  <string name="label_title_outbox">Postvak uit</string>
+  <string name="label_title_all_mail">Alle e-mails</string>
+  <string name="label_title_all_drafts">Alle concepten</string>
+  <string name="label_title_all_sent">Alle verzonden</string>
+  <string name="label_title_folders">Mappen</string>
   <string name="label_title_labels">Labels</string>
-  <string name="label_title_add_folder">Add folder</string>
-  <string name="label_title_add_label">Add label</string>
+  <string name="label_title_add_folder">Map toevoegen</string>
+  <string name="label_title_add_label">Label toevoegen</string>
 </resources>

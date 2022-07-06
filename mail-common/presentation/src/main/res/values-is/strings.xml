@@ -18,4 +18,5 @@
   -->
 <resources>
   <string name="retry">Retry</string>
+  <string name="x_error_not_logged_in">Not logged in</string>
 </resources>

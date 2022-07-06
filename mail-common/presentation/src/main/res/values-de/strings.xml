@@ -18,4 +18,5 @@
   -->
 <resources>
   <string name="retry">Wiederholen</string>
+  <string name="x_error_not_logged_in">Nicht angemeldet</string>
 </resources>

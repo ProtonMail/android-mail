@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Настройки</string>
-  <string name="mail_settings_toolbar_button_content_description">Переход к предыдущему экрану</string>
+  <string name="mail_settings_toolbar_button_content_description">Назад</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Настройки аккаунта</string>
   <string name="mail_settings_app_settings">Настройки приложения</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Действия жестов</string>
   <string name="mail_settings_swipe_actions_subtitle">Настройте жесты для доступа к наиболее используемым действиям.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Значок информации</string>
-  <string name="mail_settings_swipe_chevron_content_description">Изменение действия жестов</string>
   <string name="mail_settings_swipe_right_name">Слева направо</string>
   <string name="mail_settings_swipe_left_name">Справа налево</string>
   <string name="mail_settings_swipe_action_archive_title">Архив</string>

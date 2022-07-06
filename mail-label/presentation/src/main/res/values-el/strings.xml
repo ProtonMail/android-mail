@@ -17,19 +17,19 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="label_title_inbox">Inbox</string>
-  <string name="label_title_drafts">Drafts</string>
-  <string name="label_title_sent">Sent</string>
-  <string name="label_title_starred">Starred</string>
-  <string name="label_title_archive">Archive</string>
-  <string name="label_title_spam">Spam</string>
-  <string name="label_title_trash">Trash</string>
-  <string name="label_title_outbox">Outbox</string>
-  <string name="label_title_all_mail">All mail</string>
-  <string name="label_title_all_drafts">All drafts</string>
-  <string name="label_title_all_sent">All sent</string>
-  <string name="label_title_folders">Folders</string>
-  <string name="label_title_labels">Labels</string>
-  <string name="label_title_add_folder">Add folder</string>
-  <string name="label_title_add_label">Add label</string>
+  <string name="label_title_inbox">Εισερχόμενα</string>
+  <string name="label_title_drafts">Πρόχειρα</string>
+  <string name="label_title_sent">Απεσταλμένα</string>
+  <string name="label_title_starred">Με αστέρι</string>
+  <string name="label_title_archive">Αρχειοθετημένα</string>
+  <string name="label_title_spam">Ενοχλητικά</string>
+  <string name="label_title_trash">Διαγραμμένα</string>
+  <string name="label_title_outbox">Εξερχόμενα</string>
+  <string name="label_title_all_mail">Όλα τα μηνύματα</string>
+  <string name="label_title_all_drafts">Όλα τα πρόχειρα</string>
+  <string name="label_title_all_sent">Όλα τα απεσταλμένα</string>
+  <string name="label_title_folders">Φάκελοι</string>
+  <string name="label_title_labels">Ετικέτες</string>
+  <string name="label_title_add_folder">Προσθήκη φακέλου</string>
+  <string name="label_title_add_label">Προσθήκη ετικέτας</string>
 </resources>

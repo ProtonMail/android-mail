@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Ustawienia</string>
-  <string name="mail_settings_toolbar_button_content_description">Przejdź do poprzedniego ekranu</string>
+  <string name="mail_settings_toolbar_button_content_description">Wstecz</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Ustawienia konta</string>
   <string name="mail_settings_app_settings">Ustawienia aplikacji</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Gesty przesunięcia</string>
   <string name="mail_settings_swipe_actions_subtitle">Ustaw gesty przesunięcia palcem, aby uzyskać dostęp do najczęściej używanych akcji.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Ikona informacji</string>
-  <string name="mail_settings_swipe_chevron_content_description">Zmień gest przesunięcia</string>
   <string name="mail_settings_swipe_right_name">Od lewej do prawej</string>
   <string name="mail_settings_swipe_left_name">Od prawej do lewej</string>
   <string name="mail_settings_swipe_action_archive_title">Archiwizuj</string>

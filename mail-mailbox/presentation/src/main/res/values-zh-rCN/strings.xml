@@ -22,7 +22,7 @@
   <string name="drawer_title_subscription">账户等级</string>
   <string name="mailbox_toolbar_compose_button_content_description">撰写邮件</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">关闭选择模式</string>
-  <string name="mailbox_toolbar_menu_button_content_description">菜单按钮</string>
-  <string name="mailbox_toolbar_search_button_content_description">搜索按钮</string>
+  <string name="mailbox_toolbar_menu_button_content_description">菜单</string>
+  <string name="mailbox_toolbar_search_button_content_description">搜索</string>
   <string name="mailbox_toolbar_selected_count">已选择 %d 项</string>
 </resources>

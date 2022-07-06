@@ -22,7 +22,7 @@
   <string name="drawer_title_subscription">Előfizetés</string>
   <string name="mailbox_toolbar_compose_button_content_description">Új üzenet írása</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Kiválasztás módból kilépés</string>
-  <string name="mailbox_toolbar_menu_button_content_description">Menu button</string>
-  <string name="mailbox_toolbar_search_button_content_description">Search button</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
+  <string name="mailbox_toolbar_search_button_content_description">Keresés</string>
   <string name="mailbox_toolbar_selected_count">%d kiválasztva</string>
 </resources>

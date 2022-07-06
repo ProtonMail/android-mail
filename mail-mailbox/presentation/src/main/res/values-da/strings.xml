@@ -22,7 +22,7 @@
   <string name="drawer_title_subscription">Abonnement</string>
   <string name="mailbox_toolbar_compose_button_content_description">Skriv ny besked</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Afslut valgtilstand</string>
-  <string name="mailbox_toolbar_menu_button_content_description">Menu button</string>
-  <string name="mailbox_toolbar_search_button_content_description">Search button</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
+  <string name="mailbox_toolbar_search_button_content_description">Søg</string>
   <string name="mailbox_toolbar_selected_count">%d valgte</string>
 </resources>

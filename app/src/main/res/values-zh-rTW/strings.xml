@@ -16,11 +16,10 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
-
 <resources>
-  <string name="app_name">Proton Mail</string>
+  <string name="app_name">ProtonMail</string>
   <string name="title_remove">移除</string>
   <string name="title_remove_account">移除帳號</string>
   <string name="description_remove_account">您將登出，與此帳號相關的所有資訊都會被移除。</string>
-  <string name="user_select_other_account_content_description">選取其他帳號</string>
+  <string name="user_select_other_account_content_description">選取其它帳號</string>
 </resources>

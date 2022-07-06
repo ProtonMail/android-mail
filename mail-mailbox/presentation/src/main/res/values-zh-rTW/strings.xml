@@ -22,7 +22,7 @@
   <string name="drawer_title_subscription">訂閲</string>
   <string name="mailbox_toolbar_compose_button_content_description">撰寫新郵件</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">退出選取模式</string>
-  <string name="mailbox_toolbar_menu_button_content_description">選單按鈕</string>
-  <string name="mailbox_toolbar_search_button_content_description">搜尋按鈕</string>
+  <string name="mailbox_toolbar_menu_button_content_description">選單</string>
+  <string name="mailbox_toolbar_search_button_content_description">搜尋</string>
   <string name="mailbox_toolbar_selected_count">已選取 %d 個</string>
 </resources>

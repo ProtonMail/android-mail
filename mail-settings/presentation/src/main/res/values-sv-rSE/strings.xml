@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Inställningar</string>
-  <string name="mail_settings_toolbar_button_content_description">Navigera till föregående skärm</string>
+  <string name="mail_settings_toolbar_button_content_description">Tillbaka</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Kontoinställningar</string>
   <string name="mail_settings_app_settings">App-inställningar</string>
@@ -64,8 +64,6 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Svepåtgärder</string>
   <string name="mail_settings_swipe_actions_subtitle">Ställ in svepgester för att komma åt de mest använda åtgärderna.</string>
-  <string name="mail_settings_swipe_info_icon_content_description">Info-ikon</string>
-  <string name="mail_settings_swipe_chevron_content_description">Ändra svepåtgärd</string>
   <string name="mail_settings_swipe_right_name">Vänster till höger</string>
   <string name="mail_settings_swipe_left_name">Höger till vänster</string>
   <string name="mail_settings_swipe_action_archive_title">Arkiv</string>

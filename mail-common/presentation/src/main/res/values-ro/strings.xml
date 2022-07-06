@@ -18,4 +18,5 @@
   -->
 <resources>
   <string name="retry">Reîncercare</string>
+  <string name="x_error_not_logged_in">Neconectat</string>
 </resources>
