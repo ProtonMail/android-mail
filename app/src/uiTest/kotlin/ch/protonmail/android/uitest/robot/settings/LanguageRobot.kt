@@ -24,7 +24,6 @@ import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -107,7 +106,6 @@ class LanguageRobot(
 
             composeRule
                 .onNodeWithText(string.mail_settings_system_default)
-                .onChild()
                 .assertIsDisplayed()
                 .assertIsSelected()
 
@@ -122,7 +120,6 @@ class LanguageRobot(
         ) {
             composeRule
                 .onNodeWithText(text)
-                .onChild() // selects the radio button node
                 .assertIsSelected()
         }
 
@@ -151,7 +148,6 @@ class LanguageRobot(
             languages.forEach { language ->
                 composeRule
                     .onNodeWithText(language)
-                    .onChild()
                     .assertIsDisplayed()
                     .assertIsNotSelected()
             }

@@ -22,7 +22,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.domain.model.Theme.DARK
@@ -53,19 +52,16 @@ class ThemeSettingScreenTest {
 
         composeTestRule
             .onNodeWithText(string.mail_settings_system_default)
-            .onChild()
             .assertIsDisplayed()
             .assertIsSelected()
 
         composeTestRule
             .onNodeWithText(string.mail_settings_theme_light)
-            .onChild()
             .assertIsDisplayed()
             .assertIsNotSelected()
 
         composeTestRule
             .onNodeWithText(string.mail_settings_theme_dark)
-            .onChild()
             .assertIsDisplayed()
             .assertIsNotSelected()
     }
@@ -77,19 +73,16 @@ class ThemeSettingScreenTest {
 
         composeTestRule
             .onNodeWithText(string.mail_settings_system_default)
-            .onChild()
             .assertIsDisplayed()
             .assertIsNotSelected()
 
         composeTestRule
             .onNodeWithText(string.mail_settings_theme_light)
-            .onChild()
             .assertIsDisplayed()
             .assertIsSelected()
 
         composeTestRule
             .onNodeWithText(string.mail_settings_theme_dark)
-            .onChild()
             .assertIsDisplayed()
             .assertIsNotSelected()
     }
@@ -101,19 +94,16 @@ class ThemeSettingScreenTest {
 
         composeTestRule
             .onNodeWithText(string.mail_settings_system_default)
-            .onChild()
             .assertIsDisplayed()
             .assertIsNotSelected()
 
         composeTestRule
             .onNodeWithText(string.mail_settings_theme_light)
-            .onChild()
             .assertIsDisplayed()
             .assertIsNotSelected()
 
         composeTestRule
             .onNodeWithText(string.mail_settings_theme_dark)
-            .onChild()
             .assertIsDisplayed()
             .assertIsSelected()
     }
@@ -129,7 +119,6 @@ class ThemeSettingScreenTest {
 
         composeTestRule
             .onNodeWithText(string.mail_settings_system_default)
-            .onChild()
             .assertIsDisplayed()
             .assertIsSelected()
 
