@@ -51,12 +51,6 @@ fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launche
     }
 }
 
-
-/**
- * Adds to this [NavGraphBuilder] a screen which allows to change conversation mode.
- * @param navController the NavHostController which hosts this screen. Used to popBackStack when
- * back button is pressed
- */
 internal fun NavGraphBuilder.addConversationModeSettings(navController: NavHostController) {
     composable(route = Screen.ConversationModeSettings.route) {
         ConversationModeSettingScreen(
@@ -66,11 +60,6 @@ internal fun NavGraphBuilder.addConversationModeSettings(navController: NavHostC
     }
 }
 
-/**
- * Adds to this [NavGraphBuilder] a screen which allows to change the app language.
- * @param navController the NavHostController which hosts this screen. Used to popBackStack when
- * back button is pressed
- */
 internal fun NavGraphBuilder.addLanguageSettings(navController: NavHostController) {
     composable(route = Screen.LanguageSettings.route) {
         LanguageSettingsScreen(
@@ -80,11 +69,6 @@ internal fun NavGraphBuilder.addLanguageSettings(navController: NavHostControlle
     }
 }
 
-/**
- * Adds to this [NavGraphBuilder] a screen which allows to visualise swiper actions.
- * @param navController the NavHostController which hosts this screen. Used to popBackStack when
- *  back button is pressed and navigate to EditSwipeActionPreferenceScreen
- */
 internal fun NavGraphBuilder.addSwipeActionsSettings(navController: NavHostController) {
     composable(route = Screen.SwipeActionsSettings.route) {
         SwipeActionsPreferenceScreen(
@@ -98,11 +82,6 @@ internal fun NavGraphBuilder.addSwipeActionsSettings(navController: NavHostContr
     }
 }
 
-/**
- * Adds to this [NavGraphBuilder] a screen which allows to change theme.
- * @param navController the NavHostController which hosts this screen. Used to popBackStack when
- * back button is pressed
- */
 internal fun NavGraphBuilder.addThemeSettings(navController: NavHostController) {
     composable(route = Screen.ThemeSettings.route) {
         ThemeSettingsScreen(
