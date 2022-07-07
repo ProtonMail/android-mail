@@ -23,7 +23,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.uitest.util.onNodeWithText
@@ -58,7 +57,6 @@ class ThemeRobot(
         try {
             composeTestRule
                 .onNodeWithText(text)
-                .onChild()
                 .assertIsSelected()
         } catch (ignored: AssertionError) {
             return false
@@ -74,7 +72,6 @@ class ThemeRobot(
         fun darkThemeSelected(composeRule: ComposeContentTestRule) {
             composeRule
                 .onNodeWithText(string.mail_settings_theme_dark)
-                .onChild() // selects the radio button node
                 .assertIsSelected()
         }
 
@@ -85,19 +82,16 @@ class ThemeRobot(
 
             composeRule
                 .onNodeWithText(string.mail_settings_system_default)
-                .onChild()
                 .assertIsDisplayed()
                 .assertIsSelected()
 
             composeRule
                 .onNodeWithText(string.mail_settings_theme_light)
-                .onChild()
                 .assertIsDisplayed()
                 .assertIsNotSelected()
 
             composeRule
                 .onNodeWithText(string.mail_settings_theme_dark)
-                .onChild()
                 .assertIsDisplayed()
                 .assertIsNotSelected()
         }
