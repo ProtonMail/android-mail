@@ -49,7 +49,7 @@ class ObserveMailLabels @Inject constructor(
         observeLabels(userId, MessageFolder).map { it.toMailLabelCustom() },
     ) { defaults, labels, folders ->
         MailLabels(
-            systems = defaults,
+            systemLabels = defaults,
             labels = labels,
             folders = folders
         )

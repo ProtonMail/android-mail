@@ -33,7 +33,7 @@ fun MailLabels.toUiModels(
     counters: Map<LabelId, Int?>,
     selected: MailLabelId,
 ): MailLabelsUiModel = MailLabelsUiModel(
-    systems = systems.map { it.toSystemUiModel(settings, counters, selected) },
+    systems = systemLabels.map { it.toSystemUiModel(settings, counters, selected) },
     folders = folders.map { it.toCustomUiModel(settings, counters, selected) },
     labels = labels.map { it.toCustomUiModel(settings, counters, selected) },
 )

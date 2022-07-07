@@ -79,7 +79,7 @@ class MailboxViewModelTest {
     private val observeMailLabels = mockk<ObserveMailLabels> {
         every { this@mockk.invoke(any()) } returns MutableStateFlow(
             MailLabels(
-                systems = LabelTestData.systemLabels,
+                systemLabels = LabelTestData.systemLabels,
                 folders = emptyList(),
                 labels = emptyList(),
             )

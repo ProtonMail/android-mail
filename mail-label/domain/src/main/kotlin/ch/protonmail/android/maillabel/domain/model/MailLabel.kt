@@ -78,17 +78,17 @@ sealed class MailLabel(
 }
 
 data class MailLabels(
-    val systems: List<MailLabel.System>,
+    val systemLabels: List<MailLabel.System>,
     val folders: List<MailLabel.Custom>,
     val labels: List<MailLabel.Custom>,
 ) {
 
-    val allById = (systems + folders + labels).associateBy { item -> item.id }
+    val allById = (systemLabels + folders + labels).associateBy { item -> item.id }
 
     companion object {
 
         val Initial = MailLabels(
-            systems = emptyList(),
+            systemLabels = emptyList(),
             folders = emptyList(),
             labels = emptyList(),
         )
