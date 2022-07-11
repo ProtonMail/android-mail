@@ -49,7 +49,7 @@ platform :android do
     sh("../buildSrc/run_firebase_ui_tests.sh")
   end
 
-  desc "Generate test coverage report"
+  desc "Generate test coverage report based on the last test run"
   lane :coverageReport do
     gradle(task: "coberturaCoverageReport")
   end

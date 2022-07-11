@@ -26,7 +26,6 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-configureJacoco(flavor = "dev")
 setAsHiltModule()
 
 val privateProperties = Properties().apply {

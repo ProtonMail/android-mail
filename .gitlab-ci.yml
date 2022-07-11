@@ -178,9 +178,9 @@ coverage report:
   artifacts:
     expire_in: 1 week
     paths:
-      - app/build/reports
+      - build/reports
     reports:
-      cobertura: app/build/reports/cobertura-coverage.xml
+      cobertura: build/reports/cobertura-coverage.xml
 
 
 deploy_to_firebase:
