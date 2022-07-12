@@ -44,7 +44,7 @@ plugins {
 }
 
 protonCoverageMultiModuleOptions {
-    sharedExcludes = listOf("**/proton-libs/**")
+    sharedExcludes = listOf("**/me/proton/core/**")
     coverageConversionScript = { "$rootDir/proton-libs/plugins/jacoco/scripts/cover2cover.py" }
 }
 
