@@ -121,7 +121,9 @@ object NetworkModule {
     ): NetworkPrefs = NetworkPrefs(context)
 
     @Provides
-    fun provideNetworkRequestOverrider(): NetworkRequestOverrider = NetworkRequestOverriderImpl(OkHttpClient())
+    fun provideNetworkRequestOverrider(
+        @ApplicationContext context: Context
+    ): NetworkRequestOverrider = NetworkRequestOverriderImpl(OkHttpClient(), context)
 
     @Provides
     @Singleton
