@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.uitest.screen.settings.appsettings.combinedcontacts
 
-import java.io.IOException
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
@@ -26,10 +25,10 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingScreen
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.CombinedContactsSettingState
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.TEST_TAG_COMBINED_CONTACTS_SNACKBAR
+import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
@@ -85,7 +84,7 @@ class CombinedContactsSettingScreenTest {
         setupScreenWithState(
             CombinedContactsSettingState.Data(
                 isEnabled = false,
-                combinedContactsSettingErrorEffect = Effect.of(IOException())
+                combinedContactsSettingErrorEffect = Effect.of(Unit)
             )
         )
 

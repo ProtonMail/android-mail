@@ -16,10 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import org.gradle.api.artifacts.dsl.DependencyHandler
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import org.gradle.api.artifacts.dsl.DependencyHandler
 
 object Dependencies {
 
@@ -61,6 +61,7 @@ object Dependencies {
         add(AndroidX.Paging.runtime)
         add(AndroidX.Room.ktx)
         add(AndroidX.Work.runtimeKtx)
+        add(Arrow.core)
         addAll(composeLibs)
         add(JakeWharton.timber)
         add(Material.material)
@@ -100,6 +101,7 @@ object Dependencies {
         add(AndroidX.DataStore.preferences)
         add(AndroidX.Room.ktx)
         add(AndroidX.Work.runtimeKtx)
+        add(Arrow.core)
         add(JakeWharton.timber)
         add(JavaX.inject)
         add(KotlinX.serializationJson)
@@ -120,6 +122,7 @@ object Dependencies {
         add(AndroidX.Hilt.navigationCompose)
         add(AndroidX.Navigation.compose)
         add(AndroidX.Paging.compose)
+        add(Arrow.core)
         addAll(composeLibs)
         add(JavaX.inject)
         add(Material.material)
@@ -132,6 +135,7 @@ object Dependencies {
     }
 
     val moduleDomainLibs = mutableListOf<String>().apply {
+        add(Arrow.core)
         add(JavaX.inject)
         add(KotlinX.coroutinesCore)
         add(Proton.Core.domain)

@@ -16,20 +16,25 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain.usecase
+package ch.protonmail.android.mailcommon.data
 
+import java.io.IOException
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.MutablePreferences
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
-import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
-import javax.inject.Inject
+import timber.log.Timber
 
-class SaveCombinedContactsSetting @Inject constructor(
-    private val combinedContactsRepository: CombinedContactsRepository
-) {
-
-    suspend operator fun invoke(
-        shouldCombineContacts: Boolean
-    ): Either<PreferencesError, Unit> =
-        combinedContactsRepository.save(CombinedContactsPreference(shouldCombineContacts))
-}
+suspend fun DataStore<Preferences>.safeEdit(
+    transform: suspend (MutablePreferences) -> Unit
+): Either<PreferencesError, Preferences> =
+    try {
+        edit(transform).right()
+    } catch (exception: IOException) {
+        Timber.e(exception, "Error saving preference")
+        PreferencesError.left()
+    }

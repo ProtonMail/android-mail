@@ -131,6 +131,12 @@ object AndroidX {
     }
 }
 
+object Arrow {
+    private const val version = "1.0.1"
+
+    const val core = "io.arrow-kt:arrow-core:$version"
+}
+
 object Dagger {
     private const val version = Versions.Dagger.dagger
 

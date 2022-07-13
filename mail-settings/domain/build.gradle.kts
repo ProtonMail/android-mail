@@ -47,6 +47,8 @@ dependencies {
     implementation(Proton.Core.accountManager)
     implementation(Proton.Core.mailSettings)
 
+    implementation(project(":mail-common:domain"))
+
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test-data"))
 }

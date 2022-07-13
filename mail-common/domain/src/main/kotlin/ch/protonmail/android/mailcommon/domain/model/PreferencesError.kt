@@ -16,20 +16,6 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain.usecase
+package ch.protonmail.android.mailcommon.domain.model
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
-import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
-import javax.inject.Inject
-
-class SaveCombinedContactsSetting @Inject constructor(
-    private val combinedContactsRepository: CombinedContactsRepository
-) {
-
-    suspend operator fun invoke(
-        shouldCombineContacts: Boolean
-    ): Either<PreferencesError, Unit> =
-        combinedContactsRepository.save(CombinedContactsPreference(shouldCombineContacts))
-}
+object PreferencesError

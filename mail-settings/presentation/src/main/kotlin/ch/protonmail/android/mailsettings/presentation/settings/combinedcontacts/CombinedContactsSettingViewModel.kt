@@ -39,7 +39,7 @@ class CombinedContactsSettingViewModel @Inject constructor(
     private val saveCombinedContactsSetting: SaveCombinedContactsSetting
 ) : ViewModel() {
 
-    private val combinedContactsSettingErrorFlow: MutableStateFlow<Effect<Throwable>> = MutableStateFlow(Effect.empty())
+    private val combinedContactsSettingErrorFlow: MutableStateFlow<Effect<Unit>> = MutableStateFlow(Effect.empty())
 
     val state: Flow<CombinedContactsSettingState> = combine(
         observeCombinedContactsSetting(),
@@ -57,6 +57,6 @@ class CombinedContactsSettingViewModel @Inject constructor(
 
     fun saveCombinedContactsPreference(combinedContactsPreference: Boolean) = viewModelScope.launch {
         saveCombinedContactsSetting(combinedContactsPreference)
-            .onFailure { combinedContactsSettingErrorFlow.tryEmit(Effect.of(it)) }
+            .tapLeft { combinedContactsSettingErrorFlow.tryEmit(Effect.of(Unit)) }
     }
 }

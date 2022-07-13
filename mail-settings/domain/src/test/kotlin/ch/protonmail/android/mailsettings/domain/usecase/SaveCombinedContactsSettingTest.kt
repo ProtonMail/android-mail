@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailsettings.domain.usecase
 
-import java.io.IOException
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import io.mockk.coEvery
@@ -39,7 +41,7 @@ class SaveCombinedContactsSettingTest {
     @Test
     fun `should return success when preference is saved successfully`() = runTest {
         // Given
-        val expectedResult = Result.success(Unit)
+        val expectedResult = Unit.right()
         coEvery { combinedContactsRepository.save(combinedContactsPreference) } returns expectedResult
 
         // When
@@ -53,8 +55,7 @@ class SaveCombinedContactsSettingTest {
     @Test
     fun `should return failure when preference is not saved successfully`() = runTest {
         // Given
-        val ioException = IOException()
-        val expectedResult = Result.failure<Unit>(ioException)
+        val expectedResult = PreferencesError.left()
         coEvery { combinedContactsRepository.save(combinedContactsPreference) } returns expectedResult
 
         // When

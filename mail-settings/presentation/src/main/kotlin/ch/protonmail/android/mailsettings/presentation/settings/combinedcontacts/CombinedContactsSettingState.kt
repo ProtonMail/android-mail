@@ -24,7 +24,7 @@ sealed class CombinedContactsSettingState {
 
     data class Data(
         val isEnabled: Boolean,
-        val combinedContactsSettingErrorEffect: Effect<Throwable>
+        val combinedContactsSettingErrorEffect: Effect<Unit>
     ) : CombinedContactsSettingState()
 
     object Loading : CombinedContactsSettingState()

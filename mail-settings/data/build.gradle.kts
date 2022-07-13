@@ -48,6 +48,8 @@ dependencies {
     implementation(Dagger.hiltAndroid)
     implementation(AndroidX.AppCompat.appCompat)
 
+    implementation(project(":mail-common:data"))
+    implementation(project(":mail-common:domain"))
     implementation(project(":mail-settings:domain"))
 
     testImplementation(Dependencies.testLibs)

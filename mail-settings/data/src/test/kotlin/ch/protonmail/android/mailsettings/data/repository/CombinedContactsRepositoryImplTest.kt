@@ -23,6 +23,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import app.cash.turbine.test
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
@@ -83,20 +86,19 @@ class CombinedContactsRepositoryImplTest {
 
         // Then
         coVerify { combinedContactsDataStoreSpy.updateData(any()) }
-        assertEquals(Result.success(Unit), result)
+        assertEquals(Unit.right(), result)
     }
 
     @Test
     fun `should return failure when an exception is thrown while saving preference`() = runTest {
         // Given
         val combinedContactsPreference = CombinedContactsPreference(isEnabled = true)
-        val ioException = IOException()
-        coEvery { combinedContactsDataStoreSpy.updateData(any()) } throws ioException
+        coEvery { combinedContactsDataStoreSpy.updateData(any()) } throws IOException()
 
         // When
         val result = combinedContactsRepository.save(combinedContactsPreference)
 
         // Then
-        assertEquals(Result.failure<Unit>(ioException), result)
+        assertEquals(PreferencesError.left(), result)
     }
 }

@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailsettings.domain.repository
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import kotlinx.coroutines.flow.Flow
 
@@ -25,5 +27,5 @@ interface CombinedContactsRepository {
 
     fun observe(): Flow<CombinedContactsPreference>
 
-    suspend fun save(combinedContactsPreference: CombinedContactsPreference): Result<Unit>
+    suspend fun save(combinedContactsPreference: CombinedContactsPreference): Either<PreferencesError, Unit>
 }
