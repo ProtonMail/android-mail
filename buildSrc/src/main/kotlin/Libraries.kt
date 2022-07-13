@@ -109,10 +109,11 @@ object AndroidX {
 
         const val core = "androidx.test:core:$version"
         const val coreKtx = "androidx.test:core-ktx:$version"
-        const val runner = "androidx.test:runner:$version"
-        const val rules = "androidx.test:rules:$version"
         const val espresso = "androidx.test.espresso:espresso-core:${Versions.AndroidX.testEspresso}"
         const val extJunit = "androidx.test.ext:junit:${Versions.AndroidX.testExtJunit}"
+        const val orchestrator = "androidx.test:orchestrator:$version"
+        const val runner = "androidx.test:runner:$version"
+        const val rules = "androidx.test:rules:$version"
     }
 
     object Work {

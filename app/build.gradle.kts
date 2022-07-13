@@ -51,6 +51,7 @@ android {
         versionCode = Config.versionCode
         versionName = Config.versionName
         testInstrumentationRunner = Config.testInstrumentationRunner
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -62,6 +63,10 @@ android {
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
         buildConfigField("String", "PROXY_TOKEN", proxyToken.toBuildConfigValue())
         buildConfigField("String", "HUMAN_VERIFICATION_HOST", "verify.protonmail.com".toBuildConfigValue())
+    }
+
+    testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
 
     signingConfigs {
@@ -177,6 +182,8 @@ dependencies {
 
     androidTestImplementation(Dependencies.androidTestLibs)
     androidTestImplementation(Proton.Core.accountManagerPresentationCompose)
+
+    androidTestUtil(AndroidX.Test.orchestrator)
 }
 
 fun String?.toBuildConfigValue() = if (this != null) "\"$this\"" else "null"

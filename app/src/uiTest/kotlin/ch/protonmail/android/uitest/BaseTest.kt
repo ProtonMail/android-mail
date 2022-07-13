@@ -22,11 +22,8 @@ import android.app.Application
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.MainActivity
-import ch.protonmail.android.di.AppDatabaseModule
 import ch.protonmail.android.test.BuildConfig
-import kotlinx.coroutines.runBlocking
 import me.proton.core.auth.presentation.testing.ProtonTestEntryPoint
-import me.proton.core.test.android.instrumented.ProtonTest.Companion.getTargetContext
 import me.proton.core.test.android.instrumented.utils.Shell.setupDeviceForAutomation
 import me.proton.core.test.android.plugins.Quark
 import me.proton.core.test.android.plugins.data.User
@@ -38,8 +35,14 @@ import org.junit.rules.RuleChain
 import org.junit.rules.TestName
 import timber.log.Timber
 
+/**
+ * @param logoutUsersOnTearDown by default, revoke the user's session against the API
+ * and logout the user after each test.
+ * If using orchestrator with `clearPackageData` option this might be redundant (might still be
+ * beneficial as it doesn't leave open sessions but doesn't impact the test itself)
+ */
 open class BaseTest(
-    private val clearAppDatabaseOnTearDown: Boolean = true
+    private val logoutUsersOnTearDown: Boolean = true
 ) {
 
     val composeTestRule = createAndroidComposeRule<MainActivity>()
@@ -52,11 +55,9 @@ open class BaseTest(
 
     @After
     fun cleanup() {
-        if (clearAppDatabaseOnTearDown) {
-            Timber.d("Finishing Testing: Clearing all users from database")
-            runBlocking {
-                appDatabase.accountDao().deleteAll()
-            }
+        if (logoutUsersOnTearDown) {
+            Timber.d("Finishing Testing: Revoking user sessions and logging out")
+            authHelper.logoutAll()
         }
     }
 
@@ -68,7 +69,6 @@ open class BaseTest(
     companion object {
         val users = Users("users.json")
         val quark = Quark(BuildConfig.HOST, BuildConfig.PROXY_TOKEN, "internal_api.json")
-        val appDatabase = AppDatabaseModule.provideAppDatabase(getTargetContext())
         val authHelper = ProtonTestEntryPoint.provide(
             ApplicationProvider.getApplicationContext<Application>()
         )
