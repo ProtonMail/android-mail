@@ -225,7 +225,6 @@ class MailboxViewModelTest {
     @Test
     fun `top bar state is updated when current location changes`() = runTest {
         // Given
-        // - Current location is Inbox
         val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
         every { selectedMailLabelId.flow } returns currentLocationFlow
 
@@ -349,7 +348,6 @@ class MailboxViewModelTest {
     @Test
     fun `mailbox is scrolled to top when location changes`() = runTest {
         // Given
-        // - Current location is Inbox
         val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
         every { selectedMailLabelId.flow } returns currentLocationFlow
 
@@ -367,13 +365,10 @@ class MailboxViewModelTest {
         }
     }
 
-
     @Test
     fun `mailbox is not scrolled to top when something changes but location didn't change`() = runTest {
         // Given
-        // - Current location is All Mail
         every { selectedMailLabelId.flow } returns MutableStateFlow<MailLabelId>(MailLabelId.System.AllMail)
-        // - Unread counters is
         val unreadCountersFlow = MutableStateFlow(UnreadCountersTestData.systemUnreadCounters)
         coEvery { observeUnreadCounters(userId = any()) } returns unreadCountersFlow
 
