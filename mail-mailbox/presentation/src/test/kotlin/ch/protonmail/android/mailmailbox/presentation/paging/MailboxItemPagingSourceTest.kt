@@ -83,29 +83,28 @@ class MailboxItemPagingSourceTest {
         every { this@mockk.invoke(any(), any(), any()) } returns AdjacentPageKeys(PageKey(), PageKey(), PageKey())
     }
 
-    private var isFilterUnreadEnabled = false
-    private var selectedLabelId: MailLabelId = Inbox
+    private fun pagingSource(
+        isFilterUnreadEnabled: Boolean = false,
+        selectedLabelId: MailLabelId = Inbox
+    ) = MailboxItemPagingSource(
+        roomDatabase = roomDatabase,
+        getMailboxItems = getMailboxItems,
+        getAdjacentPageKeys = getAdjacentPageKeys,
+        userIds = listOf(userId),
+        selectedMailLabelId = selectedLabelId,
+        filterUnread = isFilterUnreadEnabled,
+        type = MailboxItemType.Message
+    )
 
-    private val pagingSource by lazy {
-        MailboxItemPagingSource(
-            roomDatabase = roomDatabase,
-            getMailboxItems = getMailboxItems,
-            getAdjacentPageKeys = getAdjacentPageKeys,
-            userIds = listOf(userId),
-            selectedMailLabelId = selectedLabelId,
-            filterUnread = isFilterUnreadEnabled,
-            type = MailboxItemType.Message
-        )
-    }
 
     @Test
-    fun `pagingSource load emptyList`() = runTest {
+    fun `paging source load empty list`() = runTest {
         // Given
         coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns emptyList()
 
         assertEquals(
             // When
-            actual = pagingSource.load(
+            actual = pagingSource().load(
                 PagingSource.LoadParams.Refresh(key = null, loadSize = 25, false)
             ),
             // Then
@@ -119,14 +118,14 @@ class MailboxItemPagingSourceTest {
     }
 
     @Test
-    fun `pagingSource load error`() = runTest {
+    fun `paging source load error`() = runTest {
         // Given
         val exception = IOException("test")
         coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } throws exception
 
         assertEquals(
             // When
-            actual = pagingSource.load(
+            actual = pagingSource().load(
                 PagingSource.LoadParams.Refresh(key = null, loadSize = 25, false)
             ),
             // Then
@@ -137,8 +136,9 @@ class MailboxItemPagingSourceTest {
     }
 
     @Test
-    fun `pagingSource invalidate return LoadResult Invalid`() = runTest {
+    fun `paging source invalidate returns invalid load result`() = runTest {
         // Given
+        val pagingSource = pagingSource()
         assertFalse(pagingSource.invalid)
         pagingSource.invalidate()
         assertTrue(pagingSource.invalid)
@@ -153,8 +153,9 @@ class MailboxItemPagingSourceTest {
     }
 
     @Test
-    fun `pagingSource load return LoadResult Page with items and adjacent keys`() = runTest {
+    fun `paging source load return page load result with items and adjacent keys`() = runTest {
         // Given
+        val pagingSource = pagingSource()
         assertFalse(pagingSource.keyReuseSupported)
         coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns listOf(
             getMailboxItem(userId, "5", time = 5000),
@@ -177,8 +178,9 @@ class MailboxItemPagingSourceTest {
     }
 
     @Test
-    fun `pagingSource getRefreshKey return null key`() = runTest {
+    fun `paging source get refresh key return null key`() = runTest {
         // Given
+        val pagingSource = pagingSource()
 
         // When
         val refreshKey = pagingSource.getRefreshKey(
@@ -195,8 +197,9 @@ class MailboxItemPagingSourceTest {
     }
 
     @Test
-    fun `pagingSource getRefreshKey return non null key`() = runTest {
+    fun `paging source get refresh key return non null key`() = runTest {
         // Given
+        val pagingSource = pagingSource()
 
         // When
         val refreshKey = pagingSource.getRefreshKey(
@@ -234,10 +237,12 @@ class MailboxItemPagingSourceTest {
     }
 
     @Test
-    fun `pagingSource getRefreshKey returns key which maintains existing PageFilter`() = runTest {
+    fun `paging source get refresh key returns key which maintains existing page filter`() = runTest {
         // Given
-        isFilterUnreadEnabled = true
-        selectedLabelId = MailLabelId.System.Archive
+        val pagingSource = pagingSource(
+            isFilterUnreadEnabled = true,
+            selectedLabelId = MailLabelId.System.Archive
+        )
 
         // When
         val refreshKey = pagingSource.getRefreshKey(
@@ -281,6 +286,7 @@ class MailboxItemPagingSourceTest {
         // For adjacent pages, we just want to normal pageSize.
 
         // Given
+        val pagingSource = pagingSource()
         val items = listOf(
             getMailboxItem(userId, "2", time = 2000),
             getMailboxItem(userId, "1", time = 1000)
