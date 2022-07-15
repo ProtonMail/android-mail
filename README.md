@@ -28,7 +28,8 @@ will show all the possible actions that are available.
 
 ## UI Tests
 UI tests are executed on firebase through the CI. Firebase test lab can be triggered also locally with `bundle exec fastlane uiTests` or tests can be run in a local emulator through android studio.
-The `app/src/uiTest/assets/users.json` and  `app/src/uiTest/assets/internal_api.json` files will be needed for UI tests to work, their value can be found in confluence or in the CI env vars
+UI tests must run on a `dev` flavour ( like `devDebug` ). 
+The `app/src/uiTest/assets/users.json` and  `app/src/uiTest/assets/internal_api.json` files will be needed and their value can be found in confluence or in the CI env vars.
 **Currently, only the ui tests that are included in the `SmokeSuite` class are run on firebase**
 
 
@@ -37,7 +38,7 @@ Each merge to `master` branch builds the branch's HEAD and deploy it to [firebas
 In order to someone as a tester for such builds, their email address needs to be added to the `v6-internal-alpha-testers` group in Firebase.
 
 ## Signing
-All `release` builds done on CI are automatically singed with ProtonMail's keystore. In order to perform signing locally the keystore will need to be placed into `keystore/` directory and the creadentials will be read from `private.properties` file.
+All `release` builds done on CI are automatically singed with ProtonMail's keystore. In order to perform signing locally the keystore will need to be placed into `keystore/` directory and the credentials will be read from `private.properties` file.
 
 
 ## Observability
