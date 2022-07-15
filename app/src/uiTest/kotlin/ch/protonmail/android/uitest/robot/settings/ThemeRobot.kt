@@ -34,19 +34,19 @@ class ThemeRobot(
     private val composeTestRule: ComposeContentTestRule? = null
 ) {
 
-    fun selectSystemDefault(): ThemeRobot {
-        composeTestRule!!
-            .onNodeWithText(string.mail_settings_system_default)
-            .performClick()
-        composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, string.mail_settings_system_default) }
-        return this
-    }
-
     fun selectDarkTheme(): ThemeRobot {
         composeTestRule!!
             .onNodeWithText(string.mail_settings_theme_dark)
             .performClick()
         composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, string.mail_settings_theme_dark) }
+        return this
+    }
+
+    fun selectSystemDefault(): ThemeRobot {
+        composeTestRule!!
+            .onNodeWithText(string.mail_settings_system_default)
+            .performClick()
+        composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, string.mail_settings_system_default) }
         return this
     }
 
@@ -64,6 +64,9 @@ class ThemeRobot(
         return true
     }
 
+    inline fun verify(block: Verify.() -> Unit) =
+        Verify().apply(block)
+
     /**
      * Contains all the validations that can be performed by [ThemeRobot].
      */
@@ -74,7 +77,6 @@ class ThemeRobot(
                 .onNodeWithText(string.mail_settings_theme_dark)
                 .assertIsSelected()
         }
-
         fun defaultThemeSettingIsSelected(composeRule: ComposeContentTestRule) {
             composeRule
                 .onNodeWithText(string.mail_settings_theme)
@@ -96,8 +98,5 @@ class ThemeRobot(
                 .assertIsNotSelected()
         }
     }
-
-    inline fun verify(block: Verify.() -> Unit) =
-        Verify().apply(block)
 }
 

@@ -53,18 +53,17 @@ class SettingsRobot(
         return InboxRobot()
     }
 
-    fun selectEmptyCache(): SettingsRobot {
-        return this
+    fun openAutoLock(): AutoLockRobot {
+        return AutoLockRobot()
     }
 
-    fun openUserAccountSettings(): AccountSettingsRobot {
+    fun openLanguageSettings(): LanguageRobot {
         composeTestRule!!
-            .onNodeWithTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM)
+            .onNodeWithText(string.mail_settings_app_language)
             .performClick()
+        composeTestRule.waitForIdle()
 
-        composeTestRule.waitUntil { progressIsHidden(composeTestRule) }
-
-        return AccountSettingsRobot(composeTestRule)
+        return LanguageRobot(composeTestRule)
     }
 
     fun openSwipeActions(): SwipeActionsRobot {
@@ -81,6 +80,16 @@ class SettingsRobot(
         return SwipeActionsRobot(composeTestRule)
     }
 
+    fun openUserAccountSettings(): AccountSettingsRobot {
+        composeTestRule!!
+            .onNodeWithTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM)
+            .performClick()
+
+        composeTestRule.waitUntil { progressIsHidden(composeTestRule) }
+
+        return AccountSettingsRobot(composeTestRule)
+    }
+
     fun openThemeSettings(): ThemeRobot {
         composeTestRule!!
             .onNodeWithText(string.mail_settings_theme)
@@ -90,22 +99,15 @@ class SettingsRobot(
         return ThemeRobot(composeTestRule)
     }
 
-    fun openLanguageSettings(): LanguageRobot {
-        composeTestRule!!
-            .onNodeWithText(string.mail_settings_app_language)
-            .performClick()
-        composeTestRule.waitForIdle()
-
-        return LanguageRobot(composeTestRule)
-    }
-
-    fun openAutoLock(): AutoLockRobot {
-        return AutoLockRobot()
+    fun selectEmptyCache(): SettingsRobot {
+        return this
     }
 
     fun selectSettingsItemByValue(value: String): AccountSettingsRobot {
         return AccountSettingsRobot()
     }
+
+    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 
     private fun ComposeContentTestRule.onList(): SemanticsNodeInteraction =
         onAllNodes(hasScrollAction()).onFirst() // second is drawer
@@ -132,6 +134,4 @@ class SettingsRobot(
         @Suppress("EmptyFunctionBlock")
         fun settingsOpened() {}
     }
-
-    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 }

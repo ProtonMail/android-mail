@@ -45,8 +45,13 @@ class AccountSettingsRobot(
     private val composeTestRule: ComposeContentTestRule? = null
 ) {
 
-    fun openPrivacy(): PrivacySettingsRobot {
-        return PrivacySettingsRobot()
+    fun navigateUpToSettings(): SettingsRobot {
+        return SettingsRobot()
+    }
+
+    fun openConversationMode(): ConversationModeRobot {
+        clickOnAccountListItemWithText(string.mail_settings_conversation_mode)
+        return ConversationModeRobot(composeTestRule)
     }
 
     fun openDefaultEmailAddress(): DefaultEmailAddressRobot {
@@ -61,23 +66,20 @@ class AccountSettingsRobot(
         return LabelsAndFoldersRobot()
     }
 
-    fun navigateUpToSettings(): SettingsRobot {
-        return SettingsRobot()
+    fun openPasswordManagement(): PasswordManagementRobot {
+        clickOnAccountListItemWithText(string.mail_settings_password_management)
+        return PasswordManagementRobot()
+    }
+
+    fun openPrivacy(): PrivacySettingsRobot {
+        return PrivacySettingsRobot()
     }
 
     fun openSwipeActions(): SwipingGesturesSettingsRobot {
         return SwipingGesturesSettingsRobot()
     }
 
-    fun openPasswordManagement(): PasswordManagementRobot {
-        clickOnAccountListItemWithText(string.mail_settings_password_management)
-        return PasswordManagementRobot()
-    }
-
-    fun openConversationMode(): ConversationModeRobot {
-        clickOnAccountListItemWithText(string.mail_settings_conversation_mode)
-        return ConversationModeRobot(composeTestRule)
-    }
+    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 
     private fun clickOnAccountListItemWithText(@StringRes itemNameRes: Int) {
         composeTestRule!!
@@ -109,6 +111,4 @@ class AccountSettingsRobot(
                 .assertIsDisplayed()
         }
     }
-
-    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 }

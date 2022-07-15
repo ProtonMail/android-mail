@@ -41,23 +41,6 @@ class LanguageRobot(
     private val composeTestRule: ComposeContentTestRule? = null
 ) {
 
-    fun selectSystemDefault(): LanguageRobot {
-        composeTestRule!!
-            .onNodeWithText(string.mail_settings_system_default)
-            .performScrollTo()
-            .performClick()
-        composeTestRule.waitForIdle()
-        return this
-    }
-
-    fun selectSpanish(): LanguageRobot {
-        composeTestRule!!
-            .onNodeWithText(AppLanguage.SPANISH.langName)
-            .performClick()
-        composeTestRule.waitForIdle()
-        return this
-    }
-
     fun selectBrazilianPortuguese(): LanguageRobot {
         composeTestRule!!
             .onNodeWithTag(TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL)
@@ -71,6 +54,23 @@ class LanguageRobot(
         return this
     }
 
+    fun selectSpanish(): LanguageRobot {
+        composeTestRule!!
+            .onNodeWithText(AppLanguage.SPANISH.langName)
+            .performClick()
+        composeTestRule.waitForIdle()
+        return this
+    }
+
+    fun selectSystemDefault(): LanguageRobot {
+        composeTestRule!!
+            .onNodeWithText(string.mail_settings_system_default)
+            .performScrollTo()
+            .performClick()
+        composeTestRule.waitForIdle()
+        return this
+    }
+
     fun selectSystemDefaultFromBrazilian(): LanguageRobot {
         composeTestRule!!
             .onNodeWithText("Padrão do sistema")
@@ -80,25 +80,28 @@ class LanguageRobot(
         return this
     }
 
+    inline fun verify(block: Verify.() -> Unit) =
+        Verify().apply(block)
+
     /**
      * Contains all the validations that can be performed by [LanguageRobot].
      */
     class Verify {
 
-        fun spanishLanguageIsSelected(composeRule: ComposeContentTestRule) {
-            verifyLanguageIsSelected(composeRule, AppLanguage.SPANISH.langName)
-        }
-
-        fun brazilianPortugueseLanguageIsSelected(composeRule: ComposeContentTestRule) {
-            verifyLanguageIsSelected(composeRule, AppLanguage.BRAZILIAN.langName)
+        fun appLanguageChangedToPortuguese(composeRule: ComposeContentTestRule) {
+            verifyScreenTitleMatchesText(composeRule, "Idioma do aplicativo")
         }
 
         fun appLanguageChangedToSpanish(composeRule: ComposeContentTestRule) {
             verifyScreenTitleMatchesText(composeRule, "Idioma de la aplicación")
         }
 
-        fun appLanguageChangedToPortuguese(composeRule: ComposeContentTestRule) {
-            verifyScreenTitleMatchesText(composeRule, "Idioma do aplicativo")
+        fun brazilianPortugueseLanguageIsSelected(composeRule: ComposeContentTestRule) {
+            verifyLanguageIsSelected(composeRule, AppLanguage.BRAZILIAN.langName)
+        }
+
+        fun spanishLanguageIsSelected(composeRule: ComposeContentTestRule) {
+            verifyLanguageIsSelected(composeRule, AppLanguage.SPANISH.langName)
         }
 
         fun defaultLanguageIsSelected(composeRule: ComposeContentTestRule) {
@@ -113,6 +116,17 @@ class LanguageRobot(
             assertLanguagesAreShownButUnselected(composeRule, languages)
         }
 
+        private fun assertLanguagesAreShownButUnselected(
+            composeRule: ComposeContentTestRule,
+            languages: List<String>
+        ) {
+            languages.forEach { language ->
+                composeRule
+                    .onNodeWithText(language)
+                    .assertIsDisplayed()
+                    .assertIsNotSelected()
+            }
+        }
 
         private fun verifyLanguageIsSelected(
             composeRule: ComposeContentTestRule,
@@ -131,7 +145,6 @@ class LanguageRobot(
                 .onNodeWithText(text)
                 .assertIsDisplayed()
         }
-
         private fun verifyScreenTitleMatchesText(
             composeRule: ComposeContentTestRule,
             @StringRes text: Int
@@ -140,21 +153,6 @@ class LanguageRobot(
                 .onNodeWithText(text)
                 .assertIsDisplayed()
         }
-
-        private fun assertLanguagesAreShownButUnselected(
-            composeRule: ComposeContentTestRule,
-            languages: List<String>
-        ) {
-            languages.forEach { language ->
-                composeRule
-                    .onNodeWithText(language)
-                    .assertIsDisplayed()
-                    .assertIsNotSelected()
-            }
-        }
     }
-
-    inline fun verify(block: Verify.() -> Unit) =
-        Verify().apply(block)
 }
 

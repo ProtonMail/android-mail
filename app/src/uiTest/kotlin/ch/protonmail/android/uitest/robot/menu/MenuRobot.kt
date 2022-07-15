@@ -45,13 +45,54 @@ import me.proton.core.presentation.compose.R.string
 /**
  * [MenuRobot] class contains actions and verifications for menu functionality.
  */
-@Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 class MenuRobot(
     private val composeTestRule: ComposeContentTestRule? = null
 ) {
 
+    @Suppress("unused", "ExpressionBodySyntax")
+    fun closeMenuWithSwipe(): MenuRobot {
+        return this
+    }
+
+    @Suppress("unused", "ExpressionBodySyntax")
+    fun openAccountsList(): AccountPanelRobot {
+        return AccountPanelRobot()
+    }
+
+    @Suppress("unused", "ExpressionBodySyntax")
     fun openArchive(): ArchiveRobot {
         return ArchiveRobot()
+    }
+
+    @Suppress("unused", "ExpressionBodySyntax")
+    fun openContacts(): ContactsRobot {
+        return ContactsRobot()
+    }
+
+    @Suppress("unused", "ExpressionBodySyntax")
+    fun openDrafts(): DraftsRobot {
+        return DraftsRobot()
+    }
+
+    @Suppress("unused", "ExpressionBodySyntax")
+    fun openInbox(): InboxRobot {
+        return InboxRobot()
+    }
+
+    @Suppress("unused")
+    fun openLabelOrFolder(withName: String): LabelFolderRobot {
+        selectMenuLabelOrFolder(withName)
+        return LabelFolderRobot()
+    }
+
+    @Suppress("unused", "ExpressionBodySyntax")
+    fun openReportBugs(): ReportBugsRobot {
+        return ReportBugsRobot()
+    }
+
+    @Suppress("unused", "ExpressionBodySyntax")
+    fun openSent(): SentRobot {
+        return SentRobot()
     }
 
     fun openSettings(): SettingsRobot {
@@ -74,64 +115,34 @@ class MenuRobot(
         return SettingsRobot(composeTestRule)
     }
 
-    fun openDrafts(): DraftsRobot {
-        return DraftsRobot()
-    }
-
-    fun openInbox(): InboxRobot {
-        return InboxRobot()
-    }
-
-    fun openSent(): SentRobot {
-        return SentRobot()
-    }
-
-    fun openContacts(): ContactsRobot {
-        return ContactsRobot()
-    }
-
-    fun openReportBugs(): ReportBugsRobot {
-        return ReportBugsRobot()
-    }
-
-    fun selectLogout(): MenuRobot {
-        return this
-    }
-
+    @Suppress("unused", "ExpressionBodySyntax")
     fun openTrash(): TrashRobot {
         return TrashRobot()
     }
 
-    fun closeMenuWithSwipe(): MenuRobot {
+    @Suppress("unused", "ExpressionBodySyntax")
+    fun selectLogout(): MenuRobot {
         return this
     }
 
-    fun openLabelOrFolder(withName: String): LabelFolderRobot {
-        selectMenuLabelOrFolder(withName)
-        return LabelFolderRobot()
-    }
+    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 
-    fun openAccountsList(): AccountPanelRobot {
-        return AccountPanelRobot()
-    }
-
-    @SuppressWarnings("EmptyFunctionBlock")
+    @Suppress("unused", "EmptyFunctionBlock")
     private fun selectMenuItem(@IdRes menuItemName: String) {}
 
-    @SuppressWarnings("EmptyFunctionBlock")
+    @Suppress("unused", "EmptyFunctionBlock")
     private fun selectMenuLabelOrFolder(@IdRes labelOrFolderName: String) {}
+
 
     /**
      * Contains all the validations that can be performed by [MenuRobot].
      */
     class Verify {
 
-        @SuppressWarnings("EmptyFunctionBlock")
+        @Suppress("unused", "EmptyFunctionBlock")
         fun menuOpened() {}
 
-        @SuppressWarnings("EmptyFunctionBlock")
+        @Suppress("unused", "EmptyFunctionBlock")
         fun menuClosed() {}
     }
-
-    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 }

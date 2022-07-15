@@ -34,11 +34,13 @@ class ConversationModeRobot(
     private val composeTestRule: ComposeContentTestRule? = null
 ) {
 
+    inline fun verify(block: Verify.() -> Unit) =
+        Verify().apply(block)
+
     /**
      * Contains all the validations that can be performed by [ConversationModeRobot].
      */
     class Verify {
-
         fun conversationModeToggleIsDisplayedAndEnabled(composeRule: ComposeContentTestRule) {
             composeRule
                 .onAllNodesWithText(R.string.mail_settings_conversation_mode)
@@ -49,7 +51,4 @@ class ConversationModeRobot(
                 .assertIsEnabled()
         }
     }
-
-    inline fun verify(block: Verify.() -> Unit) =
-        Verify().apply(block)
 }
