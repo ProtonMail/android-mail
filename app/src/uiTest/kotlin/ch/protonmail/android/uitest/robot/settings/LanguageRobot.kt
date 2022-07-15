@@ -80,8 +80,8 @@ class LanguageRobot(
         return this
     }
 
-    inline fun verify(block: Verify.() -> Unit) =
-        Verify().apply(block)
+    inline fun verify(block: Verify.() -> Unit): LanguageRobot =
+        also { Verify().apply(block) }
 
     /**
      * Contains all the validations that can be performed by [LanguageRobot].

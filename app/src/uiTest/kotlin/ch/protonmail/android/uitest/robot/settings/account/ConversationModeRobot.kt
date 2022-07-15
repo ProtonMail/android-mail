@@ -34,8 +34,8 @@ class ConversationModeRobot(
     private val composeTestRule: ComposeContentTestRule? = null
 ) {
 
-    inline fun verify(block: Verify.() -> Unit) =
-        Verify().apply(block)
+    inline fun verify(block: Verify.() -> Unit): ConversationModeRobot =
+        also { Verify().apply(block) }
 
     /**
      * Contains all the validations that can be performed by [ConversationModeRobot].

@@ -125,7 +125,8 @@ class MenuRobot(
         return this
     }
 
-    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
+    inline fun verify(block: Verify.() -> Unit): MenuRobot =
+        also { Verify().apply(block) }
 
     @Suppress("unused", "EmptyFunctionBlock")
     private fun selectMenuItem(@IdRes menuItemName: String) {}

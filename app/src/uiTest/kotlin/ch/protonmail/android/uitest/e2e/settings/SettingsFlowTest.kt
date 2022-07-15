@@ -51,9 +51,9 @@ class SettingsFlowTest : BaseTest() {
         menuRobot
             .openSettings()
             .openUserAccountSettings()
-            .also { it.verify { accountSettingsScreenIsDisplayed(composeTestRule) } }
+            .verify { accountSettingsScreenIsDisplayed(composeTestRule) }
             .openConversationMode()
-            .also { it.verify { conversationModeToggleIsDisplayedAndEnabled(composeTestRule) } }
+            .verify { conversationModeToggleIsDisplayedAndEnabled(composeTestRule) }
     }
 
     @Test

@@ -107,7 +107,8 @@ class SettingsRobot(
         return AccountSettingsRobot()
     }
 
-    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
+    inline fun verify(block: Verify.() -> Unit): SettingsRobot =
+        also { Verify().apply(block) }
 
     private fun ComposeContentTestRule.onList(): SemanticsNodeInteraction =
         onAllNodes(hasScrollAction()).onFirst() // second is drawer

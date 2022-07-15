@@ -79,7 +79,8 @@ class AccountSettingsRobot(
         return SwipingGesturesSettingsRobot()
     }
 
-    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
+    inline fun verify(block: Verify.() -> Unit): AccountSettingsRobot =
+        also { Verify().apply(block) }
 
     private fun clickOnAccountListItemWithText(@StringRes itemNameRes: Int) {
         composeTestRule!!
