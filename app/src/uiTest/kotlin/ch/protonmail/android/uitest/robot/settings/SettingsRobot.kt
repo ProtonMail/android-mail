@@ -17,17 +17,25 @@
  */
 package ch.protonmail.android.uitest.robot.settings
 
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.settings.account.AccountSettingsRobot
 import ch.protonmail.android.uitest.robot.settings.autolock.AutoLockRobot
+import ch.protonmail.android.uitest.robot.settings.swipeactions.SwipeActionsRobot
+import ch.protonmail.android.uitest.util.hasText
+import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
+import me.proton.core.presentation.R.string as coreString
 
 /**
  * [SettingsRobot] class contains actions and verifications for Settings view.
@@ -38,6 +46,10 @@ class SettingsRobot(
 ) {
 
     fun navigateUpToInbox(): InboxRobot {
+        composeTestRule!!
+            .onNodeWithContentDescription(coreString.presentation_back)
+            .performClick()
+
         return InboxRobot()
     }
 
@@ -53,6 +65,20 @@ class SettingsRobot(
         composeTestRule.waitUntil { progressIsHidden(composeTestRule) }
 
         return AccountSettingsRobot(composeTestRule)
+    }
+
+    fun openSwipeActions(): SwipeActionsRobot {
+        composeTestRule!!
+            .onList()
+            .performScrollToNode(hasText(string.mail_settings_swipe_actions))
+
+        composeTestRule
+            .onNodeWithText(string.mail_settings_swipe_actions)
+            .performClick()
+
+        composeTestRule.waitForIdle()
+
+        return SwipeActionsRobot(composeTestRule)
     }
 
     fun selectThemeSettings(): ThemeRobot {
@@ -80,6 +106,9 @@ class SettingsRobot(
     fun selectSettingsItemByValue(value: String): AccountSettingsRobot {
         return AccountSettingsRobot()
     }
+
+    private fun ComposeContentTestRule.onList(): SemanticsNodeInteraction =
+        onAllNodes(hasScrollAction()).onFirst() // second is drawer
 
     @Suppress("EmptyFunctionBlock")
     private fun selectItemByHeader(header: String) {}

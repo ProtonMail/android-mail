@@ -23,6 +23,7 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionCollection
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 
 fun SemanticsNodeInteractionsProvider.onAllNodesWithText(
@@ -30,11 +31,18 @@ fun SemanticsNodeInteractionsProvider.onAllNodesWithText(
     substring: Boolean = false,
     ignoreCase: Boolean = false,
     useUnmergedTree: Boolean = false
-): SemanticsNodeInteractionCollection = onAllNodesWithText(getString(textRes, substring, ignoreCase), useUnmergedTree)
+): SemanticsNodeInteractionCollection = onAllNodesWithText(getString(textRes), substring, ignoreCase, useUnmergedTree)
+
+fun SemanticsNodeInteractionsProvider.onNodeWithContentDescription(
+    @StringRes labelRes: Int,
+    substring: Boolean = false,
+    ignoreCase: Boolean = false,
+    useUnmergedTree: Boolean = false
+): SemanticsNodeInteraction = onNodeWithContentDescription(getString(labelRes), substring, ignoreCase, useUnmergedTree)
 
 fun SemanticsNodeInteractionsProvider.onNodeWithText(
     @StringRes textRes: Int,
     substring: Boolean = false,
     ignoreCase: Boolean = false,
     useUnmergedTree: Boolean = false
-): SemanticsNodeInteraction = onNodeWithText(getString(textRes, substring, ignoreCase), useUnmergedTree)
+): SemanticsNodeInteraction = onNodeWithText(getString(textRes), substring, ignoreCase, useUnmergedTree)

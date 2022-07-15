@@ -58,17 +58,12 @@ class SettingsFlowTest : BaseTest() {
 
     @Test
     @Category(SmokeTest::class)
-    fun openSettingAndChangePreferredTheme() {
-        val themeSettingsRobot = menuRobot
+    fun openPasswordManagementSettings() {
+        menuRobot
             .settings()
-            .selectThemeSettings()
-
-        themeSettingsRobot
-            .selectSystemDefault()
-            .verify { defaultThemeSettingShown(composeTestRule) }
-        themeSettingsRobot
-            .selectDarkTheme()
-            .verify { darkThemeSelected(composeTestRule) }
+            .openUserAccountSettings()
+            .passwordManagement()
+            .verify { passwordManagementElementsDisplayed() }
     }
 
     @Test
@@ -111,11 +106,41 @@ class SettingsFlowTest : BaseTest() {
 
     @Test
     @Category(SmokeTest::class)
-    fun openPasswordManagementSettings() {
+    fun openSettingAndChangePreferredTheme() {
+        val themeSettingsRobot = menuRobot
+            .settings()
+            .selectThemeSettings()
+
+        themeSettingsRobot
+            .selectSystemDefault()
+            .verify { defaultThemeSettingShown(composeTestRule) }
+        themeSettingsRobot
+            .selectDarkTheme()
+            .verify { darkThemeSelected(composeTestRule) }
+    }
+
+    @Test
+    @Category(SmokeTest::class)
+    fun openSettingsAndChangeLeftSwipeAction() {
         menuRobot
             .settings()
-            .openUserAccountSettings()
-            .passwordManagement()
-            .verify { passwordManagementElementsDisplayed() }
+            .openSwipeActions()
+            .openSwipeLeft()
+            .selectArchive()
+            .navigateUpToSwipeActions()
+            .verify { swipeLeft { isArchive() } }
     }
+
+    @Test
+    @Category(SmokeTest::class)
+    fun openSettingsAndChangeRightSwipeAction() {
+        menuRobot
+            .settings()
+            .openSwipeActions()
+            .openSwipeRight()
+            .selectMarkRead()
+            .navigateUpToSwipeActions()
+            .verify { swipeRight { isMarkRead() } }
+    }
+
 }
