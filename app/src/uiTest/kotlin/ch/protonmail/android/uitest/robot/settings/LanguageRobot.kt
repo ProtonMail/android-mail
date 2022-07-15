@@ -37,12 +37,10 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 /**
  * [LanguageRobot] class contains actions and verifications for LanguageSettingsScreen
  */
-class LanguageRobot(
-    private val composeTestRule: ComposeContentTestRule? = null
-) {
+class LanguageRobot(private val composeTestRule: ComposeContentTestRule) {
 
     fun selectBrazilianPortuguese(): LanguageRobot {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithTag(TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL)
             .performScrollToNode(hasText(AppLanguage.BRAZILIAN.langName))
 
@@ -55,7 +53,7 @@ class LanguageRobot(
     }
 
     fun selectSpanish(): LanguageRobot {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithText(AppLanguage.SPANISH.langName)
             .performClick()
         composeTestRule.waitForIdle()
@@ -63,7 +61,7 @@ class LanguageRobot(
     }
 
     fun selectSystemDefault(): LanguageRobot {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithText(string.mail_settings_system_default)
             .performScrollTo()
             .performClick()
@@ -72,7 +70,7 @@ class LanguageRobot(
     }
 
     fun selectSystemDefaultFromBrazilian(): LanguageRobot {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithText("Padrão do sistema")
             .performScrollTo()
             .performClick()

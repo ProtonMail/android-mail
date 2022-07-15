@@ -41,12 +41,10 @@ import me.proton.core.test.android.robots.settings.PasswordManagementRobot
  * Account settings functionality.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-class AccountSettingsRobot(
-    private val composeTestRule: ComposeContentTestRule? = null
-) {
+class AccountSettingsRobot(private val composeTestRule: ComposeContentTestRule) {
 
     fun navigateUpToSettings(): SettingsRobot {
-        return SettingsRobot()
+        return SettingsRobot(composeTestRule)
     }
 
     fun openConversationMode(): ConversationModeRobot {
@@ -83,7 +81,7 @@ class AccountSettingsRobot(
         also { Verify().apply(block) }
 
     private fun clickOnAccountListItemWithText(@StringRes itemNameRes: Int) {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
             .onChild()
             .performScrollToNode(hasText(itemNameRes))

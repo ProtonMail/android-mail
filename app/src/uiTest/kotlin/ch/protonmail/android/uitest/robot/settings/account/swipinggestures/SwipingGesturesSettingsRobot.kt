@@ -32,6 +32,6 @@ class SwipingGesturesSettingsRobot {
     }
 
     fun navigateUpToAccountSettings(): AccountSettingsRobot {
-        return AccountSettingsRobot()
+        return AccountSettingsRobot(TODO("Inject composeTestRule in this robot when used"))
     }
 }

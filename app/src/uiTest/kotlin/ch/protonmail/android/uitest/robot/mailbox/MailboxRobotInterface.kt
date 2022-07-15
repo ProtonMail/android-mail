@@ -19,6 +19,7 @@
 
 package ch.protonmail.android.uitest.robot.mailbox
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.uitest.robot.mailbox.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.messagedetail.MessageRobot
@@ -27,6 +28,8 @@ import ch.protonmail.android.uitest.robot.menu.MenuRobot
 
 @Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 interface MailboxRobotInterface {
+
+    val composeTestRule: ComposeContentTestRule get() = TODO("Override in subclass")
 
     fun swipeLeftMessageAtPosition(position: Int): Any {
         return Any()
@@ -49,7 +52,7 @@ interface MailboxRobotInterface {
     }
 
     fun menuDrawer(): MenuRobot {
-        return MenuRobot()
+        return MenuRobot(composeTestRule)
     }
 
     fun clickMessageByPosition(position: Int): MessageRobot {

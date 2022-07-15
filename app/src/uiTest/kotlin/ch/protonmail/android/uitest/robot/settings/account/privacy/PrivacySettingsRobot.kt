@@ -26,7 +26,7 @@ import ch.protonmail.android.uitest.robot.settings.account.AccountSettingsRobot
 class PrivacySettingsRobot {
 
     fun navigateUpToAccountSettings(): AccountSettingsRobot {
-        return AccountSettingsRobot()
+        return AccountSettingsRobot(TODO("Inject composeTestRule in this robot when used"))
     }
 
     fun autoDownloadMessages(): AutoDownloadMessagesRobot {

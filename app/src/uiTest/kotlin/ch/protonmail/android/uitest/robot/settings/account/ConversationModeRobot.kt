@@ -30,9 +30,7 @@ import ch.protonmail.android.uitest.util.onAllNodesWithText
  * Class represents Change Conversation Mode view.
  */
 @Suppress("unused")
-class ConversationModeRobot(
-    private val composeTestRule: ComposeContentTestRule? = null
-) {
+class ConversationModeRobot(private val composeTestRule: ComposeContentTestRule) {
 
     inline fun verify(block: Verify.() -> Unit): ConversationModeRobot =
         also { Verify().apply(block) }

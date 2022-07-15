@@ -41,9 +41,7 @@ import me.proton.core.presentation.R.string as coreString
  * [SettingsRobot] class contains actions and verifications for Settings view.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-class SettingsRobot(
-    private val composeTestRule: ComposeContentTestRule? = null
-) {
+class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
 
     fun navigateUpToInbox(): InboxRobot {
         composeTestRule!!
@@ -58,7 +56,7 @@ class SettingsRobot(
     }
 
     fun openLanguageSettings(): LanguageRobot {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithText(string.mail_settings_app_language)
             .performClick()
         composeTestRule.waitForIdle()
@@ -81,7 +79,7 @@ class SettingsRobot(
     }
 
     fun openUserAccountSettings(): AccountSettingsRobot {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM)
             .performClick()
 
@@ -91,7 +89,7 @@ class SettingsRobot(
     }
 
     fun openThemeSettings(): ThemeRobot {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithText(string.mail_settings_theme)
             .performClick()
         composeTestRule.waitForIdle()
@@ -104,7 +102,7 @@ class SettingsRobot(
     }
 
     fun selectSettingsItemByValue(value: String): AccountSettingsRobot {
-        return AccountSettingsRobot()
+        return AccountSettingsRobot(composeTestRule)
     }
 
     inline fun verify(block: Verify.() -> Unit): SettingsRobot =

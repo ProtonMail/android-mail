@@ -45,9 +45,7 @@ import me.proton.core.presentation.compose.R.string
 /**
  * [MenuRobot] class contains actions and verifications for menu functionality.
  */
-class MenuRobot(
-    private val composeTestRule: ComposeContentTestRule? = null
-) {
+class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
 
     @Suppress("unused", "ExpressionBodySyntax")
     fun closeMenuWithSwipe(): MenuRobot {
@@ -96,7 +94,7 @@ class MenuRobot(
     }
 
     fun openSettings(): SettingsRobot {
-        composeTestRule!!
+        composeTestRule
             .onRoot()
             .performTouchInput { swipeRight() }
 

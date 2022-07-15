@@ -24,7 +24,7 @@ import ch.protonmail.android.uitest.robot.settings.SettingsRobot
 class AutoLockRobot {
 
     fun navigateUptToSettings(): SettingsRobot {
-        return SettingsRobot()
+        return SettingsRobot(TODO("Inject composeTestRule in this robot when used"))
     }
 
     fun enableAutoLock(): PinRobot {

@@ -30,12 +30,10 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 /**
  * [ThemeRobot] class contains actions and verifications for ThemeSettingScreen
  */
-class ThemeRobot(
-    private val composeTestRule: ComposeContentTestRule? = null
-) {
+class ThemeRobot(private val composeTestRule: ComposeContentTestRule) {
 
     fun selectDarkTheme(): ThemeRobot {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithText(string.mail_settings_theme_dark)
             .performClick()
         composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, string.mail_settings_theme_dark) }
@@ -43,7 +41,7 @@ class ThemeRobot(
     }
 
     fun selectSystemDefault(): ThemeRobot {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithText(string.mail_settings_system_default)
             .performClick()
         composeTestRule.waitUntil { optionWithTextIsSelected(composeTestRule, string.mail_settings_system_default) }
