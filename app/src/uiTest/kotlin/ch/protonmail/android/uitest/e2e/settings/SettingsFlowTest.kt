@@ -38,7 +38,6 @@ class SettingsFlowTest : BaseTest() {
     @Test
     @Category(SmokeTest::class)
     fun openAccountSettings() {
-
         menuRobot
             .openSettings()
             .openUserAccountSettings()

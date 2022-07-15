@@ -20,10 +20,29 @@ package ch.protonmail.android.uitest.util
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 
-fun SemanticsNodeInteraction.assertTextEquals(
-    @StringRes vararg values: Int,
-    includeEditableText: Boolean = true
-): SemanticsNodeInteraction =
-    assertTextEquals(*values.map { getString(it) }.toTypedArray(), includeEditableText = includeEditableText)
+fun nodeIsDisplayed(interaction: SemanticsNodeInteraction): Boolean {
+    try {
+        interaction.assertIsDisplayed()
+    } catch (ignored: AssertionError) {
+        return false
+    }
+    return true
+}
+
+fun nodeIsNotDisplayed(interaction: SemanticsNodeInteraction): Boolean {
+    try {
+        interaction.assertIsDisplayed()
+    } catch (ignored: AssertionError) {
+        return true
+    }
+    return false
+}
+
+fun nodeWithTextIsDisplayed(composeTestRule: ComposeContentTestRule, @StringRes textRes: Int): Boolean =
+    nodeIsDisplayed(composeTestRule.onNodeWithText(textRes))
+
+fun nodeWithTextIsNotDisplayed(composeTestRule: ComposeContentTestRule, @StringRes textRes: Int): Boolean =
+    nodeIsNotDisplayed(composeTestRule.onNodeWithText(textRes))

@@ -33,6 +33,7 @@ import ch.protonmail.android.uitest.robot.settings.autolock.AutoLockRobot
 import ch.protonmail.android.uitest.robot.settings.swipeactions.SwipeActionsRobot
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
+import ch.protonmail.android.uitest.util.awaitProgressIsHidden
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 import me.proton.core.presentation.R.string as coreString
@@ -40,7 +41,6 @@ import me.proton.core.presentation.R.string as coreString
 /**
  * [SettingsRobot] class contains actions and verifications for Settings view.
  */
-@Suppress("unused", "ExpressionBodySyntax")
 class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
 
     fun navigateUpToInbox(): InboxRobot {
@@ -51,6 +51,7 @@ class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
         return InboxRobot()
     }
 
+    @Suppress("unused", "ExpressionBodySyntax")
     fun openAutoLock(): AutoLockRobot {
         return AutoLockRobot()
     }
@@ -83,7 +84,7 @@ class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
             .onNodeWithTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM)
             .performClick()
 
-        composeTestRule.waitUntil { progressIsHidden(composeTestRule) }
+        composeTestRule.awaitProgressIsHidden()
 
         return AccountSettingsRobot(composeTestRule)
     }
@@ -97,10 +98,12 @@ class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
         return ThemeRobot(composeTestRule)
     }
 
+    @Suppress("unused", "ExpressionBodySyntax")
     fun selectEmptyCache(): SettingsRobot {
         return this
     }
 
+    @Suppress("unused", "ExpressionBodySyntax")
     fun selectSettingsItemByValue(value: String): AccountSettingsRobot {
         return AccountSettingsRobot(composeTestRule)
     }
@@ -111,26 +114,15 @@ class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
     private fun ComposeContentTestRule.onList(): SemanticsNodeInteraction =
         onAllNodes(hasScrollAction()).onFirst() // second is drawer
 
-    @Suppress("EmptyFunctionBlock")
+    @Suppress("unused", "EmptyFunctionBlock")
     private fun selectItemByHeader(header: String) {}
-
-    private fun progressIsHidden(composeTestRule: ComposeContentTestRule): Boolean {
-        try {
-            composeTestRule
-                .onNodeWithTag(PROTON_PROGRESS_TEST_TAG)
-                .assertIsNotDisplayed()
-        } catch (ignored: AssertionError) {
-            return true
-        }
-        return false
-    }
 
     /**
      * Contains all the validations that can be performed by [SettingsRobot].
      */
     class Verify {
 
-        @Suppress("EmptyFunctionBlock")
+        @Suppress("unused", "EmptyFunctionBlock")
         fun settingsOpened() {}
     }
 }
