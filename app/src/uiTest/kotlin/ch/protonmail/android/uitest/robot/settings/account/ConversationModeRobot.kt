@@ -39,7 +39,7 @@ class ConversationModeRobot(
      */
     class Verify {
 
-        fun conversationModeToggleShown(composeRule: ComposeContentTestRule) {
+        fun conversationModeToggleIsDisplayedAndEnabled(composeRule: ComposeContentTestRule) {
             composeRule
                 .onAllNodesWithText(R.string.mail_settings_conversation_mode)
                 // Take first as both "toolbar" and "switch" node are matching the same text

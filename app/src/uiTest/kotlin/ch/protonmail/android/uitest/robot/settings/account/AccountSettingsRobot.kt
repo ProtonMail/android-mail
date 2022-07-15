@@ -45,19 +45,19 @@ class AccountSettingsRobot(
     private val composeTestRule: ComposeContentTestRule? = null
 ) {
 
-    fun privacy(): PrivacySettingsRobot {
+    fun openPrivacy(): PrivacySettingsRobot {
         return PrivacySettingsRobot()
     }
 
-    fun defaultEmailAddress(): DefaultEmailAddressRobot {
+    fun openDefaultEmailAddress(): DefaultEmailAddressRobot {
         return DefaultEmailAddressRobot()
     }
 
-    fun displayNameAndSignature(): DisplayNameAndSignatureRobot {
+    fun openDisplayNameAndSignature(): DisplayNameAndSignatureRobot {
         return DisplayNameAndSignatureRobot()
     }
 
-    fun foldersAndLabels(): LabelsAndFoldersRobot {
+    fun openFoldersAndLabels(): LabelsAndFoldersRobot {
         return LabelsAndFoldersRobot()
     }
 
@@ -65,21 +65,21 @@ class AccountSettingsRobot(
         return SettingsRobot()
     }
 
-    fun swipingGestures(): SwipingGesturesSettingsRobot {
+    fun openSwipeActions(): SwipingGesturesSettingsRobot {
         return SwipingGesturesSettingsRobot()
     }
 
-    fun passwordManagement(): PasswordManagementRobot {
-        clickOnAccountListItemNamed(string.mail_settings_password_management)
+    fun openPasswordManagement(): PasswordManagementRobot {
+        clickOnAccountListItemWithText(string.mail_settings_password_management)
         return PasswordManagementRobot()
     }
 
-    fun conversationMode(): ConversationModeRobot {
-        clickOnAccountListItemNamed(string.mail_settings_conversation_mode)
+    fun openConversationMode(): ConversationModeRobot {
+        clickOnAccountListItemWithText(string.mail_settings_conversation_mode)
         return ConversationModeRobot(composeTestRule)
     }
 
-    private fun clickOnAccountListItemNamed(@StringRes itemNameRes: Int) {
+    private fun clickOnAccountListItemWithText(@StringRes itemNameRes: Int) {
         composeTestRule!!
             .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
             .onChild()
@@ -97,7 +97,7 @@ class AccountSettingsRobot(
      */
     class Verify {
 
-        fun accountSettingsOpened(composeRule: ComposeContentTestRule) {
+        fun accountSettingsScreenIsDisplayed(composeRule: ComposeContentTestRule) {
             composeRule.waitUntil(timeoutMillis = 5000) {
                 composeRule
                     .onAllNodesWithTag(TEST_TAG_ACCOUNT_SETTINGS_SCREEN)

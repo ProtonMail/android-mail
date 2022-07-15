@@ -71,7 +71,7 @@ class LanguageRobot(
         return this
     }
 
-    fun fromBrazilianToSystemDefault(): LanguageRobot {
+    fun selectSystemDefaultFromBrazilian(): LanguageRobot {
         composeTestRule!!
             .onNodeWithText("Padrão do sistema")
             .performScrollTo()
@@ -85,24 +85,24 @@ class LanguageRobot(
      */
     class Verify {
 
-        fun spanishLanguageSelected(composeRule: ComposeContentTestRule) {
-            verifyLanguageSelected(composeRule, AppLanguage.SPANISH.langName)
+        fun spanishLanguageIsSelected(composeRule: ComposeContentTestRule) {
+            verifyLanguageIsSelected(composeRule, AppLanguage.SPANISH.langName)
         }
 
-        fun brazilianPortugueseLanguageSelected(composeRule: ComposeContentTestRule) {
-            verifyLanguageSelected(composeRule, AppLanguage.BRAZILIAN.langName)
+        fun brazilianPortugueseLanguageIsSelected(composeRule: ComposeContentTestRule) {
+            verifyLanguageIsSelected(composeRule, AppLanguage.BRAZILIAN.langName)
         }
 
         fun appLanguageChangedToSpanish(composeRule: ComposeContentTestRule) {
-            verifyScreenTitle(composeRule, "Idioma de la aplicación")
+            verifyScreenTitleMatchesText(composeRule, "Idioma de la aplicación")
         }
 
         fun appLanguageChangedToPortuguese(composeRule: ComposeContentTestRule) {
-            verifyScreenTitle(composeRule, "Idioma do aplicativo")
+            verifyScreenTitleMatchesText(composeRule, "Idioma do aplicativo")
         }
 
-        fun defaultLanguagesScreenIsShown(composeRule: ComposeContentTestRule) {
-            verifyScreenTitle(composeRule, string.mail_settings_app_language)
+        fun defaultLanguagesScreenIsSelected(composeRule: ComposeContentTestRule) {
+            verifyScreenTitleMatchesText(composeRule, string.mail_settings_app_language)
 
             composeRule
                 .onNodeWithText(string.mail_settings_system_default)
@@ -114,7 +114,7 @@ class LanguageRobot(
         }
 
 
-        private fun verifyLanguageSelected(
+        private fun verifyLanguageIsSelected(
             composeRule: ComposeContentTestRule,
             text: String
         ) {
@@ -123,7 +123,7 @@ class LanguageRobot(
                 .assertIsSelected()
         }
 
-        private fun verifyScreenTitle(
+        private fun verifyScreenTitleMatchesText(
             composeRule: ComposeContentTestRule,
             text: String
         ) {
@@ -132,7 +132,7 @@ class LanguageRobot(
                 .assertIsDisplayed()
         }
 
-        private fun verifyScreenTitle(
+        private fun verifyScreenTitleMatchesText(
             composeRule: ComposeContentTestRule,
             @StringRes text: Int
         ) {

@@ -50,11 +50,11 @@ class MenuRobot(
     private val composeTestRule: ComposeContentTestRule? = null
 ) {
 
-    fun archive(): ArchiveRobot {
+    fun openArchive(): ArchiveRobot {
         return ArchiveRobot()
     }
 
-    fun settings(): SettingsRobot {
+    fun openSettings(): SettingsRobot {
         composeTestRule!!
             .onRoot()
             .performTouchInput { swipeRight() }
@@ -74,31 +74,31 @@ class MenuRobot(
         return SettingsRobot(composeTestRule)
     }
 
-    fun drafts(): DraftsRobot {
+    fun openDrafts(): DraftsRobot {
         return DraftsRobot()
     }
 
-    fun inbox(): InboxRobot {
+    fun openInbox(): InboxRobot {
         return InboxRobot()
     }
 
-    fun sent(): SentRobot {
+    fun openSent(): SentRobot {
         return SentRobot()
     }
 
-    fun contacts(): ContactsRobot {
+    fun openContacts(): ContactsRobot {
         return ContactsRobot()
     }
 
-    fun reportBugs(): ReportBugsRobot {
+    fun openReportBugs(): ReportBugsRobot {
         return ReportBugsRobot()
     }
 
-    fun logout(): MenuRobot {
+    fun selectLogout(): MenuRobot {
         return this
     }
 
-    fun trash(): TrashRobot {
+    fun openTrash(): TrashRobot {
         return TrashRobot()
     }
 
@@ -106,12 +106,12 @@ class MenuRobot(
         return this
     }
 
-    fun labelOrFolder(withName: String): LabelFolderRobot {
+    fun openLabelOrFolder(withName: String): LabelFolderRobot {
         selectMenuLabelOrFolder(withName)
         return LabelFolderRobot()
     }
 
-    fun accountsList(): AccountPanelRobot {
+    fun openAccountsList(): AccountPanelRobot {
         return AccountPanelRobot()
     }
 

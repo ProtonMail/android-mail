@@ -53,7 +53,7 @@ class SettingsRobot(
         return InboxRobot()
     }
 
-    fun emptyCache(): SettingsRobot {
+    fun selectEmptyCache(): SettingsRobot {
         return this
     }
 
@@ -81,7 +81,7 @@ class SettingsRobot(
         return SwipeActionsRobot(composeTestRule)
     }
 
-    fun selectThemeSettings(): ThemeRobot {
+    fun openThemeSettings(): ThemeRobot {
         composeTestRule!!
             .onNodeWithText(string.mail_settings_theme)
             .performClick()
@@ -90,7 +90,7 @@ class SettingsRobot(
         return ThemeRobot(composeTestRule)
     }
 
-    fun selectLanguageSettings(): LanguageRobot {
+    fun openLanguageSettings(): LanguageRobot {
         composeTestRule!!
             .onNodeWithText(string.mail_settings_app_language)
             .performClick()
@@ -99,7 +99,7 @@ class SettingsRobot(
         return LanguageRobot(composeTestRule)
     }
 
-    fun selectAutoLock(): AutoLockRobot {
+    fun openAutoLock(): AutoLockRobot {
         return AutoLockRobot()
     }
 

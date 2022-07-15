@@ -40,54 +40,59 @@ class SettingsFlowTest : BaseTest() {
     fun openAccountSettings() {
 
         menuRobot
-            .settings()
+            .openSettings()
             .openUserAccountSettings()
-            .verify { accountSettingsOpened(composeTestRule) }
+            .verify { accountSettingsScreenIsDisplayed(composeTestRule) }
     }
 
     @Test
     @Category(SmokeTest::class)
     fun openConversationModeSetting() {
         menuRobot
-            .settings()
+            .openSettings()
             .openUserAccountSettings()
-            .also { it.verify { accountSettingsOpened(composeTestRule) } }
-            .conversationMode()
-            .also { it.verify { conversationModeToggleShown(composeTestRule) } }
+            .also { it.verify { accountSettingsScreenIsDisplayed(composeTestRule) } }
+            .openConversationMode()
+            .also { it.verify { conversationModeToggleIsDisplayedAndEnabled(composeTestRule) } }
     }
 
     @Test
     @Category(SmokeTest::class)
-    fun openPasswordManagementSettings() {
-        menuRobot
-            .settings()
-            .openUserAccountSettings()
-            .passwordManagement()
-            .verify { passwordManagementElementsDisplayed() }
+    fun openSettingAndChangePreferredTheme() {
+        val themeSettingsRobot = menuRobot
+            .openSettings()
+            .openThemeSettings()
+
+        themeSettingsRobot
+            .selectSystemDefault()
+            .verify { defaultThemeSettingIsSelected(composeTestRule) }
+        themeSettingsRobot
+            .selectDarkTheme()
+            .verify { darkThemeIsSelected(composeTestRule) }
     }
 
     @Test
     @Category(SmokeTest::class)
     fun openSettingAndChangePreferredLanguage() {
         val languageSettingsRobot = menuRobot
-            .settings()
-            .selectLanguageSettings()
+            .openSettings()
+            .openLanguageSettings()
 
         languageSettingsRobot
             .selectSystemDefault()
-            .verify { defaultLanguagesScreenIsShown(composeTestRule) }
+            .verify { defaultLanguagesScreenIsSelected(composeTestRule) }
 
         languageSettingsRobot
             .selectSpanish()
             .verify {
-                spanishLanguageSelected(composeTestRule)
+                spanishLanguageIsSelected(composeTestRule)
                 appLanguageChangedToSpanish(composeTestRule)
             }
 
         languageSettingsRobot
             .selectBrazilianPortuguese()
             .verify {
-                brazilianPortugueseLanguageSelected(composeTestRule)
+                brazilianPortugueseLanguageIsSelected(composeTestRule)
                 appLanguageChangedToPortuguese(composeTestRule)
             }
 
@@ -100,30 +105,25 @@ class SettingsFlowTest : BaseTest() {
          * The assumption is that this happens because the Instrumentation's context is not updated when changing lang
          */
         languageSettingsRobot
-            .fromBrazilianToSystemDefault()
-            .verify { defaultLanguagesScreenIsShown(composeTestRule) }
+            .selectSystemDefaultFromBrazilian()
+            .verify { defaultLanguagesScreenIsSelected(composeTestRule) }
     }
 
     @Test
     @Category(SmokeTest::class)
-    fun openSettingAndChangePreferredTheme() {
-        val themeSettingsRobot = menuRobot
-            .settings()
-            .selectThemeSettings()
-
-        themeSettingsRobot
-            .selectSystemDefault()
-            .verify { defaultThemeSettingShown(composeTestRule) }
-        themeSettingsRobot
-            .selectDarkTheme()
-            .verify { darkThemeSelected(composeTestRule) }
+    fun openPasswordManagementSettings() {
+        menuRobot
+            .openSettings()
+            .openUserAccountSettings()
+            .openPasswordManagement()
+            .verify { passwordManagementElementsDisplayed() }
     }
 
     @Test
     @Category(SmokeTest::class)
     fun openSettingsAndChangeLeftSwipeAction() {
         menuRobot
-            .settings()
+            .openSettings()
             .openSwipeActions()
             .openSwipeLeft()
             .selectArchive()
@@ -135,7 +135,7 @@ class SettingsFlowTest : BaseTest() {
     @Category(SmokeTest::class)
     fun openSettingsAndChangeRightSwipeAction() {
         menuRobot
-            .settings()
+            .openSettings()
             .openSwipeActions()
             .openSwipeRight()
             .selectMarkRead()

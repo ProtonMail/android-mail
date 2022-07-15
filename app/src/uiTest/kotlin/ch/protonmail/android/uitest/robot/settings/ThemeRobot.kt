@@ -69,13 +69,13 @@ class ThemeRobot(
      */
     class Verify {
 
-        fun darkThemeSelected(composeRule: ComposeContentTestRule) {
+        fun darkThemeIsSelected(composeRule: ComposeContentTestRule) {
             composeRule
                 .onNodeWithText(string.mail_settings_theme_dark)
                 .assertIsSelected()
         }
 
-        fun defaultThemeSettingShown(composeRule: ComposeContentTestRule) {
+        fun defaultThemeSettingIsSelected(composeRule: ComposeContentTestRule) {
             composeRule
                 .onNodeWithText(string.mail_settings_theme)
                 .assertIsDisplayed()
