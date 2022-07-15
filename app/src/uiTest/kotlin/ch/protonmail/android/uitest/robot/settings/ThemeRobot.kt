@@ -30,7 +30,7 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 /**
  * [ThemeRobot] class contains actions and verifications for ThemeSettingScreen
  */
-class ThemeRobot(private val composeTestRule: ComposeContentTestRule) {
+class ThemeRobot(val composeTestRule: ComposeContentTestRule) {
 
     fun selectDarkTheme(): ThemeRobot {
         composeTestRule
@@ -63,34 +63,35 @@ class ThemeRobot(private val composeTestRule: ComposeContentTestRule) {
     }
 
     inline fun verify(block: Verify.() -> Unit): ThemeRobot =
-        also { Verify().apply(block) }
+        also { Verify(composeTestRule).apply(block) }
 
     /**
      * Contains all the validations that can be performed by [ThemeRobot].
      */
-    class Verify {
+    class Verify(private val composeTestRule: ComposeContentTestRule) {
 
-        fun darkThemeIsSelected(composeRule: ComposeContentTestRule) {
-            composeRule
+        fun darkThemeIsSelected() {
+            composeTestRule
                 .onNodeWithText(string.mail_settings_theme_dark)
                 .assertIsSelected()
         }
-        fun defaultThemeSettingIsSelected(composeRule: ComposeContentTestRule) {
-            composeRule
+
+        fun defaultThemeSettingIsSelected() {
+            composeTestRule
                 .onNodeWithText(string.mail_settings_theme)
                 .assertIsDisplayed()
 
-            composeRule
+            composeTestRule
                 .onNodeWithText(string.mail_settings_system_default)
                 .assertIsDisplayed()
                 .assertIsSelected()
 
-            composeRule
+            composeTestRule
                 .onNodeWithText(string.mail_settings_theme_light)
                 .assertIsDisplayed()
                 .assertIsNotSelected()
 
-            composeRule
+            composeTestRule
                 .onNodeWithText(string.mail_settings_theme_dark)
                 .assertIsDisplayed()
                 .assertIsNotSelected()

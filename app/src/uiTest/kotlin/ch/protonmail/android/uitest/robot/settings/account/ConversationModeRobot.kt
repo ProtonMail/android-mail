@@ -30,17 +30,18 @@ import ch.protonmail.android.uitest.util.onAllNodesWithText
  * Class represents Change Conversation Mode view.
  */
 @Suppress("unused")
-class ConversationModeRobot(private val composeTestRule: ComposeContentTestRule) {
+class ConversationModeRobot(val composeTestRule: ComposeContentTestRule) {
 
     inline fun verify(block: Verify.() -> Unit): ConversationModeRobot =
-        also { Verify().apply(block) }
+        also { Verify(composeTestRule).apply(block) }
 
     /**
      * Contains all the validations that can be performed by [ConversationModeRobot].
      */
-    class Verify {
-        fun conversationModeToggleIsDisplayedAndEnabled(composeRule: ComposeContentTestRule) {
-            composeRule
+    class Verify(private val composeTestRule: ComposeContentTestRule) {
+
+        fun conversationModeToggleIsDisplayedAndEnabled() {
+            composeTestRule
                 .onAllNodesWithText(R.string.mail_settings_conversation_mode)
                 // Take first as both "toolbar" and "switch" node are matching the same text
                 .onFirst()

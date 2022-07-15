@@ -37,7 +37,7 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 /**
  * [LanguageRobot] class contains actions and verifications for LanguageSettingsScreen
  */
-class LanguageRobot(private val composeTestRule: ComposeContentTestRule) {
+class LanguageRobot(val composeTestRule: ComposeContentTestRule) {
 
     fun selectBrazilianPortuguese(): LanguageRobot {
         composeTestRule
@@ -79,75 +79,64 @@ class LanguageRobot(private val composeTestRule: ComposeContentTestRule) {
     }
 
     inline fun verify(block: Verify.() -> Unit): LanguageRobot =
-        also { Verify().apply(block) }
+        also { Verify(composeTestRule).apply(block) }
 
     /**
      * Contains all the validations that can be performed by [LanguageRobot].
      */
-    class Verify {
+    class Verify(private val composeTestRule: ComposeContentTestRule) {
 
-        fun appLanguageChangedToPortuguese(composeRule: ComposeContentTestRule) {
-            verifyScreenTitleMatchesText(composeRule, "Idioma do aplicativo")
+        fun appLanguageChangedToPortuguese() {
+            verifyScreenTitleMatchesText("Idioma do aplicativo")
         }
 
-        fun appLanguageChangedToSpanish(composeRule: ComposeContentTestRule) {
-            verifyScreenTitleMatchesText(composeRule, "Idioma de la aplicación")
+        fun appLanguageChangedToSpanish() {
+            verifyScreenTitleMatchesText("Idioma de la aplicación")
         }
 
-        fun brazilianPortugueseLanguageIsSelected(composeRule: ComposeContentTestRule) {
-            verifyLanguageIsSelected(composeRule, AppLanguage.BRAZILIAN.langName)
+        fun brazilianPortugueseLanguageIsSelected() {
+            verifyLanguageIsSelected(AppLanguage.BRAZILIAN.langName)
         }
 
-        fun spanishLanguageIsSelected(composeRule: ComposeContentTestRule) {
-            verifyLanguageIsSelected(composeRule, AppLanguage.SPANISH.langName)
+        fun spanishLanguageIsSelected() {
+            verifyLanguageIsSelected(AppLanguage.SPANISH.langName)
         }
 
-        fun defaultLanguageIsSelected(composeRule: ComposeContentTestRule) {
-            verifyScreenTitleMatchesText(composeRule, string.mail_settings_app_language)
+        fun defaultLanguageIsSelected() {
+            verifyScreenTitleMatchesText(string.mail_settings_app_language)
 
-            composeRule
+            composeTestRule
                 .onNodeWithText(string.mail_settings_system_default)
                 .assertIsDisplayed()
                 .assertIsSelected()
 
             val languages = listOf("Català", "Dansk", "Deutsch", "English", "Français")
-            assertLanguagesAreShownButUnselected(composeRule, languages)
+            assertLanguagesAreShownButUnselected(languages)
         }
 
-        private fun assertLanguagesAreShownButUnselected(
-            composeRule: ComposeContentTestRule,
-            languages: List<String>
-        ) {
+        private fun assertLanguagesAreShownButUnselected(languages: List<String>) {
             languages.forEach { language ->
-                composeRule
+                composeTestRule
                     .onNodeWithText(language)
                     .assertIsDisplayed()
                     .assertIsNotSelected()
             }
         }
 
-        private fun verifyLanguageIsSelected(
-            composeRule: ComposeContentTestRule,
-            text: String
-        ) {
-            composeRule
+        private fun verifyLanguageIsSelected(text: String) {
+            composeTestRule
                 .onNodeWithText(text)
                 .assertIsSelected()
         }
 
-        private fun verifyScreenTitleMatchesText(
-            composeRule: ComposeContentTestRule,
-            text: String
-        ) {
-            composeRule
+        private fun verifyScreenTitleMatchesText(text: String) {
+            composeTestRule
                 .onNodeWithText(text)
                 .assertIsDisplayed()
         }
-        private fun verifyScreenTitleMatchesText(
-            composeRule: ComposeContentTestRule,
-            @StringRes text: Int
-        ) {
-            composeRule
+
+        private fun verifyScreenTitleMatchesText(@StringRes text: Int) {
+            composeTestRule
                 .onNodeWithText(text)
                 .assertIsDisplayed()
         }

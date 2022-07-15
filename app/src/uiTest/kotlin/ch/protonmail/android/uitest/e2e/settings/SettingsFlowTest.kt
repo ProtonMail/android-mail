@@ -42,7 +42,7 @@ class SettingsFlowTest : BaseTest() {
         menuRobot
             .openSettings()
             .openUserAccountSettings()
-            .verify { accountSettingsScreenIsDisplayed(composeTestRule) }
+            .verify { accountSettingsScreenIsDisplayed() }
     }
 
     @Test
@@ -51,24 +51,21 @@ class SettingsFlowTest : BaseTest() {
         menuRobot
             .openSettings()
             .openUserAccountSettings()
-            .verify { accountSettingsScreenIsDisplayed(composeTestRule) }
+            .verify { accountSettingsScreenIsDisplayed() }
             .openConversationMode()
-            .verify { conversationModeToggleIsDisplayedAndEnabled(composeTestRule) }
+            .verify { conversationModeToggleIsDisplayedAndEnabled() }
     }
 
     @Test
     @Category(SmokeTest::class)
     fun openSettingAndChangePreferredTheme() {
-        val themeSettingsRobot = menuRobot
+        menuRobot
             .openSettings()
             .openThemeSettings()
-
-        themeSettingsRobot
             .selectSystemDefault()
-            .verify { defaultThemeSettingIsSelected(composeTestRule) }
-        themeSettingsRobot
+            .verify { defaultThemeSettingIsSelected() }
             .selectDarkTheme()
-            .verify { darkThemeIsSelected(composeTestRule) }
+            .verify { darkThemeIsSelected() }
     }
 
     @Test
@@ -77,23 +74,17 @@ class SettingsFlowTest : BaseTest() {
         val languageSettingsRobot = menuRobot
             .openSettings()
             .openLanguageSettings()
-
-        languageSettingsRobot
             .selectSystemDefault()
-            .verify { defaultLanguageIsSelected(composeTestRule) }
-
-        languageSettingsRobot
+            .verify { defaultLanguageIsSelected() }
             .selectSpanish()
             .verify {
-                spanishLanguageIsSelected(composeTestRule)
-                appLanguageChangedToSpanish(composeTestRule)
+                spanishLanguageIsSelected()
+                appLanguageChangedToSpanish()
             }
-
-        languageSettingsRobot
             .selectBrazilianPortuguese()
             .verify {
-                brazilianPortugueseLanguageIsSelected(composeTestRule)
-                appLanguageChangedToPortuguese(composeTestRule)
+                brazilianPortugueseLanguageIsSelected()
+                appLanguageChangedToPortuguese()
             }
 
         composeTestRule.waitForIdle()
@@ -106,7 +97,7 @@ class SettingsFlowTest : BaseTest() {
          */
         languageSettingsRobot
             .selectSystemDefaultFromBrazilian()
-            .verify { defaultLanguageIsSelected(composeTestRule) }
+            .verify { defaultLanguageIsSelected() }
     }
 
     @Test

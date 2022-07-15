@@ -41,7 +41,7 @@ import me.proton.core.test.android.robots.settings.PasswordManagementRobot
  * Account settings functionality.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-class AccountSettingsRobot(private val composeTestRule: ComposeContentTestRule) {
+class AccountSettingsRobot(val composeTestRule: ComposeContentTestRule) {
 
     fun navigateUpToSettings(): SettingsRobot {
         return SettingsRobot(composeTestRule)
@@ -78,7 +78,7 @@ class AccountSettingsRobot(private val composeTestRule: ComposeContentTestRule) 
     }
 
     inline fun verify(block: Verify.() -> Unit): AccountSettingsRobot =
-        also { Verify().apply(block) }
+        also { Verify(composeTestRule).apply(block) }
 
     private fun clickOnAccountListItemWithText(@StringRes itemNameRes: Int) {
         composeTestRule
@@ -96,16 +96,16 @@ class AccountSettingsRobot(private val composeTestRule: ComposeContentTestRule) 
     /**
      * Contains all the validations that can be performed by [AccountSettingsRobot].
      */
-    class Verify {
+    class Verify(private val composeTestRule: ComposeContentTestRule) {
 
-        fun accountSettingsScreenIsDisplayed(composeRule: ComposeContentTestRule) {
-            composeRule.waitUntil(timeoutMillis = 5000) {
-                composeRule
+        fun accountSettingsScreenIsDisplayed() {
+            composeTestRule.waitUntil(timeoutMillis = 5000) {
+                composeTestRule
                     .onAllNodesWithTag(TEST_TAG_ACCOUNT_SETTINGS_SCREEN)
                     .fetchSemanticsNodes(false)
                     .isNotEmpty()
             }
-            composeRule
+            composeTestRule
                 .onNodeWithTag(TEST_TAG_ACCOUNT_SETTINGS_SCREEN)
                 .assertIsDisplayed()
         }
