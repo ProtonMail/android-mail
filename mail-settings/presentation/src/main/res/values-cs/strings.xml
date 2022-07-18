@@ -23,7 +23,7 @@
   <string name="mail_settings_account_settings">Nastavení účtu</string>
   <string name="mail_settings_app_settings">Nastavení aplikace</string>
   <string name="mail_settings_theme">Motiv</string>
-  <string name="mail_settings_push_notifications">Push Notifikace</string>
+  <string name="mail_settings_push_notifications">Push upozornění</string>
   <string name="mail_settings_auto_lock">Automatické uzamčení</string>
   <string name="mail_settings_alternative_routing">Alternativní směrování</string>
   <string name="mail_settings_app_language">Jazyk aplikace</string>
@@ -52,7 +52,7 @@
   <string name="mail_settings_default_email_address">Výchozí e-mailová adresa</string>
   <string name="mail_settings_display_name_and_signature">Zobrazované jméno a podpis</string>
   <string name="mail_settings_mailbox">E-mailová schránka</string>
-  <string name="mail_settings_privacy">Ochrana soukromí</string>
+  <string name="mail_settings_privacy">Soukromí</string>
   <string name="mail_settings_search_message_content">Hledat v obsahu zprávy</string>
   <string name="mail_settings_labels_and_folders">Štítky a složky</string>
   <string name="mail_settings_local_storage">Místní úložiště</string>
@@ -60,7 +60,7 @@
   <string name="mail_settings_snooze_notifications">Odložit oznámení</string>
   <string name="mail_settings_conversation_mode">Režim konverzace</string>
   <string name="mail_settings_not_set">Nenastaveno</string>
-  <string name="mail_settings_conversation_mode_hint">Seskupte e-maily ve stejné konverzaci ve Vaší Doručené poště nebo je zobrazte samostatně</string>
+  <string name="mail_settings_conversation_mode_hint">E-maily stejné konverzace v doručené poště seskupit a nebo zobrazit samostatně</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Akce po přejetí prstem</string>
   <string name="mail_settings_swipe_actions_subtitle">Nastavte gesta pro přístup k nejpoužívanějším akcím.</string>
@@ -69,7 +69,7 @@
   <string name="mail_settings_swipe_action_archive_title">Archiv</string>
   <string name="mail_settings_swipe_action_read_title">Nepřečtené</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
-  <string name="mail_settings_swipe_action_star_title">Označit</string>
+  <string name="mail_settings_swipe_action_star_title">Hvězdička</string>
   <string name="mail_settings_swipe_action_trash_title">Koš</string>
   <string name="mail_settings_swipe_action_archive_description">Přesunout do archivu</string>
   <string name="mail_settings_swipe_action_read_description">Označit jako nepřečtené/přečtené</string>
