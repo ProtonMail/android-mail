@@ -253,6 +253,27 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `mailbox items for the current location are requested when location changes`() = runTest {
+        // Given
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+
+        mailboxViewModel.items.test {
+            // Then
+            awaitItem()
+            verify { pagingSourceFactory.create(listOf(userId), MailLabelId.System.Inbox, false, Message) }
+
+            // When
+            currentLocationFlow.emit(MailLabelId.System.Spam)
+
+            // Then
+            awaitItem()
+            verify { pagingSourceFactory.create(listOf(userId), MailLabelId.System.Spam, false, Message) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `onRefresh call markAsStaleMailboxItems`() = runTest {
 
         // When
@@ -354,7 +375,7 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
             // Then
             val initialState = assertIs<MailboxListState.Data>(awaitItem().mailboxListState)
-            assertEquals(null, initialState.scrollToMailboxTop.consume())
+            assertEquals(MailLabelId.System.Inbox, initialState.scrollToMailboxTop.consume())
 
             // When
             currentLocationFlow.emit(MailLabelId.System.Starred)
@@ -375,7 +396,7 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
             // Then
             val initialState = assertIs<MailboxListState.Data>(awaitItem().mailboxListState)
-            assertEquals(null, initialState.scrollToMailboxTop.consume())
+            assertEquals(MailLabelId.System.AllMail, initialState.scrollToMailboxTop.consume())
 
             // When
             unreadCountersFlow.emit(listOf(UnreadCounter(SystemLabelId.AllMail.labelId, 1)))
