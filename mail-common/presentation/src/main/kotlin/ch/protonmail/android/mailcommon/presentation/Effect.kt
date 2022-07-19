@@ -49,8 +49,8 @@ class Effect<T : Any> private constructor(private var event: T?) {
  */
 @Composable
 fun <T : Any> ConsumableLaunchedEffect(effect: Effect<T>, block: suspend CoroutineScope.(T) -> Unit) {
-    effect.consume()?.let { event ->
-        LaunchedEffect(event) {
+    LaunchedEffect(effect) {
+        effect.consume()?.let { event ->
             block(event)
         }
     }
