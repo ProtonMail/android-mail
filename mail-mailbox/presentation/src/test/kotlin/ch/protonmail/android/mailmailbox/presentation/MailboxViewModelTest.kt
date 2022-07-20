@@ -55,6 +55,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -121,7 +122,8 @@ class MailboxViewModelTest {
     @Test
     fun `emits initial mailbox state when initialized`() = runTest {
         // Given
-        givenUserNotLoggedIn()
+        coEvery { observeUnreadCounters(userId = any()) } returns emptyFlow()
+        coEvery { observeMailLabels(userId = any()) } returns emptyFlow()
 
         // When
         mailboxViewModel.state.test {
@@ -405,10 +407,6 @@ class MailboxViewModelTest {
             val actual = assertIs<MailboxListState.Data>(awaitItem().mailboxListState)
             assertEquals(null, actual.scrollToMailboxTop.consume())
         }
-    }
-
-    private fun givenUserNotLoggedIn() {
-        every { observePrimaryUserId() } returns flowOf(null)
     }
 
     private companion object TestData {

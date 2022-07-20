@@ -54,7 +54,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -88,8 +87,6 @@ class MailboxViewModel @Inject constructor(
 
     init {
         observeCurrentMailLabel()
-            .filter { primaryUserId.firstOrNull() != null }
-            .filterNotNull()
             .onEach { currentMailLabel ->
                 val topAppBarState = when (val currentState = state.value.topAppBarState) {
                     MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel)
@@ -116,7 +113,6 @@ class MailboxViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         selectedMailLabelId.flow
-            .filter { primaryUserId.firstOrNull() != null }
             .mapToExistingLabel()
             .onEach { currentMailLabel ->
                 val topAppBarState = when (val currentState = state.value.topAppBarState) {
@@ -140,7 +136,6 @@ class MailboxViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         observeUnreadCounters()
-            .filter { primaryUserId.firstOrNull() != null }
             .onEach { unreadCounters ->
                 val currentMailLabelId = selectedMailLabelId.flow.value
                 val count = unreadCounters.find { it.labelId == currentMailLabelId.labelId }?.count ?: 0
