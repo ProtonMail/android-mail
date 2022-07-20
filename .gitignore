@@ -31,7 +31,7 @@ local.properties
 *.log
 
 # Remote Detek config
-config/detekt
+config/detekt/config.yml
 
 # Fastlane
 fastlane/README.md
