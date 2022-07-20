@@ -87,10 +87,7 @@ class MailboxViewModel @Inject constructor(
     val items: Flow<PagingData<MailboxItem>> = observePagingData().cachedIn(viewModelScope)
 
     init {
-        observeMailLabels()
-            .map { mailLabels ->
-                mailLabels.allById[selectedMailLabelId.flow.value]
-            }
+        observeCurrentMailLabel()
             .filter { primaryUserId.firstOrNull() != null }
             .filterNotNull()
             .onEach { currentMailLabel ->
@@ -120,10 +117,7 @@ class MailboxViewModel @Inject constructor(
 
         selectedMailLabelId.flow
             .filter { primaryUserId.firstOrNull() != null }
-            .flatMapLatest { currentMailLabelId ->
-                observeMailLabels().map { currentMailLabels -> currentMailLabels.allById[currentMailLabelId] }
-            }
-            .filterNotNull()
+            .mapToExistingLabel()
             .onEach { currentMailLabel ->
                 val topAppBarState = when (val currentState = state.value.topAppBarState) {
                     MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel)
@@ -261,6 +255,19 @@ class MailboxViewModel @Inject constructor(
     }.flatMapLatest { pager ->
         pager?.flow ?: flowOf(PagingData.empty())
     }
+
+    private fun observeCurrentMailLabel() = observeMailLabels()
+        .map { mailLabels ->
+            mailLabels.allById[selectedMailLabelId.flow.value]
+        }
+        .filterNotNull()
+
+    private fun Flow<MailLabelId>.mapToExistingLabel() =
+        map {
+            observeMailLabels().firstOrNull()?.let { mailLabels ->
+                mailLabels.allById[selectedMailLabelId.flow.value]
+            }
+        }.filterNotNull()
 
     private fun buildMailboxPageKey(
         isUnreadFilterEnabled: Boolean,
