@@ -80,7 +80,7 @@ class SettingsFlowTest : BaseTest() {
 
         languageSettingsRobot
             .selectSystemDefault()
-            .verify { defaultLanguagesScreenIsSelected(composeTestRule) }
+            .verify { defaultLanguageIsSelected(composeTestRule) }
 
         languageSettingsRobot
             .selectSpanish()
@@ -106,7 +106,7 @@ class SettingsFlowTest : BaseTest() {
          */
         languageSettingsRobot
             .selectSystemDefaultFromBrazilian()
-            .verify { defaultLanguagesScreenIsSelected(composeTestRule) }
+            .verify { defaultLanguageIsSelected(composeTestRule) }
     }
 
     @Test

@@ -101,7 +101,7 @@ class LanguageRobot(
             verifyScreenTitleMatchesText(composeRule, "Idioma do aplicativo")
         }
 
-        fun defaultLanguagesScreenIsSelected(composeRule: ComposeContentTestRule) {
+        fun defaultLanguageIsSelected(composeRule: ComposeContentTestRule) {
             verifyScreenTitleMatchesText(composeRule, string.mail_settings_app_language)
 
             composeRule
