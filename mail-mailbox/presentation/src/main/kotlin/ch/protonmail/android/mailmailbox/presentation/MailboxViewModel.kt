@@ -27,6 +27,7 @@ import androidx.paging.cachedIn
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
@@ -88,63 +89,20 @@ class MailboxViewModel @Inject constructor(
     init {
         observeCurrentMailLabel()
             .onEach { currentMailLabel ->
-                val topAppBarState = when (val currentState = state.value.topAppBarState) {
-                    MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel)
-                    is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel)
-                }
-                val mailboxListState = when (val currentState = state.value.mailboxListState) {
-                    is MailboxListState.Loading -> MailboxListState.Data(
-                        currentMailLabel,
-                        Effect.empty(),
-                        Effect.empty()
-                    )
-                    is MailboxListState.Data -> currentState.copy(
-                        currentMailLabel = currentMailLabel
-                    )
-                }
-                val currentState = mutableState.value
-                mutableState.emit(
-                    currentState.copy(
-                        mailboxListState = mailboxListState,
-                        topAppBarState = topAppBarState
-                    )
-                )
+                updateStateForMailLabelChange(currentMailLabel)
             }
             .launchIn(viewModelScope)
 
         selectedMailLabelId.flow
             .mapToExistingLabel()
             .onEach { currentMailLabel ->
-                val topAppBarState = when (val currentState = state.value.topAppBarState) {
-                    MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel)
-                    is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel)
-                }
-
-                val currentState = state.value.mailboxListState
-                if (currentState is MailboxListState.Data) {
-                    mutableState.emit(
-                        state.value.copy(
-                            mailboxListState = currentState.copy(
-                                currentMailLabel = currentMailLabel,
-                                scrollToMailboxTop = Effect.of(currentMailLabel.id)
-                            ),
-                            topAppBarState = topAppBarState
-                        )
-                    )
-                }
+                updateStateForSelectedMailLabelChange(currentMailLabel)
             }
             .launchIn(viewModelScope)
 
         observeUnreadCounters()
             .onEach { unreadCounters ->
-                val currentMailLabelId = selectedMailLabelId.flow.value
-                val count = unreadCounters.find { it.labelId == currentMailLabelId.labelId }?.count ?: 0
-                val unreadFilterState = when (val currentState = state.value.unreadFilterState) {
-                    is UnreadFilterState.Loading -> UnreadFilterState.Data(count, false)
-                    is UnreadFilterState.Data -> currentState.copy(count)
-                }
-
-                mutableState.emit(mutableState.value.copy(unreadFilterState = unreadFilterState))
+                updateStateForUnreadCountersChange(unreadCounters)
             }
             .launchIn(viewModelScope)
     }
@@ -278,6 +236,62 @@ class MailboxViewModel @Inject constructor(
         )
     )
 
+    private suspend fun updateStateForUnreadCountersChange(unreadCounters: List<UnreadCounter>) {
+        val currentMailLabelId = selectedMailLabelId.flow.value
+        val count = unreadCounters.find { it.labelId == currentMailLabelId.labelId }?.count ?: 0
+        val unreadFilterState = when (val currentState = state.value.unreadFilterState) {
+            is UnreadFilterState.Loading -> UnreadFilterState.Data(count, false)
+            is UnreadFilterState.Data -> currentState.copy(count)
+        }
+
+        mutableState.emit(mutableState.value.copy(unreadFilterState = unreadFilterState))
+    }
+
+    private suspend fun updateStateForSelectedMailLabelChange(currentMailLabel: MailLabel) {
+        val topAppBarState = updateTopAppBarState(currentMailLabel)
+
+        val currentState = state.value.mailboxListState
+        if (currentState is MailboxListState.Data) {
+            mutableState.emit(
+                state.value.copy(
+                    mailboxListState = currentState.copy(
+                        currentMailLabel = currentMailLabel,
+                        scrollToMailboxTop = Effect.of(currentMailLabel.id)
+                    ),
+                    topAppBarState = topAppBarState
+                )
+            )
+        }
+    }
+
+    private suspend fun updateStateForMailLabelChange(currentMailLabel: MailLabel) {
+        val topAppBarState = updateTopAppBarState(currentMailLabel)
+        val mailboxListState = when (val currentState = state.value.mailboxListState) {
+            is MailboxListState.Loading -> MailboxListState.Data(
+                currentMailLabel,
+                Effect.empty(),
+                Effect.empty()
+            )
+            is MailboxListState.Data -> currentState.copy(
+                currentMailLabel = currentMailLabel
+            )
+        }
+        val currentState = mutableState.value
+        mutableState.emit(
+            currentState.copy(
+                mailboxListState = mailboxListState,
+                topAppBarState = topAppBarState
+            )
+        )
+    }
+
+    private fun updateTopAppBarState(currentMailLabel: MailLabel): MailboxTopAppBarState.Data {
+        val topAppBarState = when (val currentState = state.value.topAppBarState) {
+            MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel)
+            is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel)
+        }
+        return topAppBarState
+    }
 
     private fun observeUnreadCounters(): Flow<List<UnreadCounter>> = primaryUserId.flatMapLatest { userId ->
         if (userId == null) {
