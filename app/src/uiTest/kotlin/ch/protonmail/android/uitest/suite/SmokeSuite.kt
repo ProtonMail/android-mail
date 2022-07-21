@@ -18,25 +18,32 @@
 
 package ch.protonmail.android.uitest.suite
 
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.e2e.login.LoginFlowTests
+import ch.protonmail.android.uitest.e2e.mailbox.MailboxFlowTest
 import ch.protonmail.android.uitest.e2e.settings.SettingsFlowTest
+import ch.protonmail.android.uitest.screen.mailbox.MailboxTopAppBarTest
 import ch.protonmail.android.uitest.screen.settings.account.AccountSettingsScreenTest
 import ch.protonmail.android.uitest.screen.settings.account.conversationmode.ConversationModeSettingScreenTest
 import ch.protonmail.android.uitest.screen.settings.appsettings.SettingsScreenTest
+import ch.protonmail.android.uitest.screen.settings.appsettings.swipeactions.EditSwipeActionPreferenceScreenTest
+import ch.protonmail.android.uitest.screen.settings.appsettings.swipeactions.SwipeActionsPreferenceScreenTest
 import ch.protonmail.android.uitest.screen.settings.appsettings.theme.ThemeSettingScreenTest
-import org.junit.experimental.categories.Categories
+import ch.protonmail.android.uitest.screen.sidebar.SidebarScreenTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
-@RunWith(Categories::class)
-@Categories.IncludeCategory(SmokeTest::class)
+@RunWith(Suite::class)
 @Suite.SuiteClasses(
-    LoginFlowTests::class,
-    SettingsFlowTest::class,
-    SettingsScreenTest::class,
     AccountSettingsScreenTest::class,
     ConversationModeSettingScreenTest::class,
+    EditSwipeActionPreferenceScreenTest::class,
+    LoginFlowTests::class,
+    MailboxFlowTest::class,
+    MailboxTopAppBarTest::class,
+    SettingsFlowTest::class,
+    SettingsScreenTest::class,
+    SidebarScreenTest::class,
+    SwipeActionsPreferenceScreenTest::class,
     ThemeSettingScreenTest::class
 )
 class SmokeSuite

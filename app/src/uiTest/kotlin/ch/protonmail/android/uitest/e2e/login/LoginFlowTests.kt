@@ -19,14 +19,12 @@
 package ch.protonmail.android.uitest.e2e.login
 
 import ch.protonmail.android.uitest.BaseTest
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import me.proton.core.test.android.robots.auth.AddAccountRobot
 import me.proton.core.test.android.robots.auth.login.LoginRobot
 import me.proton.core.test.android.robots.auth.login.MailboxPasswordRobot
 import org.junit.Before
 import org.junit.Test
-import org.junit.experimental.categories.Category
 
 class LoginFlowTests : BaseTest() {
 
@@ -42,7 +40,6 @@ class LoginFlowTests : BaseTest() {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun loginUserHappyPath() {
         val user = users.getUser { it.name == "pro" }
         loginRobot
@@ -53,7 +50,6 @@ class LoginFlowTests : BaseTest() {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun loginUserWithSecondaryPasswordHappyPath() {
         val user = users.getUser(usernameAndOnePass = false) { it.name == "twopasswords" }
         loginRobot

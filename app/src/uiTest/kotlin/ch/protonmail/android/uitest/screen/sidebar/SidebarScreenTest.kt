@@ -37,13 +37,11 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.Sidebar
 import ch.protonmail.android.mailmailbox.presentation.SidebarState
 import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_SIDEBAR_MENU
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Rule
 import org.junit.Test
-import org.junit.experimental.categories.Category
 import ch.protonmail.android.maillabel.R as label
 import me.proton.core.presentation.compose.R as core
 
@@ -55,7 +53,6 @@ class SidebarScreenTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    @Category(SmokeTest::class)
     fun subscriptionIsShownWhenSidebarStateIsDisplaySubscription() {
         setupScreenWithState(showSubscriptionSidebarState())
 
@@ -67,7 +64,6 @@ class SidebarScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun subscriptionIsHiddenWhenSidebarStateIsHideSubscription() {
         setupScreenWithState(hideSubscriptionSidebarState())
 
@@ -78,7 +74,6 @@ class SidebarScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun labelsAreOnlyDisplayingTitleEmptyItemsAndAddItem() {
         setupScreenWithState(emptyLabelsSidebarState())
 
@@ -95,7 +90,6 @@ class SidebarScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun labelsAndFoldersAreDisplayed() {
         setupScreenWithState(someLabelsSidebarState())
 

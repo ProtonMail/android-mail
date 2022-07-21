@@ -19,11 +19,9 @@
 package ch.protonmail.android.uitest.e2e.settings
 
 import ch.protonmail.android.uitest.BaseTest
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import org.junit.Before
 import org.junit.Test
-import org.junit.experimental.categories.Category
 
 class SettingsFlowTest : BaseTest() {
 
@@ -36,7 +34,6 @@ class SettingsFlowTest : BaseTest() {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun openAccountSettings() {
         menuRobot
             .openSettings()
@@ -45,7 +42,6 @@ class SettingsFlowTest : BaseTest() {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun openConversationModeSetting() {
         menuRobot
             .openSettings()
@@ -56,7 +52,6 @@ class SettingsFlowTest : BaseTest() {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun openSettingAndChangePreferredTheme() {
         menuRobot
             .openSettings()
@@ -68,7 +63,6 @@ class SettingsFlowTest : BaseTest() {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun openSettingAndChangePreferredLanguage() {
         val languageSettingsRobot = menuRobot
             .openSettings()
@@ -100,7 +94,6 @@ class SettingsFlowTest : BaseTest() {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun openPasswordManagementSettings() {
         menuRobot
             .openSettings()
@@ -110,7 +103,6 @@ class SettingsFlowTest : BaseTest() {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun openSettingsAndChangeLeftSwipeAction() {
         menuRobot
             .openSettings()
@@ -122,7 +114,6 @@ class SettingsFlowTest : BaseTest() {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun openSettingsAndChangeRightSwipeAction() {
         menuRobot
             .openSettings()

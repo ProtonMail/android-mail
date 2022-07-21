@@ -27,11 +27,9 @@ import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.createComposeRule
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
-import org.junit.experimental.categories.Category
 
 class ConversationModeSettingScreenTest {
 
@@ -39,7 +37,6 @@ class ConversationModeSettingScreenTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    @Category(SmokeTest::class)
     fun testConversationModeToggleIsOnWhenStateIsTrue() {
         setupScreenWithState(Data(true))
 
@@ -51,7 +48,6 @@ class ConversationModeSettingScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun testConversationModeToggleIsOffWhenStateIsFalse() {
         setupScreenWithState(Data(false))
 
@@ -63,7 +59,6 @@ class ConversationModeSettingScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun testConversationModeToggleIsDisabledWhenStateIsInvalid() {
         setupScreenWithState(Data(null))
 

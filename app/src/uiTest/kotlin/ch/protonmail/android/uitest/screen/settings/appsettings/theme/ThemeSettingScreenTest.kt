@@ -31,12 +31,10 @@ import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeUiModel
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
-import org.junit.experimental.categories.Category
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -46,7 +44,6 @@ class ThemeSettingScreenTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    @Category(SmokeTest::class)
     fun testOnlySystemDefaultIsSelectedWhenThemeIsSystemDefault() {
         setupScreenWithSystemDefaultTheme()
 
@@ -67,7 +64,6 @@ class ThemeSettingScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun testLightIsSelectedWhenThemeIsLight() {
         setupScreenWithLightTheme()
 
@@ -88,7 +84,6 @@ class ThemeSettingScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun testDarkIsSelectedWhenThemeIsDark() {
         setupScreenWithDarkTheme()
 
@@ -109,7 +104,6 @@ class ThemeSettingScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun testCallbackIsInvokedWithThemeIdWhenAThemeIsSelected() {
         var selectedTheme: Theme? = null
         setupScreenWithSystemDefaultTheme {

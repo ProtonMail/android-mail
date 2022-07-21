@@ -28,7 +28,6 @@ import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_LIST
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.util.assertTextContains
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
@@ -36,7 +35,6 @@ import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.experimental.categories.Category
 
 class AccountSettingsScreenTest {
 
@@ -76,7 +74,6 @@ class AccountSettingsScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun testAccountSettingsScreenContainsAllExpectedSections() {
         composeTestRule.onNodeWithText(string.mail_settings_account).assertIsDisplayed()
         composeTestRule.onNodeWithText(string.mail_settings_addresses).assertIsDisplayed()
@@ -89,7 +86,6 @@ class AccountSettingsScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun testAccountSettingsScreenDisplayStateCorrectly() {
         composeTestRule
             .onNodeWithText(string.mail_settings_recovery_email)

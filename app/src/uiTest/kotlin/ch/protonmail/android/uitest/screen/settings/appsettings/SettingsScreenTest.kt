@@ -33,7 +33,6 @@ import ch.protonmail.android.mailsettings.presentation.settings.AccountInfo
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.TEST_TAG_SETTINGS_LIST
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.util.assertTextContains
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
@@ -41,7 +40,6 @@ import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.experimental.categories.Category
 
 class SettingsScreenTest {
 
@@ -82,7 +80,6 @@ class SettingsScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun testSettingsScreenContainsAllExpectedSections() {
         composeTestRule.onNodeWithText(string.mail_settings_account_settings).assertIsDisplayed()
         composeTestRule.onNodeWithText(string.mail_settings_app_settings).assertIsDisplayed()
@@ -94,7 +91,6 @@ class SettingsScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun testSettingsScreenDisplayStateCorrectly() {
         composeTestRule
             .onNodeWithText("ProtonTest")

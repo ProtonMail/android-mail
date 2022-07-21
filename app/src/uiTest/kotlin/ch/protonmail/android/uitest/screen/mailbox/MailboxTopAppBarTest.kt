@@ -31,11 +31,9 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.presentation.MailboxTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState.Data
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
-import org.junit.experimental.categories.Category
 
 @Suppress("SameParameterValue") // We want test parameters to be explicit
 internal class MailboxTopAppBarTest {
@@ -45,7 +43,6 @@ internal class MailboxTopAppBarTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
 
     @Test
-    @Category(SmokeTest::class)
     fun hamburgerIconIsShownInDefaultMode() {
         setupScreenWithDefaultMode(MAIL_LABEL_INBOX)
 
@@ -56,7 +53,6 @@ internal class MailboxTopAppBarTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun labelNameIsShownInDefaultMode() {
         setupScreenWithDefaultMode(MAIL_LABEL_INBOX)
 
@@ -66,7 +62,6 @@ internal class MailboxTopAppBarTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun actionsAreShownInDefaultMode() {
         setupScreenWithDefaultMode(MAIL_LABEL_INBOX)
 
@@ -82,7 +77,6 @@ internal class MailboxTopAppBarTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun backIconIsShownInSelectionMode() {
         setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
 
@@ -93,7 +87,6 @@ internal class MailboxTopAppBarTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun correctCountIsShownInSelectionMode() {
         setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
 
@@ -103,7 +96,6 @@ internal class MailboxTopAppBarTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun actionsAreHiddenInSelectionMode() {
         setupScreenWithSelectionMode(MAIL_LABEL_INBOX, selectedCount = SELECTED_COUNT_TEN)
 

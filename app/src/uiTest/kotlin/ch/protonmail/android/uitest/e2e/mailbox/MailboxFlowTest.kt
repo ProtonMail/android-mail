@@ -19,12 +19,10 @@
 package ch.protonmail.android.uitest.e2e.mailbox
 
 import ch.protonmail.android.uitest.BaseTest
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import org.junit.Before
 import org.junit.Test
-import org.junit.experimental.categories.Category
 
 class MailboxFlowTest : BaseTest() {
 
@@ -38,7 +36,6 @@ class MailboxFlowTest : BaseTest() {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun openMailboxAndSwitchLocation() {
         mailboxRobot.verify { mailboxScreenDisplayed() }
 
@@ -56,7 +53,6 @@ class MailboxFlowTest : BaseTest() {
      * verifications on the messages list to ensure filtering actually works as expected
      */
     @Test
-    @Category(SmokeTest::class)
     fun filterUnreadMessages() {
         mailboxRobot.verify { unreadFilterIsDisplayed() }
 

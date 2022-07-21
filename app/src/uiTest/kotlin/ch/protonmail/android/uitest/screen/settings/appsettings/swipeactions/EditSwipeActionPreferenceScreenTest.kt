@@ -29,14 +29,12 @@ import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceState
 import ch.protonmail.android.mailsettings.presentation.testdata.SwipeActionsTestData
-import ch.protonmail.android.uitest.annotation.SmokeTest
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.mailsettings.domain.entity.SwipeAction
 import org.junit.Rule
 import org.junit.Test
-import org.junit.experimental.categories.Category
 import ch.protonmail.android.mailsettings.presentation.R.string as settingsString
 
 class EditSwipeActionPreferenceScreenTest {
@@ -45,7 +43,6 @@ class EditSwipeActionPreferenceScreenTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    @Category(SmokeTest::class)
     fun whenRightSwipeIsSelectedCorrectTitleIsShown() {
         // when
         setContentWithState(EditSwipeActionPreferenceState.Loading, direction = SwipeActionDirection.RIGHT)
@@ -56,7 +53,6 @@ class EditSwipeActionPreferenceScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun whenLeftSwipeIsSelectedCorrectTitleIsShown() {
         // when
         setContentWithState(EditSwipeActionPreferenceState.Loading, direction = SwipeActionDirection.LEFT)
@@ -67,7 +63,6 @@ class EditSwipeActionPreferenceScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun whileDataIsLoadingProgressIsShown() {
         // when
         setContentWithState(EditSwipeActionPreferenceState.Loading, direction = SwipeActionDirection.LEFT)
@@ -78,7 +73,6 @@ class EditSwipeActionPreferenceScreenTest {
     }
 
     @Test
-    @Category(SmokeTest::class)
     fun whenDataIsReadyCorrectItemIsSelected() {
         // when
         val items = SwipeActionsTestData.Edit.buildAllItems(selected = SwipeAction.Star)
