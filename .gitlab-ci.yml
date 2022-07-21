@@ -181,7 +181,9 @@ coverage report:
     paths:
       - build/reports
     reports:
-      cobertura: build/reports/cobertura-coverage.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: build/reports/cobertura-coverage.xml
 
 
 deploy_to_firebase:
