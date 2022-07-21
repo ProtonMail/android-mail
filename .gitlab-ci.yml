@@ -29,6 +29,7 @@ workflow:
       - gradle/wrapper/gradle-wrapper.properties
   paths:
     - ${CI_PROJECT_DIR}/build/gradle-build-cache
+    - ${CI_PROJECT_DIR}/proton-libs/build/gradle-build-cache
   policy: pull
 
 cache:
