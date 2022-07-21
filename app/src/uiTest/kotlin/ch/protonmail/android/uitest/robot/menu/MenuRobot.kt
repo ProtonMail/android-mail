@@ -54,7 +54,7 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
 
     @Suppress("unused", "ExpressionBodySyntax")
     fun openAccountsList(): AccountPanelRobot {
-        return AccountPanelRobot()
+        return AccountPanelRobot(composeTestRule)
     }
 
     @Suppress("unused", "ExpressionBodySyntax")
@@ -64,7 +64,7 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
 
     @Suppress("unused", "ExpressionBodySyntax")
     fun openContacts(): ContactsRobot {
-        return ContactsRobot()
+        return ContactsRobot(composeTestRule)
     }
 
     @Suppress("unused", "ExpressionBodySyntax")
@@ -74,7 +74,7 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
 
     @Suppress("unused", "ExpressionBodySyntax")
     fun openInbox(): InboxRobot {
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     @Suppress("unused")
@@ -132,6 +132,27 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
     @Suppress("unused", "EmptyFunctionBlock")
     private fun selectMenuLabelOrFolder(@IdRes labelOrFolderName: String) {}
 
+    private fun openSidebarItemWithText(@StringRes menuItemName: Int) {
+        swipeOpenSidebarMenu()
+
+        composeTestRule
+            .onNodeWithTag(TEST_TAG_SIDEBAR_MENU)
+            .onChild()
+            .performScrollToNode(hasText(menuItemName))
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithText(menuItemName)
+            .performClick()
+
+        composeTestRule.waitForIdle()
+    }
+
+    private fun swipeOpenSidebarMenu() {
+        composeTestRule
+            .onRoot()
+            .performTouchInput { swipeRight() }
+    }
 
     /**
      * Contains all the validations that can be performed by [MenuRobot].

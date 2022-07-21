@@ -17,16 +17,19 @@
  */
 package ch.protonmail.android.uitest.robot.contacts
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.uitest.robot.contacts.ContactsRobot.ContactsGroupView
 
 /**
  * [GroupDetailsRobot] class contains actions and verifications for Contacts functionality.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-open class GroupDetailsRobot {
+open class GroupDetailsRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun edit(): AddContactGroupRobot {
-        return AddContactGroupRobot()
+        return AddContactGroupRobot(composeTestRule)
     }
 
     fun deleteGroup(): ContactsGroupView {
@@ -35,7 +38,7 @@ open class GroupDetailsRobot {
     }
 
     fun navigateUp(): ContactsGroupView {
-        return ContactsGroupView()
+        return ContactsGroupView(composeTestRule)
     }
 
     private fun delete(): GroupDetailsRobot {
@@ -43,7 +46,7 @@ open class GroupDetailsRobot {
     }
 
     private fun confirmDeletion(): ContactsGroupView {
-        return ContactsGroupView()
+        return ContactsGroupView(composeTestRule)
     }
 
     /**

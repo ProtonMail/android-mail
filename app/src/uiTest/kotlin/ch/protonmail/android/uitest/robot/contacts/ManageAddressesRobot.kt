@@ -18,12 +18,15 @@
 
 package ch.protonmail.android.uitest.robot.contacts
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 
 /**
  * [ManageAddressesRobot] class contains actions and verifications for Adding a Contact to Group.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-class ManageAddressesRobot {
+class ManageAddressesRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun addContactToGroup(withEmail: String): AddContactGroupRobot = selectAddress(withEmail).done()
 
@@ -32,6 +35,6 @@ class ManageAddressesRobot {
     }
 
     private fun done(): AddContactGroupRobot {
-        return AddContactGroupRobot()
+        return AddContactGroupRobot(composeTestRule)
     }
 }

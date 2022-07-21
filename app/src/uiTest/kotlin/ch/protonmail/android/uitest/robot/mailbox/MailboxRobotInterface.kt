@@ -44,11 +44,11 @@ interface MailboxRobotInterface {
     }
 
     fun searchBar(): SearchRobot {
-        return SearchRobot()
+        return SearchRobot(composeTestRule)
     }
 
     fun compose(): ComposerRobot {
-        return ComposerRobot()
+        return ComposerRobot(composeTestRule)
     }
 
     fun menuDrawer(): MenuRobot {
@@ -56,15 +56,15 @@ interface MailboxRobotInterface {
     }
 
     fun clickMessageByPosition(position: Int): MessageRobot {
-        return MessageRobot()
+        return MessageRobot(composeTestRule)
     }
 
     fun clickMessageBySubject(subject: String): MessageRobot {
-        return MessageRobot()
+        return MessageRobot(composeTestRule)
     }
 
     fun clickFirstMatchedMessageBySubject(subject: String): MessageRobot {
-        return MessageRobot()
+        return MessageRobot(composeTestRule)
     }
 
     fun refreshMessageList(): Any {

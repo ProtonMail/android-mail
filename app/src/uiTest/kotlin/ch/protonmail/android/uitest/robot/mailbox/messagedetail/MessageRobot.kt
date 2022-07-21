@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.uitest.robot.mailbox.messagedetail
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.uitest.robot.mailbox.ApplyLabelRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.mailbox.drafts.DraftsRobot
@@ -30,7 +31,9 @@ import ch.protonmail.android.uitest.robot.mailbox.trash.TrashRobot
  * [MessageRobot] class contains actions and verifications for Message detail view functionality.
  */
 @Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
-class MessageRobot {
+class MessageRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun selectFolder(folderName: String): MessageRobot {
         return this
@@ -53,15 +56,15 @@ class MessageRobot {
     }
 
     fun moveToTrash(): InboxRobot {
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     fun openActionSheet(): MessageActionSheet {
-        return MessageActionSheet()
+        return MessageActionSheet(composeTestRule)
     }
 
     fun navigateUpToSearch(): SearchRobot {
-        return SearchRobot()
+        return SearchRobot(composeTestRule)
     }
 
     fun navigateUpToSent(): SentRobot {
@@ -69,7 +72,7 @@ class MessageRobot {
     }
 
     fun navigateUpToInbox(): InboxRobot {
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     fun clickSendButtonFromDrafts(): DraftsRobot {
@@ -80,7 +83,9 @@ class MessageRobot {
         return this
     }
 
-    class LabelsDialogRobot : ApplyLabelRobotInterface {
+    class LabelsDialogRobot(
+        private val composeTestRule: ComposeContentTestRule
+    ) : ApplyLabelRobotInterface {
 
         override fun addLabel(name: String): LabelsDialogRobot {
             super.addLabel(name)
@@ -99,24 +104,24 @@ class MessageRobot {
 
         override fun apply(): MessageRobot {
             super.apply()
-            return MessageRobot()
+            return MessageRobot(composeTestRule)
         }
 
         override fun applyAndArchive(): MessageRobot {
             super.apply()
-            return MessageRobot()
+            return MessageRobot(composeTestRule)
         }
 
         override fun closeLabelModal(): MessageRobot {
             super.closeLabelModal()
-            return MessageRobot()
+            return MessageRobot(composeTestRule)
         }
     }
 
-    class FoldersDialogRobot {
+    class FoldersDialogRobot(private val composeTestRule: ComposeContentTestRule) {
 
         fun clickCreateFolder(): AddFolderRobot {
-            return AddFolderRobot()
+            return AddFolderRobot(composeTestRule)
         }
 
         fun moveMessageFromSpamToFolder(folderName: String): SpamRobot {
@@ -136,12 +141,12 @@ class MessageRobot {
 
         fun moveMessageFromInboxToFolder(folderName: String): InboxRobot {
             selectFolder(folderName)
-            return InboxRobot()
+            return InboxRobot(composeTestRule)
         }
 
         fun moveMessageFromMessageToFolder(folderName: String): MessageRobot {
             selectFolder(folderName)
-            return MessageRobot()
+            return MessageRobot(composeTestRule)
         }
 
         @SuppressWarnings("EmptyFunctionBlock")
@@ -156,12 +161,12 @@ class MessageRobot {
         inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
     }
 
-    class AddFolderRobot {
+    class AddFolderRobot(private val composeTestRule: ComposeContentTestRule) {
 
         fun addFolderWithName(name: String): FoldersDialogRobot = typeName(name).saveNewFolder()
 
         private fun saveNewFolder(): FoldersDialogRobot {
-            return FoldersDialogRobot()
+            return FoldersDialogRobot(composeTestRule)
         }
 
         private fun typeName(folderName: String): AddFolderRobot {
@@ -169,26 +174,26 @@ class MessageRobot {
         }
     }
 
-    class MessageActionSheet {
+    class MessageActionSheet(private val composeTestRule: ComposeContentTestRule) {
 
         fun reply(): ComposerRobot {
-            return ComposerRobot()
+            return ComposerRobot(composeTestRule)
         }
 
         fun replyAll(): ComposerRobot {
-            return ComposerRobot()
+            return ComposerRobot(composeTestRule)
         }
 
         fun forward(): ComposerRobot {
-            return ComposerRobot()
+            return ComposerRobot(composeTestRule)
         }
 
         fun openFoldersModal(): FoldersDialogRobot {
-            return FoldersDialogRobot()
+            return FoldersDialogRobot(composeTestRule)
         }
 
         fun openLabelsModal(): LabelsDialogRobot {
-            return LabelsDialogRobot()
+            return LabelsDialogRobot(composeTestRule)
         }
 
         fun viewHeaders(): ViewHeadersRobot {

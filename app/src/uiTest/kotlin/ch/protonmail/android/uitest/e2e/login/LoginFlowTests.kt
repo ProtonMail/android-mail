@@ -32,6 +32,7 @@ class LoginFlowTests : BaseTest() {
 
     private val addAccountRobot = AddAccountRobot()
     private val loginRobot = LoginRobot()
+    private val inboxRobot = InboxRobot(composeTestRule)
 
     @Before
     fun signIn() {
@@ -45,8 +46,10 @@ class LoginFlowTests : BaseTest() {
     fun loginUserHappyPath() {
         val user = users.getUser { it.name == "pro" }
         loginRobot
-            .loginUser<InboxRobot>(user)
-            .verify { mailboxScreenDisplayed(composeTestRule) }
+            .loginUser<LoginRobot>(user)
+
+        inboxRobot
+            .verify { mailboxScreenDisplayed() }
     }
 
     @Test
@@ -55,7 +58,9 @@ class LoginFlowTests : BaseTest() {
         val user = users.getUser(usernameAndOnePass = false) { it.name == "twopasswords" }
         loginRobot
             .loginUser<MailboxPasswordRobot>(user)
-            .unlockMailbox<InboxRobot>(user)
-            .verify { mailboxScreenDisplayed(composeTestRule) }
+            .unlockMailbox<LoginRobot>(user)
+
+        inboxRobot
+            .verify { mailboxScreenDisplayed() }
     }
 }

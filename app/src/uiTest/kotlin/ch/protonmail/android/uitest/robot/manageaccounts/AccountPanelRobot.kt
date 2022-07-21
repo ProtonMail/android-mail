@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.uitest.robot.manageaccounts
 
-import ch.protonmail.android.R
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import me.proton.core.test.android.robots.auth.login.LoginRobot
 
@@ -26,7 +26,9 @@ import me.proton.core.test.android.robots.auth.login.LoginRobot
  * [AccountPanelRobot] class contains actions and verifications for Account Manager functionality.
  */
 @Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
-open class AccountPanelRobot {
+open class AccountPanelRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun addAccount(): LoginRobot {
         return LoginRobot()
@@ -63,15 +65,15 @@ open class AccountPanelRobot {
     }
 
     fun switchToAccount(accountPosition: Int): InboxRobot {
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     private fun logout(): InboxRobot {
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     private fun logoutSecondaryAccount(): AccountPanelRobot {
-        return AccountPanelRobot()
+        return AccountPanelRobot(composeTestRule)
     }
 
     private fun logoutLastAccount(): LoginRobot {
@@ -79,11 +81,11 @@ open class AccountPanelRobot {
     }
 
     private fun remove(): AccountPanelRobot {
-        return AccountPanelRobot()
+        return AccountPanelRobot(composeTestRule)
     }
 
     private fun removeSecondaryAccount(): InboxRobot {
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     private fun removeLastAccount(): LoginRobot {
@@ -91,16 +93,16 @@ open class AccountPanelRobot {
     }
 
     private fun accountMoreMenu(email: String): AccountPanelRobot {
-        return AccountPanelRobot()
+        return AccountPanelRobot(composeTestRule)
     }
 
     /**
      * Contains all the validations that can be performed by [AccountPanelRobot].
      */
-    inner class Verify : AccountPanelRobot() {
+    inner class Verify : AccountPanelRobot(composeTestRule) {
 
         fun accountsListOpened(): AccountPanelRobot {
-            return AccountPanelRobot()
+            return AccountPanelRobot(composeTestRule)
         }
 
         @SuppressWarnings("EmptyFunctionBlock")
@@ -117,8 +119,4 @@ open class AccountPanelRobot {
     }
 
     inline fun verify(block: Verify.() -> Unit) = Verify().apply(block) as AccountPanelRobot
-
-    companion object {
-        const val accountsRecyclerViewId = R.id.account_list_recyclerview
-    }
 }

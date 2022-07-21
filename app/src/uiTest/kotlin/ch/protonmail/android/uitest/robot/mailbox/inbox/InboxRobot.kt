@@ -19,6 +19,8 @@
 package ch.protonmail.android.uitest.robot.mailbox.inbox
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
@@ -30,7 +32,9 @@ import me.proton.core.test.android.robots.CoreRobot
 import me.proton.core.test.android.robots.CoreVerify
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "ExpressionBodySyntax")
-class InboxRobot : CoreRobot(), MailboxRobotInterface {
+class InboxRobot(
+    override val composeTestRule: ComposeContentTestRule
+) : CoreRobot(), MailboxRobotInterface {
 
     override fun swipeLeftMessageAtPosition(position: Int): InboxRobot {
         super.swipeLeftMessageAtPosition(position)
@@ -39,7 +43,7 @@ class InboxRobot : CoreRobot(), MailboxRobotInterface {
 
     override fun longClickMessageOnPosition(position: Int): SelectionStateRobot {
         super.longClickMessageOnPosition(position)
-        return SelectionStateRobot()
+        return SelectionStateRobot(composeTestRule)
     }
 
     override fun deleteMessageWithSwipe(position: Int): InboxRobot {
@@ -49,14 +53,24 @@ class InboxRobot : CoreRobot(), MailboxRobotInterface {
 
     override fun refreshMessageList(): InboxRobot {
         super.refreshMessageList()
-        return InboxRobot()
+        return this
     }
 
-    class SelectionStateRobot : SelectionStateRobotInterface {
+    fun filterUnreadMessages(): InboxRobot {
+        composeTestRule
+            .onNodeWithTag(TEST_TAG_UNREAD_FILTER)
+            .performClick()
+
+        return this
+    }
+
+    class SelectionStateRobot(
+        private val composeRule: ComposeContentTestRule
+    ) : SelectionStateRobotInterface {
 
         override fun exitMessageSelectionState(): InboxRobot {
             super.exitMessageSelectionState()
-            return InboxRobot()
+            return InboxRobot(composeRule)
         }
 
         override fun selectMessage(position: Int): SelectionStateRobot {
@@ -66,35 +80,35 @@ class InboxRobot : CoreRobot(), MailboxRobotInterface {
 
         override fun addLabel(): InboxRobot {
             super.addLabel()
-            return InboxRobot()
+            return InboxRobot(composeRule)
         }
 
         override fun addFolder(): MoveToFolderRobot {
             super.addFolder()
-            return MoveToFolderRobot()
+            return MoveToFolderRobot(composeRule)
         }
 
         fun moveToTrash(): InboxRobot {
-            return InboxRobot()
+            return InboxRobot(composeRule)
         }
     }
 
-    class MoveToFolderRobot : MoveToFolderRobotInterface {
+    class MoveToFolderRobot(
+        private val composeRule: ComposeContentTestRule
+    ) : MoveToFolderRobotInterface {
 
         override fun moveToExistingFolder(name: String): InboxRobot {
             super.moveToExistingFolder(name)
-            return InboxRobot()
+            return InboxRobot(composeRule)
         }
     }
 
     /**
      * Contains all the validations that can be performed by [InboxRobot].
      */
-    inner class Verify : CoreVerify() {
+    inner class Verify(private val composeRule: ComposeContentTestRule) : CoreVerify() {
 
-        fun mailboxScreenDisplayed(
-            composeRule: ComposeContentTestRule
-        ) {
+        fun mailboxScreenDisplayed() {
             composeRule.waitUntil(timeoutMillis = 60_000) {
                 composeRule.onAllNodesWithTag(TEST_TAG_MAILBOX_SCREEN)
                     .fetchSemanticsNodes(false)
@@ -105,5 +119,5 @@ class InboxRobot : CoreRobot(), MailboxRobotInterface {
         }
     }
 
-    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
+    inline fun verify(block: Verify.() -> Unit) = Verify(composeTestRule).apply(block)
 }

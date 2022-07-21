@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.robot.contacts
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.uitest.robot.mailbox.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 
@@ -25,22 +26,24 @@ import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
  * [ContactsRobot] class contains actions and verifications for Contacts functionality.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-class ContactsRobot {
+class ContactsRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun addContact(): AddContactRobot {
-        return AddContactRobot()
+        return AddContactRobot(composeTestRule)
     }
 
     fun addGroup(): AddContactGroupRobot {
-        return AddContactGroupRobot()
+        return AddContactGroupRobot(composeTestRule)
     }
 
     fun openOptionsMenu(): ContactsMoreOptions {
-        return ContactsMoreOptions()
+        return ContactsMoreOptions(composeTestRule)
     }
 
     fun groupsView(): ContactsGroupView {
-        return ContactsGroupView()
+        return ContactsGroupView(composeTestRule)
     }
 
     fun contactsView(): ContactsView {
@@ -48,44 +51,46 @@ class ContactsRobot {
     }
 
     fun navigateUpToInbox(): InboxRobot {
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     fun clickContactByEmail(email: String): ContactDetailsRobot {
-        return ContactDetailsRobot()
+        return ContactDetailsRobot(composeTestRule)
     }
 
     inner class ContactsView {
 
         fun clickSendMessageToContact(contactEmail: String): ComposerRobot {
-            return ComposerRobot()
+            return ComposerRobot(composeTestRule)
         }
     }
 
-    class ContactsGroupView {
+    class ContactsGroupView(
+        private val composeTestRule: ComposeContentTestRule
+    ) {
 
         fun navigateUpToInbox(): InboxRobot {
-            return InboxRobot()
+            return InboxRobot(composeTestRule)
         }
 
         fun clickGroup(withName: String): GroupDetailsRobot {
-            return GroupDetailsRobot()
+            return GroupDetailsRobot(composeTestRule)
         }
 
         fun clickGroupWithMembersCount(name: String, membersCount: String): GroupDetailsRobot {
-            return GroupDetailsRobot()
+            return GroupDetailsRobot(composeTestRule)
         }
 
         fun clickSendMessageToGroup(groupName: String): ComposerRobot {
-            return ComposerRobot()
+            return ComposerRobot(composeTestRule)
         }
 
         fun openOptionsMenu(): ContactsGroupView {
-            return ContactsGroupView()
+            return ContactsGroupView(composeTestRule)
         }
 
         fun refreshGroups(): ContactsGroupView {
-            return ContactsGroupView()
+            return ContactsGroupView(composeTestRule)
         }
 
         class Verify {
@@ -102,10 +107,12 @@ class ContactsRobot {
         inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
     }
 
-    class ContactsMoreOptions {
+    class ContactsMoreOptions(
+        private val composeTestRule: ComposeContentTestRule
+    ) {
 
         fun refreshContacts(): ContactsRobot {
-            return ContactsRobot()
+            return ContactsRobot(composeTestRule)
         }
     }
 

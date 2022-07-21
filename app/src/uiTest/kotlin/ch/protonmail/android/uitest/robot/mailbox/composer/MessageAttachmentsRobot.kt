@@ -18,12 +18,15 @@
 package ch.protonmail.android.uitest.robot.mailbox.composer
 
 import androidx.annotation.IdRes
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 
 /**
  * Class represents Message Attachments.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-open class MessageAttachmentsRobot {
+open class MessageAttachmentsRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun addImageCaptureAttachment(@IdRes drawable: Int): ComposerRobot =
         mockCameraImageCapture(drawable)
@@ -40,10 +43,10 @@ open class MessageAttachmentsRobot {
         mockFileAttachment(drawable)
 
     private fun mockCameraImageCapture(@IdRes drawableId: Int): ComposerRobot {
-        return ComposerRobot()
+        return ComposerRobot(composeTestRule)
     }
 
     private fun mockFileAttachment(@IdRes drawable: Int): ComposerRobot {
-        return ComposerRobot()
+        return ComposerRobot(composeTestRule)
     }
 }

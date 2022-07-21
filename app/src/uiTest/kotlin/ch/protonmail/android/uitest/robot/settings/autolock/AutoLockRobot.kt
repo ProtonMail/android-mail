@@ -18,34 +18,37 @@
 
 package ch.protonmail.android.uitest.robot.settings.autolock
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.uitest.robot.settings.SettingsRobot
 
 @Suppress("unused", "ExpressionBodySyntax")
-class AutoLockRobot {
+class AutoLockRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun navigateUptToSettings(): SettingsRobot {
         return SettingsRobot(TODO("Inject composeTestRule in this robot when used"))
     }
 
     fun enableAutoLock(): PinRobot {
-        return PinRobot()
+        return PinRobot(composeTestRule)
     }
 
     fun changeAutoLockTimer(): AutoLockTimeoutRobot {
-        return AutoLockTimeoutRobot()
+        return AutoLockTimeoutRobot(composeTestRule)
     }
 
     /**
      * Represents Auto lock timeout pop up with options list.
      */
-    class AutoLockTimeoutRobot {
+    class AutoLockTimeoutRobot(private val composeTestRule: ComposeContentTestRule) {
 
         fun selectImmediateAutoLockTimeout(): AutoLockRobot {
-            return AutoLockRobot()
+            return AutoLockRobot(composeTestRule)
         }
 
         fun selectFiveMinutesAutoLockTimeout(): AutoLockRobot {
-            return AutoLockRobot()
+            return AutoLockRobot(composeTestRule)
         }
     }
 }

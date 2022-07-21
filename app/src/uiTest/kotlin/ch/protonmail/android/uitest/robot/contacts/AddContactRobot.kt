@@ -17,11 +17,15 @@
  */
 package ch.protonmail.android.uitest.robot.contacts
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+
 /**
  * [AddContactRobot] class contains actions and verifications for Add/Edit Contacts.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-class AddContactRobot {
+class AddContactRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun setNameEmailAndSave(name: String, email: String): ContactsRobot {
         return displayName(name)
@@ -33,7 +37,7 @@ class AddContactRobot {
         displayName(name)
             .email(email)
             .saveEditContact()
-        return ContactDetailsRobot()
+        return ContactDetailsRobot(composeTestRule)
     }
 
     private fun displayName(name: String): AddContactRobot {
@@ -45,10 +49,10 @@ class AddContactRobot {
     }
 
     private fun saveNewContact(): ContactsRobot {
-        return ContactsRobot()
+        return ContactsRobot(composeTestRule)
     }
 
     private fun saveEditContact(): ContactDetailsRobot {
-        return ContactDetailsRobot()
+        return ContactDetailsRobot(composeTestRule)
     }
 }

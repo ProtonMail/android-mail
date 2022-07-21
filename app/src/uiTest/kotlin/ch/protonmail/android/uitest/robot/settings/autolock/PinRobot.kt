@@ -18,11 +18,14 @@
 
 package ch.protonmail.android.uitest.robot.settings.autolock
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.uitest.robot.mailbox.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 
 @Suppress("unused", "ExpressionBodySyntax")
-class PinRobot {
+class PinRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun setPin(pin: String): AutoLockRobot {
         return typePin(pin)
@@ -33,12 +36,12 @@ class PinRobot {
 
     fun providePinToComposer(pin: String): ComposerRobot {
         typePin(pin)
-        return ComposerRobot()
+        return ComposerRobot(composeTestRule)
     }
 
     fun providePinToInbox(pin: String): InboxRobot {
         typePin(pin)
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     private fun typePin(pin: String): PinRobot {
@@ -50,6 +53,6 @@ class PinRobot {
     }
 
     private fun create(): AutoLockRobot {
-        return AutoLockRobot()
+        return AutoLockRobot(composeTestRule)
     }
 }

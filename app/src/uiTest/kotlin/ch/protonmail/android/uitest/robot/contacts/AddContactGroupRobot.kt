@@ -17,20 +17,24 @@
  */
 package ch.protonmail.android.uitest.robot.contacts
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+
 /**
  * [AddContactGroupRobot] class contains actions and verifications for Add/Edit Contact Groups.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-class AddContactGroupRobot {
+class AddContactGroupRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun editNameAndSave(name: String): GroupDetailsRobot {
         groupName(name)
             .done()
-        return GroupDetailsRobot()
+        return GroupDetailsRobot(composeTestRule)
     }
 
     fun manageAddresses(): ManageAddressesRobot {
-        return ManageAddressesRobot()
+        return ManageAddressesRobot(composeTestRule)
     }
 
     fun groupName(name: String): AddContactGroupRobot {
@@ -38,6 +42,6 @@ class AddContactGroupRobot {
     }
 
     fun done(): ContactsRobot {
-        return ContactsRobot()
+        return ContactsRobot(composeTestRule)
     }
 }

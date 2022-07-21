@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.uitest.robot.mailbox.sent
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.uitest.robot.mailbox.ApplyLabelRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.MoveToFolderRobotInterface
@@ -37,7 +38,7 @@ class SentRobot : MailboxRobotInterface {
 
     override fun longClickMessageOnPosition(position: Int): SelectionStateRobot {
         super.longClickMessageOnPosition(position)
-        return SelectionStateRobot()
+        return SelectionStateRobot(composeTestRule)
     }
 
     override fun deleteMessageWithSwipe(position: Int): SentRobot {
@@ -57,11 +58,13 @@ class SentRobot : MailboxRobotInterface {
     /**
      * Handles Mailbox selection state actions and verifications after user long click one of the messages.
      */
-    class SelectionStateRobot : SelectionStateRobotInterface {
+    class SelectionStateRobot(
+        private val composeTestRule: ComposeContentTestRule
+    ) : SelectionStateRobotInterface {
 
         override fun exitMessageSelectionState(): InboxRobot {
             super.exitMessageSelectionState()
-            return InboxRobot()
+            return InboxRobot(composeTestRule)
         }
 
         override fun selectMessage(position: Int): SelectionStateRobot {
@@ -76,7 +79,7 @@ class SentRobot : MailboxRobotInterface {
 
         override fun addFolder(): MoveToFolderRobot {
             super.addFolder()
-            return MoveToFolderRobot()
+            return MoveToFolderRobot(composeTestRule)
         }
 
         fun moveToTrash(): SentRobot {
@@ -87,11 +90,13 @@ class SentRobot : MailboxRobotInterface {
     /**
      * Handles Move to folder dialog actions.
      */
-    class MoveToFolderRobot : MoveToFolderRobotInterface {
+    class MoveToFolderRobot(
+        private val composeTestRule: ComposeContentTestRule
+    ) : MoveToFolderRobotInterface {
 
         override fun moveToExistingFolder(name: String): InboxRobot {
             super.moveToExistingFolder(name)
-            return InboxRobot()
+            return InboxRobot(composeTestRule)
         }
     }
 

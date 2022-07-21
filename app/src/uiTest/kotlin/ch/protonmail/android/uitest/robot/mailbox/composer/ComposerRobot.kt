@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.uitest.robot.mailbox.composer
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.R
 import ch.protonmail.android.uitest.robot.contacts.ContactsRobot
 import ch.protonmail.android.uitest.robot.mailbox.composer.ComposerRobot.MessageExpirationRobot
@@ -31,7 +32,9 @@ import ch.protonmail.android.uitest.robot.mailbox.sent.SentRobot
  * Inner classes: [MessagePasswordRobot], [MessageExpirationRobot].
  */
 @Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
-class ComposerRobot {
+class ComposerRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun sendAndLaunchApp(to: String, subject: String, body: String): InboxRobot =
         recipients(to)
@@ -54,7 +57,7 @@ class ComposerRobot {
         subject(subject)
             .body(body)
             .sendToContact()
-        return ContactsRobot.ContactsGroupView()
+        return ContactsRobot.ContactsGroupView(composeTestRule)
     }
 
     fun forwardMessage(to: String, body: String): MessageRobot =
@@ -234,7 +237,7 @@ class ComposerRobot {
 
     fun confirmDraftSaving(): InboxRobot {
         clickPositiveDialogButton()
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     fun confirmDraftSavingFromDrafts(): DraftsRobot {
@@ -294,11 +297,11 @@ class ComposerRobot {
     }
 
     private fun setMessagePassword(): MessagePasswordRobot {
-        return MessagePasswordRobot()
+        return MessagePasswordRobot(composeTestRule)
     }
 
     private fun messageExpiration(): MessageExpirationRobot {
-        return MessageExpirationRobot()
+        return MessageExpirationRobot(composeTestRule)
     }
 
     private fun hideExpirationView(): ComposerRobot {
@@ -306,43 +309,43 @@ class ComposerRobot {
     }
 
     fun attachments(): MessageAttachmentsRobot {
-        return MessageAttachmentsRobot()
+        return MessageAttachmentsRobot(composeTestRule)
     }
 
     fun removeLastAttachment(): ComposerRobot {
-        return ComposerRobot()
+        return ComposerRobot(composeTestRule)
     }
 
     fun removeOneOfTwoAttachments(): ComposerRobot {
-        return ComposerRobot()
+        return ComposerRobot(composeTestRule)
     }
 
     fun send(): InboxRobot {
         waitForConditionAndSend()
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     private fun sendAndLaunchApp(): InboxRobot {
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     private fun sendWithNotSupportedExpiryConfirmation(): NotSupportedExpirationRobot {
-        return NotSupportedExpirationRobot()
+        return NotSupportedExpirationRobot(composeTestRule)
     }
 
     private fun sendToContact(): ContactsRobot {
         waitForConditionAndSend()
-        return ContactsRobot()
+        return ContactsRobot(composeTestRule)
     }
 
     private fun reply(): MessageRobot {
         waitForConditionAndSend()
-        return MessageRobot()
+        return MessageRobot(composeTestRule)
     }
 
     private fun forward(): MessageRobot {
         waitForConditionAndSend()
-        return MessageRobot()
+        return MessageRobot(composeTestRule)
     }
 
     @SuppressWarnings("EmptyFunctionBlock")
@@ -351,7 +354,9 @@ class ComposerRobot {
     /**
      * Class represents Message Password dialog.
      */
-    class MessagePasswordRobot {
+    class MessagePasswordRobot(
+        private val composeTestRule: ComposeContentTestRule
+    ) {
 
         fun definePasswordWithHint(password: String, hint: String): ComposerRobot {
             return definePassword(password)
@@ -373,14 +378,16 @@ class ComposerRobot {
         }
 
         private fun applyPassword(): ComposerRobot {
-            return ComposerRobot()
+            return ComposerRobot(composeTestRule)
         }
     }
 
     /**
      * Class represents Message Expiration dialog.
      */
-    class MessageExpirationRobot {
+    class MessageExpirationRobot(
+        private val composeTestRule: ComposeContentTestRule
+    ) {
 
         fun setExpirationInDays(days: Int): ComposerRobot =
             expirationDays(days)
@@ -391,17 +398,19 @@ class ComposerRobot {
         }
 
         private fun confirmSetMessageExpiration(): ComposerRobot {
-            return ComposerRobot()
+            return ComposerRobot(composeTestRule)
         }
     }
 
     /**
      * Class represents Message Expiration dialog.
      */
-    class NotSupportedExpirationRobot {
+    class NotSupportedExpirationRobot(
+        private val composeTestRule: ComposeContentTestRule
+    ) {
 
         fun sendAnyway(): InboxRobot {
-            return InboxRobot()
+            return InboxRobot(composeTestRule)
         }
     }
 

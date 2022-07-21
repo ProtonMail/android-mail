@@ -18,7 +18,6 @@
 package ch.protonmail.android.uitest.robot.settings
 
 import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onFirst
@@ -31,11 +30,10 @@ import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.settings.account.AccountSettingsRobot
 import ch.protonmail.android.uitest.robot.settings.autolock.AutoLockRobot
 import ch.protonmail.android.uitest.robot.settings.swipeactions.SwipeActionsRobot
+import ch.protonmail.android.uitest.util.awaitProgressIsHidden
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
-import ch.protonmail.android.uitest.util.awaitProgressIsHidden
 import ch.protonmail.android.uitest.util.onNodeWithText
-import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 import me.proton.core.presentation.R.string as coreString
 
 /**
@@ -43,17 +41,18 @@ import me.proton.core.presentation.R.string as coreString
  */
 class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
 
+    @Suppress("unused", "ExpressionBodySyntax")
     fun navigateUpToInbox(): InboxRobot {
-        composeTestRule!!
+        composeTestRule
             .onNodeWithContentDescription(coreString.presentation_back)
             .performClick()
 
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     @Suppress("unused", "ExpressionBodySyntax")
     fun openAutoLock(): AutoLockRobot {
-        return AutoLockRobot()
+        return AutoLockRobot(composeTestRule)
     }
 
     fun openLanguageSettings(): LanguageRobot {
@@ -66,7 +65,7 @@ class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
     }
 
     fun openSwipeActions(): SwipeActionsRobot {
-        composeTestRule!!
+        composeTestRule
             .onList()
             .performScrollToNode(hasText(string.mail_settings_swipe_actions))
 

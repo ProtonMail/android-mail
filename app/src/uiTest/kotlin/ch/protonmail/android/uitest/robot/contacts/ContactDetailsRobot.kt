@@ -17,24 +17,28 @@
  */
 package ch.protonmail.android.uitest.robot.contacts
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+
 /**
  * [ContactDetailsRobot] class contains actions and verifications for Contacts functionality.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-open class ContactDetailsRobot {
+open class ContactDetailsRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun deleteContact(): ContactsRobot {
         delete()
             .confirmDeletion()
-        return ContactsRobot()
+        return ContactsRobot(composeTestRule)
     }
 
     fun editContact(): AddContactRobot {
-        return AddContactRobot()
+        return AddContactRobot(composeTestRule)
     }
 
     fun navigateUp(): ContactsRobot {
-        return ContactsRobot()
+        return ContactsRobot(composeTestRule)
     }
 
     private fun delete(): ContactDetailsRobot {

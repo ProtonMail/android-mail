@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.uitest.robot.mailbox.search
 
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.uitest.robot.mailbox.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.messagedetail.MessageRobot
@@ -25,26 +26,28 @@ import ch.protonmail.android.uitest.robot.mailbox.messagedetail.MessageRobot
  * [SearchRobot] class contains actions and verifications for Search functionality.
  */
 @Suppress("unused", "ExpressionBodySyntax")
-class SearchRobot {
+class SearchRobot(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun searchMessageText(subject: String): SearchRobot {
         return this
     }
 
     fun clickSearchedMessageBySubject(subject: String): MessageRobot {
-        return MessageRobot()
+        return MessageRobot(composeTestRule)
     }
 
     fun clickSearchedDraftBySubject(subject: String): ComposerRobot {
-        return ComposerRobot()
+        return ComposerRobot(composeTestRule)
     }
 
     fun navigateUpToInbox(): InboxRobot {
-        return InboxRobot()
+        return InboxRobot(composeTestRule)
     }
 
     fun clickSearchedMessageBySubjectPart(subject: String): MessageRobot {
-        return MessageRobot()
+        return MessageRobot(composeTestRule)
     }
 
     /**
