@@ -58,6 +58,7 @@ fun CombinedContactsSettingScreen(
                 state = state
             )
         }
+        is CombinedContactsSettingState.Error -> Unit
         is CombinedContactsSettingState.Loading -> Unit
     }
 }

@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailsettings.domain.usecase
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +29,6 @@ class ObserveCombinedContactsSetting @Inject constructor(
     private val combinedContactsRepository: CombinedContactsRepository
 ) {
 
-    operator fun invoke(): Flow<CombinedContactsPreference> =
+    operator fun invoke(): Flow<Either<PreferencesError, CombinedContactsPreference>> =
         combinedContactsRepository.observe()
 }

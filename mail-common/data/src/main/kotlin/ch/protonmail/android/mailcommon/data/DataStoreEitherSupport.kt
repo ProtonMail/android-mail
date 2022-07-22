@@ -27,7 +27,19 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
+
+val DataStore<Preferences>.safeData: Flow<Either<PreferencesError, Preferences>>
+    get() = data.map { it.right() as Either<PreferencesError, Preferences> }
+        .catch { throwable ->
+            if (throwable is IOException) {
+                Timber.e(throwable, "Error reading preference")
+                emit(PreferencesError.left())
+            } else throw throwable
+        }
 
 suspend fun DataStore<Preferences>.safeEdit(
     transform: suspend (MutablePreferences) -> Unit

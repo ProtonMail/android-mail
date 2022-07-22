@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.domain
 
 import app.cash.turbine.test
+import arrow.core.right
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
@@ -40,7 +41,7 @@ import org.junit.Test
 class ObserveAppSettingsTest {
 
     private val combinedContactsRepository = mockk<CombinedContactsRepository> {
-        every { this@mockk.observe() } returns flowOf(CombinedContactsPreference(true))
+        every { this@mockk.observe() } returns flowOf(CombinedContactsPreference(true).right())
     }
     private val appLanguageRepository = mockk<AppLanguageRepository> {
         every { this@mockk.observe() } returns flowOf(null)
@@ -153,7 +154,7 @@ class ObserveAppSettingsTest {
     fun `has combined contacts is returned from combined contacts repository`() = runTest {
         // Given
         every { combinedContactsRepository.observe() } returns flowOf(
-            CombinedContactsPreference(false)
+            CombinedContactsPreference(false).right()
         )
 
         // When

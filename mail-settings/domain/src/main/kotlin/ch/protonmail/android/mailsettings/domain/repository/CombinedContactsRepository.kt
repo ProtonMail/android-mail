@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CombinedContactsRepository {
 
-    fun observe(): Flow<CombinedContactsPreference>
+    fun observe(): Flow<Either<PreferencesError, CombinedContactsPreference>>
 
     suspend fun save(combinedContactsPreference: CombinedContactsPreference): Either<PreferencesError, Unit>
 }

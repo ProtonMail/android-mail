@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.domain.usecase
 
 import app.cash.turbine.test
+import arrow.core.right
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import io.mockk.every
@@ -31,7 +32,7 @@ import kotlin.test.assertEquals
 
 class ObserveCombinedContactsSettingTest {
 
-    private val combinedContactsPreference = CombinedContactsPreference(isEnabled = true)
+    private val combinedContactsPreference = CombinedContactsPreference(isEnabled = true).right()
     private val combinedContactsPreferenceFlow = flowOf(combinedContactsPreference)
 
     private val combinedContactsRepository: CombinedContactsRepository = mockk {

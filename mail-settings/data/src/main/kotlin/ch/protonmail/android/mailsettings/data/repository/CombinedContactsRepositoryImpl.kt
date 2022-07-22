@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.data.repository
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import arrow.core.Either
+import ch.protonmail.android.mailcommon.data.safeData
 import ch.protonmail.android.mailcommon.data.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
@@ -37,10 +38,12 @@ class CombinedContactsRepositoryImpl @Inject constructor(
 
     private val hasCombinedContactsKey = booleanPreferencesKey("hasCombinedContactsPrefKey")
 
-    override fun observe(): Flow<CombinedContactsPreference> =
-        dataStoreProvider.combinedContactsDataStore.data.map { prefs ->
-            val hasCombinedContacts = prefs[hasCombinedContactsKey] ?: DEFAULT_VALUE
-            CombinedContactsPreference(hasCombinedContacts)
+    override fun observe(): Flow<Either<PreferencesError, CombinedContactsPreference>> =
+        dataStoreProvider.combinedContactsDataStore.safeData.map { prefsEither ->
+            prefsEither.map { prefs ->
+                val hasCombinedContacts = prefs[hasCombinedContactsKey] ?: DEFAULT_VALUE
+                CombinedContactsPreference(hasCombinedContacts)
+            }
         }
 
     override suspend fun save(combinedContactsPreference: CombinedContactsPreference): Either<PreferencesError, Unit> =

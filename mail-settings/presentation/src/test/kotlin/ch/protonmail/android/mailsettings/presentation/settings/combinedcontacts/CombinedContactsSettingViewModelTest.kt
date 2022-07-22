@@ -29,9 +29,10 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -48,10 +49,7 @@ class CombinedContactsSettingViewModelTest {
     private val combinedContactsPreference = CombinedContactsPreference(true)
 
     private val observeCombinedContactsSetting: ObserveCombinedContactsSetting = mockk {
-        every { this@mockk() } returns flow {
-            delay(1) // simulate real delay
-            emit(combinedContactsPreference)
-        }
+        every { this@mockk() } returns flowOf(combinedContactsPreference.right())
     }
 
     private val saveCombinedContactsSetting: SaveCombinedContactsSetting = mockk()
@@ -70,7 +68,15 @@ class CombinedContactsSettingViewModelTest {
 
     @Test
     fun `should return loading state before the repository emits any value`() = runTest {
+        // Given
+        every { observeCombinedContactsSetting() } returns flow {
+            delay(1) // simulate real delay
+            emit(combinedContactsPreference.right())
+        }
+
+        // When
         combinedContactsSettingViewModel.state.test {
+            // Then
             val loadingState = awaitItem()
             assertEquals(CombinedContactsSettingState.Loading, loadingState)
         }
@@ -85,12 +91,24 @@ class CombinedContactsSettingViewModelTest {
 
         // When
         combinedContactsSettingViewModel.state.test {
-            assertIs<CombinedContactsSettingState.Loading>(awaitItem())
-
             // Then
             val dataState = assertIs<CombinedContactsSettingState.Data>(awaitItem())
             assertTrue(dataState.isEnabled)
             assertNull(dataState.combinedContactsSettingErrorEffect.consume())
+        }
+    }
+
+    @Test
+    fun `should return error state when an error has occurred`() = runTest {
+        // Given
+        coEvery {
+            observeCombinedContactsSetting()
+        } returns flowOf(PreferencesError.left())
+
+        // When
+        combinedContactsSettingViewModel.state.test {
+            // Then
+            assertIs<CombinedContactsSettingState.Error>(awaitItem())
         }
     }
 
@@ -120,8 +138,6 @@ class CombinedContactsSettingViewModelTest {
 
         // Then
         combinedContactsSettingViewModel.state.test {
-            assertIs<CombinedContactsSettingState.Loading>(awaitItem())
-
             val dataState = assertIs<CombinedContactsSettingState.Data>(awaitItem())
             assertNotNull(dataState.combinedContactsSettingErrorEffect.consume())
         }
@@ -139,8 +155,6 @@ class CombinedContactsSettingViewModelTest {
 
         // Then
         combinedContactsSettingViewModel.state.test {
-            assertIs<CombinedContactsSettingState.Loading>(awaitItem())
-
             val dataState = assertIs<CombinedContactsSettingState.Data>(awaitItem())
             assertNotNull(dataState.combinedContactsSettingErrorEffect.consume())
 

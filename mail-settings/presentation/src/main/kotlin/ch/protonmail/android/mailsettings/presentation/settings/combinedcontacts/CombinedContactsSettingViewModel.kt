@@ -44,10 +44,15 @@ class CombinedContactsSettingViewModel @Inject constructor(
     val state: Flow<CombinedContactsSettingState> = combine(
         observeCombinedContactsSetting(),
         combinedContactsSettingErrorFlow
-    ) { combinedContactsPreference, combinedContactsSettingErrorEffect ->
-        CombinedContactsSettingState.Data(
-            isEnabled = combinedContactsPreference.isEnabled,
-            combinedContactsSettingErrorEffect = combinedContactsSettingErrorEffect
+    ) { combinedContactsPreferenceEither, combinedContactsSettingErrorEffect ->
+        combinedContactsPreferenceEither.fold(
+            ifLeft = { CombinedContactsSettingState.Error },
+            ifRight = { combinedContactsPreference ->
+                CombinedContactsSettingState.Data(
+                    isEnabled = combinedContactsPreference.isEnabled,
+                    combinedContactsSettingErrorEffect = combinedContactsSettingErrorEffect
+                )
+            }
         )
     }.stateIn(
         scope = viewModelScope,
@@ -57,6 +62,6 @@ class CombinedContactsSettingViewModel @Inject constructor(
 
     fun saveCombinedContactsPreference(combinedContactsPreference: Boolean) = viewModelScope.launch {
         saveCombinedContactsSetting(combinedContactsPreference)
-            .tapLeft { combinedContactsSettingErrorFlow.tryEmit(Effect.of(Unit)) }
+            .tapLeft { combinedContactsSettingErrorFlow.emit(Effect.of(Unit)) }
     }
 }

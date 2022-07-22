@@ -34,6 +34,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -42,9 +43,7 @@ import kotlin.test.Test
 class CombinedContactsRepositoryImplTest {
 
     private val preferences = mockk<Preferences>()
-    private val combinedContactsDataStoreSpy = spyk<DataStore<Preferences>> {
-        every { this@spyk.data } returns flowOf(preferences)
-    }
+    private val combinedContactsDataStoreSpy = spyk<DataStore<Preferences>>()
     private val dataStoreProvider = mockk<MailSettingsDataStoreProvider> {
         every { this@mockk.combinedContactsDataStore } returns combinedContactsDataStoreSpy
     }
@@ -56,10 +55,11 @@ class CombinedContactsRepositoryImplTest {
     fun `returns false when no preference is stored locally`() = runTest {
         // Given
         coEvery { preferences.get<Boolean>(any()) } returns null
+        every { combinedContactsDataStoreSpy.data } returns flowOf(preferences)
         // When
         combinedContactsRepository.observe().test {
             // Then
-            assertEquals(CombinedContactsPreference(false), awaitItem())
+            assertEquals(CombinedContactsPreference(false).right(), awaitItem())
             awaitComplete()
         }
     }
@@ -68,10 +68,24 @@ class CombinedContactsRepositoryImplTest {
     fun `returns locally stored preference from data store when available`() = runTest {
         // Given
         coEvery { preferences[booleanPreferencesKey("hasCombinedContactsPrefKey")] } returns true
+        every { combinedContactsDataStoreSpy.data } returns flowOf(preferences)
         // When
         combinedContactsRepository.observe().test {
             // Then
-            assertEquals(CombinedContactsPreference(true), awaitItem())
+            assertEquals(CombinedContactsPreference(true).right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return error when an exception is thrown while observing preference`() = runTest {
+        // Given
+        every { combinedContactsDataStoreSpy.data } returns flow { throw IOException() }
+
+        // When
+        combinedContactsRepository.observe().test {
+            // Then
+            assertEquals(PreferencesError.left(), awaitItem())
             awaitComplete()
         }
     }
