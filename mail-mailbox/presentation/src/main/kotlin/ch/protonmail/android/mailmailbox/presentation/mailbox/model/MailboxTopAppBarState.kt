@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.model
+package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import me.proton.core.util.kotlin.EMPTY_STRING

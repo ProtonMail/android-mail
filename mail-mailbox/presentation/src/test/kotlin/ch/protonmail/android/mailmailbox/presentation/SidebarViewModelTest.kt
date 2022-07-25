@@ -35,9 +35,10 @@ import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Collapse
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Expand
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Select
-import ch.protonmail.android.mailmailbox.presentation.SidebarViewModel.Action.LabelAction
-import ch.protonmail.android.mailmailbox.presentation.SidebarViewModel.State.Disabled
-import ch.protonmail.android.mailmailbox.presentation.SidebarViewModel.State.Enabled
+import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel
+import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.Action.LabelAction
+import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Disabled
+import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Enabled
 import ch.protonmail.android.mailsettings.domain.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.FeatureFlagTestData

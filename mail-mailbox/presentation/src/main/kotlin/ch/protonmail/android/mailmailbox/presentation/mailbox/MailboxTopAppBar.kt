@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
@@ -30,7 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.text
-import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
+import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.util.kotlin.EMPTY_STRING
 

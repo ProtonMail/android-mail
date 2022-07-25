@@ -31,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.tooling.preview.Preview
-import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
 

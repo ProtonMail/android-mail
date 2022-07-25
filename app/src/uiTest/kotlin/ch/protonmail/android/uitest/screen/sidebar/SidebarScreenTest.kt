@@ -34,9 +34,9 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.maillabel.presentation.R
-import ch.protonmail.android.mailmailbox.presentation.Sidebar
-import ch.protonmail.android.mailmailbox.presentation.SidebarState
-import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_SIDEBAR_MENU
+import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
+import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarState
+import ch.protonmail.android.mailmailbox.presentation.sidebar.TEST_TAG_SIDEBAR_MENU
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.label.domain.entity.LabelId

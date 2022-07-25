@@ -25,7 +25,7 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_MAILBOX_SCREEN
+import ch.protonmail.android.mailmailbox.presentation.mailbox.TEST_TAG_MAILBOX_SCREEN
 import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_UNREAD_FILTER
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.MoveToFolderRobotInterface

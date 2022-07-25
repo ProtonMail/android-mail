@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.mailmailbox.presentation.sidebar
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -39,8 +39,9 @@ import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction
 import ch.protonmail.android.maillabel.presentation.sidebar.sidebarFolderItems
 import ch.protonmail.android.maillabel.presentation.sidebar.sidebarLabelItems
 import ch.protonmail.android.maillabel.presentation.sidebar.sidebarSystemLabelItems
-import ch.protonmail.android.mailmailbox.presentation.SidebarViewModel.State.Disabled
-import ch.protonmail.android.mailmailbox.presentation.SidebarViewModel.State.Enabled
+import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Disabled
+import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Enabled
 import kotlinx.coroutines.launch
 import me.proton.core.accountmanager.presentation.compose.AccountPrimaryItem
 import me.proton.core.compose.component.ProtonSidebarAppVersionItem

@@ -39,10 +39,12 @@ import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
-import ch.protonmail.android.mailmailbox.presentation.MailboxViewModel.Action
-import ch.protonmail.android.mailmailbox.presentation.model.MailboxListState
-import ch.protonmail.android.mailmailbox.presentation.model.MailboxTopAppBarState
-import ch.protonmail.android.mailmailbox.presentation.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel.Action
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData

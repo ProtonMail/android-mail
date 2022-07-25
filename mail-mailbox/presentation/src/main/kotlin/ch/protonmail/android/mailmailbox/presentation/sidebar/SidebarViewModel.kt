@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.mailmailbox.presentation.sidebar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
