@@ -20,10 +20,9 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
@@ -32,24 +31,20 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.extension.firstOrDefault
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
-import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
-import ch.protonmail.android.mailpagination.domain.entity.PageFilter
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,9 +58,9 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
@@ -73,19 +68,20 @@ import javax.inject.Inject
 @HiltViewModel
 class MailboxViewModel @Inject constructor(
     private val markAsStaleMailboxItems: MarkAsStaleMailboxItems,
-    private val pagingSourceFactory: MailboxItemPagingSourceFactory,
+    private val mailboxPagerFactory: MailboxPagerFactory,
     private val observeCurrentViewMode: ObserveCurrentViewMode,
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMailLabels: ObserveMailLabels,
     private val selectedMailLabelId: SelectedMailLabelId,
-    private val observeUnreadCounters: ObserveUnreadCounters
+    private val observeUnreadCounters: ObserveUnreadCounters,
+    private val mailboxItemMapper: MailboxItemUiModelMapper
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
     private val mutableState = MutableStateFlow(initialState)
 
     val state: StateFlow<MailboxState> = mutableState.asStateFlow()
-    val items: Flow<PagingData<MailboxItem>> = observePagingData().cachedIn(viewModelScope)
+    val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)
 
     init {
         observeCurrentMailLabel()
@@ -150,7 +146,7 @@ class MailboxViewModel @Inject constructor(
         }.exhaustive
     }
 
-    private suspend fun onOpenItemDetails(item: MailboxItem) {
+    private suspend fun onOpenItemDetails(item: MailboxItemUiModel) {
         val request = when (getPreferredViewMode()) {
             ViewMode.ConversationGrouping -> {
                 OpenMailboxItemRequest(MailboxItemId(item.conversationId.id), MailboxItemType.Conversation)
@@ -177,7 +173,7 @@ class MailboxViewModel @Inject constructor(
         )
     }
 
-    private fun observePagingData(): Flow<PagingData<MailboxItem>> = combine(
+    private fun observePagingData(): Flow<PagingData<MailboxItemUiModel>> = combine(
         primaryUserId,
         state,
         observeViewModeByLocation(),
@@ -195,19 +191,18 @@ class MailboxViewModel @Inject constructor(
             is MailboxListState.Loading -> MailLabelId.System.Inbox
         }
 
-        Pager(
-            config = PagingConfig(PageKey.defaultPageSize),
-            initialKey = buildMailboxPageKey(unreadFilterEnabled, selectedMailLabelId, userId)
-        ) {
-            pagingSourceFactory.create(
-                userIds = listOf(userId),
-                selectedMailLabelId = selectedMailLabelId,
-                filterUnread = unreadFilterEnabled,
-                type = viewMode.toMailboxItemType()
-            )
-        }
+        mailboxPagerFactory.create(
+            userIds = listOf(userId),
+            selectedMailLabelId = selectedMailLabelId,
+            filterUnread = unreadFilterEnabled,
+            type = viewMode.toMailboxItemType()
+        )
     }.flatMapLatest { pager ->
-        pager?.flow ?: flowOf(PagingData.empty())
+        pager?.flow?.map { pagingData ->
+            pagingData.map { mailboxItem ->
+                mailboxItemMapper.toUiModel(mailboxItem)
+            }
+        } ?: flowOf(PagingData.empty())
     }
 
     private fun observeCurrentMailLabel() = observeMailLabels()
@@ -222,20 +217,6 @@ class MailboxViewModel @Inject constructor(
                 mailLabels.allById[selectedMailLabelId.flow.value]
             }
         }.filterNotNull()
-
-    private fun buildMailboxPageKey(
-        isUnreadFilterEnabled: Boolean,
-        selectedMailLabelId: MailLabelId,
-        userId: UserId
-    ): MailboxPageKey = MailboxPageKey(
-        userIds = listOf(userId),
-        pageKey = PageKey(
-            PageFilter(
-                labelId = selectedMailLabelId.labelId,
-                read = if (isUnreadFilterEnabled) ReadStatus.Unread else ReadStatus.All
-            )
-        )
-    )
 
     private suspend fun updateStateForUnreadCountersChange(unreadCounters: List<UnreadCounter>) {
         val currentMailLabelId = selectedMailLabelId.flow.value
@@ -331,7 +312,7 @@ class MailboxViewModel @Inject constructor(
     sealed interface Action {
         object EnterSelectionMode : Action
         object ExitSelectionMode : Action
-        data class OpenItemDetails(val item: MailboxItem) : Action
+        data class OpenItemDetails(val item: MailboxItemUiModel) : Action
         object Refresh : Action
         object EnableUnreadFilter : Action
         object DisableUnreadFilter : Action

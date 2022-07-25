@@ -22,17 +22,47 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import me.proton.core.domain.entity.UserId
 
 object MailboxTestData {
 
+    val mailboxItem1 = MailboxItem(
+        type = MailboxItemType.Message,
+        id = "1",
+        conversationId = ConversationId("2"),
+        userId = UserId("0"),
+        senders = listOf(Recipient("address", "name")),
+        recipients = emptyList(),
+        subject = "First message",
+        time = 0,
+        size = 0,
+        order = 0,
+        read = false
+    )
+
+    val mailboxItem2 = MailboxItem(
+        type = MailboxItemType.Message,
+        id = "2",
+        conversationId = ConversationId("2"),
+        userId = UserId("0"),
+        senders = listOf(Recipient("address", "name")),
+        recipients = emptyList(),
+        subject = "Second message",
+        time = 0,
+        size = 0,
+        order = 0,
+        read = true
+    )
+
+
     fun buildMailboxItem(
         userId: UserId,
         id: String,
         time: Long,
-        labelIds: List<String>,
-        type: MailboxItemType,
+        labelIds: List<String> = listOf("0"),
+        type: MailboxItemType = MailboxItemType.Message,
     ) = MailboxItem(
         type = type,
         id = id,
@@ -46,5 +76,32 @@ object MailboxTestData {
         senders = listOf(Recipient("address", "name")),
         recipients = emptyList(),
         labels = labelIds.map { buildLabel(userId = userId, id = it) }
+    )
+}
+
+object MailboxItemUiModelTestData {
+
+    val mailboxItemUiModel1 = MailboxItemUiModel(
+        type = MailboxItemType.Message,
+        id = "1",
+        conversationId = ConversationId("2"),
+        userId = UserId("0"),
+        senders = listOf(Recipient("address", "name")),
+        recipients = emptyList(),
+        subject = "First message",
+        time = 0,
+        read = false
+    )
+
+    val mailboxItemUiModel2 = MailboxItemUiModel(
+        type = MailboxItemType.Message,
+        id = "2",
+        conversationId = ConversationId("2"),
+        userId = UserId("0"),
+        senders = listOf(Recipient("address", "name")),
+        recipients = emptyList(),
+        subject = "Second message",
+        time = 0,
+        read = true
     )
 }

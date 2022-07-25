@@ -52,10 +52,10 @@ import androidx.viewbinding.BuildConfig
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.UnreadItemsFilter
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
@@ -105,11 +105,11 @@ fun MailboxScreen(
     mailboxState: MailboxState,
     navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
     openDrawerMenu: () -> Unit,
-    mailboxListItems: LazyPagingItems<MailboxItem>,
+    mailboxListItems: LazyPagingItems<MailboxItemUiModel>,
     onExitSelectionMode: () -> Unit,
     onEnableUnreadFilter: () -> Unit,
     onDisableUnreadFilter: () -> Unit,
-    onNavigateToMailboxItem: (MailboxItem) -> Unit,
+    onNavigateToMailboxItem: (MailboxItemUiModel) -> Unit,
     onRefreshList: () -> Unit,
     onOpenSelectionMode: () -> Unit
 ) {
@@ -193,10 +193,10 @@ private fun MailboxStickyHeader(
 @Composable
 private fun MailboxList(
     modifier: Modifier = Modifier,
-    navigateToMailboxItem: (MailboxItem) -> Unit,
+    navigateToMailboxItem: (MailboxItemUiModel) -> Unit,
     onRefresh: () -> Unit,
     onOpenSelectionMode: () -> Unit,
-    items: LazyPagingItems<MailboxItem>,
+    items: LazyPagingItems<MailboxItemUiModel>,
     listState: LazyListState
 ) {
 
@@ -251,9 +251,9 @@ private fun MailboxList(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MailboxItem(
-    item: MailboxItem,
+    item: MailboxItemUiModel,
     modifier: Modifier = Modifier,
-    onItemClicked: (MailboxItem) -> Unit,
+    onItemClicked: (MailboxItemUiModel) -> Unit,
     onOpenSelectionMode: () -> Unit
 ) {
     Card(
@@ -312,7 +312,7 @@ fun PreviewMailbox() {
     val items = flowOf(
         PagingData.from(
             listOf(
-                MailboxItem(
+                MailboxItemUiModel(
                     type = MailboxItemType.Message,
                     id = "1",
                     conversationId = ConversationId("2"),
@@ -321,11 +321,9 @@ fun PreviewMailbox() {
                     recipients = emptyList(),
                     subject = "First message",
                     time = 0,
-                    size = 0,
-                    order = 0,
                     read = false
                 ),
-                MailboxItem(
+                MailboxItemUiModel(
                     type = MailboxItemType.Message,
                     id = "2",
                     conversationId = ConversationId("2"),
@@ -334,10 +332,8 @@ fun PreviewMailbox() {
                     recipients = emptyList(),
                     subject = "Second message",
                     time = 0,
-                    size = 0,
-                    order = 0,
                     read = true
-                ),
+                )
             )
         )
     ).collectAsLazyPagingItems()

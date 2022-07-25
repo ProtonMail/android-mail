@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
+import androidx.paging.PagingData
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
@@ -29,7 +30,6 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Sent
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
@@ -39,14 +39,21 @@ import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxPagerFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel.Action
+import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
-import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import ch.protonmail.android.testdata.label.LabelTestData
+import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.mailboxItemUiModel1
+import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.mailboxItemUiModel2
+import ch.protonmail.android.testdata.mailbox.MailboxTestData.mailboxItem1
+import ch.protonmail.android.testdata.mailbox.MailboxTestData.mailboxItem2
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
@@ -102,17 +109,20 @@ class MailboxViewModelTest {
         coEvery { this@mockk(userId = any()) } returns flowOf(UnreadCountersTestData.systemUnreadCounters)
     }
 
-    private val pagingSourceFactory = mockk<MailboxItemPagingSourceFactory>(relaxed = true)
+    private val pagerFactory = mockk<MailboxPagerFactory>()
+
+    private val mailboxItemMapper = mockk<MailboxItemUiModelMapper>()
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
             markAsStaleMailboxItems = markAsStaleMailboxItems,
-            pagingSourceFactory = pagingSourceFactory,
+            mailboxPagerFactory = pagerFactory,
             observeCurrentViewMode = observeCurrentViewMode,
             observePrimaryUserId = observePrimaryUserId,
             observeMailLabels = observeMailLabels,
             selectedMailLabelId = selectedMailLabelId,
-            observeUnreadCounters = observeUnreadCounters
+            observeUnreadCounters = observeUnreadCounters,
+            mailboxItemMapper = mailboxItemMapper
         )
     }
 
@@ -140,7 +150,7 @@ class MailboxViewModelTest {
 
             assertEquals(expected, actual)
 
-            verify { pagingSourceFactory wasNot Called }
+            verify { pagerFactory wasNot Called }
         }
     }
 
@@ -251,19 +261,44 @@ class MailboxViewModelTest {
         // Given
         val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
         every { selectedMailLabelId.flow } returns currentLocationFlow
+        every { pagerFactory.create(any(), any(), any(), any()) } returns mockk mockPager@{
+            every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(mailboxItem1)))
+        }
 
         mailboxViewModel.items.test {
             // Then
             awaitItem()
-            verify { pagingSourceFactory.create(listOf(userId), MailLabelId.System.Inbox, false, Message) }
+            verify { pagerFactory.create(listOf(userId), MailLabelId.System.Inbox, false, Message) }
 
             // When
             currentLocationFlow.emit(MailLabelId.System.Spam)
 
             // Then
             awaitItem()
-            verify { pagingSourceFactory.create(listOf(userId), MailLabelId.System.Spam, false, Message) }
+            verify { pagerFactory.create(listOf(userId), MailLabelId.System.Spam, false, Message) }
             cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `mailbox items are mapped to mailbox item ui models`() = runTest {
+        // Given
+        every { mailboxItemMapper.toUiModel(mailboxItem1) } returns mailboxItemUiModel1
+        every { mailboxItemMapper.toUiModel(mailboxItem2) } returns mailboxItemUiModel2
+        every { pagerFactory.create(any(), any(), any(), any()) } returns mockk {
+            val pagingData = PagingData.from(listOf(mailboxItem1, mailboxItem2))
+            every { this@mockk.flow } returns flowOf(pagingData)
+        }
+        val differ = MailboxAsyncPagingDataDiffer.differ
+
+        // When
+        mailboxViewModel.items.test {
+            // Then
+            val pagingData = awaitItem()
+            differ.submitData(pagingData)
+
+            val expected = listOf(mailboxItemUiModel1, mailboxItemUiModel2)
+            assertEquals(expected, differ.snapshot().items)
         }
     }
 
@@ -403,13 +438,11 @@ class MailboxViewModelTest {
 
     private companion object TestData {
 
-        fun buildMailboxItem(type: MailboxItemType) = MailboxItem(
+        fun buildMailboxItem(type: MailboxItemType) = MailboxItemUiModel(
             type = type,
             id = "id",
             userId = userId,
             time = 0,
-            size = 0,
-            order = 0,
             read = false,
             conversationId = ConversationId("id"),
             labels = emptyList(),
