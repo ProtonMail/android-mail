@@ -39,10 +39,10 @@ import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel.Action
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel.Action
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
@@ -145,7 +145,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `emits default TopAppBar state as soon as the label name is available`() = runTest {
+    fun `emits default top app bar state as soon as the label name is available`() = runTest {
         mailboxViewModel.state.test {
 
             // Then
@@ -166,7 +166,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `when selection mode is not open and the right Action is submitted, selection mode is opened`() = runTest {
+    fun `when selection mode is not open and enter selection mode is submitted, selection mode is opened`() = runTest {
         mailboxViewModel.state.test {
 
             // Given
@@ -183,7 +183,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `when selection mode is open and the right Action is submitted, selection mode is closed`() = runTest {
+    fun `when selection mode is open and exit selection mode is submitted, selection mode is closed`() = runTest {
         // Given
         mailboxViewModel.state.test {
 
@@ -247,16 +247,6 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `emits mailbox items`() = runTest {
-        mailboxViewModel.items.test {
-
-            // Then
-            awaitItem()
-            verify { pagingSourceFactory.create(listOf(userId), Archive, false, Message) }
-        }
-    }
-
-    @Test
     fun `mailbox items for the current location are requested when location changes`() = runTest {
         // Given
         val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
@@ -278,7 +268,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `onRefresh call markAsStaleMailboxItems`() = runTest {
+    fun `on refresh call mark as stale mailbox items`() = runTest {
 
         // When
         mailboxViewModel.submit(Action.Refresh)
@@ -345,7 +335,7 @@ class MailboxViewModelTest {
         }
 
     @Test
-    fun `enableUnreadFilter action emits a new state with UnreadFilterState enabled`() = runTest {
+    fun `enable unread filter action emits a new state with unread filter state enabled`() = runTest {
         // When
         mailboxViewModel.submit(Action.EnableUnreadFilter)
         mailboxViewModel.state.test {
@@ -358,7 +348,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `disableUnreadFilter action emits a new state with UnreadFilterState disabled`() = runTest {
+    fun `disableu nread filter action emits a new state with unread filter state disabled`() = runTest {
         mailboxViewModel.state.test {
             // When
             mailboxViewModel.submit(Action.DisableUnreadFilter)
