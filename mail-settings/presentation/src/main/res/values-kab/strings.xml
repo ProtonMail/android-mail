@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">Creḍ yettwaɣra/ur yettwaɣra ara</string>
   <string name="mail_settings_swipe_action_spam_description">Awi ɣer uspam</string>
   <string name="mail_settings_swipe_action_star_description">Err itri/Kkes itri</string>
-  <string name="mail_settings_swipe_action_trash_description">Taqecwalt n yiḍumman</string>
+  <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
 </resources>

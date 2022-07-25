@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">Als „Gelesen”/„Ungelesen” kennzeichnen</string>
   <string name="mail_settings_swipe_action_spam_description">In Spam-Ordner verschieben</string>
   <string name="mail_settings_swipe_action_star_description">Kennzeichnen/Kennzeichnung aufheben</string>
-  <string name="mail_settings_swipe_action_trash_description">Papierkorb</string>
+  <string name="mail_settings_swipe_action_trash_description">In den Papierkorb verschieben</string>
 </resources>

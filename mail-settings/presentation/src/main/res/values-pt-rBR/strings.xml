@@ -34,7 +34,7 @@
   <string name="mail_settings_theme_light">Claro</string>
   <string name="mail_settings_theme_dark">Escuro</string>
   <!-- Settings item states -->
-  <string name="mail_settings_no_information_available">No information available</string>
+  <string name="mail_settings_no_information_available">Nenhuma informação disponível</string>
   <string name="mail_settings_enabled">Ativado</string>
   <string name="mail_settings_disabled">Desativado</string>
   <string name="mail_settings_allowed">Permitido</string>
@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">Marcar como não lida/lida</string>
   <string name="mail_settings_swipe_action_spam_description">Mover para spam</string>
   <string name="mail_settings_swipe_action_star_description">Atribuir/retirar estrela</string>
-  <string name="mail_settings_swipe_action_trash_description">Lixeira</string>
+  <string name="mail_settings_swipe_action_trash_description">Mover para lixeira</string>
 </resources>

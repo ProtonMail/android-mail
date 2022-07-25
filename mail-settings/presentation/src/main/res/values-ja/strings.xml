@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">既読と未読を入れ替える</string>
   <string name="mail_settings_swipe_action_spam_description">迷惑メールに移動</string>
   <string name="mail_settings_swipe_action_star_description">星印を 付ける/外す</string>
-  <string name="mail_settings_swipe_action_trash_description">ごみ箱</string>
+  <string name="mail_settings_swipe_action_trash_description">ごみ箱に移動</string>
 </resources>

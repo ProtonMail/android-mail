@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2022 Proton Technologies AG
   ~ This file is part of Proton Technologies AG and Proton Mail.
   ~
@@ -15,23 +16,17 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
-
 <resources>
-
     <string name="drawer_title_more">More</string>
     <string name="drawer_title_contacts">Contacts</string>
     <string name="drawer_title_subscription">Subscription</string>
-
     <string name="mailbox_toolbar_compose_button_content_description">Compose new message</string>
     <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Exit selection mode</string>
     <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
     <string name="mailbox_toolbar_search_button_content_description">Search</string>
     <string name="mailbox_toolbar_selected_count">%d Selected</string>
-
     <plurals name="filter_unread_button_text">
-        <item quantity="one">%d unread</item>
+    <item quantity="one">%d unread</item>
         <item quantity="other">%d unread</item>
     </plurals>
-
-
 </resources>

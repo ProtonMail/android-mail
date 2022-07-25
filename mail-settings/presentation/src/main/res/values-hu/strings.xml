@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">Megjelölés olvasatlanként/olvasottként</string>
   <string name="mail_settings_swipe_action_spam_description">Áthelyezés a levélszeméthez</string>
   <string name="mail_settings_swipe_action_star_description">Csillagozás/Vagy nem</string>
-  <string name="mail_settings_swipe_action_trash_description">Lomtár</string>
+  <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
 </resources>

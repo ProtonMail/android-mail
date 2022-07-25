@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">Markera som oläst/läst</string>
   <string name="mail_settings_swipe_action_spam_description">Flytta till skräppost</string>
   <string name="mail_settings_swipe_action_star_description">Stjärnmärk/ta bort stjärnmärking</string>
-  <string name="mail_settings_swipe_action_trash_description">Papperskorg</string>
+  <string name="mail_settings_swipe_action_trash_description">Flytta till papperskorgen</string>
 </resources>

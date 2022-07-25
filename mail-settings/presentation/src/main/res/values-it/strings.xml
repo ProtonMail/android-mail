@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">Segna come non letto/letto</string>
   <string name="mail_settings_swipe_action_spam_description">Sposta in spam</string>
   <string name="mail_settings_swipe_action_star_description">Aggiungi/rimuovi preferiti</string>
-  <string name="mail_settings_swipe_action_trash_description">Cestino</string>
+  <string name="mail_settings_swipe_action_trash_description">Sposta nel cestino</string>
 </resources>

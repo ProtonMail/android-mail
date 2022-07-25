@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">Пометить как непрочитанное/прочитанное</string>
   <string name="mail_settings_swipe_action_spam_description">Отправить в спам</string>
   <string name="mail_settings_swipe_action_star_description">Важное/неважное</string>
-  <string name="mail_settings_swipe_action_trash_description">Корзина</string>
+  <string name="mail_settings_swipe_action_trash_description">Переместить в Корзину</string>
 </resources>

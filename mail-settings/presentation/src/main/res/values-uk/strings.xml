@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">Позначити прочитаним/непрочитаним</string>
   <string name="mail_settings_swipe_action_spam_description">Перемістити до спаму</string>
   <string name="mail_settings_swipe_action_star_description">Позначити/Прибрати зірочку</string>
-  <string name="mail_settings_swipe_action_trash_description">Смітник</string>
+  <string name="mail_settings_swipe_action_trash_description">Перемістити до смітника</string>
 </resources>

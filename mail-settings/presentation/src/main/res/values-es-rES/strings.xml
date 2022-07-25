@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">Marcar como no leído/leído</string>
   <string name="mail_settings_swipe_action_spam_description">Mover a spam</string>
   <string name="mail_settings_swipe_action_star_description">Destacar/no destacar</string>
-  <string name="mail_settings_swipe_action_trash_description">Papelera</string>
+  <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
 </resources>

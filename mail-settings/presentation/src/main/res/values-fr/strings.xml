@@ -75,5 +75,5 @@
   <string name="mail_settings_swipe_action_read_description">Marquer comme non lu/lu</string>
   <string name="mail_settings_swipe_action_spam_description">Déplacer dans les indésirables/spam</string>
   <string name="mail_settings_swipe_action_star_description">Ajouter/retirer des favoris</string>
-  <string name="mail_settings_swipe_action_trash_description">Corbeille</string>
+  <string name="mail_settings_swipe_action_trash_description">Déplacer vers la corbeille</string>
 </resources>

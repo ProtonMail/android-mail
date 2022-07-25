@@ -18,5 +18,5 @@
   -->
 <resources>
   <string name="retry">Tentar novamente</string>
-  <string name="x_error_not_logged_in">Not logged in</string>
+  <string name="x_error_not_logged_in">Não iniciado sessão</string>
 </resources>
