@@ -31,7 +31,6 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
-import ch.protonmail.android.mailmailbox.presentation.getMailboxItem
 import ch.protonmail.android.mailpagination.domain.AdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.entity.OrderBy
@@ -39,6 +38,7 @@ import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageFilter
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
+import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -158,11 +158,11 @@ class MailboxItemPagingSourceTest {
         val pagingSource = pagingSource()
         assertFalse(pagingSource.keyReuseSupported)
         coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns listOf(
-            getMailboxItem(userId, "5", time = 5000),
-            getMailboxItem(userId, "4", time = 4000),
-            getMailboxItem(userId, "3", time = 3000),
-            getMailboxItem(userId, "2", time = 2000),
-            getMailboxItem(userId, "1", time = 1000),
+            buildMailboxItem(userId, "5", time = 5000),
+            buildMailboxItem(userId, "4", time = 4000),
+            buildMailboxItem(userId, "3", time = 3000),
+            buildMailboxItem(userId, "2", time = 2000),
+            buildMailboxItem(userId, "1", time = 1000),
         )
 
         // When
@@ -288,8 +288,8 @@ class MailboxItemPagingSourceTest {
         // Given
         val pagingSource = pagingSource()
         val items = listOf(
-            getMailboxItem(userId, "2", time = 2000),
-            getMailboxItem(userId, "1", time = 1000)
+            buildMailboxItem(userId, "2", time = 2000),
+            buildMailboxItem(userId, "1", time = 1000)
         )
         coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns items
 
@@ -307,11 +307,11 @@ class MailboxItemPagingSourceTest {
         listOf(
             PagingSource.LoadResult.Page(
                 data = listOf(
-                    getMailboxItem(userId, "5", time = 5000),
-                    getMailboxItem(userId, "4", time = 4000),
-                    getMailboxItem(userId, "3", time = 3000),
-                    getMailboxItem(userId, "2", time = 2000),
-                    getMailboxItem(userId, "1", time = 1000),
+                    buildMailboxItem(userId, "5", time = 5000),
+                    buildMailboxItem(userId, "4", time = 4000),
+                    buildMailboxItem(userId, "3", time = 3000),
+                    buildMailboxItem(userId, "2", time = 2000),
+                    buildMailboxItem(userId, "1", time = 1000),
                 ),
                 prevKey = null,
                 nextKey = null
