@@ -23,11 +23,9 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 sealed class CombinedContactsSettingState {
 
     data class Data(
-        val isEnabled: Boolean,
+        val isEnabled: Boolean?,
         val combinedContactsSettingErrorEffect: Effect<Unit>
     ) : CombinedContactsSettingState()
-
-    object Error : CombinedContactsSettingState()
 
     object Loading : CombinedContactsSettingState()
 }

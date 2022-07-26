@@ -93,13 +93,13 @@ class CombinedContactsSettingViewModelTest {
         combinedContactsSettingViewModel.state.test {
             // Then
             val dataState = assertIs<CombinedContactsSettingState.Data>(awaitItem())
-            assertTrue(dataState.isEnabled)
+            assertTrue(dataState.isEnabled!!)
             assertNull(dataState.combinedContactsSettingErrorEffect.consume())
         }
     }
 
     @Test
-    fun `should return error state when an error has occurred`() = runTest {
+    fun `state should contain correct data when an error occurs while observing the preference`() = runTest {
         // Given
         coEvery {
             observeCombinedContactsSetting()
@@ -108,7 +108,9 @@ class CombinedContactsSettingViewModelTest {
         // When
         combinedContactsSettingViewModel.state.test {
             // Then
-            assertIs<CombinedContactsSettingState.Error>(awaitItem())
+            val dataState = assertIs<CombinedContactsSettingState.Data>(awaitItem())
+            assertNull(dataState.isEnabled)
+            assertNotNull(dataState.combinedContactsSettingErrorEffect.consume())
         }
     }
 

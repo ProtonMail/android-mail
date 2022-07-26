@@ -46,7 +46,12 @@ class CombinedContactsSettingViewModel @Inject constructor(
         combinedContactsSettingErrorFlow
     ) { combinedContactsPreferenceEither, combinedContactsSettingErrorEffect ->
         combinedContactsPreferenceEither.fold(
-            ifLeft = { CombinedContactsSettingState.Error },
+            ifLeft = {
+                CombinedContactsSettingState.Data(
+                    isEnabled = null,
+                    combinedContactsSettingErrorEffect = Effect.of(Unit)
+                )
+            },
             ifRight = { combinedContactsPreference ->
                 CombinedContactsSettingState.Data(
                     isEnabled = combinedContactsPreference.isEnabled,

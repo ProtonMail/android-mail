@@ -58,7 +58,6 @@ fun CombinedContactsSettingScreen(
                 state = state
             )
         }
-        is CombinedContactsSettingState.Error -> Unit
         is CombinedContactsSettingState.Loading -> Unit
     }
 }
@@ -94,7 +93,7 @@ fun CombinedContactsSettingScreen(
                 name = stringResource(id = R.string.mail_settings_combined_contacts),
                 hint = stringResource(id = R.string.mail_settings_combined_contacts_hint),
                 value = state.isEnabled,
-                onToggle = { onToggle(!state.isEnabled) }
+                onToggle = { state.isEnabled?.let { onToggle(!it) } }
             )
         },
         snackbarHost = { snackbarHostState ->
