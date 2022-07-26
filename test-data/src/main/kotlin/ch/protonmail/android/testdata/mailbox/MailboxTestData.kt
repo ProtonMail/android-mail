@@ -140,5 +140,6 @@ object MailboxItemUiModelTestData {
         recipients = emptyList(),
         showRepliedIcon = false,
         showRepliedAllIcon = false,
+        showForwardedIcon = false,
     )
 }

@@ -37,15 +37,6 @@ class MailboxItemUiModelMapperTest {
     }
 
     @Test
-    fun `mailbox items of conversation type never show reply icon`() {
-        val mailboxItem = MailboxTestData.mailboxConversationItem
-
-        val actual = mapper.toUiModel(mailboxItem)
-
-        assertFalse(actual.showRepliedIcon)
-    }
-
-    @Test
     fun `when mailbox message item was replied all ui model shows reply all icon`() {
         val mailboxItem = MailboxTestData.repliedAllMailboxItem
 
@@ -56,11 +47,23 @@ class MailboxItemUiModelMapperTest {
     }
 
     @Test
-    fun `mailbox items of conversation type never show reply-all icon`() {
+    fun `when mailbox message item was forwarded ui model shows forwarded icon`() {
+        val mailboxItem = MailboxTestData.allActionsMailboxItem
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertTrue(actual.showForwardedIcon)
+    }
+
+    @Test
+    fun `mailbox items of conversation type never show any of reply, reply-all, forwarded icon`() {
         val mailboxItem = MailboxTestData.mailboxConversationItem
 
         val actual = mapper.toUiModel(mailboxItem)
 
+        assertFalse(actual.showRepliedIcon)
         assertFalse(actual.showRepliedAllIcon)
+        assertFalse(actual.showForwardedIcon)
     }
+
 }

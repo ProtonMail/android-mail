@@ -38,7 +38,8 @@ class MailboxItemUiModelMapper @Inject constructor() : Mapper<MailboxItem, Mailb
             senders = mailboxItem.senders,
             recipients = mailboxItem.recipients,
             showRepliedIcon = showRepliedIcon(mailboxItem),
-            showRepliedAllIcon = mailboxItem.isRepliedAll
+            showRepliedAllIcon = mailboxItem.isRepliedAll,
+            showForwardedIcon = mailboxItem.isForwarded
         )
 
     private fun showRepliedIcon(mailboxItem: MailboxItem) =
