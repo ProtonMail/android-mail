@@ -45,7 +45,10 @@ data class MailboxItem(
     val labels: List<Label> = emptyList(),
     val subject: String,
     val senders: List<Recipient>,
-    val recipients: List<Recipient>
+    val recipients: List<Recipient>,
+    val isReplied: Boolean,
+    val isRepliedAll: Boolean,
+    val isForwarded: Boolean
 ) : PageItem {
     override val labelIds: List<LabelId> = labels.map { it.labelId }
     override val keywords: String by lazy { subject + senders + recipients }
@@ -64,8 +67,14 @@ fun Message.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     size = size,
     order = order,
     read = read,
+    isReplied = isReplied,
+    isRepliedAll = isRepliedAll,
+    isForwarded = isForwarded
 )
 
+/**
+ * @param [isReplied isRepliedAll isForwarded] are always false for Conversation type mailbox items.
+ */
 fun Conversation.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     type = MailboxItemType.Conversation,
     id = conversationId.id,
@@ -79,6 +88,9 @@ fun Conversation.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     size = size,
     order = order,
     read = read,
+    isReplied = false,
+    isRepliedAll = false,
+    isForwarded = false
 )
 
 fun ViewMode.toMailboxItemType() = when (this) {

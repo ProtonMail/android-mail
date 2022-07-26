@@ -51,7 +51,10 @@ object MailboxTestData {
         subject = "subject",
         senders = listOf(Recipient("address", "name")),
         recipients = emptyList(),
-        labels = labelIds.map { buildLabel(userId = userId, id = it) }
+        labels = labelIds.map { buildLabel(userId = userId, id = it) },
+        isReplied = false,
+        isRepliedAll = false,
+        isForwarded = false
     )
 
     private fun buildMessageMailboxItem(id: String, isRead: Boolean) = MailboxItem(
@@ -65,7 +68,10 @@ object MailboxTestData {
         time = 0,
         size = 0,
         order = 0,
-        read = isRead
+        read = isRead,
+        isReplied = false,
+        isRepliedAll = false,
+        isForwarded = false
     )
 
 }
