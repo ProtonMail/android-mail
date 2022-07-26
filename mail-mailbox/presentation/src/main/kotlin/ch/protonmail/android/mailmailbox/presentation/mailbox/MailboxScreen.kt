@@ -274,7 +274,7 @@ private fun MailboxItem(
                     softWrap = false,
                 )
                 Text(
-                    text = "Senders: ${item.senders}",
+                    text = "Participants: ${item.participants}",
                     fontWeight = fontWeight,
                     maxLines = 1
                 )
@@ -317,8 +317,7 @@ fun PreviewMailbox() {
                     id = "1",
                     conversationId = ConversationId("2"),
                     userId = UserId("0"),
-                    senders = listOf(Recipient("address", "name")),
-                    recipients = emptyList(),
+                    participants = emptyList(),
                     subject = "First message",
                     time = 0,
                     read = false,
@@ -331,8 +330,7 @@ fun PreviewMailbox() {
                     id = "2",
                     conversationId = ConversationId("2"),
                     userId = UserId("0"),
-                    senders = listOf(Recipient("address", "name")),
-                    recipients = emptyList(),
+                    participants = listOf(Recipient("address", "name")),
                     subject = "Second message",
                     time = 0,
                     read = true,

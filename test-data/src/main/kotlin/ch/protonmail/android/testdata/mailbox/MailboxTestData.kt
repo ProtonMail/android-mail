@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
+import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.domain.entity.UserId
 
@@ -41,11 +42,13 @@ object MailboxTestData {
     val mailboxConversationItem = buildConversationMailboxItem("6")
 
     fun buildMailboxItem(
-        userId: UserId,
-        id: String,
-        time: Long,
+        userId: UserId = UserIdTestData.userId,
+        id: String = "itemId",
+        time: Long = 0,
         labelIds: List<String> = listOf("0"),
         type: MailboxItemType = MailboxItemType.Message,
+        senders: List<Recipient> = listOf(Recipient("address", "name")),
+        recipients: List<Recipient> = emptyList(),
     ) = MailboxItem(
         type = type,
         id = id,
@@ -56,8 +59,8 @@ object MailboxTestData {
         order = 1000,
         read = true,
         subject = "subject",
-        senders = listOf(Recipient("address", "name")),
-        recipients = emptyList(),
+        senders = senders,
+        recipients = recipients,
         labels = labelIds.map { buildLabel(userId = userId, id = it) },
         isReplied = false,
         isRepliedAll = false,
@@ -136,8 +139,7 @@ object MailboxItemUiModelTestData {
         read = isRead,
         labels = emptyList(),
         subject = subject,
-        senders = emptyList(),
-        recipients = emptyList(),
+        participants = emptyList(),
         showRepliedIcon = false,
         showRepliedAllIcon = false,
         showForwardedIcon = false,

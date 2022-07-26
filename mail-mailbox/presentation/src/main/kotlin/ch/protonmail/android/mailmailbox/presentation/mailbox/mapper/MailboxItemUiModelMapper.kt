@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
+import ch.protonmail.android.mailconversation.domain.entity.Recipient
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import me.proton.core.domain.arch.Mapper
@@ -35,12 +37,25 @@ class MailboxItemUiModelMapper @Inject constructor() : Mapper<MailboxItem, Mailb
             read = mailboxItem.read,
             labels = mailboxItem.labels,
             subject = mailboxItem.subject,
-            senders = mailboxItem.senders,
-            recipients = mailboxItem.recipients,
+            participants = getParticipants(mailboxItem),
             showRepliedIcon = showRepliedIcon(mailboxItem),
             showRepliedAllIcon = mailboxItem.isRepliedAll,
             showForwardedIcon = mailboxItem.isForwarded
         )
+
+    private fun getParticipants(mailboxItem: MailboxItem): List<Recipient> {
+        val displayRecipientLocations = setOf(
+            SystemLabelId.Sent.labelId,
+            SystemLabelId.Drafts.labelId
+        )
+        val displayRecipients = mailboxItem.labelIds.intersect(displayRecipientLocations).isNotEmpty()
+
+        return if (displayRecipients) {
+            mailboxItem.recipients
+        } else {
+            mailboxItem.senders
+        }
+    }
 
     private fun showRepliedIcon(mailboxItem: MailboxItem) =
         if (mailboxItem.isRepliedAll) {

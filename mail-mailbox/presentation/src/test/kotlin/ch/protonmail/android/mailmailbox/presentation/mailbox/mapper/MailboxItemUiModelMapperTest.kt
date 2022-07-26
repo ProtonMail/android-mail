@@ -18,8 +18,12 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
+import ch.protonmail.android.mailconversation.domain.entity.Recipient
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
+import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -66,4 +70,35 @@ class MailboxItemUiModelMapperTest {
         assertFalse(actual.showForwardedIcon)
     }
 
+    @Test
+    fun `when mailbox item is not in sent or drafts ui model shows senders as participants`() {
+        val senders = listOf(
+            Recipient("sender@proton.ch", "sender"),
+            Recipient("sender1@proton.ch", "sender1"),
+        )
+        val mailboxItem = buildMailboxItem(
+            labelIds = listOf(SystemLabelId.Inbox.labelId.id),
+            senders = senders
+        )
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertEquals(senders, actual.participants)
+    }
+
+    @Test
+    fun `when mailbox item is in sent or drafts ui model shows recipients as participants`() {
+        val recipients = listOf(
+            Recipient("recipient@proton.ch", "recipient"),
+            Recipient("recipient1@proton.ch", "recipient1"),
+        )
+        val mailboxItem = buildMailboxItem(
+            labelIds = listOf(SystemLabelId.Sent.labelId.id),
+            recipients = recipients
+        )
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertEquals(recipients, actual.participants)
+    }
 }
