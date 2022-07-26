@@ -24,12 +24,13 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.domain.entity.UserId
 
 object MailboxTestData {
 
-    val mailboxItem1 = buildMessageMailboxItem("1", isRead = false)
-    val mailboxItem2 = buildMessageMailboxItem("2", isRead = true)
+    val unreadMailboxItem = buildMessageMailboxItem("1", isRead = false)
+    val readMailboxItem = buildMessageMailboxItem("2", isRead = true)
 
     val repliedMailboxItem = buildMessageMailboxItem("3", isReplied = true)
     val repliedAllMailboxItem = buildMessageMailboxItem("4", isRepliedAll = true)
@@ -87,7 +88,7 @@ object MailboxTestData {
     )
 
     private fun buildConversationMailboxItem(id: String) = MailboxItem(
-        type = MailboxItemType.Message,
+        type = MailboxItemType.Conversation,
         id = id,
         conversationId = ConversationId("2"),
         userId = UserId("0"),
@@ -107,29 +108,36 @@ object MailboxTestData {
 
 object MailboxItemUiModelTestData {
 
-    val mailboxItemUiModel1 = MailboxItemUiModel(
-        type = MailboxItemType.Message,
+    val unreadMailboxItemUiModel = buildMailboxUiModelItem(
         id = "1",
-        conversationId = ConversationId("2"),
-        userId = UserId("0"),
-        senders = listOf(Recipient("address", "name")),
-        recipients = emptyList(),
+        type = MailboxItemType.Message,
         subject = "First message",
-        time = 0,
-        read = false,
-        showRepliedIcon = false,
+        isRead = false,
     )
 
-    val mailboxItemUiModel2 = MailboxItemUiModel(
-        type = MailboxItemType.Message,
+    val readMailboxItemUiModel = buildMailboxUiModelItem(
         id = "2",
-        conversationId = ConversationId("2"),
-        userId = UserId("0"),
-        senders = listOf(Recipient("address", "name")),
-        recipients = emptyList(),
+        type = MailboxItemType.Message,
         subject = "Second message",
+        isRead = true,
+    )
+
+    fun buildMailboxUiModelItem(
+        id: String,
+        type: MailboxItemType,
+        subject: String = "subject",
+        isRead: Boolean = true
+    ) = MailboxItemUiModel(
+        type = type,
+        id = id,
+        userId = userId,
+        conversationId = ConversationId(id),
         time = 0,
-        read = true,
+        read = isRead,
+        labels = emptyList(),
+        subject = subject,
+        senders = emptyList(),
+        recipients = emptyList(),
         showRepliedIcon = false,
     )
 }

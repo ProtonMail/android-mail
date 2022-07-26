@@ -23,7 +23,6 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
@@ -31,9 +30,7 @@ import org.junit.Test
 
 class MailboxPagerFactoryTest {
 
-    private val pagingSourceFactory = mockk<MailboxItemPagingSourceFactory> {
-        every { this@mockk.create(any(), any(), any(), any()) } returns mockk(relaxUnitFun = true)
-    }
+    private val pagingSourceFactory = mockk<MailboxItemPagingSourceFactory>()
 
     private val mailboxPagerFactory = MailboxPagerFactory(pagingSourceFactory)
 
