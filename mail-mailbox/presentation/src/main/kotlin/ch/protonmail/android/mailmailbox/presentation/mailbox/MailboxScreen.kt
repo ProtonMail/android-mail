@@ -321,7 +321,8 @@ fun PreviewMailbox() {
                     recipients = emptyList(),
                     subject = "First message",
                     time = 0,
-                    read = false
+                    read = false,
+                    showRepliedIcon = true,
                 ),
                 MailboxItemUiModel(
                     type = MailboxItemType.Message,
@@ -332,7 +333,8 @@ fun PreviewMailbox() {
                     recipients = emptyList(),
                     subject = "Second message",
                     time = 0,
-                    read = true
+                    read = true,
+                    showRepliedIcon = true,
                 )
             )
         )

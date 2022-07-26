@@ -28,10 +28,16 @@ import me.proton.core.domain.entity.UserId
 
 object MailboxTestData {
 
-    val mailboxItem1 = buildMessageMailboxItem("1", false)
+    val mailboxItem1 = buildMessageMailboxItem("1", isRead = false)
+    val mailboxItem2 = buildMessageMailboxItem("2", isRead = true)
 
-    val mailboxItem2 = buildMessageMailboxItem("2", true)
+    val repliedMailboxItem = buildMessageMailboxItem("3", isReplied = true)
+    val repliedAllMailboxItem = buildMessageMailboxItem("4", isRepliedAll = true)
+    val allActionsMailboxItem = buildMessageMailboxItem(
+        "5", isReplied = true, isRepliedAll = true, isForwarded = true
+    )
 
+    val mailboxConversationItem = buildConversationMailboxItem("6")
 
     fun buildMailboxItem(
         userId: UserId,
@@ -57,7 +63,13 @@ object MailboxTestData {
         isForwarded = false
     )
 
-    private fun buildMessageMailboxItem(id: String, isRead: Boolean) = MailboxItem(
+    private fun buildMessageMailboxItem(
+        id: String,
+        isRead: Boolean = true,
+        isReplied: Boolean = false,
+        isRepliedAll: Boolean = false,
+        isForwarded: Boolean = false
+    ) = MailboxItem(
         type = MailboxItemType.Message,
         id = id,
         conversationId = ConversationId("2"),
@@ -69,6 +81,23 @@ object MailboxTestData {
         size = 0,
         order = 0,
         read = isRead,
+        isReplied = isReplied,
+        isRepliedAll = isRepliedAll,
+        isForwarded = isForwarded
+    )
+
+    private fun buildConversationMailboxItem(id: String) = MailboxItem(
+        type = MailboxItemType.Message,
+        id = id,
+        conversationId = ConversationId("2"),
+        userId = UserId("0"),
+        senders = listOf(Recipient("address", "name")),
+        recipients = emptyList(),
+        subject = "First message",
+        time = 0,
+        size = 0,
+        order = 0,
+        read = false,
         isReplied = false,
         isRepliedAll = false,
         isForwarded = false
@@ -87,7 +116,8 @@ object MailboxItemUiModelTestData {
         recipients = emptyList(),
         subject = "First message",
         time = 0,
-        read = false
+        read = false,
+        showRepliedIcon = false,
     )
 
     val mailboxItemUiModel2 = MailboxItemUiModel(
@@ -99,6 +129,7 @@ object MailboxItemUiModelTestData {
         recipients = emptyList(),
         subject = "Second message",
         time = 0,
-        read = true
+        read = true,
+        showRepliedIcon = false,
     )
 }

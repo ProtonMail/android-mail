@@ -27,15 +27,16 @@ class MailboxItemUiModelMapper @Inject constructor() : Mapper<MailboxItem, Mailb
 
     fun toUiModel(mailboxItem: MailboxItem): MailboxItemUiModel =
         MailboxItemUiModel(
-            mailboxItem.type,
-            mailboxItem.id,
-            mailboxItem.userId,
-            mailboxItem.conversationId,
-            mailboxItem.time,
-            mailboxItem.read,
-            mailboxItem.labels,
-            mailboxItem.subject,
-            mailboxItem.senders,
-            mailboxItem.recipients
+            type = mailboxItem.type,
+            id = mailboxItem.id,
+            userId = mailboxItem.userId,
+            conversationId = mailboxItem.conversationId,
+            time = mailboxItem.time,
+            read = mailboxItem.read,
+            labels = mailboxItem.labels,
+            subject = mailboxItem.subject,
+            senders = mailboxItem.senders,
+            recipients = mailboxItem.recipients,
+            showRepliedIcon = mailboxItem.isReplied ?: false
         )
 }

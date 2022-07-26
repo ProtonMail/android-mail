@@ -442,13 +442,14 @@ class MailboxViewModelTest {
             type = type,
             id = "id",
             userId = userId,
+            conversationId = ConversationId("id"),
             time = 0,
             read = false,
-            conversationId = ConversationId("id"),
             labels = emptyList(),
             subject = "subject",
             senders = emptyList(),
             recipients = emptyList(),
+            showRepliedIcon = false,
         )
     }
 }
