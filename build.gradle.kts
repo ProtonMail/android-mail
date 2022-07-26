@@ -59,6 +59,10 @@ protonCoverageMultiModuleOptions {
     coverageConversionScript = { "$rootDir/proton-libs/plugins/jacoco/scripts/cover2cover.py" }
 }
 
+protonDetekt {
+    threshold = 0
+}
+
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
