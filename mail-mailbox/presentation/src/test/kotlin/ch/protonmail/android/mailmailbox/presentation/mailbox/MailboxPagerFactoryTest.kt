@@ -40,11 +40,15 @@ class MailboxPagerFactoryTest {
     @Test
     fun `pager content is returned from mailbox paging source factory`() = runTest {
         // Given
+        val userIds = listOf(userId)
+        val selectedMailLabelId = MailLabelId.System.Starred
+        val filterUnread = false
+        val type = MailboxItemType.Message
         val pager = mailboxPagerFactory.create(
-            listOf(userId),
-            MailLabelId.System.Starred,
-            false,
-            MailboxItemType.Message
+            userIds,
+            selectedMailLabelId,
+            filterUnread,
+            type
         )
 
         // When
@@ -53,10 +57,10 @@ class MailboxPagerFactoryTest {
             // Then
             verify {
                 pagingSourceFactory.create(
-                    listOf(userId),
-                    MailLabelId.System.Starred,
-                    false,
-                    MailboxItemType.Message
+                    userIds,
+                    selectedMailLabelId,
+                    filterUnread,
+                    type
                 )
             }
             cancelAndConsumeRemainingEvents()
