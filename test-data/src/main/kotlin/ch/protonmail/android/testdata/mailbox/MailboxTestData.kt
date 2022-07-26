@@ -138,14 +138,14 @@ object MailboxItemUiModelTestData {
         id = "1",
         type = MailboxItemType.Message,
         subject = "First message",
-        isRead = false,
+        isRead = false
     )
 
     val readMailboxItemUiModel = buildMailboxUiModelItem(
         id = "2",
         type = MailboxItemType.Message,
         subject = "Second message",
-        isRead = true,
+        isRead = true
     )
 
     fun buildMailboxUiModelItem(

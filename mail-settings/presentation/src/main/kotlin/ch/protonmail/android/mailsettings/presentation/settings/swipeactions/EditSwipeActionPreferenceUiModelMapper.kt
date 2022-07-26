@@ -65,7 +65,7 @@ class EditSwipeActionPreferenceUiModelMapper @Inject constructor() :
 
     private fun toUiModel(
         swipeAction: SwipeAction,
-        isSelected: Boolean,
+        isSelected: Boolean
     ) = EditSwipeActionPreferenceItemUiModel(
         swipeAction = swipeAction,
         imageRes = swipeAction.imageRes,

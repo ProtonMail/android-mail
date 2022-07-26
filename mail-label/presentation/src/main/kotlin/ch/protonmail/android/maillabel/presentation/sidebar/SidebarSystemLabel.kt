@@ -35,7 +35,7 @@ import me.proton.core.compose.theme.ProtonTheme
 
 fun LazyListScope.sidebarSystemLabelItems(
     items: List<MailLabelUiModel.System>,
-    onLabelAction: (SidebarLabelAction) -> Unit,
+    onLabelAction: (SidebarLabelAction) -> Unit
 ) {
     items(items = items, key = { it.id.labelId.id }) {
         SidebarSystemLabel(it, onLabelAction)
@@ -45,7 +45,7 @@ fun LazyListScope.sidebarSystemLabelItems(
 @Composable
 private fun SidebarSystemLabel(
     item: MailLabelUiModel.System,
-    onLabelAction: (SidebarLabelAction) -> Unit,
+    onLabelAction: (SidebarLabelAction) -> Unit
 ) {
     ProtonSidebarItem(
         icon = painterResource(item.icon),
@@ -59,11 +59,11 @@ private fun SidebarSystemLabel(
 @SuppressLint("VisibleForTests")
 @Preview(
     name = "Sidebar System Labels in light mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
 )
 @Preview(
     name = "Sidebar System Labels in dark mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
 fun PreviewSidebarSystemLabelItems() {
@@ -71,7 +71,7 @@ fun PreviewSidebarSystemLabelItems() {
         ProtonSidebarLazy {
             sidebarSystemLabelItems(
                 items = MailLabelsUiModel.PreviewForTesting.systems,
-                onLabelAction = {},
+                onLabelAction = {}
             )
         }
     }

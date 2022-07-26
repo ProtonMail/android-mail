@@ -37,7 +37,7 @@ import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
 internal class ObserveCurrentViewModeTest(
-    @Suppress("UNUSED_PARAMETER") _testName: String,
+    @Suppress("UNUSED_PARAMETER") testName: String,
     private val input: Params.Input,
     private val expected: ViewMode
 ) {
@@ -64,7 +64,7 @@ internal class ObserveCurrentViewModeTest(
 
         data class Input(
             val isConversationSettingEnabled: Boolean,
-            val selectedMailLabelId: MailLabelId,
+            val selectedMailLabelId: MailLabelId
         )
     }
 

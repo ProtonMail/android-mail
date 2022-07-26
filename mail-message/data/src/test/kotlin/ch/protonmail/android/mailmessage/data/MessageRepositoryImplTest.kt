@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data
 
+import java.io.IOException
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.repository.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.domain.repository.MessageRemoteDataSource
@@ -33,7 +34,6 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Before
 import org.junit.Test
-import java.io.IOException
 import kotlin.test.assertEquals
 
 class MessageRepositoryImplTest {
@@ -45,7 +45,7 @@ class MessageRepositoryImplTest {
             getMessage(id = "1", time = 1000),
             getMessage(id = "2", time = 2000),
             getMessage(id = "3", time = 3000),
-            getMessage(id = "4", time = 4000),
+            getMessage(id = "4", time = 4000)
         )
     }
     private val localDataSource = mockk<MessageLocalDataSource> {
@@ -66,12 +66,12 @@ class MessageRepositoryImplTest {
         // Given
         val pageKey = PageKey()
         val localMessages = listOf(
-            getMessage(id = "1", time = 1000),
+            getMessage(id = "1", time = 1000)
         )
         val remoteMessages = listOf(
             getMessage(id = "1", time = 1000),
             getMessage(id = "2", time = 2000),
-            getMessage(id = "3", time = 3000),
+            getMessage(id = "3", time = 3000)
         )
         coEvery { localDataSource.getMessages(any(), any()) } returns localMessages
         coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
@@ -94,7 +94,7 @@ class MessageRepositoryImplTest {
         val pageKey = PageKey()
         val localMessages = listOf(
             getMessage(id = "1", time = 1000),
-            getMessage(id = "2", time = 2000),
+            getMessage(id = "2", time = 2000)
         )
         coEvery { localDataSource.getMessages(any(), any()) } returns localMessages
         coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
@@ -116,12 +116,12 @@ class MessageRepositoryImplTest {
         val pageKey = PageKey()
         val localMessages = listOf(
             getMessage(id = "1", time = 1000),
-            getMessage(id = "2", time = 2000),
+            getMessage(id = "2", time = 2000)
         )
         val remoteMessages = listOf(
             getMessage(id = "1", time = 1000),
             getMessage(id = "2", time = 2000),
-            getMessage(id = "3", time = 3000),
+            getMessage(id = "3", time = 3000)
         )
         coEvery { localDataSource.getMessages(any(), any()) } returns localMessages
         coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns true

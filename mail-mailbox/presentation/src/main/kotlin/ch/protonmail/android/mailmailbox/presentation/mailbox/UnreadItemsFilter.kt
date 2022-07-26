@@ -95,7 +95,7 @@ private fun chipColors() = ChipDefaults.filterChipColors(
 @Composable
 fun InactiveUnreadFilterButtonPreview() {
     UnreadItemsFilter(
-        state = UnreadFilterState.Data(4, false),
+        state = UnreadFilterState.Data(DUMMY_UNREAD_COUNT, false),
         onFilterEnabled = {},
         onFilterDisabled = {}
     )
@@ -105,8 +105,10 @@ fun InactiveUnreadFilterButtonPreview() {
 @Composable
 fun ActiveUnreadFilterButtonPreview() {
     UnreadItemsFilter(
-        state = UnreadFilterState.Data(4, true),
+        state = UnreadFilterState.Data(DUMMY_UNREAD_COUNT, true),
         onFilterEnabled = {},
         onFilterDisabled = {}
     )
 }
+
+private const val DUMMY_UNREAD_COUNT = 4

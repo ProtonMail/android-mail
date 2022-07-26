@@ -87,7 +87,8 @@ fun AccountSettingScreen(
             ProtonSettingsList(
                 modifier
                     .padding(paddingValues)
-                    .testTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)) {
+                    .testTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
+            ) {
                 item { ProtonSettingsHeader(title = string.mail_settings_account) }
                 item {
                     ProtonSettingsItem(

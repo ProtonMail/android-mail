@@ -43,12 +43,12 @@ interface MessageApi : BaseRetrofitApi {
         /* Keyword search of To, CC, BCC, From, Subject */
         @Query("Keyword") keyword: String? = null,
         @Query("Unread") unread: Int? = null,
-        @Query("ConversationID") conversationsIds: List<String> = emptyList(),
+        @Query("ConversationID") conversationsIds: List<String> = emptyList()
     ): GetMessagesResponse
 
     @GET("mail/v4/messages/{messageId}")
     suspend fun getMessage(
-        @Path("messageId") messageId: String,
+        @Path("messageId") messageId: String
     ): GetMessageResponse
 
     companion object {

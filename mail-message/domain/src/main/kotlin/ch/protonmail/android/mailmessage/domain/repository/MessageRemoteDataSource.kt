@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.mailmessage.domain.repository
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import me.proton.core.domain.entity.UserId
 
 interface MessageRemoteDataSource {
@@ -30,7 +30,7 @@ interface MessageRemoteDataSource {
      */
     suspend fun getMessages(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): List<Message>
 
     /**
@@ -38,6 +38,6 @@ interface MessageRemoteDataSource {
      */
     suspend fun getMessage(
         userId: UserId,
-        messageId: MessageId,
+        messageId: MessageId
     ): MessageWithBody
 }

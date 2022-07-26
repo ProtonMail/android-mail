@@ -31,17 +31,17 @@ import me.proton.core.label.domain.entity.LabelId
 fun MailLabels.toUiModels(
     settings: FolderColorSettings,
     counters: Map<LabelId, Int?>,
-    selected: MailLabelId,
+    selected: MailLabelId
 ): MailLabelsUiModel = MailLabelsUiModel(
     systems = systemLabels.map { it.toSystemUiModel(settings, counters, selected) },
     folders = folders.map { it.toCustomUiModel(settings, counters, selected) },
-    labels = labels.map { it.toCustomUiModel(settings, counters, selected) },
+    labels = labels.map { it.toCustomUiModel(settings, counters, selected) }
 )
 
 fun MailLabel.toUiModel(
     settings: FolderColorSettings,
     counters: Map<LabelId, Int?>,
-    selected: MailLabelId,
+    selected: MailLabelId
 ): MailLabelUiModel = when (this) {
     is MailLabel.System -> toSystemUiModel(settings, counters, selected)
     is MailLabel.Custom -> toCustomUiModel(settings, counters, selected)
@@ -50,7 +50,7 @@ fun MailLabel.toUiModel(
 fun MailLabel.System.toSystemUiModel(
     settings: FolderColorSettings,
     counters: Map<LabelId, Int?>,
-    selected: MailLabelId,
+    selected: MailLabelId
 ): MailLabelUiModel.System = MailLabelUiModel.System(
     id = id,
     text = text() as TextUiModel.TextRes,
@@ -63,7 +63,7 @@ fun MailLabel.System.toSystemUiModel(
 fun MailLabel.Custom.toCustomUiModel(
     settings: FolderColorSettings,
     counters: Map<LabelId, Int?>,
-    selected: MailLabelId,
+    selected: MailLabelId
 ): MailLabelUiModel.Custom = MailLabelUiModel.Custom(
     id = id,
     text = text() as TextUiModel.Text,

@@ -32,17 +32,17 @@ data class MessageBody(
     val spamScore: String,
     val replyTo: Recipient,
     val replyTos: List<Recipient>,
-    val unsubscribeMethods: List<UnsubscribeMethod>?,
+    val unsubscribeMethods: List<UnsubscribeMethod>?
 )
 
 data class UnsubscribeMethod(
     val httpClient: String?,
     val oneClick: String?,
-    val mailTo: MailTo?,
+    val mailTo: MailTo?
 )
 
 data class MailTo(
     val toList: List<String>,
     val subject: String,
-    val body: String,
+    val body: String
 )

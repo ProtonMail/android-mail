@@ -36,7 +36,7 @@ class AttachmentsInfoResourceTest {
     fun `when atts info contains no atts of ics type calendar then atts count is zero`() {
         val resource = AttachmentsInfoResource(
             ics = AttachmentCountsResource(attachedCount = 0, inlineCount = 0),
-            applicationIcs = AttachmentCountsResource(attachedCount = 0, inlineCount = 0),
+            applicationIcs = AttachmentCountsResource(attachedCount = 0, inlineCount = 0)
         )
 
         val actual = resource.toAttachmentsCount()
@@ -48,7 +48,7 @@ class AttachmentsInfoResourceTest {
     fun `when atts info contains 1 or more atts of ics type then calendar att count is equal to that number`() {
         val resource = AttachmentsInfoResource(
             ics = AttachmentCountsResource(attachedCount = 2, inlineCount = 0),
-            applicationIcs = AttachmentCountsResource(attachedCount = 0, inlineCount = 0),
+            applicationIcs = AttachmentCountsResource(attachedCount = 0, inlineCount = 0)
         )
 
         val actual = resource.toAttachmentsCount()
@@ -60,7 +60,7 @@ class AttachmentsInfoResourceTest {
     fun `when atts info contains 1 or more atts of app-ics type then calendar att count is equal to that number`() {
         val resource = AttachmentsInfoResource(
             ics = AttachmentCountsResource(attachedCount = 0, inlineCount = 0),
-            applicationIcs = AttachmentCountsResource(attachedCount = 1, inlineCount = 0),
+            applicationIcs = AttachmentCountsResource(attachedCount = 1, inlineCount = 0)
         )
 
         val actual = resource.toAttachmentsCount()
@@ -72,7 +72,7 @@ class AttachmentsInfoResourceTest {
     fun `when atts info contains both atts of ics and app-ics types then calendar att count is equal to their sum`() {
         val resource = AttachmentsInfoResource(
             ics = AttachmentCountsResource(attachedCount = 3, inlineCount = 0),
-            applicationIcs = AttachmentCountsResource(attachedCount = 1, inlineCount = 0),
+            applicationIcs = AttachmentCountsResource(attachedCount = 1, inlineCount = 0)
         )
 
         val actual = resource.toAttachmentsCount()
@@ -84,7 +84,7 @@ class AttachmentsInfoResourceTest {
     fun `count of atts with inline disposition is ignored for calendar attachments as not legal`() {
         val resource = AttachmentsInfoResource(
             ics = AttachmentCountsResource(attachedCount = 1, inlineCount = 2),
-            applicationIcs = AttachmentCountsResource(attachedCount = 0, inlineCount = 5),
+            applicationIcs = AttachmentCountsResource(attachedCount = 0, inlineCount = 5)
         )
 
         val actual = resource.toAttachmentsCount()

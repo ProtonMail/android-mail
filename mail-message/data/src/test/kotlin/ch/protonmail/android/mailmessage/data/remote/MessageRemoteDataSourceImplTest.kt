@@ -18,14 +18,14 @@
 
 package ch.protonmail.android.mailmessage.data.remote
 
+import ch.protonmail.android.mailmessage.data.getMessage
+import ch.protonmail.android.mailmessage.data.getMessageResource
+import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailpagination.domain.entity.OrderBy
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageFilter
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
-import ch.protonmail.android.mailmessage.data.getMessage
-import ch.protonmail.android.mailmessage.data.getMessageResource
-import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -100,7 +100,7 @@ class MessageRemoteDataSourceImplTest {
             total = 2,
             messages = listOf(
                 getMessageResource("2", time = 2000),
-                getMessageResource("1", time = 1000),
+                getMessageResource("1", time = 1000)
             ),
             stale = 0
         )
@@ -110,7 +110,7 @@ class MessageRemoteDataSourceImplTest {
         assertEquals(
             expected = listOf(
                 getMessage(userId, "2", time = 2000),
-                getMessage(userId, "1", time = 1000),
+                getMessage(userId, "1", time = 1000)
             ),
             actual = messages
         )

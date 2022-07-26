@@ -28,12 +28,12 @@ import javax.inject.Inject
 
 class MarkAsStaleMailboxItems @Inject constructor(
     private val messageRepository: MessageRepository,
-    private val conversationRepository: ConversationRepository,
+    private val conversationRepository: ConversationRepository
 ) {
     suspend operator fun invoke(
         userIds: List<UserId>,
         type: MailboxItemType,
-        labelId: LabelId,
+        labelId: LabelId
     ) = userIds.forEachAsync { userId ->
         when (type) {
             MailboxItemType.Message -> messageRepository.markAsStale(userId, labelId)

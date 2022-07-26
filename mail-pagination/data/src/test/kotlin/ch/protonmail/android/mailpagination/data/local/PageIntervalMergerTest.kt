@@ -34,7 +34,7 @@ class PageIntervalMergerTest {
         minValue: Long,
         maxValue: Long,
         minOrder: Long = minValue,
-        maxOrder: Long = maxValue,
+        maxOrder: Long = maxValue
     ) = PageIntervalEntity(
         userId = UserId("1"),
         type = PageItemType.Message,
@@ -47,7 +47,7 @@ class PageIntervalMergerTest {
         minOrder = minOrder,
         maxOrder = maxOrder,
         minId = "minId",
-        maxId = "maxId",
+        maxId = "maxId"
     )
 
     @Test
@@ -55,10 +55,10 @@ class PageIntervalMergerTest {
         // Given
         val intervals = listOf(
             getInterval(1000, 2000),
-            getInterval(1500, 3000),
+            getInterval(1500, 3000)
         )
         val expected = listOf(
-            getInterval(1000, 3000),
+            getInterval(1000, 3000)
         )
         // When
         val actual = intervals.merge()
@@ -71,10 +71,10 @@ class PageIntervalMergerTest {
         // Given
         val intervals = listOf(
             getInterval(1000, 2000),
-            getInterval(2000, 3000),
+            getInterval(2000, 3000)
         )
         val expected = listOf(
-            getInterval(1000, 3000),
+            getInterval(1000, 3000)
         )
         // When
         val actual = intervals.merge()
@@ -87,11 +87,11 @@ class PageIntervalMergerTest {
         // Given
         val intervals = listOf(
             getInterval(1000, 2000),
-            getInterval(2100, 3000),
+            getInterval(2100, 3000)
         )
         val expected = listOf(
             getInterval(1000, 2000),
-            getInterval(2100, 3000),
+            getInterval(2100, 3000)
         )
         // When
         val actual = intervals.merge()
@@ -106,11 +106,11 @@ class PageIntervalMergerTest {
             getInterval(1000, 2000),
             getInterval(2200, 3000),
             getInterval(2900, 3200),
-            getInterval(1000, 2100),
+            getInterval(1000, 2100)
         )
         val expected = listOf(
             getInterval(1000, 2100),
-            getInterval(2200, 3200),
+            getInterval(2200, 3200)
         )
         // When
         val actual = intervals.merge()
@@ -125,11 +125,11 @@ class PageIntervalMergerTest {
             getInterval(2200, 3000),
             getInterval(1000, 2100),
             getInterval(2900, 3200),
-            getInterval(1000, 2000),
+            getInterval(1000, 2000)
         )
         val expected = listOf(
             getInterval(1000, 2100),
-            getInterval(2200, 3200),
+            getInterval(2200, 3200)
         )
         // When
         val actual = intervals.merge()
@@ -144,13 +144,13 @@ class PageIntervalMergerTest {
             getInterval(1000, 2000),
             getInterval(2100, 3000),
             getInterval(3100, 4000),
-            getInterval(4100, 5000),
+            getInterval(4100, 5000)
         )
         val expected = listOf(
             getInterval(1000, 2000),
             getInterval(2100, 3000),
             getInterval(3100, 4000),
-            getInterval(4100, 5000),
+            getInterval(4100, 5000)
         )
         // When
         val actual = intervals.merge()
@@ -164,11 +164,11 @@ class PageIntervalMergerTest {
         val intervals = listOf(
             getInterval(minValue = 1000, minOrder = 1001, maxValue = 2000, maxOrder = 2001),
             // 2001 & 2003 have more than 1 increment -> non-overlapping.
-            getInterval(minValue = 2000, minOrder = 2003, maxValue = 3000, maxOrder = 3001),
+            getInterval(minValue = 2000, minOrder = 2003, maxValue = 3000, maxOrder = 3001)
         )
         val expected = listOf(
             getInterval(minValue = 1000, minOrder = 1001, maxValue = 2000, maxOrder = 2001),
-            getInterval(minValue = 2000, minOrder = 2003, maxValue = 3000, maxOrder = 3001),
+            getInterval(minValue = 2000, minOrder = 2003, maxValue = 3000, maxOrder = 3001)
         )
         // When
         val actual = intervals.merge()
@@ -182,10 +182,10 @@ class PageIntervalMergerTest {
         val intervals = listOf(
             getInterval(minValue = 1000, minOrder = 1001, maxValue = 2000, maxOrder = 2001),
             // 2001 & 2002 have only 1 increment -> overlapping.
-            getInterval(minValue = 2000, minOrder = 2002, maxValue = 3000, maxOrder = 3001),
+            getInterval(minValue = 2000, minOrder = 2002, maxValue = 3000, maxOrder = 3001)
         )
         val expected = listOf(
-            getInterval(minValue = 1000, minOrder = 1001, maxValue = 3000, maxOrder = 3001),
+            getInterval(minValue = 1000, minOrder = 1001, maxValue = 3000, maxOrder = 3001)
         )
         // When
         val actual = intervals.merge()
@@ -199,10 +199,10 @@ class PageIntervalMergerTest {
         val intervals = listOf(
             getInterval(minValue = 1000, minOrder = 1001, maxValue = 2000, maxOrder = 2002),
             // 2002 > 2001 -> overlapping.
-            getInterval(minValue = 2000, minOrder = 2000, maxValue = 3000, maxOrder = 3001),
+            getInterval(minValue = 2000, minOrder = 2000, maxValue = 3000, maxOrder = 3001)
         )
         val expected = listOf(
-            getInterval(minValue = 1000, minOrder = 1001, maxValue = 3000, maxOrder = 3001),
+            getInterval(minValue = 1000, minOrder = 1001, maxValue = 3000, maxOrder = 3001)
         )
         // When
         val actual = intervals.merge()

@@ -33,7 +33,7 @@ suspend fun PageIntervalDao.isLocalPageValid(
     userId: UserId,
     type: PageItemType,
     pageKey: PageKey,
-    items: List<PageItem>,
+    items: List<PageItem>
 ): Boolean {
     val intervals = getAll(
         userId = userId,

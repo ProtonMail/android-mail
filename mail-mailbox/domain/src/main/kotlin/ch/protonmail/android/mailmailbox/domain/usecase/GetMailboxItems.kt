@@ -45,7 +45,7 @@ class GetMailboxItems @Inject constructor(
     suspend operator fun invoke(
         userId: UserId,
         type: MailboxItemType,
-        pageKey: PageKey = PageKey(),
+        pageKey: PageKey = PageKey()
     ): List<MailboxItem> {
         val folders = labelRepository.getLabels(userId, LabelType.MessageFolder)
         val labels = labelRepository.getLabels(userId, LabelType.MessageLabel)
@@ -67,7 +67,7 @@ class GetMailboxItems @Inject constructor(
         private val messageTables = arrayOf(
             "MessageEntity",
             "MessageLabelEntity",
-            "LabelEntity",
+            "LabelEntity"
         )
 
         /**
@@ -76,7 +76,7 @@ class GetMailboxItems @Inject constructor(
         private val conversationTables = arrayOf(
             "ConversationEntity",
             "ConversationLabelEntity",
-            "LabelEntity",
+            "LabelEntity"
         )
 
         /**

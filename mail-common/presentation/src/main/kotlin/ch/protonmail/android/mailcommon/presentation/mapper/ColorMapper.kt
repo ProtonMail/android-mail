@@ -27,6 +27,7 @@ import javax.inject.Inject
 class ColorMapper @Inject constructor() {
 
     fun toColor(string: String): Either<String, Color> {
+        @Suppress("MagicNumber")
         with(string.substringAfter("#")) {
             val (a, r, g, b) = when (length) {
                 3 -> listOf(NoTransparency, substring(0, 1), substring(1, 2), substring(2, 3))

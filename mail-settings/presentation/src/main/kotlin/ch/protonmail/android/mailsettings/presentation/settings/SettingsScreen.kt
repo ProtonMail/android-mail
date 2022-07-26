@@ -49,7 +49,7 @@ const val TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM = "AccountSettingsItemTestTag"
 fun MainSettingsScreen(
     modifier: Modifier = Modifier,
     actions: MainSettingsScreen.Actions,
-    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    settingsViewModel: SettingsViewModel = hiltViewModel()
 ) {
     when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
         is Data -> MainSettingsScreen(
@@ -152,7 +152,7 @@ fun MainSettingsScreen(
 private fun CombinedContactsSettingItem(
     modifier: Modifier = Modifier,
     appSettings: AppSettings,
-    onCombinedContactsClick: () -> Unit,
+    onCombinedContactsClick: () -> Unit
 ) {
     val hint = if (appSettings.hasCombinedContacts) {
         stringResource(id = string.mail_settings_enabled)
@@ -172,7 +172,7 @@ private fun CombinedContactsSettingItem(
 private fun AppLanguageSettingItem(
     modifier: Modifier = Modifier,
     appSettings: AppSettings,
-    onAppLanguageClick: () -> Unit,
+    onAppLanguageClick: () -> Unit
 ) {
     val appLanguage = appSettings.customAppLanguage
         ?: stringResource(id = string.mail_settings_auto_detect)
@@ -189,7 +189,7 @@ private fun AppLanguageSettingItem(
 private fun AlternativeRoutingSettingItem(
     modifier: Modifier = Modifier,
     appSettings: AppSettings,
-    onAlternativeRoutingClick: () -> Unit,
+    onAlternativeRoutingClick: () -> Unit
 ) {
     val hint = if (appSettings.hasAlternativeRouting) {
         stringResource(id = string.mail_settings_allowed)
@@ -209,7 +209,7 @@ private fun AlternativeRoutingSettingItem(
 private fun AutoLockSettingItem(
     modifier: Modifier = Modifier,
     appSettings: AppSettings,
-    onAutoLockClick: () -> Unit,
+    onAutoLockClick: () -> Unit
 ) {
     val hint = if (appSettings.hasAutoLock) {
         stringResource(id = string.mail_settings_enabled)
@@ -229,7 +229,7 @@ private fun AutoLockSettingItem(
 fun AccountSettingsItem(
     modifier: Modifier = Modifier,
     accountInfo: AccountInfo?,
-    onAccountClicked: () -> Unit,
+    onAccountClicked: () -> Unit
 ) {
     val header = accountInfo?.name
         ?: stringResource(id = R.string.mail_settings_no_information_available)
@@ -255,7 +255,7 @@ object MainSettingsScreen {
         val onAppLanguageClick: () -> Unit,
         val onCombinedContactsClick: () -> Unit,
         val onSwipeActionsClick: () -> Unit,
-        val onBackClick: () -> Unit,
+        val onBackClick: () -> Unit
     )
 }
 

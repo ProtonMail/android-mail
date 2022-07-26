@@ -32,7 +32,7 @@ data class PageKey(
     val filter: PageFilter = PageFilter(),
     val orderBy: OrderBy = Time,
     val orderDirection: OrderDirection = Descending,
-    val size: Int = defaultPageSize,
+    val size: Int = defaultPageSize
 ) {
     companion object {
         const val defaultPageSize = 25
@@ -60,7 +60,7 @@ data class PageFilter(
     /** Filter on [PageItem.id], excluded, only if [PageItem.time] equal [minTime].*/
     val minId: String? = null,
     /** Filter on [PageItem.id], excluded, only if [PageItem.time] equal [maxTime].*/
-    val maxId: String? = null,
+    val maxId: String? = null
 )
 
 /**

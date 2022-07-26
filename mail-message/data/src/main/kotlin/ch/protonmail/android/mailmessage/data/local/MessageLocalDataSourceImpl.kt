@@ -35,7 +35,7 @@ import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class MessageLocalDataSourceImpl @Inject constructor(
-    private val db: MessageDatabase,
+    private val db: MessageDatabase
 ) : MessageLocalDataSource {
 
     private val messageDao = db.messageDao()
@@ -44,27 +44,27 @@ class MessageLocalDataSourceImpl @Inject constructor(
 
     override fun observeMessages(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): Flow<List<Message>> = messageDao
         .observeAll(userId, pageKey)
         .mapLatest { list -> list.map { it.toMessage() } }
 
     override suspend fun getMessages(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): List<Message> = observeMessages(userId, pageKey).first()
 
     override suspend fun upsertMessages(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Message>,
+        items: List<Message>
     ) = db.inTransaction {
         upsertMessages(items)
         upsertPageInterval(userId, pageKey, items)
     }
 
     override suspend fun upsertMessages(
-        items: List<Message>,
+        items: List<Message>
     ) = db.inTransaction {
         messageDao.insertOrUpdate(*items.map { it.toEntity() }.toTypedArray())
         updateLabels(items)
@@ -72,11 +72,11 @@ class MessageLocalDataSourceImpl @Inject constructor(
 
     override suspend fun deleteMessage(
         userId: UserId,
-        ids: List<MessageId>,
+        ids: List<MessageId>
     ) = messageDao.delete(userId, ids.map { it.id })
 
     override suspend fun deleteAllMessages(
-        userId: UserId,
+        userId: UserId
     ) = db.inTransaction {
         messageDao.deleteAll(userId)
         pageIntervalDao.deleteAll(userId, PageItemType.Message)
@@ -90,22 +90,22 @@ class MessageLocalDataSourceImpl @Inject constructor(
     override suspend fun isLocalPageValid(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Message>,
+        items: List<Message>
     ): Boolean = pageIntervalDao.isLocalPageValid(userId, PageItemType.Message, pageKey, items)
 
     override suspend fun getClippedPageKey(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): PageKey = pageIntervalDao.getClippedPageKey(userId, PageItemType.Message, pageKey)
 
     private suspend fun upsertPageInterval(
         userId: UserId,
         pageKey: PageKey,
-        messages: List<Message>,
+        messages: List<Message>
     ) = pageIntervalDao.upsertPageInterval(userId, PageItemType.Message, pageKey, messages)
 
     private suspend fun updateLabels(
-        messages: List<Message>,
+        messages: List<Message>
     ) = with(groupByUserId(messages)) {
         deleteLabels()
         insertLabels()

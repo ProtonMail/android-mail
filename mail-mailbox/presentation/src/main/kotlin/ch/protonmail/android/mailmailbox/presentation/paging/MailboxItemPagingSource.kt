@@ -47,7 +47,7 @@ interface MailboxItemPagingSourceFactory {
         userIds: List<UserId>,
         selectedMailLabelId: MailLabelId,
         filterUnread: Boolean,
-        type: MailboxItemType,
+        type: MailboxItemType
     ): MailboxItemPagingSource
 }
 
@@ -58,7 +58,7 @@ class MailboxItemPagingSource @AssistedInject constructor(
     @Assisted private val userIds: List<UserId>,
     @Assisted private val selectedMailLabelId: MailLabelId,
     @Assisted private val filterUnread: Boolean,
-    @Assisted private val type: MailboxItemType,
+    @Assisted private val type: MailboxItemType
 ) : InvalidationTrackerPagingSource<MailboxPageKey, MailboxItem>(
     db = roomDatabase,
     tables = GetMultiUserMailboxItems.getInvolvedTables(type)
@@ -75,7 +75,7 @@ class MailboxItemPagingSource @AssistedInject constructor(
     )
 
     override suspend fun loadPage(
-        params: LoadParams<MailboxPageKey>,
+        params: LoadParams<MailboxPageKey>
     ): LoadResult<MailboxPageKey, MailboxItem> {
         try {
             val key = params.key ?: initialPageKey
@@ -99,12 +99,12 @@ class MailboxItemPagingSource @AssistedInject constructor(
     }
 
     override fun getRefreshKey(
-        state: PagingState<MailboxPageKey, MailboxItem>,
+        state: PagingState<MailboxPageKey, MailboxItem>
     ): MailboxPageKey? {
         val items = state.pages.flatMap { it.data }.takeIfNotEmpty() ?: return null
         val key = items.getRefreshPageKey(initialPageKey.pageKey)
         return initialPageKey.copy(
-            pageKey = key.copy(size = max(key.size, state.config.initialLoadSize)),
+            pageKey = key.copy(size = max(key.size, state.config.initialLoadSize))
         )
     }
 }

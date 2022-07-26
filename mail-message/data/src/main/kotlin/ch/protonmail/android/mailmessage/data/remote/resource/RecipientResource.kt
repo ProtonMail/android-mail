@@ -29,7 +29,7 @@ data class RecipientResource(
     @SerialName("Name")
     val name: String,
     @SerialName("Group")
-    val group: String? = null,
+    val group: String? = null
 ) {
     fun toRecipient() = Recipient(
         address = address,

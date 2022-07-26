@@ -76,7 +76,7 @@ class FormatMailboxItemTime @Inject constructor(
         currentTime.get(Calendar.YEAR) == itemCalendar.get(Calendar.YEAR)
 
     private fun isYesterdayAcrossYearChange(itemCalendar: Calendar) = isPreviousYear(itemCalendar) &&
-        itemCalendar.get(Calendar.DAY_OF_YEAR) - currentTime.get(Calendar.DAY_OF_YEAR) == 364
+        itemCalendar.get(Calendar.DAY_OF_YEAR) - currentTime.get(Calendar.DAY_OF_YEAR) == DAYS_IN_ONE_YEAR - 1
 
     private fun isPreviousYear(itemCalendar: Calendar) =
         currentTime.get(Calendar.YEAR) - itemCalendar.get(Calendar.YEAR) == 1
@@ -91,6 +91,7 @@ class FormatMailboxItemTime @Inject constructor(
         itemCalendar.time = Date(this.inWholeMilliseconds)
         return itemCalendar
     }
-
 }
+
+private const val DAYS_IN_ONE_YEAR = 365
 

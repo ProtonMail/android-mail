@@ -27,7 +27,7 @@ import me.proton.core.domain.entity.UserId
 fun getConversationResource(
     id: String = "1",
     order: Long = 1000,
-    labels: List<ConversationLabelResource> = listOf(getConversationLabelResource(id)),
+    labels: List<ConversationLabelResource> = listOf(getConversationLabelResource(id))
 ) = ConversationResource(
     id = id,
     order = order,
@@ -46,14 +46,14 @@ fun getConversationResource(
 
 fun getConversationLabelResource(
     id: String,
-    contextTime: Long = 1000,
+    contextTime: Long = 1000
 ) = ConversationLabelResource(
     id = id,
     contextNumUnread = 0,
     contextNumMessages = 0,
     contextTime = 0,
     contextSize = contextTime,
-    contextNumAttachments = 0,
+    contextNumAttachments = 0
 )
 
 fun getConversation(
@@ -61,9 +61,9 @@ fun getConversation(
     id: String = "1",
     order: Long = 1000,
     time: Long = 1000,
-    labelIds: List<String> = listOf("0"),
+    labelIds: List<String> = listOf("0")
 ) = getConversationResource(
     id = id,
     order = order,
-    labels = labelIds.map { getConversationLabelResource(id, contextTime = time) },
+    labels = labelIds.map { getConversationLabelResource(id, contextTime = time) }
 ).toConversation(userId)

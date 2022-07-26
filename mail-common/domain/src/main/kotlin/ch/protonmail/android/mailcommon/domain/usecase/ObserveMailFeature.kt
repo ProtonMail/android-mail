@@ -26,7 +26,7 @@ import me.proton.core.featureflag.domain.entity.FeatureFlag
 import javax.inject.Inject
 
 class ObserveMailFeature @Inject constructor(
-    private val featureFlagManager: FeatureFlagManager,
+    private val featureFlagManager: FeatureFlagManager
 ) {
 
     operator fun invoke(userId: UserId, feature: MailFeatureId): Flow<FeatureFlag?> =

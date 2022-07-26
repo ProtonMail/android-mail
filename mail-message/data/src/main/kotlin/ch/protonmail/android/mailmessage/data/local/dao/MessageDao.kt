@@ -20,12 +20,12 @@ package ch.protonmail.android.mailmessage.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
+import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
 import ch.protonmail.android.mailpagination.domain.entity.OrderBy
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
-import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
-import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
@@ -108,7 +108,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         maxValue: Long,
         minOrder: Long,
         maxOrder: Long,
-        size: Int,
+        size: Int
     ): Flow<List<MessageWithLabelIds>>
 
     @Query(
@@ -143,7 +143,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         maxValue: Long,
         minOrder: Long,
         maxOrder: Long,
-        size: Int,
+        size: Int
     ): Flow<List<MessageWithLabelIds>>
 
     @Query("DELETE FROM MessageEntity WHERE userId = :userId AND messageId IN (:messageIds)")

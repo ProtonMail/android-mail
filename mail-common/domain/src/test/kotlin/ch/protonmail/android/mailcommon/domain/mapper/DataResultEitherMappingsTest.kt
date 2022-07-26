@@ -40,7 +40,7 @@ internal class DataResultEitherMappingsTest {
         val string2 = "world"
         val input = flowOf(
             DataResult.Success(ResponseSource.Local, string1),
-            DataResult.Success(ResponseSource.Remote, string2),
+            DataResult.Success(ResponseSource.Remote, string2)
         )
 
         // when
@@ -59,7 +59,7 @@ internal class DataResultEitherMappingsTest {
         val string = "hello"
         val input = flowOf(
             DataResult.Processing(ResponseSource.Remote),
-            DataResult.Success(ResponseSource.Remote, string),
+            DataResult.Success(ResponseSource.Remote, string)
         )
 
         // when

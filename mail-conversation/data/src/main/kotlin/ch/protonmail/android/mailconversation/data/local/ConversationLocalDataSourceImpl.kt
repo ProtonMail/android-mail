@@ -35,7 +35,7 @@ import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class ConversationLocalDataSourceImpl @Inject constructor(
-    private val db: ConversationDatabase,
+    private val db: ConversationDatabase
 ) : ConversationLocalDataSource {
 
     private val conversationDao = db.conversationDao()
@@ -44,27 +44,27 @@ class ConversationLocalDataSourceImpl @Inject constructor(
 
     override fun observeConversations(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): Flow<List<Conversation>> = conversationDao
         .observeAll(userId, pageKey)
         .mapLatest { list -> list.map { it.toConversation(pageKey.filter.labelId) } }
 
     override suspend fun getConversations(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): List<Conversation> = observeConversations(userId, pageKey).first()
 
     override suspend fun upsertConversations(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Conversation>,
+        items: List<Conversation>
     ) = db.inTransaction {
         upsertConversations(items)
         upsertPageInterval(userId, pageKey, items)
     }
 
     override suspend fun upsertConversations(
-        items: List<Conversation>,
+        items: List<Conversation>
     ) = db.inTransaction {
         conversationDao.insertOrUpdate(*items.map { it.toEntity() }.toTypedArray())
         updateLabels(items)
@@ -72,11 +72,11 @@ class ConversationLocalDataSourceImpl @Inject constructor(
 
     override suspend fun deleteConversation(
         userId: UserId,
-        ids: List<ConversationId>,
+        ids: List<ConversationId>
     ) = conversationDao.delete(userId, ids.map { it.id })
 
     override suspend fun deleteAllConversations(
-        userId: UserId,
+        userId: UserId
     ) = db.inTransaction {
         conversationDao.deleteAll(userId)
         pageIntervalDao.deleteAll(userId, PageItemType.Conversation)
@@ -84,28 +84,28 @@ class ConversationLocalDataSourceImpl @Inject constructor(
 
     override suspend fun markAsStale(
         userId: UserId,
-        labelId: LabelId,
+        labelId: LabelId
     ) = pageIntervalDao.deleteAll(userId, PageItemType.Conversation, labelId)
 
     override suspend fun isLocalPageValid(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Conversation>,
+        items: List<Conversation>
     ): Boolean = pageIntervalDao.isLocalPageValid(userId, PageItemType.Conversation, pageKey, items)
 
     override suspend fun getClippedPageKey(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): PageKey = pageIntervalDao.getClippedPageKey(userId, PageItemType.Conversation, pageKey)
 
     private suspend fun upsertPageInterval(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Conversation>,
+        items: List<Conversation>
     ) = pageIntervalDao.upsertPageInterval(userId, PageItemType.Conversation, pageKey, items)
 
     private suspend fun updateLabels(
-        items: List<Conversation>,
+        items: List<Conversation>
     ) = with(groupByUserId(items)) {
         deleteLabels()
         insertLabels()

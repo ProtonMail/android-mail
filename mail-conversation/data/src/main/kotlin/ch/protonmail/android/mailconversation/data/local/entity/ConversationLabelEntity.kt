@@ -33,7 +33,7 @@ import me.proton.core.user.data.entity.UserEntity
         Index("labelId"),
         Index("conversationId"),
         // Index("userId", "labelId"), // LabelEntity foreign key.
-        Index("userId", "conversationId"), // ConversationEntity foreign key.
+        Index("userId", "conversationId") // ConversationEntity foreign key.
     ],
     foreignKeys = [
         ForeignKey(
@@ -54,7 +54,7 @@ import me.proton.core.user.data.entity.UserEntity
             parentColumns = ["userId", "conversationId"],
             childColumns = ["userId", "conversationId"],
             onDelete = ForeignKey.CASCADE
-        ),
+        )
     ]
 )
 data class ConversationLabelEntity(
@@ -65,5 +65,5 @@ data class ConversationLabelEntity(
     val contextSize: Long,
     val contextNumMessages: Int,
     val contextNumUnread: Int,
-    val contextNumAttachments: Int,
+    val contextNumAttachments: Int
 )

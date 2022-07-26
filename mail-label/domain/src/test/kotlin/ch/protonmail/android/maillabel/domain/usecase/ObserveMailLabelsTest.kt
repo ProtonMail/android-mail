@@ -55,7 +55,7 @@ class ObserveMailLabelsTest {
                 value = listOf(
                     buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
                     buildLabel(userId, LabelType.MessageFolder, "1", order = 1),
-                    buildLabel(userId, LabelType.MessageFolder, "2", order = 2),
+                    buildLabel(userId, LabelType.MessageFolder, "2", order = 2)
                 )
             )
         )
@@ -65,7 +65,7 @@ class ObserveMailLabelsTest {
                 value = listOf(
                     buildLabel(userId, LabelType.MessageLabel, "3", order = 0),
                     buildLabel(userId, LabelType.MessageLabel, "4", order = 1),
-                    buildLabel(userId, LabelType.MessageLabel, "5", order = 2),
+                    buildLabel(userId, LabelType.MessageLabel, "5", order = 2)
                 )
             )
         )
@@ -78,7 +78,7 @@ class ObserveMailLabelsTest {
     private val TestScope.observeMailLabels
         get() = ObserveMailLabels(
             dispatcher = UnconfinedTestDispatcher(testScheduler),
-            labelRepository = labelRepository,
+            labelRepository = labelRepository
         )
 
     @Before
@@ -107,7 +107,7 @@ class ObserveMailLabelsTest {
                 expected = listOf(
                     buildCustomFolder("0", order = 0),
                     buildCustomFolder("1", order = 1),
-                    buildCustomFolder("2", order = 2),
+                    buildCustomFolder("2", order = 2)
                 ),
                 actual = item.folders
             )
@@ -115,7 +115,7 @@ class ObserveMailLabelsTest {
                 expected = listOf(
                     buildCustomLabel("3", order = 0),
                     buildCustomLabel("4", order = 1),
-                    buildCustomLabel("5", order = 2),
+                    buildCustomLabel("5", order = 2)
                 ),
                 actual = item.labels
             )
@@ -136,7 +136,7 @@ class ObserveMailLabelsTest {
                     buildLabel(userId, LabelType.MessageFolder, "0.1", order = 0, parentId = "0"),
                     buildLabel(userId, LabelType.MessageFolder, "0.2", order = 1, parentId = "0"),
                     buildLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2"),
-                    buildLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2"),
+                    buildLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2")
                 )
             )
         )
@@ -172,7 +172,7 @@ class ObserveMailLabelsTest {
                     buildLabel(userId, LabelType.MessageFolder, "0.0", order = 0, parentId = "0"),
                     buildLabel(userId, LabelType.MessageFolder, "2", order = 2),
                     buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
-                    buildLabel(userId, LabelType.MessageFolder, "1", order = 1),
+                    buildLabel(userId, LabelType.MessageFolder, "1", order = 1)
                 )
             )
         )

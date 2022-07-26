@@ -38,7 +38,7 @@ import javax.inject.Singleton
 @Serializable
 data class ConversationsEvents(
     @SerialName("Conversations")
-    val conversations: List<ConversationEvent>,
+    val conversations: List<ConversationEvent>
 )
 
 @Serializable
@@ -48,14 +48,14 @@ data class ConversationEvent(
     @SerialName("Action")
     val action: Int,
     @SerialName("Conversation")
-    val conversation: ConversationResource? = null,
+    val conversation: ConversationResource? = null
 )
 
 @Singleton
 open class ConversationEventListener @Inject constructor(
     private val db: LabelDatabase,
     private val localDataSource: ConversationLocalDataSource,
-    private val repository: ConversationRepository,
+    private val repository: ConversationRepository
 ) : EventListener<String, ConversationResource>() {
 
     override val type = Type.Core
@@ -63,7 +63,7 @@ open class ConversationEventListener @Inject constructor(
 
     override suspend fun deserializeEvents(
         config: EventManagerConfig,
-        response: EventsResponse,
+        response: EventsResponse
     ): List<Event<String, ConversationResource>>? {
         return response.body.deserializeOrNull<ConversationsEvents>()?.conversations?.map {
             Event(requireNotNull(Action.map[it.action]), it.id, it.conversation)

@@ -72,6 +72,6 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideWorkManager(
-        @ApplicationContext context: Context,
+        @ApplicationContext context: Context
     ): WorkManager = WorkManager.getInstance(context)
 }

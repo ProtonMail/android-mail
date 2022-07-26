@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailmessage.domain.repository
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -32,7 +32,7 @@ interface MessageLocalDataSource {
      */
     fun observeMessages(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): Flow<List<Message>>
 
     /**
@@ -40,7 +40,7 @@ interface MessageLocalDataSource {
      */
     suspend fun getMessages(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): List<Message>
 
     /**
@@ -49,14 +49,14 @@ interface MessageLocalDataSource {
     suspend fun upsertMessages(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Message>,
+        items: List<Message>
     )
 
     /**
      * Update or insert [Message].
      */
     suspend fun upsertMessages(
-        items: List<Message>,
+        items: List<Message>
     )
 
     /**
@@ -64,14 +64,14 @@ interface MessageLocalDataSource {
      */
     suspend fun deleteMessage(
         userId: UserId,
-        ids: List<MessageId>,
+        ids: List<MessageId>
     )
 
     /**
      * Delete all messages for [userId].
      */
     suspend fun deleteAllMessages(
-        userId: UserId,
+        userId: UserId
     )
 
     /**
@@ -88,7 +88,7 @@ interface MessageLocalDataSource {
     suspend fun isLocalPageValid(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Message>,
+        items: List<Message>
     ): Boolean
 
     /**
@@ -98,6 +98,6 @@ interface MessageLocalDataSource {
      */
     suspend fun getClippedPageKey(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): PageKey
 }

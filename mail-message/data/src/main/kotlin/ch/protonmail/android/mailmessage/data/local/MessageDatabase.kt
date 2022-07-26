@@ -58,7 +58,7 @@ interface MessageDatabase : Database, PageIntervalDatabase {
                     table = "MessageEntity",
                     column = "sender_group",
                     type = "TEXT",
-                    defaultValue = null,
+                    defaultValue = null
                 )
             }
         }

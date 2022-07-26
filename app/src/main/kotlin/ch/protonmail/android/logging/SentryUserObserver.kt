@@ -31,7 +31,7 @@ import javax.inject.Singleton
 @Singleton
 class SentryUserObserver @Inject constructor(
     internal val scopeProvider: CoroutineScopeProvider,
-    internal val accountManager: AccountManager,
+    internal val accountManager: AccountManager
 ) {
 
     fun start() = accountManager.getPrimaryUserId()

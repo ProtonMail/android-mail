@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.mailmessage.data
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageResource
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import me.proton.core.eventmanager.domain.EventListener
@@ -38,7 +38,7 @@ import javax.inject.Singleton
 @Serializable
 data class MessagesEvents(
     @SerialName("Messages")
-    val messages: List<MessageEvent>,
+    val messages: List<MessageEvent>
 )
 
 @Serializable
@@ -48,14 +48,14 @@ data class MessageEvent(
     @SerialName("Action")
     val action: Int,
     @SerialName("Message")
-    val message: MessageResource? = null,
+    val message: MessageResource? = null
 )
 
 @Singleton
 open class MessageEventListener @Inject constructor(
     private val db: LabelDatabase,
     private val localDataSource: MessageLocalDataSource,
-    private val repository: MessageRepository,
+    private val repository: MessageRepository
 ) : EventListener<String, MessageResource>() {
 
     override val type = Type.Core
@@ -63,7 +63,7 @@ open class MessageEventListener @Inject constructor(
 
     override suspend fun deserializeEvents(
         config: EventManagerConfig,
-        response: EventsResponse,
+        response: EventsResponse
     ): List<Event<String, MessageResource>>? {
         return response.body.deserializeOrNull<MessagesEvents>()?.messages?.map {
             Event(requireNotNull(Action.map[it.action]), it.id, it.message)

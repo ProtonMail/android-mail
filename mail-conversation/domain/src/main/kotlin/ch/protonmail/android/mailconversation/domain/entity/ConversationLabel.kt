@@ -28,5 +28,5 @@ data class ConversationLabel(
     val contextSize: Long,
     val contextNumMessages: Int,
     val contextNumUnread: Int,
-    val contextNumAttachments: Int,
+    val contextNumAttachments: Int
 )

@@ -56,18 +56,18 @@ import me.proton.core.label.domain.entity.LabelType.MessageLabel
 
 fun LazyListScope.sidebarLabelItems(
     items: List<MailLabelUiModel.Custom>,
-    onLabelAction: (SidebarLabelAction) -> Unit,
+    onLabelAction: (SidebarLabelAction) -> Unit
 ) = sidebarCustomLabelItems(MessageLabel, items, onLabelAction)
 
 fun LazyListScope.sidebarFolderItems(
     items: List<MailLabelUiModel.Custom>,
-    onLabelAction: (SidebarLabelAction) -> Unit,
+    onLabelAction: (SidebarLabelAction) -> Unit
 ) = sidebarCustomLabelItems(MessageFolder, items, onLabelAction)
 
 private fun LazyListScope.sidebarCustomLabelItems(
     type: LabelType,
     items: List<MailLabelUiModel.Custom>,
-    onLabelAction: (SidebarLabelAction) -> Unit,
+    onLabelAction: (SidebarLabelAction) -> Unit
 ) {
     item {
         SidebarCustomLabelTitleItem(
@@ -87,7 +87,7 @@ private fun LazyListScope.sidebarCustomLabelItems(
 @Composable
 private fun LazyItemScope.SidebarCustomLabel(
     item: MailLabelUiModel.Custom,
-    onLabelAction: (SidebarLabelAction) -> Unit,
+    onLabelAction: (SidebarLabelAction) -> Unit
 ) {
     ProtonSidebarItem(
         modifier = Modifier.animateItemPlacement(),
@@ -105,7 +105,7 @@ private fun LazyItemScope.SidebarCustomLabel(
 private fun SidebarCustomLabelTitleItem(
     type: LabelType,
     showAddIcon: Boolean,
-    onAddClick: () -> Unit,
+    onAddClick: () -> Unit
 ) {
     ProtonSidebarItem(
         modifier = Modifier.background(ProtonTheme.colors.backgroundNorm),
@@ -115,7 +115,7 @@ private fun SidebarCustomLabelTitleItem(
         Text(
             modifier = Modifier.weight(1f, fill = true),
             text = stringResource(type.labelTitleRes()),
-            color = ProtonTheme.colors.textWeak,
+            color = ProtonTheme.colors.textWeak
         )
         if (showAddIcon) {
             Icon(
@@ -132,26 +132,26 @@ private fun SidebarCustomLabelTitleItem(
 @Composable
 private fun SidebarAddCustomLabelItem(
     type: LabelType,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     ProtonSidebarItem(
         isClickable = true,
         onClick = onClick,
         icon = R.drawable.ic_proton_plus,
-        text = type.labelAddTitleRes(),
+        text = type.labelAddTitleRes()
     )
 }
 
 @Preview(
     name = "Sidebar Labels in light mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
 )
 @Preview(
     name = "Sidebar Labels in dark mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-fun PreviewSidebarLabelFolderItems() {
+private fun PreviewSidebarLabelFolderItems() {
     ProtonTheme {
         ProtonSidebarLazy {
             sidebarFolderItems(
@@ -188,9 +188,9 @@ fun PreviewSidebarLabelFolderItems() {
                         isVisible = true,
                         isExpanded = true,
                         iconPaddingStart = ProtonDimens.DefaultSpacing * 2
-                    ),
+                    )
                 ),
-                onLabelAction = {},
+                onLabelAction = {}
             )
             item { Divider() }
             sidebarLabelItems(
@@ -216,19 +216,19 @@ fun PreviewSidebarLabelFolderItems() {
                         isVisible = true,
                         isExpanded = true,
                         iconPaddingStart = 0.dp
-                    ),
+                    )
                 ),
-                onLabelAction = {},
+                onLabelAction = {}
             )
             item { Divider() }
             sidebarFolderItems(
                 items = emptyList(),
-                onLabelAction = {},
+                onLabelAction = {}
             )
             item { Divider() }
             sidebarLabelItems(
                 items = emptyList(),
-                onLabelAction = {},
+                onLabelAction = {}
             )
         }
     }

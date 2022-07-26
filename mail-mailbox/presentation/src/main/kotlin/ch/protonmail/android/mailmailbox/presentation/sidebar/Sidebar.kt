@@ -62,14 +62,14 @@ const val TEST_TAG_SIDEBAR_MENU = "SidebarMenuTestTag"
 @Suppress("ComplexMethod")
 fun Sidebar(
     drawerState: DrawerState,
-    actions: Sidebar.Actions,
+    navigationActions: Sidebar.NavigationActions,
     modifier: Modifier = Modifier,
-    viewModel: SidebarViewModel = hiltViewModel(),
+    viewModel: SidebarViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
     val viewState = rememberSidebarState(
         drawerState = drawerState,
-        appInformation = viewModel.appInformation,
+        appInformation = viewModel.appInformation
     )
 
     fun close() = scope.launch {
@@ -82,53 +82,29 @@ fun Sidebar(
         is Enabled -> {
             viewState.isSubscriptionVisible = viewModelState.canChangeSubscription
             viewState.mailLabels = viewModelState.mailLabels
-            Sidebar(
-                onRemove = {
-                    close()
-                    actions.onRemoveAccount(it)
-                },
-                onSignOut = {
-                    close()
-                    actions.onSignOut(it)
-                },
-                onSignIn = {
-                    close()
-                    actions.onSignIn(it)
-                },
-                onSwitch = {
-                    close()
-                    actions.onSwitchAccount(it)
-                },
-                onLabelAction = {
-                    when (it) {
+            val actions = navigationActions.toSidebarActions(
+                close = ::close,
+                onLabelAction = { sidebarLabelAction ->
+                    when (sidebarLabelAction) {
                         is SidebarLabelAction.Add -> {
                             close()
-                            actions.onLabelsSettings()
+                            navigationActions.onLabelsSettings()
                         }
                         is SidebarLabelAction.Select -> {
                             close()
-                            viewModel.submit(SidebarViewModel.Action.LabelAction(it))
+                            viewModel.submit(SidebarViewModel.Action.LabelAction(sidebarLabelAction))
                         }
                         is SidebarLabelAction.Collapse,
-                        is SidebarLabelAction.Expand -> viewModel.submit(SidebarViewModel.Action.LabelAction(it))
+                        is SidebarLabelAction.Expand -> {
+                            viewModel.submit(SidebarViewModel.Action.LabelAction(sidebarLabelAction))
+                        }
                     }
-                },
-                onSettings = {
-                    close()
-                    if (viewModelState.isSettingsEnabled) {
-                        actions.onSettings()
-                    }
-                },
-                onSubscription = {
-                    close()
-                    actions.onSubscription()
-                },
-                onReportBug = {
-                    close()
-                    actions.onReportBug()
-                },
+                }
+            )
+            Sidebar(
+                modifier = modifier,
                 viewState = viewState,
-                modifier = modifier
+                actions = actions
             )
         }
     }
@@ -136,16 +112,9 @@ fun Sidebar(
 
 @Composable
 fun Sidebar(
-    onRemove: (UserId?) -> Unit,
-    onSignOut: (UserId) -> Unit,
-    onSignIn: (UserId?) -> Unit,
-    onSwitch: (UserId) -> Unit,
-    onLabelAction: (SidebarLabelAction) -> Unit,
-    onSettings: () -> Unit,
-    onSubscription: () -> Unit,
-    onReportBug: () -> Unit,
     modifier: Modifier = Modifier,
     viewState: SidebarState,
+    actions: Sidebar.Actions
 ) {
     val sidebarColors = requireNotNull(ProtonTheme.colors.sidebarColors)
 
@@ -155,29 +124,29 @@ fun Sidebar(
                 .background(sidebarColors.backgroundNorm)
                 .padding(all = ProtonDimens.SmallSpacing)
                 .fillMaxWidth(),
-            onRemove = { onRemove(it) },
-            onSignIn = { onSignIn(it) },
-            onSignOut = { onSignOut(it) },
-            onSwitch = { onSwitch(it) },
+            onRemove = actions.onRemoveAccount,
+            onSignIn = actions.onSignIn,
+            onSignOut = actions.onSignOut,
+            onSwitch = actions.onSwitchAccount,
             viewState = viewState.accountPrimaryState
         )
     }
 
     ProtonSidebarLazy(
         modifier = modifier.testTag(TEST_TAG_SIDEBAR_MENU),
-        drawerState = viewState.drawerState,
+        drawerState = viewState.drawerState
     ) {
-        sidebarSystemLabelItems(viewState.mailLabels.systems, onLabelAction)
+        sidebarSystemLabelItems(viewState.mailLabels.systems, actions.onLabelAction)
         item { Divider() }
-        sidebarFolderItems(viewState.mailLabels.folders, onLabelAction)
+        sidebarFolderItems(viewState.mailLabels.folders, actions.onLabelAction)
         item { Divider() }
-        sidebarLabelItems(viewState.mailLabels.labels, onLabelAction)
+        sidebarLabelItems(viewState.mailLabels.labels, actions.onLabelAction)
         item { Divider() }
         item { SidebarMoreTitleItem() }
-        item { ProtonSidebarSettingsItem { onSettings() } }
-        item { SidebarSubscriptionItem(viewState.isSubscriptionVisible) { onSubscription() } }
-        item { ProtonSidebarReportBugItem { onReportBug() } }
-        item { ProtonSidebarSignOutItem { onRemove(null) } }
+        item { ProtonSidebarSettingsItem(onClick = actions.onSettings) }
+        item { SidebarSubscriptionItem(viewState.isSubscriptionVisible, onSubscription = actions.onSubscription) }
+        item { ProtonSidebarReportBugItem(onClick = actions.onReportBug) }
+        item { ProtonSidebarSignOutItem(onClick = { actions.onRemoveAccount(null) }) }
         item { SidebarAppVersionItem(viewState.appInformation) }
     }
 }
@@ -195,7 +164,7 @@ private fun SidebarMoreTitleItem() {
 @Composable
 private fun SidebarSubscriptionItem(
     isVisible: Boolean,
-    onSubscription: () -> Unit,
+    onSubscription: () -> Unit
 ) {
     if (isVisible) {
         ProtonSidebarSubscriptionItem { onSubscription() }
@@ -204,7 +173,7 @@ private fun SidebarSubscriptionItem(
 
 @Composable
 private fun SidebarAppVersionItem(
-    appInformation: AppInformation,
+    appInformation: AppInformation
 ) {
     ProtonSidebarAppVersionItem(
         name = appInformation.appName,
@@ -220,10 +189,89 @@ object Sidebar {
         val onRemoveAccount: (UserId?) -> Unit,
         val onSwitchAccount: (UserId) -> Unit,
         val onSettings: () -> Unit,
+        val onLabelAction: (SidebarLabelAction) -> Unit,
+        val onSubscription: () -> Unit,
+        val onReportBug: () -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onSignIn = {},
+                onSignOut = {},
+                onRemoveAccount = {},
+                onSwitchAccount = {},
+                onSettings = {},
+                onLabelAction = {},
+                onSubscription = {},
+                onReportBug = {}
+            )
+        }
+    }
+
+    data class NavigationActions(
+        val onSignIn: (UserId?) -> Unit,
+        val onSignOut: (UserId) -> Unit,
+        val onRemoveAccount: (UserId?) -> Unit,
+        val onSwitchAccount: (UserId) -> Unit,
+        val onSettings: () -> Unit,
         val onLabelsSettings: () -> Unit,
         val onSubscription: () -> Unit,
         val onReportBug: () -> Unit
-    )
+    ) {
+
+        fun toSidebarActions(
+            close: () -> Unit,
+            onLabelAction: (SidebarLabelAction) -> Unit
+        ) = Actions(
+            onSignIn = {
+                onSignIn(it)
+                close()
+            },
+            onSignOut = {
+                onSignOut(it)
+                close()
+            },
+            onRemoveAccount = {
+                onRemoveAccount(it)
+                close()
+            },
+            onSwitchAccount = {
+                onSwitchAccount(it)
+                close()
+            },
+            onSettings = {
+                onSettings()
+                close()
+            },
+            onLabelAction = { action ->
+                onLabelAction(action)
+                close()
+            },
+            onSubscription = {
+                onSubscription()
+                close()
+            },
+            onReportBug = {
+                onReportBug()
+                close()
+            }
+        )
+
+        companion object {
+
+            val Empty = NavigationActions(
+                onSignIn = {},
+                onSignOut = {},
+                onRemoveAccount = {},
+                onSwitchAccount = {},
+                onSettings = {},
+                onLabelsSettings = {},
+                onSubscription = {},
+                onReportBug = {}
+            )
+        }
+    }
 }
 
 @SuppressLint("VisibleForTests")
@@ -241,19 +289,12 @@ object Sidebar {
 fun PreviewSidebar() {
     ProtonTheme {
         Sidebar(
-            onSignOut = {},
-            onSignIn = {},
-            onSwitch = {},
-            onRemove = {},
-            onLabelAction = {},
-            onSettings = {},
-            onSubscription = {},
-            onReportBug = {},
             viewState = SidebarState(
                 hasPrimaryAccount = false,
                 isSubscriptionVisible = true,
                 mailLabels = MailLabelsUiModel.PreviewForTesting
             ),
+            actions = Sidebar.Actions.Empty
         )
     }
 }

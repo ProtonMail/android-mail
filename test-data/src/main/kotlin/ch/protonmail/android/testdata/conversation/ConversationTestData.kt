@@ -56,7 +56,7 @@ object ConversationTestData {
         conversationId: String,
         labelId: String,
         time: Long = 1000,
-        size: Long = 1000,
+        size: Long = 1000
     ) = ConversationLabel(
         conversationId = ConversationId(conversationId),
         labelId = LabelId(labelId),

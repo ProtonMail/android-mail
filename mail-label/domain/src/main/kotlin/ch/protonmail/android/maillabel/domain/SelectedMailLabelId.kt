@@ -29,11 +29,11 @@ import javax.inject.Singleton
 @Singleton
 class SelectedMailLabelId @Inject constructor() {
 
-    private val selectedMailLabelId = MutableStateFlow<MailLabelId>(System.Inbox)
+    private val mutableFlow = MutableStateFlow<MailLabelId>(System.Inbox)
 
-    val flow: StateFlow<MailLabelId> = selectedMailLabelId.asStateFlow()
+    val flow: StateFlow<MailLabelId> = mutableFlow.asStateFlow()
 
     fun set(value: MailLabelId) {
-        selectedMailLabelId.value = value
+        mutableFlow.value = value
     }
 }

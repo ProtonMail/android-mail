@@ -48,7 +48,7 @@ class GetMailboxItemsTest {
             // userId1
             buildMessage(userId, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId, "2", time = 2000, labelIds = listOf("4")),
-            buildMessage(userId, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildMessage(userId, "3", time = 3000, labelIds = listOf("0", "1"))
         )
     }
     private val conversationRepository = mockk<ConversationRepository> {
@@ -56,7 +56,7 @@ class GetMailboxItemsTest {
             // userId1
             buildConversation(userId, "1", time = 1000, labelIds = listOf("0")),
             buildConversation(userId, "2", time = 2000, labelIds = listOf("4")),
-            buildConversation(userId, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildConversation(userId, "3", time = 3000, labelIds = listOf("0", "1"))
         )
     }
     private val labelRepository = mockk<LabelRepository> {
@@ -65,7 +65,7 @@ class GetMailboxItemsTest {
             buildLabel(userId, LabelType.MessageLabel, "1"),
             buildLabel(userId, LabelType.MessageLabel, "2"),
             buildLabel(userId, LabelType.MessageLabel, "3"),
-            buildLabel(userId, LabelType.MessageLabel, "4"),
+            buildLabel(userId, LabelType.MessageLabel, "4")
         )
     }
 

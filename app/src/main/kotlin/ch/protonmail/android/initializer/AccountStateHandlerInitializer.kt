@@ -36,7 +36,7 @@ class AccountStateHandlerInitializer : Initializer<Unit> {
     }
 
     override fun dependencies(): List<Class<out Initializer<*>?>> = listOf(
-        LoggerInitializer::class.java,
+        LoggerInitializer::class.java
     )
 
     @EntryPoint

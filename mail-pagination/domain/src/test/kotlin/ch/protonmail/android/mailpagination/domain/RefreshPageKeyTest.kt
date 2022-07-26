@@ -38,7 +38,7 @@ class RefreshPageKeyTest {
         override val order: Long = time,
         override val read: Boolean = false,
         override val labelIds: List<LabelId> = emptyList(),
-        override val keywords: String = "",
+        override val keywords: String = ""
     ) : PageItem
 
     @Test
@@ -59,7 +59,7 @@ class RefreshPageKeyTest {
             FakeItem(id = "7", time = 7000L),
             FakeItem(id = "8", time = 8000L),
             FakeItem(id = "9", time = 9000L),
-            FakeItem(id = "10", time = 10_000L),
+            FakeItem(id = "10", time = 10_000L)
         )
         val lowest = items.first()
         val highest = items.last()
@@ -68,7 +68,7 @@ class RefreshPageKeyTest {
                 minTime = lowest.time,
                 minOrder = lowest.order,
                 maxTime = highest.time,
-                maxOrder = highest.order,
+                maxOrder = highest.order
             )
         )
 
@@ -96,7 +96,7 @@ class RefreshPageKeyTest {
             FakeItem(id = "4", time = 4000L),
             FakeItem(id = "3", time = 3000L),
             FakeItem(id = "2", time = 2000L),
-            FakeItem(id = "1", time = 1000L),
+            FakeItem(id = "1", time = 1000L)
         )
         val lowest = items.last()
         val highest = items.first()
@@ -105,7 +105,7 @@ class RefreshPageKeyTest {
                 minTime = lowest.time,
                 minOrder = lowest.order,
                 maxTime = highest.time,
-                maxOrder = highest.order,
+                maxOrder = highest.order
             )
         )
 
@@ -133,7 +133,7 @@ class RefreshPageKeyTest {
             FakeItem(id = "7", time = 7000L),
             FakeItem(id = "8", time = 8000L),
             FakeItem(id = "9", time = 9000L),
-            FakeItem(id = "10", time = 10_000L),
+            FakeItem(id = "10", time = 10_000L)
         )
         val lowest = items.first()
         val highest = items.last()
@@ -142,7 +142,7 @@ class RefreshPageKeyTest {
                 minTime = lowest.time,
                 minOrder = lowest.order,
                 maxTime = highest.time,
-                maxOrder = highest.order,
+                maxOrder = highest.order
             ),
             size = 10
         )
@@ -162,7 +162,7 @@ class RefreshPageKeyTest {
             size = 10
         )
         val items = listOf<PageItem>(
-            FakeItem(id = "1", time = 1000L),
+            FakeItem(id = "1", time = 1000L)
         )
         val single = items.first()
         val expected = initial.copy(
@@ -170,7 +170,7 @@ class RefreshPageKeyTest {
                 minTime = single.time,
                 minOrder = single.order,
                 maxTime = single.time,
-                maxOrder = single.order,
+                maxOrder = single.order
             )
         )
 
@@ -194,7 +194,7 @@ class RefreshPageKeyTest {
                 minTime = Long.MIN_VALUE,
                 minOrder = Long.MIN_VALUE,
                 maxTime = Long.MAX_VALUE,
-                maxOrder = Long.MAX_VALUE,
+                maxOrder = Long.MAX_VALUE
             )
         )
 

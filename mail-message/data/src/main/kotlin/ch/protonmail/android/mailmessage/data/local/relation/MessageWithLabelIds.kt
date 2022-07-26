@@ -32,5 +32,5 @@ data class MessageWithLabelIds(
         entity = MessageLabelEntity::class,
         projection = ["labelId"]
     )
-    val labelIds: List<LabelId>,
+    val labelIds: List<LabelId>
 )

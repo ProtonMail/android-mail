@@ -78,7 +78,7 @@ class MailLabelBuilderTest {
             MailLabel.System(System.Archive),
             MailLabel.System(System.Spam),
             MailLabel.System(System.Trash),
-            MailLabel.System(System.AllMail),
+            MailLabel.System(System.AllMail)
         )
         assertEquals(expected, actual)
     }
@@ -89,7 +89,7 @@ class MailLabelBuilderTest {
         val items = listOf(
             buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
             buildLabel(userId, LabelType.MessageFolder, "1", order = 1),
-            buildLabel(userId, LabelType.MessageFolder, "2", order = 2),
+            buildLabel(userId, LabelType.MessageFolder, "2", order = 2)
         )
 
         // When
@@ -99,7 +99,7 @@ class MailLabelBuilderTest {
         val expected = listOf(
             buildCustomFolder("0", order = 0),
             buildCustomFolder("1", order = 1),
-            buildCustomFolder("2", order = 2),
+            buildCustomFolder("2", order = 2)
         )
         assertEquals(expected, actual)
     }
@@ -112,7 +112,7 @@ class MailLabelBuilderTest {
             buildLabel(userId, LabelType.MessageFolder, "0.1", order = 0, parentId = "0"),
             buildLabel(userId, LabelType.MessageFolder, "0.2", order = 1, parentId = "0"),
             buildLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2"),
-            buildLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2"),
+            buildLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2")
         )
 
         // When
@@ -137,7 +137,7 @@ class MailLabelBuilderTest {
             buildLabel(userId, LabelType.MessageFolder, "0.2", order = 1, parentId = "0"),
             buildLabel(userId, LabelType.MessageFolder, "0.1", order = 0, parentId = "0"),
             buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
-            buildLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2"),
+            buildLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2")
         )
 
         // When

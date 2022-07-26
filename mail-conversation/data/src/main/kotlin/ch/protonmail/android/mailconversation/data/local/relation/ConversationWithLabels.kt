@@ -29,7 +29,7 @@ data class ConversationWithLabels(
     @Relation(
         parentColumn = "conversationId",
         entityColumn = "conversationId",
-        entity = ConversationLabelEntity::class,
+        entity = ConversationLabelEntity::class
     )
-    val labels: List<ConversationLabel>,
+    val labels: List<ConversationLabel>
 )

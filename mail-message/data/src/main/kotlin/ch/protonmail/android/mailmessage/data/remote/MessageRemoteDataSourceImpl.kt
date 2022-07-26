@@ -32,12 +32,12 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 class MessageRemoteDataSourceImpl @Inject constructor(
-    private val apiProvider: ApiProvider,
+    private val apiProvider: ApiProvider
 ) : MessageRemoteDataSource {
 
     override suspend fun getMessages(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): List<Message> = apiProvider.get<MessageApi>(userId).invoke {
         require(pageKey.size <= MessageApi.maxPageSize)
         getMessages(
@@ -59,13 +59,13 @@ class MessageRemoteDataSourceImpl @Inject constructor(
                 OrderDirection.Ascending -> 0
                 OrderDirection.Descending -> 1
             },
-            pageSize = pageKey.size,
+            pageSize = pageKey.size
         ).messages.map { it.toMessage(userId) }
     }.valueOrThrow
 
     override suspend fun getMessage(
         userId: UserId,
-        messageId: MessageId,
+        messageId: MessageId
     ): MessageWithBody = apiProvider.get<MessageApi>(userId).invoke {
         getMessage(
             messageId = messageId.id

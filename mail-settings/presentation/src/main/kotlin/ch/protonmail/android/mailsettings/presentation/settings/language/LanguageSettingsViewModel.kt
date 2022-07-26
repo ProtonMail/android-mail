@@ -37,12 +37,14 @@ class LanguageSettingsViewModel @Inject constructor(
     private val languageRepository: AppLanguageRepository
 ) : ViewModel() {
 
-    val state: Flow<LanguageSettingsState> = languageRepository.observe()
+    val state: Flow<LanguageSettingsState> = languageRepository
+        .observe()
         .mapLatest { selectedLang ->
             val languages = getAppLanguageUiModels(selectedLang).sortedBy { it.name }
             val isSystemDefault = selectedLang == null
             LanguageSettingsState.Data(isSystemDefault, languages)
-        }.stateIn(
+        }
+        .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(stopTimeoutMillis),
             Loading

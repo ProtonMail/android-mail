@@ -41,7 +41,8 @@ class ThemeSettingsViewModel @Inject constructor(
     private val themeRepository: ThemeRepository
 ) : ViewModel() {
 
-    val state: Flow<ThemeSettingsState> = themeRepository.observe()
+    val state: Flow<ThemeSettingsState> = themeRepository
+        .observe()
         .mapLatest { currentTheme ->
             ThemeSettingsState.Data(
                 Theme.values().map { theme ->
@@ -52,7 +53,8 @@ class ThemeSettingsViewModel @Inject constructor(
                     )
                 }
             )
-        }.stateIn(
+        }
+        .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(stopTimeoutMillis),
             Loading

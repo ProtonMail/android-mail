@@ -34,7 +34,7 @@ object MailLabelTestData {
         isExpanded: Boolean = true,
         level: Int = 0,
         order: Int = 0,
-        children: List<String> = emptyList(),
+        children: List<String> = emptyList()
     ) = buildCustomLabel(
         id = MailLabelId.Custom.Label(LabelId(id)),
         name = name,
@@ -43,7 +43,7 @@ object MailLabelTestData {
         isExpanded = isExpanded,
         level = level,
         order = order,
-        children = children.map { MailLabelId.Custom.Label(LabelId(it)) },
+        children = children.map { MailLabelId.Custom.Label(LabelId(it)) }
     )
 
     fun buildCustomFolder(
@@ -54,7 +54,7 @@ object MailLabelTestData {
         isExpanded: Boolean = true,
         level: Int = 0,
         order: Int = 0,
-        children: List<String> = emptyList(),
+        children: List<String> = emptyList()
     ) = buildCustomLabel(
         id = MailLabelId.Custom.Folder(LabelId(id)),
         name = name,
@@ -63,7 +63,7 @@ object MailLabelTestData {
         isExpanded = isExpanded,
         level = level,
         order = order,
-        children = children.map { MailLabelId.Custom.Folder(LabelId(it)) },
+        children = children.map { MailLabelId.Custom.Folder(LabelId(it)) }
     )
 
     private fun buildCustomLabel(
@@ -74,7 +74,7 @@ object MailLabelTestData {
         isExpanded: Boolean = true,
         level: Int = 0,
         order: Int = 0,
-        children: List<MailLabelId.Custom> = emptyList(),
+        children: List<MailLabelId.Custom> = emptyList()
     ) = MailLabel.Custom(
         id = id,
         text = name,
@@ -83,6 +83,6 @@ object MailLabelTestData {
         isExpanded = isExpanded,
         level = level,
         order = order,
-        children = children,
+        children = children
     )
 }

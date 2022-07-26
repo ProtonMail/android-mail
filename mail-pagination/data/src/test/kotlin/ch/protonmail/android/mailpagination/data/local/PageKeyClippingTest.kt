@@ -35,7 +35,6 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Before
 import org.junit.Test
-import java.lang.IllegalStateException
 import kotlin.test.assertEquals
 
 class PageKeyClippingTest {
@@ -64,7 +63,7 @@ class PageKeyClippingTest {
         minOrder: Long = minValue,
         maxOrder: Long = maxValue,
         minId: String? = null,
-        maxId: String? = null,
+        maxId: String? = null
     ) = PageIntervalEntity(
         userId = userId,
         type = type,
@@ -77,7 +76,7 @@ class PageKeyClippingTest {
         minOrder = minOrder,
         maxOrder = maxOrder,
         minId = minId,
-        maxId = maxId,
+        maxId = maxId
     )
 
     private fun getPageKey(
@@ -111,7 +110,7 @@ class PageKeyClippingTest {
         val actual = dao.getClippedPageKey(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 1000, maxTime = Long.MAX_VALUE),
+            pageKey = getPageKey(minTime = 1000, maxTime = Long.MAX_VALUE)
         )
 
         val expected = getPageKey(minTime = 1000, maxTime = Long.MAX_VALUE)
@@ -133,7 +132,7 @@ class PageKeyClippingTest {
         val actual = dao.getClippedPageKey(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 2000, maxTime = Long.MAX_VALUE),
+            pageKey = getPageKey(minTime = 2000, maxTime = Long.MAX_VALUE)
         )
 
         val expected = getPageKey(minTime = 2000, maxTime = Long.MAX_VALUE)
@@ -155,7 +154,7 @@ class PageKeyClippingTest {
         val actual = dao.getClippedPageKey(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = Long.MAX_VALUE),
+            pageKey = getPageKey(minTime = 0, maxTime = Long.MAX_VALUE)
         )
 
         val expected = getPageKey(minTime = 1000, maxTime = Long.MAX_VALUE)
@@ -178,7 +177,7 @@ class PageKeyClippingTest {
         val actual = dao.getClippedPageKey(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = Long.MAX_VALUE),
+            pageKey = getPageKey(minTime = 0, maxTime = Long.MAX_VALUE)
         )
 
         val expected = getPageKey(minTime = 1000, maxTime = Long.MAX_VALUE)
@@ -201,7 +200,7 @@ class PageKeyClippingTest {
         val actual = dao.getClippedPageKey(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = 3000),
+            pageKey = getPageKey(minTime = 0, maxTime = 3000)
         )
 
         val expected = getPageKey(minTime = 1000, maxTime = 2000)
@@ -224,7 +223,7 @@ class PageKeyClippingTest {
         val actual = dao.getClippedPageKey(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = 1000),
+            pageKey = getPageKey(minTime = 0, maxTime = 1000)
         )
 
         val expected = getPageKey(minTime = 0, maxTime = 1000)
@@ -238,7 +237,7 @@ class PageKeyClippingTest {
         // Given
         localIntervals.addAll(
             listOf(
-                getInterval(minValue = Long.MIN_VALUE, maxValue = 1000, maxOrder = 1001),
+                getInterval(minValue = Long.MIN_VALUE, maxValue = 1000, maxOrder = 1001)
             )
         )
 
@@ -246,7 +245,7 @@ class PageKeyClippingTest {
         val actual = dao.getClippedPageKey(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = 3000),
+            pageKey = getPageKey(minTime = 0, maxTime = 3000)
         )
 
         val expected = getPageKey(minTime = 1000, minOrder = 1001, maxTime = 3000)
@@ -260,7 +259,7 @@ class PageKeyClippingTest {
         // Given
         localIntervals.addAll(
             listOf(
-                getInterval(minValue = 1000, minOrder = 1001, maxValue = Long.MAX_VALUE),
+                getInterval(minValue = 1000, minOrder = 1001, maxValue = Long.MAX_VALUE)
             )
         )
 
@@ -268,7 +267,7 @@ class PageKeyClippingTest {
         val actual = dao.getClippedPageKey(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = 3000),
+            pageKey = getPageKey(minTime = 0, maxTime = 3000)
         )
 
         val expected = getPageKey(minTime = 0, maxTime = 1000, maxOrder = 1001)
@@ -291,7 +290,7 @@ class PageKeyClippingTest {
         val actual = dao.getClippedPageKey(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = 3000),
+            pageKey = getPageKey(minTime = 0, maxTime = 3000)
         )
 
         val expected = getPageKey(minTime = 1000, minOrder = 1001, maxTime = 2000, maxOrder = 2001)

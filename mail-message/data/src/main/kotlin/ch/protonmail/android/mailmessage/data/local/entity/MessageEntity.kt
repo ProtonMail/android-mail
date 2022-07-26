@@ -35,7 +35,7 @@ import me.proton.core.user.domain.entity.AddressId
     indices = [
         Index("userId"),
         Index("messageId"),
-        Index("addressId"),
+        Index("addressId")
     ],
     foreignKeys = [
         ForeignKey(
@@ -49,7 +49,7 @@ import me.proton.core.user.domain.entity.AddressId
             parentColumns = ["addressId"],
             childColumns = ["addressId"],
             onDelete = ForeignKey.CASCADE
-        ),
+        )
     ]
 )
 data class MessageEntity(

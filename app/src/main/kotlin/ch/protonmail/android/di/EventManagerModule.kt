@@ -62,6 +62,6 @@ object EventManagerModule {
         contactEmailEventListener,
         labelEventListener,
         messageEventListener,
-        conversationEventListener,
+        conversationEventListener
     )
 }

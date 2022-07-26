@@ -367,7 +367,7 @@ class MailboxViewModelTest {
         runTest {
 
             // Given
-            val item = buildMailboxUiModelItem("id", Message )
+            val item = buildMailboxUiModelItem("id", Message)
             every { observeCurrentViewMode(userId) } returns flowOf(NoConversationGrouping)
 
             // When
@@ -382,11 +382,11 @@ class MailboxViewModelTest {
         }
 
     @Test
-    fun `open item details action generates a request to open Conversation details for a Conversation while in Conversation mode`() =
+    fun `open item action generates a request to open Conversation for a Conversation while in Conversation mode`() =
         runTest {
 
             // Given
-            val item = buildMailboxUiModelItem("id", Conversation )
+            val item = buildMailboxUiModelItem("id", Conversation)
             every { observeCurrentViewMode(userId) } returns flowOf(ConversationGrouping)
 
             // When
@@ -401,7 +401,7 @@ class MailboxViewModelTest {
         }
 
     @Test
-    fun `open item details action generates a request to open Conversation details for a Message while in Conversation mode`() =
+    fun `open item action generates a request to open Conversation for a Message while in Conversation mode`() =
         runTest {
 
             // Given

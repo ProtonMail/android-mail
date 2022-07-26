@@ -55,12 +55,15 @@ fun LanguageSettingsScreen(
         ).value
     ) {
         is Data -> {
-            LanguageSettingsScreen(
-                modifier = modifier,
+            val actions = LanguageSettingsScreen.Actions(
                 onBackClick = onBackClick,
                 onLanguageSelected = viewModel::onLanguageSelected,
-                onSystemDefaultSelected = viewModel::onSystemDefaultSelected,
-                state = state
+                onSystemDefaultSelected = viewModel::onSystemDefaultSelected
+            )
+            LanguageSettingsScreen(
+                modifier = modifier,
+                state = state,
+                actions = actions
             )
         }
         is Loading -> Unit
@@ -70,17 +73,15 @@ fun LanguageSettingsScreen(
 @Composable
 fun LanguageSettingsScreen(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
-    onLanguageSelected: (AppLanguage) -> Unit,
-    onSystemDefaultSelected: () -> Unit,
-    state: Data
+    state: Data,
+    actions: LanguageSettingsScreen.Actions
 ) {
     Scaffold(
         modifier = modifier.testTag(TEST_TAG_LANGUAGE_SETTINGS_SCREEN),
         topBar = {
             ProtonSettingsTopBar(
                 title = stringResource(id = R.string.mail_settings_app_language),
-                onBackClick = onBackClick
+                onBackClick = actions.onBackClick
             )
         },
         content = { paddingValues ->
@@ -94,14 +95,14 @@ fun LanguageSettingsScreen(
                 ProtonSettingsRadioItem(
                     name = stringResource(id = string.mail_settings_system_default),
                     isSelected = state.isSystemDefault,
-                    onItemSelected = { onSystemDefaultSelected() }
+                    onItemSelected = { actions.onSystemDefaultSelected() }
                 )
 
                 state.languages.forEach { language ->
                     ProtonSettingsRadioItem(
                         name = language.name,
                         isSelected = language.isSelected,
-                        onItemSelected = { onLanguageSelected(language.language) }
+                        onItemSelected = { actions.onLanguageSelected(language.language) }
                     )
                 }
             }
@@ -109,16 +110,33 @@ fun LanguageSettingsScreen(
     )
 }
 
-@Preview(name = "Theme settings screen")
+object LanguageSettingsScreen {
+
+    data class Actions(
+        val onBackClick: () -> Unit,
+        val onLanguageSelected: (AppLanguage) -> Unit,
+        val onSystemDefaultSelected: () -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onBackClick = {},
+                onLanguageSelected = {},
+                onSystemDefaultSelected = {}
+            )
+        }
+    }
+}
+
 @Composable
-fun previewThemeSettingsScreen() {
+@Preview(name = "Theme settings screen")
+private fun LanguageSettingsScreenPreview() {
     LanguageSettingsScreen(
-        onBackClick = {},
-        onLanguageSelected = {},
-        onSystemDefaultSelected = {},
         state = Data(
             isSystemDefault = true,
             languages = listOf()
-        )
+        ),
+        actions = LanguageSettingsScreen.Actions.Empty
     )
 }

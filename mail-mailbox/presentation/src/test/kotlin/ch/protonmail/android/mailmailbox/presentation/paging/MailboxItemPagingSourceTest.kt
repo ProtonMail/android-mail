@@ -112,7 +112,7 @@ class MailboxItemPagingSourceTest {
                 data = emptyList(),
                 prevKey = null,
                 nextKey = null
-            ),
+            )
         )
         coVerify { mockInvalidationTracker.addWeakObserver(any()) }
     }
@@ -131,7 +131,7 @@ class MailboxItemPagingSourceTest {
             // Then
             expected = PagingSource.LoadResult.Error(
                 throwable = exception
-            ),
+            )
         )
     }
 
@@ -162,7 +162,7 @@ class MailboxItemPagingSourceTest {
             buildMailboxItem(userId, "4", time = 4000),
             buildMailboxItem(userId, "3", time = 3000),
             buildMailboxItem(userId, "2", time = 2000),
-            buildMailboxItem(userId, "1", time = 1000),
+            buildMailboxItem(userId, "1", time = 1000)
         )
 
         // When
@@ -311,7 +311,7 @@ class MailboxItemPagingSourceTest {
                     buildMailboxItem(userId, "4", time = 4000),
                     buildMailboxItem(userId, "3", time = 3000),
                     buildMailboxItem(userId, "2", time = 2000),
-                    buildMailboxItem(userId, "1", time = 1000),
+                    buildMailboxItem(userId, "1", time = 1000)
                 ),
                 prevKey = null,
                 nextKey = null

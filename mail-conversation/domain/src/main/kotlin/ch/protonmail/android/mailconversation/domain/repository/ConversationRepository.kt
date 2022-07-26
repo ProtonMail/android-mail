@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.mailconversation.domain.repository
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
@@ -30,7 +30,7 @@ interface ConversationRepository {
      */
     suspend fun getConversations(
         userId: UserId,
-        pageKey: PageKey = PageKey(),
+        pageKey: PageKey = PageKey()
     ): List<Conversation>
 
     /**
@@ -38,6 +38,6 @@ interface ConversationRepository {
      */
     suspend fun markAsStale(
         userId: UserId,
-        labelId: LabelId,
+        labelId: LabelId
     )
 }

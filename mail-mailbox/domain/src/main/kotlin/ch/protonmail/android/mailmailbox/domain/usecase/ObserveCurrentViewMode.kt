@@ -30,7 +30,7 @@ import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
 class ObserveCurrentViewMode @Inject constructor(
-    private val observeMailSettings: ObserveMailSettings,
+    private val observeMailSettings: ObserveMailSettings
 ) {
 
     private val messagesOnlyLabelsIds = listOf(

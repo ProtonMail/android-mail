@@ -123,12 +123,12 @@ class SidebarScreenTest {
             folders = listOf(
                 buildMailLabelFolderUiModel("Folder1"),
                 buildMailLabelFolderUiModel("Folder2"),
-                buildMailLabelFolderUiModel("Folder3"),
+                buildMailLabelFolderUiModel("Folder3")
             ),
             labels = listOf(
                 buildMailLabelLabelUiModel("Label1"),
                 buildMailLabelLabelUiModel("Label2"),
-                buildMailLabelLabelUiModel("Label3"),
+                buildMailLabelLabelUiModel("Label3")
             )
         )
     )
@@ -159,7 +159,7 @@ class SidebarScreenTest {
 
     private fun buildSidebarState(
         isSubscriptionVisible: Boolean = true,
-        mailLabels: MailLabelsUiModel = MailLabelsUiModel.Loading,
+        mailLabels: MailLabelsUiModel = MailLabelsUiModel.Loading
     ) = SidebarState(
         isSubscriptionVisible = isSubscriptionVisible,
         hasPrimaryAccount = false,
@@ -173,17 +173,7 @@ class SidebarScreenTest {
     private fun setupScreenWithState(state: SidebarState) {
         composeTestRule.setContent {
             ProtonTheme {
-                Sidebar(
-                    onRemove = {},
-                    onSignOut = {},
-                    onSignIn = {},
-                    onSwitch = {},
-                    onLabelAction = {},
-                    onSettings = {},
-                    onSubscription = {},
-                    onReportBug = {},
-                    viewState = state
-                )
+                Sidebar(viewState = state, actions = Sidebar.Actions.Empty)
             }
         }
     }

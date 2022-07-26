@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.mailmessage.domain.repository
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
@@ -30,7 +30,7 @@ interface MessageRepository {
      */
     suspend fun getMessages(
         userId: UserId,
-        pageKey: PageKey = PageKey(),
+        pageKey: PageKey = PageKey()
     ): List<Message>
 
     /**

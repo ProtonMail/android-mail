@@ -107,7 +107,7 @@ class SidebarViewModelTest {
             observeMailFeature = observeMailFeature,
             observePrimaryUser = observePrimaryUser,
             observeFolderColors = observeFolderColors,
-            observeMailLabels = observeMailboxLabels,
+            observeMailLabels = observeMailboxLabels
         )
     }
 

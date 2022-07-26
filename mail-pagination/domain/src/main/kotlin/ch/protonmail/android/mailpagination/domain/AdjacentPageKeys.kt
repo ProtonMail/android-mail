@@ -62,7 +62,7 @@ class GetAdjacentPageKeys @Inject constructor() {
                 minId = maxItem?.id,
                 maxTime = Long.MAX_VALUE,
                 maxOrder = Long.MAX_VALUE,
-                maxId = null,
+                maxId = null
             ),
             size = size
         )
@@ -81,5 +81,5 @@ class GetAdjacentPageKeys @Inject constructor() {
 data class AdjacentPageKeys(
     val prev: PageKey,
     val current: PageKey,
-    val next: PageKey,
+    val next: PageKey
 )

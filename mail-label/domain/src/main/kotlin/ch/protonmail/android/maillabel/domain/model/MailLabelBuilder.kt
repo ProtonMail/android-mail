@@ -43,7 +43,7 @@ fun List<Label>.toMailLabelCustom(): List<MailLabel.Custom> {
 
 private fun Label.toMailLabelCustom(
     getMailLabel: (LabelId) -> MailLabel.Custom,
-    getChildren: (LabelId) -> List<Label>,
+    getChildren: (LabelId) -> List<Label>
 ): MailLabel.Custom {
     val parent = parentId?.let(getMailLabel)
     val level = parent?.level?.plus(1) ?: 0
@@ -55,7 +55,7 @@ private fun Label.toMailLabelCustom(
         isExpanded = parent?.isExpanded ?: true && isExpanded ?: true,
         level = level,
         order = order,
-        children = getChildren(labelId).map { it.labelId.toMailLabelId(type) },
+        children = getChildren(labelId).map { it.labelId.toMailLabelId(type) }
     )
 }
 

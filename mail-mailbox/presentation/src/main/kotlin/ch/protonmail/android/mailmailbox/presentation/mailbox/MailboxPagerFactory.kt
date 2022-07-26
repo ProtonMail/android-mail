@@ -38,7 +38,7 @@ class MailboxPagerFactory @Inject constructor(
         userIds: List<UserId>,
         selectedMailLabelId: MailLabelId,
         filterUnread: Boolean,
-        type: MailboxItemType,
+        type: MailboxItemType
     ) = Pager(
         config = PagingConfig(PageKey.defaultPageSize),
         initialKey = buildPageKey(filterUnread, selectedMailLabelId, userIds)

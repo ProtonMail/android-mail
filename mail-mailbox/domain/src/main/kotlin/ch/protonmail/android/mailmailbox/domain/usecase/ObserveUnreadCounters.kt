@@ -36,6 +36,7 @@ import javax.inject.Inject
 class ObserveUnreadCounters @Inject constructor() {
 
     operator fun invoke(userId: UserId): Flow<List<UnreadCounter>> = flowOf(
+        @Suppress("MagicNumber")
         listOf(
             UnreadCounter(SystemLabelId.Inbox.labelId, 5),
             UnreadCounter(SystemLabelId.Drafts.labelId, 0),

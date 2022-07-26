@@ -40,18 +40,18 @@ object MailMessageModule {
     @Singleton
     fun provideMessageRepositoryImpl(
         remoteDataSource: MessageRemoteDataSource,
-        localDataSource: MessageLocalDataSource,
+        localDataSource: MessageLocalDataSource
     ): MessageRepository = MessageRepositoryImpl(remoteDataSource, localDataSource)
 
     @Provides
     @Singleton
     fun provideMessageRemoteDataSource(
-        apiProvider: ApiProvider,
+        apiProvider: ApiProvider
     ): MessageRemoteDataSource = MessageRemoteDataSourceImpl(apiProvider)
 
     @Provides
     @Singleton
     fun provideMessageLocalDataSource(
-        db: MessageDatabase,
+        db: MessageDatabase
     ): MessageLocalDataSource = MessageLocalDataSourceImpl(db)
 }

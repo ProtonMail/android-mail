@@ -26,7 +26,7 @@ import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
 class ObserveFolderColorSettings @Inject constructor(
-    private val mailSettingsRepository: MailSettingsRepository,
+    private val mailSettingsRepository: MailSettingsRepository
 ) {
     operator fun invoke(userId: UserId) = mailSettingsRepository.getMailSettingsFlow(userId)
         .mapSuccessValueOrNull()

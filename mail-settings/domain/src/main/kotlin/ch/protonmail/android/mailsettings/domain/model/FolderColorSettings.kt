@@ -20,5 +20,5 @@ package ch.protonmail.android.mailsettings.domain.model
 
 data class FolderColorSettings(
     val useFolderColor: Boolean = true,
-    val inheritParentFolderColor: Boolean = false,
+    val inheritParentFolderColor: Boolean = false
 )

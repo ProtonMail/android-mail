@@ -36,7 +36,7 @@ import me.proton.core.user.data.entity.UserEntity
         Index("minValue"),
         Index("maxValue"),
         Index("minOrder"),
-        Index("maxOrder"),
+        Index("maxOrder")
     ],
     foreignKeys = [
         ForeignKey(
@@ -44,7 +44,7 @@ import me.proton.core.user.data.entity.UserEntity
             parentColumns = ["userId"],
             childColumns = ["userId"],
             onDelete = ForeignKey.CASCADE
-        ),
+        )
     ]
 )
 data class PageIntervalEntity(
@@ -59,5 +59,5 @@ data class PageIntervalEntity(
     val minOrder: Long,
     val maxOrder: Long,
     val minId: String?,
-    val maxId: String?,
+    val maxId: String?
 )

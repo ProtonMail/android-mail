@@ -30,7 +30,7 @@ import javax.inject.Singleton
 class ForceUpdateHandler @Inject constructor(
     @ApplicationContext
     private val context: Context,
-    private val appLifecycleObserver: AppLifecycleObserver,
+    private val appLifecycleObserver: AppLifecycleObserver
 ) {
     fun onForceUpdate(errorMessage: String) {
         if (appLifecycleObserver.state.value == AppLifecycleProvider.State.Foreground) {

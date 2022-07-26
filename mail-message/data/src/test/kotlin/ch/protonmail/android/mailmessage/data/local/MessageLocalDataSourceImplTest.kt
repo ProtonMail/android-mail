@@ -18,15 +18,15 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import ch.protonmail.android.mailmessage.data.getMessage
+import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
+import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageItemType
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.mailmessage.data.getMessage
-import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
-import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coInvoke
@@ -84,7 +84,7 @@ class MessageLocalDataSourceImplTest {
             getMessage(userId1, "2", time = 2000, labelIds = listOf("4")),
             getMessage(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
             // userId2
-            getMessage(userId2, "1", time = 1000, labelIds = listOf("3")),
+            getMessage(userId2, "1", time = 1000, labelIds = listOf("3"))
         )
         val user1MessageIds = listOf(MessageId("1"), MessageId("2"), MessageId("3"))
         val user2MessageIds = listOf(MessageId("1"))
@@ -109,7 +109,7 @@ class MessageLocalDataSourceImplTest {
             // userId1
             getMessage(userId1, "1", time = 1000, labelIds = emptyList()),
             getMessage(userId1, "2", time = 2000, labelIds = listOf("4")),
-            getMessage(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
+            getMessage(userId1, "3", time = 3000, labelIds = listOf("0", "1"))
         )
         val user1MessageIds = listOf(MessageId("1"), MessageId("2"), MessageId("3"))
 

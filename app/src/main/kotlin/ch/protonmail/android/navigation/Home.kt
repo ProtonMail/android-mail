@@ -62,7 +62,7 @@ fun Home(launcherActions: Launcher.Actions) {
         drawerContent = {
             Sidebar(
                 drawerState = scaffoldState.drawerState,
-                actions = buildSidebarActions(navController, launcherActions)
+                navigationActions = buildSidebarActions(navController, launcherActions)
             )
         }
     ) { contentPadding ->
@@ -71,7 +71,7 @@ fun Home(launcherActions: Launcher.Actions) {
         ) {
             NavHost(
                 navController = navController,
-                startDestination = Screen.Mailbox.route,
+                startDestination = Screen.Mailbox.route
             ) {
                 // home
                 addConversationDetail()
@@ -100,13 +100,13 @@ fun Home(launcherActions: Launcher.Actions) {
 private fun buildSidebarActions(
     navController: NavHostController,
     launcherActions: Launcher.Actions
-) = Sidebar.Actions(
+) = Sidebar.NavigationActions(
     onSignIn = launcherActions.onSignIn,
     onSignOut = launcherActions.onSignOut,
     onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
     onSwitchAccount = launcherActions.onSwitchAccount,
     onSettings = { navController.navigate(Screen.Settings.route) },
-    onLabelsSettings = { /*navController.navigate(...)*/ },
+    onLabelsSettings = {},
     onSubscription = launcherActions.onSubscription,
     onReportBug = launcherActions.onReportBug
 )

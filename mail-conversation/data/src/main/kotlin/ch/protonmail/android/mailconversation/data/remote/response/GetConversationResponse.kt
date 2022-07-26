@@ -27,5 +27,5 @@ data class GetConversationResponse(
     @SerialName("Code")
     val code: Int,
     @SerialName("Conversation")
-    val conversation: ConversationResource,
+    val conversation: ConversationResource
 )

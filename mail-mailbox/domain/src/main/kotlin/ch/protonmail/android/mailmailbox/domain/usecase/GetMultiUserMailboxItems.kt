@@ -32,11 +32,11 @@ import javax.inject.Inject
  * @see GetMailboxItems
  */
 class GetMultiUserMailboxItems @Inject constructor(
-    private val getMailboxItems: GetMailboxItems,
+    private val getMailboxItems: GetMailboxItems
 ) {
     suspend operator fun invoke(
         type: MailboxItemType,
-        pageKey: MailboxPageKey,
+        pageKey: MailboxPageKey
     ): List<MailboxItem> {
         return pageKey.userIds
             .mapAsync { getMailboxItems(userId = it, type = type, pageKey = pageKey.pageKey) }

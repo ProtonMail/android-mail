@@ -19,8 +19,8 @@
 package ch.protonmail.android.maillabel.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
 import kotlinx.coroutines.CoroutineDispatcher
@@ -40,13 +40,13 @@ import javax.inject.Inject
 class ObserveMailLabels @Inject constructor(
     @DefaultDispatcher
     private val dispatcher: CoroutineDispatcher,
-    private val labelRepository: LabelRepository,
+    private val labelRepository: LabelRepository
 ) {
 
     operator fun invoke(userId: UserId) = combine(
         observeSystemLabelIds().map { it.toMailLabelSystem() },
         observeLabels(userId, MessageLabel).map { it.toMailLabelCustom() },
-        observeLabels(userId, MessageFolder).map { it.toMailLabelCustom() },
+        observeLabels(userId, MessageFolder).map { it.toMailLabelCustom() }
     ) { defaults, labels, folders ->
         MailLabels(
             systemLabels = defaults,
@@ -59,7 +59,7 @@ class ObserveMailLabels @Inject constructor(
 
     private fun observeLabels(
         userId: UserId,
-        type: LabelType,
+        type: LabelType
     ) = labelRepository.observeLabels(userId, type)
         .mapSuccessValueOrNull()
         .mapLatest { list -> list.orEmpty().sortedBy { it.order } }

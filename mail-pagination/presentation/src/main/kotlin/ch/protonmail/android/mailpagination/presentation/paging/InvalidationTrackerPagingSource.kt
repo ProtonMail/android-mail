@@ -18,19 +18,19 @@
 
 package ch.protonmail.android.mailpagination.presentation.paging
 
+import java.util.concurrent.atomic.AtomicBoolean
 import androidx.paging.PagingSource
 import androidx.room.InvalidationTracker
 import androidx.room.RoomDatabase
 import androidx.room.getQueryDispatcher
 import kotlinx.coroutines.withContext
-import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * [PagingSource] invalidating itself using [InvalidationTracker] observing the given [tables].
  */
 abstract class InvalidationTrackerPagingSource<Key : Any, Value : Any>(
     private val db: RoomDatabase,
-    private val tables: Array<String>,
+    private val tables: Array<String>
 ) : PagingSource<Key, Value>() {
 
     private val registeredObserver = AtomicBoolean(false)

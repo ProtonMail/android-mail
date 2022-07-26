@@ -42,7 +42,7 @@ class AdjacentPageKeysTest {
             size = 5,
             filter = PageFilter(
                 minTime = 1000L,
-                maxTime = 5000L,
+                maxTime = 5000L
             )
         )
         val items = listOf<PageItem>(
@@ -50,7 +50,7 @@ class AdjacentPageKeysTest {
             FakeItem(id = "2", time = 2000L),
             FakeItem(id = "3", time = 3000L),
             FakeItem(id = "4", time = 4000L),
-            FakeItem(id = "5", time = 5000L),
+            FakeItem(id = "5", time = 5000L)
         )
         val first = items.first()
         val last = items.last()
@@ -62,7 +62,7 @@ class AdjacentPageKeysTest {
                     minId = null,
                     maxTime = first.time,
                     maxOrder = first.order - 1,
-                    maxId = first.id,
+                    maxId = first.id
                 )
             ),
             current = current,
@@ -73,7 +73,7 @@ class AdjacentPageKeysTest {
                     minId = last.id,
                     maxTime = Long.MAX_VALUE,
                     maxOrder = Long.MAX_VALUE,
-                    maxId = null,
+                    maxId = null
                 )
             )
         )
@@ -93,7 +93,7 @@ class AdjacentPageKeysTest {
             size = 5,
             filter = PageFilter(
                 minTime = Long.MIN_VALUE,
-                maxTime = Long.MAX_VALUE,
+                maxTime = Long.MAX_VALUE
             )
         )
         val items = listOf<PageItem>(
@@ -101,7 +101,7 @@ class AdjacentPageKeysTest {
             FakeItem(id = "2", time = 2000L),
             FakeItem(id = "3", time = 3000L),
             FakeItem(id = "4", time = 4000L),
-            FakeItem(id = "5", time = 5000L),
+            FakeItem(id = "5", time = 5000L)
         )
         val first = items.first()
         val last = items.last()
@@ -113,7 +113,7 @@ class AdjacentPageKeysTest {
                     minId = null,
                     maxTime = first.time,
                     maxOrder = first.order - 1,
-                    maxId = first.id,
+                    maxId = first.id
                 )
             ),
             current = current,
@@ -124,7 +124,7 @@ class AdjacentPageKeysTest {
                     minId = last.id,
                     maxTime = Long.MAX_VALUE,
                     maxOrder = Long.MAX_VALUE,
-                    maxId = null,
+                    maxId = null
                 )
             )
         )
@@ -144,7 +144,7 @@ class AdjacentPageKeysTest {
             size = 5,
             filter = PageFilter(
                 minTime = Long.MIN_VALUE,
-                maxTime = Long.MAX_VALUE,
+                maxTime = Long.MAX_VALUE
             )
         )
         val items = listOf<PageItem>(
@@ -152,7 +152,7 @@ class AdjacentPageKeysTest {
             FakeItem(id = "4", time = 4000L),
             FakeItem(id = "3", time = 3000L),
             FakeItem(id = "2", time = 2000L),
-            FakeItem(id = "1", time = 1000L),
+            FakeItem(id = "1", time = 1000L)
         )
         val first = items.first()
         val last = items.last()
@@ -164,7 +164,7 @@ class AdjacentPageKeysTest {
                     minId = first.id,
                     maxTime = Long.MAX_VALUE,
                     maxOrder = Long.MAX_VALUE,
-                    maxId = null,
+                    maxId = null
                 )
             ),
             current = current,
@@ -175,7 +175,7 @@ class AdjacentPageKeysTest {
                     minId = null,
                     maxTime = last.time,
                     maxOrder = last.order - 1,
-                    maxId = last.id,
+                    maxId = last.id
                 )
             )
         )
@@ -194,6 +194,6 @@ class AdjacentPageKeysTest {
         override val order: Long = time,
         override val read: Boolean = false,
         override val labelIds: List<LabelId> = emptyList(),
-        override val keywords: String = "",
+        override val keywords: String = ""
     ) : PageItem
 }

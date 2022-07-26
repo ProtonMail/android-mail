@@ -67,7 +67,7 @@ class LauncherViewModel @Inject constructor(
     private val authOrchestrator: AuthOrchestrator,
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
-    private val userSettingsOrchestrator: UserSettingsOrchestrator,
+    private val userSettingsOrchestrator: UserSettingsOrchestrator
 ) : ViewModel() {
 
     val state: StateFlow<LauncherState> = accountManager.getAccounts()
@@ -185,9 +185,9 @@ class LauncherViewModel @Inject constructor(
         object OpenRecoveryEmail : Action
         object OpenReport : Action
         object OpenSubscription : Action
-        data class Remove(val userId: UserId): Action
-        data class SignIn(val userId: UserId?): Action
-        data class SignOut(val userId: UserId?): Action
-        data class Switch(val userId: UserId): Action
+        data class Remove(val userId: UserId) : Action
+        data class SignIn(val userId: UserId?) : Action
+        data class SignOut(val userId: UserId?) : Action
+        data class Switch(val userId: UserId) : Action
     }
 }

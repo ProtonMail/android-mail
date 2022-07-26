@@ -58,11 +58,11 @@ sealed class MailLabelId(
 }
 
 sealed class MailLabel(
-    open val id: MailLabelId,
+    open val id: MailLabelId
 ) {
 
     data class System(
-        override val id: MailLabelId.System,
+        override val id: MailLabelId.System
     ) : MailLabel(id)
 
     data class Custom(
@@ -73,14 +73,14 @@ sealed class MailLabel(
         val isExpanded: Boolean,
         val level: Int,
         val order: Int,
-        val children: List<MailLabelId.Custom>,
+        val children: List<MailLabelId.Custom>
     ) : MailLabel(id)
 }
 
 data class MailLabels(
     val systemLabels: List<MailLabel.System>,
     val folders: List<MailLabel.Custom>,
-    val labels: List<MailLabel.Custom>,
+    val labels: List<MailLabel.Custom>
 ) {
 
     val allById = (systemLabels + folders + labels).associateBy { item -> item.id }
@@ -90,7 +90,7 @@ data class MailLabels(
         val Initial = MailLabels(
             systemLabels = emptyList(),
             folders = emptyList(),
-            labels = emptyList(),
+            labels = emptyList()
         )
     }
 }

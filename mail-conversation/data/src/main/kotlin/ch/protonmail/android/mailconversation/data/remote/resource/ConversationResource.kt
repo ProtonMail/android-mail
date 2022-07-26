@@ -52,7 +52,7 @@ data class ConversationResource(
     @SerialName("Labels")
     val labels: List<ConversationLabelResource>,
     @SerialName("AttachmentInfo")
-    val attachmentsInfo: AttachmentsInfoResource,
+    val attachmentsInfo: AttachmentsInfoResource
 ) {
     fun toConversation(userId: UserId, contextLabelId: LabelId = LabelId("0")) = Conversation(
         userId = userId,
@@ -84,7 +84,7 @@ data class ConversationLabelResource(
     @SerialName("ContextSize")
     val contextSize: Long,
     @SerialName("ContextNumAttachments")
-    val contextNumAttachments: Int,
+    val contextNumAttachments: Int
 ) {
     fun toConversationLabel(conversationId: ConversationId) = ConversationLabel(
         conversationId = conversationId,

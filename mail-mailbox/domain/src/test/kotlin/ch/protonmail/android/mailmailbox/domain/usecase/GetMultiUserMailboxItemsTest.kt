@@ -54,13 +54,13 @@ class GetMultiUserMailboxItemsTest {
             // userId1
             buildMessage(userId1, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId1, "2", time = 2000, labelIds = listOf("4")),
-            buildMessage(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildMessage(userId1, "3", time = 3000, labelIds = listOf("0", "1"))
         )
         coEvery { this@mockk.getMessages(userId2, any()) } returns listOf(
             // userId1
             buildMessage(userId2, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId2, "2", time = 2000, labelIds = listOf("4")),
-            buildMessage(userId2, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildMessage(userId2, "3", time = 3000, labelIds = listOf("0", "1"))
         )
     }
     private val conversationRepository = mockk<ConversationRepository> {
@@ -68,13 +68,13 @@ class GetMultiUserMailboxItemsTest {
             // userId1
             buildConversation(userId1, "1", time = 1000, labelIds = listOf("0")),
             buildConversation(userId1, "2", time = 2000, labelIds = listOf("4")),
-            buildConversation(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildConversation(userId1, "3", time = 3000, labelIds = listOf("0", "1"))
         )
         coEvery { getConversations(userId2, any()) } returns listOf(
             // userId1
             buildConversation(userId2, "1", time = 1000, labelIds = listOf("0")),
             buildConversation(userId2, "2", time = 2000, labelIds = listOf("4")),
-            buildConversation(userId2, "3", time = 3000, labelIds = listOf("0", "1")),
+            buildConversation(userId2, "3", time = 3000, labelIds = listOf("0", "1"))
         )
     }
     private val labelRepository = mockk<LabelRepository> {
@@ -83,14 +83,14 @@ class GetMultiUserMailboxItemsTest {
             buildLabel(userId1, MessageLabel, "1"),
             buildLabel(userId1, MessageLabel, "2"),
             buildLabel(userId1, MessageLabel, "3"),
-            buildLabel(userId1, MessageLabel, "4"),
+            buildLabel(userId1, MessageLabel, "4")
         )
         coEvery { this@mockk.getLabels(userId2, any()) } returns listOf(
             buildLabel(userId2, MessageLabel, "0"),
             buildLabel(userId2, MessageLabel, "1"),
             buildLabel(userId2, MessageLabel, "2"),
             buildLabel(userId2, MessageLabel, "3"),
-            buildLabel(userId2, MessageLabel, "4"),
+            buildLabel(userId2, MessageLabel, "4")
         )
     }
 

@@ -140,7 +140,7 @@ class MailboxItemUiModelMapperTest {
     @Test
     fun `mailbox item time is formatted in the ui model`() {
         // Given
-        val time: Long = 1658851202
+        val time: Long = 1_658_851_202
         val mailboxItem = buildMailboxItem(time = time)
         val result = TextUiModel.Text("18:00")
         every { formatMailboxItemTime.invoke(time.seconds) } returns result

@@ -31,5 +31,5 @@ data class GetConversationsResponse(
     @SerialName("Conversations")
     val conversations: List<ConversationResource>,
     @SerialName("Stale")
-    val stale: Int,
+    val stale: Int
 )

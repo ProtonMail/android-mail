@@ -25,13 +25,13 @@ import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class UpdateLabelExpandedState @Inject constructor(
-    private val labelRepository: LabelRepository,
+    private val labelRepository: LabelRepository
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         labelId: MailLabelId,
-        isExpanded: Boolean,
+        isExpanded: Boolean
     ) {
         val type = when (labelId) {
             is MailLabelId.Custom.Folder -> LabelType.MessageFolder

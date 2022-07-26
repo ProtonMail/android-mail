@@ -29,5 +29,5 @@ data class MessageAttachment(
     val keyPackets: String?,
     val signature: String?,
     val encSignature: String?,
-    val headers: Map<String, String>,
+    val headers: Map<String, String>
 )

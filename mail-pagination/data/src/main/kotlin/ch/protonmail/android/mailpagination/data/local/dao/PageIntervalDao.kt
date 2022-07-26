@@ -52,7 +52,7 @@ abstract class PageIntervalDao : BaseDao<PageIntervalEntity>() {
         orderBy: OrderBy,
         labelId: LabelId,
         keyword: String,
-        read: ReadStatus,
+        read: ReadStatus
     ): List<PageIntervalEntity>
 
     @Transaction
@@ -81,7 +81,7 @@ abstract class PageIntervalDao : BaseDao<PageIntervalEntity>() {
     abstract suspend fun deleteAll(
         userId: UserId,
         type: PageItemType,
-        labelId: LabelId,
+        labelId: LabelId
     )
 
     @Query(
@@ -93,6 +93,6 @@ abstract class PageIntervalDao : BaseDao<PageIntervalEntity>() {
     )
     abstract suspend fun deleteAll(
         userId: UserId,
-        type: PageItemType,
+        type: PageItemType
     )
 }

@@ -32,7 +32,7 @@ import me.proton.core.domain.entity.UserId
 suspend fun PageIntervalDao.getClippedPageKey(
     userId: UserId,
     type: PageItemType,
-    pageKey: PageKey,
+    pageKey: PageKey
 ): PageKey {
     val intervals = getAll(
         userId = userId,
@@ -58,7 +58,7 @@ suspend fun PageIntervalDao.getClippedPageKey(
             minId = minInterval?.maxId ?: pageKey.filter.minId,
             maxTime = maxInterval?.minValue ?: pageKey.filter.maxTime,
             maxOrder = maxInterval?.minOrder ?: pageKey.filter.maxOrder,
-            maxId = maxInterval?.minId ?: pageKey.filter.maxId,
+            maxId = maxInterval?.minId ?: pageKey.filter.maxId
         )
     ).also {
         check(it.filter.minTime <= it.filter.maxTime)

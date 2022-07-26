@@ -23,5 +23,5 @@ import me.proton.core.domain.entity.UserId
 
 data class MailboxPageKey(
     val userIds: List<UserId>,
-    val pageKey: PageKey = PageKey(),
+    val pageKey: PageKey = PageKey()
 )

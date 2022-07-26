@@ -159,7 +159,7 @@ data class AttachmentResource(
     @SerialName("EncSignature")
     val encSignature: String? = null,
     @SerialName("Headers")
-    val headers: Map<String, String>,
+    val headers: Map<String, String>
 ) {
     fun toMessageAttachment() = MessageAttachment(
         attachmentId = AttachmentId(id),
@@ -181,7 +181,7 @@ data class UnsubscribeMethodResource(
     @SerialName("OneClick")
     val oneClick: String?,
     @SerialName("Mailto")
-    val mailTo: MailToResource?,
+    val mailTo: MailToResource?
 ) {
     fun toUnsubscribeMethod() = UnsubscribeMethod(
         httpClient = httpClient,
@@ -197,7 +197,7 @@ data class MailToResource(
     @SerialName("Subject")
     val subject: String,
     @SerialName("Body")
-    val body: String,
+    val body: String
 ) {
     fun toMailTo() = MailTo(
         toList = toList,

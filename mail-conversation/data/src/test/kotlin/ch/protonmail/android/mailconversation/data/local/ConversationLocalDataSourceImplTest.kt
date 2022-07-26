@@ -84,7 +84,7 @@ class ConversationLocalDataSourceImplTest {
             getConversation(userId1, "2", time = 2000, labelIds = listOf("4")),
             getConversation(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
             // userId2
-            getConversation(userId2, "1", time = 1000, labelIds = listOf("3")),
+            getConversation(userId2, "1", time = 1000, labelIds = listOf("3"))
         )
         val user1conversationIds =
             listOf(ConversationId("1"), ConversationId("2"), ConversationId("3"))
@@ -110,7 +110,7 @@ class ConversationLocalDataSourceImplTest {
             // userId1
             getConversation(userId1, "1", time = 1000, labelIds = emptyList()),
             getConversation(userId1, "2", time = 2000, labelIds = listOf("4")),
-            getConversation(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
+            getConversation(userId1, "3", time = 3000, labelIds = listOf("0", "1"))
         )
         val user1conversationIds =
             listOf(ConversationId("1"), ConversationId("2"), ConversationId("3"))
@@ -147,9 +147,11 @@ class ConversationLocalDataSourceImplTest {
 
         // Then
         coVerify(exactly = 1) {
-            pageIntervalDao.deleteAll(userId1,
+            pageIntervalDao.deleteAll(
+                userId1,
                 PageItemType.Conversation,
-                labelId)
+                labelId
+            )
         }
     }
 }

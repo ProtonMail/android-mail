@@ -76,7 +76,7 @@ class GetMailboxItemLocationIconsTest {
     }
 
     @Test
-    fun `when location is starred and mailbox item contains messages in inbox and archive show Inbox and Archive icons`() {
+    fun `when location is starred and item contains messages in inbox and archive show Inbox and Archive icons`() {
         givenCurrentLocationIs(MailLabelId.System.Starred)
         val itemLabels = listOf(MailLabelId.System.Archive.labelId, MailLabelId.System.Inbox.labelId)
         val mailboxItem = buildMailboxItem(labelIds = itemLabels)
@@ -88,7 +88,7 @@ class GetMailboxItemLocationIconsTest {
     }
 
     @Test
-    fun `when location is all mail and mailbox item contains messages in drafts and sent show Drafts and Sent icons`() {
+    fun `when location is all mail and item contains messages in drafts and sent show Drafts and Sent icons`() {
         givenCurrentLocationIs(MailLabelId.System.AllMail)
         val itemLabels = listOf(MailLabelId.System.Drafts.labelId, MailLabelId.System.Sent.labelId)
         val mailboxItem = buildMailboxItem(labelIds = itemLabels)
@@ -100,7 +100,7 @@ class GetMailboxItemLocationIconsTest {
     }
 
     @Test
-    fun `when location is all mail and mailbox item contains messages in Spam, Custom Folder and Trash show Spam Custom Folder and Trash icons`() {
+    fun `when location is all mail and item contains messages in Spam, Custom Folder and Trash show those icons`() {
         givenCurrentLocationIs(MailLabelId.System.AllMail)
         val folderId = "customFolder"
         val itemLabelIds = listOf(

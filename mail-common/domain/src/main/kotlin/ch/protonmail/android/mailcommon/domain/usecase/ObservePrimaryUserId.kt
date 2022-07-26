@@ -24,7 +24,7 @@ import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class ObservePrimaryUserId @Inject constructor(
-    val accountManager: AccountManager,
+    val accountManager: AccountManager
 ) {
 
     operator fun invoke(): Flow<UserId?> =

@@ -129,21 +129,22 @@ class CombinedContactsSettingViewModelTest {
     }
 
     @Test
-    fun `state should emit error data when an exception is thrown during saving combined contacts preference`() = runTest {
-        // Given
-        coEvery {
-            saveCombinedContactsSetting(combinedContactsPreference.isEnabled)
-        } returns PreferencesError.left()
+    fun `state should emit error data when an exception is thrown during saving combined contacts preference`() =
+        runTest {
+            // Given
+            coEvery {
+                saveCombinedContactsSetting(combinedContactsPreference.isEnabled)
+            } returns PreferencesError.left()
 
-        // When
-        combinedContactsSettingViewModel.saveCombinedContactsPreference(combinedContactsPreference.isEnabled)
+            // When
+            combinedContactsSettingViewModel.saveCombinedContactsPreference(combinedContactsPreference.isEnabled)
 
-        // Then
-        combinedContactsSettingViewModel.state.test {
-            val dataState = assertIs<CombinedContactsSettingState.Data>(awaitItem())
-            assertNotNull(dataState.combinedContactsSettingErrorEffect.consume())
+            // Then
+            combinedContactsSettingViewModel.state.test {
+                val dataState = assertIs<CombinedContactsSettingState.Data>(awaitItem())
+                assertNotNull(dataState.combinedContactsSettingErrorEffect.consume())
+            }
         }
-    }
 
     @Test
     fun `can emit multiple errors`() = runTest {

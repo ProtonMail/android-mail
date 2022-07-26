@@ -65,7 +65,7 @@ class PageValidationTest {
         minOrder: Long = minValue,
         maxOrder: Long = maxValue,
         minId: String? = null,
-        maxId: String? = null,
+        maxId: String? = null
     ) = PageIntervalEntity(
         userId = userId,
         type = type,
@@ -78,13 +78,13 @@ class PageValidationTest {
         minOrder = minOrder,
         maxOrder = maxOrder,
         minId = minId,
-        maxId = maxId,
+        maxId = maxId
     )
 
     private fun getPageKey(
         orderDirection: OrderDirection = OrderDirection.Ascending,
         minTime: Long = Long.MIN_VALUE,
-        maxTime: Long = Long.MAX_VALUE,
+        maxTime: Long = Long.MAX_VALUE
     ) = PageKey(
         orderDirection = orderDirection,
         filter = PageFilter(
@@ -103,7 +103,7 @@ class PageValidationTest {
         override val order: Long = time,
         override val read: Boolean = false,
         override val labelIds: List<LabelId> = emptyList(),
-        override val keywords: String = "",
+        override val keywords: String = ""
     ) : PageItem
 
     @Before
@@ -142,7 +142,7 @@ class PageValidationTest {
             items = listOf(
                 FakeItem(id = "1", time = 1000),
                 FakeItem(id = "2", time = 2000),
-                FakeItem(id = "3", time = 3000),
+                FakeItem(id = "3", time = 3000)
             )
         )
 
@@ -186,7 +186,7 @@ class PageValidationTest {
                 FakeItem(id = "2", time = 2000),
                 FakeItem(id = "3", time = 3000),
                 FakeItem(id = "4", time = 4000),
-                FakeItem(id = "5", time = 5000),
+                FakeItem(id = "5", time = 5000)
             )
         )
 
@@ -211,7 +211,7 @@ class PageValidationTest {
                 FakeItem(id = "2", time = 2000),
                 FakeItem(id = "3", time = 3000),
                 FakeItem(id = "4", time = 4000),
-                FakeItem(id = "5", time = 5000), // <- Not valid
+                FakeItem(id = "5", time = 5000) // <- Not valid
             )
         )
 
@@ -226,7 +226,7 @@ class PageValidationTest {
             listOf(
                 getInterval(minValue = 1000, maxValue = 2000),
                 // 2000 -> 4000 no covered.
-                getInterval(minValue = 4000, maxValue = 5000),
+                getInterval(minValue = 4000, maxValue = 5000)
             )
         )
 
@@ -240,7 +240,7 @@ class PageValidationTest {
                 FakeItem(id = "2", time = 2000),
                 FakeItem(id = "3", time = 3000), // <- Not valid
                 FakeItem(id = "4", time = 4000),
-                FakeItem(id = "5", time = 5000),
+                FakeItem(id = "5", time = 5000)
             )
         )
 
@@ -263,14 +263,14 @@ class PageValidationTest {
         val actual = dao.isLocalPageValid(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = 20000),
+            pageKey = getPageKey(minTime = 0, maxTime = 20_000),
             items = listOf(
                 FakeItem(id = "1", time = 1000),
                 FakeItem(id = "2", time = 2000),
                 FakeItem(id = "3", time = 3000),
                 FakeItem(id = "4", time = 4000),
                 // Potential gap between 4000 -> 4500.
-                FakeItem(id = "5", time = 5000),
+                FakeItem(id = "5", time = 5000)
             )
         )
 
@@ -299,7 +299,7 @@ class PageValidationTest {
                 FakeItem(id = "2", time = 2000),
                 FakeItem(id = "3", time = 3000),
                 FakeItem(id = "4", time = 4000),
-                FakeItem(id = "5", time = 5000),
+                FakeItem(id = "5", time = 5000)
             )
         )
 
@@ -312,7 +312,7 @@ class PageValidationTest {
         // Given
         localIntervals.addAll(
             listOf(
-                getInterval(minValue = 0, maxValue = 2000, maxOrder = 2001), // <- 2001 !
+                getInterval(minValue = 0, maxValue = 2000, maxOrder = 2001) // <- 2001 !
             )
         )
 
@@ -320,11 +320,11 @@ class PageValidationTest {
         val actual = dao.isLocalPageValid(
             userId = userId,
             type = type,
-            pageKey = getPageKey(minTime = 0, maxTime = 20000),
+            pageKey = getPageKey(minTime = 0, maxTime = 20_000),
             items = listOf(
                 FakeItem(id = "1", time = 1000),
                 FakeItem(id = "2", time = 2000, order = 2000), // <- Same time, ok order.
-                FakeItem(id = "3", time = 2000, order = 2001), // <- Same time, ok order.
+                FakeItem(id = "3", time = 2000, order = 2001) // <- Same time, ok order.
             )
         )
 
@@ -337,7 +337,7 @@ class PageValidationTest {
         // Given
         localIntervals.addAll(
             listOf(
-                getInterval(minValue = 0, maxValue = 2000, maxOrder = 2000), // <- 2000 !
+                getInterval(minValue = 0, maxValue = 2000, maxOrder = 2000) // <- 2000 !
             )
         )
 
@@ -349,7 +349,7 @@ class PageValidationTest {
             items = listOf(
                 FakeItem(id = "1", time = 1000),
                 FakeItem(id = "2", time = 2000, order = 2000), // <- Same time, ok order.
-                FakeItem(id = "3", time = 2000, order = 2001), // <- Same time, ko order.
+                FakeItem(id = "3", time = 2000, order = 2001) // <- Same time, ko order.
             )
         )
 

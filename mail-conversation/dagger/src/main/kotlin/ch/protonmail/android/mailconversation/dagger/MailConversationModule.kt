@@ -40,18 +40,18 @@ object MailConversationModule {
     @Singleton
     fun provideConversationRepositoryImpl(
         remoteDataSource: ConversationRemoteDataSource,
-        localDataSource: ConversationLocalDataSource,
+        localDataSource: ConversationLocalDataSource
     ): ConversationRepository = ConversationRepositoryImpl(remoteDataSource, localDataSource)
 
     @Provides
     @Singleton
     fun provideConversationRemoteDataSource(
-        apiProvider: ApiProvider,
+        apiProvider: ApiProvider
     ): ConversationRemoteDataSource = ConversationRemoteDataSourceImpl(apiProvider)
 
     @Provides
     @Singleton
     fun provideConversationLocalDataSource(
-        db: ConversationDatabase,
+        db: ConversationDatabase
     ): ConversationLocalDataSource = ConversationLocalDataSourceImpl(db)
 }

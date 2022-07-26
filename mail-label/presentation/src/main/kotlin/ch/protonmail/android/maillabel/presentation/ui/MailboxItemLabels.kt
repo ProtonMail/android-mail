@@ -100,7 +100,8 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
             }
             if (notPlacedCount > 0) {
                 subcompose(notPlacedCount) { PlusText(count = notPlacedCount) }
-                    .map { it.measure(constraints) }.forEach { placeable ->
+                    .map { it.measure(constraints) }
+                    .forEach { placeable ->
                         placeable.place(x = x, y = 0)
                         x += placeable.width
                     }

@@ -41,7 +41,7 @@ object MailSettingsTestData {
         swipeLeft: SwipeAction? = null,
         swipeRight: SwipeAction? = null,
         enableFolderColor: Boolean = true,
-        inheritParentFolderColor: Boolean = true,
+        inheritParentFolderColor: Boolean = true
     ) = MailSettings(
         userId = UserIdTestData.userId,
         displayName = "displayName",

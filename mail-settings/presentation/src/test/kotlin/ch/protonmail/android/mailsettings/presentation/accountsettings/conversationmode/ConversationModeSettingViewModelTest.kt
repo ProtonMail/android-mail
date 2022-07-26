@@ -55,7 +55,7 @@ class ConversationModeSettingViewModelTest {
         every { this@mockk(userId) } returns mailSettingsFlow
     }
 
-    private val mailSettingsRepository = mockk<MailSettingsRepository>() {
+    private val mailSettingsRepository = mockk<MailSettingsRepository> {
         coEvery { updateViewMode(any(), any()) } returns MailSettingsTestData.mailSettings
     }
 

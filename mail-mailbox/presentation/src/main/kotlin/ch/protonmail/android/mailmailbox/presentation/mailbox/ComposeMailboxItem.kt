@@ -115,7 +115,14 @@ private fun MailboxItemLayout(
     ConstraintLayout(modifier = modifier.fillMaxWidth()) {
 
         val (
-            avatarRef, actionIconsRef, participantsRef, timeRef, subjectRef, countRef, iconsRef, expirationLabelRef, labelsRef
+            avatarRef,
+            actionIconsRef,
+            participantsRef,
+            timeRef,
+            subjectRef,
+            countRef, iconsRef,
+            expirationLabelRef,
+            labelsRef
         ) = createRefs()
 
         Box(

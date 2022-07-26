@@ -100,7 +100,7 @@ class ConversationRemoteDataSourceImplTest {
             total = 2,
             conversations = listOf(
                 getConversationResource("2", order = 2000),
-                getConversationResource("1", order = 1000),
+                getConversationResource("1", order = 1000)
             ),
             stale = 0
         )
@@ -110,7 +110,7 @@ class ConversationRemoteDataSourceImplTest {
         assertEquals(
             expected = listOf(
                 getConversation(userId, "2", order = 2000),
-                getConversation(userId, "1", order = 1000),
+                getConversation(userId, "1", order = 1000)
             ),
             actual = conversations
         )
@@ -152,7 +152,7 @@ class ConversationRemoteDataSourceImplTest {
                 endTime = null,
                 endId = null,
                 keyword = "test",
-                unread = null,
+                unread = null
             )
         }
     }
@@ -193,7 +193,7 @@ class ConversationRemoteDataSourceImplTest {
                 endTime = null,
                 endId = null,
                 keyword = "test",
-                unread = 1,
+                unread = 1
             )
         }
     }
@@ -234,7 +234,7 @@ class ConversationRemoteDataSourceImplTest {
                 endTime = 3000,
                 endId = "3000",
                 keyword = null,
-                unread = 1,
+                unread = 1
             )
         }
     }

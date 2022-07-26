@@ -32,7 +32,7 @@ import me.proton.core.user.data.entity.UserEntity
         Index("userId"),
         Index("messageId"),
         Index("attachmentId"),
-        Index("userId", "messageId"), // MessageEntity foreign key.
+        Index("userId", "messageId") // MessageEntity foreign key.
     ],
     foreignKeys = [
         ForeignKey(
@@ -46,7 +46,7 @@ import me.proton.core.user.data.entity.UserEntity
             parentColumns = ["userId", "messageId"],
             childColumns = ["userId", "messageId"],
             onDelete = ForeignKey.CASCADE
-        ),
+        )
     ]
 )
 data class MessageAttachmentEntity(
@@ -60,5 +60,5 @@ data class MessageAttachmentEntity(
     val keyPackets: String?,
     val signature: String?,
     val encSignature: String?,
-    val headers: Map<String, String>,
+    val headers: Map<String, String>
 )

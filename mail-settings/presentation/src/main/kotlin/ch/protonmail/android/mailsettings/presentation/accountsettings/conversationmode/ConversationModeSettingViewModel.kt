@@ -60,11 +60,11 @@ class ConversationModeSettingViewModel @Inject constructor(
             Loading
         )
 
-    fun onConversationToggled(isEnabled: Boolean) = accountManager.getPrimaryUserId()
+    fun onConversationToggled(isEnabled: Boolean) = accountManager
+        .getPrimaryUserId()
         .filterNotNull()
-        .mapLatest { userId ->
-            mailSettingsRepository.updateViewMode(userId, viewModeFrom(isEnabled))
-        }.launchIn(viewModelScope)
+        .mapLatest { userId -> mailSettingsRepository.updateViewMode(userId, viewModeFrom(isEnabled)) }
+        .launchIn(viewModelScope)
 
     private fun viewModeFrom(isEnabled: Boolean) = if (isEnabled) {
         ConversationGrouping

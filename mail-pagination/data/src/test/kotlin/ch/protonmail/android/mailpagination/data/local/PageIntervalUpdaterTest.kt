@@ -88,14 +88,14 @@ class PageIntervalUpdaterTest {
         override val order: Long = time,
         override val read: Boolean = false,
         override val labelIds: List<LabelId> = emptyList(),
-        override val keywords: String = "",
+        override val keywords: String = ""
     ) : PageItem
 
     private fun getInterval(
         minValue: Long,
         maxValue: Long,
         minId: String? = null,
-        maxId: String? = null,
+        maxId: String? = null
     ) = PageIntervalEntity(
         userId = userId,
         type = type,
@@ -108,14 +108,14 @@ class PageIntervalUpdaterTest {
         minOrder = minValue,
         maxOrder = maxValue,
         minId = minId,
-        maxId = maxId,
+        maxId = maxId
     )
 
     private fun getPageKey(
         size: Int,
         orderDirection: OrderDirection = OrderDirection.Ascending,
         minTime: Long = Long.MIN_VALUE,
-        maxTime: Long = Long.MAX_VALUE,
+        maxTime: Long = Long.MAX_VALUE
     ) = PageKey(
         size = size,
         orderDirection = orderDirection,
@@ -141,7 +141,7 @@ class PageIntervalUpdaterTest {
             pageKey = getPageKey(size = 10, minTime = Long.MIN_VALUE, maxTime = Long.MAX_VALUE),
             items = listOf(
                 FakeItem(id = "1", time = 1000),
-                FakeItem(id = "2", time = 2000),
+                FakeItem(id = "2", time = 2000)
             )
         )
 
@@ -172,7 +172,7 @@ class PageIntervalUpdaterTest {
                 FakeItem(id = "7", time = 7000),
                 FakeItem(id = "8", time = 8000),
                 FakeItem(id = "9", time = 9000),
-                FakeItem(id = "10", time = 10_000),
+                FakeItem(id = "10", time = 10_000)
             )
         )
 
@@ -203,7 +203,7 @@ class PageIntervalUpdaterTest {
                 FakeItem(id = "7", time = 7000),
                 FakeItem(id = "8", time = 8000),
                 FakeItem(id = "9", time = 9000),
-                FakeItem(id = "10", time = 10_000),
+                FakeItem(id = "10", time = 10_000)
             )
         )
 
@@ -240,7 +240,7 @@ class PageIntervalUpdaterTest {
                 FakeItem(id = "7", time = 7000),
                 FakeItem(id = "8", time = 8000),
                 FakeItem(id = "9", time = 9000),
-                FakeItem(id = "10", time = 10_000),
+                FakeItem(id = "10", time = 10_000)
             )
         )
 
@@ -269,7 +269,7 @@ class PageIntervalUpdaterTest {
             pageKey = getPageKey(size = 10, minTime = 1000, maxTime = Long.MAX_VALUE),
             items = listOf(
                 FakeItem(id = "1", time = 1000),
-                FakeItem(id = "2", time = 2000),
+                FakeItem(id = "2", time = 2000)
             )
         )
 
@@ -289,7 +289,7 @@ class PageIntervalUpdaterTest {
         items.addAll(
             listOf(
                 getInterval(minValue = 0, maxValue = 1000, maxId = "1"),
-                getInterval(minValue = 2000, maxValue = 2000, maxId = "2"),
+                getInterval(minValue = 2000, maxValue = 2000, maxId = "2")
             )
         )
         // When
@@ -299,7 +299,7 @@ class PageIntervalUpdaterTest {
             pageKey = getPageKey(size = 10, minTime = Long.MIN_VALUE, maxTime = Long.MAX_VALUE),
             items = listOf(
                 FakeItem(id = "1", time = 1000),
-                FakeItem(id = "2", time = 2000),
+                FakeItem(id = "2", time = 2000)
             )
         )
 

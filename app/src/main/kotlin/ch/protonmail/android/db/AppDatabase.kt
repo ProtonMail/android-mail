@@ -126,7 +126,7 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         MessageLabelEntity::class,
         // mail-conversation
         ConversationEntity::class,
-        ConversationLabelEntity::class,
+        ConversationLabelEntity::class
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -143,8 +143,9 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
     LabelConverters::class,
     ChallengeConverters::class,
     MessageConverters::class,
-    ConversationConverters::class,
+    ConversationConverters::class
 )
+@Suppress("UnnecessaryAbstractClass")
 abstract class AppDatabase :
     BaseDatabase(),
     AccountDatabase,

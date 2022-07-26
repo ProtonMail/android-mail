@@ -58,7 +58,7 @@ sealed interface MailLabelUiModel {
         override val count: Int?,
         val isVisible: Boolean,
         val isExpanded: Boolean,
-        val iconPaddingStart: Dp,
+        val iconPaddingStart: Dp
     ) : MailLabelUiModel
 }
 
@@ -66,7 +66,7 @@ sealed interface MailLabelUiModel {
 data class MailLabelsUiModel(
     val systems: List<MailLabelUiModel.System>,
     val folders: List<MailLabelUiModel.Custom>,
-    val labels: List<MailLabelUiModel.Custom>,
+    val labels: List<MailLabelUiModel.Custom>
 ) {
 
     companion object {

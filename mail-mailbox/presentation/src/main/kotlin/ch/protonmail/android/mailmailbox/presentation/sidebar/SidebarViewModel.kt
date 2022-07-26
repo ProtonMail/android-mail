@@ -55,7 +55,7 @@ class SidebarViewModel @Inject constructor(
     observeMailFeature: ObserveMailFeature,
     observePrimaryUser: ObservePrimaryUser,
     observeFolderColors: ObserveFolderColorSettings,
-    observeMailLabels: ObserveMailLabels,
+    observeMailLabels: ObserveMailLabels
 ) : ViewModel() {
 
     val initialState = State.Disabled
@@ -75,13 +75,13 @@ class SidebarViewModel @Inject constructor(
             selectedMailLabelId.flow,
             observeMailFeature(user.userId, ShowSettings),
             observeFolderColors(user.userId),
-            observeMailLabels(user.userId),
+            observeMailLabels(user.userId)
         ) { selectedMailLabelId, settingsFeature, folderColors, mailLabels ->
             State.Enabled(
                 selectedMailLabelId = selectedMailLabelId,
                 isSettingsEnabled = settingsFeature?.value ?: mailFeatureDefault[ShowSettings],
                 canChangeSubscription = user.canChangeSubscription(),
-                mailLabels = mailLabels.toUiModels(folderColors, emptyMap(), selectedMailLabelId),
+                mailLabels = mailLabels.toUiModels(folderColors, emptyMap(), selectedMailLabelId)
             )
         }
     }.stateIn(
@@ -109,7 +109,7 @@ class SidebarViewModel @Inject constructor(
 
     private fun onUpdateLabelExpandedState(
         labelId: MailLabelId,
-        isExpanded: Boolean,
+        isExpanded: Boolean
     ) = viewModelScope.launch {
         primaryUser.value?.let {
             updateLabelExpandedState(it.userId, labelId, isExpanded)
@@ -121,7 +121,7 @@ class SidebarViewModel @Inject constructor(
             val selectedMailLabelId: MailLabelId,
             val isSettingsEnabled: Boolean,
             val canChangeSubscription: Boolean,
-            val mailLabels: MailLabelsUiModel,
+            val mailLabels: MailLabelsUiModel
         ) : State()
 
         object Disabled : State()

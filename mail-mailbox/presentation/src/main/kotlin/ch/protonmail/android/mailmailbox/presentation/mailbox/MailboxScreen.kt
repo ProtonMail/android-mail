@@ -83,7 +83,7 @@ fun MailboxScreen(
     modifier: Modifier = Modifier,
     navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
     openDrawerMenu: () -> Unit,
-    viewModel: MailboxViewModel = hiltViewModel(),
+    viewModel: MailboxViewModel = hiltViewModel()
 ) {
     val mailboxState = rememberAsState(viewModel.state, MailboxViewModel.initialState).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
@@ -207,7 +207,10 @@ private fun MailboxSwipeRefresh(
     SwipeRefresh(
         modifier = modifier,
         state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = { actions.onRefreshList(); items.refresh() },
+        onRefresh = {
+            actions.onRefreshList()
+            items.refresh()
+        }
     ) {
 
         if (isRefreshing.not() && items.itemCount == 0) {
@@ -304,12 +307,12 @@ object MailboxScreen {
 @Preview(
     name = "Mailbox in light mode",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showBackground = true,
+    showBackground = true
 )
 @Preview(
     name = "Mailbox in dark mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
+    showBackground = true
 )
 @Composable
 fun PreviewMailbox() {

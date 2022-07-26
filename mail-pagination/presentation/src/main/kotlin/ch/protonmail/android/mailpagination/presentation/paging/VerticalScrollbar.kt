@@ -32,12 +32,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.proton.core.compose.theme.ProtonTheme
 
-// TODO: Find AndroidX equivalent.
 @Composable
 fun Modifier.verticalScrollbar(
     state: LazyListState,
     width: Dp = 2.dp,
-    color: Color = ProtonTheme.colors.interactionStrongNorm,
+    color: Color = ProtonTheme.colors.interactionStrongNorm
 ): Modifier {
     val targetAlpha = if (state.isScrollInProgress) 1f else 0f
     val duration = if (state.isScrollInProgress) 150 else 500

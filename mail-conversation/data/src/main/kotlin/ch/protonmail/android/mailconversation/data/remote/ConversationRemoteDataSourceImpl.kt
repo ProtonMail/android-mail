@@ -31,12 +31,12 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 class ConversationRemoteDataSourceImpl @Inject constructor(
-    private val apiProvider: ApiProvider,
+    private val apiProvider: ApiProvider
 ) : ConversationRemoteDataSource {
 
     override suspend fun getConversations(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): List<Conversation> = apiProvider.get<ConversationApi>(userId).invoke {
         require(pageKey.size <= ConversationApi.maxPageSize)
         getConversations(
@@ -58,13 +58,13 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
                 OrderDirection.Ascending -> 0
                 OrderDirection.Descending -> 1
             },
-            pageSize = pageKey.size,
+            pageSize = pageKey.size
         ).conversations.map { it.toConversation(userId, pageKey.filter.labelId) }
     }.valueOrThrow
 
     override suspend fun getConversation(
         userId: UserId,
-        conversationId: ConversationId,
+        conversationId: ConversationId
     ): Conversation = apiProvider.get<ConversationApi>(userId).invoke {
         getConversation(
             conversationId = conversationId.id

@@ -43,6 +43,6 @@ fun List<PageItem>.getRefreshPageKey(initial: PageKey): PageKey {
             maxOrder = maxItem?.order ?: Long.MAX_VALUE,
             maxId = null
         ),
-        size = max(size, initial.size),
+        size = max(size, initial.size)
     )
 }

@@ -38,7 +38,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     appInformation: AppInformation,
     observePrimaryUser: ObservePrimaryUser,
-    observeAppSettings: ObserveAppSettings,
+    observeAppSettings: ObserveAppSettings
 ) : ViewModel() {
 
     val state = combine(
@@ -48,7 +48,7 @@ class SettingsViewModel @Inject constructor(
         Data(
             buildAccountData(user),
             appSettings,
-            appInformation,
+            appInformation
         )
     }.stateIn(
         viewModelScope,

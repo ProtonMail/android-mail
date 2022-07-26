@@ -38,7 +38,7 @@ suspend fun PageIntervalDao.upsertPageInterval(
     userId: UserId,
     type: PageItemType,
     pageKey: PageKey,
-    items: List<PageItem>,
+    items: List<PageItem>
 ) {
     // If no more page for this query -> use pageKey interval.
     // If potentially more pages for this query -> use pageKey + lastItem.
@@ -72,7 +72,7 @@ suspend fun PageIntervalDao.upsertPageInterval(
             minOrder = minOrder,
             maxOrder = maxOrder,
             minId = minId,
-            maxId = maxId,
+            maxId = maxId
         )
     )
 }

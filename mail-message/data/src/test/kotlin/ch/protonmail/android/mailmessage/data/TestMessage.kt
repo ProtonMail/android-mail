@@ -28,7 +28,7 @@ fun getMessageResource(
     id: String = "1",
     order: Long = 1000,
     time: Long = 1000,
-    labelIds: List<String> = listOf("0"),
+    labelIds: List<String> = listOf("0")
 ) = MessageResource(
     id = id,
     order = order,
@@ -63,10 +63,10 @@ fun getMessage(
     id: String = "1",
     order: Long = 1000,
     time: Long = 1000,
-    labelIds: List<String> = listOf("0"),
+    labelIds: List<String> = listOf("0")
 ) = getMessageResource(
     id = id,
     order = order,
     time = time,
-    labelIds = labelIds,
+    labelIds = labelIds
 ).toMessage(userId)

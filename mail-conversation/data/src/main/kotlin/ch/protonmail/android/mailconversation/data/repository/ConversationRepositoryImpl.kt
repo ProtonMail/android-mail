@@ -18,12 +18,12 @@
 
 package ch.protonmail.android.mailconversation.data.repository
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
@@ -33,12 +33,12 @@ import kotlin.math.min
 @Singleton
 class ConversationRepositoryImpl @Inject constructor(
     private val remoteDataSource: ConversationRemoteDataSource,
-    private val localDataSource: ConversationLocalDataSource,
+    private val localDataSource: ConversationLocalDataSource
 ) : ConversationRepository {
 
     override suspend fun getConversations(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): List<Conversation> = localDataSource.getConversations(
         userId = userId,
         pageKey = pageKey
@@ -49,12 +49,12 @@ class ConversationRepositoryImpl @Inject constructor(
 
     override suspend fun markAsStale(
         userId: UserId,
-        labelId: LabelId,
+        labelId: LabelId
     ) = localDataSource.markAsStale(userId, labelId)
 
     private suspend fun fetchConversations(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ) = localDataSource.getClippedPageKey(
         userId = userId,
         pageKey = pageKey.copy(size = min(ConversationApi.maxPageSize, pageKey.size))
@@ -68,7 +68,7 @@ class ConversationRepositoryImpl @Inject constructor(
     private suspend fun insertConversations(
         userId: UserId,
         pageKey: PageKey,
-        conversations: List<Conversation>,
+        conversations: List<Conversation>
     ) = localDataSource.upsertConversations(
         userId = userId,
         pageKey = pageKey,

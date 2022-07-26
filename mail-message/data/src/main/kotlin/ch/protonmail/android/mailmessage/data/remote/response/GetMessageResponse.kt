@@ -27,5 +27,5 @@ data class GetMessageResponse(
     @SerialName("Code")
     val code: Int,
     @SerialName("Message")
-    val message: MessageWithBodyResource,
+    val message: MessageWithBodyResource
 )

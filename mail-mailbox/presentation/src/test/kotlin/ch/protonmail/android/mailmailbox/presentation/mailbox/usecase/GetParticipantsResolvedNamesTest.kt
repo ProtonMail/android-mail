@@ -37,7 +37,7 @@ class GetParticipantsResolvedNamesTest {
         // Given
         val senders = listOf(
             Recipient("sender@proton.ch", "sender"),
-            Recipient("sender1@proton.ch", "sender1"),
+            Recipient("sender1@proton.ch", "sender1")
         )
         val mailboxItem = buildMailboxItem(
             labelIds = listOf(SystemLabelId.Inbox.labelId),
@@ -51,11 +51,11 @@ class GetParticipantsResolvedNamesTest {
     }
 
     @Test
-    fun `when message type mailbox item is in all sent or all drafts ui model shows recipients names as participants`() {
+    fun `when message is in all sent or all drafts ui model shows recipients names as participants`() {
         // Given
         val recipients = listOf(
             Recipient("recipient@proton.ch", "recipient"),
-            Recipient("recipient1@proton.ch", "recipient1"),
+            Recipient("recipient1@proton.ch", "recipient1")
         )
         val mailboxItem = buildMailboxItem(
             type = MailboxItemType.Message,
@@ -84,7 +84,7 @@ class GetParticipantsResolvedNamesTest {
         val userContacts = listOf(contact, ContactTestData.contact2)
         val senders = listOf(
             Recipient("sender@proton.ch", "sender"),
-            Recipient("sender1@proton.ch", ""),
+            Recipient("sender1@proton.ch", "")
         )
         val mailboxItem = buildMailboxItem(
             labelIds = listOf(SystemLabelId.Inbox.labelId),
@@ -102,7 +102,7 @@ class GetParticipantsResolvedNamesTest {
         // Given
         val senders = listOf(
             Recipient("sender@proton.ch", "sender"),
-            Recipient("sender1@proton.ch", ""),
+            Recipient("sender1@proton.ch", "")
         )
         val mailboxItem = buildMailboxItem(
             labelIds = listOf(SystemLabelId.Inbox.labelId),

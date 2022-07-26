@@ -40,7 +40,7 @@ class SidebarState(
     val accountPrimaryState: AccountPrimaryState = AccountPrimaryState(),
     val hasPrimaryAccount: Boolean = true,
     mailLabels: MailLabelsUiModel = MailLabelsUiModel.Loading,
-    isSubscriptionVisible: Boolean = true,
+    isSubscriptionVisible: Boolean = true
 ) {
 
     var mailLabels by mutableStateOf(mailLabels)
@@ -51,7 +51,7 @@ class SidebarState(
 fun rememberSidebarState(
     appInformation: AppInformation,
     drawerState: DrawerState = rememberDrawerState(DrawerValue.Closed),
-    accountPrimaryState: AccountPrimaryState = rememberAccountPrimaryState(),
+    accountPrimaryState: AccountPrimaryState = rememberAccountPrimaryState()
 ): SidebarState = remember {
     SidebarState(
         appInformation = appInformation,

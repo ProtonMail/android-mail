@@ -29,7 +29,7 @@ interface ConversationRemoteDataSource {
      */
     suspend fun getConversations(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): List<Conversation>
 
     /**
@@ -37,6 +37,6 @@ interface ConversationRemoteDataSource {
      */
     suspend fun getConversation(
         userId: UserId,
-        conversationId: ConversationId,
+        conversationId: ConversationId
     ): Conversation
 }

@@ -31,7 +31,7 @@ import me.proton.core.user.data.entity.UserEntity
     primaryKeys = ["userId", "messageId"],
     indices = [
         Index("userId"),
-        Index("messageId"),
+        Index("messageId")
     ],
     foreignKeys = [
         ForeignKey(
@@ -39,7 +39,7 @@ import me.proton.core.user.data.entity.UserEntity
             parentColumns = ["userId"],
             childColumns = ["userId"],
             onDelete = ForeignKey.CASCADE
-        ),
+        )
         /*
         No foreign key for messageId.
         We want to keep MessageBodyEntity without MessageEntity.
@@ -61,17 +61,17 @@ data class MessageBodyEntity(
     val spamScore: String,
     val replyTo: Recipient,
     val replyTos: List<Recipient>,
-    val unsubscribeMethods: List<UnsubscribeMethod>?,
+    val unsubscribeMethods: List<UnsubscribeMethod>?
 )
 
 data class UnsubscribeMethod(
     val httpClient: String?,
     val oneClick: String?,
-    val mailTo: MailTo?,
+    val mailTo: MailTo?
 )
 
 data class MailTo(
     val toList: List<String>,
     val subject: String,
-    val body: String,
+    val body: String
 )

@@ -32,7 +32,7 @@ interface ConversationLocalDataSource {
      */
     fun observeConversations(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): Flow<List<Conversation>>
 
     /**
@@ -40,7 +40,7 @@ interface ConversationLocalDataSource {
      */
     suspend fun getConversations(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): List<Conversation>
 
     /**
@@ -49,14 +49,14 @@ interface ConversationLocalDataSource {
     suspend fun upsertConversations(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Conversation>,
+        items: List<Conversation>
     )
 
     /**
      * Update or insert [Conversation].
      */
     suspend fun upsertConversations(
-        items: List<Conversation>,
+        items: List<Conversation>
     )
 
     /**
@@ -64,14 +64,14 @@ interface ConversationLocalDataSource {
      */
     suspend fun deleteConversation(
         userId: UserId,
-        ids: List<ConversationId>,
+        ids: List<ConversationId>
     )
 
     /**
      * Delete all conversations for [userId].
      */
     suspend fun deleteAllConversations(
-        userId: UserId,
+        userId: UserId
     )
 
     /**
@@ -88,7 +88,7 @@ interface ConversationLocalDataSource {
     suspend fun isLocalPageValid(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Conversation>,
+        items: List<Conversation>
     ): Boolean
 
     /**
@@ -98,6 +98,6 @@ interface ConversationLocalDataSource {
      */
     suspend fun getClippedPageKey(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): PageKey
 }

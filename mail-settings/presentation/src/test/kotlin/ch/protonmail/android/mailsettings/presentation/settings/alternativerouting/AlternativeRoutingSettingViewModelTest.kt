@@ -118,7 +118,7 @@ class AlternativeRoutingSettingViewModelTest {
     }
 
     @Test
-    fun `state should emit error data when an exception is thrown during saving alternative routing preference`() = runTest {
+    fun `state should emit error data when an exception is thrown saving alternative routing preference`() = runTest {
         // Given
         coEvery {
             saveAlternativeRoutingSetting(alternativeRoutingPreference.isEnabled)

@@ -31,7 +31,7 @@ import me.proton.core.user.data.entity.UserEntity
     primaryKeys = ["userId", "conversationId"],
     indices = [
         Index("userId"),
-        Index("conversationId"),
+        Index("conversationId")
     ],
     foreignKeys = [
         ForeignKey(
@@ -39,7 +39,7 @@ import me.proton.core.user.data.entity.UserEntity
             parentColumns = ["userId"],
             childColumns = ["userId"],
             onDelete = ForeignKey.CASCADE
-        ),
+        )
     ]
 )
 data class ConversationEntity(

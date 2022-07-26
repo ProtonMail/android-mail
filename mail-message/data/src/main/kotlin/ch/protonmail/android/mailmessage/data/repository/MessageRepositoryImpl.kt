@@ -18,12 +18,12 @@
 
 package ch.protonmail.android.mailmessage.data.repository
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.repository.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.domain.repository.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
@@ -33,12 +33,12 @@ import kotlin.math.min
 @Singleton
 class MessageRepositoryImpl @Inject constructor(
     private val remoteDataSource: MessageRemoteDataSource,
-    private val localDataSource: MessageLocalDataSource,
+    private val localDataSource: MessageLocalDataSource
 ) : MessageRepository {
 
     override suspend fun getMessages(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ): List<Message> = localDataSource.getMessages(
         userId = userId,
         pageKey = pageKey
@@ -49,12 +49,12 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun markAsStale(
         userId: UserId,
-        labelId: LabelId,
+        labelId: LabelId
     ) = localDataSource.markAsStale(userId, labelId)
 
     private suspend fun fetchMessages(
         userId: UserId,
-        pageKey: PageKey,
+        pageKey: PageKey
     ) = localDataSource.getClippedPageKey(
         userId = userId,
         pageKey = pageKey.copy(size = min(MessageApi.maxPageSize, pageKey.size))
@@ -68,7 +68,7 @@ class MessageRepositoryImpl @Inject constructor(
     private suspend fun insertMessages(
         userId: UserId,
         pageKey: PageKey,
-        messages: List<Message>,
+        messages: List<Message>
     ) = localDataSource.upsertMessages(
         userId = userId,
         pageKey = pageKey,

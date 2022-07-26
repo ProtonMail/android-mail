@@ -59,7 +59,7 @@ fun MailboxTopAppBar(
             shouldShowActions = false
         )
         is MailboxTopAppBarState.Data.SearchMode -> UiModel.Empty.copy(
-            navigationIconRes = R.drawable.ic_proton_arrow_left,
+            navigationIconRes = R.drawable.ic_proton_arrow_left
         )
     }
 

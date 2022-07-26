@@ -42,12 +42,12 @@ interface ConversationApi : BaseRetrofitApi {
         @Query("EndID") endId: String? = null,
         /* Keyword search of To, CC, BCC, From, Subject */
         @Query("Keyword") keyword: String? = null,
-        @Query("Unread") unread: Int? = null,
+        @Query("Unread") unread: Int? = null
     ): GetConversationsResponse
 
     @GET("mail/v4/conversations/{conversationId}")
     suspend fun getConversation(
-        @Path("conversationId") conversationId: String,
+        @Path("conversationId") conversationId: String
     ): GetConversationResponse
 
     companion object {
