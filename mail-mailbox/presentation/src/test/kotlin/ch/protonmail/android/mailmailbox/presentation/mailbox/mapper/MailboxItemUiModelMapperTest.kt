@@ -20,7 +20,8 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import org.junit.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class MailboxItemUiModelMapperTest {
 
@@ -32,15 +33,34 @@ class MailboxItemUiModelMapperTest {
 
         val actual = mapper.toUiModel(mailboxItem)
 
-        assertEquals(true, actual.showRepliedIcon)
+        assertTrue(actual.showRepliedIcon)
     }
 
     @Test
-    fun `mailbox conversation items are always mapped to not show reply icon`() {
+    fun `mailbox items of conversation type never show reply icon`() {
         val mailboxItem = MailboxTestData.mailboxConversationItem
 
         val actual = mapper.toUiModel(mailboxItem)
 
-        assertEquals(false, actual.showRepliedIcon)
+        assertFalse(actual.showRepliedIcon)
+    }
+
+    @Test
+    fun `when mailbox message item was replied all ui model shows reply all icon`() {
+        val mailboxItem = MailboxTestData.repliedAllMailboxItem
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertTrue(actual.showRepliedAllIcon)
+        assertFalse(actual.showRepliedIcon)
+    }
+
+    @Test
+    fun `mailbox items of conversation type never show reply-all icon`() {
+        val mailboxItem = MailboxTestData.mailboxConversationItem
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertFalse(actual.showRepliedAllIcon)
     }
 }

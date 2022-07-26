@@ -35,5 +35,6 @@ data class MailboxItemUiModel(
     val subject: String,
     val senders: List<Recipient>,
     val recipients: List<Recipient>,
-    val showRepliedIcon: Boolean
+    val showRepliedIcon: Boolean,
+    val showRepliedAllIcon: Boolean
 )

@@ -323,6 +323,7 @@ fun PreviewMailbox() {
                     time = 0,
                     read = false,
                     showRepliedIcon = true,
+                    showRepliedAllIcon = false,
                 ),
                 MailboxItemUiModel(
                     type = MailboxItemType.Message,
@@ -334,7 +335,8 @@ fun PreviewMailbox() {
                     subject = "Second message",
                     time = 0,
                     read = true,
-                    showRepliedIcon = true,
+                    showRepliedIcon = false,
+                    showRepliedAllIcon = true,
                 )
             )
         )

@@ -33,7 +33,7 @@ object MailboxTestData {
     val readMailboxItem = buildMessageMailboxItem("2", isRead = true)
 
     val repliedMailboxItem = buildMessageMailboxItem("3", isReplied = true)
-    val repliedAllMailboxItem = buildMessageMailboxItem("4", isRepliedAll = true)
+    val repliedAllMailboxItem = buildMessageMailboxItem("4", isReplied = true, isRepliedAll = true)
     val allActionsMailboxItem = buildMessageMailboxItem(
         "5", isReplied = true, isRepliedAll = true, isForwarded = true
     )
@@ -139,5 +139,6 @@ object MailboxItemUiModelTestData {
         senders = emptyList(),
         recipients = emptyList(),
         showRepliedIcon = false,
+        showRepliedAllIcon = false,
     )
 }
