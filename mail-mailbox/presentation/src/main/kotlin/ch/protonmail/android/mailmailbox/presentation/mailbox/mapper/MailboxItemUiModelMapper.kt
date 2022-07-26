@@ -22,11 +22,14 @@ import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTimeFormatter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
 
-class MailboxItemUiModelMapper @Inject constructor() : Mapper<MailboxItem, MailboxItemUiModel> {
+class MailboxItemUiModelMapper @Inject constructor(
+    val mailboxItemTimeFormatter: MailboxItemTimeFormatter
+) : Mapper<MailboxItem, MailboxItemUiModel> {
 
     fun toUiModel(mailboxItem: MailboxItem): MailboxItemUiModel =
         MailboxItemUiModel(
@@ -34,7 +37,7 @@ class MailboxItemUiModelMapper @Inject constructor() : Mapper<MailboxItem, Mailb
             id = mailboxItem.id,
             userId = mailboxItem.userId,
             conversationId = mailboxItem.conversationId,
-            time = mailboxItem.time,
+            time = mailboxItemTimeFormatter(mailboxItem.time),
             read = mailboxItem.read,
             labels = mailboxItem.labels,
             subject = mailboxItem.subject,

@@ -135,7 +135,7 @@ object MailboxItemUiModelTestData {
         id = id,
         userId = userId,
         conversationId = ConversationId(id),
-        time = 0,
+        time = "10:42",
         read = isRead,
         labels = emptyList(),
         subject = subject,

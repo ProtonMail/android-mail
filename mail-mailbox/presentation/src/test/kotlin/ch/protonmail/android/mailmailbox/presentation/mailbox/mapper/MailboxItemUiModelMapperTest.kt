@@ -20,8 +20,11 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTimeFormatter
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -29,7 +32,11 @@ import kotlin.test.assertTrue
 
 class MailboxItemUiModelMapperTest {
 
-    private val mapper = MailboxItemUiModelMapper()
+    private val mailboxItemTimeFormatter = mockk<MailboxItemTimeFormatter> {
+        every { this@mockk.invoke(any()) } returns "21 Feb"
+    }
+
+    private val mapper = MailboxItemUiModelMapper(mailboxItemTimeFormatter)
 
     @Test
     fun `when mailbox message item was replied ui model shows reply icon`() {
@@ -100,5 +107,17 @@ class MailboxItemUiModelMapperTest {
         val actual = mapper.toUiModel(mailboxItem)
 
         assertEquals(recipients, actual.participants)
+    }
+
+    @Test
+    fun `mailbox item time is formatted in the ui model`() {
+        val time: Long = 1658851202
+        val mailboxItem = buildMailboxItem(time = time)
+        val formattedTime = "18:00"
+        every { mailboxItemTimeFormatter.invoke(time) } returns formattedTime
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertEquals(formattedTime, actual.time)
     }
 }

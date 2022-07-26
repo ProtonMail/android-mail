@@ -29,7 +29,7 @@ data class MailboxItemUiModel(
     val id: String,
     val userId: UserId,
     val conversationId: ConversationId,
-    val time: Long,
+    val time: String,
     val read: Boolean,
     val labels: List<Label> = emptyList(),
     val subject: String,
