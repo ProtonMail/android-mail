@@ -31,6 +31,8 @@ if (includeCoreLibsHelper.exists()) {
     println("Core libs from git submodule `$coreSubmoduleDir`")
 }
 
+include("detekt-rules")
+
 include(":app")
 include(":test-data")
 

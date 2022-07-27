@@ -144,6 +144,11 @@ object Dagger {
     const val hiltDaggerCompiler = "com.google.dagger:hilt-compiler:$version"
 }
 
+object Detekt {
+    const val api = "io.gitlab.arturbosch.detekt:detekt-api:${Versions.Detekt.detekt}"
+    const val test = "io.gitlab.arturbosch.detekt:detekt-test:${Versions.Detekt.detekt}"
+}
+
 object JakeWharton {
     const val timber = "com.jakewharton.timber:timber:${Versions.JakeWharton.timber}"
 }
@@ -157,7 +162,7 @@ object Junit {
 }
 
 object Kotlin {
-    private const val version = Versions.Kotlin.kotlin
+    const val testJunit = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.Kotlin.kotlin}"
 }
 
 object KotlinX {

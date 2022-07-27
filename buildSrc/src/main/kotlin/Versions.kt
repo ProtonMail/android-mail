@@ -53,13 +53,15 @@ object Versions {
         const val dagger = "2.41"
     }
 
+    object Detekt {
+        const val detekt = "1.21.0"
+    }
+
     object Gradle {
         const val androidGradlePlugin = "7.1.3"
         const val benManesVersionsPlugin = "0.42.0"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
-        const val protonDetektPlugin = "1.0.0-alpha03"
-        const val protonCoveragePlugin = "1.0.0-alpha03"
         const val jacocoGradlePlugin = "0.8.8"
     }
 

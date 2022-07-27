@@ -38,8 +38,8 @@ allprojects {
 }
 
 plugins {
-    id("me.proton.core.gradle-plugins.detekt") version Versions.Gradle.protonDetektPlugin
-    id("me.proton.core.gradle-plugins.jacoco") version Versions.Gradle.protonCoveragePlugin
+    id("me.proton.core.gradle-plugins.detekt")
+    id("me.proton.core.gradle-plugins.jacoco")
     id("com.github.ben-manes.versions") version Versions.Gradle.benManesVersionsPlugin
 }
 
