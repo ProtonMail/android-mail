@@ -21,37 +21,68 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import androidx.annotation.StringRes
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
+import ch.protonmail.android.mailmailbox.presentation.R
 import javax.inject.Inject
 import kotlin.time.Duration
 
-private const val MILLIS_IN_A_DAY = 86_400_000L
-
 class MailboxItemTimeFormatter @Inject constructor(
-    private val calendar: Calendar,
+    private val currentTime: Calendar,
     private val getDefaultLocale: GetDefaultLocale
 ) {
 
-    operator fun invoke(itemTime: Duration): String {
+    operator fun invoke(itemTime: Duration): FormattedTime {
         if (itemTime.isToday()) {
             return itemTime.format(DateFormat.Today)
         }
-        return "foo"
+
+        if (itemTime.isYesterday()) {
+            return FormattedTime.Localizable(R.string.yesterday)
+        }
+        return FormattedTime.Date("foo")
     }
 
-    private fun Duration.format(format: DateFormat) = SimpleDateFormat(
-        format.pattern,
-        getDefaultLocale()
-    ).format(
-        Date(this.inWholeMilliseconds)
+    private fun Duration.format(format: DateFormat) = FormattedTime.Date(
+        SimpleDateFormat(
+            format.pattern,
+            getDefaultLocale()
+        ).format(
+            Date(this.inWholeMilliseconds)
+        )
     )
 
     private fun Duration.isToday(): Boolean {
-        val currentTimeMillis = calendar.time.time
-        return currentTimeMillis - this.inWholeMilliseconds < MILLIS_IN_A_DAY
+        val itemCalendar = Calendar.getInstance()
+        itemCalendar.time = Date(this.inWholeMilliseconds)
+
+        return isCurrentYear(itemCalendar) && isCurrentDayOfYear(itemCalendar)
     }
+
+    private fun Duration.isYesterday(): Boolean {
+        val itemCalendar = Calendar.getInstance()
+        itemCalendar.time = Date(this.inWholeMilliseconds)
+
+        return isCurrentYear(itemCalendar) && isDayOfYearYesterday(itemCalendar)
+    }
+
+    private fun isDayOfYearYesterday(itemCalendar: Calendar) =
+        currentTime.get(Calendar.DAY_OF_YEAR) - itemCalendar.get(Calendar.DAY_OF_YEAR) == 1
+
+    private fun isCurrentDayOfYear(itemCalendar: Calendar) =
+        currentTime.get(Calendar.DAY_OF_YEAR) == itemCalendar.get(Calendar.DAY_OF_YEAR)
+
+    private fun isCurrentYear(itemCalendar: Calendar) =
+        currentTime.get(Calendar.YEAR) == itemCalendar.get(Calendar.YEAR)
+
 
     private enum class DateFormat(val pattern: String) {
         Today("HH:mm")
     }
+
+    sealed interface FormattedTime {
+        data class Localizable(@StringRes val stringId: Int) : FormattedTime
+        data class Date(val value: String) : FormattedTime
+    }
 }
+

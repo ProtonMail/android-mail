@@ -22,6 +22,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTimeFormatter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -135,7 +136,7 @@ object MailboxItemUiModelTestData {
         id = id,
         userId = userId,
         conversationId = ConversationId(id),
-        time = "10:42",
+        time = MailboxItemTimeFormatter.FormattedTime.Date("10:42"),
         read = isRead,
         labels = emptyList(),
         subject = subject,

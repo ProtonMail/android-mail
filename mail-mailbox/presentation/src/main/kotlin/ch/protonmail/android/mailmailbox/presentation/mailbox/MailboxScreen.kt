@@ -54,6 +54,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.UnreadItemsFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
@@ -319,7 +320,7 @@ fun PreviewMailbox() {
                     userId = UserId("0"),
                     participants = emptyList(),
                     subject = "First message",
-                    time = "Monday",
+                    time = MailboxItemTimeFormatter.FormattedTime.Localizable(R.string.yesterday),
                     read = false,
                     shouldShowRepliedIcon = true,
                     shouldShowRepliedAllIcon = false,
@@ -332,7 +333,7 @@ fun PreviewMailbox() {
                     userId = UserId("0"),
                     participants = listOf(Recipient("address", "name")),
                     subject = "Second message",
-                    time = "10:42",
+                    time = MailboxItemTimeFormatter.FormattedTime.Date("10:42"),
                     read = true,
                     shouldShowRepliedIcon = false,
                     shouldShowRepliedAllIcon = true,

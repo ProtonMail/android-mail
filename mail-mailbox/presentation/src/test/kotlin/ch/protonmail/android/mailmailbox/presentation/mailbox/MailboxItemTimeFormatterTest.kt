@@ -18,23 +18,22 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
-import java.time.Instant
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
+import ch.protonmail.android.mailmailbox.presentation.R
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemTimeFormatterTest {
 
-    private val calendar = mockk<Calendar> {
-        val fakeCurrentTime = 1658853752L // Tue Jul 26 18:42:35 CEST 2022
-        every { this@mockk.time } returns Date.from(Instant.ofEpochMilli(fakeCurrentTime))
-    }
+    private val calendar = Calendar.getInstance()
 
     private val getDefaultLocale = mockk<GetDefaultLocale> {
         every { this@mockk.invoke() } returns Locale.CANADA
@@ -47,10 +46,27 @@ class MailboxItemTimeFormatterTest {
 
     @Test
     fun `when the message is from the current day show time of the message`() {
-        val time = 1658853643L // Tue Jul 26 18:40:44 CEST 2022
+        givenCurrentTimeIs(1658853752.seconds) // Tue Jul 26 18:42:35 CEST 2022
+        val itemTime = 1658853643L // Tue Jul 26 18:40:44 CEST 2022
 
-        val actual = formatter.invoke(time.seconds)
+        val actual = formatter.invoke(itemTime.seconds)
 
-        assertEquals("18:40", actual)
+        assertIs<MailboxItemTimeFormatter.FormattedTime.Date>(actual, actual.toString())
+        assertEquals(MailboxItemTimeFormatter.FormattedTime.Date("18:40"), actual)
+    }
+
+    @Test
+    fun `when the message is from the day before today show yesterday`() {
+        givenCurrentTimeIs(1658853752.seconds) // Tue Jul 26 18:42:35 CEST 2022
+        val itemTime = 1658772437 // 2022-07-25 20:07:17
+
+        val actual = formatter.invoke(itemTime.seconds)
+
+        assertIs<MailboxItemTimeFormatter.FormattedTime.Localizable>(actual, actual.toString())
+        assertEquals(MailboxItemTimeFormatter.FormattedTime.Localizable(R.string.yesterday), actual)
+    }
+
+    private fun givenCurrentTimeIs(currentTime: Duration) {
+        calendar.time = Date(currentTime.inWholeMilliseconds)
     }
 }

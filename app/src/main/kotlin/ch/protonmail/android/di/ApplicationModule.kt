@@ -18,10 +18,11 @@
 
 package ch.protonmail.android.di
 
+import java.util.Calendar
 import android.content.Context
 import androidx.work.WorkManager
-import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.BuildConfig
+import ch.protonmail.android.mailcommon.domain.AppInformation
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -76,6 +77,9 @@ object ApplicationModule {
     fun provideWorkManager(
         @ApplicationContext context: Context,
     ): WorkManager = WorkManager.getInstance(context)
+
+    @Provides
+    fun provideCalendar(): Calendar = Calendar.getInstance()
 }
 
 @Module
