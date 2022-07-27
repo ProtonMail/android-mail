@@ -29,6 +29,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapperTest {
 
@@ -114,7 +115,7 @@ class MailboxItemUiModelMapperTest {
         val time: Long = 1658851202
         val mailboxItem = buildMailboxItem(time = time)
         val formattedTime = "18:00"
-        every { mailboxItemTimeFormatter.invoke(time) } returns formattedTime
+        every { mailboxItemTimeFormatter.invoke(time.seconds) } returns formattedTime
 
         val actual = mapper.toUiModel(mailboxItem)
 

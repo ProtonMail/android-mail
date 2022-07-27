@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTimeFor
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapper @Inject constructor(
     val mailboxItemTimeFormatter: MailboxItemTimeFormatter
@@ -37,7 +38,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             id = mailboxItem.id,
             userId = mailboxItem.userId,
             conversationId = mailboxItem.conversationId,
-            time = mailboxItemTimeFormatter(mailboxItem.time),
+            time = mailboxItemTimeFormatter(mailboxItem.time.seconds),
             read = mailboxItem.read,
             labels = mailboxItem.labels,
             subject = mailboxItem.subject,

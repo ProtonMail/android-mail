@@ -18,40 +18,39 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
-import java.text.SimpleDateFormat
+import java.time.Instant
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
-import javax.inject.Inject
-import kotlin.time.Duration
+import io.mockk.every
+import io.mockk.mockk
+import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.time.Duration.Companion.seconds
 
-private const val MILLIS_IN_A_DAY = 86_400_000L
+class MailboxItemTimeFormatterTest {
 
-class MailboxItemTimeFormatter @Inject constructor(
-    private val calendar: Calendar,
-    private val getDefaultLocale: GetDefaultLocale
-) {
-
-    operator fun invoke(itemTime: Duration): String {
-        if (itemTime.isToday()) {
-            return itemTime.format(DateFormat.Today)
-        }
-        return "foo"
+    private val calendar = mockk<Calendar> {
+        val fakeCurrentTime = 1658853752L // Tue Jul 26 18:42:35 CEST 2022
+        every { this@mockk.time } returns Date.from(Instant.ofEpochMilli(fakeCurrentTime))
     }
 
-    private fun Duration.format(format: DateFormat) = SimpleDateFormat(
-        format.pattern,
-        getDefaultLocale()
-    ).format(
-        Date(this.inWholeMilliseconds)
+    private val getDefaultLocale = mockk<GetDefaultLocale> {
+        every { this@mockk.invoke() } returns Locale.CANADA
+    }
+
+    private val formatter = MailboxItemTimeFormatter(
+        calendar,
+        getDefaultLocale
     )
 
-    private fun Duration.isToday(): Boolean {
-        val currentTimeMillis = calendar.time.time
-        return currentTimeMillis - this.inWholeMilliseconds < MILLIS_IN_A_DAY
-    }
+    @Test
+    fun `when the message is from the current day show time of the message`() {
+        val time = 1658853643L // Tue Jul 26 18:40:44 CEST 2022
 
-    private enum class DateFormat(val pattern: String) {
-        Today("HH:mm")
+        val actual = formatter.invoke(time.seconds)
+
+        assertEquals("18:40", actual)
     }
 }
