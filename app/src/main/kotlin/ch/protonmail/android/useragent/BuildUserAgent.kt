@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.useragent
 
+import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
 import javax.inject.Inject
 
 class BuildUserAgent @Inject constructor(

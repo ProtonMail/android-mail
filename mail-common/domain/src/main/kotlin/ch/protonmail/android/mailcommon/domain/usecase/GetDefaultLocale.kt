@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.useragent
+package ch.protonmail.android.mailcommon.domain.usecase
 
 import java.util.Locale
 import javax.inject.Inject

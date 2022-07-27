@@ -24,6 +24,7 @@ import io.mockk.mockk
 import org.junit.Before
 import org.junit.Test
 import java.util.Locale
+import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
 import kotlin.test.assertEquals
 
 class BuildUserAgentTest {
