@@ -154,4 +154,23 @@ class MailboxItemUiModelMapperTest {
 
         assertEquals(2, actual.numMessages)
     }
+
+    @Test
+    fun `when mailbox item is starred show starred`() {
+        val mailboxItem = buildMailboxItem(labelIds = listOf(SystemLabelId.Starred.labelId.id))
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertTrue(actual.showStar)
+    }
+
+    @Test
+    fun `when mailbox item is not starred do not show starred`() {
+        val labelIds = listOf(SystemLabelId.Drafts.labelId.id, SystemLabelId.Archive.labelId.id)
+        val mailboxItem = buildMailboxItem(labelIds = labelIds)
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertFalse(actual.showStar)
+    }
 }

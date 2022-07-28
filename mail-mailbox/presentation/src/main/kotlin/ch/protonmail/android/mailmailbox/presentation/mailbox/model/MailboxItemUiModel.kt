@@ -31,12 +31,13 @@ data class MailboxItemUiModel(
     val userId: UserId,
     val conversationId: ConversationId,
     val time: TextUiModel,
-    val read: Boolean,
+    val isRead: Boolean,
     val labels: List<Label> = emptyList(),
     val subject: String,
     val participants: List<Recipient>,
     val shouldShowRepliedIcon: Boolean,
     val shouldShowRepliedAllIcon: Boolean,
     val shouldShowForwardedIcon: Boolean,
-    val numMessages: Int?
+    val numMessages: Int?,
+    val showStar: Boolean
 )

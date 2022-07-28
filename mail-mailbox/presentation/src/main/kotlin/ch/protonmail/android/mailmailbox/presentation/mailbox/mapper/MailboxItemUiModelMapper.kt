@@ -39,14 +39,15 @@ class MailboxItemUiModelMapper @Inject constructor(
             userId = mailboxItem.userId,
             conversationId = mailboxItem.conversationId,
             time = formatMailboxItemTime(mailboxItem.time.seconds),
-            read = mailboxItem.read,
+            isRead = mailboxItem.read,
             labels = mailboxItem.labels,
             subject = mailboxItem.subject,
             participants = getParticipants(mailboxItem),
             shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
             shouldShowRepliedAllIcon = shouldShowRepliedAllIcon(mailboxItem),
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
-            numMessages = mailboxItem.numMessages
+            numMessages = mailboxItem.numMessages,
+            showStar = mailboxItem.labelIds.contains(SystemLabelId.Starred.labelId)
         )
 
     private fun getParticipants(mailboxItem: MailboxItem): List<Recipient> {

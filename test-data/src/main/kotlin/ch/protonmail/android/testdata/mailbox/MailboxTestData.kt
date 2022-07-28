@@ -141,13 +141,14 @@ object MailboxItemUiModelTestData {
         userId = userId,
         conversationId = ConversationId(id),
         time = TextUiModel.Text("10:42"),
-        read = isRead,
+        isRead = isRead,
         labels = emptyList(),
         subject = subject,
         participants = emptyList(),
         shouldShowRepliedIcon = false,
         shouldShowRepliedAllIcon = false,
         shouldShowForwardedIcon = false,
-        numMessages = null
+        numMessages = null,
+        showStar = false
     )
 }

@@ -284,7 +284,7 @@ private fun MailboxItem(
             modifier = Modifier.padding(16.dp)
         ) {
             Column {
-                val fontWeight = if (item.read) FontWeight.Normal else FontWeight.Bold
+                val fontWeight = if (item.isRead) FontWeight.Normal else FontWeight.Bold
                 Text(
                     text = "UserId: ${item.userId}",
                     fontWeight = fontWeight,
@@ -374,11 +374,12 @@ fun PreviewMailbox() {
                     participants = emptyList(),
                     subject = "First message",
                     time = TextUiModel.TextRes(R.string.yesterday),
-                    read = false,
+                    isRead = false,
                     shouldShowRepliedIcon = true,
                     shouldShowRepliedAllIcon = false,
                     shouldShowForwardedIcon = false,
-                    numMessages = null
+                    numMessages = null,
+                    showStar = false
                 ),
                 MailboxItemUiModel(
                     type = MailboxItemType.Message,
@@ -388,11 +389,12 @@ fun PreviewMailbox() {
                     participants = listOf(Recipient("address", "name")),
                     subject = "Second message",
                     time = TextUiModel.Text("10:42"),
-                    read = true,
+                    isRead = true,
                     shouldShowRepliedIcon = false,
                     shouldShowRepliedAllIcon = true,
                     shouldShowForwardedIcon = true,
-                    numMessages = null
+                    numMessages = null,
+                    showStar = true
                 )
             )
         )
