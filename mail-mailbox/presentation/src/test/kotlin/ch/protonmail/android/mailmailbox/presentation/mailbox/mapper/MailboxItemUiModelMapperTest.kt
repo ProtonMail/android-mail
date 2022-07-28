@@ -21,9 +21,9 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTimeFormatter
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocations
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.every
@@ -41,9 +41,15 @@ import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapperTest {
 
+    private val getMailboxItemLocations = mockk<GetMailboxItemLocations> {
+        every { this@mockk.invoke(any()) } returns emptyList<SystemLabelId>()
+    }
     private val formatMailboxItemTime: FormatMailboxItemTime = mockk()
 
-    private val mapper = MailboxItemUiModelMapper(formatMailboxItemTime)
+    private val mapper = MailboxItemUiModelMapper(
+        formatMailboxItemTime,
+        getMailboxItemLocations
+    )
 
     @BeforeTest
     fun setup() {
@@ -172,5 +178,17 @@ class MailboxItemUiModelMapperTest {
         val actual = mapper.toUiModel(mailboxItem)
 
         assertFalse(actual.showStar)
+    }
+
+    @Test
+    fun `labels of location for which to show an icon are mapped on the ui model as defined by the use case`() {
+        val labelIds = listOf(SystemLabelId.Inbox.labelId.id, SystemLabelId.Drafts.labelId.id)
+        val mailboxItem = buildMailboxItem(type = MailboxItemType.Conversation, labelIds = labelIds)
+        val locations = listOf(SystemLabelId.Inbox, SystemLabelId.Drafts)
+        every { getMailboxItemLocations.invoke(mailboxItem) } returns locations
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertEquals(locations, actual.showLocationIcons)
     }
 }
