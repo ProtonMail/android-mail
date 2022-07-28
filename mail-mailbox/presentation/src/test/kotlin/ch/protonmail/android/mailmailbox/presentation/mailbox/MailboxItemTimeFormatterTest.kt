@@ -76,8 +76,24 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<MailboxItemTimeFormatter.FormattedTime.Localizable>(actual, actual.toString())
-        assertEquals(MailboxItemTimeFormatter.FormattedTime.Localizable(R.string.yesterday), actual)
+        assertIs<FormattedTime.Localizable>(actual, actual.toString())
+        assertEquals(FormattedTime.Localizable(R.string.yesterday), actual)
+    }
+
+    @Test
+    fun `when the message is older than yesterday and from the current week show week day`() {
+        givenCurrentLocaleIs(Locale.ENGLISH)
+        givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
+        val itemTime = 1658772437 // Mon Jul 25 20:07:17 CEST 2022
+
+        val actual = formatter.invoke(itemTime.seconds)
+
+        assertIs<FormattedTime.Date>(actual, actual.toString())
+        assertEquals(FormattedTime.Date("Monday"), actual)
+    }
+
+    private fun givenCurrentLocaleIs(locale: Locale) {
+        every { getDefaultLocale() } returns locale
     }
 
     private fun givenCurrentTimeIs(currentTime: Duration) {

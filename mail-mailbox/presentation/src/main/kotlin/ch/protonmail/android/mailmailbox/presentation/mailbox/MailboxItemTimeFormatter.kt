@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import androidx.annotation.StringRes
@@ -34,50 +35,47 @@ class MailboxItemTimeFormatter @Inject constructor(
 
     operator fun invoke(itemTime: Duration): FormattedTime {
         if (itemTime.isToday()) {
-            return itemTime.format(ItemTimeFormat.Today)
+            return FormattedTime.Date(itemTime.toHourLocalised())
         }
 
         if (itemTime.isYesterday()) {
             return FormattedTime.Localizable(R.string.yesterday)
         }
+
+        if (itemTime.isThisWeek()) {
+            return FormattedTime.Date(itemTime.toWeekDay())
+        }
         return FormattedTime.Date("foo")
     }
 
-    private fun Duration.format(timeFormat: ItemTimeFormat) = FormattedTime.Date(
-        DateFormat.getTimeInstance(
-            timeFormat.dateFormatConst,
-            getDefaultLocale()
-        ).format(
-            Date(this.inWholeMilliseconds)
-        )
-    )
+    private fun Duration.toHourLocalised() = DateFormat.getTimeInstance(DateFormat.SHORT, getDefaultLocale())
+        .format(Date(this.inWholeMilliseconds))
 
-    private fun Duration.isToday(): Boolean {
-        val itemCalendar = Calendar.getInstance()
-        itemCalendar.time = Date(this.inWholeMilliseconds)
+    private fun Duration.toWeekDay() = SimpleDateFormat("EEEE", getDefaultLocale())
+        .format(Date(this.inWholeMilliseconds))
 
-        return isCurrentYear(itemCalendar) && isCurrentDayOfYear(itemCalendar)
-    }
-
-    private fun Duration.isYesterday(): Boolean {
-        val itemCalendar = Calendar.getInstance()
-        itemCalendar.time = Date(this.inWholeMilliseconds)
-
-        return isCurrentYear(itemCalendar) && isDayOfYearYesterday(itemCalendar)
-    }
-
-    private fun isDayOfYearYesterday(itemCalendar: Calendar) =
+    private fun isYesterday(itemCalendar: Calendar) = isCurrentYear(itemCalendar) &&
         currentTime.get(Calendar.DAY_OF_YEAR) - itemCalendar.get(Calendar.DAY_OF_YEAR) == 1
 
-    private fun isCurrentDayOfYear(itemCalendar: Calendar) =
+    private fun isToday(itemCalendar: Calendar) = isCurrentYear(itemCalendar) &&
         currentTime.get(Calendar.DAY_OF_YEAR) == itemCalendar.get(Calendar.DAY_OF_YEAR)
+
+    private fun isCurrentWeek(itemCalendar: Calendar) = isCurrentYear(itemCalendar) &&
+        currentTime.get(Calendar.WEEK_OF_YEAR) == itemCalendar.get(Calendar.WEEK_OF_YEAR)
 
     private fun isCurrentYear(itemCalendar: Calendar) =
         currentTime.get(Calendar.YEAR) == itemCalendar.get(Calendar.YEAR)
 
+    private fun Duration.isToday(): Boolean = isToday(toCalendar())
 
-    private enum class ItemTimeFormat(val dateFormatConst: Int) {
-        Today(DateFormat.SHORT)
+    private fun Duration.isYesterday(): Boolean = isYesterday(toCalendar())
+
+    private fun Duration.isThisWeek(): Boolean = isCurrentWeek(toCalendar())
+
+    private fun Duration.toCalendar(): Calendar {
+        val itemCalendar = Calendar.getInstance()
+        itemCalendar.time = Date(this.inWholeMilliseconds)
+        return itemCalendar
     }
 
     sealed interface FormattedTime {
