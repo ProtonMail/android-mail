@@ -35,7 +35,7 @@ class MailboxItemTimeFormatter @Inject constructor(
 
     operator fun invoke(itemTime: Duration): FormattedTime {
         if (itemTime.isToday()) {
-            return FormattedTime.Date(itemTime.toHourLocalised())
+            return FormattedTime.Localized(itemTime.toHourLocalised())
         }
 
         if (itemTime.isYesterday()) {
@@ -43,9 +43,9 @@ class MailboxItemTimeFormatter @Inject constructor(
         }
 
         if (itemTime.isThisWeek()) {
-            return FormattedTime.Date(itemTime.toWeekDay())
+            return FormattedTime.Localized(itemTime.toWeekDay())
         }
-        return FormattedTime.Date("foo")
+        return FormattedTime.Localized("foo")
     }
 
     private fun Duration.toHourLocalised() = DateFormat.getTimeInstance(DateFormat.SHORT, getDefaultLocale())
@@ -80,7 +80,7 @@ class MailboxItemTimeFormatter @Inject constructor(
 
     sealed interface FormattedTime {
         data class Localizable(@StringRes val stringId: Int) : FormattedTime
-        data class Date(val value: String) : FormattedTime
+        data class Localized(val value: String) : FormattedTime
     }
 }
 

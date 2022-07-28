@@ -18,9 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
-import java.text.DateFormat
-import java.util.Date
-import java.util.Locale
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
@@ -336,7 +333,7 @@ fun PreviewMailbox() {
                     userId = UserId("0"),
                     participants = listOf(Recipient("address", "name")),
                     subject = "Second message",
-                    time = MailboxItemTimeFormatter.FormattedTime.Date("10:42"),
+                    time = MailboxItemTimeFormatter.FormattedTime.Localized("10:42"),
                     read = true,
                     shouldShowRepliedIcon = false,
                     shouldShowRepliedAllIcon = true,

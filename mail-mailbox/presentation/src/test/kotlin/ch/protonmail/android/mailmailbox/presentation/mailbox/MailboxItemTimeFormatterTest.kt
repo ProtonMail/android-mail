@@ -53,8 +53,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Date>(actual, actual.toString())
-        assertEquals(FormattedTime.Date("18:40"), actual)
+        assertIs<FormattedTime.Localized>(actual, actual.toString())
+        assertEquals(FormattedTime.Localized("18:40"), actual)
     }
 
     @Test
@@ -65,8 +65,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Date>(actual, actual.toString())
-        assertEquals(FormattedTime.Date("6:40 PM"), actual)
+        assertIs<FormattedTime.Localized>(actual, actual.toString())
+        assertEquals(FormattedTime.Localized("6:40 PM"), actual)
     }
 
     @Test
@@ -88,8 +88,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Date>(actual, actual.toString())
-        assertEquals(FormattedTime.Date("Monday"), actual)
+        assertIs<FormattedTime.Localized>(actual, actual.toString())
+        assertEquals(FormattedTime.Localized("Monday"), actual)
     }
 
     private fun givenCurrentLocaleIs(locale: Locale) {

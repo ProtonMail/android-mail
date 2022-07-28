@@ -136,7 +136,7 @@ object MailboxItemUiModelTestData {
         id = id,
         userId = userId,
         conversationId = ConversationId(id),
-        time = MailboxItemTimeFormatter.FormattedTime.Date("10:42"),
+        time = MailboxItemTimeFormatter.FormattedTime.Localized("10:42"),
         read = isRead,
         labels = emptyList(),
         subject = subject,

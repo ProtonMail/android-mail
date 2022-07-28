@@ -34,7 +34,7 @@ import kotlin.time.Duration.Companion.seconds
 class MailboxItemUiModelMapperTest {
 
     private val mailboxItemTimeFormatter = mockk<MailboxItemTimeFormatter> {
-        every { this@mockk.invoke(any()) } returns MailboxItemTimeFormatter.FormattedTime.Date("21 Feb")
+        every { this@mockk.invoke(any()) } returns MailboxItemTimeFormatter.FormattedTime.Localized("21 Feb")
     }
 
     private val mapper = MailboxItemUiModelMapper(mailboxItemTimeFormatter)
@@ -114,7 +114,7 @@ class MailboxItemUiModelMapperTest {
     fun `mailbox item time is formatted in the ui model`() {
         val time: Long = 1658851202
         val mailboxItem = buildMailboxItem(time = time)
-        val formattedTime = MailboxItemTimeFormatter.FormattedTime.Date("18:00")
+        val formattedTime = MailboxItemTimeFormatter.FormattedTime.Localized("18:00")
         every { mailboxItemTimeFormatter.invoke(time.seconds) } returns formattedTime
 
         val actual = mapper.toUiModel(mailboxItem)
