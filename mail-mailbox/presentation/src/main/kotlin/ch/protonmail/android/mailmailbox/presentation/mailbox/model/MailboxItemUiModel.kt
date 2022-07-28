@@ -37,5 +37,6 @@ data class MailboxItemUiModel(
     val participants: List<Recipient>,
     val shouldShowRepliedIcon: Boolean,
     val shouldShowRepliedAllIcon: Boolean,
-    val shouldShowForwardedIcon: Boolean
+    val shouldShowForwardedIcon: Boolean,
+    val numMessages: Int?
 )

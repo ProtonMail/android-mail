@@ -377,7 +377,8 @@ fun PreviewMailbox() {
                     read = false,
                     shouldShowRepliedIcon = true,
                     shouldShowRepliedAllIcon = false,
-                    shouldShowForwardedIcon = false
+                    shouldShowForwardedIcon = false,
+                    numMessages = null
                 ),
                 MailboxItemUiModel(
                     type = MailboxItemType.Message,
@@ -390,7 +391,8 @@ fun PreviewMailbox() {
                     read = true,
                     shouldShowRepliedIcon = false,
                     shouldShowRepliedAllIcon = true,
-                    shouldShowForwardedIcon = true
+                    shouldShowForwardedIcon = true,
+                    numMessages = null
                 )
             )
         )

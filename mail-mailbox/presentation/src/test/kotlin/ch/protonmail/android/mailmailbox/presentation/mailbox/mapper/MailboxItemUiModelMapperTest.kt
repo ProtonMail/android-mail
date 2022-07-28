@@ -22,6 +22,8 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTimeFormatter
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.every
@@ -142,5 +144,14 @@ class MailboxItemUiModelMapperTest {
         val actual = mapper.toUiModel(mailboxItem)
         // Then
         assertEquals(result, actual.time)
+    }
+
+    @Test
+    fun `when mailbox item of conversation type contains two or more messages show messages number`() {
+        val mailboxItem = buildMailboxItem(type = MailboxItemType.Conversation, numMessages = 2)
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertEquals(2, actual.numMessages)
     }
 }

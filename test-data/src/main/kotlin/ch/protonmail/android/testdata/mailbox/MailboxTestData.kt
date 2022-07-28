@@ -50,6 +50,7 @@ object MailboxTestData {
         type: MailboxItemType = MailboxItemType.Message,
         senders: List<Recipient> = listOf(Recipient("address", "name")),
         recipients: List<Recipient> = emptyList(),
+        numMessages: Int = 1
     ) = MailboxItem(
         type = type,
         id = id,
@@ -65,7 +66,8 @@ object MailboxTestData {
         labels = labelIds.map { buildLabel(userId = userId, id = it) },
         isReplied = false,
         isRepliedAll = false,
-        isForwarded = false
+        isForwarded = false,
+        numMessages = numMessages
     )
 
     private fun buildMessageMailboxItem(
@@ -88,7 +90,8 @@ object MailboxTestData {
         read = isRead,
         isReplied = isReplied,
         isRepliedAll = isRepliedAll,
-        isForwarded = isForwarded
+        isForwarded = isForwarded,
+        numMessages = 1
     )
 
     private fun buildConversationMailboxItem(id: String) = MailboxItem(
@@ -105,7 +108,8 @@ object MailboxTestData {
         read = false,
         isReplied = false,
         isRepliedAll = false,
-        isForwarded = false
+        isForwarded = false,
+        numMessages = 3
     )
 
 }
@@ -144,5 +148,6 @@ object MailboxItemUiModelTestData {
         shouldShowRepliedIcon = false,
         shouldShowRepliedAllIcon = false,
         shouldShowForwardedIcon = false,
+        numMessages = null
     )
 }

@@ -45,7 +45,8 @@ class MailboxItemUiModelMapper @Inject constructor(
             participants = getParticipants(mailboxItem),
             shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
             shouldShowRepliedAllIcon = shouldShowRepliedAllIcon(mailboxItem),
-            shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem)
+            shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
+            numMessages = mailboxItem.numMessages
         )
 
     private fun getParticipants(mailboxItem: MailboxItem): List<Recipient> {

@@ -44,7 +44,7 @@ object ConversationTestData {
         recipients = emptyList(),
         senders = listOf(Recipient("address", "name")),
         numAttachments = 0,
-        numMessages = 0,
+        numMessages = 1,
         numUnread = 0,
     )
 
