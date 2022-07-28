@@ -70,7 +70,7 @@ class MailboxItemTimeFormatterTest {
     }
 
     @Test
-    fun `when the message is from the day before today show yesterday`() {
+    fun `when the message is from yesterday show localized 'yesterday' string`() {
         givenCurrentTimeIs(1658853752.seconds) // Tue Jul 26 18:42:35 CEST 2022
         val itemTime = 1658772437 // Mon Jul 25 20:07:17 CEST 2022
 
@@ -81,7 +81,7 @@ class MailboxItemTimeFormatterTest {
     }
 
     @Test
-    fun `when the message is older than yesterday and from the current week show week day`() {
+    fun `when the message is from the current week and older than yesterday show week day`() {
         givenCurrentLocaleIs(Locale.ENGLISH)
         givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1658772437 // Mon Jul 25 20:07:17 CEST 2022
@@ -90,6 +90,54 @@ class MailboxItemTimeFormatterTest {
 
         assertIs<FormattedTime.Localized>(actual, actual.toString())
         assertEquals(FormattedTime.Localized("Monday"), actual)
+    }
+
+    @Test
+    fun `when the message is from the current year and older than current week show day and month`() {
+        givenCurrentLocaleIs(Locale.FRENCH)
+        givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
+        val itemTime = 1647852004 // Mon Mar 21 09:40:04 CEST 2022
+
+        val actual = formatter.invoke(itemTime.seconds)
+
+        assertIs<FormattedTime.Localized>(actual, actual.toString())
+        assertEquals(FormattedTime.Localized("21 mars"), actual)
+    }
+
+    @Test
+    fun `when showing day and month ensure they are formatted based on the current locale`() {
+        givenCurrentLocaleIs(Locale.US)
+        givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
+        val itemTime = 1647852004 // Mon Mar 21 09:40:04 CEST 2022
+
+        val actual = formatter.invoke(itemTime.seconds)
+
+        assertIs<FormattedTime.Localized>(actual, actual.toString())
+        assertEquals(FormattedTime.Localized("Mar 21"), actual)
+    }
+
+    @Test
+    fun `when the message is from before the current year show the day month and year`() {
+        givenCurrentLocaleIs(Locale.UK)
+        givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
+        val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2022
+
+        val actual = formatter.invoke(itemTime.seconds)
+
+        assertIs<FormattedTime.Localized>(actual, actual.toString())
+        assertEquals(FormattedTime.Localized("13 Sep 2021"), actual)
+    }
+
+    @Test
+    fun `when showing day month and year ensure they are formatted based on current locale`() {
+        givenCurrentLocaleIs(Locale.US)
+        givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
+        val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2022
+
+        val actual = formatter.invoke(itemTime.seconds)
+
+        assertIs<FormattedTime.Localized>(actual, actual.toString())
+        assertEquals(FormattedTime.Localized("Sep 13, 2021"), actual)
     }
 
     private fun givenCurrentLocaleIs(locale: Locale) {

@@ -35,20 +35,29 @@ class MailboxItemTimeFormatter @Inject constructor(
 
     operator fun invoke(itemTime: Duration): FormattedTime {
         if (itemTime.isToday()) {
-            return FormattedTime.Localized(itemTime.toHourLocalised())
+            return FormattedTime.Localized(itemTime.toHourAndMinutes())
         }
-
         if (itemTime.isYesterday()) {
             return FormattedTime.Localizable(R.string.yesterday)
         }
-
         if (itemTime.isThisWeek()) {
             return FormattedTime.Localized(itemTime.toWeekDay())
         }
-        return FormattedTime.Localized("foo")
+        if (itemTime.isThisYear()) {
+            return FormattedTime.Localized(itemTime.toDayAndMonth())
+        }
+        return FormattedTime.Localized(itemTime.toFullDate())
     }
 
-    private fun Duration.toHourLocalised() = DateFormat.getTimeInstance(DateFormat.SHORT, getDefaultLocale())
+    private fun Duration.toFullDate() = DateFormat.getDateInstance(DateFormat.MEDIUM, getDefaultLocale())
+        .format(Date(this.inWholeMilliseconds))
+
+    private fun Duration.toDayAndMonth() = this.toFullDate()
+        .replace(",", "")
+        .replace(SimpleDateFormat("YYYY").format(currentTime.time), "")
+        .trim()
+
+    private fun Duration.toHourAndMinutes() = DateFormat.getTimeInstance(DateFormat.SHORT, getDefaultLocale())
         .format(Date(this.inWholeMilliseconds))
 
     private fun Duration.toWeekDay() = SimpleDateFormat("EEEE", getDefaultLocale())
@@ -66,11 +75,10 @@ class MailboxItemTimeFormatter @Inject constructor(
     private fun isCurrentYear(itemCalendar: Calendar) =
         currentTime.get(Calendar.YEAR) == itemCalendar.get(Calendar.YEAR)
 
-    private fun Duration.isToday(): Boolean = isToday(toCalendar())
-
-    private fun Duration.isYesterday(): Boolean = isYesterday(toCalendar())
-
-    private fun Duration.isThisWeek(): Boolean = isCurrentWeek(toCalendar())
+    private fun Duration.isToday() = isToday(toCalendar())
+    private fun Duration.isYesterday() = isYesterday(toCalendar())
+    private fun Duration.isThisWeek() = isCurrentWeek(toCalendar())
+    private fun Duration.isThisYear() = isCurrentYear(toCalendar())
 
     private fun Duration.toCalendar(): Calendar {
         val itemCalendar = Calendar.getInstance()
