@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox
+package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -28,25 +28,25 @@ import ch.protonmail.android.mailmailbox.presentation.R
 import javax.inject.Inject
 import kotlin.time.Duration
 
-class MailboxItemTimeFormatter @Inject constructor(
+class FormatMailboxItemTime @Inject constructor(
     private val currentTime: Calendar,
     private val getDefaultLocale: GetDefaultLocale
 ) {
 
-    operator fun invoke(itemTime: Duration): FormattedTime {
+    operator fun invoke(itemTime: Duration): Result {
         if (itemTime.isToday()) {
-            return FormattedTime.Localized(itemTime.toHourAndMinutes())
+            return Result.Localized(itemTime.toHourAndMinutes())
         }
         if (itemTime.isYesterday()) {
-            return FormattedTime.Localizable(R.string.yesterday)
+            return Result.Localizable(R.string.yesterday)
         }
         if (itemTime.isThisWeek()) {
-            return FormattedTime.Localized(itemTime.toWeekDay())
+            return Result.Localized(itemTime.toWeekDay())
         }
         if (itemTime.isThisYear()) {
-            return FormattedTime.Localized(itemTime.toDayAndMonth())
+            return Result.Localized(itemTime.toDayAndMonth())
         }
-        return FormattedTime.Localized(itemTime.toFullDate())
+        return Result.Localized(itemTime.toFullDate())
     }
 
     private fun Duration.toFullDate() = DateFormat.getDateInstance(DateFormat.MEDIUM, getDefaultLocale())
@@ -86,9 +86,9 @@ class MailboxItemTimeFormatter @Inject constructor(
         return itemCalendar
     }
 
-    sealed interface FormattedTime {
-        data class Localizable(@StringRes val stringId: Int) : FormattedTime
-        data class Localized(val value: String) : FormattedTime
+    sealed interface Result {
+        data class Localizable(@StringRes val stringId: Int) : Result
+        data class Localized(val value: String) : Result
     }
 }
 

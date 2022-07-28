@@ -23,7 +23,8 @@ import java.util.Date
 import java.util.Locale
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
 import ch.protonmail.android.mailmailbox.presentation.R
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTimeFormatter.FormattedTime
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime.Result
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
@@ -32,7 +33,7 @@ import kotlin.test.assertIs
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-class MailboxItemTimeFormatterTest {
+class FormatMailboxItemTimeTest {
 
     private val calendar = Calendar.getInstance()
 
@@ -40,7 +41,7 @@ class MailboxItemTimeFormatterTest {
         every { this@mockk.invoke() } returns Locale.CANADA
     }
 
-    private val formatter = MailboxItemTimeFormatter(
+    private val formatter = FormatMailboxItemTime(
         calendar,
         getDefaultLocale
     )
@@ -53,8 +54,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Localized>(actual, actual.toString())
-        assertEquals(FormattedTime.Localized("18:40"), actual)
+        assertIs<Result.Localized>(actual, actual.toString())
+        assertEquals(Result.Localized("18:40"), actual)
     }
 
     @Test
@@ -65,8 +66,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Localized>(actual, actual.toString())
-        assertEquals(FormattedTime.Localized("6:40 PM"), actual)
+        assertIs<Result.Localized>(actual, actual.toString())
+        assertEquals(Result.Localized("6:40 PM"), actual)
     }
 
     @Test
@@ -76,8 +77,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Localizable>(actual, actual.toString())
-        assertEquals(FormattedTime.Localizable(R.string.yesterday), actual)
+        assertIs<Result.Localizable>(actual, actual.toString())
+        assertEquals(Result.Localizable(R.string.yesterday), actual)
     }
 
     @Test
@@ -88,8 +89,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Localized>(actual, actual.toString())
-        assertEquals(FormattedTime.Localized("Monday"), actual)
+        assertIs<Result.Localized>(actual, actual.toString())
+        assertEquals(Result.Localized("Monday"), actual)
     }
 
     @Test
@@ -100,8 +101,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Localized>(actual, actual.toString())
-        assertEquals(FormattedTime.Localized("21 mars"), actual)
+        assertIs<Result.Localized>(actual, actual.toString())
+        assertEquals(Result.Localized("21 mars"), actual)
     }
 
     @Test
@@ -112,8 +113,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Localized>(actual, actual.toString())
-        assertEquals(FormattedTime.Localized("Mar 21"), actual)
+        assertIs<Result.Localized>(actual, actual.toString())
+        assertEquals(Result.Localized("Mar 21"), actual)
     }
 
     @Test
@@ -124,8 +125,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Localized>(actual, actual.toString())
-        assertEquals(FormattedTime.Localized("13 Sep 2021"), actual)
+        assertIs<Result.Localized>(actual, actual.toString())
+        assertEquals(Result.Localized("13 Sep 2021"), actual)
     }
 
     @Test
@@ -136,8 +137,8 @@ class MailboxItemTimeFormatterTest {
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<FormattedTime.Localized>(actual, actual.toString())
-        assertEquals(FormattedTime.Localized("Sep 13, 2021"), actual)
+        assertIs<Result.Localized>(actual, actual.toString())
+        assertEquals(Result.Localized("Sep 13, 2021"), actual)
     }
 
     private fun givenCurrentLocaleIs(locale: Locale) {

@@ -60,6 +60,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -320,7 +321,7 @@ fun PreviewMailbox() {
                     userId = UserId("0"),
                     participants = emptyList(),
                     subject = "First message",
-                    time = MailboxItemTimeFormatter.FormattedTime.Localizable(R.string.yesterday),
+                    time = FormatMailboxItemTime.Result.Localizable(R.string.yesterday),
                     read = false,
                     shouldShowRepliedIcon = true,
                     shouldShowRepliedAllIcon = false,
@@ -333,7 +334,7 @@ fun PreviewMailbox() {
                     userId = UserId("0"),
                     participants = listOf(Recipient("address", "name")),
                     subject = "Second message",
-                    time = MailboxItemTimeFormatter.FormattedTime.Localized("10:42"),
+                    time = FormatMailboxItemTime.Result.Localized("10:42"),
                     read = true,
                     shouldShowRepliedIcon = false,
                     shouldShowRepliedAllIcon = true,

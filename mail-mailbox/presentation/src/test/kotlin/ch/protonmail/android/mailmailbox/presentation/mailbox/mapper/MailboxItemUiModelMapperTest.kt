@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTimeFormatter
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.every
@@ -33,11 +33,11 @@ import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapperTest {
 
-    private val mailboxItemTimeFormatter = mockk<MailboxItemTimeFormatter> {
-        every { this@mockk.invoke(any()) } returns MailboxItemTimeFormatter.FormattedTime.Localized("21 Feb")
+    private val formatMailboxItemTime = mockk<FormatMailboxItemTime> {
+        every { this@mockk.invoke(any()) } returns FormatMailboxItemTime.Result.Localized("21 Feb")
     }
 
-    private val mapper = MailboxItemUiModelMapper(mailboxItemTimeFormatter)
+    private val mapper = MailboxItemUiModelMapper(formatMailboxItemTime)
 
     @Test
     fun `when mailbox message item was replied ui model shows reply icon`() {
@@ -114,11 +114,11 @@ class MailboxItemUiModelMapperTest {
     fun `mailbox item time is formatted in the ui model`() {
         val time: Long = 1658851202
         val mailboxItem = buildMailboxItem(time = time)
-        val formattedTime = MailboxItemTimeFormatter.FormattedTime.Localized("18:00")
-        every { mailboxItemTimeFormatter.invoke(time.seconds) } returns formattedTime
+        val result = FormatMailboxItemTime.Result.Localized("18:00")
+        every { formatMailboxItemTime.invoke(time.seconds) } returns result
 
         val actual = mapper.toUiModel(mailboxItem)
 
-        assertEquals(formattedTime, actual.time)
+        assertEquals(result, actual.time)
     }
 }

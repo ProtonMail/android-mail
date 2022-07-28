@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTimeFormatter
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 
@@ -30,7 +30,7 @@ data class MailboxItemUiModel(
     val id: String,
     val userId: UserId,
     val conversationId: ConversationId,
-    val time: MailboxItemTimeFormatter.FormattedTime,
+    val time: FormatMailboxItemTime.Result,
     val read: Boolean,
     val labels: List<Label> = emptyList(),
     val subject: String,
