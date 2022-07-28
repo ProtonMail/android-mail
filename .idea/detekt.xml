@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DetektProjectConfiguration">
-    <enableDetekt>true</enableDetekt>
     <enableFormatting>true</enableFormatting>
+    <buildUponDefaultConfig>false</buildUponDefaultConfig>
     <configPaths>$PROJECT_DIR$/config/detekt/config.yml</configPaths>
+    <pluginPaths>$PROJECT_DIR$/detekt-rules/build/libs/detekt-rules.jar</pluginPaths>
   </component>
 </project>

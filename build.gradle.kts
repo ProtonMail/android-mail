@@ -16,6 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
@@ -41,6 +42,15 @@ plugins {
     id("me.proton.core.gradle-plugins.detekt")
     id("me.proton.core.gradle-plugins.jacoco")
     id("com.github.ben-manes.versions") version Versions.Gradle.benManesVersionsPlugin
+}
+
+subprojects {
+    afterEvaluate {
+        dependencies {
+            add("detektPlugins", project(":detekt-rules"))
+        }
+        tasks.named("detekt").dependsOn(":detekt-rules:assemble")
+    }
 }
 
 protonCoverageMultiModuleOptions {
