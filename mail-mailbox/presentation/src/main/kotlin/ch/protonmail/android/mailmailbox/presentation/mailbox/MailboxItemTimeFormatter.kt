@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
-import java.text.SimpleDateFormat
+import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
 import androidx.annotation.StringRes
@@ -34,7 +34,7 @@ class MailboxItemTimeFormatter @Inject constructor(
 
     operator fun invoke(itemTime: Duration): FormattedTime {
         if (itemTime.isToday()) {
-            return itemTime.format(DateFormat.Today)
+            return itemTime.format(ItemTimeFormat.Today)
         }
 
         if (itemTime.isYesterday()) {
@@ -43,9 +43,9 @@ class MailboxItemTimeFormatter @Inject constructor(
         return FormattedTime.Date("foo")
     }
 
-    private fun Duration.format(format: DateFormat) = FormattedTime.Date(
-        SimpleDateFormat(
-            format.pattern,
+    private fun Duration.format(timeFormat: ItemTimeFormat) = FormattedTime.Date(
+        DateFormat.getTimeInstance(
+            timeFormat.dateFormatConst,
             getDefaultLocale()
         ).format(
             Date(this.inWholeMilliseconds)
@@ -76,8 +76,8 @@ class MailboxItemTimeFormatter @Inject constructor(
         currentTime.get(Calendar.YEAR) == itemCalendar.get(Calendar.YEAR)
 
 
-    private enum class DateFormat(val pattern: String) {
-        Today("HH:mm")
+    private enum class ItemTimeFormat(val dateFormatConst: Int) {
+        Today(DateFormat.SHORT)
     }
 
     sealed interface FormattedTime {

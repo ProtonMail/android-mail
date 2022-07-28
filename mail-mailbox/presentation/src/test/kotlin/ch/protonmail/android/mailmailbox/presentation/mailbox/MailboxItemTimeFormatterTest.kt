@@ -23,6 +23,7 @@ import java.util.Date
 import java.util.Locale
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTimeFormatter.FormattedTime
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
@@ -45,20 +46,33 @@ class MailboxItemTimeFormatterTest {
     )
 
     @Test
-    fun `when the message is from the current day show time of the message`() {
+    fun `when the message is from the current day and locale is Italian show time of the message in 24 hours format`() {
+        givenCurrentLocaleIs(Locale.ITALIAN)
         givenCurrentTimeIs(1658853752.seconds) // Tue Jul 26 18:42:35 CEST 2022
         val itemTime = 1658853643L // Tue Jul 26 18:40:44 CEST 2022
 
         val actual = formatter.invoke(itemTime.seconds)
 
-        assertIs<MailboxItemTimeFormatter.FormattedTime.Date>(actual, actual.toString())
-        assertEquals(MailboxItemTimeFormatter.FormattedTime.Date("18:40"), actual)
+        assertIs<FormattedTime.Date>(actual, actual.toString())
+        assertEquals(FormattedTime.Date("18:40"), actual)
+    }
+
+    @Test
+    fun `when the message is from the current day and locale is English show time of the message in 12 hours format`() {
+        givenCurrentLocaleIs(Locale.ENGLISH)
+        givenCurrentTimeIs(1658853752.seconds) // Tue Jul 26 18:42:35 CEST 2022
+        val itemTime = 1658853643L // Tue Jul 26 18:40:44 CEST 2022
+
+        val actual = formatter.invoke(itemTime.seconds)
+
+        assertIs<FormattedTime.Date>(actual, actual.toString())
+        assertEquals(FormattedTime.Date("6:40 PM"), actual)
     }
 
     @Test
     fun `when the message is from the day before today show yesterday`() {
         givenCurrentTimeIs(1658853752.seconds) // Tue Jul 26 18:42:35 CEST 2022
-        val itemTime = 1658772437 // 2022-07-25 20:07:17
+        val itemTime = 1658772437 // Mon Jul 25 20:07:17 CEST 2022
 
         val actual = formatter.invoke(itemTime.seconds)
 
