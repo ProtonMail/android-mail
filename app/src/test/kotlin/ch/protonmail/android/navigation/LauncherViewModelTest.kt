@@ -81,7 +81,7 @@ class LauncherViewModelTest {
     private val humanVerificationManager = mockk<HumanVerificationManager>()
 
     private val accountListFlow = MutableStateFlow<List<Account>>(emptyList())
-    private val accountManager = mockk<AccountManager> {
+    private val accountManager = mockk<AccountManager>(relaxUnitFun = true) {
         every { getAccounts() } returns accountListFlow
     }
 

@@ -63,6 +63,7 @@ tasks.register("clean", Delete::class) {
 }
 
 setupDependenciesPlugin()
+setupTestLogging()
 
 kotlinCompilerArgs(
     // Enables experimental Coroutines (runBlockingTest).
@@ -93,4 +94,14 @@ fun isNonStable(version: String): Boolean {
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
     val isStable = stableKeyword || regex.matches(version)
     return isStable.not()
+}
+
+fun Project.setupTestLogging() {
+    for (sub in subprojects) {
+        sub.tasks.withType<Test> {
+            testLogging {
+                exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+            }
+        }
+    }
 }
