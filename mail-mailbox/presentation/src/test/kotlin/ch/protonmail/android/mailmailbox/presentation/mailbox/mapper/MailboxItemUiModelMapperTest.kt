@@ -21,9 +21,10 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocations
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.every
@@ -41,14 +42,14 @@ import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapperTest {
 
-    private val getMailboxItemLocations = mockk<GetMailboxItemLocations> {
-        every { this@mockk.invoke(any()) } returns emptyList<SystemLabelId>()
+    private val getMailboxItemLocationIcons = mockk<GetMailboxItemLocationIcons> {
+        every { this@mockk.invoke(any()) } returns GetMailboxItemLocationIcons.Result.None
     }
     private val formatMailboxItemTime: FormatMailboxItemTime = mockk()
 
     private val mapper = MailboxItemUiModelMapper(
         formatMailboxItemTime,
-        getMailboxItemLocations
+        getMailboxItemLocationIcons
     )
 
     @BeforeTest
@@ -181,14 +182,27 @@ class MailboxItemUiModelMapperTest {
     }
 
     @Test
-    fun `labels of location for which to show an icon are mapped on the ui model as defined by the use case`() {
+    fun `when use case returns location icons to be shown they are mapped to the ui model`() {
         val labelIds = listOf(SystemLabelId.Inbox.labelId.id, SystemLabelId.Drafts.labelId.id)
         val mailboxItem = buildMailboxItem(type = MailboxItemType.Conversation, labelIds = labelIds)
-        val locations = listOf(SystemLabelId.Inbox, SystemLabelId.Drafts)
-        every { getMailboxItemLocations.invoke(mailboxItem) } returns locations
+        val inboxIconRes = R.drawable.ic_proton_inbox
+        val draftsIconRes = R.drawable.ic_proton_file_lines
+        val icons = GetMailboxItemLocationIcons.Result.Icons(inboxIconRes, draftsIconRes)
+        every { getMailboxItemLocationIcons.invoke(mailboxItem) } returns icons
 
         val actual = mapper.toUiModel(mailboxItem)
 
-        assertEquals(locations, actual.showLocationIcons)
+        val expectedIconsRes = listOf(inboxIconRes, draftsIconRes)
+        assertEquals(expectedIconsRes, actual.locationIconResIds)
+    }
+
+    @Test
+    fun `when use case returns no location icons to be shown empty list is mapped to the ui model`() {
+        val mailboxItem = buildMailboxItem()
+        every { getMailboxItemLocationIcons.invoke(mailboxItem) } returns GetMailboxItemLocationIcons.Result.None
+
+        val actual = mapper.toUiModel(mailboxItem)
+
+        assertEquals(emptyList(), actual.locationIconResIds)
     }
 }

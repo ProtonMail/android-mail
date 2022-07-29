@@ -380,7 +380,7 @@ fun PreviewMailbox() {
                     shouldShowForwardedIcon = false,
                     numMessages = null,
                     showStar = false,
-                    showLocationIcons = emptyList()
+                    locationIconResIds = emptyList()
                 ),
                 MailboxItemUiModel(
                     type = MailboxItemType.Message,
@@ -396,7 +396,7 @@ fun PreviewMailbox() {
                     shouldShowForwardedIcon = true,
                     numMessages = null,
                     showStar = true,
-                    showLocationIcons = emptyList()
+                    locationIconResIds = emptyList()
                 )
             )
         )

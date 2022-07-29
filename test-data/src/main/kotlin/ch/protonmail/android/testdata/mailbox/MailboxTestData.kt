@@ -151,6 +151,6 @@ object MailboxItemUiModelTestData {
         shouldShowForwardedIcon = false,
         numMessages = null,
         showStar = false,
-        showLocationIcons = emptyList()
+        locationIconResIds = emptyList()
     )
 }

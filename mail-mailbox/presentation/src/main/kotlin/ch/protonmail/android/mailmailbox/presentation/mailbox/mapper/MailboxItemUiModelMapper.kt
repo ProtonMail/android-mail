@@ -24,14 +24,14 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocations
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapper @Inject constructor(
     private val formatMailboxItemTime: FormatMailboxItemTime,
-    private val getMailboxItemLocations: GetMailboxItemLocations
+    private val getMailboxItemLocationIcons: GetMailboxItemLocationIcons
 ) : Mapper<MailboxItem, MailboxItemUiModel> {
 
     fun toUiModel(mailboxItem: MailboxItem): MailboxItemUiModel =
@@ -50,8 +50,14 @@ class MailboxItemUiModelMapper @Inject constructor(
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
             numMessages = mailboxItem.numMessages,
             showStar = mailboxItem.labelIds.contains(SystemLabelId.Starred.labelId),
-            showLocationIcons = getMailboxItemLocations(mailboxItem)
+            locationIconResIds = getLocationIconsToDisplay(mailboxItem)
         )
+
+    private fun getLocationIconsToDisplay(mailboxItem: MailboxItem) =
+        when (val icons = getMailboxItemLocationIcons(mailboxItem)) {
+            is GetMailboxItemLocationIcons.Result.None -> emptyList()
+            is GetMailboxItemLocationIcons.Result.Icons -> listOfNotNull(icons.first, icons.second, icons.third)
+        }
 
     private fun getParticipants(mailboxItem: MailboxItem): List<Recipient> {
         val displayRecipientLocations = setOf(
