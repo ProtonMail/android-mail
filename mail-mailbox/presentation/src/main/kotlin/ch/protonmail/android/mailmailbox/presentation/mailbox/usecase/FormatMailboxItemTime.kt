@@ -23,15 +23,18 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import androidx.annotation.StringRes
+import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultCalendar
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
 import ch.protonmail.android.mailmailbox.presentation.R
 import javax.inject.Inject
 import kotlin.time.Duration
 
 class FormatMailboxItemTime @Inject constructor(
-    private val currentTime: Calendar,
+    private val getDefaultCalendar: GetDefaultCalendar,
     private val getDefaultLocale: GetDefaultLocale
 ) {
+
+    private val currentTime by lazy { getDefaultCalendar() }
 
     operator fun invoke(itemTime: Duration): Result {
         if (itemTime.isToday()) {
@@ -81,7 +84,7 @@ class FormatMailboxItemTime @Inject constructor(
     private fun Duration.isThisYear() = isCurrentYear(toCalendar())
 
     private fun Duration.toCalendar(): Calendar {
-        val itemCalendar = Calendar.getInstance()
+        val itemCalendar = Calendar.getInstance(getDefaultLocale())
         itemCalendar.time = Date(this.inWholeMilliseconds)
         return itemCalendar
     }

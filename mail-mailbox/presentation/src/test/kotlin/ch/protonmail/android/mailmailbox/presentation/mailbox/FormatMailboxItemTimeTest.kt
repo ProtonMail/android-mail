@@ -21,35 +21,42 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultCalendar
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime.Result
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkAll
+import io.mockk.verify
+import org.junit.After
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertTrue
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 class FormatMailboxItemTimeTest {
 
-    private val calendar = Calendar.getInstance()
-
-    private val getDefaultLocale = mockk<GetDefaultLocale> {
-        every { this@mockk.invoke() } returns Locale.CANADA
-    }
+    private val getDefaultCalendar = mockk<GetDefaultCalendar>()
+    private val getDefaultLocale = mockk<GetDefaultLocale>()
 
     private val formatter = FormatMailboxItemTime(
-        calendar,
+        getDefaultCalendar,
         getDefaultLocale
     )
 
+    @After
+    fun tearDown() {
+        unmockkAll()
+    }
+
     @Test
     fun `when the message is from the current day and locale is Italian show time of the message in 24 hours format`() {
-        givenCurrentLocaleIs(Locale.ITALIAN)
-        givenCurrentTimeIs(1658853752.seconds) // Tue Jul 26 18:42:35 CEST 2022
+        givenCurrentTimeAndLocale(1658853752.seconds, Locale.ITALIAN) // Tue Jul 26 18:42:35 CEST 2022
         val itemTime = 1658853643L // Tue Jul 26 18:40:44 CEST 2022
 
         val actual = formatter.invoke(itemTime.seconds)
@@ -60,8 +67,7 @@ class FormatMailboxItemTimeTest {
 
     @Test
     fun `when the message is from the current day and locale is English show time of the message in 12 hours format`() {
-        givenCurrentLocaleIs(Locale.ENGLISH)
-        givenCurrentTimeIs(1658853752.seconds) // Tue Jul 26 18:42:35 CEST 2022
+        givenCurrentTimeAndLocale(1658853752.seconds, Locale.ENGLISH) // Tue Jul 26 18:42:35 CEST 2022
         val itemTime = 1658853643L // Tue Jul 26 18:40:44 CEST 2022
 
         val actual = formatter.invoke(itemTime.seconds)
@@ -72,7 +78,7 @@ class FormatMailboxItemTimeTest {
 
     @Test
     fun `when the message is from yesterday show localized 'yesterday' string`() {
-        givenCurrentTimeIs(1658853752.seconds) // Tue Jul 26 18:42:35 CEST 2022
+        givenCurrentTimeAndLocale(1658853752.seconds, Locale.UK) // Tue Jul 26 18:42:35 CEST 2022
         val itemTime = 1658772437 // Mon Jul 25 20:07:17 CEST 2022
 
         val actual = formatter.invoke(itemTime.seconds)
@@ -83,8 +89,7 @@ class FormatMailboxItemTimeTest {
 
     @Test
     fun `when the message is from the current week and older than yesterday show week day`() {
-        givenCurrentLocaleIs(Locale.ENGLISH)
-        givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
+        givenCurrentTimeAndLocale(1658994137.seconds, Locale.UK) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1658772437 // Mon Jul 25 20:07:17 CEST 2022
 
         val actual = formatter.invoke(itemTime.seconds)
@@ -95,8 +100,7 @@ class FormatMailboxItemTimeTest {
 
     @Test
     fun `when the message is from the current year and older than current week show day and month`() {
-        givenCurrentLocaleIs(Locale.FRENCH)
-        givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
+        givenCurrentTimeAndLocale(1658994137.seconds, Locale.FRENCH) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1647852004 // Mon Mar 21 09:40:04 CEST 2022
 
         val actual = formatter.invoke(itemTime.seconds)
@@ -107,8 +111,7 @@ class FormatMailboxItemTimeTest {
 
     @Test
     fun `when showing day and month ensure they are formatted based on the current locale`() {
-        givenCurrentLocaleIs(Locale.US)
-        givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
+        givenCurrentTimeAndLocale(1658994137.seconds, Locale.US) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1647852004 // Mon Mar 21 09:40:04 CEST 2022
 
         val actual = formatter.invoke(itemTime.seconds)
@@ -119,8 +122,7 @@ class FormatMailboxItemTimeTest {
 
     @Test
     fun `when the message is from before the current year show the day month and year`() {
-        givenCurrentLocaleIs(Locale.UK)
-        givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
+        givenCurrentTimeAndLocale(1658994137.seconds, Locale.UK) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2022
 
         val actual = formatter.invoke(itemTime.seconds)
@@ -131,8 +133,7 @@ class FormatMailboxItemTimeTest {
 
     @Test
     fun `when showing day month and year ensure they are formatted based on current locale`() {
-        givenCurrentLocaleIs(Locale.US)
-        givenCurrentTimeIs(1658994137.seconds) // Thu Jul 28 09:42:17 CEST 2022
+        givenCurrentTimeAndLocale(1658994137.seconds, Locale.US) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2022
 
         val actual = formatter.invoke(itemTime.seconds)
@@ -141,11 +142,25 @@ class FormatMailboxItemTimeTest {
         assertEquals(Result.Localized("Sep 13, 2021"), actual)
     }
 
-    private fun givenCurrentLocaleIs(locale: Locale) {
-        every { getDefaultLocale() } returns locale
+    @Test
+    fun `all instances of calendar are created considering the current locale`() {
+        mockkStatic(Calendar::class)
+        givenCurrentTimeAndLocale(1658994137.seconds, Locale.TAIWAN) // Thu Jul 28 09:42:17 CEST 2022
+        val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2022
+
+        formatter.invoke(itemTime.seconds)
+
+        val slot = mutableListOf<Locale>()
+        verify { Calendar.getInstance(capture(slot)) }
+        assertTrue(slot.isNotEmpty())
+        assertTrue(slot.all { it == Locale.TAIWAN })
     }
 
-    private fun givenCurrentTimeIs(currentTime: Duration) {
+    private fun givenCurrentTimeAndLocale(currentTime: Duration, locale: Locale) {
+        val calendar = Calendar.getInstance(locale)
         calendar.time = Date(currentTime.inWholeMilliseconds)
+
+        every { getDefaultCalendar() } returns calendar
+        every { getDefaultLocale() } returns locale
     }
 }

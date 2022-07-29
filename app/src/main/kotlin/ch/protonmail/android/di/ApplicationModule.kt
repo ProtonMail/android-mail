@@ -77,9 +77,6 @@ object ApplicationModule {
     fun provideWorkManager(
         @ApplicationContext context: Context,
     ): WorkManager = WorkManager.getInstance(context)
-
-    @Provides
-    fun provideCalendar(): Calendar = Calendar.getInstance()
 }
 
 @Module
