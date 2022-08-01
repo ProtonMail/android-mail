@@ -20,8 +20,8 @@
   <string name="mail_settings_settings">設定</string>
   <string name="mail_settings_toolbar_button_content_description">戻る</string>
   <!-- Settings items -->
-  <string name="mail_settings_account_settings">アカウントの設定</string>
-  <string name="mail_settings_app_settings">アプリの設定</string>
+  <string name="mail_settings_account_settings">アカウント設定</string>
+  <string name="mail_settings_app_settings">アプリ設定</string>
   <string name="mail_settings_theme">テーマ</string>
   <string name="mail_settings_push_notifications">プッシュ通知</string>
   <string name="mail_settings_auto_lock">自動ロック</string>
@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">アプリ言語</string>
   <string name="mail_settings_combined_contacts">連絡先の相互利用</string>
   <string name="mail_settings_swipe_actions">スワイプ操作</string>
+  <string name="mail_settings_combined_contacts_hint">この機能を有効にすると、ログイン済みアカウントの連絡先をメールアドレスの自動補完に利用することができます。</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">システム標準</string>
   <string name="mail_settings_theme_light">ライト</string>
@@ -48,7 +49,7 @@
   <string name="mail_settings_password_management">パスワード管理</string>
   <string name="mail_settings_recovery_email">回復用メールアドレス</string>
   <string name="mail_settings_mailbox_size">メールボックスの容量</string>
-  <string name="mail_settings_addresses">メールアドレス</string>
+  <string name="mail_settings_addresses">アドレス</string>
   <string name="mail_settings_default_email_address">既定のメールアドレス</string>
   <string name="mail_settings_display_name_and_signature">表示名と署名</string>
   <string name="mail_settings_mailbox">受信トレイ</string>
@@ -69,11 +70,13 @@
   <string name="mail_settings_swipe_action_archive_title">アーカイブ</string>
   <string name="mail_settings_swipe_action_read_title">未読</string>
   <string name="mail_settings_swipe_action_spam_title">迷惑メール</string>
-  <string name="mail_settings_swipe_action_star_title">星印を付ける</string>
+  <string name="mail_settings_swipe_action_star_title">星印</string>
   <string name="mail_settings_swipe_action_trash_title">ごみ箱</string>
   <string name="mail_settings_swipe_action_archive_description">アーカイブに移動</string>
   <string name="mail_settings_swipe_action_read_description">既読と未読を入れ替える</string>
   <string name="mail_settings_swipe_action_spam_description">迷惑メールに移動</string>
-  <string name="mail_settings_swipe_action_star_description">星印を 付ける/外す</string>
+  <string name="mail_settings_swipe_action_star_description">星印の状態を入れ替える</string>
   <string name="mail_settings_swipe_action_trash_description">ごみ箱に移動</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">エラーが発生しました。再度お試しください。</string>
 </resources>

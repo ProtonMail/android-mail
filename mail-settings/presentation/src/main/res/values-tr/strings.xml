@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">Uygulama dili</string>
   <string name="mail_settings_combined_contacts">Birleştirilmiş kişiler</string>
   <string name="mail_settings_swipe_actions">Kaydırma işlemleri</string>
+  <string name="mail_settings_combined_contacts_hint">E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişiler kullanılarak otomatik olarak tamamlanması için bu özelliği etkinleştirin.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Sistem varsayılanı</string>
   <string name="mail_settings_theme_light">Açık</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">İstenmeyen kutusuna taşı</string>
   <string name="mail_settings_swipe_action_star_description">Yıldız koy/kaldır</string>
   <string name="mail_settings_swipe_action_trash_description">Çöpe at</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Bir sorun çıktı. Yeniden deneyin.</string>
 </resources>

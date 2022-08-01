@@ -24,7 +24,7 @@
   <string name="label_title_archive">アーカイブ</string>
   <string name="label_title_spam">迷惑メール</string>
   <string name="label_title_trash">ごみ箱</string>
-  <string name="label_title_outbox">送信箱</string>
+  <string name="label_title_outbox">送信トレイ</string>
   <string name="label_title_all_mail">すべてのメール</string>
   <string name="label_title_all_drafts">すべての下書き</string>
   <string name="label_title_all_sent">すべての送信済み</string>

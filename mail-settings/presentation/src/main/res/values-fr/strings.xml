@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">Langue de l\'application</string>
   <string name="mail_settings_combined_contacts">Contacts combinés</string>
   <string name="mail_settings_swipe_actions">Actions de balayage</string>
+  <string name="mail_settings_combined_contacts_hint">Activez cette fonctionnalité pour compléter automatiquement les adresses électroniques en utilisant les contacts de tous vos comptes connectés.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Identique au système</string>
   <string name="mail_settings_theme_light">Clair</string>
@@ -75,5 +76,7 @@
   <string name="mail_settings_swipe_action_read_description">Marquer comme non lu/lu</string>
   <string name="mail_settings_swipe_action_spam_description">Déplacer dans les indésirables/spam</string>
   <string name="mail_settings_swipe_action_star_description">Ajouter/retirer des favoris</string>
-  <string name="mail_settings_swipe_action_trash_description">Déplacer vers la corbeille</string>
+  <string name="mail_settings_swipe_action_trash_description">Déplacer vers la Corbeille</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Une erreur est survenue. Veuillez réessayer.</string>
 </resources>

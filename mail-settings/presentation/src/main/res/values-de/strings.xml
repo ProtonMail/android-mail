@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">Sprache der App</string>
   <string name="mail_settings_combined_contacts">Zusammengeführte Kontakte</string>
   <string name="mail_settings_swipe_actions">Wischgesten</string>
+  <string name="mail_settings_combined_contacts_hint">Aktiviere diese Funktion, um E-Mail-Adressen aus Kontakten von all deinen angemeldeten Konten automatisch zu vervollständigen.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Systemstandard</string>
   <string name="mail_settings_theme_light">Hell</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">In Spam-Ordner verschieben</string>
   <string name="mail_settings_swipe_action_star_description">Kennzeichnen/Kennzeichnung aufheben</string>
   <string name="mail_settings_swipe_action_trash_description">In den Papierkorb verschieben</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Es ist ein Fehler aufgetreten. Versuche es erneut.</string>
 </resources>

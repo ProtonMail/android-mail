@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">Lingua dell\'app</string>
   <string name="mail_settings_combined_contacts">Contatti combinati</string>
   <string name="mail_settings_swipe_actions">Azioni di scorrimento</string>
+  <string name="mail_settings_combined_contacts_hint">Attiva questa funzionalità per il completamento automatico degli indirizzi email, usando i contatti di tutti i tuoi profili collegati.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Predefinito di sistema</string>
   <string name="mail_settings_theme_light">Chiaro</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">Sposta in spam</string>
   <string name="mail_settings_swipe_action_star_description">Aggiungi/rimuovi preferiti</string>
   <string name="mail_settings_swipe_action_trash_description">Sposta nel cestino</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Si è verificato un errore. Riprovare.</string>
 </resources>

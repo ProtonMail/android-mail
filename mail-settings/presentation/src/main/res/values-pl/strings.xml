@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">Język aplikacji</string>
   <string name="mail_settings_combined_contacts">Połączone kontakty</string>
   <string name="mail_settings_swipe_actions">Gesty przesunięcia</string>
+  <string name="mail_settings_combined_contacts_hint">Włączenie tej funkcji spowoduje automatyczne uzupełnianie adresów e-mail przy użyciu wszystkich kontaktów na Twoich zalogowanych kontach.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Domyślny systemu</string>
   <string name="mail_settings_theme_light">Jasny</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">Przenieś do Spamu</string>
   <string name="mail_settings_swipe_action_star_description">Oznacz gwiazdką / usuń gwiazdkę</string>
   <string name="mail_settings_swipe_action_trash_description">Przenieś do Kosza</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Wystąpił błąd. Spróbuj ponownie.</string>
 </resources>

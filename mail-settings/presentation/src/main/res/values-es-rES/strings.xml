@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">Idioma de la aplicación</string>
   <string name="mail_settings_combined_contacts">Contactos combinados</string>
   <string name="mail_settings_swipe_actions">Gestos de deslizamiento</string>
+  <string name="mail_settings_combined_contacts_hint">Activa esta característica para autocompletar las direcciones de correo usando los contactos de todas tus cuentas conectadas.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Del sistema</string>
   <string name="mail_settings_theme_light">Claro</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">Mover a spam</string>
   <string name="mail_settings_swipe_action_star_description">Destacar/no destacar</string>
   <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Ha ocurrido un error. Inténtalo de nuevo.</string>
 </resources>

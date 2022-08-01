@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">Bahasa aplikasi</string>
   <string name="mail_settings_combined_contacts">Kontak gabungan</string>
   <string name="mail_settings_swipe_actions">Tindakan geser</string>
+  <string name="mail_settings_combined_contacts_hint">Aktifkan fitur ini agar alamat email yang Anda ketik dapat dilengkapi secara otomatis dengan menggunakan data kontak dari seluruh akun aktif yang Anda miliki.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Bawaan sistem</string>
   <string name="mail_settings_theme_light">Terang</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">Pindahkan ke spam</string>
   <string name="mail_settings_swipe_action_star_description">Bintangi/Hapus Bintang</string>
   <string name="mail_settings_swipe_action_trash_description">Pindahkan ke sampah</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Terjadi kesalahan. Silakan coba lagi.</string>
 </resources>

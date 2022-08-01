@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">Мова програми</string>
   <string name="mail_settings_combined_contacts">Об\'єднані контакти</string>
   <string name="mail_settings_swipe_actions">Жести посування</string>
+  <string name="mail_settings_combined_contacts_hint">Увімкніть цю функцію для автозаповнення адрес електронної пошти, використовуючи контакти з усіх облікових записів, у які ви ввійшли.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Системна</string>
   <string name="mail_settings_theme_light">Світла</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">Перемістити до спаму</string>
   <string name="mail_settings_swipe_action_star_description">Позначити/Прибрати зірочку</string>
   <string name="mail_settings_swipe_action_trash_description">Перемістити до смітника</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Сталася помилка. Спробуйте знову.</string>
 </resources>

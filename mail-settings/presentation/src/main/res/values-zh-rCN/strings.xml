@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">语言</string>
   <string name="mail_settings_combined_contacts">共用通讯录</string>
   <string name="mail_settings_swipe_actions">滑动操作</string>
+  <string name="mail_settings_combined_contacts_hint">开启后您登录的所有账户通讯录中的邮箱地址都可自动补全。</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">跟随系统</string>
   <string name="mail_settings_theme_light">浅色</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">归为垃圾邮件</string>
   <string name="mail_settings_swipe_action_star_description">星标/取消星标</string>
   <string name="mail_settings_swipe_action_trash_description">移至废件箱</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">出错了，请重试。</string>
 </resources>

@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">App-språk</string>
   <string name="mail_settings_combined_contacts">Kombinerade kontakter</string>
   <string name="mail_settings_swipe_actions">Svepåtgärder</string>
+  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Systemstandard</string>
   <string name="mail_settings_theme_light">Ljus</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">Flytta till skräppost</string>
   <string name="mail_settings_swipe_action_star_description">Stjärnmärk/ta bort stjärnmärking</string>
   <string name="mail_settings_swipe_action_trash_description">Flytta till papperskorgen</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">An error occurred. Try again.</string>
 </resources>

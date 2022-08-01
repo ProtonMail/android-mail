@@ -23,13 +23,13 @@
   <string name="label_title_starred">Starred</string>
   <string name="label_title_archive">Archive</string>
   <string name="label_title_spam">Spam</string>
-  <string name="label_title_trash">Trash</string>
+  <string name="label_title_trash">Paperera</string>
   <string name="label_title_outbox">Outbox</string>
   <string name="label_title_all_mail">All mail</string>
   <string name="label_title_all_drafts">All drafts</string>
   <string name="label_title_all_sent">All sent</string>
-  <string name="label_title_folders">Folders</string>
-  <string name="label_title_labels">Labels</string>
+  <string name="label_title_folders">Carpetes</string>
+  <string name="label_title_labels">Etiquetes</string>
   <string name="label_title_add_folder">Add folder</string>
   <string name="label_title_add_label">Add label</string>
 </resources>

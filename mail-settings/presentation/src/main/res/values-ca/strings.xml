@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Preferències</string>
-  <string name="mail_settings_toolbar_button_content_description">Back</string>
+  <string name="mail_settings_toolbar_button_content_description">Torna</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Configuració del compte</string>
   <string name="mail_settings_app_settings">Configuració de l\'aplicació</string>
@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">Idioma de l\'aplicació</string>
   <string name="mail_settings_combined_contacts">Contactes combinats</string>
   <string name="mail_settings_swipe_actions">Accions de lliscament</string>
+  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Predeterminat del sistema</string>
   <string name="mail_settings_theme_light">Clar</string>
@@ -64,16 +65,18 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Swipe actions</string>
   <string name="mail_settings_swipe_actions_subtitle">Set up swipe gestures to access most used actions.</string>
-  <string name="mail_settings_swipe_right_name">Left to right</string>
-  <string name="mail_settings_swipe_left_name">Right to left</string>
-  <string name="mail_settings_swipe_action_archive_title">Archive</string>
-  <string name="mail_settings_swipe_action_read_title">Unread</string>
-  <string name="mail_settings_swipe_action_spam_title">Spam</string>
-  <string name="mail_settings_swipe_action_star_title">Star</string>
-  <string name="mail_settings_swipe_action_trash_title">Trash</string>
-  <string name="mail_settings_swipe_action_archive_description">Move to archive</string>
-  <string name="mail_settings_swipe_action_read_description">Mark as unread/read</string>
+  <string name="mail_settings_swipe_right_name">Esquerra a dreta</string>
+  <string name="mail_settings_swipe_left_name">Dreta a esquerra</string>
+  <string name="mail_settings_swipe_action_archive_title">Arxiva</string>
+  <string name="mail_settings_swipe_action_read_title">No llegit</string>
+  <string name="mail_settings_swipe_action_spam_title">Correu brossa</string>
+  <string name="mail_settings_swipe_action_star_title">Destaca</string>
+  <string name="mail_settings_swipe_action_trash_title">Paperera</string>
+  <string name="mail_settings_swipe_action_archive_description">Mou a l\'arxiu</string>
+  <string name="mail_settings_swipe_action_read_description">Marcar com a llegit/no llegit</string>
   <string name="mail_settings_swipe_action_spam_description">Move to spam</string>
   <string name="mail_settings_swipe_action_star_description">Star/unstar</string>
   <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">An error occurred. Try again.</string>
 </resources>

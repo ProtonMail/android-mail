@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">Jazyk aplikace</string>
   <string name="mail_settings_combined_contacts">Sloučené kontakty</string>
   <string name="mail_settings_swipe_actions">Akce po přejetí prstem</string>
+  <string name="mail_settings_combined_contacts_hint">Zapněte tuto funkci pro automatické vyplňování e-mailových adres pomocí kontaktů ze všech vašich přihlášených účtů.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Podle systému</string>
   <string name="mail_settings_theme_light">Světlý</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">Přesunout do spamu</string>
   <string name="mail_settings_swipe_action_star_description">Přidat/odebrat hvězdičku</string>
   <string name="mail_settings_swipe_action_trash_description">Přesunout do koše</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">Došlo k chybě. Zkuste to znovu.</string>
 </resources>

@@ -29,6 +29,7 @@
   <string name="mail_settings_app_language">App-sprog</string>
   <string name="mail_settings_combined_contacts">Kombinerede kontakter</string>
   <string name="mail_settings_swipe_actions">Strygehandlinger</string>
+  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Systemstandard</string>
   <string name="mail_settings_theme_light">Lys</string>
@@ -76,4 +77,6 @@
   <string name="mail_settings_swipe_action_spam_description">Flyt til spam</string>
   <string name="mail_settings_swipe_action_star_description">Tilføj eller fjern stjerne</string>
   <string name="mail_settings_swipe_action_trash_description">Flyt til papirkurv</string>
+  <!-- Error messages -->
+  <string name="mail_settings_generic_error_message">An error occurred. Try again.</string>
 </resources>
