@@ -93,7 +93,7 @@ object Versions {
     }
 
     object Proton {
-        const val core = "8.4.0"
+        const val core = "8.5.0"
     }
 
     object Squareup {
