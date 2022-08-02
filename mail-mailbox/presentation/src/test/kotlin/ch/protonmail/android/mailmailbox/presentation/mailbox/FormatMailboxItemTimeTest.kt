@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultCalendar
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
 import ch.protonmail.android.mailmailbox.presentation.R
@@ -32,6 +33,7 @@ import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import io.mockk.verify
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -48,6 +50,12 @@ class FormatMailboxItemTimeTest {
         getDefaultCalendar,
         getDefaultLocale
     )
+
+    @Before
+    fun setUp() {
+        mockkStatic(TimeZone::class)
+        every { TimeZone.getDefault() } returns TimeZone.getTimeZone("Europe/Zurich")
+    }
 
     @After
     fun tearDown() {
