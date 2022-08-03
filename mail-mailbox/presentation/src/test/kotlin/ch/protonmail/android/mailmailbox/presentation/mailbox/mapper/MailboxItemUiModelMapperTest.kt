@@ -37,7 +37,7 @@ class MailboxItemUiModelMapperTest {
 
         val actual = mapper.toUiModel(mailboxItem)
 
-        assertTrue(actual.showRepliedIcon)
+        assertTrue(actual.shouldShowRepliedIcon)
     }
 
     @Test
@@ -46,8 +46,8 @@ class MailboxItemUiModelMapperTest {
 
         val actual = mapper.toUiModel(mailboxItem)
 
-        assertTrue(actual.showRepliedAllIcon)
-        assertFalse(actual.showRepliedIcon)
+        assertTrue(actual.shouldShowRepliedAllIcon)
+        assertFalse(actual.shouldShowRepliedIcon)
     }
 
     @Test
@@ -56,7 +56,7 @@ class MailboxItemUiModelMapperTest {
 
         val actual = mapper.toUiModel(mailboxItem)
 
-        assertTrue(actual.showForwardedIcon)
+        assertTrue(actual.shouldShowForwardedIcon)
     }
 
     @Test
@@ -65,9 +65,9 @@ class MailboxItemUiModelMapperTest {
 
         val actual = mapper.toUiModel(mailboxItem)
 
-        assertFalse(actual.showRepliedIcon)
-        assertFalse(actual.showRepliedAllIcon)
-        assertFalse(actual.showForwardedIcon)
+        assertFalse(actual.shouldShowRepliedIcon)
+        assertFalse(actual.shouldShowRepliedAllIcon)
+        assertFalse(actual.shouldShowForwardedIcon)
     }
 
     @Test

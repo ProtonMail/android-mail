@@ -38,9 +38,9 @@ class MailboxItemUiModelMapper @Inject constructor() : Mapper<MailboxItem, Mailb
             labels = mailboxItem.labels,
             subject = mailboxItem.subject,
             participants = getParticipants(mailboxItem),
-            showRepliedIcon = showRepliedIcon(mailboxItem),
-            showRepliedAllIcon = mailboxItem.isRepliedAll,
-            showForwardedIcon = mailboxItem.isForwarded
+            shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
+            shouldShowRepliedAllIcon = mailboxItem.isRepliedAll,
+            shouldShowForwardedIcon = mailboxItem.isForwarded
         )
 
     private fun getParticipants(mailboxItem: MailboxItem): List<Recipient> {
@@ -48,16 +48,16 @@ class MailboxItemUiModelMapper @Inject constructor() : Mapper<MailboxItem, Mailb
             SystemLabelId.Sent.labelId,
             SystemLabelId.Drafts.labelId
         )
-        val displayRecipients = mailboxItem.labelIds.intersect(displayRecipientLocations).isNotEmpty()
+        val shouldDisplayRecipients = mailboxItem.labelIds.any { it in displayRecipientLocations }
 
-        return if (displayRecipients) {
+        return if (shouldDisplayRecipients) {
             mailboxItem.recipients
         } else {
             mailboxItem.senders
         }
     }
 
-    private fun showRepliedIcon(mailboxItem: MailboxItem) =
+    private fun shouldShowRepliedIcon(mailboxItem: MailboxItem) =
         if (mailboxItem.isRepliedAll) {
             false
         } else {

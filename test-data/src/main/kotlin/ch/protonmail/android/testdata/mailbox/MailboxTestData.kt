@@ -140,8 +140,8 @@ object MailboxItemUiModelTestData {
         labels = emptyList(),
         subject = subject,
         participants = emptyList(),
-        showRepliedIcon = false,
-        showRepliedAllIcon = false,
-        showForwardedIcon = false,
+        shouldShowRepliedIcon = false,
+        shouldShowRepliedAllIcon = false,
+        shouldShowForwardedIcon = false,
     )
 }

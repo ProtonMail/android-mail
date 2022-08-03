@@ -33,6 +33,11 @@ enum class MailboxItemType {
     Conversation
 }
 
+/**
+ * @property isReplied always `false` if [type] is [MailboxItemType.Conversation]
+ * @property isRepliedAll always `false` if [type] is [MailboxItemType.Conversation]
+ * @property isForwarded always `false` if [type] is [MailboxItemType.Conversation]
+ */
 data class MailboxItem(
     val type: MailboxItemType,
     override val id: String,
@@ -72,9 +77,6 @@ fun Message.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     isForwarded = isForwarded
 )
 
-/**
- * @param [isReplied isRepliedAll isForwarded] are always false for Conversation type mailbox items.
- */
 fun Conversation.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     type = MailboxItemType.Conversation,
     id = conversationId.id,
