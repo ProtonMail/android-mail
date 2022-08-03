@@ -30,6 +30,7 @@ import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 
 object MailboxTestData {
@@ -50,6 +51,7 @@ object MailboxTestData {
         id: String = "itemId",
         time: Long = 0,
         labelIds: List<LabelId> = listOf(MailLabelId.System.Inbox.labelId),
+        labels: List<Label> = labelIds.map { buildLabel(userId = userId, id = it.id) },
         type: MailboxItemType = MailboxItemType.Message,
         senders: List<Recipient> = listOf(Recipient("address", "name")),
         recipients: List<Recipient> = emptyList(),
@@ -66,7 +68,7 @@ object MailboxTestData {
         subject = "subject",
         senders = senders,
         recipients = recipients,
-        labels = labelIds.map { buildLabel(userId = userId, id = it.id) },
+        labels = labels,
         isReplied = false,
         isRepliedAll = false,
         isForwarded = false,
@@ -84,6 +86,7 @@ object MailboxTestData {
         type = MailboxItemType.Message,
         id = id,
         conversationId = ConversationId("2"),
+        labels = emptyList(),
         userId = UserId("0"),
         senders = listOf(Recipient("address", "name")),
         recipients = emptyList(),
@@ -103,6 +106,7 @@ object MailboxTestData {
         type = MailboxItemType.Conversation,
         id = id,
         conversationId = ConversationId("2"),
+        labels = emptyList(),
         userId = UserId("0"),
         senders = listOf(Recipient("address", "name")),
         recipients = emptyList(),

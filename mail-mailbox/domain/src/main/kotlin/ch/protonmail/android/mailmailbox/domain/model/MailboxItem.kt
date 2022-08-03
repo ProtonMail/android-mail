@@ -48,7 +48,7 @@ data class MailboxItem(
     override val read: Boolean,
     override val labelIds: List<LabelId>,
     val conversationId: ConversationId,
-    val labels: List<Label> = emptyList(),
+    val labels: List<Label>,
     val subject: String,
     val senders: List<Recipient>,
     val recipients: List<Recipient>,

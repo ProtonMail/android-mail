@@ -21,8 +21,11 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 import androidx.annotation.DrawableRes
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.maillabel.presentation.R
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.presentation.R
+import me.proton.core.label.domain.entity.LabelType
 import javax.inject.Inject
 
 /**
@@ -38,9 +41,42 @@ class GetMailboxItemLocationIcons @Inject constructor(
             return Result.None
         }
 
-
-        return Result.Icons(R.drawable.ic_proton_inbox)
+        val icons = getLocationIcons(mailboxItem)
+        if (icons.isEmpty()) {
+            // Having no icons can happen when an item was in a custom folder which got
+            // deleted. Such item is now only in all mail and no other location.
+            // This is handled by showing no location icons, product discussion on alternatives ongoing
+            return Result.None
+        }
+        return Result.Icons(icons.first(), icons.getOrNull(1), icons.getOrNull(2))
     }
+
+    private fun getLocationIcons(mailboxItem: MailboxItem): MutableList<Int> {
+        val icons = mutableListOf<Int>()
+        locationsForWhichToShowIcons().forEach { systemLabelId ->
+            if (mailboxItem.labelIds.contains(systemLabelId.labelId)) {
+                val iconDrawable = SystemLabelId.enumOf(systemLabelId.labelId.id).iconRes()
+                icons.add(iconDrawable)
+            }
+
+            if (systemLabelId == SystemLabelId.Spam) {
+                val isInCustomFolder = mailboxItem.labels.any { it.type == LabelType.MessageFolder }
+                if (isInCustomFolder) {
+                    icons.add(R.drawable.ic_proton_folder)
+                }
+            }
+        }
+        return icons
+    }
+
+    private fun locationsForWhichToShowIcons() = listOf(
+        SystemLabelId.Inbox,
+        SystemLabelId.Drafts,
+        SystemLabelId.Spam,
+        SystemLabelId.Trash,
+        SystemLabelId.Archive,
+        SystemLabelId.Sent
+    )
 
     private fun currentLocationShouldShowIcons(): Boolean {
         val currentLocation = selectedMailLabelId.flow.value
