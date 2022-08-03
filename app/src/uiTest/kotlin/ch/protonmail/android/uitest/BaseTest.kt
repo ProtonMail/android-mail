@@ -22,8 +22,12 @@ import android.app.Application
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.MainActivity
+import ch.protonmail.android.di.MailTestEntryPoint
 import ch.protonmail.android.test.BuildConfig
+import kotlinx.coroutines.runBlocking
+import me.proton.core.auth.domain.entity.SessionInfo
 import me.proton.core.auth.presentation.testing.ProtonTestEntryPoint
+import me.proton.core.mailsettings.domain.repository.getMailSettingsOrNull
 import me.proton.core.test.android.instrumented.utils.Shell.setupDeviceForAutomation
 import me.proton.core.test.android.plugins.Quark
 import me.proton.core.test.android.plugins.data.User
@@ -61,15 +65,26 @@ open class BaseTest(
         }
     }
 
-    fun login(user: User) {
+    fun loginAndAwaitData(user: User) {
+        val sessionInfo = login(user)
+
+        composeTestRule.waitUntil(5_000) {
+            runBlocking { mailSettingsRepo.getMailSettingsOrNull(sessionInfo.userId) != null }
+        }
+    }
+
+    fun login(user: User): SessionInfo {
         Timber.d("Login user: ${user.name}")
-        authHelper.login(user.name, user.password)
+        return authHelper.login(user.name, user.password)
     }
 
     companion object {
         val users = Users("users.json")
         val quark = Quark(BuildConfig.HOST, BuildConfig.PROXY_TOKEN, "internal_api.json")
         val authHelper = ProtonTestEntryPoint.provide(
+            ApplicationProvider.getApplicationContext<Application>()
+        )
+        val mailSettingsRepo = MailTestEntryPoint.provide(
             ApplicationProvider.getApplicationContext<Application>()
         )
 
