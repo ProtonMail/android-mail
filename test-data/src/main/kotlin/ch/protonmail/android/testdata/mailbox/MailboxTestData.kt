@@ -21,6 +21,7 @@ package ch.protonmail.android.testdata.mailbox
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -29,6 +30,7 @@ import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 
 object MailboxTestData {
 
@@ -47,7 +49,7 @@ object MailboxTestData {
         userId: UserId = UserIdTestData.userId,
         id: String = "itemId",
         time: Long = 0,
-        labelIds: List<String> = listOf("0"),
+        labelIds: List<LabelId> = listOf(MailLabelId.System.Inbox.labelId),
         type: MailboxItemType = MailboxItemType.Message,
         senders: List<Recipient> = listOf(Recipient("address", "name")),
         recipients: List<Recipient> = emptyList(),
@@ -64,11 +66,12 @@ object MailboxTestData {
         subject = "subject",
         senders = senders,
         recipients = recipients,
-        labels = labelIds.map { buildLabel(userId = userId, id = it) },
+        labels = labelIds.map { buildLabel(userId = userId, id = it.id) },
         isReplied = false,
         isRepliedAll = false,
         isForwarded = false,
-        numMessages = numMessages
+        numMessages = numMessages,
+        labelIds = labelIds
     )
 
     private fun buildMessageMailboxItem(
@@ -92,7 +95,8 @@ object MailboxTestData {
         isReplied = isReplied,
         isRepliedAll = isRepliedAll,
         isForwarded = isForwarded,
-        numMessages = 1
+        numMessages = 1,
+        labelIds = emptyList()
     )
 
     private fun buildConversationMailboxItem(id: String) = MailboxItem(
@@ -110,7 +114,8 @@ object MailboxTestData {
         isReplied = false,
         isRepliedAll = false,
         isForwarded = false,
-        numMessages = 3
+        numMessages = 3,
+        labelIds = emptyList()
     )
 
 }

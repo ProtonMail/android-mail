@@ -114,7 +114,7 @@ class MailboxItemUiModelMapperTest {
             Recipient("sender1@proton.ch", "sender1"),
         )
         val mailboxItem = buildMailboxItem(
-            labelIds = listOf(SystemLabelId.Inbox.labelId.id),
+            labelIds = listOf(SystemLabelId.Inbox.labelId),
             senders = senders
         )
         // When
@@ -131,7 +131,7 @@ class MailboxItemUiModelMapperTest {
             Recipient("recipient1@proton.ch", "recipient1"),
         )
         val mailboxItem = buildMailboxItem(
-            labelIds = listOf(SystemLabelId.Sent.labelId.id),
+            labelIds = listOf(SystemLabelId.Sent.labelId),
             recipients = recipients
         )
         // When
@@ -164,7 +164,7 @@ class MailboxItemUiModelMapperTest {
 
     @Test
     fun `when mailbox item is starred show starred`() {
-        val mailboxItem = buildMailboxItem(labelIds = listOf(SystemLabelId.Starred.labelId.id))
+        val mailboxItem = buildMailboxItem(labelIds = listOf(SystemLabelId.Starred.labelId))
 
         val actual = mapper.toUiModel(mailboxItem)
 
@@ -173,7 +173,7 @@ class MailboxItemUiModelMapperTest {
 
     @Test
     fun `when mailbox item is not starred do not show starred`() {
-        val labelIds = listOf(SystemLabelId.Drafts.labelId.id, SystemLabelId.Archive.labelId.id)
+        val labelIds = listOf(SystemLabelId.Drafts.labelId, SystemLabelId.Archive.labelId)
         val mailboxItem = buildMailboxItem(labelIds = labelIds)
 
         val actual = mapper.toUiModel(mailboxItem)
@@ -183,7 +183,7 @@ class MailboxItemUiModelMapperTest {
 
     @Test
     fun `when use case returns location icons to be shown they are mapped to the ui model`() {
-        val labelIds = listOf(SystemLabelId.Inbox.labelId.id, SystemLabelId.Drafts.labelId.id)
+        val labelIds = listOf(SystemLabelId.Inbox.labelId, SystemLabelId.Drafts.labelId)
         val mailboxItem = buildMailboxItem(type = MailboxItemType.Conversation, labelIds = labelIds)
         val inboxIconRes = R.drawable.ic_proton_inbox
         val draftsIconRes = R.drawable.ic_proton_file_lines

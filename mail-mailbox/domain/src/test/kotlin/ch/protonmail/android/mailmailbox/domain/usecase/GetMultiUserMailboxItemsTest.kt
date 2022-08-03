@@ -34,6 +34,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.LabelType.MessageLabel
 import me.proton.core.label.domain.repository.LabelRepository
@@ -119,10 +120,10 @@ class GetMultiUserMailboxItemsTest {
         val mailboxItemsOrderedByTimeAscending = listOf(
             buildMailboxItem(userId1, "1", time = 1000, labelIds = emptyList(), type = Message),
             buildMailboxItem(userId2, "1", time = 1000, labelIds = emptyList(), type = Message),
-            buildMailboxItem(userId1, "2", time = 2000, labelIds = listOf("4"), type = Message),
-            buildMailboxItem(userId2, "2", time = 2000, labelIds = listOf("4"), type = Message),
-            buildMailboxItem(userId1, "3", time = 3000, labelIds = listOf("0", "1"), type = Message),
-            buildMailboxItem(userId2, "3", time = 3000, labelIds = listOf("0", "1"), type = Message)
+            buildMailboxItem(userId1, "2", time = 2000, labelIds = listOf(LabelId("4")), type = Message),
+            buildMailboxItem(userId2, "2", time = 2000, labelIds = listOf(LabelId("4")), type = Message),
+            buildMailboxItem(userId1, "3", time = 3000, labelIds = listOf(LabelId("0"), LabelId("1")), type = Message),
+            buildMailboxItem(userId2, "3", time = 3000, labelIds = listOf(LabelId("0"), LabelId("1")), type = Message)
         )
         assertEquals(expected = mailboxItemsOrderedByTimeAscending, actual = mailboxItems)
     }
@@ -144,12 +145,16 @@ class GetMultiUserMailboxItemsTest {
         coVerify { conversationRepository.getConversations(userId1, pageKey) }
         coVerify { conversationRepository.getConversations(userId2, pageKey) }
         val mailboxItemsOrderedByTimeAscending = listOf(
-            buildMailboxItem(userId1, "1", time = 1000, labelIds = listOf("0"), type = Conversation),
-            buildMailboxItem(userId2, "1", time = 1000, labelIds = listOf("0"), type = Conversation),
-            buildMailboxItem(userId1, "2", time = 2000, labelIds = listOf("4"), type = Conversation),
-            buildMailboxItem(userId2, "2", time = 2000, labelIds = listOf("4"), type = Conversation),
-            buildMailboxItem(userId1, "3", time = 3000, labelIds = listOf("0", "1"), type = Conversation),
-            buildMailboxItem(userId2, "3", time = 3000, labelIds = listOf("0", "1"), type = Conversation)
+            buildMailboxItem(userId1, "1", time = 1000, labelIds = listOf(LabelId("0")), type = Conversation),
+            buildMailboxItem(userId2, "1", time = 1000, labelIds = listOf(LabelId("0")), type = Conversation),
+            buildMailboxItem(userId1, "2", time = 2000, labelIds = listOf(LabelId("4")), type = Conversation),
+            buildMailboxItem(userId2, "2", time = 2000, labelIds = listOf(LabelId("4")), type = Conversation),
+            buildMailboxItem(
+                userId1, "3", time = 3000, labelIds = listOf(LabelId("0"), LabelId("1")), type = Conversation
+            ),
+            buildMailboxItem(
+                userId2, "3", time = 3000, labelIds = listOf(LabelId("0"), LabelId("1")), type = Conversation
+            )
         )
         assertEquals(expected = mailboxItemsOrderedByTimeAscending, actual = mailboxItems)
     }
