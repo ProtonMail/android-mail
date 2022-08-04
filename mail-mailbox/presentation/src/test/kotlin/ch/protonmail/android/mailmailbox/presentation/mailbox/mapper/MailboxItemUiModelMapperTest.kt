@@ -210,4 +210,25 @@ class MailboxItemUiModelMapperTest {
         // Then
         assertEquals(emptyList(), actual.locationIconResIds)
     }
+
+    @Test
+    fun `when mailbox item has attachments show attachment icon`() {
+        // Given
+        val mailboxItem = buildMailboxItem(hasAttachments = true)
+        // When
+        val actual = mapper.toUiModel(mailboxItem)
+        // Then
+        assertTrue(actual.shouldShowAttachmentIcon)
+    }
+
+    @Test
+    fun `when mailbox item has no attachments do not show attachment icon`() {
+        // Given
+        val mailboxItem = buildMailboxItem(hasAttachments = false)
+        // When
+        val actual = mapper.toUiModel(mailboxItem)
+        // Then
+        assertFalse(actual.shouldShowAttachmentIcon)
+    }
+
 }

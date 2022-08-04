@@ -40,5 +40,6 @@ data class MailboxItemUiModel(
     val shouldShowForwardedIcon: Boolean,
     val numMessages: Int?,
     val showStar: Boolean,
-    val locationIconResIds: List<Int>
+    val locationIconResIds: List<Int>,
+    val shouldShowAttachmentIcon: Boolean
 )

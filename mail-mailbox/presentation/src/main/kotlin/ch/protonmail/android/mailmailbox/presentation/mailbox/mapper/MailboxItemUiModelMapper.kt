@@ -50,7 +50,8 @@ class MailboxItemUiModelMapper @Inject constructor(
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
             numMessages = mailboxItem.numMessages,
             showStar = mailboxItem.labelIds.contains(SystemLabelId.Starred.labelId),
-            locationIconResIds = getLocationIconsToDisplay(mailboxItem)
+            locationIconResIds = getLocationIconsToDisplay(mailboxItem),
+            shouldShowAttachmentIcon = mailboxItem.hasAttachments
         )
 
     private fun getLocationIconsToDisplay(mailboxItem: MailboxItem) =

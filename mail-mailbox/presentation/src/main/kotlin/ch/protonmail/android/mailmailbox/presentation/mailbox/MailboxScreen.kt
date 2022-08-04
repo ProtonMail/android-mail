@@ -369,34 +369,36 @@ fun PreviewMailbox() {
                 MailboxItemUiModel(
                     type = MailboxItemType.Message,
                     id = "1",
-                    conversationId = ConversationId("2"),
                     userId = UserId("0"),
-                    participants = emptyList(),
-                    subject = "First message",
+                    conversationId = ConversationId("2"),
                     time = TextUiModel.TextRes(R.string.yesterday),
                     isRead = false,
+                    subject = "First message",
+                    participants = emptyList(),
                     shouldShowRepliedIcon = true,
                     shouldShowRepliedAllIcon = false,
                     shouldShowForwardedIcon = false,
                     numMessages = null,
                     showStar = false,
-                    locationIconResIds = emptyList()
+                    locationIconResIds = emptyList(),
+                    shouldShowAttachmentIcon = false
                 ),
                 MailboxItemUiModel(
                     type = MailboxItemType.Message,
                     id = "2",
-                    conversationId = ConversationId("2"),
                     userId = UserId("0"),
-                    participants = listOf(Recipient("address", "name")),
-                    subject = "Second message",
+                    conversationId = ConversationId("2"),
                     time = TextUiModel.Text("10:42"),
                     isRead = true,
+                    subject = "Second message",
+                    participants = listOf(Recipient("address", "name")),
                     shouldShowRepliedIcon = false,
                     shouldShowRepliedAllIcon = true,
                     shouldShowForwardedIcon = true,
                     numMessages = null,
                     showStar = true,
-                    locationIconResIds = emptyList()
+                    locationIconResIds = emptyList(),
+                    shouldShowAttachmentIcon = true
                 )
             )
         )
