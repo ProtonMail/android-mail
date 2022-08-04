@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
@@ -34,7 +33,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.Button
-import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -43,9 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -207,9 +203,9 @@ private fun MailboxSwipeRefresh(
     }
 
     SwipeRefresh(
+        modifier = modifier,
         state = rememberSwipeRefreshState(isRefreshing),
         onRefresh = { actions.onRefreshList(); items.refresh() },
-        modifier = modifier,
     ) {
 
         if (isRefreshing.not() && items.itemCount == 0) {
@@ -244,8 +240,8 @@ private fun MailboxItemsList(
         ) { item ->
             item?.let {
                 MailboxItem(
-                    item = item,
                     modifier = Modifier.animateItemPlacement(),
+                    item = item,
                     onItemClicked = actions.onNavigateToMailboxItem,
                     onOpenSelectionMode = actions.onOpenSelectionMode
                 )
@@ -261,55 +257,6 @@ private fun MailboxItemsList(
                 ) {
                     Text(text = stringResource(id = commonString.retry))
                 }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun MailboxItem(
-    item: MailboxItemUiModel,
-    modifier: Modifier = Modifier,
-    onItemClicked: (MailboxItemUiModel) -> Unit,
-    onOpenSelectionMode: () -> Unit
-) {
-    Card(
-        modifier = modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-            .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
-    ) {
-        Box(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Column {
-                val fontWeight = if (item.isRead) FontWeight.Normal else FontWeight.Bold
-                Text(
-                    text = "UserId: ${item.userId}",
-                    fontWeight = fontWeight,
-                    maxLines = 1,
-                    softWrap = false,
-                )
-                Text(
-                    text = "Participants: ${item.participants}",
-                    fontWeight = fontWeight,
-                    maxLines = 1
-                )
-                Text(
-                    text = "Subject: ${item.subject}",
-                    fontWeight = fontWeight,
-                    maxLines = 1
-                )
-                Text(
-                    text = when (item.type) {
-                        MailboxItemType.Message -> "Message "
-                        MailboxItemType.Conversation -> "Conversation "
-                    } + "Labels: ${item.labels.map { it.name }}",
-                    fontWeight = fontWeight,
-                    maxLines = 1
-                )
-                Text(text = "Time: ${item.time}", fontWeight = fontWeight)
             }
         }
     }
@@ -365,42 +312,7 @@ object MailboxScreen {
 fun PreviewMailbox() {
     val items = flowOf(
         PagingData.from(
-            listOf(
-                MailboxItemUiModel(
-                    type = MailboxItemType.Message,
-                    id = "1",
-                    userId = UserId("0"),
-                    conversationId = ConversationId("2"),
-                    time = TextUiModel.TextRes(R.string.yesterday),
-                    isRead = false,
-                    subject = "First message",
-                    participants = emptyList(),
-                    shouldShowRepliedIcon = true,
-                    shouldShowRepliedAllIcon = false,
-                    shouldShowForwardedIcon = false,
-                    numMessages = null,
-                    showStar = false,
-                    locationIconResIds = emptyList(),
-                    shouldShowAttachmentIcon = false
-                ),
-                MailboxItemUiModel(
-                    type = MailboxItemType.Message,
-                    id = "2",
-                    userId = UserId("0"),
-                    conversationId = ConversationId("2"),
-                    time = TextUiModel.Text("10:42"),
-                    isRead = true,
-                    subject = "Second message",
-                    participants = listOf(Recipient("address", "name")),
-                    shouldShowRepliedIcon = false,
-                    shouldShowRepliedAllIcon = true,
-                    shouldShowForwardedIcon = true,
-                    numMessages = null,
-                    showStar = true,
-                    locationIconResIds = emptyList(),
-                    shouldShowAttachmentIcon = true
-                )
-            )
+            listOf(MailboxPreviewData.mailboxItem, MailboxPreviewData.mailboxItem1)
         )
     ).collectAsLazyPagingItems()
 
@@ -411,4 +323,46 @@ fun PreviewMailbox() {
             actions = MailboxScreen.Actions.Empty
         )
     }
+}
+
+object MailboxPreviewData {
+
+    val mailboxItem = MailboxItemUiModel(
+        type = MailboxItemType.Message,
+        id = "1",
+        userId = UserId("0"),
+        conversationId = ConversationId("2"),
+        time = TextUiModel.TextRes(R.string.yesterday),
+        isRead = false,
+        subject = "First message",
+        participants = listOf(
+            Recipient("address1@pm.me", "Contact1"),
+            Recipient("address2-long-long@pm.me", ""),
+        ),
+        shouldShowRepliedIcon = true,
+        shouldShowRepliedAllIcon = false,
+        shouldShowForwardedIcon = true,
+        numMessages = 2,
+        showStar = true,
+        locationIconResIds = emptyList(),
+        shouldShowAttachmentIcon = true
+    )
+
+    val mailboxItem1 = MailboxItemUiModel(
+        type = MailboxItemType.Conversation,
+        id = "2",
+        userId = UserId("0"),
+        conversationId = ConversationId("2"),
+        time = TextUiModel.Text("10:42"),
+        isRead = true,
+        subject = "Second message",
+        participants = listOf(Recipient("address", "name")),
+        shouldShowRepliedIcon = false,
+        shouldShowRepliedAllIcon = true,
+        shouldShowForwardedIcon = true,
+        numMessages = 5,
+        showStar = true,
+        locationIconResIds = emptyList(),
+        shouldShowAttachmentIcon = true
+    )
 }
