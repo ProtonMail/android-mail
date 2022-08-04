@@ -26,6 +26,7 @@ import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class MailboxItemMapperTest {
 
@@ -73,5 +74,45 @@ class MailboxItemMapperTest {
         // Then
         val expected = labelIds.map { LabelId(it) }
         assertEquals(expected, actual.labelIds)
+    }
+
+    @Test
+    fun `when mapping message with 1 or more attachments to mailbox item then has attachments is true`() {
+        // Given
+        val message = MessageTestData.buildMessage(userId, "id", numAttachments = 1)
+        // When
+        val actual = message.toMailboxItem(emptyMap())
+        // Then
+        assertTrue(actual.hasAttachments)
+    }
+
+    @Test
+    fun `when mapping message with 0 attachments to mailbox item then has attachments is false`() {
+        // Given
+        val message = MessageTestData.buildMessage(userId, "id", numAttachments = 0)
+        // When
+        val actual = message.toMailboxItem(emptyMap())
+        // Then
+        assertFalse(actual.hasAttachments)
+    }
+
+    @Test
+    fun `when mapping conversation with 1 or more attachments to mailbox item then has attachments is true`() {
+        // Given
+        val message = ConversationTestData.buildConversation(userId, "id", numAttachments = 3)
+        // When
+        val actual = message.toMailboxItem(emptyMap())
+        // Then
+        assertTrue(actual.hasAttachments)
+    }
+
+    @Test
+    fun `when mapping conversation with 0 attachments to mailbox item then has attachments is false`() {
+        // Given
+        val message = ConversationTestData.buildConversation(userId, "id", numAttachments = 0)
+        // When
+        val actual = message.toMailboxItem(emptyMap())
+        // Then
+        assertFalse(actual.hasAttachments)
     }
 }

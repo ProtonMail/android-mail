@@ -34,6 +34,7 @@ object MessageTestData {
         order: Long = 1000,
         time: Long = 1000,
         labelIds: List<String> = listOf("0"),
+        numAttachments: Int = 0
     ) = Message(
         userId = userId,
         messageId = MessageId(id),
@@ -54,7 +55,7 @@ object MessageTestData {
         isForwarded = false,
         addressId = AddressId("1"),
         externalId = null,
-        numAttachments = 0,
+        numAttachments = numAttachments,
         flags = 0
     )
 }

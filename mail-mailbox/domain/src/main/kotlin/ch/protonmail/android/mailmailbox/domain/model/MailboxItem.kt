@@ -55,7 +55,8 @@ data class MailboxItem(
     val isReplied: Boolean,
     val isRepliedAll: Boolean,
     val isForwarded: Boolean,
-    val numMessages: Int
+    val numMessages: Int,
+    val hasAttachments: Boolean
 ) : PageItem {
     override val keywords: String by lazy { subject + senders + recipients }
 }
@@ -78,6 +79,7 @@ fun Message.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     isRepliedAll = isRepliedAll,
     isForwarded = isForwarded,
     numMessages = 1,
+    hasAttachments = numAttachments > 0
 )
 
 fun Conversation.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
@@ -98,6 +100,7 @@ fun Conversation.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     isRepliedAll = false,
     isForwarded = false,
     numMessages = numMessages,
+    hasAttachments = numAttachments > 0
 )
 
 fun ViewMode.toMailboxItemType() = when (this) {

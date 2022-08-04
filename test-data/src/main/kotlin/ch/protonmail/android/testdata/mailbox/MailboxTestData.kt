@@ -55,7 +55,8 @@ object MailboxTestData {
         type: MailboxItemType = MailboxItemType.Message,
         senders: List<Recipient> = listOf(Recipient("address", "name")),
         recipients: List<Recipient> = emptyList(),
-        numMessages: Int = 1
+        numMessages: Int = 1,
+        hasAttachments: Boolean = false
     ) = MailboxItem(
         type = type,
         id = id,
@@ -74,6 +75,7 @@ object MailboxTestData {
         isRepliedAll = false,
         isForwarded = false,
         numMessages = numMessages,
+        hasAttachments = hasAttachments
     )
 
     private fun buildMessageMailboxItem(
@@ -100,6 +102,7 @@ object MailboxTestData {
         isRepliedAll = isRepliedAll,
         isForwarded = isForwarded,
         numMessages = 1,
+        hasAttachments = false
     )
 
     private fun buildConversationMailboxItem(id: String) = MailboxItem(
@@ -120,6 +123,7 @@ object MailboxTestData {
         isRepliedAll = false,
         isForwarded = false,
         numMessages = 3,
+        hasAttachments = false
     )
 
 }
