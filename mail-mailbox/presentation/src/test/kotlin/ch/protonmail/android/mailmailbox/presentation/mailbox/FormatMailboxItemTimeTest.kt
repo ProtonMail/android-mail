@@ -64,100 +64,109 @@ class FormatMailboxItemTimeTest {
 
     @Test
     fun `when the message is from the current day and locale is Italian show time of the message in 24 hours format`() {
+        // Given
         givenCurrentTimeAndLocale(1658853752.seconds, Locale.ITALIAN) // Tue Jul 26 18:42:35 CEST 2022
         val itemTime = 1658853643L // Tue Jul 26 18:40:44 CEST 2022
-
+        // When
         val actual = formatter.invoke(itemTime.seconds)
-
+        // Then
         assertIs<Result.Localized>(actual, actual.toString())
         assertEquals(Result.Localized("18:40"), actual)
     }
 
     @Test
     fun `when the message is from the current day and locale is English show time of the message in 12 hours format`() {
+        // Given
         givenCurrentTimeAndLocale(1658853752.seconds, Locale.ENGLISH) // Tue Jul 26 18:42:35 CEST 2022
         val itemTime = 1658853643L // Tue Jul 26 18:40:44 CEST 2022
-
+        // When
         val actual = formatter.invoke(itemTime.seconds)
-
+        // Then
         assertIs<Result.Localized>(actual, actual.toString())
         assertEquals(Result.Localized("6:40 PM"), actual)
     }
 
     @Test
     fun `when the message is from yesterday show localized 'yesterday' string`() {
+        // Given
         givenCurrentTimeAndLocale(1658853752.seconds, Locale.UK) // Tue Jul 26 18:42:35 CEST 2022
         val itemTime = 1658772437 // Mon Jul 25 20:07:17 CEST 2022
-
+        // When
         val actual = formatter.invoke(itemTime.seconds)
-
+        // Then
         assertIs<Result.Localizable>(actual, actual.toString())
         assertEquals(Result.Localizable(R.string.yesterday), actual)
     }
 
     @Test
     fun `when the message is from the current week and older than yesterday show week day`() {
+        // Given
         givenCurrentTimeAndLocale(1658994137.seconds, Locale.UK) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1658772437 // Mon Jul 25 20:07:17 CEST 2022
-
+        // When
         val actual = formatter.invoke(itemTime.seconds)
-
+        // Then
         assertIs<Result.Localized>(actual, actual.toString())
         assertEquals(Result.Localized("Monday"), actual)
     }
 
     @Test
     fun `when the message is from the current year and older than current week show day and month`() {
+        // Given
         givenCurrentTimeAndLocale(1658994137.seconds, Locale.FRENCH) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1647852004 // Mon Mar 21 09:40:04 CEST 2022
-
+        // When
         val actual = formatter.invoke(itemTime.seconds)
-
+        // Then
         assertIs<Result.Localized>(actual, actual.toString())
         assertEquals(Result.Localized("21 mars"), actual)
     }
 
     @Test
     fun `when showing day and month ensure they are formatted based on the current locale`() {
+        // Given
         givenCurrentTimeAndLocale(1658994137.seconds, Locale.US) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1647852004 // Mon Mar 21 09:40:04 CEST 2022
-
+        // When
         val actual = formatter.invoke(itemTime.seconds)
-
+        // Then
         assertIs<Result.Localized>(actual, actual.toString())
         assertEquals(Result.Localized("Mar 21"), actual)
     }
 
     @Test
     fun `when the message is from before the current year show the day month and year`() {
+        // Given
         givenCurrentTimeAndLocale(1658994137.seconds, Locale.UK) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2022
-
+        // When
         val actual = formatter.invoke(itemTime.seconds)
-
+        // Then
         assertIs<Result.Localized>(actual, actual.toString())
         assertEquals(Result.Localized("13 Sep 2021"), actual)
     }
 
     @Test
     fun `when showing day month and year ensure they are formatted based on current locale`() {
+        // Given
         givenCurrentTimeAndLocale(1658994137.seconds, Locale.US) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2022
-
+        // When
         val actual = formatter.invoke(itemTime.seconds)
-
+        // Then
         assertIs<Result.Localized>(actual, actual.toString())
         assertEquals(Result.Localized("Sep 13, 2021"), actual)
     }
 
     @Test
     fun `all instances of calendar are created considering the current locale`() {
+        // Given
         mockkStatic(Calendar::class)
         givenCurrentTimeAndLocale(1658994137.seconds, Locale.TAIWAN) // Thu Jul 28 09:42:17 CEST 2022
         val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2022
-
+        // When
         formatter.invoke(itemTime.seconds)
-
+        // Then
         val slot = mutableListOf<Locale>()
         verify { Calendar.getInstance(capture(slot)) }
         assertTrue(slot.isNotEmpty())

@@ -45,10 +45,11 @@ class GetDefaultCalendarTest {
 
     @Test
     fun `gets calendar instance based on current locale`() {
+        // Given
         mockkStatic(Calendar::class)
-
+        // When
         getDefaultCalendar()
-
+        // Then
         val slot = slot<Locale>()
         verify { Calendar.getInstance(capture(slot)) }
         assertEquals(Locale.CHINA, slot.captured)
