@@ -59,21 +59,21 @@ object MailboxTestData {
     ) = MailboxItem(
         type = type,
         id = id,
-        conversationId = ConversationId(id),
         userId = userId,
         time = time,
         size = 1000,
         order = 1000,
         read = true,
+        labelIds = labelIds,
+        conversationId = ConversationId(id),
+        labels = labels,
         subject = "subject",
         senders = senders,
         recipients = recipients,
-        labels = labels,
         isReplied = false,
         isRepliedAll = false,
         isForwarded = false,
         numMessages = numMessages,
-        labelIds = labelIds
     )
 
     private fun buildMessageMailboxItem(
@@ -85,41 +85,41 @@ object MailboxTestData {
     ) = MailboxItem(
         type = MailboxItemType.Message,
         id = id,
-        conversationId = ConversationId("2"),
-        labels = emptyList(),
         userId = UserId("0"),
-        senders = listOf(Recipient("address", "name")),
-        recipients = emptyList(),
-        subject = "First message",
         time = 0,
         size = 0,
         order = 0,
         read = isRead,
+        labelIds = emptyList(),
+        conversationId = ConversationId("2"),
+        labels = emptyList(),
+        subject = "First message",
+        senders = listOf(Recipient("address", "name")),
+        recipients = emptyList(),
         isReplied = isReplied,
         isRepliedAll = isRepliedAll,
         isForwarded = isForwarded,
         numMessages = 1,
-        labelIds = emptyList()
     )
 
     private fun buildConversationMailboxItem(id: String) = MailboxItem(
         type = MailboxItemType.Conversation,
         id = id,
-        conversationId = ConversationId("2"),
-        labels = emptyList(),
         userId = UserId("0"),
-        senders = listOf(Recipient("address", "name")),
-        recipients = emptyList(),
-        subject = "First message",
         time = 0,
         size = 0,
         order = 0,
         read = false,
+        labelIds = emptyList(),
+        conversationId = ConversationId("2"),
+        labels = emptyList(),
+        subject = "First message",
+        senders = listOf(Recipient("address", "name")),
+        recipients = emptyList(),
         isReplied = false,
         isRepliedAll = false,
         isForwarded = false,
         numMessages = 3,
-        labelIds = emptyList()
     )
 
 }

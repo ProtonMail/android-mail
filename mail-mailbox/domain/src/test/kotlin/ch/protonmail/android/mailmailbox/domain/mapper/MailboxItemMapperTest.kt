@@ -31,19 +31,21 @@ class MailboxItemMapperTest {
 
     @Test
     fun `when mapping message to mailbox item num messages is always 1`() {
+        // Given
         val message = MessageTestData.buildMessage(userId, "id")
-
+        // When
         val actual = message.toMailboxItem(emptyMap())
-
+        // Then
         assertEquals(1, actual.numMessages)
     }
 
     @Test
     fun `when mapping conversation to mailbox item 'replied' 'replied all' and 'forwarded' flags are always false`() {
+        // Given
         val conversation = ConversationTestData.buildConversation(userId, "id")
-
+        // When
         val actual = conversation.toMailboxItem(emptyMap())
-
+        // Then
         assertFalse(actual.isReplied)
         assertFalse(actual.isRepliedAll)
         assertFalse(actual.isForwarded)
@@ -51,22 +53,24 @@ class MailboxItemMapperTest {
 
     @Test
     fun `when mapping message to mailbox item all labelIds are preserved`() {
+        // Given
         val labelIds = listOf("0", "5", "10", "customLabel")
         val conversation = ConversationTestData.buildConversation(userId, "id", labelIds = labelIds)
-
+        // When
         val actual = conversation.toMailboxItem(emptyMap())
-
+        // Then
         val expected = labelIds.map { LabelId(it) }
         assertEquals(expected, actual.labelIds)
     }
 
     @Test
     fun `when mapping conversation to mailbox item all labelIds are preserved`() {
+        // Given
         val labelIds = listOf("0", "5", "10", "customLabel")
         val message = MessageTestData.buildMessage(userId, "id", labelIds = labelIds)
-
+        // When
         val actual = message.toMailboxItem(emptyMap())
-
+        // Then
         val expected = labelIds.map { LabelId(it) }
         assertEquals(expected, actual.labelIds)
     }

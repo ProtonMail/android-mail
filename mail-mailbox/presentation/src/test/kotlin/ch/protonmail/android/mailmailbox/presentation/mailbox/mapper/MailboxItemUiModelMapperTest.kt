@@ -155,54 +155,59 @@ class MailboxItemUiModelMapperTest {
 
     @Test
     fun `when mailbox item of conversation type contains two or more messages show messages number`() {
+        // Given
         val mailboxItem = buildMailboxItem(type = MailboxItemType.Conversation, numMessages = 2)
-
+        // When
         val actual = mapper.toUiModel(mailboxItem)
-
+        // Then
         assertEquals(2, actual.numMessages)
     }
 
     @Test
     fun `when mailbox item is starred show starred`() {
+        // Given
         val mailboxItem = buildMailboxItem(labelIds = listOf(SystemLabelId.Starred.labelId))
-
+        // When
         val actual = mapper.toUiModel(mailboxItem)
-
+        // Then
         assertTrue(actual.showStar)
     }
 
     @Test
     fun `when mailbox item is not starred do not show starred`() {
+        // Given
         val labelIds = listOf(SystemLabelId.Drafts.labelId, SystemLabelId.Archive.labelId)
         val mailboxItem = buildMailboxItem(labelIds = labelIds)
-
+        // When
         val actual = mapper.toUiModel(mailboxItem)
-
+        // Then
         assertFalse(actual.showStar)
     }
 
     @Test
     fun `when use case returns location icons to be shown they are mapped to the ui model`() {
+        // Given
         val labelIds = listOf(SystemLabelId.Inbox.labelId, SystemLabelId.Drafts.labelId)
         val mailboxItem = buildMailboxItem(type = MailboxItemType.Conversation, labelIds = labelIds)
         val inboxIconRes = R.drawable.ic_proton_inbox
         val draftsIconRes = R.drawable.ic_proton_file_lines
         val icons = GetMailboxItemLocationIcons.Result.Icons(inboxIconRes, draftsIconRes)
         every { getMailboxItemLocationIcons.invoke(mailboxItem) } returns icons
-
+        // When
         val actual = mapper.toUiModel(mailboxItem)
-
+        // Then
         val expectedIconsRes = listOf(inboxIconRes, draftsIconRes)
         assertEquals(expectedIconsRes, actual.locationIconResIds)
     }
 
     @Test
     fun `when use case returns no location icons to be shown empty list is mapped to the ui model`() {
+        // Given
         val mailboxItem = buildMailboxItem()
         every { getMailboxItemLocationIcons.invoke(mailboxItem) } returns GetMailboxItemLocationIcons.Result.None
-
+        // When
         val actual = mapper.toUiModel(mailboxItem)
-
+        // Then
         assertEquals(emptyList(), actual.locationIconResIds)
     }
 }

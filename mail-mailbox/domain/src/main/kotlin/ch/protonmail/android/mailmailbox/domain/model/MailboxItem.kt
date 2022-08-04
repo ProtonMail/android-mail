@@ -63,41 +63,41 @@ data class MailboxItem(
 fun Message.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     type = MailboxItemType.Message,
     id = messageId.id,
-    conversationId = conversationId,
     userId = userId,
-    senders = listOf(sender),
-    recipients = toList + ccList + bccList,
-    subject = subject,
-    labels = labelIds.mapNotNull { labels[it] },
     time = time,
     size = size,
     order = order,
     read = read,
+    labelIds = labelIds,
+    conversationId = conversationId,
+    labels = labelIds.mapNotNull { labels[it] },
+    subject = subject,
+    senders = listOf(sender),
+    recipients = toList + ccList + bccList,
     isReplied = isReplied,
     isRepliedAll = isRepliedAll,
     isForwarded = isForwarded,
     numMessages = 1,
-    labelIds = labelIds
 )
 
 fun Conversation.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
     type = MailboxItemType.Conversation,
     id = conversationId.id,
-    conversationId = conversationId,
     userId = userId,
-    senders = senders,
-    recipients = recipients,
-    subject = subject,
-    labels = labelIds.mapNotNull { labels[it] },
     time = time,
     size = size,
     order = order,
     read = read,
+    labelIds = labelIds,
+    conversationId = conversationId,
+    labels = labelIds.mapNotNull { labels[it] },
+    subject = subject,
+    senders = senders,
+    recipients = recipients,
     isReplied = false,
     isRepliedAll = false,
     isForwarded = false,
     numMessages = numMessages,
-    labelIds = labelIds
 )
 
 fun ViewMode.toMailboxItemType() = when (this) {
