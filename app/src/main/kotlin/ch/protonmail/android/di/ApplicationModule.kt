@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.di
 
-import java.util.Calendar
 import android.content.Context
 import androidx.work.WorkManager
 import ch.protonmail.android.BuildConfig
