@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
@@ -39,8 +40,8 @@ class MailboxItemUiModelMapper @Inject constructor() : Mapper<MailboxItem, Mailb
             subject = mailboxItem.subject,
             participants = getParticipants(mailboxItem),
             shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
-            shouldShowRepliedAllIcon = mailboxItem.isRepliedAll,
-            shouldShowForwardedIcon = mailboxItem.isForwarded
+            shouldShowRepliedAllIcon = shouldShowRepliedAllIcon(mailboxItem),
+            shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem)
         )
 
     private fun getParticipants(mailboxItem: MailboxItem): List<Recipient> {
@@ -57,10 +58,30 @@ class MailboxItemUiModelMapper @Inject constructor() : Mapper<MailboxItem, Mailb
         }
     }
 
-    private fun shouldShowRepliedIcon(mailboxItem: MailboxItem) =
-        if (mailboxItem.isRepliedAll) {
+    private fun shouldShowRepliedIcon(mailboxItem: MailboxItem): Boolean {
+        if (mailboxItem.type == MailboxItemType.Conversation) {
+            return false
+        }
+
+        return if (mailboxItem.isRepliedAll) {
             false
         } else {
             mailboxItem.isReplied
         }
+    }
+
+    private fun shouldShowRepliedAllIcon(mailboxItem: MailboxItem) =
+        if (mailboxItem.type == MailboxItemType.Conversation) {
+            false
+        } else {
+            mailboxItem.isRepliedAll
+        }
+
+    private fun shouldShowForwardedIcon(mailboxItem: MailboxItem) =
+        if (mailboxItem.type == MailboxItemType.Conversation) {
+            false
+        } else {
+            mailboxItem.isForwarded
+        }
+
 }
