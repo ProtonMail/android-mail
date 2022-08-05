@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
@@ -34,7 +35,7 @@ import kotlin.time.Duration.Companion.seconds
 class MailboxItemUiModelMapperTest {
 
     private val formatMailboxItemTime = mockk<FormatMailboxItemTime> {
-        every { this@mockk.invoke(any()) } returns FormatMailboxItemTime.Result.Localized("21 Feb")
+        every { this@mockk.invoke(any()) } returns TextUiModel.Text("21 Feb")
     }
 
     private val mapper = MailboxItemUiModelMapper(formatMailboxItemTime)
@@ -121,7 +122,7 @@ class MailboxItemUiModelMapperTest {
         // Given
         val time: Long = 1658851202
         val mailboxItem = buildMailboxItem(time = time)
-        val result = FormatMailboxItemTime.Result.Localized("18:00")
+        val result = TextUiModel.Text("18:00")
         every { formatMailboxItemTime.invoke(time.seconds) } returns result
         // When
         val actual = mapper.toUiModel(mailboxItem)

@@ -22,9 +22,9 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import androidx.annotation.StringRes
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultCalendar
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -36,20 +36,20 @@ class FormatMailboxItemTime @Inject constructor(
 
     private val currentTime by lazy { getDefaultCalendar() }
 
-    operator fun invoke(itemTime: Duration): Result {
+    operator fun invoke(itemTime: Duration): TextUiModel {
         if (itemTime.isToday()) {
-            return Result.Localized(itemTime.toHourAndMinutes())
+            return TextUiModel.Text(itemTime.toHourAndMinutes())
         }
         if (itemTime.isYesterday()) {
-            return Result.Localizable(R.string.yesterday)
+            return TextUiModel.TextRes(R.string.yesterday)
         }
         if (itemTime.isThisWeek()) {
-            return Result.Localized(itemTime.toWeekDay())
+            return TextUiModel.Text(itemTime.toWeekDay())
         }
         if (itemTime.isThisYear()) {
-            return Result.Localized(itemTime.toDayAndMonth())
+            return TextUiModel.Text(itemTime.toDayAndMonth())
         }
-        return Result.Localized(itemTime.toFullDate())
+        return TextUiModel.Text(itemTime.toFullDate())
     }
 
     private fun Duration.toFullDate() = DateFormat.getDateInstance(DateFormat.MEDIUM, getDefaultLocale())
@@ -57,7 +57,7 @@ class FormatMailboxItemTime @Inject constructor(
 
     private fun Duration.toDayAndMonth() = this.toFullDate()
         .replace(",", "")
-        .replace(SimpleDateFormat("YYYY").format(currentTime.time), "")
+        .replace(SimpleDateFormat("YYYY", getDefaultLocale()).format(currentTime.time), "")
         .trim()
 
     private fun Duration.toHourAndMinutes() = DateFormat.getTimeInstance(DateFormat.SHORT, getDefaultLocale())
@@ -89,9 +89,5 @@ class FormatMailboxItemTime @Inject constructor(
         return itemCalendar
     }
 
-    sealed interface Result {
-        data class Localizable(@StringRes val stringId: Int) : Result
-        data class Localized(val value: String) : Result
-    }
 }
 

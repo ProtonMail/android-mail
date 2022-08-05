@@ -24,9 +24,9 @@ import java.util.Locale
 import java.util.TimeZone
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultCalendar
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime.Result
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -70,8 +70,8 @@ class FormatMailboxItemTimeTest {
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
-        assertIs<Result.Localized>(actual, actual.toString())
-        assertEquals(Result.Localized("18:40"), actual)
+        assertIs<TextUiModel.Text>(actual, actual.toString())
+        assertEquals(TextUiModel.Text("18:40"), actual)
     }
 
     @Test
@@ -82,8 +82,8 @@ class FormatMailboxItemTimeTest {
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
-        assertIs<Result.Localized>(actual, actual.toString())
-        assertEquals(Result.Localized("6:40 PM"), actual)
+        assertIs<TextUiModel.Text>(actual, actual.toString())
+        assertEquals(TextUiModel.Text("6:40 PM"), actual)
     }
 
     @Test
@@ -94,8 +94,8 @@ class FormatMailboxItemTimeTest {
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
-        assertIs<Result.Localizable>(actual, actual.toString())
-        assertEquals(Result.Localizable(R.string.yesterday), actual)
+        assertIs<TextUiModel.TextRes>(actual, actual.toString())
+        assertEquals(TextUiModel.TextRes(R.string.yesterday), actual)
     }
 
     @Test
@@ -106,8 +106,8 @@ class FormatMailboxItemTimeTest {
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
-        assertIs<Result.Localized>(actual, actual.toString())
-        assertEquals(Result.Localized("Monday"), actual)
+        assertIs<TextUiModel.Text>(actual, actual.toString())
+        assertEquals(TextUiModel.Text("Monday"), actual)
     }
 
     @Test
@@ -118,8 +118,8 @@ class FormatMailboxItemTimeTest {
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
-        assertIs<Result.Localized>(actual, actual.toString())
-        assertEquals(Result.Localized("21 mars"), actual)
+        assertIs<TextUiModel.Text>(actual, actual.toString())
+        assertEquals(TextUiModel.Text("21 mars"), actual)
     }
 
     @Test
@@ -130,8 +130,8 @@ class FormatMailboxItemTimeTest {
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
-        assertIs<Result.Localized>(actual, actual.toString())
-        assertEquals(Result.Localized("Mar 21"), actual)
+        assertIs<TextUiModel.Text>(actual, actual.toString())
+        assertEquals(TextUiModel.Text("Mar 21"), actual)
     }
 
     @Test
@@ -142,8 +142,8 @@ class FormatMailboxItemTimeTest {
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
-        assertIs<Result.Localized>(actual, actual.toString())
-        assertEquals(Result.Localized("13 Sep 2021"), actual)
+        assertIs<TextUiModel.Text>(actual, actual.toString())
+        assertEquals(TextUiModel.Text("13 Sep 2021"), actual)
     }
 
     @Test
@@ -154,8 +154,8 @@ class FormatMailboxItemTimeTest {
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
-        assertIs<Result.Localized>(actual, actual.toString())
-        assertEquals(Result.Localized("Sep 13, 2021"), actual)
+        assertIs<TextUiModel.Text>(actual, actual.toString())
+        assertEquals(TextUiModel.Text("Sep 13, 2021"), actual)
     }
 
     @Test
