@@ -31,7 +31,7 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class DataStoreEitherSupportTest {
+internal class DataStoreEitherMappingsTest {
 
     private val dataStore: DataStore<Preferences> = mockk()
     private val intKey = intPreferencesKey("key")

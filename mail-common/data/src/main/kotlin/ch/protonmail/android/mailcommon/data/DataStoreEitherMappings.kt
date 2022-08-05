@@ -33,6 +33,8 @@ import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
 val DataStore<Preferences>.safeData: Flow<Either<PreferencesError, Preferences>>
+    // type inference fails to resolve type for `Preferences.right() as Either<PreferencesError, Preferences>`
+    @Suppress("USELESS_CAST")
     get() = data.map { it.right() as Either<PreferencesError, Preferences> }
         .catch { throwable ->
             if (throwable is IOException) {
