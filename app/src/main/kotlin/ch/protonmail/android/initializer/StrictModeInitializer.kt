@@ -22,6 +22,10 @@ import android.content.Context
 import android.os.StrictMode
 import androidx.startup.Initializer
 import ch.protonmail.android.BuildConfig
+import timber.log.Timber
+import java.lang.reflect.Field
+import java.lang.reflect.Method
+import java.lang.reflect.Modifier
 
 class StrictModeInitializer : Initializer<Unit> {
 
@@ -37,12 +41,67 @@ class StrictModeInitializer : Initializer<Unit> {
         val threadPolicyBuilder = StrictMode.ThreadPolicy.Builder()
             .detectAll()
             .penaltyFlashScreen()
-            .penaltyLog()
+            .penaltyDeath()
         val vmPolicyBuilder = StrictMode.VmPolicy.Builder()
             .detectAll()
-            .penaltyLog()
+            .penaltyDeath()
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build())
         StrictMode.setVmPolicy(vmPolicyBuilder.build())
+        ignoreWhitelistedWarnings()
+    }
+
+    private fun ignoreWhitelistedWarnings() {
+        // Source: https://atscaleconference.com/videos/eliminating-long-tail-jank-with-strictmode/
+        // On API levels above N, we can use reflection to read the violationsBeingTimed field of strict
+        // to get notifications about reported violations
+        val field = StrictMode::class.java.getDeclaredField("violationsBeingTimed")
+        field.isAccessible = true // Suppress Java language access checking
+        // Remove "final" modifier
+        val modifiersField = Field::class.java.getDeclaredField("accessFlags")
+        modifiersField.isAccessible = true
+        modifiersField.setInt(field, field.modifiers and Modifier.FINAL.inv())
+        // Override the field with a custom ArrayList, which is able to skip whitelisted violations
+        field.set(
+            null,
+            object : ThreadLocal<ArrayList<out Any>>() {
+                override fun get(): ArrayList<out Any> {
+                    return StrictModeHackArrayList()
+                }
+            }
+        )
+    }
+
+    /**
+     * Special array list that skip additions for matching ViolationInfo instances as per
+     * hack described in https://atscaleconference.com/videos/eliminating-long-tail-jank-with-strictmode/
+     */
+    class StrictModeHackArrayList : ArrayList<Any>() {
+
+        private val whitelistedViolations = listOf(
+            // AppLanguageRepository reading locale from file through
+            // AppCompatDelegate (due to `autoStoreLocales` manifest metadata)
+            "androidx.appcompat.app.AppLocalesStorageHelper.readLocales",
+            // Using StorageManager
+            "me.proton.core.challenge.data.DeviceUtilsKt.deviceVolumesStorage",
+            // CryptoPrefs lib reading from SharedPreferences
+            "me.proton.core.crypto.validator.data.prefs.CryptoPrefsImpl.<init>",
+            // Reading from SharedPreferences
+            "me.proton.core.util.android.sharedpreferences.ExtensionsKt.nullableGet",
+        )
+
+        override fun add(element: Any): Boolean {
+            val crashInfoMethod: Method = element.javaClass.getDeclaredMethod("getStackTrace")
+            crashInfoMethod.invoke(element)?.let { crashInfoStackTrace ->
+                for (whitelistedStacktraceCall in whitelistedViolations) {
+                    if (crashInfoStackTrace.toString().contains(whitelistedStacktraceCall)) {
+                        Timber.d("Skipping whitelisted StrictMode violation: $whitelistedStacktraceCall")
+                        return false
+                    }
+                }
+            }
+            // call super to continue with standard violation reporting
+            return super.add(element)
+        }
     }
 }
