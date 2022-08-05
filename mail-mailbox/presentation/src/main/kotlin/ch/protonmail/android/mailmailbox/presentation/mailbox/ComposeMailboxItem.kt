@@ -108,7 +108,7 @@ private fun MailboxItemFirstRow(
             }
             Text(
                 modifier = Modifier,
-                text = item.participants.joinToString { it.name.ifEmpty { it.address } },
+                text = item.participants.joinToString { it },
                 fontWeight = fontWeight,
                 color = colorResource(id = R.color.text_weak),
                 overflow = TextOverflow.Ellipsis,

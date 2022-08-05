@@ -108,7 +108,7 @@ class MailboxItemUiModelMapperTest {
     }
 
     @Test
-    fun `when mailbox item is not in sent or drafts ui model shows senders as participants`() {
+    fun `when mailbox item is not in sent or drafts ui model shows senders names as participants`() {
         // Given
         val senders = listOf(
             Recipient("sender@proton.ch", "sender"),
@@ -121,11 +121,12 @@ class MailboxItemUiModelMapperTest {
         // When
         val actual = mapper.toUiModel(mailboxItem)
         // Then
-        assertEquals(senders, actual.participants)
+        val expected = listOf("sender", "sender1")
+        assertEquals(expected, actual.participants)
     }
 
     @Test
-    fun `when mailbox item is in sent or drafts ui model shows recipients as participants`() {
+    fun `when mailbox item is in sent or drafts ui model shows recipients names as participants`() {
         // Given
         val recipients = listOf(
             Recipient("recipient@proton.ch", "recipient"),
@@ -138,7 +139,26 @@ class MailboxItemUiModelMapperTest {
         // When
         val actual = mapper.toUiModel(mailboxItem)
         // Then
-        assertEquals(recipients, actual.participants)
+        val expected = listOf("recipient", "recipient1")
+        assertEquals(expected, actual.participants)
+    }
+
+    @Test
+    fun `when any participant has no name defined address is mapped to the ui model`() {
+        // Given
+        val senders = listOf(
+            Recipient("sender@proton.ch", "sender"),
+            Recipient("sender1@proton.ch", ""),
+        )
+        val mailboxItem = buildMailboxItem(
+            labelIds = listOf(SystemLabelId.Inbox.labelId),
+            senders = senders
+        )
+        // When
+        val actual = mapper.toUiModel(mailboxItem)
+        // Then
+        val expected = listOf("sender", "sender1@proton.ch")
+        assertEquals(expected, actual.participants)
     }
 
     @Test

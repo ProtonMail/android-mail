@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -60,7 +59,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             is GetMailboxItemLocationIcons.Result.Icons -> listOfNotNull(icons.first, icons.second, icons.third)
         }
 
-    private fun getParticipants(mailboxItem: MailboxItem): List<Recipient> {
+    private fun getParticipants(mailboxItem: MailboxItem): List<String> {
         val displayRecipientLocations = setOf(
             SystemLabelId.Sent.labelId,
             SystemLabelId.Drafts.labelId
@@ -68,9 +67,9 @@ class MailboxItemUiModelMapper @Inject constructor(
         val shouldDisplayRecipients = mailboxItem.labelIds.any { it in displayRecipientLocations }
 
         return if (shouldDisplayRecipients) {
-            mailboxItem.recipients
+            mailboxItem.recipients.map { it.name.ifEmpty { it.address } }
         } else {
-            mailboxItem.senders
+            mailboxItem.senders.map { it.name.ifEmpty { it.address } }
         }
     }
 

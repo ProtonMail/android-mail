@@ -52,7 +52,6 @@ import androidx.viewbinding.BuildConfig
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.R
@@ -335,10 +334,7 @@ object MailboxPreviewData {
         time = TextUiModel.TextRes(R.string.yesterday),
         isRead = false,
         subject = "First message",
-        participants = listOf(
-            Recipient("address1@pm.me", "Contact1"),
-            Recipient("address2-long-long@pm.me", ""),
-        ),
+        participants = listOf("Contact1", "address2-long-long@pm.me"),
         shouldShowRepliedIcon = true,
         shouldShowRepliedAllIcon = false,
         shouldShowForwardedIcon = true,
@@ -356,7 +352,7 @@ object MailboxPreviewData {
         time = TextUiModel.Text("10:42"),
         isRead = true,
         subject = "Second message",
-        participants = listOf(Recipient("address", "name")),
+        participants = listOf("name"),
         shouldShowRepliedIcon = false,
         shouldShowRepliedAllIcon = true,
         shouldShowForwardedIcon = true,
