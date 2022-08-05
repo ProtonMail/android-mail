@@ -36,6 +36,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -161,6 +162,16 @@ class MailboxItemUiModelMapperTest {
         val actual = mapper.toUiModel(mailboxItem)
         // Then
         assertEquals(2, actual.numMessages)
+    }
+
+    @Test
+    fun `when mailbox item contains less than two messages do not show messages number`() {
+        // Given
+        val mailboxItem = buildMailboxItem(type = MailboxItemType.Conversation, numMessages = 1)
+        // When
+        val actual = mapper.toUiModel(mailboxItem)
+        // Then
+        assertNull(actual.numMessages)
     }
 
     @Test

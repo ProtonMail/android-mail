@@ -48,7 +48,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
             shouldShowRepliedAllIcon = shouldShowRepliedAllIcon(mailboxItem),
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
-            numMessages = mailboxItem.numMessages,
+            numMessages = mailboxItem.numMessages.takeIf { it >= 2 },
             showStar = mailboxItem.labelIds.contains(SystemLabelId.Starred.labelId),
             locationIconResIds = getLocationIconsToDisplay(mailboxItem),
             shouldShowAttachmentIcon = mailboxItem.hasAttachments
