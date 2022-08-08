@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">Configuració de l\'aplicació</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_push_notifications">Notificacions push</string>
-  <string name="mail_settings_auto_lock">Auto Lock</string>
+  <string name="mail_settings_auto_lock">Bloqueig automàtic</string>
   <string name="mail_settings_alternative_routing">Enrutament alternatiu</string>
   <string name="mail_settings_app_language">Idioma de l\'aplicació</string>
   <string name="mail_settings_combined_contacts">Contactes combinats</string>
@@ -51,7 +51,7 @@
   <string name="mail_settings_mailbox_size">Mida de la bústia</string>
   <string name="mail_settings_addresses">Adreces</string>
   <string name="mail_settings_default_email_address">Adreça de correu per defecte</string>
-  <string name="mail_settings_display_name_and_signature">Display name and signature</string>
+  <string name="mail_settings_display_name_and_signature">Nom a mostrar i signatura</string>
   <string name="mail_settings_mailbox">Bústia de correu</string>
   <string name="mail_settings_privacy">Privacitat</string>
   <string name="mail_settings_search_message_content">Cercar al contingut del missatge</string>
@@ -74,7 +74,7 @@
   <string name="mail_settings_swipe_action_trash_title">Paperera</string>
   <string name="mail_settings_swipe_action_archive_description">Mou a l\'arxiu</string>
   <string name="mail_settings_swipe_action_read_description">Marcar com a llegit/no llegit</string>
-  <string name="mail_settings_swipe_action_spam_description">Move to spam</string>
+  <string name="mail_settings_swipe_action_spam_description">Mou al correu brossa</string>
   <string name="mail_settings_swipe_action_star_description">Star/unstar</string>
   <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
   <!-- Error messages -->

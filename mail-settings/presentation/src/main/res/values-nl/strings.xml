@@ -76,7 +76,7 @@
   <string name="mail_settings_swipe_action_read_description">Markeren als ongelezen/gelezen</string>
   <string name="mail_settings_swipe_action_spam_description">Verplaatsen naar spam</string>
   <string name="mail_settings_swipe_action_star_description">Ster/verwijder ster</string>
-  <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
+  <string name="mail_settings_swipe_action_trash_description">Naar prullenbak verplaatsen</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Er ging iets fout. Probeer nog eens.</string>
 </resources>

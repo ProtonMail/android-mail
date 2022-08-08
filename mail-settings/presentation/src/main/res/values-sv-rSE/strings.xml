@@ -40,7 +40,7 @@
   <string name="mail_settings_disabled">Inaktiverad</string>
   <string name="mail_settings_allowed">Tillåtet</string>
   <string name="mail_settings_denied">Nekad</string>
-  <string name="mail_settings_auto_detect">Identifiera automatiskt</string>
+  <string name="mail_settings_auto_detect">Automatisk upptäckt</string>
   <string name="mail_settings_app_information">App-information</string>
   <string name="mail_settings_app_version">App-version</string>
   <string name="mail_settings_account">Konto</string>
@@ -78,5 +78,5 @@
   <string name="mail_settings_swipe_action_star_description">Stjärnmärk/ta bort stjärnmärking</string>
   <string name="mail_settings_swipe_action_trash_description">Flytta till papperskorgen</string>
   <!-- Error messages -->
-  <string name="mail_settings_generic_error_message">An error occurred. Try again.</string>
+  <string name="mail_settings_generic_error_message">Ett fel uppstod. Försök igen.</string>
 </resources>
