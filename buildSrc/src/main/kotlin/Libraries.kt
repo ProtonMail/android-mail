@@ -132,7 +132,7 @@ object AndroidX {
 }
 
 object Arrow {
-    private const val version = "1.0.1"
+    private const val version = Versions.Arrow.core
 
     const val core = "io.arrow-kt:arrow-core:$version"
 }
