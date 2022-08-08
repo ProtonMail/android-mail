@@ -26,13 +26,13 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import io.sentry.Sentry
 import io.sentry.SentryOptions
+import io.sentry.android.core.SentryAndroid
 
 class SentryInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
-        Sentry.init { options: SentryOptions ->
+        SentryAndroid.init(context.applicationContext) { options: SentryOptions ->
             options.dsn = BuildConfig.SENTRY_DSN
             options.release = BuildConfig.VERSION_NAME
             options.environment = BuildConfig.HOST
