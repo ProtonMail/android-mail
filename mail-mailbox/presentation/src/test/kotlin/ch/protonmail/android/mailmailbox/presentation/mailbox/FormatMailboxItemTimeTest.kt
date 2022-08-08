@@ -138,7 +138,7 @@ class FormatMailboxItemTimeTest {
     fun `when the message is from before the current year show the day month and year`() {
         // Given
         givenCurrentTimeAndLocale(1658994137.seconds, Locale.UK) // Thu Jul 28 09:42:17 CEST 2022
-        val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2022
+        val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2021
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
@@ -147,10 +147,22 @@ class FormatMailboxItemTimeTest {
     }
 
     @Test
+    fun `when the message is from just before the current year show the day month and year`() {
+        // Given
+        givenCurrentTimeAndLocale(1640995200.seconds, Locale.UK) // Sat Jan 01 2022 01:00:00 CEST
+        val itemTime = 1640989800 // Fri Dec 31 2021 23:30:00 CEST
+        // When
+        val actual = formatter.invoke(itemTime.seconds)
+        // Then
+        assertIs<TextUiModel.Text>(actual, actual.toString())
+        assertEquals(TextUiModel.Text("31 Dec 2021"), actual)
+    }
+
+    @Test
     fun `when showing day month and year ensure they are formatted based on current locale`() {
         // Given
         givenCurrentTimeAndLocale(1658994137.seconds, Locale.US) // Thu Jul 28 09:42:17 CEST 2022
-        val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2022
+        val itemTime = 1631518804 // Mon Sep 13 09:40:04 CEST 2021
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
