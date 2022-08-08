@@ -53,7 +53,7 @@
                 android:name="ch.protonmail.android.initializer.AccountStateHandlerInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="ch.protonmail.android.initializer.StrictModeInitializer"
+                android:name="ch.protonmail.android.initializer.strictmode.StrictModeInitializer"
                 android:value="androidx.startup" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.LoggerInitializer"
