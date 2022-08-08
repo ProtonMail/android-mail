@@ -24,6 +24,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("io.sentry.android.gradle")
 }
 
 setAsHiltModule()

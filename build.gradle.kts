@@ -28,6 +28,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.Gradle.kotlinGradlePlugin}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.Gradle.hiltAndroidGradlePlugin}")
         classpath("org.jacoco:org.jacoco.core:${Versions.Gradle.jacocoGradlePlugin}")
+        classpath("io.sentry:sentry-android-gradle-plugin:${Versions.Gradle.sentryGradlePlugin}")
     }
 }
 

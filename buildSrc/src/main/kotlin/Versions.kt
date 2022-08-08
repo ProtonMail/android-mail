@@ -67,6 +67,7 @@ object Versions {
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
         const val jacocoGradlePlugin = "0.8.8"
+        const val sentryGradlePlugin = "3.1.4"
     }
 
     object JaCoCo {
