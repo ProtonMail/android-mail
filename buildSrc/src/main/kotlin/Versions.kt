@@ -54,7 +54,7 @@ object Versions {
     }
 
     object Dagger {
-        const val dagger = "2.43.2"
+        const val dagger = "2.42"
     }
 
     object Detekt {
