@@ -21,6 +21,9 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +39,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -86,34 +90,32 @@ fun MailboxScreen(
     val mailboxState = rememberAsState(viewModel.state, MailboxViewModel.initialState).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
 
-    MailboxScreen(
-        modifier = modifier,
-        mailboxState = mailboxState,
+    val actions = MailboxScreen.Actions(
         navigateToMailboxItem = navigateToMailboxItem,
-        openDrawerMenu = openDrawerMenu,
-        mailboxListItems = mailboxListItems,
-        onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
-        onEnableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.EnableUnreadFilter) },
         onDisableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.DisableUnreadFilter) },
+        onEnableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.EnableUnreadFilter) },
+        onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
         onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
-        onRefreshList = { viewModel.submit(MailboxViewModel.Action.Refresh) }
-    ) { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) }
+        onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
+        onRefreshList = { viewModel.submit(MailboxViewModel.Action.Refresh) },
+        openDrawerMenu = openDrawerMenu
+    )
+
+    MailboxScreen(
+        mailboxState = mailboxState,
+        mailboxListItems = mailboxListItems,
+        actions = actions,
+        modifier = modifier
+    )
 
 }
 
 @Composable
 fun MailboxScreen(
-    modifier: Modifier = Modifier,
     mailboxState: MailboxState,
-    navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
-    openDrawerMenu: () -> Unit,
     mailboxListItems: LazyPagingItems<MailboxItemUiModel>,
-    onExitSelectionMode: () -> Unit,
-    onEnableUnreadFilter: () -> Unit,
-    onDisableUnreadFilter: () -> Unit,
-    onNavigateToMailboxItem: (MailboxItemUiModel) -> Unit,
-    onRefreshList: () -> Unit,
-    onOpenSelectionMode: () -> Unit
+    actions: MailboxScreen.Actions,
+    modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
     val lazyListState = mailboxListItems.rememberLazyListState()
@@ -125,8 +127,8 @@ fun MailboxScreen(
                 MailboxTopAppBar(
                     state = mailboxState.topAppBarState,
                     actions = MailboxTopAppBar.Actions(
-                        onOpenMenu = openDrawerMenu,
-                        onExitSelectionMode = onExitSelectionMode,
+                        onOpenMenu = actions.openDrawerMenu,
+                        onExitSelectionMode = actions.onExitSelectionMode,
                         onExitSearchMode = {},
                         onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
                         onEnterSearchMode = {},
@@ -138,8 +140,8 @@ fun MailboxScreen(
                 MailboxStickyHeader(
                     modifier = Modifier,
                     state = mailboxState.unreadFilterState,
-                    onFilterEnabled = onEnableUnreadFilter,
-                    onFilterDisabled = onDisableUnreadFilter
+                    onFilterEnabled = actions.onEnableUnreadFilter,
+                    onFilterDisabled = actions.onDisableUnreadFilter
                 )
             }
         }
@@ -152,16 +154,14 @@ fun MailboxScreen(
                 }
 
                 ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
-                    navigateToMailboxItem(itemId)
+                    actions.navigateToMailboxItem(itemId)
                 }
 
-                MailboxList(
+                MailboxSwipeRefresh(
                     modifier = Modifier.padding(paddingValues),
-                    navigateToMailboxItem = onNavigateToMailboxItem,
-                    onRefresh = onRefreshList,
-                    onOpenSelectionMode = onOpenSelectionMode,
                     items = mailboxListItems,
-                    listState = lazyListState
+                    listState = lazyListState,
+                    actions = actions
                 )
             }
             MailboxListState.Loading -> ProtonCenteredProgress(Modifier.padding(paddingValues))
@@ -191,15 +191,12 @@ private fun MailboxStickyHeader(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun MailboxList(
-    modifier: Modifier = Modifier,
-    navigateToMailboxItem: (MailboxItemUiModel) -> Unit,
-    onRefresh: () -> Unit,
-    onOpenSelectionMode: () -> Unit,
+private fun MailboxSwipeRefresh(
     items: LazyPagingItems<MailboxItemUiModel>,
-    listState: LazyListState
+    listState: LazyListState,
+    actions: MailboxScreen.Actions,
+    modifier: Modifier = Modifier
 ) {
 
     val isRefreshing = when {
@@ -211,39 +208,58 @@ private fun MailboxList(
 
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = { onRefresh(); items.refresh() },
+        onRefresh = { actions.onRefreshList(); items.refresh() },
         modifier = modifier,
     ) {
 
-        LazyColumn(
-            state = listState,
-            modifier = Modifier
-                .fillMaxSize()
-                .let { if (BuildConfig.DEBUG) it.verticalScrollbar(listState) else it }
-        ) {
-            items(
-                items = items,
-                key = { it.id }
-            ) { item ->
-                item?.let {
-                    MailboxItem(
-                        item = item,
-                        modifier = Modifier.animateItemPlacement(),
-                        onItemClicked = navigateToMailboxItem,
-                        onOpenSelectionMode = onOpenSelectionMode
-                    )
-                }
+        if (isRefreshing.not() && items.itemCount == 0) {
+            MailboxEmpty(
+                modifier = modifier.scrollable(
+                    rememberScrollableState(consumeScrollDelta = { 0f }),
+                    orientation = Orientation.Vertical
+                )
+            )
+        } else {
+            MailboxItemsList(listState, items, actions)
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun MailboxItemsList(
+    listState: LazyListState,
+    items: LazyPagingItems<MailboxItemUiModel>,
+    actions: MailboxScreen.Actions
+) {
+    LazyColumn(
+        state = listState,
+        modifier = Modifier
+            .fillMaxSize()
+            .let { if (BuildConfig.DEBUG) it.verticalScrollbar(listState) else it }
+    ) {
+        items(
+            items = items,
+            key = { it.id }
+        ) { item ->
+            item?.let {
+                MailboxItem(
+                    item = item,
+                    modifier = Modifier.animateItemPlacement(),
+                    onItemClicked = actions.onNavigateToMailboxItem,
+                    onOpenSelectionMode = actions.onOpenSelectionMode
+                )
             }
-            item {
-                when (items.loadState.append) {
-                    is LoadState.NotLoading -> Unit
-                    is LoadState.Loading -> ProtonCenteredProgress(Modifier.fillMaxWidth())
-                    is LoadState.Error -> Button(
-                        onClick = { items.retry() },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(text = stringResource(id = commonString.retry))
-                    }
+        }
+        item {
+            when (items.loadState.append) {
+                is LoadState.NotLoading -> Unit
+                is LoadState.Loading -> ProtonCenteredProgress(Modifier.fillMaxWidth())
+                is LoadState.Error -> Button(
+                    onClick = { items.retry() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = stringResource(id = commonString.retry))
                 }
             }
         }
@@ -299,6 +315,42 @@ private fun MailboxItem(
     }
 }
 
+@Composable
+private fun MailboxEmpty(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text("Empty mailbox")
+    }
+}
+
+object MailboxScreen {
+
+    data class Actions(
+        val navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
+        val onDisableUnreadFilter: () -> Unit,
+        val onEnableUnreadFilter: () -> Unit,
+        val onExitSelectionMode: () -> Unit,
+        val onNavigateToMailboxItem: (MailboxItemUiModel) -> Unit,
+        val onOpenSelectionMode: () -> Unit,
+        val onRefreshList: () -> Unit,
+        val openDrawerMenu: () -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                navigateToMailboxItem = {},
+                onDisableUnreadFilter = {},
+                onEnableUnreadFilter = {},
+                onExitSelectionMode = {},
+                onNavigateToMailboxItem = {},
+                onOpenSelectionMode = {},
+                onRefreshList = {},
+                openDrawerMenu = {}
+            )
+        }
+    }
+}
+
 @Preview(
     name = "Mailbox in light mode",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
@@ -345,12 +397,10 @@ fun PreviewMailbox() {
     ).collectAsLazyPagingItems()
 
     ProtonTheme {
-        MailboxList(
-            navigateToMailboxItem = {},
-            onRefresh = {},
-            onOpenSelectionMode = {},
+        MailboxSwipeRefresh(
             items = items,
-            listState = items.rememberLazyListState()
+            listState = items.rememberLazyListState(),
+            actions = MailboxScreen.Actions.Empty
         )
     }
 }

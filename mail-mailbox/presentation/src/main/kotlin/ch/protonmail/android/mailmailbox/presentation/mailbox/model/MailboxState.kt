@@ -25,4 +25,14 @@ data class MailboxState(
     val mailboxListState: MailboxListState,
     val topAppBarState: MailboxTopAppBarState,
     val unreadFilterState: UnreadFilterState
-)
+) {
+
+    companion object {
+
+        val Loading = MailboxState(
+            mailboxListState = MailboxListState.Loading,
+            topAppBarState = MailboxTopAppBarState.Loading,
+            unreadFilterState = UnreadFilterState.Loading
+        )
+    }
+}
