@@ -26,19 +26,33 @@ import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkConstructor
+import io.mockk.unmockkConstructor
 import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapperTest {
 
-    private val formatMailboxItemTime = mockk<FormatMailboxItemTime> {
-        every { this@mockk.invoke(any()) } returns TextUiModel.Text("21 Feb")
-    }
+    private val formatMailboxItemTime: FormatMailboxItemTime = mockk()
 
     private val mapper = MailboxItemUiModelMapper(formatMailboxItemTime)
+
+    @BeforeTest
+    fun setup() {
+        mockkConstructor(Duration::class)
+        every { formatMailboxItemTime(anyConstructed()) } returns TextUiModel.Text("21 Feb")
+    }
+
+    @AfterTest
+    fun teardown() {
+        unmockkConstructor(Duration::class)
+    }
 
     @Test
     fun `when mailbox message item was replied ui model shows reply icon`() {
