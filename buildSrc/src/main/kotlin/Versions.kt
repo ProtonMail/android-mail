@@ -40,7 +40,7 @@ object Versions {
         const val lifecycle = "2.4.2"
         const val navigation = "2.5.1"
         const val paging = "3.1.1"
-        const val pagingCompose = "1.0.0-alpha15"
+        const val pagingCompose = "1.0.0-alpha14"
         const val room = "2.4.3"
         const val splashscreen = "1.0.0"
         const val test = "1.4.0"
