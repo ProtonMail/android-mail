@@ -44,12 +44,13 @@ import ch.protonmail.android.navigation.route.addRemoveAccountDialog
 import ch.protonmail.android.navigation.route.addSettings
 import ch.protonmail.android.navigation.route.addSwipeActionsSettings
 import ch.protonmail.android.navigation.route.addThemeSettings
+import io.sentry.compose.withSentryObservableEffect
 import kotlinx.coroutines.launch
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
 fun Home(launcherActions: Launcher.Actions) {
-    val navController = rememberNavController()
+    val navController = rememberNavController().withSentryObservableEffect()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 

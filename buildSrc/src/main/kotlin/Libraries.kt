@@ -229,6 +229,7 @@ object Squareup {
 
 object Sentry {
     const val sentry = "io.sentry:sentry-android:${Versions.Sentry.sentry}"
+    const val compose = "io.sentry:sentry-compose-android:${Versions.Sentry.sentry}"
 }
 
 fun coreArtifact(name: String, version: String) = "me.proton.core:$name:$version"

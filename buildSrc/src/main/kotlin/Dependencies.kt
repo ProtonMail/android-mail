@@ -93,6 +93,7 @@ object Dependencies {
         add(Proton.Core.userSettings)
         add(Proton.Core.utilKotlin)
         add(Sentry.sentry)
+        add(Sentry.compose)
         add(Squareup.okhttp)
         add(Squareup.plumber)
     }
