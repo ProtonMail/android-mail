@@ -22,10 +22,9 @@ import android.content.Context
 import android.os.StrictMode
 import androidx.startup.Initializer
 import ch.protonmail.android.BuildConfig
-import timber.log.Timber
 import java.lang.reflect.Field
-import java.lang.reflect.Method
 import java.lang.reflect.Modifier
+import android.os.Build
 
 class StrictModeInitializer : Initializer<Unit> {
 
@@ -43,7 +42,28 @@ class StrictModeInitializer : Initializer<Unit> {
             .penaltyFlashScreen()
             .penaltyDeath()
         val vmPolicyBuilder = StrictMode.VmPolicy.Builder()
-            .detectAll()
+            .detectActivityLeaks()
+            .detectCleartextNetwork()
+            .detectFileUriExposure()
+            .detectLeakedClosableObjects()
+            .detectLeakedRegistrationObjects()
+            .detectLeakedSqlLiteObjects()
+            .penaltyDeathOnFileUriExposure()
+            // .detectUntaggedSockets() // Not needed (unless we want to use `android.net.TrafficStats`).
+            // .detectNonSdkApiUsage() // Skip: some androidx libraries violate this.
+            .apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    detectContentUriWithoutPermission()
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    detectCredentialProtectedWhileLocked()
+                    detectImplicitDirectBoot()
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    detectIncorrectContextUse()
+                    detectUnsafeIntentLaunch()
+                }
+            }
             .penaltyDeath()
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build())
