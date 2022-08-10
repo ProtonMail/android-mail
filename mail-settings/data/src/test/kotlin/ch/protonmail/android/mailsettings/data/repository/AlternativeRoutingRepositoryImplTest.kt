@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.data.repository
 
 import app.cash.turbine.test
+import arrow.core.right
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingLocalDataSource
 import io.mockk.every
@@ -30,7 +31,7 @@ import org.junit.Test
 
 class AlternativeRoutingRepositoryImplTest {
 
-    private val alternativeRoutingPreference = AlternativeRoutingPreference(isEnabled = true)
+    private val alternativeRoutingPreference = AlternativeRoutingPreference(isEnabled = true).right()
     private val alternativeRoutingPreferenceFlow = flowOf(alternativeRoutingPreference)
 
     private val alternativeRoutingLocalDataSource: AlternativeRoutingLocalDataSource = mockk {
@@ -44,7 +45,7 @@ class AlternativeRoutingRepositoryImplTest {
         // When
         alternativeRoutingRepository.observe().test {
             // Then
-            assertEquals(AlternativeRoutingPreference(isEnabled = true), awaitItem())
+            assertEquals(AlternativeRoutingPreference(isEnabled = true).right(), awaitItem())
             awaitComplete()
         }
     }

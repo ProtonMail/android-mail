@@ -23,6 +23,7 @@ import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPrefere
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -34,10 +35,17 @@ class HasAlternativeRouting @Inject constructor(
 
     private val initialValue = AlternativeRoutingPreference(true)
 
-    operator fun invoke() = alternativeRoutingRepository.observe()
-        .stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.Eagerly,
-            initialValue = initialValue
-        )
+    operator fun invoke() =
+        alternativeRoutingRepository.observe()
+            .map { alternativeRoutingPreferenceEither ->
+                alternativeRoutingPreferenceEither.fold(
+                    ifLeft = { initialValue },
+                    ifRight = { it }
+                )
+            }
+            .stateIn(
+                scope = coroutineScope,
+                started = SharingStarted.Eagerly,
+                initialValue = initialValue
+            )
 }

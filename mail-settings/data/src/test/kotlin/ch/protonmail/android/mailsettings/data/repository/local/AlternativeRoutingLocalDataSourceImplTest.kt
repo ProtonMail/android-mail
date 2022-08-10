@@ -18,14 +18,21 @@
 
 package ch.protonmail.android.mailsettings.data.repository.local
 
+import java.io.IOException
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import app.cash.turbine.test
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.spyk
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -34,10 +41,9 @@ import org.junit.Test
 class AlternativeRoutingLocalDataSourceImplTest {
 
     private val preferences = mockk<Preferences>()
+    private val alternativeRoutingDataStoreSpy = spyk<DataStore<Preferences>>()
     private val dataStoreProvider = mockk<MailSettingsDataStoreProvider> {
-        every { this@mockk.alternativeRoutingDataStore } returns mockk dataStore@{
-            every { this@dataStore.data } returns flowOf(preferences)
-        }
+        every { this@mockk.alternativeRoutingDataStore } returns alternativeRoutingDataStoreSpy
     }
 
     private val alternativeRoutingLocalDataSource = AlternativeRoutingLocalDataSourceImpl(dataStoreProvider)
@@ -46,10 +52,12 @@ class AlternativeRoutingLocalDataSourceImplTest {
     fun `returns true when no preference is stored locally`() = runTest {
         // Given
         coEvery { preferences.get<Boolean>(any()) } returns null
+        every { alternativeRoutingDataStoreSpy.data } returns flowOf(preferences)
+
         // When
         alternativeRoutingLocalDataSource.observe().test {
             // Then
-            Assert.assertEquals(AlternativeRoutingPreference(true), awaitItem())
+            Assert.assertEquals(AlternativeRoutingPreference(true).right(), awaitItem())
             awaitComplete()
         }
     }
@@ -58,10 +66,25 @@ class AlternativeRoutingLocalDataSourceImplTest {
     fun `returns locally stored preference from data store when available`() = runTest {
         // Given
         coEvery { preferences[booleanPreferencesKey("hasAlternativeRoutingPrefKey")] } returns false
+        every { alternativeRoutingDataStoreSpy.data } returns flowOf(preferences)
+
         // When
         alternativeRoutingLocalDataSource.observe().test {
             // Then
-            Assert.assertEquals(AlternativeRoutingPreference(false), awaitItem())
+            Assert.assertEquals(AlternativeRoutingPreference(false).right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return error when an exception is thrown while observing preference`() = runTest {
+        // Given
+        every { alternativeRoutingDataStoreSpy.data } returns flow { throw IOException() }
+
+        // When
+        alternativeRoutingLocalDataSource.observe().test {
+            // Then
+            Assert.assertEquals(PreferencesError.left(), awaitItem())
             awaitComplete()
         }
     }

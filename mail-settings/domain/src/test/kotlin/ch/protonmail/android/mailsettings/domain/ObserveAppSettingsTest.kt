@@ -47,7 +47,7 @@ class ObserveAppSettingsTest {
         every { this@mockk.observe() } returns flowOf(null)
     }
     private val alternativeRoutingRepository = mockk<AlternativeRoutingRepository> {
-        every { this@mockk.observe() } returns flowOf(AlternativeRoutingPreference(true))
+        every { this@mockk.observe() } returns flowOf(AlternativeRoutingPreference(true).right())
     }
     private val autoLockRepository = mockk<AutoLockRepository> {
         every { this@mockk.observe() } returns flowOf(AutoLockPreference(false))
@@ -90,7 +90,7 @@ class ObserveAppSettingsTest {
         runTest {
             // Given
             every { alternativeRoutingRepository.observe() } returns flowOf(
-                AlternativeRoutingPreference(false)
+                AlternativeRoutingPreference(false).right()
             )
 
             // When

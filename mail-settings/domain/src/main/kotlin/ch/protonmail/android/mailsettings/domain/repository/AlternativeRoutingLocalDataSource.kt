@@ -18,10 +18,12 @@
 
 package ch.protonmail.android.mailsettings.domain.repository
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import kotlinx.coroutines.flow.Flow
 
 interface AlternativeRoutingLocalDataSource {
 
-    fun observe(): Flow<AlternativeRoutingPreference>
+    fun observe(): Flow<Either<PreferencesError, AlternativeRoutingPreference>>
 }

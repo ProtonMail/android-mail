@@ -19,6 +19,9 @@
 package ch.protonmail.android.feature.alternativerouting
 
 import app.cash.turbine.test
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import io.mockk.every
@@ -65,7 +68,7 @@ class HasAlternativeRoutingTest {
     fun `emits alternative routing preference from repository when repository emits`() = runTest {
         // Given
         every { alternativeRoutingRepository.observe() } returns flowOf(
-            AlternativeRoutingPreference(false)
+            AlternativeRoutingPreference(false).right()
         )
         // When
         hasAlternativeRouting.invoke().test {
@@ -75,4 +78,16 @@ class HasAlternativeRoutingTest {
         }
     }
 
+    @Test
+    fun `emits alternative routing preference initial value when an error happens`() = runTest {
+        // Given
+        every { alternativeRoutingRepository.observe() } returns flowOf(
+            PreferencesError.left()
+        )
+        // When
+        hasAlternativeRouting.invoke().test {
+            // Then
+            assertEquals(AlternativeRoutingPreference(true), awaitItem())
+        }
+    }
 }

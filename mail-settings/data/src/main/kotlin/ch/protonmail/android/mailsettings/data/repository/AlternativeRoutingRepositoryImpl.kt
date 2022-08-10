@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingLocalDataSource
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
@@ -28,6 +30,6 @@ class AlternativeRoutingRepositoryImpl @Inject constructor(
     private val alternativeRoutingLocalDataSource: AlternativeRoutingLocalDataSource
 ) : AlternativeRoutingRepository {
 
-    override fun observe(): Flow<AlternativeRoutingPreference> =
+    override fun observe(): Flow<Either<PreferencesError, AlternativeRoutingPreference>> =
         alternativeRoutingLocalDataSource.observe()
 }

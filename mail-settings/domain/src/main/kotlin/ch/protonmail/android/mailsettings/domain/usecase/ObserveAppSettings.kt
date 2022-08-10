@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.domain.usecase
 
 import arrow.core.Either
+import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
@@ -43,10 +44,11 @@ class ObserveAppSettings @Inject constructor(
         combinedContactsRepository.observe()
     ) { autoLockPref, alternativeRouting, customLanguage, combinedContacts ->
         val hasCombinedContacts = (combinedContacts as Either.Right<CombinedContactsPreference>).value.isEnabled
+        val hasAlternativeRouting = (alternativeRouting as Either.Right<AlternativeRoutingPreference>).value.isEnabled
 
         AppSettings(
             hasAutoLock = autoLockPref.isEnabled,
-            hasAlternativeRouting = alternativeRouting.isEnabled,
+            hasAlternativeRouting = hasAlternativeRouting,
             customAppLanguage = customLanguage?.langName,
             hasCombinedContacts = hasCombinedContacts
         )
