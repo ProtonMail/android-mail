@@ -108,7 +108,7 @@ private fun MailboxItemFirstRow(
             }
             Text(
                 modifier = Modifier,
-                text = item.participants.joinToString { it },
+                text = item.participants.joinToString(),
                 fontWeight = fontWeight,
                 color = colorResource(id = R.color.text_weak),
                 overflow = TextOverflow.Ellipsis,
@@ -233,7 +233,7 @@ fun ContactAvatar(
     name = "Mailbox Item"
 )
 @Composable
-fun PreviewMailboxItem() {
+private fun MailboxItemPreview() {
     ProtonTheme {
         MailboxItem(
             modifier = Modifier,
