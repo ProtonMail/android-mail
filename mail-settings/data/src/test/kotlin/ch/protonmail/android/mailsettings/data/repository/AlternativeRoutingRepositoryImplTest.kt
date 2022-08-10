@@ -18,57 +18,33 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import app.cash.turbine.test
-import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
-import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
-import io.mockk.coEvery
+import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingLocalDataSource
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 
 class AlternativeRoutingRepositoryImplTest {
 
-    private val preferences = mockk<Preferences>()
-    private val dataStoreProvider = mockk<MailSettingsDataStoreProvider> {
-        every { this@mockk.alternativeRoutingDataStore } returns mockk dataStore@{
-            every { this@dataStore.data } returns flowOf(preferences)
-        }
+    private val alternativeRoutingPreference = AlternativeRoutingPreference(isEnabled = true)
+    private val alternativeRoutingPreferenceFlow = flowOf(alternativeRoutingPreference)
+
+    private val alternativeRoutingLocalDataSource: AlternativeRoutingLocalDataSource = mockk {
+        every { observe() } returns alternativeRoutingPreferenceFlow
     }
 
-    private lateinit var alternativeRoutingRepository: AlternativeRoutingRepository
-
-    @Before
-    fun setUp() {
-        alternativeRoutingRepository = AlternativeRoutingRepositoryImpl(dataStoreProvider)
-    }
+    private val alternativeRoutingRepository = AlternativeRoutingRepositoryImpl(alternativeRoutingLocalDataSource)
 
     @Test
-    fun `returns true when no preference is stored locally`() = runTest {
-        // Given
-        coEvery { preferences.get<Boolean>(any()) } returns null
+    fun `returns value from the local data source`() = runTest {
         // When
         alternativeRoutingRepository.observe().test {
             // Then
-            assertEquals(AlternativeRoutingPreference(true), awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `returns locally stored preference from data store when available`() = runTest {
-        // Given
-        coEvery { preferences[booleanPreferencesKey("hasAlternativeRoutingPrefKey")] } returns false
-        // When
-        alternativeRoutingRepository.observe().test {
-            // Then
-            assertEquals(AlternativeRoutingPreference(false), awaitItem())
+            assertEquals(AlternativeRoutingPreference(isEnabled = true), awaitItem())
             awaitComplete()
         }
     }

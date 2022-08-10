@@ -25,6 +25,8 @@ import ch.protonmail.android.mailsettings.data.repository.AppLanguageRepositoryI
 import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.ThemeRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSourceImpl
+import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingLocalDataSource
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
@@ -59,9 +61,15 @@ object SettingsModule {
 
     @Provides
     @Singleton
-    fun provideAlternativeRoutingRepository(
+    fun provideAlternativeRoutingLocalDataSource(
         dataStoreProvider: MailSettingsDataStoreProvider
-    ): AlternativeRoutingRepository = AlternativeRoutingRepositoryImpl(dataStoreProvider)
+    ): AlternativeRoutingLocalDataSource = AlternativeRoutingLocalDataSourceImpl(dataStoreProvider)
+
+    @Provides
+    @Singleton
+    fun provideAlternativeRoutingRepository(
+        alternativeRoutingLocalDataSource: AlternativeRoutingLocalDataSource
+    ): AlternativeRoutingRepository = AlternativeRoutingRepositoryImpl(alternativeRoutingLocalDataSource)
 
     @Provides
     @Singleton

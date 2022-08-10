@@ -21,7 +21,7 @@ package ch.protonmail.android.mailsettings.domain.repository
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import kotlinx.coroutines.flow.Flow
 
-interface AlternativeRoutingRepository {
+interface AlternativeRoutingLocalDataSource {
 
     fun observe(): Flow<AlternativeRoutingPreference>
 }
