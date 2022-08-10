@@ -18,10 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.domain.model
 
-import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
-import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailpagination.domain.entity.PageItem
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
@@ -60,48 +58,6 @@ data class MailboxItem(
 ) : PageItem {
     override val keywords: String by lazy { subject + senders + recipients }
 }
-
-fun Message.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
-    type = MailboxItemType.Message,
-    id = messageId.id,
-    userId = userId,
-    time = time,
-    size = size,
-    order = order,
-    read = read,
-    labelIds = labelIds,
-    conversationId = conversationId,
-    labels = labelIds.mapNotNull { labels[it] },
-    subject = subject,
-    senders = listOf(sender),
-    recipients = toList + ccList + bccList,
-    isReplied = isReplied,
-    isRepliedAll = isRepliedAll,
-    isForwarded = isForwarded,
-    numMessages = 1,
-    hasAttachments = numAttachments > 0
-)
-
-fun Conversation.toMailboxItem(labels: Map<LabelId, Label>) = MailboxItem(
-    type = MailboxItemType.Conversation,
-    id = conversationId.id,
-    userId = userId,
-    time = time,
-    size = size,
-    order = order,
-    read = read,
-    labelIds = labelIds,
-    conversationId = conversationId,
-    labels = labelIds.mapNotNull { labels[it] },
-    subject = subject,
-    senders = senders,
-    recipients = recipients,
-    isReplied = false,
-    isRepliedAll = false,
-    isForwarded = false,
-    numMessages = numMessages,
-    hasAttachments = numAttachments > 0
-)
 
 fun ViewMode.toMailboxItemType() = when (this) {
     ViewMode.ConversationGrouping -> MailboxItemType.Conversation

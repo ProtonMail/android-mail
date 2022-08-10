@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailmailbox.domain.mapper.ConversationMailboxItemMapper
+import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
@@ -67,11 +69,20 @@ class GetMailboxItemsTest {
         )
     }
 
+    private val messageMailboxItemMapper = MessageMailboxItemMapper()
+    private val conversationMailboxItemMapper = ConversationMailboxItemMapper()
+
     private lateinit var usecase: GetMailboxItems
 
     @Before
     fun setUp() {
-        usecase = GetMailboxItems(labelRepository, messageRepository, conversationRepository)
+        usecase = GetMailboxItems(
+            labelRepository,
+            messageRepository,
+            conversationRepository,
+            messageMailboxItemMapper,
+            conversationMailboxItemMapper
+        )
     }
 
     @Test

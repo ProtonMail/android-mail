@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.domain.mapper
 
-import ch.protonmail.android.mailmailbox.domain.model.toMailboxItem
-import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.label.domain.entity.LabelId
@@ -28,49 +26,27 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class MailboxItemMapperTest {
+class MessageMailboxItemMapperTest {
+
+    private val mapper = MessageMailboxItemMapper()
 
     @Test
     fun `when mapping message to mailbox item num messages is always 1`() {
         // Given
         val message = MessageTestData.buildMessage(userId, "id")
         // When
-        val actual = message.toMailboxItem(emptyMap())
+        val actual = mapper.toMailboxItem(message, emptyMap())
         // Then
         assertEquals(1, actual.numMessages)
-    }
-
-    @Test
-    fun `when mapping conversation to mailbox item 'replied' 'replied all' and 'forwarded' flags are always false`() {
-        // Given
-        val conversation = ConversationTestData.buildConversation(userId, "id")
-        // When
-        val actual = conversation.toMailboxItem(emptyMap())
-        // Then
-        assertFalse(actual.isReplied)
-        assertFalse(actual.isRepliedAll)
-        assertFalse(actual.isForwarded)
     }
 
     @Test
     fun `when mapping message to mailbox item all labelIds are preserved`() {
         // Given
         val labelIds = listOf("0", "5", "10", "customLabel")
-        val conversation = ConversationTestData.buildConversation(userId, "id", labelIds = labelIds)
-        // When
-        val actual = conversation.toMailboxItem(emptyMap())
-        // Then
-        val expected = labelIds.map { LabelId(it) }
-        assertEquals(expected, actual.labelIds)
-    }
-
-    @Test
-    fun `when mapping conversation to mailbox item all labelIds are preserved`() {
-        // Given
-        val labelIds = listOf("0", "5", "10", "customLabel")
         val message = MessageTestData.buildMessage(userId, "id", labelIds = labelIds)
         // When
-        val actual = message.toMailboxItem(emptyMap())
+        val actual = mapper.toMailboxItem(message, emptyMap())
         // Then
         val expected = labelIds.map { LabelId(it) }
         assertEquals(expected, actual.labelIds)
@@ -81,7 +57,7 @@ class MailboxItemMapperTest {
         // Given
         val message = MessageTestData.buildMessage(userId, "id", numAttachments = 1)
         // When
-        val actual = message.toMailboxItem(emptyMap())
+        val actual = mapper.toMailboxItem(message, emptyMap())
         // Then
         assertTrue(actual.hasAttachments)
     }
@@ -91,27 +67,7 @@ class MailboxItemMapperTest {
         // Given
         val message = MessageTestData.buildMessage(userId, "id", numAttachments = 0)
         // When
-        val actual = message.toMailboxItem(emptyMap())
-        // Then
-        assertFalse(actual.hasAttachments)
-    }
-
-    @Test
-    fun `when mapping conversation with 1 or more attachments to mailbox item then has attachments is true`() {
-        // Given
-        val message = ConversationTestData.buildConversation(userId, "id", numAttachments = 3)
-        // When
-        val actual = message.toMailboxItem(emptyMap())
-        // Then
-        assertTrue(actual.hasAttachments)
-    }
-
-    @Test
-    fun `when mapping conversation with 0 attachments to mailbox item then has attachments is false`() {
-        // Given
-        val message = ConversationTestData.buildConversation(userId, "id", numAttachments = 0)
-        // When
-        val actual = message.toMailboxItem(emptyMap())
+        val actual = mapper.toMailboxItem(message, emptyMap())
         // Then
         assertFalse(actual.hasAttachments)
     }

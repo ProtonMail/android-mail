@@ -18,12 +18,13 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailmailbox.domain.mapper.ConversationMailboxItemMapper
+import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailmailbox.domain.model.toMailboxItem
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
@@ -38,6 +39,8 @@ class GetMailboxItems @Inject constructor(
     private val labelRepository: LabelRepository,
     private val messageRepository: MessageRepository,
     private val conversationRepository: ConversationRepository,
+    private val messageMailboxItemMapper: MessageMailboxItemMapper,
+    private val conversationMailboxItemMapper: ConversationMailboxItemMapper
 ) {
     suspend operator fun invoke(
         userId: UserId,
@@ -49,10 +52,10 @@ class GetMailboxItems @Inject constructor(
         val labelsMaps = (labels + folders).associateBy { it.labelId }
         return when (type) {
             MailboxItemType.Message -> messageRepository.getMessages(userId, pageKey).map {
-                it.toMailboxItem(labelsMaps)
+                messageMailboxItemMapper.toMailboxItem(it, labelsMaps)
             }
             MailboxItemType.Conversation -> conversationRepository.getConversations(userId, pageKey).map {
-                it.toMailboxItem(labelsMaps)
+                conversationMailboxItemMapper.toMailboxItem(it, labelsMaps)
             }
         }
     }
