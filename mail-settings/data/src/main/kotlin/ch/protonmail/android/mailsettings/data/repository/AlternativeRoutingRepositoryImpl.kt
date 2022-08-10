@@ -32,4 +32,7 @@ class AlternativeRoutingRepositoryImpl @Inject constructor(
 
     override fun observe(): Flow<Either<PreferencesError, AlternativeRoutingPreference>> =
         alternativeRoutingLocalDataSource.observe()
+
+    override suspend fun save(alternativeRoutingPreference: AlternativeRoutingPreference): Either<PreferencesError, Unit> =
+        alternativeRoutingLocalDataSource.save(alternativeRoutingPreference)
 }

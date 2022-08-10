@@ -26,4 +26,6 @@ import kotlinx.coroutines.flow.Flow
 interface AlternativeRoutingLocalDataSource {
 
     fun observe(): Flow<Either<PreferencesError, AlternativeRoutingPreference>>
+
+    suspend fun save(alternativeRoutingPreference: AlternativeRoutingPreference): Either<PreferencesError, Unit>
 }

@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
@@ -87,5 +88,31 @@ class AlternativeRoutingLocalDataSourceImplTest {
             Assert.assertEquals(PreferencesError.left(), awaitItem())
             awaitComplete()
         }
+    }
+
+    @Test
+    fun `should return success when preference is saved`() = runTest {
+        // Given
+        val alternativeRoutingPreference = AlternativeRoutingPreference(isEnabled = true)
+
+        // When
+        val result = alternativeRoutingLocalDataSource.save(alternativeRoutingPreference)
+
+        // Then
+        coVerify { alternativeRoutingDataStoreSpy.updateData(any()) }
+        Assert.assertEquals(Unit.right(), result)
+    }
+
+    @Test
+    fun `should return failure when an exception is thrown while saving preference`() = runTest {
+        // Given
+        val alternativeRoutingPreference = AlternativeRoutingPreference(isEnabled = true)
+        coEvery { alternativeRoutingDataStoreSpy.updateData(any()) } throws IOException()
+
+        // When
+        val result = alternativeRoutingLocalDataSource.save(alternativeRoutingPreference)
+
+        // Then
+        Assert.assertEquals(PreferencesError.left(), result)
     }
 }

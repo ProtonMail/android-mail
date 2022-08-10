@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.data.repository.local
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.data.safeData
+import ch.protonmail.android.mailcommon.data.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
@@ -44,4 +45,9 @@ class AlternativeRoutingLocalDataSourceImpl @Inject constructor(
                 AlternativeRoutingPreference(hasAlternativeRouting)
             }
         }
+
+    override suspend fun save(alternativeRoutingPreference: AlternativeRoutingPreference): Either<PreferencesError, Unit> =
+        dataStoreProvider.alternativeRoutingDataStore.safeEdit { mutablePreferences ->
+            mutablePreferences[hasAlternativeRoutingKey] = alternativeRoutingPreference.isEnabled
+        }.void()
 }

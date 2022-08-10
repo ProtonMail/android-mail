@@ -22,6 +22,8 @@ import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingLocalDataSource
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -36,6 +38,7 @@ class AlternativeRoutingRepositoryImplTest {
 
     private val alternativeRoutingLocalDataSource: AlternativeRoutingLocalDataSource = mockk {
         every { observe() } returns alternativeRoutingPreferenceFlow
+        coEvery { save(any()) } returns Unit.right()
     }
 
     private val alternativeRoutingRepository = AlternativeRoutingRepositoryImpl(alternativeRoutingLocalDataSource)
@@ -48,5 +51,17 @@ class AlternativeRoutingRepositoryImplTest {
             assertEquals(AlternativeRoutingPreference(isEnabled = true).right(), awaitItem())
             awaitComplete()
         }
+    }
+
+    @Test
+    fun `calls the local data source save method with the correct preference`() = runTest {
+        // Given
+        val alternativeRoutingPreference = AlternativeRoutingPreference(isEnabled = true)
+
+        // When
+        alternativeRoutingRepository.save(alternativeRoutingPreference)
+
+        // Then
+        coVerify { alternativeRoutingLocalDataSource.save(alternativeRoutingPreference) }
     }
 }
