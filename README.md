@@ -43,7 +43,7 @@ All `release` builds done on CI are automatically singed with ProtonMail's keyst
 
 ## Observability
 Crashes and errors that happen in `release` (non debuggable) builds are reported to Sentry in an anonymised form.
-The CI sets up the integration with Sentry by providing in the build environment `private.properties` and `sentry.properties` files that contains the secrets needed. 
+The CI sets up the integration with Sentry by providing in the build environment `private.properties` and `sentry.properties` files that contain the secrets needed. 
 This can as well be performed locally by creating `private.properties` and `sentry.properties` files (which will be ignored by git) and filling them with the needed secrets (eg. `SentryDSN`; for more details about the `sentry.properties` file, see https://docs.sentry.io/platforms/android/gradle/#proguardr8--dexguard).
 
 

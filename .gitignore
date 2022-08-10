@@ -43,6 +43,9 @@ keystore/*
 # Private properties
 private.properties
 
+# Sentry properties
+sentry.properties
+
 # Test users credentials
 **/users.json
 **/internal_api.json
