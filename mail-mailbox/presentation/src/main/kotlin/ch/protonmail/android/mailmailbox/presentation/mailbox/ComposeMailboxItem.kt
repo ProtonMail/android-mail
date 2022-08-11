@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -42,14 +41,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.captionWeak
+import me.proton.core.compose.theme.defaultWeak
+import me.proton.core.compose.theme.headline
+import me.proton.core.compose.theme.overline
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -61,7 +63,7 @@ fun MailboxItem(
 ) {
     Card(
         modifier = modifier
-            .padding(4.dp)
+            .padding(ProtonDimens.ExtraSmallSpacing)
             .fillMaxWidth()
             .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
     ) {
@@ -109,22 +111,21 @@ private fun MailboxItemFirstRow(
             Text(
                 modifier = Modifier,
                 text = item.participants.joinToString(),
-                fontWeight = fontWeight,
-                color = colorResource(id = R.color.text_weak),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
-                fontSize = 16.sp
+                style = ProtonTheme.typography.defaultWeak.copy(fontWeight = fontWeight)
             )
         }
 
         Text(
             modifier = Modifier.weight(.2f),
             text = item.time.string(),
-            fontWeight = fontWeight,
-            color = colorResource(id = R.color.text_weak),
             maxLines = 1,
-            fontSize = 12.sp,
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
+            style = ProtonTheme.typography.overline.copy(
+                fontWeight = fontWeight,
+                color = ProtonTheme.colors.textWeak
+            )
         )
     }
 }
@@ -146,25 +147,23 @@ private fun MailboxItemSecondRow(
             val fontWeight = if (item.isRead) FontWeight.Normal else FontWeight.Bold
             Text(
                 text = item.subject,
-                fontWeight = fontWeight,
-                color = colorResource(id = R.color.text_weak),
                 maxLines = 1,
-                fontSize = 14.sp
+                style = ProtonTheme.typography.captionWeak.copy(fontWeight = fontWeight)
             )
             item.numMessages?.let { numMessages ->
                 Box(
                     modifier = Modifier
                         .padding(ProtonDimens.ExtraSmallSpacing)
-                        .border(0.5.dp, colorResource(id = R.color.text_weak), shape = RoundedCornerShape(4.dp)),
+                        .border(MailDimens.ThinBorder, ProtonTheme.colors.textNorm, ProtonTheme.shapes.small)
                 ) {
                     Text(
-                        modifier = Modifier
-                            .padding(horizontal = 5.dp),
+                        modifier = Modifier.padding(horizontal = ProtonDimens.ExtraSmallSpacing),
                         text = numMessages.toString(),
-                        fontWeight = fontWeight,
-                        color = colorResource(id = R.color.text_weak),
                         overflow = TextOverflow.Ellipsis,
-                        fontSize = 12.sp
+                        style = ProtonTheme.typography.overline.copy(
+                            fontWeight = fontWeight,
+                            color = ProtonTheme.colors.textWeak
+                        )
                     )
                 }
             }
@@ -196,10 +195,11 @@ private fun MailboxItemThirdRow(
                 MailboxItemType.Message -> "Message "
                 MailboxItemType.Conversation -> "Conversation "
             } + "Labels: ${item.labels.map { it.name }}",
-            fontWeight = fontWeight,
-            color = colorResource(id = R.color.text_weak),
             maxLines = 1,
-            fontSize = 12.sp
+            style = ProtonTheme.typography.overline.copy(
+                fontWeight = fontWeight,
+                color = ProtonTheme.colors.textWeak
+            )
         )
     }
 }
@@ -210,7 +210,7 @@ private fun MailboxItemIcon(
     tintId: Int = R.color.icon_weak
 ) {
     Icon(
-        modifier = Modifier.size(16.dp),
+        modifier = Modifier.size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = iconId),
         contentDescription = null,
         tint = colorResource(id = tintId)
@@ -221,10 +221,10 @@ private fun MailboxItemIcon(
 fun ContactAvatar(
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier.padding(16.dp)) {
+    Box(modifier = modifier.padding(ProtonDimens.DefaultSpacing)) {
         Text(
             text = "A",
-            fontSize = 20.sp
+            style = ProtonTheme.typography.headline
         )
     }
 }
