@@ -99,7 +99,7 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
                     Timber.i("Auto Lock setting clicked")
                 },
                 onAlternativeRoutingClick = {
-                    Timber.i("Alternative routing setting clicked")
+                    navController.navigate(Destination.Screen.AlternativeRoutingSettings.route)
                 },
                 onAppLanguageClick = {
                     Timber.d("Navigating to language settings")

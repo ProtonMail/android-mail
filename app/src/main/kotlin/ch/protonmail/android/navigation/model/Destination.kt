@@ -44,6 +44,7 @@ sealed class Destination(val route: String) {
 
         object Settings : Destination("settings")
         object AccountSettings : Destination("settings/account")
+        object AlternativeRoutingSettings : Destination("settings/alternativeRouting")
         object CombinedContactsSettings : Destination("settings/combinedContacts")
         object ConversationModeSettings : Destination("settings/account/conversationMode")
         object LanguageSettings : Destination("settings/appLanguage")
