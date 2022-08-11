@@ -33,6 +33,7 @@ object Versions {
         const val appCompat = "1.6.0-alpha05"
         const val arch = "2.1.0"
         const val compose = "1.2.0-alpha08"
+        const val constraintLayoutCompose = "1.0.1"
         const val customView = "1.2.0-alpha01"
         const val customViewPoolingContainer = "1.0.0"
         const val datastore = "1.0.0"

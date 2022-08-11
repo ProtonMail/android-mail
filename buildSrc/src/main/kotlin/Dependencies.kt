@@ -30,6 +30,7 @@ object Dependencies {
 
     val composeLibs = mutableListOf<String>().apply {
         add(AndroidX.Activity.compose)
+        add(AndroidX.ConstraintLayoutCompose.constraintLayoutCompose)
         add(AndroidX.Compose.foundation)
         add(AndroidX.Compose.foundationLayout)
         add(AndroidX.Compose.material)

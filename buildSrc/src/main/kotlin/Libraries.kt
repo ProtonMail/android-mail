@@ -35,12 +35,21 @@ object AndroidX {
     }
 
     object AppCompat {
+
         private const val version = Versions.AndroidX.appCompat
 
         const val appCompat = "androidx.appcompat:appcompat:$version"
     }
 
+    object ConstraintLayoutCompose {
+
+        private const val version = Versions.AndroidX.constraintLayoutCompose
+
+        const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$version"
+    }
+
     object Compose {
+
         private const val version = Versions.AndroidX.compose
 
         const val foundation = "androidx.compose.foundation:foundation:$version"
