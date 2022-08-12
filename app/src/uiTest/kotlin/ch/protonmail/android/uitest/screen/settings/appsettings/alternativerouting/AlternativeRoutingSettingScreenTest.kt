@@ -1,0 +1,129 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.uitest.screen.settings.appsettings.alternativerouting
+
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsOff
+import androidx.compose.ui.test.assertIsOn
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.AlternativeRoutingSettingScreen
+import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.AlternativeRoutingSettingState
+import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.TEST_TAG_ALTERNATIVE_ROUTING_SNACKBAR
+import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.TEST_TAG_ALTERNATIVE_ROUTING_TOGGLE_ITEM
+import me.proton.core.compose.theme.ProtonTheme
+import org.junit.Rule
+import org.junit.Test
+import kotlin.test.assertEquals
+
+class AlternativeRoutingSettingScreenTest {
+
+    @get:Rule
+    val composeTestRule = createComposeRule()
+
+    @Test
+    fun testSwitchIsCheckedIfAlternativeRoutingSettingIsEnabled() {
+        setupScreenWithState(
+            AlternativeRoutingSettingState.Data(isEnabled = true, alternativeRoutingSettingErrorEffect = Effect.empty())
+        )
+
+        composeTestRule
+            .onNodeWithTag(TEST_TAG_ALTERNATIVE_ROUTING_TOGGLE_ITEM)
+            .assertIsOn()
+    }
+
+    @Test
+    fun testSwitchIsNotCheckedIfAlternativeRoutingSettingIsNotEnabled() {
+        setupScreenWithState(
+            AlternativeRoutingSettingState.Data(isEnabled = false, alternativeRoutingSettingErrorEffect = Effect.empty())
+        )
+
+        composeTestRule
+            .onNodeWithTag(TEST_TAG_ALTERNATIVE_ROUTING_TOGGLE_ITEM)
+            .assertIsOff()
+    }
+
+    @Test
+    fun testCallbackIsInvokedWhenSwitchIsToggled() {
+        var isEnabled = false
+        setupScreenWithState(
+            state = AlternativeRoutingSettingState.Data(
+                isEnabled = false,
+                alternativeRoutingSettingErrorEffect = Effect.empty()
+            ),
+            onToggle = { isEnabled = !isEnabled }
+        )
+
+        composeTestRule
+            .onNodeWithTag(TEST_TAG_ALTERNATIVE_ROUTING_TOGGLE_ITEM)
+            .performClick()
+
+        assertEquals(true, isEnabled)
+    }
+
+    @Test
+    fun testErrorSnackbarIsShownWhenStateContainsThrowableEffect() {
+        setupScreenWithState(
+            AlternativeRoutingSettingState.Data(
+                isEnabled = false,
+                alternativeRoutingSettingErrorEffect = Effect.of(Unit)
+            )
+        )
+
+        composeTestRule
+            .onNodeWithTag(TEST_TAG_ALTERNATIVE_ROUTING_SNACKBAR)
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun testSwitchIsDisabledAndSnackbarIsShownWhenSwitchStateIsNull() {
+        setupScreenWithState(
+            AlternativeRoutingSettingState.Data(
+                isEnabled = null,
+                alternativeRoutingSettingErrorEffect = Effect.of(Unit)
+            )
+        )
+
+        composeTestRule
+            .onNodeWithTag(TEST_TAG_ALTERNATIVE_ROUTING_TOGGLE_ITEM)
+            .assertIsNotEnabled()
+        composeTestRule
+            .onNodeWithTag(TEST_TAG_ALTERNATIVE_ROUTING_SNACKBAR)
+            .assertIsDisplayed()
+    }
+
+    private fun setupScreenWithState(
+        state: AlternativeRoutingSettingState.Data,
+        onBackClick: () -> Unit = {},
+        onToggle: (Boolean) -> Unit = {}
+    ) {
+        composeTestRule.setContent {
+            ProtonTheme {
+                AlternativeRoutingSettingScreen(
+                    onBackClick = onBackClick,
+                    onToggle = onToggle,
+                    state = state
+                )
+            }
+        }
+    }
+}

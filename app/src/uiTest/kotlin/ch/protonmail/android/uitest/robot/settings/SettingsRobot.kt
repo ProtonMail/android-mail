@@ -111,6 +111,15 @@ class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
         return CombinedContactsRobot(composeTestRule)
     }
 
+    fun openAlternativeRoutingSettings(): AlternativeRoutingRobot {
+        composeTestRule
+            .onNodeWithText(string.mail_settings_alternative_routing)
+            .performClick()
+        composeTestRule.waitForIdle()
+
+        return AlternativeRoutingRobot(composeTestRule)
+    }
+
     @Suppress("unused", "ExpressionBodySyntax")
     fun selectSettingsItemByValue(value: String): AccountSettingsRobot {
         return AccountSettingsRobot(composeTestRule)

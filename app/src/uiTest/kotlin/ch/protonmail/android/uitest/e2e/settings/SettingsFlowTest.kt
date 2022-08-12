@@ -132,4 +132,13 @@ class SettingsFlowTest : BaseTest() {
             .turnOnCombinedContacts()
             .verify { combinedContactsSettingIsToggled() }
     }
+
+    @Test
+    fun openSettingsAndChangeAlternativeRoutingSetting() {
+        menuRobot
+            .openSettings()
+            .openAlternativeRoutingSettings()
+            .turnOffAlternativeRouting()
+            .verify { alternativeRoutingSettingIsToggled() }
+    }
 }
