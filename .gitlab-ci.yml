@@ -140,6 +140,7 @@ build_release:
   extends: .build_job
   script:
     - base64 -d - < "$PROTON_RELEASE_KEYSTORE_BASE64" > keystore/ProtonMail.keystore
+    - base64 -d - < "$SENTRY_PROPERTIES_FILE" > "sentry.properties"
     - bundle exec fastlane assembleRelease
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
