@@ -18,9 +18,10 @@
 
 package ch.protonmail.android.mailmessage.domain.entity
 
-import ch.protonmail.android.mailpagination.domain.entity.PageItem
+import ch.protonmail.android.mailcommon.domain.model.AttachmentCount
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
+import ch.protonmail.android.mailpagination.domain.entity.PageItem
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.AddressId
@@ -49,6 +50,7 @@ data class Message(
     val externalId: String?,
     val numAttachments: Int,
     val flags: Int,
+    val attachmentCount: AttachmentCount
 ) : PageItem {
     override val id: String = messageId.id
     override val read: Boolean by lazy { !unread }

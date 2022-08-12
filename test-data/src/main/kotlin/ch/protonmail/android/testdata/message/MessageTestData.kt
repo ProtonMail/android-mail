@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.testdata.message
 
+import ch.protonmail.android.mailcommon.domain.model.AttachmentCount
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.entity.Message
@@ -56,6 +57,7 @@ object MessageTestData {
         addressId = AddressId("1"),
         externalId = null,
         numAttachments = numAttachments,
-        flags = 0
+        flags = 0,
+        attachmentCount = AttachmentCount(0)
     )
 }

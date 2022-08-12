@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailconversation.data
 
+import ch.protonmail.android.mailcommon.data.remote.resource.AttachmentCountsResource
+import ch.protonmail.android.mailcommon.data.remote.resource.AttachmentsInfoResource
 import ch.protonmail.android.mailconversation.data.remote.resource.ConversationLabelResource
 import ch.protonmail.android.mailconversation.data.remote.resource.ConversationResource
 import me.proton.core.domain.entity.UserId
@@ -36,7 +38,10 @@ fun getConversationResource(
     numMessages = 0,
     numUnread = 0,
     recipients = emptyList(),
-    senders = emptyList()
+    senders = emptyList(),
+    attachmentsInfo = AttachmentsInfoResource(
+        applicationIcs = AttachmentCountsResource(attachedCount = 1)
+    )
 )
 
 fun getConversationLabelResource(

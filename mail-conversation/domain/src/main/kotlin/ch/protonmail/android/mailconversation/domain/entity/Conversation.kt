@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailconversation.domain.entity
 
+import ch.protonmail.android.mailcommon.domain.model.AttachmentCount
 import ch.protonmail.android.mailpagination.domain.entity.PageItem
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -35,6 +36,7 @@ data class Conversation(
     val numMessages: Int,
     val numUnread: Int,
     val numAttachments: Int,
+    val attachmentCount: AttachmentCount
 ) : PageItem {
     private val contextLabel: ConversationLabel by lazy {
         labels.firstOrNull { it.labelId == contextLabelId } ?: labels.first()

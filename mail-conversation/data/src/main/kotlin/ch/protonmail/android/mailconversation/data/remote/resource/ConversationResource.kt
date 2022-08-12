@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailconversation.data.remote.resource
 
+import ch.protonmail.android.mailcommon.data.remote.resource.AttachmentsInfoResource
+import ch.protonmail.android.mailcommon.data.remote.resource.toAttachmentsCount
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
@@ -48,6 +50,8 @@ data class ConversationResource(
     val expirationTime: Long,
     @SerialName("Labels")
     val labels: List<ConversationLabelResource>,
+    @SerialName("AttachmentInfo")
+    val attachmentsInfo: AttachmentsInfoResource,
 ) {
     fun toConversation(userId: UserId, contextLabelId: LabelId = LabelId("0")) = Conversation(
         userId = userId,
@@ -62,6 +66,7 @@ data class ConversationResource(
         numMessages = numMessages,
         numUnread = numUnread,
         numAttachments = numAttachments,
+        attachmentCount = attachmentsInfo.toAttachmentsCount()
     )
 }
 

@@ -50,6 +50,7 @@ dependencies {
     implementation(Proton.Core.label)
 
     implementation(project(":mail-pagination:domain"))
+    implementation(project(":mail-common:domain"))
 
     testImplementation(Dependencies.testLibs)
 }

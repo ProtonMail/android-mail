@@ -21,6 +21,7 @@ package ch.protonmail.android.mailconversation.data.local.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import ch.protonmail.android.mailcommon.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import me.proton.core.domain.entity.UserId
@@ -52,4 +53,5 @@ data class ConversationEntity(
     val numMessages: Int,
     val numUnread: Int,
     val numAttachments: Int,
+    val attachmentCount: AttachmentCountEntity
 )

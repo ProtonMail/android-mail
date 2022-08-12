@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import ch.protonmail.android.mailcommon.data.mapper.toDomainModel
+import ch.protonmail.android.mailcommon.data.mapper.toEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
 import ch.protonmail.android.mailmessage.domain.entity.Message
@@ -26,24 +28,25 @@ fun MessageWithLabelIds.toMessage() = Message(
     userId = message.userId,
     messageId = message.messageId,
     conversationId = message.conversationId,
+    time = message.time,
+    size = message.size,
     order = message.order,
+    labelIds = labelIds,
     subject = message.subject,
     unread = message.unread,
     sender = message.sender,
     toList = message.toList,
     ccList = message.ccList,
     bccList = message.bccList,
-    time = message.time,
-    size = message.size,
     expirationTime = message.expirationTime,
     isReplied = message.isReplied,
     isRepliedAll = message.isRepliedAll,
     isForwarded = message.isForwarded,
     addressId = message.addressId,
-    labelIds = labelIds,
     externalId = message.externalId,
     numAttachments = message.numAttachments,
-    flags = message.flags
+    flags = message.flags,
+    attachmentCount = message.attachmentCount.toDomainModel()
 )
 
 fun Message.toEntity() = MessageEntity(
@@ -66,5 +69,6 @@ fun Message.toEntity() = MessageEntity(
     addressId = addressId,
     externalId = externalId,
     numAttachments = numAttachments,
-    flags = flags
+    flags = flags,
+    attachmentCount = attachmentCount.toEntity()
 )

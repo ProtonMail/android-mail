@@ -22,6 +22,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import ch.protonmail.android.mailcommon.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -104,5 +105,6 @@ data class MessageEntity(
      * Phishing manual = 2147483648 (2^31)
      */
     val flags: Int,
+    val attachmentCount: AttachmentCountEntity
 )
 

@@ -19,12 +19,14 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import androidx.sqlite.db.SupportSQLiteDatabase
-import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
+import ch.protonmail.android.mailcommon.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
+import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import me.proton.core.data.room.db.Database
 import me.proton.core.data.room.db.extension.addTableColumn
 import me.proton.core.data.room.db.migration.DatabaseMigration
+import me.proton.core.util.kotlin.serialize
 
 @Suppress("MaxLineLength")
 interface MessageDatabase : Database, PageIntervalDatabase {
@@ -57,6 +59,18 @@ interface MessageDatabase : Database, PageIntervalDatabase {
                     column = "sender_group",
                     type = "TEXT",
                     defaultValue = null,
+                )
+            }
+        }
+
+        val MIGRATION_2 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Added MessageEntity.attachmentCount.
+                database.addTableColumn(
+                    table = "MessageEntity",
+                    column = "attachmentCount",
+                    type = "TEXT NOT NULL",
+                    defaultValue = AttachmentCountEntity(0).serialize()
                 )
             }
         }

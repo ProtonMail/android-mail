@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmessage.data.remote.resource
 
+import ch.protonmail.android.mailcommon.data.remote.resource.AttachmentsInfoResource
+import ch.protonmail.android.mailcommon.data.remote.resource.toAttachmentsCount
 import ch.protonmail.android.mailconversation.data.remote.resource.RecipientResource
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.Message
@@ -71,6 +73,8 @@ data class MessageResource(
     val numAttachments: Int,
     @SerialName("Flags")
     val flags: Int,
+    @SerialName("AttachmentInfo")
+    val attachmentsInfo: AttachmentsInfoResource
 ) {
     fun toMessage(userId: UserId) = Message(
         userId = userId,
@@ -94,5 +98,6 @@ data class MessageResource(
         externalId = externalId,
         numAttachments = numAttachments,
         flags = flags,
+        attachmentCount = attachmentsInfo.toAttachmentsCount()
     )
 }

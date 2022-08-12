@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.testdata.conversation
 
+import ch.protonmail.android.mailcommon.domain.model.AttachmentCount
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
@@ -38,18 +39,19 @@ object ConversationTestData {
         userId = userId,
         conversationId = ConversationId(id),
         contextLabelId = labelIds.firstOrNull()?.let { LabelId(it) } ?: LabelId("0"),
-        labels = labelIds.map { buildConversationLabel(id, it, time) },
         order = order,
+        labels = labelIds.map { buildConversationLabel(id, it, time) },
         subject = "subject",
-        expirationTime = 1000,
-        recipients = emptyList(),
         senders = listOf(Recipient("address", "name")),
-        numAttachments = numAttachments,
+        recipients = emptyList(),
+        expirationTime = 1000,
         numMessages = 1,
         numUnread = 0,
+        numAttachments = numAttachments,
+        attachmentCount = AttachmentCount(0)
     )
 
-    fun buildConversationLabel(
+    private fun buildConversationLabel(
         conversationId: String,
         labelId: String,
         time: Long = 1000,

@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmessage.data.remote.resource
 
+import ch.protonmail.android.mailcommon.data.remote.resource.AttachmentsInfoResource
+import ch.protonmail.android.mailcommon.data.remote.resource.toAttachmentsCount
 import ch.protonmail.android.mailconversation.data.remote.resource.RecipientResource
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
@@ -97,30 +99,33 @@ data class MessageWithBodyResource(
     val replyTos: List<RecipientResource>,
     @SerialName("UnsubscribeMethods")
     val unsubscribeMethods: List<UnsubscribeMethodResource>? = null,
+    @SerialName("AttachmentInfo")
+    val attachmentsInfo: AttachmentsInfoResource?
 ) {
     fun toMessageWithBody(userId: UserId) = MessageWithBody(
         message = Message(
             userId = userId,
             messageId = MessageId(id),
             conversationId = ConversationId(conversationId),
+            time = time,
+            size = size,
             order = order,
+            labelIds = labelIds.map { LabelId(it) },
             subject = subject,
             unread = unread.toBooleanOrFalse(),
             sender = sender.toRecipient(),
             toList = toList.map { it.toRecipient() },
             ccList = ccList.map { it.toRecipient() },
             bccList = bccList.map { it.toRecipient() },
-            time = time,
-            size = size,
             expirationTime = expirationTime,
             isReplied = isReplied.toBooleanOrFalse(),
             isRepliedAll = isRepliedAll.toBooleanOrFalse(),
             isForwarded = isForwarded.toBooleanOrFalse(),
             addressId = AddressId(addressId),
-            labelIds = labelIds.map { LabelId(it) },
             externalId = externalId,
             numAttachments = numAttachments,
-            flags = flags
+            flags = flags,
+            attachmentCount = attachmentsInfo.toAttachmentsCount()
         ),
         messageBody = MessageBody(
             userId = userId,

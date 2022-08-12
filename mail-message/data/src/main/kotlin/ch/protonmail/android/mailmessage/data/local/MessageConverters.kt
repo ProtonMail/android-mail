@@ -19,10 +19,11 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import androidx.room.TypeConverter
-import ch.protonmail.android.mailpagination.domain.entity.OrderBy
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
+import ch.protonmail.android.mailcommon.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailpagination.domain.entity.OrderBy
+import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
 import kotlinx.serialization.json.JsonElement
 import me.proton.core.util.kotlin.deserialize
 import me.proton.core.util.kotlin.serialize
@@ -58,4 +59,10 @@ class MessageConverters {
 
     @TypeConverter
     fun fromStringToReadStatus(value: String?): ReadStatus? = value?.let { ReadStatus.valueOf(it) }
+
+    @TypeConverter
+    fun fromAttachmentCountToString(value: AttachmentCountEntity?) = value?.serialize()
+
+    @TypeConverter
+    fun fromStringToAttachmentCount(value: String?): AttachmentCountEntity? = value?.deserialize()
 }

@@ -19,11 +19,14 @@
 package ch.protonmail.android.mailconversation.data.local
 
 import androidx.sqlite.db.SupportSQLiteDatabase
-import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
+import ch.protonmail.android.mailcommon.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationDao
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationLabelDao
+import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import me.proton.core.data.room.db.Database
+import me.proton.core.data.room.db.extension.addTableColumn
 import me.proton.core.data.room.db.migration.DatabaseMigration
+import me.proton.core.util.kotlin.serialize
 
 @Suppress("MaxLineLength")
 interface ConversationDatabase : Database, PageIntervalDatabase {
@@ -44,6 +47,17 @@ interface ConversationDatabase : Database, PageIntervalDatabase {
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_ConversationLabelEntity_labelId` ON `ConversationLabelEntity` (`labelId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_ConversationLabelEntity_conversationId` ON `ConversationLabelEntity` (`conversationId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_ConversationLabelEntity_userId_conversationId` ON `ConversationLabelEntity` (`userId`, `conversationId`)")
+            }
+        }
+
+        val MIGRATION_1 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.addTableColumn(
+                    table = "ConversationEntity",
+                    column = "attachmentCount",
+                    type = "TEXT NOT NULL",
+                    defaultValue = AttachmentCountEntity(0).serialize()
+                )
             }
         }
     }

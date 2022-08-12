@@ -55,6 +55,8 @@ dependencies {
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-conversation:data"))
     implementation(project(":mail-conversation:domain"))
+    implementation(project(":mail-common:domain"))
+    implementation(project(":mail-common:data"))
 
     testImplementation(Dependencies.testLibs)
     testImplementation(Proton.Core.testAndroid)
