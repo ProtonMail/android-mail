@@ -67,16 +67,23 @@ class FormatMailboxItemTime @Inject constructor(
         .format(Date(this.inWholeMilliseconds))
 
     private fun isYesterday(itemCalendar: Calendar) = isCurrentYear(itemCalendar) &&
-        currentTime.get(Calendar.DAY_OF_YEAR) - itemCalendar.get(Calendar.DAY_OF_YEAR) == 1
+        currentTime.get(Calendar.DAY_OF_YEAR) - itemCalendar.get(Calendar.DAY_OF_YEAR) == 1 ||
+        isYesterdayAcrossYearChange(itemCalendar)
 
     private fun isToday(itemCalendar: Calendar) = isCurrentYear(itemCalendar) &&
         currentTime.get(Calendar.DAY_OF_YEAR) == itemCalendar.get(Calendar.DAY_OF_YEAR)
 
-    private fun isCurrentWeek(itemCalendar: Calendar) = isCurrentYear(itemCalendar) &&
+    private fun isCurrentWeek(itemCalendar: Calendar) =
         currentTime.get(Calendar.WEEK_OF_YEAR) == itemCalendar.get(Calendar.WEEK_OF_YEAR)
 
     private fun isCurrentYear(itemCalendar: Calendar) =
         currentTime.get(Calendar.YEAR) == itemCalendar.get(Calendar.YEAR)
+
+    private fun isYesterdayAcrossYearChange(itemCalendar: Calendar) = isPreviousYear(itemCalendar) &&
+        itemCalendar.get(Calendar.DAY_OF_YEAR) - currentTime.get(Calendar.DAY_OF_YEAR) == 364
+
+    private fun isPreviousYear(itemCalendar: Calendar) =
+        currentTime.get(Calendar.YEAR) - itemCalendar.get(Calendar.YEAR) == 1
 
     private fun Duration.isToday() = isToday(toCalendar())
     private fun Duration.isYesterday() = isYesterday(toCalendar())

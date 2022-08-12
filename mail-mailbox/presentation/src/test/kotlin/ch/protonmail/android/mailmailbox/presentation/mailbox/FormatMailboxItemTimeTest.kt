@@ -111,6 +111,18 @@ class FormatMailboxItemTimeTest {
     }
 
     @Test
+    fun `when the year changed and message is from the current week and older than yesterday show week day`() {
+        // Given
+        givenCurrentTimeAndLocale(1640995200.seconds, Locale.UK) // Sat Jan 01 2022 01:00:00 CEST
+        val itemTime = 1640760408 // Wed Dec 29 2021 07:46:48 CEST
+        // When
+        val actual = formatter.invoke(itemTime.seconds)
+        // Then
+        assertIs<TextUiModel.Text>(actual, actual.toString())
+        assertEquals(TextUiModel.Text("Wednesday"), actual)
+    }
+
+    @Test
     fun `when the message is from the current year and older than current week show day and month`() {
         // Given
         givenCurrentTimeAndLocale(1658994137.seconds, Locale.FRENCH) // Thu Jul 28 09:42:17 CEST 2022
@@ -147,15 +159,15 @@ class FormatMailboxItemTimeTest {
     }
 
     @Test
-    fun `when the message is from just before the current year show the day month and year`() {
+    fun `when the message is from Dec 31st and today is Jan 1st show yesterday`() {
         // Given
         givenCurrentTimeAndLocale(1640995200.seconds, Locale.UK) // Sat Jan 01 2022 01:00:00 CEST
         val itemTime = 1640989800 // Fri Dec 31 2021 23:30:00 CEST
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
-        assertIs<TextUiModel.Text>(actual, actual.toString())
-        assertEquals(TextUiModel.Text("31 Dec 2021"), actual)
+        assertIs<TextUiModel.TextRes>(actual, actual.toString())
+        assertEquals(TextUiModel.TextRes(R.string.yesterday), actual)
     }
 
     @Test
