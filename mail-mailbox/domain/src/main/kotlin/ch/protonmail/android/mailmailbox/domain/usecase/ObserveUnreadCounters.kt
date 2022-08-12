@@ -38,8 +38,13 @@ class ObserveUnreadCounters @Inject constructor() {
     operator fun invoke(userId: UserId): Flow<List<UnreadCounter>> = flowOf(
         listOf(
             UnreadCounter(SystemLabelId.Inbox.labelId, 5),
+            UnreadCounter(SystemLabelId.Drafts.labelId, 0),
+            UnreadCounter(SystemLabelId.Sent.labelId, 0),
+            UnreadCounter(SystemLabelId.Starred.labelId, 4),
             UnreadCounter(SystemLabelId.Archive.labelId, 2),
-            UnreadCounter(SystemLabelId.AllMail.labelId, 7)
+            UnreadCounter(SystemLabelId.Spam.labelId, 6),
+            UnreadCounter(SystemLabelId.Trash.labelId, 0),
+            UnreadCounter(SystemLabelId.AllMail.labelId, 17)
         )
     )
 

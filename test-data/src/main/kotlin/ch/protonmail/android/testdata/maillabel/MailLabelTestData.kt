@@ -24,6 +24,8 @@ import me.proton.core.label.domain.entity.LabelId
 
 object MailLabelTestData {
 
+    val customLabel = buildCustomLabel("customLabel1")
+
     fun buildCustomLabel(
         id: String,
         name: String = id,

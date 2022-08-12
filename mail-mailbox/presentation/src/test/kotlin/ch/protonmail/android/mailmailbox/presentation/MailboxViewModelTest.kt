@@ -48,11 +48,12 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
-import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.unreadMailboxItemUiModel
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.readMailboxItemUiModel
-import ch.protonmail.android.testdata.mailbox.MailboxTestData.unreadMailboxItem
+import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.unreadMailboxItemUiModel
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.readMailboxItem
+import ch.protonmail.android.testdata.mailbox.MailboxTestData.unreadMailboxItem
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
+import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
 import io.mockk.coEvery
@@ -89,7 +90,7 @@ class MailboxViewModelTest {
             MailLabels(
                 systemLabels = LabelTestData.systemLabels,
                 folders = emptyList(),
-                labels = emptyList(),
+                labels = listOf(MailLabelTestData.customLabel)
             )
         )
     }
@@ -224,15 +225,38 @@ class MailboxViewModelTest {
     @Test
     fun `emits mailbox state with unread filter state based on current location`() = runTest {
         // Given
-        every { selectedMailLabelId.flow } returns MutableStateFlow<MailLabelId>(Sent)
+        val currentLocation = MutableStateFlow<MailLabelId>(Sent)
+        every { selectedMailLabelId.flow } returns currentLocation
 
         mailboxViewModel.state.test {
-
             // Then
-            val actual = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
-            assertEquals(3, actual.numUnread)
+            val firstItem = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
+            assertEquals(3, firstItem.numUnread)
+            // When
+            currentLocation.emit(Archive)
+            // Then
+            val secondItem = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
+            assertEquals(5, secondItem.numUnread)
         }
     }
+
+    @Test
+    fun `emits mailbox state with loading unread filter state when no unread counters for current location`() =
+        runTest {
+            // Given
+            val currentLocation = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
+            every { selectedMailLabelId.flow } returns currentLocation
+
+            mailboxViewModel.state.test {
+                // Then
+                val firstItem = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
+                assertEquals(1, firstItem.numUnread)
+                // When
+                currentLocation.emit(MailLabelTestData.customLabel.id)
+                // Then
+                assertIs<UnreadFilterState.Loading>(awaitItem().unreadFilterState)
+            }
+        }
 
     @Test
     fun `top bar state is updated when current location changes`() = runTest {
@@ -381,7 +405,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `disableu nread filter action emits a new state with unread filter state disabled`() = runTest {
+    fun `disable unread filter action emits a new state with unread filter state disabled`() = runTest {
         mailboxViewModel.state.test {
             // When
             mailboxViewModel.submit(Action.DisableUnreadFilter)
