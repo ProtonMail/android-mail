@@ -55,15 +55,15 @@
   <string name="mail_settings_mailbox">Bústia de correu</string>
   <string name="mail_settings_privacy">Privacitat</string>
   <string name="mail_settings_search_message_content">Cercar al contingut del missatge</string>
-  <string name="mail_settings_labels_and_folders">Labels and folders</string>
-  <string name="mail_settings_local_storage">Local storage</string>
+  <string name="mail_settings_labels_and_folders">Etiquetes i carpetes</string>
+  <string name="mail_settings_local_storage">Emmagatzematge local</string>
   <string name="mail_settings_snooze">Posposa</string>
-  <string name="mail_settings_snooze_notifications">Snooze notifications</string>
+  <string name="mail_settings_snooze_notifications">Posposa notificacions</string>
   <string name="mail_settings_conversation_mode">Mode de conversa</string>
   <string name="mail_settings_not_set">Sense definir</string>
   <string name="mail_settings_conversation_mode_hint">Group emails in the same conversation together in your inbox or display them separately</string>
   <!-- Swipe Actions -->
-  <string name="mail_settings_swipe_actions_title">Swipe actions</string>
+  <string name="mail_settings_swipe_actions_title">Accions de lliscament</string>
   <string name="mail_settings_swipe_actions_subtitle">Set up swipe gestures to access most used actions.</string>
   <string name="mail_settings_swipe_right_name">Esquerra a dreta</string>
   <string name="mail_settings_swipe_left_name">Dreta a esquerra</string>
@@ -75,8 +75,8 @@
   <string name="mail_settings_swipe_action_archive_description">Mou a l\'arxiu</string>
   <string name="mail_settings_swipe_action_read_description">Marcar com a llegit/no llegit</string>
   <string name="mail_settings_swipe_action_spam_description">Mou al correu brossa</string>
-  <string name="mail_settings_swipe_action_star_description">Star/unstar</string>
-  <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
+  <string name="mail_settings_swipe_action_star_description">Destaca/no destaquis</string>
+  <string name="mail_settings_swipe_action_trash_description">Mou a la paperera</string>
   <!-- Error messages -->
-  <string name="mail_settings_generic_error_message">An error occurred. Try again.</string>
+  <string name="mail_settings_generic_error_message">S\'ha produït un error. Proveu de nou.</string>
 </resources>

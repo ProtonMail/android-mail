@@ -25,4 +25,9 @@
   <string name="mailbox_toolbar_menu_button_content_description">Meny</string>
   <string name="mailbox_toolbar_search_button_content_description">Sök</string>
   <string name="mailbox_toolbar_selected_count">%d valda</string>
+  <string name="yesterday">igår</string>
+  <plurals name="filter_unread_button_text">
+    <item quantity="one">%d oläst</item>
+    <item quantity="other">%d olästa</item>
+  </plurals>
 </resources>

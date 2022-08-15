@@ -25,4 +25,8 @@
   <string name="mailbox_toolbar_menu_button_content_description">メニュー</string>
   <string name="mailbox_toolbar_search_button_content_description">検索</string>
   <string name="mailbox_toolbar_selected_count">%d 件選択済み</string>
+  <string name="yesterday">昨日</string>
+  <plurals name="filter_unread_button_text">
+    <item quantity="other">%d 未読</item>
+  </plurals>
 </resources>

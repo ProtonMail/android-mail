@@ -25,4 +25,9 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Zoeken</string>
   <string name="mailbox_toolbar_selected_count">%d Geselecteerd</string>
+  <string name="yesterday">gisteren</string>
+  <plurals name="filter_unread_button_text">
+    <item quantity="one">%d ongelezen</item>
+    <item quantity="other">%d ongelezen</item>
+  </plurals>
 </resources>

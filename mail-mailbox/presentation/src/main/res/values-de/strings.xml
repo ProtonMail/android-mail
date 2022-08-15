@@ -25,4 +25,9 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Suche</string>
   <string name="mailbox_toolbar_selected_count">%d ausgewählt</string>
+  <string name="yesterday">Gestern</string>
+  <plurals name="filter_unread_button_text">
+    <item quantity="one">%d ungelesen</item>
+    <item quantity="other">%d ungelesen</item>
+  </plurals>
 </resources>

@@ -30,6 +30,6 @@
   <string name="label_title_all_sent">Tots els enviats</string>
   <string name="label_title_folders">Carpetes</string>
   <string name="label_title_labels">Etiquetes</string>
-  <string name="label_title_add_folder">Add folder</string>
-  <string name="label_title_add_label">Add label</string>
+  <string name="label_title_add_folder">Afegeix carpeta</string>
+  <string name="label_title_add_label">Afegeix etiqueta</string>
 </resources>

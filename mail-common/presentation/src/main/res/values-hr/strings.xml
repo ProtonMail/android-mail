@@ -17,6 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="retry">Retry</string>
+  <string name="retry">Pokušaj ponovno</string>
   <string name="x_error_not_logged_in">Not logged in</string>
 </resources>
