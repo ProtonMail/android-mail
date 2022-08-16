@@ -57,5 +57,5 @@ sealed interface NetworkError {
      */
     object Unreachable : NetworkError
 
-    data class Unknown(val httpCode: Int) : NetworkError
+    data class Other(val httpCode: Int) : NetworkError
 }

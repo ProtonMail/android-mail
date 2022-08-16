@@ -36,7 +36,7 @@ sealed interface DataError {
         /**
          * A not handled error happened in the local persistence
          */
-        data class Unknown(val message: String) : Local
+        data class Other(val message: String) : Local
     }
 
     /**
@@ -57,6 +57,6 @@ sealed interface DataError {
         /**
          * A not handled error happened in the remote source
          */
-        data class Unknown(val message: String) : Remote
+        data class Other(val message: String) : Remote
     }
 }

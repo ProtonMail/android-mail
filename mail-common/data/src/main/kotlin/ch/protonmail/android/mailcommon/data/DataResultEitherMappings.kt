@@ -39,13 +39,13 @@ fun <T> Flow<DataResult<T>>.mapToEither(): Flow<Either<DataError, T>> = transfor
 }
 
 private fun toLocalError(dataResult: DataResult.Error.Local): DataError.Local =
-    DataError.Local.Unknown(messageFrom(dataResult))
+    DataError.Local.Other(messageFrom(dataResult))
 
 private fun toRemoteDataError(dataResult: DataResult.Error.Remote): DataError.Remote {
     return when {
         dataResult.protonCode != PROTON_CODE_INITIAL_VALUE -> toProtonDataError(dataResult.protonCode)
         dataResult.httpCode != PROTON_CODE_INITIAL_VALUE -> toHttpDataError(dataResult.httpCode)
-        else -> DataError.Remote.Unknown(messageFrom(dataResult))
+        else -> DataError.Remote.Other(messageFrom(dataResult))
     }
 }
 
@@ -55,13 +55,13 @@ private fun toHttpDataError(httpCode: Int): DataError.Remote.Http {
         403 -> NetworkError.Forbidden
         404 -> NetworkError.NotFound
         500 -> NetworkError.Internal
-        else -> NetworkError.Unknown(httpCode)
+        else -> NetworkError.Other(httpCode)
     }
     return DataError.Remote.Http(networkError)
 }
 
 private fun toProtonDataError(protonCode: Int): DataError.Remote.Proton =
-    DataError.Remote.Proton(ProtonError.Unknown(protonCode))
+    DataError.Remote.Proton(ProtonError.Other(protonCode))
 
 private fun messageFrom(dataResult: DataResult.Error): String =
     dataResult.message?.takeIfNotEmpty()

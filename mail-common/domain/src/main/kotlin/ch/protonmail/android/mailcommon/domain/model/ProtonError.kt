@@ -26,5 +26,5 @@ sealed interface ProtonError {
     /**
      * An error with a not handled Proton code happened
      */
-    data class Unknown(val protonCode: Int) : ProtonError
+    data class Other(val protonCode: Int) : ProtonError
 }

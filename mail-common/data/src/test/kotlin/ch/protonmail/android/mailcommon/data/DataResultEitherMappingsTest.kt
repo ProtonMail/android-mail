@@ -82,7 +82,7 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Local.Unknown(message).left(), awaitItem())
+            assertEquals(DataError.Local.Other(message).left(), awaitItem())
             awaitComplete()
         }
     }
@@ -97,7 +97,7 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Local.Unknown(message).left(), awaitItem())
+            assertEquals(DataError.Local.Other(message).left(), awaitItem())
             awaitComplete()
         }
     }
@@ -112,7 +112,7 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Local.Unknown(message).left(), awaitItem())
+            assertEquals(DataError.Local.Other(message).left(), awaitItem())
             awaitComplete()
         }
     }
@@ -141,7 +141,7 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Remote.Proton(ProtonError.Unknown(protonCode)).left(), awaitItem())
+            assertEquals(DataError.Remote.Proton(ProtonError.Other(protonCode)).left(), awaitItem())
             awaitComplete()
         }
     }
@@ -156,7 +156,7 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Remote.Unknown(message).left(), awaitItem())
+            assertEquals(DataError.Remote.Other(message).left(), awaitItem())
             awaitComplete()
         }
     }
@@ -171,7 +171,7 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Remote.Unknown(message).left(), awaitItem())
+            assertEquals(DataError.Remote.Other(message).left(), awaitItem())
             awaitComplete()
         }
     }
@@ -186,7 +186,7 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Remote.Unknown(message).left(), awaitItem())
+            assertEquals(DataError.Remote.Other(message).left(), awaitItem())
             awaitComplete()
         }
     }
