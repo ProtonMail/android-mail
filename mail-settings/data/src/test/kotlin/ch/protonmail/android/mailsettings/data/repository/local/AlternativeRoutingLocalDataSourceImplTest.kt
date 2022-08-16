@@ -32,7 +32,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.spyk
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -42,9 +41,9 @@ import org.junit.Test
 class AlternativeRoutingLocalDataSourceImplTest {
 
     private val preferences = mockk<Preferences>()
-    private val alternativeRoutingDataStoreSpy = spyk<DataStore<Preferences>>()
+    private val alternativeRoutingDataStoreMock = mockk<DataStore<Preferences>>()
     private val dataStoreProvider = mockk<MailSettingsDataStoreProvider> {
-        every { this@mockk.alternativeRoutingDataStore } returns alternativeRoutingDataStoreSpy
+        every { this@mockk.alternativeRoutingDataStore } returns alternativeRoutingDataStoreMock
     }
 
     private val alternativeRoutingLocalDataSource = AlternativeRoutingLocalDataSourceImpl(dataStoreProvider)
@@ -53,7 +52,7 @@ class AlternativeRoutingLocalDataSourceImplTest {
     fun `returns true when no preference is stored locally`() = runTest {
         // Given
         coEvery { preferences.get<Boolean>(any()) } returns null
-        every { alternativeRoutingDataStoreSpy.data } returns flowOf(preferences)
+        every { alternativeRoutingDataStoreMock.data } returns flowOf(preferences)
 
         // When
         alternativeRoutingLocalDataSource.observe().test {
@@ -67,7 +66,7 @@ class AlternativeRoutingLocalDataSourceImplTest {
     fun `returns locally stored preference from data store when available`() = runTest {
         // Given
         coEvery { preferences[booleanPreferencesKey("hasAlternativeRoutingPrefKey")] } returns false
-        every { alternativeRoutingDataStoreSpy.data } returns flowOf(preferences)
+        every { alternativeRoutingDataStoreMock.data } returns flowOf(preferences)
 
         // When
         alternativeRoutingLocalDataSource.observe().test {
@@ -80,7 +79,7 @@ class AlternativeRoutingLocalDataSourceImplTest {
     @Test
     fun `should return error when an exception is thrown while observing preference`() = runTest {
         // Given
-        every { alternativeRoutingDataStoreSpy.data } returns flow { throw IOException() }
+        every { alternativeRoutingDataStoreMock.data } returns flow { throw IOException() }
 
         // When
         alternativeRoutingLocalDataSource.observe().test {
@@ -94,12 +93,13 @@ class AlternativeRoutingLocalDataSourceImplTest {
     fun `should return success when preference is saved`() = runTest {
         // Given
         val alternativeRoutingPreference = AlternativeRoutingPreference(isEnabled = true)
+        coEvery { alternativeRoutingDataStoreMock.updateData(any()) } returns mockk()
 
         // When
         val result = alternativeRoutingLocalDataSource.save(alternativeRoutingPreference)
 
         // Then
-        coVerify { alternativeRoutingDataStoreSpy.updateData(any()) }
+        coVerify { alternativeRoutingDataStoreMock.updateData(any()) }
         Assert.assertEquals(Unit.right(), result)
     }
 
@@ -107,7 +107,7 @@ class AlternativeRoutingLocalDataSourceImplTest {
     fun `should return failure when an exception is thrown while saving preference`() = runTest {
         // Given
         val alternativeRoutingPreference = AlternativeRoutingPreference(isEnabled = true)
-        coEvery { alternativeRoutingDataStoreSpy.updateData(any()) } throws IOException()
+        coEvery { alternativeRoutingDataStoreMock.updateData(any()) } throws IOException()
 
         // When
         val result = alternativeRoutingLocalDataSource.save(alternativeRoutingPreference)
