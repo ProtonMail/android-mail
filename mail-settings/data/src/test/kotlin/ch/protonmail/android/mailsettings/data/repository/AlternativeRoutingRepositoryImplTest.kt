@@ -21,7 +21,7 @@ package ch.protonmail.android.mailsettings.data.repository
 import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
-import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingLocalDataSource
+import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSource
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every

@@ -21,7 +21,7 @@ package ch.protonmail.android.mailsettings.data.repository
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.AlternativeRoutingPreference
-import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingLocalDataSource
+import ch.protonmail.android.mailsettings.data.repository.local.AlternativeRoutingLocalDataSource
 import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
