@@ -54,7 +54,7 @@ private fun toHttpDataError(httpCode: Int): DataError.Remote.Http {
         401 -> NetworkError.Unauthorized
         403 -> NetworkError.Forbidden
         404 -> NetworkError.NotFound
-        500 -> NetworkError.Internal
+        in 500 until 600 -> NetworkError.ServerError
         else -> NetworkError.Other(httpCode)
     }
     return DataError.Remote.Http(networkError)

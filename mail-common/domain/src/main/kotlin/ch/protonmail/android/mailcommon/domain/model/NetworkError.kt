@@ -42,9 +42,9 @@ sealed interface NetworkError {
 
     /**
      * Server has encountered an error.
-     * 500 error
+     * 5xx error
      */
-    object Internal : NetworkError
+    object ServerError : NetworkError
 
     /**
      * Request is not authorized
