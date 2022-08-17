@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.alternativerouting
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
@@ -28,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailsettings.presentation.R
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSettingsToggleItem
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.component.ProtonSnackbarHost
@@ -58,7 +60,7 @@ fun AlternativeRoutingSettingScreen(
                 state = state
             )
         }
-        is AlternativeRoutingSettingState.Loading -> Unit
+        is AlternativeRoutingSettingState.Loading -> ProtonCenteredProgress(Modifier.fillMaxWidth())
     }
 }
 

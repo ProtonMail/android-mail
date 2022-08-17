@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.uitest.screen.settings.appsettings.alternativerouting
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsOff
@@ -30,6 +32,8 @@ import ch.protonmail.android.mailsettings.presentation.settings.alternativerouti
 import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.AlternativeRoutingSettingState
 import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.TEST_TAG_ALTERNATIVE_ROUTING_SNACKBAR
 import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.TEST_TAG_ALTERNATIVE_ROUTING_TOGGLE_ITEM
+import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
@@ -39,6 +43,15 @@ class AlternativeRoutingSettingScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    @Test
+    fun testProgressIsShownWhenStateIsLoading() {
+        setupScreenWithState(AlternativeRoutingSettingState.Loading)
+
+        composeTestRule
+            .onNodeWithTag(PROTON_PROGRESS_TEST_TAG)
+            .assertIsDisplayed()
+    }
 
     @Test
     fun testSwitchIsCheckedIfAlternativeRoutingSettingIsEnabled() {
@@ -112,17 +125,24 @@ class AlternativeRoutingSettingScreenTest {
     }
 
     private fun setupScreenWithState(
-        state: AlternativeRoutingSettingState.Data,
+        state: AlternativeRoutingSettingState,
         onBackClick: () -> Unit = {},
         onToggle: (Boolean) -> Unit = {}
     ) {
         composeTestRule.setContent {
             ProtonTheme {
-                AlternativeRoutingSettingScreen(
-                    onBackClick = onBackClick,
-                    onToggle = onToggle,
-                    state = state
-                )
+                when (state) {
+                    is AlternativeRoutingSettingState.Data -> {
+                        AlternativeRoutingSettingScreen(
+                            onBackClick = onBackClick,
+                            onToggle = onToggle,
+                            state = state
+                        )
+                    }
+                    is AlternativeRoutingSettingState.Loading -> {
+                        ProtonCenteredProgress(Modifier.fillMaxWidth())
+                    }
+                }
             }
         }
     }
