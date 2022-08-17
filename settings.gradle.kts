@@ -40,6 +40,11 @@ include(":mail-common:data")
 include(":mail-common:domain")
 include(":mail-common:presentation")
 
+include(":mail-contact:dagger")
+include(":mail-contact:data")
+include(":mail-contact:domain")
+include(":mail-contact:presentation")
+
 include(":mail-pagination:data")
 include(":mail-pagination:domain")
 include(":mail-pagination:presentation")

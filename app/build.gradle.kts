@@ -168,6 +168,7 @@ dependencies {
     debugImplementation(Dependencies.appDebug)
 
     implementation(project(":mail-common"))
+    implementation(project(":mail-contact"))
     implementation(project(":mail-conversation"))
     implementation(project(":mail-label"))
     implementation(project(":mail-mailbox"))
