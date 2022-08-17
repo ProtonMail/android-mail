@@ -24,14 +24,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.MailboxItemLabelsPreviewDataProvider
+import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.DummyMinExpandedLabel
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.DummyMinExpandedLabelId
-import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.DummyMinExpandedLabelText
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.Plus1CharLimit
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.Plus2CharsLimit
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.Plus3CharsLimit
@@ -42,7 +44,7 @@ import me.proton.core.compose.theme.overline
 import kotlin.random.Random
 
 @Composable
-fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<String>) {
+fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLabelUiModel>) {
     SubcomposeLayout(modifier) { constraints ->
 
         val plusOneDigitWidth = subcompose(Plus1CharLimit) { PlusText(count = Plus1CharLimit) }
@@ -52,12 +54,12 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<String>) {
         val plusThreeDigitWidth = subcompose(Plus3CharsLimit) { PlusText(count = Plus3CharsLimit) }
             .maxOf { it.measure(constraints).width }
 
-        val threeCharLabelWidth = subcompose(DummyMinExpandedLabelId) { Label(text = DummyMinExpandedLabelText) }
+        val threeCharLabelWidth = subcompose(DummyMinExpandedLabelId) { Label(label = DummyMinExpandedLabel) }
             .maxOf { it.measure(constraints).width }
 
         val labelsMeasurables = labels.map { label ->
-            subcompose("$label.${Random.nextFloat()}") {
-                Label(text = label)
+            subcompose("${label.name}.${Random.nextFloat()}") {
+                Label(label = label)
             }
         }
 
@@ -107,14 +109,14 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<String>) {
 }
 
 @Composable
-private fun Label(text: String) {
+private fun Label(label: MailboxItemLabelUiModel) {
     Text(
         modifier = Modifier
             .padding(2.dp)
-            .background(ProtonTheme.colors.shade40, shape = RoundedCornerShape(percent = 100))
+            .background(label.color, shape = RoundedCornerShape(percent = 100))
             .padding(horizontal = ProtonDimens.SmallSpacing, vertical = 2.dp),
-        text = text,
-        style = ProtonTheme.typography.overline,
+        text = label.name,
+        style = ProtonTheme.typography.overline.copy(color = ProtonTheme.colors.floatyText),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
     )
@@ -136,13 +138,17 @@ object MailboxItemLabels {
     internal const val Plus2CharsLimit = 99
     internal const val Plus3CharsLimit = 999
     internal const val DummyMinExpandedLabelId = "DummyMinimumExpandedLabelId"
-    internal const val DummyMinExpandedLabelText = "abc..."
+    private const val DummyMinExpandedLabelText = "abc..."
+    internal val DummyMinExpandedLabel = MailboxItemLabelUiModel(
+        name = DummyMinExpandedLabelText,
+        color = Color.Unspecified
+    )
 }
 
 @Composable
 @Preview(showBackground = true, widthDp = 400)
 private fun MailboxItemLabelsPreview(
-    @PreviewParameter(MailboxItemLabelsPreviewDataProvider::class) labels: List<String>
+    @PreviewParameter(MailboxItemLabelsPreviewDataProvider::class) labels: List<MailboxItemLabelUiModel>
 ) {
     ProtonTheme {
         MailboxItemLabels(labels = labels)

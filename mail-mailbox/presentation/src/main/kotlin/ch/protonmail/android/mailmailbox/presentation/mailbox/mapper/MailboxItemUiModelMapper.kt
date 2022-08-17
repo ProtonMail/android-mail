@@ -18,17 +18,23 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
+import androidx.compose.ui.graphics.Color
+import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import me.proton.core.domain.arch.Mapper
+import me.proton.core.label.domain.entity.Label
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapper @Inject constructor(
+    private val colorMapper: ColorMapper,
     private val formatMailboxItemTime: FormatMailboxItemTime,
     private val getMailboxItemLocationIcons: GetMailboxItemLocationIcons
 ) : Mapper<MailboxItem, MailboxItemUiModel> {
@@ -41,7 +47,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             conversationId = mailboxItem.conversationId,
             time = formatMailboxItemTime(mailboxItem.time.seconds),
             isRead = mailboxItem.read,
-            labels = mailboxItem.labels,
+            labels = toLabelUiModels(mailboxItem.labels),
             subject = mailboxItem.subject,
             participants = getParticipants(mailboxItem),
             shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
@@ -99,4 +105,11 @@ class MailboxItemUiModelMapper @Inject constructor(
             mailboxItem.isForwarded
         }
 
+    private fun toLabelUiModels(labels: List<Label>): List<MailboxItemLabelUiModel> =
+        labels.map { label ->
+            MailboxItemLabelUiModel(
+                name = label.name,
+                color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
+            )
+        }
 }

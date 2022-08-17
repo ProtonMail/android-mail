@@ -22,8 +22,9 @@ import androidx.compose.ui.graphics.Color
 import arrow.core.Validated
 import arrow.core.invalid
 import arrow.core.valid
+import javax.inject.Inject
 
-class ColorMapper {
+class ColorMapper @Inject constructor() {
 
     fun toColor(string: String): Validated<String, Color> {
         with(string.substringAfter("#")) {

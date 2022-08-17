@@ -26,7 +26,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -47,7 +46,8 @@ import androidx.constraintlayout.compose.Dimension
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
+import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import me.proton.core.compose.theme.ProtonDimens
@@ -56,7 +56,6 @@ import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultWeak
 import me.proton.core.compose.theme.headline
 import me.proton.core.compose.theme.overline
-import me.proton.core.label.domain.entity.Label
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -82,7 +81,7 @@ fun MailboxItem(
             subject = { Subject(subject = item.subject, fontWeight = fontWeight) },
             count = { Count(count = item.numMessages, fontWeight = fontWeight) },
             icons = { Icons(item = item) },
-            labels = { Labels(labels = item.labels, fontWeight = fontWeight, type = item.type) }
+            labels = { Labels(labels = item.labels) }
         )
     }
 }
@@ -100,7 +99,7 @@ private fun MailboxItemLayout(
     icons: @Composable () -> Unit,
     labels: @Composable () -> Unit
 ) {
-    ConstraintLayout(modifier = modifier.fillMaxSize()) {
+    ConstraintLayout(modifier = modifier.fillMaxWidth()) {
 
         val spacing = ProtonDimens.ExtraSmallSpacing
         val (
@@ -174,9 +173,11 @@ private fun MailboxItemLayout(
 
         Box(
             modifier = modifier.constrainAs(labelsRef) {
+                width = Dimension.preferredWrapContent
                 top.linkTo(subjectRef.bottom, margin = spacing)
                 bottom.linkTo(parent.bottom, margin = spacing)
                 start.linkTo(avatarRef.end)
+                end.linkTo(parent.end)
             }
         ) { labels() }
     }
@@ -320,22 +321,10 @@ private fun Icons(
 @Composable
 private fun Labels(
     modifier: Modifier = Modifier,
-    labels: List<Label>,
-    fontWeight: FontWeight,
-    type: MailboxItemType
+    labels: List<MailboxItemLabelUiModel>
 ) {
-    Row(modifier = modifier) {
-        Text(
-            text = when (type) {
-                MailboxItemType.Message -> "Message "
-                MailboxItemType.Conversation -> "Conversation "
-            } + "Labels: ${labels.map { it.name }}",
-            maxLines = 1,
-            style = ProtonTheme.typography.overline.copy(
-                fontWeight = fontWeight,
-                color = ProtonTheme.colors.textWeak
-            )
-        )
+    if (labels.isNotEmpty()) {
+        MailboxItemLabels(modifier = modifier, labels = labels)
     }
 }
 

@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.screen.mailbox
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.MailboxItemLabelsPreviewData
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels
 import me.proton.core.compose.theme.ProtonTheme
@@ -43,12 +44,12 @@ class MailboxItemLabelsTest {
 
         // then
         for (label in labels) {
-            composeTestRule.onNodeWithText(label)
+            composeTestRule.onNodeWithText(label.name)
                 .assertIsDisplayed()
         }
     }
 
-    private fun setupWithState(labels: List<String>) {
+    private fun setupWithState(labels: List<MailboxItemLabelUiModel>) {
         composeTestRule.setContent {
             ProtonTheme {
                 MailboxItemLabels(labels = labels)

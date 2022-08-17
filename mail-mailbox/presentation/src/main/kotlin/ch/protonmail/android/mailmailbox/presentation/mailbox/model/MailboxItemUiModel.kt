@@ -20,9 +20,9 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.Label
 
 data class MailboxItemUiModel(
     val type: MailboxItemType,
@@ -31,7 +31,7 @@ data class MailboxItemUiModel(
     val conversationId: ConversationId,
     val time: TextUiModel,
     val isRead: Boolean,
-    val labels: List<Label> = emptyList(),
+    val labels: List<MailboxItemLabelUiModel>,
     val subject: String,
     val participants: List<String>,
     val shouldShowRepliedIcon: Boolean,
