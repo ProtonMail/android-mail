@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +30,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -65,11 +65,12 @@ fun MailboxItem(
     onItemClicked: (MailboxItemUiModel) -> Unit,
     onOpenSelectionMode: () -> Unit
 ) {
-    Card(
+    Box(
         modifier = modifier
+            .background(ProtonTheme.colors.backgroundNorm)
+            .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
             .padding(ProtonDimens.ExtraSmallSpacing)
             .fillMaxWidth()
-            .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
     ) {
         val fontWeight = if (item.isRead) FontWeight.Normal else FontWeight.Bold
 
