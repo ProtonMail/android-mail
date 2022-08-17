@@ -80,8 +80,12 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
             measurables.mapNotNull subMap@{ measurable ->
                 val availableWidth = constraints.maxWidth - labelsWidth - plusPlaceableWidth()
                 val maxWidth = availableWidth.coerceAtLeast(threeCharLabelWidth)
+                val minWidth = minOf(
+                    measurable.measure(constraints.copy(maxWidth = maxWidth)).width,
+                    threeCharLabelWidth
+                )
                 val placeable =
-                    measurable.measure(constraints.copy(minWidth = threeCharLabelWidth, maxWidth = maxWidth))
+                    measurable.measure(constraints.copy(minWidth = minWidth, maxWidth = maxWidth))
                 if (placeable.width > availableWidth) {
                     return@subMap null
                 }
