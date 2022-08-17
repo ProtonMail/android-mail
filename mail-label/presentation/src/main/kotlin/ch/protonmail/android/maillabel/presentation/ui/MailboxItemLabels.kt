@@ -29,7 +29,7 @@ import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.dp
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.MailboxItemLabelsPreviewDataProvider
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.DummyMinExpandedLabel
@@ -116,9 +116,9 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
 private fun Label(label: MailboxItemLabelUiModel) {
     Text(
         modifier = Modifier
-            .padding(2.dp)
+            .padding(MailDimens.TinySpacing)
             .background(label.color, shape = RoundedCornerShape(percent = 100))
-            .padding(horizontal = ProtonDimens.SmallSpacing, vertical = 2.dp),
+            .padding(horizontal = ProtonDimens.SmallSpacing, vertical = MailDimens.TinySpacing),
         text = label.name,
         style = ProtonTheme.typography.overline.copy(color = ProtonTheme.colors.floatyText),
         maxLines = 1,
@@ -129,7 +129,7 @@ private fun Label(label: MailboxItemLabelUiModel) {
 @Composable
 private fun PlusText(count: Int) {
     Text(
-        modifier = Modifier.padding(2.dp),
+        modifier = Modifier.padding(MailDimens.TinySpacing),
         text = "+$count",
         style = ProtonTheme.typography.caption,
         maxLines = 1

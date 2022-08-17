@@ -24,4 +24,5 @@ import androidx.compose.ui.unit.dp
 object MailDimens {
     val HairlineBorder = Dp.Hairline
     val ThinBorder = 0.5.dp
+    val TinySpacing = 2.dp
 }
