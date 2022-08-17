@@ -67,6 +67,7 @@ setupDependenciesPlugin()
 setupTestLogging()
 
 kotlinCompilerArgs(
+    "-Xopt-in=kotlin.RequiresOptIn",
     // Enables experimental Coroutines (runBlockingTest).
     "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
     // Enables experimental Time (Turbine).
