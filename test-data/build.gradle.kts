@@ -32,6 +32,7 @@ android {
 
 dependencies {
     implementation(Proton.Core.account)
+    implementation(Proton.Core.contact)
     implementation(Proton.Core.domain)
     implementation(Proton.Core.featureFlag)
     implementation(Proton.Core.label)
