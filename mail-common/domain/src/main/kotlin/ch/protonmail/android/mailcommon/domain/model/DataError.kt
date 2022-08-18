@@ -29,11 +29,6 @@ sealed interface DataError {
     sealed interface Local : DataError {
 
         /**
-         * There's no cached value in the local persistence
-         */
-        object NoCache : Local
-
-        /**
          * A not handled error happened in the local persistence
          */
         data class Other(val message: String) : Local
