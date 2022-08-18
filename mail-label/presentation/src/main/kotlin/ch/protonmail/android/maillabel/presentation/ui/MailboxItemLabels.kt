@@ -26,9 +26,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.layout.SubcomposeMeasureScope
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Constraints
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.MailboxItemLabelsPreviewDataProvider
@@ -41,24 +43,18 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.caption
 import me.proton.core.compose.theme.overline
-import kotlin.random.Random
 
 @Composable
 fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLabelUiModel>) {
     SubcomposeLayout(modifier) { constraints ->
 
-        val plusOneDigitWidth = subcompose(Plus1CharLimit) { PlusText(count = Plus1CharLimit) }
-            .maxOf { it.measure(constraints).width }
-        val plusTwoDigitWidth = subcompose(Plus2CharsLimit) { PlusText(count = Plus2CharsLimit) }
-            .maxOf { it.measure(constraints).width }
-        val plusThreeDigitWidth = subcompose(Plus3CharsLimit) { PlusText(count = Plus3CharsLimit) }
-            .maxOf { it.measure(constraints).width }
-
-        val threeCharLabelWidth = subcompose(DummyMinExpandedLabelId) { Label(label = DummyMinExpandedLabel) }
-            .maxOf { it.measure(constraints).width }
+        val plusOneDigitWidth = measurePlusTextWidth(constraints, Plus1CharLimit)
+        val plusTwoDigitWidth = measurePlusTextWidth(constraints, Plus2CharsLimit)
+        val plusThreeDigitWidth = measurePlusTextWidth(constraints, Plus3CharsLimit)
+        val minExpandedLabelWidth = measureMinExpandedLabelWidth(constraints)
 
         val labelsMeasurables = labels.map { label ->
-            subcompose("${label.name}.${Random.nextFloat()}") {
+            subcompose(label.name) {
                 Label(label = label)
             }
         }
@@ -69,7 +65,7 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
         fun plusPlaceableWidth(): Int {
             val notPlacedCountExcludingCurrent = notPlacedCount - 1
             return when {
-                notPlacedCountExcludingCurrent == 0 -> 0
+                notPlacedCountExcludingCurrent <= 0 -> 0
                 notPlacedCount <= Plus1CharLimit -> plusOneDigitWidth
                 notPlacedCount <= Plus2CharsLimit -> plusTwoDigitWidth
                 else -> plusThreeDigitWidth
@@ -79,10 +75,10 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
         val labelsPlaceables = labelsMeasurables.map { measurables ->
             measurables.mapNotNull subMap@{ measurable ->
                 val availableWidth = constraints.maxWidth - labelsWidth - plusPlaceableWidth()
-                val maxWidth = availableWidth.coerceAtLeast(threeCharLabelWidth)
+                val maxWidth = availableWidth.coerceAtLeast(minExpandedLabelWidth)
                 val minWidth = minOf(
                     measurable.measure(constraints.copy(maxWidth = maxWidth)).width,
-                    threeCharLabelWidth
+                    minExpandedLabelWidth
                 )
                 val placeable =
                     measurable.measure(constraints.copy(minWidth = minWidth, maxWidth = maxWidth))
@@ -111,6 +107,14 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
         }
     }
 }
+
+private fun SubcomposeMeasureScope.measurePlusTextWidth(constraints: Constraints, charsLimit: Int) =
+    subcompose(charsLimit) { PlusText(count = charsLimit) }
+        .maxOf { it.measure(constraints).width }
+
+private fun SubcomposeMeasureScope.measureMinExpandedLabelWidth(constraints: Constraints) =
+    subcompose(DummyMinExpandedLabelId) { Label(label = DummyMinExpandedLabel) }
+        .maxOf { it.measure(constraints).width }
 
 @Composable
 private fun Label(label: MailboxItemLabelUiModel) {
