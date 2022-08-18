@@ -43,8 +43,8 @@ private fun toLocalError(dataResult: DataResult.Error.Local): DataError.Local =
 
 private fun toRemoteDataError(dataResult: DataResult.Error.Remote): DataError.Remote {
     return when {
-        dataResult.protonCode != PROTON_CODE_INITIAL_VALUE -> toProtonDataError(dataResult.protonCode)
-        dataResult.httpCode != PROTON_CODE_INITIAL_VALUE -> toHttpDataError(dataResult.httpCode)
+        dataResult.protonCode != INITIAL_ERROR_CODE -> toProtonDataError(dataResult.protonCode)
+        dataResult.httpCode != INITIAL_ERROR_CODE -> toHttpDataError(dataResult.httpCode)
         else -> DataError.Remote.Other(messageFrom(dataResult))
     }
 }
@@ -68,5 +68,5 @@ private fun messageFrom(dataResult: DataResult.Error): String =
         ?: dataResult.cause?.message?.takeIfNotEmpty()
         ?: DATA_RESULT_NO_MESSAGE_PROVIDED
 
-private const val PROTON_CODE_INITIAL_VALUE = 0
+private const val INITIAL_ERROR_CODE = 0
 internal const val DATA_RESULT_NO_MESSAGE_PROVIDED = "DataResult didn't provide any message"
