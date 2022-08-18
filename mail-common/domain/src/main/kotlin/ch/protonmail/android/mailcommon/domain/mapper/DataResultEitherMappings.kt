@@ -17,7 +17,7 @@
  */
 @file:Suppress("TooGenericExceptionThrown")
 
-package ch.protonmail.android.mailcommon.domain
+package ch.protonmail.android.mailcommon.domain.mapper
 
 import arrow.core.Either
 import arrow.core.left
