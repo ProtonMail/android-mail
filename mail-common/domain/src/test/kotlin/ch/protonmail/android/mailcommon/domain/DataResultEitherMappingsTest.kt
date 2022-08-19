@@ -24,7 +24,6 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
-import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.arch.DataResult
@@ -73,47 +72,53 @@ internal class DataResultEitherMappingsTest {
     }
 
     @Test
-    fun `does emit local error with message from data result`() = runTest {
+    fun `does throw exception with message from data result for unhandled local error`() = runTest {
         // given
         val message = "an error occurred"
-        val input = flowOf(DataResult.Error.Local(message, cause = null))
+        val dataResult = DataResult.Error.Local(message, cause = null)
+        val expectedError = RuntimeException("Unhandled local error $dataResult, message = $message", null)
+        val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Local.Other(message).left(), awaitItem())
-            awaitComplete()
+            assertExceptionEquals(expectedError, awaitError())
         }
     }
 
     @Test
-    fun `does emit local error with cause from data result if no message`() = runTest {
+    fun `does throw exception with cause from data result for unhandled local error`() = runTest {
         // given
-        val message = "an error occurred"
-        val input = flowOf(DataResult.Error.Local(message = null, cause = IOException(message)))
+        val cause = IOException("an error occurred")
+        val dataResult = DataResult.Error.Local(message = null, cause = cause)
+        val expectedError = RuntimeException("Unhandled local error $dataResult, message = an error occurred", cause)
+        val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Local.Other(message).left(), awaitItem())
-            awaitComplete()
+            assertExceptionEquals(expectedError, awaitError())
         }
     }
 
     @Test
-    fun `does emit local error with no message provided if no cause and message from data result`() = runTest {
+    fun `does throw exception with no message provided for unhandled local error`() = runTest {
         // given
-        val message = DATA_RESULT_NO_MESSAGE_PROVIDED
-        val input = flowOf(DataResult.Error.Local(message = null, cause = IOException()))
+        val cause = IOException()
+        val dataResult = DataResult.Error.Local(message = null, cause = cause)
+        val expectedError = RuntimeException(
+            "Unhandled local error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED",
+            cause
+        )
+        val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Local.Other(message).left(), awaitItem())
-            awaitComplete()
+            assertExceptionEquals(expectedError, awaitError())
         }
     }
 
@@ -132,62 +137,83 @@ internal class DataResultEitherMappingsTest {
     }
 
     @Test
-    fun `does emit proton error`() = runTest {
+    fun `does throw exception for unhandled proton error`() = runTest {
         // given
-        val protonCode = 123
-        val input = flowOf(DataResult.Error.Remote(message = null, cause = null, protonCode = 123))
+        val dataResult = DataResult.Error.Remote(message = null, cause = null, protonCode = 123)
+        val expectedError = RuntimeException(
+            "Unhandled Proton error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED",
+            null
+        )
+        val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Remote.Proton(ProtonError.Other(protonCode)).left(), awaitItem())
-            awaitComplete()
+            assertExceptionEquals(expectedError, awaitError())
         }
     }
 
     @Test
-    fun `does emit unknown error with message from data result`() = runTest {
+    fun `does throw exception with message from data result for unhandled remote error`() = runTest {
         // given
         val message = "an error occurred"
-        val input = flowOf(DataResult.Error.Remote(message = message, cause = null))
+        val dataResult = DataResult.Error.Remote(message = message, cause = null)
+        val expectedError = RuntimeException(
+            "Unhandled remote error $dataResult, message = $message",
+            null
+        )
+        val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Remote.Other(message).left(), awaitItem())
-            awaitComplete()
+            assertExceptionEquals(expectedError, awaitError())
         }
     }
 
     @Test
-    fun `does emit unknown error with cause from data result if no message`() = runTest {
+    fun `does throw exception with cause from data result for unhandled remote error`() = runTest {
         // given
         val message = "an error occurred"
-        val input = flowOf(DataResult.Error.Remote(message = null, cause = IOException(message)))
+        val cause = IOException(message)
+        val dataResult = DataResult.Error.Remote(message = null, cause = cause)
+        val expectedError = RuntimeException(
+            "Unhandled remote error $dataResult, message = $message",
+            cause
+        )
+        val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Remote.Other(message).left(), awaitItem())
-            awaitComplete()
+            assertExceptionEquals(expectedError, awaitError())
         }
     }
 
     @Test
-    fun `does emit unknown error with no message provided if no message and cause from data result`() = runTest {
+    fun `does throw exception with no message provided for unhandled remote error`() = runTest {
         // given
-        val message = DATA_RESULT_NO_MESSAGE_PROVIDED
-        val input = flowOf(DataResult.Error.Remote(message = null, cause = null))
+        val dataResult = DataResult.Error.Remote(message = null, cause = null)
+        val expectedError = RuntimeException(
+            "Unhandled remote error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED",
+            null
+        )
+        val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertEquals(DataError.Remote.Other(message).left(), awaitItem())
-            awaitComplete()
+            assertExceptionEquals(expectedError, awaitError())
         }
+    }
+
+    private fun assertExceptionEquals(expected: Throwable, actual: Throwable) {
+        assertEquals(expected::class, actual::class)
+        assertEquals(expected.message, actual.message)
+        assertEquals(expected.cause, actual.cause)
     }
 }

@@ -21,10 +21,4 @@ package ch.protonmail.android.mailcommon.domain.model
 /**
  * Error related to Proton error codes
  */
-sealed interface ProtonError {
-
-    /**
-     * An error with a not handled Proton code happened
-     */
-    data class Other(val protonCode: Int) : ProtonError
-}
+sealed interface ProtonError

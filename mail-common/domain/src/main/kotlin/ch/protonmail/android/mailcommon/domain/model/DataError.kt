@@ -26,13 +26,7 @@ sealed interface DataError {
     /**
      * Errors related to Local persistence
      */
-    sealed interface Local : DataError {
-
-        /**
-         * A not handled error happened in the local persistence
-         */
-        data class Other(val message: String) : Local
-    }
+    sealed interface Local : DataError
 
     /**
      * Error fetching date from Remote source
@@ -48,10 +42,5 @@ sealed interface DataError {
          * The API returned a success, but proton code is not OK
          */
         data class Proton(val protonError: ProtonError) : Remote
-
-        /**
-         * A not handled error happened in the remote source
-         */
-        data class Other(val message: String) : Remote
     }
 }

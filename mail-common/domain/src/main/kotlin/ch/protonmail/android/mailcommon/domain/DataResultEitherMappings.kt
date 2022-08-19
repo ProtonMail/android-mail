@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
+@file:Suppress("TooGenericExceptionThrown")
 
 package ch.protonmail.android.mailcommon.domain
 
@@ -23,7 +24,6 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
-import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import me.proton.core.domain.arch.DataResult
@@ -38,30 +38,44 @@ fun <T> Flow<DataResult<T>>.mapToEither(): Flow<Either<DataError, T>> = transfor
     }
 }
 
-private fun toLocalError(dataResult: DataResult.Error.Local): DataError.Local =
-    DataError.Local.Other(messageFrom(dataResult))
+private fun toLocalError(dataResult: DataResult.Error.Local): DataError.Local {
+    throw RuntimeException(
+        "Unhandled local error $dataResult, message = ${messageFrom(dataResult)}",
+        dataResult.cause
+    )
+}
 
 private fun toRemoteDataError(dataResult: DataResult.Error.Remote): DataError.Remote {
     return when {
-        dataResult.protonCode != INITIAL_ERROR_CODE -> toProtonDataError(dataResult.protonCode)
-        dataResult.httpCode != INITIAL_ERROR_CODE -> toHttpDataError(dataResult.httpCode)
-        else -> DataError.Remote.Other(messageFrom(dataResult))
+        dataResult.protonCode != INITIAL_ERROR_CODE -> toProtonDataError(dataResult)
+        dataResult.httpCode != INITIAL_ERROR_CODE -> toHttpDataError(dataResult)
+        else -> throw RuntimeException(
+            "Unhandled remote error $dataResult, message = ${messageFrom(dataResult)}",
+            dataResult.cause
+        )
     }
 }
 
-private fun toHttpDataError(httpCode: Int): DataError.Remote.Http {
-    val networkError = when (httpCode) {
+private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Http {
+    @Suppress("MagicNumber")
+    val networkError = when (dataResult.httpCode) {
         401 -> NetworkError.Unauthorized
         403 -> NetworkError.Forbidden
         404 -> NetworkError.NotFound
         in 500 until 600 -> NetworkError.ServerError
-        else -> NetworkError.Other(httpCode)
+        else -> throw RuntimeException(
+            "Unhandled http error $dataResult, message = ${messageFrom(dataResult)}",
+            dataResult.cause
+        )
     }
     return DataError.Remote.Http(networkError)
 }
 
-private fun toProtonDataError(protonCode: Int): DataError.Remote.Proton =
-    DataError.Remote.Proton(ProtonError.Other(protonCode))
+private fun toProtonDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Proton =
+    throw RuntimeException(
+        "Unhandled Proton error $dataResult, message = ${messageFrom(dataResult)}",
+        dataResult.cause
+    )
 
 private fun messageFrom(dataResult: DataResult.Error): String =
     dataResult.message?.takeIfNotEmpty()

@@ -56,6 +56,4 @@ sealed interface NetworkError {
      * Requested host is not reachable
      */
     object Unreachable : NetworkError
-
-    data class Other(val httpCode: Int) : NetworkError
 }
