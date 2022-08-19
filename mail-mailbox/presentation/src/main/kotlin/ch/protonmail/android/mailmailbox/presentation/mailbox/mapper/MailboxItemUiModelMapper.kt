@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
+import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.arch.Mapper
 import me.proton.core.label.domain.entity.Label
 import javax.inject.Inject
@@ -39,7 +40,7 @@ class MailboxItemUiModelMapper @Inject constructor(
     private val getMailboxItemLocationIcons: GetMailboxItemLocationIcons
 ) : Mapper<MailboxItem, MailboxItemUiModel> {
 
-    fun toUiModel(mailboxItem: MailboxItem): MailboxItemUiModel =
+    fun toUiModel(mailboxItem: MailboxItem, contacts: List<Contact>): MailboxItemUiModel =
         MailboxItemUiModel(
             type = mailboxItem.type,
             id = mailboxItem.id,

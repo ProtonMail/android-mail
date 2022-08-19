@@ -25,6 +25,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -60,6 +61,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
@@ -73,7 +75,8 @@ class MailboxViewModel @Inject constructor(
     private val observeMailLabels: ObserveMailLabels,
     private val selectedMailLabelId: SelectedMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
-    private val mailboxItemMapper: MailboxItemUiModelMapper
+    private val mailboxItemMapper: MailboxItemUiModelMapper,
+    private val getContacts: GetContacts
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -175,7 +178,7 @@ class MailboxViewModel @Inject constructor(
     private fun observePagingData(): Flow<PagingData<MailboxItemUiModel>> = combine(
         primaryUserId,
         state,
-        observeViewModeByLocation(),
+        observeViewModeByLocation()
     ) { userId, mailboxState, viewMode ->
         if (userId == null) {
             return@combine null
@@ -197,9 +200,10 @@ class MailboxViewModel @Inject constructor(
             type = viewMode.toMailboxItemType()
         )
     }.flatMapLatest { pager ->
+        val contacts = getContacts()
         pager?.flow?.map { pagingData ->
             pagingData.map { mailboxItem ->
-                mailboxItemMapper.toUiModel(mailboxItem)
+                mailboxItemMapper.toUiModel(mailboxItem, contacts)
             }
         } ?: flowOf(PagingData.empty())
     }
@@ -303,6 +307,15 @@ class MailboxViewModel @Inject constructor(
         } else {
             observeMailLabels(userId)
         }
+    }
+
+    private suspend fun getContacts(): List<Contact> {
+        val userId = primaryUserId.firstOrNull() ?: return emptyList()
+
+        return getContacts(userId).fold(
+            ifLeft = { emptyList() },
+            ifRight = { it }
+        )
     }
 
     private suspend fun getPreferredViewMode(): ViewMode {

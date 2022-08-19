@@ -20,7 +20,9 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import androidx.paging.PagingData
 import app.cash.turbine.test
+import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -46,6 +48,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.readMailboxItemUiModel
@@ -108,6 +111,10 @@ class MailboxViewModelTest {
         coEvery { this@mockk(userId = any()) } returns flowOf(UnreadCountersTestData.systemUnreadCounters)
     }
 
+    private val getContacts = mockk<GetContacts> {
+        coEvery { this@mockk.invoke(userId) } returns Either.Right(ContactTestData.contacts)
+    }
+
     private val pagerFactory = mockk<MailboxPagerFactory>()
 
     private val mailboxItemMapper = mockk<MailboxItemUiModelMapper>()
@@ -121,7 +128,8 @@ class MailboxViewModelTest {
             observeMailLabels = observeMailLabels,
             selectedMailLabelId = selectedMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
-            mailboxItemMapper = mailboxItemMapper
+            mailboxItemMapper = mailboxItemMapper,
+            getContacts = getContacts
         )
     }
 
@@ -305,8 +313,10 @@ class MailboxViewModelTest {
     @Test
     fun `mailbox items are mapped to mailbox item ui models`() = runTest {
         // Given
-        every { mailboxItemMapper.toUiModel(unreadMailboxItem) } returns unreadMailboxItemUiModel
-        every { mailboxItemMapper.toUiModel(readMailboxItem) } returns readMailboxItemUiModel
+        every {
+            mailboxItemMapper.toUiModel(unreadMailboxItem, ContactTestData.contacts)
+        } returns unreadMailboxItemUiModel
+        every { mailboxItemMapper.toUiModel(readMailboxItem, ContactTestData.contacts) } returns readMailboxItemUiModel
         every { pagerFactory.create(any(), any(), any(), any()) } returns mockk {
             val pagingData = PagingData.from(listOf(unreadMailboxItem, readMailboxItem))
             every { this@mockk.flow } returns flowOf(pagingData)
@@ -321,6 +331,24 @@ class MailboxViewModelTest {
 
             val expected = listOf(unreadMailboxItemUiModel, readMailboxItemUiModel)
             assertEquals(expected, differ.snapshot().items)
+        }
+    }
+
+    @Test
+    fun `user contacts are used to map mailbox items to ui models`() = runTest {
+        // Given
+        every { pagerFactory.create(any(), any(), any(), any()) } returns mockk {
+            val pagingData = PagingData.from(listOf(unreadMailboxItem, readMailboxItem))
+            every { this@mockk.flow } returns flowOf(pagingData)
+        }
+        val differ = MailboxAsyncPagingDataDiffer.differ
+        // When
+        mailboxViewModel.items.test {
+            // Then
+            val pagingData = awaitItem()
+            differ.submitData(pagingData)
+
+            verify { mailboxItemMapper.toUiModel(any(), ContactTestData.contacts) }
         }
     }
 

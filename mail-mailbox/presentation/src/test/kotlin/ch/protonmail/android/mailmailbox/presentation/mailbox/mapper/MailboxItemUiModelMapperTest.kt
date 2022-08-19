@@ -28,6 +28,7 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
+import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.every
@@ -76,7 +77,7 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = MailboxTestData.repliedMailboxItem
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertTrue(actual.shouldShowRepliedIcon)
     }
@@ -86,7 +87,7 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = MailboxTestData.repliedAllMailboxItem
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertTrue(actual.shouldShowRepliedAllIcon)
         assertFalse(actual.shouldShowRepliedIcon)
@@ -97,7 +98,7 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = MailboxTestData.allActionsMailboxItem
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertTrue(actual.shouldShowForwardedIcon)
     }
@@ -107,7 +108,7 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = MailboxTestData.mailboxConversationItem
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertFalse(actual.shouldShowRepliedIcon)
         assertFalse(actual.shouldShowRepliedAllIcon)
@@ -126,7 +127,7 @@ class MailboxItemUiModelMapperTest {
             senders = senders
         )
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         val expected = listOf("sender", "sender1")
         assertEquals(expected, actual.participants)
@@ -144,7 +145,7 @@ class MailboxItemUiModelMapperTest {
             recipients = recipients
         )
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         val expected = listOf("recipient", "recipient1")
         assertEquals(expected, actual.participants)
@@ -162,7 +163,7 @@ class MailboxItemUiModelMapperTest {
             senders = senders
         )
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         val expected = listOf("sender", "sender1@proton.ch")
         assertEquals(expected, actual.participants)
@@ -176,7 +177,7 @@ class MailboxItemUiModelMapperTest {
         val result = TextUiModel.Text("18:00")
         every { formatMailboxItemTime.invoke(time.seconds) } returns result
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertEquals(result, actual.time)
     }
@@ -186,7 +187,7 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = buildMailboxItem(type = MailboxItemType.Conversation, numMessages = 2)
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertEquals(2, actual.numMessages)
     }
@@ -196,7 +197,7 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = buildMailboxItem(type = MailboxItemType.Conversation, numMessages = 1)
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertNull(actual.numMessages)
     }
@@ -206,7 +207,7 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = buildMailboxItem(labelIds = listOf(SystemLabelId.Starred.labelId))
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertTrue(actual.showStar)
     }
@@ -217,7 +218,7 @@ class MailboxItemUiModelMapperTest {
         val labelIds = listOf(SystemLabelId.Drafts.labelId, SystemLabelId.Archive.labelId)
         val mailboxItem = buildMailboxItem(labelIds = labelIds)
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertFalse(actual.showStar)
     }
@@ -232,7 +233,7 @@ class MailboxItemUiModelMapperTest {
         val icons = GetMailboxItemLocationIcons.Result.Icons(inboxIconRes, draftsIconRes)
         every { getMailboxItemLocationIcons.invoke(mailboxItem) } returns icons
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         val expectedIconsRes = listOf(inboxIconRes, draftsIconRes)
         assertEquals(expectedIconsRes, actual.locationIconResIds)
@@ -244,7 +245,7 @@ class MailboxItemUiModelMapperTest {
         val mailboxItem = buildMailboxItem()
         every { getMailboxItemLocationIcons.invoke(mailboxItem) } returns GetMailboxItemLocationIcons.Result.None
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertEquals(emptyList(), actual.locationIconResIds)
     }
@@ -254,7 +255,7 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = buildMailboxItem(hasAttachments = true)
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertTrue(actual.shouldShowAttachmentIcon)
     }
@@ -264,7 +265,7 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = buildMailboxItem(hasAttachments = false)
         // When
-        val actual = mapper.toUiModel(mailboxItem)
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertFalse(actual.shouldShowAttachmentIcon)
     }
