@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.data
+package ch.protonmail.android.mailcommon.domain
 
 import arrow.core.Either
 import arrow.core.left
