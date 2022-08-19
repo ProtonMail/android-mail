@@ -21,7 +21,6 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 import androidx.compose.ui.graphics.Color
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
@@ -29,6 +28,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetParticipantsResolvedNames
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.arch.Mapper
 import me.proton.core.label.domain.entity.Label
@@ -39,7 +39,8 @@ import kotlin.time.Duration.Companion.seconds
 class MailboxItemUiModelMapper @Inject constructor(
     private val colorMapper: ColorMapper,
     private val formatMailboxItemTime: FormatMailboxItemTime,
-    private val getMailboxItemLocationIcons: GetMailboxItemLocationIcons
+    private val getMailboxItemLocationIcons: GetMailboxItemLocationIcons,
+    private val getParticipantsResolvedNames: GetParticipantsResolvedNames
 ) : Mapper<MailboxItem, MailboxItemUiModel> {
 
     fun toUiModel(mailboxItem: MailboxItem, contacts: List<Contact>): MailboxItemUiModel =
@@ -52,7 +53,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             isRead = mailboxItem.read,
             labels = toLabelUiModels(mailboxItem.labels),
             subject = mailboxItem.subject,
-            participants = getParticipantResolvedNames(mailboxItem, contacts),
+            participants = getParticipantsResolvedNames(mailboxItem, contacts),
             shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
             shouldShowRepliedAllIcon = shouldShowRepliedAllIcon(mailboxItem),
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
@@ -67,28 +68,6 @@ class MailboxItemUiModelMapper @Inject constructor(
             is GetMailboxItemLocationIcons.Result.None -> emptyList()
             is GetMailboxItemLocationIcons.Result.Icons -> listOfNotNull(icons.first, icons.second, icons.third)
         }
-
-    private fun getParticipantResolvedNames(mailboxItem: MailboxItem, contacts: List<Contact>): List<String> {
-        val displayRecipientLocations = setOf(
-            SystemLabelId.Sent.labelId,
-            SystemLabelId.Drafts.labelId
-        )
-        val shouldDisplayRecipients = mailboxItem.labelIds.any { it in displayRecipientLocations }
-
-        return if (shouldDisplayRecipients) {
-            mailboxItem.recipients.map { getPreferredName(contacts, it) }
-        } else {
-            mailboxItem.senders.map { getPreferredName(contacts, it) }
-        }
-    }
-
-    private fun getPreferredName(contacts: List<Contact>, recipient: Recipient): String {
-        val contactEmail = contacts.firstNotNullOfOrNull { contact ->
-            contact.contactEmails.find { it.email == recipient.address }
-        }
-
-        return contactEmail?.name?.takeIfNotBlank() ?: recipient.name.ifEmpty { recipient.address }
-    }
 
     private fun shouldShowRepliedIcon(mailboxItem: MailboxItem): Boolean {
         if (mailboxItem.type == MailboxItemType.Conversation) {
