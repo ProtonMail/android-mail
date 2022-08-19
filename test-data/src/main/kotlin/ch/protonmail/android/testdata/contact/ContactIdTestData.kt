@@ -18,9 +18,13 @@
 
 package ch.protonmail.android.testdata.contact
 
+import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.contact.domain.entity.ContactId
 
 object ContactIdTestData {
+
     val contactId1 = ContactId("1")
     val contactId2 = ContactId("2")
+
+    val contactEmailId1 = ContactEmailId("1")
 }

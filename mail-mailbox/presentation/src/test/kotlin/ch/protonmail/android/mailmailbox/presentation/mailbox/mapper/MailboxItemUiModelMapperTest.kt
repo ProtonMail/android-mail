@@ -31,6 +31,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailbox
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
+import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkConstructor
@@ -152,7 +153,35 @@ class MailboxItemUiModelMapperTest {
     }
 
     @Test
-    fun `when any participant has no name defined address is mapped to the ui model`() {
+    fun `when any participant is saved as contact then contact name is mapped to the ui model`() {
+        // Given
+        val contact = ContactTestData.buildContactWith(
+            userId = UserIdTestData.userId,
+            contactEmails = listOf(
+                ContactTestData.buildContactEmailWith(
+                    name = "contact email name",
+                    address = "sender1@proton.ch"
+                )
+            )
+        )
+        val userContacts = listOf(contact, ContactTestData.contact2)
+        val senders = listOf(
+            Recipient("sender@proton.ch", "sender"),
+            Recipient("sender1@proton.ch", ""),
+        )
+        val mailboxItem = buildMailboxItem(
+            labelIds = listOf(SystemLabelId.Inbox.labelId),
+            senders = senders
+        )
+        // When
+        val actual = mapper.toUiModel(mailboxItem, userContacts)
+        // Then
+        val expected = listOf("sender", "contact email name")
+        assertEquals(expected, actual.participants)
+    }
+
+    @Test
+    fun `when any participant has no display name defined address is mapped to the ui model`() {
         // Given
         val senders = listOf(
             Recipient("sender@proton.ch", "sender"),

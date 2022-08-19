@@ -20,14 +20,48 @@ package ch.protonmail.android.testdata.contact
 
 import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.contact.domain.entity.ContactEmail
+import me.proton.core.contact.domain.entity.ContactEmailId
+import me.proton.core.contact.domain.entity.ContactId
+import me.proton.core.domain.entity.UserId
 
 object ContactTestData {
+
     val contact1 = Contact(UserIdTestData.userId, ContactIdTestData.contactId1, "first contact", emptyList())
     val contact2 = Contact(UserIdTestData.userId, ContactIdTestData.contactId2, "second contact", emptyList())
 
     val contacts = listOf(
         contact1,
         contact2
+    )
+
+    fun buildContactWith(
+        userId: UserId = UserIdTestData.userId,
+        contactId: ContactId = ContactIdTestData.contactId1,
+        contactEmails: List<ContactEmail>
+    ) = Contact(
+        userId = userId,
+        id = contactId,
+        name = "contact name",
+        contactEmails = contactEmails
+    )
+
+    fun buildContactEmailWith(
+        userId: UserId = UserIdTestData.userId,
+        contactEmailId: ContactEmailId = ContactIdTestData.contactEmailId1,
+        contactId: ContactId = ContactIdTestData.contactId1,
+        name: String,
+        address: String
+    ) = ContactEmail(
+        userId = userId,
+        id = contactEmailId,
+        name = name,
+        email = address,
+        defaults = 0,
+        order = 0,
+        contactId = contactId,
+        canonicalEmail = address,
+        labelIds = emptyList()
     )
 }
 
