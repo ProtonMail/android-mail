@@ -30,6 +30,7 @@
   <string name="mail_settings_combined_contacts">Zusammengeführte Kontakte</string>
   <string name="mail_settings_swipe_actions">Wischgesten</string>
   <string name="mail_settings_combined_contacts_hint">Aktiviere diese Funktion, um E-Mail-Adressen aus Kontakten von all deinen angemeldeten Konten automatisch zu vervollständigen.</string>
+  <string name="mail_settings_alternative_routing_hint">Für den Fall, dass die Websites von Proton gesperrt sind, kann die App mit dieser Einstellung versuchen, Proton über ein alternatives Netzwerk-Routing zu erreichen, was nützlich sein kann, um Firewalls oder Netzwerkprobleme zu umgehen: Wir empfehlen, diese Einstellung zu aktivieren, um die Zuverlässigkeit zu erhöhen.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Systemstandard</string>
   <string name="mail_settings_theme_light">Hell</string>

@@ -30,6 +30,7 @@
   <string name="mail_settings_combined_contacts">Kombinált névjegyek</string>
   <string name="mail_settings_swipe_actions">Csúsztatási műveletek</string>
   <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.</string>
+  <string name="mail_settings_alternative_routing_hint">In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues: We recommend keeping this setting on for greater reliability.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">A rendszer alapértelmezései</string>
   <string name="mail_settings_theme_light">Világos</string>

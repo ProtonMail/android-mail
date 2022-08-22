@@ -30,6 +30,7 @@
   <string name="mail_settings_combined_contacts">Contacte combinate</string>
   <string name="mail_settings_swipe_actions">Acțiuni de glisare</string>
   <string name="mail_settings_combined_contacts_hint">Activați funcția pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.</string>
+  <string name="mail_settings_alternative_routing_hint">În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Implicit din sistem</string>
   <string name="mail_settings_theme_light">Albă</string>

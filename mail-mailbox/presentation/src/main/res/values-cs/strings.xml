@@ -25,11 +25,11 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Vyhledat</string>
   <string name="mailbox_toolbar_selected_count">Vybráno: %d</string>
-  <string name="yesterday">yesterday</string>
+  <string name="yesterday">včera</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d unread</item>
-    <item quantity="few">%d unread</item>
-    <item quantity="many">%d unread</item>
-    <item quantity="other">%d unread</item>
+    <item quantity="one">%d nepřečtená</item>
+    <item quantity="few">%d nepřečtené</item>
+    <item quantity="many">%d nepřečtených</item>
+    <item quantity="other">%d nepřečtených</item>
   </plurals>
 </resources>

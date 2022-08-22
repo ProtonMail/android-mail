@@ -30,6 +30,7 @@
   <string name="mail_settings_combined_contacts">Contacts combinés</string>
   <string name="mail_settings_swipe_actions">Actions de balayage</string>
   <string name="mail_settings_combined_contacts_hint">Activez cette fonctionnalité pour compléter automatiquement les adresses électroniques en utilisant les contacts de tous vos comptes connectés.</string>
+  <string name="mail_settings_alternative_routing_hint">En cas de blocage des sites Proton, ce paramètre permet à l\'application d\'essayer un routage réseau alternatif pour atteindre Proton, ce qui peut être utile pour contourner les pare-feux ou les problèmes de réseau : nous vous recommandons de conserver ce paramètre activé pour plus de fiabilité.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Identique au système</string>
   <string name="mail_settings_theme_light">Clair</string>

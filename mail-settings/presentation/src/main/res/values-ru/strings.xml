@@ -30,6 +30,7 @@
   <string name="mail_settings_combined_contacts">Объединенные контакты</string>
   <string name="mail_settings_swipe_actions">Жесты пролистывания</string>
   <string name="mail_settings_combined_contacts_hint">Включите эту функцию для автозаполнения адресов электронной почты с использованием контактов из всех учетных записей, в которые вы вошли.</string>
+  <string name="mail_settings_alternative_routing_hint">В случае если сайты Proton заблокированы, эта настройка позволяет приложению попробовать альтернативную сетевую маршрутизацию для подключения к Proton, что может быть полезно для обхода брандмауэров или проблем с сетью. Мы рекомендуем оставить эту настройку включенной для большей надежности.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Системная по умолчанию</string>
   <string name="mail_settings_theme_light">Светлая</string>
