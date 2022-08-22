@@ -19,9 +19,9 @@
 package ch.protonmail.android.mailcommon.presentation.mapper
 
 import androidx.compose.ui.graphics.Color
-import arrow.core.Validated
-import arrow.core.invalid
-import arrow.core.valid
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
@@ -32,7 +32,7 @@ import kotlin.test.assertEquals
 internal class ColorMapperTest(
     private val testName: String,
     private val input: String,
-    private val expected: Validated<String, Color>
+    private val expected: Either<String, Color>
 ) {
 
     @Test
@@ -44,7 +44,7 @@ internal class ColorMapperTest(
     data class Params(
         val testName: String,
         val input: String,
-        val expected: Validated<String, Color>
+        val expected: Either<String, Color>
     )
 
     companion object {
@@ -56,61 +56,61 @@ internal class ColorMapperTest(
             Params(
                 testName = "success from #aarrggbb string",
                 input = "#80000000",
-                expected = Color.Black.copy(alpha = 0.5f).valid()
+                expected = Color.Black.copy(alpha = 0.5f).right()
             ),
 
             Params(
                 testName = "success from aarrggbb string",
                 input = "80000000",
-                expected = Color.Black.copy(alpha = 0.5f).valid()
+                expected = Color.Black.copy(alpha = 0.5f).right()
             ),
 
             Params(
                 testName = "success from #rrggbb string",
                 input = "#000000",
-                expected = Color.Black.valid()
+                expected = Color.Black.right()
             ),
 
             Params(
                 testName = "success from rrggbb string",
                 input = "000000",
-                expected = Color.Black.valid()
+                expected = Color.Black.right()
             ),
 
             Params(
                 testName = "success from #rgb string",
                 input = "#000",
-                expected = Color.Black.valid()
+                expected = Color.Black.right()
             ),
 
             Params(
                 testName = "success from rgb string",
                 input = "000",
-                expected = Color.Black.valid()
+                expected = Color.Black.right()
             ),
 
             Params(
                 testName = "success for red color",
                 input = "ff0000",
-                expected = Color.Red.valid()
+                expected = Color.Red.right()
             ),
 
             Params(
                 testName = "success for green color",
                 input = "00ff00",
-                expected = Color.Green.valid()
+                expected = Color.Green.right()
             ),
 
             Params(
                 testName = "success for blue color",
                 input = "0000ff",
-                expected = Color.Blue.valid()
+                expected = Color.Blue.right()
             ),
 
             Params(
                 testName = "from invalid string",
                 input = "invalid",
-                expected = "invalid".invalid()
+                expected = "invalid".left()
             )
 
         ).map { arrayOf(it.testName, it.input, it.expected) }

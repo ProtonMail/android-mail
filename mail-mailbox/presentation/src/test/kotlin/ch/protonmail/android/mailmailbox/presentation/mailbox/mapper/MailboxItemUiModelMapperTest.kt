@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
+import androidx.compose.ui.graphics.Color
+import arrow.core.right
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -43,14 +46,18 @@ import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapperTest {
 
+    private val colorMapper: ColorMapper = mockk {
+        every { toColor(any()) } returns Color.Unspecified.right()
+    }
     private val getMailboxItemLocationIcons = mockk<GetMailboxItemLocationIcons> {
-        every { this@mockk.invoke(any()) } returns GetMailboxItemLocationIcons.Result.None
+        every { this@mockk(any()) } returns GetMailboxItemLocationIcons.Result.None
     }
     private val formatMailboxItemTime: FormatMailboxItemTime = mockk()
 
     private val mapper = MailboxItemUiModelMapper(
-        formatMailboxItemTime,
-        getMailboxItemLocationIcons
+        colorMapper = colorMapper,
+        formatMailboxItemTime = formatMailboxItemTime,
+        getMailboxItemLocationIcons = getMailboxItemLocationIcons
     )
 
     @BeforeTest

@@ -19,28 +19,28 @@
 package ch.protonmail.android.mailcommon.presentation.mapper
 
 import androidx.compose.ui.graphics.Color
-import arrow.core.Validated
-import arrow.core.invalid
-import arrow.core.valid
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import javax.inject.Inject
 
 class ColorMapper @Inject constructor() {
 
-    fun toColor(string: String): Validated<String, Color> {
+    fun toColor(string: String): Either<String, Color> {
         with(string.substringAfter("#")) {
             val (a, r, g, b) = when (length) {
                 3 -> listOf(NoTransparency, substring(0, 1), substring(1, 2), substring(2, 3))
                 6 -> listOf(NoTransparency, substring(0, 2), substring(2, 4), substring(4, 6))
                 4 -> listOf(substring(0, 1), substring(1, 2), substring(2, 3), substring(3, 4))
                 8 -> listOf(substring(0, 2), substring(2, 4), substring(4, 6), substring(6, 8))
-                else -> return string.invalid()
+                else -> return string.left()
             }
             return Color(
                 alpha = a.toColorInt(),
                 red = r.toColorInt(),
                 green = g.toColorInt(),
                 blue = b.toColorInt()
-            ).valid()
+            ).right()
         }
     }
 
