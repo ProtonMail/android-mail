@@ -25,6 +25,8 @@ import ch.protonmail.android.uitest.screen.mailbox.MailboxTopAppBarTest
 import ch.protonmail.android.uitest.screen.settings.account.AccountSettingsScreenTest
 import ch.protonmail.android.uitest.screen.settings.account.conversationmode.ConversationModeSettingScreenTest
 import ch.protonmail.android.uitest.screen.settings.appsettings.SettingsScreenTest
+import ch.protonmail.android.uitest.screen.settings.appsettings.alternativerouting.AlternativeRoutingSettingScreenTest
+import ch.protonmail.android.uitest.screen.settings.appsettings.combinedcontacts.CombinedContactsSettingScreenTest
 import ch.protonmail.android.uitest.screen.settings.appsettings.swipeactions.EditSwipeActionPreferenceScreenTest
 import ch.protonmail.android.uitest.screen.settings.appsettings.swipeactions.SwipeActionsPreferenceScreenTest
 import ch.protonmail.android.uitest.screen.settings.appsettings.theme.ThemeSettingScreenTest
@@ -35,6 +37,8 @@ import org.junit.runners.Suite
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
     AccountSettingsScreenTest::class,
+    AlternativeRoutingSettingScreenTest::class,
+    CombinedContactsSettingScreenTest::class,
     ConversationModeSettingScreenTest::class,
     EditSwipeActionPreferenceScreenTest::class,
     LoginFlowTests::class,
