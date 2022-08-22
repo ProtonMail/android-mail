@@ -93,23 +93,21 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
                     navController.navigate(Destination.Screen.ThemeSettings.route)
                 },
                 onPushNotificationsClick = {
-                    Timber.i("Push Notifications setting clicked")
+                    Timber.d("Push Notifications setting clicked")
                 },
                 onAutoLockClick = {
-                    Timber.i("Auto Lock setting clicked")
+                    Timber.d("Auto Lock setting clicked")
                 },
                 onAlternativeRoutingClick = {
                     navController.navigate(Destination.Screen.AlternativeRoutingSettings.route)
                 },
                 onAppLanguageClick = {
-                    Timber.d("Navigating to language settings")
                     navController.navigate(Destination.Screen.LanguageSettings.route)
                 },
                 onCombinedContactsClick = {
                     navController.navigate(Destination.Screen.CombinedContactsSettings.route)
                 },
                 onSwipeActionsClick = {
-                    Timber.d("Swipe actions setting clicked")
                     navController.navigate(Destination.Screen.SwipeActionsSettings.route)
                 },
                 onBackClick = {

@@ -45,13 +45,13 @@ fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launche
                 onPasswordManagementClick = launcherActions.onPasswordManagement,
                 onRecoveryEmailClick = launcherActions.onRecoveryEmail,
                 onConversationModeClick = { navController.navigate(Screen.ConversationModeSettings.route) },
-                onDefaultEmailAddressClick = { Timber.i("Default email address setting clicked") },
-                onDisplayNameClick = { Timber.i("Display name setting clicked") },
-                onPrivacyClick = { Timber.i("Privacy setting clicked") },
-                onSearchMessageContentClick = { Timber.i("Search message content setting clicked") },
-                onLabelsFoldersClick = { Timber.i("Labels folders setting clicked") },
-                onLocalStorageClick = { Timber.i("Local storage setting clicked") },
-                onSnoozeNotificationsClick = { Timber.i("Snooze notification setting clicked") }
+                onDefaultEmailAddressClick = { Timber.d("Default email address setting clicked") },
+                onDisplayNameClick = { Timber.d("Display name setting clicked") },
+                onPrivacyClick = { Timber.d("Privacy setting clicked") },
+                onSearchMessageContentClick = { Timber.d("Search message content setting clicked") },
+                onLabelsFoldersClick = { Timber.d("Labels folders setting clicked") },
+                onLocalStorageClick = { Timber.d("Local storage setting clicked") },
+                onSnoozeNotificationsClick = { Timber.d("Snooze notification setting clicked") }
             )
         )
     }
