@@ -91,7 +91,7 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
             }
         }
 
-        layout(width = constraints.maxWidth, height = labelsPlaceables.flatten().maxOf { it.height }) {
+        layout(width = constraints.maxWidth, height = labelsPlaceables.flatten().firstOrNull()?.height ?: 0) {
             var x = 0
             labelsPlaceables.flatten().forEach { placeable ->
                 placeable.place(x = x, y = 0)
