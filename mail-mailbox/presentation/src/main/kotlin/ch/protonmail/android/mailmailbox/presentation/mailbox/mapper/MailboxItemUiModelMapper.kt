@@ -28,23 +28,25 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetAvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.arch.Mapper
 import me.proton.core.label.domain.entity.Label
-import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapper @Inject constructor(
     private val colorMapper: ColorMapper,
     private val formatMailboxItemTime: FormatMailboxItemTime,
+    private val getAvatarUiModel: GetAvatarUiModel,
     private val getMailboxItemLocationIcons: GetMailboxItemLocationIcons,
     private val getParticipantsResolvedNames: GetParticipantsResolvedNames
 ) : Mapper<MailboxItem, MailboxItemUiModel> {
 
     fun toUiModel(mailboxItem: MailboxItem, contacts: List<Contact>): MailboxItemUiModel =
         MailboxItemUiModel(
+            avatar = getAvatarUiModel(mailboxItem),
             type = mailboxItem.type,
             id = mailboxItem.id,
             userId = mailboxItem.userId,

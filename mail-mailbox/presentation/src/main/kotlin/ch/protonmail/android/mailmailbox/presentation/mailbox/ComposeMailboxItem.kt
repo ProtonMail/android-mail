@@ -50,6 +50,7 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -77,7 +78,7 @@ fun MailboxItem(
         val fontColor = if (item.isRead) ProtonTheme.colors.textWeak else ProtonTheme.colors.textNorm
 
         MailboxItemLayout(
-            avatar = { Avatar(participants = item.participants, fontWeight = fontWeight, fontColor = fontColor) },
+            avatar = { Avatar(avatarUiModel = item.avatar, fontWeight = fontWeight) },
             actionIcons = { ActionIcons(item = item) },
             participants = {
                 Participants(participants = item.participants, fontWeight = fontWeight, fontColor = fontColor)
@@ -191,14 +192,13 @@ private fun MailboxItemLayout(
 @Composable
 private fun Avatar(
     modifier: Modifier = Modifier,
-    participants: List<String>,
-    fontWeight: FontWeight,
-    fontColor: Color
+    avatarUiModel: AvatarUiModel,
+    fontWeight: FontWeight
 ) {
     Box(modifier = modifier.padding(ProtonDimens.DefaultSpacing)) {
         Text(
-            text = participants.firstOrNull()?.first()?.uppercase() ?: "*",
-            style = ProtonTheme.typography.headline.copy(fontWeight = fontWeight, color = fontColor)
+            text = avatarUiModel.participantInitial?.uppercase() ?: "*",
+            style = ProtonTheme.typography.headline.copy(fontWeight = fontWeight)
         )
     }
 }

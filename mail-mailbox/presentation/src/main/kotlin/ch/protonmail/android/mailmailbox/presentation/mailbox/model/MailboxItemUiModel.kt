@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import me.proton.core.domain.entity.UserId
 
 data class MailboxItemUiModel(
+    val avatar: AvatarUiModel,
     val type: MailboxItemType,
     val id: String,
     val userId: UserId,

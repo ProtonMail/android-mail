@@ -56,6 +56,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.UnreadItemsFilter
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
@@ -327,6 +328,7 @@ fun PreviewMailbox() {
 object MailboxPreviewData {
 
     val mailboxItem = MailboxItemUiModel(
+        avatar = AvatarUiModel('C', false),
         type = MailboxItemType.Message,
         id = "1",
         userId = UserId("0"),
@@ -346,6 +348,7 @@ object MailboxPreviewData {
     )
 
     val mailboxItem1 = MailboxItemUiModel(
+        avatar = AvatarUiModel('N', false),
         type = MailboxItemType.Conversation,
         id = "2",
         userId = UserId("0"),

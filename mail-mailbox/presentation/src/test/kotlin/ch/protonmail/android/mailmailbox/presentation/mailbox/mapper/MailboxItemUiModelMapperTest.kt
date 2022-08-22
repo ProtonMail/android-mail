@@ -26,7 +26,9 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetAvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
@@ -35,9 +37,9 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.unmockkConstructor
-import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
@@ -49,6 +51,9 @@ class MailboxItemUiModelMapperTest {
 
     private val colorMapper: ColorMapper = mockk {
         every { toColor(any()) } returns Color.Unspecified.right()
+    }
+    private val getAvatarUiModel: GetAvatarUiModel = mockk {
+        every { this@mockk.invoke(any()) } returns mockk()
     }
     private val getMailboxItemLocationIcons = mockk<GetMailboxItemLocationIcons> {
         every { this@mockk(any()) } returns GetMailboxItemLocationIcons.Result.None
@@ -62,6 +67,7 @@ class MailboxItemUiModelMapperTest {
     private val mapper = MailboxItemUiModelMapper(
         colorMapper = colorMapper,
         formatMailboxItemTime = formatMailboxItemTime,
+        getAvatarUiModel = getAvatarUiModel,
         getMailboxItemLocationIcons = getMailboxItemLocationIcons,
         getParticipantsResolvedNames = getParticipantsResolvedNames
     )
@@ -233,4 +239,17 @@ class MailboxItemUiModelMapperTest {
         assertFalse(actual.shouldShowAttachmentIcon)
     }
 
+    @Test
+    fun `avatar ui model should be received from the use case`() {
+        // Given
+        val avatarUiModel = AvatarUiModel(participantInitial = 'T', shouldShowDraftIcon = false)
+        val mailboxItem = buildMailboxItem()
+        every { getAvatarUiModel(mailboxItem) } returns avatarUiModel
+
+        // When
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
+
+        // Then
+        assertEquals(avatarUiModel, actual.avatar)
+    }
 }
