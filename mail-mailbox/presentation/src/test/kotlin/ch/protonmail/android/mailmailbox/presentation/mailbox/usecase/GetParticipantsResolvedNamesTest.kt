@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import ch.protonmail.android.testdata.user.UserIdTestData
