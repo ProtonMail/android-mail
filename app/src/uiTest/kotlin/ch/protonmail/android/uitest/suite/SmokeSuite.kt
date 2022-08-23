@@ -37,6 +37,13 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
+    MailboxFlowTest::class,
+    SettingsFlowTest::class
+)
+class SmokeSuite
+
+@RunWith(Suite::class)
+@Suite.SuiteClasses(
     AccountSettingsScreenTest::class,
     AlternativeRoutingSettingScreenTest::class,
     CombinedContactsSettingScreenTest::class,
@@ -52,4 +59,4 @@ import org.junit.runners.Suite
     SwipeActionsPreferenceScreenTest::class,
     ThemeSettingScreenTest::class
 )
-class SmokeSuite
+class SmokeSuiteExtended

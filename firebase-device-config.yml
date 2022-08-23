@@ -1,5 +1,7 @@
 fullTest:
   device:
+    - model: Pixel2
+      version: 32
     - model: f2q
       version: 30
     - model: a10
@@ -8,17 +10,15 @@ fullTest:
       version: 28
     - model: walleye
       version: 27
-    - model: G8142
-      version: 25
     - model: NexusLowRes
       version: 24
-quickTest:
+smokeTest:
   timeout: 30m
   device:
     - model: x1q
       version: 29
     - model: Pixel2
       version: 28
-    - model: NexusLowRes
-      version: 24
+    - model: G8142
+      version: 25
 

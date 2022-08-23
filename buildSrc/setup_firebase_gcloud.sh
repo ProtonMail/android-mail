@@ -33,7 +33,6 @@ if [ $? != 0 ]; then
 fi
 
 # Prepares gcloud client to interact with ProtonMail firebase project
-echo $CLOUD_PROJECT_ID_MAIL
 gcloud config set project $CLOUD_PROJECT_ID_MAIL
 echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
 gcloud auth activate-service-account --key-file /tmp/service-account.json

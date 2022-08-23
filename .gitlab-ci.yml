@@ -111,8 +111,8 @@ build_release:
     - base64 -d - < "$SENTRY_PROPERTIES_FILE" > "sentry.properties"
     - bundle exec fastlane assembleRelease
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
-    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
 
 
@@ -132,11 +132,32 @@ run_firebase_instrumentation_tests:
   script:
     - bundle exec fastlane instrumentedTest
 
-run_firebase_ui_tests:
+run_firebase_smoke_tests:
   extends: .firebase_test_job
   script:
-    - bundle exec fastlane uiTest
+    - bundle exec fastlane smokeTest
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: never
+    - if: $NIGHTLY_ALPHA_BUILD == "true"
+      when: never
 
+run_firebase_extended_smoke_tests:
+  extends: .firebase_test_job
+  script:
+    - bundle exec fastlane smokeTestExtended
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $NIGHTLY_ALPHA_BUILD == "true"
+      when: never
+
+run_firebase_full_regression_tests:
+  extends: .firebase_test_job
+  script:
+    - bundle exec fastlane fullRegressionTest
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $NIGHTLY_ALPHA_BUILD == "true"
 
 coverage report:
   stage: report
@@ -160,11 +181,16 @@ deploy_to_firebase_dev:
   extends: .firebase_deploy_job
   script:
     - bundle exec fastlane deployToFirebaseDevGroup
+  rules:
+    - if: $NIGHTLY_ALPHA_BUILD == "true"
+      when: never
 
 deploy_to_firebase_alpha:
   extends: .firebase_deploy_job
   script:
     - bundle exec fastlane deployToFirebaseAlphaGroup
+  rules:
+    - if: $NIGHTLY_ALPHA_BUILD == "true"
 
 
 include:

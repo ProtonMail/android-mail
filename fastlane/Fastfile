@@ -44,9 +44,19 @@ platform :android do
     sh("../buildSrc/run_firebase_instrumentation_tests.sh")
   end
 
-  desc "Runs UI Tests on Firebase"
-  lane :uiTest do
+  desc "Runs Smoke Tests Suite on Firebase Test lab"
+  lane :smokeTest do
     sh("../buildSrc/run_firebase_ui_tests.sh")
+  end
+
+  desc "Runs extended Smoke Tests Suite on Firebase Test lab"
+  lane :smokeTestExtended do
+    sh("../buildSrc/run_firebase_ui_tests.sh extended_test")
+  end
+
+  desc "Runs all UI tests on a wide set of devices on Firebase Test lab"
+  lane :fullRegressionTest do
+    sh("../buildSrc/run_firebase_ui_tests.sh full_test")
   end
 
   desc "Generate test coverage report based on the last test run"
