@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DetektPluginSettings">
+    <option name="buildUponDefaultConfig" value="false" />
+    <option name="configurationFilePaths">
+      <set>
+        <option value="$PROJECT_DIR$/config/detekt/config.yml" />
+      </set>
+    </option>
+    <option name="enableFormatting" value="true" />
+    <option name="pluginJarPaths">
+      <set>
+        <option value="$PROJECT_DIR$/detekt-rules/build/libs/detekt-rules.jar" />
+      </set>
+    </option>
+  </component>
   <component name="DetektProjectConfiguration">
     <enableDetekt>true</enableDetekt>
     <enableFormatting>true</enableFormatting>
