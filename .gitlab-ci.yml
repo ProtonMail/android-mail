@@ -8,8 +8,8 @@ before_script:
   - base64 -d - < "$INTERNAL_API_FILE" > app/src/uiTest/assets/internal_api.json
   - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
-  - !reference [.ruby, before_script]
-  - !reference [.checkout-core-submodule, before_script] # included from checkout-core.gitlab-ci.yml
+  - !reference [ .ruby, before_script ]
+  - !reference [ .checkout-core-submodule, before_script ] # included from checkout-core.gitlab-ci.yml
 variables:
   ORG_GRADLE_PROJECT_useCoreGitSubmodule: "true" # see included checkout-core.gitlab-ci.yml for usage context
 
@@ -22,7 +22,7 @@ workflow:
       when: never
     - if: $CI_COMMIT_BRANCH
 
-.gradle-build-cache: &gradle-build-cache
+.gradle_build_cache: &gradle-build-cache
   key:
     prefix: gradle-build-cache
     files:
@@ -37,8 +37,13 @@ cache:
     policy: pull
     paths:
       - .gradle
-  - !reference [.ruby, cache]
+  - !reference [ .ruby, cache ]
   - <<: *gradle-build-cache
+
+.build_job:
+  cache:
+    - <<: *gradle-build-cache
+      policy: pull-push
 
 stages:
   - analyse
@@ -53,28 +58,6 @@ stages:
 .checkout_core_job:
   variables:
     CHECKOUT_CORE_SUBMODULE: "true"
-
-.build_job:
-  stage: build
-  extends: .checkout_core_job
-  tags:
-    - xlarge-k8s
-  artifacts:
-    paths:
-      - app/build/outputs
-  cache:
-    - <<: *gradle-build-cache
-      policy: pull-push
-
-.firebase_test_job:
-  stage: test
-  dependencies:
-    - build_debug
-  tags:
-    - small
-  before_script:
-    - bundle install
-    - ./buildSrc/setup_firebase_gcloud.sh
 
 analyse:
   stage: analyse
@@ -188,19 +171,15 @@ coverage report:
         path: build/reports/cobertura-coverage.xml
 
 
-deploy_to_firebase:
-  stage: deploy
-  dependencies:
-    - build_release
-  tags:
-    - small
+deploy_to_firebase_dev:
+  extends: .firebase_deploy_job
   script:
-    - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
-    - bundle exec fastlane deployToFirebase
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
-    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
-      when: never
+    - bundle exec fastlane deployToFirebaseDevGroup
+
+deploy_to_firebase_alpha:
+  extends: .firebase_deploy_job
+  script:
+    - bundle exec fastlane deployToFirebaseAlphaGroup
 
 
 include:
@@ -217,3 +196,4 @@ include:
     file: '/ci/templates/checkout-core.gitlab-ci.yml'
 
   - local: '/ci/templates/ruby.gitlab-ci.yml'
+  - local: '/ci/templates/base-jobs.gitlab-ci.yml'

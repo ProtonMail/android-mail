@@ -54,8 +54,19 @@ platform :android do
     gradle(task: "-Pci --console=plain coberturaCoverageReport")
   end
 
-  desc "Publish build to firebase app testing"
-  lane :deployToFirebase do
+  desc "Publish alpha build to firebase dev group"
+  lane :deployToFirebaseDevGroup do
+    firebase_app_distribution(
+      app: '1:75309174866:android:d354e9e5da9113aa78cf8b',
+      android_artifact_path: 'app/build/outputs/apk/alpha/release/app-alpha-release.apk',
+      # Service account is created on the CI from an env var each run (destroyed when finishing)
+      service_credentials_file: '/tmp/service-account.json',
+      groups: 'v6-dev-builds-testers'
+    )
+  end
+
+  desc "Publish alpha build to firebase alpha group"
+  lane :deployToFirebaseAlphaGroup do
     firebase_app_distribution(
       app: '1:75309174866:android:d354e9e5da9113aa78cf8b',
       android_artifact_path: 'app/build/outputs/apk/alpha/release/app-alpha-release.apk',

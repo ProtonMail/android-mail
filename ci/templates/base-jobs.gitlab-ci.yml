@@ -1,0 +1,31 @@
+.build_job:
+  stage: build
+  extends: .checkout_core_job
+  tags:
+    - xlarge-k8s
+  artifacts:
+    paths:
+      - app/build/outputs
+
+.firebase_test_job:
+  stage: test
+  dependencies:
+    - build_debug
+  tags:
+    - small
+  before_script:
+    - bundle install
+    - ./buildSrc/setup_firebase_gcloud.sh
+
+.firebase_deploy_job:
+  stage: deploy
+  dependencies:
+    - build_release
+  tags:
+    - small
+  script:
+    - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+      when: never
