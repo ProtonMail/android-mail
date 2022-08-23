@@ -36,6 +36,7 @@ import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiMode
 import ch.protonmail.android.maillabel.presentation.previewdata.MailboxItemLabelsPreviewDataProvider
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.DummyMinExpandedLabel
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.DummyMinExpandedLabelId
+import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.MinExpandedLabelLength
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.Plus1CharLimit
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.Plus2CharsLimit
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.Plus3CharsLimit
@@ -54,7 +55,7 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
         val minExpandedLabelWidth = measureMinExpandedLabelWidth(constraints)
 
         val labelsMeasurables = labels.map { label ->
-            subcompose(label.name) {
+            label to subcompose(label.name) {
                 Label(label = label)
             }
         }
@@ -72,14 +73,14 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
             }
         }
 
-        val labelsPlaceables = labelsMeasurables.map { measurables ->
+        val labelsPlaceables = labelsMeasurables.map { (label, measurables) ->
             measurables.mapNotNull subMap@{ measurable ->
                 val availableWidth = constraints.maxWidth - labelsWidth - plusPlaceableWidth()
                 val maxWidth = availableWidth.coerceAtLeast(minExpandedLabelWidth)
-                val minWidth = minOf(
-                    measurable.measure(constraints.copy(maxWidth = maxWidth)).width,
-                    minExpandedLabelWidth
-                )
+                val minWidth = when {
+                    label.name.length >= MinExpandedLabelLength -> minExpandedLabelWidth
+                    else -> 0
+                }
                 val placeable =
                     measurable.measure(constraints.copy(minWidth = minWidth, maxWidth = maxWidth))
                 if (placeable.width > availableWidth) {
@@ -142,6 +143,7 @@ private fun PlusText(count: Int) {
 
 object MailboxItemLabels {
 
+    internal const val MinExpandedLabelLength = 4
     internal const val Plus1CharLimit = 9
     internal const val Plus2CharsLimit = 99
     internal const val Plus3CharsLimit = 999
