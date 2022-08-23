@@ -16,20 +16,6 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontact.domain.usecase
+package ch.protonmail.android.mailcontact.domain.model
 
-import arrow.core.Either
-import ch.protonmail.android.mailcontact.domain.model.GetContactError
-import kotlinx.coroutines.flow.first
-import me.proton.core.contact.domain.entity.Contact
-import me.proton.core.domain.entity.UserId
-import javax.inject.Inject
-
-class GetContacts @Inject constructor(
-    private val observeContacts: ObserveContacts
-) {
-
-    suspend operator fun invoke(userId: UserId): Either<GetContactError, List<Contact>> =
-        observeContacts(userId).first()
-
-}
+object GetContactError

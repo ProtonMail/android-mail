@@ -74,6 +74,4 @@ dependencies {
     testImplementation(Dependencies.testLibs)
     testImplementation(Proton.Core.network)
     testImplementation(project(":test-data"))
-
-    androidTestImplementation(Dependencies.androidTestLibs)
 }

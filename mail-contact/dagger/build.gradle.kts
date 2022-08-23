@@ -34,7 +34,6 @@ android {
 }
 
 dependencies {
-    implementation(KotlinX.coroutinesCore)
     implementation(Proton.Core.contact)
 
     implementation(project(":mail-contact:data"))

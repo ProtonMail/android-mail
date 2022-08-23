@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import app.cash.turbine.test
 import arrow.core.Either
+import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
@@ -42,9 +43,7 @@ class ObserveContactsTest {
         )
     }
 
-    private val observeContacts by lazy {
-        ObserveContacts(repository)
-    }
+    private val observeContacts = ObserveContacts(repository)
 
     @Test
     fun `when repository returns contacts they are successfully emitted`() = runTest {
@@ -66,13 +65,13 @@ class ObserveContactsTest {
         // When
         observeContacts(UserIdTestData.userId).test {
             // Then
-            assertIs<Either.Left<ObserveContacts.GetContactError>>(awaitItem())
+            assertIs<Either.Left<GetContactError>>(awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `when repository returns encounters any unhandled error then throw`() = runTest {
+    fun `when repository encounters any unhandled error then throw`() = runTest {
         // Given
         every { repository.observeAllContacts(UserIdTestData.userId) } returns flowOf(
             DataResult.Error.Local("failed accessing DB", null)

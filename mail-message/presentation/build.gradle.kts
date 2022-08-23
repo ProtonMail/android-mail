@@ -64,5 +64,4 @@ dependencies {
     implementation(project(":mail-message:domain"))
 
     testImplementation(Dependencies.testLibs)
-    androidTestImplementation(Dependencies.androidTestLibs)
 }

@@ -18,8 +18,12 @@
 
 package ch.protonmail.android.mailcontact.domain.usecase
 
+import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
+import ch.protonmail.android.mailcontact.domain.model.GetContactError
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
+import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.contact.domain.repository.ContactRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
@@ -28,12 +32,10 @@ class ObserveContacts @Inject constructor(
     private val contactRepository: ContactRepository
 ) {
 
-    operator fun invoke(userId: UserId) =
+    operator fun invoke(userId: UserId): Flow<Either<GetContactError, List<Contact>>> =
         contactRepository.observeAllContacts(userId)
             .mapToEither()
             .mapLatest {
                 it.mapLeft { GetContactError }
             }
-
-    object GetContactError
 }

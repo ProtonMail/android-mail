@@ -18,29 +18,29 @@
 
 package ch.protonmail.android.mailcontact.domain.usecase
 
-import java.io.IOException
 import arrow.core.Either
+import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.contact.domain.entity.Contact
-import me.proton.core.contact.domain.repository.ContactRepository
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 class GetContactsTest {
 
-    private val repository = mockk<ContactRepository> {
-        coEvery { this@mockk.getAllContacts(UserIdTestData.userId) } returns ContactTestData.contacts
+    private val observeContacts = mockk<ObserveContacts> {
+        coEvery { this@mockk.invoke(UserIdTestData.userId) } returns flowOf(Either.Right(ContactTestData.contacts))
     }
 
-    private val getContacts = GetContacts(repository)
+    private val getContacts = GetContacts(observeContacts)
 
     @Test
-    fun `when repository returns contacts they are successfully emitted`() = runTest {
+    fun `when observe contacts returns contacts they are successfully emitted`() = runTest {
         // When
         val actual = getContacts(UserIdTestData.userId)
         // Then
@@ -49,12 +49,12 @@ class GetContactsTest {
     }
 
     @Test
-    fun `when repository returns any data error then emit get contacts error`() = runTest {
+    fun `when observe contacts returns any error then emit get contacts error`() = runTest {
         // Given
-        coEvery { repository.getAllContacts(UserIdTestData.userId) } throws IOException()
+        coEvery { observeContacts(UserIdTestData.userId) } returns flowOf(Either.Left(GetContactError))
         // When
         val actual = getContacts(UserIdTestData.userId)
         // Then
-        assertIs<Either.Left<ObserveContacts.GetContactError>>(actual)
+        assertIs<Either.Left<GetContactError>>(actual)
     }
 }
