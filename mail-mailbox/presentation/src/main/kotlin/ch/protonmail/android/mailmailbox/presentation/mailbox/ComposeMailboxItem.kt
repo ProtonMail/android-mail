@@ -56,7 +56,6 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultWeak
-import me.proton.core.compose.theme.headline
 import me.proton.core.compose.theme.overline
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -69,16 +68,15 @@ fun MailboxItem(
 ) {
     Box(
         modifier = modifier
-            .background(ProtonTheme.colors.backgroundNorm)
             .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
-            .padding(ProtonDimens.ExtraSmallSpacing)
+            .padding(horizontal = ProtonDimens.DefaultSpacing, vertical = MailDimens.DefaultSmallSpacing)
             .fillMaxWidth()
     ) {
         val fontWeight = if (item.isRead) FontWeight.Normal else FontWeight.Bold
         val fontColor = if (item.isRead) ProtonTheme.colors.textWeak else ProtonTheme.colors.textNorm
 
         MailboxItemLayout(
-            avatar = { Avatar(avatarUiModel = item.avatar, fontWeight = fontWeight) },
+            avatar = { Avatar(avatarUiModel = item.avatar) },
             actionIcons = { ActionIcons(item = item) },
             participants = {
                 Participants(participants = item.participants, fontWeight = fontWeight, fontColor = fontColor)
@@ -116,7 +114,6 @@ private fun MailboxItemLayout(
             modifier = modifier.constrainAs(avatarRef) {
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
-                bottom.linkTo(parent.bottom)
             }
         ) { avatar() }
 
@@ -124,7 +121,7 @@ private fun MailboxItemLayout(
             modifier = modifier.constrainAs(actionIconsRef) {
                 top.linkTo(parent.top)
                 bottom.linkTo(subjectRef.top)
-                start.linkTo(avatarRef.end)
+                start.linkTo(avatarRef.end, margin = MailDimens.DefaultSmallSpacing)
             }
         ) { actionIcons() }
 
@@ -143,7 +140,7 @@ private fun MailboxItemLayout(
             modifier = modifier.constrainAs(timeRef) {
                 top.linkTo(parent.top)
                 bottom.linkTo(subjectRef.top)
-                end.linkTo(parent.end, margin = spacing)
+                end.linkTo(parent.end)
             },
             contentAlignment = Alignment.CenterEnd
         ) { time() }
@@ -154,7 +151,7 @@ private fun MailboxItemLayout(
                 width = Dimension.fillToConstraints
                 top.linkTo(participantsRef.bottom, margin = spacing)
                 bottom.linkTo(labelsRef.top)
-                start.linkTo(avatarRef.end)
+                start.linkTo(avatarRef.end, margin = MailDimens.DefaultSmallSpacing)
                 end.linkTo(countRef.start)
             }
         ) { subject() }
@@ -173,7 +170,7 @@ private fun MailboxItemLayout(
             modifier = modifier.constrainAs(iconsRef) {
                 top.linkTo(participantsRef.bottom, margin = spacing)
                 bottom.linkTo(labelsRef.top)
-                end.linkTo(parent.end, margin = spacing)
+                end.linkTo(parent.end)
             }
         ) { icons() }
 
@@ -181,8 +178,8 @@ private fun MailboxItemLayout(
             modifier = modifier.constrainAs(labelsRef) {
                 width = Dimension.preferredWrapContent
                 top.linkTo(subjectRef.bottom, margin = spacing)
-                bottom.linkTo(parent.bottom, margin = spacing)
-                start.linkTo(avatarRef.end)
+                bottom.linkTo(parent.bottom)
+                start.linkTo(avatarRef.end, margin = MailDimens.DefaultSmallSpacing)
                 end.linkTo(parent.end)
             }
         ) { labels() }
@@ -192,14 +189,42 @@ private fun MailboxItemLayout(
 @Composable
 private fun Avatar(
     modifier: Modifier = Modifier,
-    avatarUiModel: AvatarUiModel,
-    fontWeight: FontWeight
+    avatarUiModel: AvatarUiModel
 ) {
-    Box(modifier = modifier.padding(ProtonDimens.DefaultSpacing)) {
-        Text(
-            text = avatarUiModel.participantInitial?.uppercase() ?: "*",
-            style = ProtonTheme.typography.headline.copy(fontWeight = fontWeight)
-        )
+    if (avatarUiModel.shouldShowDraftIcon) {
+        Box(
+            modifier = modifier
+                .size(ProtonDimens.LargeSpacing)
+                .padding(MailDimens.ExtraExtraSmallSpacing)
+                .border(
+                    width = MailDimens.DefaultBorder,
+                    color = ProtonTheme.colors.interactionWeakNorm,
+                    shape = ProtonTheme.shapes.medium
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                modifier = Modifier.size(ProtonDimens.SmallIconSize),
+                painter = painterResource(id = R.drawable.ic_proton_pencil),
+                contentDescription = null
+            )
+        }
+    } else {
+        Box(
+            modifier = modifier
+                .size(ProtonDimens.LargeSpacing)
+                .padding(MailDimens.ExtraExtraSmallSpacing)
+                .background(
+                    color = ProtonTheme.colors.interactionWeakNorm,
+                    shape = ProtonTheme.shapes.medium
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                textAlign = TextAlign.Center,
+                text = avatarUiModel.participantInitial.toString()
+            )
+        }
     }
 }
 

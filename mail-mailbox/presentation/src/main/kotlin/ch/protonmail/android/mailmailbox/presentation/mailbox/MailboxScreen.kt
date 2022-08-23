@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.Button
+import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -50,6 +51,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import androidx.viewbinding.BuildConfig
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -246,6 +248,7 @@ private fun MailboxItemsList(
                     onOpenSelectionMode = actions.onOpenSelectionMode
                 )
             }
+            Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.ListSeparatorHeight)
         }
         item {
             when (items.loadState.append) {
