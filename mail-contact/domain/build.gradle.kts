@@ -19,11 +19,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
-
-setAsHiltModule()
 
 android {
     compileSdk = Config.compileSdk
@@ -44,8 +40,6 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
-
     implementation(Dependencies.moduleDomainLibs)
     implementation(KotlinX.serializationJson)
 
