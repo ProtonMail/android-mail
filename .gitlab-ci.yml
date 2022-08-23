@@ -22,28 +22,13 @@ workflow:
       when: never
     - if: $CI_COMMIT_BRANCH
 
-.gradle_build_cache: &gradle-build-cache
-  key:
-    prefix: gradle-build-cache
-    files:
-      - gradle/wrapper/gradle-wrapper.properties
-  paths:
-    - ${CI_PROJECT_DIR}/build/gradle-build-cache
-    - ${CI_PROJECT_DIR}/proton-libs/build/gradle-build-cache
-  policy: pull
-
 cache:
   - key: $CI_COMMIT_REF_SLUG
     policy: pull
     paths:
       - .gradle
   - !reference [ .ruby, cache ]
-  - <<: *gradle-build-cache
-
-.build_job:
-  cache:
-    - <<: *gradle-build-cache
-      policy: pull-push
+  - !reference [ .gradle_build_cache ]
 
 stages:
   - analyse

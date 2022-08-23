@@ -1,3 +1,13 @@
+.gradle_build_cache: &gradle-build-cache
+  key:
+    prefix: gradle-build-cache
+    files:
+      - gradle/wrapper/gradle-wrapper.properties
+  paths:
+    - ${CI_PROJECT_DIR}/build/gradle-build-cache
+    - ${CI_PROJECT_DIR}/proton-libs/build/gradle-build-cache
+  policy: pull
+
 .build_job:
   stage: build
   extends: .checkout_core_job
@@ -6,6 +16,9 @@
   artifacts:
     paths:
       - app/build/outputs
+  cache:
+    - <<: *gradle-build-cache
+      policy: pull-push
 
 .firebase_test_job:
   stage: test
@@ -26,6 +39,6 @@
   script:
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
-    - if: '$CI_PIPELINE_SOURCE == "parent_pipeline"'
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
