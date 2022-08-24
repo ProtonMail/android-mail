@@ -34,7 +34,8 @@ class FormatMailboxItemTime @Inject constructor(
     private val getAppLocale: GetAppLocale
 ) {
 
-    private val currentTime by lazy { getLocalisedCalendar() }
+    private val currentTime: Calendar
+        get() = getLocalisedCalendar()
 
     operator fun invoke(itemTime: Duration): TextUiModel {
         if (itemTime.isToday()) {
