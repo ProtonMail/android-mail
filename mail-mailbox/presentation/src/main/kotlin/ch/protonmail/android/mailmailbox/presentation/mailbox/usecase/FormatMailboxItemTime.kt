@@ -56,9 +56,6 @@ class FormatMailboxItemTime @Inject constructor(
         .format(Date(this.inWholeMilliseconds))
 
     private fun Duration.toDayAndMonth() = this.toFullDate()
-        .replace(",", "")
-        .replace(SimpleDateFormat("YYYY", getDefaultLocale()).format(currentTime.time), "")
-        .trim()
 
     private fun Duration.toHourAndMinutes() = DateFormat.getTimeInstance(DateFormat.SHORT, getDefaultLocale())
         .format(Date(this.inWholeMilliseconds))

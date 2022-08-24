@@ -131,7 +131,7 @@ class FormatMailboxItemTimeTest {
         val actual = formatter.invoke(itemTime.seconds)
         // Then
         assertIs<TextUiModel.Text>(actual, actual.toString())
-        assertEquals(TextUiModel.Text("21 mars"), actual)
+        assertEquals(TextUiModel.Text("21 mars 2022"), actual)
     }
 
     @Test
@@ -143,7 +143,7 @@ class FormatMailboxItemTimeTest {
         val actual = formatter.invoke(itemTime.seconds)
         // Then
         assertIs<TextUiModel.Text>(actual, actual.toString())
-        assertEquals(TextUiModel.Text("Mar 21"), actual)
+        assertEquals(TextUiModel.Text("Mar 21, 2022"), actual)
     }
 
     @Test
