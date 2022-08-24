@@ -137,27 +137,25 @@ run_firebase_smoke_tests:
   script:
     - bundle exec fastlane smokeTest
   rules:
-    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "master" || $NIGHTLY_ALPHA_BUILD == "true"
       when: never
-    - if: $NIGHTLY_ALPHA_BUILD == "true"
-      when: never
+    - when: on_success
 
 run_firebase_extended_smoke_tests:
   extends: .firebase_test_job
   script:
     - bundle exec fastlane smokeTestExtended
   rules:
-    - if: $CI_COMMIT_BRANCH == "master"
     - if: $NIGHTLY_ALPHA_BUILD == "true"
       when: never
+    - if: $CI_COMMIT_BRANCH == "master"
 
 run_firebase_full_regression_tests:
   extends: .firebase_test_job
   script:
     - bundle exec fastlane fullRegressionTest
   rules:
-    - if: $CI_COMMIT_BRANCH == "master"
-    - if: $NIGHTLY_ALPHA_BUILD == "true"
+    - if: $CI_COMMIT_BRANCH == "master" && $NIGHTLY_ALPHA_BUILD == "true"
 
 coverage report:
   stage: report
