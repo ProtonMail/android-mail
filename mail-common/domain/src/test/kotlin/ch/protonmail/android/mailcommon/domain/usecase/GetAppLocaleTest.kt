@@ -25,18 +25,18 @@ import io.mockk.mockk
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class GetDefaultLocaleTest {
+class GetAppLocaleTest {
 
     private val appLocaleRepository = mockk<AppLocaleRepository>()
 
-    private val getDefaultLocale = GetDefaultLocale(appLocaleRepository)
+    private val getAppLocale = GetAppLocale(appLocaleRepository)
 
     @Test
     fun `returns locale provided by app locale repository`() {
         val appLocale = Locale.UK
         every { appLocaleRepository.current() } returns appLocale
 
-        val actual = getDefaultLocale()
+        val actual = getAppLocale()
 
         assertEquals(appLocale, actual)
     }

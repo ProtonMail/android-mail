@@ -18,13 +18,13 @@
 
 package ch.protonmail.android.useragent
 
+import java.util.Locale
+import ch.protonmail.android.mailcommon.domain.usecase.GetAppLocale
 import ch.protonmail.android.useragent.model.DeviceData
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Test
-import java.util.Locale
-import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
 import kotlin.test.assertEquals
 
 class BuildUserAgentTest {
@@ -35,7 +35,7 @@ class BuildUserAgentTest {
     private val device = "device"
     private val defaultLanguage = "en"
 
-    private val getDefaultLanguage = mockk<GetDefaultLocale> {
+    private val getAppLocale = mockk<GetAppLocale> {
         every { this@mockk.invoke() } returns Locale(defaultLanguage)
     }
     private val getDeviceData = mockk<GetDeviceData> {
@@ -56,7 +56,7 @@ class BuildUserAgentTest {
             getAppVersion,
             getAndroidVersion,
             getDeviceData,
-            getDefaultLanguage
+            getAppLocale
         )
     }
 

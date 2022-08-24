@@ -22,8 +22,8 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import ch.protonmail.android.mailcommon.domain.usecase.GetAppLocale
 import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultCalendar
-import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultLocale
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
 import javax.inject.Inject
@@ -31,7 +31,7 @@ import kotlin.time.Duration
 
 class FormatMailboxItemTime @Inject constructor(
     private val getDefaultCalendar: GetDefaultCalendar,
-    private val getDefaultLocale: GetDefaultLocale
+    private val getAppLocale: GetAppLocale
 ) {
 
     private val currentTime by lazy { getDefaultCalendar() }
@@ -52,15 +52,15 @@ class FormatMailboxItemTime @Inject constructor(
         return TextUiModel.Text(itemTime.toFullDate())
     }
 
-    private fun Duration.toFullDate() = DateFormat.getDateInstance(DateFormat.MEDIUM, getDefaultLocale())
+    private fun Duration.toFullDate() = DateFormat.getDateInstance(DateFormat.MEDIUM, getAppLocale())
         .format(Date(this.inWholeMilliseconds))
 
     private fun Duration.toDayAndMonth() = this.toFullDate()
 
-    private fun Duration.toHourAndMinutes() = DateFormat.getTimeInstance(DateFormat.SHORT, getDefaultLocale())
+    private fun Duration.toHourAndMinutes() = DateFormat.getTimeInstance(DateFormat.SHORT, getAppLocale())
         .format(Date(this.inWholeMilliseconds))
 
-    private fun Duration.toWeekDay() = SimpleDateFormat("EEEE", getDefaultLocale())
+    private fun Duration.toWeekDay() = SimpleDateFormat("EEEE", getAppLocale())
         .format(Date(this.inWholeMilliseconds))
 
     private fun isYesterday(itemCalendar: Calendar) = isCurrentYear(itemCalendar) &&
@@ -88,7 +88,7 @@ class FormatMailboxItemTime @Inject constructor(
     private fun Duration.isThisYear() = isCurrentYear(toCalendar())
 
     private fun Duration.toCalendar(): Calendar {
-        val itemCalendar = Calendar.getInstance(getDefaultLocale())
+        val itemCalendar = Calendar.getInstance(getAppLocale())
         itemCalendar.time = Date(this.inWholeMilliseconds)
         return itemCalendar
     }

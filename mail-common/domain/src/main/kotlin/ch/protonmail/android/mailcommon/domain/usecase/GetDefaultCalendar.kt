@@ -22,7 +22,8 @@ import java.util.Calendar
 import javax.inject.Inject
 
 class GetDefaultCalendar @Inject constructor(
-    private val getDefaultLocale: GetDefaultLocale
+    private val getAppLocale: GetAppLocale
 ) {
-    operator fun invoke(): Calendar = Calendar.getInstance(getDefaultLocale())
+
+    operator fun invoke(): Calendar = Calendar.getInstance(getAppLocale())
 }

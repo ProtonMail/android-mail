@@ -22,7 +22,7 @@ import java.util.Locale
 import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
 import javax.inject.Inject
 
-class GetDefaultLocale @Inject constructor(
+class GetAppLocale @Inject constructor(
     private val appLocaleRepository: AppLocaleRepository
 ) {
 

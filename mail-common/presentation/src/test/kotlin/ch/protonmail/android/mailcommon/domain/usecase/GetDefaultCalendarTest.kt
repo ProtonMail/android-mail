@@ -32,11 +32,11 @@ import kotlin.test.assertEquals
 
 class GetDefaultCalendarTest {
 
-    private val getDefaultLocale = mockk<GetDefaultLocale> {
+    private val getAppLocale = mockk<GetAppLocale> {
         every { this@mockk.invoke() } returns Locale.CHINA
     }
 
-    private val getDefaultCalendar = GetDefaultCalendar(getDefaultLocale)
+    private val getDefaultCalendar = GetDefaultCalendar(getAppLocale)
 
     @After
     fun tearDown() {
