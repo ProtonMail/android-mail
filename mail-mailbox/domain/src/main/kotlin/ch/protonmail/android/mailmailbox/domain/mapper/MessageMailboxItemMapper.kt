@@ -38,7 +38,7 @@ class MessageMailboxItemMapper @Inject constructor() : Mapper<Message, MailboxIt
         read = message.read,
         labelIds = message.labelIds,
         conversationId = message.conversationId,
-        labels = message.labelIds.mapNotNull { labels[it] },
+        labels = message.labelIds.mapNotNull { labels[it] }.sortedBy { it.order },
         subject = message.subject,
         senders = listOf(message.sender),
         recipients = message.toList + message.ccList + message.bccList,

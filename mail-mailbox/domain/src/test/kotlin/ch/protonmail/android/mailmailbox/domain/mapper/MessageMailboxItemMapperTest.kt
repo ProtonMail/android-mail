@@ -18,9 +18,11 @@
 
 package ch.protonmail.android.mailmailbox.domain.mapper
 
+import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.label.domain.entity.LabelType
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -53,6 +55,21 @@ class MessageMailboxItemMapperTest {
     }
 
     @Test
+    fun `when mapping message to mailbox item labels are sorted according to their order`() {
+        // Given
+        val labelIds = listOf("5", "0", "10")
+        val labels = labelIds.associate { value ->
+            LabelId(value) to buildLabel(value)
+        }
+        val message = MessageTestData.buildMessage(userId, "id", labelIds = labelIds)
+        // When
+        val actual = mapper.toMailboxItem(message = message, labels = labels)
+        // Then
+        val expected = listOf("0", "5", "10").map(::buildLabel)
+        assertEquals(expected, actual.labels)
+    }
+
+    @Test
     fun `when mapping message with 1 or more attachments to mailbox item then has attachments is true`() {
         // Given
         val message = MessageTestData.buildMessage(userId, "id", numAttachments = 1)
@@ -71,4 +88,11 @@ class MessageMailboxItemMapperTest {
         // Then
         assertFalse(actual.hasAttachments)
     }
+
+    private fun buildLabel(value: String) = LabelTestData.buildLabel(
+        userId = userId,
+        id = value,
+        type = LabelType.MessageLabel,
+        order = value.hashCode()
+    )
 }
