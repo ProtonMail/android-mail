@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
@@ -64,6 +65,7 @@ import kotlinx.coroutines.launch
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.util.kotlin.exhaustive
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -312,10 +314,10 @@ class MailboxViewModel @Inject constructor(
     private suspend fun getContacts(): List<Contact> {
         val userId = primaryUserId.firstOrNull() ?: return emptyList()
 
-        return getContacts(userId).fold(
-            ifLeft = { emptyList() },
-            ifRight = { it }
-        )
+        return getContacts(userId).getOrElse {
+            Timber.i("Failed getting user contacts for displaying mailbox. Fallback to using display name")
+            emptyList()
+        }
     }
 
     private suspend fun getPreferredViewMode(): ViewMode {
