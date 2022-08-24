@@ -45,6 +45,7 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.moduleDataLibs)
+    implementation(AndroidX.AppCompat.appCompat)
 
     implementation(Proton.Core.user)
     implementation(Proton.Core.featureFlag)

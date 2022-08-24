@@ -16,15 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain.usecase
+package ch.protonmail.android.mailcommon.domain.repository
 
 import java.util.Locale
-import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
-import javax.inject.Inject
 
-class GetDefaultLocale @Inject constructor(
-    private val appLocaleRepository: AppLocaleRepository
-) {
-
-    operator fun invoke(): Locale = appLocaleRepository.current()
+interface AppLocaleRepository {
+    fun current(): Locale
 }

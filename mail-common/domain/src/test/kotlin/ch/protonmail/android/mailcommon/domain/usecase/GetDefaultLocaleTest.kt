@@ -20,11 +20,24 @@ package ch.protonmail.android.mailcommon.domain.usecase
 
 import java.util.Locale
 import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
-import javax.inject.Inject
+import io.mockk.every
+import io.mockk.mockk
+import org.junit.Test
+import kotlin.test.assertEquals
 
-class GetDefaultLocale @Inject constructor(
-    private val appLocaleRepository: AppLocaleRepository
-) {
+class GetDefaultLocaleTest {
 
-    operator fun invoke(): Locale = appLocaleRepository.current()
+    private val appLocaleRepository = mockk<AppLocaleRepository>()
+
+    private val getDefaultLocale = GetDefaultLocale(appLocaleRepository)
+
+    @Test
+    fun `returns locale provided by app locale repository`() {
+        val appLocale = Locale.UK
+        every { appLocaleRepository.current() } returns appLocale
+
+        val actual = getDefaultLocale()
+
+        assertEquals(appLocale, actual)
+    }
 }
