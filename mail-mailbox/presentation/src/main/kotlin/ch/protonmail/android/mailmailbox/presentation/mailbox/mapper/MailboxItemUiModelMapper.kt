@@ -44,9 +44,11 @@ class MailboxItemUiModelMapper @Inject constructor(
     private val getParticipantsResolvedNames: GetParticipantsResolvedNames
 ) : Mapper<MailboxItem, MailboxItemUiModel> {
 
-    fun toUiModel(mailboxItem: MailboxItem, contacts: List<Contact>): MailboxItemUiModel =
-        MailboxItemUiModel(
-            avatar = getAvatarUiModel(mailboxItem),
+    fun toUiModel(mailboxItem: MailboxItem, contacts: List<Contact>): MailboxItemUiModel {
+        val participantsResolvedNames = getParticipantsResolvedNames(mailboxItem, contacts)
+
+        return MailboxItemUiModel(
+            avatar = getAvatarUiModel(mailboxItem, participantsResolvedNames),
             type = mailboxItem.type,
             id = mailboxItem.id,
             userId = mailboxItem.userId,
@@ -55,7 +57,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             isRead = mailboxItem.read,
             labels = toLabelUiModels(mailboxItem.labels),
             subject = mailboxItem.subject,
-            participants = getParticipantsResolvedNames(mailboxItem, contacts),
+            participants = participantsResolvedNames,
             shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
             shouldShowRepliedAllIcon = shouldShowRepliedAllIcon(mailboxItem),
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
@@ -64,6 +66,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             locationIconResIds = getLocationIconsToDisplay(mailboxItem),
             shouldShowAttachmentIcon = mailboxItem.hasAttachments
         )
+    }
 
     private fun getLocationIconsToDisplay(mailboxItem: MailboxItem) =
         when (val icons = getMailboxItemLocationIcons(mailboxItem)) {

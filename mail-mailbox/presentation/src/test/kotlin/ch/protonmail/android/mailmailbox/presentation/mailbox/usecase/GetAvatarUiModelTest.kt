@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
@@ -27,6 +26,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class GetAvatarUiModelTest {
+
+    private val participantsResolvedNames = listOf("Test")
 
     private val getAvatarUiModel = GetAvatarUiModel()
 
@@ -43,19 +44,18 @@ class GetAvatarUiModelTest {
         )
 
         // When
-        val result = getAvatarUiModel(mailboxItem)
+        val result = getAvatarUiModel(mailboxItem, participantsResolvedNames)
 
         // Then
         assertEquals(expectedResult, result)
     }
 
     @Test
-    fun `avatar should show first letter of recipient for all sent messages in message mode`() {
+    fun `avatar should show first letter of first participant for all sent messages in message mode`() {
         // Given
         val mailboxItem = buildMailboxItem(
             type = MailboxItemType.Message,
-            labelIds = listOf(SystemLabelId.AllSent.labelId),
-            recipients = listOf(Recipient(address = "test@protonmail.com", name = ""))
+            labelIds = listOf(SystemLabelId.AllSent.labelId)
         )
         val expectedResult = AvatarUiModel(
             participantInitial = 'T',
@@ -63,27 +63,26 @@ class GetAvatarUiModelTest {
         )
 
         // When
-        val result = getAvatarUiModel(mailboxItem)
+        val result = getAvatarUiModel(mailboxItem, participantsResolvedNames)
 
         // Then
         assertEquals(expectedResult, result)
     }
 
     @Test
-    fun `avatar should show first letter of sender for mailbox items in conversation mode`() {
+    fun `avatar should show first letter of first participant for mailbox items in conversation mode`() {
         // Given
         val mailboxItem = buildMailboxItem(
             type = MailboxItemType.Conversation,
-            labelIds = listOf(SystemLabelId.Inbox.labelId),
-            senders = listOf(Recipient(address = "test@protonmail.com", name = "Name"))
+            labelIds = listOf(SystemLabelId.Inbox.labelId)
         )
         val expectedResult = AvatarUiModel(
-            participantInitial = 'N',
+            participantInitial = 'T',
             shouldShowDraftIcon = false
         )
 
         // When
-        val result = getAvatarUiModel(mailboxItem)
+        val result = getAvatarUiModel(mailboxItem, participantsResolvedNames)
 
         // Then
         assertEquals(expectedResult, result)

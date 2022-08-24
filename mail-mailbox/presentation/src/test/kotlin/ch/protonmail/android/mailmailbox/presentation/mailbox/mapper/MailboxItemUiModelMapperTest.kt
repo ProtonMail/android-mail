@@ -53,7 +53,7 @@ class MailboxItemUiModelMapperTest {
         every { toColor(any()) } returns Color.Unspecified.right()
     }
     private val getAvatarUiModel: GetAvatarUiModel = mockk {
-        every { this@mockk.invoke(any()) } returns mockk()
+        every { this@mockk.invoke(any(), any()) } returns mockk()
     }
     private val getMailboxItemLocationIcons = mockk<GetMailboxItemLocationIcons> {
         every { this@mockk(any()) } returns GetMailboxItemLocationIcons.Result.None
@@ -244,7 +244,9 @@ class MailboxItemUiModelMapperTest {
         // Given
         val avatarUiModel = AvatarUiModel(participantInitial = 'T', shouldShowDraftIcon = false)
         val mailboxItem = buildMailboxItem()
-        every { getAvatarUiModel(mailboxItem) } returns avatarUiModel
+        val resolvedNames = listOf("contact name", "display name")
+        every { getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts) } returns resolvedNames
+        every { getAvatarUiModel(mailboxItem, resolvedNames) } returns avatarUiModel
 
         // When
         val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)

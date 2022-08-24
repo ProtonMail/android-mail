@@ -26,22 +26,14 @@ import javax.inject.Inject
 
 class GetAvatarUiModel @Inject constructor() {
 
-    operator fun invoke(mailboxItem: MailboxItem): AvatarUiModel {
+    operator fun invoke(mailboxItem: MailboxItem, participantsResolvedNames: List<String>): AvatarUiModel {
         return if (
             mailboxItem.type == MailboxItemType.Message &&
             mailboxItem.labelIds.any { it == SystemLabelId.AllDrafts.labelId }
         ) {
             AvatarUiModel(participantInitial = null, shouldShowDraftIcon = true)
-        } else if (
-            mailboxItem.type == MailboxItemType.Message &&
-            mailboxItem.labelIds.any { it == SystemLabelId.AllSent.labelId }
-        ) {
-            val participant = mailboxItem.recipients[0]
-            val participantInitial = participant.name.ifEmpty { participant.address }.first().uppercaseChar()
-            AvatarUiModel(participantInitial = participantInitial, shouldShowDraftIcon = false)
         } else {
-            val participant = mailboxItem.senders[0]
-            val participantInitial = participant.name.ifEmpty { participant.address }.first().uppercaseChar()
+            val participantInitial = participantsResolvedNames[0].first().uppercaseChar()
             AvatarUiModel(participantInitial = participantInitial, shouldShowDraftIcon = false)
         }
     }

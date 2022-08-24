@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
@@ -32,7 +33,7 @@ class GetParticipantsResolvedNamesTest {
     private val useCase = GetParticipantsResolvedNames()
 
     @Test
-    fun `when mailbox item is not in sent or drafts ui model shows senders names as participants`() {
+    fun `when mailbox item is not in all sent or all drafts ui model shows senders names as participants`() {
         // Given
         val senders = listOf(
             Recipient("sender@proton.ch", "sender"),
@@ -50,14 +51,15 @@ class GetParticipantsResolvedNamesTest {
     }
 
     @Test
-    fun `when mailbox item is in sent or drafts ui model shows recipients names as participants`() {
+    fun `when message type mailbox item is in all sent or all drafts ui model shows recipients names as participants`() {
         // Given
         val recipients = listOf(
             Recipient("recipient@proton.ch", "recipient"),
             Recipient("recipient1@proton.ch", "recipient1"),
         )
         val mailboxItem = buildMailboxItem(
-            labelIds = listOf(SystemLabelId.Sent.labelId),
+            type = MailboxItemType.Message,
+            labelIds = listOf(SystemLabelId.AllSent.labelId),
             recipients = recipients
         )
         // When

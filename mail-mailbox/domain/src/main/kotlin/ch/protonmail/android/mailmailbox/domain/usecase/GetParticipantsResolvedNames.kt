@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
@@ -29,12 +30,12 @@ class GetParticipantsResolvedNames @Inject constructor() {
 
     operator fun invoke(mailboxItem: MailboxItem, contacts: List<Contact>): List<String> {
         val displayRecipientLocations = setOf(
-            SystemLabelId.Sent.labelId,
-            SystemLabelId.Drafts.labelId
+            SystemLabelId.AllSent.labelId,
+            SystemLabelId.AllDrafts.labelId
         )
         val shouldDisplayRecipients = mailboxItem.labelIds.any { it in displayRecipientLocations }
 
-        return if (shouldDisplayRecipients) {
+        return if (shouldDisplayRecipients && mailboxItem.type == MailboxItemType.Message) {
             mailboxItem.recipients.map { getPreferredName(contacts, it) }
         } else {
             mailboxItem.senders.map { getPreferredName(contacts, it) }
