@@ -21,7 +21,7 @@ package ch.protonmail.android.mailcommon.domain.usecase
 import java.util.Calendar
 import javax.inject.Inject
 
-class GetDefaultCalendar @Inject constructor(
+class GetLocalisedCalendar @Inject constructor(
     private val getAppLocale: GetAppLocale
 ) {
 

@@ -23,7 +23,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import ch.protonmail.android.mailcommon.domain.usecase.GetAppLocale
-import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultCalendar
+import ch.protonmail.android.mailcommon.domain.usecase.GetLocalisedCalendar
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
@@ -43,11 +43,11 @@ import kotlin.time.Duration.Companion.seconds
 
 class FormatMailboxItemTimeTest {
 
-    private val getDefaultCalendar = mockk<GetDefaultCalendar>()
+    private val getLocalisedCalendar = mockk<GetLocalisedCalendar>()
     private val getAppLocale = mockk<GetAppLocale>()
 
     private val formatter = FormatMailboxItemTime(
-        getDefaultCalendar,
+        getLocalisedCalendar,
         getAppLocale
     )
 
@@ -201,7 +201,7 @@ class FormatMailboxItemTimeTest {
         val calendar = Calendar.getInstance(locale)
         calendar.time = Date(currentTime.inWholeMilliseconds)
 
-        every { getDefaultCalendar() } returns calendar
+        every { getLocalisedCalendar() } returns calendar
         every { getAppLocale() } returns locale
     }
 }

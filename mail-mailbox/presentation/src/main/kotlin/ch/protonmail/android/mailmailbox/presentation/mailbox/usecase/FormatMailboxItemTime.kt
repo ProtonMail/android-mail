@@ -23,18 +23,18 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import ch.protonmail.android.mailcommon.domain.usecase.GetAppLocale
-import ch.protonmail.android.mailcommon.domain.usecase.GetDefaultCalendar
+import ch.protonmail.android.mailcommon.domain.usecase.GetLocalisedCalendar
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
 import javax.inject.Inject
 import kotlin.time.Duration
 
 class FormatMailboxItemTime @Inject constructor(
-    private val getDefaultCalendar: GetDefaultCalendar,
+    private val getLocalisedCalendar: GetLocalisedCalendar,
     private val getAppLocale: GetAppLocale
 ) {
 
-    private val currentTime by lazy { getDefaultCalendar() }
+    private val currentTime by lazy { getLocalisedCalendar() }
 
     operator fun invoke(itemTime: Duration): TextUiModel {
         if (itemTime.isToday()) {

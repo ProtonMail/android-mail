@@ -30,13 +30,13 @@ import org.junit.After
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class GetDefaultCalendarTest {
+class GetLocalisedCalendarTest {
 
     private val getAppLocale = mockk<GetAppLocale> {
         every { this@mockk.invoke() } returns Locale.CHINA
     }
 
-    private val getDefaultCalendar = GetDefaultCalendar(getAppLocale)
+    private val getLocalisedCalendar = GetLocalisedCalendar(getAppLocale)
 
     @After
     fun tearDown() {
@@ -48,7 +48,7 @@ class GetDefaultCalendarTest {
         // Given
         mockkStatic(Calendar::class)
         // When
-        getDefaultCalendar()
+        getLocalisedCalendar()
         // Then
         val slot = slot<Locale>()
         verify { Calendar.getInstance(capture(slot)) }
