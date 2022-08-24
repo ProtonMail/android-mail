@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
@@ -206,7 +207,7 @@ private fun Avatar(
             Icon(
                 modifier = Modifier.size(ProtonDimens.SmallIconSize),
                 painter = painterResource(id = R.drawable.ic_proton_pencil),
-                contentDescription = null
+                contentDescription = NO_CONTENT_DESCRIPTION
             )
         }
     } else {
@@ -365,7 +366,7 @@ private fun MailboxItemIcon(
     Icon(
         modifier = Modifier.size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = iconId),
-        contentDescription = null,
+        contentDescription = NO_CONTENT_DESCRIPTION,
         tint = colorResource(id = tintId)
     )
 }

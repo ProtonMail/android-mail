@@ -47,6 +47,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.presentation.R
@@ -310,8 +311,6 @@ object SwipeActionsPreferenceScreen {
         val onChangeSwipeLeftClick: () -> Unit
     )
 }
-
-private val NO_CONTENT_DESCRIPTION: String? = null
 
 @Composable
 @Preview(showBackground = true)
