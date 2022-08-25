@@ -22,14 +22,20 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 fun ComposeContentTestRule.awaitProgressIsHidden() {
     onNodeWithTag(PROTON_PROGRESS_TEST_TAG)
         .awaitHidden(this)
 }
 
-fun SemanticsNodeInteraction.awaitDisplayed(composeTestRule: ComposeContentTestRule): SemanticsNodeInteraction =
-    also { composeTestRule.waitUntil { nodeIsDisplayed(this) } }
+fun SemanticsNodeInteraction.awaitDisplayed(
+    composeTestRule: ComposeContentTestRule,
+    timeout: Duration = 1.seconds
+): SemanticsNodeInteraction = also {
+    composeTestRule.waitUntil(timeout.inWholeMilliseconds) { nodeIsDisplayed(this) }
+}
 
 fun SemanticsNodeInteraction.awaitHidden(composeTestRule: ComposeContentTestRule): SemanticsNodeInteraction =
     also { composeTestRule.waitUntil { nodeIsNotDisplayed(this) } }

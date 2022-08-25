@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.uitest.robot.mailbox.allmail
 
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onFirst
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 
 @Suppress("unused")
@@ -36,7 +36,7 @@ class AllMailRobot(
             composeRule
                 .onAllNodesWithText(R.string.label_title_all_mail)
                 .onFirst() // Both "TopBar" and "sidebar" are found as match of "All Mail". Only TopBar is displayed.
-                .assertIsDisplayed()
+                .awaitDisplayed(composeRule)
         }
     }
 

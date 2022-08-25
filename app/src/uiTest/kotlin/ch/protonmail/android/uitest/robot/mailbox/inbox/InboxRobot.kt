@@ -22,14 +22,15 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import ch.protonmail.android.mailmailbox.presentation.mailbox.TEST_TAG_MAILBOX_SCREEN
+import ch.protonmail.android.maillabel.R
 import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_UNREAD_FILTER
+import ch.protonmail.android.mailmailbox.presentation.mailbox.TEST_TAG_MAILBOX_SCREEN
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.MoveToFolderRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.SelectionStateRobotInterface
+import ch.protonmail.android.uitest.util.onAllNodesWithText
 import me.proton.core.test.android.robots.CoreRobot
 import me.proton.core.test.android.robots.CoreVerify
 
@@ -113,7 +114,7 @@ class InboxRobot(
 
         fun mailboxScreenDisplayed() {
             composeRule.waitUntil(timeoutMillis = 60_000) {
-                composeRule.onAllNodesWithTag(TEST_TAG_MAILBOX_SCREEN)
+                composeRule.onAllNodesWithText(R.string.label_title_inbox)
                     .fetchSemanticsNodes(false)
                     .isNotEmpty()
             }

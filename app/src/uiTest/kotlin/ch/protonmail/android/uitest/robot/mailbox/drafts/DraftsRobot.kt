@@ -17,13 +17,13 @@
  */
 package ch.protonmail.android.uitest.robot.mailbox.drafts
 
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onFirst
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 
 /**
@@ -89,7 +89,7 @@ class DraftsRobot : MailboxRobotInterface {
             composeRule
                 .onAllNodesWithText(R.string.label_title_drafts)
                 .onFirst() // "Drafts" string has matches in both topbar and sidebar. Only topbar one is displayed.
-                .assertIsDisplayed()
+                .awaitDisplayed(composeRule)
         }
 
         @SuppressWarnings("EmptyFunctionBlock")
