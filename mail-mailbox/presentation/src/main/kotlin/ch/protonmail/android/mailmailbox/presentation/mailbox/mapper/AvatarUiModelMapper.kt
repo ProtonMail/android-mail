@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
+package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
@@ -24,7 +24,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
 import javax.inject.Inject
 
-class GetAvatarUiModel @Inject constructor() {
+class AvatarUiModelMapper @Inject constructor() {
 
     operator fun invoke(mailboxItem: MailboxItem, participantsResolvedNames: List<String>): AvatarUiModel {
         return if (

@@ -28,7 +28,6 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetAvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
@@ -49,11 +48,11 @@ import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapperTest {
 
+    private val avatarUiModelMapper: AvatarUiModelMapper = mockk {
+        every { this@mockk.invoke(any(), any()) } returns mockk()
+    }
     private val colorMapper: ColorMapper = mockk {
         every { toColor(any()) } returns Color.Unspecified.right()
-    }
-    private val getAvatarUiModel: GetAvatarUiModel = mockk {
-        every { this@mockk.invoke(any(), any()) } returns mockk()
     }
     private val getMailboxItemLocationIcons = mockk<GetMailboxItemLocationIcons> {
         every { this@mockk(any()) } returns GetMailboxItemLocationIcons.Result.None
@@ -65,9 +64,9 @@ class MailboxItemUiModelMapperTest {
     }
 
     private val mapper = MailboxItemUiModelMapper(
+        avatarUiModelMapper = avatarUiModelMapper,
         colorMapper = colorMapper,
         formatMailboxItemTime = formatMailboxItemTime,
-        getAvatarUiModel = getAvatarUiModel,
         getMailboxItemLocationIcons = getMailboxItemLocationIcons,
         getParticipantsResolvedNames = getParticipantsResolvedNames
     )
@@ -246,7 +245,7 @@ class MailboxItemUiModelMapperTest {
         val mailboxItem = buildMailboxItem()
         val resolvedNames = listOf("contact name", "display name")
         every { getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts) } returns resolvedNames
-        every { getAvatarUiModel(mailboxItem, resolvedNames) } returns avatarUiModel
+        every { avatarUiModelMapper(mailboxItem, resolvedNames) } returns avatarUiModel
 
         // When
         val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
