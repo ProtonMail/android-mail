@@ -15,9 +15,9 @@ fullTest:
 smokeTest:
   timeout: 30m
   device:
-    - model: x1q
-      version: 29
-    - model: Pixel2
+    - model: oriole
+      version: 31
+    - model: HWANE-LX2
       version: 28
     - model: G8142
       version: 25
