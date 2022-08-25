@@ -18,17 +18,17 @@
 
 package ch.protonmail.android.mailcommon.presentation.compose
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 object MailDimens {
-    val HairlineBorder = Dp.Hairline
     val ThinBorder = 0.5.dp
     val DefaultBorder = 1.dp
+
     val TinySpacing = 2.dp
 
     val ListSeparatorHeight = 1.dp
 
-    val DefaultSmallSpacing = 12.dp
-    val ExtraExtraSmallSpacing = 2.dp
+    val DefaultTouchTargetSize = 48.dp
+
+    val AvatarMinSize = 32.dp
 }

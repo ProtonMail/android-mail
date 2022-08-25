@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -70,7 +71,12 @@ fun MailboxItem(
     Box(
         modifier = modifier
             .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
-            .padding(horizontal = ProtonDimens.DefaultSpacing, vertical = MailDimens.DefaultSmallSpacing)
+            .padding(
+                start = ProtonDimens.SmallSpacing,
+                end = ProtonDimens.DefaultSpacing,
+                top = ProtonDimens.ExtraSmallSpacing,
+                bottom = ProtonDimens.ExtraSmallSpacing
+            )
             .fillMaxWidth()
     ) {
         val fontWeight = if (item.isRead) FontWeight.Normal else FontWeight.Bold
@@ -106,7 +112,6 @@ private fun MailboxItemLayout(
 ) {
     ConstraintLayout(modifier = modifier.fillMaxWidth()) {
 
-        val spacing = ProtonDimens.ExtraSmallSpacing
         val (
             avatarRef, actionIconsRef, participantsRef, timeRef, subjectRef, countRef, iconsRef, labelsRef
         ) = createRefs()
@@ -120,9 +125,9 @@ private fun MailboxItemLayout(
 
         Box(
             modifier = modifier.constrainAs(actionIconsRef) {
-                top.linkTo(parent.top)
+                top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
                 bottom.linkTo(subjectRef.top)
-                start.linkTo(avatarRef.end, margin = MailDimens.DefaultSmallSpacing)
+                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
             }
         ) { actionIcons() }
 
@@ -130,7 +135,7 @@ private fun MailboxItemLayout(
             modifier = modifier.constrainAs(participantsRef) {
                 horizontalChainWeight = 0f
                 width = Dimension.fillToConstraints
-                top.linkTo(parent.top)
+                top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
                 bottom.linkTo(subjectRef.top)
                 start.linkTo(actionIconsRef.end)
                 end.linkTo(timeRef.start)
@@ -139,7 +144,7 @@ private fun MailboxItemLayout(
 
         Box(
             modifier = modifier.constrainAs(timeRef) {
-                top.linkTo(parent.top)
+                top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
                 bottom.linkTo(subjectRef.top)
                 end.linkTo(parent.end)
             },
@@ -150,9 +155,9 @@ private fun MailboxItemLayout(
             modifier = modifier.constrainAs(subjectRef) {
                 horizontalChainWeight = 0f
                 width = Dimension.fillToConstraints
-                top.linkTo(participantsRef.bottom, margin = spacing)
+                top.linkTo(participantsRef.bottom)
                 bottom.linkTo(labelsRef.top)
-                start.linkTo(avatarRef.end, margin = MailDimens.DefaultSmallSpacing)
+                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(countRef.start)
             }
         ) { subject() }
@@ -160,16 +165,16 @@ private fun MailboxItemLayout(
         Box(
             modifier = modifier.constrainAs(countRef) {
                 horizontalChainWeight = 0f
-                top.linkTo(participantsRef.bottom, margin = spacing)
+                top.linkTo(participantsRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
                 bottom.linkTo(labelsRef.top)
-                start.linkTo(subjectRef.end, margin = spacing)
-                end.linkTo(iconsRef.start, margin = spacing)
+                start.linkTo(subjectRef.end, margin = ProtonDimens.ExtraSmallSpacing)
+                end.linkTo(iconsRef.start, margin = ProtonDimens.ExtraSmallSpacing)
             }
         ) { count() }
 
         Box(
             modifier = modifier.constrainAs(iconsRef) {
-                top.linkTo(participantsRef.bottom, margin = spacing)
+                top.linkTo(participantsRef.bottom)
                 bottom.linkTo(labelsRef.top)
                 end.linkTo(parent.end)
             }
@@ -178,9 +183,9 @@ private fun MailboxItemLayout(
         Box(
             modifier = modifier.constrainAs(labelsRef) {
                 width = Dimension.preferredWrapContent
-                top.linkTo(subjectRef.bottom, margin = spacing)
-                bottom.linkTo(parent.bottom)
-                start.linkTo(avatarRef.end, margin = MailDimens.DefaultSmallSpacing)
+                top.linkTo(subjectRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
+                bottom.linkTo(parent.bottom, margin = ProtonDimens.ExtraSmallSpacing)
+                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(parent.end)
             }
         ) { labels() }
@@ -192,41 +197,51 @@ private fun Avatar(
     modifier: Modifier = Modifier,
     avatarUiModel: AvatarUiModel
 ) {
-    when (avatarUiModel) {
-        is AvatarUiModel.DraftIcon ->
-            Box(
-                modifier = modifier
-                    .size(ProtonDimens.LargeSpacing)
-                    .padding(MailDimens.ExtraExtraSmallSpacing)
-                    .border(
-                        width = MailDimens.DefaultBorder,
-                        color = ProtonTheme.colors.interactionWeakNorm,
-                        shape = ProtonTheme.shapes.medium
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    modifier = Modifier.size(ProtonDimens.SmallIconSize),
-                    painter = painterResource(id = R.drawable.ic_proton_pencil),
-                    contentDescription = NO_CONTENT_DESCRIPTION
-                )
-            }
-        is AvatarUiModel.ParticipantInitial ->
-            Box(
-                modifier = modifier
-                    .size(ProtonDimens.LargeSpacing)
-                    .padding(MailDimens.ExtraExtraSmallSpacing)
-                    .background(
-                        color = ProtonTheme.colors.interactionWeakNorm,
-                        shape = ProtonTheme.shapes.medium
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    textAlign = TextAlign.Center,
-                    text = avatarUiModel.char.toString()
-                )
-            }
+    Box(
+        modifier = modifier.size(MailDimens.DefaultTouchTargetSize),
+        contentAlignment = Alignment.Center
+    ) {
+        when (avatarUiModel) {
+            is AvatarUiModel.DraftIcon ->
+                Box(
+                    modifier = modifier
+                        .sizeIn(
+                            minWidth = MailDimens.AvatarMinSize,
+                            minHeight = MailDimens.AvatarMinSize
+                        )
+                        .border(
+                            width = MailDimens.DefaultBorder,
+                            color = ProtonTheme.colors.interactionWeakNorm,
+                            shape = ProtonTheme.shapes.medium
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        modifier = Modifier.size(ProtonDimens.SmallIconSize),
+                        painter = painterResource(id = R.drawable.ic_proton_pencil),
+                        contentDescription = NO_CONTENT_DESCRIPTION
+                    )
+                }
+            is AvatarUiModel.ParticipantInitial ->
+                Box(
+                    modifier = modifier
+                        .sizeIn(
+                            minWidth = MailDimens.AvatarMinSize,
+                            minHeight = MailDimens.AvatarMinSize
+                        )
+                        .background(
+                            color = ProtonTheme.colors.interactionWeakNorm,
+                            shape = ProtonTheme.shapes.medium
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
+                        textAlign = TextAlign.Center,
+                        text = avatarUiModel.char.toString()
+                    )
+                }
+        }
     }
 }
 
