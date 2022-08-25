@@ -38,10 +38,7 @@ class GetAvatarUiModelTest {
             type = MailboxItemType.Message,
             labelIds = listOf(SystemLabelId.AllDrafts.labelId)
         )
-        val expectedResult = AvatarUiModel(
-            participantInitial = null,
-            shouldShowDraftIcon = true
-        )
+        val expectedResult = AvatarUiModel.DraftIcon
 
         // When
         val result = getAvatarUiModel(mailboxItem, participantsResolvedNames)
@@ -57,10 +54,7 @@ class GetAvatarUiModelTest {
             type = MailboxItemType.Message,
             labelIds = listOf(SystemLabelId.AllSent.labelId)
         )
-        val expectedResult = AvatarUiModel(
-            participantInitial = 'T',
-            shouldShowDraftIcon = false
-        )
+        val expectedResult = AvatarUiModel.ParticipantInitial(char = 'T')
 
         // When
         val result = getAvatarUiModel(mailboxItem, participantsResolvedNames)
@@ -76,10 +70,7 @@ class GetAvatarUiModelTest {
             type = MailboxItemType.Conversation,
             labelIds = listOf(SystemLabelId.Inbox.labelId)
         )
-        val expectedResult = AvatarUiModel(
-            participantInitial = 'T',
-            shouldShowDraftIcon = false
-        )
+        val expectedResult = AvatarUiModel.ParticipantInitial(char = 'T')
 
         // When
         val result = getAvatarUiModel(mailboxItem, participantsResolvedNames)

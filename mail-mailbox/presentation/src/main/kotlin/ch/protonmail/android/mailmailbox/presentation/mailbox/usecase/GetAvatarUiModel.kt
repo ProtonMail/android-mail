@@ -31,10 +31,10 @@ class GetAvatarUiModel @Inject constructor() {
             mailboxItem.type == MailboxItemType.Message &&
             mailboxItem.labelIds.any { it == SystemLabelId.AllDrafts.labelId }
         ) {
-            AvatarUiModel(participantInitial = null, shouldShowDraftIcon = true)
+            AvatarUiModel.DraftIcon
         } else {
             val participantInitial = participantsResolvedNames[0].first().uppercaseChar()
-            AvatarUiModel(participantInitial = participantInitial, shouldShowDraftIcon = false)
+            AvatarUiModel.ParticipantInitial(participantInitial)
         }
     }
 }

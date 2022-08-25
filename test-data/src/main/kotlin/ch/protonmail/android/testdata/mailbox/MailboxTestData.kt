@@ -150,7 +150,7 @@ object MailboxItemUiModelTestData {
         subject: String = "subject",
         isRead: Boolean = true
     ) = MailboxItemUiModel(
-        avatar = AvatarUiModel('T', false),
+        avatar = AvatarUiModel.ParticipantInitial('T'),
         type = type,
         id = id,
         userId = userId,

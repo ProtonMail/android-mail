@@ -242,7 +242,7 @@ class MailboxItemUiModelMapperTest {
     @Test
     fun `avatar ui model should be received from the use case`() {
         // Given
-        val avatarUiModel = AvatarUiModel(participantInitial = 'T', shouldShowDraftIcon = false)
+        val avatarUiModel = AvatarUiModel.ParticipantInitial(char = 'T')
         val mailboxItem = buildMailboxItem()
         val resolvedNames = listOf("contact name", "display name")
         every { getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts) } returns resolvedNames

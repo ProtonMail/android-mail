@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
-data class AvatarUiModel(
-    val participantInitial: Char?,
-    val shouldShowDraftIcon: Boolean
-)
+sealed interface AvatarUiModel {
+    data class ParticipantInitial(val char: Char) : AvatarUiModel
+    object DraftIcon : AvatarUiModel
+}

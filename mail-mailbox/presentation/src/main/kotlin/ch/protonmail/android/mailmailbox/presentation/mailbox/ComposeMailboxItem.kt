@@ -192,40 +192,41 @@ private fun Avatar(
     modifier: Modifier = Modifier,
     avatarUiModel: AvatarUiModel
 ) {
-    if (avatarUiModel.shouldShowDraftIcon) {
-        Box(
-            modifier = modifier
-                .size(ProtonDimens.LargeSpacing)
-                .padding(MailDimens.ExtraExtraSmallSpacing)
-                .border(
-                    width = MailDimens.DefaultBorder,
-                    color = ProtonTheme.colors.interactionWeakNorm,
-                    shape = ProtonTheme.shapes.medium
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                modifier = Modifier.size(ProtonDimens.SmallIconSize),
-                painter = painterResource(id = R.drawable.ic_proton_pencil),
-                contentDescription = NO_CONTENT_DESCRIPTION
-            )
-        }
-    } else {
-        Box(
-            modifier = modifier
-                .size(ProtonDimens.LargeSpacing)
-                .padding(MailDimens.ExtraExtraSmallSpacing)
-                .background(
-                    color = ProtonTheme.colors.interactionWeakNorm,
-                    shape = ProtonTheme.shapes.medium
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                textAlign = TextAlign.Center,
-                text = avatarUiModel.participantInitial.toString()
-            )
-        }
+    when (avatarUiModel) {
+        is AvatarUiModel.DraftIcon ->
+            Box(
+                modifier = modifier
+                    .size(ProtonDimens.LargeSpacing)
+                    .padding(MailDimens.ExtraExtraSmallSpacing)
+                    .border(
+                        width = MailDimens.DefaultBorder,
+                        color = ProtonTheme.colors.interactionWeakNorm,
+                        shape = ProtonTheme.shapes.medium
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    modifier = Modifier.size(ProtonDimens.SmallIconSize),
+                    painter = painterResource(id = R.drawable.ic_proton_pencil),
+                    contentDescription = NO_CONTENT_DESCRIPTION
+                )
+            }
+        is AvatarUiModel.ParticipantInitial ->
+            Box(
+                modifier = modifier
+                    .size(ProtonDimens.LargeSpacing)
+                    .padding(MailDimens.ExtraExtraSmallSpacing)
+                    .background(
+                        color = ProtonTheme.colors.interactionWeakNorm,
+                        shape = ProtonTheme.shapes.medium
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    textAlign = TextAlign.Center,
+                    text = avatarUiModel.char.toString()
+                )
+            }
     }
 }
 
