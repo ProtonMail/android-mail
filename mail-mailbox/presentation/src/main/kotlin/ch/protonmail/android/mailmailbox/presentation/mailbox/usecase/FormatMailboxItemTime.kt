@@ -48,15 +48,13 @@ class FormatMailboxItemTime @Inject constructor(
             return TextUiModel.Text(itemTime.toWeekDay())
         }
         if (itemTime.isThisYear()) {
-            return TextUiModel.Text(itemTime.toDayAndMonth())
+            return TextUiModel.Text(itemTime.toFullDate())
         }
         return TextUiModel.Text(itemTime.toFullDate())
     }
 
     private fun Duration.toFullDate() = DateFormat.getDateInstance(DateFormat.MEDIUM, getAppLocale())
         .format(Date(this.inWholeMilliseconds))
-
-    private fun Duration.toDayAndMonth() = this.toFullDate()
 
     private fun Duration.toHourAndMinutes() = DateFormat.getTimeInstance(DateFormat.SHORT, getAppLocale())
         .format(Date(this.inWholeMilliseconds))

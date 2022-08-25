@@ -182,6 +182,7 @@ deploy_to_firebase_dev:
   rules:
     - if: $NIGHTLY_ALPHA_BUILD == "true"
       when: never
+    - if: $CI_COMMIT_BRANCH == "master"
 
 deploy_to_firebase_alpha:
   extends: .firebase_deploy_job
