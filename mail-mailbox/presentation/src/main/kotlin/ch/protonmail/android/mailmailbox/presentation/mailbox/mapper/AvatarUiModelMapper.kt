@@ -27,14 +27,17 @@ import javax.inject.Inject
 class AvatarUiModelMapper @Inject constructor() {
 
     operator fun invoke(mailboxItem: MailboxItem, participantsResolvedNames: List<String>): AvatarUiModel {
-        return if (
-            mailboxItem.type == MailboxItemType.Message &&
-            mailboxItem.labelIds.any { it == SystemLabelId.AllDrafts.labelId }
-        ) {
+
+        return if (mailboxItem.isDraftInMessageMode()) {
             AvatarUiModel.DraftIcon
         } else {
             val participantInitial = participantsResolvedNames[0].first().uppercaseChar()
             AvatarUiModel.ParticipantInitial(participantInitial)
         }
     }
+
+    private fun MailboxItem.isDraftInMessageMode() =
+        type == MailboxItemType.Message &&
+            labelIds.any { it == SystemLabelId.AllDrafts.labelId }
+
 }
