@@ -35,6 +35,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -73,14 +74,17 @@ fun MailboxItem(
             .fillMaxWidth()
     ) {
         val fontWeight = if (item.isRead) FontWeight.Normal else FontWeight.Bold
+        val fontColor = if (item.isRead) ProtonTheme.colors.textWeak else ProtonTheme.colors.textNorm
 
         MailboxItemLayout(
-            avatar = { Avatar(participants = item.participants, fontWeight = fontWeight) },
+            avatar = { Avatar(participants = item.participants, fontWeight = fontWeight, fontColor = fontColor) },
             actionIcons = { ActionIcons(item = item) },
-            participants = { Participants(participants = item.participants, fontWeight = fontWeight) },
-            time = { Time(time = item.time, fontWeight = fontWeight) },
-            subject = { Subject(subject = item.subject, fontWeight = fontWeight) },
-            count = { Count(count = item.numMessages, fontWeight = fontWeight) },
+            participants = {
+                Participants(participants = item.participants, fontWeight = fontWeight, fontColor = fontColor)
+            },
+            time = { Time(time = item.time, fontWeight = fontWeight, fontColor = fontColor) },
+            subject = { Subject(subject = item.subject, fontWeight = fontWeight, fontColor = fontColor) },
+            count = { Count(count = item.numMessages, fontWeight = fontWeight, fontColor = fontColor) },
             icons = { Icons(item = item) },
             labels = { Labels(labels = item.labels) }
         )
@@ -188,12 +192,13 @@ private fun MailboxItemLayout(
 private fun Avatar(
     modifier: Modifier = Modifier,
     participants: List<String>,
-    fontWeight: FontWeight
+    fontWeight: FontWeight,
+    fontColor: Color
 ) {
     Box(modifier = modifier.padding(ProtonDimens.DefaultSpacing)) {
         Text(
             text = participants.firstOrNull()?.first()?.uppercase() ?: "*",
-            style = ProtonTheme.typography.headline.copy(fontWeight = fontWeight)
+            style = ProtonTheme.typography.headline.copy(fontWeight = fontWeight, color = fontColor)
         )
     }
 }
@@ -228,14 +233,15 @@ private fun ActionIcons(
 private fun Participants(
     modifier: Modifier = Modifier,
     participants: List<String>,
-    fontWeight: FontWeight
+    fontWeight: FontWeight,
+    fontColor: Color
 ) {
     Text(
         modifier = modifier,
         text = participants.joinToString(),
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
-        style = ProtonTheme.typography.defaultWeak.copy(fontWeight = fontWeight)
+        style = ProtonTheme.typography.defaultWeak.copy(fontWeight = fontWeight, color = fontColor)
     )
 
 }
@@ -244,17 +250,15 @@ private fun Participants(
 private fun Time(
     modifier: Modifier = Modifier,
     time: TextUiModel,
-    fontWeight: FontWeight
+    fontWeight: FontWeight,
+    fontColor: Color
 ) {
     Text(
         modifier = modifier,
         text = time.string(),
         maxLines = 1,
         textAlign = TextAlign.End,
-        style = ProtonTheme.typography.overline.copy(
-            fontWeight = fontWeight,
-            color = ProtonTheme.colors.textWeak
-        )
+        style = ProtonTheme.typography.overline.copy(fontWeight = fontWeight, color = fontColor)
     )
 }
 
@@ -262,14 +266,15 @@ private fun Time(
 private fun Subject(
     modifier: Modifier = Modifier,
     subject: String,
-    fontWeight: FontWeight
+    fontWeight: FontWeight,
+    fontColor: Color
 ) {
     Text(
         modifier = modifier,
         text = subject,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
-        style = ProtonTheme.typography.captionWeak.copy(fontWeight = fontWeight)
+        style = ProtonTheme.typography.captionWeak.copy(fontWeight = fontWeight, color = fontColor)
     )
 }
 
@@ -277,7 +282,8 @@ private fun Subject(
 private fun Count(
     modifier: Modifier = Modifier,
     count: Int?,
-    fontWeight: FontWeight
+    fontWeight: FontWeight,
+    fontColor: Color
 ) {
     if (count == null) {
         return
@@ -293,10 +299,7 @@ private fun Count(
             modifier = Modifier.padding(horizontal = ProtonDimens.ExtraSmallSpacing),
             text = count.toString(),
             overflow = TextOverflow.Ellipsis,
-            style = ProtonTheme.typography.overline.copy(
-                fontWeight = fontWeight,
-                color = ProtonTheme.colors.textWeak
-            )
+            style = ProtonTheme.typography.overline.copy(fontWeight = fontWeight, color = fontColor)
         )
     }
 }
