@@ -182,6 +182,7 @@ deploy_to_firebase_dev:
   rules:
     - if: $NIGHTLY_ALPHA_BUILD == "true"
       when: never
+    - !reference [ .firebase_deploy_job, rules ]
     - if: $CI_COMMIT_BRANCH == "master"
 
 deploy_to_firebase_alpha:
@@ -189,6 +190,7 @@ deploy_to_firebase_alpha:
   script:
     - bundle exec fastlane deployToFirebaseAlphaGroup
   rules:
+    - !reference [ .firebase_deploy_job, rules ]
     - if: $NIGHTLY_ALPHA_BUILD == "true"
 
 

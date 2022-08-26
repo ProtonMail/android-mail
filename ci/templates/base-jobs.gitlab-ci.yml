@@ -36,9 +36,8 @@
     - build_release
   tags:
     - small
-  script:
+  before_script:
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
   rules:
-    - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
