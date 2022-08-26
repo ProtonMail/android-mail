@@ -37,6 +37,7 @@
   tags:
     - small
   before_script:
+    - bundle install
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
   rules:
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
