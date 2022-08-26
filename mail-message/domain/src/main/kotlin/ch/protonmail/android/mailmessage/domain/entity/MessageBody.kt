@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmessage.domain.entity
 
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import kotlinx.serialization.json.JsonElement
 import me.proton.core.domain.entity.UserId
 

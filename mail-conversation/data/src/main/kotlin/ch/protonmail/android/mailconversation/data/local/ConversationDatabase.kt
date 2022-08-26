@@ -19,9 +19,9 @@
 package ch.protonmail.android.mailconversation.data.local
 
 import androidx.sqlite.db.SupportSQLiteDatabase
-import ch.protonmail.android.mailcommon.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationDao
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationLabelDao
+import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import me.proton.core.data.room.db.Database
 import me.proton.core.data.room.db.extension.addTableColumn

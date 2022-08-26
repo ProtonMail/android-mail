@@ -21,8 +21,8 @@ package ch.protonmail.android.mailmessage.data.local.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import kotlinx.serialization.json.JsonElement
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.UserEntity

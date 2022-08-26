@@ -48,7 +48,6 @@ dependencies {
     implementation(KotlinX.serializationJson)
 
     implementation(project(":mail-pagination:domain"))
-    implementation(project(":mail-conversation:domain"))
     implementation(project(":mail-common:domain"))
 
     testImplementation(Dependencies.testLibs)

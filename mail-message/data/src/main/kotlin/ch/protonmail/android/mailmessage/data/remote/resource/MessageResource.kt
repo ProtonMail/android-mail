@@ -18,10 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.remote.resource
 
-import ch.protonmail.android.mailcommon.data.remote.resource.AttachmentsInfoResource
-import ch.protonmail.android.mailcommon.data.remote.resource.toAttachmentsCount
-import ch.protonmail.android.mailconversation.data.remote.resource.RecipientResource
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.serialization.SerialName

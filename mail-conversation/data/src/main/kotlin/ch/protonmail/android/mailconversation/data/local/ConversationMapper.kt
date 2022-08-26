@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.mailconversation.data.local
 
-import ch.protonmail.android.mailcommon.data.mapper.toDomainModel
-import ch.protonmail.android.mailcommon.data.mapper.toEntity
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationEntity
 import ch.protonmail.android.mailconversation.data.local.relation.ConversationWithLabels
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailmessage.data.mapper.toDomainModel
+import ch.protonmail.android.mailmessage.data.mapper.toEntity
 import me.proton.core.label.domain.entity.LabelId
 
 fun ConversationWithLabels.toConversation(contextLabelId: LabelId) = Conversation(

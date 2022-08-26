@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.mailconversation.data.local
 
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.getConversation
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationDao
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationLabelDao
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection

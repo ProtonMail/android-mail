@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailconversation.domain.repository
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId

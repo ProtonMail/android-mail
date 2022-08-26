@@ -16,24 +16,6 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.data.remote.resource
+package ch.protonmail.android.mailcommon.domain.model
 
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class RecipientResource(
-    @SerialName("Address")
-    val address: String,
-    @SerialName("Name")
-    val name: String,
-    @SerialName("Group")
-    val group: String? = null,
-) {
-    fun toRecipient() = Recipient(
-        address = address,
-        name = name,
-        group = group
-    )
-}
+data class ConversationId(val id: String)

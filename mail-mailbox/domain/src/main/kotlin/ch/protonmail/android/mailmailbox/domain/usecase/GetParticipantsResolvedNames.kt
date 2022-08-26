@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject

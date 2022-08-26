@@ -20,8 +20,8 @@ package ch.protonmail.android.mailconversation.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
 

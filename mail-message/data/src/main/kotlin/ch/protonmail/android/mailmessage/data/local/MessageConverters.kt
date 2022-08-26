@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import androidx.room.TypeConverter
-import ch.protonmail.android.mailcommon.data.local.entity.AttachmentCountEntity
+import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.entity.OrderBy

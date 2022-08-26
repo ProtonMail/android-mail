@@ -16,9 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.data.remote.resource
+package ch.protonmail.android.mailmessage.data.remote.resource
 
-import ch.protonmail.android.mailcommon.domain.model.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

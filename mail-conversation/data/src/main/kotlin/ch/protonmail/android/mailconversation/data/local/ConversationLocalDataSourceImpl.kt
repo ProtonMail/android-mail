@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailconversation.data.local
 
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailpagination.data.local.getClippedPageKey
 import ch.protonmail.android.mailpagination.data.local.isLocalPageValid

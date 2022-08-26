@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.testdata.conversation
 
-import ch.protonmail.android.mailcommon.domain.model.AttachmentCount
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 

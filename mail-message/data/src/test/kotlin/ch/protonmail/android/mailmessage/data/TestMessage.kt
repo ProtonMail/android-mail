@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.mailmessage.data
 
-import ch.protonmail.android.mailcommon.data.remote.resource.AttachmentCountsResource
-import ch.protonmail.android.mailcommon.data.remote.resource.AttachmentsInfoResource
-import ch.protonmail.android.mailconversation.data.remote.resource.RecipientResource
+import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentCountsResource
+import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentsInfoResource
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageResource
+import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
 import me.proton.core.domain.entity.UserId
 
 fun getMessageResource(

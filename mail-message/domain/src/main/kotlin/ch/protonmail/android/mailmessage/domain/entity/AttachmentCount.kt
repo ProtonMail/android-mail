@@ -16,11 +16,8 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.data.local.entity
+package ch.protonmail.android.mailmessage.domain.entity
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class AttachmentCountEntity(
+data class AttachmentCount(
     val calendar: Int
 )

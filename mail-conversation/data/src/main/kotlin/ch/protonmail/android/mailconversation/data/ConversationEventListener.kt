@@ -18,11 +18,11 @@
 
 package ch.protonmail.android.mailconversation.data
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.remote.resource.ConversationResource
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import me.proton.core.eventmanager.domain.EventListener

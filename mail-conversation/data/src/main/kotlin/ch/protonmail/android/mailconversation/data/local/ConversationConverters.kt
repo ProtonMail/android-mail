@@ -19,8 +19,8 @@
 package ch.protonmail.android.mailconversation.data.local
 
 import androidx.room.TypeConverter
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import me.proton.core.util.kotlin.deserialize
 import me.proton.core.util.kotlin.serialize
 
@@ -35,8 +35,10 @@ class ConversationConverters {
     }
 
     @TypeConverter
-    fun fromListRecipientToString(value: List<Recipient>?) = value?.serialize()
+    fun fromListRecipientToString(value: List<Recipient>?) =
+        value?.serialize()
 
     @TypeConverter
-    fun fromStringToListRecipient(value: String?): List<Recipient>? = value?.deserialize()
+    fun fromStringToListRecipient(value: String?): List<Recipient>? =
+        value?.deserialize()
 }

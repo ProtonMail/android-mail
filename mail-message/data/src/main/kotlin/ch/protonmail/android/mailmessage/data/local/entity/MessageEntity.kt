@@ -22,10 +22,9 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import ch.protonmail.android.mailcommon.data.local.entity.AttachmentCountEntity
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
-import ch.protonmail.android.mailconversation.domain.entity.Recipient
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.AddressEntity
 import me.proton.core.user.data.entity.UserEntity

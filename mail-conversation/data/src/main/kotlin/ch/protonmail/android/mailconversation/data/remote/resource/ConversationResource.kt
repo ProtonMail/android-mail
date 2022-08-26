@@ -18,11 +18,12 @@
 
 package ch.protonmail.android.mailconversation.data.remote.resource
 
-import ch.protonmail.android.mailcommon.data.remote.resource.AttachmentsInfoResource
-import ch.protonmail.android.mailcommon.data.remote.resource.toAttachmentsCount
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
-import ch.protonmail.android.mailconversation.domain.entity.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
+import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentsInfoResource
+import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
+import ch.protonmail.android.mailmessage.data.remote.resource.toAttachmentsCount
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import me.proton.core.domain.entity.UserId

@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
-import ch.protonmail.android.mailcommon.data.mapper.toDomainModel
-import ch.protonmail.android.mailcommon.data.mapper.toEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
+import ch.protonmail.android.mailmessage.data.mapper.toDomainModel
+import ch.protonmail.android.mailmessage.data.mapper.toEntity
 import ch.protonmail.android.mailmessage.domain.entity.Message
 
 fun MessageWithLabelIds.toMessage() = Message(

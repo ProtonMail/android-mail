@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailconversation.domain.entity
 
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import me.proton.core.label.domain.entity.LabelId
 
 data class ConversationLabel(
