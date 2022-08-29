@@ -20,9 +20,9 @@ package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailconversation.presentation.ConversationDetailScreen.CONVERSATION_ID_KEY
+import ch.protonmail.android.maildetail.presentation.conversation.ConversationDetailScreen.CONVERSATION_ID_KEY
+import ch.protonmail.android.maildetail.presentation.message.MessageDetailScreen.MESSAGE_ID_KEY
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.presentation.MessageDetailScreen.MESSAGE_ID_KEY
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen.SWIPE_DIRECTION_KEY
 import me.proton.core.domain.entity.UserId

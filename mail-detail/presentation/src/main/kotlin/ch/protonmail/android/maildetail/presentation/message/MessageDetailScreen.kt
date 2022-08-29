@@ -16,12 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.presentation
+package ch.protonmail.android.maildetail.presentation.message
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
 @Composable
