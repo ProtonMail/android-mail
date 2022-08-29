@@ -170,6 +170,7 @@ dependencies {
     implementation(project(":mail-common"))
     implementation(project(":mail-contact"))
     implementation(project(":mail-conversation"))
+    implementation(project(":mail-detail"))
     implementation(project(":mail-label"))
     implementation(project(":mail-mailbox"))
     implementation(project(":mail-message"))

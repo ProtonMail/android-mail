@@ -59,6 +59,11 @@ include(":mail-conversation:data")
 include(":mail-conversation:domain")
 include(":mail-conversation:presentation")
 
+include(":mail-detail:dagger")
+include(":mail-detail:data")
+include(":mail-detail:domain")
+include(":mail-detail:presentation")
+
 include(":mail-label:dagger")
 include(":mail-label:data")
 include(":mail-label:domain")
