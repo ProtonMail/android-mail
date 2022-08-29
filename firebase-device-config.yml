@@ -13,7 +13,6 @@ fullTest:
     - model: NexusLowRes
       version: 24
 smokeTest:
-  timeout: 30m
   device:
     - model: oriole
       version: 31
