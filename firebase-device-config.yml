@@ -1,12 +1,12 @@
 fullTest:
   device:
-    - model: Pixel2
+    - model: Pixel2.arm
       version: 32
     - model: f2q
       version: 30
     - model: a10
       version: 29
-    - model: phoenix_sprout
+    - model: HWANE-LX2
       version: 28
     - model: walleye
       version: 27
