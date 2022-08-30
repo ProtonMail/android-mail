@@ -347,7 +347,8 @@ object MailboxPreviewData {
         numMessages = 2,
         showStar = true,
         locationIconResIds = emptyList(),
-        shouldShowAttachmentIcon = true
+        shouldShowAttachmentIcon = true,
+        shouldShowExpirationLabel = true
     )
 
     val mailboxItem1 = MailboxItemUiModel(
@@ -367,6 +368,7 @@ object MailboxPreviewData {
         numMessages = 5,
         showStar = true,
         locationIconResIds = emptyList(),
-        shouldShowAttachmentIcon = true
+        shouldShowAttachmentIcon = true,
+        shouldShowExpirationLabel = true
     )
 }

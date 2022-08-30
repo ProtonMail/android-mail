@@ -35,7 +35,8 @@ object MessageTestData {
         order: Long = 1000,
         time: Long = 1000,
         labelIds: List<String> = listOf("0"),
-        numAttachments: Int = 0
+        numAttachments: Int = 0,
+        expirationTime: Long = 0
     ) = Message(
         userId = userId,
         messageId = MessageId(id),
@@ -50,7 +51,7 @@ object MessageTestData {
         toList = emptyList(),
         ccList = emptyList(),
         bccList = emptyList(),
-        expirationTime = 1000,
+        expirationTime = expirationTime,
         isReplied = false,
         isRepliedAll = false,
         isForwarded = false,

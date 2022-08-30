@@ -63,7 +63,8 @@ class MailboxItemUiModelMapper @Inject constructor(
             numMessages = mailboxItem.numMessages.takeIf { it >= 2 },
             showStar = mailboxItem.labelIds.contains(SystemLabelId.Starred.labelId),
             locationIconResIds = getLocationIconsToDisplay(mailboxItem),
-            shouldShowAttachmentIcon = mailboxItem.hasAttachments
+            shouldShowAttachmentIcon = mailboxItem.hasAttachments,
+            shouldShowExpirationLabel = hasExpirationTime(mailboxItem)
         )
     }
 
@@ -72,6 +73,8 @@ class MailboxItemUiModelMapper @Inject constructor(
             is GetMailboxItemLocationIcons.Result.None -> emptyList()
             is GetMailboxItemLocationIcons.Result.Icons -> listOfNotNull(icons.first, icons.second, icons.third)
         }
+
+    private fun hasExpirationTime(mailboxItem: MailboxItem) = mailboxItem.expirationTime > 0
 
     private fun shouldShowRepliedIcon(mailboxItem: MailboxItem): Boolean {
         if (mailboxItem.type == MailboxItemType.Conversation) {

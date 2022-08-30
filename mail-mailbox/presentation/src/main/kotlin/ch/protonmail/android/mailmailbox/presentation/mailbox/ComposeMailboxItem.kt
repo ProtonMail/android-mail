@@ -92,6 +92,7 @@ fun MailboxItem(
             subject = { Subject(subject = item.subject, fontWeight = fontWeight, fontColor = fontColor) },
             count = { Count(count = item.numMessages, fontWeight = fontWeight, fontColor = fontColor) },
             icons = { Icons(item = item) },
+            expirationLabel = { ExpirationLabel(hasExpirationTime = item.shouldShowExpirationLabel) },
             labels = { Labels(labels = item.labels) }
         )
     }
@@ -108,12 +109,13 @@ private fun MailboxItemLayout(
     subject: @Composable () -> Unit,
     count: @Composable () -> Unit,
     icons: @Composable () -> Unit,
+    expirationLabel: @Composable () -> Unit,
     labels: @Composable () -> Unit
 ) {
     ConstraintLayout(modifier = modifier.fillMaxWidth()) {
 
         val (
-            avatarRef, actionIconsRef, participantsRef, timeRef, subjectRef, countRef, iconsRef, labelsRef
+            avatarRef, actionIconsRef, participantsRef, timeRef, subjectRef, countRef, iconsRef, expirationLabelRef, labelsRef
         ) = createRefs()
 
         Box(
@@ -165,7 +167,7 @@ private fun MailboxItemLayout(
         Box(
             modifier = modifier.constrainAs(countRef) {
                 horizontalChainWeight = 0f
-                top.linkTo(participantsRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
+                top.linkTo(participantsRef.bottom)
                 bottom.linkTo(labelsRef.top)
                 start.linkTo(subjectRef.end, margin = ProtonDimens.ExtraSmallSpacing)
                 end.linkTo(iconsRef.start, margin = ProtonDimens.ExtraSmallSpacing)
@@ -181,11 +183,17 @@ private fun MailboxItemLayout(
         ) { icons() }
 
         Box(
+            modifier = modifier.constrainAs(expirationLabelRef) {
+                top.linkTo(subjectRef.bottom, margin = ProtonDimens.SmallSpacing)
+                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
+            }
+        ) { expirationLabel() }
+
+        Box(
             modifier = modifier.constrainAs(labelsRef) {
                 width = Dimension.preferredWrapContent
-                top.linkTo(subjectRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
-                bottom.linkTo(parent.bottom, margin = ProtonDimens.ExtraSmallSpacing)
-                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
+                top.linkTo(subjectRef.bottom, margin = ProtonDimens.SmallSpacing)
+                start.linkTo(expirationLabelRef.end, margin = ProtonDimens.ExtraSmallSpacing)
                 end.linkTo(parent.end)
             }
         ) { labels() }
@@ -360,6 +368,27 @@ private fun Icons(
         }
         if (item.showStar) {
             MailboxItemIcon(iconId = R.drawable.ic_proton_star_filled, tintId = R.color.sunglow)
+        }
+    }
+}
+
+@Composable
+private fun ExpirationLabel(
+    modifier: Modifier = Modifier,
+    hasExpirationTime: Boolean
+) {
+    if (hasExpirationTime) {
+        Box(
+            modifier = modifier
+                .background(ProtonTheme.colors.interactionWeakNorm, ProtonTheme.shapes.large)
+                .size(ProtonDimens.SmallIconSize)
+                .padding(MailDimens.TinySpacing),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_proton_hourglass),
+                contentDescription = NO_CONTENT_DESCRIPTION
+            )
         }
     }
 }

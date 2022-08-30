@@ -23,7 +23,7 @@ import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -87,6 +87,17 @@ class MessageMailboxItemMapperTest {
         val actual = mapper.toMailboxItem(message, emptyMap())
         // Then
         assertFalse(actual.hasAttachments)
+    }
+
+    @Test
+    fun `when mapping message expiration time is preserved in the mailbox item`() {
+        // Given
+        val expirationTime = 1000L
+        val message = MessageTestData.buildMessage(userId, "id", expirationTime = expirationTime)
+        // When
+        val mailboxItem = mapper.toMailboxItem(message, emptyMap())
+        // Then
+        assertEquals(expirationTime, mailboxItem.expirationTime)
     }
 
     private fun buildLabel(value: String) = LabelTestData.buildLabel(

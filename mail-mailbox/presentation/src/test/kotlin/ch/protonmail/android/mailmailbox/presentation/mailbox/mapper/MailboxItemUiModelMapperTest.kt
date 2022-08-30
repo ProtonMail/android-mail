@@ -246,11 +246,29 @@ class MailboxItemUiModelMapperTest {
         val resolvedNames = listOf("contact name", "display name")
         every { getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts) } returns resolvedNames
         every { avatarUiModelMapper(mailboxItem, resolvedNames) } returns avatarUiModel
-
         // When
         val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
-
         // Then
         assertEquals(avatarUiModel, actual.avatar)
+    }
+
+    @Test
+    fun `when mailbox item has expiration time show expiration label`() {
+        // Given
+        val mailboxItem = buildMailboxItem(expirationTime = 1000L)
+        // When
+        val mailboxItemUiModel = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
+        // Then
+        assertTrue(mailboxItemUiModel.shouldShowExpirationLabel)
+    }
+
+    @Test
+    fun `when mailbox item has no expiration time don't show expiration label`() {
+        // Given
+        val mailboxItem = buildMailboxItem(expirationTime = 0L)
+        // When
+        val mailboxItemUiModel = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
+        // Then
+        assertFalse(mailboxItemUiModel.shouldShowExpirationLabel)
     }
 }

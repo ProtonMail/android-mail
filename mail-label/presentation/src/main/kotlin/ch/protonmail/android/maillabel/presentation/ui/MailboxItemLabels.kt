@@ -121,7 +121,7 @@ private fun SubcomposeMeasureScope.measureMinExpandedLabelWidth(constraints: Con
 private fun Label(label: MailboxItemLabelUiModel) {
     Text(
         modifier = Modifier
-            .padding(MailDimens.TinySpacing)
+            .padding(horizontal = MailDimens.TinySpacing)
             .background(label.color, shape = RoundedCornerShape(percent = 100))
             .padding(horizontal = ProtonDimens.SmallSpacing, vertical = MailDimens.TinySpacing),
         text = label.name,

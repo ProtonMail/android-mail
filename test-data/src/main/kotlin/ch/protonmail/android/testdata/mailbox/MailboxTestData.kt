@@ -56,7 +56,8 @@ object MailboxTestData {
         senders: List<Recipient> = listOf(Recipient("address", "name")),
         recipients: List<Recipient> = emptyList(),
         numMessages: Int = 1,
-        hasAttachments: Boolean = false
+        hasAttachments: Boolean = false,
+        expirationTime: Long = 0
     ) = MailboxItem(
         type = type,
         id = id,
@@ -75,7 +76,8 @@ object MailboxTestData {
         isRepliedAll = false,
         isForwarded = false,
         numMessages = numMessages,
-        hasAttachments = hasAttachments
+        hasAttachments = hasAttachments,
+        expirationTime = expirationTime
     )
 
     private fun buildMessageMailboxItem(
@@ -102,7 +104,8 @@ object MailboxTestData {
         isRepliedAll = isRepliedAll,
         isForwarded = isForwarded,
         numMessages = 1,
-        hasAttachments = false
+        hasAttachments = false,
+        expirationTime = 0
     )
 
     private fun buildConversationMailboxItem(id: String) = MailboxItem(
@@ -123,7 +126,8 @@ object MailboxTestData {
         isRepliedAll = false,
         isForwarded = false,
         numMessages = 3,
-        hasAttachments = false
+        hasAttachments = false,
+        expirationTime = 0
     )
 
 }
@@ -166,6 +170,7 @@ object MailboxItemUiModelTestData {
         numMessages = null,
         showStar = false,
         locationIconResIds = emptyList(),
-        shouldShowAttachmentIcon = false
+        shouldShowAttachmentIcon = false,
+        shouldShowExpirationLabel = false
     )
 }

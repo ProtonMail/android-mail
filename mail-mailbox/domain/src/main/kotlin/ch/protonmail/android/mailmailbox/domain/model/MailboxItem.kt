@@ -54,7 +54,8 @@ data class MailboxItem(
     val isRepliedAll: Boolean,
     val isForwarded: Boolean,
     val numMessages: Int,
-    val hasAttachments: Boolean
+    val hasAttachments: Boolean,
+    val expirationTime: Long
 ) : PageItem {
     override val keywords: String by lazy { subject + senders + recipients }
 }
