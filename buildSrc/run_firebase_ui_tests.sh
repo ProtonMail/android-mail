@@ -21,20 +21,20 @@
 set -e
 
 device_config=smokeTest
-test_suite="class ch.protonmail.android.uitest.suite.SmokeSuite"
+test_suite='class ch.protonmail.android.uitest.suite.SmokeSuite'
 timeout=15m
 
 if [ "$1" = extended_test ]
 then
   device_config=smokeTest
-  test_suite="class ch.protonmail.android.uitest.suite.SmokeSuiteExtended"
+  test_suite='class ch.protonmail.android.uitest.suite.SmokeSuiteExtended'
   timeout=30m
 fi
 
 if [ "$1" = full_test ]
 then
   device_config=fullTest
-  test_suite="package ch.protonmail.android.uitest"
+  test_suite='class ch.protonmail.android.uitest.suite.FullRegressionSuite'
   timeout=45m
 fi
 

@@ -18,14 +18,11 @@
 
 package ch.protonmail.android.uitest.suite
 
-import ch.protonmail.android.uitest.e2e.mailbox.MailboxFlowTest
-import ch.protonmail.android.uitest.e2e.settings.SettingsFlowTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    MailboxFlowTest::class,
-    SettingsFlowTest::class
+    SmokeSuiteExtended::class
 )
-class SmokeSuite
+class FullRegressionSuite
