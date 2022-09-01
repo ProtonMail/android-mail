@@ -18,8 +18,12 @@
 
 package ch.protonmail.android.mailmessage.domain.repository
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
@@ -40,4 +44,13 @@ interface MessageRepository {
         userId: UserId,
         labelId: LabelId
     )
+
+    /**
+     * Gets a [Message] metadata for [userId] from the local storage
+     * @return either the [Message] or a [DataError.Local]
+     */
+    fun observeCachedMessage(
+        userId: UserId,
+        messageId: MessageId
+    ): Flow<Either<DataError.Local, Message>>
 }

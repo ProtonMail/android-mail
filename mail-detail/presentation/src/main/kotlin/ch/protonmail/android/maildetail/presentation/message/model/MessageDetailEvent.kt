@@ -16,34 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain.model
+package ch.protonmail.android.maildetail.presentation.message.model
 
-/**
- * Errors related to Data
- */
-sealed interface DataError {
+import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 
-    /**
-     * Errors related to Local persistence
-     */
-    sealed interface Local : DataError {
+sealed interface MessageDetailEvent {
+    data class MessageMetadata(val message: Message) : MessageDetailEvent
+    data class MessageBody(val message: MessageWithBody) : MessageDetailEvent
 
-        object NoDataCached : Local
-    }
-
-    /**
-     * Error fetching date from Remote source
-     */
-    sealed interface Remote : DataError {
-
-        /**
-         * The API returned a failure response
-         */
-        data class Http(val networkError: NetworkError) : Remote
-
-        /**
-         * The API returned a success, but proton code is not OK
-         */
-        data class Proton(val protonError: ProtonError) : Remote
-    }
+    object NoPrimaryUser : MessageDetailEvent
+    object NoCachedMetadata : MessageDetailEvent
+    object NoMessageIdProvided : MessageDetailEvent
 }
