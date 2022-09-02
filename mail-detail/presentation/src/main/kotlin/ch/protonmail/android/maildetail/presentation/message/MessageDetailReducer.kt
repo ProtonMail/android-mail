@@ -20,7 +20,6 @@ package ch.protonmail.android.maildetail.presentation.message
 
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
-import ch.protonmail.android.maildetail.presentation.message.model.MessageUiModel
 import javax.inject.Inject
 
 class MessageDetailReducer @Inject constructor() {
@@ -30,11 +29,8 @@ class MessageDetailReducer @Inject constructor() {
             is MessageDetailEvent.NoPrimaryUser -> MessageDetailState.Error.NotLoggedIn
             is MessageDetailEvent.NoMessageIdProvided -> MessageDetailState.Error.NoMessageIdProvided
 
-            is MessageDetailEvent.MessageMetadata -> {
-                MessageDetailState.Data(
-                    MessageUiModel(event.message.messageId)
-                )
-            }
+            is MessageDetailEvent.MessageMetadata -> MessageDetailState.Data(event.messageUiModel)
+
             is MessageDetailEvent.NoCachedMetadata -> TODO(
                 "This should never happen. Handle by following the 'load message body' flow (once implemented)"
             )

@@ -20,7 +20,6 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
 
 android {
@@ -60,9 +59,11 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.modulePresentationLibs)
+    implementation(Proton.Core.label)
 
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-message:domain"))
+    implementation(project(":mail-label:domain"))
     // Needed as PageType is a supertype of Message.
     implementation(project(":mail-pagination:domain"))
 

@@ -46,4 +46,5 @@ dependencies {
     implementation(project(":mail-label"))
     implementation(project(":mail-mailbox"))
     implementation(project(":mail-message"))
+    implementation(project(":mail-detail"))
 }

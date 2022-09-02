@@ -35,6 +35,7 @@ object MessageTestData {
         order: Long = 1000,
         time: Long = 1000,
         labelIds: List<String> = listOf("0"),
+        subject: String = "subject",
         numAttachments: Int = 0,
         expirationTime: Long = 0,
         attachmentCount: AttachmentCount = AttachmentCount(0)
@@ -46,7 +47,7 @@ object MessageTestData {
         size = 1000,
         order = order,
         labelIds = labelIds.map { LabelId(it) },
-        subject = "subject",
+        subject = subject,
         unread = false,
         sender = Recipient("address", "name"),
         toList = emptyList(),

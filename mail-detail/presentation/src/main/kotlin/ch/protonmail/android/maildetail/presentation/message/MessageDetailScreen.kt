@@ -41,9 +41,11 @@ fun MessageDetailScreen(
         ).value
     ) {
         is MessageDetailState.Data -> {
+            val stateMessageId = state.messageUiModel.messageId.id
+            val subject = state.messageUiModel.subject
             Text(
                 modifier = modifier,
-                text = "Message detail for message ID: ${state.messageUiModel.messageId.id}"
+                text = "Message detail \n\nMessage ID: $stateMessageId \n\nSubject: $subject"
             )
         }
         MessageDetailState.Error.NoMessageIdProvided -> throw IllegalStateException("No message id given")

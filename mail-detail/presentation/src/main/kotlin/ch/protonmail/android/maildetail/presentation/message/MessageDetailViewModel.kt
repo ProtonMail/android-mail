@@ -22,6 +22,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.maildetail.presentation.message.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailAction
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
@@ -45,6 +46,7 @@ class MessageDetailViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val messageDetailReducer: MessageDetailReducer,
     private val messageRepository: MessageRepository,
+    private val uiModelMapper: MessageDetailUiModelMapper,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -74,7 +76,7 @@ class MessageDetailViewModel @Inject constructor(
             return@flatMapLatest messageRepository.observeCachedMessage(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.NoCachedMetadata },
-                    ifRight = { MessageDetailEvent.MessageMetadata(it) }
+                    ifRight = { MessageDetailEvent.MessageMetadata(uiModelMapper.toUiModel(it)) }
                 )
             }
         }.onEach { event ->

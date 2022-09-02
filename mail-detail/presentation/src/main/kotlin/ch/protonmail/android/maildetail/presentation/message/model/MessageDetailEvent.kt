@@ -18,11 +18,10 @@
 
 package ch.protonmail.android.maildetail.presentation.message.model
 
-import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 
 sealed interface MessageDetailEvent {
-    data class MessageMetadata(val message: Message) : MessageDetailEvent
+    data class MessageMetadata(val messageUiModel: MessageUiModel) : MessageDetailEvent
     data class MessageBody(val message: MessageWithBody) : MessageDetailEvent
 
     object NoPrimaryUser : MessageDetailEvent

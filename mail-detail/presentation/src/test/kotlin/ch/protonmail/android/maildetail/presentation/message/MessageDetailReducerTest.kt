@@ -20,10 +20,7 @@ package ch.protonmail.android.maildetail.presentation.message
 
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
-import ch.protonmail.android.maildetail.presentation.message.model.MessageUiModel
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.testdata.message.MessageTestData
-import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import ch.protonmail.android.testdata.message.MessageUiModelTestData
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
@@ -45,8 +42,10 @@ class MessageDetailReducerTest(
 
     companion object {
 
-        private const val rawMessageId = "messageId"
-        private val messageId = MessageId(rawMessageId)
+        private val messageUiModel = MessageUiModelTestData.buildMessageUiModel(
+            "messageId",
+            "This email is about subjects"
+        )
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
@@ -61,8 +60,8 @@ class MessageDetailReducerTest(
             ).toArray(),
             TestInput(
                 currentState = MessageDetailState.Loading,
-                event = MessageDetailEvent.MessageMetadata(MessageTestData.buildMessage(userId, rawMessageId)),
-                expectedState = MessageDetailState.Data(MessageUiModel(messageId))
+                event = MessageDetailEvent.MessageMetadata(messageUiModel),
+                expectedState = MessageDetailState.Data(messageUiModel)
             ).toArray(),
         )
 

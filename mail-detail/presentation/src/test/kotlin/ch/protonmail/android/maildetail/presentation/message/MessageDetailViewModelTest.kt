@@ -25,8 +25,10 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.maildetail.presentation.message.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.message.model.MessageUiModel
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.testdata.message.MessageTestData
@@ -45,6 +47,7 @@ import kotlin.test.assertEquals
 class MessageDetailViewModelTest {
 
     private val rawMessageId = "detailMessageId"
+    private val messageUiModelMapper = MessageDetailUiModelMapper()
     private val reducer = MessageDetailReducer()
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
@@ -63,6 +66,7 @@ class MessageDetailViewModelTest {
             observePrimaryUserId = observePrimaryUserId,
             messageDetailReducer = reducer,
             messageRepository = messageRepository,
+            uiModelMapper = messageUiModelMapper,
             savedStateHandle = savedStateHandle
         )
     }
@@ -111,14 +115,21 @@ class MessageDetailViewModelTest {
     fun `state is data when repository returns message metadata`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        val cachedMessage = MessageTestData.buildMessage(userId, messageId.id)
+        val subject = "message subject"
+        val isStarred = true
+        val cachedMessage = MessageTestData.buildMessage(
+            userId = userId,
+            id = messageId.id,
+            subject = subject,
+            labelIds = listOf(SystemLabelId.Starred.labelId.id)
+        )
         every { messageRepository.observeCachedMessage(userId, messageId) } returns flowOf(cachedMessage.right())
 
         // When
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            val expected = MessageDetailState.Data(MessageUiModel(messageId))
+            val expected = MessageDetailState.Data(MessageUiModel(messageId, subject, isStarred))
             assertEquals(expected, awaitItem())
         }
     }
