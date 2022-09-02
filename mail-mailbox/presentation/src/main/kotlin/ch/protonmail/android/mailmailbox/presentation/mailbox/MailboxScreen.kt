@@ -331,7 +331,7 @@ fun PreviewMailbox() {
 object MailboxPreviewData {
 
     val mailboxItem = MailboxItemUiModel(
-        avatar = AvatarUiModel.ParticipantInitial('C'),
+        avatar = AvatarUiModel.ParticipantInitial("C"),
         type = MailboxItemType.Message,
         id = "1",
         userId = UserId("0"),
@@ -352,7 +352,7 @@ object MailboxPreviewData {
     )
 
     val mailboxItem1 = MailboxItemUiModel(
-        avatar = AvatarUiModel.ParticipantInitial('N'),
+        avatar = AvatarUiModel.ParticipantInitial("N"),
         type = MailboxItemType.Conversation,
         id = "2",
         userId = UserId("0"),

@@ -246,7 +246,7 @@ private fun Avatar(
                     Text(
                         modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
                         textAlign = TextAlign.Center,
-                        text = avatarUiModel.char.toString()
+                        text = avatarUiModel.value
                     )
                 }
         }

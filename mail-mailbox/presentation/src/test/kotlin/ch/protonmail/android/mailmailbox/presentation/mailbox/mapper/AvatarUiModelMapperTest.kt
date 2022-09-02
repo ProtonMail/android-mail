@@ -54,7 +54,7 @@ class AvatarUiModelMapperTest {
             type = MailboxItemType.Message,
             labelIds = listOf(SystemLabelId.AllSent.labelId)
         )
-        val expectedResult = AvatarUiModel.ParticipantInitial(char = 'T')
+        val expectedResult = AvatarUiModel.ParticipantInitial(value = "T")
 
         // When
         val result = avatarUiModelMapper(mailboxItem, participantsResolvedNames)
@@ -70,7 +70,21 @@ class AvatarUiModelMapperTest {
             type = MailboxItemType.Conversation,
             labelIds = listOf(SystemLabelId.Inbox.labelId)
         )
-        val expectedResult = AvatarUiModel.ParticipantInitial(char = 'T')
+        val expectedResult = AvatarUiModel.ParticipantInitial(value = "T")
+
+        // When
+        val result = avatarUiModelMapper(mailboxItem, participantsResolvedNames)
+
+        // Then
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `avatar should show emoji if the first letter of the first participant is an emoji`() {
+        // Given
+        val mailboxItem = buildMailboxItem()
+        val participantsResolvedNames = listOf("\uD83D\uDC7D Test")
+        val expectedResult = AvatarUiModel.ParticipantInitial(value = "\uD83D\uDC7D")
 
         // When
         val result = avatarUiModelMapper(mailboxItem, participantsResolvedNames)

@@ -31,8 +31,7 @@ class AvatarUiModelMapper @Inject constructor() {
         return if (mailboxItem.isDraftInMessageMode()) {
             AvatarUiModel.DraftIcon
         } else {
-            val participantInitial = participantsResolvedNames[0].first().uppercaseChar()
-            AvatarUiModel.ParticipantInitial(participantInitial)
+            AvatarUiModel.ParticipantInitial(participantsResolvedNames[0].getInitial())
         }
     }
 
@@ -40,4 +39,12 @@ class AvatarUiModelMapper @Inject constructor() {
         type == MailboxItemType.Message &&
             labelIds.any { it == SystemLabelId.AllDrafts.labelId }
 
+    private fun String.getInitial(): String {
+        val firstChar = this[0].uppercaseChar()
+        val stringBuilder = StringBuilder().append(firstChar)
+        if (firstChar.isHighSurrogate()) {
+            stringBuilder.append(this[1])
+        }
+        return stringBuilder.toString()
+    }
 }
