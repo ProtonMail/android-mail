@@ -19,7 +19,12 @@
 package ch.protonmail.android.mailmessage.data
 
 import java.io.IOException
+import app.cash.turbine.test
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.domain.repository.MessageRemoteDataSource
 import ch.protonmail.android.mailpagination.domain.entity.PageFilter
@@ -30,6 +35,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Before
@@ -154,6 +160,33 @@ class MessageRepositoryImplTest {
         coVerify(ordering = Ordering.ORDERED) {
             localDataSource.getClippedPageKey(userId, pageKey)
             remoteDataSource.getMessages(userId, clippedPageKey)
+        }
+    }
+
+    @Test
+    fun `observe cached message emits message when existing in cache`() = runTest {
+        // Given
+        val messageId = MessageId("messageId")
+        val message = getMessage(userId, "1")
+        coEvery { localDataSource.observeMessage(userId, messageId) } returns flowOf(message)
+        // When
+        messageRepository.observeCachedMessage(userId, messageId).test {
+            // Then
+            assertEquals(message.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe cached message emits no data cached error when message does not exist in cache`() = runTest {
+        // Given
+        val messageId = MessageId("messageId")
+        coEvery { localDataSource.observeMessage(userId, messageId) } returns flowOf(null)
+        // When
+        messageRepository.observeCachedMessage(userId, messageId).test {
+            // Then
+            assertEquals(DataError.Local.NoDataCached.left(), awaitItem())
+            awaitComplete()
         }
     }
 }

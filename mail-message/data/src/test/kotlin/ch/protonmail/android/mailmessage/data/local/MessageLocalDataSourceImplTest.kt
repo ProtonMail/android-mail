@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import app.cash.turbine.test
 import ch.protonmail.android.mailmessage.data.getMessage
+import ch.protonmail.android.mailmessage.data.getMessageWithLabels
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -27,36 +29,29 @@ import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageItemType
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coInvoke
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class MessageLocalDataSourceImplTest {
 
     private val userId1 = UserId("1")
     private val userId2 = UserId("2")
 
-    private val messageDao = mockk<MessageDao> {
-        coEvery { this@mockk.insertOrUpdate(entities = anyVararg()) } just Runs
-        coEvery { this@mockk.insertOrIgnore(entities = anyVararg()) } just Runs
-        coEvery { this@mockk.deleteAll(any()) } just Runs
-    }
-    private val labelDao = mockk<MessageLabelDao> {
-        coEvery { this@mockk.insertOrUpdate(entities = anyVararg()) } just Runs
-        coEvery { this@mockk.insertOrIgnore(entities = anyVararg()) } just Runs
-        coEvery { this@mockk.deleteAll(any(), any()) } just Runs
-    }
-    private val pageIntervalDao = mockk<PageIntervalDao>(relaxed = true)
+    private val messageDao = mockk<MessageDao>(relaxUnitFun = true)
+    private val labelDao = mockk<MessageLabelDao>(relaxUnitFun = true)
+    private val pageIntervalDao = mockk<PageIntervalDao>(relaxUnitFun = true)
 
     private val db = mockk<MessageDatabase>(relaxed = true) {
         every { messageDao() } returns messageDao
@@ -145,5 +140,35 @@ class MessageLocalDataSourceImplTest {
 
         // Then
         coVerify(exactly = 1) { pageIntervalDao.deleteAll(userId1, PageItemType.Message, labelId) }
+    }
+
+    @Test
+    fun `observe message returns message from DB when existing`() = runTest {
+        // Given
+        val messageId = MessageId("MessageId")
+        val messageWithLabels = getMessageWithLabels(userId1, "1")
+        val message = messageWithLabels.toMessage()
+        coEvery { messageDao.observe(userId1, messageId) } returns flowOf(messageWithLabels)
+
+        // When
+        messageLocalDataSource.observeMessage(userId1, messageId).test {
+            // Then
+            assertEquals(message, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe message returns null when message does not exist in DB`() = runTest {
+        // Given
+        val messageId = MessageId("MessageId")
+        coEvery { messageDao.observe(userId1, messageId) } returns flowOf(null)
+
+        // When
+        messageLocalDataSource.observeMessage(userId1, messageId).test {
+            // Then
+            assertNull(awaitItem())
+            awaitComplete()
+        }
     }
 }

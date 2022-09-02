@@ -21,17 +21,35 @@ package ch.protonmail.android.maildetail.presentation.message
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.util.kotlin.exhaustive
 
 @Composable
 fun MessageDetailScreen(
     messageId: MessageId,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
-    Text(
-        modifier = modifier,
-        text = "Message detail for message ID: ${messageId.id}"
-    )
+    when (
+        val state = rememberAsState(
+            flow = viewModel.state,
+            initial = MessageDetailState.Loading
+        ).value
+    ) {
+        is MessageDetailState.Data -> {
+            Text(
+                modifier = modifier,
+                text = "Message detail for message ID: ${state.messageUiModel.messageId.id}"
+            )
+        }
+        MessageDetailState.Error.NoMessageIdProvided -> throw IllegalStateException("No message id given")
+        MessageDetailState.Error.NotLoggedIn -> Text(modifier = modifier, text = "No user logged in")
+        MessageDetailState.Loading -> ProtonCenteredProgress()
+    }.exhaustive
 }
 
 object MessageDetailScreen {

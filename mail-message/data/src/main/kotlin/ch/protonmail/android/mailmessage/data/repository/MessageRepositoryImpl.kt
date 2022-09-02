@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailmessage.data.repository
 
 import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.domain.entity.Message
@@ -28,6 +30,7 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRemoteDataSour
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
@@ -59,8 +62,8 @@ class MessageRepositoryImpl @Inject constructor(
     override fun observeCachedMessage(
         userId: UserId,
         messageId: MessageId
-    ): Flow<Either<DataError.Local, Message>> {
-        TODO("Not yet implemented")
+    ): Flow<Either<DataError.Local, Message>> = localDataSource.observeMessage(userId, messageId).mapLatest {
+        it?.right() ?: DataError.Local.NoDataCached.left()
     }
 
     private suspend fun fetchMessages(

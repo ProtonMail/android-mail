@@ -98,6 +98,11 @@ class MessageLocalDataSourceImpl @Inject constructor(
         pageKey: PageKey
     ): PageKey = pageIntervalDao.getClippedPageKey(userId, PageItemType.Message, pageKey)
 
+    override fun observeMessage(
+        userId: UserId,
+        messageId: MessageId
+    ): Flow<Message?> = messageDao.observe(userId, messageId).mapLatest { it?.toMessage() }
+
     private suspend fun upsertPageInterval(
         userId: UserId,
         pageKey: PageKey,

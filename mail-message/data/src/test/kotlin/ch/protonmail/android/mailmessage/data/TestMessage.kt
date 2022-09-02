@@ -18,11 +18,14 @@
 
 package ch.protonmail.android.mailmessage.data
 
+import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
+import ch.protonmail.android.mailmessage.data.local.toEntity
 import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentCountsResource
 import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentsInfoResource
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageResource
 import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 
 fun getMessageResource(
     id: String = "1",
@@ -70,3 +73,12 @@ fun getMessage(
     time = time,
     labelIds = labelIds
 ).toMessage(userId)
+
+fun getMessageWithLabels(
+    userId: UserId = UserId("1"),
+    id: String = "1",
+    labelIds: List<LabelId> = listOf(LabelId("0")),
+) = MessageWithLabelIds(
+    getMessageResource(id).toMessage(userId).toEntity(),
+    labelIds
+)

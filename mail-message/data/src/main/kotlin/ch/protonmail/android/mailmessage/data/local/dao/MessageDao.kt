@@ -22,6 +22,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.entity.OrderBy
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
@@ -78,7 +79,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
 
     @Query(
         """
-        SELECT * FROM MessageEntity 
+        SELECT * FROM MessageEntity
         JOIN MessageLabelEntity
         ON MessageLabelEntity.userId = MessageEntity.userId
         AND MessageLabelEntity.messageId = MessageEntity.messageId
@@ -113,7 +114,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
 
     @Query(
         """
-        SELECT * FROM MessageEntity 
+        SELECT * FROM MessageEntity
         JOIN MessageLabelEntity
         ON MessageLabelEntity.userId = MessageEntity.userId
         AND MessageLabelEntity.messageId = MessageEntity.messageId
@@ -151,4 +152,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
 
     @Query("DELETE FROM MessageEntity WHERE userId = :userId")
     abstract suspend fun deleteAll(userId: UserId)
+
+    @Query("SELECT * FROM MessageEntity WHERE userId = :userId AND messageId = :messageId")
+    abstract fun observe(userId: UserId, messageId: MessageId): Flow<MessageWithLabelIds?>
 }

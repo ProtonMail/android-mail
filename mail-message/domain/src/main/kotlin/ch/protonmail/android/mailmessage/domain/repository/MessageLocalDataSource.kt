@@ -100,4 +100,12 @@ interface MessageLocalDataSource {
         userId: UserId,
         pageKey: PageKey
     ): PageKey
+
+    /**
+     * Observe [Message] by [UserId] and [MessageId]
+     */
+    fun observeMessage(
+        userId: UserId,
+        messageId: MessageId
+    ): Flow<Message?>
 }
