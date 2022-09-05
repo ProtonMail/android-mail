@@ -42,5 +42,6 @@ data class MailboxItemUiModel(
     val showStar: Boolean,
     val locationIconResIds: List<Int>,
     val shouldShowAttachmentIcon: Boolean,
-    val shouldShowExpirationLabel: Boolean
+    val shouldShowExpirationLabel: Boolean,
+    val shouldShowCalendarIcon: Boolean
 )

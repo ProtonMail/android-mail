@@ -175,6 +175,7 @@ object MailboxItemUiModelTestData {
         showStar = false,
         locationIconResIds = emptyList(),
         shouldShowAttachmentIcon = false,
-        shouldShowExpirationLabel = false
+        shouldShowExpirationLabel = false,
+        shouldShowCalendarIcon = false
     )
 }

@@ -351,7 +351,8 @@ object MailboxPreviewData {
         showStar = true,
         locationIconResIds = emptyList(),
         shouldShowAttachmentIcon = true,
-        shouldShowExpirationLabel = true
+        shouldShowExpirationLabel = true,
+        shouldShowCalendarIcon = true
     )
 
     val mailboxItem1 = MailboxItemUiModel(
@@ -372,6 +373,7 @@ object MailboxPreviewData {
         showStar = true,
         locationIconResIds = emptyList(),
         shouldShowAttachmentIcon = true,
-        shouldShowExpirationLabel = true
+        shouldShowExpirationLabel = true,
+        shouldShowCalendarIcon = false
     )
 }

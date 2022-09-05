@@ -64,7 +64,8 @@ class MailboxItemUiModelMapper @Inject constructor(
             showStar = mailboxItem.labelIds.contains(SystemLabelId.Starred.labelId),
             locationIconResIds = getLocationIconsToDisplay(mailboxItem),
             shouldShowAttachmentIcon = mailboxItem.hasAttachments,
-            shouldShowExpirationLabel = hasExpirationTime(mailboxItem)
+            shouldShowExpirationLabel = hasExpirationTime(mailboxItem),
+            shouldShowCalendarIcon = hasCalendarAttachment(mailboxItem)
         )
     }
 
@@ -73,6 +74,8 @@ class MailboxItemUiModelMapper @Inject constructor(
             is GetMailboxItemLocationIcons.Result.None -> emptyList()
             is GetMailboxItemLocationIcons.Result.Icons -> listOfNotNull(icons.first, icons.second, icons.third)
         }
+
+    private fun hasCalendarAttachment(mailboxItem: MailboxItem) = mailboxItem.calendarAttachmentCount > 0
 
     private fun hasExpirationTime(mailboxItem: MailboxItem) = mailboxItem.expirationTime > 0
 

@@ -271,4 +271,24 @@ class MailboxItemUiModelMapperTest {
         // Then
         assertFalse(mailboxItemUiModel.shouldShowExpirationLabel)
     }
+
+    @Test
+    fun `when mailbox item has calendar attachments, show calendar icon`() {
+        // Given
+        val mailboxItem = buildMailboxItem(calendarAttachmentCount = 1)
+        // When
+        val mailboxItemUiModel = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
+        // Then
+        assertTrue(mailboxItemUiModel.shouldShowCalendarIcon)
+    }
+
+    @Test
+    fun `when mailbox item has no calendar attachments, don't show calendar icon`() {
+        // Given
+        val mailboxItem = buildMailboxItem(calendarAttachmentCount = 0)
+        // When
+        val mailboxItemUiModel = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
+        // Then
+        assertFalse(mailboxItemUiModel.shouldShowCalendarIcon)
+    }
 }
