@@ -18,6 +18,6 @@
   -->
 <resources>
   <string name="retry">再試行</string>
-  <string name="toolbar_back_content_descritpion">Back to previous screen</string>
+  <string name="toolbar_back_content_descritpion">前の画面に戻る</string>
   <string name="x_error_not_logged_in">ログインしていません</string>
 </resources>

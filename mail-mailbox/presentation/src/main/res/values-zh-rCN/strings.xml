@@ -25,8 +25,8 @@
   <string name="mailbox_toolbar_menu_button_content_description">菜单</string>
   <string name="mailbox_toolbar_search_button_content_description">搜索</string>
   <string name="mailbox_toolbar_selected_count">已选择 %d 项</string>
-  <string name="yesterday">yesterday</string>
+  <string name="yesterday">昨天</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="other">%d unread</item>
+    <item quantity="other">%d 封未读邮件</item>
   </plurals>
 </resources>

@@ -30,7 +30,7 @@
   <string name="mail_settings_combined_contacts">共用通讯录</string>
   <string name="mail_settings_swipe_actions">滑动操作</string>
   <string name="mail_settings_combined_contacts_hint">开启后您登录的所有账户通讯录中的邮箱地址都可自动补全。</string>
-  <string name="mail_settings_alternative_routing_hint">In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues: We recommend keeping this setting on for greater reliability.</string>
+  <string name="mail_settings_alternative_routing_hint">当 Proton 网站遭到封禁时，此设置允许该应用程序改用其他网络路由连接 Proton，这能有助于绕过防火墙或解决网络问题：推荐开启此设置，以提高可靠性。</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">跟随系统</string>
   <string name="mail_settings_theme_light">浅色</string>
