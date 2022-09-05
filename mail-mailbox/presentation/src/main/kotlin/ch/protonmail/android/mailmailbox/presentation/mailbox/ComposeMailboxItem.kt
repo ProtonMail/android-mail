@@ -370,6 +370,9 @@ private fun Icons(
         modifier = modifier,
         horizontalArrangement = Arrangement.End
     ) {
+        if (item.shouldShowCalendarIcon) {
+            MailboxItemIcon(iconId = R.drawable.ic_proton_calendar_grid)
+        }
         if (item.shouldShowAttachmentIcon) {
             MailboxItemIcon(iconId = R.drawable.ic_proton_paper_clip)
         }
