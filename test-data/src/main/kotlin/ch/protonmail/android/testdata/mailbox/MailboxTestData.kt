@@ -57,7 +57,8 @@ object MailboxTestData {
         recipients: List<Recipient> = emptyList(),
         numMessages: Int = 1,
         hasAttachments: Boolean = false,
-        expirationTime: Long = 0
+        expirationTime: Long = 0,
+        calendarAttachmentCount: Int = 0
     ) = MailboxItem(
         type = type,
         id = id,
@@ -77,7 +78,8 @@ object MailboxTestData {
         isForwarded = false,
         numMessages = numMessages,
         hasAttachments = hasAttachments,
-        expirationTime = expirationTime
+        expirationTime = expirationTime,
+        calendarAttachmentCount = calendarAttachmentCount
     )
 
     private fun buildMessageMailboxItem(
@@ -105,7 +107,8 @@ object MailboxTestData {
         isForwarded = isForwarded,
         numMessages = 1,
         hasAttachments = false,
-        expirationTime = 0
+        expirationTime = 0,
+        calendarAttachmentCount = 0
     )
 
     private fun buildConversationMailboxItem(id: String) = MailboxItem(
@@ -127,7 +130,8 @@ object MailboxTestData {
         isForwarded = false,
         numMessages = 3,
         hasAttachments = false,
-        expirationTime = 0
+        expirationTime = 0,
+        calendarAttachmentCount = 0
     )
 
 }

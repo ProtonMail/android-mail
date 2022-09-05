@@ -36,7 +36,8 @@ object MessageTestData {
         time: Long = 1000,
         labelIds: List<String> = listOf("0"),
         numAttachments: Int = 0,
-        expirationTime: Long = 0
+        expirationTime: Long = 0,
+        attachmentCount: AttachmentCount = AttachmentCount(0)
     ) = Message(
         userId = userId,
         messageId = MessageId(id),
@@ -59,6 +60,6 @@ object MessageTestData {
         externalId = null,
         numAttachments = numAttachments,
         flags = 0,
-        attachmentCount = AttachmentCount(0)
+        attachmentCount = attachmentCount
     )
 }

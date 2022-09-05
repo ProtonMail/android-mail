@@ -47,7 +47,8 @@ class MessageMailboxItemMapper @Inject constructor() : Mapper<Message, MailboxIt
         isForwarded = message.isForwarded,
         numMessages = 1,
         hasAttachments = message.numAttachments > 0,
-        expirationTime = message.expirationTime
+        expirationTime = message.expirationTime,
+        calendarAttachmentCount = message.attachmentCount.calendar
     )
 
 }

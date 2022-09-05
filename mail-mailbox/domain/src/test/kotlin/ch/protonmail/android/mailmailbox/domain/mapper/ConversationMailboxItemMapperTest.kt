@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.domain.mapper
 
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -100,6 +101,21 @@ class ConversationMailboxItemMapperTest {
         val mailboxItem = mapper.toMailboxItem(conversation, emptyMap())
         // Then
         assertEquals(expirationTime, mailboxItem.expirationTime)
+    }
+
+    @Test
+    fun `when mapping conversation, calendar attachment count is preserved in the mailbox item`() {
+        // Given
+        val calendarAttachmentCount = 1
+        val conversation = ConversationTestData.buildConversation(
+            userId,
+            "id",
+            attachmentCount = AttachmentCount(calendar = calendarAttachmentCount)
+        )
+        // When
+        val mailboxItem = mapper.toMailboxItem(conversation, emptyMap())
+        // Then
+        assertEquals(calendarAttachmentCount, mailboxItem.calendarAttachmentCount)
     }
 
     private fun buildLabel(value: String) = LabelTestData.buildLabel(

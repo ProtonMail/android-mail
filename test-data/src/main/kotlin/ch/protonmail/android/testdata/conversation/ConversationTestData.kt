@@ -35,7 +35,8 @@ object ConversationTestData {
         time: Long = 1000,
         labelIds: List<String> = listOf("0"),
         numAttachments: Int = 0,
-        expirationTime: Long = 0
+        expirationTime: Long = 0,
+        attachmentCount: AttachmentCount = AttachmentCount(0)
     ) = Conversation(
         userId = userId,
         conversationId = ConversationId(id),
@@ -49,7 +50,7 @@ object ConversationTestData {
         numMessages = 1,
         numUnread = 0,
         numAttachments = numAttachments,
-        attachmentCount = AttachmentCount(0)
+        attachmentCount = attachmentCount
     )
 
     private fun buildConversationLabel(
