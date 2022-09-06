@@ -24,5 +24,5 @@ dependencies {
     compileOnly(Detekt.api)
 
     testImplementation(Detekt.test)
-    testImplementation(Kotlin.testJunit)
+    testImplementation(Kotlin.test)
 }

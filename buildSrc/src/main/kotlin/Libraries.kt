@@ -131,6 +131,7 @@ object AndroidX {
         const val orchestrator = "androidx.test:orchestrator:$version"
         const val runner = "androidx.test:runner:$version"
         const val rules = "androidx.test:rules:$version"
+        const val uiautomator = "androidx.test.uiautomator:uiautomator:${Versions.AndroidX.testUiautomator}"
     }
 
     object Work {
@@ -144,6 +145,12 @@ object Arrow {
     private const val version = Versions.Arrow.core
 
     const val core = "io.arrow-kt:arrow-core:$version"
+}
+
+object Cash {
+    private const val version = Versions.Cash.turbine
+
+    const val turbine = "app.cash.turbine:turbine:$version"
 }
 
 object Dagger {
@@ -171,7 +178,8 @@ object Junit {
 }
 
 object Kotlin {
-    const val testJunit = "org.jetbrains.kotlin:kotlin-test-junit:${Versions.Kotlin.kotlin}"
+    private const val version = Versions.Kotlin.kotlin
+    const val test = "org.jetbrains.kotlin:kotlin-test:$version"
 }
 
 object KotlinX {
@@ -212,6 +220,7 @@ object Proton {
         val mailSettings = coreArtifact("mail-settings", Versions.Proton.core)
         val network = coreArtifact("network", Versions.Proton.core)
         val payment = coreArtifact("payment", Versions.Proton.core)
+        val paymentIap = coreArtifact("payment-iap", Versions.Proton.core)
         val plan = coreArtifact("plan", Versions.Proton.core)
         val presentation = coreArtifact("presentation", Versions.Proton.core)
         val presentationCompose = coreArtifact("presentation-compose", Versions.Proton.core)

@@ -36,7 +36,7 @@ object HumanVerificationModule {
     fun provideHumanVerificationApiHost(): String = "https://${BuildConfig.HUMAN_VERIFICATION_HOST}/"
 
     @Provides
-    fun provideHumanVerificationVersion() = HumanVerificationVersion.HV2
+    fun provideHumanVerificationVersion() = HumanVerificationVersion.HV3
 
     @Provides
     @CaptchaApiHost

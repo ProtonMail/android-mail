@@ -22,7 +22,6 @@ import android.content.Context
 import androidx.work.WorkManager
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.mailcommon.domain.AppInformation
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,9 +29,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.proton.core.account.domain.entity.AccountType
 import me.proton.core.auth.domain.ClientSecret
+import me.proton.core.domain.entity.AppStore
 import me.proton.core.domain.entity.Product
-import me.proton.core.presentation.app.AppLifecycleObserver
-import me.proton.core.presentation.app.AppLifecycleProvider
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -47,6 +45,10 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideProduct(): Product = Product.Mail
+
+    @Provides
+    @Singleton
+    fun provideAppStore() = AppStore.GooglePlay
 
     @Provides
     @Singleton

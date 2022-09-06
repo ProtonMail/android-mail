@@ -30,19 +30,19 @@ object Dependencies {
 
     val composeLibs = mutableListOf<String>().apply {
         add(AndroidX.Activity.compose)
-        add(AndroidX.ConstraintLayoutCompose.constraintLayoutCompose)
         add(AndroidX.Compose.foundation)
         add(AndroidX.Compose.foundationLayout)
         add(AndroidX.Compose.material)
         add(AndroidX.Compose.runtime)
         add(AndroidX.Compose.ui)
         add(AndroidX.Compose.uiToolingPreview)
+        add(AndroidX.ConstraintLayoutCompose.constraintLayoutCompose)
     }
 
     val composeDebugLibs = mutableListOf<String>().apply {
-        add(AndroidX.Compose.uiTooling)
         add(AndroidX.Compose.uiTestManifest)
-        // CustomView: https://issuetracker.google.com/issues/227767363
+        add(AndroidX.Compose.uiTooling)
+        // CustomView: https://issuetracker.google.com/issues/227767363, fixed on AS Dolphin, remove once stable
         add(AndroidX.CustomView.customView)
         add(AndroidX.CustomView.poolingContainer)
     }
@@ -63,7 +63,6 @@ object Dependencies {
         add(AndroidX.Room.ktx)
         add(AndroidX.Work.runtimeKtx)
         add(Arrow.core)
-        addAll(composeLibs)
         add(JakeWharton.timber)
         add(Material.material)
         add(Proton.Core.account)
@@ -93,10 +92,11 @@ object Dependencies {
         add(Proton.Core.userSettings)
         add(Proton.Core.utilAndroidDagger)
         add(Proton.Core.utilKotlin)
-        add(Sentry.sentry)
         add(Sentry.compose)
+        add(Sentry.sentry)
         add(Squareup.okhttp)
         add(Squareup.plumber)
+        addAll(composeLibs)
     }
 
     val moduleDataLibs = mutableListOf<String>().apply {
@@ -118,14 +118,14 @@ object Dependencies {
 
     val modulePresentationLibs = mutableListOf<String>().apply {
         add(Accompanist.swipeRefresh)
-        add(AndroidX.Paging.runtime)
-        add(AndroidX.Room.ktx)
         add(AndroidX.Activity.ktx)
         add(AndroidX.Hilt.navigationCompose)
         add(AndroidX.Navigation.compose)
         add(AndroidX.Paging.compose)
+        add(AndroidX.Paging.runtime)
+        add(AndroidX.Room.ktx)
         add(Arrow.core)
-        addAll(composeLibs)
+        add(JakeWharton.timber)
         add(JavaX.inject)
         add(Material.material)
         add(Proton.Core.accountManager)
@@ -133,7 +133,7 @@ object Dependencies {
         add(Proton.Core.presentation)
         add(Proton.Core.presentationCompose)
         add(Proton.Core.utilKotlin)
-        add(JakeWharton.timber)
+        addAll(composeLibs)
     }
 
     val moduleDomainLibs = mutableListOf<String>().apply {
@@ -154,8 +154,10 @@ object Dependencies {
     }
 
     val testLibs = mutableListOf<String>().apply {
-        add(KotlinX.coroutinesTest)
+        add(Cash.turbine)
         add(Junit.junit)
+        add(Kotlin.test)
+        add(KotlinX.coroutinesTest)
         add(Mockk.mockk)
         add(Proton.Core.testKotlin)
     }
@@ -164,10 +166,14 @@ object Dependencies {
         add(AndroidX.Compose.uiTestJUnit)
         add(AndroidX.Test.core)
         add(AndroidX.Test.coreKtx)
-        add(AndroidX.Test.runner)
-        add(AndroidX.Test.rules)
         add(AndroidX.Test.espresso)
+        add(AndroidX.Test.rules)
+        add(AndroidX.Test.runner)
+        add(AndroidX.Test.uiautomator)
+        add(Cash.turbine)
+        add(Kotlin.test)
         add(Mockk.mockkAndroid)
+        add(Proton.Core.paymentIap)
         add(Proton.Core.testAndroidInstrumented)
     }
 }

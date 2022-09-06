@@ -18,11 +18,9 @@
 
 package ch.protonmail.android.di
 
-import android.content.Context
 import androidx.annotation.RestrictTo
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 
@@ -31,10 +29,4 @@ import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 @RestrictTo(RestrictTo.Scope.TESTS)
 interface MailTestEntryPoint {
     val mailSettingsRepository: MailSettingsRepository
-
-    @RestrictTo(RestrictTo.Scope.TESTS)
-    companion object {
-        fun provide(context: Context): MailSettingsRepository =
-            EntryPointAccessors.fromApplication(context, MailTestEntryPoint::class.java).mailSettingsRepository
-    }
 }

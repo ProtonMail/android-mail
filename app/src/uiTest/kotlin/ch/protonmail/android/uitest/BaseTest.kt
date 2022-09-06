@@ -24,6 +24,7 @@ import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.di.MailTestEntryPoint
 import ch.protonmail.android.test.BuildConfig
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.runBlocking
 import me.proton.core.auth.domain.entity.SessionInfo
 import me.proton.core.auth.presentation.testing.ProtonTestEntryPoint
@@ -79,14 +80,26 @@ open class BaseTest(
     }
 
     companion object {
+
+        private val protonTestEntryPoint by lazy {
+            EntryPointAccessors.fromApplication(
+                ApplicationProvider.getApplicationContext<Application>(),
+                ProtonTestEntryPoint::class.java
+            )
+        }
+
+        private val mailTestEntryPoint by lazy {
+            EntryPointAccessors.fromApplication(
+                ApplicationProvider.getApplicationContext<Application>(),
+                MailTestEntryPoint::class.java
+            )
+        }
+
         val users = Users("users.json")
         val quark = Quark(BuildConfig.HOST, BuildConfig.PROXY_TOKEN, "internal_api.json")
-        val authHelper = ProtonTestEntryPoint.provide(
-            ApplicationProvider.getApplicationContext<Application>()
-        )
-        val mailSettingsRepo = MailTestEntryPoint.provide(
-            ApplicationProvider.getApplicationContext<Application>()
-        )
+
+        val authHelper by lazy { protonTestEntryPoint.loginTestHelper }
+        val mailSettingsRepo by lazy { mailTestEntryPoint.mailSettingsRepository }
 
         @JvmStatic
         @BeforeClass

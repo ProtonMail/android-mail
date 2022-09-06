@@ -25,6 +25,6 @@ object FeatureFlagTestData {
 
     val showSettingsId = MailFeatureId.ShowSettings
 
-    val enabledShowSettings = FeatureFlag(showSettingsId.id, true)
-    val disabledShowSettings = FeatureFlag(showSettingsId.id, false)
+    val enabledShowSettings = FeatureFlag.default(showSettingsId.id.id, true)
+    val disabledShowSettings = FeatureFlag.default(showSettingsId.id.id, false)
 }

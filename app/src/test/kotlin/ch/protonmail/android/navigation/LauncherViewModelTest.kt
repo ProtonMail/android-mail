@@ -49,16 +49,9 @@ import me.proton.core.accountmanager.presentation.onSessionForceLogout
 import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
 import me.proton.core.auth.presentation.MissingScopeObserver
-import me.proton.core.auth.presentation.observe
-import me.proton.core.auth.presentation.onConfirmPasswordNeeded
 import me.proton.core.domain.entity.Product
 import me.proton.core.domain.entity.Product.Mail
-import me.proton.core.humanverification.domain.HumanVerificationManager
 import me.proton.core.humanverification.presentation.HumanVerificationManagerObserver
-import me.proton.core.humanverification.presentation.HumanVerificationOrchestrator
-import me.proton.core.humanverification.presentation.observe
-import me.proton.core.humanverification.presentation.onHumanVerificationNeeded
-import me.proton.core.network.domain.scopes.MissingScopeListener
 import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.user.domain.UserManager
@@ -71,14 +64,11 @@ import kotlin.test.assertEquals
 class LauncherViewModelTest {
 
     private val authOrchestrator = mockk<AuthOrchestrator>(relaxUnitFun = true)
-    private val hvOrchestrator = mockk<HumanVerificationOrchestrator>(relaxUnitFun = true)
     private val plansOrchestrator = mockk<PlansOrchestrator>(relaxUnitFun = true)
     private val reportOrchestrator = mockk<ReportOrchestrator>(relaxUnitFun = true)
     private val userSettingsOrchestrator = mockk<UserSettingsOrchestrator>(relaxUnitFun = true)
-    private val missingScopeListener = mockk<MissingScopeListener>(relaxUnitFun = true)
 
     private val userManager = mockk<UserManager>()
-    private val humanVerificationManager = mockk<HumanVerificationManager>()
 
     private val accountListFlow = MutableStateFlow<List<Account>>(emptyList())
     private val accountManager = mockk<AccountManager>(relaxUnitFun = true) {
@@ -102,13 +92,10 @@ class LauncherViewModelTest {
             Internal,
             accountManager,
             userManager,
-            humanVerificationManager,
             authOrchestrator,
-            hvOrchestrator,
             plansOrchestrator,
             reportOrchestrator,
-            userSettingsOrchestrator,
-            missingScopeListener
+            userSettingsOrchestrator
         )
     }
 
@@ -280,16 +267,6 @@ class LauncherViewModelTest {
         val amObserver = mockAccountManagerObserver()
         every { accountManager.observe(any(), any()) } returns amObserver
 
-        // HumanVerificationManager
-        mockkStatic(HumanVerificationManager::observe)
-        val hvObserver = mockHumanVerificationManagerObserver()
-        every { humanVerificationManager.observe(any(), any()) } returns hvObserver
-
-        // MissingScopeListener
-        mockkStatic(MissingScopeListener::observe)
-        val missingScopeObserver = mockMissingScopeObserver()
-        every { missingScopeListener.observe(any(), any()) } returns missingScopeObserver
-
         // WHEN
         viewModel.register(context)
 
@@ -301,10 +278,6 @@ class LauncherViewModelTest {
         verify(exactly = 1) { amObserver.onAccountTwoPassModeNeeded(any(), any()) }
         verify(exactly = 1) { amObserver.onSessionForceLogout(any(), any()) }
         verify(exactly = 1) { amObserver.onSessionSecondFactorNeeded(any(), any()) }
-        // HumanVerificationManager
-        verify(exactly = 1) { hvObserver.onHumanVerificationNeeded(any(), any()) }
-        // MissingScopeListener
-        verify(exactly = 1) { missingScopeObserver.onConfirmPasswordNeeded(any()) }
     }
 
     @Test
@@ -313,14 +286,6 @@ class LauncherViewModelTest {
         mockkStatic(AccountManager::observe)
         val amObserver = mockAccountManagerObserver()
         every { accountManager.observe(any(), any()) } returns amObserver
-
-        mockkStatic(HumanVerificationManager::observe)
-        val hvObserver = mockHumanVerificationManagerObserver()
-        every { humanVerificationManager.observe(any(), any()) } returns hvObserver
-
-        mockkStatic(MissingScopeListener::observe)
-        val missingScopeObserver = mockMissingScopeObserver()
-        every { missingScopeListener.observe(any(), any()) } returns missingScopeObserver
 
         // WHEN
         viewModel.register(context)
@@ -351,22 +316,6 @@ class LauncherViewModelTest {
 
         // then
         verify { userSettingsOrchestrator.startUpdateRecoveryEmailWorkflow(userId) }
-    }
-
-    private fun mockMissingScopeObserver(): MissingScopeObserver {
-        mockkStatic(MissingScopeObserver::onConfirmPasswordNeeded)
-        val missingScopeObserver = mockk<MissingScopeObserver> {
-            every { onConfirmPasswordNeeded(any()) } returns this
-        }
-        return missingScopeObserver
-    }
-
-    private fun mockHumanVerificationManagerObserver(): HumanVerificationManagerObserver {
-        mockkStatic(HumanVerificationManagerObserver::onHumanVerificationNeeded)
-        val hvObserver = mockk<HumanVerificationManagerObserver> {
-            every { onHumanVerificationNeeded(any(), any()) } returns this
-        }
-        return hvObserver
     }
 
     private fun mockAccountManagerObserver(): AccountManagerObserver {

@@ -38,6 +38,7 @@ import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.session.SessionId
 import me.proton.core.network.domain.session.SessionProvider
 import me.proton.core.test.android.api.TestApiManager
+import me.proton.core.util.kotlin.DefaultDispatcherProvider
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -69,7 +70,7 @@ class MessageRemoteDataSourceImplTest {
 
     @Before
     fun setUp() {
-        apiProvider = ApiProvider(apiManagerFactory, sessionProvider)
+        apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
         messageRemoteDataSource = MessageRemoteDataSourceImpl(apiProvider)
     }
 

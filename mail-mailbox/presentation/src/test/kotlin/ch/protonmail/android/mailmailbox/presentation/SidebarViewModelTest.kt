@@ -73,7 +73,7 @@ class SidebarViewModelTest {
         every { this@mockk[MailFeatureId.ShowSettings] } returns false
     }
 
-    private val showSettings = MutableStateFlow(FeatureFlag(FeatureFlagTestData.showSettingsId.id, false))
+    private val showSettings = MutableStateFlow(FeatureFlag.default(FeatureFlagTestData.showSettingsId.id.id, false))
     private val observeMailFeature = mockk<ObserveMailFeature> {
         every { this@mockk(any(), FeatureFlagTestData.showSettingsId) } returns showSettings
     }

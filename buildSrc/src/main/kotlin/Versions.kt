@@ -47,11 +47,16 @@ object Versions {
         const val test = "1.4.0"
         const val testEspresso = "3.4.0"
         const val testExtJunit = "1.1.3"
+        const val testUiautomator = "2.2.0"
         const val work = "2.7.1"
     }
 
     object Arrow {
         const val core = "1.1.2"
+    }
+
+    object Cash {
+        const val turbine = "0.7.0"
     }
 
     object Dagger {
@@ -101,7 +106,7 @@ object Versions {
     }
 
     object Proton {
-        const val core = "8.5.0"
+        const val core = "9.0.0"
     }
 
     object Squareup {

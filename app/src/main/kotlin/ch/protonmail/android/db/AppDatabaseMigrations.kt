@@ -26,6 +26,7 @@ import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import me.proton.core.account.data.db.AccountDatabase
 import me.proton.core.challenge.data.db.ChallengeDatabase
 import me.proton.core.featureflag.data.db.FeatureFlagDatabase
+import me.proton.core.humanverification.data.db.HumanVerificationDatabase
 import me.proton.core.label.data.local.LabelDatabase
 import me.proton.core.user.data.db.AddressDatabase
 import me.proton.core.user.data.db.UserDatabase
@@ -92,6 +93,15 @@ object AppDatabaseMigrations {
         override fun migrate(database: SupportSQLiteDatabase) {
             MessageDatabase.MIGRATION_2.migrate(database)
             ConversationDatabase.MIGRATION_1.migrate(database)
+        }
+    }
+
+    val MIGRATION_10_11 = object : Migration(10, 11) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            FeatureFlagDatabase.MIGRATION_2.migrate(database)
+            FeatureFlagDatabase.MIGRATION_3.migrate(database)
+            HumanVerificationDatabase.MIGRATION_1.migrate(database)
+            HumanVerificationDatabase.MIGRATION_2.migrate(database)
         }
     }
 }
