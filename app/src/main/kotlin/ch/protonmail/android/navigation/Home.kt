@@ -79,7 +79,7 @@ fun Home(launcherActions: Launcher.Actions) {
                     navController,
                     openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } }
                 )
-                addMessageDetail()
+                addMessageDetail(navController)
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
                 // settings

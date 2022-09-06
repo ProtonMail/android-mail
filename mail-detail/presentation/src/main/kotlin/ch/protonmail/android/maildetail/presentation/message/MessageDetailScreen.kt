@@ -22,16 +22,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.maildetail.presentation.DetailScreen
+import ch.protonmail.android.maildetail.presentation.DetailScreenTopBar
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.maildetail.presentation.message.model.MessageUiModel
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.util.kotlin.exhaustive
 
 @Composable
 fun MessageDetailScreen(
-    messageId: MessageId,
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
     viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
     when (
@@ -40,18 +42,27 @@ fun MessageDetailScreen(
             initial = MessageDetailState.Loading
         ).value
     ) {
-        is MessageDetailState.Data -> {
-            val stateMessageId = state.messageUiModel.messageId.id
-            val subject = state.messageUiModel.subject
-            Text(
-                modifier = modifier,
-                text = "Message detail \n\nMessage ID: $stateMessageId \n\nSubject: $subject"
-            )
-        }
+        is MessageDetailState.Data -> MessageDetailScreen(
+            messageUiModel = state.messageUiModel,
+            actions = DetailScreen.Actions(onBackClick = onBackClick)
+        )
         MessageDetailState.Error.NoMessageIdProvided -> throw IllegalStateException("No message id given")
         MessageDetailState.Error.NotLoggedIn -> Text(modifier = modifier, text = "No user logged in")
         MessageDetailState.Loading -> ProtonCenteredProgress()
     }.exhaustive
+}
+
+@Composable
+fun MessageDetailScreen(
+    modifier: Modifier = Modifier,
+    messageUiModel: MessageUiModel,
+    actions: DetailScreen.Actions
+) {
+    DetailScreenTopBar(
+        modifier = modifier,
+        title = messageUiModel.subject,
+        onBackClick = actions.onBackClick
+    )
 }
 
 object MessageDetailScreen {

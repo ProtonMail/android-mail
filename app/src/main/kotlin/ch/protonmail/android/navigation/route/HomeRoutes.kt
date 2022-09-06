@@ -28,7 +28,6 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.maildetail.presentation.conversation.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.conversation.ConversationDetailScreen.CONVERSATION_ID_KEY
 import ch.protonmail.android.maildetail.presentation.message.MessageDetailScreen
-import ch.protonmail.android.maildetail.presentation.message.MessageDetailScreen.MESSAGE_ID_KEY
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -66,9 +65,11 @@ internal fun NavGraphBuilder.addMailbox(
     }
 }
 
-internal fun NavGraphBuilder.addMessageDetail() {
+internal fun NavGraphBuilder.addMessageDetail(navController: NavHostController) {
     composable(route = Destination.Screen.Message.route) {
-        MessageDetailScreen(MessageId(it.require(MESSAGE_ID_KEY)))
+        MessageDetailScreen(
+            onBackClick = { navController.popBackStack() }
+        )
     }
 }
 
