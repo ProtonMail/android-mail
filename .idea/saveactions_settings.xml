@@ -9,5 +9,10 @@
       </set>
     </option>
     <option name="configurationPath" value="" />
+    <option name="exclusions">
+      <set>
+        <option value="kotlin/versionsConfig.kt" />
+      </set>
+    </option>
   </component>
 </project>

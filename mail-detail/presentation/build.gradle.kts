@@ -62,6 +62,7 @@ dependencies {
     implementation(Proton.Core.label)
 
     implementation(project(":mail-common:domain"))
+    implementation(project(":mail-common:presentation"))
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-label:domain"))
     // Needed as PageType is a supertype of Message.

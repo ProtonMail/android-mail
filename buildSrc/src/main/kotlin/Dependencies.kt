@@ -33,6 +33,7 @@ object Dependencies {
         add(AndroidX.Compose.foundation)
         add(AndroidX.Compose.foundationLayout)
         add(AndroidX.Compose.material)
+        add(AndroidX.Compose.material3)
         add(AndroidX.Compose.runtime)
         add(AndroidX.Compose.ui)
         add(AndroidX.Compose.uiToolingPreview)

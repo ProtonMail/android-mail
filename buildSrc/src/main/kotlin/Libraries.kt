@@ -51,10 +51,12 @@ object AndroidX {
     object Compose {
 
         private const val version = Versions.AndroidX.compose
+        private const val material3Version = Versions.AndroidX.material3
 
         const val foundation = "androidx.compose.foundation:foundation:$version"
         const val foundationLayout = "androidx.compose.foundation:foundation-layout:$version"
         const val material = "androidx.compose.material:material:$version"
+        const val material3 = "androidx.compose.material3:material3:$material3Version"
         const val runtime = "androidx.compose.runtime:runtime:$version"
         const val ui = "androidx.compose.ui:ui:$version"
         const val uiTooling = "androidx.compose.ui:ui-tooling:$version"

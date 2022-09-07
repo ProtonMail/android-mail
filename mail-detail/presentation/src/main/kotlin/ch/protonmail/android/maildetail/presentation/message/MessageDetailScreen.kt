@@ -18,9 +18,19 @@
 
 package ch.protonmail.android.maildetail.presentation.message
 
-import androidx.compose.material.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.maildetail.presentation.DetailScreen
 import ch.protonmail.android.maildetail.presentation.DetailScreenTopBar
@@ -28,6 +38,8 @@ import ch.protonmail.android.maildetail.presentation.message.model.MessageDetail
 import ch.protonmail.android.maildetail.presentation.message.model.MessageUiModel
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.default
 import me.proton.core.util.kotlin.exhaustive
 
 @Composable
@@ -52,16 +64,43 @@ fun MessageDetailScreen(
     }.exhaustive
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageDetailScreen(
     modifier: Modifier = Modifier,
     messageUiModel: MessageUiModel,
     actions: DetailScreen.Actions
 ) {
-    DetailScreenTopBar(
-        modifier = modifier,
-        title = messageUiModel.subject,
-        onBackClick = actions.onBackClick
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            DetailScreenTopBar(
+                title = messageUiModel.subject,
+                isStarred = messageUiModel.isStarred,
+                onBackClick = actions.onBackClick,
+                scrollBehavior = scrollBehavior
+            )
+        },
+        content = { innerPadding ->
+            LazyColumn(
+                modifier = Modifier.background(ProtonTheme.colors.backgroundSecondary),
+                contentPadding = innerPadding,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                val list = (0..75).map { it.toString() }
+                items(count = list.size) {
+                    Text(
+                        text = list[it],
+                        style = ProtonTheme.typography.default,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    )
+                }
+            }
+        }
     )
 }
 
