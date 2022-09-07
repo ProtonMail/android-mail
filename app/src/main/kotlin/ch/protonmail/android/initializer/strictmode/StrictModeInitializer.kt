@@ -24,7 +24,7 @@ import androidx.startup.Initializer
 import ch.protonmail.android.BuildConfig
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
-import android.os.Build
+import me.proton.core.util.android.strictmode.detectCommon
 
 class StrictModeInitializer : Initializer<Unit> {
 
@@ -42,28 +42,7 @@ class StrictModeInitializer : Initializer<Unit> {
             .penaltyFlashScreen()
             .penaltyDeath()
         val vmPolicyBuilder = StrictMode.VmPolicy.Builder()
-            .detectActivityLeaks()
-            .detectCleartextNetwork()
-            .detectFileUriExposure()
-            .detectLeakedClosableObjects()
-            .detectLeakedRegistrationObjects()
-            .detectLeakedSqlLiteObjects()
-            .penaltyDeathOnFileUriExposure()
-            // .detectUntaggedSockets() // Not needed (unless we want to use `android.net.TrafficStats`).
-            // .detectNonSdkApiUsage() // Skip: some androidx libraries violate this.
-            .apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    detectContentUriWithoutPermission()
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    detectCredentialProtectedWhileLocked()
-                    detectImplicitDirectBoot()
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    detectIncorrectContextUse()
-                    detectUnsafeIntentLaunch()
-                }
-            }
+            .detectCommon()
             .penaltyDeath()
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build())
