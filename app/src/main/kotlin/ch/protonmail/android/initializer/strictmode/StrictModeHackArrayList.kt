@@ -31,10 +31,6 @@ class StrictModeHackArrayList : ArrayList<Any>() {
         // AppLanguageRepository reading locale from file through
         // AppCompatDelegate (due to `autoStoreLocales` manifest metadata)
         "androidx.appcompat.app.AppLocalesStorageHelper.readLocales",
-        // Using StorageManager
-        "me.proton.core.challenge.data.DeviceUtilsKt.deviceVolumesStorage",
-        // CryptoPrefs lib reading from SharedPreferences
-        "me.proton.core.crypto.validator.data.prefs.CryptoPrefsImpl.<init>",
         // Reading from SharedPreferences
         "me.proton.core.util.android.sharedpreferences.ExtensionsKt.nullableGet",
     )
