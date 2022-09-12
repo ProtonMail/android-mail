@@ -58,8 +58,8 @@
   <string name="mail_settings_search_message_content">Rechercher dans le contenu des messages</string>
   <string name="mail_settings_labels_and_folders">Labels et dossiers</string>
   <string name="mail_settings_local_storage">Stockage local</string>
-  <string name="mail_settings_snooze">Reporter</string>
-  <string name="mail_settings_snooze_notifications">Reporter les notifications</string>
+  <string name="mail_settings_snooze">Mettre en pause</string>
+  <string name="mail_settings_snooze_notifications">Mettre en pause les notifications</string>
   <string name="mail_settings_conversation_mode">Mode conversation</string>
   <string name="mail_settings_not_set">Non défini</string>
   <string name="mail_settings_conversation_mode_hint">Regroupez les e-mails d\'une même conversation dans votre boîte de réception ou affichez-les séparément</string>
