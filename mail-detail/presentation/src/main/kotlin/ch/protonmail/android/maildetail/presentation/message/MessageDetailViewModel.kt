@@ -65,8 +65,9 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
-    fun submit(action: MessageDetailAction) {
-        TODO("Implement when adding first action")
+    fun submit(action: MessageDetailAction) = when (action) {
+        is MessageDetailAction.Star -> Timber.d("Star message clicked")
+        is MessageDetailAction.UnStar -> Timber.d("UnStar message clicked")
     }
 
     private fun observeMessageMetadata(messageId: MessageId) {

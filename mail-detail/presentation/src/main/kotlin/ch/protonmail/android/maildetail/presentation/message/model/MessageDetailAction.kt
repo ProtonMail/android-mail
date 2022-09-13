@@ -18,4 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.message.model
 
-sealed interface MessageDetailAction
+sealed interface MessageDetailAction {
+    object Star : MessageDetailAction
+    object UnStar : MessageDetailAction
+}

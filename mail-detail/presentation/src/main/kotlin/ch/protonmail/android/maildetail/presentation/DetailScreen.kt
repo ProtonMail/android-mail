@@ -20,6 +20,8 @@ package ch.protonmail.android.maildetail.presentation
 
 object DetailScreen {
     data class Actions(
-        val onBackClick: () -> Unit
+        val onBackClick: () -> Unit,
+        val onStarClick: () -> Unit,
+        val onUnStarClick: () -> Unit
     )
 }

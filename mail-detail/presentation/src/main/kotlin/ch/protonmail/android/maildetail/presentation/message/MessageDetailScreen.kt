@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.maildetail.presentation.DetailScreen
 import ch.protonmail.android.maildetail.presentation.DetailScreenTopBar
+import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailAction
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.message.model.MessageUiModel
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -56,7 +57,11 @@ fun MessageDetailScreen(
     ) {
         is MessageDetailState.Data -> MessageDetailScreen(
             messageUiModel = state.messageUiModel,
-            actions = DetailScreen.Actions(onBackClick = onBackClick)
+            actions = DetailScreen.Actions(
+                onBackClick = onBackClick,
+                onStarClick = { viewModel.submit(MessageDetailAction.Star) },
+                onUnStarClick = { viewModel.submit(MessageDetailAction.UnStar) }
+            )
         )
         MessageDetailState.Error.NoMessageIdProvided -> throw IllegalStateException("No message id given")
         MessageDetailState.Error.NotLoggedIn -> Text(modifier = modifier, text = "No user logged in")
@@ -74,12 +79,14 @@ fun MessageDetailScreen(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             DetailScreenTopBar(
                 title = messageUiModel.subject,
                 isStarred = messageUiModel.isStarred,
                 onBackClick = actions.onBackClick,
+                onStarClicked = actions.onStarClick,
+                onUnStarClicked = actions.onUnStarClick,
                 scrollBehavior = scrollBehavior
             )
         },

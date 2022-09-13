@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -30,10 +31,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import me.proton.core.compose.theme.ProtonDimens
@@ -41,29 +45,38 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.overline
 
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressWarnings("UseComposableActions")
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun DetailScreenTopBar(
     modifier: Modifier = Modifier,
     title: String,
     isStarred: Boolean,
+    messageCount: Int? = null,
     onBackClick: () -> Unit,
-    scrollBehavior: TopAppBarScrollBehavior,
+    onStarClicked: () -> Unit,
+    onUnStarClicked: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior
 ) {
     ProtonTheme3 {
         LargeTopAppBar(
             modifier = modifier,
             title = {
-                val maxLines = if (scrollBehavior.state.collapsedFraction > 0) 1 else Int.MAX_VALUE
                 Column {
+                    messageCount?.let { count ->
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = pluralStringResource(R.plurals.message_count_label_text, count, count),
+                            fontSize = ProtonTheme.typography.overline.fontSize,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    val isFullyExpanded = scrollBehavior.state.collapsedFraction == 0F
                     Text(
-                        text = "1 message",
-                        fontSize = ProtonTheme.typography.overline.fontSize
-                    )
-                    Text(
-                        maxLines = maxLines,
+                        maxLines = if (isFullyExpanded) 2 else 1,
                         text = title,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.Center
                     )
 
                 }
@@ -74,7 +87,12 @@ fun DetailScreenTopBar(
                 }
             },
             actions = {
-                IconButton(onClick = { /* doSomething() */ }) {
+                fun onStarIconClicked() = if (isStarred) {
+                    onUnStarClicked()
+                } else {
+                    onStarClicked()
+                }
+                IconButton(onClick = ::onStarIconClicked) {
                     Icon(
                         modifier = Modifier.size(ProtonDimens.DefaultIconSize),
                         painter = getStarredIcon(isStarred),
@@ -92,7 +110,6 @@ fun DetailScreenTopBar(
             )
         )
     }
-
 }
 
 @Composable
