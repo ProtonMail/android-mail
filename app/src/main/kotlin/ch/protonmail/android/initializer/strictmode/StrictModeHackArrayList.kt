@@ -28,11 +28,18 @@ import timber.log.Timber
 class StrictModeHackArrayList : ArrayList<Any>() {
 
     private val whitelistedViolations = listOf(
+        // Violations observed only in Firebase tests
+        "android.graphics.HwTypefaceUtil.getMultyWeightHwFamily",
+        "android.graphics.HwTypefaceUtil.updateFont",
         // AppLanguageRepository reading locale from file through
         // AppCompatDelegate (due to `autoStoreLocales` manifest metadata)
         "androidx.appcompat.app.AppLocalesStorageHelper.readLocales",
+        // Firebase tests initialization
+        "androidx.test.runner.MonitoringInstrumentation.specifyDexMakerCacheProperty",
+        // Reading from file
+        "ch.protonmail.android.initializer.SentryInitializer.create",
         // Reading from SharedPreferences
-        "me.proton.core.util.android.sharedpreferences.ExtensionsKt.nullableGet",
+        "me.proton.core.util.android.sharedpreferences.ExtensionsKt.nullableGet"
     )
 
     override fun add(element: Any): Boolean {
