@@ -2,8 +2,8 @@ default:
   image: $CI_REGISTRY/android/shared/docker-android:v1.0.0
 
 before_script:
-  - mkdir app/src/uiTest/assets
-  - mkdir keystore
+  - mkdir app/src/uiTest/assets -p
+  - mkdir keystore -p
   - base64 -d - < "$TEST_USERS_CREDENTIALS_FILE" > app/src/uiTest/assets/users.json
   - base64 -d - < "$INTERNAL_API_FILE" > app/src/uiTest/assets/internal_api.json
   - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
@@ -22,14 +22,6 @@ workflow:
       when: never
     - if: $CI_COMMIT_BRANCH
 
-cache:
-  - key: $CI_COMMIT_REF_SLUG
-    policy: pull
-    paths:
-      - .gradle
-  - !reference [ .ruby, cache ]
-  - !reference [ .gradle_build_cache ]
-
 stages:
   - analyse
   - danger-review
@@ -46,12 +38,7 @@ stages:
 
 analyse:
   stage: analyse
-  extends: .checkout_core_job
-  cache:
-    - key: $CI_COMMIT_REF_SLUG
-      policy: pull-push
-      paths:
-        - .gradle
+  extends: .base_job
   tags:
     - medium
   script:
@@ -118,7 +105,7 @@ build_release:
 
 run_unit_test:
   stage: test
-  extends: .checkout_core_job
+  extends: .base_job
   tags:
     - xlarge-k8s
   dependencies:
@@ -159,7 +146,7 @@ run_firebase_full_regression_tests:
 
 coverage report:
   stage: report
-  extends: .checkout_core_job
+  extends: .base_job
   tags:
     - xlarge-k8s
   script:

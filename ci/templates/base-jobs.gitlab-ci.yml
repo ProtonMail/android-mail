@@ -1,24 +1,22 @@
-.gradle_build_cache: &gradle-build-cache
-  key:
-    prefix: gradle-build-cache
-    files:
-      - gradle/wrapper/gradle-wrapper.properties
+cache: &cache
+  key: $CI_COMMIT_SHA
   paths:
-    - ${CI_PROJECT_DIR}/build/gradle-build-cache
-    - ${CI_PROJECT_DIR}/proton-libs/build/gradle-build-cache
-  policy: pull
+    - ${CI_PROJECT_DIR}
+  untracked: true
+
+.base_job:
+  extends: .checkout_core_job
+  cache:
+    *cache
 
 .build_job:
   stage: build
-  extends: .checkout_core_job
+  extends: .base_job
   tags:
     - xlarge-k8s
   artifacts:
     paths:
       - app/build/outputs
-  cache:
-    - <<: *gradle-build-cache
-      policy: pull-push
 
 .firebase_test_job:
   stage: test
@@ -29,6 +27,8 @@
   before_script:
     - bundle install
     - ./buildSrc/setup_firebase_gcloud.sh
+  cache:
+    *cache
 
 .firebase_deploy_job:
   stage: deploy
@@ -42,3 +42,5 @@
   rules:
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
+  cache:
+    *cache
