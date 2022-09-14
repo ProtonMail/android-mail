@@ -11,7 +11,17 @@ before_script:
   - !reference [ .ruby, before_script ]
   - !reference [ .checkout-core-submodule, before_script ] # included from checkout-core.gitlab-ci.yml
 variables:
-  ORG_GRADLE_PROJECT_useCoreGitSubmodule: "true" # see included checkout-core.gitlab-ci.yml for usage context
+  # see included checkout-core.gitlab-ci.yml for usage context
+  ORG_GRADLE_PROJECT_useCoreGitSubmodule: "true"
+  # Use fastzip to improve cache times
+  FF_USE_FASTZIP: "true"
+  # Output upload and download progress every 5 seconds
+  TRANSFER_METER_FREQUENCY: "5s"
+  # Use no compression for artifacts
+  ARTIFACT_COMPRESSION_LEVEL: "fastest"
+  # Use low compression for caches
+  CACHE_COMPRESSION_LEVEL: "fast"
+
 
 # Makes sure we do not create separate merge request and branch pipelines.
 # See https://docs.gitlab.com/ee/ci/yaml/workflow.html#switch-between-branch-pipelines-and-merge-request-pipelines
