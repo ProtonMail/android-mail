@@ -74,7 +74,7 @@ fun Home(launcherActions: Launcher.Actions) {
                 startDestination = Screen.Mailbox.route
             ) {
                 // home
-                addConversationDetail()
+                addConversationDetail(navController)
                 addMailbox(
                     navController,
                     openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } }

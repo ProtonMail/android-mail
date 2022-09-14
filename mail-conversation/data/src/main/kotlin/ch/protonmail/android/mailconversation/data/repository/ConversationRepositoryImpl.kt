@@ -18,12 +18,16 @@
 
 package ch.protonmail.android.mailconversation.data.repository
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
@@ -51,6 +55,10 @@ class ConversationRepositoryImpl @Inject constructor(
         userId: UserId,
         labelId: LabelId
     ) = localDataSource.markAsStale(userId, labelId)
+
+    override fun observeConversation(userId: UserId, id: ConversationId): Flow<Either<DataError, Conversation>> {
+        TODO("Not yet implemented")
+    }
 
     private suspend fun fetchConversations(
         userId: UserId,

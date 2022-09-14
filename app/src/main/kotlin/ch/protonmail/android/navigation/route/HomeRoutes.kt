@@ -26,7 +26,6 @@ import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.maildetail.presentation.conversation.ConversationDetailScreen
-import ch.protonmail.android.maildetail.presentation.conversation.ConversationDetailScreen.CONVERSATION_ID_KEY
 import ch.protonmail.android.maildetail.presentation.message.MessageDetailScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
@@ -34,14 +33,15 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.navigation.model.Destination
 import me.proton.core.compose.navigation.get
-import me.proton.core.compose.navigation.require
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
 import timber.log.Timber
 
-internal fun NavGraphBuilder.addConversationDetail() {
+internal fun NavGraphBuilder.addConversationDetail(navController: NavHostController) {
     composable(route = Destination.Screen.Conversation.route) {
-        ConversationDetailScreen(ConversationId(it.require(CONVERSATION_ID_KEY)))
+        ConversationDetailScreen(
+            onBackClick = { navController.popBackStack() }
+        )
     }
 }
 

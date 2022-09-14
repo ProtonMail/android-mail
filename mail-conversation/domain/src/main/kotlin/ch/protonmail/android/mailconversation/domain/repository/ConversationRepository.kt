@@ -18,8 +18,12 @@
 
 package ch.protonmail.android.mailconversation.domain.repository
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
@@ -40,4 +44,11 @@ interface ConversationRepository {
         userId: UserId,
         labelId: LabelId
     )
+
+    /**
+     * Get a conversation.
+     * Returns any conversation data that is available locally right away.
+     * Message metadata is fetched and returned as available
+     */
+    fun observeConversation(userId: UserId, id: ConversationId): Flow<Either<DataError, Conversation>>
 }

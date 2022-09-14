@@ -31,6 +31,7 @@ object ConversationTestData {
     fun buildConversation(
         userId: UserId,
         id: String,
+        subject: String = "subject",
         order: Long = 1000,
         time: Long = 1000,
         labelIds: List<String> = listOf("0"),
@@ -43,7 +44,7 @@ object ConversationTestData {
         contextLabelId = labelIds.firstOrNull()?.let { LabelId(it) } ?: LabelId("0"),
         order = order,
         labels = labelIds.map { buildConversationLabel(id, it, time) },
-        subject = "subject",
+        subject = subject,
         senders = listOf(Recipient("address", "name")),
         recipients = emptyList(),
         expirationTime = expirationTime,
