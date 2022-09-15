@@ -25,6 +25,10 @@ import ch.protonmail.android.mailmessage.data.mapper.toDomainModel
 import ch.protonmail.android.mailmessage.data.mapper.toEntity
 import me.proton.core.label.domain.entity.LabelId
 
+private val NO_CONTEXT_LABEL_ID = LabelId("no-context")
+
+fun ConversationWithLabels.toConversationWithNoContext() = toConversation(NO_CONTEXT_LABEL_ID)
+
 fun ConversationWithLabels.toConversation(contextLabelId: LabelId) = Conversation(
     userId = conversation.userId,
     conversationId = conversation.conversationId,

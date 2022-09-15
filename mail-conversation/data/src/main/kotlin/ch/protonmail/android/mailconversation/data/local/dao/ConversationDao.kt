@@ -20,6 +20,7 @@ package ch.protonmail.android.mailconversation.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationEntity
 import ch.protonmail.android.mailconversation.data.local.relation.ConversationWithLabels
 import ch.protonmail.android.mailpagination.domain.entity.OrderBy
@@ -83,7 +84,7 @@ abstract class ConversationDao : BaseDao<ConversationEntity>() {
 
     @Query(
         """
-        SELECT * FROM ConversationEntity 
+        SELECT * FROM ConversationEntity
         JOIN ConversationLabelEntity
         ON ConversationLabelEntity.userId = ConversationEntity.userId
         AND ConversationLabelEntity.conversationId = ConversationEntity.conversationId
@@ -116,7 +117,7 @@ abstract class ConversationDao : BaseDao<ConversationEntity>() {
 
     @Query(
         """
-        SELECT * FROM ConversationEntity 
+        SELECT * FROM ConversationEntity
         JOIN ConversationLabelEntity
         ON ConversationLabelEntity.userId = ConversationEntity.userId
         AND ConversationLabelEntity.conversationId = ConversationEntity.conversationId
@@ -152,4 +153,7 @@ abstract class ConversationDao : BaseDao<ConversationEntity>() {
 
     @Query("DELETE FROM ConversationEntity WHERE userId = :userId")
     abstract suspend fun deleteAll(userId: UserId)
+
+    @Query("SELECT * FROM ConversationEntity WHERE userId = :userId AND conversationId = :conversationId")
+    abstract fun observe(userId: UserId, conversationId: ConversationId): Flow<ConversationWithLabels?>
 }

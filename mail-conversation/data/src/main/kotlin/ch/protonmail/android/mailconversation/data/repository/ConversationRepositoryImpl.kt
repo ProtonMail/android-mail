@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailconversation.data.repository
 
 import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
@@ -27,7 +28,16 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationLoca
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import com.dropbox.android.external.store4.Fetcher
+import com.dropbox.android.external.store4.SourceOfTruth
+import com.dropbox.android.external.store4.StoreBuilder
+import com.dropbox.android.external.store4.StoreRequest
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.mapLatest
+import me.proton.core.data.arch.ProtonStore
+import me.proton.core.data.arch.buildProtonStore
+import me.proton.core.data.arch.toDataResult
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
@@ -39,6 +49,22 @@ class ConversationRepositoryImpl @Inject constructor(
     private val remoteDataSource: ConversationRemoteDataSource,
     private val localDataSource: ConversationLocalDataSource
 ) : ConversationRepository {
+
+    private data class StoreKey(val userId: UserId, val conversationId: ConversationId)
+
+    private val conversationStore: ProtonStore<StoreKey, Conversation> = StoreBuilder.from(
+        fetcher = Fetcher.of { key: StoreKey ->
+            remoteDataSource.getConversation(key.userId, key.conversationId)
+        },
+        sourceOfTruth = SourceOfTruth.of(
+            reader = { key: StoreKey ->
+                localDataSource.observeConversation(key.userId, key.conversationId)
+            },
+            writer = { key, conversation ->
+                localDataSource.upsertConversation(key.userId, conversation)
+            },
+        )
+    ).buildProtonStore()
 
     override suspend fun getConversations(
         userId: UserId,
@@ -56,9 +82,14 @@ class ConversationRepositoryImpl @Inject constructor(
         labelId: LabelId
     ) = localDataSource.markAsStale(userId, labelId)
 
-    override fun observeConversation(userId: UserId, id: ConversationId): Flow<Either<DataError, Conversation>> {
-        TODO("Not yet implemented")
-    }
+    override fun observeConversation(
+        userId: UserId,
+        id: ConversationId
+    ): Flow<Either<DataError, Conversation>> = conversationStore.stream(
+        StoreRequest.cached(StoreKey(userId, id), true)
+    ).mapLatest { it.toDataResult() }
+        .mapToEither()
+        .distinctUntilChanged()
 
     private suspend fun fetchConversations(
         userId: UserId,

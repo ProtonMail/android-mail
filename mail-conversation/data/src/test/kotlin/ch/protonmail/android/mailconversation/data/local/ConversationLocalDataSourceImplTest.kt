@@ -18,8 +18,10 @@
 
 package ch.protonmail.android.mailconversation.data.local
 
+import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.getConversation
+import ch.protonmail.android.mailconversation.data.getConversationWithLabels
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationDao
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationLabelDao
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
@@ -35,11 +37,13 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class ConversationLocalDataSourceImplTest {
 
@@ -153,5 +157,31 @@ class ConversationLocalDataSourceImplTest {
                 labelId
             )
         }
+    }
+
+    @Test
+    fun `observe conversation returns conversation from db when existing`() = runTest {
+        // Given
+        val conversationId = ConversationId("convId1")
+        val conversationWithLabels = getConversationWithLabels(userId1, conversationId.id)
+        val conversation = conversationWithLabels.toConversation(LabelId("no-context"))
+        coEvery { conversationDao.observe(userId1, conversationId) } returns flowOf(conversationWithLabels)
+        // When
+        conversationLocalDataSource.observeConversation(userId1, conversationId).test {
+            // Then
+            assertEquals(conversation, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `upsert conversation inserts or updates conversation in the DB`() = runTest {
+        // Given
+        val conversationId = ConversationId("convId1")
+        val conversation = getConversation(userId1, conversationId.id)
+        // When
+        conversationLocalDataSource.upsertConversation(userId1, conversation)
+        // Then
+        coVerify { conversationDao.insertOrUpdate(conversation.toEntity()) }
     }
 }

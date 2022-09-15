@@ -18,8 +18,11 @@
 
 package ch.protonmail.android.mailconversation.data
 
+import ch.protonmail.android.mailconversation.data.local.relation.ConversationWithLabels
+import ch.protonmail.android.mailconversation.data.local.toEntity
 import ch.protonmail.android.mailconversation.data.remote.resource.ConversationLabelResource
 import ch.protonmail.android.mailconversation.data.remote.resource.ConversationResource
+import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentCountsResource
 import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentsInfoResource
 import me.proton.core.domain.entity.UserId
@@ -67,3 +70,12 @@ fun getConversation(
     order = order,
     labels = labelIds.map { getConversationLabelResource(id, contextTime = time) }
 ).toConversation(userId)
+
+fun getConversationWithLabels(
+    userId: UserId = UserId("1"),
+    id: String = "1",
+    labels: List<ConversationLabel> = listOf()
+) = ConversationWithLabels(
+    getConversationResource(id).toConversation(userId).toEntity(),
+    labels
+)

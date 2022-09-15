@@ -100,4 +100,11 @@ interface ConversationLocalDataSource {
         userId: UserId,
         pageKey: PageKey
     ): PageKey
+
+    fun observeConversation(
+        userId: UserId,
+        conversationId: ConversationId
+    ): Flow<Conversation?>
+
+    suspend fun upsertConversation(userId: UserId, conversation: Conversation)
 }

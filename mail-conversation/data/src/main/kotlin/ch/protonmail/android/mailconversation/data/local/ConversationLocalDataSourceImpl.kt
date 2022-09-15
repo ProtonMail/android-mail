@@ -98,6 +98,13 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         pageKey: PageKey
     ): PageKey = pageIntervalDao.getClippedPageKey(userId, PageItemType.Conversation, pageKey)
 
+    override fun observeConversation(userId: UserId, conversationId: ConversationId) = conversationDao
+        .observe(userId, conversationId)
+        .mapLatest { it?.toConversationWithNoContext() }
+
+    override suspend fun upsertConversation(userId: UserId, conversation: Conversation) = conversationDao
+        .insertOrUpdate(conversation.toEntity())
+
     private suspend fun upsertPageInterval(
         userId: UserId,
         pageKey: PageKey,
