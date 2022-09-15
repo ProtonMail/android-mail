@@ -2,17 +2,8 @@ default:
   image: $CI_REGISTRY/android/shared/docker-android:v1.0.0
 
 before_script:
-  - mkdir app/src/uiTest/assets -p
-  - mkdir keystore -p
-  - base64 -d - < "$TEST_USERS_CREDENTIALS_FILE" > app/src/uiTest/assets/users.json
-  - base64 -d - < "$INTERNAL_API_FILE" > app/src/uiTest/assets/internal_api.json
-  - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
   - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
-  - !reference [ .ruby, before_script ]
-  - !reference [ .checkout-core-submodule, before_script ] # included from checkout-core.gitlab-ci.yml
 variables:
-  # see included checkout-core.gitlab-ci.yml for usage context
-  ORG_GRADLE_PROJECT_useCoreGitSubmodule: "true"
   # Use fastzip to improve cache times
   FF_USE_FASTZIP: "true"
   # Output upload and download progress every 5 seconds
@@ -33,6 +24,7 @@ workflow:
     - if: $CI_COMMIT_BRANCH
 
 stages:
+  - setup
   - analyse
   - danger-review
   - localise
@@ -41,10 +33,23 @@ stages:
   - report
   - deploy
 
-# See included checkout-core.gitlab-ci.yml for usage context
-.checkout_core_job:
+setup:
+  stage: setup
+  extends: .base_job
+  tags:
+    - small
   variables:
     CHECKOUT_CORE_SUBMODULE: "true"
+    ORG_GRADLE_PROJECT_useCoreGitSubmodule: "true"
+  before_script:
+    - !reference [ .ruby, before_script ]
+    - !reference [ .checkout-core-submodule, before_script ]
+  script:
+    - mkdir app/src/uiTest/assets -p
+    - mkdir keystore -p
+    - base64 -d - < "$TEST_USERS_CREDENTIALS_FILE" > app/src/uiTest/assets/users.json
+    - base64 -d - < "$INTERNAL_API_FILE" > app/src/uiTest/assets/internal_api.json
+    - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
 
 analyse:
   stage: analyse
@@ -57,7 +62,6 @@ analyse:
     expire_in: 1 month
     reports:
       codequality: config/detekt/reports/mergedReport.json
-
 
 danger-review:
   stage: danger-review
@@ -72,7 +76,6 @@ danger-review:
   interruptible: true
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-
 
 localise-sync-crowdin:
   stage: localise
@@ -92,14 +95,12 @@ localise-commit-locales:
     I18N_COMMIT_BRANCH_ALLOWED: 'master'
   extends: .i18n-commit-locales-shared
 
-
 build_debug:
   extends: .build_job
   script:
     - echo PROXY_TOKEN="$(curl -o - https://proxy.proton.black/token/get)" >> private.properties
     - bundle exec fastlane assembleDebug
     - bundle exec fastlane assembleTest
-
 
 build_release:
   extends: .build_job
@@ -111,7 +112,6 @@ build_release:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
-
 
 run_unit_test:
   stage: test
@@ -171,7 +171,6 @@ coverage report:
         coverage_format: cobertura
         path: build/reports/cobertura-coverage.xml
 
-
 deploy_to_firebase_dev:
   extends: .firebase_deploy_job
   script:
@@ -189,7 +188,6 @@ deploy_to_firebase_alpha:
   rules:
     - !reference [ .firebase_deploy_job, rules ]
     - if: $NIGHTLY_ALPHA_BUILD == "true"
-
 
 include:
   - project: 'translations/generator'

@@ -5,7 +5,6 @@ cache: &cache
   untracked: true
 
 .base_job:
-  extends: .checkout_core_job
   cache:
     *cache
 
