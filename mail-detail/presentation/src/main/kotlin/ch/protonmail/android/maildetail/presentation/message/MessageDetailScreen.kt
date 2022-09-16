@@ -32,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.maildetail.presentation.DetailScreen
 import ch.protonmail.android.maildetail.presentation.DetailScreenTopBar
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailAction
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
@@ -57,7 +56,7 @@ fun MessageDetailScreen(
     ) {
         is MessageDetailState.Data -> MessageDetailScreen(
             messageUiModel = state.messageUiModel,
-            actions = DetailScreen.Actions(
+            actions = MessageDetailScreen.Actions(
                 onBackClick = onBackClick,
                 onStarClick = { viewModel.submit(MessageDetailAction.Star) },
                 onUnStarClick = { viewModel.submit(MessageDetailAction.UnStar) }
@@ -74,7 +73,7 @@ fun MessageDetailScreen(
 fun MessageDetailScreen(
     modifier: Modifier = Modifier,
     messageUiModel: MessageUiModel,
-    actions: DetailScreen.Actions
+    actions: MessageDetailScreen.Actions
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -84,9 +83,11 @@ fun MessageDetailScreen(
             DetailScreenTopBar(
                 title = messageUiModel.subject,
                 isStarred = messageUiModel.isStarred,
-                onBackClick = actions.onBackClick,
-                onStarClicked = actions.onStarClick,
-                onUnStarClicked = actions.onUnStarClick,
+                actions = DetailScreenTopBar.Actions(
+                    onBackClick = actions.onBackClick,
+                    onStarClick = actions.onStarClick,
+                    onUnStarClick = actions.onUnStarClick
+                ),
                 scrollBehavior = scrollBehavior
             )
         },
@@ -114,4 +115,10 @@ fun MessageDetailScreen(
 object MessageDetailScreen {
 
     const val MESSAGE_ID_KEY = "message id"
+
+    data class Actions(
+        val onBackClick: () -> Unit,
+        val onStarClick: () -> Unit,
+        val onUnStarClick: () -> Unit
+    )
 }

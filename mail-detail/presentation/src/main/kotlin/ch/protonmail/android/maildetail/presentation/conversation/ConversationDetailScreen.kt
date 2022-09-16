@@ -31,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.maildetail.presentation.DetailScreen
 import ch.protonmail.android.maildetail.presentation.DetailScreenTopBar
 import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailAction
 import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailState
@@ -56,7 +55,7 @@ fun ConversationDetailScreen(
     ) {
         is ConversationDetailState.Data -> ConversationDetailScreen(
             conversationUiModel = state.conversationUiModel,
-            actions = DetailScreen.Actions(
+            actions = ConversationDetailScreen.Actions(
                 onBackClick = onBackClick,
                 onStarClick = { viewModel.submit(ConversationDetailAction.Star) },
                 onUnStarClick = { viewModel.submit(ConversationDetailAction.UnStar) }
@@ -76,7 +75,7 @@ fun ConversationDetailScreen(
 fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
     conversationUiModel: ConversationUiModel,
-    actions: DetailScreen.Actions
+    actions: ConversationDetailScreen.Actions
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -86,9 +85,11 @@ fun ConversationDetailScreen(
             DetailScreenTopBar(
                 title = conversationUiModel.subject,
                 isStarred = conversationUiModel.isStarred,
-                onBackClick = actions.onBackClick,
-                onStarClicked = actions.onStarClick,
-                onUnStarClicked = actions.onUnStarClick,
+                actions = DetailScreenTopBar.Actions(
+                    onBackClick = actions.onBackClick,
+                    onStarClick = actions.onStarClick,
+                    onUnStarClick = actions.onUnStarClick
+                ),
                 scrollBehavior = scrollBehavior
             )
         },
@@ -116,4 +117,10 @@ fun ConversationDetailScreen(
 object ConversationDetailScreen {
 
     const val CONVERSATION_ID_KEY = "conversation id"
+
+    data class Actions(
+        val onBackClick: () -> Unit,
+        val onStarClick: () -> Unit,
+        val onUnStarClick: () -> Unit
+    )
 }

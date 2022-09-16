@@ -45,7 +45,6 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.overline
 
-@SuppressWarnings("UseComposableActions")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun DetailScreenTopBar(
@@ -53,9 +52,7 @@ fun DetailScreenTopBar(
     title: String,
     isStarred: Boolean,
     messageCount: Int? = null,
-    onBackClick: () -> Unit,
-    onStarClicked: () -> Unit,
-    onUnStarClicked: () -> Unit,
+    actions: DetailScreenTopBar.Actions,
     scrollBehavior: TopAppBarScrollBehavior
 ) {
     ProtonTheme3 {
@@ -82,15 +79,15 @@ fun DetailScreenTopBar(
                 }
             },
             navigationIcon = {
-                IconButton(onClick = onBackClick) {
+                IconButton(onClick = actions.onBackClick) {
                     Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(id = R.string.presentation_back))
                 }
             },
             actions = {
                 fun onStarIconClicked() = if (isStarred) {
-                    onUnStarClicked()
+                    actions.onUnStarClick()
                 } else {
-                    onStarClicked()
+                    actions.onStarClick()
                 }
                 IconButton(onClick = ::onStarIconClicked) {
                     Icon(
@@ -127,3 +124,12 @@ private fun getStarredIcon(isStarred: Boolean) = painterResource(
         R.drawable.ic_proton_star
     }
 )
+
+object DetailScreenTopBar {
+
+    data class Actions(
+        val onBackClick: () -> Unit,
+        val onStarClick: () -> Unit,
+        val onUnStarClick: () -> Unit
+    )
+}
