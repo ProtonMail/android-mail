@@ -18,4 +18,4 @@
 
 package ch.protonmail.android.maildetail.presentation.message.model
 
-sealed interface MessageDetailAction {}
+sealed interface MessageDetailAction

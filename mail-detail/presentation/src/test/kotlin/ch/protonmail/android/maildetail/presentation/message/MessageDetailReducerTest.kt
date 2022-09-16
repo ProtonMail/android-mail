@@ -62,14 +62,12 @@ class MessageDetailReducerTest(
                 currentState = MessageDetailState.Loading,
                 event = MessageDetailEvent.MessageMetadata(messageUiModel),
                 expectedState = MessageDetailState.Data(messageUiModel)
-            ).toArray(),
+            ).toArray()
         )
 
         @JvmStatic
         @Parameterized.Parameters
-        fun data(): Collection<Array<TestInput>> {
-            return transitionsFromLoadingState
-        }
+        fun data(): Collection<Array<TestInput>> = transitionsFromLoadingState
     }
 
     class TestInput(

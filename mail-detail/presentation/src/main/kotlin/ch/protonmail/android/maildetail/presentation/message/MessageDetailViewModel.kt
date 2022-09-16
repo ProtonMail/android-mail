@@ -64,6 +64,7 @@ class MessageDetailViewModel @Inject constructor(
         }
     }
 
+    @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
     fun submit(action: MessageDetailAction) {
         TODO("Implement when adding first action")
     }
@@ -88,6 +89,7 @@ class MessageDetailViewModel @Inject constructor(
         mutableDetailState.emit(messageDetailReducer.reduce(state.value, event))
     }
 
+    @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
     private fun MessageDetailAction.toEvent(): MessageDetailEvent = TODO("Implement when adding first action")
 
 }

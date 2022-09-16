@@ -77,7 +77,7 @@ fun getMessage(
 fun getMessageWithLabels(
     userId: UserId = UserId("1"),
     id: String = "1",
-    labelIds: List<LabelId> = listOf(LabelId("0")),
+    labelIds: List<LabelId> = listOf(LabelId("0"))
 ) = MessageWithLabelIds(
     getMessageResource(id).toMessage(userId).toEntity(),
     labelIds
