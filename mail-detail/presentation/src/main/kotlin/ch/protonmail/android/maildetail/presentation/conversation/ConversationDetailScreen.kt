@@ -85,6 +85,7 @@ fun ConversationDetailScreen(
             DetailScreenTopBar(
                 title = conversationUiModel.subject,
                 isStarred = conversationUiModel.isStarred,
+                messageCount = conversationUiModel.messageCount,
                 actions = DetailScreenTopBar.Actions(
                     onBackClick = actions.onBackClick,
                     onStarClick = actions.onStarClick,

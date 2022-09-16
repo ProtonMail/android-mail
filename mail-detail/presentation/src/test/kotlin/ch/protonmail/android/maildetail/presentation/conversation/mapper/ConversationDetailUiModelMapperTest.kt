@@ -36,15 +36,17 @@ class ConversationDetailUiModelMapperTest {
         val conversation = buildConversation(
             userId = userId,
             id = RAW_CONVERSATION_ID,
-            subject = SUBJECT
+            subject = SUBJECT,
+            numMessages = 3
         )
         // When
         val actual = mapper.toUiModel(conversation)
         // Then
         val expected = ConversationUiModel(
-            ConversationId(RAW_CONVERSATION_ID),
-            SUBJECT,
-            false
+            conversationId = ConversationId(RAW_CONVERSATION_ID),
+            subject = SUBJECT,
+            isStarred = false,
+            messageCount = 3
         )
         assertEquals(expected, actual)
     }

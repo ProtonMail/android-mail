@@ -23,5 +23,6 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 data class ConversationUiModel(
     val conversationId: ConversationId,
     val subject: String,
-    val isStarred: Boolean
+    val isStarred: Boolean,
+    val messageCount: Int
 )

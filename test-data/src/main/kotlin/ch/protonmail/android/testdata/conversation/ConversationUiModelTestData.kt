@@ -26,10 +26,12 @@ object ConversationUiModelTestData {
     fun buildConversationUiModel(
         conversationId: String,
         subject: String,
-        isStarred: Boolean = false
+        isStarred: Boolean = false,
+        messageCount: Int = 1
     ) = ConversationUiModel(
         conversationId = ConversationId(conversationId),
         subject = subject,
-        isStarred = isStarred
+        isStarred = isStarred,
+        messageCount = messageCount
     )
 }

@@ -32,6 +32,7 @@ object ConversationTestData {
         userId: UserId,
         id: String,
         subject: String = "subject",
+        numMessages: Int = 1,
         order: Long = 1000,
         time: Long = 1000,
         labelIds: List<String> = listOf("0"),
@@ -48,7 +49,7 @@ object ConversationTestData {
         senders = listOf(Recipient("address", "name")),
         recipients = emptyList(),
         expirationTime = expirationTime,
-        numMessages = 1,
+        numMessages = numMessages,
         numUnread = 0,
         numAttachments = numAttachments,
         attachmentCount = attachmentCount

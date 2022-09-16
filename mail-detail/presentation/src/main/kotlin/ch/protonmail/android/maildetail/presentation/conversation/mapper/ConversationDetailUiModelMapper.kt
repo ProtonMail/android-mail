@@ -29,7 +29,8 @@ class ConversationDetailUiModelMapper @Inject constructor() : Mapper<Conversatio
     fun toUiModel(conversation: Conversation) = ConversationUiModel(
         conversationId = conversation.conversationId,
         subject = conversation.subject,
-        isStarred = conversation.labelIds.contains(SystemLabelId.Starred.labelId)
+        isStarred = conversation.labelIds.contains(SystemLabelId.Starred.labelId),
+        messageCount = conversation.numMessages
     )
 
 }
