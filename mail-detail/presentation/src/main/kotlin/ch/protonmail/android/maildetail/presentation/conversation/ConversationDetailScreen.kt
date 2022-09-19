@@ -61,12 +61,14 @@ fun ConversationDetailScreen(
                 onUnStarClick = { viewModel.submit(ConversationDetailAction.UnStar) }
             )
         )
-        ConversationDetailState.Error.NoConversationIdProvided -> throw IllegalStateException("No Conversation id given")
+        ConversationDetailState.Error.NoConversationIdProvided ->
+            throw IllegalStateException("No Conversation id given")
         ConversationDetailState.Error.NotLoggedIn -> Text(
             modifier = modifier,
             text = "No user logged in"
         )
         ConversationDetailState.Loading -> ProtonCenteredProgress()
+        ConversationDetailState.Error.FailedLoadingData -> Text("Failed loading conversation")
     }.exhaustive
 }
 

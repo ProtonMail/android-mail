@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 class ConversationDetailReducer @Inject constructor() {
 
+    @SuppressWarnings("UnusedPrivateMember")
     fun reduce(
         currentState: ConversationDetailState,
         event: ConversationDetailEvent
@@ -13,7 +14,7 @@ class ConversationDetailReducer @Inject constructor() {
         is ConversationDetailEvent.NoPrimaryUser -> ConversationDetailState.Error.NotLoggedIn
         is ConversationDetailEvent.NoConversationIdProvided -> ConversationDetailState.Error.NoConversationIdProvided
         is ConversationDetailEvent.ConversationData -> ConversationDetailState.Data(event.conversationUiModel)
-        is ConversationDetailEvent.ErrorLoadingConversation -> TODO()
+        is ConversationDetailEvent.ErrorLoadingConversation -> ConversationDetailState.Error.FailedLoadingData
     }
 
 }

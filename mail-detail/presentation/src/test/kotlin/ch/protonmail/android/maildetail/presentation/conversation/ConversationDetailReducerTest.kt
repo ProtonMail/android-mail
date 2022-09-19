@@ -27,7 +27,7 @@ import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
-class ConversationDetailReducerTest (
+class ConversationDetailReducerTest(
     private val testInput: TestInput
 ) {
 
@@ -62,14 +62,17 @@ class ConversationDetailReducerTest (
                 currentState = ConversationDetailState.Loading,
                 event = ConversationDetailEvent.ConversationData(conversationUiModel),
                 expectedState = ConversationDetailState.Data(conversationUiModel)
+            ).toArray(),
+            TestInput(
+                currentState = ConversationDetailState.Loading,
+                event = ConversationDetailEvent.ErrorLoadingConversation,
+                expectedState = ConversationDetailState.Error.FailedLoadingData
             ).toArray()
         )
 
         @JvmStatic
         @Parameterized.Parameters
-        fun data(): Collection<Array<TestInput>> {
-            return transitionsFromLoadingState
-        }
+        fun data(): Collection<Array<TestInput>> = transitionsFromLoadingState
     }
 
     class TestInput(

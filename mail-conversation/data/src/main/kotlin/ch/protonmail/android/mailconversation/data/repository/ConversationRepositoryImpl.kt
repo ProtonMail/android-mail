@@ -62,7 +62,7 @@ class ConversationRepositoryImpl @Inject constructor(
             },
             writer = { key, conversation ->
                 localDataSource.upsertConversation(key.userId, conversation)
-            },
+            }
         )
     ).buildProtonStore()
 

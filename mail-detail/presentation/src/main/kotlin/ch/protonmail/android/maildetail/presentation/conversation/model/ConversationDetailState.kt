@@ -29,5 +29,6 @@ sealed interface ConversationDetailState {
     sealed interface Error : ConversationDetailState {
         object NotLoggedIn : Error
         object NoConversationIdProvided : Error
+        object FailedLoadingData : Error
     }
 }
