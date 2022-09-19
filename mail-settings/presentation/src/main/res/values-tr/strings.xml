@@ -62,7 +62,7 @@
   <string name="mail_settings_snooze_notifications">Bildirimleri ertele</string>
   <string name="mail_settings_conversation_mode">Yazışma kipi</string>
   <string name="mail_settings_not_set">Ayarlanmamış</string>
-  <string name="mail_settings_conversation_mode_hint">Aynı yazışmadaki e-postaları gelen kutunuzda gruplayın veya ayrı ayrı görüntüleyin</string>
+  <string name="mail_settings_conversation_mode_hint">Aynı yazışmadaki e-postaları Gelen kutunuzda gruplayın ya da ayrı ayrı görüntüleyin</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Kaydırma işlemleri</string>
   <string name="mail_settings_swipe_actions_subtitle">Sık kullanılan işlemler için kaydırma hareketlerini ayarlayın.</string>

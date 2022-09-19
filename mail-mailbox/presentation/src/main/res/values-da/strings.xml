@@ -25,9 +25,9 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Søg</string>
   <string name="mailbox_toolbar_selected_count">%d valgte</string>
-  <string name="yesterday">yesterday</string>
+  <string name="yesterday">i går</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d unread</item>
-    <item quantity="other">%d unread</item>
+    <item quantity="one">%d ulæst</item>
+    <item quantity="other">%d ulæste</item>
   </plurals>
 </resources>

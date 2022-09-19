@@ -71,13 +71,13 @@
   <string name="mail_settings_swipe_action_archive_title">Archiver</string>
   <string name="mail_settings_swipe_action_read_title">Non lu(s)</string>
   <string name="mail_settings_swipe_action_spam_title">Indésirables/spam</string>
-  <string name="mail_settings_swipe_action_star_title">Ajouter aux favoris</string>
+  <string name="mail_settings_swipe_action_star_title">Ajouter aux Favoris</string>
   <string name="mail_settings_swipe_action_trash_title">Corbeille</string>
-  <string name="mail_settings_swipe_action_archive_description">Déplacer vers les archives</string>
+  <string name="mail_settings_swipe_action_archive_description">Déplacer dans le dossier Archives</string>
   <string name="mail_settings_swipe_action_read_description">Marquer comme non lu/lu</string>
-  <string name="mail_settings_swipe_action_spam_description">Déplacer dans les indésirables/spam</string>
-  <string name="mail_settings_swipe_action_star_description">Ajouter/retirer des favoris</string>
-  <string name="mail_settings_swipe_action_trash_description">Déplacer vers la Corbeille</string>
+  <string name="mail_settings_swipe_action_spam_description">Déplacer dans le dossier Indésirables/spam</string>
+  <string name="mail_settings_swipe_action_star_description">Ajouter/Retirer des Favoris</string>
+  <string name="mail_settings_swipe_action_trash_description">Déplacer dans le dossier Corbeille</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Une erreur est survenue. Veuillez réessayer.</string>
 </resources>

@@ -20,6 +20,6 @@
   <string name="app_name">ProtonMail</string>
   <string name="title_remove">Αφαίρεση</string>
   <string name="title_remove_account">Αφαίρεση Λογαριασμού</string>
-  <string name="description_remove_account">Πρόκειται να εξέλθετε και να αφαιρέσετε όλες τις πληροφορίες που σχετίζονται με αυτόν τον λογαριασμό.</string>
+  <string name="description_remove_account">Πρόκειται να αποσυνδεθείτε και να αφαιρέσετε όλες τις πληροφορίες που σχετίζονται με αυτόν τον λογαριασμό.</string>
   <string name="user_select_other_account_content_description">Επιλογή άλλου λογαριασμού</string>
 </resources>

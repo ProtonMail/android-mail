@@ -23,7 +23,7 @@
   <string name="mailbox_toolbar_compose_button_content_description">Escrever nova mensagem</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Sair do modo de seleção</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
-  <string name="mailbox_toolbar_search_button_content_description">Buscar</string>
+  <string name="mailbox_toolbar_search_button_content_description">Pesquisar</string>
   <string name="mailbox_toolbar_selected_count">%d Selecionado</string>
   <string name="yesterday">ontem</string>
   <plurals name="filter_unread_button_text">
