@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.conversation.mapper
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationUiModel
+import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailUiModel
 import ch.protonmail.android.testdata.conversation.ConversationTestData.buildConversation
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import org.junit.Test
@@ -42,7 +42,7 @@ class ConversationDetailUiModelMapperTest {
         // When
         val actual = mapper.toUiModel(conversation)
         // Then
-        val expected = ConversationUiModel(
+        val expected = ConversationDetailUiModel(
             conversationId = ConversationId(RAW_CONVERSATION_ID),
             subject = SUBJECT,
             isStarred = false,

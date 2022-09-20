@@ -19,14 +19,14 @@
 package ch.protonmail.android.maildetail.presentation.conversation.mapper
 
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationUiModel
+import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
 
-class ConversationDetailUiModelMapper @Inject constructor() : Mapper<Conversation, ConversationUiModel> {
+class ConversationDetailUiModelMapper @Inject constructor() : Mapper<Conversation, ConversationDetailUiModel> {
 
-    fun toUiModel(conversation: Conversation) = ConversationUiModel(
+    fun toUiModel(conversation: Conversation) = ConversationDetailUiModel(
         conversationId = conversation.conversationId,
         subject = conversation.subject,
         isStarred = conversation.labelIds.contains(SystemLabelId.Starred.labelId),

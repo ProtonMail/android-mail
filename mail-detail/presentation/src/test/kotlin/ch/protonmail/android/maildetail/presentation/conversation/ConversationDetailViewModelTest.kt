@@ -40,7 +40,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-
 class ConversationDetailViewModelTest {
 
     private val rawConversationId = "detailConversationId"

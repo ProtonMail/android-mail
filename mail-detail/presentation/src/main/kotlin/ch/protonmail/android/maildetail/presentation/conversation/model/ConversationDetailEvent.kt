@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.conversation.model
 
 
 sealed interface ConversationDetailEvent {
-    data class ConversationData(val conversationUiModel: ConversationUiModel) : ConversationDetailEvent
+    data class ConversationData(val conversationUiModel: ConversationDetailUiModel) : ConversationDetailEvent
 
     object NoPrimaryUser : ConversationDetailEvent
     object ErrorLoadingConversation : ConversationDetailEvent

@@ -34,7 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.maildetail.presentation.DetailScreenTopBar
 import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailAction
 import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationUiModel
+import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailUiModel
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
@@ -74,7 +74,7 @@ fun ConversationDetailScreen(
 @Composable
 fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
-    conversationUiModel: ConversationUiModel,
+    conversationUiModel: ConversationDetailUiModel,
     actions: ConversationDetailScreen.Actions
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()

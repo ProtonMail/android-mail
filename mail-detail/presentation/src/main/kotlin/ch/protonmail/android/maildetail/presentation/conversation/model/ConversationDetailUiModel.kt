@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.conversation.model
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 
-data class ConversationUiModel(
+data class ConversationDetailUiModel(
     val conversationId: ConversationId,
     val subject: String,
     val isStarred: Boolean,

@@ -21,7 +21,7 @@ package ch.protonmail.android.maildetail.presentation.conversation.model
 sealed interface ConversationDetailState {
 
     data class Data(
-        val conversationUiModel: ConversationUiModel
+        val conversationUiModel: ConversationDetailUiModel
     ) : ConversationDetailState
 
     object Loading : ConversationDetailState

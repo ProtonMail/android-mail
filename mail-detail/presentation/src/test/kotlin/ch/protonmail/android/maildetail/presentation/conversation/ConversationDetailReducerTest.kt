@@ -28,7 +28,8 @@ import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
 class ConversationDetailReducerTest(
-    private val testInput: TestInput
+    @Suppress("UNUSED_PARAMETER") private val testName: String,
+    private val testInput: TestParams.TestInput
 ) {
 
     private val detailReducer = ConversationDetailReducer()
@@ -48,34 +49,48 @@ class ConversationDetailReducerTest(
         )
 
         private val transitionsFromLoadingState = listOf(
-            TestInput(
-                currentState = ConversationDetailState.Loading,
-                event = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationDetailState.Error.NotLoggedIn
-            ).toArray(),
-            TestInput(
-                currentState = ConversationDetailState.Loading,
-                event = ConversationDetailEvent.ConversationData(conversationUiModel),
-                expectedState = ConversationDetailState.Data(conversationUiModel)
-            ).toArray(),
-            TestInput(
-                currentState = ConversationDetailState.Loading,
-                event = ConversationDetailEvent.ErrorLoadingConversation,
-                expectedState = ConversationDetailState.Error.FailedLoadingData
-            ).toArray()
+            TestParams(
+                "from loading to no primary user",
+                TestParams.TestInput(
+                    currentState = ConversationDetailState.Loading,
+                    event = ConversationDetailEvent.NoPrimaryUser,
+                    expectedState = ConversationDetailState.Error.NotLoggedIn
+                )
+            ),
+            TestParams(
+                "from loading to conversation data",
+                TestParams.TestInput(
+                    currentState = ConversationDetailState.Loading,
+                    event = ConversationDetailEvent.ConversationData(conversationUiModel),
+                    expectedState = ConversationDetailState.Data(conversationUiModel)
+                )
+            ),
+            TestParams(
+                "from loading to error loading conversation",
+                TestParams.TestInput(
+                    currentState = ConversationDetailState.Loading,
+                    event = ConversationDetailEvent.ErrorLoadingConversation,
+                    expectedState = ConversationDetailState.Error.FailedLoadingData
+                )
+            )
         )
 
         @JvmStatic
-        @Parameterized.Parameters
-        fun data(): Collection<Array<TestInput>> = transitionsFromLoadingState
+        @Parameterized.Parameters(name = "{0}")
+        fun data() = transitionsFromLoadingState
+            .map { arrayOf(it.testName, it.testInput) }
     }
 
-    class TestInput(
-        val currentState: ConversationDetailState,
-        val event: ConversationDetailEvent,
-        val expectedState: ConversationDetailState
+    data class TestParams(
+        val testName: String,
+        val testInput: TestInput
     ) {
 
-        fun toArray() = arrayOf(this)
+        data class TestInput(
+            val currentState: ConversationDetailState,
+            val event: ConversationDetailEvent,
+            val expectedState: ConversationDetailState
+        )
     }
+
 }

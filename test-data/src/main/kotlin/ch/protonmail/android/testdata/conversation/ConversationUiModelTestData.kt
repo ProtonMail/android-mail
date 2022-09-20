@@ -19,7 +19,7 @@
 package ch.protonmail.android.testdata.conversation
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationUiModel
+import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailUiModel
 
 object ConversationUiModelTestData {
 
@@ -28,7 +28,7 @@ object ConversationUiModelTestData {
         subject: String,
         isStarred: Boolean = false,
         messageCount: Int = 1
-    ) = ConversationUiModel(
+    ) = ConversationDetailUiModel(
         conversationId = ConversationId(conversationId),
         subject = subject,
         isStarred = isStarred,
