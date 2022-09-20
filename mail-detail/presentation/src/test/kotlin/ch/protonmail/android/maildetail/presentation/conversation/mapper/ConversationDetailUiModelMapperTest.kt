@@ -18,10 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.conversation.mapper
 
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailUiModel
-import ch.protonmail.android.testdata.conversation.ConversationTestData.buildConversation
-import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import ch.protonmail.android.testdata.conversation.ConversationTestData
+import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -32,42 +30,17 @@ class ConversationDetailUiModelMapperTest {
 
     @Test
     fun `map conversation to conversation ui model`() {
-        // Given
-        val conversation = buildConversation(
-            userId = userId,
-            id = RAW_CONVERSATION_ID,
-            subject = SUBJECT,
-            numMessages = 3
-        )
         // When
-        val actual = mapper.toUiModel(conversation)
+        val actual = mapper.toUiModel(ConversationTestData.conversationWith3Messages)
         // Then
-        val expected = ConversationDetailUiModel(
-            conversationId = ConversationId(RAW_CONVERSATION_ID),
-            subject = SUBJECT,
-            isStarred = false,
-            messageCount = 3
-        )
-        assertEquals(expected, actual)
+        assertEquals(ConversationUiModelTestData.uiModelWith3Messages, actual)
     }
 
     @Test
     fun `map conversation with starred label to starred conversation ui model`() {
-        // Given
-        val conversation = buildConversation(
-            userId = userId,
-            id = RAW_CONVERSATION_ID,
-            labelIds = listOf("10")
-        )
         // When
-        val actual = mapper.toUiModel(conversation)
+        val actual = mapper.toUiModel(ConversationTestData.starredConversation)
         // Then
         assertTrue(actual.isStarred)
-    }
-
-    companion object {
-
-        const val RAW_CONVERSATION_ID = "rawConversationId"
-        const val SUBJECT = "Here's a new email"
     }
 }

@@ -88,7 +88,7 @@ class ConversationDetailViewModelTest {
 
         // When
         viewModel.state.test {
-            initialStateEmitted()
+            awaitInitialState()
             // Then
             assertEquals(ConversationDetailState.Error.NotLoggedIn, awaitItem())
         }
@@ -105,7 +105,7 @@ class ConversationDetailViewModelTest {
     }
 
 
-    private suspend fun FlowTurbine<ConversationDetailState>.initialStateEmitted() {
+    private suspend fun FlowTurbine<ConversationDetailState>.awaitInitialState() {
         awaitItem() as ConversationDetailState.Loading
     }
 

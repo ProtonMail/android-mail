@@ -23,10 +23,28 @@ import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
 object ConversationTestData {
+
+    const val RAW_CONVERSATION_ID = "rawConversationId"
+    const val RAW_SUBJECT = "Here's a new email"
+
+    val conversationWith3Messages = buildConversation(
+        userId = userId,
+        id = RAW_CONVERSATION_ID,
+        subject = RAW_SUBJECT,
+        numMessages = 3
+    )
+
+    val starredConversation = buildConversation(
+        userId = userId,
+        id = RAW_CONVERSATION_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf("10")
+    )
 
     fun buildConversation(
         userId: UserId,
