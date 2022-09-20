@@ -50,14 +50,14 @@ class ConversationRepositoryImpl @Inject constructor(
     private val localDataSource: ConversationLocalDataSource
 ) : ConversationRepository {
 
-    private data class StoreKey(val userId: UserId, val conversationId: ConversationId)
+    private data class ConversationKey(val userId: UserId, val conversationId: ConversationId)
 
-    private val conversationStore: ProtonStore<StoreKey, Conversation> = StoreBuilder.from(
-        fetcher = Fetcher.of { key: StoreKey ->
+    private val conversationStore: ProtonStore<ConversationKey, Conversation> = StoreBuilder.from(
+        fetcher = Fetcher.of { key: ConversationKey ->
             remoteDataSource.getConversation(key.userId, key.conversationId)
         },
         sourceOfTruth = SourceOfTruth.of(
-            reader = { key: StoreKey ->
+            reader = { key: ConversationKey ->
                 localDataSource.observeConversation(key.userId, key.conversationId)
             },
             writer = { key, conversation ->
@@ -86,7 +86,7 @@ class ConversationRepositoryImpl @Inject constructor(
         userId: UserId,
         id: ConversationId
     ): Flow<Either<DataError, Conversation>> = conversationStore.stream(
-        StoreRequest.cached(StoreKey(userId, id), true)
+        StoreRequest.cached(ConversationKey(userId, id), true)
     ).mapLatest { it.toDataResult() }
         .mapToEither()
         .distinctUntilChanged()

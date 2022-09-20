@@ -44,6 +44,7 @@ import me.proton.core.label.domain.entity.LabelId
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class ConversationLocalDataSourceImplTest {
 
@@ -170,6 +171,19 @@ class ConversationLocalDataSourceImplTest {
         conversationLocalDataSource.observeConversation(userId1, conversationId).test {
             // Then
             assertEquals(conversation, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe conversation returns null conversation when not existing in db`() = runTest {
+        // Given
+        val conversationId = ConversationId("convId1")
+        coEvery { conversationDao.observe(userId1, conversationId) } returns flowOf(null)
+        // When
+        conversationLocalDataSource.observeConversation(userId1, conversationId).test {
+            // Then
+            assertNull(awaitItem())
             awaitComplete()
         }
     }
