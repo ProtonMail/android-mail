@@ -12,7 +12,6 @@ class ConversationDetailReducer @Inject constructor() {
         event: ConversationDetailEvent
     ) = when (event) {
         is ConversationDetailEvent.NoPrimaryUser -> ConversationDetailState.Error.NotLoggedIn
-        is ConversationDetailEvent.NoConversationIdProvided -> ConversationDetailState.Error.NoConversationIdProvided
         is ConversationDetailEvent.ConversationData -> ConversationDetailState.Data(event.conversationUiModel)
         is ConversationDetailEvent.ErrorLoadingConversation -> ConversationDetailState.Error.FailedLoadingData
     }

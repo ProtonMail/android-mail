@@ -37,7 +37,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -58,7 +57,7 @@ class ConversationDetailViewModel @Inject constructor(
         Timber.d("Open detail screen for conversation ID: $conversationIdParam")
 
         if (conversationIdParam == null) {
-            viewModelScope.launch { emitNewStateFrom(ConversationDetailEvent.NoConversationIdProvided) }
+            throw IllegalStateException("No Conversation id given")
         } else {
             observeConversationMetadata(ConversationId(conversationIdParam))
         }

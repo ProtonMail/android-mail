@@ -35,9 +35,11 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.Assert.assertThrows
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+
 
 class ConversationDetailViewModelTest {
 
@@ -94,16 +96,13 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `state is no conversation id param when conversation id parameter was not provided as input`() = runTest {
+    fun `throws exception when conversation id parameter was not provided as input`() = runTest {
         // Given
         every { savedStateHandle.get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns null
 
         // When
-        viewModel.state.test {
-            initialStateEmitted()
-            // Then
-            assertEquals(ConversationDetailState.Error.NoConversationIdProvided, awaitItem())
-        }
+        val thrown = assertThrows(IllegalStateException::class.java) { viewModel.state }
+        assertEquals("No Conversation id given", thrown.message)
     }
 
 

@@ -50,11 +50,6 @@ class ConversationDetailReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = ConversationDetailState.Loading,
-                event = ConversationDetailEvent.NoConversationIdProvided,
-                expectedState = ConversationDetailState.Error.NoConversationIdProvided
-            ).toArray(),
-            TestInput(
-                currentState = ConversationDetailState.Loading,
                 event = ConversationDetailEvent.NoPrimaryUser,
                 expectedState = ConversationDetailState.Error.NotLoggedIn
             ).toArray(),

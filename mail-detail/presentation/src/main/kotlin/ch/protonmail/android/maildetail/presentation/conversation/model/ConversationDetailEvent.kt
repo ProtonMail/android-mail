@@ -24,5 +24,4 @@ sealed interface ConversationDetailEvent {
 
     object NoPrimaryUser : ConversationDetailEvent
     object ErrorLoadingConversation : ConversationDetailEvent
-    object NoConversationIdProvided : ConversationDetailEvent
 }
