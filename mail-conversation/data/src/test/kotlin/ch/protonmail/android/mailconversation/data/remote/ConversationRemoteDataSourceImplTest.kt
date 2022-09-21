@@ -25,13 +25,13 @@ import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageFilter
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
-import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData.getConversationWithContext
+import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiManagerFactory
 import me.proton.core.network.data.ApiProvider
@@ -45,8 +45,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class ConversationRemoteDataSourceImplTest {
-
-    private val userId = UserId("1")
 
     private val sessionProvider = mockk<SessionProvider> {
         coEvery { getSessionId(userId) } returns SessionId("testSessionId")
@@ -109,8 +107,8 @@ class ConversationRemoteDataSourceImplTest {
         // Then
         assertEquals(
             expected = listOf(
-                getConversationWithContext(userId, "2", order = 2000),
-                getConversationWithContext(userId, "1", order = 1000)
+                ConversationWithContextTestData.conversation2Ordered,
+                ConversationWithContextTestData.conversation1Ordered
             ),
             actual = conversations
         )

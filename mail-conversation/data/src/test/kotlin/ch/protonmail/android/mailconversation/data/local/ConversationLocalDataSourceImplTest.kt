@@ -29,7 +29,9 @@ import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageItemType
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData.getConversationWithContext
+import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import ch.protonmail.android.testdata.user.UserIdTestData.userId1
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coInvoke
@@ -40,7 +42,6 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Before
 import org.junit.Test
@@ -48,9 +49,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class ConversationLocalDataSourceImplTest {
-
-    private val userId1 = UserId("1")
-    private val userId2 = UserId("2")
 
     private val conversationDao = mockk<ConversationDao> {
         coEvery { this@mockk.insertOrUpdate(entities = anyVararg()) } just Runs
@@ -85,12 +83,12 @@ class ConversationLocalDataSourceImplTest {
     fun `upsert conversations and corresponding labels, from arbitrary users`() = runTest {
         // Given
         val conversations = listOf(
+            // userId
+            getConversation(userId, "1", time = 1000, labelIds = emptyList()),
+            getConversation(userId, "2", time = 2000, labelIds = listOf("4")),
+            getConversation(userId, "3", time = 3000, labelIds = listOf("0", "1")),
             // userId1
-            getConversation(userId1, "1", time = 1000, labelIds = emptyList()),
-            getConversation(userId1, "2", time = 2000, labelIds = listOf("4")),
-            getConversation(userId1, "3", time = 3000, labelIds = listOf("0", "1")),
-            // userId2
-            getConversation(userId2, "1", time = 1000, labelIds = listOf("3"))
+            getConversation(userId1, "1", time = 1000, labelIds = listOf("3"))
         )
         val user1conversationIds =
             listOf(ConversationId("1"), ConversationId("2"), ConversationId("3"))
@@ -101,32 +99,32 @@ class ConversationLocalDataSourceImplTest {
 
         // Then
         coVerify { db.inTransaction(any()) }
-        coVerify { labelDao.deleteAll(userId1, user1conversationIds) }
-        coVerify { labelDao.deleteAll(userId2, user2conversationIds) }
+        coVerify { labelDao.deleteAll(userId, user1conversationIds) }
+        coVerify { labelDao.deleteAll(userId1, user2conversationIds) }
         coVerify(exactly = 1) { conversationDao.insertOrUpdate(entities = anyVararg()) }
         coVerify(exactly = 4) { labelDao.insertOrUpdate(entities = anyVararg()) }
         coVerify(exactly = 0) { pageIntervalDao.upsertPageInterval(any(), any(), any(), any()) }
     }
 
     @Test
-    fun `with userId1 and pageKey, upsert conversations and corresponding interval`() = runTest {
+    fun `with userId and pageKey, upsert conversations and corresponding interval`() = runTest {
         // Given
         val pageKey = PageKey(orderDirection = OrderDirection.Ascending, size = 3)
         val conversations = listOf(
-            // userId1
-            getConversationWithContext(userId1, "1", time = 1000, labelIds = emptyList()),
-            getConversationWithContext(userId1, "2", time = 2000, labelIds = listOf("4")),
-            getConversationWithContext(userId1, "3", time = 3000, labelIds = listOf("0", "1"))
+            // userId
+            ConversationWithContextTestData.conversation1NoLabels,
+            ConversationWithContextTestData.conversation2Labeled,
+            ConversationWithContextTestData.conversation3Labeled
         )
         val user1conversationIds =
             listOf(ConversationId("1"), ConversationId("2"), ConversationId("3"))
 
         // When
-        conversationLocalDataSource.upsertConversations(userId1, pageKey, conversations)
+        conversationLocalDataSource.upsertConversations(userId, pageKey, conversations)
 
         // Then
         coVerify { db.inTransaction(any()) }
-        coVerify { labelDao.deleteAll(userId1, user1conversationIds) }
+        coVerify { labelDao.deleteAll(userId, user1conversationIds) }
         coVerify(exactly = 1) { conversationDao.insertOrUpdate(entities = anyVararg()) }
         coVerify(exactly = 3) { labelDao.insertOrUpdate(entities = anyVararg()) }
         coVerify(exactly = 1) { pageIntervalDao.upsertPageInterval(any(), any(), any(), any()) }
@@ -135,12 +133,12 @@ class ConversationLocalDataSourceImplTest {
     @Test
     fun `deleteAllConversations call conversationDao and pageIntervalDao deleteAll`() = runTest {
         // When
-        conversationLocalDataSource.deleteAllConversations(userId1)
+        conversationLocalDataSource.deleteAllConversations(userId)
 
         // Then
         coVerify(exactly = 1) { db.inTransaction(any()) }
-        coVerify(exactly = 1) { conversationDao.deleteAll(userId1) }
-        coVerify(exactly = 1) { pageIntervalDao.deleteAll(userId1, PageItemType.Conversation) }
+        coVerify(exactly = 1) { conversationDao.deleteAll(userId) }
+        coVerify(exactly = 1) { pageIntervalDao.deleteAll(userId, PageItemType.Conversation) }
     }
 
     @Test
@@ -149,12 +147,12 @@ class ConversationLocalDataSourceImplTest {
         val labelId = LabelId("1")
 
         // When
-        conversationLocalDataSource.markAsStale(userId1, labelId)
+        conversationLocalDataSource.markAsStale(userId, labelId)
 
         // Then
         coVerify(exactly = 1) {
             pageIntervalDao.deleteAll(
-                userId1,
+                userId,
                 PageItemType.Conversation,
                 labelId
             )
@@ -165,11 +163,11 @@ class ConversationLocalDataSourceImplTest {
     fun `observe conversation returns conversation from db when existing`() = runTest {
         // Given
         val conversationId = ConversationId("convId1")
-        val conversationWithLabels = getConversationWithLabels(userId1, conversationId.id)
+        val conversationWithLabels = getConversationWithLabels(userId, conversationId.id)
         val conversation = conversationWithLabels.toConversation()
-        coEvery { conversationDao.observe(userId1, conversationId) } returns flowOf(conversationWithLabels)
+        coEvery { conversationDao.observe(userId, conversationId) } returns flowOf(conversationWithLabels)
         // When
-        conversationLocalDataSource.observeConversation(userId1, conversationId).test {
+        conversationLocalDataSource.observeConversation(userId, conversationId).test {
             // Then
             assertEquals(conversation, awaitItem())
             awaitComplete()
@@ -180,9 +178,9 @@ class ConversationLocalDataSourceImplTest {
     fun `observe conversation returns null conversation when not existing in db`() = runTest {
         // Given
         val conversationId = ConversationId("convId1")
-        coEvery { conversationDao.observe(userId1, conversationId) } returns flowOf(null)
+        coEvery { conversationDao.observe(userId, conversationId) } returns flowOf(null)
         // When
-        conversationLocalDataSource.observeConversation(userId1, conversationId).test {
+        conversationLocalDataSource.observeConversation(userId, conversationId).test {
             // Then
             assertNull(awaitItem())
             awaitComplete()
@@ -193,9 +191,9 @@ class ConversationLocalDataSourceImplTest {
     fun `upsert conversation inserts or updates conversation in the DB`() = runTest {
         // Given
         val conversationId = ConversationId("convId1")
-        val conversation = getConversation(userId1, conversationId.id)
+        val conversation = getConversation(userId, conversationId.id)
         // When
-        conversationLocalDataSource.upsertConversation(userId1, conversation)
+        conversationLocalDataSource.upsertConversation(userId, conversation)
         // Then
         coVerify { conversationDao.insertOrUpdate(conversation.toEntity()) }
     }

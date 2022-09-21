@@ -25,14 +25,14 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData.getConversationWithContext
+import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.message.MessageTestData.buildMessage
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Before
@@ -40,8 +40,6 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 class GetMailboxItemsTest {
-
-    private val userId = UserId("1")
 
     private val messageRepository = mockk<MessageRepository> {
         coEvery { getMessages(any(), any()) } returns listOf(
@@ -54,9 +52,9 @@ class GetMailboxItemsTest {
     private val conversationRepository = mockk<ConversationRepository> {
         coEvery { getConversations(any(), any()) } returns listOf(
             // userId1
-            getConversationWithContext(userId, "1", time = 1000, labelIds = listOf("0")),
-            getConversationWithContext(userId, "2", time = 2000, labelIds = listOf("4")),
-            getConversationWithContext(userId, "3", time = 3000, labelIds = listOf("0", "1"))
+            ConversationWithContextTestData.conversation1Labeled,
+            ConversationWithContextTestData.conversation2Labeled,
+            ConversationWithContextTestData.conversation3Labeled
         )
     }
     private val labelRepository = mockk<LabelRepository> {

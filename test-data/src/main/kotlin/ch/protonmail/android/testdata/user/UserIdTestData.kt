@@ -22,5 +22,6 @@ import me.proton.core.domain.entity.UserId
 
 object UserIdTestData {
     val userId = UserId("userId")
+    val userId1 = UserId("userId1")
     val adminUserId = UserId("adminUserId")
 }
