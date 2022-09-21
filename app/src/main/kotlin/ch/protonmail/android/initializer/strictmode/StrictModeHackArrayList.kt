@@ -29,7 +29,7 @@ class StrictModeHackArrayList : ArrayList<Any>() {
 
     private val whitelistedViolations = listOf(
         // Violations observed only in Firebase tests
-        "android.graphics.HwTypefaceUtil.getMultyWeightHwFamily",
+        "android.graphics.HwTypefaceUtil.getMultiWeightHwFamily",
         "android.graphics.HwTypefaceUtil.updateFont",
         // AppLanguageRepository reading locale from file through
         // AppCompatDelegate (due to `autoStoreLocales` manifest metadata)
@@ -43,6 +43,10 @@ class StrictModeHackArrayList : ArrayList<Any>() {
     )
 
     override fun add(element: Any): Boolean {
+        val hasDeclaredMethod = element.javaClass.declaredMethods.any { it.name == "getStackTrace" }
+        if (!hasDeclaredMethod) {
+            return false
+        }
         val crashInfoMethod: Method = element.javaClass.getDeclaredMethod("getStackTrace")
         crashInfoMethod.invoke(element)?.let { crashInfoStackTrace ->
             for (whitelistedStacktraceCall in whitelistedViolations) {
