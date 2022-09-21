@@ -20,17 +20,19 @@ package ch.protonmail.android.mailconversation.domain.repository
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import me.proton.core.domain.entity.UserId
 
 interface ConversationRemoteDataSource {
+
     /**
      * Get all [Conversation] for [userId].
      */
     suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey
-    ): List<Conversation>
+    ): List<ConversationWithContext>
 
     /**
      * Get a [Conversation] for [userId], by [messageId].

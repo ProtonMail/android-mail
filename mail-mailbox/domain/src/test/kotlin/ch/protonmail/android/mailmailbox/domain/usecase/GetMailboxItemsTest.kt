@@ -25,7 +25,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.testdata.conversation.ConversationTestData.buildConversation
+import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData.getConversationWithContext
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.message.MessageTestData.buildMessage
 import io.mockk.coEvery
@@ -54,9 +54,9 @@ class GetMailboxItemsTest {
     private val conversationRepository = mockk<ConversationRepository> {
         coEvery { getConversations(any(), any()) } returns listOf(
             // userId1
-            buildConversation(userId, "1", time = 1000, labelIds = listOf("0")),
-            buildConversation(userId, "2", time = 2000, labelIds = listOf("4")),
-            buildConversation(userId, "3", time = 3000, labelIds = listOf("0", "1"))
+            getConversationWithContext(userId, "1", time = 1000, labelIds = listOf("0")),
+            getConversationWithContext(userId, "2", time = 2000, labelIds = listOf("4")),
+            getConversationWithContext(userId, "3", time = 3000, labelIds = listOf("0", "1"))
         )
     }
     private val labelRepository = mockk<LabelRepository> {

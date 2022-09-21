@@ -29,6 +29,7 @@ import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
 import ch.protonmail.android.mailpagination.domain.entity.PageItemType
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData.getConversationWithContext
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coInvoke
@@ -113,9 +114,9 @@ class ConversationLocalDataSourceImplTest {
         val pageKey = PageKey(orderDirection = OrderDirection.Ascending, size = 3)
         val conversations = listOf(
             // userId1
-            getConversation(userId1, "1", time = 1000, labelIds = emptyList()),
-            getConversation(userId1, "2", time = 2000, labelIds = listOf("4")),
-            getConversation(userId1, "3", time = 3000, labelIds = listOf("0", "1"))
+            getConversationWithContext(userId1, "1", time = 1000, labelIds = emptyList()),
+            getConversationWithContext(userId1, "2", time = 2000, labelIds = listOf("4")),
+            getConversationWithContext(userId1, "3", time = 3000, labelIds = listOf("0", "1"))
         )
         val user1conversationIds =
             listOf(ConversationId("1"), ConversationId("2"), ConversationId("3"))
@@ -165,7 +166,7 @@ class ConversationLocalDataSourceImplTest {
         // Given
         val conversationId = ConversationId("convId1")
         val conversationWithLabels = getConversationWithLabels(userId1, conversationId.id)
-        val conversation = conversationWithLabels.toConversation(LabelId("no-context"))
+        val conversation = conversationWithLabels.toConversation()
         coEvery { conversationDao.observe(userId1, conversationId) } returns flowOf(conversationWithLabels)
         // When
         conversationLocalDataSource.observeConversation(userId1, conversationId).test {

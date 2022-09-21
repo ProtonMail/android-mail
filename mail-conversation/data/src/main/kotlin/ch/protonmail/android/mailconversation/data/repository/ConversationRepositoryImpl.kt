@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
@@ -69,7 +70,7 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey
-    ): List<Conversation> = localDataSource.getConversations(
+    ): List<ConversationWithContext> = localDataSource.getConversations(
         userId = userId,
         pageKey = pageKey
     ).let { conversations ->
@@ -107,7 +108,7 @@ class ConversationRepositoryImpl @Inject constructor(
     private suspend fun insertConversations(
         userId: UserId,
         pageKey: PageKey,
-        conversations: List<Conversation>
+        conversations: List<ConversationWithContext>
     ) = localDataSource.upsertConversations(
         userId = userId,
         pageKey = pageKey,

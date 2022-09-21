@@ -35,15 +35,15 @@ fun getConversationResource(
     id = id,
     order = order,
     subject = "subject",
-    expirationTime = 1000,
+    expirationTime = 0,
     labels = labels,
-    numAttachments = 0,
-    numMessages = 0,
+    numAttachments = 2,
+    numMessages = 1,
     numUnread = 0,
     recipients = emptyList(),
     senders = emptyList(),
     attachmentsInfo = AttachmentsInfoResource(
-        applicationIcs = AttachmentCountsResource(attachedCount = 1)
+        applicationIcs = AttachmentCountsResource(attachedCount = 0)
     )
 )
 
@@ -54,8 +54,8 @@ fun getConversationLabelResource(
     id = id,
     contextNumUnread = 0,
     contextNumMessages = 0,
-    contextTime = 0,
-    contextSize = contextTime,
+    contextTime = contextTime,
+    contextSize = 0,
     contextNumAttachments = 0
 )
 

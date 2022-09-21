@@ -28,6 +28,7 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationLoca
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailpagination.domain.entity.PageFilter
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData.getConversationWithContext
 import io.mockk.Ordering
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -47,10 +48,10 @@ class ConversationRepositoryImplTest {
 
     private val remoteDataSource = mockk<ConversationRemoteDataSource> {
         coEvery { this@mockk.getConversations(any(), any()) } returns listOf(
-            getConversation(id = "1", time = 1000),
-            getConversation(id = "2", time = 2000),
-            getConversation(id = "3", time = 3000),
-            getConversation(id = "4", time = 4000)
+            getConversationWithContext(id = "1", time = 1000),
+            getConversationWithContext(id = "2", time = 2000),
+            getConversationWithContext(id = "3", time = 3000),
+            getConversationWithContext(id = "4", time = 4000)
         )
     }
     private val localDataSource = mockk<ConversationLocalDataSource>(relaxUnitFun = true) {
@@ -70,12 +71,12 @@ class ConversationRepositoryImplTest {
         // Given
         val pageKey = PageKey()
         val local = listOf(
-            getConversation(id = "1", time = 1000)
+            getConversationWithContext(id = "1", time = 1000)
         )
         val remote = listOf(
-            getConversation(id = "1", time = 1000),
-            getConversation(id = "2", time = 2000),
-            getConversation(id = "3", time = 3000)
+            getConversationWithContext(id = "1", time = 1000),
+            getConversationWithContext(id = "2", time = 2000),
+            getConversationWithContext(id = "3", time = 3000)
         )
         coEvery { localDataSource.getConversations(any(), any()) } returns local
         coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
@@ -97,8 +98,8 @@ class ConversationRepositoryImplTest {
         // Given
         val pageKey = PageKey()
         val local = listOf(
-            getConversation(id = "1", time = 1000),
-            getConversation(id = "2", time = 2000)
+            getConversationWithContext(id = "1", time = 1000),
+            getConversationWithContext(id = "2", time = 2000)
         )
         coEvery { localDataSource.getConversations(any(), any()) } returns local
         coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
@@ -119,13 +120,13 @@ class ConversationRepositoryImplTest {
         // Given
         val pageKey = PageKey()
         val local = listOf(
-            getConversation(id = "1", time = 1000),
-            getConversation(id = "2", time = 2000)
+            getConversationWithContext(id = "1", time = 1000),
+            getConversationWithContext(id = "2", time = 2000)
         )
         val remote = listOf(
-            getConversation(id = "1", time = 1000),
-            getConversation(id = "2", time = 2000),
-            getConversation(id = "3", time = 3000)
+            getConversationWithContext(id = "1", time = 1000),
+            getConversationWithContext(id = "2", time = 2000),
+            getConversationWithContext(id = "3", time = 3000)
         )
         coEvery { localDataSource.getConversations(any(), any()) } returns local
         coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns true

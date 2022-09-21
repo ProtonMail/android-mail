@@ -44,7 +44,7 @@ object MessageTestData {
         messageId = MessageId(id),
         conversationId = ConversationId(id),
         time = time,
-        size = 1000,
+        size = 0,
         order = order,
         labelIds = labelIds.map { LabelId(it) },
         subject = subject,

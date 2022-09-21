@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmailbox.domain.mapper
 
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
-import ch.protonmail.android.testdata.conversation.ConversationTestData
+import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.label.domain.entity.LabelId
@@ -36,7 +36,7 @@ class ConversationMailboxItemMapperTest {
     @Test
     fun `when mapping conversation to mailbox item 'replied' 'replied all' and 'forwarded' flags are always false`() {
         // Given
-        val conversation = ConversationTestData.buildConversation(userId, "id")
+        val conversation = ConversationWithContextTestData.getConversationWithContext(userId, "id")
         // When
         val actual = mapper.toMailboxItem(conversation, emptyMap())
         // Then
@@ -49,7 +49,7 @@ class ConversationMailboxItemMapperTest {
     fun `when mapping conversation to mailbox item all labelIds are preserved`() {
         // Given
         val labelIds = listOf("0", "5", "10", "customLabel")
-        val conversation = ConversationTestData.buildConversation(userId, "id", labelIds = labelIds)
+        val conversation = ConversationWithContextTestData.getConversationWithContext(userId, "id", labelIds = labelIds)
         // When
         val actual = mapper.toMailboxItem(conversation, emptyMap())
         // Then
@@ -64,9 +64,9 @@ class ConversationMailboxItemMapperTest {
         val labels = labelIds.associate { value ->
             LabelId(value) to buildLabel(value)
         }
-        val conversation = ConversationTestData.buildConversation(userId, "id", labelIds = labelIds)
+        val conversation = ConversationWithContextTestData.getConversationWithContext(userId, "id", labelIds = labelIds)
         // When
-        val actual = mapper.toMailboxItem(conversation = conversation, labels = labels)
+        val actual = mapper.toMailboxItem(conversationWithContext = conversation, labels = labels)
         // Then
         val expected = listOf("0", "5", "10").map(::buildLabel)
         assertEquals(expected, actual.labels)
@@ -75,7 +75,7 @@ class ConversationMailboxItemMapperTest {
     @Test
     fun `when mapping conversation with 1 or more attachments to mailbox item then has attachments is true`() {
         // Given
-        val conversation = ConversationTestData.buildConversation(userId, "id", numAttachments = 3)
+        val conversation = ConversationWithContextTestData.getConversationWithContext(userId, "id", numAttachments = 3)
         // When
         val actual = mapper.toMailboxItem(conversation, emptyMap())
         // Then
@@ -85,7 +85,7 @@ class ConversationMailboxItemMapperTest {
     @Test
     fun `when mapping conversation with 0 attachments to mailbox item then has attachments is false`() {
         // Given
-        val conversation = ConversationTestData.buildConversation(userId, "id", numAttachments = 0)
+        val conversation = ConversationWithContextTestData.getConversationWithContext(userId, "id", numAttachments = 0)
         // When
         val actual = mapper.toMailboxItem(conversation, emptyMap())
         // Then
@@ -96,7 +96,9 @@ class ConversationMailboxItemMapperTest {
     fun `when mapping conversation the expiration time is preserved in the mailbox item`() {
         // Given
         val expirationTime = 1000L
-        val conversation = ConversationTestData.buildConversation(userId, "id", expirationTime = expirationTime)
+        val conversation = ConversationWithContextTestData.getConversationWithContext(
+            userId, "id", expirationTime = expirationTime
+        )
         // When
         val mailboxItem = mapper.toMailboxItem(conversation, emptyMap())
         // Then
@@ -107,7 +109,7 @@ class ConversationMailboxItemMapperTest {
     fun `when mapping conversation, calendar attachment count is preserved in the mailbox item`() {
         // Given
         val calendarAttachmentCount = 1
-        val conversation = ConversationTestData.buildConversation(
+        val conversation = ConversationWithContextTestData.getConversationWithContext(
             userId,
             "id",
             attachmentCount = AttachmentCount(calendar = calendarAttachmentCount)

@@ -21,15 +21,12 @@ package ch.protonmail.android.mailconversation.domain.entity
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
-import ch.protonmail.android.mailpagination.domain.entity.PageItem
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.LabelId
 
 data class Conversation(
-    override val userId: UserId,
+    val userId: UserId,
     val conversationId: ConversationId,
-    val contextLabelId: LabelId,
-    override val order: Long,
+    val order: Long,
     val labels: List<ConversationLabel>,
     val subject: String,
     val senders: List<Recipient>,
@@ -39,17 +36,4 @@ data class Conversation(
     val numUnread: Int,
     val numAttachments: Int,
     val attachmentCount: AttachmentCount
-) : PageItem {
-    private val contextLabel: ConversationLabel by lazy {
-        labels.firstOrNull { it.labelId == contextLabelId } ?: labels.first()
-    }
-    override val id: String = conversationId.id
-    override val time: Long by lazy { contextLabel.contextTime }
-    override val size: Long by lazy { contextLabel.contextSize }
-    override val read: Boolean by lazy { contextLabel.contextNumUnread == 0 }
-    override val labelIds: List<LabelId> by lazy { labels.map { it.labelId } }
-    override val keywords: String by lazy { subject + senders + recipients }
-    val contextNumMessages: Int by lazy { contextLabel.contextNumMessages }
-    val contextNumUnread: Int by lazy { contextLabel.contextNumUnread }
-    val contextNumAttachments: Int by lazy { contextLabel.contextNumAttachments }
-}
+)

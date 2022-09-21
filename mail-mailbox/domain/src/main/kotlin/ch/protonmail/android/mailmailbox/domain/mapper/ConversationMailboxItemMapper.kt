@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.domain.mapper
 
-import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import me.proton.core.domain.arch.Mapper
@@ -26,29 +26,32 @@ import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
-class ConversationMailboxItemMapper @Inject constructor() : Mapper<Conversation, MailboxItem> {
+class ConversationMailboxItemMapper @Inject constructor() : Mapper<ConversationWithContext, MailboxItem> {
 
-    fun toMailboxItem(conversation: Conversation, labels: Map<LabelId, Label>) = MailboxItem(
-        type = MailboxItemType.Conversation,
-        id = conversation.conversationId.id,
-        userId = conversation.userId,
-        time = conversation.time,
-        size = conversation.size,
-        order = conversation.order,
-        read = conversation.read,
-        labelIds = conversation.labelIds,
-        conversationId = conversation.conversationId,
-        labels = conversation.labelIds.mapNotNull { labels[it] }.sortedBy { it.order },
-        subject = conversation.subject,
-        senders = conversation.senders,
-        recipients = conversation.recipients,
-        isReplied = false,
-        isRepliedAll = false,
-        isForwarded = false,
-        numMessages = conversation.numMessages,
-        hasAttachments = conversation.numAttachments > 0,
-        expirationTime = conversation.expirationTime,
-        calendarAttachmentCount = conversation.attachmentCount.calendar
-    )
+    fun toMailboxItem(conversationWithContext: ConversationWithContext, labels: Map<LabelId, Label>) =
+        with(conversationWithContext.conversation) {
+            MailboxItem(
+                type = MailboxItemType.Conversation,
+                id = conversationId.id,
+                userId = userId,
+                time = conversationWithContext.time,
+                size = conversationWithContext.size,
+                order = order,
+                read = conversationWithContext.read,
+                labelIds = conversationWithContext.labelIds,
+                conversationId = conversationId,
+                labels = conversationWithContext.labelIds.mapNotNull { labels[it] }.sortedBy { it.order },
+                subject = subject,
+                senders = senders,
+                recipients = recipients,
+                isReplied = false,
+                isRepliedAll = false,
+                isForwarded = false,
+                numMessages = numMessages,
+                hasAttachments = numAttachments > 0,
+                expirationTime = expirationTime,
+                calendarAttachmentCount = attachmentCount.calendar
+            )
+        }
 
 }

@@ -21,6 +21,7 @@ package ch.protonmail.android.mailconversation.data.local
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailpagination.data.local.getClippedPageKey
 import ch.protonmail.android.mailpagination.data.local.isLocalPageValid
@@ -45,21 +46,21 @@ class ConversationLocalDataSourceImpl @Inject constructor(
     override fun observeConversations(
         userId: UserId,
         pageKey: PageKey
-    ): Flow<List<Conversation>> = conversationDao
+    ): Flow<List<ConversationWithContext>> = conversationDao
         .observeAll(userId, pageKey)
-        .mapLatest { list -> list.map { it.toConversation(pageKey.filter.labelId) } }
+        .mapLatest { list -> list.map { it.toConversationWithContext(pageKey.filter.labelId) } }
 
     override suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey
-    ): List<Conversation> = observeConversations(userId, pageKey).first()
+    ): List<ConversationWithContext> = observeConversations(userId, pageKey).first()
 
     override suspend fun upsertConversations(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Conversation>
+        items: List<ConversationWithContext>
     ) = db.inTransaction {
-        upsertConversations(items)
+        upsertConversations(items.map { it.conversation })
         upsertPageInterval(userId, pageKey, items)
     }
 
@@ -90,7 +91,7 @@ class ConversationLocalDataSourceImpl @Inject constructor(
     override suspend fun isLocalPageValid(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Conversation>
+        items: List<ConversationWithContext>
     ): Boolean = pageIntervalDao.isLocalPageValid(userId, PageItemType.Conversation, pageKey, items)
 
     override suspend fun getClippedPageKey(
@@ -101,7 +102,7 @@ class ConversationLocalDataSourceImpl @Inject constructor(
     override fun observeConversation(userId: UserId, conversationId: ConversationId): Flow<Conversation?> =
         conversationDao
             .observe(userId, conversationId)
-            .mapLatest { it?.toConversationWithNoContext() }
+            .mapLatest { it?.toConversation() }
 
     override suspend fun upsertConversation(userId: UserId, conversation: Conversation) {
         conversationDao.insertOrUpdate(conversation.toEntity())
@@ -110,7 +111,7 @@ class ConversationLocalDataSourceImpl @Inject constructor(
     private suspend fun upsertPageInterval(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Conversation>
+        items: List<ConversationWithContext>
     ) = pageIntervalDao.upsertPageInterval(userId, PageItemType.Conversation, pageKey, items)
 
     private suspend fun updateLabels(

@@ -21,18 +21,19 @@ package ch.protonmail.android.mailconversation.data.local
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationEntity
 import ch.protonmail.android.mailconversation.data.local.relation.ConversationWithLabels
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailmessage.data.mapper.toDomainModel
 import ch.protonmail.android.mailmessage.data.mapper.toEntity
 import me.proton.core.label.domain.entity.LabelId
 
-private val NO_CONTEXT_LABEL_ID = LabelId("no-context")
+fun ConversationWithLabels.toConversationWithContext(contextLabelId: LabelId) = ConversationWithContext(
+    conversation = this.toConversation(),
+    contextLabelId = contextLabelId
+)
 
-fun ConversationWithLabels.toConversationWithNoContext() = toConversation(NO_CONTEXT_LABEL_ID)
-
-fun ConversationWithLabels.toConversation(contextLabelId: LabelId) = Conversation(
+fun ConversationWithLabels.toConversation() = Conversation(
     userId = conversation.userId,
     conversationId = conversation.conversationId,
-    contextLabelId = contextLabelId,
     order = conversation.order,
     labels = labels,
     subject = conversation.subject,

@@ -20,6 +20,7 @@ package ch.protonmail.android.mailconversation.data.remote
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailpagination.domain.entity.OrderBy
 import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
@@ -37,7 +38,7 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
     override suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey
-    ): List<Conversation> = apiProvider.get<ConversationApi>(userId).invoke {
+    ): List<ConversationWithContext> = apiProvider.get<ConversationApi>(userId).invoke {
         require(pageKey.size <= ConversationApi.maxPageSize)
         getConversations(
             labelIds = listOf(pageKey.filter.labelId).map { it.id },
@@ -59,7 +60,7 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
                 OrderDirection.Descending -> 1
             },
             pageSize = pageKey.size
-        ).conversations.map { it.toConversation(userId, pageKey.filter.labelId) }
+        ).conversations.map { it.toConversationWithContext(userId, pageKey.filter.labelId) }
     }.valueOrThrow
 
     override suspend fun getConversation(

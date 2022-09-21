@@ -20,6 +20,7 @@ package ch.protonmail.android.mailconversation.domain.repository
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailpagination.domain.entity.PageKey
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
@@ -33,7 +34,7 @@ interface ConversationLocalDataSource {
     fun observeConversations(
         userId: UserId,
         pageKey: PageKey
-    ): Flow<List<Conversation>>
+    ): Flow<List<ConversationWithContext>>
 
     /**
      * Get all [Conversation] by [userId] for this [pageKey].
@@ -41,7 +42,7 @@ interface ConversationLocalDataSource {
     suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey
-    ): List<Conversation>
+    ): List<ConversationWithContext>
 
     /**
      * Update or insert [Conversation] related to the same [userId] and [pageKey].
@@ -49,7 +50,7 @@ interface ConversationLocalDataSource {
     suspend fun upsertConversations(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Conversation>
+        items: List<ConversationWithContext>
     )
 
     /**
@@ -88,7 +89,7 @@ interface ConversationLocalDataSource {
     suspend fun isLocalPageValid(
         userId: UserId,
         pageKey: PageKey,
-        items: List<Conversation>
+        items: List<ConversationWithContext>
     ): Boolean
 
     /**

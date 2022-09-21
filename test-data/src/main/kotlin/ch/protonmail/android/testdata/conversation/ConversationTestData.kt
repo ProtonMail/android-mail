@@ -46,7 +46,7 @@ object ConversationTestData {
         labelIds = listOf("10")
     )
 
-    fun buildConversation(
+    private fun buildConversation(
         userId: UserId,
         id: String,
         subject: String = "subject",
@@ -60,7 +60,6 @@ object ConversationTestData {
     ) = Conversation(
         userId = userId,
         conversationId = ConversationId(id),
-        contextLabelId = labelIds.firstOrNull()?.let { LabelId(it) } ?: LabelId("0"),
         order = order,
         labels = labelIds.map { buildConversationLabel(id, it, time) },
         subject = subject,
