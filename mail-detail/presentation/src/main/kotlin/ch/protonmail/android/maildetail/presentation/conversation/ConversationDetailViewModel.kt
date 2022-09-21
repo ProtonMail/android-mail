@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maildetail.domain.ObserveConversation
 import ch.protonmail.android.maildetail.presentation.conversation.mapper.ConversationDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailAction
 import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailEvent
@@ -44,7 +44,7 @@ import javax.inject.Inject
 class ConversationDetailViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val conversationDetailReducer: ConversationDetailReducer,
-    private val conversationRepository: ConversationRepository,
+    private val observeConversation: ObserveConversation,
     private val uiModelMapper: ConversationDetailUiModelMapper,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -73,7 +73,7 @@ class ConversationDetailViewModel @Inject constructor(
             if (userId == null) {
                 return@flatMapLatest flowOf(ConversationDetailEvent.NoPrimaryUser)
             }
-            return@flatMapLatest conversationRepository.observeConversation(userId, conversationId)
+            return@flatMapLatest observeConversation(userId, conversationId)
                 .mapLatest { either ->
                     either.fold(
                         ifLeft = { ConversationDetailEvent.ErrorLoadingConversation },

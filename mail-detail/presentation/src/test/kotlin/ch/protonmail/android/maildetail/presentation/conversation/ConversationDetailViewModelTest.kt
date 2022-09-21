@@ -22,11 +22,15 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maildetail.domain.ObserveConversation
 import ch.protonmail.android.maildetail.presentation.conversation.mapper.ConversationDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailState
+import ch.protonmail.android.testdata.conversation.ConversationTestData
+import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every
 import io.mockk.mockk
@@ -42,7 +46,7 @@ import kotlin.test.assertEquals
 
 class ConversationDetailViewModelTest {
 
-    private val rawConversationId = "detailConversationId"
+    private val rawConversationId = ConversationTestData.RAW_CONVERSATION_ID
     private val conversationUiModelMapper = ConversationDetailUiModelMapper()
     private val reducer = ConversationDetailReducer()
 
@@ -50,8 +54,8 @@ class ConversationDetailViewModelTest {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
 
-    private val conversationRepository = mockk<ConversationRepository> {
-        every { this@mockk.observeConversation(userId, any()) } returns flowOf(DataError.Local.NoDataCached.left())
+    private val observeConversation = mockk<ObserveConversation> {
+        every { this@mockk.invoke(userId, any()) } returns flowOf(DataError.Local.NoDataCached.left())
     }
     private val savedStateHandle = mockk<SavedStateHandle> {
         every { this@mockk.get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns rawConversationId
@@ -61,7 +65,7 @@ class ConversationDetailViewModelTest {
         ConversationDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
             conversationDetailReducer = reducer,
-            conversationRepository = conversationRepository,
+            observeConversation = observeConversation,
             uiModelMapper = conversationUiModelMapper,
             savedStateHandle = savedStateHandle
         )
@@ -104,6 +108,33 @@ class ConversationDetailViewModelTest {
         assertEquals("No Conversation id given", thrown.message)
     }
 
+    @Test
+    fun `state is conversation data when use case returns conversation`() = runTest {
+        // Given
+        val conversationId = ConversationId(rawConversationId)
+        every { observeConversation(userId, conversationId) } returns flowOf(ConversationTestData.conversation.right())
+
+        // When
+        viewModel.state.test {
+            awaitInitialState()
+            // Then
+            assertEquals(ConversationDetailState.Data(ConversationUiModelTestData.conversationUiModel), awaitItem())
+        }
+    }
+
+    @Test
+    fun `state is failed loading data when use case returns data error`() = runTest {
+        // Given
+        val conversationId = ConversationId(rawConversationId)
+        every { observeConversation(userId, conversationId) } returns flowOf(DataError.Local.NoDataCached.left())
+
+        // When
+        viewModel.state.test {
+            awaitInitialState()
+            // Then
+            assertEquals(ConversationDetailState.Error.FailedLoadingData, awaitItem())
+        }
+    }
 
     private suspend fun FlowTurbine<ConversationDetailState>.awaitInitialState() {
         awaitItem() as ConversationDetailState.Loading

@@ -23,6 +23,13 @@ import ch.protonmail.android.maildetail.presentation.conversation.model.Conversa
 
 object ConversationUiModelTestData {
 
+    val conversationUiModel = ConversationDetailUiModel(
+        conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID),
+        subject = ConversationTestData.RAW_SUBJECT,
+        isStarred = false,
+        messageCount = 1
+    )
+
     val uiModelWith3Messages = ConversationDetailUiModel(
         conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID),
         subject = ConversationTestData.RAW_SUBJECT,

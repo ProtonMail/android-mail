@@ -61,6 +61,7 @@ dependencies {
     implementation(Dependencies.modulePresentationLibs)
     implementation(Proton.Core.label)
 
+    implementation(project(":mail-detail:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-conversation:domain"))

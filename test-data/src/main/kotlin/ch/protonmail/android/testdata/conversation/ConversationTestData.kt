@@ -32,6 +32,14 @@ object ConversationTestData {
     const val RAW_CONVERSATION_ID = "rawConversationId"
     const val RAW_SUBJECT = "Here's a new email"
 
+    val conversation = buildConversation(
+        userId = userId,
+        id = RAW_CONVERSATION_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf("0"),
+        numMessages = 1
+    )
+
     val conversationWith3Messages = buildConversation(
         userId = userId,
         id = RAW_CONVERSATION_ID,
@@ -49,10 +57,8 @@ object ConversationTestData {
     private fun buildConversation(
         userId: UserId,
         id: String,
-        subject: String = "subject",
+        subject: String,
         numMessages: Int = 1,
-        order: Long = 1000,
-        time: Long = 1000,
         labelIds: List<String> = listOf("0"),
         numAttachments: Int = 0,
         expirationTime: Long = 0,
@@ -60,8 +66,8 @@ object ConversationTestData {
     ) = Conversation(
         userId = userId,
         conversationId = ConversationId(id),
-        order = order,
-        labels = labelIds.map { buildConversationLabel(id, it, time) },
+        order = 0,
+        labels = labelIds.map { buildConversationLabel(id, it) },
         subject = subject,
         senders = listOf(Recipient("address", "name")),
         recipients = emptyList(),
@@ -75,8 +81,8 @@ object ConversationTestData {
     private fun buildConversationLabel(
         conversationId: String,
         labelId: String,
-        time: Long = 1000,
-        size: Long = 1000
+        time: Long = 0,
+        size: Long = 0
     ) = ConversationLabel(
         conversationId = ConversationId(conversationId),
         labelId = LabelId(labelId),
