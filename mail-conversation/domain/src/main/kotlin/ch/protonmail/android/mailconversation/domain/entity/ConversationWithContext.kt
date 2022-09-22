@@ -26,18 +26,19 @@ data class ConversationWithContext(
     val conversation: Conversation,
     val contextLabelId: LabelId
 ) : PageItem {
+
     private val contextLabel: ConversationLabel by lazy {
         conversation.labels.firstOrNull { it.labelId == contextLabelId } ?: conversation.labels.first()
     }
     override val userId: UserId = conversation.userId
     override val order: Long = conversation.order
     override val id: String = conversation.conversationId.id
-    override val time: Long by lazy { contextLabel.contextTime }
-    override val size: Long by lazy { contextLabel.contextSize }
-    override val read: Boolean by lazy { contextLabel.contextNumUnread == 0 }
-    override val labelIds: List<LabelId> by lazy { conversation.labels.map { it.labelId } }
-    override val keywords: String by lazy { conversation.subject + conversation.senders + conversation.recipients }
-    val contextNumMessages: Int by lazy { contextLabel.contextNumMessages }
-    val contextNumUnread: Int by lazy { contextLabel.contextNumUnread }
-    val contextNumAttachments: Int by lazy { contextLabel.contextNumAttachments }
+    override val time: Long get() = contextLabel.contextTime
+    override val size: Long get() = contextLabel.contextSize
+    override val read: Boolean get() = contextLabel.contextNumUnread == 0
+    override val labelIds: List<LabelId> get() = conversation.labels.map { it.labelId }
+    override val keywords: String get() = conversation.subject + conversation.senders + conversation.recipients
+    val contextNumMessages: Int get() = contextLabel.contextNumMessages
+    val contextNumUnread: Int get() = contextLabel.contextNumUnread
+    val contextNumAttachments: Int get() = contextLabel.contextNumAttachments
 }
