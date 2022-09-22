@@ -40,10 +40,10 @@ class StrictModeInitializer : Initializer<Unit> {
         val threadPolicyBuilder = StrictMode.ThreadPolicy.Builder()
             .detectAll()
             .penaltyFlashScreen()
-            .penaltyDeath()
+            .penaltyLog()
         val vmPolicyBuilder = StrictMode.VmPolicy.Builder()
             .detectCommon()
-            .penaltyDeath()
+            .penaltyLog()
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build())
         StrictMode.setVmPolicy(vmPolicyBuilder.build())

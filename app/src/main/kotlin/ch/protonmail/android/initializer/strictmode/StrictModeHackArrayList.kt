@@ -45,8 +45,10 @@ class StrictModeHackArrayList : ArrayList<Any>() {
     override fun add(element: Any): Boolean {
         val hasDeclaredMethod = element.javaClass.declaredMethods.any { it.name == "getStackTrace" }
         if (!hasDeclaredMethod) {
-            return false
+            // call super to continue with standard violation reporting
+            return super.add(element)
         }
+
         val crashInfoMethod: Method = element.javaClass.getDeclaredMethod("getStackTrace")
         crashInfoMethod.invoke(element)?.let { crashInfoStackTrace ->
             for (whitelistedStacktraceCall in whitelistedViolations) {
