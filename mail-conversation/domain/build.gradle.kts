@@ -23,6 +23,8 @@ plugins {
     kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
 
+setAsHiltModule()
+
 android {
     compileSdk = Config.compileSdk
 
@@ -54,4 +56,5 @@ dependencies {
     implementation(project(":mail-message:domain"))
 
     testImplementation(Dependencies.testLibs)
+    testImplementation(project(":test-data"))
 }
