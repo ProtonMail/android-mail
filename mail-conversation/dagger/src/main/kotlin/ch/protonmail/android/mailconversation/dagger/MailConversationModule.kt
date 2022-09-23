@@ -30,6 +30,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.proton.core.network.data.ApiProvider
+import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Singleton
 
 @Module
@@ -40,8 +41,9 @@ object MailConversationModule {
     @Singleton
     fun provideConversationRepositoryImpl(
         remoteDataSource: ConversationRemoteDataSource,
-        localDataSource: ConversationLocalDataSource
-    ): ConversationRepository = ConversationRepositoryImpl(remoteDataSource, localDataSource)
+        localDataSource: ConversationLocalDataSource,
+        coroutineScopeProvider: CoroutineScopeProvider
+    ): ConversationRepository = ConversationRepositoryImpl(remoteDataSource, localDataSource, coroutineScopeProvider)
 
     @Provides
     @Singleton

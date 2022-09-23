@@ -41,6 +41,7 @@ import me.proton.core.data.arch.buildProtonStore
 import me.proton.core.data.arch.toDataResult
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.min
@@ -48,7 +49,8 @@ import kotlin.math.min
 @Singleton
 class ConversationRepositoryImpl @Inject constructor(
     private val remoteDataSource: ConversationRemoteDataSource,
-    private val localDataSource: ConversationLocalDataSource
+    private val localDataSource: ConversationLocalDataSource,
+    coroutineScopeProvider: CoroutineScopeProvider
 ) : ConversationRepository {
 
     private data class ConversationKey(val userId: UserId, val conversationId: ConversationId)
@@ -65,7 +67,7 @@ class ConversationRepositoryImpl @Inject constructor(
                 localDataSource.upsertConversation(key.userId, conversation)
             }
         )
-    ).buildProtonStore()
+    ).scope(coroutineScopeProvider.GlobalIOSupervisedScope).buildProtonStore()
 
     override suspend fun getConversations(
         userId: UserId,

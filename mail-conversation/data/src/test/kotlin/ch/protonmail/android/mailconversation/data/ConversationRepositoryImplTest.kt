@@ -37,10 +37,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
+import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.time.Duration.Companion.seconds
 
 class ConversationRepositoryImplTest {
 
@@ -59,11 +59,17 @@ class ConversationRepositoryImplTest {
         coEvery { this@mockk.isLocalPageValid(any(), any(), any()) } returns false
     }
 
+    private val coroutineScopeProvider = TestCoroutineScopeProvider
+
     private lateinit var conversationRepository: ConversationRepositoryImpl
 
     @Before
     fun setUp() {
-        conversationRepository = ConversationRepositoryImpl(remoteDataSource, localDataSource)
+        conversationRepository = ConversationRepositoryImpl(
+            remoteDataSource,
+            localDataSource,
+            coroutineScopeProvider
+        )
     }
 
     @Test
@@ -171,7 +177,7 @@ class ConversationRepositoryImplTest {
         coEvery { localDataSource.observeConversation(userId, conversationId) } returns conversationFlow
         coEvery { remoteDataSource.getConversation(userId, conversationId) } returns conversation
         // When
-        conversationRepository.observeConversation(userId, conversationId).test(timeout = 2.seconds) {
+        conversationRepository.observeConversation(userId, conversationId).test {
             // Then
             conversationFlow.emit(conversation)
             assertEquals(conversation.right(), awaitItem())
@@ -192,7 +198,7 @@ class ConversationRepositoryImplTest {
         // When
         conversationRepository.observeConversation(userId, conversationId).test {
             // Then
-            coVerify(timeout = 500) { remoteDataSource.getConversation(userId, conversationId) }
+            coVerify { remoteDataSource.getConversation(userId, conversationId) }
         }
     }
 
@@ -207,7 +213,7 @@ class ConversationRepositoryImplTest {
         // When
         conversationRepository.observeConversation(userId, conversationId).test {
             // Then
-            coVerify(timeout = 500) { localDataSource.upsertConversation(userId, updatedConversation) }
+            coVerify { localDataSource.upsertConversation(userId, updatedConversation) }
             cancelAndConsumeRemainingEvents()
         }
     }
