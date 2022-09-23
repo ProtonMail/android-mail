@@ -67,6 +67,8 @@ import me.proton.core.label.data.local.LabelDatabase
 import me.proton.core.label.data.local.LabelEntity
 import me.proton.core.mailsettings.data.db.MailSettingsDatabase
 import me.proton.core.mailsettings.data.entity.MailSettingsEntity
+import me.proton.core.payment.data.local.db.PaymentDatabase
+import me.proton.core.payment.data.local.entity.GooglePurchaseEntity
 import me.proton.core.user.data.db.AddressDatabase
 import me.proton.core.user.data.db.UserConverters
 import me.proton.core.user.data.db.UserDatabase
@@ -126,7 +128,9 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         MessageLabelEntity::class,
         // mail-conversation
         ConversationEntity::class,
-        ConversationLabelEntity::class
+        ConversationLabelEntity::class,
+        // in app purchase
+        GooglePurchaseEntity::class
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -164,11 +168,13 @@ abstract class AppDatabase :
     ChallengeDatabase,
     PageIntervalDatabase,
     MessageDatabase,
-    ConversationDatabase {
+    ConversationDatabase,
+    PaymentDatabase {
 
     companion object {
+
         const val name = "db-mail"
-        const val version = 11
+        const val version = 12
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -180,7 +186,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_7_8,
             AppDatabaseMigrations.MIGRATION_8_9,
             AppDatabaseMigrations.MIGRATION_9_10,
-            AppDatabaseMigrations.MIGRATION_10_11
+            AppDatabaseMigrations.MIGRATION_10_11,
+            AppDatabaseMigrations.MIGRATION_11_12
         )
 
         fun buildDatabase(context: Context): AppDatabase =
