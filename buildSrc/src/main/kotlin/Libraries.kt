@@ -182,6 +182,7 @@ object Junit {
 object Kotlin {
     private const val version = Versions.Kotlin.kotlin
     const val test = "org.jetbrains.kotlin:kotlin-test:$version"
+    const val testJunit = "org.jetbrains.kotlin:kotlin-test-junit:$version"
 }
 
 object KotlinX {

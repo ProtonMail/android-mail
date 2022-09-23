@@ -70,7 +70,7 @@ object Versions {
     }
 
     object Gradle {
-        const val androidGradlePlugin = "7.1.3"
+        const val androidGradlePlugin = "7.2.2"
         const val benManesVersionsPlugin = "0.42.0"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
