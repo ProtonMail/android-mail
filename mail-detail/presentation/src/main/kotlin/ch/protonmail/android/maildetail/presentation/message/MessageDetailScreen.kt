@@ -62,7 +62,6 @@ fun MessageDetailScreen(
                 onUnStarClick = { viewModel.submit(MessageDetailAction.UnStar) }
             )
         )
-        MessageDetailState.Error.NoMessageIdProvided -> throw IllegalStateException("No message id given")
         MessageDetailState.Error.NotLoggedIn -> Text(modifier = modifier, text = "No user logged in")
         MessageDetailState.Loading -> ProtonCenteredProgress()
     }.exhaustive

@@ -28,6 +28,5 @@ sealed interface MessageDetailState {
 
     sealed interface Error : MessageDetailState {
         object NotLoggedIn : Error
-        object NoMessageIdProvided : Error
     }
 }

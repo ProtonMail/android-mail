@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.Assert.assertThrows
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -99,16 +100,14 @@ class MessageDetailViewModelTest {
     }
 
     @Test
-    fun `state is no message id param when message id parameter was not provided as input`() = runTest {
+    fun `throws exception when message id parameter was not provided as input`() = runTest {
         // Given
         every { savedStateHandle.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns null
 
-        // When
-        viewModel.state.test {
-            initialStateEmitted()
-            // Then
-            assertEquals(MessageDetailState.Error.NoMessageIdProvided, awaitItem())
-        }
+        // Then
+        val thrown = assertThrows(IllegalStateException::class.java) { viewModel.state }
+        // Then
+        assertEquals("No Message id given", thrown.message)
     }
 
     @Test

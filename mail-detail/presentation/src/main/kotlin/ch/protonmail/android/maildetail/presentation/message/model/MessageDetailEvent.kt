@@ -26,5 +26,4 @@ sealed interface MessageDetailEvent {
 
     object NoPrimaryUser : MessageDetailEvent
     object NoCachedMetadata : MessageDetailEvent
-    object NoMessageIdProvided : MessageDetailEvent
 }

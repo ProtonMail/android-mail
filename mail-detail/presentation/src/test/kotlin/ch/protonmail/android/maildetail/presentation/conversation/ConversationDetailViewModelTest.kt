@@ -102,9 +102,9 @@ class ConversationDetailViewModelTest {
     fun `throws exception when conversation id parameter was not provided as input`() = runTest {
         // Given
         every { savedStateHandle.get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns null
-
         // When
         val thrown = assertThrows(IllegalStateException::class.java) { viewModel.state }
+        // Then
         assertEquals("No Conversation id given", thrown.message)
     }
 

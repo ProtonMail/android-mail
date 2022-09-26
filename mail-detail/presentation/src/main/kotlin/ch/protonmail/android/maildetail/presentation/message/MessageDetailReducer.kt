@@ -28,7 +28,6 @@ class MessageDetailReducer @Inject constructor() {
     fun reduce(currentState: MessageDetailState, event: MessageDetailEvent): MessageDetailState {
         return when (event) {
             is MessageDetailEvent.NoPrimaryUser -> MessageDetailState.Error.NotLoggedIn
-            is MessageDetailEvent.NoMessageIdProvided -> MessageDetailState.Error.NoMessageIdProvided
 
             is MessageDetailEvent.MessageMetadata -> MessageDetailState.Data(event.messageUiModel)
 
