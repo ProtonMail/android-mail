@@ -76,7 +76,7 @@
   <string name="mail_settings_swipe_action_archive_description">Отправить в архив</string>
   <string name="mail_settings_swipe_action_read_description">Пометить как непрочитанное/прочитанное</string>
   <string name="mail_settings_swipe_action_spam_description">Отправить в спам</string>
-  <string name="mail_settings_swipe_action_star_description">Важное/неважное</string>
+  <string name="mail_settings_swipe_action_star_description">Отметить звездочкой / снять звездочку</string>
   <string name="mail_settings_swipe_action_trash_description">Переместить в Корзину</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Произошла ошибка. Попробуйте ещё раз.</string>
