@@ -47,6 +47,10 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
             <meta-data
+                android:name="me.proton.core.plan.presentation.UnredeemedPurchaseInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+            <meta-data
                 android:name="ch.protonmail.android.initializer.WorkManagerInitializer"
                 android:value="androidx.startup" />
             <meta-data
