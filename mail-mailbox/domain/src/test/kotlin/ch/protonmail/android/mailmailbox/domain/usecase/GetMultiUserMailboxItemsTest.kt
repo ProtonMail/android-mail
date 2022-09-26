@@ -78,18 +78,25 @@ class GetMultiUserMailboxItemsTest {
     }
     private val labelRepository = mockk<LabelRepository> {
         coEvery { this@mockk.getLabels(userId, any()) } returns listOf(
-            buildLabel(userId, MessageLabel, "0"),
-            buildLabel(userId, MessageLabel, "1"),
-            buildLabel(userId, MessageLabel, "2"),
-            buildLabel(userId, MessageLabel, "3"),
-            buildLabel(userId, MessageLabel, "4")
+            buildLabel(userId = userId, type = MessageLabel, id = "0"),
+            buildLabel(userId = userId, type = MessageLabel, id = "1"),
+            buildLabel(userId = userId, type = MessageLabel, id = "2"),
+            buildLabel(userId = userId, type = MessageLabel, id = "3"),
+            buildLabel(userId = userId, type = MessageLabel, id = "4")
+        )
+        coEvery { this@mockk.getLabels(userId, any()) } returns listOf(
+            buildLabel(userId = userId, type = MessageLabel, id = "0"),
+            buildLabel(userId = userId, type = MessageLabel, id = "1"),
+            buildLabel(userId = userId, type = MessageLabel, id = "2"),
+            buildLabel(userId = userId, type = MessageLabel, id = "3"),
+            buildLabel(userId = userId, type = MessageLabel, id = "4")
         )
         coEvery { this@mockk.getLabels(userId1, any()) } returns listOf(
-            buildLabel(userId1, MessageLabel, "0"),
-            buildLabel(userId1, MessageLabel, "1"),
-            buildLabel(userId1, MessageLabel, "2"),
-            buildLabel(userId1, MessageLabel, "3"),
-            buildLabel(userId1, MessageLabel, "4")
+            buildLabel(userId = userId1, type = MessageLabel, id = "0"),
+            buildLabel(userId = userId1, type = MessageLabel, id = "1"),
+            buildLabel(userId = userId1, type = MessageLabel, id = "2"),
+            buildLabel(userId = userId1, type = MessageLabel, id = "3"),
+            buildLabel(userId = userId1, type = MessageLabel, id = "4")
         )
     }
 
@@ -129,35 +136,49 @@ class GetMultiUserMailboxItemsTest {
         coVerify { messageRepository.getMessages(userId1, pageKey) }
         val senders = listOf(Recipient("address", "name"))
         val mailboxItemsOrderedByTimeAscending = listOf(
-            buildMailboxItem(userId, "1", time = 1000, labelIds = emptyList(), type = Message, senders = senders),
-            buildMailboxItem(userId1, "1", time = 1000, labelIds = emptyList(), type = Message, senders = senders),
             buildMailboxItem(
-                userId,
-                "2",
+                userId = userId,
+                id = "1",
+                time = 1000,
+                labelIds = emptyList(),
+                type = Message,
+                senders = senders
+            ),
+            buildMailboxItem(
+                userId = userId1,
+                id = "1",
+                time = 1000,
+                labelIds = emptyList(),
+                type = Message,
+                senders = senders
+            ),
+            buildMailboxItem(
+                userId = userId,
+                id = "2",
                 time = 2000,
                 labelIds = listOf(LabelId("4")),
                 type = Message,
                 senders = senders
             ),
             buildMailboxItem(
-                userId1,
-                "2",
+                userId = userId1,
+                id = "2",
                 time = 2000,
                 labelIds = listOf(LabelId("4")),
                 type = Message,
                 senders = senders
             ),
             buildMailboxItem(
-                userId,
-                "3",
+                userId = userId,
+                id = "3",
                 time = 3000,
                 labelIds = listOf(LabelId("0"), LabelId("1")),
                 type = Message,
                 senders = senders
             ),
             buildMailboxItem(
-                userId1,
-                "3",
+                userId = userId1,
+                id = "3",
                 time = 3000,
                 labelIds = listOf(LabelId("0"), LabelId("1")),
                 type = Message,
@@ -185,48 +206,48 @@ class GetMultiUserMailboxItemsTest {
         coVerify { conversationRepository.getConversations(userId1, pageKey) }
         val mailboxItemsOrderedByTimeAscending = listOf(
             buildMailboxItem(
-                userId,
-                "1",
+                userId = userId,
+                id = "1",
                 time = 1000,
                 labelIds = listOf(LabelId("0")),
                 type = Conversation,
                 hasAttachments = true
             ),
             buildMailboxItem(
-                userId1,
-                "1",
+                userId = userId1,
+                id = "1",
                 time = 1000,
                 labelIds = listOf(LabelId("0")),
                 type = Conversation,
                 hasAttachments = true
             ),
             buildMailboxItem(
-                userId,
-                "2",
+                userId = userId,
+                id = "2",
                 time = 2000,
                 labelIds = listOf(LabelId("4")),
                 type = Conversation,
                 hasAttachments = true
             ),
             buildMailboxItem(
-                userId1,
-                "2",
+                userId = userId1,
+                id = "2",
                 time = 2000,
                 labelIds = listOf(LabelId("4")),
                 type = Conversation,
                 hasAttachments = true
             ),
             buildMailboxItem(
-                userId,
-                "3",
+                userId = userId,
+                id = "3",
                 time = 3000,
                 labelIds = listOf(LabelId("0"), LabelId("1")),
                 type = Conversation,
                 hasAttachments = true
             ),
             buildMailboxItem(
-                userId1,
-                "3",
+                userId = userId1,
+                id = "3",
                 time = 3000,
                 labelIds = listOf(LabelId("0"), LabelId("1")),
                 type = Conversation,

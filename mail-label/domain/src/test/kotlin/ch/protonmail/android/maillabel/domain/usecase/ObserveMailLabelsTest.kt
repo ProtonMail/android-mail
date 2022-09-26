@@ -53,9 +53,9 @@ class ObserveMailLabelsTest {
             DataResult.Success(
                 source = ResponseSource.Local,
                 value = listOf(
-                    buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
-                    buildLabel(userId, LabelType.MessageFolder, "1", order = 1),
-                    buildLabel(userId, LabelType.MessageFolder, "2", order = 2)
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0", order = 0),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "1", order = 1),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "2", order = 2)
                 )
             )
         )
@@ -63,9 +63,9 @@ class ObserveMailLabelsTest {
             DataResult.Success(
                 source = ResponseSource.Local,
                 value = listOf(
-                    buildLabel(userId, LabelType.MessageLabel, "3", order = 0),
-                    buildLabel(userId, LabelType.MessageLabel, "4", order = 1),
-                    buildLabel(userId, LabelType.MessageLabel, "5", order = 2)
+                    buildLabel(userId = userId, type = LabelType.MessageLabel, id = "3", order = 0),
+                    buildLabel(userId = userId, type = LabelType.MessageLabel, id = "4", order = 1),
+                    buildLabel(userId = userId, type = LabelType.MessageLabel, id = "5", order = 2)
                 )
             )
         )
@@ -128,16 +128,17 @@ class ObserveMailLabelsTest {
         // Given
         every { selectedMailLabelId.flow } returns MutableStateFlow(MailLabelId.System.Inbox)
 
+        val labels = listOf(
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0", order = 0),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.1", order = 0, parentId = "0"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2", order = 1, parentId = "0"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2.1", order = 0, parentId = "0.2"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2.2", order = 1, parentId = "0.2")
+        )
         every { labelRepository.observeLabels(any(), type = LabelType.MessageFolder) } returns flowOf(
             DataResult.Success(
                 source = ResponseSource.Local,
-                value = listOf(
-                    buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
-                    buildLabel(userId, LabelType.MessageFolder, "0.1", order = 0, parentId = "0"),
-                    buildLabel(userId, LabelType.MessageFolder, "0.2", order = 1, parentId = "0"),
-                    buildLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2"),
-                    buildLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2")
-                )
+                value = labels
             )
         )
 
@@ -168,11 +169,11 @@ class ObserveMailLabelsTest {
             DataResult.Success(
                 source = ResponseSource.Local,
                 value = listOf(
-                    buildLabel(userId, LabelType.MessageFolder, "0.1", order = 1, parentId = "0"),
-                    buildLabel(userId, LabelType.MessageFolder, "0.0", order = 0, parentId = "0"),
-                    buildLabel(userId, LabelType.MessageFolder, "2", order = 2),
-                    buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
-                    buildLabel(userId, LabelType.MessageFolder, "1", order = 1)
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.1", order = 1, parentId = "0"),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.0", order = 0, parentId = "0"),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "2", order = 2),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0", order = 0),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "1", order = 1)
                 )
             )
         )

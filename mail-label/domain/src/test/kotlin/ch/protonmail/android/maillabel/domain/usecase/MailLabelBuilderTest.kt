@@ -87,9 +87,9 @@ class MailLabelBuilderTest {
     fun `return correct simple folders`() = runTest {
         // Given
         val items = listOf(
-            buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
-            buildLabel(userId, LabelType.MessageFolder, "1", order = 1),
-            buildLabel(userId, LabelType.MessageFolder, "2", order = 2)
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0", order = 0),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "1", order = 1),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "2", order = 2)
         )
 
         // When
@@ -108,11 +108,11 @@ class MailLabelBuilderTest {
     fun `return correct folders with parent`() = runTest {
         // Given
         val items = listOf(
-            buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
-            buildLabel(userId, LabelType.MessageFolder, "0.1", order = 0, parentId = "0"),
-            buildLabel(userId, LabelType.MessageFolder, "0.2", order = 1, parentId = "0"),
-            buildLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2"),
-            buildLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2")
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0", order = 0),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.1", order = 0, parentId = "0"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2", order = 1, parentId = "0"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2.1", order = 0, parentId = "0.2"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2.2", order = 1, parentId = "0.2")
         )
 
         // When
@@ -133,11 +133,11 @@ class MailLabelBuilderTest {
     fun `return correct ordered folders`() = runTest {
         // Given
         val items = listOf(
-            buildLabel(userId, LabelType.MessageFolder, "0.2.2", order = 1, parentId = "0.2"),
-            buildLabel(userId, LabelType.MessageFolder, "0.2", order = 1, parentId = "0"),
-            buildLabel(userId, LabelType.MessageFolder, "0.1", order = 0, parentId = "0"),
-            buildLabel(userId, LabelType.MessageFolder, "0", order = 0),
-            buildLabel(userId, LabelType.MessageFolder, "0.2.1", order = 0, parentId = "0.2")
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2.2", order = 1, parentId = "0.2"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2", order = 1, parentId = "0"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.1", order = 0, parentId = "0"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0", order = 0),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2.1", order = 0, parentId = "0.2")
         )
 
         // When

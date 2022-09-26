@@ -59,11 +59,11 @@ class GetMailboxItemsTest {
     }
     private val labelRepository = mockk<LabelRepository> {
         coEvery { getLabels(any(), any()) } returns listOf(
-            buildLabel(userId, LabelType.MessageLabel, "0"),
-            buildLabel(userId, LabelType.MessageLabel, "1"),
-            buildLabel(userId, LabelType.MessageLabel, "2"),
-            buildLabel(userId, LabelType.MessageLabel, "3"),
-            buildLabel(userId, LabelType.MessageLabel, "4")
+            buildLabel(userId = userId, type = LabelType.MessageLabel, id = "0"),
+            buildLabel(userId = userId, type = LabelType.MessageLabel, id = "1"),
+            buildLabel(userId = userId, type = LabelType.MessageLabel, id = "2"),
+            buildLabel(userId = userId, type = LabelType.MessageLabel, id = "3"),
+            buildLabel(userId = userId, type = LabelType.MessageLabel, id = "4")
         )
     }
 
