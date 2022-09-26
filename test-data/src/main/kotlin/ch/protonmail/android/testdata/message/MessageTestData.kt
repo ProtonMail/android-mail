@@ -23,11 +23,22 @@ import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.AddressId
 
 object MessageTestData {
+
+    const val RAW_MESSAGE_ID = "rawMessageId"
+    const val RAW_SUBJECT = "Here's a new message"
+
+    val message = buildMessage(
+        userId = userId,
+        id = RAW_MESSAGE_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf("0")
+    )
 
     fun buildMessage(
         userId: UserId,

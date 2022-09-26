@@ -27,7 +27,7 @@ import ch.protonmail.android.maildetail.presentation.message.model.MessageDetail
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,7 +45,7 @@ import javax.inject.Inject
 class MessageDetailViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val messageDetailReducer: MessageDetailReducer,
-    private val messageRepository: MessageRepository,
+    private val observeMessage: ObserveMessage,
     private val uiModelMapper: MessageDetailUiModelMapper,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -75,7 +75,7 @@ class MessageDetailViewModel @Inject constructor(
             if (userId == null) {
                 return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
             }
-            return@flatMapLatest messageRepository.observeCachedMessage(userId, messageId).mapLatest { either ->
+            return@flatMapLatest observeMessage(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.NoCachedMetadata },
                     ifRight = { MessageDetailEvent.MessageMetadata(uiModelMapper.toUiModel(it)) }

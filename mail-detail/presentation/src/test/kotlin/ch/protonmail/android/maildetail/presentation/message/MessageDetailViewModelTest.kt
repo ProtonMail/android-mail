@@ -30,7 +30,7 @@ import ch.protonmail.android.maildetail.presentation.message.model.MessageDetail
 import ch.protonmail.android.maildetail.presentation.message.model.MessageUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every
@@ -54,8 +54,8 @@ class MessageDetailViewModelTest {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
 
-    private val messageRepository = mockk<MessageRepository> {
-        every { this@mockk.observeCachedMessage(userId, any()) } returns flowOf(DataError.Local.NoDataCached.left())
+    private val observeMessage = mockk<ObserveMessage> {
+        every { this@mockk.invoke(userId, any()) } returns flowOf(DataError.Local.NoDataCached.left())
     }
     private val savedStateHandle = mockk<SavedStateHandle> {
         every { this@mockk.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns rawMessageId
@@ -65,7 +65,7 @@ class MessageDetailViewModelTest {
         MessageDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
             messageDetailReducer = reducer,
-            messageRepository = messageRepository,
+            observeMessage = observeMessage,
             uiModelMapper = messageUiModelMapper,
             savedStateHandle = savedStateHandle
         )
@@ -123,7 +123,7 @@ class MessageDetailViewModelTest {
             subject = subject,
             labelIds = listOf(SystemLabelId.Starred.labelId.id)
         )
-        every { messageRepository.observeCachedMessage(userId, messageId) } returns flowOf(cachedMessage.right())
+        every { observeMessage.invoke(userId, messageId) } returns flowOf(cachedMessage.right())
 
         // When
         viewModel.state.test {
