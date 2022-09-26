@@ -32,6 +32,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailbox
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.arch.Mapper
 import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.LabelType
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -106,7 +107,7 @@ class MailboxItemUiModelMapper @Inject constructor(
         }
 
     private fun toLabelUiModels(labels: List<Label>): List<MailboxItemLabelUiModel> =
-        labels.map { label ->
+        labels.filter { it.type == LabelType.MessageLabel }.map { label ->
             MailboxItemLabelUiModel(
                 name = label.name,
                 color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified }

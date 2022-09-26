@@ -108,7 +108,7 @@ class GetMailboxItemLocationIconsTest {
             MailLabelId.System.Trash.labelId,
             LabelId(folderId)
         )
-        val labels = listOf(buildLabel(userId, LabelType.MessageFolder, id = folderId))
+        val labels = listOf(buildLabel(userId = userId, type = LabelType.MessageFolder, id = folderId))
         val mailboxItem = buildMailboxItem(labelIds = itemLabelIds, labels = labels)
 
         val actual = getMailboxItemLocationIcons(mailboxItem)

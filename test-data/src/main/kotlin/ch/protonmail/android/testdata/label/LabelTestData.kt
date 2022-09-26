@@ -20,6 +20,7 @@ package ch.protonmail.android.testdata.label
 
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
@@ -42,9 +43,9 @@ object LabelTestData {
     )
 
     fun buildLabel(
-        userId: UserId,
-        type: LabelType = LabelType.MessageLabel,
         id: String,
+        userId: UserId = UserIdTestData.userId,
+        type: LabelType = LabelType.MessageLabel,
         name: String = id,
         order: Int = 0,
         color: String = "#338AF3",

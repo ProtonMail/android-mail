@@ -24,18 +24,21 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.R
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import ch.protonmail.android.testdata.contact.ContactTestData
+import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.unmockkConstructor
+import me.proton.core.label.domain.entity.LabelType
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -290,5 +293,28 @@ class MailboxItemUiModelMapperTest {
         val mailboxItemUiModel = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
         assertFalse(mailboxItemUiModel.shouldShowCalendarIcon)
+    }
+
+    @Test
+    fun `labels doesn't include folders and contacts groups`() {
+        // given
+        val mailboxItemLabels = listOf(
+            buildLabel("label", type = LabelType.MessageLabel),
+            buildLabel("folder", type = LabelType.MessageFolder),
+            buildLabel("group", type = LabelType.ContactGroup)
+        )
+        val mailboxItem = buildMailboxItem(labels = mailboxItemLabels)
+
+        // when
+        val result = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
+
+        // then
+        val expectedLabels = listOf(
+            MailboxItemLabelUiModel(
+                name = "label",
+                color = Color.Unspecified
+            )
+        )
+        assertEquals(expectedLabels, result.labels)
     }
 }
