@@ -54,6 +54,7 @@ import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionWeak
@@ -426,15 +427,13 @@ private fun MailboxItemIcon(
     )
 }
 
-@Preview(
-    name = "Mailbox Item"
-)
 @Composable
+@Preview(showBackground = true)
 private fun MailboxItemPreview() {
     ProtonTheme {
         MailboxItem(
             modifier = Modifier,
-            item = MailboxPreviewData.mailboxItem,
+            item = MailboxItemUiModelPreviewData.Conversation.DroidConLondon,
             onItemClicked = {},
             onOpenSelectionMode = {}
         )

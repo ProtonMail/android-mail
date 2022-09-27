@@ -43,37 +43,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import androidx.viewbinding.BuildConfig
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.UnreadItemsFilter
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
+import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.domain.entity.UserId
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
@@ -304,76 +299,27 @@ object MailboxScreen {
     }
 }
 
+/**
+ * Note: The preview won't show mailbox items because this: https://issuetracker.google.com/issues/194544557
+ *  Start preview in Interactive Mode to correctly see the mailbox items
+ */
 @Preview(
-    name = "Mailbox in light mode",
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     showBackground = true
 )
 @Preview(
-    name = "Mailbox in dark mode",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
 @Composable
-fun PreviewMailbox() {
-    val items = flowOf(
-        PagingData.from(
-            listOf(MailboxPreviewData.mailboxItem, MailboxPreviewData.mailboxItem1)
-        )
-    ).collectAsLazyPagingItems()
-
+private fun MailboxScreenPreview(
+    @PreviewParameter(MailboxPreviewProvider::class) mailboxPreview: MailboxPreview
+) {
     ProtonTheme {
-        MailboxSwipeRefresh(
-            items = items,
-            listState = items.rememberLazyListState(),
+        MailboxScreen(
+            mailboxListItems = mailboxPreview.items.collectAsLazyPagingItems(),
+            mailboxState = mailboxPreview.state,
             actions = MailboxScreen.Actions.Empty
         )
     }
-}
-
-object MailboxPreviewData {
-
-    val mailboxItem = MailboxItemUiModel(
-        avatar = AvatarUiModel.ParticipantInitial("C"),
-        type = MailboxItemType.Message,
-        id = "1",
-        userId = UserId("0"),
-        conversationId = ConversationId("2"),
-        time = TextUiModel.TextRes(R.string.yesterday),
-        isRead = false,
-        labels = emptyList(),
-        subject = "First message",
-        participants = listOf("Contact1", "address2-long-long@pm.me"),
-        shouldShowRepliedIcon = true,
-        shouldShowRepliedAllIcon = false,
-        shouldShowForwardedIcon = true,
-        numMessages = 2,
-        showStar = true,
-        locationIconResIds = emptyList(),
-        shouldShowAttachmentIcon = true,
-        shouldShowExpirationLabel = true,
-        shouldShowCalendarIcon = true
-    )
-
-    val mailboxItem1 = MailboxItemUiModel(
-        avatar = AvatarUiModel.ParticipantInitial("N"),
-        type = MailboxItemType.Conversation,
-        id = "2",
-        userId = UserId("0"),
-        conversationId = ConversationId("2"),
-        time = TextUiModel.Text("10:42"),
-        isRead = true,
-        labels = emptyList(),
-        subject = "Second message",
-        participants = listOf("name"),
-        shouldShowRepliedIcon = false,
-        shouldShowRepliedAllIcon = true,
-        shouldShowForwardedIcon = true,
-        numMessages = 5,
-        showStar = true,
-        locationIconResIds = emptyList(),
-        shouldShowAttachmentIcon = true,
-        shouldShowExpirationLabel = true,
-        shouldShowCalendarIcon = false
-    )
 }
