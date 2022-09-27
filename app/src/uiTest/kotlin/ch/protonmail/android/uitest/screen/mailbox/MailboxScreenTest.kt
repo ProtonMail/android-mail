@@ -18,14 +18,7 @@
 
 package ch.protonmail.android.uitest.screen.mailbox
 
-import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.swipeDown
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -35,9 +28,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
-import ch.protonmail.android.uitest.util.awaitDisplayed
+import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
+import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import kotlinx.coroutines.flow.flowOf
-import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
@@ -48,19 +41,38 @@ internal class MailboxScreenTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun whenNotLoadingAndNoItemThenEmptyMailboxIsDisplayed() {
+    fun whenLoadingThenProgressIsDisplayed() {
+        val mailboxState = MailboxState.Loading
+        val robot = setupScreen(state = mailboxState)
+
+        robot.verify { listProgressIsDisplayed() }
+    }
+
+    @Test
+    fun givenLoadingCompletedWhenItemsThenItemsAreDisplayed() {
         val mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             Effect.empty(),
             Effect.empty()
         )
         val mailboxState = MailboxState.Loading.copy(mailboxListState = mailboxListState)
-        setupScreen(state = mailboxState, items = emptyList())
+        val items = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
+        val robot = setupScreen(state = mailboxState, items = items)
 
-        composeTestRule
-            .onEmptyMailbox()
-            .awaitDisplayed(composeTestRule)
-            .assertIsDisplayed()
+        robot.verify { itemWithSubjectIsDisplayed(items.first().subject) }
+    }
+
+    @Test
+    fun givenLoadingCompletedWhenNoItemThenEmptyMailboxIsDisplayed() {
+        val mailboxListState = MailboxListState.Data(
+            currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
+            Effect.empty(),
+            Effect.empty()
+        )
+        val mailboxState = MailboxState.Loading.copy(mailboxListState = mailboxListState)
+        val robot = setupScreen(state = mailboxState)
+
+        robot.verify { emptyMailboxIsDisplayed() }
     }
 
     @Test
@@ -71,29 +83,19 @@ internal class MailboxScreenTest {
             Effect.empty()
         )
         val mailboxState = MailboxState.Loading.copy(mailboxListState = mailboxListState)
-        setupScreen(state = mailboxState, items = emptyList())
+        val robot = setupScreen(state = mailboxState)
 
-        composeTestRule
-            .onEmptyMailbox()
-            .awaitDisplayed(composeTestRule)
-
-        composeTestRule
-            .onEmptyMailbox()
-            .performTouchInput { swipeDown() }
-
-        composeTestRule
-            .onNodeWithTag(PROTON_PROGRESS_TEST_TAG)
-            .assertIsDisplayed()
+        robot
+            .verify { emptyMailboxIsDisplayed() }
+            .pullDownToRefresh()
+            .verify { listProgressIsDisplayed() }
     }
-
-    private fun ComposeContentTestRule.onEmptyMailbox(): SemanticsNodeInteraction =
-        onNodeWithText("Empty mailbox")
 
     private fun setupScreen(
         state: MailboxState = MailboxState.Loading,
         items: List<MailboxItemUiModel> = emptyList()
-    ) {
-        composeTestRule.setContent {
+    ): MailboxRobot =
+        composeTestRule.MailboxRobot {
             val mailboxItems = flowOf(PagingData.from(items)).collectAsLazyPagingItems()
 
             ProtonTheme {
@@ -104,6 +106,5 @@ internal class MailboxScreenTest {
                 )
             }
         }
-    }
 }
 

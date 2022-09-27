@@ -26,7 +26,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maillabel.R
 import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_UNREAD_FILTER
-import ch.protonmail.android.mailmailbox.presentation.mailbox.TEST_TAG_MAILBOX_SCREEN
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.MoveToFolderRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.SelectionStateRobotInterface
@@ -119,7 +119,7 @@ class InboxRobot(
                     .isNotEmpty()
             }
 
-            composeRule.onNodeWithTag(TEST_TAG_MAILBOX_SCREEN).assertIsDisplayed()
+            composeRule.onNodeWithTag(MailboxScreen.TestTag).assertIsDisplayed()
         }
 
         fun unreadFilterIsDisplayed() {

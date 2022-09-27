@@ -30,6 +30,7 @@ plugins {
 setAsHiltModule()
 
 val privateProperties = Properties().apply {
+    @Suppress("SwallowedException")
     try {
         load(FileInputStream("private.properties"))
     } catch (exception: java.io.FileNotFoundException) {
@@ -183,6 +184,7 @@ dependencies {
     testImplementation(project(":test-data"))
 
     androidTestImplementation(Dependencies.androidTestLibs)
+    androidTestImplementation(project(":test-data"))
     androidTestImplementation(Proton.Core.accountManagerPresentationCompose)
 
     androidTestUtil(AndroidX.Test.orchestrator)

@@ -76,8 +76,6 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
-const val TEST_TAG_MAILBOX_SCREEN = "MailboxScreenTestTag"
-
 @Composable
 fun MailboxScreen(
     modifier: Modifier = Modifier,
@@ -119,7 +117,7 @@ fun MailboxScreen(
     val lazyListState = mailboxListItems.rememberLazyListState()
 
     Scaffold(
-        modifier = modifier.testTag(TEST_TAG_MAILBOX_SCREEN),
+        modifier = modifier.testTag(MailboxScreen.TestTag),
         topBar = {
             Column {
                 MailboxTopAppBar(
@@ -276,6 +274,8 @@ private fun MailboxEmpty(modifier: Modifier = Modifier) {
 }
 
 object MailboxScreen {
+
+    const val TestTag = "MailboxScreen"
 
     data class Actions(
         val navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
