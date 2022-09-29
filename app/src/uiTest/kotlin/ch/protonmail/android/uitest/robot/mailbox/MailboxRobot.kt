@@ -22,22 +22,38 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasScrollAction
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performScrollToIndex
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.espresso.action.ViewActions.swipeDown
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.uitest.util.awaitDisplayed
-import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 
 class MailboxRobot internal constructor(
     private val composeTestRule: ComposeContentTestRule
 ) {
 
     fun pullDownToRefresh(): MailboxRobot {
-        composeTestRule.onNode(emptyMailboxMatcher()) // or match list
+        composeTestRule.onList()
             .performTouchInput { swipeDown() }
+        return this
+    }
+
+    fun scrollToItem(index: Int): MailboxRobot {
+        composeTestRule.onList()
+            .performScrollToIndex(index)
+        return this
+    }
+
+    fun scrollToItem(subject: String): MailboxRobot {
+        composeTestRule.onList()
+            .performScrollToNode(hasText(subject))
         return this
     }
 
@@ -62,18 +78,25 @@ class MailboxRobot internal constructor(
 
         fun listProgressIsDisplayed() {
             composeTestRule
-                // TODO: Match the right Progress between the one for Unread Filter and the List one
-                .onAllNodesWithTag(PROTON_PROGRESS_TEST_TAG)[1]
+                .onNodeWithTag(MailboxScreen.ListProgressTestTag)
                 .assertIsDisplayed()
+        }
+
+        fun swipeRefreshProgressIsDisplayed() {
+            composeTestRule
+                // TODO
         }
     }
 }
+
+private fun ComposeContentTestRule.onList(): SemanticsNodeInteraction =
+    onNode(hasScrollAction())
 
 private fun ComposeContentTestRule.onEmptyMailbox(): SemanticsNodeInteraction =
     onNode(emptyMailboxMatcher())
 
 private fun emptyMailboxMatcher(): SemanticsMatcher =
-    hasText("Empty mailbox")
+    hasTestTag(MailboxScreen.MailboxEmptyTestTag)
 
 fun ComposeContentTestRule.MailboxRobot(content: @Composable () -> Unit) =
     MailboxRobot(this).also { setContent(content) }

@@ -26,12 +26,14 @@ import androidx.paging.map
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
+import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.domain.extension.firstOrDefault
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -229,7 +231,7 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun updateStateForSelectedMailLabelChange(currentMailLabel: MailLabel) {
-        val topAppBarState = buildUpdatedTopAppBarState(currentMailLabel)
+        val topAppBarState = buildUpdatedTopAppBarState(currentMailLabel.text())
         val unreadFilterState = buildUpdatedUnreadFilterState(observeUnreadCounters().firstOrNull())
 
         val currentState = state.value.mailboxListState
@@ -248,7 +250,7 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun updateStateForMailLabelChange(currentMailLabel: MailLabel) {
-        val topAppBarState = buildUpdatedTopAppBarState(currentMailLabel)
+        val topAppBarState = buildUpdatedTopAppBarState(currentMailLabel.text())
         val mailboxListState = when (val currentState = state.value.mailboxListState) {
             is MailboxListState.Loading -> MailboxListState.Data(
                 currentMailLabel,
@@ -279,10 +281,10 @@ class MailboxViewModel @Inject constructor(
         }
     }
 
-    private fun buildUpdatedTopAppBarState(currentMailLabel: MailLabel): MailboxTopAppBarState.Data {
+    private fun buildUpdatedTopAppBarState(currentLabelName: TextUiModel): MailboxTopAppBarState.Data {
         val topAppBarState = when (val currentState = state.value.topAppBarState) {
-            MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel)
-            is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel)
+            MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentLabelName)
+            is MailboxTopAppBarState.Data -> currentState.with(currentLabelName)
         }
         return topAppBarState
     }

@@ -69,6 +69,7 @@ import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
@@ -155,7 +156,9 @@ fun MailboxScreen(
                     actions = actions
                 )
             }
-            is MailboxListState.Loading -> ProtonCenteredProgress(Modifier.padding(paddingValues))
+            MailboxListState.Loading -> ProtonCenteredProgress(
+                modifier = Modifier.testTag(MailboxScreen.ListProgressTestTag).padding(paddingValues)
+            )
         }
     }
 }
@@ -190,25 +193,27 @@ private fun MailboxSwipeRefresh(
     modifier: Modifier = Modifier
 ) {
 
-    val isRefreshing = when {
+    val isLoading = when {
         items.loadState.refresh is LoadState.Loading -> true
         items.loadState.append is LoadState.Loading -> true
         items.loadState.prepend is LoadState.Loading -> true
         else -> false
     }
 
+    Timber.v("Is loading: $isLoading, items count: ${items.itemCount}")
+
     SwipeRefresh(
         modifier = modifier,
-        state = rememberSwipeRefreshState(isRefreshing),
+        state = rememberSwipeRefreshState(isLoading),
         onRefresh = {
             actions.onRefreshList()
             items.refresh()
         }
     ) {
 
-        if (isRefreshing.not() && items.itemCount == 0) {
+        if (isLoading.not() && items.itemCount == 0) {
             MailboxEmpty(
-                modifier = modifier.scrollable(
+                modifier = Modifier.scrollable(
                     rememberScrollableState(consumeScrollDelta = { 0f }),
                     orientation = Orientation.Vertical
                 )
@@ -263,13 +268,20 @@ private fun MailboxItemsList(
 
 @Composable
 private fun MailboxEmpty(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = modifier
+            .testTag(MailboxScreen.MailboxEmptyTestTag)
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
         Text("Empty mailbox")
     }
 }
 
 object MailboxScreen {
 
+    const val ListProgressTestTag = "MailboxListProgress"
+    const val MailboxEmptyTestTag = "MailboxEmpty"
     const val TestTag = "MailboxScreen"
 
     data class Actions(

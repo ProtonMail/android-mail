@@ -31,6 +31,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Sent
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
+import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
@@ -166,7 +167,7 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
 
             // Then
-            val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive))
+            val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive).text())
             val actual = awaitItem()
             assertEquals(expected, actual.topAppBarState)
         }
@@ -193,7 +194,7 @@ class MailboxViewModelTest {
             mailboxViewModel.submit(Action.EnterSelectionMode)
 
             // Then
-            val expected = MailboxTopAppBarState.Data.SelectionMode(MailLabel.System(Archive), selectedCount = 0)
+            val expected = MailboxTopAppBarState.Data.SelectionMode(MailLabel.System(Archive).text(), selectedCount = 0)
             val actual = awaitItem()
             assertEquals(expected, actual.topAppBarState)
         }
@@ -213,7 +214,7 @@ class MailboxViewModelTest {
             mailboxViewModel.submit(Action.ExitSelectionMode)
 
             // Then
-            val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive))
+            val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive).text())
             val actual = awaitItem()
             assertEquals(expected, actual.topAppBarState)
         }
@@ -275,14 +276,14 @@ class MailboxViewModelTest {
         mailboxViewModel.state.test {
             // Then
             val firstUnreadFilterState = assertIs<MailboxTopAppBarState.Data>(awaitItem().topAppBarState)
-            assertEquals(MailLabel.System(MailLabelId.System.Inbox), firstUnreadFilterState.currentMailLabel)
+            assertEquals(MailLabel.System(MailLabelId.System.Inbox).text(), firstUnreadFilterState.currentLabelName)
 
             // When
             currentLocationFlow.emit(MailLabelId.System.Starred)
 
             // Then
             val secondUnreadFilterState = assertIs<MailboxTopAppBarState.Data>(awaitItem().topAppBarState)
-            assertEquals(MailLabel.System(MailLabelId.System.Starred), secondUnreadFilterState.currentMailLabel)
+            assertEquals(MailLabel.System(MailLabelId.System.Starred).text(), secondUnreadFilterState.currentLabelName)
         }
     }
 

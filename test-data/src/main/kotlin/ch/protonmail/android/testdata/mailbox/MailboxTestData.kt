@@ -155,7 +155,7 @@ object MailboxItemUiModelTestData {
     fun buildMailboxUiModelItem(
         id: String,
         type: MailboxItemType,
-        subject: String = "subject",
+        subject: String = id,
         isRead: Boolean = true
     ) = MailboxItemUiModel(
         avatar = AvatarUiModel.ParticipantInitial("T"),

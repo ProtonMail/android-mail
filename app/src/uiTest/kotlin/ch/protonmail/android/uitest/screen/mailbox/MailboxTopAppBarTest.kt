@@ -28,8 +28,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBar
+import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState.Data
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
@@ -128,17 +129,17 @@ internal class MailboxTopAppBarTest {
     }
 
     private fun setupScreenWithDefaultMode(currentMailLabel: MailLabel) {
-        val state = Data.DefaultMode(currentMailLabel = currentMailLabel)
+        val state = Data.DefaultMode(currentLabelName = currentMailLabel.text())
         setupScreenWithState(state)
     }
 
     private fun setupScreenWithSelectionMode(currentMailLabel: MailLabel, selectedCount: Int) {
-        val state = Data.SelectionMode(currentMailLabel = currentMailLabel, selectedCount = selectedCount)
+        val state = Data.SelectionMode(currentLabelName = currentMailLabel.text(), selectedCount = selectedCount)
         setupScreenWithState(state)
     }
 
     private fun setupScreenWithSearchMode(currentMailLabel: MailLabel, searchQuery: String) {
-        val state = Data.SearchMode(currentMailLabel = currentMailLabel, searchQuery = searchQuery)
+        val state = Data.SearchMode(currentLabelName = currentMailLabel.text(), searchQuery = searchQuery)
         setupScreenWithState(state)
     }
 

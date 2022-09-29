@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
@@ -37,7 +38,7 @@ object MailboxStatePreviewData {
             scrollToMailboxTop = Effect.empty()
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-            currentMailLabel = MailLabel.System(MailLabelId.System.Inbox)
+            currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text()
         ),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
@@ -52,7 +53,7 @@ object MailboxStatePreviewData {
             scrollToMailboxTop = Effect.empty()
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-            currentMailLabel = MailLabel.System(MailLabelId.System.AllMail)
+            currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text()
         ),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
