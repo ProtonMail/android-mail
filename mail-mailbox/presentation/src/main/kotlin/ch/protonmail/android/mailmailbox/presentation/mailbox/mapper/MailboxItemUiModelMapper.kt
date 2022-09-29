@@ -64,7 +64,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             numMessages = mailboxItem.numMessages.takeIf { it >= 2 },
             showStar = mailboxItem.labelIds.contains(SystemLabelId.Starred.labelId),
             locationIconResIds = getLocationIconsToDisplay(mailboxItem),
-            shouldShowAttachmentIcon = mailboxItem.hasAttachments,
+            shouldShowAttachmentIcon = mailboxItem.hasNonCalendarAttachments,
             shouldShowExpirationLabel = hasExpirationTime(mailboxItem),
             shouldShowCalendarIcon = hasCalendarAttachment(mailboxItem)
         )

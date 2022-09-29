@@ -222,7 +222,7 @@ class MailboxItemUiModelMapperTest {
     }
 
     @Test
-    fun `when mailbox item has attachments show attachment icon`() {
+    fun `when mailbox item has attachments show paperclip icon`() {
         // Given
         val mailboxItem = buildMailboxItem(hasAttachments = true)
         // When
@@ -232,7 +232,7 @@ class MailboxItemUiModelMapperTest {
     }
 
     @Test
-    fun `when mailbox item has no attachments do not show attachment icon`() {
+    fun `when mailbox item has no attachments do not show paperclip icon`() {
         // Given
         val mailboxItem = buildMailboxItem(hasAttachments = false)
         // When

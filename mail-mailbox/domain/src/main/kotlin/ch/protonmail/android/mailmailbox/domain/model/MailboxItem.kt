@@ -54,7 +54,7 @@ data class MailboxItem(
     val isRepliedAll: Boolean,
     val isForwarded: Boolean,
     val numMessages: Int,
-    val hasAttachments: Boolean,
+    val hasNonCalendarAttachments: Boolean,
     val expirationTime: Long,
     val calendarAttachmentCount: Int
 ) : PageItem {

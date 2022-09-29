@@ -71,13 +71,18 @@ class MessageMailboxItemMapperTest {
     }
 
     @Test
-    fun `when mapping message with 1 or more attachments to mailbox item then has attachments is true`() {
+    fun `when mapping message with 1 or more non-calendar attachments to mailbox item then has attachments is true`() {
         // Given
-        val message = MessageTestData.buildMessage(userId, "id", numAttachments = 1)
+        val message = MessageTestData.buildMessage(
+            userId,
+            "id",
+            numAttachments = 1,
+            attachmentCount = AttachmentCount(calendar = 0)
+        )
         // When
         val actual = mapper.toMailboxItem(message, emptyMap())
         // Then
-        assertTrue(actual.hasAttachments)
+        assertTrue(actual.hasNonCalendarAttachments)
     }
 
     @Test
@@ -87,7 +92,22 @@ class MessageMailboxItemMapperTest {
         // When
         val actual = mapper.toMailboxItem(message, emptyMap())
         // Then
-        assertFalse(actual.hasAttachments)
+        assertFalse(actual.hasNonCalendarAttachments)
+    }
+
+    @Test
+    fun `when mapping message with only calendar attachments to mailbox item then has attachments is false`() {
+        // Given
+        val message = MessageTestData.buildMessage(
+            userId,
+            "id",
+            numAttachments = 1,
+            attachmentCount = AttachmentCount(calendar = 1)
+        )
+        // When
+        val actual = mapper.toMailboxItem(message, emptyMap())
+        // Then
+        assertFalse(actual.hasNonCalendarAttachments)
     }
 
     @Test

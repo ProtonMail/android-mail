@@ -77,7 +77,7 @@ object MailboxTestData {
         isRepliedAll = false,
         isForwarded = false,
         numMessages = numMessages,
-        hasAttachments = hasAttachments,
+        hasNonCalendarAttachments = hasAttachments,
         expirationTime = expirationTime,
         calendarAttachmentCount = calendarAttachmentCount
     )
@@ -106,7 +106,7 @@ object MailboxTestData {
         isRepliedAll = isRepliedAll,
         isForwarded = isForwarded,
         numMessages = 1,
-        hasAttachments = false,
+        hasNonCalendarAttachments = false,
         expirationTime = 0,
         calendarAttachmentCount = 0
     )
@@ -129,7 +129,7 @@ object MailboxTestData {
         isRepliedAll = false,
         isForwarded = false,
         numMessages = 3,
-        hasAttachments = false,
+        hasNonCalendarAttachments = false,
         expirationTime = 0,
         calendarAttachmentCount = 0
     )

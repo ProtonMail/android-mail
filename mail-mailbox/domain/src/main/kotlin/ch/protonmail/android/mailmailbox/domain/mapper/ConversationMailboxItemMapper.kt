@@ -48,7 +48,7 @@ class ConversationMailboxItemMapper @Inject constructor() : Mapper<ConversationW
                 isRepliedAll = false,
                 isForwarded = false,
                 numMessages = numMessages,
-                hasAttachments = numAttachments > 0,
+                hasNonCalendarAttachments = numAttachments > attachmentCount.calendar,
                 expirationTime = expirationTime,
                 calendarAttachmentCount = attachmentCount.calendar
             )

@@ -73,13 +73,13 @@ class ConversationMailboxItemMapperTest {
     }
 
     @Test
-    fun `when mapping conversation with 1 or more attachments to mailbox item then has attachments is true`() {
+    fun `when mapping conversation with 1 or more non-calendar attachments then has attachments is true`() {
         // Given
         val conversation = ConversationWithContextTestData.getConversationWithContext(userId, "id", numAttachments = 3)
         // When
         val actual = mapper.toMailboxItem(conversation, emptyMap())
         // Then
-        assertTrue(actual.hasAttachments)
+        assertTrue(actual.hasNonCalendarAttachments)
     }
 
     @Test
@@ -89,7 +89,22 @@ class ConversationMailboxItemMapperTest {
         // When
         val actual = mapper.toMailboxItem(conversation, emptyMap())
         // Then
-        assertFalse(actual.hasAttachments)
+        assertFalse(actual.hasNonCalendarAttachments)
+    }
+
+    @Test
+    fun `when mapping conversation with only calendar attachments to mailbox item then has attachments is false`() {
+        // Given
+        val conversation = ConversationWithContextTestData.getConversationWithContext(
+            userId,
+            "id",
+            numAttachments = 1,
+            attachmentCount = AttachmentCount(calendar = 1)
+        )
+        // When
+        val actual = mapper.toMailboxItem(conversation, emptyMap())
+        // Then
+        assertFalse(actual.hasNonCalendarAttachments)
     }
 
     @Test
