@@ -42,7 +42,9 @@ import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.S
 import ch.protonmail.android.mailsettings.domain.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.FeatureFlagTestData
+import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserTestData
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -55,6 +57,7 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.payment.domain.PaymentManager
 import me.proton.core.user.domain.entity.User
 import org.junit.Before
 import org.junit.Test
@@ -93,6 +96,9 @@ class SidebarViewModelTest {
     private val observeFolderColors = mockk<ObserveFolderColorSettings> {
         every { this@mockk(any()) } returns folderColorSettings
     }
+    private val paymentManager = mockk<PaymentManager> {
+        coEvery { this@mockk.isSubscriptionAvailable(UserIdTestData.userId) } returns true
+    }
 
     private lateinit var sidebarViewModel: SidebarViewModel
 
@@ -104,6 +110,7 @@ class SidebarViewModelTest {
             selectedMailLabelId = selectedMailLabelId,
             mailFeatureDefault = mailFeatureDefault,
             updateLabelExpandedState = updateLabelExpandedState,
+            paymentManager = paymentManager,
             observeMailFeature = observeMailFeature,
             observePrimaryUser = observePrimaryUser,
             observeFolderColors = observeFolderColors,
@@ -178,12 +185,13 @@ class SidebarViewModelTest {
     }
 
     @Test
-    fun `state is can change subscriptions when user is free`() = runTest {
+    fun `state is can change subscriptions when payment manager subscription available is true`() = runTest {
         sidebarViewModel.state.test {
             // Initial state is Disabled.
             assertEquals(Disabled, awaitItem())
 
             // Given
+            coEvery { paymentManager.isSubscriptionAvailable(UserIdTestData.userId) } returns true
             primaryUser.emit(UserTestData.user)
 
             // Then
@@ -199,33 +207,13 @@ class SidebarViewModelTest {
     }
 
     @Test
-    fun `state is can change subscriptions when user is admin`() = runTest {
+    fun `state is can't change subscription when payment manager subscription available is false`() = runTest {
         sidebarViewModel.state.test {
             // Initial state is Disabled.
             assertEquals(Disabled, awaitItem())
 
             // Given
-            primaryUser.emit(UserTestData.adminUser)
-
-            // Then
-            val actual = awaitItem() as Enabled
-            val expected = Enabled(
-                selectedMailLabelId = Inbox,
-                isSettingsEnabled = false,
-                canChangeSubscription = true,
-                mailLabels = MailLabelsUiModel.Loading
-            )
-            assertEquals(expected, actual)
-        }
-    }
-
-    @Test
-    fun `state is can't change subscription when user is organization member`() = runTest {
-        sidebarViewModel.state.test {
-            // Initial state is Disabled.
-            assertEquals(Disabled, awaitItem())
-
-            // Given
+            coEvery { paymentManager.isSubscriptionAvailable(UserIdTestData.adminUserId) } returns false
             primaryUser.emit(UserTestData.orgMemberUser)
 
             // Then

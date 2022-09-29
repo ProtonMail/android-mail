@@ -23,7 +23,6 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
 import ch.protonmail.android.mailcommon.domain.MailFeatureId.ShowSettings
-import ch.protonmail.android.mailcommon.domain.extension.canChangeSubscription
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
@@ -43,6 +42,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
+import me.proton.core.payment.domain.PaymentManager
 import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
@@ -52,6 +52,7 @@ class SidebarViewModel @Inject constructor(
     private val selectedMailLabelId: SelectedMailLabelId,
     private val mailFeatureDefault: MailFeatureDefault,
     private val updateLabelExpandedState: UpdateLabelExpandedState,
+    private val paymentManager: PaymentManager,
     observeMailFeature: ObserveMailFeature,
     observePrimaryUser: ObservePrimaryUser,
     observeFolderColors: ObserveFolderColorSettings,
@@ -80,7 +81,7 @@ class SidebarViewModel @Inject constructor(
             State.Enabled(
                 selectedMailLabelId = selectedMailLabelId,
                 isSettingsEnabled = settingsFeature?.value ?: mailFeatureDefault[ShowSettings],
-                canChangeSubscription = user.canChangeSubscription(),
+                canChangeSubscription = paymentManager.isSubscriptionAvailable(user.userId),
                 mailLabels = mailLabels.toUiModels(folderColors, emptyMap(), selectedMailLabelId)
             )
         }
