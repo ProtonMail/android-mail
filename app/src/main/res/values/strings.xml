@@ -17,7 +17,7 @@
   -->
 
 <resources>
-    <string name="app_name">Proton Mail</string>
+    <string name="app_name" translatable="false">Proton Mail</string>
     <string name="title_remove">Remove</string>
     <string name="title_remove_account">Remove Account</string>
     <string name="description_remove_account">You will sign out and remove all information associated with this account.</string>
