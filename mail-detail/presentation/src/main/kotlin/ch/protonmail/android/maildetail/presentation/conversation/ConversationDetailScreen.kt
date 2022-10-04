@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.maildetail.presentation.conversation
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,19 +28,28 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.maildetail.presentation.DetailScreenTopBar
+import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailAction
 import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailUiModel
+import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.default
 import me.proton.core.util.kotlin.exhaustive
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
 fun ConversationDetailScreen(
@@ -47,32 +57,43 @@ fun ConversationDetailScreen(
     onBackClick: () -> Unit,
     viewModel: ConversationDetailViewModel = hiltViewModel()
 ) {
-    when (
-        val state = rememberAsState(
-            flow = viewModel.state,
-            initial = ConversationDetailState.Loading
-        ).value
-    ) {
+    val state by rememberAsState(flow = viewModel.state, initial = viewModel.initialState)
+    ConversationDetailScreen(
+        state = state,
+        actions = ConversationDetailScreen.Actions(
+            onBackClick = onBackClick,
+            onStarClick = { viewModel.submit(ConversationDetailAction.Star) },
+            onUnStarClick = { viewModel.submit(ConversationDetailAction.UnStar) }
+        ),
+        modifier = modifier
+    )
+}
+
+@Composable
+fun ConversationDetailScreen(
+    state: ConversationDetailState,
+    actions: ConversationDetailScreen.Actions,
+    modifier: Modifier = Modifier
+) {
+    when (state) {
         is ConversationDetailState.Data -> ConversationDetailScreen(
             conversationUiModel = state.conversationUiModel,
-            actions = ConversationDetailScreen.Actions(
-                onBackClick = onBackClick,
-                onStarClick = { viewModel.submit(ConversationDetailAction.Star) },
-                onUnStarClick = { viewModel.submit(ConversationDetailAction.UnStar) }
-            )
+            actions = actions
         )
         ConversationDetailState.Error.NotLoggedIn -> Text(
             modifier = modifier,
-            text = "No user logged in"
+            text = stringResource(id = commonString.x_error_not_logged_in)
         )
         ConversationDetailState.Loading -> ProtonCenteredProgress()
-        ConversationDetailState.Error.FailedLoadingData -> Text("Failed loading conversation")
+        ConversationDetailState.Error.FailedLoadingData -> Text(
+            text = stringResource(id = string.details_error_loading_conversation)
+        )
     }.exhaustive
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConversationDetailScreen(
+private fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
     conversationUiModel: ConversationDetailUiModel,
     actions: ConversationDetailScreen.Actions
@@ -123,5 +144,29 @@ object ConversationDetailScreen {
         val onBackClick: () -> Unit,
         val onStarClick: () -> Unit,
         val onUnStarClick: () -> Unit
-    )
+    ) {
+
+        companion object {
+
+            val EMPTY = Actions(
+                onBackClick = {},
+                onStarClick = {},
+                onUnStarClick = {}
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(device = Devices.FOLDABLE)
+@Preview(device = Devices.TABLET)
+private fun ConversationDetailScreenPreview(
+    @PreviewParameter(ConversationDetailsPreviewProvider::class) state: ConversationDetailState
+) {
+    ProtonTheme3 {
+        ProtonTheme {
+            ConversationDetailScreen(state = state, actions = ConversationDetailScreen.Actions.EMPTY)
+        }
+    }
 }
