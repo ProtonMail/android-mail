@@ -16,12 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.conversation.model
+package ch.protonmail.android.maildetail.presentation.model
 
-
-sealed interface ConversationDetailEvent {
-    data class ConversationData(val conversationUiModel: ConversationDetailUiModel) : ConversationDetailEvent
-
-    object NoPrimaryUser : ConversationDetailEvent
-    object ErrorLoadingConversation : ConversationDetailEvent
+sealed interface MessageDetailAction {
+    object Star : MessageDetailAction
+    object UnStar : MessageDetailAction
 }

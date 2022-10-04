@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation
+package ch.protonmail.android.maildetail.presentation.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,6 +40,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.maildetail.presentation.R.color
+import ch.protonmail.android.maildetail.presentation.R.drawable
+import ch.protonmail.android.maildetail.presentation.R.plurals
+import ch.protonmail.android.maildetail.presentation.R.string
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
@@ -63,7 +67,7 @@ fun DetailScreenTopBar(
                     messageCount?.let { count ->
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = pluralStringResource(R.plurals.message_count_label_text, count, count),
+                            text = pluralStringResource(plurals.message_count_label_text, count, count),
                             fontSize = ProtonTheme.typography.overline.fontSize,
                             textAlign = TextAlign.Center
                         )
@@ -80,7 +84,7 @@ fun DetailScreenTopBar(
             },
             navigationIcon = {
                 IconButton(onClick = actions.onBackClick) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(id = R.string.presentation_back))
+                    Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(id = string.presentation_back))
                 }
             },
             actions = {
@@ -111,7 +115,7 @@ fun DetailScreenTopBar(
 
 @Composable
 private fun getStarredIconColor(isStarred: Boolean) = if (isStarred) {
-    colorResource(id = R.color.sunglow)
+    colorResource(id = color.sunglow)
 } else {
     ProtonTheme.colors.textNorm
 }
@@ -119,9 +123,9 @@ private fun getStarredIconColor(isStarred: Boolean) = if (isStarred) {
 @Composable
 private fun getStarredIcon(isStarred: Boolean) = painterResource(
     id = if (isStarred) {
-        R.drawable.ic_proton_star_filled
+        drawable.ic_proton_star_filled
     } else {
-        R.drawable.ic_proton_star
+        drawable.ic_proton_star
     }
 )
 

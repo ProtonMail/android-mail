@@ -18,8 +18,9 @@
 
 package ch.protonmail.android.maildetail.presentation.conversation
 
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailEvent
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith

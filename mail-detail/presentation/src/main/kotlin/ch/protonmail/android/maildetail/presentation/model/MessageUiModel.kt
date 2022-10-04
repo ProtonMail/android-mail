@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.message.model
+package ch.protonmail.android.maildetail.presentation.model
 
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 

@@ -18,8 +18,9 @@
 
 package ch.protonmail.android.maildetail.presentation.message
 
-import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.testdata.message.MessageUiModelTestData
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized

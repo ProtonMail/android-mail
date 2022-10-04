@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.conversation
+package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -24,10 +24,12 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.maildetail.presentation.conversation.mapper.ConversationDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailAction
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailEvent
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailAction
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

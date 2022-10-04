@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.previewdata
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailUiModel
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailUiModel
 
 object ConversationDetailsUiModelPreviewData {
 

@@ -25,8 +25,8 @@ import androidx.navigation.compose.dialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.maildetail.presentation.conversation.ConversationDetailScreen
-import ch.protonmail.android.maildetail.presentation.message.MessageDetailScreen
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId

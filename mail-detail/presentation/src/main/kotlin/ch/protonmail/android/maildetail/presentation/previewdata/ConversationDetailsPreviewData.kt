@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.previewdata
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 
 object ConversationDetailsPreviewData {
 

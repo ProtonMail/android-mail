@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.conversation.mapper
 
+import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import org.junit.Test

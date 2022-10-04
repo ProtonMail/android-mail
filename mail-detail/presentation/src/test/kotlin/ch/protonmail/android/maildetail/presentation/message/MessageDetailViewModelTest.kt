@@ -25,9 +25,12 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.maildetail.presentation.message.mapper.MessageDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
-import ch.protonmail.android.maildetail.presentation.message.model.MessageUiModel
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageUiModel
+import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage

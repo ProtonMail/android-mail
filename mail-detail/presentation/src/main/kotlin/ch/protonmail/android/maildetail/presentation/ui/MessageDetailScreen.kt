@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.message
+package ch.protonmail.android.maildetail.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,10 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.maildetail.presentation.DetailScreenTopBar
-import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailAction
-import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
-import ch.protonmail.android.maildetail.presentation.message.model.MessageUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailAction
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageUiModel
+import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme

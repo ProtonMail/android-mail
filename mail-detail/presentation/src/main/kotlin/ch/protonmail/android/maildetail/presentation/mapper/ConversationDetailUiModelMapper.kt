@@ -16,21 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.message.mapper
+package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.maildetail.presentation.message.model.MessageUiModel
+import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.domain.entity.Message
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
 
-class MessageDetailUiModelMapper @Inject constructor() : Mapper<Message, MessageUiModel> {
+class ConversationDetailUiModelMapper @Inject constructor() : Mapper<Conversation, ConversationDetailUiModel> {
 
-    fun toUiModel(message: Message): MessageUiModel {
-        return MessageUiModel(
-            messageId = message.messageId,
-            subject = message.subject,
-            isStarred = message.labelIds.contains(SystemLabelId.Starred.labelId)
-        )
-    }
+    fun toUiModel(conversation: Conversation) = ConversationDetailUiModel(
+        conversationId = conversation.conversationId,
+        subject = conversation.subject,
+        isStarred = conversation.labels.find { it.labelId == SystemLabelId.Starred.labelId } != null,
+        messageCount = conversation.numMessages
+    )
+
 }

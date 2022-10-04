@@ -16,16 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.message
+package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.maildetail.presentation.message.mapper.MessageDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailAction
-import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailAction
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import dagger.hilt.android.lifecycle.HiltViewModel

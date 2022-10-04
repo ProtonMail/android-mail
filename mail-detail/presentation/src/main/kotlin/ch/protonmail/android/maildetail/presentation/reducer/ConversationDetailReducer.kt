@@ -16,21 +16,22 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.conversation.mapper
+package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.mailconversation.domain.entity.Conversation
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailUiModel
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import me.proton.core.domain.arch.Mapper
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import javax.inject.Inject
 
-class ConversationDetailUiModelMapper @Inject constructor() : Mapper<Conversation, ConversationDetailUiModel> {
+class ConversationDetailReducer @Inject constructor() {
 
-    fun toUiModel(conversation: Conversation) = ConversationDetailUiModel(
-        conversationId = conversation.conversationId,
-        subject = conversation.subject,
-        isStarred = conversation.labels.find { it.labelId == SystemLabelId.Starred.labelId } != null,
-        messageCount = conversation.numMessages
-    )
+    @SuppressWarnings("UnusedPrivateMember")
+    fun reduce(
+        currentState: ConversationDetailState,
+        event: ConversationDetailEvent
+    ) = when (event) {
+        is ConversationDetailEvent.NoPrimaryUser -> ConversationDetailState.Error.NotLoggedIn
+        is ConversationDetailEvent.ConversationData -> ConversationDetailState.Data(event.conversationUiModel)
+        is ConversationDetailEvent.ErrorLoadingConversation -> ConversationDetailState.Error.FailedLoadingData
+    }
 
 }

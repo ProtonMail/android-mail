@@ -16,10 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.message
+package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.message.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import javax.inject.Inject
 
 class MessageDetailReducer @Inject constructor() {

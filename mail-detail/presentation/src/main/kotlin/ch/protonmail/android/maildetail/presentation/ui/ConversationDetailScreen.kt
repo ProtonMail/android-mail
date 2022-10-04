@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.protonmail.android.maildetail.presentation.conversation
+package ch.protonmail.android.maildetail.presentation.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -37,12 +37,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.maildetail.presentation.DetailScreenTopBar
 import ch.protonmail.android.maildetail.presentation.R.string
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailAction
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.conversation.model.ConversationDetailUiModel
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailAction
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailUiModel
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
+import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
