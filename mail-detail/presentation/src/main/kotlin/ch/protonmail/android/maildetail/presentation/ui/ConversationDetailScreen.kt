@@ -18,8 +18,8 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -40,14 +40,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailUiModel
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.default
+import me.proton.core.util.kotlin.EMPTY_STRING
 import me.proton.core.util.kotlin.exhaustive
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
@@ -59,54 +60,33 @@ fun ConversationDetailScreen(
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = viewModel.initialState)
     ConversationDetailScreen(
+        modifier = modifier,
         state = state,
         actions = ConversationDetailScreen.Actions(
             onBackClick = onBackClick,
             onStarClick = { viewModel.submit(ConversationDetailAction.Star) },
             onUnStarClick = { viewModel.submit(ConversationDetailAction.UnStar) }
-        ),
-        modifier = modifier
+        )
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConversationDetailScreen(
     state: ConversationDetailState,
     actions: ConversationDetailScreen.Actions,
     modifier: Modifier = Modifier
 ) {
-    when (state) {
-        is ConversationDetailState.Data -> ConversationDetailScreen(
-            conversationUiModel = state.conversationUiModel,
-            actions = actions
-        )
-        ConversationDetailState.Error.NotLoggedIn -> Text(
-            modifier = modifier,
-            text = stringResource(id = commonString.x_error_not_logged_in)
-        )
-        ConversationDetailState.Loading -> ProtonCenteredProgress()
-        ConversationDetailState.Error.FailedLoadingData -> Text(
-            text = stringResource(id = string.details_error_loading_conversation)
-        )
-    }.exhaustive
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun ConversationDetailScreen(
-    modifier: Modifier = Modifier,
-    conversationUiModel: ConversationDetailUiModel,
-    actions: ConversationDetailScreen.Actions
-) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
+            val uiModel = (state as? ConversationDetailState.Data)?.conversationUiModel
             DetailScreenTopBar(
-                title = conversationUiModel.subject,
-                isStarred = conversationUiModel.isStarred,
-                messageCount = conversationUiModel.messageCount,
+                title = uiModel?.subject ?: EMPTY_STRING,
+                isStarred = uiModel?.isStarred,
+                messageCount = uiModel?.messageCount,
                 actions = DetailScreenTopBar.Actions(
                     onBackClick = actions.onBackClick,
                     onStarClick = actions.onStarClick,
@@ -114,26 +94,46 @@ private fun ConversationDetailScreen(
                 ),
                 scrollBehavior = scrollBehavior
             )
-        },
-        content = { innerPadding ->
-            LazyColumn(
-                modifier = Modifier.background(ProtonTheme.colors.backgroundSecondary),
-                contentPadding = innerPadding,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                val list = (0..75).map { it.toString() }
-                items(count = list.size) {
-                    Text(
-                        text = list[it],
-                        style = ProtonTheme.typography.default,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                    )
-                }
-            }
         }
-    )
+    ) { innerPadding ->
+        when (state) {
+            is ConversationDetailState.Data -> ConversationDetailContent(contentPadding = innerPadding)
+            ConversationDetailState.Error.NotLoggedIn -> ProtonErrorMessage(
+                modifier = Modifier.padding(innerPadding),
+                errorMessage = stringResource(id = commonString.x_error_not_logged_in)
+            )
+            ConversationDetailState.Error.FailedLoadingData -> ProtonErrorMessage(
+                modifier = Modifier.padding(innerPadding),
+                errorMessage = stringResource(id = string.details_error_loading_conversation)
+            )
+            ConversationDetailState.Loading -> ProtonCenteredProgress(
+                modifier = Modifier.padding(innerPadding)
+            )
+        }.exhaustive
+    }
+}
+
+@Composable
+private fun ConversationDetailContent(
+    contentPadding: PaddingValues,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        val list = (0..75).map { it.toString() }
+        items(count = list.size) {
+            Text(
+                text = list[it],
+                style = ProtonTheme.typography.default,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+        }
+    }
 }
 
 object ConversationDetailScreen {

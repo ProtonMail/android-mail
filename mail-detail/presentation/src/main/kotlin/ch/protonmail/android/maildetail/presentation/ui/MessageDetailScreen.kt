@@ -81,6 +81,7 @@ fun MessageDetailScreen(
         topBar = {
             DetailScreenTopBar(
                 title = messageUiModel.subject,
+                messageCount = null,
                 isStarred = messageUiModel.isStarred,
                 actions = DetailScreenTopBar.Actions(
                     onBackClick = actions.onBackClick,

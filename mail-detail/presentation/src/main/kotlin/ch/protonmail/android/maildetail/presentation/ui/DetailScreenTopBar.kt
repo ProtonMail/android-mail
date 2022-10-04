@@ -39,11 +39,13 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.maildetail.presentation.R.color
 import ch.protonmail.android.maildetail.presentation.R.drawable
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.R.string
+import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsUiModelPreviewData
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
@@ -54,8 +56,8 @@ import me.proton.core.compose.theme.overline
 fun DetailScreenTopBar(
     modifier: Modifier = Modifier,
     title: String,
-    isStarred: Boolean,
-    messageCount: Int? = null,
+    isStarred: Boolean?,
+    messageCount: Int?,
     actions: DetailScreenTopBar.Actions,
     scrollBehavior: TopAppBarScrollBehavior
 ) {
@@ -88,18 +90,19 @@ fun DetailScreenTopBar(
                 }
             },
             actions = {
-                fun onStarIconClicked() = if (isStarred) {
-                    actions.onUnStarClick()
-                } else {
-                    actions.onStarClick()
-                }
-                IconButton(onClick = ::onStarIconClicked) {
-                    Icon(
-                        modifier = Modifier.size(ProtonDimens.DefaultIconSize),
-                        painter = getStarredIcon(isStarred),
-                        contentDescription = NO_CONTENT_DESCRIPTION,
-                        tint = getStarredIconColor(isStarred)
-                    )
+                if (isStarred != null) {
+                    fun onStarIconClicked() = when (isStarred) {
+                        true -> actions.onUnStarClick()
+                        false -> actions.onStarClick()
+                    }
+                    IconButton(onClick = ::onStarIconClicked) {
+                        Icon(
+                            modifier = Modifier.size(ProtonDimens.DefaultIconSize),
+                            painter = getStarredIcon(isStarred),
+                            contentDescription = NO_CONTENT_DESCRIPTION,
+                            tint = getStarredIconColor(isStarred)
+                        )
+                    }
                 }
             },
             scrollBehavior = scrollBehavior,
@@ -135,5 +138,31 @@ object DetailScreenTopBar {
         val onBackClick: () -> Unit,
         val onStarClick: () -> Unit,
         val onUnStarClick: () -> Unit
-    )
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onBackClick = {},
+                onStarClick = {},
+                onUnStarClick = {}
+            )
+        }
+    }
+}
+
+@Composable
+@Preview
+@OptIn(ExperimentalMaterial3Api::class)
+private fun DetailScreenTopBarPreview() {
+    ProtonTheme3 {
+        val model = ConversationDetailsUiModelPreviewData.WeatherForecast
+        DetailScreenTopBar(
+            title = model.subject,
+            isStarred = model.isStarred,
+            messageCount = model.messageCount,
+            actions = DetailScreenTopBar.Actions.Empty,
+            scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+        )
+    }
 }
