@@ -30,6 +30,7 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -40,12 +41,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.maildetail.presentation.R.color
 import ch.protonmail.android.maildetail.presentation.R.drawable
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.R.string
-import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsUiModelPreviewData
+import ch.protonmail.android.maildetail.presentation.previewdata.DetailsScreenTopBarPreview
+import ch.protonmail.android.maildetail.presentation.previewdata.DetailsScreenTopBarPreviewProvider
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
@@ -76,6 +79,7 @@ fun DetailScreenTopBar(
                     }
                     val isFullyExpanded = scrollBehavior.state.collapsedFraction == 0F
                     Text(
+                        modifier = Modifier.fillMaxWidth(),
                         maxLines = if (isFullyExpanded) 2 else 1,
                         text = title,
                         overflow = TextOverflow.Ellipsis,
@@ -154,15 +158,18 @@ object DetailScreenTopBar {
 @Composable
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
-private fun DetailScreenTopBarPreview() {
+private fun DetailScreenTopBarPreview(
+    @PreviewParameter(DetailsScreenTopBarPreviewProvider::class) preview: DetailsScreenTopBarPreview
+) {
     ProtonTheme3 {
-        val model = ConversationDetailsUiModelPreviewData.WeatherForecast
+        val initialHeightOffset = if (preview.isExpanded) 0f else -Float.MAX_VALUE
+        val state = rememberTopAppBarState(initialHeightOffset = initialHeightOffset)
         DetailScreenTopBar(
-            title = model.subject,
-            isStarred = model.isStarred,
-            messageCount = model.messageCount,
+            title = preview.title,
+            isStarred = preview.isStarred,
+            messageCount = preview.messageCount,
             actions = DetailScreenTopBar.Actions.Empty,
-            scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+            scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(state = state)
         )
     }
 }
