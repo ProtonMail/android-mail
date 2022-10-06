@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FilterChip
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
 const val TEST_TAG_UNREAD_FILTER = "UnreadFilterScreenTestTag"
@@ -46,7 +48,7 @@ fun UnreadItemsFilter(
     onFilterDisabled: () -> Unit
 ) {
     when (state) {
-        is UnreadFilterState.Loading -> ProtonCenteredProgress(modifier)
+        is UnreadFilterState.Loading -> ProtonCenteredProgress(modifier = Modifier.size(ProtonDimens.MediumSpacing))
         is UnreadFilterState.Data -> {
             FilterChip(
                 modifier = modifier.testTag(TEST_TAG_UNREAD_FILTER),

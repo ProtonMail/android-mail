@@ -162,7 +162,7 @@ fun MailboxScreen(
                     actions = actions
                 )
             }
-            MailboxListState.Loading -> ProtonCenteredProgress(Modifier.padding(paddingValues))
+            is MailboxListState.Loading -> ProtonCenteredProgress(Modifier.padding(paddingValues))
         }
     }
 }
@@ -177,7 +177,7 @@ private fun MailboxStickyHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = ProtonDimens.SmallSpacing),
+            .padding(horizontal = ProtonDimens.DefaultSpacing),
         horizontalArrangement = Arrangement.End
     ) {
         UnreadItemsFilter(
