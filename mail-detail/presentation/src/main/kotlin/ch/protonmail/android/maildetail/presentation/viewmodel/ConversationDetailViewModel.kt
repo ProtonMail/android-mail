@@ -66,9 +66,11 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    fun submit(action: ConversationDetailAction) = when (action) {
-        is ConversationDetailAction.Star -> Timber.d("Star conversation clicked")
-        is ConversationDetailAction.UnStar -> Timber.d("UnStar conversation clicked")
+    fun submit(action: ConversationDetailAction) {
+        when (action) {
+            is ConversationDetailAction.Star -> Timber.d("Star conversation clicked")
+            is ConversationDetailAction.UnStar -> Timber.d("UnStar conversation clicked")
+        }
     }
 
     private fun observeConversationMetadata(conversationId: ConversationId) {
