@@ -19,7 +19,22 @@
 package ch.protonmail.android
 
 import android.app.Application
+import androidx.startup.AppInitializer
+import ch.protonmail.android.initializer.AccountStateHandlerInitializer
+import ch.protonmail.android.initializer.SentryInitializer
+import ch.protonmail.android.initializer.strictmode.StrictModeInitializer
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class App : Application()
+class App : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+
+        with(AppInitializer.getInstance(this)) {
+            initializeComponent(AccountStateHandlerInitializer::class.java)
+            initializeComponent(SentryInitializer::class.java)
+            initializeComponent(StrictModeInitializer::class.java)
+        }
+    }
+}
