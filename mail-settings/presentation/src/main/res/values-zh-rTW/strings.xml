@@ -73,7 +73,7 @@
   <string name="mail_settings_swipe_action_spam_title">垃圾郵件</string>
   <string name="mail_settings_swipe_action_star_title">加上星號</string>
   <string name="mail_settings_swipe_action_trash_title">垃圾桶</string>
-  <string name="mail_settings_swipe_action_archive_description">移至「封存」資料夾</string>
+  <string name="mail_settings_swipe_action_archive_description">移至「封存」</string>
   <string name="mail_settings_swipe_action_read_description">標記為未讀/已讀</string>
   <string name="mail_settings_swipe_action_spam_description">移至「垃圾郵件」資料夾</string>
   <string name="mail_settings_swipe_action_star_description">加上星號／移除星號</string>

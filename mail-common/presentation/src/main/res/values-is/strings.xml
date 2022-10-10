@@ -18,6 +18,6 @@
   -->
 <resources>
   <string name="retry">Reyna aftur</string>
-  <string name="toolbar_back_content_descritpion">Back to previous screen</string>
-  <string name="x_error_not_logged_in">Not logged in</string>
+  <string name="toolbar_back_content_descritpion">Til baka á fyrri skjá</string>
+  <string name="x_error_not_logged_in">Ekki skráð inn</string>
 </resources>

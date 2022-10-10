@@ -21,11 +21,11 @@
   <string name="label_title_drafts">Borradores</string>
   <string name="label_title_sent">Enviados</string>
   <string name="label_title_starred">Destacados</string>
-  <string name="label_title_archive">Archivar</string>
-  <string name="label_title_spam">Correo no deseado</string>
+  <string name="label_title_archive">Archivo</string>
+  <string name="label_title_spam">Spam</string>
   <string name="label_title_trash">Papelera</string>
   <string name="label_title_outbox">Bandeja de salida</string>
-  <string name="label_title_all_mail">Todos los correos</string>
+  <string name="label_title_all_mail">Todo el correo</string>
   <string name="label_title_all_drafts">Todos los borradores</string>
   <string name="label_title_all_sent">Todos los correos enviados</string>
   <string name="label_title_folders">Carpetas</string>

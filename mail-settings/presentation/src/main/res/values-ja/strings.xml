@@ -30,7 +30,7 @@
   <string name="mail_settings_combined_contacts">連絡先の相互利用</string>
   <string name="mail_settings_swipe_actions">スワイプ操作</string>
   <string name="mail_settings_combined_contacts_hint">この機能を有効にすると、ログイン済みアカウントの連絡先をメールアドレスの自動補完に利用することができます。</string>
-  <string name="mail_settings_alternative_routing_hint">Proton のサイトがブロックされている場合、この設定により、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。サービスへの接続の信頼性向上の観点から、私たちはこの設定を有効にしておくことをおすすめします。</string>
+  <string name="mail_settings_alternative_routing_hint">Proton への接続がブロックされている場合、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。信頼性向上の観点から、この設定を有効にしておくことをおすすめします。</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">システム標準</string>
   <string name="mail_settings_theme_light">ライト</string>

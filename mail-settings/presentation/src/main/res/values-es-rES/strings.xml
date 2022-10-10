@@ -47,13 +47,13 @@
   <string name="mail_settings_account">Cuenta</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Suscripción</string>
-  <string name="mail_settings_password_management">Administrador de contraseñas</string>
-  <string name="mail_settings_recovery_email">Correo electrónico para recuperación</string>
+  <string name="mail_settings_password_management">Gestión de contraseñas</string>
+  <string name="mail_settings_recovery_email">Correo electrónico de recuperación</string>
   <string name="mail_settings_mailbox_size">Tamaño del buzón</string>
   <string name="mail_settings_addresses">Direcciones</string>
   <string name="mail_settings_default_email_address">Dirección de correo electrónico por defecto</string>
   <string name="mail_settings_display_name_and_signature">Mostrar nombre y firma</string>
-  <string name="mail_settings_mailbox">Buzón</string>
+  <string name="mail_settings_mailbox">Bandeja de entrada</string>
   <string name="mail_settings_privacy">Privacidad</string>
   <string name="mail_settings_search_message_content">Buscar contenido del mensaje</string>
   <string name="mail_settings_labels_and_folders">Etiquetas y carpetas</string>
