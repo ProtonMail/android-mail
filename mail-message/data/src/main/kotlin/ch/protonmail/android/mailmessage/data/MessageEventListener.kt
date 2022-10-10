@@ -38,7 +38,7 @@ import javax.inject.Singleton
 @Serializable
 data class MessagesEvents(
     @SerialName("Messages")
-    val messages: List<MessageEvent>
+    val messages: List<MessageEvent>? = null
 )
 
 @Serializable

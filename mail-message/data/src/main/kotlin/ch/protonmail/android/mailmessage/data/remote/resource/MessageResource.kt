@@ -71,7 +71,7 @@ data class MessageResource(
     @SerialName("Flags")
     val flags: Int,
     @SerialName("AttachmentInfo")
-    val attachmentsInfo: AttachmentsInfoResource
+    val attachmentsInfo: AttachmentsInfoResource? = null
 ) {
     fun toMessage(userId: UserId) = Message(
         userId = userId,
