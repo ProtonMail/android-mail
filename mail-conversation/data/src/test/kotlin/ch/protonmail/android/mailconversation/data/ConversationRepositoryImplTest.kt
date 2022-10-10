@@ -26,8 +26,8 @@ import ch.protonmail.android.mailconversation.data.repository.ConversationReposi
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
-import ch.protonmail.android.mailpagination.domain.entity.PageFilter
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailpagination.domain.model.PageFilter
+import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
 import io.mockk.Ordering
 import io.mockk.coEvery

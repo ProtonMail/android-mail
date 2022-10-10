@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.domain.model
 
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailpagination.domain.model.PageKey
 import me.proton.core.domain.entity.UserId
 
 data class MailboxPageKey(

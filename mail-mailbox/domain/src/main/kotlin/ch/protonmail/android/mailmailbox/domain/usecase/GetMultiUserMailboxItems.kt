@@ -21,8 +21,8 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
-import ch.protonmail.android.mailpagination.domain.entity.OrderBy
-import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
+import ch.protonmail.android.mailpagination.domain.model.OrderBy
+import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import me.proton.core.util.kotlin.mapAsync
 import javax.inject.Inject
 

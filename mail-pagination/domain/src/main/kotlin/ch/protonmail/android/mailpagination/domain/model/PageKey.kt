@@ -16,13 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailpagination.domain.entity
+package ch.protonmail.android.mailpagination.domain.model
 
-import ch.protonmail.android.mailpagination.domain.entity.OrderBy.Time
-import ch.protonmail.android.mailpagination.domain.entity.OrderDirection.Descending
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus.All
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus.Read
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus.Unread
+import ch.protonmail.android.mailpagination.domain.model.OrderBy.Time
+import ch.protonmail.android.mailpagination.domain.model.OrderDirection.Descending
+import ch.protonmail.android.mailpagination.domain.model.ReadStatus.All
+import ch.protonmail.android.mailpagination.domain.model.ReadStatus.Read
+import ch.protonmail.android.mailpagination.domain.model.ReadStatus.Unread
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.EMPTY_STRING
 

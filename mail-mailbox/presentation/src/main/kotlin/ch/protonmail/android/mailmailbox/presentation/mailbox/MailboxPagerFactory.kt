@@ -24,9 +24,9 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
-import ch.protonmail.android.mailpagination.domain.entity.PageFilter
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
+import ch.protonmail.android.mailpagination.domain.model.PageFilter
+import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 

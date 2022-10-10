@@ -25,8 +25,8 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageLocalDataSourc
 import ch.protonmail.android.mailpagination.data.local.getClippedPageKey
 import ch.protonmail.android.mailpagination.data.local.isLocalPageValid
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
-import ch.protonmail.android.mailpagination.domain.entity.PageItemType
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailpagination.domain.model.PageItemType
+import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest

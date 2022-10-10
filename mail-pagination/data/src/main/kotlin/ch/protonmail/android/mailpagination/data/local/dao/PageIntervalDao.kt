@@ -23,9 +23,9 @@ import androidx.room.Query
 import androidx.room.Transaction
 import ch.protonmail.android.mailpagination.data.local.entity.PageIntervalEntity
 import ch.protonmail.android.mailpagination.data.local.merge
-import ch.protonmail.android.mailpagination.domain.entity.OrderBy
-import ch.protonmail.android.mailpagination.domain.entity.PageItemType
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
+import ch.protonmail.android.mailpagination.domain.model.OrderBy
+import ch.protonmail.android.mailpagination.domain.model.PageItemType
+import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId

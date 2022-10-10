@@ -20,12 +20,12 @@ package ch.protonmail.android.mailpagination.data.local
 
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.entity.PageIntervalEntity
-import ch.protonmail.android.mailpagination.domain.entity.OrderBy
-import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
-import ch.protonmail.android.mailpagination.domain.entity.PageFilter
-import ch.protonmail.android.mailpagination.domain.entity.PageItemType
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
+import ch.protonmail.android.mailpagination.domain.model.OrderBy
+import ch.protonmail.android.mailpagination.domain.model.OrderDirection
+import ch.protonmail.android.mailpagination.domain.model.PageFilter
+import ch.protonmail.android.mailpagination.domain.model.PageItemType
+import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK

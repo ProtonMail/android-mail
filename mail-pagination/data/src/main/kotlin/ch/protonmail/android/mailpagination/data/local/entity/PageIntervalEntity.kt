@@ -21,9 +21,9 @@ package ch.protonmail.android.mailpagination.data.local.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import ch.protonmail.android.mailpagination.domain.entity.OrderBy
-import ch.protonmail.android.mailpagination.domain.entity.PageItemType
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
+import ch.protonmail.android.mailpagination.domain.model.OrderBy
+import ch.protonmail.android.mailpagination.domain.model.PageItemType
+import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.data.entity.UserEntity

@@ -33,11 +33,11 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
 import ch.protonmail.android.mailpagination.domain.AdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
-import ch.protonmail.android.mailpagination.domain.entity.OrderBy
-import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
-import ch.protonmail.android.mailpagination.domain.entity.PageFilter
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
+import ch.protonmail.android.mailpagination.domain.model.OrderBy
+import ch.protonmail.android.mailpagination.domain.model.OrderDirection
+import ch.protonmail.android.mailpagination.domain.model.PageFilter
+import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.Runs
 import io.mockk.coEvery

@@ -26,9 +26,9 @@ import ch.protonmail.android.mailconversation.data.local.dao.ConversationDao
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationLabelDao
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
-import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
-import ch.protonmail.android.mailpagination.domain.entity.PageItemType
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailpagination.domain.model.OrderDirection
+import ch.protonmail.android.mailpagination.domain.model.PageItemType
+import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import ch.protonmail.android.testdata.user.UserIdTestData.userId1

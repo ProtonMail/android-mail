@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.domain.entity
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailpagination.domain.entity.PageItem
+import ch.protonmail.android.mailpagination.domain.model.PageItem
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.AddressId

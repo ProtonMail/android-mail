@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailpagination.domain
 
-import ch.protonmail.android.mailpagination.domain.entity.OrderDirection
-import ch.protonmail.android.mailpagination.domain.entity.PageItem
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailpagination.domain.model.OrderDirection
+import ch.protonmail.android.mailpagination.domain.model.PageItem
+import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlin.math.max
 
 /**

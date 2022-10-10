@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailpagination.domain.entity
+package ch.protonmail.android.mailpagination.domain.model
 
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId

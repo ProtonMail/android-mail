@@ -22,7 +22,7 @@ import ch.protonmail.android.mailmessage.data.remote.resource.MessageResource
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
+import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import me.proton.core.eventmanager.domain.EventListener

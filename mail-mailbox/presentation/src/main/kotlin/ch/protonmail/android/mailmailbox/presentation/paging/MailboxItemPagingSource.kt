@@ -27,10 +27,10 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
 import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
-import ch.protonmail.android.mailpagination.domain.entity.PageFilter
-import ch.protonmail.android.mailpagination.domain.entity.PageKey
-import ch.protonmail.android.mailpagination.domain.entity.ReadStatus
 import ch.protonmail.android.mailpagination.domain.getRefreshPageKey
+import ch.protonmail.android.mailpagination.domain.model.PageFilter
+import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import ch.protonmail.android.mailpagination.presentation.paging.InvalidationTrackerPagingSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
