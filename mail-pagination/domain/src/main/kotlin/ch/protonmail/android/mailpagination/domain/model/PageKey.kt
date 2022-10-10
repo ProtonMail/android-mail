@@ -24,6 +24,7 @@ import ch.protonmail.android.mailpagination.domain.entity.ReadStatus.All
 import ch.protonmail.android.mailpagination.domain.entity.ReadStatus.Read
 import ch.protonmail.android.mailpagination.domain.entity.ReadStatus.Unread
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.util.kotlin.EMPTY_STRING
 
 /**
  * Page Parameters needed to query/fetch/filter/sort/order a page.
@@ -41,25 +42,25 @@ data class PageKey(
 
 /**
  * Page Filters needed to query a page.
+ * @param labelId filters on [PageItem.labelIds], containing the given [labelId]
+ * @param keyword filters on [PageItem.keywords], containing [keyword]. Supports wildcard
+ * @param read filters on [PageItem.read]
+ * @param minTime filters on [PageItem.time], greater or equal
+ * @param maxTime filters on [PageItem.time], less or equal
+ * @param minOrder filters on [PageItem.order], greater or equal, only if [PageItem.time] equal [minTime]
+ * @param maxOrder filters on [PageItem.order], less or equal, only if [PageItem.time] equal [maxTime]
+ * @param minId filters on [PageItem.id], excluded, only if [PageItem.time] equal [minTime]
+ * @param maxId filters on [PageItem.id], excluded, only if [PageItem.time] equal [maxTime]
  */
 data class PageFilter(
-    /** Filter on [PageItem.labelIds], containing the given [labelId].*/
     val labelId: LabelId = LabelId("0"),
-    /** Filter on [PageItem.keywords], containing [keyword] (wildcard).*/
-    val keyword: String = "",
-    /** Filter on [PageItem.read].*/
+    val keyword: String = EMPTY_STRING,
     val read: ReadStatus = All,
-    /** Filter on [PageItem.time], greater or equal.*/
     val minTime: Long = Long.MIN_VALUE,
-    /** Filter on [PageItem.time], less or equal.*/
     val maxTime: Long = Long.MAX_VALUE,
-    /** Filter on [PageItem.order], greater or equal, only if [PageItem.time] equal [minTime].*/
     val minOrder: Long = Long.MIN_VALUE,
-    /** Filter on [PageItem.order], less or equal, only if [PageItem.time] equal [maxTime].*/
     val maxOrder: Long = Long.MAX_VALUE,
-    /** Filter on [PageItem.id], excluded, only if [PageItem.time] equal [minTime].*/
     val minId: String? = null,
-    /** Filter on [PageItem.id], excluded, only if [PageItem.time] equal [maxTime].*/
     val maxId: String? = null
 )
 
