@@ -56,7 +56,7 @@ internal class MailboxScreenTest {
     }
 
     @Test
-    fun givenLoadingCompletedWhenItemsThenItemsAreDisplayed() {
+    fun givenLoadingCompletedThenItemsAreDisplayed() {
         val mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
