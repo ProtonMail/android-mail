@@ -47,10 +47,6 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
             <meta-data
-                android:name="me.proton.core.plan.presentation.UnredeemedPurchaseInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
                 android:name="ch.protonmail.android.initializer.WorkManagerInitializer"
                 android:value="androidx.startup" />
             <meta-data
@@ -58,9 +54,6 @@
                 android:value="androidx.startup" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.EventManagerInitializer"
-                android:value="androidx.startup" />
-            <meta-data
-                android:name="me.proton.core.crypto.validator.presentation.init.CryptoValidatorInitializer"
                 android:value="androidx.startup" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.ThemeObserverInitializer"
