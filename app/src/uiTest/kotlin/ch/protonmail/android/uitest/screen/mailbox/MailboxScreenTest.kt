@@ -83,7 +83,7 @@ internal class MailboxScreenTest {
     }
 
     @Test
-    @Ignore("How to verify SwipeRefresh is refreshing?")
+    @Ignore("How to verify SwipeRefresh is refreshing?") // MAILANDR-271
     fun givenEmptyMailboxIsDisplayedWhenSwipeDownThenRefreshIsTriggered() {
         val mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
@@ -96,7 +96,7 @@ internal class MailboxScreenTest {
         robot
             .verify { emptyMailboxIsDisplayed() }
             .pullDownToRefresh()
-            // TODO .verify { swipeRefreshProgressIsDisplayed() }
+            .verify { swipeRefreshProgressIsDisplayed() }
     }
 
     @Test

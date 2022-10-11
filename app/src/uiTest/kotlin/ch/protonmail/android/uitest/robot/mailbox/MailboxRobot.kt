@@ -84,7 +84,7 @@ class MailboxRobot internal constructor(
 
         fun swipeRefreshProgressIsDisplayed() {
             composeTestRule
-                // TODO
+            // TODO MAILANDR-271
         }
     }
 }
