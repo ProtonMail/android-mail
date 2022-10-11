@@ -47,16 +47,25 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
             <meta-data
-                android:name="ch.protonmail.android.initializer.WorkManagerInitializer"
+                android:name="ch.protonmail.android.initializer.AccountStateHandlerInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="ch.protonmail.android.initializer.LoggerInitializer"
+                android:name="ch.protonmail.android.initializer.SentryInitializer"
                 android:value="androidx.startup" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.EventManagerInitializer"
                 android:value="androidx.startup" />
             <meta-data
+                android:name="ch.protonmail.android.initializer.LoggerInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="ch.protonmail.android.initializer.strictmode.StrictModeInitializer"
+                android:value="androidx.startup" />
+            <meta-data
                 android:name="ch.protonmail.android.initializer.ThemeObserverInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="ch.protonmail.android.initializer.WorkManagerInitializer"
                 android:value="androidx.startup" />
         </provider>
 
