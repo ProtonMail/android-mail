@@ -64,6 +64,34 @@ class DetailScreenTopBarTest {
         }
     }
 
+    @Test
+    fun whenConversationIsLoadedThenSubjectIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Conversation
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify {
+            subjectIsDisplayed(state.conversationUiModel.subject)
+        }
+    }
+
+    @Test
+    fun whenMessageIsLoadedThenSubjectIsDisplayed() {
+        // given
+        val state = MessageDetailsPreviewData.Message
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify {
+            subjectIsDisplayed(state.messageUiModel.subject)
+        }
+    }
+
     private fun setupScreen(
         state: ConversationDetailState,
         actions: ConversationDetailScreen.Actions = ConversationDetailScreen.Actions.Empty
