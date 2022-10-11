@@ -40,8 +40,8 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.maildetail.presentation.R.color
 import ch.protonmail.android.maildetail.presentation.R.drawable
@@ -138,6 +138,11 @@ private fun getStarredIcon(isStarred: Boolean) = painterResource(
 
 object DetailScreenTopBar {
 
+    /**
+     * Using an empty String for a Text inside LargeTopAppBar causes a crash.
+     */
+    const val NoTitle = " "
+
     data class Actions(
         val onBackClick: () -> Unit,
         val onStarClick: () -> Unit,
@@ -156,7 +161,7 @@ object DetailScreenTopBar {
 }
 
 @Composable
-@Preview
+@AdaptivePreviews
 @OptIn(ExperimentalMaterial3Api::class)
 private fun DetailScreenTopBarPreview(
     @PreviewParameter(DetailsScreenTopBarPreviewProvider::class) preview: DetailsScreenTopBarPreview

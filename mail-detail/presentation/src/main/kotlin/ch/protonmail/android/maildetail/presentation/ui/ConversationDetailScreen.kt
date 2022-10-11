@@ -17,7 +17,6 @@
  */
 package ch.protonmail.android.maildetail.presentation.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,11 +31,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -48,7 +46,6 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.default
-import me.proton.core.util.kotlin.EMPTY_STRING
 import me.proton.core.util.kotlin.exhaustive
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
@@ -84,7 +81,7 @@ fun ConversationDetailScreen(
         topBar = {
             val uiModel = (state as? ConversationDetailState.Data)?.conversationUiModel
             DetailScreenTopBar(
-                title = uiModel?.subject ?: EMPTY_STRING,
+                title = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
                 isStarred = uiModel?.isStarred,
                 messageCount = uiModel?.messageCount,
                 actions = DetailScreenTopBar.Actions(
@@ -148,7 +145,7 @@ object ConversationDetailScreen {
 
         companion object {
 
-            val EMPTY = Actions(
+            val Empty = Actions(
                 onBackClick = {},
                 onStarClick = {},
                 onUnStarClick = {}
@@ -158,15 +155,13 @@ object ConversationDetailScreen {
 }
 
 @Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Preview(device = Devices.FOLDABLE)
-@Preview(device = Devices.TABLET)
+@AdaptivePreviews
 private fun ConversationDetailScreenPreview(
     @PreviewParameter(ConversationDetailsPreviewProvider::class) state: ConversationDetailState
 ) {
     ProtonTheme3 {
         ProtonTheme {
-            ConversationDetailScreen(state = state, actions = ConversationDetailScreen.Actions.EMPTY)
+            ConversationDetailScreen(state = state, actions = ConversationDetailScreen.Actions.Empty)
         }
     }
 }

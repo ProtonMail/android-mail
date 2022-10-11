@@ -20,28 +20,47 @@ package ch.protonmail.android.uitest.screen.detail
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewData
+import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maildetail.presentation.ui.DetailScreenTopBar
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import org.junit.Rule
-import kotlin.test.Test
+import org.junit.Test
 
-class ConversationDetailScreenTest {
+class DetailScreenTopBarTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun whenConversationIsLoadedThenSubjectIsDisplayed() {
+    fun whenConversationIsLoadingThenSubjectContainsABlankString() {
         // given
-        val state = ConversationDetailsPreviewData.Conversation
+        val state = ConversationDetailsPreviewData.Loading
 
         // when
         val robot = setupScreen(state = state)
 
         // then
         robot.verify {
-            subjectIsDisplayed(state.conversationUiModel.subject)
+            subjectIsDisplayed(DetailScreenTopBar.NoTitle)
+        }
+    }
+
+    @Test
+    fun whenMessageIsLoadingThenSubjectContainsABlankString() {
+        // given
+        val state = MessageDetailsPreviewData.Loading
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify {
+            subjectIsDisplayed(DetailScreenTopBar.NoTitle)
         }
     }
 
@@ -50,5 +69,12 @@ class ConversationDetailScreenTest {
         actions: ConversationDetailScreen.Actions = ConversationDetailScreen.Actions.Empty
     ): ConversationDetailRobot = composeTestRule.ConversationDetailRobot {
         ConversationDetailScreen(state = state, actions = actions)
+    }
+
+    private fun setupScreen(
+        state: MessageDetailState,
+        actions: MessageDetailScreen.Actions = MessageDetailScreen.Actions.Empty
+    ): MessageDetailRobot = composeTestRule.MessageDetailRobot {
+        MessageDetailScreen(state = state, actions = actions)
     }
 }

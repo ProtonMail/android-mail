@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,19 +28,26 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailAction
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
-import ch.protonmail.android.maildetail.presentation.model.MessageUiModel
+import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.default
 import me.proton.core.util.kotlin.exhaustive
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
 fun MessageDetailScreen(
@@ -48,41 +55,35 @@ fun MessageDetailScreen(
     onBackClick: () -> Unit,
     viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
-    when (
-        val state = rememberAsState(
-            flow = viewModel.state,
-            initial = MessageDetailState.Loading
-        ).value
-    ) {
-        is MessageDetailState.Data -> MessageDetailScreen(
-            messageUiModel = state.messageUiModel,
-            actions = MessageDetailScreen.Actions(
-                onBackClick = onBackClick,
-                onStarClick = { viewModel.submit(MessageDetailAction.Star) },
-                onUnStarClick = { viewModel.submit(MessageDetailAction.UnStar) }
-            )
+    val state by rememberAsState(flow = viewModel.state, initial = viewModel.initialState)
+    MessageDetailScreen(
+        modifier = modifier,
+        state = state,
+        actions = MessageDetailScreen.Actions(
+            onBackClick = onBackClick,
+            onStarClick = { viewModel.submit(MessageDetailAction.Star) },
+            onUnStarClick = { viewModel.submit(MessageDetailAction.UnStar) }
         )
-        MessageDetailState.Error.NotLoggedIn -> Text(modifier = modifier, text = "No user logged in")
-        MessageDetailState.Loading -> ProtonCenteredProgress()
-    }.exhaustive
+    )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun MessageDetailScreen(
-    modifier: Modifier = Modifier,
-    messageUiModel: MessageUiModel,
-    actions: MessageDetailScreen.Actions
+    state: MessageDetailState,
+    actions: MessageDetailScreen.Actions,
+    modifier: Modifier = Modifier
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
+            val uiModel = (state as? MessageDetailState.Data)?.messageUiModel
             DetailScreenTopBar(
-                title = messageUiModel.subject,
+                title = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
+                isStarred = uiModel?.isStarred,
                 messageCount = null,
-                isStarred = messageUiModel.isStarred,
                 actions = DetailScreenTopBar.Actions(
                     onBackClick = actions.onBackClick,
                     onStarClick = actions.onStarClick,
@@ -90,26 +91,42 @@ fun MessageDetailScreen(
                 ),
                 scrollBehavior = scrollBehavior
             )
-        },
-        content = { innerPadding ->
-            LazyColumn(
-                modifier = Modifier.background(ProtonTheme.colors.backgroundSecondary),
-                contentPadding = innerPadding,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                val list = (0..75).map { it.toString() }
-                items(count = list.size) {
-                    Text(
-                        text = list[it],
-                        style = ProtonTheme.typography.default,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                    )
-                }
-            }
         }
-    )
+    ) { innerPadding ->
+        when (state) {
+            is MessageDetailState.Data -> MessageDetailContent(contentPadding = innerPadding)
+            MessageDetailState.Error.NotLoggedIn -> ProtonErrorMessage(
+                modifier = Modifier.padding(innerPadding),
+                errorMessage = stringResource(id = commonString.x_error_not_logged_in)
+            )
+            MessageDetailState.Loading -> ProtonCenteredProgress(
+                modifier = Modifier.padding(innerPadding)
+            )
+        }.exhaustive
+    }
+}
+
+@Composable
+private fun MessageDetailContent(
+    contentPadding: PaddingValues,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        val list = (0..75).map { it.toString() }
+        items(count = list.size) {
+            Text(
+                text = list[it],
+                style = ProtonTheme.typography.default,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+        }
+    }
 }
 
 object MessageDetailScreen {
@@ -120,5 +137,27 @@ object MessageDetailScreen {
         val onBackClick: () -> Unit,
         val onStarClick: () -> Unit,
         val onUnStarClick: () -> Unit
-    )
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onBackClick = {},
+                onStarClick = {},
+                onUnStarClick = {}
+            )
+        }
+    }
+}
+
+@Composable
+@AdaptivePreviews
+private fun MessageDetailScreenPreview(
+    @PreviewParameter(MessageDetailsPreviewProvider::class) state: MessageDetailState
+) {
+    ProtonTheme3 {
+        ProtonTheme {
+            MessageDetailScreen(state = state, actions = MessageDetailScreen.Actions.Empty)
+        }
+    }
 }

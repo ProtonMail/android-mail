@@ -51,7 +51,8 @@ class MessageDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val mutableDetailState = MutableStateFlow<MessageDetailState>(MessageDetailState.Loading)
+    val initialState = MessageDetailState.Loading
+    private val mutableDetailState = MutableStateFlow<MessageDetailState>(initialState)
     val state: StateFlow<MessageDetailState> = mutableDetailState.asStateFlow()
 
     init {

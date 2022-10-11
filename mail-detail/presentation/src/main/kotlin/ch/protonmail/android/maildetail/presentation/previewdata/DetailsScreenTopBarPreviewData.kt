@@ -22,6 +22,20 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 
 object DetailsScreenTopBarPreviewData {
 
+    val LoadingExpanded = DetailsScreenTopBarPreview(
+        title = " ",
+        isStarred = null,
+        messageCount = null,
+        isExpanded = true
+    )
+
+    val LoadingCollapsed = DetailsScreenTopBarPreview(
+        title = " ",
+        isStarred = null,
+        messageCount = null,
+        isExpanded = false
+    )
+
     val WeatherForecastExpanded = DetailsScreenTopBarPreview(
         title = ConversationDetailsUiModelPreviewData.WeatherForecast.subject,
         isStarred = ConversationDetailsUiModelPreviewData.WeatherForecast.isStarred,
@@ -75,6 +89,8 @@ data class DetailsScreenTopBarPreview(
 class DetailsScreenTopBarPreviewProvider : PreviewParameterProvider<DetailsScreenTopBarPreview> {
 
     override val values = sequenceOf(
+        DetailsScreenTopBarPreviewData.LoadingExpanded,
+        DetailsScreenTopBarPreviewData.LoadingCollapsed,
         DetailsScreenTopBarPreviewData.WeatherForecastExpanded,
         DetailsScreenTopBarPreviewData.WeatherForecastCollapsed,
         DetailsScreenTopBarPreviewData.FirstWeekOfAugWeatherForecastExpanded,
