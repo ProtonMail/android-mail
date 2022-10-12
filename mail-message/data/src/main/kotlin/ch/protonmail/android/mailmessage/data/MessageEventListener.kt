@@ -31,7 +31,7 @@ import me.proton.core.eventmanager.domain.entity.Action
 import me.proton.core.eventmanager.domain.entity.Event
 import me.proton.core.eventmanager.domain.entity.EventsResponse
 import me.proton.core.label.data.local.LabelDatabase
-import me.proton.core.util.kotlin.deserializeOrNull
+import me.proton.core.util.kotlin.deserialize
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -65,7 +65,7 @@ open class MessageEventListener @Inject constructor(
         config: EventManagerConfig,
         response: EventsResponse
     ): List<Event<String, MessageResource>>? {
-        return response.body.deserializeOrNull<MessagesEvents>()?.messages?.map {
+        return response.body.deserialize<MessagesEvents>().messages?.map {
             Event(requireNotNull(Action.map[it.action]), it.id, it.message)
         }
     }
