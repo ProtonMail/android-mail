@@ -28,35 +28,10 @@ import me.proton.core.label.domain.entity.LabelId
 interface MessageLocalDataSource {
 
     /**
-     * Observe all [Message] by [userId] for this [pageKey].
+     * Delete all messages for [userId].
      */
-    fun observeMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): Flow<List<Message>>
-
-    /**
-     * Get all [Message] by [userId] for this [pageKey].
-     */
-    suspend fun getMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): List<Message>
-
-    /**
-     * Update or insert [Message] related to the same [userId] and [pageKey].
-     */
-    suspend fun upsertMessages(
-        userId: UserId,
-        pageKey: PageKey,
-        items: List<Message>
-    )
-
-    /**
-     * Update or insert [Message].
-     */
-    suspend fun upsertMessages(
-        items: List<Message>
+    suspend fun deleteAllMessages(
+        userId: UserId
     )
 
     /**
@@ -66,30 +41,6 @@ interface MessageLocalDataSource {
         userId: UserId,
         ids: List<MessageId>
     )
-
-    /**
-     * Delete all messages for [userId].
-     */
-    suspend fun deleteAllMessages(
-        userId: UserId
-    )
-
-    /**
-     * Mark local data as stale for [userId], by [labelId].
-     */
-    suspend fun markAsStale(
-        userId: UserId,
-        labelId: LabelId
-    )
-
-    /**
-     * Return true if all [Message] are considered locally up-to-date according the given [pageKey].
-     */
-    suspend fun isLocalPageValid(
-        userId: UserId,
-        pageKey: PageKey,
-        items: List<Message>
-    ): Boolean
 
     /**
      * Return clipped [PageKey] according already persisted intervals.
@@ -102,10 +53,59 @@ interface MessageLocalDataSource {
     ): PageKey
 
     /**
+     * Get all [Message] by [userId] for this [pageKey].
+     */
+    suspend fun getMessages(
+        userId: UserId,
+        pageKey: PageKey
+    ): List<Message>
+
+    /**
+     * Return true if all [Message] are considered locally up-to-date according the given [pageKey].
+     */
+    suspend fun isLocalPageValid(
+        userId: UserId,
+        pageKey: PageKey,
+        items: List<Message>
+    ): Boolean
+
+    /**
+     * Mark local data as stale for [userId], by [labelId].
+     */
+    suspend fun markAsStale(
+        userId: UserId,
+        labelId: LabelId
+    )
+
+    /**
      * Observe [Message] by [UserId] and [MessageId]
      */
     fun observeMessage(
         userId: UserId,
         messageId: MessageId
     ): Flow<Message?>
+
+    /**
+     * Observe all [Message] by [userId] for this [pageKey].
+     */
+    fun observeMessages(
+        userId: UserId,
+        pageKey: PageKey
+    ): Flow<List<Message>>
+
+    /**
+     * Update or insert [Message].
+     */
+    suspend fun upsertMessages(
+        items: List<Message>
+    )
+
+    /**
+     * Update or insert [Message] related to the same [userId] and [pageKey].
+     */
+    suspend fun upsertMessages(
+        userId: UserId,
+        pageKey: PageKey,
+        items: List<Message>
+    )
 }
