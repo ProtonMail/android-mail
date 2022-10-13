@@ -19,11 +19,11 @@
 package ch.protonmail.android.mailmessage.dagger
 
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSourceImpl
+import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
-import ch.protonmail.android.mailmessage.domain.repository.MessageLocalDataSource
-import ch.protonmail.android.mailmessage.domain.repository.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import dagger.Module
 import dagger.Provides
