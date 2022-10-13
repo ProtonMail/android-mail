@@ -41,6 +41,44 @@ class MessageLocalDataSourceImpl @Inject constructor(
     private val messageLabelDao = db.messageLabelDao()
     private val pageIntervalDao = db.pageIntervalDao()
 
+    override suspend fun deleteAllMessages(
+        userId: UserId
+    ) = db.inTransaction {
+        messageDao.deleteAll(userId)
+        pageIntervalDao.deleteAll(userId, PageItemType.Message)
+    }
+
+    override suspend fun deleteMessage(
+        userId: UserId,
+        ids: List<MessageId>
+    ) = messageDao.delete(userId, ids.map { it.id })
+
+    override suspend fun getClippedPageKey(
+        userId: UserId,
+        pageKey: PageKey
+    ): PageKey = pageIntervalDao.getClippedPageKey(userId, PageItemType.Message, pageKey)
+
+    override suspend fun getMessages(
+        userId: UserId,
+        pageKey: PageKey
+    ): List<Message> = observeMessages(userId, pageKey).first()
+
+    override suspend fun isLocalPageValid(
+        userId: UserId,
+        pageKey: PageKey,
+        items: List<Message>
+    ): Boolean = pageIntervalDao.isLocalPageValid(userId, PageItemType.Message, pageKey, items)
+
+    override suspend fun markAsStale(
+        userId: UserId,
+        labelId: LabelId
+    ) = pageIntervalDao.deleteAll(userId, PageItemType.Message, labelId)
+
+    override fun observeMessage(
+        userId: UserId,
+        messageId: MessageId
+    ): Flow<Message?> = messageDao.observe(userId, messageId).mapLatest { it?.toMessage() }
+
     override fun observeMessages(
         userId: UserId,
         pageKey: PageKey
@@ -48,10 +86,12 @@ class MessageLocalDataSourceImpl @Inject constructor(
         .observeAll(userId, pageKey)
         .mapLatest { list -> list.map { it.toMessage() } }
 
-    override suspend fun getMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): List<Message> = observeMessages(userId, pageKey).first()
+    override suspend fun upsertMessages(
+        items: List<Message>
+    ) = db.inTransaction {
+        messageDao.insertOrUpdate(*items.map { it.toEntity() }.toTypedArray())
+        updateLabels(items)
+    }
 
     override suspend fun upsertMessages(
         userId: UserId,
@@ -62,58 +102,18 @@ class MessageLocalDataSourceImpl @Inject constructor(
         upsertPageInterval(userId, pageKey, items)
     }
 
-    override suspend fun upsertMessages(
-        items: List<Message>
-    ) = db.inTransaction {
-        messageDao.insertOrUpdate(*items.map { it.toEntity() }.toTypedArray())
-        updateLabels(items)
-    }
-
-    override suspend fun deleteMessage(
-        userId: UserId,
-        ids: List<MessageId>
-    ) = messageDao.delete(userId, ids.map { it.id })
-
-    override suspend fun deleteAllMessages(
-        userId: UserId
-    ) = db.inTransaction {
-        messageDao.deleteAll(userId)
-        pageIntervalDao.deleteAll(userId, PageItemType.Message)
-    }
-
-    override suspend fun markAsStale(
-        userId: UserId,
-        labelId: LabelId
-    ) = pageIntervalDao.deleteAll(userId, PageItemType.Message, labelId)
-
-    override suspend fun isLocalPageValid(
-        userId: UserId,
-        pageKey: PageKey,
-        items: List<Message>
-    ): Boolean = pageIntervalDao.isLocalPageValid(userId, PageItemType.Message, pageKey, items)
-
-    override suspend fun getClippedPageKey(
-        userId: UserId,
-        pageKey: PageKey
-    ): PageKey = pageIntervalDao.getClippedPageKey(userId, PageItemType.Message, pageKey)
-
-    override fun observeMessage(
-        userId: UserId,
-        messageId: MessageId
-    ): Flow<Message?> = messageDao.observe(userId, messageId).mapLatest { it?.toMessage() }
-
-    private suspend fun upsertPageInterval(
-        userId: UserId,
-        pageKey: PageKey,
-        messages: List<Message>
-    ) = pageIntervalDao.upsertPageInterval(userId, PageItemType.Message, pageKey, messages)
-
     private suspend fun updateLabels(
         messages: List<Message>
     ) = with(groupByUserId(messages)) {
         deleteLabels()
         insertLabels()
     }
+
+    private suspend fun upsertPageInterval(
+        userId: UserId,
+        pageKey: PageKey,
+        messages: List<Message>
+    ) = pageIntervalDao.upsertPageInterval(userId, PageItemType.Message, pageKey, messages)
 
     private fun groupByUserId(messages: List<Message>) = messages.fold(
         mutableMapOf<UserId, MutableList<Message>>()
