@@ -40,8 +40,8 @@ allprojects {
 }
 
 plugins {
-    id("me.proton.core.gradle-plugins.detekt")
-    id("me.proton.core.gradle-plugins.jacoco")
+    id("me.proton.core.gradle-plugins.detekt") version Versions.Proton.corePlugin
+    id("me.proton.core.gradle-plugins.jacoco") version Versions.Proton.corePlugin
     id("com.github.ben-manes.versions") version Versions.Gradle.benManesVersionsPlugin
 }
 
@@ -56,7 +56,7 @@ subprojects {
 
 protonCoverageMultiModuleOptions {
     sharedExcludes = listOf("**/me/proton/core/**")
-    coverageConversionScript = { "$rootDir/proton-libs/plugins/jacoco/scripts/cover2cover.py" }
+    coverageConversionScript = { "$rootDir/../proton-libs/plugins/jacoco/scripts/cover2cover.py" }
 }
 
 protonDetekt {

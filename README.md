@@ -10,8 +10,7 @@ Copyright (c) 2021 Proton Technologies AG
     - Install java11 with `brew install java11` | `apt install openjdk-11-jdk`
     - Check installed versions with `/usr/libexec/java_home -V`
     - Set java 11 as the current version with `export JAVA_HOME=`/usr/libexec/java_home -v 11.x.x`
-- Clone this repository with submodules (Use `git clone --recurse-submodules [url]`.).
-    - If the project was already cloned use `git submodule init` and then `git pull --recurse-submodules`
+- Clone this repository (Use `git clone [url]`.).
 - Build with any of the following: Execute `./gradlew assembleDebug`, open and build in Android Studio or use fastlane as defined below to build
 
 ## CI / CD

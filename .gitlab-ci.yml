@@ -13,7 +13,6 @@ variables:
   # Use low compression for caches
   CACHE_COMPRESSION_LEVEL: "fast"
 
-
 # Makes sure we do not create separate merge request and branch pipelines.
 # See https://docs.gitlab.com/ee/ci/yaml/workflow.html#switch-between-branch-pipelines-and-merge-request-pipelines
 workflow:
@@ -40,12 +39,8 @@ setup:
   extends: .base_job
   tags:
     - small
-  variables:
-    CHECKOUT_CORE_SUBMODULE: "true"
-    ORG_GRADLE_PROJECT_useCoreGitSubmodule: "true"
   before_script:
     - !reference [ .ruby, before_script ]
-    - !reference [ .checkout-core-submodule, before_script ]
   script:
     - mkdir app/src/uiTest/assets -p
     - mkdir keystore -p
@@ -226,10 +221,6 @@ include:
   - project: 'translations/generator'
     ref: master
     file: '/jobs/commit-locales.gitlab-ci.yml'
-
-  - project: 'proton/mobile/android/proton-libs'
-    ref: main
-    file: '/ci/templates/checkout-core.gitlab-ci.yml'
 
   - project: 'proton/mobile/android/proton-libs'
     ref: main

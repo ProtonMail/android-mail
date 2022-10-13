@@ -18,17 +18,14 @@
 
 rootProject.name = "ProtonMail"
 
-// Use core libs from maven artifacts or from git submodule using Gradle's included build:
-// - to enable/disable locally: gradle.properties > useCoreGitSubmodule
-// - to enable/disable on CI: .gitlab-ci.yml > ORG_GRADLE_PROJECT_useCoreGitSubmodule
-val coreSubmoduleDir = rootDir.resolve("proton-libs")
-extra.set("coreSubmoduleDir", coreSubmoduleDir)
-val includeCoreLibsHelper = File(coreSubmoduleDir, "gradle/include-core-libs.gradle.kts")
-if (includeCoreLibsHelper.exists()) {
-    apply(from = "${coreSubmoduleDir.path}/gradle/include-core-libs.gradle.kts")
-} else if (extensions.extraProperties["useCoreGitSubmodule"].toString().toBoolean()) {
-    includeBuild("proton-libs")
-    println("Core libs from git submodule `$coreSubmoduleDir`")
+plugins {
+    id("me.proton.core.gradle-plugins.include-core-build") version "1.0.0"
+}
+
+includeCoreBuild {
+    uri.set("https://github.com/ProtonMail/protoncore_android.git")
+    branch.set("main")
+    includeBuild("gopenpgp")
 }
 
 include(":app")

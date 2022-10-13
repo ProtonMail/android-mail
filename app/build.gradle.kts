@@ -164,7 +164,7 @@ android {
 }
 
 dependencies {
-    implementation(files("../proton-libs/gopenpgp/gopenpgp.aar"))
+    implementation(files("../../proton-libs/gopenpgp/gopenpgp.aar"))
     implementation(Dependencies.appLibs)
     debugImplementation(Dependencies.appDebug)
 
