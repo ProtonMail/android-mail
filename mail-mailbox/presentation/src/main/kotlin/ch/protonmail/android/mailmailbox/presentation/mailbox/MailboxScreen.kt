@@ -84,12 +84,12 @@ fun MailboxScreen(
 
     val actions = MailboxScreen.Actions(
         navigateToMailboxItem = navigateToMailboxItem,
-        onDisableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.DisableUnreadFilter) },
-        onEnableUnreadFilter = { viewModel.submit(MailboxViewModel.Action.EnableUnreadFilter) },
-        onExitSelectionMode = { viewModel.submit(MailboxViewModel.Action.ExitSelectionMode) },
-        onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewModel.Action.OpenItemDetails(item)) },
-        onOpenSelectionMode = { viewModel.submit(MailboxViewModel.Action.EnterSelectionMode) },
-        onRefreshList = { viewModel.submit(MailboxViewModel.Action.Refresh) },
+        onDisableUnreadFilter = { viewModel.submit(ViewAction.DisableUnreadFilter) },
+        onEnableUnreadFilter = { viewModel.submit(ViewAction.EnableUnreadFilter) },
+        onExitSelectionMode = { viewModel.submit(ViewAction.ExitSelectionMode) },
+        onNavigateToMailboxItem = { item -> viewModel.submit(ViewAction.OpenItemDetails(item)) },
+        onOpenSelectionMode = { viewModel.submit(ViewAction.EnterSelectionMode) },
+        onRefreshList = { viewModel.submit(ViewAction.Refresh) },
         openDrawerMenu = openDrawerMenu
     )
 

@@ -19,26 +19,14 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import me.proton.core.util.kotlin.EMPTY_STRING
 
 sealed interface MailboxTopAppBarState {
-
-    fun with(currentLabelName: TextUiModel) = when (this) {
-        Loading -> Data.DefaultMode(currentLabelName = currentLabelName)
-        is Data.DefaultMode -> copy(currentLabelName = currentLabelName)
-        is Data.SearchMode -> copy(currentLabelName = currentLabelName)
-        is Data.SelectionMode -> copy(currentLabelName = currentLabelName)
-    }
 
     object Loading : MailboxTopAppBarState
 
     sealed interface Data : MailboxTopAppBarState {
 
         val currentLabelName: TextUiModel
-
-        fun toDefaultMode() = DefaultMode(currentLabelName)
-        fun toSelectionMode() = SelectionMode(currentLabelName, selectedCount = 0)
-        fun toSearchMode() = SearchMode(currentLabelName, searchQuery = EMPTY_STRING)
 
         data class DefaultMode(
             override val currentLabelName: TextUiModel

@@ -26,6 +26,8 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Archive
+import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Sent
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
@@ -39,14 +41,16 @@ import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.Event
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxPagerFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel.Action
+import ch.protonmail.android.mailmailbox.presentation.mailbox.ViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxTopAppBarReducer
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
@@ -118,6 +122,10 @@ class MailboxViewModelTest {
 
     private val mailboxItemMapper = mockk<MailboxItemUiModelMapper>()
 
+    private val mailboxTopAppBarReducer = mockk<MailboxTopAppBarReducer> {
+        every { newStateFrom(any(), any()) } returns MailboxTopAppBarState.Loading
+    }
+
     private val mailboxViewModel by lazy {
         MailboxViewModel(
             markAsStaleMailboxItems = markAsStaleMailboxItems,
@@ -128,7 +136,8 @@ class MailboxViewModelTest {
             selectedMailLabelId = selectedMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
             mailboxItemMapper = mailboxItemMapper,
-            getContacts = getContacts
+            getContacts = getContacts,
+            mailboxTopAppBarReducer = mailboxTopAppBarReducer
         )
     }
 
@@ -162,12 +171,22 @@ class MailboxViewModelTest {
 
     @Test
     fun `emits default top app bar state as soon as the label name is available`() = runTest {
+        // Given
+        val expectedMailLabel = MailLabel.System(Archive)
+        val expectedCount = UnreadCountersTestData.labelToCounterMap[SystemLabelId.Archive.labelId]!!
+        val expectedState = MailboxTopAppBarState.Data.DefaultMode(expectedMailLabel.text())
+        every {
+            mailboxTopAppBarReducer.newStateFrom(
+                any(),
+                Event.LabelSelected(expectedMailLabel, expectedCount)
+            )
+        } returns expectedState
+
         mailboxViewModel.state.test {
 
             // Then
-            val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(MailLabelId.System.Archive).text())
             val actual = awaitItem()
-            assertEquals(expected, actual.topAppBarState)
+            assertEquals(expectedState, actual.topAppBarState)
         }
     }
 
@@ -177,47 +196,51 @@ class MailboxViewModelTest {
 
             // Then
             val mailboxListState = assertIs<MailboxListState.Data>(awaitItem().mailboxListState)
-            assertEquals(MailLabel.System(MailLabelId.System.Archive), mailboxListState.currentMailLabel)
+            assertEquals(MailLabel.System(Archive), mailboxListState.currentMailLabel)
         }
     }
 
     @Test
     fun `when selection mode is not open and enter selection mode is submitted, selection mode is opened`() = runTest {
+        // Given
+        val expectedState = MailboxTopAppBarState.Data.SelectionMode(
+            MailLabel.System(Archive).text(),
+            selectedCount = 0
+        )
+        every { mailboxTopAppBarReducer.newStateFrom(any(), ViewAction.EnterSelectionMode) } returns expectedState
+
         mailboxViewModel.state.test {
 
             // Given
             awaitItem() // First emission for selected user
 
             // When
-            mailboxViewModel.submit(Action.EnterSelectionMode)
+            mailboxViewModel.submit(ViewAction.EnterSelectionMode)
 
             // Then
-            val expected = MailboxTopAppBarState.Data.SelectionMode(
-                currentLabelName = MailLabel.System(MailLabelId.System.Archive).text(),
-                selectedCount = 0
-            )
             val actual = awaitItem()
-            assertEquals(expected, actual.topAppBarState)
+            assertEquals(expectedState, actual.topAppBarState)
         }
     }
 
     @Test
     fun `when selection mode is open and exit selection mode is submitted, selection mode is closed`() = runTest {
         // Given
+        val expectedState = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive).text())
+        every { mailboxTopAppBarReducer.newStateFrom(any(), ViewAction.ExitSelectionMode) } returns expectedState
+
         mailboxViewModel.state.test {
 
-            awaitItem() // First emission for selected user
-
-            mailboxViewModel.submit(Action.EnterSelectionMode)
+            // When
+            mailboxViewModel.submit(ViewAction.EnterSelectionMode)
             awaitItem() // Selection Mode has been opened
 
-            // When
-            mailboxViewModel.submit(Action.ExitSelectionMode)
+            mailboxViewModel.submit(ViewAction.ExitSelectionMode)
 
             // Then
-            val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(MailLabelId.System.Archive).text())
+            val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive).text())
             val actual = awaitItem()
-            assertEquals(expected, actual.topAppBarState)
+            assertEquals(expectedState, actual.topAppBarState)
         }
     }
 
@@ -228,14 +251,14 @@ class MailboxViewModelTest {
 
             // Then
             val mailboxListState = assertIs<MailboxListState.Data>(awaitItem().mailboxListState)
-            assertEquals(MailLabelId.System.Archive.toMailLabel(), mailboxListState.currentMailLabel)
+            assertEquals(Archive.toMailLabel(), mailboxListState.currentMailLabel)
         }
     }
 
     @Test
     fun `emits mailbox state with unread filter state based on current location`() = runTest {
         // Given
-        val currentLocation = MutableStateFlow<MailLabelId>(MailLabelId.System.Sent)
+        val currentLocation = MutableStateFlow<MailLabelId>(Sent)
         every { selectedMailLabelId.flow } returns currentLocation
 
         mailboxViewModel.state.test {
@@ -243,7 +266,7 @@ class MailboxViewModelTest {
             val firstItem = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
             assertEquals(3, firstItem.numUnread)
             // When
-            currentLocation.emit(MailLabelId.System.Archive)
+            currentLocation.emit(Archive)
             // Then
             val secondItem = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
             assertEquals(5, secondItem.numUnread)
@@ -272,12 +295,28 @@ class MailboxViewModelTest {
     fun `top bar state is updated when current location changes`() = runTest {
         // Given
         val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
+        val inboxLabel = MailLabel.System(MailLabelId.System.Inbox)
+        val inboxCount = UnreadCountersTestData.labelToCounterMap[SystemLabelId.Inbox.labelId]!!
+        val starredCount = UnreadCountersTestData.labelToCounterMap[SystemLabelId.Starred.labelId]!!
+        val starredLabel = MailLabel.System(MailLabelId.System.Starred)
+        every {
+            mailboxTopAppBarReducer.newStateFrom(
+                any(),
+                Event.LabelSelected(inboxLabel, inboxCount)
+            )
+        } returns MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
+        every {
+            mailboxTopAppBarReducer.newStateFrom(
+                any(),
+                Event.LabelSelected(starredLabel, starredCount)
+            )
+        } returns MailboxTopAppBarState.Data.DefaultMode(starredLabel.text())
         every { selectedMailLabelId.flow } returns currentLocationFlow
 
         mailboxViewModel.state.test {
             // Then
             val firstUnreadFilterState = assertIs<MailboxTopAppBarState.Data>(awaitItem().topAppBarState)
-            assertEquals(MailLabel.System(MailLabelId.System.Inbox).text(), firstUnreadFilterState.currentLabelName)
+            assertEquals(inboxLabel.text(), firstUnreadFilterState.currentLabelName)
 
             // When
             currentLocationFlow.emit(MailLabelId.System.Starred)
@@ -385,10 +424,10 @@ class MailboxViewModelTest {
     fun `on refresh call mark as stale mailbox items`() = runTest {
 
         // When
-        mailboxViewModel.submit(Action.Refresh)
+        mailboxViewModel.submit(ViewAction.Refresh)
 
         // Then
-        coVerify { markAsStaleMailboxItems.invoke(listOf(userId), Message, MailLabelId.System.Archive.labelId) }
+        coVerify { markAsStaleMailboxItems.invoke(listOf(userId), Message, Archive.labelId) }
     }
 
     @Test
@@ -400,7 +439,7 @@ class MailboxViewModelTest {
             every { observeCurrentViewMode(userId) } returns flowOf(NoConversationGrouping)
 
             // When
-            mailboxViewModel.submit(Action.OpenItemDetails(item))
+            mailboxViewModel.submit(ViewAction.OpenItemDetails(item))
             mailboxViewModel.state.test {
 
                 // Then
@@ -419,7 +458,7 @@ class MailboxViewModelTest {
             every { observeCurrentViewMode(userId) } returns flowOf(ConversationGrouping)
 
             // When
-            mailboxViewModel.submit(Action.OpenItemDetails(item))
+            mailboxViewModel.submit(ViewAction.OpenItemDetails(item))
             mailboxViewModel.state.test {
 
                 // Then
@@ -438,7 +477,7 @@ class MailboxViewModelTest {
             every { observeCurrentViewMode(userId = any()) } returns flowOf(ConversationGrouping)
 
             // When
-            mailboxViewModel.submit(Action.OpenItemDetails(item))
+            mailboxViewModel.submit(ViewAction.OpenItemDetails(item))
             mailboxViewModel.state.test {
 
                 // Then
@@ -451,7 +490,7 @@ class MailboxViewModelTest {
     @Test
     fun `enable unread filter action emits a new state with unread filter state enabled`() = runTest {
         // When
-        mailboxViewModel.submit(Action.EnableUnreadFilter)
+        mailboxViewModel.submit(ViewAction.EnableUnreadFilter)
         mailboxViewModel.state.test {
 
             // Then
@@ -465,7 +504,7 @@ class MailboxViewModelTest {
     fun `disable unread filter action emits a new state with unread filter state disabled`() = runTest {
         mailboxViewModel.state.test {
             // When
-            mailboxViewModel.submit(Action.DisableUnreadFilter)
+            mailboxViewModel.submit(ViewAction.DisableUnreadFilter)
 
             // Then
             val expected = UnreadFilterState.Data(5, false)

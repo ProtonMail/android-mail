@@ -23,15 +23,16 @@ import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 
 object UnreadCountersTestData {
 
-    val systemUnreadCounters = listOf(
-        UnreadCounter(SystemLabelId.Inbox.labelId, 1),
-        UnreadCounter(SystemLabelId.Drafts.labelId, 2),
-        UnreadCounter(SystemLabelId.Sent.labelId, 3),
-        UnreadCounter(SystemLabelId.Starred.labelId, 4),
-        UnreadCounter(SystemLabelId.Archive.labelId, 5),
-        UnreadCounter(SystemLabelId.Spam.labelId, 6),
-        UnreadCounter(SystemLabelId.Trash.labelId, 7),
-        UnreadCounter(SystemLabelId.AllMail.labelId, 8)
+    val labelToCounterMap = hashMapOf(
+        SystemLabelId.Inbox.labelId to 1,
+        SystemLabelId.Drafts.labelId to 2,
+        SystemLabelId.Sent.labelId to 3,
+        SystemLabelId.Starred.labelId to 4,
+        SystemLabelId.Archive.labelId to 5,
+        SystemLabelId.Spam.labelId to 6,
+        SystemLabelId.Trash.labelId to 7,
+        SystemLabelId.AllMail.labelId to 8
     )
 
+    val systemUnreadCounters = labelToCounterMap.map { UnreadCounter(it.key, it.value) }
 }
