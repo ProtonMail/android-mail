@@ -29,9 +29,11 @@ stages:
   - danger-review
   - localise
   - build
+  - startReview
   - test
   - report
   - deploy
+  - stopReview
 
 setup:
   stage: setup
@@ -95,12 +97,17 @@ localise-commit-locales:
     I18N_COMMIT_BRANCH_ALLOWED: 'master'
   extends: .i18n-commit-locales-shared
 
-build_debug:
+build_dev_debug:
   extends: .build_job
   script:
     - echo PROXY_TOKEN="$(curl -o - https://proxy.proton.black/token/get)" >> private.properties
-    - bundle exec fastlane assembleDebug
+    - bundle exec fastlane assembleDevDebug
     - bundle exec fastlane assembleTest
+
+build_prod_debug:
+  extends: .build_job
+  script:
+    - bundle exec fastlane assembleProdDebug
 
 build_release:
   extends: .build_job
@@ -113,13 +120,35 @@ build_release:
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
 
+startReview:
+  stage: startReview
+  before_script:
+    - export REVIEW_APP_ARTIFACT_PATH="app/build/outputs/apk/prod/debug/app-prod-debug.apk"
+    - echo ${REVIEW_APP_ARTIFACT_PATH}
+  extends: .startReview
+  dependencies:
+    - build_prod_debug
+  only:
+    - merge_requests
+
+stopReview:
+  stage: stopReview
+  extends: .stopReview
+  rules:
+    # The cleanup is always manual on a Merge Request
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: manual
+      allow_failure: true
+    # But it's not needed when not on a Merge Request
+    - when: never
+
 run_unit_test:
   stage: test
   extends: .base_job
   tags:
     - xlarge-k8s
   dependencies:
-    - build_debug
+    - build_dev_debug
   script:
     - bundle exec fastlane unitTest
 
@@ -201,6 +230,10 @@ include:
   - project: 'proton/mobile/android/proton-libs'
     ref: main
     file: '/ci/templates/checkout-core.gitlab-ci.yml'
+
+  - project: 'proton/mobile/android/proton-libs'
+    ref: main
+    file: '/ci/templates-shared/appetize-integration.yml'
 
   - local: '/ci/templates/ruby.gitlab-ci.yml'
   - local: '/ci/templates/base-jobs.gitlab-ci.yml'

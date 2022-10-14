@@ -20,7 +20,7 @@ cache: &cache
 .firebase_test_job:
   stage: test
   dependencies:
-    - build_debug
+    - build_dev_debug
   tags:
     - small
   before_script:
