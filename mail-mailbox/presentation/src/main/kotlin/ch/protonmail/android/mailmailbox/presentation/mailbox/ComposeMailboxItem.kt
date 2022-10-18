@@ -30,7 +30,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -52,9 +51,9 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels
 import ch.protonmail.android.mailmailbox.presentation.R
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
+import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionWeak
@@ -219,59 +218,6 @@ private fun MailboxItemLayout(
                 end.linkTo(parent.end)
             }
         ) { labels() }
-    }
-}
-
-@Composable
-private fun Avatar(
-    modifier: Modifier = Modifier,
-    avatarUiModel: AvatarUiModel
-) {
-    Box(
-        modifier = modifier.size(MailDimens.DefaultTouchTargetSize),
-        contentAlignment = Alignment.Center
-    ) {
-        when (avatarUiModel) {
-            is AvatarUiModel.DraftIcon ->
-                Box(
-                    modifier = modifier
-                        .sizeIn(
-                            minWidth = MailDimens.AvatarMinSize,
-                            minHeight = MailDimens.AvatarMinSize
-                        )
-                        .border(
-                            width = MailDimens.DefaultBorder,
-                            color = ProtonTheme.colors.interactionWeakNorm,
-                            shape = ProtonTheme.shapes.medium
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        modifier = Modifier.size(ProtonDimens.SmallIconSize),
-                        painter = painterResource(id = R.drawable.ic_proton_pencil),
-                        contentDescription = NO_CONTENT_DESCRIPTION
-                    )
-                }
-            is AvatarUiModel.ParticipantInitial ->
-                Box(
-                    modifier = modifier
-                        .sizeIn(
-                            minWidth = MailDimens.AvatarMinSize,
-                            minHeight = MailDimens.AvatarMinSize
-                        )
-                        .background(
-                            color = ProtonTheme.colors.interactionWeakNorm,
-                            shape = ProtonTheme.shapes.medium
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
-                        textAlign = TextAlign.Center,
-                        text = avatarUiModel.value
-                    )
-                }
-        }
     }
 }
 

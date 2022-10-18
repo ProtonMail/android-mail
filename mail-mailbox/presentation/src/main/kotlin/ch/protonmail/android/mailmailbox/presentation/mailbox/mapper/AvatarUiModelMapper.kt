@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import javax.inject.Inject
 
 class AvatarUiModelMapper @Inject constructor() {
