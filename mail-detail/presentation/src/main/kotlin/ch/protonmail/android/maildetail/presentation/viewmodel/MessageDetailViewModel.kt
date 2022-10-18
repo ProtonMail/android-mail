@@ -26,7 +26,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailAction
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
-import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
+import ch.protonmail.android.maildetail.presentation.reducer.MessageStateReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
@@ -45,7 +45,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MessageDetailViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
-    private val messageDetailReducer: MessageDetailReducer,
+    private val messageStateReducer: MessageStateReducer,
     private val observeMessage: ObserveMessage,
     private val uiModelMapper: MessageDetailUiModelMapper,
     savedStateHandle: SavedStateHandle
@@ -89,7 +89,9 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private suspend fun emitNewStateFrom(event: MessageDetailEvent) {
-        mutableDetailState.emit(messageDetailReducer.reduce(state.value, event))
+        val updatedMessageState = messageStateReducer.reduce(state.value.messageState, event)
+        val updatedDetailState = state.value.copy(messageState = updatedMessageState)
+        mutableDetailState.emit(updatedDetailState)
     }
 
     @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")

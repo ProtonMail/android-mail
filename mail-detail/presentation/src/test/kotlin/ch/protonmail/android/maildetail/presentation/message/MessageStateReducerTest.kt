@@ -19,8 +19,8 @@
 package ch.protonmail.android.maildetail.presentation.message
 
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
-import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
+import ch.protonmail.android.maildetail.presentation.model.MessageState
+import ch.protonmail.android.maildetail.presentation.reducer.MessageStateReducer
 import ch.protonmail.android.testdata.message.MessageUiModelTestData
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -28,11 +28,11 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
-class MessageDetailReducerTest(
+class MessageStateReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val detailReducer = MessageDetailReducer()
+    private val detailReducer = MessageStateReducer()
 
     @Test
     fun `should produce the expected new state`() {
@@ -50,14 +50,14 @@ class MessageDetailReducerTest(
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
-                currentState = MessageDetailState.Loading,
+                currentState = MessageState.Loading,
                 event = MessageDetailEvent.NoPrimaryUser,
-                expectedState = MessageDetailState.Error.NotLoggedIn
+                expectedState = MessageState.Error.NotLoggedIn
             ).toArray(),
             TestInput(
-                currentState = MessageDetailState.Loading,
+                currentState = MessageState.Loading,
                 event = MessageDetailEvent.MessageMetadata(messageUiModel),
-                expectedState = MessageDetailState.Data(messageUiModel)
+                expectedState = MessageState.Data(messageUiModel)
             ).toArray()
         )
 
@@ -67,9 +67,9 @@ class MessageDetailReducerTest(
     }
 
     class TestInput(
-        val currentState: MessageDetailState,
+        val currentState: MessageState,
         val event: MessageDetailEvent,
-        val expectedState: MessageDetailState
+        val expectedState: MessageState
     ) {
 
         fun toArray() = arrayOf(this)

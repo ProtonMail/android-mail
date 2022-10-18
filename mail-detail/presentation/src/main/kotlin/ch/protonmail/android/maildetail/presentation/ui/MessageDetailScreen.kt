@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailAction
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageState
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -79,7 +80,7 @@ fun MessageDetailScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            val uiModel = (state as? MessageDetailState.Data)?.messageUiModel
+            val uiModel = (state.messageState as? MessageState.Data)?.messageUiModel
             DetailScreenTopBar(
                 title = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
                 isStarred = uiModel?.isStarred,
@@ -93,13 +94,13 @@ fun MessageDetailScreen(
             )
         }
     ) { innerPadding ->
-        when (state) {
-            is MessageDetailState.Data -> MessageDetailContent(contentPadding = innerPadding)
-            MessageDetailState.Error.NotLoggedIn -> ProtonErrorMessage(
+        when (state.messageState) {
+            is MessageState.Data -> MessageDetailContent(contentPadding = innerPadding)
+            MessageState.Error.NotLoggedIn -> ProtonErrorMessage(
                 modifier = Modifier.padding(innerPadding),
                 errorMessage = stringResource(id = commonString.x_error_not_logged_in)
             )
-            MessageDetailState.Loading -> ProtonCenteredProgress(
+            MessageState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
             )
         }.exhaustive
@@ -156,8 +157,6 @@ private fun MessageDetailScreenPreview(
     @PreviewParameter(MessageDetailsPreviewProvider::class) state: MessageDetailState
 ) {
     ProtonTheme3 {
-        ProtonTheme {
-            MessageDetailScreen(state = state, actions = MessageDetailScreen.Actions.Empty)
-        }
+        MessageDetailScreen(state = state, actions = MessageDetailScreen.Actions.Empty)
     }
 }

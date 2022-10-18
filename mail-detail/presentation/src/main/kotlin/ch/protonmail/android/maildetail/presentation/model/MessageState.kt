@@ -18,14 +18,15 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-data class MessageDetailState(
-    val messageState: MessageState
-) {
+sealed interface MessageState {
 
-    companion object {
+    data class Data(
+        val messageUiModel: MessageUiModel
+    ) : MessageState
 
-        val Loading = MessageDetailState(
-            messageState = MessageState.Loading
-        )
+    object Loading : MessageState
+
+    sealed interface Error : MessageState {
+        object NotLoggedIn : Error
     }
 }

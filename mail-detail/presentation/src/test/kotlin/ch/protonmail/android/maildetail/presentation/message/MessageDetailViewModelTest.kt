@@ -27,8 +27,9 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageState
 import ch.protonmail.android.maildetail.presentation.model.MessageUiModel
-import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
+import ch.protonmail.android.maildetail.presentation.reducer.MessageStateReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -52,7 +53,7 @@ class MessageDetailViewModelTest {
 
     private val rawMessageId = "detailMessageId"
     private val messageUiModelMapper = MessageDetailUiModelMapper()
-    private val reducer = MessageDetailReducer()
+    private val reducer = MessageStateReducer()
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
@@ -68,7 +69,7 @@ class MessageDetailViewModelTest {
     private val viewModel by lazy {
         MessageDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
-            messageDetailReducer = reducer,
+            messageStateReducer = reducer,
             observeMessage = observeMessage,
             uiModelMapper = messageUiModelMapper,
             savedStateHandle = savedStateHandle
@@ -98,7 +99,7 @@ class MessageDetailViewModelTest {
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            assertEquals(MessageDetailState.Error.NotLoggedIn, awaitItem())
+            assertEquals(MessageState.Error.NotLoggedIn, awaitItem().messageState)
         }
     }
 
@@ -131,13 +132,13 @@ class MessageDetailViewModelTest {
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            val expected = MessageDetailState.Data(MessageUiModel(messageId, subject, isStarred))
-            assertEquals(expected, awaitItem())
+            val expected = MessageState.Data(MessageUiModel(messageId, subject, isStarred))
+            assertEquals(expected, awaitItem().messageState)
         }
     }
 
     private suspend fun FlowTurbine<MessageDetailState>.initialStateEmitted() {
-        awaitItem() as MessageDetailState.Loading
+        assertEquals(MessageDetailState.Loading, awaitItem())
     }
 
     private fun givenNoLoggedInUser() {

@@ -20,16 +20,23 @@ package ch.protonmail.android.maildetail.presentation.previewdata
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageState
 
 object MessageDetailsPreviewData {
 
-    val Message = MessageDetailState.Data(
-        messageUiModel = MessageDetailsUiModelPreviewData.FirstWeekOfAugWeatherForecast
+    val Message = MessageDetailState(
+        messageState = MessageState.Data(
+            messageUiModel = MessageDetailsUiModelPreviewData.FirstWeekOfAugWeatherForecast
+        )
     )
 
-    val Loading = MessageDetailState.Loading
+    val Loading = MessageDetailState(
+        messageState = MessageState.Loading
+    )
 
-    val NotLoggedIn = MessageDetailState.Error.NotLoggedIn
+    val NotLoggedIn = MessageDetailState(
+        messageState = MessageState.Error.NotLoggedIn
+    )
 }
 
 class MessageDetailsPreviewProvider : PreviewParameterProvider<MessageDetailState> {
