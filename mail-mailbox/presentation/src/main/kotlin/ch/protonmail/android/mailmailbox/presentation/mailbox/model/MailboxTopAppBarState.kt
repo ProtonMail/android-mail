@@ -19,19 +19,9 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.maillabel.domain.model.MailLabel
-import ch.protonmail.android.maillabel.presentation.text
 import me.proton.core.util.kotlin.EMPTY_STRING
 
 sealed interface MailboxTopAppBarState {
-
-    @Deprecated("Use with currentLabelName instead")
-    fun with(currentMailLabel: MailLabel) = when (this) {
-        Loading -> Data.DefaultMode(currentLabelName = currentMailLabel.text())
-        is Data.DefaultMode -> copy(currentLabelName = currentLabelName)
-        is Data.SearchMode -> copy(currentLabelName = currentLabelName)
-        is Data.SelectionMode -> copy(currentLabelName = currentLabelName)
-    }
 
     fun with(currentLabelName: TextUiModel) = when (this) {
         Loading -> Data.DefaultMode(currentLabelName = currentLabelName)
