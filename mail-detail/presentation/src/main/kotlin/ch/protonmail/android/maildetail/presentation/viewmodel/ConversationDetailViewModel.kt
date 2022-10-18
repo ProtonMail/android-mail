@@ -52,7 +52,7 @@ class ConversationDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     val initialState = ConversationDetailState.Loading
-    private val mutableDetailState = MutableStateFlow<ConversationDetailState>(initialState)
+    private val mutableDetailState = MutableStateFlow(initialState)
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
 
     init {
@@ -91,7 +91,9 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private suspend fun emitNewStateFrom(event: ConversationDetailEvent) {
-        mutableDetailState.emit(conversationDetailReducer.reduce(state.value, event))
+        val updatedConversationState = conversationDetailReducer.reduce(state.value, event)
+        val updatedDetailState = state.value.copy(conversationState = updatedConversationState)
+        mutableDetailState.emit(updatedDetailState)
     }
 
 

@@ -18,14 +18,16 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-data class ConversationDetailState(
-    val conversationState: ConversationState
-) {
+sealed interface ConversationState {
 
-    companion object {
+    data class Data(
+        val conversationUiModel: ConversationDetailUiModel
+    ) : ConversationState
 
-        val Loading = ConversationDetailState(
-            conversationState = ConversationState.Loading
-        )
+    object Loading : ConversationState
+
+    sealed interface Error : ConversationState {
+        object NotLoggedIn : Error
+        object FailedLoadingData : Error
     }
 }

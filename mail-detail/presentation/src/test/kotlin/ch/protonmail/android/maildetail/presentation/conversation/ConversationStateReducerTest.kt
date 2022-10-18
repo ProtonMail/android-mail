@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.conversation
 
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import org.junit.Test
@@ -55,7 +56,7 @@ class ConversationDetailReducerTest(
                 TestParams.TestInput(
                     currentState = ConversationDetailState.Loading,
                     event = ConversationDetailEvent.NoPrimaryUser,
-                    expectedState = ConversationDetailState.Error.NotLoggedIn
+                    expectedState = ConversationState.Error.NotLoggedIn
                 )
             ),
             TestParams(
@@ -63,7 +64,7 @@ class ConversationDetailReducerTest(
                 TestParams.TestInput(
                     currentState = ConversationDetailState.Loading,
                     event = ConversationDetailEvent.ConversationData(conversationUiModel),
-                    expectedState = ConversationDetailState.Data(conversationUiModel)
+                    expectedState = ConversationState.Data(conversationUiModel)
                 )
             ),
             TestParams(
@@ -71,7 +72,7 @@ class ConversationDetailReducerTest(
                 TestParams.TestInput(
                     currentState = ConversationDetailState.Loading,
                     event = ConversationDetailEvent.ErrorLoadingConversation,
-                    expectedState = ConversationDetailState.Error.FailedLoadingData
+                    expectedState = ConversationState.Error.FailedLoadingData
                 )
             )
         )
@@ -90,7 +91,7 @@ class ConversationDetailReducerTest(
         data class TestInput(
             val currentState: ConversationDetailState,
             val event: ConversationDetailEvent,
-            val expectedState: ConversationDetailState
+            val expectedState: ConversationState
         )
     }
 

@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
@@ -97,7 +98,7 @@ class ConversationDetailViewModelTest {
         viewModel.state.test {
             awaitInitialState()
             // Then
-            assertEquals(ConversationDetailState.Error.NotLoggedIn, awaitItem())
+            assertEquals(ConversationState.Error.NotLoggedIn, awaitItem().conversationState)
         }
     }
 
@@ -121,7 +122,10 @@ class ConversationDetailViewModelTest {
         viewModel.state.test {
             awaitInitialState()
             // Then
-            assertEquals(ConversationDetailState.Data(ConversationUiModelTestData.conversationUiModel), awaitItem())
+            assertEquals(
+                ConversationState.Data(ConversationUiModelTestData.conversationUiModel),
+                awaitItem().conversationState
+            )
         }
     }
 
@@ -135,12 +139,12 @@ class ConversationDetailViewModelTest {
         viewModel.state.test {
             awaitInitialState()
             // Then
-            assertEquals(ConversationDetailState.Error.FailedLoadingData, awaitItem())
+            assertEquals(ConversationState.Error.FailedLoadingData, awaitItem().conversationState)
         }
     }
 
     private suspend fun FlowTurbine<ConversationDetailState>.awaitInitialState() {
-        awaitItem() as ConversationDetailState.Loading
+        assertEquals(ConversationDetailState.Loading, awaitItem())
     }
 
     private fun givenNoLoggedInUser() {

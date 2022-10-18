@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationState
 import javax.inject.Inject
 
 class ConversationDetailReducer @Inject constructor() {
@@ -29,9 +30,9 @@ class ConversationDetailReducer @Inject constructor() {
         currentState: ConversationDetailState,
         event: ConversationDetailEvent
     ) = when (event) {
-        is ConversationDetailEvent.NoPrimaryUser -> ConversationDetailState.Error.NotLoggedIn
-        is ConversationDetailEvent.ConversationData -> ConversationDetailState.Data(event.conversationUiModel)
-        is ConversationDetailEvent.ErrorLoadingConversation -> ConversationDetailState.Error.FailedLoadingData
+        is ConversationDetailEvent.NoPrimaryUser -> ConversationState.Error.NotLoggedIn
+        is ConversationDetailEvent.ConversationData -> ConversationState.Data(event.conversationUiModel)
+        is ConversationDetailEvent.ErrorLoadingConversation -> ConversationState.Error.FailedLoadingData
     }
 
 }

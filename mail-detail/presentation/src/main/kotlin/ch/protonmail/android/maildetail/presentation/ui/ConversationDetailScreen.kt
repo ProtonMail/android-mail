@@ -38,6 +38,7 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -79,7 +80,7 @@ fun ConversationDetailScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            val uiModel = (state as? ConversationDetailState.Data)?.conversationUiModel
+            val uiModel = (state.conversationState as? ConversationState.Data)?.conversationUiModel
             DetailScreenTopBar(
                 title = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
                 isStarred = uiModel?.isStarred,
@@ -93,17 +94,17 @@ fun ConversationDetailScreen(
             )
         }
     ) { innerPadding ->
-        when (state) {
-            is ConversationDetailState.Data -> ConversationDetailContent(contentPadding = innerPadding)
-            ConversationDetailState.Error.NotLoggedIn -> ProtonErrorMessage(
+        when (state.conversationState) {
+            is ConversationState.Data -> ConversationDetailContent(contentPadding = innerPadding)
+            ConversationState.Error.NotLoggedIn -> ProtonErrorMessage(
                 modifier = Modifier.padding(innerPadding),
                 errorMessage = stringResource(id = commonString.x_error_not_logged_in)
             )
-            ConversationDetailState.Error.FailedLoadingData -> ProtonErrorMessage(
+            ConversationState.Error.FailedLoadingData -> ProtonErrorMessage(
                 modifier = Modifier.padding(innerPadding),
                 errorMessage = stringResource(id = string.details_error_loading_conversation)
             )
-            ConversationDetailState.Loading -> ProtonCenteredProgress(
+            ConversationState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
             )
         }.exhaustive
