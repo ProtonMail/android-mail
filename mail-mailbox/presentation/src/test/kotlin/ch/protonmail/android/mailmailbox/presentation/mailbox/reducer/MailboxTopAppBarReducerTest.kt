@@ -21,9 +21,9 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
-import ch.protonmail.android.mailmailbox.presentation.mailbox.AffectingTopAppBar
-import ch.protonmail.android.mailmailbox.presentation.mailbox.Event
-import ch.protonmail.android.mailmailbox.presentation.mailbox.ViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import me.proton.core.util.kotlin.EMPTY_STRING
 import org.junit.Test
@@ -39,10 +39,16 @@ internal class MailboxTopAppBarReducerTest(
     private val topAppBarReducer = MailboxTopAppBarReducer()
 
     @Test
-    fun `should produce the expected new state`() {
-        val actualState = topAppBarReducer.newStateFrom(testInput.currentState, testInput.operation)
+    fun `should produce the expected new state`() = with(testInput) {
+        val actualState = topAppBarReducer.newStateFrom(currentState, operation)
 
-        assertEquals(testInput.expectedState, actualState)
+        val errorMessage = """
+            Current state: $currentState
+            Operation: $operation
+            Expected state: $expectedState
+            
+        """.trimIndent()
+        assertEquals(expectedState, actualState, errorMessage)
     }
 
     companion object {
@@ -53,22 +59,22 @@ internal class MailboxTopAppBarReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MailboxTopAppBarState.Loading,
-                operation = ViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode,
                 expectedState = MailboxTopAppBarState.Loading
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Loading,
-                operation = ViewAction.ExitSelectionMode,
+                operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = MailboxTopAppBarState.Loading
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Loading,
-                operation = Event.LabelSelected(inboxLabel, currentLabelCount = 42),
+                operation = MailboxEvent.NewLabelSelected(inboxLabel, selectedLabelCount = 42),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Loading,
-                operation = Event.SelectedLabelChanged(inboxLabel),
+                operation = MailboxEvent.SelectedLabelChanged(inboxLabel),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ).toArray()
         )
@@ -76,7 +82,7 @@ internal class MailboxTopAppBarReducerTest(
         private val transitionsFromDefaultModeState = listOf(
             TestInput(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
-                operation = ViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode,
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(
                     inboxLabel.text(),
                     selectedCount = 0
@@ -84,17 +90,17 @@ internal class MailboxTopAppBarReducerTest(
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
-                operation = ViewAction.ExitSelectionMode,
+                operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
-                operation = Event.LabelSelected(trashLabel, currentLabelCount = 42),
+                operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text())
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
-                operation = Event.SelectedLabelChanged(trashLabel),
+                operation = MailboxEvent.SelectedLabelChanged(trashLabel),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text())
             ).toArray()
         )
@@ -102,7 +108,7 @@ internal class MailboxTopAppBarReducerTest(
         private val transitionsFromSelectionModeState = listOf(
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
-                operation = ViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode,
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(
                     inboxLabel.text(),
                     selectedCount = 0
@@ -110,17 +116,17 @@ internal class MailboxTopAppBarReducerTest(
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
-                operation = ViewAction.ExitSelectionMode,
+                operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
-                operation = Event.LabelSelected(trashLabel, currentLabelCount = 42),
+                operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(trashLabel.text(), selectedCount = 42)
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
-                operation = Event.SelectedLabelChanged(trashLabel),
+                operation = MailboxEvent.SelectedLabelChanged(trashLabel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(trashLabel.text(), selectedCount = 42)
             ).toArray()
         )
@@ -128,7 +134,7 @@ internal class MailboxTopAppBarReducerTest(
         private val transitionsFromSearchModeState = listOf(
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
-                operation = ViewAction.EnterSelectionMode,
+                operation = MailboxViewAction.EnterSelectionMode,
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(
                     inboxLabel.text(),
                     selectedCount = 0
@@ -136,17 +142,17 @@ internal class MailboxTopAppBarReducerTest(
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
-                operation = ViewAction.ExitSelectionMode,
+                operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
-                operation = Event.LabelSelected(trashLabel, currentLabelCount = 42),
+                operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
                 expectedState = MailboxTopAppBarState.Data.SearchMode(trashLabel.text(), searchQuery = EMPTY_STRING)
             ).toArray(),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
-                operation = Event.SelectedLabelChanged(trashLabel),
+                operation = MailboxEvent.SelectedLabelChanged(trashLabel),
                 expectedState = MailboxTopAppBarState.Data.SearchMode(trashLabel.text(), searchQuery = EMPTY_STRING)
             ).toArray()
         )
@@ -163,7 +169,7 @@ internal class MailboxTopAppBarReducerTest(
 
     class TestInput(
         val currentState: MailboxTopAppBarState,
-        val operation: AffectingTopAppBar,
+        val operation: MailboxOperation.AffectingTopAppBar,
         val expectedState: MailboxTopAppBarState
     ) {
         fun toArray() = arrayOf(this)

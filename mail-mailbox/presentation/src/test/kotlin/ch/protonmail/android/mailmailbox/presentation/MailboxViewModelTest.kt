@@ -41,10 +41,10 @@ import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
-import ch.protonmail.android.mailmailbox.presentation.mailbox.Event
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxPagerFactory
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
-import ch.protonmail.android.mailmailbox.presentation.mailbox.ViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
@@ -178,7 +178,7 @@ class MailboxViewModelTest {
         every {
             mailboxTopAppBarReducer.newStateFrom(
                 any(),
-                Event.LabelSelected(expectedMailLabel, expectedCount)
+                MailboxEvent.NewLabelSelected(expectedMailLabel, expectedCount)
             )
         } returns expectedState
 
@@ -207,7 +207,9 @@ class MailboxViewModelTest {
             MailLabel.System(Archive).text(),
             selectedCount = 0
         )
-        every { mailboxTopAppBarReducer.newStateFrom(any(), ViewAction.EnterSelectionMode) } returns expectedState
+        every {
+            mailboxTopAppBarReducer.newStateFrom(any(), MailboxViewAction.EnterSelectionMode)
+        } returns expectedState
 
         mailboxViewModel.state.test {
 
@@ -215,7 +217,7 @@ class MailboxViewModelTest {
             awaitItem() // First emission for selected user
 
             // When
-            mailboxViewModel.submit(ViewAction.EnterSelectionMode)
+            mailboxViewModel.submit(MailboxViewAction.EnterSelectionMode)
 
             // Then
             val actual = awaitItem()
@@ -227,15 +229,15 @@ class MailboxViewModelTest {
     fun `when selection mode is open and exit selection mode is submitted, selection mode is closed`() = runTest {
         // Given
         val expectedState = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive).text())
-        every { mailboxTopAppBarReducer.newStateFrom(any(), ViewAction.ExitSelectionMode) } returns expectedState
+        every { mailboxTopAppBarReducer.newStateFrom(any(), MailboxViewAction.ExitSelectionMode) } returns expectedState
 
         mailboxViewModel.state.test {
 
             // When
-            mailboxViewModel.submit(ViewAction.EnterSelectionMode)
+            mailboxViewModel.submit(MailboxViewAction.EnterSelectionMode)
             awaitItem() // Selection Mode has been opened
 
-            mailboxViewModel.submit(ViewAction.ExitSelectionMode)
+            mailboxViewModel.submit(MailboxViewAction.ExitSelectionMode)
 
             // Then
             val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive).text())
@@ -302,13 +304,13 @@ class MailboxViewModelTest {
         every {
             mailboxTopAppBarReducer.newStateFrom(
                 any(),
-                Event.LabelSelected(inboxLabel, inboxCount)
+                MailboxEvent.NewLabelSelected(inboxLabel, inboxCount)
             )
         } returns MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
         every {
             mailboxTopAppBarReducer.newStateFrom(
                 any(),
-                Event.LabelSelected(starredLabel, starredCount)
+                MailboxEvent.NewLabelSelected(starredLabel, starredCount)
             )
         } returns MailboxTopAppBarState.Data.DefaultMode(starredLabel.text())
         every { selectedMailLabelId.flow } returns currentLocationFlow
@@ -424,7 +426,7 @@ class MailboxViewModelTest {
     fun `on refresh call mark as stale mailbox items`() = runTest {
 
         // When
-        mailboxViewModel.submit(ViewAction.Refresh)
+        mailboxViewModel.submit(MailboxViewAction.Refresh)
 
         // Then
         coVerify { markAsStaleMailboxItems.invoke(listOf(userId), Message, Archive.labelId) }
@@ -439,7 +441,7 @@ class MailboxViewModelTest {
             every { observeCurrentViewMode(userId) } returns flowOf(NoConversationGrouping)
 
             // When
-            mailboxViewModel.submit(ViewAction.OpenItemDetails(item))
+            mailboxViewModel.submit(MailboxViewAction.OpenItemDetails(item))
             mailboxViewModel.state.test {
 
                 // Then
@@ -458,7 +460,7 @@ class MailboxViewModelTest {
             every { observeCurrentViewMode(userId) } returns flowOf(ConversationGrouping)
 
             // When
-            mailboxViewModel.submit(ViewAction.OpenItemDetails(item))
+            mailboxViewModel.submit(MailboxViewAction.OpenItemDetails(item))
             mailboxViewModel.state.test {
 
                 // Then
@@ -477,7 +479,7 @@ class MailboxViewModelTest {
             every { observeCurrentViewMode(userId = any()) } returns flowOf(ConversationGrouping)
 
             // When
-            mailboxViewModel.submit(ViewAction.OpenItemDetails(item))
+            mailboxViewModel.submit(MailboxViewAction.OpenItemDetails(item))
             mailboxViewModel.state.test {
 
                 // Then
@@ -490,7 +492,7 @@ class MailboxViewModelTest {
     @Test
     fun `enable unread filter action emits a new state with unread filter state enabled`() = runTest {
         // When
-        mailboxViewModel.submit(ViewAction.EnableUnreadFilter)
+        mailboxViewModel.submit(MailboxViewAction.EnableUnreadFilter)
         mailboxViewModel.state.test {
 
             // Then
@@ -504,7 +506,7 @@ class MailboxViewModelTest {
     fun `disable unread filter action emits a new state with unread filter state disabled`() = runTest {
         mailboxViewModel.state.test {
             // When
-            mailboxViewModel.submit(ViewAction.DisableUnreadFilter)
+            mailboxViewModel.submit(MailboxViewAction.DisableUnreadFilter)
 
             // Then
             val expected = UnreadFilterState.Data(5, false)

@@ -42,11 +42,13 @@ import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxTopAppBarReducer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -119,15 +121,15 @@ class MailboxViewModel @Inject constructor(
         Pair(currentLabel, currentLabelCount)
     }
 
-    internal fun submit(viewAction: ViewAction) {
+    internal fun submit(viewAction: MailboxViewAction) {
         viewModelScope.launch {
             when (viewAction) {
-                is ViewAction.EnterSelectionMode -> onOpenSelectionMode()
-                is ViewAction.ExitSelectionMode -> onCloseSelectionMode()
-                is ViewAction.OpenItemDetails -> onOpenItemDetails(viewAction.item)
-                is ViewAction.Refresh -> onRefresh()
-                is ViewAction.DisableUnreadFilter -> toggleUnreadFilter(isEnabled = false)
-                is ViewAction.EnableUnreadFilter -> toggleUnreadFilter(isEnabled = true)
+                is MailboxViewAction.EnterSelectionMode -> onOpenSelectionMode()
+                is MailboxViewAction.ExitSelectionMode -> onCloseSelectionMode()
+                is MailboxViewAction.OpenItemDetails -> onOpenItemDetails(viewAction.item)
+                is MailboxViewAction.Refresh -> onRefresh()
+                is MailboxViewAction.DisableUnreadFilter -> toggleUnreadFilter(isEnabled = false)
+                is MailboxViewAction.EnableUnreadFilter -> toggleUnreadFilter(isEnabled = true)
             }.exhaustive
         }
     }
@@ -148,7 +150,7 @@ class MailboxViewModel @Inject constructor(
             state.value.copy(
                 topAppBarState = mailboxTopAppBarReducer.newStateFrom(
                     state.value.topAppBarState,
-                    ViewAction.ExitSelectionMode
+                    MailboxViewAction.ExitSelectionMode
                 )
             )
         )
@@ -159,7 +161,7 @@ class MailboxViewModel @Inject constructor(
             state.value.copy(
                 topAppBarState = mailboxTopAppBarReducer.newStateFrom(
                     state.value.topAppBarState,
-                    ViewAction.EnterSelectionMode
+                    MailboxViewAction.EnterSelectionMode
                 )
             )
         )
@@ -244,8 +246,10 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun updateStateForSelectedMailLabelChange(currentMailLabel: MailLabel, currentLabelCount: Int) {
-        val topAppBarState = mailboxTopAppBarReducer
-            .newStateFrom(state.value.topAppBarState, Event.LabelSelected(currentMailLabel, currentLabelCount))
+        val topAppBarState = mailboxTopAppBarReducer.newStateFrom(
+            state.value.topAppBarState,
+            MailboxEvent.NewLabelSelected(currentMailLabel, currentLabelCount)
+        )
         val unreadFilterState = buildUpdatedUnreadFilterState(observeUnreadCounters().firstOrNull())
 
         val currentState = state.value.mailboxListState
@@ -265,7 +269,7 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun updateStateForMailLabelChange(currentMailLabel: MailLabel) {
         val topAppBarState = mailboxTopAppBarReducer
-            .newStateFrom(state.value.topAppBarState, Event.SelectedLabelChanged(currentMailLabel))
+            .newStateFrom(state.value.topAppBarState, MailboxEvent.SelectedLabelChanged(currentMailLabel))
         val mailboxListState = when (val currentState = state.value.mailboxListState) {
             is MailboxListState.Loading -> MailboxListState.Data(
                 currentMailLabel,

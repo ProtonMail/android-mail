@@ -58,6 +58,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
@@ -84,12 +85,12 @@ fun MailboxScreen(
 
     val actions = MailboxScreen.Actions(
         navigateToMailboxItem = navigateToMailboxItem,
-        onDisableUnreadFilter = { viewModel.submit(ViewAction.DisableUnreadFilter) },
-        onEnableUnreadFilter = { viewModel.submit(ViewAction.EnableUnreadFilter) },
-        onExitSelectionMode = { viewModel.submit(ViewAction.ExitSelectionMode) },
-        onNavigateToMailboxItem = { item -> viewModel.submit(ViewAction.OpenItemDetails(item)) },
-        onOpenSelectionMode = { viewModel.submit(ViewAction.EnterSelectionMode) },
-        onRefreshList = { viewModel.submit(ViewAction.Refresh) },
+        onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
+        onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },
+        onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
+        onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewAction.OpenItemDetails(item)) },
+        onOpenSelectionMode = { viewModel.submit(MailboxViewAction.EnterSelectionMode) },
+        onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
         openDrawerMenu = openDrawerMenu
     )
 

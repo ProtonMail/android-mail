@@ -21,9 +21,9 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.text
-import ch.protonmail.android.mailmailbox.presentation.mailbox.ViewAction
-import ch.protonmail.android.mailmailbox.presentation.mailbox.AffectingTopAppBar
-import ch.protonmail.android.mailmailbox.presentation.mailbox.Event
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import javax.inject.Inject
 
@@ -31,24 +31,24 @@ class MailboxTopAppBarReducer @Inject constructor() {
 
     internal fun newStateFrom(
         currentState: MailboxTopAppBarState,
-        operation: AffectingTopAppBar
+        operation: MailboxOperation.AffectingTopAppBar
     ): MailboxTopAppBarState {
         return when (operation) {
-            is Event.SelectedLabelChanged -> {
+            is MailboxEvent.SelectedLabelChanged -> {
                 val currentMailLabel = operation.selectedLabel
                 when (currentState) {
                     MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
                     is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel.text())
                 }
             }
-            is Event.LabelSelected -> {
+            is MailboxEvent.NewLabelSelected -> {
                 val currentMailLabel = operation.selectedLabel
                 when (currentState) {
                     MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
                     is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel.text())
                 }
             }
-            ViewAction.EnterSelectionMode -> {
+            MailboxViewAction.EnterSelectionMode -> {
                 when (currentState) {
                     is MailboxTopAppBarState.Loading -> currentState
                     is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(
@@ -57,7 +57,7 @@ class MailboxTopAppBarReducer @Inject constructor() {
                     )
                 }
             }
-            ViewAction.ExitSelectionMode -> {
+            MailboxViewAction.ExitSelectionMode -> {
                 when (currentState) {
                     is MailboxTopAppBarState.Loading -> currentState
                     is MailboxTopAppBarState.Data ->
