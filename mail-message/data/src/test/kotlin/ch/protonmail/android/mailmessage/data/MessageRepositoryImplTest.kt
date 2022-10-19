@@ -29,16 +29,20 @@ import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.conversation.ConversationIdTestData
+import ch.protonmail.android.testdata.message.MessageTestData
+import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.Ordering
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -47,7 +51,7 @@ class MessageRepositoryImplTest {
     private val userId = UserId("1")
 
     private val remoteDataSource = mockk<MessageRemoteDataSource> {
-        coEvery { this@mockk.getMessages(any(), any()) } returns listOf(
+        coEvery { getMessages(userId = any(), pageKey = any()) } returns listOf(
             getMessage(id = "1", time = 1000),
             getMessage(id = "2", time = 2000),
             getMessage(id = "3", time = 3000),
@@ -55,17 +59,15 @@ class MessageRepositoryImplTest {
         )
     }
     private val localDataSource = mockk<MessageLocalDataSource> {
-        coEvery { this@mockk.getMessages(any(), any()) } returns emptyList()
-        coEvery { this@mockk.isLocalPageValid(any(), any(), any()) } returns false
-        coEvery { this@mockk.upsertMessages(any(), any(), any()) } just Runs
+        coEvery { getMessages(userId = any(), pageKey = any()) } returns emptyList()
+        coEvery { isLocalPageValid(userId = any(), pageKey = any(), items = any()) } returns false
+        coEvery { upsertMessages(userId = any(), pageKey = any(), items = any()) } just Runs
     }
 
-    private lateinit var messageRepository: MessageRepositoryImpl
-
-    @Before
-    fun setUp() {
-        messageRepository = MessageRepositoryImpl(remoteDataSource, localDataSource)
-    }
+    private val messageRepository = MessageRepositoryImpl(
+        remoteDataSource = remoteDataSource,
+        localDataSource = localDataSource
+    )
 
     @Test
     fun `return remote if local page is invalid`() = runTest {
@@ -168,7 +170,7 @@ class MessageRepositoryImplTest {
         // Given
         val messageId = MessageId("messageId")
         val message = getMessage(userId, "1")
-        coEvery { localDataSource.observeMessage(userId, messageId) } returns flowOf(message)
+        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(message)
         // When
         messageRepository.observeCachedMessage(userId, messageId).test {
             // Then
@@ -181,11 +183,32 @@ class MessageRepositoryImplTest {
     fun `observe cached message emits no data cached error when message does not exist in cache`() = runTest {
         // Given
         val messageId = MessageId("messageId")
-        coEvery { localDataSource.observeMessage(userId, messageId) } returns flowOf(null)
+        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(null)
         // When
         messageRepository.observeCachedMessage(userId, messageId).test {
             // Then
             assertEquals(DataError.Local.NoDataCached.left(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe cached messages for a conversation id calls the local source with correct parameters`() = runTest {
+        // given
+        val userId = UserIdTestData.Primary
+        val conversationId = ConversationIdTestData.WeatherForecast
+        val messages = listOf(
+            MessageTestData.AugWeatherForecast,
+            MessageTestData.SepWeatherForecast
+        )
+        every { localDataSource.observeMessages(userId, conversationId) } returns flowOf(messages)
+
+        // when
+        messageRepository.observeCachedMessages(userId, conversationId).test {
+
+            // then
+            assertEquals(messages, awaitItem())
+            verify { localDataSource.observeMessages(userId, conversationId) }
             awaitComplete()
         }
     }
