@@ -33,6 +33,7 @@ import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
 internal class MailboxTopAppBarReducerTest(
+    private val testName: String,
     private val testInput: TestInput
 ) {
 
@@ -42,13 +43,7 @@ internal class MailboxTopAppBarReducerTest(
     fun `should produce the expected new state`() = with(testInput) {
         val actualState = topAppBarReducer.newStateFrom(currentState, operation)
 
-        val errorMessage = """
-            Current state: $currentState
-            Operation: $operation
-            Expected state: $expectedState
-            
-        """.trimIndent()
-        assertEquals(expectedState, actualState, errorMessage)
+        assertEquals(expectedState, actualState, testName)
     }
 
     companion object {
@@ -61,22 +56,22 @@ internal class MailboxTopAppBarReducerTest(
                 currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxViewAction.EnterSelectionMode,
                 expectedState = MailboxTopAppBarState.Loading
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = MailboxTopAppBarState.Loading
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxEvent.NewLabelSelected(inboxLabel, selectedLabelCount = 42),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Loading,
                 operation = MailboxEvent.SelectedLabelChanged(inboxLabel),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
-            ).toArray()
+            )
         )
 
         private val transitionsFromDefaultModeState = listOf(
@@ -87,22 +82,22 @@ internal class MailboxTopAppBarReducerTest(
                     inboxLabel.text(),
                     selectedCount = 0
                 )
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
                 operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
                 operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text())
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text()),
                 operation = MailboxEvent.SelectedLabelChanged(trashLabel),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(trashLabel.text())
-            ).toArray()
+            )
         )
 
         private val transitionsFromSelectionModeState = listOf(
@@ -113,22 +108,22 @@ internal class MailboxTopAppBarReducerTest(
                     inboxLabel.text(),
                     selectedCount = 0
                 )
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(trashLabel.text(), selectedCount = 42)
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
                 operation = MailboxEvent.SelectedLabelChanged(trashLabel),
                 expectedState = MailboxTopAppBarState.Data.SelectionMode(trashLabel.text(), selectedCount = 42)
-            ).toArray()
+            )
         )
 
         private val transitionsFromSearchModeState = listOf(
@@ -139,39 +134,48 @@ internal class MailboxTopAppBarReducerTest(
                     inboxLabel.text(),
                     selectedCount = 0
                 )
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
                 operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
                 operation = MailboxEvent.NewLabelSelected(trashLabel, selectedLabelCount = 42),
                 expectedState = MailboxTopAppBarState.Data.SearchMode(trashLabel.text(), searchQuery = EMPTY_STRING)
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
                 operation = MailboxEvent.SelectedLabelChanged(trashLabel),
                 expectedState = MailboxTopAppBarState.Data.SearchMode(trashLabel.text(), searchQuery = EMPTY_STRING)
-            ).toArray()
+            )
         )
 
         @JvmStatic
-        @Parameterized.Parameters
-        fun data(): Collection<Array<TestInput>> {
-            return transitionsFromLoadingState +
-                transitionsFromDefaultModeState +
-                transitionsFromSelectionModeState +
-                transitionsFromSearchModeState
+        @Parameterized.Parameters(name = "{0}")
+        fun data(): Collection<Array<Any>> {
+            return (
+                transitionsFromLoadingState +
+                    transitionsFromDefaultModeState +
+                    transitionsFromSelectionModeState +
+                    transitionsFromSearchModeState
+                )
+                .map { testInput ->
+                    val testName = """
+                        Current state: ${testInput.currentState}
+                        Operation: ${testInput.operation}
+                        Next state: ${testInput.expectedState}
+                        
+                    """.trimIndent()
+                    arrayOf(testName, testInput)
+                }
         }
     }
 
-    class TestInput(
+    data class TestInput(
         val currentState: MailboxTopAppBarState,
         val operation: MailboxOperation.AffectingTopAppBar,
         val expectedState: MailboxTopAppBarState
-    ) {
-        fun toArray() = arrayOf(this)
-    }
+    )
 }
