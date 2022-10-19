@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -36,7 +35,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +44,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
@@ -236,13 +235,13 @@ private fun ActionIcons(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (item.shouldShowRepliedIcon) {
-            MailboxItemIcon(R.drawable.ic_proton_arrow_up_and_left)
+            SmallNonClickableIcon(R.drawable.ic_proton_arrow_up_and_left)
         }
         if (item.shouldShowRepliedAllIcon) {
-            MailboxItemIcon(R.drawable.ic_proton_arrows_up_and_left)
+            SmallNonClickableIcon(R.drawable.ic_proton_arrows_up_and_left)
         }
         if (item.shouldShowForwardedIcon) {
-            MailboxItemIcon(R.drawable.ic_proton_arrow_right)
+            SmallNonClickableIcon(R.drawable.ic_proton_arrow_right)
         }
     }
 }
@@ -293,7 +292,7 @@ private fun LocationIcons(
         modifier = modifier,
         horizontalArrangement = Arrangement.Start
     ) {
-        iconResIds.forEach { MailboxItemIcon(iconId = it) }
+        iconResIds.forEach { SmallNonClickableIcon(iconId = it) }
     }
 }
 
@@ -349,13 +348,13 @@ private fun Icons(
         horizontalArrangement = Arrangement.End
     ) {
         if (item.shouldShowCalendarIcon) {
-            MailboxItemIcon(iconId = R.drawable.ic_proton_calendar_grid)
+            SmallNonClickableIcon(iconId = R.drawable.ic_proton_calendar_grid)
         }
         if (item.shouldShowAttachmentIcon) {
-            MailboxItemIcon(iconId = R.drawable.ic_proton_paper_clip)
+            SmallNonClickableIcon(iconId = R.drawable.ic_proton_paper_clip)
         }
         if (item.showStar) {
-            MailboxItemIcon(iconId = R.drawable.ic_proton_star_filled, tintId = R.color.sunglow)
+            SmallNonClickableIcon(iconId = R.drawable.ic_proton_star_filled, tintId = R.color.sunglow)
         }
     }
 }
@@ -391,19 +390,6 @@ private fun Labels(
     }
 }
 
-@Composable
-private fun MailboxItemIcon(
-    @DrawableRes iconId: Int,
-    modifier: Modifier = Modifier,
-    tintId: Int = R.color.icon_weak
-) {
-    Icon(
-        modifier = modifier.size(ProtonDimens.SmallIconSize),
-        painter = painterResource(id = iconId),
-        contentDescription = NO_CONTENT_DESCRIPTION,
-        tint = colorResource(id = tintId)
-    )
-}
 
 @Composable
 @Preview(showBackground = true)
