@@ -16,28 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.message
+package ch.protonmail.android.maildetail.domain
 
-import ch.protonmail.android.maildetail.presentation.model.MessageUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-object MessageUiModelTestData {
+class ObserveDetailActions @Inject constructor() {
 
-    const val RAW_MESSAGE_ID = "rawMessageId"
-    const val RAW_SUBJECT = "Here's a new email"
-
-    val uiModel = buildMessageUiModel(
-        RAW_MESSAGE_ID,
-        RAW_SUBJECT
-    )
-
-    fun buildMessageUiModel(
-        messageId: String,
-        subject: String,
-        isStarred: Boolean = false
-    ) = MessageUiModel(
-        messageId = MessageId(messageId),
-        subject = subject,
-        isStarred = isStarred
-    )
+    operator fun invoke(userId: UserId, messageId: MessageId): Flow<List<Action>> {
+        return flowOf(emptyList())
+    }
 }

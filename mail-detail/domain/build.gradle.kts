@@ -47,6 +47,7 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     implementation(Dependencies.moduleDomainLibs)
+    implementation(project(":mail-message:domain"))
     implementation(project(":mail-common:domain"))
 
     testImplementation(Dependencies.testLibs)

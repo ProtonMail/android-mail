@@ -29,7 +29,7 @@ import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
-class ConversationDetailReducerTest(
+class ConversationStateReducerTest(
     @Suppress("UNUSED_PARAMETER") private val testName: String,
     private val testInput: TestParams.TestInput
 ) {

@@ -56,7 +56,7 @@ fun MessageDetailScreen(
     onBackClick: () -> Unit,
     viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
-    val state by rememberAsState(flow = viewModel.state, initial = viewModel.initialState)
+    val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
     MessageDetailScreen(
         modifier = modifier,
         state = state,

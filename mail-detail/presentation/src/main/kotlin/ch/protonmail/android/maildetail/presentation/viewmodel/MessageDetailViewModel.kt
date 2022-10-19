@@ -22,10 +22,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.maildetail.domain.ObserveDetailActions
+import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailAction
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.reducer.BottomBarStateReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageStateReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -44,15 +47,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MessageDetailViewModel @Inject constructor(
-    private val observePrimaryUserId: ObservePrimaryUserId,
+    observePrimaryUserId: ObservePrimaryUserId,
     private val messageStateReducer: MessageStateReducer,
+    private val bottomBarStateReducer: BottomBarStateReducer,
     private val observeMessage: ObserveMessage,
     private val uiModelMapper: MessageDetailUiModelMapper,
+    private val actionUiModelMapper: ActionUiModelMapper,
+    private val observeDetailActions: ObserveDetailActions,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val initialState = MessageDetailState.Loading
-    private val mutableDetailState = MutableStateFlow<MessageDetailState>(initialState)
+    private val primaryUserId = observePrimaryUserId()
+    private val mutableDetailState = MutableStateFlow(initialState)
+
     val state: StateFlow<MessageDetailState> = mutableDetailState.asStateFlow()
 
     init {
@@ -61,9 +68,11 @@ class MessageDetailViewModel @Inject constructor(
 
         if (messageIdParam == null) {
             throw IllegalStateException("No Message id given")
-        } else {
-            observeMessageMetadata(MessageId(messageIdParam))
         }
+
+        val messageId = MessageId(messageIdParam)
+        observeMessageMetadata(messageId)
+        observeBottomBarActions(messageId)
     }
 
     @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
@@ -73,7 +82,7 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun observeMessageMetadata(messageId: MessageId) {
-        observePrimaryUserId().flatMapLatest { userId ->
+        primaryUserId.flatMapLatest { userId ->
             if (userId == null) {
                 return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
             }
@@ -88,13 +97,37 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun observeBottomBarActions(messageId: MessageId) {
+        primaryUserId.flatMapLatest { userId ->
+            if (userId == null) {
+                return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
+            }
+            return@flatMapLatest observeDetailActions(userId, messageId).mapLatest { actions ->
+                val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
+                return@mapLatest if (actionUiModels.isEmpty()) {
+                    MessageDetailEvent.ErrorLoadingActions
+                } else {
+                    MessageDetailEvent.MessageActionsData(actionUiModels)
+                }
+            }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
     private suspend fun emitNewStateFrom(event: MessageDetailEvent) {
-        val updatedMessageState = messageStateReducer.reduce(state.value.messageState, event)
-        val updatedDetailState = state.value.copy(messageState = updatedMessageState)
+        val updatedDetailState = state.value.copy(
+            messageState = messageStateReducer.reduce(state.value.messageState, event),
+            bottomBarState = bottomBarStateReducer.reduce(state.value.bottomBarState, event)
+        )
         mutableDetailState.emit(updatedDetailState)
     }
 
     @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
     private fun MessageDetailAction.toEvent(): MessageDetailEvent = TODO("Implement when adding first action")
 
+    companion object {
+
+        val initialState = MessageDetailState.Loading
+    }
 }

@@ -26,4 +26,7 @@ sealed interface MessageDetailEvent {
 
     object NoPrimaryUser : MessageDetailEvent
     object NoCachedMetadata : MessageDetailEvent
+
+    data class MessageActionsData(val actions: List<ActionUiModel>) : MessageDetailEvent
+    object ErrorLoadingActions : MessageDetailEvent
 }

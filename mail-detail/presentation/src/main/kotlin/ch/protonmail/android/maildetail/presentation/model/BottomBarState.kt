@@ -16,28 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.message
+package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.maildetail.presentation.model.MessageUiModel
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+sealed interface BottomBarState {
 
-object MessageUiModelTestData {
+    data class Data(
+        val actions: List<ActionUiModel>
+    ) : BottomBarState
 
-    const val RAW_MESSAGE_ID = "rawMessageId"
-    const val RAW_SUBJECT = "Here's a new email"
+    object Loading : BottomBarState
 
-    val uiModel = buildMessageUiModel(
-        RAW_MESSAGE_ID,
-        RAW_SUBJECT
-    )
-
-    fun buildMessageUiModel(
-        messageId: String,
-        subject: String,
-        isStarred: Boolean = false
-    ) = MessageUiModel(
-        messageId = MessageId(messageId),
-        subject = subject,
-        isStarred = isStarred
-    )
+    sealed interface Error : BottomBarState {
+        object FailedLoadingActions : Error
+    }
 }
