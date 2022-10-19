@@ -126,7 +126,7 @@ class SidebarViewModelTest {
             assertEquals(Disabled, awaitItem())
 
             // Given
-            primaryUser.emit(UserTestData.user)
+            primaryUser.emit(UserTestData.Primary)
 
             // Then
             val actual = awaitItem() as Enabled
@@ -148,7 +148,7 @@ class SidebarViewModelTest {
 
             // Given
             showSettings.emit(FeatureFlagTestData.enabledShowSettings)
-            primaryUser.emit(UserTestData.user)
+            primaryUser.emit(UserTestData.Primary)
 
             // Then
             val actual = awaitItem() as Enabled
@@ -169,7 +169,7 @@ class SidebarViewModelTest {
             assertEquals(Disabled, awaitItem())
 
             // Given
-            primaryUser.emit(UserTestData.user)
+            primaryUser.emit(UserTestData.Primary)
             showSettings.emit(FeatureFlagTestData.disabledShowSettings)
 
             // Then
@@ -192,7 +192,7 @@ class SidebarViewModelTest {
 
             // Given
             coEvery { paymentManager.isSubscriptionAvailable(UserIdTestData.userId) } returns true
-            primaryUser.emit(UserTestData.user)
+            primaryUser.emit(UserTestData.Primary)
 
             // Then
             val actual = awaitItem() as Enabled
@@ -241,25 +241,25 @@ class SidebarViewModelTest {
     fun `onSidebarLabelAction Collapse, call updateLabelExpandedState`() = runTest {
         // Given
         val mailLabelId = MailLabelId.Custom.Folder(LabelId("folder"))
-        primaryUser.emit(UserTestData.user)
+        primaryUser.emit(UserTestData.Primary)
 
         // When
         sidebarViewModel.submit(LabelAction(Collapse(mailLabelId)))
 
         // Then
-        coVerify { updateLabelExpandedState.invoke(UserTestData.user.userId, mailLabelId, false) }
+        coVerify { updateLabelExpandedState.invoke(UserTestData.Primary.userId, mailLabelId, false) }
     }
 
     @Test
     fun `onSidebarLabelAction Expand, call updateLabelExpandedState`() = runTest {
         // Given
         val mailLabelId = MailLabelId.Custom.Folder(LabelId("folder"))
-        primaryUser.emit(UserTestData.user)
+        primaryUser.emit(UserTestData.Primary)
 
         // When
         sidebarViewModel.submit(LabelAction(Expand(mailLabelId)))
 
         // Then
-        coVerify { updateLabelExpandedState.invoke(UserTestData.user.userId, mailLabelId, true) }
+        coVerify { updateLabelExpandedState.invoke(UserTestData.Primary.userId, mailLabelId, true) }
     }
 }

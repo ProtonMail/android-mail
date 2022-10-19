@@ -86,7 +86,7 @@ class SettingsViewModelTest {
             appSettingsFlow.emit(AppSettingsTestData.appSettings)
 
             // When
-            userFlow.emit(UserTestData.user)
+            userFlow.emit(UserTestData.Primary)
 
             // Then
             val actual = awaitItem() as Data
@@ -140,7 +140,7 @@ class SettingsViewModelTest {
             viewModel.state.test {
                 // Given
                 initialStateEmitted()
-                userFlow.emit(UserTestData.user)
+                userFlow.emit(UserTestData.Primary)
 
                 // When
                 appSettingsFlow.emit(AppSettingsTestData.appSettings)

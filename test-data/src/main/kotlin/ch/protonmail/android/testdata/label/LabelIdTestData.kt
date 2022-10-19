@@ -16,14 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.user
+package ch.protonmail.android.testdata.label
 
-import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 
-object UserIdTestData {
+object LabelIdTestData {
 
-    val Primary = UserId("primary")
-    val userId = UserId("userId")
-    val userId1 = UserId("userId1")
-    val adminUserId = UserId("adminUserId")
+    val Archive = LabelId("archive")
+    val Document = LabelId("document")
+    val News = LabelId("news")
+
+    fun build() = LabelId("label")
 }

@@ -16,14 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.user
+package ch.protonmail.android.testdata.account
 
-import me.proton.core.domain.entity.UserId
+import me.proton.core.account.data.entity.AccountEntity
+import me.proton.core.account.domain.entity.Account
 
-object UserIdTestData {
+object AccountEntityTestData {
 
-    val Primary = UserId("primary")
-    val userId = UserId("userId")
-    val userId1 = UserId("userId1")
-    val adminUserId = UserId("adminUserId")
+    val Primary = build(AccountTestData.Primary)
+
+    val PrimaryNotReady = build(AccountTestData.PrimaryNotReady)
+
+    fun build(account: Account = AccountTestData.build()) = AccountEntity(
+        email = account.email,
+        sessionId = account.sessionId,
+        sessionState = account.sessionState,
+        state = account.state,
+        userId = account.userId,
+        username = account.username
+    )
 }

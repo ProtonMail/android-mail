@@ -18,10 +18,9 @@
 
 package ch.protonmail.android.testdata.user
 
-import me.proton.core.user.domain.entity.Delinquent.None
-import me.proton.core.user.domain.entity.Role.NoOrganization
-import me.proton.core.user.domain.entity.Role.OrganizationAdmin
-import me.proton.core.user.domain.entity.Role.OrganizationMember
+import me.proton.core.domain.entity.UserId
+import me.proton.core.user.domain.entity.Delinquent
+import me.proton.core.user.domain.entity.Role
 import me.proton.core.user.domain.entity.User
 
 object UserTestData {
@@ -32,75 +31,42 @@ object UserTestData {
     const val USER_DISPLAY_NAME_RAW = "userDisplayName"
     const val USER_NAME_RAW = "username"
 
-    val user = User(
-        userId = UserIdTestData.userId,
-        email = USER_EMAIL_RAW,
-        displayName = USER_DISPLAY_NAME_RAW,
-        name = null,
-        currency = "CHF",
-        credit = 1,
-        usedSpace = USED_SPACE_RAW,
-        maxSpace = MAX_SPACE_RAW,
-        maxUpload = 1,
-        role = NoOrganization,
-        private = true,
-        services = 1,
-        subscribed = 1,
-        delinquent = None,
-        keys = emptyList()
-    )
+    val Primary = build()
 
-    val emptyDisplayNameUser = User(
-        userId = UserIdTestData.userId,
-        email = USER_EMAIL_RAW,
+    val emptyDisplayNameUser = build(
         displayName = "",
-        name = USER_NAME_RAW,
-        currency = "CHF",
-        credit = 1,
-        usedSpace = USED_SPACE_RAW,
-        maxSpace = MAX_SPACE_RAW,
-        maxUpload = 1,
-        role = NoOrganization,
-        private = true,
-        services = 1,
-        subscribed = 1,
-        delinquent = None,
-        keys = emptyList()
+        userId = UserIdTestData.userId
     )
 
-    val adminUser = User(
-        userId = UserIdTestData.adminUserId,
-        email = USER_EMAIL_RAW,
-        displayName = USER_DISPLAY_NAME_RAW,
-        name = null,
-        currency = "CHF",
-        credit = 1,
-        usedSpace = USED_SPACE_RAW,
-        maxSpace = MAX_SPACE_RAW,
-        maxUpload = 1,
-        role = OrganizationAdmin,
-        private = true,
-        services = 1,
-        subscribed = 1,
-        delinquent = None,
-        keys = emptyList()
+    val adminUser = build(
+        role = Role.OrganizationAdmin,
+        userId = UserIdTestData.adminUserId
     )
 
-    val orgMemberUser = User(
-        userId = UserIdTestData.adminUserId,
-        email = USER_EMAIL_RAW,
-        displayName = USER_DISPLAY_NAME_RAW,
-        name = null,
-        currency = "CHF",
+    val orgMemberUser = build(
+        role = Role.OrganizationMember,
+        userId = UserIdTestData.adminUserId
+    )
+
+    fun build(
+        displayName: String = USER_DISPLAY_NAME_RAW,
+        role: Role = Role.NoOrganization,
+        userId: UserId = UserIdTestData.Primary
+    ) = User(
         credit = 1,
-        usedSpace = USED_SPACE_RAW,
+        currency = "CHF",
+        delinquent = Delinquent.None,
+        displayName = displayName,
+        email = USER_EMAIL_RAW,
+        keys = emptyList(),
         maxSpace = MAX_SPACE_RAW,
         maxUpload = 1,
-        role = OrganizationMember,
+        name = null,
         private = true,
+        role = role,
         services = 1,
         subscribed = 1,
-        delinquent = None,
-        keys = emptyList()
+        usedSpace = USED_SPACE_RAW,
+        userId = userId
     )
 }

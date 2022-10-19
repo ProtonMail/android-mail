@@ -23,6 +23,10 @@ import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.testdata.address.AddressIdTestData
+import ch.protonmail.android.testdata.conversation.ConversationIdTestData
+import ch.protonmail.android.testdata.label.LabelIdTestData
+import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -33,6 +37,21 @@ object MessageTestData {
     const val RAW_MESSAGE_ID = "rawMessageId"
     const val RAW_SUBJECT = "Here's a new message"
 
+    val AugWeatherForecast = build(
+        conversationId = ConversationIdTestData.WeatherForecast,
+        messageId = MessageIdTestData.AugWeatherForecast,
+        labelIds = listOf(LabelIdTestData.Archive)
+    )
+    val Invoice = build(
+        messageId = MessageIdTestData.Invoice,
+        labelIds = listOf(LabelIdTestData.Archive, LabelIdTestData.Document)
+    )
+    val SepWeatherForecast = build(
+        conversationId = ConversationIdTestData.WeatherForecast,
+        messageId = MessageIdTestData.SepWeatherForecast,
+        labelIds = listOf(LabelIdTestData.Archive)
+    )
+
     val message = buildMessage(
         userId = userId,
         id = RAW_MESSAGE_ID,
@@ -40,8 +59,44 @@ object MessageTestData {
         labelIds = listOf("0")
     )
 
+    fun build(
+        attachmentCount: AttachmentCount = AttachmentCount(0),
+        conversationId: ConversationId = ConversationIdTestData.build(),
+        expirationTime: Long = 0,
+        messageId: MessageId = MessageId("message1"),
+        labelIds: List<LabelId> = emptyList(),
+        numAttachments: Int = 0,
+        order: Long = messageId.id.first().code.toLong(),
+        subject: String = "subject",
+        time: Long = 1000,
+        userId: UserId = UserIdTestData.Primary
+    ) = Message(
+        addressId = AddressIdTestData.Primary,
+        attachmentCount = attachmentCount,
+        bccList = emptyList(),
+        ccList = emptyList(),
+        conversationId = conversationId,
+        expirationTime = expirationTime,
+        externalId = null,
+        flags = 0,
+        isForwarded = false,
+        isReplied = false,
+        isRepliedAll = false,
+        labelIds = labelIds,
+        messageId = messageId,
+        numAttachments = numAttachments,
+        order = order,
+        sender = Recipient("address", "name"),
+        size = 0,
+        subject = subject,
+        time = time,
+        toList = emptyList(),
+        unread = false,
+        userId = userId
+    )
+
     fun buildMessage(
-        userId: UserId,
+        userId: UserId = UserIdTestData.userId,
         id: String,
         order: Long = 1000,
         time: Long = 1000,

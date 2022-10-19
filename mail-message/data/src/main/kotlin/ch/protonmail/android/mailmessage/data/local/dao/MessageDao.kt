@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -31,10 +32,20 @@ import kotlinx.coroutines.flow.Flow
 import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.util.kotlin.EMPTY_STRING
 
-@Suppress("LongParameterList", "ComplexMethod")
 @Dao
+@Suppress("LongParameterList")
 abstract class MessageDao : BaseDao<MessageEntity>() {
+
+    @Query("DELETE FROM MessageEntity WHERE userId = :userId AND messageId IN (:messageIds)")
+    abstract suspend fun delete(userId: UserId, messageIds: List<String>)
+
+    @Query("DELETE FROM MessageEntity WHERE userId = :userId")
+    abstract suspend fun deleteAll(userId: UserId)
+
+    @Query("SELECT * FROM MessageEntity WHERE userId = :userId AND messageId = :messageId")
+    abstract fun observe(userId: UserId, messageId: MessageId): Flow<MessageWithLabelIds?>
 
     fun observeAll(userId: UserId, pageKey: PageKey): Flow<List<MessageWithLabelIds>> {
         val labelId = pageKey.filter.labelId
@@ -55,6 +66,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
             OrderDirection.Ascending -> observeAllOrderByTimeAsc(
                 userId = userId,
                 labelId = labelId,
+                conversationId = null,
                 keyword = keyword,
                 unread = unread,
                 minValue = minValue,
@@ -83,7 +95,14 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         JOIN MessageLabelEntity
         ON MessageLabelEntity.userId = MessageEntity.userId
         AND MessageLabelEntity.messageId = MessageEntity.messageId
-        AND MessageLabelEntity.labelId = :labelId
+        AND (
+            MessageLabelEntity.labelId = :labelId
+            OR :labelId IS NULL
+        )
+        AND (
+            MessageEntity.conversationId = :conversationId
+            OR :conversationId IS NULL
+        )
         WHERE MessageEntity.userId = :userId
         AND (
             MessageEntity.subject LIKE '%'||:keyword||'%'
@@ -96,20 +115,22 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         AND MessageEntity.unread IN (:unread)
         AND (MessageEntity.time > :minValue OR (MessageEntity.time = :minValue AND MessageEntity.`order` >= :minOrder))
         AND (MessageEntity.time < :maxValue OR (MessageEntity.time = :maxValue AND MessageEntity.`order` <= :maxOrder))
-        ORDER BY MessageEntity.time DESC, MessageEntity.`order` DESC
+        GROUP BY MessageEntity.messageId
+        ORDER BY MessageEntity.time ASC, MessageEntity.`order` ASC
         LIMIT :size
         """
     )
-    abstract fun observeAllOrderByTimeDesc(
+    abstract fun observeAllOrderByTimeAsc(
         userId: UserId,
-        labelId: LabelId,
-        keyword: String,
-        unread: List<Boolean>,
-        minValue: Long,
-        maxValue: Long,
-        minOrder: Long,
-        maxOrder: Long,
-        size: Int
+        labelId: LabelId? = null,
+        conversationId: ConversationId? = null,
+        keyword: String = EMPTY_STRING,
+        unread: List<Boolean> = listOf(false, true),
+        minValue: Long = Long.MIN_VALUE,
+        maxValue: Long = Long.MAX_VALUE,
+        minOrder: Long = Long.MIN_VALUE,
+        maxOrder: Long = Long.MAX_VALUE,
+        size: Int = Int.MAX_VALUE
     ): Flow<List<MessageWithLabelIds>>
 
     @Query(
@@ -118,7 +139,14 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         JOIN MessageLabelEntity
         ON MessageLabelEntity.userId = MessageEntity.userId
         AND MessageLabelEntity.messageId = MessageEntity.messageId
-        AND MessageLabelEntity.labelId = :labelId
+        AND (
+            MessageLabelEntity.labelId = :labelId
+            OR :labelId IS NULL
+        )
+        AND (
+            MessageEntity.conversationId = :conversationId
+            OR :conversationId IS NULL
+        )
         WHERE MessageEntity.userId = :userId
         AND (
             MessageEntity.subject LIKE '%'||:keyword||'%'
@@ -131,28 +159,21 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         AND MessageEntity.unread IN (:unread)
         AND (MessageEntity.time > :minValue OR (MessageEntity.time = :minValue AND MessageEntity.`order` >= :minOrder))
         AND (MessageEntity.time < :maxValue OR (MessageEntity.time = :maxValue AND MessageEntity.`order` <= :maxOrder))
-        ORDER BY MessageEntity.time ASC, MessageEntity.`order` ASC
+        GROUP BY MessageEntity.messageId
+        ORDER BY MessageEntity.time DESC, MessageEntity.`order` DESC
         LIMIT :size
         """
     )
-    abstract fun observeAllOrderByTimeAsc(
+    abstract fun observeAllOrderByTimeDesc(
         userId: UserId,
-        labelId: LabelId,
-        keyword: String,
-        unread: List<Boolean>,
-        minValue: Long,
-        maxValue: Long,
-        minOrder: Long,
-        maxOrder: Long,
-        size: Int
+        labelId: LabelId? = null,
+        conversationId: ConversationId? = null,
+        keyword: String = EMPTY_STRING,
+        unread: List<Boolean> = listOf(false, true),
+        minValue: Long = Long.MIN_VALUE,
+        maxValue: Long = Long.MAX_VALUE,
+        minOrder: Long = Long.MIN_VALUE,
+        maxOrder: Long = Long.MAX_VALUE,
+        size: Int = Int.MAX_VALUE
     ): Flow<List<MessageWithLabelIds>>
-
-    @Query("DELETE FROM MessageEntity WHERE userId = :userId AND messageId IN (:messageIds)")
-    abstract suspend fun delete(userId: UserId, messageIds: List<String>)
-
-    @Query("DELETE FROM MessageEntity WHERE userId = :userId")
-    abstract suspend fun deleteAll(userId: UserId)
-
-    @Query("SELECT * FROM MessageEntity WHERE userId = :userId AND messageId = :messageId")
-    abstract fun observe(userId: UserId, messageId: MessageId): Flow<MessageWithLabelIds?>
 }

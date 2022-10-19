@@ -65,11 +65,11 @@ class ObservePrimaryUserTest {
             primaryUserIdIs(UserIdTestData.userId)
 
             // When
-            userManagerSuccessfullyReturns(UserTestData.user)
+            userManagerSuccessfullyReturns(UserTestData.Primary)
 
             // Then
             val actual = awaitItem()
-            assertEquals(UserTestData.user, actual)
+            assertEquals(UserTestData.Primary, actual)
         }
     }
 

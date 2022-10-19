@@ -132,7 +132,7 @@ class AccountSettingsViewModelTest {
             mailSettingsExist()
 
             // When
-            userFlow.emit(UserTestData.user)
+            userFlow.emit(UserTestData.Primary)
 
             // Then
             val actual = awaitItem() as Data
@@ -167,7 +167,7 @@ class AccountSettingsViewModelTest {
             mailSettingsExist()
 
             // When
-            userFlow.emit(UserTestData.user)
+            userFlow.emit(UserTestData.Primary)
 
             // Then
             val actual = awaitItem() as Data
@@ -250,7 +250,7 @@ class AccountSettingsViewModelTest {
     }
 
     private suspend fun primaryUserExists() {
-        userFlow.emit(UserTestData.user)
+        userFlow.emit(UserTestData.Primary)
     }
 
     private suspend fun userSettingsExist() {

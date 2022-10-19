@@ -18,12 +18,28 @@
 
 package ch.protonmail.android.testdata.user
 
-import me.proton.core.domain.entity.UserId
+import me.proton.core.user.data.entity.UserEntity
+import me.proton.core.user.domain.entity.User
 
-object UserIdTestData {
+object UserEntityTestData {
 
-    val Primary = UserId("primary")
-    val userId = UserId("userId")
-    val userId1 = UserId("userId1")
-    val adminUserId = UserId("adminUserId")
+    val Primary = build(UserTestData.Primary)
+
+    fun build(user: User = UserTestData.build()) = UserEntity(
+        credit = user.credit,
+        currency = user.currency,
+        delinquent = user.delinquent?.value,
+        displayName = user.displayName,
+        email = user.email,
+        isPrivate = user.private,
+        maxSpace = user.maxSpace,
+        maxUpload = user.maxUpload,
+        name = user.name,
+        passphrase = null,
+        role = user.role?.value,
+        services = user.services,
+        subscribed = user.subscribed,
+        usedSpace = user.usedSpace,
+        userId = user.userId
+    )
 }

@@ -31,7 +31,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import ch.protonmail.android.testdata.contact.ContactTestData
-import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
+import ch.protonmail.android.testdata.label.LabelTestData.build
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.every
@@ -299,9 +299,9 @@ class MailboxItemUiModelMapperTest {
     fun `labels doesn't include folders and contacts groups`() {
         // given
         val mailboxItemLabels = listOf(
-            buildLabel("label", type = LabelType.MessageLabel),
-            buildLabel("folder", type = LabelType.MessageFolder),
-            buildLabel("group", type = LabelType.ContactGroup)
+            build("label", type = LabelType.MessageLabel),
+            build("folder", type = LabelType.MessageFolder),
+            build("group", type = LabelType.ContactGroup)
         )
         val mailboxItem = buildMailboxItem(labels = mailboxItemLabels)
 

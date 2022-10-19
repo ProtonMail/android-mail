@@ -33,7 +33,7 @@ import kotlin.test.assertNull
 internal class ObserveUserTest {
 
     private val userManager: UserManager = mockk {
-        every { observeUser(userId) } returns flowOf(UserTestData.user)
+        every { observeUser(userId) } returns flowOf(UserTestData.Primary)
     }
     private val observeUser = ObserveUser(userManager = userManager)
 
@@ -43,7 +43,7 @@ internal class ObserveUserTest {
         observeUser(userId).test {
 
             // then
-            val expected = UserTestData.user
+            val expected = UserTestData.Primary
             assertEquals(expected, awaitItem())
             awaitComplete()
         }

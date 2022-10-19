@@ -16,14 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.user
+package ch.protonmail.android.testdata.session
 
-import me.proton.core.domain.entity.UserId
+import me.proton.core.network.domain.session.Session
+import me.proton.core.network.domain.session.SessionId
 
-object UserIdTestData {
+object SessionTestData {
 
-    val Primary = UserId("primary")
-    val userId = UserId("userId")
-    val userId1 = UserId("userId1")
-    val adminUserId = UserId("adminUserId")
+    val Primary = build()
+
+    fun build() = Session(
+        accessToken = "accessToken",
+        refreshToken = "refreshToken",
+        scopes = listOf("Mail"),
+        sessionId = SessionId("session")
+    )
 }

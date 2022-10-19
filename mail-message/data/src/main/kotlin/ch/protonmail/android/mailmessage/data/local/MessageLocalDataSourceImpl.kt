@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -78,6 +79,14 @@ class MessageLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         messageId: MessageId
     ): Flow<Message?> = messageDao.observe(userId, messageId).mapLatest { it?.toMessage() }
+
+    override fun observeMessages(
+        userId: UserId,
+        conversationId: ConversationId
+    ): Flow<List<Message>> = messageDao.observeAllOrderByTimeAsc(
+        userId = userId,
+        conversationId = conversationId
+    ).mapLatest { list -> list.map { messageWithLabelIds -> messageWithLabelIds.toMessage() } }
 
     override fun observeMessages(
         userId: UserId,

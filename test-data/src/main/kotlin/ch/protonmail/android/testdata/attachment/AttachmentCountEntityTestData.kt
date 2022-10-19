@@ -16,14 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.user
+package ch.protonmail.android.testdata.attachment
 
-import me.proton.core.domain.entity.UserId
+import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
 
-object UserIdTestData {
+object AttachmentCountEntityTestData {
 
-    val Primary = UserId("primary")
-    val userId = UserId("userId")
-    val userId1 = UserId("userId1")
-    val adminUserId = UserId("adminUserId")
+    fun build() = AttachmentCountEntity(
+        calendar = 0
+    )
 }
