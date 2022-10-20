@@ -18,17 +18,14 @@
 
 package ch.protonmail.android.maildetail.domain
 
-import ch.protonmail.android.mailcommon.domain.model.Action
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import me.proton.core.domain.entity.UserId
-import javax.inject.Inject
+import org.junit.Test
 
-class ObserveDetailActions @Inject constructor() {
+internal class ObserveConversationDetailActionsTest {
 
-    operator fun invoke(userId: UserId, conversationId: ConversationId): Flow<List<Action>> = flowOf(emptyList())
+    private val observeDetailActions = ObserveConversationDetailActions()
 
-    operator fun invoke(userId: UserId, messageId: MessageId): Flow<List<Action>> = flowOf(emptyList())
+    @Test
+    fun name() {
+        TODO("Not yet implemented")
+    }
 }

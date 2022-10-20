@@ -27,7 +27,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
-import ch.protonmail.android.maildetail.domain.ObserveDetailActions
+import ch.protonmail.android.maildetail.domain.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -72,7 +72,7 @@ class MessageDetailViewModelTest {
     private val savedStateHandle = mockk<SavedStateHandle> {
         every { this@mockk.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns rawMessageId
     }
-    private val observeDetailActions = mockk<ObserveDetailActions> {
+    private val observeDetailActions = mockk<ObserveMessageDetailActions> {
         every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
             listOf(Action.Reply, Action.Archive, Action.MarkUnread)
         )

@@ -31,7 +31,7 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.maildetail.domain.ObserveDetailActions
+import ch.protonmail.android.maildetail.domain.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -73,7 +73,7 @@ class ConversationDetailViewModelTest {
     private val savedStateHandle = mockk<SavedStateHandle> {
         every { this@mockk.get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns rawConversationId
     }
-    private val observeDetailActions = mockk<ObserveDetailActions> {
+    private val observeConversationDetailActions = mockk<ObserveConversationDetailActions> {
         every { this@mockk.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
             listOf(Action.Reply, Action.Archive, Action.MarkUnread)
         )
@@ -87,7 +87,7 @@ class ConversationDetailViewModelTest {
             observeConversation = observeConversation,
             uiModelMapper = conversationUiModelMapper,
             actionUiModelMapper = actionUiModelMapper,
-            observeDetailActions = observeDetailActions,
+            observeDetailActions = observeConversationDetailActions,
             savedStateHandle = savedStateHandle
         )
     }
@@ -165,7 +165,7 @@ class ConversationDetailViewModelTest {
     @Test
     fun `bottomBar state is data when use case returns actions`() = runTest {
         // Given
-        every { observeDetailActions.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
+        every { observeConversationDetailActions.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
             listOf(Action.Reply, Action.Archive)
         )
         // When
@@ -185,7 +185,9 @@ class ConversationDetailViewModelTest {
     @Test
     fun `bottomBar state is failed loading actions when use case returns no actions`() = runTest {
         // Given
-        every { observeDetailActions.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(emptyList())
+        every { observeConversationDetailActions.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
+            emptyList()
+        )
         // When
         viewModel.state.test {
             initialStateEmitted()

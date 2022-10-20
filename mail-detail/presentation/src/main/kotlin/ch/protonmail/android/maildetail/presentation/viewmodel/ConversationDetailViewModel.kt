@@ -26,7 +26,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.maildetail.domain.ObserveDetailActions
+import ch.protonmail.android.maildetail.domain.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.AffectingConversation
@@ -55,7 +55,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeConversation: ObserveConversation,
     private val uiModelMapper: ConversationDetailUiModelMapper,
     private val actionUiModelMapper: ActionUiModelMapper,
-    private val observeDetailActions: ObserveDetailActions,
+    private val observeDetailActions: ObserveConversationDetailActions,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
