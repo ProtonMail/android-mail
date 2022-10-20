@@ -16,31 +16,29 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.conversation
+package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
-import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
-import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.ObserveDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
-import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.ConversationState
-import ch.protonmail.android.maildetail.presentation.reducer.ConversationStateReducer
-import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
-import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
-import ch.protonmail.android.testdata.conversation.ConversationTestData
-import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageState
+import ch.protonmail.android.maildetail.presentation.model.MessageUiModel
+import ch.protonmail.android.maildetail.presentation.reducer.MessageStateReducer
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every
 import io.mockk.mockk
@@ -56,37 +54,37 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
-class ConversationDetailViewModelTest {
+class MessageDetailViewModelTest {
 
-    private val rawConversationId = ConversationTestData.RAW_CONVERSATION_ID
-    private val conversationUiModelMapper = ConversationDetailUiModelMapper()
+    private val rawMessageId = "detailMessageId"
     private val actionUiModelMapper = ActionUiModelMapper()
-    private val conversationStateReducer = ConversationStateReducer()
+    private val messageUiModelMapper = MessageDetailUiModelMapper()
+    private val messageStateReducer = MessageStateReducer()
     private val bottomBarStateReducer = BottomBarStateReducer()
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
 
-    private val observeConversation = mockk<ObserveConversation> {
-        every { this@mockk.invoke(userId, any()) } returns flowOf(ConversationTestData.conversation.right())
+    private val observeMessage = mockk<ObserveMessage> {
+        every { this@mockk.invoke(userId, any()) } returns flowOf(MessageTestData.message.right())
     }
     private val savedStateHandle = mockk<SavedStateHandle> {
-        every { this@mockk.get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns rawConversationId
+        every { this@mockk.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns rawMessageId
     }
     private val observeDetailActions = mockk<ObserveDetailActions> {
-        every { this@mockk.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
+        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
             listOf(Action.Reply, Action.Archive, Action.MarkUnread)
         )
     }
 
     private val viewModel by lazy {
-        ConversationDetailViewModel(
+        MessageDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
-            conversationStateReducer = conversationStateReducer,
+            messageStateReducer = messageStateReducer,
             bottomBarStateReducer = bottomBarStateReducer,
-            observeConversation = observeConversation,
-            uiModelMapper = conversationUiModelMapper,
+            observeMessage = observeMessage,
+            uiModelMapper = messageUiModelMapper,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeDetailActions,
             savedStateHandle = savedStateHandle
@@ -103,12 +101,12 @@ class ConversationDetailViewModelTest {
         // When
         viewModel.state.test {
             // Then
-            assertEquals(ConversationDetailState.Loading, awaitItem())
+            assertEquals(MessageDetailState.Loading, awaitItem())
         }
     }
 
     @Test
-    fun `state is not logged in when there is no primary user`() = runTest {
+    fun `message state is not logged in when there is no primary user`() = runTest {
         // Given
         givenNoLoggedInUser()
 
@@ -116,49 +114,41 @@ class ConversationDetailViewModelTest {
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            assertEquals(ConversationState.Error.NotLoggedIn, awaitItem().conversationState)
+            assertEquals(MessageState.Error.NotLoggedIn, awaitItem().messageState)
         }
     }
 
     @Test
-    fun `throws exception when conversation id parameter was not provided as input`() = runTest {
+    fun `throws exception when message id parameter was not provided as input`() = runTest {
         // Given
-        every { savedStateHandle.get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns null
-        // When
+        every { savedStateHandle.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns null
+
+        // Then
         val thrown = assertThrows(IllegalStateException::class.java) { viewModel.state }
         // Then
-        assertEquals("No Conversation id given", thrown.message)
+        assertEquals("No Message id given", thrown.message)
     }
 
     @Test
-    fun `conversation state is conversation data when use case returns conversation`() = runTest {
+    fun `message state is data when use case returns message metadata`() = runTest {
         // Given
-        val conversationId = ConversationId(rawConversationId)
-        every { observeConversation(userId, conversationId) } returns flowOf(ConversationTestData.conversation.right())
+        val messageId = MessageId(rawMessageId)
+        val subject = "message subject"
+        val isStarred = true
+        val cachedMessage = MessageTestData.buildMessage(
+            userId = userId,
+            id = messageId.id,
+            subject = subject,
+            labelIds = listOf(SystemLabelId.Starred.labelId.id)
+        )
+        every { observeMessage.invoke(userId, messageId) } returns flowOf(cachedMessage.right())
 
         // When
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            assertEquals(
-                ConversationState.Data(ConversationUiModelTestData.conversationUiModel),
-                awaitItem().conversationState
-            )
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `conversation state is failed loading data when use case returns data error`() = runTest {
-        // Given
-        val conversationId = ConversationId(rawConversationId)
-        every { observeConversation(userId, conversationId) } returns flowOf(DataError.Local.NoDataCached.left())
-
-        // When
-        viewModel.state.test {
-            initialStateEmitted()
-            // Then
-            assertEquals(ConversationState.Error.FailedLoadingData, awaitItem().conversationState)
+            val expected = MessageState.Data(MessageUiModel(messageId, subject, isStarred))
+            assertEquals(expected, awaitItem().messageState)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -166,13 +156,14 @@ class ConversationDetailViewModelTest {
     @Test
     fun `bottomBar state is data when use case returns actions`() = runTest {
         // Given
-        every { observeDetailActions.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
+        every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
             listOf(Action.Reply, Action.Archive)
         )
+
         // When
         viewModel.state.test {
             initialStateEmitted()
-            conversationStateEmitted()
+            messageStateEmitted()
             // Then
             val actionUiModels = listOf(
                 ActionUiModel(Action.Reply, R.drawable.ic_proton_arrow_up_and_left),
@@ -186,26 +177,28 @@ class ConversationDetailViewModelTest {
     @Test
     fun `bottomBar state is failed loading actions when use case returns no actions`() = runTest {
         // Given
-        every { observeDetailActions.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(emptyList())
+        every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns flowOf(emptyList())
+
         // When
         viewModel.state.test {
             initialStateEmitted()
-            conversationStateEmitted()
+            messageStateEmitted()
             // Then
             val expected = BottomBarState.Error.FailedLoadingActions
             assertEquals(expected, awaitItem().bottomBarState)
         }
     }
 
-    private suspend fun FlowTurbine<ConversationDetailState>.initialStateEmitted() {
-        assertEquals(ConversationDetailState.Loading, awaitItem())
+    private suspend fun FlowTurbine<MessageDetailState>.messageStateEmitted() {
+        assertIs<MessageState.Data>(awaitItem().messageState)
     }
 
-    private suspend fun FlowTurbine<ConversationDetailState>.conversationStateEmitted() {
-        assertIs<ConversationState.Data>(awaitItem().conversationState)
+    private suspend fun FlowTurbine<MessageDetailState>.initialStateEmitted() {
+        assertEquals(MessageDetailState.Loading, awaitItem())
     }
 
     private fun givenNoLoggedInUser() {
         every { observePrimaryUserId.invoke() } returns flowOf(null)
     }
+
 }
