@@ -32,8 +32,7 @@ class ConversationStateReducer @Inject constructor() {
         is ConversationDetailEvent.NoPrimaryUser -> ConversationState.Error.NotLoggedIn
         is ConversationDetailEvent.ConversationData -> ConversationState.Data(event.conversationUiModel)
         is ConversationDetailEvent.ErrorLoadingConversation -> ConversationState.Error.FailedLoadingData
-        is ConversationDetailEvent.ConversationActionsData,
-        is ConversationDetailEvent.ErrorLoadingActions -> currentState
+        is ConversationDetailEvent.ConversationBottomBarEvent -> currentState
     }
 
 }

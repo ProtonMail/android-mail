@@ -16,12 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.mailcommon.presentation.reducer
 
-import androidx.annotation.DrawableRes
-import ch.protonmail.android.maildetail.domain.Action
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import javax.inject.Inject
 
-data class ActionUiModel(
-    val action: Action,
-    @DrawableRes val icon: Int
-)
+class BottomBarStateReducer @Inject constructor() {
+
+    fun reduce(currentState: BottomBarState, event: BottomBarEvent): BottomBarState {
+        return when (event) {
+            is BottomBarEvent.ActionsData -> BottomBarState.Data(event.actionUiModels)
+            is BottomBarEvent.ErrorLoadingActions -> BottomBarState.Error.FailedLoadingActions
+        }
+    }
+}

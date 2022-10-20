@@ -35,8 +35,7 @@ class MessageStateReducer @Inject constructor() {
                 "This should never happen. Handle by following the 'load message body' flow (once implemented)"
             )
             is MessageDetailEvent.MessageBody -> TODO("Implement when adding message body flow")
-            is MessageDetailEvent.ErrorLoadingActions,
-            is MessageDetailEvent.MessageActionsData -> currentState
+            is MessageDetailEvent.MessageBottomBarEvent -> currentState
         }
     }
 }

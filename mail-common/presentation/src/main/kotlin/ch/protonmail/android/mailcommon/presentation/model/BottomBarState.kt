@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.mailcommon.presentation.model
 
 sealed interface BottomBarState {
 
@@ -29,4 +29,11 @@ sealed interface BottomBarState {
     sealed interface Error : BottomBarState {
         object FailedLoadingActions : Error
     }
+}
+
+sealed interface BottomBarEvent {
+
+    data class ActionsData(val actionUiModels: List<ActionUiModel>) : BottomBarEvent
+
+    object ErrorLoadingActions : BottomBarEvent
 }

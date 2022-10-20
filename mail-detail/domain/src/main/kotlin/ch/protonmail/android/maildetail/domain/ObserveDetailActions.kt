@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.domain
 
+import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.Flow

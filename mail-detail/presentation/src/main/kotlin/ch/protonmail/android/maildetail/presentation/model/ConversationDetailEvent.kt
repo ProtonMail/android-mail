@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 
 sealed interface ConversationDetailEvent {
     data class ConversationData(val conversationUiModel: ConversationDetailUiModel) : ConversationDetailEvent
@@ -25,9 +26,5 @@ sealed interface ConversationDetailEvent {
     object NoPrimaryUser : ConversationDetailEvent
     object ErrorLoadingConversation : ConversationDetailEvent
 
-    data class ConversationActionsData(
-        val actionUiModels: List<ActionUiModel>
-    ) : ConversationDetailEvent
-
-    object ErrorLoadingActions : ConversationDetailEvent
+    data class ConversationBottomBarEvent(val bottomBarEvent: BottomBarEvent) : ConversationDetailEvent
 }

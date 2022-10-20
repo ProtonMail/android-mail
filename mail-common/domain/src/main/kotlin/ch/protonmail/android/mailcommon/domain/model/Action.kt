@@ -16,20 +16,29 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.mailcommon.domain.model
 
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-
-data class MessageDetailState(
-    val messageState: MessageState,
-    val bottomBarState: BottomBarState
-) {
-
-    companion object {
-
-        val Loading = MessageDetailState(
-            messageState = MessageState.Loading,
-            bottomBarState = BottomBarState.Loading
-        )
-    }
+enum class Action {
+    Reply,
+    ReplyAll,
+    Forward,
+    MarkRead,
+    MarkUnread,
+    Star,
+    Unstar,
+    Label,
+    Move,
+    Trash,
+    Archive,
+    Spam,
+    ViewInLightMode,
+    ViewInDarkMode,
+    Print,
+    ViewHeaders,
+    ViewHtml,
+    ReportPhishing,
+    Remind,
+    SavePdf,
+    SenderEmails,
+    SaveAttachments
 }

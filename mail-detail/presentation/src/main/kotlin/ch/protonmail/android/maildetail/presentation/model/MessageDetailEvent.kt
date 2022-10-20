@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 
 sealed interface MessageDetailEvent {
@@ -27,6 +28,5 @@ sealed interface MessageDetailEvent {
     object NoPrimaryUser : MessageDetailEvent
     object NoCachedMetadata : MessageDetailEvent
 
-    data class MessageActionsData(val actions: List<ActionUiModel>) : MessageDetailEvent
-    object ErrorLoadingActions : MessageDetailEvent
+    data class MessageBottomBarEvent(val bottomBarEvent: BottomBarEvent) : MessageDetailEvent
 }

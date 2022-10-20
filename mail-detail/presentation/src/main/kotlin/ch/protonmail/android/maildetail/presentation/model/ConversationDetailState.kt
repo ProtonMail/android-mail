@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+
 data class ConversationDetailState(
     val conversationState: ConversationState,
     val bottomBarState: BottomBarState

@@ -16,34 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain
+package ch.protonmail.android.mailcommon.presentation.model
 
 import androidx.annotation.DrawableRes
+import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.presentation.R
 
-enum class Action {
-    Reply,
-    ReplyAll,
-    Forward,
-    MarkRead,
-    MarkUnread,
-    Star,
-    Unstar,
-    Label,
-    Move,
-    Trash,
-    Archive,
-    Spam,
-    ViewInLightMode,
-    ViewInDarkMode,
-    Print,
-    ViewHeaders,
-    ViewHtml,
-    ReportPhishing,
-    Remind,
-    SavePdf,
-    SenderEmails,
-    SaveAttachments
-}
+data class ActionUiModel(
+    val action: Action,
+    @DrawableRes val icon: Int
+)
 
 @DrawableRes
 fun Action.iconDrawable(): Int {

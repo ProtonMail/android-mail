@@ -16,16 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.reducer
+package ch.protonmail.android.mailcommon.presentation.reducer
 
-import ch.protonmail.android.maildetail.domain.Action
-import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.model.ActionUiModel
-import ch.protonmail.android.maildetail.presentation.model.BottomBarState
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
-import ch.protonmail.android.testdata.message.MessageTestData
-import ch.protonmail.android.testdata.message.MessageUiModelTestData
+import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import me.proton.core.presentation.R
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -55,7 +52,7 @@ internal class BottomBarStateReducerTest(
                 "from loading to actions data",
                 TestParams.TestInput(
                     currentState = BottomBarState.Loading,
-                    event = MessageDetailEvent.MessageActionsData(actions),
+                    event = BottomBarEvent.ActionsData(actions),
                     expectedState = BottomBarState.Data(actions)
                 )
             ),
@@ -63,49 +60,15 @@ internal class BottomBarStateReducerTest(
                 "from loading to failed loading actions data",
                 TestParams.TestInput(
                     currentState = BottomBarState.Loading,
-                    event = MessageDetailEvent.ErrorLoadingActions,
+                    event = BottomBarEvent.ErrorLoadingActions,
                     expectedState = BottomBarState.Error.FailedLoadingActions
-                )
-            )
-        )
-        private val noTransitionFromIgnoredEvents = listOf(
-            TestParams(
-                "current state is unchanged when no primary user",
-                TestParams.TestInput(
-                    currentState = BottomBarState.Loading,
-                    event = MessageDetailEvent.NoPrimaryUser,
-                    expectedState = BottomBarState.Loading
-                )
-            ),
-            TestParams(
-                "current state is unchanged when message body",
-                TestParams.TestInput(
-                    currentState = BottomBarState.Data(actions),
-                    event = MessageDetailEvent.MessageBody(MessageWithBody(MessageTestData.message, null)),
-                    expectedState = BottomBarState.Data(actions)
-                )
-            ),
-            TestParams(
-                "current state is unchanged when message metadata",
-                TestParams.TestInput(
-                    currentState = BottomBarState.Error.FailedLoadingActions,
-                    event = MessageDetailEvent.MessageMetadata(MessageUiModelTestData.uiModel),
-                    expectedState = BottomBarState.Error.FailedLoadingActions
-                )
-            ),
-            TestParams(
-                "current state is unchanged when no primary user",
-                TestParams.TestInput(
-                    currentState = BottomBarState.Loading,
-                    event = MessageDetailEvent.NoPrimaryUser,
-                    expectedState = BottomBarState.Loading
                 )
             )
         )
 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
-        fun data() = (transitionsFromRelevantEvents + noTransitionFromIgnoredEvents)
+        fun data() = transitionsFromRelevantEvents
             .map { arrayOf(it.testName, it.testInput) }
     }
 
@@ -116,7 +79,7 @@ internal class BottomBarStateReducerTest(
 
         data class TestInput(
             val currentState: BottomBarState,
-            val event: MessageDetailEvent,
+            val event: BottomBarEvent,
             val expectedState: BottomBarState
         )
     }

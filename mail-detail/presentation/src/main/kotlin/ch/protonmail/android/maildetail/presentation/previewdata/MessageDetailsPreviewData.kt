@@ -19,10 +19,10 @@
 package ch.protonmail.android.maildetail.presentation.previewdata
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import ch.protonmail.android.maildetail.domain.Action
+import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.model.ActionUiModel
-import ch.protonmail.android.maildetail.presentation.model.BottomBarState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageState
 

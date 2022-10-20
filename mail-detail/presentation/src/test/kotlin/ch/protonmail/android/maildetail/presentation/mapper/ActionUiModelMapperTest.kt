@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.maildetail.domain.Action
-import ch.protonmail.android.maildetail.presentation.model.ActionUiModel
+import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import me.proton.core.presentation.R
 import org.junit.Test
 import org.junit.runner.RunWith

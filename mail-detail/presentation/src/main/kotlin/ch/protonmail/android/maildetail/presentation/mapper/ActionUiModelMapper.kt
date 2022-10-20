@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.maildetail.domain.Action
-import ch.protonmail.android.maildetail.domain.iconDrawable
-import ch.protonmail.android.maildetail.presentation.model.ActionUiModel
+import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
+import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
 
