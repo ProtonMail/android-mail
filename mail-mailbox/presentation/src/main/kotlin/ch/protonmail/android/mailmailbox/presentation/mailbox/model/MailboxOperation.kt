@@ -32,8 +32,8 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object ExitSelectionMode : MailboxViewAction, MailboxOperation.AffectingTopAppBar
     data class OpenItemDetails(val item: MailboxItemUiModel) : MailboxViewAction
     object Refresh : MailboxViewAction
-    object EnableUnreadFilter : MailboxViewAction
-    object DisableUnreadFilter : MailboxViewAction
+    object EnableUnreadFilter : MailboxViewAction, MailboxOperation.AffectingUnreadFilter
+    object DisableUnreadFilter : MailboxViewAction, MailboxOperation.AffectingUnreadFilter
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
@@ -44,8 +44,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     data class NewLabelSelected(
         val selectedLabel: MailLabel,
-        val selectedLabelCount: Int
-    ) : MailboxEvent, MailboxOperation.AffectingTopAppBar
+        val selectedLabelCount: Int?
+    ) : MailboxEvent, MailboxOperation.AffectingTopAppBar, MailboxOperation.AffectingUnreadFilter
 
     data class SelectedLabelChanged(
         val selectedLabel: MailLabel
@@ -53,7 +53,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
 
     data class SelectedLabelCountChanged(
         val selectedLabelCount: Int
-    ) : MailboxEvent
+    ) : MailboxEvent, MailboxOperation.AffectingUnreadFilter
 }
 
 

@@ -48,8 +48,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxTopAppBarReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxUnreadFilterReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -82,7 +83,8 @@ class MailboxViewModel @Inject constructor(
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val getContacts: GetContacts,
-    private val mailboxTopAppBarReducer: MailboxTopAppBarReducer
+    private val mailboxTopAppBarReducer: MailboxTopAppBarReducer,
+    private val unreadFilterReducer: MailboxUnreadFilterReducer
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -107,18 +109,12 @@ class MailboxViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         observeUnreadCounters()
-            .onEach { unreadCounters ->
-                updateStateForUnreadCountersChange(unreadCounters)
+            .mapToCurrentLabelCount()
+            .filterNotNull()
+            .onEach { currentLabelCount ->
+                updateStateForUnreadCountersChange(currentLabelCount)
             }
             .launchIn(viewModelScope)
-    }
-
-    private fun Flow<MailLabel>.pairWithCurrentLabelCount() = map { currentLabel ->
-        val currentLabelCount = observeUnreadCounters().firstOrNull()
-            ?.find { it.labelId == currentLabel.id.labelId }
-            ?.count
-            ?: 0
-        Pair(currentLabel, currentLabelCount)
     }
 
     internal fun submit(viewAction: MailboxViewAction) {
@@ -135,14 +131,15 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun toggleUnreadFilter(isEnabled: Boolean) {
-        when (val currentState = state.value.unreadFilterState) {
-            is UnreadFilterState.Loading -> return
-            is UnreadFilterState.Data -> mutableState.emit(
-                state.value.copy(
-                    unreadFilterState = currentState.copy(isFilterEnabled = isEnabled)
-                )
+        val unreadFilterState = unreadFilterReducer.newStateFrom(
+            currentState = state.value.unreadFilterState,
+            operation = if (isEnabled) MailboxViewAction.EnableUnreadFilter else MailboxViewAction.DisableUnreadFilter
+        )
+        mutableState.emit(
+            state.value.copy(
+                unreadFilterState = unreadFilterState
             )
-        }.exhaustive
+        )
     }
 
     private suspend fun onCloseSelectionMode() {
@@ -240,17 +237,23 @@ class MailboxViewModel @Inject constructor(
             }
         }.filterNotNull()
 
-    private suspend fun updateStateForUnreadCountersChange(unreadCounters: List<UnreadCounter>) {
-        val unreadFilterState = buildUpdatedUnreadFilterState(unreadCounters)
+    private suspend fun updateStateForUnreadCountersChange(currentLabelCount: Int) {
+        val unreadFilterState = unreadFilterReducer.newStateFrom(
+            state.value.unreadFilterState,
+            MailboxEvent.SelectedLabelCountChanged(currentLabelCount)
+        )
         mutableState.emit(mutableState.value.copy(unreadFilterState = unreadFilterState))
     }
 
-    private suspend fun updateStateForSelectedMailLabelChange(currentMailLabel: MailLabel, currentLabelCount: Int) {
+    private suspend fun updateStateForSelectedMailLabelChange(currentMailLabel: MailLabel, currentLabelCount: Int?) {
         val topAppBarState = mailboxTopAppBarReducer.newStateFrom(
             state.value.topAppBarState,
             MailboxEvent.NewLabelSelected(currentMailLabel, currentLabelCount)
         )
-        val unreadFilterState = buildUpdatedUnreadFilterState(observeUnreadCounters().firstOrNull())
+        val unreadFilterState = unreadFilterReducer.newStateFrom(
+            state.value.unreadFilterState,
+            MailboxEvent.NewLabelSelected(currentMailLabel, currentLabelCount)
+        )
 
         val currentState = state.value.mailboxListState
         if (currentState is MailboxListState.Data) {
@@ -287,17 +290,6 @@ class MailboxViewModel @Inject constructor(
                 topAppBarState = topAppBarState
             )
         )
-    }
-
-    private fun buildUpdatedUnreadFilterState(unreadCounters: List<UnreadCounter>?): UnreadFilterState {
-        val currentMailLabelId = selectedMailLabelId.flow.value
-        val count = unreadCounters?.find { it.labelId == currentMailLabelId.labelId }?.count
-            ?: return UnreadFilterState.Loading
-
-        return when (val currentState = state.value.unreadFilterState) {
-            is UnreadFilterState.Loading -> UnreadFilterState.Data(count, false)
-            is UnreadFilterState.Data -> currentState.copy(count)
-        }
     }
 
     private fun observeUnreadCounters(): Flow<List<UnreadCounter>> = primaryUserId.flatMapLatest { userId ->
@@ -341,6 +333,18 @@ class MailboxViewModel @Inject constructor(
         } else {
             observeCurrentViewMode(userId).first()
         }
+    }
+
+    private fun Flow<MailLabel>.pairWithCurrentLabelCount() = map { currentLabel ->
+        val currentLabelCount = observeUnreadCounters().firstOrNull()
+            ?.find { it.labelId == currentLabel.id.labelId }
+            ?.count
+        Pair(currentLabel, currentLabelCount)
+    }
+
+    private fun Flow<List<UnreadCounter>>.mapToCurrentLabelCount() = map { unreadCounters ->
+        val currentMailLabelId = selectedMailLabelId.flow.value
+        unreadCounters.find { it.labelId == currentMailLabelId.labelId }?.count
     }
 
     companion object {

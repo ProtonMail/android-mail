@@ -51,6 +51,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxTopAppBarReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxUnreadFilterReducer
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
@@ -62,6 +63,7 @@ import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
+import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -126,6 +128,10 @@ class MailboxViewModelTest {
         every { newStateFrom(any(), any()) } returns MailboxTopAppBarState.Loading
     }
 
+    private val unreadFilterReducer = mockk<MailboxUnreadFilterReducer> {
+        every { newStateFrom(any(), any()) } returns UnreadFilterState.Loading
+    }
+
     private val mailboxViewModel by lazy {
         MailboxViewModel(
             markAsStaleMailboxItems = markAsStaleMailboxItems,
@@ -137,7 +143,8 @@ class MailboxViewModelTest {
             observeUnreadCounters = observeUnreadCounters,
             mailboxItemMapper = mailboxItemMapper,
             getContacts = getContacts,
-            mailboxTopAppBarReducer = mailboxTopAppBarReducer
+            mailboxTopAppBarReducer = mailboxTopAppBarReducer,
+            unreadFilterReducer = unreadFilterReducer
         )
     }
 
@@ -261,17 +268,32 @@ class MailboxViewModelTest {
     fun `emits mailbox state with unread filter state based on current location`() = runTest {
         // Given
         val currentLocation = MutableStateFlow<MailLabelId>(Sent)
+        val sentCount = UnreadCountersTestData.labelToCounterMap[Sent.labelId]!!
+        val archiveCount = UnreadCountersTestData.labelToCounterMap[Archive.labelId]!!
+        clearMocks(unreadFilterReducer)
         every { selectedMailLabelId.flow } returns currentLocation
+        every {
+            unreadFilterReducer.newStateFrom(
+                any(),
+                MailboxEvent.NewLabelSelected(Sent.toMailLabel(), sentCount)
+            )
+        } returns UnreadFilterState.Data(sentCount, false)
+        every {
+            unreadFilterReducer.newStateFrom(
+                any(),
+                MailboxEvent.NewLabelSelected(Archive.toMailLabel(), archiveCount)
+            )
+        } returns UnreadFilterState.Data(archiveCount, false)
 
         mailboxViewModel.state.test {
             // Then
             val firstItem = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
-            assertEquals(3, firstItem.numUnread)
+            assertEquals(sentCount, firstItem.numUnread)
             // When
             currentLocation.emit(Archive)
             // Then
             val secondItem = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
-            assertEquals(5, secondItem.numUnread)
+            assertEquals(archiveCount, secondItem.numUnread)
         }
     }
 
@@ -281,11 +303,16 @@ class MailboxViewModelTest {
             // Given
             val currentLocation = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
             every { selectedMailLabelId.flow } returns currentLocation
+            every {
+                unreadFilterReducer.newStateFrom(
+                    any(),
+                    MailboxEvent.NewLabelSelected(MailLabelTestData.customLabel, selectedLabelCount = null)
+                )
+            } returns UnreadFilterState.Loading
 
             mailboxViewModel.state.test {
                 // Then
-                val firstItem = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
-                assertEquals(1, firstItem.numUnread)
+                awaitItem()
                 // When
                 currentLocation.emit(MailLabelTestData.customLabel.id)
                 // Then
@@ -491,27 +518,33 @@ class MailboxViewModelTest {
 
     @Test
     fun `enable unread filter action emits a new state with unread filter state enabled`() = runTest {
+        // Given
+        val expectedState = UnreadFilterState.Data(5, true)
+        every { unreadFilterReducer.newStateFrom(any(), MailboxViewAction.EnableUnreadFilter) } returns expectedState
+
         // When
         mailboxViewModel.submit(MailboxViewAction.EnableUnreadFilter)
         mailboxViewModel.state.test {
 
             // Then
-            val expected = UnreadFilterState.Data(5, true)
             val actual = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
-            assertEquals(expected, actual)
+            assertEquals(expectedState, actual)
         }
     }
 
     @Test
     fun `disable unread filter action emits a new state with unread filter state disabled`() = runTest {
+        // Given
+        val expectedState = UnreadFilterState.Data(5, false)
+        every { unreadFilterReducer.newStateFrom(any(), MailboxViewAction.DisableUnreadFilter) } returns expectedState
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.DisableUnreadFilter)
         mailboxViewModel.state.test {
-            // When
-            mailboxViewModel.submit(MailboxViewAction.DisableUnreadFilter)
 
             // Then
-            val expected = UnreadFilterState.Data(5, false)
             val actual = assertIs<UnreadFilterState.Data>(awaitItem().unreadFilterState)
-            assertEquals(expected, actual)
+            assertEquals(expectedState, actual)
         }
     }
 
@@ -540,7 +573,14 @@ class MailboxViewModelTest {
         // Given
         every { selectedMailLabelId.flow } returns MutableStateFlow<MailLabelId>(MailLabelId.System.AllMail)
         val unreadCountersFlow = MutableStateFlow(UnreadCountersTestData.systemUnreadCounters)
+        val changedCount = 1
         coEvery { observeUnreadCounters(userId = any()) } returns unreadCountersFlow
+        every {
+            unreadFilterReducer.newStateFrom(
+                any(),
+                MailboxEvent.SelectedLabelCountChanged(changedCount)
+            )
+        } returns UnreadFilterState.Data(changedCount, false)
 
         mailboxViewModel.state.test {
             // Then
@@ -548,7 +588,7 @@ class MailboxViewModelTest {
             assertEquals(MailLabelId.System.AllMail, initialState.scrollToMailboxTop.consume())
 
             // When
-            unreadCountersFlow.emit(listOf(UnreadCounter(SystemLabelId.AllMail.labelId, 1)))
+            unreadCountersFlow.emit(listOf(UnreadCounter(SystemLabelId.AllMail.labelId, changedCount)))
 
             // Then
             val actual = assertIs<MailboxListState.Data>(awaitItem().mailboxListState)
