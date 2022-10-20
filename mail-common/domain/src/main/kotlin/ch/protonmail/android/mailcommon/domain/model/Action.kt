@@ -29,6 +29,7 @@ enum class Action {
     Label,
     Move,
     Trash,
+    Delete,
     Archive,
     Spam,
     ViewInLightMode,

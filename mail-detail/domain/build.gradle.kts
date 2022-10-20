@@ -46,8 +46,12 @@ android {
 dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
+    implementation(Proton.Core.label)
+
     implementation(Dependencies.moduleDomainLibs)
+    implementation(project(":mail-conversation:domain"))
     implementation(project(":mail-message:domain"))
+    implementation(project(":mail-label:domain"))
     implementation(project(":mail-common:domain"))
 
     testImplementation(Dependencies.testLibs)

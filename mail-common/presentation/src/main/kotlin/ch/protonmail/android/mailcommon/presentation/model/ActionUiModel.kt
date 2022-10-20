@@ -41,6 +41,7 @@ fun Action.iconDrawable(): Int {
         Action.Label -> R.drawable.ic_proton_tag
         Action.Move -> R.drawable.ic_proton_folder_arrow_in
         Action.Trash -> R.drawable.ic_proton_trash
+        Action.Delete -> R.drawable.ic_proton_trash_cross
         Action.Archive -> R.drawable.ic_proton_archive_box
         Action.Spam -> R.drawable.ic_proton_fire
         Action.ViewInLightMode -> R.drawable.ic_proton_circle

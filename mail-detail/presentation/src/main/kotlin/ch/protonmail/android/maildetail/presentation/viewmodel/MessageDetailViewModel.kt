@@ -24,7 +24,7 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
-import ch.protonmail.android.maildetail.domain.ObserveMessageDetailActions
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.AffectingMessage

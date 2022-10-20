@@ -26,7 +26,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.maildetail.domain.ObserveConversationDetailActions
+import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.AffectingConversation
@@ -105,13 +105,14 @@ class ConversationDetailViewModel @Inject constructor(
             if (userId == null) {
                 return@flatMapLatest flowOf(ConversationDetailEvent.NoPrimaryUser)
             }
-            return@flatMapLatest observeDetailActions(userId, conversationId).mapLatest { actions ->
-                val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
-                return@mapLatest if (actionUiModels.isEmpty()) {
-                    ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions)
-                } else {
-                    ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ActionsData(actionUiModels))
-                }
+            observeDetailActions(userId, conversationId).mapLatest { either ->
+                either.fold(
+                    ifLeft = { ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
+                    ifRight = { actions ->
+                        val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
+                        ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ActionsData(actionUiModels))
+                    }
+                )
             }
         }.onEach { event ->
             emitNewStateFrom(event)

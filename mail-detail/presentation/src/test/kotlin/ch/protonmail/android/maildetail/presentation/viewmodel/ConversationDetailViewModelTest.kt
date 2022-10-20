@@ -31,7 +31,7 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.maildetail.domain.ObserveConversationDetailActions
+import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -75,7 +75,7 @@ class ConversationDetailViewModelTest {
     }
     private val observeConversationDetailActions = mockk<ObserveConversationDetailActions> {
         every { this@mockk.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
-            listOf(Action.Reply, Action.Archive, Action.MarkUnread)
+            listOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
         )
     }
 
@@ -166,7 +166,7 @@ class ConversationDetailViewModelTest {
     fun `bottomBar state is data when use case returns actions`() = runTest {
         // Given
         every { observeConversationDetailActions.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
-            listOf(Action.Reply, Action.Archive)
+            listOf(Action.Reply, Action.Archive).right()
         )
         // When
         viewModel.state.test {
@@ -183,10 +183,10 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `bottomBar state is failed loading actions when use case returns no actions`() = runTest {
+    fun `bottomBar state is failed loading actions when use case returns error`() = runTest {
         // Given
         every { observeConversationDetailActions.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
-            emptyList()
+            DataError.Local.NoDataCached.left()
         )
         // When
         viewModel.state.test {

@@ -18,14 +18,85 @@
 
 package ch.protonmail.android.maildetail.domain
 
+import app.cash.turbine.test
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
+import ch.protonmail.android.testdata.conversation.ConversationTestData
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import io.mockk.every
+import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.test.assertEquals
 
 internal class ObserveConversationDetailActionsTest {
 
-    private val observeDetailActions = ObserveConversationDetailActions()
+    private val observeConversation = mockk<ObserveConversation> {
+        every {
+            this@mockk.invoke(userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
+        } returns flowOf(ConversationTestData.conversation.right())
+    }
+
+    private val observeDetailActions = ObserveConversationDetailActions(
+        observeConversation = observeConversation
+    )
 
     @Test
-    fun name() {
-        TODO("Not yet implemented")
+    fun `returns default actions list for conversation`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        // When
+        observeDetailActions.invoke(userId, conversationId).test {
+            // Then
+            val expected = listOf(
+                Action.MarkUnread,
+                Action.Move,
+                Action.Trash,
+                Action.Label
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns delete action when all messages in conversation are trash or spam`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val conversation = ConversationTestData.trashAndSpamConversation
+        every { observeConversation.invoke(userId, conversationId) } returns flowOf(conversation.right())
+        // When
+        observeDetailActions.invoke(userId, conversationId).test {
+            // Then
+            val expected = listOf(
+                Action.MarkUnread,
+                Action.Move,
+                Action.Delete,
+                Action.Label
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns data error when failing to get conversation`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        every { observeConversation.invoke(userId, conversationId) } returns flowOf(
+            DataError.Local.NoDataCached.left()
+        )
+        // When
+        observeDetailActions.invoke(userId, conversationId).test {
+            // Then
+            assertEquals(DataError.Local.NoDataCached.left(), awaitItem())
+            awaitComplete()
+        }
     }
 }

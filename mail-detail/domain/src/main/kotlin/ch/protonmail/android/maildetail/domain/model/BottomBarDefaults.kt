@@ -16,17 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain
+package ch.protonmail.android.maildetail.domain.model
 
 import ch.protonmail.android.mailcommon.domain.model.Action
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import me.proton.core.domain.entity.UserId
-import javax.inject.Inject
 
-class ObserveConversationDetailActions @Inject constructor() {
-
-    operator fun invoke(userId: UserId, conversationId: ConversationId): Flow<List<Action>> =
-        flowOf(emptyList())
+object BottomBarDefaults {
+    object Conversation {
+        val actions = listOf(
+            Action.MarkUnread,
+            Action.Move,
+            Action.Trash,
+            Action.Label
+        )
+        val actionsPermanentDelete = listOf(
+            Action.MarkUnread,
+            Action.Move,
+            Action.Delete,
+            Action.Label
+        )
+    }
 }
