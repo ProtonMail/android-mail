@@ -27,9 +27,10 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReduc
 import ch.protonmail.android.maildetail.domain.ObserveDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailAction
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.AffectingMessage
+import ch.protonmail.android.maildetail.presentation.model.Event
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageStateReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -77,20 +78,20 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
-    fun submit(action: MessageDetailAction) = when (action) {
-        is MessageDetailAction.Star -> Timber.d("Star message clicked")
-        is MessageDetailAction.UnStar -> Timber.d("UnStar message clicked")
+    fun submit(action: MessageViewAction) = when (action) {
+        is MessageViewAction.Star -> Timber.d("Star message clicked")
+        is MessageViewAction.UnStar -> Timber.d("UnStar message clicked")
     }
 
     private fun observeMessageMetadata(messageId: MessageId) {
         primaryUserId.flatMapLatest { userId ->
             if (userId == null) {
-                return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
+                return@flatMapLatest flowOf(Event.NoPrimaryUser)
             }
             return@flatMapLatest observeMessage(userId, messageId).mapLatest { either ->
                 either.fold(
-                    ifLeft = { MessageDetailEvent.NoCachedMetadata },
-                    ifRight = { MessageDetailEvent.MessageMetadata(uiModelMapper.toUiModel(it)) }
+                    ifLeft = { Event.NoCachedMetadata },
+                    ifRight = { Event.MessageMetadata(uiModelMapper.toUiModel(it)) }
                 )
             }
         }.onEach { event ->
@@ -101,14 +102,14 @@ class MessageDetailViewModel @Inject constructor(
     private fun observeBottomBarActions(messageId: MessageId) {
         primaryUserId.flatMapLatest { userId ->
             if (userId == null) {
-                return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
+                return@flatMapLatest flowOf(Event.NoPrimaryUser)
             }
             return@flatMapLatest observeDetailActions(userId, messageId).mapLatest { actions ->
                 val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
                 return@mapLatest if (actionUiModels.isEmpty()) {
-                    MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions)
+                    Event.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions)
                 } else {
-                    MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ActionsData(actionUiModels))
+                    Event.MessageBottomBarEvent(BottomBarEvent.ActionsData(actionUiModels))
                 }
             }
         }.onEach { event ->
@@ -116,23 +117,27 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private suspend fun emitNewStateFrom(event: MessageDetailEvent) {
+    private suspend fun emitNewStateFrom(event: Event) {
         val updatedDetailState = state.value.copy(
-            messageState = messageStateReducer.reduce(state.value.messageState, event),
+            messageState = updateMessageState(event),
             bottomBarState = updateBottomBarState(event)
         )
         mutableDetailState.emit(updatedDetailState)
     }
 
-    private fun updateBottomBarState(event: MessageDetailEvent) =
-        if (event is MessageDetailEvent.MessageBottomBarEvent) {
+    private fun updateMessageState(event: Event) =
+        if (event is AffectingMessage) {
+            messageStateReducer.reduce(state.value.messageState, event)
+        } else {
+            state.value.messageState
+        }
+
+    private fun updateBottomBarState(event: Event) =
+        if (event is Event.MessageBottomBarEvent) {
             bottomBarStateReducer.reduce(state.value.bottomBarState, event.bottomBarEvent)
         } else {
             state.value.bottomBarState
         }
-
-    @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
-    private fun MessageDetailAction.toEvent(): MessageDetailEvent = TODO("Implement when adding first action")
 
     companion object {
 

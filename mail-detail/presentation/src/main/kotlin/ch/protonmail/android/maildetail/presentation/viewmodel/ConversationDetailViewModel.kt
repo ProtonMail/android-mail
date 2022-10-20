@@ -29,9 +29,10 @@ import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.ObserveDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailAction
+import ch.protonmail.android.maildetail.presentation.model.AffectingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationStateReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,7 +49,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConversationDetailViewModel @Inject constructor(
-    private val observePrimaryUserId: ObservePrimaryUserId,
+    observePrimaryUserId: ObservePrimaryUserId,
     private val conversationStateReducer: ConversationStateReducer,
     private val bottomBarStateReducer: BottomBarStateReducer,
     private val observeConversation: ObserveConversation,
@@ -75,10 +76,10 @@ class ConversationDetailViewModel @Inject constructor(
         observeBottomBarActions(conversationId)
     }
 
-    fun submit(action: ConversationDetailAction) {
+    fun submit(action: ConversationViewAction) {
         when (action) {
-            is ConversationDetailAction.Star -> Timber.d("Star conversation clicked")
-            is ConversationDetailAction.UnStar -> Timber.d("UnStar conversation clicked")
+            is ConversationViewAction.Star -> Timber.d("Star conversation clicked")
+            is ConversationViewAction.UnStar -> Timber.d("UnStar conversation clicked")
         }
     }
 
@@ -119,11 +120,18 @@ class ConversationDetailViewModel @Inject constructor(
 
     private suspend fun emitNewStateFrom(event: ConversationDetailEvent) {
         val updatedDetailState = state.value.copy(
-            conversationState = conversationStateReducer.reduce(state.value.conversationState, event),
+            conversationState = updateConversationState(event),
             bottomBarState = updateBottomBarState(event)
         )
         mutableDetailState.emit(updatedDetailState)
     }
+
+    private fun updateConversationState(event: ConversationDetailEvent) =
+        if (event is AffectingConversation) {
+            conversationStateReducer.reduce(state.value.conversationState, event)
+        } else {
+            state.value.conversationState
+        }
 
     private fun updateBottomBarState(event: ConversationDetailEvent) =
         if (event is ConversationDetailEvent.ConversationBottomBarEvent) {

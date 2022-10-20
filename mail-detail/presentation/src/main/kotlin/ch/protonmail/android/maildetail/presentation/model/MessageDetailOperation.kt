@@ -18,7 +18,24 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-sealed interface MessageDetailAction {
-    object Star : MessageDetailAction
-    object UnStar : MessageDetailAction
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+
+sealed interface MessageDetailOperation
+
+sealed interface AffectingMessage
+
+sealed interface Event : MessageDetailOperation {
+    data class MessageMetadata(val messageUiModel: MessageUiModel) : Event, AffectingMessage
+    data class MessageBody(val message: MessageWithBody) : Event, AffectingMessage
+
+    object NoPrimaryUser : Event, AffectingMessage
+    object NoCachedMetadata : Event, AffectingMessage
+
+    data class MessageBottomBarEvent(val bottomBarEvent: BottomBarEvent) : Event
+}
+
+sealed interface MessageViewAction : MessageDetailOperation {
+    object Star : MessageViewAction, AffectingMessage
+    object UnStar : MessageViewAction, AffectingMessage
 }

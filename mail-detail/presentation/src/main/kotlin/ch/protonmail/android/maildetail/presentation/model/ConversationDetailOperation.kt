@@ -19,14 +19,23 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 
-sealed interface MessageDetailEvent {
-    data class MessageMetadata(val messageUiModel: MessageUiModel) : MessageDetailEvent
-    data class MessageBody(val message: MessageWithBody) : MessageDetailEvent
+sealed interface ConversationDetailOperation
 
-    object NoPrimaryUser : MessageDetailEvent
-    object NoCachedMetadata : MessageDetailEvent
+sealed interface AffectingConversation : ConversationDetailOperation
 
-    data class MessageBottomBarEvent(val bottomBarEvent: BottomBarEvent) : MessageDetailEvent
+sealed interface ConversationDetailEvent : ConversationDetailOperation {
+    data class ConversationData(
+        val conversationUiModel: ConversationDetailUiModel
+    ) : ConversationDetailEvent, AffectingConversation
+
+    object NoPrimaryUser : ConversationDetailEvent, AffectingConversation
+    object ErrorLoadingConversation : ConversationDetailEvent, AffectingConversation
+
+    data class ConversationBottomBarEvent(val bottomBarEvent: BottomBarEvent) : ConversationDetailEvent
+}
+
+sealed interface ConversationViewAction : ConversationDetailOperation {
+    object Star : ConversationViewAction, AffectingConversation
+    object UnStar : ConversationViewAction, AffectingConversation
 }

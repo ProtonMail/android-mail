@@ -36,9 +36,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailAction
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageState
+import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -62,8 +62,8 @@ fun MessageDetailScreen(
         state = state,
         actions = MessageDetailScreen.Actions(
             onBackClick = onBackClick,
-            onStarClick = { viewModel.submit(MessageDetailAction.Star) },
-            onUnStarClick = { viewModel.submit(MessageDetailAction.UnStar) }
+            onStarClick = { viewModel.submit(MessageViewAction.Star) },
+            onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) }
         )
     )
 }

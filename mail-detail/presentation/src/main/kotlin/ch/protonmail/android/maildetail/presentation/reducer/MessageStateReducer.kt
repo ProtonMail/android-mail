@@ -18,24 +18,27 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.AffectingMessage
+import ch.protonmail.android.maildetail.presentation.model.Event
 import ch.protonmail.android.maildetail.presentation.model.MessageState
+import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import javax.inject.Inject
 
 class MessageStateReducer @Inject constructor() {
 
     @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
-    fun reduce(currentState: MessageState, event: MessageDetailEvent): MessageState {
+    fun reduce(currentState: MessageState, event: AffectingMessage): MessageState {
         return when (event) {
-            is MessageDetailEvent.NoPrimaryUser -> MessageState.Error.NotLoggedIn
+            is Event.NoPrimaryUser -> MessageState.Error.NotLoggedIn
 
-            is MessageDetailEvent.MessageMetadata -> MessageState.Data(event.messageUiModel)
+            is Event.MessageMetadata -> MessageState.Data(event.messageUiModel)
 
-            is MessageDetailEvent.NoCachedMetadata -> TODO(
+            is Event.NoCachedMetadata -> TODO(
                 "This should never happen. Handle by following the 'load message body' flow (once implemented)"
             )
-            is MessageDetailEvent.MessageBody -> TODO("Implement when adding message body flow")
-            is MessageDetailEvent.MessageBottomBarEvent -> currentState
+            is Event.MessageBody -> TODO("Implement when adding message body flow")
+            is MessageViewAction.Star -> TODO()
+            is MessageViewAction.UnStar -> TODO()
         }
     }
 }

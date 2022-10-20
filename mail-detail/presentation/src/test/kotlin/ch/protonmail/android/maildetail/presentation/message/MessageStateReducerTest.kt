@@ -18,7 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.message
 
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.AffectingMessage
+import ch.protonmail.android.maildetail.presentation.model.Event
 import ch.protonmail.android.maildetail.presentation.model.MessageState
 import ch.protonmail.android.maildetail.presentation.reducer.MessageStateReducer
 import ch.protonmail.android.testdata.message.MessageUiModelTestData
@@ -51,12 +52,12 @@ class MessageStateReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MessageState.Loading,
-                event = MessageDetailEvent.NoPrimaryUser,
+                event = Event.NoPrimaryUser,
                 expectedState = MessageState.Error.NotLoggedIn
             ).toArray(),
             TestInput(
                 currentState = MessageState.Loading,
-                event = MessageDetailEvent.MessageMetadata(messageUiModel),
+                event = Event.MessageMetadata(messageUiModel),
                 expectedState = MessageState.Data(messageUiModel)
             ).toArray()
         )
@@ -68,7 +69,7 @@ class MessageStateReducerTest(
 
     class TestInput(
         val currentState: MessageState,
-        val event: MessageDetailEvent,
+        val event: AffectingMessage,
         val expectedState: MessageState
     ) {
 

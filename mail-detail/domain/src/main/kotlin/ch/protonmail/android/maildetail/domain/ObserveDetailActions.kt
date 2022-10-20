@@ -28,11 +28,7 @@ import javax.inject.Inject
 
 class ObserveDetailActions @Inject constructor() {
 
-    operator fun invoke(userId: UserId, conversationId: ConversationId): Flow<List<Action>> {
-        return flowOf(emptyList())
-    }
+    operator fun invoke(userId: UserId, conversationId: ConversationId): Flow<List<Action>> = flowOf(emptyList())
 
-    operator fun invoke(userId: UserId, messageId: MessageId): Flow<List<Action>> {
-        return flowOf(emptyList())
-    }
+    operator fun invoke(userId: UserId, messageId: MessageId): Flow<List<Action>> = flowOf(emptyList())
 }

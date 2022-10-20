@@ -28,6 +28,7 @@ data class ActionUiModel(
 )
 
 @DrawableRes
+@SuppressWarnings("ComplexMethod")
 fun Action.iconDrawable(): Int {
     return when (this) {
         Action.Reply -> R.drawable.ic_proton_arrow_up_and_left
