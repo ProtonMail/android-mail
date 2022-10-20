@@ -19,6 +19,8 @@
 package ch.protonmail.android.testdata.message
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -58,7 +60,51 @@ object MessageTestData {
         userId = userId,
         id = RAW_MESSAGE_ID,
         subject = RAW_SUBJECT,
-        labelIds = listOf("0")
+        labelIds = listOf(SystemLabelId.Inbox.labelId.id)
+    )
+
+    val multipleRecipientsMessage = buildMessage(
+        userId = userId,
+        id = RAW_MESSAGE_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(SystemLabelId.Inbox.labelId.id),
+        toList = listOf(
+            Recipient("recipient1@pm.me", "recipient1"),
+            Recipient("recipient2@pm.me", "recipient2")
+        )
+    )
+
+    val trashedMessage = buildMessage(
+        userId = userId,
+        id = RAW_MESSAGE_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(SystemLabelId.Trash.labelId.id)
+    )
+
+    val trashedMessageWithCustomLabels = buildMessage(
+        userId = userId,
+        id = RAW_MESSAGE_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(
+            SystemLabelId.Trash.labelId.id,
+            MailLabelId.Custom.Label(LabelId("Travel")).labelId.id
+        )
+    )
+
+    val spamMessage = buildMessage(
+        userId = userId,
+        id = RAW_MESSAGE_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(SystemLabelId.Spam.labelId.id)
+    )
+
+    val spamMessageWithMultipleRecipients = buildMessage(
+        userId = userId,
+        id = RAW_MESSAGE_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(SystemLabelId.Spam.labelId.id),
+        toList = listOf(Recipient("recipient1@pm.me", "recipient1")),
+        ccList = listOf(Recipient("recipient2@pm.me", "recipient2"))
     )
 
     private val Aug2022 get() = 1_630_403_200_000L
@@ -109,7 +155,9 @@ object MessageTestData {
         subject: String = "subject",
         numAttachments: Int = 0,
         expirationTime: Long = 0,
-        attachmentCount: AttachmentCount = AttachmentCount(0)
+        attachmentCount: AttachmentCount = AttachmentCount(0),
+        toList: List<Recipient> = emptyList(),
+        ccList: List<Recipient> = emptyList()
     ) = Message(
         userId = userId,
         messageId = MessageId(id),
@@ -121,8 +169,8 @@ object MessageTestData {
         subject = subject,
         unread = false,
         sender = Recipient("address", "name"),
-        toList = emptyList(),
-        ccList = emptyList(),
+        toList = toList,
+        ccList = ccList,
         bccList = emptyList(),
         expirationTime = expirationTime,
         isReplied = false,

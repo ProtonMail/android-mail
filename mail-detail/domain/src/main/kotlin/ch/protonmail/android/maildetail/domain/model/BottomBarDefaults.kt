@@ -22,17 +22,13 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 
 object BottomBarDefaults {
     object Conversation {
-        val actions = listOf(
-            Action.MarkUnread,
-            Action.Move,
-            Action.Trash,
-            Action.Label
-        )
-        val actionsPermanentDelete = listOf(
-            Action.MarkUnread,
-            Action.Move,
-            Action.Delete,
-            Action.Label
-        )
+
+        val actions = listOf(Action.MarkUnread, Action.Move, Action.Trash, Action.Label)
+    }
+
+    object Message {
+
+        val actions = listOf(Action.Reply, Action.MarkUnread, Action.Trash, Action.Label)
+
     }
 }

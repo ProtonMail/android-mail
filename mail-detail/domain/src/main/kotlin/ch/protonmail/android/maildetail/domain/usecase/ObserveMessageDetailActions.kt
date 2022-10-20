@@ -18,15 +18,41 @@
 
 package ch.protonmail.android.maildetail.domain.usecase
 
+import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.maildetail.domain.model.BottomBarDefaults
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class ObserveMessageDetailActions @Inject constructor() {
+class ObserveMessageDetailActions @Inject constructor(
+    private val observeMessage: ObserveMessage
+) {
 
-    operator fun invoke(userId: UserId, messageId: MessageId): Flow<List<Action>> =
-        flowOf(emptyList())
+    operator fun invoke(userId: UserId, messageId: MessageId): Flow<Either<DataError, List<Action>>> =
+        observeMessage(userId, messageId).mapLatest { either ->
+            either.map { message ->
+                val actions = BottomBarDefaults.Message.actions.toMutableList()
+
+                if (message.messageIsSpamOrTrash()) {
+                    actions[actions.indexOf(Action.Trash)] = Action.Delete
+                }
+                if (message.hasMultipleRecipients()) {
+                    actions[actions.indexOf(Action.Reply)] = Action.ReplyAll
+                }
+                actions
+            }
+        }
+
+    private fun Message.hasMultipleRecipients() = (toList + ccList).size > 1
+
+    private fun Message.messageIsSpamOrTrash() = labelIds.any {
+        it == SystemLabelId.Spam.labelId || it == SystemLabelId.Trash.labelId
+    }
 }

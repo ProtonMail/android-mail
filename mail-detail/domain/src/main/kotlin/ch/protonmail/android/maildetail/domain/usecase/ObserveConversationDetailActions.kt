@@ -38,11 +38,12 @@ class ObserveConversationDetailActions @Inject constructor(
     operator fun invoke(userId: UserId, conversationId: ConversationId): Flow<Either<DataError, List<Action>>> =
         observeConversation(userId, conversationId).mapLatest { either ->
             either.map { conversation ->
+                val actions = BottomBarDefaults.Conversation.actions.toMutableList()
+
                 if (conversation.allMessagesAreSpamOrTrash()) {
-                    BottomBarDefaults.Conversation.actionsPermanentDelete
-                } else {
-                    BottomBarDefaults.Conversation.actions
+                    actions[actions.indexOf(Action.Trash)] = Action.Delete
                 }
+                actions
             }
         }
 

@@ -32,6 +32,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.Ignore
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -70,6 +71,33 @@ internal class ObserveConversationDetailActionsTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val conversation = ConversationTestData.trashAndSpamConversation
+        every { observeConversation.invoke(userId, conversationId) } returns flowOf(conversation.right())
+        // When
+        observeDetailActions.invoke(userId, conversationId).test {
+            // Then
+            val expected = listOf(
+                Action.MarkUnread,
+                Action.Move,
+                Action.Delete,
+                Action.Label
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    @Ignore(
+        """
+        This case must be fixed by querying all the messages of the conversation and checking the labels of each
+        instead of the conversation's ones (as it's done in ObserveMessageDetailAction).
+        Such query is being worked on as part of MAILANDR-206
+    """
+    )
+    fun `returns delete action when all messages in conversation are trashed and have custom labels`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val conversation = ConversationTestData.trashConversationWithCustomLabels
         every { observeConversation.invoke(userId, conversationId) } returns flowOf(conversation.right())
         // When
         observeDetailActions.invoke(userId, conversationId).test {

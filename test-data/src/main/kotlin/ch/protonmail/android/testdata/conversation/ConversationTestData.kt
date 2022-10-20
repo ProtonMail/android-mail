@@ -21,6 +21,7 @@ package ch.protonmail.android.testdata.conversation
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
@@ -62,6 +63,16 @@ object ConversationTestData {
         labelIds = listOf(
             SystemLabelId.Trash.labelId.id,
             SystemLabelId.Spam.labelId.id
+        )
+    )
+
+    val trashConversationWithCustomLabels = buildConversation(
+        userId = userId,
+        id = RAW_CONVERSATION_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(
+            SystemLabelId.Trash.labelId.id,
+            MailLabelId.Custom.Label(LabelId("Travel")).labelId.id
         )
     )
 

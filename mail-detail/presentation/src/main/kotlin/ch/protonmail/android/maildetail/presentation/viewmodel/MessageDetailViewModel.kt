@@ -104,13 +104,14 @@ class MessageDetailViewModel @Inject constructor(
             if (userId == null) {
                 return@flatMapLatest flowOf(Event.NoPrimaryUser)
             }
-            return@flatMapLatest observeDetailActions(userId, messageId).mapLatest { actions ->
-                val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
-                return@mapLatest if (actionUiModels.isEmpty()) {
-                    Event.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions)
-                } else {
-                    Event.MessageBottomBarEvent(BottomBarEvent.ActionsData(actionUiModels))
-                }
+            observeDetailActions(userId, messageId).mapLatest { either ->
+                either.fold(
+                    ifLeft = { Event.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
+                    ifRight = { actions ->
+                        val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
+                        Event.MessageBottomBarEvent(BottomBarEvent.ActionsData(actionUiModels))
+                    }
+                )
             }
         }.onEach { event ->
             emitNewStateFrom(event)
