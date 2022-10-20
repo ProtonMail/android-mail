@@ -56,7 +56,7 @@ fun ConversationDetailScreen(
     onBackClick: () -> Unit,
     viewModel: ConversationDetailViewModel = hiltViewModel()
 ) {
-    val state by rememberAsState(flow = viewModel.state, initial = viewModel.initialState)
+    val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
     ConversationDetailScreen(
         modifier = modifier,
         state = state,

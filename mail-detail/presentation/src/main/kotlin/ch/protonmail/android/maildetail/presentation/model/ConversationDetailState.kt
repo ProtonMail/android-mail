@@ -19,13 +19,15 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 data class ConversationDetailState(
-    val conversationState: ConversationState
+    val conversationState: ConversationState,
+    val bottomBarState: BottomBarState
 ) {
 
     companion object {
 
         val Loading = ConversationDetailState(
-            conversationState = ConversationState.Loading
+            conversationState = ConversationState.Loading,
+            bottomBarState = BottomBarState.Loading
         )
     }
 }

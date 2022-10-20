@@ -24,11 +24,14 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.maildetail.domain.ObserveDetailActions
+import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
+import ch.protonmail.android.maildetail.presentation.reducer.BottomBarStateReducer
+import ch.protonmail.android.maildetail.presentation.reducer.ConversationStateReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,14 +48,18 @@ import javax.inject.Inject
 @HiltViewModel
 class ConversationDetailViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
-    private val conversationDetailReducer: ConversationDetailReducer,
+    private val conversationStateReducer: ConversationStateReducer,
+    private val bottomBarStateReducer: BottomBarStateReducer,
     private val observeConversation: ObserveConversation,
     private val uiModelMapper: ConversationDetailUiModelMapper,
+    private val actionUiModelMapper: ActionUiModelMapper,
+    private val observeDetailActions: ObserveDetailActions,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val initialState = ConversationDetailState.Loading
+    private val primaryUserId = observePrimaryUserId()
     private val mutableDetailState = MutableStateFlow(initialState)
+
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
 
     init {
@@ -61,9 +68,10 @@ class ConversationDetailViewModel @Inject constructor(
 
         if (conversationIdParam == null) {
             throw IllegalStateException("No Conversation id given")
-        } else {
-            observeConversationMetadata(ConversationId(conversationIdParam))
         }
+        val conversationId = ConversationId(conversationIdParam)
+        observeConversationMetadata(conversationId)
+        observeBottomBarActions(conversationId)
     }
 
     fun submit(action: ConversationDetailAction) {
@@ -74,7 +82,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun observeConversationMetadata(conversationId: ConversationId) {
-        observePrimaryUserId().flatMapLatest { userId ->
+        primaryUserId.flatMapLatest { userId ->
             if (userId == null) {
                 return@flatMapLatest flowOf(ConversationDetailEvent.NoPrimaryUser)
             }
@@ -90,11 +98,35 @@ class ConversationDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun observeBottomBarActions(conversationId: ConversationId) {
+        primaryUserId.flatMapLatest { userId ->
+            if (userId == null) {
+                return@flatMapLatest flowOf(ConversationDetailEvent.NoPrimaryUser)
+            }
+            return@flatMapLatest observeDetailActions(userId, conversationId).mapLatest { actions ->
+                val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
+                return@mapLatest if (actionUiModels.isEmpty()) {
+                    ConversationDetailEvent.ErrorLoadingActions
+                } else {
+                    ConversationDetailEvent.ConversationActionsData(actionUiModels)
+                }
+            }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
     private suspend fun emitNewStateFrom(event: ConversationDetailEvent) {
-        val updatedConversationState = conversationDetailReducer.reduce(state.value, event)
-        val updatedDetailState = state.value.copy(conversationState = updatedConversationState)
+        val updatedDetailState = state.value.copy(
+            conversationState = conversationStateReducer.reduce(state.value.conversationState, event),
+            bottomBarState = bottomBarStateReducer.reduce(state.value.bottomBarState, event)
+        )
         mutableDetailState.emit(updatedDetailState)
     }
 
+    companion object {
+
+        val initialState = ConversationDetailState.Loading
+    }
 
 }

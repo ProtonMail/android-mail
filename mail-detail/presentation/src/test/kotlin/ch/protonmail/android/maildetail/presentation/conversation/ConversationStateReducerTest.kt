@@ -19,9 +19,8 @@
 package ch.protonmail.android.maildetail.presentation.conversation
 
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationState
-import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
+import ch.protonmail.android.maildetail.presentation.reducer.ConversationStateReducer
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,7 +33,7 @@ class ConversationStateReducerTest(
     private val testInput: TestParams.TestInput
 ) {
 
-    private val detailReducer = ConversationDetailReducer()
+    private val detailReducer = ConversationStateReducer()
 
     @Test
     fun `should produce the expected new state`() {
@@ -54,7 +53,7 @@ class ConversationStateReducerTest(
             TestParams(
                 "from loading to no primary user",
                 TestParams.TestInput(
-                    currentState = ConversationDetailState.Loading,
+                    currentState = ConversationState.Loading,
                     event = ConversationDetailEvent.NoPrimaryUser,
                     expectedState = ConversationState.Error.NotLoggedIn
                 )
@@ -62,7 +61,7 @@ class ConversationStateReducerTest(
             TestParams(
                 "from loading to conversation data",
                 TestParams.TestInput(
-                    currentState = ConversationDetailState.Loading,
+                    currentState = ConversationState.Loading,
                     event = ConversationDetailEvent.ConversationData(conversationUiModel),
                     expectedState = ConversationState.Data(conversationUiModel)
                 )
@@ -70,7 +69,7 @@ class ConversationStateReducerTest(
             TestParams(
                 "from loading to error loading conversation",
                 TestParams.TestInput(
-                    currentState = ConversationDetailState.Loading,
+                    currentState = ConversationState.Loading,
                     event = ConversationDetailEvent.ErrorLoadingConversation,
                     expectedState = ConversationState.Error.FailedLoadingData
                 )
@@ -89,7 +88,7 @@ class ConversationStateReducerTest(
     ) {
 
         data class TestInput(
-            val currentState: ConversationDetailState,
+            val currentState: ConversationState,
             val event: ConversationDetailEvent,
             val expectedState: ConversationState
         )

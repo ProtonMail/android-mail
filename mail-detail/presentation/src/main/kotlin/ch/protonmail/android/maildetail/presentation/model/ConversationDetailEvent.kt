@@ -24,4 +24,10 @@ sealed interface ConversationDetailEvent {
 
     object NoPrimaryUser : ConversationDetailEvent
     object ErrorLoadingConversation : ConversationDetailEvent
+
+    data class ConversationActionsData(
+        val actionUiModels: List<ActionUiModel>
+    ) : ConversationDetailEvent
+
+    object ErrorLoadingActions : ConversationDetailEvent
 }

@@ -19,10 +19,21 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.BottomBarState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import javax.inject.Inject
 
 class BottomBarStateReducer @Inject constructor() {
+
+    fun reduce(currentState: BottomBarState, event: ConversationDetailEvent): BottomBarState {
+        return when (event) {
+            is ConversationDetailEvent.ConversationActionsData -> BottomBarState.Data(event.actionUiModels)
+            is ConversationDetailEvent.ErrorLoadingActions -> BottomBarState.Error.FailedLoadingActions
+            is ConversationDetailEvent.ConversationData,
+            is ConversationDetailEvent.ErrorLoadingConversation,
+            is ConversationDetailEvent.NoPrimaryUser -> currentState
+        }
+    }
 
     fun reduce(currentState: BottomBarState, event: MessageDetailEvent): BottomBarState {
         return when (event) {

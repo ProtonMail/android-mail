@@ -19,6 +19,10 @@
 package ch.protonmail.android.maildetail.presentation.previewdata
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import ch.protonmail.android.maildetail.domain.Action
+import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.ActionUiModel
+import ch.protonmail.android.maildetail.presentation.model.BottomBarState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationState
 
@@ -27,19 +31,28 @@ object ConversationDetailsPreviewData {
     val Conversation = ConversationDetailState(
         ConversationState.Data(
             conversationUiModel = ConversationDetailsUiModelPreviewData.WeatherForecast
+        ),
+        bottomBarState = BottomBarState.Data(
+            listOf(
+                ActionUiModel(Action.Reply, R.drawable.ic_proton_arrow_up_and_left),
+                ActionUiModel(Action.Archive, R.drawable.ic_proton_archive_box)
+            )
         )
     )
 
     val FailedLoadingData = ConversationDetailState(
-        ConversationState.Error.FailedLoadingData
+        conversationState = ConversationState.Error.FailedLoadingData,
+        bottomBarState = BottomBarState.Error.FailedLoadingActions
     )
 
     val Loading = ConversationDetailState(
-        ConversationState.Loading
+        conversationState = ConversationState.Loading,
+        bottomBarState = BottomBarState.Loading
     )
 
     val NotLoggedIn = ConversationDetailState(
-        ConversationState.Error.NotLoggedIn
+        conversationState = ConversationState.Error.NotLoggedIn,
+        bottomBarState = BottomBarState.Loading
     )
 }
 
