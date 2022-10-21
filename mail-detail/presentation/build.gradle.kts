@@ -58,6 +58,8 @@ android {
 dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
+    debugImplementation(Dependencies.composeDebugLibs)
+
     implementation(Dependencies.modulePresentationLibs)
     implementation(Proton.Core.label)
 

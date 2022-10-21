@@ -24,4 +24,5 @@
         <item quantity="one">%d message</item>
         <item quantity="other">%d messages</item>
     </plurals>
+    <string name="more_button_content_description">More</string>
 </resources>
