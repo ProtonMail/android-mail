@@ -22,17 +22,18 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 
 object BottomActionBarsPreviewData {
 
     val Data = BottomBarState.Data(
         listOf(
-            ActionUiModel(Action.Reply, Action.Reply.iconDrawable()),
-            ActionUiModel(Action.MarkUnread, Action.MarkUnread.iconDrawable()),
-            ActionUiModel(Action.Archive, Action.Archive.iconDrawable()),
-            ActionUiModel(Action.Trash, Action.Trash.iconDrawable()),
-            ActionUiModel(Action.Move, Action.Move.iconDrawable())
+            ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
+            ActionUiModel(Action.MarkUnread, Action.MarkUnread.iconDrawable(), Action.MarkUnread.contentDescription()),
+            ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription()),
+            ActionUiModel(Action.Trash, Action.Trash.iconDrawable(), Action.Trash.contentDescription()),
+            ActionUiModel(Action.Move, Action.Move.iconDrawable(), Action.Move.contentDescription())
         )
     )
 

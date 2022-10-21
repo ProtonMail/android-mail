@@ -16,20 +16,28 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.mapper
+package ch.protonmail.android.testdata.action
 
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
-import ch.protonmail.android.mailcommon.presentation.model.contentDescription
-import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
-import me.proton.core.domain.arch.Mapper
-import javax.inject.Inject
+import me.proton.core.presentation.R
+import ch.protonmail.android.mailcommon.R as commonRes
 
-class ActionUiModelMapper @Inject constructor() : Mapper<Action, ActionUiModel> {
+object ActionUiModelTestData {
 
-    fun toUiModel(action: Action) = ActionUiModel(
-        action,
-        action.iconDrawable(),
-        action.contentDescription()
+    val reply = ActionUiModel(
+        Action.Reply,
+        R.drawable.ic_proton_arrow_up_and_left,
+        commonRes.string.action_reply_content_description
+    )
+    val archive = ActionUiModel(
+        Action.Archive,
+        R.drawable.ic_proton_archive_box,
+        commonRes.string.action_archive_content_description
+    )
+    val markUnread = ActionUiModel(
+        Action.MarkUnread,
+        R.drawable.ic_proton_envelope_dot,
+        commonRes.string.action_mark_unread_content_description
     )
 }

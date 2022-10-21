@@ -18,11 +18,9 @@
 
 package ch.protonmail.android.mailcommon.presentation.reducer
 
-import ch.protonmail.android.mailcommon.domain.model.Action
-import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import me.proton.core.presentation.R
+import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -45,7 +43,7 @@ internal class BottomBarStateReducerTest(
 
     companion object {
 
-        private val actions = listOf(ActionUiModel(Action.MarkUnread, R.drawable.ic_proton_envelope_dot))
+        private val actions = listOf(ActionUiModelTestData.markUnread)
 
         private val transitionsFromRelevantEvents = listOf(
             TestParams(

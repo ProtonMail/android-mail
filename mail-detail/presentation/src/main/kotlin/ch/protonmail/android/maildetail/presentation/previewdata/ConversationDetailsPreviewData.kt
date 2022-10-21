@@ -22,7 +22,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.mailcommon.presentation.model.contentDescription
+import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationState
 
@@ -34,8 +35,8 @@ object ConversationDetailsPreviewData {
         ),
         bottomBarState = BottomBarState.Data(
             listOf(
-                ActionUiModel(Action.Reply, R.drawable.ic_proton_arrow_up_and_left),
-                ActionUiModel(Action.Archive, R.drawable.ic_proton_archive_box)
+                ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
+                ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
         )
     )

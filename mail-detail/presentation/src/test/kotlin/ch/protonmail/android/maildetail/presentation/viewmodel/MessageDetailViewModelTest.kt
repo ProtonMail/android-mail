@@ -26,7 +26,6 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
@@ -40,6 +39,7 @@ import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every
@@ -49,7 +49,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import me.proton.core.presentation.R
 import org.junit.Assert.assertThrows
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -167,10 +166,7 @@ class MessageDetailViewModelTest {
             initialStateEmitted()
             messageStateEmitted()
             // Then
-            val actionUiModels = listOf(
-                ActionUiModel(Action.Reply, R.drawable.ic_proton_arrow_up_and_left),
-                ActionUiModel(Action.Archive, R.drawable.ic_proton_archive_box)
-            )
+            val actionUiModels = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
             val expected = BottomBarState.Data(actionUiModels)
             assertEquals(expected, awaitItem().bottomBarState)
         }

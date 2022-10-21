@@ -19,40 +19,68 @@
 package ch.protonmail.android.mailcommon.presentation.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.R
 
 data class ActionUiModel(
     val action: Action,
-    @DrawableRes val icon: Int
+    @DrawableRes val icon: Int,
+    @StringRes val description: Int
 )
 
 @DrawableRes
 @SuppressWarnings("ComplexMethod")
-fun Action.iconDrawable(): Int {
-    return when (this) {
-        Action.Reply -> R.drawable.ic_proton_arrow_up_and_left
-        Action.ReplyAll -> R.drawable.ic_proton_arrows_up_and_left
-        Action.Forward -> R.drawable.ic_arrow_forward
-        Action.MarkRead -> R.drawable.ic_proton_envelope
-        Action.MarkUnread -> R.drawable.ic_proton_envelope_dot
-        Action.Star -> R.drawable.ic_proton_star
-        Action.Unstar -> R.drawable.ic_proton_star_filled
-        Action.Label -> R.drawable.ic_proton_tag
-        Action.Move -> R.drawable.ic_proton_folder_arrow_in
-        Action.Trash -> R.drawable.ic_proton_trash
-        Action.Delete -> R.drawable.ic_proton_trash_cross
-        Action.Archive -> R.drawable.ic_proton_archive_box
-        Action.Spam -> R.drawable.ic_proton_fire
-        Action.ViewInLightMode -> R.drawable.ic_proton_circle
-        Action.ViewInDarkMode -> R.drawable.ic_proton_circle_filled
-        Action.Print -> R.drawable.ic_proton_printer
-        Action.ViewHeaders -> R.drawable.ic_proton_file_lines
-        Action.ViewHtml -> R.drawable.ic_proton_code
-        Action.ReportPhishing -> R.drawable.ic_proton_hook
-        Action.Remind -> R.drawable.ic_proton_clock
-        Action.SavePdf -> R.drawable.ic_proton_arrow_down_line
-        Action.SenderEmails -> R.drawable.ic_proton_envelope
-        Action.SaveAttachments -> R.drawable.ic_proton_arrow_down_to_square
-    }
+fun Action.iconDrawable() = when (this) {
+    Action.Reply -> R.drawable.ic_proton_arrow_up_and_left
+    Action.ReplyAll -> R.drawable.ic_proton_arrows_up_and_left
+    Action.Forward -> R.drawable.ic_arrow_forward
+    Action.MarkRead -> R.drawable.ic_proton_envelope
+    Action.MarkUnread -> R.drawable.ic_proton_envelope_dot
+    Action.Star -> R.drawable.ic_proton_star
+    Action.Unstar -> R.drawable.ic_proton_star_filled
+    Action.Label -> R.drawable.ic_proton_tag
+    Action.Move -> R.drawable.ic_proton_folder_arrow_in
+    Action.Trash -> R.drawable.ic_proton_trash
+    Action.Delete -> R.drawable.ic_proton_trash_cross
+    Action.Archive -> R.drawable.ic_proton_archive_box
+    Action.Spam -> R.drawable.ic_proton_fire
+    Action.ViewInLightMode -> R.drawable.ic_proton_circle
+    Action.ViewInDarkMode -> R.drawable.ic_proton_circle_filled
+    Action.Print -> R.drawable.ic_proton_printer
+    Action.ViewHeaders -> R.drawable.ic_proton_file_lines
+    Action.ViewHtml -> R.drawable.ic_proton_code
+    Action.ReportPhishing -> R.drawable.ic_proton_hook
+    Action.Remind -> R.drawable.ic_proton_clock
+    Action.SavePdf -> R.drawable.ic_proton_arrow_down_line
+    Action.SenderEmails -> R.drawable.ic_proton_envelope
+    Action.SaveAttachments -> R.drawable.ic_proton_arrow_down_to_square
+}
+
+@StringRes
+@SuppressWarnings("ComplexMethod")
+fun Action.contentDescription() = when (this) {
+    Action.Reply -> R.string.action_reply_content_description
+    Action.ReplyAll -> R.string.action_reply_all_content_description
+    Action.Forward -> R.string.action_forward_content_description
+    Action.MarkRead -> R.string.action_mark_read_content_description
+    Action.MarkUnread -> R.string.action_mark_unread_content_description
+    Action.Star -> R.string.action_star_content_description
+    Action.Unstar -> R.string.action_unstar_content_description
+    Action.Label -> R.string.action_label_content_description
+    Action.Move -> R.string.action_move_content_description
+    Action.Trash -> R.string.action_trash_content_description
+    Action.Delete -> R.string.action_delete_content_description
+    Action.Archive -> R.string.action_archive_content_description
+    Action.Spam -> R.string.action_spam_content_description
+    Action.ViewInLightMode -> R.string.action_view_in_light_mode_content_description
+    Action.ViewInDarkMode -> R.string.action_view_in_dark_mode_content_description
+    Action.Print -> R.string.action_print_content_description
+    Action.ViewHeaders -> R.string.action_view_headers_content_description
+    Action.ViewHtml -> R.string.action_view_html_content_description
+    Action.ReportPhishing -> R.string.action_report_phishing_content_description
+    Action.Remind -> R.string.action_remind_content_description
+    Action.SavePdf -> R.string.action_save_pdf_content_description
+    Action.SenderEmails -> R.string.action_sender_emails_content_description
+    Action.SaveAttachments -> R.string.action_save_attachments_content_description
 }

@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,7 +40,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
-import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.maildetail.presentation.R
@@ -82,6 +82,7 @@ fun BottomActionBar(
                         }
                         BottomBarIcon(
                             iconId = uiModel.icon,
+                            descriptionId = uiModel.description,
                             onClick = callbackForAction(uiModel.action, viewActionCallbacks)
                         )
                     }
@@ -124,6 +125,7 @@ private fun Int.exceedsMaxActionsShowed() = this > BottomActionBar.MAX_ACTIONS_C
 @Composable
 private fun BottomBarIcon(
     @DrawableRes iconId: Int,
+    @StringRes descriptionId: Int,
     onClick: () -> Unit,
     tintId: Int = R.color.icon_norm
 ) {
@@ -134,7 +136,7 @@ private fun BottomBarIcon(
         Icon(
             modifier = Modifier,
             painter = painterResource(id = iconId),
-            contentDescription = NO_CONTENT_DESCRIPTION,
+            contentDescription = stringResource(id = descriptionId),
             tint = colorResource(id = tintId)
         )
     }
