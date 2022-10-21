@@ -48,6 +48,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.default
 import me.proton.core.util.kotlin.exhaustive
+import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
@@ -91,6 +92,36 @@ fun MessageDetailScreen(
                     onUnStarClick = actions.onUnStarClick
                 ),
                 scrollBehavior = scrollBehavior
+            )
+        },
+        bottomBar = {
+            BottomActionBar(
+                state = state.bottomBarState,
+                viewActionCallbacks = BottomActionBar.Actions(
+                    onReply = { Timber.d("message onReply clicked") },
+                    onReplyAll = { Timber.d("message onReplyAll clicked") },
+                    onForward = { Timber.d("message onForward clicked") },
+                    onMarkRead = { Timber.d("message onMarkRead clicked") },
+                    onMarkUnread = { Timber.d("message onMarkUnread clicked") },
+                    onStar = { Timber.d("message onStar clicked") },
+                    onUnstar = { Timber.d("message onUnstar clicked") },
+                    onMove = { Timber.d("message onMove clicked") },
+                    onLabel = { Timber.d("message onLabel clicked") },
+                    onTrash = { Timber.d("message onTrash clicked") },
+                    onDelete = { Timber.d("message onDelete clicked") },
+                    onArchive = { Timber.d("message onArchive clicked") },
+                    onSpam = { Timber.d("message onSpam clicked") },
+                    onViewInLightMode = { Timber.d("message onViewInLightMode clicked") },
+                    onViewInDarkMode = { Timber.d("message onViewInDarkMode clicked") },
+                    onPrint = { Timber.d("message onPrint clicked") },
+                    onViewHeaders = { Timber.d("message onViewHeaders clicked") },
+                    onViewHtml = { Timber.d("message onViewHtml clicked") },
+                    onReportPhishing = { Timber.d("message onReportPhishing clicked") },
+                    onRemind = { Timber.d("message onRemind clicked") },
+                    onSavePdf = { Timber.d("message onSavePdf clicked") },
+                    onSenderEmail = { Timber.d("message onSenderEmail clicked") },
+                    onSaveAttachments = { Timber.d("message onSaveAttachments clicked") }
+                )
             )
         }
     ) { innerPadding ->

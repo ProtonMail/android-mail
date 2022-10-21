@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcommon.presentation.compose
 import androidx.compose.ui.unit.dp
 
 object MailDimens {
+
     val ThinBorder = 0.5.dp
     val DefaultBorder = 1.dp
 
@@ -31,4 +32,6 @@ object MailDimens {
     val DefaultTouchTargetSize = 48.dp
 
     val AvatarMinSize = 32.dp
+
+    val ProgressDefaultSize = 24.dp
 }
