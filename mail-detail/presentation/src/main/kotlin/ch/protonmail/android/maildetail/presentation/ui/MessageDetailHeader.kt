@@ -18,8 +18,10 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +29,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +43,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.constraintlayout.compose.Visibility
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -79,7 +83,10 @@ private fun MessageDetailHeader(
             ccRecipientsRef,
             bccRecipientsTitleRef,
             bccRecipientsRef,
-            labelsRef
+            labelsRef,
+            extendedTimeRef,
+            locationRef,
+            sizeRef
         ) = createRefs()
 
         Avatar(
@@ -134,70 +141,126 @@ private fun MessageDetailHeader(
             allRecipients = uiModel.allRecipients
         )
 
-        if (uiModel.toRecipients.isNotEmpty()) {
-            RecipientsTitle(
-                modifier = modifier.constrainAs(toRecipientsTitleRef) {
-                    top.linkTo(toRecipientsRef.top)
-                    end.linkTo(toRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
-                },
-                recipientsTitle = R.string.to
-            )
-            Recipients(
-                modifier = modifier.constrainAs(toRecipientsRef) {
-                    width = Dimension.fillToConstraints
-                    top.linkTo(allRecipientsRef.bottom, margin = ProtonDimens.SmallSpacing)
-                    start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                    end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                },
-                recipients = uiModel.toRecipients
-            )
-        }
+        RecipientsTitle(
+            modifier = modifier.constrainAs(toRecipientsTitleRef) {
+                top.linkTo(toRecipientsRef.top)
+                end.linkTo(toRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
+                visibility = if (uiModel.toRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+            },
+            recipientsTitle = R.string.to
+        )
+        Recipients(
+            modifier = modifier.constrainAs(toRecipientsRef) {
+                width = Dimension.fillToConstraints
+                top.linkTo(allRecipientsRef.bottom, margin = ProtonDimens.SmallSpacing)
+                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
+                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                visibility = if (uiModel.toRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+            },
+            recipients = uiModel.toRecipients
+        )
 
-        if (uiModel.ccRecipients.isNotEmpty()) {
-            RecipientsTitle(
-                modifier = modifier.constrainAs(ccRecipientsTitleRef) {
-                    top.linkTo(ccRecipientsRef.top)
-                    end.linkTo(ccRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
-                },
-                recipientsTitle = R.string.cc
-            )
-            Recipients(
-                modifier = modifier.constrainAs(ccRecipientsRef) {
-                    width = Dimension.fillToConstraints
-                    top.linkTo(toRecipientsRef.bottom, margin = ProtonDimens.SmallSpacing)
-                    start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                    end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                },
-                recipients = uiModel.ccRecipients
-            )
-        }
+        RecipientsTitle(
+            modifier = modifier.constrainAs(ccRecipientsTitleRef) {
+                top.linkTo(ccRecipientsRef.top)
+                end.linkTo(ccRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
+                visibility = if (uiModel.ccRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+            },
+            recipientsTitle = R.string.cc
+        )
+        Recipients(
+            modifier = modifier.constrainAs(ccRecipientsRef) {
+                width = Dimension.fillToConstraints
+                top.linkTo(
+                    toRecipientsRef.bottom,
+                    margin = ProtonDimens.SmallSpacing,
+                    goneMargin = ProtonDimens.SmallSpacing
+                )
+                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
+                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                visibility = if (uiModel.ccRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+            },
+            recipients = uiModel.ccRecipients
+        )
 
-        if (uiModel.bccRecipients.isNotEmpty()) {
-            RecipientsTitle(
-                modifier = modifier.constrainAs(bccRecipientsTitleRef) {
-                    top.linkTo(bccRecipientsRef.top)
-                    end.linkTo(bccRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
-                },
-                recipientsTitle = R.string.bcc
-            )
-            Recipients(
-                modifier = modifier.constrainAs(bccRecipientsRef) {
-                    width = Dimension.fillToConstraints
-                    top.linkTo(ccRecipientsRef.bottom, margin = ProtonDimens.SmallSpacing)
-                    start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                    end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                },
-                recipients = uiModel.bccRecipients
-            )
-        }
+        RecipientsTitle(
+            modifier = modifier.constrainAs(bccRecipientsTitleRef) {
+                top.linkTo(bccRecipientsRef.top)
+                end.linkTo(bccRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
+                visibility = if (uiModel.bccRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+            },
+            recipientsTitle = R.string.bcc
+        )
+        Recipients(
+            modifier = modifier.constrainAs(bccRecipientsRef) {
+                width = Dimension.fillToConstraints
+                top.linkTo(
+                    ccRecipientsRef.bottom,
+                    margin = ProtonDimens.SmallSpacing,
+                    goneMargin = ProtonDimens.SmallSpacing
+                )
+                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
+                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                visibility = if (uiModel.bccRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+            },
+            recipients = uiModel.bccRecipients
+        )
 
-        if (uiModel.labels.isNotEmpty()) {
-            Box(
-                modifier = modifier.constrainAs(labelsRef) {
-                    top.linkTo(bccRecipientsRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
-                }
-            )
-        }
+        Box(
+            modifier = modifier.constrainAs(labelsRef) {
+                top.linkTo(
+                    bccRecipientsRef.bottom,
+                    margin = ProtonDimens.ExtraSmallSpacing,
+                    goneMargin = ProtonDimens.SmallSpacing
+                )
+                visibility = if (uiModel.labels.isNotEmpty()) Visibility.Visible else Visibility.Gone
+            }
+        )
+
+        ExtendedHeaderRow(
+            modifier = modifier.constrainAs(extendedTimeRef) {
+                width = Dimension.fillToConstraints
+                top.linkTo(
+                    labelsRef.bottom,
+                    margin = ProtonDimens.SmallSpacing,
+                    goneMargin = ProtonDimens.SmallSpacing
+                )
+                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
+                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+            },
+            icon = R.drawable.ic_proton_calendar_today,
+            text = uiModel.extendedTime
+        )
+
+        ExtendedHeaderRow(
+            modifier = modifier.constrainAs(locationRef) {
+                width = Dimension.fillToConstraints
+                top.linkTo(
+                    extendedTimeRef.bottom,
+                    margin = ProtonDimens.SmallSpacing,
+                    goneMargin = ProtonDimens.SmallSpacing
+                )
+                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
+                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+            },
+            icon = uiModel.locationIcon,
+            text = uiModel.location
+        )
+
+        ExtendedHeaderRow(
+            modifier = modifier.constrainAs(sizeRef) {
+                width = Dimension.fillToConstraints
+                top.linkTo(
+                    locationRef.bottom,
+                    margin = ProtonDimens.SmallSpacing,
+                    goneMargin = ProtonDimens.SmallSpacing
+                )
+                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
+                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+            },
+            icon = R.drawable.ic_proton_storage,
+            text = uiModel.size
+        )
     }
 }
 
@@ -319,6 +382,23 @@ private fun ParticipantText(
         overflow = TextOverflow.Ellipsis,
         style = ProtonTheme.typography.caption
     )
+}
+
+@Composable
+private fun ExtendedHeaderRow(
+    modifier: Modifier = Modifier,
+    @DrawableRes icon: Int,
+    text: String
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        SmallNonClickableIcon(iconId = icon)
+        Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
+        Text(text = text, style = ProtonTheme.typography.captionWeak)
+    }
 }
 
 @Preview(showBackground = true)
