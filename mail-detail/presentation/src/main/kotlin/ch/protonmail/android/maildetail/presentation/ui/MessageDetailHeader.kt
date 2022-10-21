@@ -90,7 +90,8 @@ private fun MessageDetailHeader(
         ) = createRefs()
 
         val (
-            trackerProtectionInfoRef
+            trackerProtectionInfoRef,
+            encryptionInfoRef
         ) = createRefs()
 
         Avatar(
@@ -279,6 +280,21 @@ private fun MessageDetailHeader(
             },
             icon = R.drawable.ic_proton_shield,
             text = "Placeholder text"
+        )
+
+        ExtendedHeaderRow(
+            modifier = modifier.constrainAs(encryptionInfoRef) {
+                width = Dimension.fillToConstraints
+                top.linkTo(
+                    trackerProtectionInfoRef.bottom,
+                    margin = ProtonDimens.SmallSpacing,
+                    goneMargin = ProtonDimens.SmallSpacing
+                )
+                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
+                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+            },
+            icon = uiModel.encryptionPadlock,
+            text = uiModel.encryptionInfo
         )
     }
 }
