@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="details_error_loading_conversation">Eșuare încărcare conversație.</string>
+  <string name="detail_error_loading_conversation">Eșuare încărcare conversație.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">Un mesaj</item>
     <item quantity="few">%d mesaje</item>

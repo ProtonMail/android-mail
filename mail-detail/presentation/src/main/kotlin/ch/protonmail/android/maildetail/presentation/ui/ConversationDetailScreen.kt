@@ -102,7 +102,7 @@ fun ConversationDetailScreen(
             )
             ConversationState.Error.FailedLoadingData -> ProtonErrorMessage(
                 modifier = Modifier.padding(innerPadding),
-                errorMessage = stringResource(id = string.details_error_loading_conversation)
+                errorMessage = stringResource(id = string.detail_error_loading_conversation)
             )
             ConversationState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)

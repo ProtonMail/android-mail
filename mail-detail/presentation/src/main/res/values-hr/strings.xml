@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="details_error_loading_conversation">Failed loading conversation</string>
+  <string name="detail_error_loading_conversation">Failed loading conversation</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d message</item>
     <item quantity="few">%d messages</item>
