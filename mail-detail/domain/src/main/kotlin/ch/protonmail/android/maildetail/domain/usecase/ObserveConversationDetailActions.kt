@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.model.BottomBarDefaults
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -47,8 +48,11 @@ class ObserveConversationDetailActions @Inject constructor(
             }
         }
 
-    private fun Conversation.allMessagesAreSpamOrTrash() = labels.all {
-        it.labelId == SystemLabelId.Spam.labelId ||
-            it.labelId == SystemLabelId.Trash.labelId
+    private fun Conversation.allMessagesAreSpamOrTrash() = labels
+        .removeAllMailAllSent()
+        .all { it.labelId == SystemLabelId.Spam.labelId || it.labelId == SystemLabelId.Trash.labelId }
+
+    private fun List<ConversationLabel>.removeAllMailAllSent() = this.filterNot {
+        it.labelId == SystemLabelId.AllMail.labelId || it.labelId == SystemLabelId.AllSent.labelId
     }
 }

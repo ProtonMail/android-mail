@@ -62,7 +62,8 @@ object ConversationTestData {
         subject = RAW_SUBJECT,
         labelIds = listOf(
             SystemLabelId.Trash.labelId.id,
-            SystemLabelId.Spam.labelId.id
+            SystemLabelId.Spam.labelId.id,
+            SystemLabelId.AllMail.labelId.id
         )
     )
 
