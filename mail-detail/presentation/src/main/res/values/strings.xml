@@ -25,4 +25,7 @@
         <item quantity="other">%d messages</item>
     </plurals>
     <string name="more_button_content_description">More</string>
+    <string name="to">To:</string>
+    <string name="cc">Cc:</string>
+    <string name="bcc">Bcc:</string>
 </resources>
