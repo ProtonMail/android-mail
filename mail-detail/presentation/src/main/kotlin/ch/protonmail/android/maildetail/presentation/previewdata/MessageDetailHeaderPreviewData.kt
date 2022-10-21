@@ -66,6 +66,7 @@ object MessageDetailHeaderPreviewData {
                 participantPadlock = R.drawable.ic_proton_lock
             )
         ),
+        labels = emptyList(),
         size = "6.35 KB",
         encryptionPadlock = R.drawable.ic_proton_lock,
         encryptionInfo = "End-to-end encrypted and signed message"

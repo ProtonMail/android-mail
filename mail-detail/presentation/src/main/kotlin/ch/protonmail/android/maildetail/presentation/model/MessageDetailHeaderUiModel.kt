@@ -35,6 +35,7 @@ data class MessageDetailHeaderUiModel(
     val toRecipients: List<ParticipantUiModel>,
     val ccRecipients: List<ParticipantUiModel>,
     val bccRecipients: List<ParticipantUiModel>,
+    val labels: List<String>,
     val size: String,
     @DrawableRes val encryptionPadlock: Int,
     val encryptionInfo: String

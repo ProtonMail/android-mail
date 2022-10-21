@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -77,7 +78,8 @@ private fun MessageDetailHeader(
             ccRecipientsTitleRef,
             ccRecipientsRef,
             bccRecipientsTitleRef,
-            bccRecipientsRef
+            bccRecipientsRef,
+            labelsRef
         ) = createRefs()
 
         Avatar(
@@ -186,6 +188,14 @@ private fun MessageDetailHeader(
                     end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
                 },
                 recipients = uiModel.bccRecipients
+            )
+        }
+
+        if (uiModel.labels.isNotEmpty()) {
+            Box(
+                modifier = modifier.constrainAs(labelsRef) {
+                    top.linkTo(bccRecipientsRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
+                }
             )
         }
     }
