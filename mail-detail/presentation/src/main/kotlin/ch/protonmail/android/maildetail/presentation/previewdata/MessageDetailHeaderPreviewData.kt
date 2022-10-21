@@ -33,6 +33,7 @@ object MessageDetailHeaderPreviewData {
             participantAddress = "proton.test@protonmail.com",
             participantPadlock = R.drawable.ic_proton_lock
         ),
+        shouldShowTrackerProtectionIcon = true,
         shouldShowAttachmentIcon = true,
         shouldShowStar = true,
         locationIcon = R.drawable.ic_proton_inbox,

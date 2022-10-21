@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 data class MessageDetailHeaderUiModel(
     val avatar: AvatarUiModel,
     val sender: ParticipantUiModel,
+    val shouldShowTrackerProtectionIcon: Boolean,
     val shouldShowAttachmentIcon: Boolean,
     val shouldShowStar: Boolean,
     @DrawableRes val locationIcon: Int,

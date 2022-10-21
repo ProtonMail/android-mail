@@ -89,6 +89,10 @@ private fun MessageDetailHeader(
             sizeRef
         ) = createRefs()
 
+        val (
+            trackerProtectionInfoRef
+        ) = createRefs()
+
         Avatar(
             modifier = modifier.constrainAs(avatarRef) {
                 top.linkTo(parent.top)
@@ -261,6 +265,21 @@ private fun MessageDetailHeader(
             icon = R.drawable.ic_proton_storage,
             text = uiModel.size
         )
+
+        ExtendedHeaderRow(
+            modifier = modifier.constrainAs(trackerProtectionInfoRef) {
+                width = Dimension.fillToConstraints
+                top.linkTo(
+                    sizeRef.bottom,
+                    margin = ProtonDimens.SmallSpacing,
+                    goneMargin = ProtonDimens.SmallSpacing
+                )
+                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
+                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+            },
+            icon = R.drawable.ic_proton_shield,
+            text = "Placeholder text"
+        )
     }
 }
 
@@ -289,6 +308,9 @@ private fun Icons(
     uiModel: MessageDetailHeaderUiModel
 ) {
     Row(modifier = modifier) {
+        if (uiModel.shouldShowTrackerProtectionIcon) {
+            SmallNonClickableIcon(iconId = R.drawable.ic_proton_shield)
+        }
         if (uiModel.shouldShowAttachmentIcon) {
             SmallNonClickableIcon(iconId = R.drawable.ic_proton_paper_clip)
         }
