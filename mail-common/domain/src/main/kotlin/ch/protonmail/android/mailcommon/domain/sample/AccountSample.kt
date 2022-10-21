@@ -16,18 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.account
+package ch.protonmail.android.mailcommon.domain.sample
 
-import ch.protonmail.android.testdata.session.SessionTestData
-import ch.protonmail.android.testdata.user.UserIdTestData
-import ch.protonmail.android.testdata.user.UserTestData
 import me.proton.core.account.domain.entity.Account
 import me.proton.core.account.domain.entity.AccountDetails
 import me.proton.core.account.domain.entity.AccountState
 import me.proton.core.account.domain.entity.SessionState
 import me.proton.core.network.domain.session.SessionId
 
-object AccountTestData {
+object AccountSample {
 
     val Primary = build()
 
@@ -38,16 +35,16 @@ object AccountTestData {
     )
 
     fun build(
-        sessionId: SessionId? = SessionTestData.Primary.sessionId,
+        sessionId: SessionId? = SessionIdSample.build(),
         sessionState: SessionState? = SessionState.Authenticated,
         state: AccountState = AccountState.Ready
     ) = Account(
         details = AccountDetails(session = null),
-        email = UserTestData.Primary.email,
+        email = UserAddressSample.build().email,
         sessionId = sessionId,
         sessionState = sessionState,
         state = state,
-        userId = UserIdTestData.Primary,
-        username = UserTestData.Primary.name ?: UserTestData.Primary.userId.id
+        userId = UserIdSample.Primary,
+        username = UserAddressSample.build().displayName ?: UserIdSample.Primary.id
     )
 }

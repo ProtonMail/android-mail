@@ -16,15 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.label
+package ch.protonmail.android.mailcommon.domain.sample
 
-import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.network.domain.session.SessionId
 
-object LabelIdTestData {
+object SessionIdSample {
 
-    val Archive = LabelId("archive")
-    val Document = LabelId("document")
-    val News = LabelId("news")
-
-    fun build() = LabelId("label")
+    fun build() = SessionId("session")
 }

@@ -204,6 +204,7 @@ object Proton {
 
     object Core {
         val account = coreArtifact("account", Versions.Proton.core)
+        val accountData = coreArtifact("account-data", Versions.Proton.core)
         val accountManager = coreArtifact("account-manager", Versions.Proton.core)
         val accountManagerPresentationCompose = coreArtifact("account-manager-presentation-compose", Versions.Proton.core)
         val auth = coreArtifact("auth", Versions.Proton.core)
@@ -220,6 +221,8 @@ object Proton {
         val humanVerification = coreArtifact("human-verification", Versions.Proton.core)
         val key = coreArtifact("key", Versions.Proton.core)
         val label = coreArtifact("label", Versions.Proton.core)
+        val labelData = coreArtifact("label-data", Versions.Proton.core)
+        val labelDomain = coreArtifact("label-domain", Versions.Proton.core)
         val mailSettings = coreArtifact("mail-settings", Versions.Proton.core)
         val network = coreArtifact("network", Versions.Proton.core)
         val payment = coreArtifact("payment", Versions.Proton.core)

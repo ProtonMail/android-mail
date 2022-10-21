@@ -16,22 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.message
+package ch.protonmail.android.mailmessage.data.sample
 
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.testdata.attachment.AttachmentCountEntityTestData
-import ch.protonmail.android.testdata.user.UserIdTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 
-object MessageEntityTestData {
+object MessageEntitySample {
 
-    val AugWeatherForecast = build(MessageTestData.AugWeatherForecast)
-    val Invoice = build(MessageTestData.Invoice)
-    val SepWeatherForecast = build(MessageTestData.SepWeatherForecast)
+    val AugWeatherForecast = build(MessageSample.AugWeatherForecast)
+    val Invoice = build(MessageSample.Invoice)
+    val SepWeatherForecast = build(MessageSample.SepWeatherForecast)
 
-    fun build(message: Message = MessageTestData.build()) = MessageEntity(
+    fun build(message: Message = MessageSample.build()) = MessageEntity(
         addressId = message.addressId,
-        attachmentCount = AttachmentCountEntityTestData.build(),
+        attachmentCount = AttachmentCountEntitySample.build(),
         bccList = message.bccList,
         ccList = message.ccList,
         conversationId = message.conversationId,
@@ -50,6 +49,6 @@ object MessageEntityTestData {
         time = message.time,
         toList = message.toList,
         unread = message.unread,
-        userId = UserIdTestData.Primary
+        userId = message.userId
     )
 }

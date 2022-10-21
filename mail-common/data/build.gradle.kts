@@ -47,8 +47,11 @@ dependencies {
     implementation(Dependencies.moduleDataLibs)
     implementation(AndroidX.AppCompat.appCompat)
 
-    implementation(Proton.Core.user)
+    implementation(Proton.Core.accountData)
     implementation(Proton.Core.featureFlag)
+    implementation(Proton.Core.labelData)
+    implementation(Proton.Core.labelDomain)
+    implementation(Proton.Core.user)
 
     implementation(project(":mail-common:domain"))
 

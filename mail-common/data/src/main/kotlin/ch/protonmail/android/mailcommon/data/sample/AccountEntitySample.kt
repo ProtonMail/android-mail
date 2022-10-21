@@ -16,27 +16,24 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.model
+package ch.protonmail.android.mailcommon.data.sample
 
-import androidx.annotation.StringRes
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.ui.res.stringResource
+import ch.protonmail.android.mailcommon.domain.sample.AccountSample
+import me.proton.core.account.data.entity.AccountEntity
+import me.proton.core.account.domain.entity.Account
 
-@Immutable
-sealed class TextUiModel {
+object AccountEntitySample {
 
-    data class Text(val value: String) : TextUiModel()
-    data class TextRes(@StringRes val value: Int) : TextUiModel()
-}
+    val Primary = build(AccountSample.Primary)
 
-fun TextUiModel(value: String): TextUiModel = TextUiModel.Text(value)
-fun TextUiModel(@StringRes value: Int): TextUiModel = TextUiModel.TextRes(value)
+    val PrimaryNotReady = build(AccountSample.PrimaryNotReady)
 
-@Composable
-@ReadOnlyComposable
-fun TextUiModel.string() = when (this) {
-    is TextUiModel.Text -> value
-    is TextUiModel.TextRes -> stringResource(value)
+    fun build(account: Account = AccountSample.build()) = AccountEntity(
+        email = account.email,
+        sessionId = account.sessionId,
+        sessionState = account.sessionState,
+        state = account.state,
+        userId = account.userId,
+        username = account.username
+    )
 }

@@ -16,23 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.session
+package ch.protonmail.android.mailmessage.domain.sample
 
-import ch.protonmail.android.testdata.user.UserIdTestData
-import me.proton.core.account.data.entity.SessionEntity
-import me.proton.core.domain.entity.Product
-import me.proton.core.network.domain.session.Session
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 
-object SessionEntityTestData {
+object AttachmentCountSample {
 
-    val Primary = build(SessionTestData.Primary)
-
-    fun build(session: Session = SessionTestData.build()) = SessionEntity(
-        accessToken = session.accessToken,
-        product = Product.Mail,
-        refreshToken = session.refreshToken,
-        scopes = session.scopes,
-        sessionId = session.sessionId,
-        userId = UserIdTestData.Primary
+    fun build() = AttachmentCount(
+        calendar = 0
     )
 }

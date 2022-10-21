@@ -16,32 +16,32 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.message
+package ch.protonmail.android.mailmessage.data.sample
 
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
-import ch.protonmail.android.testdata.label.LabelIdTestData
 import me.proton.core.label.domain.entity.LabelId
 
-object MessageWithLabelIdsTestData {
+object MessageWithLabelIdsSample {
 
     val AugWeatherForecast = build(
-        message = MessageEntityTestData.AugWeatherForecast,
-        labelIds = listOf(LabelIdTestData.Archive)
+        message = MessageEntitySample.AugWeatherForecast,
+        labelIds = listOf(LabelIdSample.Archive)
     )
 
     val Invoice = build(
-        message = MessageEntityTestData.Invoice,
-        labelIds = listOf(LabelIdTestData.Archive, LabelIdTestData.Document)
+        message = MessageEntitySample.Invoice,
+        labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document)
     )
 
     val SepWeatherForecast = build(
-        message = MessageEntityTestData.SepWeatherForecast,
-        labelIds = listOf(LabelIdTestData.Archive)
+        message = MessageEntitySample.SepWeatherForecast,
+        labelIds = listOf(LabelIdSample.Archive)
     )
 
     fun build(
-        message: MessageEntity = MessageEntityTestData.build(),
+        message: MessageEntity = MessageEntitySample.build(),
         labelIds: List<LabelId> = emptyList()
     ) = MessageWithLabelIds(
         message = message,

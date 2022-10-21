@@ -16,16 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.user
+package ch.protonmail.android.mailcommon.data.sample
 
+import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import me.proton.core.user.data.entity.UserEntity
 import me.proton.core.user.domain.entity.User
 
-object UserEntityTestData {
+object UserEntitySample {
 
-    val Primary = build(UserTestData.Primary)
+    val Primary = build(UserSample.Primary)
 
-    fun build(user: User = UserTestData.build()) = UserEntity(
+    fun build(user: User = UserSample.build()) = UserEntity(
         credit = user.credit,
         currency = user.currency,
         delinquent = user.delinquent?.value,

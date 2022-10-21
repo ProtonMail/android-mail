@@ -16,27 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.label
+package ch.protonmail.android.mailcommon.domain.sample
 
-import me.proton.core.label.data.local.LabelEntity
-import me.proton.core.label.domain.entity.Label
+import me.proton.core.user.domain.entity.AddressId
 
-object LabelEntityTestData {
+object AddressIdSample {
 
-    val Archive = build(LabelTestData.Archive)
-    val Document = build(LabelTestData.Document)
-
-    fun build(label: Label = LabelTestData.build()) = LabelEntity(
-        color = label.color,
-        isExpanded = label.isExpanded,
-        isNotified = label.isNotified,
-        isSticky = label.isSticky,
-        labelId = label.labelId,
-        name = label.name,
-        order = label.order,
-        parentId = label.parentId?.id,
-        path = label.path,
-        type = label.type.value,
-        userId = label.userId
-    )
+    val Primary = AddressId("primary")
 }

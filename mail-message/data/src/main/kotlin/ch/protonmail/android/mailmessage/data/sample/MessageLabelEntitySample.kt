@@ -16,41 +16,42 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.label
+package ch.protonmail.android.mailmessage.data.sample
 
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.testdata.message.MessageIdTestData
-import ch.protonmail.android.testdata.user.UserIdTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
-object MessageLabelEntityTestData {
+object MessageLabelEntitySample {
 
     val AugWeatherForecastArchive = build(
-        messageId = MessageIdTestData.AugWeatherForecast,
-        labelId = LabelIdTestData.Archive
+        messageId = MessageIdSample.AugWeatherForecast,
+        labelId = LabelIdSample.Archive
     )
 
     val InvoiceArchive = build(
-        messageId = MessageIdTestData.Invoice,
-        labelId = LabelIdTestData.Archive
+        messageId = MessageIdSample.Invoice,
+        labelId = LabelIdSample.Archive
     )
 
     val InvoiceDocument = build(
-        messageId = MessageIdTestData.Invoice,
-        labelId = LabelIdTestData.Document
+        messageId = MessageIdSample.Invoice,
+        labelId = LabelIdSample.Document
     )
 
     val SepWeatherForecastArchive = build(
-        messageId = MessageIdTestData.SepWeatherForecast,
-        labelId = LabelIdTestData.Archive
+        messageId = MessageIdSample.SepWeatherForecast,
+        labelId = LabelIdSample.Archive
     )
 
     fun build(
-        labelId: LabelId = LabelIdTestData.build(),
-        messageId: MessageId = MessageIdTestData.build(),
-        userId: UserId = UserIdTestData.Primary
+        labelId: LabelId = LabelIdSample.build(),
+        messageId: MessageId = MessageIdSample.build(),
+        userId: UserId = UserIdSample.Primary
     ) = MessageLabelEntity(
         labelId = labelId,
         messageId = messageId,

@@ -19,10 +19,10 @@
 package ch.protonmail.android.mailconversation.domain.usecase
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import ch.protonmail.android.testdata.conversation.ConversationIdTestData
-import ch.protonmail.android.testdata.message.MessageTestData
-import ch.protonmail.android.testdata.user.UserIdTestData
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -39,11 +39,11 @@ class ObserveConversationMessagesTest {
     @Test
     fun `calls the repository with correct parameters`() = runTest {
         // given
-        val userId = UserIdTestData.Primary
-        val conversationId = ConversationIdTestData.WeatherForecast
+        val userId = UserIdSample.Primary
+        val conversationId = ConversationIdSample.WeatherForecast
         val messages = listOf(
-            MessageTestData.AugWeatherForecast,
-            MessageTestData.SepWeatherForecast
+            MessageSample.AugWeatherForecast,
+            MessageSample.SepWeatherForecast
         )
         every { messageRepository.observeCachedMessages(userId, conversationId) } returns flowOf(messages)
 

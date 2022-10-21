@@ -16,27 +16,24 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.model
+package ch.protonmail.android.mailcommon.data.sample
 
-import androidx.annotation.StringRes
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.ui.res.stringResource
+import ch.protonmail.android.mailcommon.domain.sample.SessionSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import me.proton.core.account.data.entity.SessionEntity
+import me.proton.core.domain.entity.Product
+import me.proton.core.network.domain.session.Session
 
-@Immutable
-sealed class TextUiModel {
+object SessionEntitySample {
 
-    data class Text(val value: String) : TextUiModel()
-    data class TextRes(@StringRes val value: Int) : TextUiModel()
-}
+    val Primary = build(SessionSample.Primary)
 
-fun TextUiModel(value: String): TextUiModel = TextUiModel.Text(value)
-fun TextUiModel(@StringRes value: Int): TextUiModel = TextUiModel.TextRes(value)
-
-@Composable
-@ReadOnlyComposable
-fun TextUiModel.string() = when (this) {
-    is TextUiModel.Text -> value
-    is TextUiModel.TextRes -> stringResource(value)
+    fun build(session: Session = SessionSample.build()) = SessionEntity(
+        accessToken = session.accessToken,
+        product = Product.Mail,
+        refreshToken = session.refreshToken,
+        scopes = session.scopes,
+        sessionId = session.sessionId,
+        userId = UserIdSample.Primary
+    )
 }

@@ -21,14 +21,14 @@ package ch.protonmail.android.db
 import androidx.room.withTransaction
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.data.sample.LabelEntitySample
+import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
-import ch.protonmail.android.testdata.conversation.ConversationIdTestData
-import ch.protonmail.android.testdata.label.LabelEntityTestData
-import ch.protonmail.android.testdata.label.LabelIdTestData
-import ch.protonmail.android.testdata.label.MessageLabelEntityTestData
-import ch.protonmail.android.testdata.message.MessageEntityTestData
-import ch.protonmail.android.testdata.message.MessageWithLabelIdsTestData
-import ch.protonmail.android.testdata.user.UserIdTestData
+import ch.protonmail.android.mailmessage.data.sample.MessageEntitySample
+import ch.protonmail.android.mailmessage.data.sample.MessageLabelEntitySample
+import ch.protonmail.android.mailmessage.data.sample.MessageWithLabelIdsSample
 import kotlinx.coroutines.runBlocking
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -37,9 +37,9 @@ import kotlin.test.assertContentEquals
 class MessageDaoTest : BaseDatabaseTest() {
 
     private val allMessages = listOf(
-        MessageWithLabelIdsTestData.AugWeatherForecast,
-        MessageWithLabelIdsTestData.Invoice,
-        MessageWithLabelIdsTestData.SepWeatherForecast
+        MessageWithLabelIdsSample.AugWeatherForecast,
+        MessageWithLabelIdsSample.Invoice,
+        MessageWithLabelIdsSample.SepWeatherForecast
     )
 
     @BeforeTest
@@ -54,7 +54,7 @@ class MessageDaoTest : BaseDatabaseTest() {
 
         // when
         messageDao.observeAllOrderByTimeAsc(
-            userId = UserIdTestData.Primary
+            userId = UserIdSample.Primary
         ).test {
 
             // then
@@ -69,7 +69,7 @@ class MessageDaoTest : BaseDatabaseTest() {
 
         // when
         messageDao.observeAllOrderByTimeDesc(
-            userId = UserIdTestData.Primary
+            userId = UserIdSample.Primary
         ).test {
 
             // then
@@ -80,14 +80,14 @@ class MessageDaoTest : BaseDatabaseTest() {
     @Test
     fun findAllByLabelIdByDesc() = runBlocking {
         // given
-        val labelId = LabelIdTestData.Document
+        val labelId = LabelIdSample.Document
         val expected = allMessages
             .filter { labelId in it.labelIds }
             .sortedByDescending { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeDesc(
-            userId = UserIdTestData.Primary,
+            userId = UserIdSample.Primary,
             labelId = labelId
         ).test {
 
@@ -99,14 +99,14 @@ class MessageDaoTest : BaseDatabaseTest() {
     @Test
     fun findAllByLabelIdByAsc() = runBlocking {
         // given
-        val labelId = LabelIdTestData.Document
+        val labelId = LabelIdSample.Document
         val expected = allMessages
             .filter { labelId in it.labelIds }
             .sortedBy { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeAsc(
-            userId = UserIdTestData.Primary,
+            userId = UserIdSample.Primary,
             labelId = labelId
         ).test {
 
@@ -118,14 +118,14 @@ class MessageDaoTest : BaseDatabaseTest() {
     @Test
     fun findAllByConversationIdByDesc() = runBlocking {
         // given
-        val conversationId = ConversationIdTestData.WeatherForecast
+        val conversationId = ConversationIdSample.WeatherForecast
         val expected = allMessages
             .filter { it.message.conversationId == conversationId }
             .sortedByDescending { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeDesc(
-            userId = UserIdTestData.Primary,
+            userId = UserIdSample.Primary,
             conversationId = conversationId
         ).test {
 
@@ -137,14 +137,14 @@ class MessageDaoTest : BaseDatabaseTest() {
     @Test
     fun findAllByConversationIdByAsc() = runBlocking {
         // given
-        val conversationId = ConversationIdTestData.WeatherForecast
+        val conversationId = ConversationIdSample.WeatherForecast
         val expected = allMessages
             .filter { it.message.conversationId == conversationId }
             .sortedBy { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeAsc(
-            userId = UserIdTestData.Primary,
+            userId = UserIdSample.Primary,
             conversationId = conversationId
         ).test {
 
@@ -157,19 +157,19 @@ class MessageDaoTest : BaseDatabaseTest() {
         database.withTransaction {
             insertPrimaryUser()
             with(labelDao) {
-                insertOrIgnore(LabelEntityTestData.Archive)
-                insertOrIgnore(LabelEntityTestData.Document)
+                insertOrIgnore(LabelEntitySample.Archive)
+                insertOrIgnore(LabelEntitySample.Document)
             }
             with(messageDao) {
-                insertOrIgnore(MessageEntityTestData.AugWeatherForecast)
-                insertOrIgnore(MessageEntityTestData.Invoice)
-                insertOrIgnore(MessageEntityTestData.SepWeatherForecast)
+                insertOrIgnore(MessageEntitySample.AugWeatherForecast)
+                insertOrIgnore(MessageEntitySample.Invoice)
+                insertOrIgnore(MessageEntitySample.SepWeatherForecast)
             }
             with(messageLabelDao) {
-                insertOrIgnore(MessageLabelEntityTestData.AugWeatherForecastArchive)
-                insertOrIgnore(MessageLabelEntityTestData.InvoiceArchive)
-                insertOrIgnore(MessageLabelEntityTestData.InvoiceDocument)
-                insertOrIgnore(MessageLabelEntityTestData.SepWeatherForecastArchive)
+                insertOrIgnore(MessageLabelEntitySample.AugWeatherForecastArchive)
+                insertOrIgnore(MessageLabelEntitySample.InvoiceArchive)
+                insertOrIgnore(MessageLabelEntitySample.InvoiceDocument)
+                insertOrIgnore(MessageLabelEntitySample.SepWeatherForecastArchive)
             }
         }
     }

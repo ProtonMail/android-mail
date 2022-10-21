@@ -16,27 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.model
+package ch.protonmail.android.mailcommon.domain.sample
 
-import androidx.annotation.StringRes
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.ui.res.stringResource
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 
-@Immutable
-sealed class TextUiModel {
+object ConversationIdSample {
 
-    data class Text(val value: String) : TextUiModel()
-    data class TextRes(@StringRes val value: Int) : TextUiModel()
-}
+    val WeatherForecast = ConversationId("weather_forecast")
 
-fun TextUiModel(value: String): TextUiModel = TextUiModel.Text(value)
-fun TextUiModel(@StringRes value: Int): TextUiModel = TextUiModel.TextRes(value)
-
-@Composable
-@ReadOnlyComposable
-fun TextUiModel.string() = when (this) {
-    is TextUiModel.Text -> value
-    is TextUiModel.TextRes -> stringResource(value)
+    fun build() = ConversationId("conversation")
 }

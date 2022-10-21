@@ -16,13 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.conversation
+package ch.protonmail.android.mailcommon.presentation.sample
 
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
-object ConversationIdTestData {
+object TextMessageSample {
 
-    val WeatherForecast = ConversationId("weather_forecast")
-
-    fun build() = ConversationId("conversation")
+    val NoNetwork = TextUiModel("No network")
+    val NotLoggedIn = TextUiModel("Not logged in")
+    val UnknownError = TextUiModel("Unknown error")
 }

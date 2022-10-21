@@ -28,9 +28,6 @@ import me.proton.core.label.domain.entity.LabelType
 
 object LabelTestData {
 
-    val Archive = build(labelId = LabelIdTestData.Archive)
-    val Document = build(labelId = LabelIdTestData.Document)
-
     val systemLabels = listOf(
         MailLabel.System(MailLabelId.System.Inbox),
         MailLabel.System(MailLabelId.System.AllDrafts),
@@ -43,29 +40,6 @@ object LabelTestData {
         MailLabel.System(MailLabelId.System.Drafts),
         MailLabel.System(MailLabelId.System.Outbox),
         MailLabel.System(MailLabelId.System.Starred)
-    )
-
-    fun build(
-        color: String = "#338AF3",
-        isExpanded: Boolean? = null,
-        labelId: LabelId = LabelId("labelId"),
-        name: String = labelId.id,
-        order: Int = 0,
-        parentId: LabelId? = null,
-        type: LabelType = LabelType.MessageLabel,
-        userId: UserId = UserIdTestData.Primary
-    ) = Label(
-        color = color,
-        isExpanded = isExpanded,
-        isNotified = null,
-        isSticky = null,
-        labelId = labelId,
-        name = name,
-        order = order,
-        parentId = parentId,
-        path = labelId.id,
-        type = type,
-        userId = userId
     )
 
     fun buildLabel(

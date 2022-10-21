@@ -21,10 +21,10 @@ package ch.protonmail.android.db
 import androidx.room.Room
 import androidx.room.withTransaction
 import androidx.test.core.app.ApplicationProvider
-import ch.protonmail.android.testdata.account.AccountEntityTestData
-import ch.protonmail.android.testdata.address.AddressEntityTestData
-import ch.protonmail.android.testdata.session.SessionEntityTestData
-import ch.protonmail.android.testdata.user.UserEntityTestData
+import ch.protonmail.android.mailcommon.data.sample.AccountEntitySample
+import ch.protonmail.android.mailcommon.data.sample.AddressEntitySample
+import ch.protonmail.android.mailcommon.data.sample.SessionEntitySample
+import ch.protonmail.android.mailcommon.data.sample.UserEntitySample
 import kotlin.test.AfterTest
 
 @Suppress("UnnecessaryAbstractClass", "MemberVisibilityCanBePrivate")
@@ -50,12 +50,12 @@ abstract class BaseDatabaseTest {
     }
 
     protected suspend fun insertPrimaryUser() {
-        accountDao.insertOrIgnore(AccountEntityTestData.PrimaryNotReady)
+        accountDao.insertOrIgnore(AccountEntitySample.PrimaryNotReady)
         database.withTransaction {
-            sessionDao.insertOrIgnore(SessionEntityTestData.Primary)
-            accountDao.insertOrUpdate(AccountEntityTestData.Primary)
-            userDao.insertOrIgnore(UserEntityTestData.Primary)
+            sessionDao.insertOrIgnore(SessionEntitySample.Primary)
+            accountDao.insertOrUpdate(AccountEntitySample.Primary)
+            userDao.insertOrIgnore(UserEntitySample.Primary)
         }
-        addressDao.insertOrIgnore(AddressEntityTestData.Primary)
+        addressDao.insertOrIgnore(AddressEntitySample.Primary)
     }
 }

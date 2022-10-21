@@ -16,11 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.address
+package ch.protonmail.android.mailcommon.domain.sample
 
-import me.proton.core.user.domain.entity.AddressId
+import me.proton.core.domain.entity.UserId
 
-object AddressIdTestData {
+object UserIdSample {
 
-    val Primary = AddressId("primary")
+    val Primary = UserId("primary")
 }

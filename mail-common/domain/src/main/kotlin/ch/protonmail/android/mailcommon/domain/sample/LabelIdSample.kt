@@ -16,22 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.address
+package ch.protonmail.android.mailcommon.domain.sample
 
-import ch.protonmail.android.testdata.user.UserIdTestData
-import me.proton.core.user.data.entity.AddressEntity
+import me.proton.core.label.domain.entity.LabelId
 
-object AddressEntityTestData {
+object LabelIdSample {
 
-    val Primary = AddressEntity(
-        addressId = AddressIdTestData.Primary,
-        canReceive = true,
-        canSend = true,
-        email = "primary@proton.me",
-        enabled = true,
-        order = 1,
-        signedKeyList = null,
-        type = 1,
-        userId = UserIdTestData.Primary
-    )
+    val Archive = LabelId("archive")
+    val Document = LabelId("document")
+    val News = LabelId("news")
+
+    fun build() = LabelId("label")
 }

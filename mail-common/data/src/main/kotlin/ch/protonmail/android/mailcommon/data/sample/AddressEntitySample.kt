@@ -16,15 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.message
+package ch.protonmail.android.mailcommon.data.sample
 
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailcommon.domain.sample.AddressIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import me.proton.core.user.data.entity.AddressEntity
 
-object MessageIdTestData {
+object AddressEntitySample {
 
-    val AugWeatherForecast = MessageId("aug_weather_forecast")
-    val Invoice = MessageId("invoice")
-    val SepWeatherForecast = MessageId("sep_weather_forecast")
-
-    fun build() = MessageId("message")
+    val Primary = AddressEntity(
+        addressId = AddressIdSample.Primary,
+        canReceive = true,
+        canSend = true,
+        email = "primary@proton.me",
+        enabled = true,
+        order = 1,
+        signedKeyList = null,
+        type = 1,
+        userId = UserIdSample.Primary
+    )
 }

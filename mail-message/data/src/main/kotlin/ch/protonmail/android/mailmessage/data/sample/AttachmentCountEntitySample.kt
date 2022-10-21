@@ -16,13 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.attachment
+package ch.protonmail.android.mailmessage.data.sample
 
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
+import ch.protonmail.android.mailmessage.domain.sample.AttachmentCountSample
 
-object AttachmentCountEntityTestData {
+object AttachmentCountEntitySample {
 
-    fun build() = AttachmentCountEntity(
-        calendar = 0
+    fun build(attachmentCount: AttachmentCount = AttachmentCountSample.build()) = AttachmentCountEntity(
+        calendar = attachmentCount.calendar
     )
 }

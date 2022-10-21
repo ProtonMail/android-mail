@@ -23,15 +23,15 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
-import ch.protonmail.android.testdata.conversation.ConversationIdTestData
-import ch.protonmail.android.testdata.message.MessageTestData
-import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.Ordering
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -195,11 +195,11 @@ class MessageRepositoryImplTest {
     @Test
     fun `observe cached messages for a conversation id calls the local source with correct parameters`() = runTest {
         // given
-        val userId = UserIdTestData.Primary
-        val conversationId = ConversationIdTestData.WeatherForecast
+        val userId = UserIdSample.Primary
+        val conversationId = ConversationIdSample.WeatherForecast
         val messages = listOf(
-            MessageTestData.AugWeatherForecast,
-            MessageTestData.SepWeatherForecast
+            MessageSample.AugWeatherForecast,
+            MessageSample.SepWeatherForecast
         )
         every { localDataSource.observeMessages(userId, conversationId) } returns flowOf(messages)
 
