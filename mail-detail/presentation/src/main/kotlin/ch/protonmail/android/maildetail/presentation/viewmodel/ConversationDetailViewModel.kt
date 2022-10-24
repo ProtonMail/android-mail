@@ -129,14 +129,14 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun updateConversationState(event: ConversationDetailEvent) =
         if (event is AffectingConversation) {
-            conversationStateReducer.reduce(state.value.conversationState, event)
+            conversationStateReducer.newStateFrom(state.value.conversationState, event)
         } else {
             state.value.conversationState
         }
 
     private fun updateBottomBarState(event: ConversationDetailEvent) =
         if (event is ConversationDetailEvent.ConversationBottomBarEvent) {
-            bottomBarStateReducer.reduce(state.value.bottomBarState, event.bottomBarEvent)
+            bottomBarStateReducer.newStateFrom(state.value.bottomBarState, event.bottomBarEvent)
         } else {
             state.value.bottomBarState
         }

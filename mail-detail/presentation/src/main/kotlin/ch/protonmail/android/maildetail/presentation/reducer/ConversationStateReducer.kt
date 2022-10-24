@@ -27,7 +27,7 @@ import javax.inject.Inject
 class ConversationStateReducer @Inject constructor() {
 
     @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
-    fun reduce(
+    fun newStateFrom(
         currentState: ConversationState,
         event: AffectingConversation
     ) = when (event) {

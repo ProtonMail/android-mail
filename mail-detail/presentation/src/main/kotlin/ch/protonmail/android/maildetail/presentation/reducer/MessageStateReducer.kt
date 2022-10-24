@@ -27,7 +27,7 @@ import javax.inject.Inject
 class MessageStateReducer @Inject constructor() {
 
     @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
-    fun reduce(currentState: MessageState, event: AffectingMessage): MessageState {
+    fun newStateFrom(currentState: MessageState, event: AffectingMessage): MessageState {
         return when (event) {
             is Event.NoPrimaryUser -> MessageState.Error.NotLoggedIn
 

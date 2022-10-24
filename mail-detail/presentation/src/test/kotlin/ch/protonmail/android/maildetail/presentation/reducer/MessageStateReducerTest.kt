@@ -35,10 +35,10 @@ class MessageStateReducerTest(
     private val detailReducer = MessageStateReducer()
 
     @Test
-    fun `should produce the expected new state`() {
-        val actualState = detailReducer.reduce(testInput.currentState, testInput.event)
+    fun `should produce the expected new state`() = with(testInput) {
+        val actualState = detailReducer.newStateFrom(currentState, event)
 
-        assertEquals(testInput.expectedState, actualState)
+        assertEquals(expectedState, actualState)
     }
 
     companion object {

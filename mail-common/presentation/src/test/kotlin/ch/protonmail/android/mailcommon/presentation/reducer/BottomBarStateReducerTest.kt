@@ -35,10 +35,10 @@ internal class BottomBarStateReducerTest(
     private val reducer = BottomBarStateReducer()
 
     @Test
-    fun `should produce the expected new state`() {
-        val actualState = reducer.reduce(testInput.currentState, testInput.event)
+    fun `should produce the expected new state`() = with(testInput) {
+        val actualState = reducer.newStateFrom(currentState, event)
 
-        assertEquals(testInput.expectedState, actualState)
+        assertEquals(expectedState, actualState)
     }
 
     companion object {

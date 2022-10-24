@@ -25,7 +25,7 @@ import javax.inject.Inject
 class BottomBarStateReducer @Inject constructor() {
 
     @SuppressWarnings("UnusedPrivateMember")
-    fun reduce(currentState: BottomBarState, event: BottomBarEvent): BottomBarState {
+    fun newStateFrom(currentState: BottomBarState, event: BottomBarEvent): BottomBarState {
         return when (event) {
             is BottomBarEvent.ActionsData -> BottomBarState.Data(event.actionUiModels)
             is BottomBarEvent.ErrorLoadingActions -> BottomBarState.Error.FailedLoadingActions
