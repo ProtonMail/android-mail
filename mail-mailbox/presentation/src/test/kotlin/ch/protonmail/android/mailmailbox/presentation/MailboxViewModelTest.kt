@@ -47,6 +47,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxViewModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
@@ -63,7 +64,6 @@ import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
-import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -129,7 +129,14 @@ class MailboxViewModelTest {
     }
 
     private val unreadFilterReducer = mockk<MailboxUnreadFilterReducer> {
-        every { newStateFrom(any(), any()) } returns UnreadFilterState.Loading
+        every { newStateFrom(any(), any()) } answers {
+            val operation = secondArg<MailboxOperation.AffectingUnreadFilter>()
+            if (operation is MailboxEvent.SelectedLabelCountChanged) {
+                UnreadFilterState.Data(operation.selectedLabelCount, false)
+            } else {
+                UnreadFilterState.Loading
+            }
+        }
     }
 
     private val mailboxViewModel by lazy {
@@ -247,7 +254,6 @@ class MailboxViewModelTest {
             mailboxViewModel.submit(MailboxViewAction.ExitSelectionMode)
 
             // Then
-            val expected = MailboxTopAppBarState.Data.DefaultMode(MailLabel.System(Archive).text())
             val actual = awaitItem()
             assertEquals(expectedState, actual.topAppBarState)
         }
@@ -270,7 +276,6 @@ class MailboxViewModelTest {
         val currentLocation = MutableStateFlow<MailLabelId>(Sent)
         val sentCount = UnreadCountersTestData.labelToCounterMap[Sent.labelId]!!
         val archiveCount = UnreadCountersTestData.labelToCounterMap[Archive.labelId]!!
-        clearMocks(unreadFilterReducer)
         every { selectedMailLabelId.flow } returns currentLocation
         every {
             unreadFilterReducer.newStateFrom(
