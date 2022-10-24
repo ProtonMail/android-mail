@@ -48,6 +48,10 @@ class ConversationStateReducerTest(
             "conversationId",
             "This email is about subjects"
         )
+        private val updatedConversationUiModel = ConversationUiModelTestData.buildConversationUiModel(
+            "conversationId1",
+            "[Re] This email is about subjects"
+        )
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
@@ -75,8 +79,8 @@ class ConversationStateReducerTest(
             ),
             TestInput(
                 currentState = ConversationState.Data(conversationUiModel),
-                operation = ConversationDetailEvent.ConversationData(conversationUiModel),
-                expectedState = ConversationState.Data(conversationUiModel)
+                operation = ConversationDetailEvent.ConversationData(updatedConversationUiModel),
+                expectedState = ConversationState.Data(updatedConversationUiModel)
             ),
             TestInput(
                 currentState = ConversationState.Data(conversationUiModel),
@@ -111,6 +115,7 @@ class ConversationStateReducerTest(
                         Current state: ${testInput.currentState}
                         Operation: ${testInput.operation}
                         Next state: ${testInput.expectedState}
+                        
                 """.trimIndent()
                 arrayOf(testName, testInput)
             }

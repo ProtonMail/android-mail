@@ -44,6 +44,7 @@ internal class BottomBarStateReducerTest(
     companion object {
 
         private val actions = listOf(ActionUiModelTestData.markUnread)
+        private val updatedActions = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
@@ -61,8 +62,8 @@ internal class BottomBarStateReducerTest(
         private val transitionsFromDataState = listOf(
             TestInput(
                 currentState = BottomBarState.Data(actions),
-                operation = BottomBarEvent.ActionsData(actions),
-                expectedState = BottomBarState.Data(actions)
+                operation = BottomBarEvent.ActionsData(updatedActions),
+                expectedState = BottomBarState.Data(updatedActions)
             ),
             TestInput(
                 currentState = BottomBarState.Data(actions),
@@ -92,6 +93,7 @@ internal class BottomBarStateReducerTest(
                         Current state: ${testInput.currentState}
                         Operation: ${testInput.operation}
                         Next state: ${testInput.expectedState}
+                        
                 """.trimIndent()
                 arrayOf(testName, testInput)
             }
