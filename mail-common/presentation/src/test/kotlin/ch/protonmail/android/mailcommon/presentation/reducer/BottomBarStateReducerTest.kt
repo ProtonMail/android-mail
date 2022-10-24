@@ -28,17 +28,17 @@ import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
 internal class BottomBarStateReducerTest(
-    @Suppress("UNUSED_PARAMETER") private val testName: String,
-    private val testInput: TestParams.TestInput
+    private val testName: String,
+    private val testInput: TestInput
 ) {
 
     private val reducer = BottomBarStateReducer()
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
-        val actualState = reducer.newStateFrom(currentState, event)
+        val actualState = reducer.newStateFrom(currentState, operation)
 
-        assertEquals(expectedState, actualState)
+        assertEquals(expectedState, actualState, testName)
     }
 
     companion object {
@@ -46,78 +46,61 @@ internal class BottomBarStateReducerTest(
         private val actions = listOf(ActionUiModelTestData.markUnread)
 
         private val transitionsFromLoadingState = listOf(
-            TestParams(
-                "from loading to actions data",
-                TestParams.TestInput(
-                    currentState = BottomBarState.Loading,
-                    event = BottomBarEvent.ActionsData(actions),
-                    expectedState = BottomBarState.Data(actions)
-                )
+            TestInput(
+                currentState = BottomBarState.Loading,
+                operation = BottomBarEvent.ActionsData(actions),
+                expectedState = BottomBarState.Data(actions)
             ),
-            TestParams(
-                "from loading to failed loading actions data",
-                TestParams.TestInput(
-                    currentState = BottomBarState.Loading,
-                    event = BottomBarEvent.ErrorLoadingActions,
-                    expectedState = BottomBarState.Error.FailedLoadingActions
-                )
+            TestInput(
+                currentState = BottomBarState.Loading,
+                operation = BottomBarEvent.ErrorLoadingActions,
+                expectedState = BottomBarState.Error.FailedLoadingActions
             )
         )
 
         private val transitionsFromDataState = listOf(
-            TestParams(
-                "from data to actions data",
-                TestParams.TestInput(
-                    currentState = BottomBarState.Data(actions),
-                    event = BottomBarEvent.ActionsData(actions),
-                    expectedState = BottomBarState.Data(actions)
-                )
+            TestInput(
+                currentState = BottomBarState.Data(actions),
+                operation = BottomBarEvent.ActionsData(actions),
+                expectedState = BottomBarState.Data(actions)
             ),
-            TestParams(
-                "from data to failed loading actions data",
-                TestParams.TestInput(
-                    currentState = BottomBarState.Data(actions),
-                    event = BottomBarEvent.ErrorLoadingActions,
-                    expectedState = BottomBarState.Error.FailedLoadingActions
-                )
+            TestInput(
+                currentState = BottomBarState.Data(actions),
+                operation = BottomBarEvent.ErrorLoadingActions,
+                expectedState = BottomBarState.Error.FailedLoadingActions
             )
         )
 
         private val transitionsFromErrorState = listOf(
-            TestParams(
-                "from error to actions data",
-                TestParams.TestInput(
-                    currentState = BottomBarState.Error.FailedLoadingActions,
-                    event = BottomBarEvent.ActionsData(actions),
-                    expectedState = BottomBarState.Data(actions)
-                )
+            TestInput(
+                currentState = BottomBarState.Error.FailedLoadingActions,
+                operation = BottomBarEvent.ActionsData(actions),
+                expectedState = BottomBarState.Data(actions)
             ),
-            TestParams(
-                "from error to failed loading actions data",
-                TestParams.TestInput(
-                    currentState = BottomBarState.Error.FailedLoadingActions,
-                    event = BottomBarEvent.ErrorLoadingActions,
-                    expectedState = BottomBarState.Error.FailedLoadingActions
-                )
+            TestInput(
+                currentState = BottomBarState.Error.FailedLoadingActions,
+                operation = BottomBarEvent.ErrorLoadingActions,
+                expectedState = BottomBarState.Error.FailedLoadingActions
             )
         )
 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data() = (transitionsFromLoadingState + transitionsFromDataState + transitionsFromErrorState)
-            .map { arrayOf(it.testName, it.testInput) }
+            .map { testInput ->
+                val testName = """
+                        Current state: ${testInput.currentState}
+                        Operation: ${testInput.operation}
+                        Next state: ${testInput.expectedState}
+                """.trimIndent()
+                arrayOf(testName, testInput)
+            }
     }
 
-    data class TestParams(
-        val testName: String,
-        val testInput: TestInput
-    ) {
-
-        data class TestInput(
-            val currentState: BottomBarState,
-            val event: BottomBarEvent,
-            val expectedState: BottomBarState
-        )
-    }
+    data class TestInput(
+        val currentState: BottomBarState,
+        val operation: BottomBarEvent,
+        val expectedState: BottomBarState
+    )
 
 }

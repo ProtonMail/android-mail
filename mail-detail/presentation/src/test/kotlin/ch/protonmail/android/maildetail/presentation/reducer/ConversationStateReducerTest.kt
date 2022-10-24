@@ -29,17 +29,17 @@ import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
 class ConversationStateReducerTest(
-    @Suppress("UNUSED_PARAMETER") private val testName: String,
-    private val testInput: TestParams.TestInput
+    private val testName: String,
+    private val testInput: TestInput
 ) {
 
     private val detailReducer = ConversationStateReducer()
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
-        val actualState = detailReducer.newStateFrom(currentState, event)
+        val actualState = detailReducer.newStateFrom(currentState, operation)
 
-        assertEquals(expectedState, actualState)
+        assertEquals(expectedState, actualState, testName)
     }
 
     companion object {
@@ -50,102 +50,76 @@ class ConversationStateReducerTest(
         )
 
         private val transitionsFromLoadingState = listOf(
-            TestParams(
-                "from loading to no primary user",
-                TestParams.TestInput(
-                    currentState = ConversationState.Loading,
-                    event = ConversationDetailEvent.NoPrimaryUser,
-                    expectedState = ConversationState.Error.NotLoggedIn
-                )
+            TestInput(
+                currentState = ConversationState.Loading,
+                operation = ConversationDetailEvent.NoPrimaryUser,
+                expectedState = ConversationState.Error.NotLoggedIn
             ),
-            TestParams(
-                "from loading to conversation data",
-                TestParams.TestInput(
-                    currentState = ConversationState.Loading,
-                    event = ConversationDetailEvent.ConversationData(conversationUiModel),
-                    expectedState = ConversationState.Data(conversationUiModel)
-                )
+            TestInput(
+                currentState = ConversationState.Loading,
+                operation = ConversationDetailEvent.ConversationData(conversationUiModel),
+                expectedState = ConversationState.Data(conversationUiModel)
             ),
-            TestParams(
-                "from loading to error loading conversation",
-                TestParams.TestInput(
-                    currentState = ConversationState.Loading,
-                    event = ConversationDetailEvent.ErrorLoadingConversation,
-                    expectedState = ConversationState.Error.FailedLoadingData
-                )
+            TestInput(
+                currentState = ConversationState.Loading,
+                operation = ConversationDetailEvent.ErrorLoadingConversation,
+                expectedState = ConversationState.Error.FailedLoadingData
             )
         )
 
         private val transitionsFromDataState = listOf(
-            TestParams(
-                "from data to no primary user",
-                TestParams.TestInput(
-                    currentState = ConversationState.Data(conversationUiModel),
-                    event = ConversationDetailEvent.NoPrimaryUser,
-                    expectedState = ConversationState.Error.NotLoggedIn
-                )
+            TestInput(
+                currentState = ConversationState.Data(conversationUiModel),
+                operation = ConversationDetailEvent.NoPrimaryUser,
+                expectedState = ConversationState.Error.NotLoggedIn
             ),
-            TestParams(
-                "from data to conversation data",
-                TestParams.TestInput(
-                    currentState = ConversationState.Data(conversationUiModel),
-                    event = ConversationDetailEvent.ConversationData(conversationUiModel),
-                    expectedState = ConversationState.Data(conversationUiModel)
-                )
+            TestInput(
+                currentState = ConversationState.Data(conversationUiModel),
+                operation = ConversationDetailEvent.ConversationData(conversationUiModel),
+                expectedState = ConversationState.Data(conversationUiModel)
             ),
-            TestParams(
-                "from data to error loading conversation",
-                TestParams.TestInput(
-                    currentState = ConversationState.Data(conversationUiModel),
-                    event = ConversationDetailEvent.ErrorLoadingConversation,
-                    expectedState = ConversationState.Error.FailedLoadingData
-                )
+            TestInput(
+                currentState = ConversationState.Data(conversationUiModel),
+                operation = ConversationDetailEvent.ErrorLoadingConversation,
+                expectedState = ConversationState.Error.FailedLoadingData
             )
         )
 
         private val transitionsFromErrorState = listOf(
-            TestParams(
-                "from failed loading to no primary user",
-                TestParams.TestInput(
-                    currentState = ConversationState.Error.FailedLoadingData,
-                    event = ConversationDetailEvent.NoPrimaryUser,
-                    expectedState = ConversationState.Error.NotLoggedIn
-                )
+            TestInput(
+                currentState = ConversationState.Error.FailedLoadingData,
+                operation = ConversationDetailEvent.NoPrimaryUser,
+                expectedState = ConversationState.Error.NotLoggedIn
             ),
-            TestParams(
-                "from failed loading to conversation data",
-                TestParams.TestInput(
-                    currentState = ConversationState.Error.FailedLoadingData,
-                    event = ConversationDetailEvent.ConversationData(conversationUiModel),
-                    expectedState = ConversationState.Data(conversationUiModel)
-                )
+            TestInput(
+                currentState = ConversationState.Error.FailedLoadingData,
+                operation = ConversationDetailEvent.ConversationData(conversationUiModel),
+                expectedState = ConversationState.Data(conversationUiModel)
             ),
-            TestParams(
-                "from failed loading to failed loading",
-                TestParams.TestInput(
-                    currentState = ConversationState.Error.FailedLoadingData,
-                    event = ConversationDetailEvent.ErrorLoadingConversation,
-                    expectedState = ConversationState.Error.FailedLoadingData
-                )
+            TestInput(
+                currentState = ConversationState.Error.FailedLoadingData,
+                operation = ConversationDetailEvent.ErrorLoadingConversation,
+                expectedState = ConversationState.Error.FailedLoadingData
             )
         )
 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data() = (transitionsFromLoadingState + transitionsFromDataState + transitionsFromErrorState)
-            .map { arrayOf(it.testName, it.testInput) }
+            .map { testInput ->
+                val testName = """
+                        Current state: ${testInput.currentState}
+                        Operation: ${testInput.operation}
+                        Next state: ${testInput.expectedState}
+                """.trimIndent()
+                arrayOf(testName, testInput)
+            }
     }
 
-    data class TestParams(
-        val testName: String,
-        val testInput: TestInput
-    ) {
-
-        data class TestInput(
-            val currentState: ConversationState,
-            val event: ConversationDetailOperation.AffectingConversation,
-            val expectedState: ConversationState
-        )
-    }
+    data class TestInput(
+        val currentState: ConversationState,
+        val operation: ConversationDetailOperation.AffectingConversation,
+        val expectedState: ConversationState
+    )
 
 }

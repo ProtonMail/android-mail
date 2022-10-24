@@ -29,6 +29,7 @@ import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
 class MessageStateReducerTest(
+    private val testName: String,
     private val testInput: TestInput
 ) {
 
@@ -36,9 +37,9 @@ class MessageStateReducerTest(
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
-        val actualState = detailReducer.newStateFrom(currentState, event)
+        val actualState = detailReducer.newStateFrom(currentState, operation)
 
-        assertEquals(expectedState, actualState)
+        assertEquals(expectedState, actualState, testName)
     }
 
     companion object {
@@ -51,12 +52,12 @@ class MessageStateReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MessageState.Loading,
-                event = Event.NoPrimaryUser,
+                operation = Event.NoPrimaryUser,
                 expectedState = MessageState.Error.NotLoggedIn
             ),
             TestInput(
                 currentState = MessageState.Loading,
-                event = Event.MessageMetadata(messageUiModel),
+                operation = Event.MessageMetadata(messageUiModel),
                 expectedState = MessageState.Data(messageUiModel)
             )
         )
@@ -64,12 +65,12 @@ class MessageStateReducerTest(
         private val transitionsFromDataState = listOf(
             TestInput(
                 currentState = MessageState.Data(messageUiModel),
-                event = Event.NoPrimaryUser,
+                operation = Event.NoPrimaryUser,
                 expectedState = MessageState.Error.NotLoggedIn
             ),
             TestInput(
                 currentState = MessageState.Data(messageUiModel),
-                event = Event.MessageMetadata(messageUiModel),
+                operation = Event.MessageMetadata(messageUiModel),
                 expectedState = MessageState.Data(messageUiModel)
             )
         )
@@ -77,12 +78,12 @@ class MessageStateReducerTest(
         private val transitionsFromErrorState = listOf(
             TestInput(
                 currentState = MessageState.Error.NotLoggedIn,
-                event = Event.NoPrimaryUser,
+                operation = Event.NoPrimaryUser,
                 expectedState = MessageState.Error.NotLoggedIn
             ),
             TestInput(
                 currentState = MessageState.Error.NotLoggedIn,
-                event = Event.MessageMetadata(messageUiModel),
+                operation = Event.MessageMetadata(messageUiModel),
                 expectedState = MessageState.Data(messageUiModel)
             )
         )
@@ -90,12 +91,19 @@ class MessageStateReducerTest(
         @JvmStatic
         @Parameterized.Parameters
         fun data() = (transitionsFromLoadingState + transitionsFromDataState + transitionsFromErrorState)
-            .map { arrayOf(it) }
+            .map { testInput ->
+                val testName = """
+                        Current state: ${testInput.currentState}
+                        Operation: ${testInput.operation}
+                        Next state: ${testInput.expectedState}
+                """.trimIndent()
+                arrayOf(testName, testInput)
+            }
     }
 
-    class TestInput(
+    data class TestInput(
         val currentState: MessageState,
-        val event: MessageDetailOperation.AffectingMessage,
+        val operation: MessageDetailOperation.AffectingMessage,
         val expectedState: MessageState
     )
 }
