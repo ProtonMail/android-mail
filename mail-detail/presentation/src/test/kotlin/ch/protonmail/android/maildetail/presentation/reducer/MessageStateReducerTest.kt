@@ -53,25 +53,49 @@ class MessageStateReducerTest(
                 currentState = MessageState.Loading,
                 event = Event.NoPrimaryUser,
                 expectedState = MessageState.Error.NotLoggedIn
-            ).toArray(),
+            ),
             TestInput(
                 currentState = MessageState.Loading,
                 event = Event.MessageMetadata(messageUiModel),
                 expectedState = MessageState.Data(messageUiModel)
-            ).toArray()
+            )
+        )
+
+        private val transitionsFromDataState = listOf(
+            TestInput(
+                currentState = MessageState.Data(messageUiModel),
+                event = Event.NoPrimaryUser,
+                expectedState = MessageState.Error.NotLoggedIn
+            ),
+            TestInput(
+                currentState = MessageState.Data(messageUiModel),
+                event = Event.MessageMetadata(messageUiModel),
+                expectedState = MessageState.Data(messageUiModel)
+            )
+        )
+
+        private val transitionsFromErrorState = listOf(
+            TestInput(
+                currentState = MessageState.Error.NotLoggedIn,
+                event = Event.NoPrimaryUser,
+                expectedState = MessageState.Error.NotLoggedIn
+            ),
+            TestInput(
+                currentState = MessageState.Error.NotLoggedIn,
+                event = Event.MessageMetadata(messageUiModel),
+                expectedState = MessageState.Data(messageUiModel)
+            )
         )
 
         @JvmStatic
         @Parameterized.Parameters
-        fun data(): Collection<Array<TestInput>> = transitionsFromLoadingState
+        fun data() = (transitionsFromLoadingState + transitionsFromDataState + transitionsFromErrorState)
+            .map { arrayOf(it) }
     }
 
     class TestInput(
         val currentState: MessageState,
         val event: MessageDetailOperation.AffectingMessage,
         val expectedState: MessageState
-    ) {
-
-        fun toArray() = arrayOf(this)
-    }
+    )
 }

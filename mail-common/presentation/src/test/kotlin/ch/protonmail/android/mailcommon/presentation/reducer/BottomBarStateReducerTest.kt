@@ -45,7 +45,7 @@ internal class BottomBarStateReducerTest(
 
         private val actions = listOf(ActionUiModelTestData.markUnread)
 
-        private val transitionsFromRelevantEvents = listOf(
+        private val transitionsFromLoadingState = listOf(
             TestParams(
                 "from loading to actions data",
                 TestParams.TestInput(
@@ -64,9 +64,47 @@ internal class BottomBarStateReducerTest(
             )
         )
 
+        private val transitionsFromDataState = listOf(
+            TestParams(
+                "from data to actions data",
+                TestParams.TestInput(
+                    currentState = BottomBarState.Data(actions),
+                    event = BottomBarEvent.ActionsData(actions),
+                    expectedState = BottomBarState.Data(actions)
+                )
+            ),
+            TestParams(
+                "from data to failed loading actions data",
+                TestParams.TestInput(
+                    currentState = BottomBarState.Data(actions),
+                    event = BottomBarEvent.ErrorLoadingActions,
+                    expectedState = BottomBarState.Error.FailedLoadingActions
+                )
+            )
+        )
+
+        private val transitionsFromErrorState = listOf(
+            TestParams(
+                "from error to actions data",
+                TestParams.TestInput(
+                    currentState = BottomBarState.Error.FailedLoadingActions,
+                    event = BottomBarEvent.ActionsData(actions),
+                    expectedState = BottomBarState.Data(actions)
+                )
+            ),
+            TestParams(
+                "from error to failed loading actions data",
+                TestParams.TestInput(
+                    currentState = BottomBarState.Error.FailedLoadingActions,
+                    event = BottomBarEvent.ErrorLoadingActions,
+                    expectedState = BottomBarState.Error.FailedLoadingActions
+                )
+            )
+        )
+
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
-        fun data() = transitionsFromRelevantEvents
+        fun data() = (transitionsFromLoadingState + transitionsFromDataState + transitionsFromErrorState)
             .map { arrayOf(it.testName, it.testInput) }
     }
 
