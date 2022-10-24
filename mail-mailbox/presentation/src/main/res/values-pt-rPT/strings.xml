@@ -20,10 +20,10 @@
   <string name="drawer_title_more">Mais</string>
   <string name="drawer_title_contacts">Contactos</string>
   <string name="drawer_title_subscription">Subscrição</string>
-  <string name="mailbox_toolbar_compose_button_content_description">Compose new message</string>
-  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Exit selection mode</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Compor nova mensagem</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Sair do modo de seleção</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
-  <string name="mailbox_toolbar_search_button_content_description">Search</string>
+  <string name="mailbox_toolbar_search_button_content_description">Procurar</string>
   <string name="mailbox_toolbar_selected_count">%d seleccionado</string>
   <string name="yesterday">ontem</string>
   <plurals name="filter_unread_button_text">
