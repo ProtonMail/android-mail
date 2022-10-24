@@ -29,8 +29,8 @@ import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.AffectingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationStateReducer
@@ -128,7 +128,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun updateConversationState(event: ConversationDetailEvent) =
-        if (event is AffectingConversation) {
+        if (event is ConversationDetailOperation.AffectingConversation) {
             conversationStateReducer.newStateFrom(state.value.conversationState, event)
         } else {
             state.value.conversationState

@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.model.AffectingMessage
 import ch.protonmail.android.maildetail.presentation.model.Event
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageState
 import ch.protonmail.android.testdata.message.MessageUiModelTestData
 import org.junit.runner.RunWith
@@ -68,7 +68,7 @@ class MessageStateReducerTest(
 
     class TestInput(
         val currentState: MessageState,
-        val event: AffectingMessage,
+        val event: MessageDetailOperation.AffectingMessage,
         val expectedState: MessageState
     ) {
 

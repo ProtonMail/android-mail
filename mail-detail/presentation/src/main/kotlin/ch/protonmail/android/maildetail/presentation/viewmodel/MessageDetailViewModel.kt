@@ -27,8 +27,8 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReduc
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.AffectingMessage
 import ch.protonmail.android.maildetail.presentation.model.Event
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageStateReducer
@@ -127,7 +127,7 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun updateMessageState(event: Event) =
-        if (event is AffectingMessage) {
+        if (event is MessageDetailOperation.AffectingMessage) {
             messageStateReducer.newStateFrom(state.value.messageState, event)
         } else {
             state.value.messageState
