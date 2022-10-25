@@ -90,6 +90,7 @@ fun MailboxItem(
                 Participants(participants = item.participants, fontWeight = fontWeight, fontColor = fontColor)
             },
             time = { Time(time = item.time, fontWeight = fontWeight, fontColor = fontColor) },
+            locationIcons = { LocationIcons(iconResIds = item.locationIconResIds) },
             subject = { Subject(subject = item.subject, fontWeight = fontWeight, fontColor = fontColor) },
             count = { Count(count = item.numMessages, fontWeight = fontWeight, fontColor = fontColor) },
             icons = { Icons(item = item) },
@@ -107,6 +108,7 @@ private fun MailboxItemLayout(
     actionIcons: @Composable () -> Unit,
     participants: @Composable () -> Unit,
     time: @Composable () -> Unit,
+    locationIcons: @Composable () -> Unit,
     subject: @Composable () -> Unit,
     count: @Composable () -> Unit,
     icons: @Composable () -> Unit,
@@ -120,6 +122,7 @@ private fun MailboxItemLayout(
             actionIconsRef,
             participantsRef,
             timeRef,
+            locationIconsRef,
             subjectRef,
             countRef, iconsRef,
             expirationLabelRef,
@@ -138,6 +141,7 @@ private fun MailboxItemLayout(
                 top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
                 bottom.linkTo(subjectRef.top)
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
+                end.linkTo(participantsRef.start, margin = ProtonDimens.ExtraSmallSpacing)
             }
         ) { actionIcons() }
 
@@ -162,12 +166,22 @@ private fun MailboxItemLayout(
         ) { time() }
 
         Box(
+            modifier = modifier.constrainAs(locationIconsRef) {
+                horizontalChainWeight = 0f
+                top.linkTo(subjectRef.top)
+                bottom.linkTo(subjectRef.bottom)
+                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
+                end.linkTo(subjectRef.start, margin = ProtonDimens.ExtraSmallSpacing)
+            }
+        ) { locationIcons() }
+
+        Box(
             modifier = modifier.constrainAs(subjectRef) {
                 horizontalChainWeight = 0f
                 width = Dimension.fillToConstraints
                 top.linkTo(participantsRef.bottom)
                 bottom.linkTo(labelsRef.top)
-                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
+                start.linkTo(locationIconsRef.end)
                 end.linkTo(countRef.start)
             }
         ) { subject() }
@@ -175,8 +189,8 @@ private fun MailboxItemLayout(
         Box(
             modifier = modifier.constrainAs(countRef) {
                 horizontalChainWeight = 0f
-                top.linkTo(participantsRef.bottom)
-                bottom.linkTo(labelsRef.top)
+                top.linkTo(subjectRef.top)
+                bottom.linkTo(subjectRef.bottom)
                 start.linkTo(subjectRef.end, margin = ProtonDimens.ExtraSmallSpacing)
                 end.linkTo(iconsRef.start, margin = ProtonDimens.ExtraSmallSpacing)
             }
@@ -184,8 +198,8 @@ private fun MailboxItemLayout(
 
         Box(
             modifier = modifier.constrainAs(iconsRef) {
-                top.linkTo(participantsRef.bottom)
-                bottom.linkTo(labelsRef.top)
+                top.linkTo(subjectRef.top)
+                bottom.linkTo(subjectRef.bottom)
                 end.linkTo(parent.end)
             }
         ) { icons() }
@@ -321,6 +335,23 @@ private fun Time(
 }
 
 @Composable
+private fun LocationIcons(
+    modifier: Modifier = Modifier,
+    iconResIds: List<Int>
+) {
+    if (iconResIds.isEmpty()) {
+        return
+    }
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        iconResIds.forEach { MailboxItemIcon(iconId = it) }
+    }
+}
+
+@Composable
 private fun Subject(
     modifier: Modifier = Modifier,
     subject: String,
@@ -417,10 +448,11 @@ private fun Labels(
 @Composable
 private fun MailboxItemIcon(
     @DrawableRes iconId: Int,
+    modifier: Modifier = Modifier,
     tintId: Int = R.color.icon_weak
 ) {
     Icon(
-        modifier = Modifier.size(ProtonDimens.SmallIconSize),
+        modifier = modifier.size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = iconId),
         contentDescription = NO_CONTENT_DESCRIPTION,
         tint = colorResource(id = tintId)
@@ -429,11 +461,24 @@ private fun MailboxItemIcon(
 
 @Composable
 @Preview(showBackground = true)
-private fun MailboxItemPreview() {
+private fun DroidConMailboxItemPreview() {
     ProtonTheme {
         MailboxItem(
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.DroidConLondon,
+            onItemClicked = {},
+            onOpenSelectionMode = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun WeatherMailboxItemPreview() {
+    ProtonTheme {
+        MailboxItem(
+            modifier = Modifier,
+            item = MailboxItemUiModelPreviewData.Conversation.WeatherForecast,
             onItemClicked = {},
             onOpenSelectionMode = {}
         )
