@@ -19,7 +19,6 @@
 <resources>
 
     <string name="detail_error_loading_conversation">Failed loading conversation</string>
-    <string name="detail_error_loading_actions">Failed loading actions</string>
     <plurals name="message_count_label_text">
         <item quantity="one">%d message</item>
         <item quantity="other">%d messages</item>

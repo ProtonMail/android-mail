@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.ui
+package ch.protonmail.android.mailcommon.presentation.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -40,10 +40,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.previewdata.BottomActionBarPreviewProvider
+import ch.protonmail.android.mailcommon.presentation.previewdata.BottomActionBarPreviewProvider
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -72,7 +72,7 @@ fun BottomActionBar(
                     ProtonCenteredProgress(modifier = Modifier.size(MailDimens.ProgressDefaultSize))
                 }
                 is BottomBarState.Error -> Text(
-                    text = stringResource(id = R.string.detail_error_loading_actions),
+                    text = stringResource(id = R.string.common_error_loading_actions),
                     style = ProtonTypography.Default.default
                 )
                 is BottomBarState.Data -> {
