@@ -51,7 +51,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         val labelId = pageKey.filter.labelId
         val keyword = pageKey.filter.keyword
         val unread = when (pageKey.filter.read) {
-            ReadStatus.All -> listOf(false, true)
+            ReadStatus.All -> ReadAndUnread
             ReadStatus.Read -> listOf(false)
             ReadStatus.Unread -> listOf(true)
         }
@@ -125,7 +125,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         labelId: LabelId? = null,
         conversationId: ConversationId? = null,
         keyword: String = EMPTY_STRING,
-        unread: List<Boolean> = listOf(false, true),
+        unread: List<Boolean> = ReadAndUnread,
         minValue: Long = Long.MIN_VALUE,
         maxValue: Long = Long.MAX_VALUE,
         minOrder: Long = Long.MIN_VALUE,
@@ -169,11 +169,16 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         labelId: LabelId? = null,
         conversationId: ConversationId? = null,
         keyword: String = EMPTY_STRING,
-        unread: List<Boolean> = listOf(false, true),
+        unread: List<Boolean> = ReadAndUnread,
         minValue: Long = Long.MIN_VALUE,
         maxValue: Long = Long.MAX_VALUE,
         minOrder: Long = Long.MIN_VALUE,
         maxOrder: Long = Long.MAX_VALUE,
         size: Int = Int.MAX_VALUE
     ): Flow<List<MessageWithLabelIds>>
+
+    private companion object {
+
+        private val ReadAndUnread = listOf(false, true)
+    }
 }
