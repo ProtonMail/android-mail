@@ -40,20 +40,27 @@ internal sealed interface MailboxEvent : MailboxOperation {
     data class ItemDetailsOpenedInViewMode(
         val item: MailboxItemUiModel,
         val preferredViewMode: ViewMode
-    ) : MailboxEvent
+    ) : MailboxEvent,
+        MailboxOperation.AffectingMailboxList
 
     data class NewLabelSelected(
         val selectedLabel: MailLabel,
         val selectedLabelCount: Int?
-    ) : MailboxEvent, MailboxOperation.AffectingTopAppBar, MailboxOperation.AffectingUnreadFilter
+    ) : MailboxEvent,
+        MailboxOperation.AffectingTopAppBar,
+        MailboxOperation.AffectingUnreadFilter,
+        MailboxOperation.AffectingMailboxList
 
     data class SelectedLabelChanged(
         val selectedLabel: MailLabel
-    ) : MailboxEvent, MailboxOperation.AffectingTopAppBar
+    ) : MailboxEvent,
+        MailboxOperation.AffectingTopAppBar,
+        MailboxOperation.AffectingMailboxList
 
     data class SelectedLabelCountChanged(
         val selectedLabelCount: Int
-    ) : MailboxEvent, MailboxOperation.AffectingUnreadFilter
+    ) : MailboxEvent,
+        MailboxOperation.AffectingUnreadFilter
 }
 
 

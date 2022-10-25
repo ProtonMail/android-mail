@@ -25,7 +25,6 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -33,9 +32,6 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.mailmailbox.domain.extension.firstOrDefault
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
@@ -48,9 +44,10 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxListReducer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxTopAppBarReducer
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxUnreadFilterReducer
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,7 +81,8 @@ class MailboxViewModel @Inject constructor(
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val getContacts: GetContacts,
     private val mailboxTopAppBarReducer: MailboxTopAppBarReducer,
-    private val unreadFilterReducer: MailboxUnreadFilterReducer
+    private val unreadFilterReducer: MailboxUnreadFilterReducer,
+    private val mailboxListReducer: MailboxListReducer
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -165,22 +163,14 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun onOpenItemDetails(item: MailboxItemUiModel) {
-        val request = when (getPreferredViewMode()) {
-            ViewMode.ConversationGrouping -> {
-                OpenMailboxItemRequest(MailboxItemId(item.conversationId.id), MailboxItemType.Conversation)
-            }
-            ViewMode.NoConversationGrouping -> {
-                OpenMailboxItemRequest(MailboxItemId(item.id), item.type)
-            }
-        }
-        when (val currentListState = state.value.mailboxListState) {
-            is MailboxListState.Loading -> throw IllegalStateException("Can't open item while list is loading")
-            is MailboxListState.Data -> mutableState.emit(
-                state.value.copy(
-                    mailboxListState = currentListState.copy(openItemEffect = Effect.of(request))
+        mutableState.emit(
+            state.value.copy(
+                mailboxListState = mailboxListReducer.newStateFrom(
+                    currentState = state.value.mailboxListState,
+                    operation = MailboxEvent.ItemDetailsOpenedInViewMode(item, getPreferredViewMode())
                 )
             )
-        }.exhaustive
+        )
     }
 
     private suspend fun onRefresh() {
@@ -254,38 +244,31 @@ class MailboxViewModel @Inject constructor(
             state.value.unreadFilterState,
             MailboxEvent.NewLabelSelected(currentMailLabel, currentLabelCount)
         )
+        val mailboxListState = mailboxListReducer.newStateFrom(
+            state.value.mailboxListState,
+            MailboxEvent.NewLabelSelected(currentMailLabel, currentLabelCount)
+        )
 
-        val currentState = state.value.mailboxListState
-        if (currentState is MailboxListState.Data) {
-            mutableState.emit(
-                state.value.copy(
-                    mailboxListState = currentState.copy(
-                        currentMailLabel = currentMailLabel,
-                        scrollToMailboxTop = Effect.of(currentMailLabel.id)
-                    ),
-                    topAppBarState = topAppBarState,
-                    unreadFilterState = unreadFilterState
-                )
+        mutableState.emit(
+            state.value.copy(
+                mailboxListState = mailboxListState,
+                topAppBarState = topAppBarState,
+                unreadFilterState = unreadFilterState
             )
-        }
+        )
     }
 
     private suspend fun updateStateForMailLabelChange(currentMailLabel: MailLabel) {
-        val topAppBarState = mailboxTopAppBarReducer
-            .newStateFrom(state.value.topAppBarState, MailboxEvent.SelectedLabelChanged(currentMailLabel))
-        val mailboxListState = when (val currentState = state.value.mailboxListState) {
-            is MailboxListState.Loading -> MailboxListState.Data(
-                currentMailLabel,
-                Effect.empty(),
-                Effect.empty()
-            )
-            is MailboxListState.Data -> currentState.copy(
-                currentMailLabel = currentMailLabel
-            )
-        }
-        val currentState = mutableState.value
+        val topAppBarState = mailboxTopAppBarReducer.newStateFrom(
+            state.value.topAppBarState,
+            MailboxEvent.SelectedLabelChanged(currentMailLabel)
+        )
+        val mailboxListState = mailboxListReducer.newStateFrom(
+            state.value.mailboxListState,
+            MailboxEvent.SelectedLabelChanged(currentMailLabel)
+        )
         mutableState.emit(
-            currentState.copy(
+            state.value.copy(
                 mailboxListState = mailboxListState,
                 topAppBarState = topAppBarState
             )
