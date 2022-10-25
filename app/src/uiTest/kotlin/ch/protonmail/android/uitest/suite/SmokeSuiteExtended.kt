@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.suite
 import ch.protonmail.android.uitest.e2e.login.LoginFlowTests
 import ch.protonmail.android.uitest.e2e.mailbox.MailboxFlowTest
 import ch.protonmail.android.uitest.e2e.settings.SettingsFlowTest
+import ch.protonmail.android.uitest.screen.common.BottomActionBarTest
 import ch.protonmail.android.uitest.screen.mailbox.MailboxItemLabelsTest
 import ch.protonmail.android.uitest.screen.mailbox.MailboxScreenTest
 import ch.protonmail.android.uitest.screen.mailbox.MailboxTopAppBarTest
@@ -40,6 +41,7 @@ import org.junit.runners.Suite
 @Suite.SuiteClasses(
     AccountSettingsScreenTest::class,
     AlternativeRoutingSettingScreenTest::class,
+    BottomActionBarTest::class,
     CombinedContactsSettingScreenTest::class,
     ConversationModeSettingScreenTest::class,
     EditSwipeActionPreferenceScreenTest::class,

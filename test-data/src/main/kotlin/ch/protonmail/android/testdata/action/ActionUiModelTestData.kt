@@ -35,9 +35,29 @@ object ActionUiModelTestData {
         R.drawable.ic_proton_archive_box,
         commonRes.string.action_archive_content_description
     )
+    val forward = ActionUiModel(
+        Action.Forward,
+        R.drawable.ic_arrow_forward,
+        commonRes.string.action_forward_content_description
+    )
     val markUnread = ActionUiModel(
         Action.MarkUnread,
         R.drawable.ic_proton_envelope_dot,
         commonRes.string.action_mark_unread_content_description
+    )
+    val move = ActionUiModel(
+        Action.Move,
+        R.drawable.ic_proton_folder_arrow_in,
+        commonRes.string.action_move_content_description
+    )
+    val label = ActionUiModel(
+        Action.Label,
+        R.drawable.ic_proton_tag,
+        commonRes.string.action_label_content_description
+    )
+    val reportPhishing = ActionUiModel(
+        Action.ReportPhishing,
+        R.drawable.ic_proton_hook,
+        commonRes.string.action_report_phishing_content_description
     )
 }
