@@ -36,6 +36,10 @@ class Effect<T : Any> private constructor(private var event: T?) {
     fun consume(): T? = event
         .also { event = null }
 
+    override fun equals(other: Any?): Boolean = other is Effect<*> && this.event == other.event
+
+    override fun hashCode(): Int = event?.hashCode() ?: 0
+
     companion object {
 
         fun <T : Any> of(event: T) = Effect(event)

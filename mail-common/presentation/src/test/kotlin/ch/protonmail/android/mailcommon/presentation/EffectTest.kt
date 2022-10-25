@@ -18,8 +18,12 @@
 
 package ch.protonmail.android.mailcommon.presentation
 
+import app.cash.turbine.test
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotSame
 import kotlin.test.assertNull
 
 internal class EffectTest {
@@ -44,5 +48,32 @@ internal class EffectTest {
 
         // then
         assertNull(effect.consume())
+    }
+
+    @Test
+    fun `state flow should not emit the same effect instance after it's consumed`() = runTest {
+        // given
+        val effect = Effect.of(42)
+        val stateFlow = MutableStateFlow(effect)
+
+        // when/then
+        stateFlow.test {
+            val initialState = awaitItem()
+            assertEquals(effect, initialState)
+
+            effect.consume()
+            stateFlow.value = effect
+        }
+    }
+
+    @Test
+    fun `should compare the event value and not the instance when doing the equals check`() {
+        // given
+        val firstEffect = Effect.of(42)
+        val secondEffect = Effect.of(42)
+
+        // when/then
+        assertEquals(firstEffect, secondEffect)
+        assertNotSame(firstEffect, secondEffect)
     }
 }
