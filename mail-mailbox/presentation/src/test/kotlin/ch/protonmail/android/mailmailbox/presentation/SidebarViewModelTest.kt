@@ -97,7 +97,7 @@ class SidebarViewModelTest {
         every { this@mockk(any()) } returns folderColorSettings
     }
     private val paymentManager = mockk<PaymentManager> {
-        coEvery { this@mockk.isSubscriptionAvailable(UserIdTestData.userId) } returns true
+        coEvery { this@mockk.isSubscriptionAvailable(userId = any()) } returns true
     }
 
     private lateinit var sidebarViewModel: SidebarViewModel
