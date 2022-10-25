@@ -78,16 +78,36 @@ class MessageDaoTest : BaseDatabaseTest() {
     }
 
     @Test
+    fun findAllByLabelIdByDesc() = runBlocking {
+        // given
+        val labelId = LabelIdTestData.Document
+        val expected = allMessages
+            .filter { labelId in it.labelIds }
+            .sortedByDescending { it.message.time }
+
+        // when
+        messageDao.observeAllOrderByTimeDesc(
+            userId = UserIdTestData.Primary,
+            labelId = labelId
+        ).test {
+
+            // then
+            assertMessagesEquals(expected)
+        }
+    }
+
+    @Test
     fun findAllByLabelIdByAsc() = runBlocking {
         // given
-        val expected = listOf(
-            MessageWithLabelIdsTestData.Invoice
-        ).sortedBy { it.message.time }
+        val labelId = LabelIdTestData.Document
+        val expected = allMessages
+            .filter { labelId in it.labelIds }
+            .sortedBy { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeAsc(
             userId = UserIdTestData.Primary,
-            labelId = LabelIdTestData.Document
+            labelId = labelId
         ).test {
 
             // then
@@ -98,15 +118,15 @@ class MessageDaoTest : BaseDatabaseTest() {
     @Test
     fun findAllByConversationIdByDesc() = runBlocking {
         // given
-        val expected = listOf(
-            MessageWithLabelIdsTestData.AugWeatherForecast,
-            MessageWithLabelIdsTestData.SepWeatherForecast
-        ).sortedByDescending { it.message.time }
+        val conversationId = ConversationIdTestData.WeatherForecast
+        val expected = allMessages
+            .filter { it.message.conversationId == conversationId }
+            .sortedByDescending { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeDesc(
             userId = UserIdTestData.Primary,
-            conversationId = ConversationIdTestData.WeatherForecast
+            conversationId = conversationId
         ).test {
 
             // then
@@ -117,33 +137,15 @@ class MessageDaoTest : BaseDatabaseTest() {
     @Test
     fun findAllByConversationIdByAsc() = runBlocking {
         // given
-        val expected = listOf(
-            MessageWithLabelIdsTestData.AugWeatherForecast,
-            MessageWithLabelIdsTestData.SepWeatherForecast
-        ).sortedBy { it.message.time }
+        val conversationId = ConversationIdTestData.WeatherForecast
+        val expected = allMessages
+            .filter { it.message.conversationId == conversationId }
+            .sortedBy { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeAsc(
             userId = UserIdTestData.Primary,
-            conversationId = ConversationIdTestData.WeatherForecast
-        ).test {
-
-            // then
-            assertMessagesEquals(expected)
-        }
-    }
-
-    @Test
-    fun findAllByLabelIdByDesc() = runBlocking {
-        // given
-        val expected = listOf(
-            MessageWithLabelIdsTestData.Invoice
-        ).sortedByDescending { it.message.time }
-
-        // when
-        messageDao.observeAllOrderByTimeDesc(
-            userId = UserIdTestData.Primary,
-            labelId = LabelIdTestData.Document
+            conversationId = conversationId
         ).test {
 
             // then
