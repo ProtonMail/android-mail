@@ -28,14 +28,16 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
+import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
-import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.ConversationState
-import ch.protonmail.android.maildetail.presentation.reducer.ConversationStateReducer
+import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMessagesReducer
+import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMetadataReducer
+import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.conversation.ConversationTestData
@@ -57,10 +59,8 @@ import kotlin.test.assertIs
 class ConversationDetailViewModelTest {
 
     private val rawConversationId = ConversationTestData.RAW_CONVERSATION_ID
-    private val conversationUiModelMapper = ConversationDetailUiModelMapper()
+    private val conversationUiModelMapper = ConversationDetailMetadataUiModelMapper()
     private val actionUiModelMapper = ActionUiModelMapper()
-    private val conversationStateReducer = ConversationStateReducer()
-    private val bottomBarStateReducer = BottomBarStateReducer()
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
@@ -77,16 +77,21 @@ class ConversationDetailViewModelTest {
             listOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
         )
     }
+    // TODO: Return stub state and test reducers separately
+    private val reducer = ConversationDetailReducer(
+        bottomBarReducer = BottomBarReducer(),
+        metadataReducer = ConversationDetailMetadataReducer(),
+        messagesReducer = ConversationDetailMessagesReducer()
+    )
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
-            conversationStateReducer = conversationStateReducer,
-            bottomBarStateReducer = bottomBarStateReducer,
             observeConversation = observeConversation,
-            uiModelMapper = conversationUiModelMapper,
+            metadataUiModelMapper = conversationUiModelMapper,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeConversationDetailActions,
+            reducer = reducer,
             savedStateHandle = savedStateHandle
         )
     }
@@ -114,7 +119,7 @@ class ConversationDetailViewModelTest {
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            assertEquals(ConversationState.Error.NotLoggedIn, awaitItem().conversationState)
+            assertEquals(ConversationDetailMetadataState.Error.NotLoggedIn, awaitItem().conversationState)
         }
     }
 
@@ -139,7 +144,7 @@ class ConversationDetailViewModelTest {
             initialStateEmitted()
             // Then
             assertEquals(
-                ConversationState.Data(ConversationUiModelTestData.conversationUiModel),
+                ConversationDetailMetadataState.Data(ConversationUiModelTestData.conversationUiModel),
                 awaitItem().conversationState
             )
             cancelAndIgnoreRemainingEvents()
@@ -156,7 +161,7 @@ class ConversationDetailViewModelTest {
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            assertEquals(ConversationState.Error.FailedLoadingData, awaitItem().conversationState)
+            assertEquals(ConversationDetailMetadataState.Error.FailedLoadingData, awaitItem().conversationState)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -199,7 +204,7 @@ class ConversationDetailViewModelTest {
     }
 
     private suspend fun FlowTurbine<ConversationDetailState>.conversationStateEmitted() {
-        assertIs<ConversationState.Data>(awaitItem().conversationState)
+        assertIs<ConversationDetailMetadataState.Data>(awaitItem().conversationState)
     }
 
     private fun givenNoLoggedInUser() {

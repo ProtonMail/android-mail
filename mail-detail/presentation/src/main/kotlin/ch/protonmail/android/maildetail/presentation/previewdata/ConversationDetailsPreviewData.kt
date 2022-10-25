@@ -22,37 +22,62 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.sample.TextMessageSample
+import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.ConversationState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 
 object ConversationDetailsPreviewData {
 
-    val Conversation = ConversationDetailState(
-        ConversationState.Data(
+    val Success = ConversationDetailState(
+        ConversationDetailMetadataState.Data(
             conversationUiModel = ConversationDetailsUiModelPreviewData.WeatherForecast
         ),
+        messagesState = ConversationDetailsMessagesState.Data(
+            messages = listOf(
+                ConversationDetailMessageUiModelSample.AugWeatherForecast,
+                ConversationDetailMessageUiModelSample.SepWeatherForecast
+            )
+        ),
         bottomBarState = BottomBarState.Data(
-            listOf(
+            actions = listOf(
                 ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
         )
     )
 
-    val FailedLoadingData = ConversationDetailState(
-        conversationState = ConversationState.Error.FailedLoadingData,
+    val FailedLoadingConversation = ConversationDetailState(
+        conversationState = ConversationDetailMetadataState.Error.FailedLoadingData,
+        messagesState = ConversationDetailsMessagesState.Loading,
+        bottomBarState = BottomBarState.Loading
+    )
+
+    val FailedLoadingMessages = ConversationDetailState(
+        conversationState = ConversationDetailMetadataState.Loading,
+        messagesState = ConversationDetailsMessagesState.Error(TextMessageSample.NoNetwork),
+        bottomBarState = BottomBarState.Loading
+    )
+
+    val FailedLoadingBottomBar = ConversationDetailState(
+        conversationState = ConversationDetailMetadataState.Loading,
+        messagesState = ConversationDetailsMessagesState.Loading,
         bottomBarState = BottomBarState.Error.FailedLoadingActions
     )
 
     val Loading = ConversationDetailState(
-        conversationState = ConversationState.Loading,
+        conversationState = ConversationDetailMetadataState.Loading,
+        messagesState = ConversationDetailsMessagesState.Loading,
         bottomBarState = BottomBarState.Loading
     )
 
     val NotLoggedIn = ConversationDetailState(
-        conversationState = ConversationState.Error.NotLoggedIn,
+        conversationState = ConversationDetailMetadataState.Error.NotLoggedIn,
+        messagesState = ConversationDetailsMessagesState.Error(TextMessageSample.NotLoggedIn),
         bottomBarState = BottomBarState.Loading
     )
 }
@@ -60,8 +85,10 @@ object ConversationDetailsPreviewData {
 class ConversationDetailsPreviewProvider : PreviewParameterProvider<ConversationDetailState> {
 
     override val values = sequenceOf(
-        ConversationDetailsPreviewData.Conversation,
-        ConversationDetailsPreviewData.FailedLoadingData,
+        ConversationDetailsPreviewData.Success,
+        ConversationDetailsPreviewData.FailedLoadingConversation,
+        ConversationDetailsPreviewData.FailedLoadingMessages,
+        ConversationDetailsPreviewData.FailedLoadingBottomBar,
         ConversationDetailsPreviewData.Loading,
         ConversationDetailsPreviewData.NotLoggedIn
     )

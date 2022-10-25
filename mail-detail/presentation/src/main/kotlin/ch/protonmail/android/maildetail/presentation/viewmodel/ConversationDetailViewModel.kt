@@ -24,16 +24,14 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
-import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
-import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.ConversationViewAction
-import ch.protonmail.android.maildetail.presentation.reducer.ConversationStateReducer
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
+import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,12 +48,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ConversationDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
-    private val conversationStateReducer: ConversationStateReducer,
-    private val bottomBarStateReducer: BottomBarStateReducer,
     private val observeConversation: ObserveConversation,
-    private val uiModelMapper: ConversationDetailUiModelMapper,
+    private val metadataUiModelMapper: ConversationDetailMetadataUiModelMapper,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveConversationDetailActions,
+    private val reducer: ConversationDetailReducer,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -76,10 +73,10 @@ class ConversationDetailViewModel @Inject constructor(
         observeBottomBarActions(conversationId)
     }
 
-    fun submit(action: ConversationViewAction) {
+    fun submit(action: ConversationDetailViewAction) {
         when (action) {
-            is ConversationViewAction.Star -> Timber.d("Star conversation clicked")
-            is ConversationViewAction.UnStar -> Timber.d("UnStar conversation clicked")
+            is ConversationDetailViewAction.Star -> Timber.d("Star conversation clicked")
+            is ConversationDetailViewAction.UnStar -> Timber.d("UnStar conversation clicked")
         }
     }
 
@@ -92,7 +89,7 @@ class ConversationDetailViewModel @Inject constructor(
                 .mapLatest { either ->
                     either.fold(
                         ifLeft = { ConversationDetailEvent.ErrorLoadingConversation },
-                        ifRight = { ConversationDetailEvent.ConversationData(uiModelMapper.toUiModel(it)) }
+                        ifRight = { ConversationDetailEvent.ConversationData(metadataUiModelMapper.toUiModel(it)) }
                     )
                 }
         }.onEach { event ->
@@ -120,26 +117,8 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private suspend fun emitNewStateFrom(event: ConversationDetailEvent) {
-        val updatedDetailState = state.value.copy(
-            conversationState = updateConversationState(event),
-            bottomBarState = updateBottomBarState(event)
-        )
-        mutableDetailState.emit(updatedDetailState)
+        mutableDetailState.emit(reducer.newStateFrom(state.value, event))
     }
-
-    private fun updateConversationState(event: ConversationDetailEvent) =
-        if (event is ConversationDetailOperation.AffectingConversation) {
-            conversationStateReducer.newStateFrom(state.value.conversationState, event)
-        } else {
-            state.value.conversationState
-        }
-
-    private fun updateBottomBarState(event: ConversationDetailEvent) =
-        if (event is ConversationDetailEvent.ConversationBottomBarEvent) {
-            bottomBarStateReducer.newStateFrom(state.value.bottomBarState, event.bottomBarEvent)
-        } else {
-            state.value.bottomBarState
-        }
 
     companion object {
 

@@ -19,18 +19,18 @@
 package ch.protonmail.android.testdata.conversation
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailUiModel
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataUiModel
 
 object ConversationUiModelTestData {
 
-    val conversationUiModel = ConversationDetailUiModel(
+    val conversationUiModel = ConversationDetailMetadataUiModel(
         conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID),
         subject = ConversationTestData.RAW_SUBJECT,
         isStarred = false,
         messageCount = 1
     )
 
-    val uiModelWith3Messages = ConversationDetailUiModel(
+    val uiModelWith3Messages = ConversationDetailMetadataUiModel(
         conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID),
         subject = ConversationTestData.RAW_SUBJECT,
         isStarred = false,
@@ -42,7 +42,7 @@ object ConversationUiModelTestData {
         subject: String,
         isStarred: Boolean = false,
         messageCount: Int = 1
-    ) = ConversationDetailUiModel(
+    ) = ConversationDetailMetadataUiModel(
         conversationId = ConversationId(conversationId),
         subject = subject,
         isStarred = isStarred,

@@ -18,10 +18,15 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+sealed interface MessageDetailMetadataState {
 
-data class MessageUiModel(
-    val messageId: MessageId,
-    val subject: String,
-    val isStarred: Boolean
-)
+    data class Data(
+        val messageUiModel: MessageDetailMetadataUiModel
+    ) : MessageDetailMetadataState
+
+    object Loading : MessageDetailMetadataState
+
+    sealed interface Error : MessageDetailMetadataState {
+        object NotLoggedIn : Error
+    }
+}

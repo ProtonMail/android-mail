@@ -19,10 +19,10 @@
 package ch.protonmail.android.uitest.screen.detail
 
 import androidx.compose.ui.test.junit4.createComposeRule
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.ConversationState
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
-import ch.protonmail.android.maildetail.presentation.model.MessageState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
@@ -69,14 +69,14 @@ class DetailScreenTopBarTest {
     @Test
     fun whenConversationIsLoadedThenSubjectIsDisplayed() {
         // given
-        val state = ConversationDetailsPreviewData.Conversation
+        val state = ConversationDetailsPreviewData.Success
 
         // when
         val robot = setupScreen(state = state)
 
         // then
         robot.verify {
-            val conversationState = state.conversationState as ConversationState.Data
+            val conversationState = state.conversationState as ConversationDetailMetadataState.Data
             subjectIsDisplayed(conversationState.conversationUiModel.subject)
         }
     }
@@ -91,7 +91,7 @@ class DetailScreenTopBarTest {
 
         // then
         robot.verify {
-            val messageState = state.messageState as MessageState.Data
+            val messageState = state.messageState as MessageDetailMetadataState.Data
             subjectIsDisplayed(messageState.messageUiModel.subject)
         }
     }

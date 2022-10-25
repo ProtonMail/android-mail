@@ -300,9 +300,9 @@ class MailboxItemUiModelMapperTest {
     fun `labels doesn't include folders and contacts groups`() {
         // given
         val mailboxItemLabels = listOf(
-            LabelTestData.build(labelId = LabelId("label"), type = LabelType.MessageLabel),
-            LabelTestData.build(labelId = LabelId("folder"), type = LabelType.MessageFolder),
-            LabelTestData.build(labelId = LabelId("group"), type = LabelType.ContactGroup)
+            LabelTestData.buildLabel(id = "label", type = LabelType.MessageLabel),
+            LabelTestData.buildLabel(id = "folder", type = LabelType.MessageFolder),
+            LabelTestData.buildLabel(id = "group", type = LabelType.ContactGroup)
         )
         val mailboxItem = buildMailboxItem(labels = mailboxItemLabels)
 

@@ -18,16 +18,15 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-sealed interface ConversationState {
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+
+sealed interface ConversationDetailsMessagesState {
 
     data class Data(
-        val conversationUiModel: ConversationDetailUiModel
-    ) : ConversationState
+        val messages: List<ConversationDetailMessageUiModel>
+    ) : ConversationDetailsMessagesState
 
-    object Loading : ConversationState
+    object Loading : ConversationDetailsMessagesState
 
-    sealed interface Error : ConversationState {
-        object NotLoggedIn : Error
-        object FailedLoadingData : Error
-    }
+    data class Error(val message: TextUiModel) : ConversationDetailsMessagesState
 }

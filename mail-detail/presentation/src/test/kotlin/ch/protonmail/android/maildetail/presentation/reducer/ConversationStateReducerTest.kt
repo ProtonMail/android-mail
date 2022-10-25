@@ -20,7 +20,8 @@ package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
-import ch.protonmail.android.maildetail.presentation.model.ConversationState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,7 +34,7 @@ class ConversationStateReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val detailReducer = ConversationStateReducer()
+    private val detailReducer = ConversationDetailMetadataReducer()
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
@@ -55,55 +56,55 @@ class ConversationStateReducerTest(
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
-                currentState = ConversationState.Loading,
+                currentState = ConversationDetailMetadataState.Loading,
                 operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationState.Error.NotLoggedIn
+                expectedState = ConversationDetailMetadataState.Error.NotLoggedIn
             ),
             TestInput(
-                currentState = ConversationState.Loading,
+                currentState = ConversationDetailMetadataState.Loading,
                 operation = ConversationDetailEvent.ConversationData(conversationUiModel),
-                expectedState = ConversationState.Data(conversationUiModel)
+                expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
             ),
             TestInput(
-                currentState = ConversationState.Loading,
+                currentState = ConversationDetailMetadataState.Loading,
                 operation = ConversationDetailEvent.ErrorLoadingConversation,
-                expectedState = ConversationState.Error.FailedLoadingData
+                expectedState = ConversationDetailMetadataState.Error.FailedLoadingData
             )
         )
 
         private val transitionsFromDataState = listOf(
             TestInput(
-                currentState = ConversationState.Data(conversationUiModel),
+                currentState = ConversationDetailMetadataState.Data(conversationUiModel),
                 operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationState.Error.NotLoggedIn
+                expectedState = ConversationDetailMetadataState.Error.NotLoggedIn
             ),
             TestInput(
-                currentState = ConversationState.Data(conversationUiModel),
+                currentState = ConversationDetailMetadataState.Data(conversationUiModel),
                 operation = ConversationDetailEvent.ConversationData(updatedConversationUiModel),
-                expectedState = ConversationState.Data(updatedConversationUiModel)
+                expectedState = ConversationDetailMetadataState.Data(updatedConversationUiModel)
             ),
             TestInput(
-                currentState = ConversationState.Data(conversationUiModel),
+                currentState = ConversationDetailMetadataState.Data(conversationUiModel),
                 operation = ConversationDetailEvent.ErrorLoadingConversation,
-                expectedState = ConversationState.Error.FailedLoadingData
+                expectedState = ConversationDetailMetadataState.Error.FailedLoadingData
             )
         )
 
         private val transitionsFromErrorState = listOf(
             TestInput(
-                currentState = ConversationState.Error.FailedLoadingData,
+                currentState = ConversationDetailMetadataState.Error.FailedLoadingData,
                 operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationState.Error.NotLoggedIn
+                expectedState = ConversationDetailMetadataState.Error.NotLoggedIn
             ),
             TestInput(
-                currentState = ConversationState.Error.FailedLoadingData,
+                currentState = ConversationDetailMetadataState.Error.FailedLoadingData,
                 operation = ConversationDetailEvent.ConversationData(conversationUiModel),
-                expectedState = ConversationState.Data(conversationUiModel)
+                expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
             ),
             TestInput(
-                currentState = ConversationState.Error.FailedLoadingData,
+                currentState = ConversationDetailMetadataState.Error.FailedLoadingData,
                 operation = ConversationDetailEvent.ErrorLoadingConversation,
-                expectedState = ConversationState.Error.FailedLoadingData
+                expectedState = ConversationDetailMetadataState.Error.FailedLoadingData
             )
         )
 
@@ -122,9 +123,9 @@ class ConversationStateReducerTest(
     }
 
     data class TestInput(
-        val currentState: ConversationState,
+        val currentState: ConversationDetailMetadataState,
         val operation: ConversationDetailOperation.AffectingConversation,
-        val expectedState: ConversationState
+        val expectedState: ConversationDetailMetadataState
     )
 
 }

@@ -19,11 +19,11 @@
 package ch.protonmail.android.maildetail.presentation.previewdata
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailUiModel
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataUiModel
 
 object ConversationDetailsUiModelPreviewData {
 
-    val WeatherForecast = ConversationDetailUiModel(
+    val WeatherForecast = ConversationDetailMetadataUiModel(
         conversationId = ConversationId("WeatherForecast"),
         subject = "Weather Forecast",
         isStarred = true,

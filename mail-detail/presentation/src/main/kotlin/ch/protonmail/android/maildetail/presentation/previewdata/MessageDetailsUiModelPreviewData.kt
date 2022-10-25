@@ -18,18 +18,18 @@
 
 package ch.protonmail.android.maildetail.presentation.previewdata
 
-import ch.protonmail.android.maildetail.presentation.model.MessageUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
 object MessageDetailsUiModelPreviewData {
 
-    val FirstWeekOfAugWeatherForecast = MessageUiModel(
+    val FirstWeekOfAugWeatherForecast = MessageDetailMetadataUiModel(
         messageId = MessageId("Weather Forecast for the first week of August"),
         subject = "Weather Forecast for the first week of August",
         isStarred = true
     )
 
-    val LoremIpsum30words = MessageUiModel(
+    val LoremIpsum30words = MessageDetailMetadataUiModel(
         messageId = MessageId("Lorem Ipsum"),
         subject = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In volutpat elit vitae massa bibendum, " +
             "sed vestibulum velit feugiat. Suspendisse molestie purus at ornare cursus. Mauris placerat tortor est, " +

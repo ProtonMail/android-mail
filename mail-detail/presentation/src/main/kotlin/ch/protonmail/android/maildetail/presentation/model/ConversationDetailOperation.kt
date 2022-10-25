@@ -21,12 +21,15 @@ package ch.protonmail.android.maildetail.presentation.model
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 
 sealed interface ConversationDetailOperation {
-    sealed interface AffectingConversation
+
+    sealed interface AffectingConversation : ConversationDetailOperation
+    sealed interface AffectingConversationMessages : ConversationDetailOperation
 }
 
 sealed interface ConversationDetailEvent : ConversationDetailOperation {
+
     data class ConversationData(
-        val conversationUiModel: ConversationDetailUiModel
+        val conversationUiModel: ConversationDetailMetadataUiModel
     ) : ConversationDetailEvent, ConversationDetailOperation.AffectingConversation
 
     object NoPrimaryUser : ConversationDetailEvent, ConversationDetailOperation.AffectingConversation
@@ -35,7 +38,8 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     data class ConversationBottomBarEvent(val bottomBarEvent: BottomBarEvent) : ConversationDetailEvent
 }
 
-sealed interface ConversationViewAction : ConversationDetailOperation {
-    object Star : ConversationViewAction, ConversationDetailOperation.AffectingConversation
-    object UnStar : ConversationViewAction, ConversationDetailOperation.AffectingConversation
+sealed interface ConversationDetailViewAction : ConversationDetailOperation {
+
+    object Star : ConversationDetailViewAction, ConversationDetailOperation.AffectingConversation
+    object UnStar : ConversationDetailViewAction, ConversationDetailOperation.AffectingConversation
 }

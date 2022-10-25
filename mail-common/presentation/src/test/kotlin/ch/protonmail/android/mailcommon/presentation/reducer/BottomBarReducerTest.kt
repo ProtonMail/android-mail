@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailcommon.presentation.reducer
 
+import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
@@ -27,12 +29,12 @@ import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
-internal class BottomBarStateReducerTest(
+internal class BottomBarReducerTest(
     private val testName: String,
     private val testInput: TestInput
 ) {
 
-    private val reducer = BottomBarStateReducer()
+    private val reducer = BottomBarReducer()
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {

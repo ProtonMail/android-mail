@@ -37,9 +37,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.maildetail.presentation.R.string
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.ConversationState
-import ch.protonmail.android.maildetail.presentation.model.ConversationViewAction
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -64,8 +64,8 @@ fun ConversationDetailScreen(
         state = state,
         actions = ConversationDetailScreen.Actions(
             onBackClick = onBackClick,
-            onStarClick = { viewModel.submit(ConversationViewAction.Star) },
-            onUnStarClick = { viewModel.submit(ConversationViewAction.UnStar) }
+            onStarClick = { viewModel.submit(ConversationDetailViewAction.Star) },
+            onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) }
         )
     )
 }
@@ -82,7 +82,7 @@ fun ConversationDetailScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            val uiModel = (state.conversationState as? ConversationState.Data)?.conversationUiModel
+            val uiModel = (state.conversationState as? ConversationDetailMetadataState.Data)?.conversationUiModel
             DetailScreenTopBar(
                 title = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
                 isStarred = uiModel?.isStarred,
@@ -127,16 +127,16 @@ fun ConversationDetailScreen(
         }
     ) { innerPadding ->
         when (state.conversationState) {
-            is ConversationState.Data -> ConversationDetailContent(contentPadding = innerPadding)
-            ConversationState.Error.NotLoggedIn -> ProtonErrorMessage(
+            is ConversationDetailMetadataState.Data -> ConversationDetailContent(contentPadding = innerPadding)
+            ConversationDetailMetadataState.Error.NotLoggedIn -> ProtonErrorMessage(
                 modifier = Modifier.padding(innerPadding),
                 errorMessage = stringResource(id = commonString.x_error_not_logged_in)
             )
-            ConversationState.Error.FailedLoadingData -> ProtonErrorMessage(
+            ConversationDetailMetadataState.Error.FailedLoadingData -> ProtonErrorMessage(
                 modifier = Modifier.padding(innerPadding),
                 errorMessage = stringResource(id = string.detail_error_loading_conversation)
             )
-            ConversationState.Loading -> ProtonCenteredProgress(
+            ConversationDetailMetadataState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
             )
         }.exhaustive

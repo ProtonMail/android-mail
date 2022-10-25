@@ -24,13 +24,13 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
-import ch.protonmail.android.maildetail.presentation.model.MessageState
 
 object MessageDetailsPreviewData {
 
     val Message = MessageDetailState(
-        messageState = MessageState.Data(
+        messageState = MessageDetailMetadataState.Data(
             messageUiModel = MessageDetailsUiModelPreviewData.FirstWeekOfAugWeatherForecast
         ),
         bottomBarState = BottomBarState.Data(
@@ -42,12 +42,12 @@ object MessageDetailsPreviewData {
     )
 
     val Loading = MessageDetailState(
-        messageState = MessageState.Loading,
+        messageState = MessageDetailMetadataState.Loading,
         bottomBarState = BottomBarState.Loading
     )
 
     val NotLoggedIn = MessageDetailState(
-        messageState = MessageState.Error.NotLoggedIn,
+        messageState = MessageDetailMetadataState.Error.NotLoggedIn,
         bottomBarState = BottomBarState.Loading
     )
 }

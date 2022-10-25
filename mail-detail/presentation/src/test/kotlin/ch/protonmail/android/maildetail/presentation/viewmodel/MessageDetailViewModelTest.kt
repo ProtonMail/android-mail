@@ -27,14 +27,14 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
+import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
-import ch.protonmail.android.maildetail.presentation.model.MessageState
-import ch.protonmail.android.maildetail.presentation.model.MessageUiModel
-import ch.protonmail.android.maildetail.presentation.reducer.MessageStateReducer
+import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -60,8 +60,8 @@ class MessageDetailViewModelTest {
     private val rawMessageId = "detailMessageId"
     private val actionUiModelMapper = ActionUiModelMapper()
     private val messageUiModelMapper = MessageDetailUiModelMapper()
-    private val messageStateReducer = MessageStateReducer()
-    private val bottomBarStateReducer = BottomBarStateReducer()
+    private val messageStateReducer = MessageDetailMetadataReducer()
+    private val bottomBarReducer = BottomBarReducer()
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
@@ -83,7 +83,7 @@ class MessageDetailViewModelTest {
         MessageDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
             messageStateReducer = messageStateReducer,
-            bottomBarStateReducer = bottomBarStateReducer,
+            bottomBarReducer = bottomBarReducer,
             observeMessage = observeMessage,
             uiModelMapper = messageUiModelMapper,
             actionUiModelMapper = actionUiModelMapper,
@@ -115,7 +115,7 @@ class MessageDetailViewModelTest {
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            assertEquals(MessageState.Error.NotLoggedIn, awaitItem().messageState)
+            assertEquals(MessageDetailMetadataState.Error.NotLoggedIn, awaitItem().messageState)
         }
     }
 
@@ -148,7 +148,7 @@ class MessageDetailViewModelTest {
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            val expected = MessageState.Data(MessageUiModel(messageId, subject, isStarred))
+            val expected = MessageDetailMetadataState.Data(MessageDetailMetadataUiModel(messageId, subject, isStarred))
             assertEquals(expected, awaitItem().messageState)
             cancelAndIgnoreRemainingEvents()
         }
@@ -190,7 +190,7 @@ class MessageDetailViewModelTest {
     }
 
     private suspend fun FlowTurbine<MessageDetailState>.messageStateEmitted() {
-        assertIs<MessageState.Data>(awaitItem().messageState)
+        assertIs<MessageDetailMetadataState.Data>(awaitItem().messageState)
     }
 
     private suspend fun FlowTurbine<MessageDetailState>.initialStateEmitted() {

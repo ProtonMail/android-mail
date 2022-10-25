@@ -18,24 +18,17 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
-import ch.protonmail.android.maildetail.presentation.model.ConversationState
-import ch.protonmail.android.maildetail.presentation.model.ConversationViewAction
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import javax.inject.Inject
 
-class ConversationStateReducer @Inject constructor() {
+class ConversationDetailMessagesReducer @Inject constructor() {
 
-    @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
     fun newStateFrom(
-        currentState: ConversationState,
-        event: ConversationDetailOperation.AffectingConversation
-    ) = when (event) {
-        is ConversationDetailEvent.NoPrimaryUser -> ConversationState.Error.NotLoggedIn
-        is ConversationDetailEvent.ConversationData -> ConversationState.Data(event.conversationUiModel)
-        is ConversationDetailEvent.ErrorLoadingConversation -> ConversationState.Error.FailedLoadingData
-        is ConversationViewAction.Star -> TODO()
-        is ConversationViewAction.UnStar -> TODO()
-    }
-
+        currentState: ConversationDetailsMessagesState,
+        operation: ConversationDetailOperation.AffectingConversationMessages
+    ): ConversationDetailsMessagesState =
+        when (operation) {
+            else -> currentState
+        }
 }

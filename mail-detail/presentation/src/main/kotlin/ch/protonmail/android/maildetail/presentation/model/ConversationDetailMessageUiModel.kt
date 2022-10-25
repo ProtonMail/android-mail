@@ -16,19 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.reducer
+package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import javax.inject.Inject
+sealed interface ConversationDetailMessageUiModel {
 
-class BottomBarStateReducer @Inject constructor() {
-
-    @SuppressWarnings("UnusedPrivateMember")
-    fun newStateFrom(currentState: BottomBarState, event: BottomBarEvent): BottomBarState {
-        return when (event) {
-            is BottomBarEvent.ActionsData -> BottomBarState.Data(event.actionUiModels)
-            is BottomBarEvent.ErrorLoadingActions -> BottomBarState.Error.FailedLoadingActions
-        }
-    }
+    object Collapsed : ConversationDetailMessageUiModel
+    object Expanded : ConversationDetailMessageUiModel
 }

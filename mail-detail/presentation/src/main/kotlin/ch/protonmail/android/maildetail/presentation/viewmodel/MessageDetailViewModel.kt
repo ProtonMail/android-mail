@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
-import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarStateReducer
+import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
@@ -31,7 +31,7 @@ import ch.protonmail.android.maildetail.presentation.model.Event
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
-import ch.protonmail.android.maildetail.presentation.reducer.MessageStateReducer
+import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
@@ -50,8 +50,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
-    private val messageStateReducer: MessageStateReducer,
-    private val bottomBarStateReducer: BottomBarStateReducer,
+    private val messageStateReducer: MessageDetailMetadataReducer,
+    private val bottomBarReducer: BottomBarReducer,
     private val observeMessage: ObserveMessage,
     private val uiModelMapper: MessageDetailUiModelMapper,
     private val actionUiModelMapper: ActionUiModelMapper,
@@ -135,7 +135,7 @@ class MessageDetailViewModel @Inject constructor(
 
     private fun updateBottomBarState(event: Event) =
         if (event is Event.MessageBottomBarEvent) {
-            bottomBarStateReducer.newStateFrom(state.value.bottomBarState, event.bottomBarEvent)
+            bottomBarReducer.newStateFrom(state.value.bottomBarState, event.bottomBarEvent)
         } else {
             state.value.bottomBarState
         }

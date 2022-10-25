@@ -19,8 +19,8 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.Event
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
-import ch.protonmail.android.maildetail.presentation.model.MessageState
 import ch.protonmail.android.testdata.message.MessageUiModelTestData
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -33,7 +33,7 @@ class MessageStateReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val detailReducer = MessageStateReducer()
+    private val detailReducer = MessageDetailMetadataReducer()
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
@@ -55,40 +55,40 @@ class MessageStateReducerTest(
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
-                currentState = MessageState.Loading,
+                currentState = MessageDetailMetadataState.Loading,
                 operation = Event.NoPrimaryUser,
-                expectedState = MessageState.Error.NotLoggedIn
+                expectedState = MessageDetailMetadataState.Error.NotLoggedIn
             ),
             TestInput(
-                currentState = MessageState.Loading,
+                currentState = MessageDetailMetadataState.Loading,
                 operation = Event.MessageMetadata(messageUiModel),
-                expectedState = MessageState.Data(messageUiModel)
+                expectedState = MessageDetailMetadataState.Data(messageUiModel)
             )
         )
 
         private val transitionsFromDataState = listOf(
             TestInput(
-                currentState = MessageState.Data(messageUiModel),
+                currentState = MessageDetailMetadataState.Data(messageUiModel),
                 operation = Event.NoPrimaryUser,
-                expectedState = MessageState.Error.NotLoggedIn
+                expectedState = MessageDetailMetadataState.Error.NotLoggedIn
             ),
             TestInput(
-                currentState = MessageState.Data(messageUiModel),
+                currentState = MessageDetailMetadataState.Data(messageUiModel),
                 operation = Event.MessageMetadata(updatedMessageUiModel),
-                expectedState = MessageState.Data(updatedMessageUiModel)
+                expectedState = MessageDetailMetadataState.Data(updatedMessageUiModel)
             )
         )
 
         private val transitionsFromErrorState = listOf(
             TestInput(
-                currentState = MessageState.Error.NotLoggedIn,
+                currentState = MessageDetailMetadataState.Error.NotLoggedIn,
                 operation = Event.NoPrimaryUser,
-                expectedState = MessageState.Error.NotLoggedIn
+                expectedState = MessageDetailMetadataState.Error.NotLoggedIn
             ),
             TestInput(
-                currentState = MessageState.Error.NotLoggedIn,
+                currentState = MessageDetailMetadataState.Error.NotLoggedIn,
                 operation = Event.MessageMetadata(messageUiModel),
-                expectedState = MessageState.Data(messageUiModel)
+                expectedState = MessageDetailMetadataState.Data(messageUiModel)
             )
         )
 
@@ -107,8 +107,8 @@ class MessageStateReducerTest(
     }
 
     data class TestInput(
-        val currentState: MessageState,
+        val currentState: MessageDetailMetadataState,
         val operation: MessageDetailOperation.AffectingMessage,
-        val expectedState: MessageState
+        val expectedState: MessageDetailMetadataState
     )
 }

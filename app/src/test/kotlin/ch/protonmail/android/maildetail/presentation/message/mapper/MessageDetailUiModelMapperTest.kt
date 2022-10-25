@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.message.mapper
 
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.MessageUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.testdata.message.MessageTestData.buildMessage
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -42,7 +42,7 @@ class MessageDetailUiModelMapperTest {
         // When
         val actual = mapper.toUiModel(message)
         // Then
-        val expected = MessageUiModel(
+        val expected = MessageDetailMetadataUiModel(
             MessageId(RAW_MESSAGE_ID),
             SUBJECT,
             false
