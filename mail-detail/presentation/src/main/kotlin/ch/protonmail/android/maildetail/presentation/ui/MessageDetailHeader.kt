@@ -33,6 +33,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,6 +59,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.caption
 import me.proton.core.compose.theme.captionWeak
+import me.proton.core.compose.theme.defaultSmall
 import me.proton.core.compose.theme.defaultSmallStrong
 
 @Composable
@@ -64,10 +67,22 @@ private fun MessageDetailHeader(
     modifier: Modifier = Modifier,
     uiModel: MessageDetailHeaderUiModel
 ) {
+
+    val isExpanded = rememberSaveable(inputs = arrayOf()) {
+        mutableStateOf(false)
+    }
+
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = ProtonDimens.SmallSpacing, end = ProtonDimens.DefaultSpacing)
+            .clickable(
+                enabled = !isExpanded.value
+            ) { isExpanded.value = !isExpanded.value }
+            .padding(
+                start = ProtonDimens.SmallSpacing,
+                end = ProtonDimens.DefaultSpacing,
+                bottom = ProtonDimens.SmallSpacing
+            )
     ) {
 
         val (
@@ -91,7 +106,8 @@ private fun MessageDetailHeader(
 
         val (
             trackerProtectionInfoRef,
-            encryptionInfoRef
+            encryptionInfoRef,
+            hideDetailsRef
         ) = createRefs()
 
         Avatar(
@@ -118,7 +134,8 @@ private fun MessageDetailHeader(
                 bottom.linkTo(timeRef.bottom)
                 end.linkTo(timeRef.start)
             },
-            uiModel = uiModel
+            uiModel = uiModel,
+            isExpanded = isExpanded.value
         )
 
         Time(
@@ -142,6 +159,7 @@ private fun MessageDetailHeader(
                 top.linkTo(senderRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                visibility = if (isExpanded.value) Visibility.Gone else Visibility.Visible
             },
             allRecipients = uiModel.allRecipients
         )
@@ -150,17 +168,23 @@ private fun MessageDetailHeader(
             modifier = modifier.constrainAs(toRecipientsTitleRef) {
                 top.linkTo(toRecipientsRef.top)
                 end.linkTo(toRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
-                visibility = if (uiModel.toRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+                visibility =
+                    if (uiModel.toRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             recipientsTitle = R.string.to
         )
         Recipients(
             modifier = modifier.constrainAs(toRecipientsRef) {
                 width = Dimension.fillToConstraints
-                top.linkTo(allRecipientsRef.bottom, margin = ProtonDimens.SmallSpacing)
+                top.linkTo(
+                    allRecipientsRef.bottom,
+                    margin = ProtonDimens.SmallSpacing,
+                    goneMargin = ProtonDimens.SmallSpacing
+                )
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility = if (uiModel.toRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+                visibility =
+                    if (uiModel.toRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             recipients = uiModel.toRecipients
         )
@@ -169,7 +193,8 @@ private fun MessageDetailHeader(
             modifier = modifier.constrainAs(ccRecipientsTitleRef) {
                 top.linkTo(ccRecipientsRef.top)
                 end.linkTo(ccRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
-                visibility = if (uiModel.ccRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+                visibility =
+                    if (uiModel.ccRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             recipientsTitle = R.string.cc
         )
@@ -183,7 +208,8 @@ private fun MessageDetailHeader(
                 )
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility = if (uiModel.ccRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+                visibility =
+                    if (uiModel.ccRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             recipients = uiModel.ccRecipients
         )
@@ -192,7 +218,8 @@ private fun MessageDetailHeader(
             modifier = modifier.constrainAs(bccRecipientsTitleRef) {
                 top.linkTo(bccRecipientsRef.top)
                 end.linkTo(bccRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
-                visibility = if (uiModel.bccRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+                visibility =
+                    if (uiModel.bccRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             recipientsTitle = R.string.bcc
         )
@@ -206,7 +233,8 @@ private fun MessageDetailHeader(
                 )
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility = if (uiModel.bccRecipients.isNotEmpty()) Visibility.Visible else Visibility.Gone
+                visibility =
+                    if (uiModel.bccRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             recipients = uiModel.bccRecipients
         )
@@ -215,8 +243,8 @@ private fun MessageDetailHeader(
             modifier = modifier.constrainAs(labelsRef) {
                 top.linkTo(
                     bccRecipientsRef.bottom,
-                    margin = ProtonDimens.ExtraSmallSpacing,
-                    goneMargin = ProtonDimens.SmallSpacing
+                    margin = if (isExpanded.value) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing,
+                    goneMargin = if (isExpanded.value) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing
                 )
                 visibility = if (uiModel.labels.isNotEmpty()) Visibility.Visible else Visibility.Gone
             }
@@ -232,6 +260,7 @@ private fun MessageDetailHeader(
                 )
                 start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             icon = R.drawable.ic_proton_calendar_today,
             text = uiModel.extendedTime
@@ -247,6 +276,7 @@ private fun MessageDetailHeader(
                 )
                 start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             icon = uiModel.locationIcon,
             text = uiModel.location
@@ -262,6 +292,7 @@ private fun MessageDetailHeader(
                 )
                 start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             icon = R.drawable.ic_proton_storage,
             text = uiModel.size
@@ -277,6 +308,7 @@ private fun MessageDetailHeader(
                 )
                 start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             icon = R.drawable.ic_proton_shield,
             text = "Placeholder text"
@@ -292,9 +324,24 @@ private fun MessageDetailHeader(
                 )
                 start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             icon = uiModel.encryptionPadlock,
             text = uiModel.encryptionInfo
+        )
+
+        HideDetails(
+            modifier = modifier
+                .constrainAs(hideDetailsRef) {
+                    top.linkTo(
+                        encryptionInfoRef.bottom,
+                        margin = ProtonDimens.SmallSpacing,
+                        goneMargin = ProtonDimens.SmallSpacing
+                    )
+                    start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
+                    visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
+                }
+                .clickable { isExpanded.value = !isExpanded.value }
         )
     }
 }
@@ -321,10 +368,11 @@ private fun Sender(
 @Composable
 private fun Icons(
     modifier: Modifier = Modifier,
-    uiModel: MessageDetailHeaderUiModel
+    uiModel: MessageDetailHeaderUiModel,
+    isExpanded: Boolean
 ) {
     Row(modifier = modifier) {
-        if (uiModel.shouldShowTrackerProtectionIcon) {
+        if (uiModel.shouldShowTrackerProtectionIcon && !isExpanded) {
             SmallNonClickableIcon(iconId = R.drawable.ic_proton_shield)
         }
         if (uiModel.shouldShowAttachmentIcon) {
@@ -333,7 +381,9 @@ private fun Icons(
         if (uiModel.shouldShowStar) {
             SmallNonClickableIcon(iconId = R.drawable.ic_proton_star_filled, tintId = R.color.notification_warning)
         }
-        SmallNonClickableIcon(iconId = uiModel.locationIcon)
+        if (!isExpanded) {
+            SmallNonClickableIcon(iconId = uiModel.locationIcon)
+        }
     }
 }
 
@@ -437,6 +487,18 @@ private fun ExtendedHeaderRow(
         Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
         Text(text = text, style = ProtonTheme.typography.captionWeak)
     }
+}
+
+@Composable
+private fun HideDetails(
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier,
+        text = stringResource(id = R.string.hide_details),
+        color = ProtonTheme.colors.interactionNorm,
+        style = ProtonTheme.typography.defaultSmall
+    )
 }
 
 @Preview(showBackground = true)

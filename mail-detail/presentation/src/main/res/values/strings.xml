@@ -28,4 +28,5 @@
     <string name="to">To:</string>
     <string name="cc">Cc:</string>
     <string name="bcc">Bcc:</string>
+    <string name="hide_details">Hide details</string>
 </resources>
