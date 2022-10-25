@@ -36,6 +36,12 @@ import kotlin.test.assertContentEquals
 
 class MessageDaoTest : BaseDatabaseTest() {
 
+    private val allMessages = listOf(
+        MessageWithLabelIdsTestData.AugWeatherForecast,
+        MessageWithLabelIdsTestData.Invoice,
+        MessageWithLabelIdsTestData.SepWeatherForecast
+    )
+
     @BeforeTest
     fun setup() {
         runBlocking { setupDatabaseWithMessages() }
@@ -44,11 +50,7 @@ class MessageDaoTest : BaseDatabaseTest() {
     @Test
     fun findAllByAsc() = runBlocking {
         // given
-        val expected = listOf(
-            MessageWithLabelIdsTestData.AugWeatherForecast,
-            MessageWithLabelIdsTestData.Invoice,
-            MessageWithLabelIdsTestData.SepWeatherForecast
-        )
+        val expected = allMessages.sortedBy { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeAsc(
@@ -63,11 +65,7 @@ class MessageDaoTest : BaseDatabaseTest() {
     @Test
     fun findAllByDesc() = runBlocking {
         // given
-        val expected = listOf(
-            MessageWithLabelIdsTestData.SepWeatherForecast,
-            MessageWithLabelIdsTestData.Invoice,
-            MessageWithLabelIdsTestData.AugWeatherForecast
-        )
+        val expected = allMessages.sortedByDescending { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeDesc(
@@ -84,7 +82,7 @@ class MessageDaoTest : BaseDatabaseTest() {
         // given
         val expected = listOf(
             MessageWithLabelIdsTestData.Invoice
-        )
+        ).sortedBy { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeAsc(
@@ -101,9 +99,9 @@ class MessageDaoTest : BaseDatabaseTest() {
     fun findAllByConversationIdByDesc() = runBlocking {
         // given
         val expected = listOf(
-            MessageWithLabelIdsTestData.SepWeatherForecast,
-            MessageWithLabelIdsTestData.AugWeatherForecast
-        )
+            MessageWithLabelIdsTestData.AugWeatherForecast,
+            MessageWithLabelIdsTestData.SepWeatherForecast
+        ).sortedByDescending { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeDesc(
@@ -122,7 +120,7 @@ class MessageDaoTest : BaseDatabaseTest() {
         val expected = listOf(
             MessageWithLabelIdsTestData.AugWeatherForecast,
             MessageWithLabelIdsTestData.SepWeatherForecast
-        )
+        ).sortedBy { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeAsc(
@@ -140,7 +138,7 @@ class MessageDaoTest : BaseDatabaseTest() {
         // given
         val expected = listOf(
             MessageWithLabelIdsTestData.Invoice
-        )
+        ).sortedByDescending { it.message.time }
 
         // when
         messageDao.observeAllOrderByTimeDesc(

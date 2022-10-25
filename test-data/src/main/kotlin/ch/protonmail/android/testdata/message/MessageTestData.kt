@@ -40,7 +40,8 @@ object MessageTestData {
     val AugWeatherForecast = build(
         conversationId = ConversationIdTestData.WeatherForecast,
         messageId = MessageIdTestData.AugWeatherForecast,
-        labelIds = listOf(LabelIdTestData.Archive)
+        labelIds = listOf(LabelIdTestData.Archive),
+        time = Aug2022
     )
     val Invoice = build(
         messageId = MessageIdTestData.Invoice,
@@ -49,7 +50,8 @@ object MessageTestData {
     val SepWeatherForecast = build(
         conversationId = ConversationIdTestData.WeatherForecast,
         messageId = MessageIdTestData.SepWeatherForecast,
-        labelIds = listOf(LabelIdTestData.Archive)
+        labelIds = listOf(LabelIdTestData.Archive),
+        time = Sep2022
     )
 
     val message = buildMessage(
@@ -58,6 +60,9 @@ object MessageTestData {
         subject = RAW_SUBJECT,
         labelIds = listOf("0")
     )
+
+    private val Aug2022 get() = 1_630_403_200_000L
+    private val Sep2022 get() = 1_633_081_600_000L
 
     fun build(
         attachmentCount: AttachmentCount = AttachmentCount(0),
