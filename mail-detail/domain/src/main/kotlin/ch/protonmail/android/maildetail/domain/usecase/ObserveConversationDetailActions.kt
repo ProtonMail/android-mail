@@ -49,10 +49,24 @@ class ObserveConversationDetailActions @Inject constructor(
         }
 
     private fun Conversation.allMessagesAreSpamOrTrash() = labels
-        .removeAllMailAllSent()
-        .all { it.labelId == SystemLabelId.Spam.labelId || it.labelId == SystemLabelId.Trash.labelId }
+        .ignoringAllMail()
+        .ignoringAllSent()
+        .ignoringAllDrafts()
+        .areAllTrashOrSpam()
 
-    private fun List<ConversationLabel>.removeAllMailAllSent() = this.filterNot {
-        it.labelId == SystemLabelId.AllMail.labelId || it.labelId == SystemLabelId.AllSent.labelId
+    private fun List<ConversationLabel>.areAllTrashOrSpam() = this.all {
+        it.labelId == SystemLabelId.Spam.labelId || it.labelId == SystemLabelId.Trash.labelId
+    }
+
+    private fun List<ConversationLabel>.ignoringAllMail() = this.filterNot {
+        it.labelId == SystemLabelId.AllMail.labelId
+    }
+
+    private fun List<ConversationLabel>.ignoringAllSent() = this.filterNot {
+        it.labelId == SystemLabelId.AllSent.labelId
+    }
+
+    private fun List<ConversationLabel>.ignoringAllDrafts() = this.filterNot {
+        it.labelId == SystemLabelId.AllDrafts.labelId
     }
 }
