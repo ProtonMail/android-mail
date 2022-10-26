@@ -43,6 +43,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.constraintlayout.compose.ConstrainScope
+import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.Visibility
@@ -166,75 +168,69 @@ private fun MessageDetailHeader(
 
         RecipientsTitle(
             modifier = modifier.constrainAs(toRecipientsTitleRef) {
-                top.linkTo(toRecipientsRef.top)
-                end.linkTo(toRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
-                visibility =
-                    if (uiModel.toRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
+                constrainRecipientsTitle(
+                    reference = toRecipientsRef,
+                    recipients = uiModel.toRecipients,
+                    isExpanded = isExpanded.value
+                )
             },
             recipientsTitle = R.string.to
         )
         Recipients(
             modifier = modifier.constrainAs(toRecipientsRef) {
-                width = Dimension.fillToConstraints
-                top.linkTo(
-                    allRecipientsRef.bottom,
-                    margin = ProtonDimens.SmallSpacing,
-                    goneMargin = ProtonDimens.SmallSpacing
+                constrainRecipients(
+                    topReference = allRecipientsRef,
+                    startReference = avatarRef,
+                    endReference = moreButtonRef,
+                    recipients = uiModel.toRecipients,
+                    isExpanded = isExpanded.value
                 )
-                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility =
-                    if (uiModel.toRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             recipients = uiModel.toRecipients
         )
 
         RecipientsTitle(
             modifier = modifier.constrainAs(ccRecipientsTitleRef) {
-                top.linkTo(ccRecipientsRef.top)
-                end.linkTo(ccRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
-                visibility =
-                    if (uiModel.ccRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
+                constrainRecipientsTitle(
+                    reference = ccRecipientsRef,
+                    recipients = uiModel.ccRecipients,
+                    isExpanded = isExpanded.value
+                )
             },
             recipientsTitle = R.string.cc
         )
         Recipients(
             modifier = modifier.constrainAs(ccRecipientsRef) {
-                width = Dimension.fillToConstraints
-                top.linkTo(
-                    toRecipientsRef.bottom,
-                    margin = ProtonDimens.SmallSpacing,
-                    goneMargin = ProtonDimens.SmallSpacing
+                constrainRecipients(
+                    topReference = toRecipientsRef,
+                    startReference = avatarRef,
+                    endReference = moreButtonRef,
+                    recipients = uiModel.ccRecipients,
+                    isExpanded = isExpanded.value
                 )
-                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility =
-                    if (uiModel.ccRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             recipients = uiModel.ccRecipients
         )
 
         RecipientsTitle(
             modifier = modifier.constrainAs(bccRecipientsTitleRef) {
-                top.linkTo(bccRecipientsRef.top)
-                end.linkTo(bccRecipientsRef.start, margin = ProtonDimens.DefaultSpacing)
-                visibility =
-                    if (uiModel.bccRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
+                constrainRecipientsTitle(
+                    reference = bccRecipientsRef,
+                    recipients = uiModel.bccRecipients,
+                    isExpanded = isExpanded.value
+                )
             },
             recipientsTitle = R.string.bcc
         )
         Recipients(
             modifier = modifier.constrainAs(bccRecipientsRef) {
-                width = Dimension.fillToConstraints
-                top.linkTo(
-                    ccRecipientsRef.bottom,
-                    margin = ProtonDimens.SmallSpacing,
-                    goneMargin = ProtonDimens.SmallSpacing
+                constrainRecipients(
+                    topReference = ccRecipientsRef,
+                    startReference = avatarRef,
+                    endReference = moreButtonRef,
+                    recipients = uiModel.bccRecipients,
+                    isExpanded = isExpanded.value
                 )
-                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility =
-                    if (uiModel.bccRecipients.isNotEmpty() && isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             recipients = uiModel.bccRecipients
         )
@@ -252,15 +248,11 @@ private fun MessageDetailHeader(
 
         ExtendedHeaderRow(
             modifier = modifier.constrainAs(extendedTimeRef) {
-                width = Dimension.fillToConstraints
-                top.linkTo(
-                    labelsRef.bottom,
-                    margin = ProtonDimens.SmallSpacing,
-                    goneMargin = ProtonDimens.SmallSpacing
+                constrainExtendedHeaderRow(
+                    topReference = labelsRef,
+                    endReference = moreButtonRef,
+                    isExpanded = isExpanded.value
                 )
-                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
-                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             icon = R.drawable.ic_proton_calendar_today,
             text = uiModel.extendedTime
@@ -268,15 +260,11 @@ private fun MessageDetailHeader(
 
         ExtendedHeaderRow(
             modifier = modifier.constrainAs(locationRef) {
-                width = Dimension.fillToConstraints
-                top.linkTo(
-                    extendedTimeRef.bottom,
-                    margin = ProtonDimens.SmallSpacing,
-                    goneMargin = ProtonDimens.SmallSpacing
+                constrainExtendedHeaderRow(
+                    topReference = extendedTimeRef,
+                    endReference = moreButtonRef,
+                    isExpanded = isExpanded.value
                 )
-                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
-                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             icon = uiModel.locationIcon,
             text = uiModel.location
@@ -284,15 +272,11 @@ private fun MessageDetailHeader(
 
         ExtendedHeaderRow(
             modifier = modifier.constrainAs(sizeRef) {
-                width = Dimension.fillToConstraints
-                top.linkTo(
-                    locationRef.bottom,
-                    margin = ProtonDimens.SmallSpacing,
-                    goneMargin = ProtonDimens.SmallSpacing
+                constrainExtendedHeaderRow(
+                    topReference = locationRef,
+                    endReference = moreButtonRef,
+                    isExpanded = isExpanded.value
                 )
-                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
-                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             icon = R.drawable.ic_proton_storage,
             text = uiModel.size
@@ -300,15 +284,11 @@ private fun MessageDetailHeader(
 
         ExtendedHeaderRow(
             modifier = modifier.constrainAs(trackerProtectionInfoRef) {
-                width = Dimension.fillToConstraints
-                top.linkTo(
-                    sizeRef.bottom,
-                    margin = ProtonDimens.SmallSpacing,
-                    goneMargin = ProtonDimens.SmallSpacing
+                constrainExtendedHeaderRow(
+                    topReference = sizeRef,
+                    endReference = moreButtonRef,
+                    isExpanded = isExpanded.value
                 )
-                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
-                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             icon = R.drawable.ic_proton_shield,
             text = "Placeholder text"
@@ -316,15 +296,11 @@ private fun MessageDetailHeader(
 
         ExtendedHeaderRow(
             modifier = modifier.constrainAs(encryptionInfoRef) {
-                width = Dimension.fillToConstraints
-                top.linkTo(
-                    trackerProtectionInfoRef.bottom,
-                    margin = ProtonDimens.SmallSpacing,
-                    goneMargin = ProtonDimens.SmallSpacing
+                constrainExtendedHeaderRow(
+                    topReference = trackerProtectionInfoRef,
+                    endReference = moreButtonRef,
+                    isExpanded = isExpanded.value
                 )
-                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
-                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
             },
             icon = uiModel.encryptionPadlock,
             text = uiModel.encryptionInfo
@@ -499,6 +475,50 @@ private fun HideDetails(
         color = ProtonTheme.colors.interactionNorm,
         style = ProtonTheme.typography.defaultSmall
     )
+}
+
+private fun ConstrainScope.constrainRecipientsTitle(
+    reference: ConstrainedLayoutReference,
+    recipients: List<ParticipantUiModel>,
+    isExpanded: Boolean
+) {
+    top.linkTo(reference.top)
+    end.linkTo(reference.start, margin = ProtonDimens.DefaultSpacing)
+    visibility = if (recipients.isNotEmpty() && isExpanded) Visibility.Visible else Visibility.Gone
+}
+
+private fun ConstrainScope.constrainRecipients(
+    topReference: ConstrainedLayoutReference,
+    startReference: ConstrainedLayoutReference,
+    endReference: ConstrainedLayoutReference,
+    recipients: List<ParticipantUiModel>,
+    isExpanded: Boolean
+) {
+    width = Dimension.fillToConstraints
+    top.linkTo(
+        topReference.bottom,
+        margin = ProtonDimens.SmallSpacing,
+        goneMargin = ProtonDimens.SmallSpacing
+    )
+    start.linkTo(startReference.end, margin = ProtonDimens.SmallSpacing)
+    end.linkTo(endReference.start, margin = ProtonDimens.SmallSpacing)
+    visibility = if (recipients.isNotEmpty() && isExpanded) Visibility.Visible else Visibility.Gone
+}
+
+private fun ConstrainScope.constrainExtendedHeaderRow(
+    topReference: ConstrainedLayoutReference,
+    endReference: ConstrainedLayoutReference,
+    isExpanded: Boolean
+) {
+    width = Dimension.fillToConstraints
+    top.linkTo(
+        topReference.bottom,
+        margin = ProtonDimens.SmallSpacing,
+        goneMargin = ProtonDimens.SmallSpacing
+    )
+    start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
+    end.linkTo(endReference.start, margin = ProtonDimens.SmallSpacing)
+    visibility = if (isExpanded) Visibility.Visible else Visibility.Gone
 }
 
 @Preview(showBackground = true)
