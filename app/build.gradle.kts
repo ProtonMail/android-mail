@@ -148,6 +148,8 @@ android {
     }
 
     packagingOptions {
+        resources.excludes.add("MANIFEST.MF")
+        resources.excludes.add("META-INF/LICENSE*")
         resources.excludes.add("META-INF/licenses/**")
         resources.excludes.add("META-INF/AL2.0")
         resources.excludes.add("META-INF/LGPL2.1")

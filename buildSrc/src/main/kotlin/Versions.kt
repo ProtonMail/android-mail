@@ -24,7 +24,7 @@ object Versions {
 
     object Android {
         const val material = "1.6.1"
-        const val material3 = "1.0.0-beta01"
+        const val material3 = "1.0.0"
     }
 
     object AndroidX {
@@ -33,15 +33,15 @@ object Versions {
         const val annotation = "1.2.0"
         const val appCompat = "1.6.0-alpha05"
         const val arch = "2.1.0"
-        const val compose = "1.2.0-alpha08"
+        const val compose = "1.2.0-rc02"
         const val constraintLayoutCompose = "1.0.1"
         const val customView = "1.2.0-alpha01"
         const val customViewPoolingContainer = "1.0.0"
         const val datastore = "1.0.0"
         const val hilt = "1.0.0"
         const val lifecycle = "2.4.2"
-        const val material3 = "1.0.0-beta01"
-        const val navigation = "2.5.1"
+        const val material3 = "1.0.0"
+        const val navigation = "2.5.3"
         const val paging = "3.1.1"
         const val pagingCompose = "1.0.0-alpha14"
         const val room = "2.4.3"
@@ -62,7 +62,7 @@ object Versions {
     }
 
     object Dagger {
-        const val dagger = "2.42"
+        const val dagger = "2.44"
     }
 
     object Detekt {
@@ -70,7 +70,7 @@ object Versions {
     }
 
     object Gradle {
-        const val androidGradlePlugin = "7.2.2"
+        const val androidGradlePlugin = "7.3.1"
         const val benManesVersionsPlugin = "0.42.0"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
@@ -95,7 +95,7 @@ object Versions {
     }
 
     object Kotlin {
-        const val kotlin = "1.6.20"
+        const val kotlin = "1.6.21"
     }
 
     object KotlinX {
@@ -104,11 +104,11 @@ object Versions {
     }
 
     object Mockk {
-        const val mockk = "1.12.5"
+        const val mockk = "1.13.2"
     }
 
     object Proton {
-        const val core = "9.1.1"
+        const val core = "9.2.0"
         const val corePlugin = "1.0.0"
     }
 
