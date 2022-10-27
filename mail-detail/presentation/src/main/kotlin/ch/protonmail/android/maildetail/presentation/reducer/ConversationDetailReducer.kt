@@ -42,6 +42,12 @@ class ConversationDetailReducer @Inject constructor(
             is ConversationDetailEvent.ErrorLoadingConversation -> currentState.copy(
                 conversationState = metadataReducer.newStateFrom(currentState.conversationState, operation)
             )
+            is ConversationDetailEvent.ErrorLoadingMessages -> currentState.copy(
+                messagesState = messagesReducer.newStateFrom(currentState.messagesState, operation)
+            )
+            is ConversationDetailEvent.MessagesData -> currentState.copy(
+                messagesState = messagesReducer.newStateFrom(currentState.messagesState, operation)
+            )
             is ConversationDetailEvent.NoPrimaryUser -> currentState.copy(
                 conversationState = metadataReducer.newStateFrom(currentState.conversationState, operation)
             )

@@ -19,16 +19,29 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.presentation.R.string
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import javax.inject.Inject
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 class ConversationDetailMessagesReducer @Inject constructor() {
 
     fun newStateFrom(
         currentState: ConversationDetailsMessagesState,
-        operation: ConversationDetailOperation.AffectingConversationMessages
+        operation: ConversationDetailOperation.AffectingMessages
     ): ConversationDetailsMessagesState =
         when (operation) {
-            else -> currentState
+            ConversationDetailEvent.ErrorLoadingMessages -> ConversationDetailsMessagesState.Error(
+                message = TextUiModel(string.details_error_loading_messages)
+            )
+            is ConversationDetailEvent.MessagesData -> ConversationDetailsMessagesState.Data(
+                messages = operation.messagesUiModels,
+            )
+            ConversationDetailEvent.NoPrimaryUser -> ConversationDetailsMessagesState.Error(
+                message = TextUiModel(commonString.x_error_not_logged_in)
+            )
         }
 }

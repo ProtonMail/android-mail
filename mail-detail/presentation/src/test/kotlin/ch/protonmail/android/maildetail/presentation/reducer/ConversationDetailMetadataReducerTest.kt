@@ -29,7 +29,7 @@ import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
 class ConversationDetailMetadataReducerTest(
-    @Suppress("UNUSED_PARAMETER") private val testName: String,
+    private val testName: String,
     private val testInput: TestParams.TestInput
 ) {
 
@@ -39,7 +39,7 @@ class ConversationDetailMetadataReducerTest(
     fun `should produce the expected new state`() {
         val actualState = detailReducer.newStateFrom(testInput.currentState, testInput.event)
 
-        assertEquals(testInput.expectedState, actualState)
+        assertEquals(testInput.expectedState, actualState, testName)
     }
 
     companion object {
