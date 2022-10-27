@@ -19,7 +19,6 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction

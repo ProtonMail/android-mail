@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
@@ -38,7 +37,7 @@ class ConversationDetailMessagesReducer @Inject constructor() {
                 message = TextUiModel(string.details_error_loading_messages)
             )
             is ConversationDetailEvent.MessagesData -> ConversationDetailsMessagesState.Data(
-                messages = operation.messagesUiModels,
+                messages = operation.messagesUiModels
             )
             ConversationDetailEvent.NoPrimaryUser -> ConversationDetailsMessagesState.Error(
                 message = TextUiModel(commonString.x_error_not_logged_in)

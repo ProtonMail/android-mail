@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.viewmodel
+package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.Event
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
