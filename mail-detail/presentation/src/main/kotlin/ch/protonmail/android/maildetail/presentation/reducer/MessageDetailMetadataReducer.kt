@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.model.Event
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
@@ -26,20 +26,20 @@ import javax.inject.Inject
 
 class MessageDetailMetadataReducer @Inject constructor() {
 
-    @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
+    @SuppressWarnings("NotImplementedDeclaration")
     fun newStateFrom(
-        currentState: MessageDetailMetadataState,
+        @Suppress("UNUSED_PARAMETER") currentState: MessageDetailMetadataState,
         event: MessageDetailOperation.AffectingMessage
     ): MessageDetailMetadataState {
         return when (event) {
-            is Event.NoPrimaryUser -> MessageDetailMetadataState.Error.NotLoggedIn
+            is MessageDetailEvent.NoPrimaryUser -> MessageDetailMetadataState.Error.NotLoggedIn
 
-            is Event.MessageMetadata -> MessageDetailMetadataState.Data(event.messageUiModel)
+            is MessageDetailEvent.MessageMetadata -> MessageDetailMetadataState.Data(event.messageUiModel)
 
-            is Event.NoCachedMetadata -> TODO(
+            is MessageDetailEvent.NoCachedMetadata -> TODO(
                 "This should never happen. Handle by following the 'load message body' flow (once implemented)"
             )
-            is Event.MessageBody -> TODO("Implement when adding message body flow")
+            is MessageDetailEvent.MessageBody -> TODO("Implement when adding message body flow")
             is MessageViewAction.Star -> TODO()
             is MessageViewAction.UnStar -> TODO()
         }

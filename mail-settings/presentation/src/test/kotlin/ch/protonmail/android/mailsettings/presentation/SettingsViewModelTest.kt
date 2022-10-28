@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAppSettings
@@ -102,17 +103,18 @@ class SettingsViewModelTest {
     fun `state has user name info when primary user display name is empty`() = runTest {
         viewModel.state.test {
             // Given
+            val user = UserSample.Primary
             initialStateEmitted()
             appSettingsFlow.emit(AppSettingsTestData.appSettings)
 
             // When
-            userFlow.emit(UserTestData.emptyDisplayNameUser)
+            userFlow.emit(user.copy(displayName = ""))
 
             // Then
             val actual = awaitItem() as Data
             val expected = AccountInfo(
-                UserTestData.USER_NAME_RAW,
-                UserTestData.USER_EMAIL_RAW
+                name = requireNotNull(user.displayName),
+                email = requireNotNull(user.email)
             )
             assertEquals(expected, actual.account)
         }

@@ -28,7 +28,8 @@ object UserSample {
     val Primary = build()
 
     fun build(
-        displayName: String = AccountSample.build().username,
+        name: String = AccountSample.build().username,
+        displayName: String = name,
         email: String = AccountSample.build().email ?: "email",
         role: Role = Role.NoOrganization,
         userId: UserId = UserIdSample.Primary
@@ -41,7 +42,7 @@ object UserSample {
         keys = emptyList(),
         maxSpace = 1_024,
         maxUpload = 1,
-        name = null,
+        name = name,
         private = true,
         role = role,
         services = 1,

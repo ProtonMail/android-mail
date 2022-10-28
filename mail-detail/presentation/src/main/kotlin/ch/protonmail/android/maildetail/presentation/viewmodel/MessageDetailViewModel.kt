@@ -27,8 +27,8 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.Event
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
@@ -86,12 +86,12 @@ class MessageDetailViewModel @Inject constructor(
     private fun observeMessageMetadata(messageId: MessageId) {
         primaryUserId.flatMapLatest { userId ->
             if (userId == null) {
-                return@flatMapLatest flowOf(Event.NoPrimaryUser)
+                return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
             }
             return@flatMapLatest observeMessage(userId, messageId).mapLatest { either ->
                 either.fold(
-                    ifLeft = { Event.NoCachedMetadata },
-                    ifRight = { Event.MessageMetadata(uiModelMapper.toUiModel(it)) }
+                    ifLeft = { MessageDetailEvent.NoCachedMetadata },
+                    ifRight = { MessageDetailEvent.MessageMetadata(uiModelMapper.toUiModel(it)) }
                 )
             }
         }.onEach { event ->
@@ -102,14 +102,14 @@ class MessageDetailViewModel @Inject constructor(
     private fun observeBottomBarActions(messageId: MessageId) {
         primaryUserId.flatMapLatest { userId ->
             if (userId == null) {
-                return@flatMapLatest flowOf(Event.NoPrimaryUser)
+                return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
             }
             observeDetailActions(userId, messageId).mapLatest { either ->
                 either.fold(
-                    ifLeft = { Event.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
+                    ifLeft = { MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
                     ifRight = { actions ->
                         val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
-                        Event.MessageBottomBarEvent(BottomBarEvent.ActionsData(actionUiModels))
+                        MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ActionsData(actionUiModels))
                     }
                 )
             }
@@ -118,7 +118,7 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private suspend fun emitNewStateFrom(event: Event) {
+    private suspend fun emitNewStateFrom(event: MessageDetailEvent) {
         val updatedDetailState = state.value.copy(
             messageState = updateMessageState(event),
             bottomBarState = updateBottomBarState(event)
@@ -126,15 +126,15 @@ class MessageDetailViewModel @Inject constructor(
         mutableDetailState.emit(updatedDetailState)
     }
 
-    private fun updateMessageState(event: Event) =
+    private fun updateMessageState(event: MessageDetailEvent) =
         if (event is MessageDetailOperation.AffectingMessage) {
             messageStateReducer.newStateFrom(state.value.messageState, event)
         } else {
             state.value.messageState
         }
 
-    private fun updateBottomBarState(event: Event) =
-        if (event is Event.MessageBottomBarEvent) {
+    private fun updateBottomBarState(event: MessageDetailEvent) =
+        if (event is MessageDetailEvent.MessageBottomBarEvent) {
             bottomBarReducer.newStateFrom(state.value.bottomBarState, event.bottomBarEvent)
         } else {
             state.value.bottomBarState

@@ -25,14 +25,14 @@ sealed interface MessageDetailOperation {
     sealed interface AffectingMessage
 }
 
-sealed interface Event : MessageDetailOperation {
-    data class MessageMetadata(val messageUiModel: MessageDetailMetadataUiModel) : Event, MessageDetailOperation.AffectingMessage
-    data class MessageBody(val message: MessageWithBody) : Event, MessageDetailOperation.AffectingMessage
+sealed interface MessageDetailEvent : MessageDetailOperation {
+    data class MessageMetadata(val messageUiModel: MessageDetailMetadataUiModel) : MessageDetailEvent, MessageDetailOperation.AffectingMessage
+    data class MessageBody(val message: MessageWithBody) : MessageDetailEvent, MessageDetailOperation.AffectingMessage
 
-    object NoPrimaryUser : Event, MessageDetailOperation.AffectingMessage
-    object NoCachedMetadata : Event, MessageDetailOperation.AffectingMessage
+    object NoPrimaryUser : MessageDetailEvent, MessageDetailOperation.AffectingMessage
+    object NoCachedMetadata : MessageDetailEvent, MessageDetailOperation.AffectingMessage
 
-    data class MessageBottomBarEvent(val bottomBarEvent: BottomBarEvent) : Event
+    data class MessageBottomBarEvent(val bottomBarEvent: BottomBarEvent) : MessageDetailEvent
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {

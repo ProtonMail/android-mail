@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
 import androidx.compose.ui.graphics.Color
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -31,7 +32,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.AvatarUiMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import ch.protonmail.android.testdata.contact.ContactTestData
-import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.every
@@ -300,9 +300,9 @@ class MailboxItemUiModelMapperTest {
     fun `labels doesn't include folders and contacts groups`() {
         // given
         val mailboxItemLabels = listOf(
-            LabelTestData.buildLabel(id = "label", type = LabelType.MessageLabel),
-            LabelTestData.buildLabel(id = "folder", type = LabelType.MessageFolder),
-            LabelTestData.buildLabel(id = "group", type = LabelType.ContactGroup)
+            LabelSample.build(labelId = LabelId("label"), type = LabelType.MessageLabel),
+            LabelSample.build(labelId = LabelId("folder"), type = LabelType.MessageFolder),
+            LabelSample.build(labelId = LabelId("group"), type = LabelType.ContactGroup)
         )
         val mailboxItem = buildMailboxItem(labels = mailboxItemLabels)
 

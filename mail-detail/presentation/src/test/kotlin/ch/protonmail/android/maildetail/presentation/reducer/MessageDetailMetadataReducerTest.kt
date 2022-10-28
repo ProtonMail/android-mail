@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.model.Event
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
@@ -52,12 +52,12 @@ class MessageDetailMetadataReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MessageDetailMetadataState.Loading,
-                event = Event.NoPrimaryUser,
+                event = MessageDetailEvent.NoPrimaryUser,
                 expectedState = MessageDetailMetadataState.Error.NotLoggedIn
             ).toArray(),
             TestInput(
                 currentState = MessageDetailMetadataState.Loading,
-                event = Event.MessageMetadata(messageUiModel),
+                event = MessageDetailEvent.MessageMetadata(messageUiModel),
                 expectedState = MessageDetailMetadataState.Data(messageUiModel)
             ).toArray()
         )

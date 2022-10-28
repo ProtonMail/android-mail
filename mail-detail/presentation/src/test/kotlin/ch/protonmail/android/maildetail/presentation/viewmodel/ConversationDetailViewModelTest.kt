@@ -22,67 +22,76 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import arrow.core.left
+import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
+import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMessagesReducer
-import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMetadataReducer
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
+import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
-import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.test.kotlin.assertIs
 import org.junit.Assert.assertThrows
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
+import kotlin.test.assertFailsWith
 
 class ConversationDetailViewModelTest {
 
-    private val rawConversationId = ConversationTestData.RAW_CONVERSATION_ID
-    private val conversationUiModelMapper = ConversationDetailMetadataUiModelMapper()
     private val actionUiModelMapper = ActionUiModelMapper()
-
-    private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
-        every { this@mockk.invoke() } returns flowOf(userId)
+    private val conversationUiModelMapper: ConversationDetailMetadataUiModelMapper = mockk {
+        every { toUiModel(ConversationSample.WeatherForecast) } returns
+            ConversationDetailMetadataUiModelSample.WeatherForecast
     }
-
-    private val observeConversation = mockk<ObserveConversation> {
-        every { this@mockk.invoke(userId, any()) } returns flowOf(ConversationTestData.conversation.right())
-    }
-    private val savedStateHandle = mockk<SavedStateHandle> {
-        every { this@mockk.get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns rawConversationId
+    private val observeConversation: ObserveConversation = mockk {
+        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
+            flowOf(ConversationSample.WeatherForecast.right())
     }
     private val observeConversationDetailActions = mockk<ObserveConversationDetailActions> {
-        every { this@mockk.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
+        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
             listOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
         )
     }
-    // TODO: Return stub state and test reducers separately
-    private val reducer = ConversationDetailReducer(
-        bottomBarReducer = BottomBarReducer(),
-        metadataReducer = ConversationDetailMetadataReducer(),
-        messagesReducer = ConversationDetailMessagesReducer()
-    )
+    private val observePrimaryUserId: ObservePrimaryUserId = mockk {
+        every { this@mockk() } returns flowOf(UserIdSample.Primary)
+    }
+    private val reducer: ConversationDetailReducer = mockk {
+        every { newStateFrom(currentState = any(), operation = any()) } returns ConversationDetailState.Loading
+    }
+    private val savedStateHandle: SavedStateHandle = mockk {
+        every { get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns
+            ConversationIdSample.WeatherForecast.id
+    }
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -111,68 +120,74 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `state is not logged in when there is no primary user`() = runTest {
-        // Given
-        givenNoLoggedInUser()
-
-        // When
-        viewModel.state.test {
-            initialStateEmitted()
-            // Then
-            assertEquals(ConversationDetailMetadataState.Error.NotLoggedIn, awaitItem().conversationState)
-        }
-    }
-
-    @Test
     fun `throws exception when conversation id parameter was not provided as input`() = runTest {
         // Given
         every { savedStateHandle.get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns null
         // When
-        val thrown = assertThrows(IllegalStateException::class.java) { viewModel.state }
+        val thrown = assertFailsWith<IllegalStateException> { viewModel.state }
         // Then
         assertEquals("No Conversation id given", thrown.message)
     }
 
     @Test
-    fun `conversation state is conversation data when use case returns conversation`() = runTest {
-        // Given
-        val conversationId = ConversationId(rawConversationId)
-        every { observeConversation(userId, conversationId) } returns flowOf(ConversationTestData.conversation.right())
+    fun `does handle user not logged in`() = runTest {
+        // given
+        val expectedOperation = ConversationDetailEvent.NoPrimaryUser
+        every { observePrimaryUserId() } returns flowOf(null)
 
-        // When
+        // when
         viewModel.state.test {
-            initialStateEmitted()
-            // Then
-            assertEquals(
-                ConversationDetailMetadataState.Data(ConversationUiModelTestData.conversationUiModel),
-                awaitItem().conversationState
-            )
+
+            // then
+            advanceUntilIdle()
+            verify { reducer.newStateFrom(ConversationDetailState.Loading, expectedOperation) }
             cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `conversation state is failed loading data when use case returns data error`() = runTest {
-        // Given
-        val conversationId = ConversationId(rawConversationId)
-        every { observeConversation(userId, conversationId) } returns flowOf(DataError.Local.NoDataCached.left())
+    fun `does handle conversation data`() = runTest {
+        // given
+        val expectedOperation = ConversationDetailEvent.ConversationData(
+            conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+        )
 
-        // When
+        // when
         viewModel.state.test {
-            initialStateEmitted()
-            // Then
-            assertEquals(ConversationDetailMetadataState.Error.FailedLoadingData, awaitItem().conversationState)
-            cancelAndIgnoreRemainingEvents()
+
+            // then
+            advanceUntilIdle()
+            verify { reducer.newStateFrom(ConversationDetailState.Loading, expectedOperation) }
+            cancelAndConsumeRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `does handle conversation error`() = runTest {
+        // given
+        val expectedOperation = ConversationDetailEvent.ErrorLoadingConversation
+        every { observeConversation(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
+            DataError.Local.NoDataCached.left()
+        )
+
+        // when
+        viewModel.state.test {
+
+            // then
+            advanceUntilIdle()
+            verify { reducer.newStateFrom(ConversationDetailState.Loading, expectedOperation) }
+            cancelAndConsumeRemainingEvents()
         }
     }
 
     @Test
     fun `bottomBar state is data when use case returns actions`() = runTest {
         // Given
-        every { observeConversationDetailActions.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
-            listOf(Action.Reply, Action.Archive).right()
-        )
-        // When
+        every {
+            observeConversationDetailActions(UserIdSample.Primary, ConversationIdSample.WeatherForecast)
+        } returns flowOf(listOf(Action.Reply, Action.Archive).right())
+
+        // when
         viewModel.state.test {
             initialStateEmitted()
             conversationStateEmitted()
@@ -186,9 +201,10 @@ class ConversationDetailViewModelTest {
     @Test
     fun `bottomBar state is failed loading actions when use case returns error`() = runTest {
         // Given
-        every { observeConversationDetailActions.invoke(userId, ConversationId(rawConversationId)) } returns flowOf(
-            DataError.Local.NoDataCached.left()
-        )
+        every {
+            observeConversationDetailActions(UserIdSample.Primary, ConversationIdSample.WeatherForecast)
+        } returns flowOf(DataError.Local.NoDataCached.left())
+
         // When
         viewModel.state.test {
             initialStateEmitted()
@@ -197,6 +213,7 @@ class ConversationDetailViewModelTest {
             val expected = BottomBarState.Error.FailedLoadingActions
             assertEquals(expected, awaitItem().bottomBarState)
         }
+
     }
 
     private suspend fun FlowTurbine<ConversationDetailState>.initialStateEmitted() {

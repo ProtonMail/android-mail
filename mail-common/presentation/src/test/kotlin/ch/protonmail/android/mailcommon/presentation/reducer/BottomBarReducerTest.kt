@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcommon.presentation.reducer
 
+import arrow.core.nonEmptyListOf
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
@@ -45,7 +46,7 @@ internal class BottomBarReducerTest(
 
     companion object {
 
-        private val actions = listOf(ActionUiModelTestData.markUnread)
+        private val actions = nonEmptyListOf(ActionUiModelTestData.markUnread)
         private val updatedActions = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
 
         private val transitionsFromLoadingState = listOf(

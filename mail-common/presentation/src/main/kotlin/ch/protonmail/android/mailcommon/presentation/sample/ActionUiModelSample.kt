@@ -16,26 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.model
+package ch.protonmail.android.mailcommon.presentation.sample
 
-import arrow.core.NonEmptyList
+import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
+import ch.protonmail.android.mailcommon.presentation.model.contentDescription
+import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 
-sealed interface BottomBarState {
+object ActionUiModelSample {
 
-    data class Data(
-        val actions: List<ActionUiModel>
-    ) : BottomBarState
+    val Archive: ActionUiModel =
+        build(Action.Archive)
 
-    object Loading : BottomBarState
-
-    sealed interface Error : BottomBarState {
-        object FailedLoadingActions : Error
-    }
-}
-
-sealed interface BottomBarEvent {
-
-    data class ActionsData(val actionUiModels: List<ActionUiModel>) : BottomBarEvent
-
-    object ErrorLoadingActions : BottomBarEvent
+    fun build(action: Action) = ActionUiModel(
+        action = action,
+        icon = action.iconDrawable(),
+        description = action.contentDescription()
+    )
 }

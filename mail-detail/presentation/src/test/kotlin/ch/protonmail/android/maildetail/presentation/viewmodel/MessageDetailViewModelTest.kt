@@ -22,6 +22,8 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import arrow.core.left
+import arrow.core.nonEmptyListOf
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -75,7 +77,7 @@ class MessageDetailViewModelTest {
     }
     private val observeDetailActions = mockk<ObserveMessageDetailActions> {
         every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
-            listOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
+            nonEmptyListOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
         )
     }
 
@@ -158,7 +160,7 @@ class MessageDetailViewModelTest {
     fun `bottomBar state is data when use case returns actions`() = runTest {
         // Given
         every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
-            listOf(Action.Reply, Action.Archive).right()
+            nonEmptyListOf(Action.Reply, Action.Archive).right()
         )
 
         // When
@@ -175,8 +177,8 @@ class MessageDetailViewModelTest {
     @Test
     fun `bottomBar state is failed loading actions when use case returns no actions`() = runTest {
         // Given
-        every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
-            DataError.Local.NoDataCached.left()
+        every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns
+            flowOf(DataError.Local.NoDataCached.left()
         )
 
         // When
