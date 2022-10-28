@@ -49,7 +49,8 @@ class ConversationDetailReducer @Inject constructor(
                 messagesState = messagesReducer.newStateFrom(currentState.messagesState, operation)
             )
             is ConversationDetailEvent.NoPrimaryUser -> currentState.copy(
-                conversationState = metadataReducer.newStateFrom(currentState.conversationState, operation)
+                conversationState = metadataReducer.newStateFrom(currentState.conversationState, operation),
+                messagesState = messagesReducer.newStateFrom(currentState.messagesState, operation)
             )
             is ConversationDetailViewAction.Star -> currentState.copy(
                 conversationState = metadataReducer.newStateFrom(currentState.conversationState, operation)
