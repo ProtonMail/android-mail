@@ -16,17 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
+import ch.protonmail.android.mailmessage.domain.entity.Message
+import me.proton.core.domain.arch.Mapper
+import javax.inject.Inject
 
-sealed interface ConversationDetailMetadataState {
+class ConversationDetailMessageUiModelMapper @Inject constructor():
+    Mapper<Message, ConversationDetailMessageUiModel> {
 
-    data class Data(
-        val conversationUiModel: ConversationDetailMetadataUiModel
-    ) : ConversationDetailMetadataState
-
-    data class Error(val message: TextUiModel) : ConversationDetailMetadataState
-
-    object Loading : ConversationDetailMetadataState
+    fun toUiModel(@Suppress("UNUSED_PARAMETER") message: Message) = ConversationDetailMessageUiModel.Collapsed
 }
+

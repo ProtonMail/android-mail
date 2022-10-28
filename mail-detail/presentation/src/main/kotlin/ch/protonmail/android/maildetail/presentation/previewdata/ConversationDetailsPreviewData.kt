@@ -52,7 +52,7 @@ object ConversationDetailsPreviewData {
     )
 
     val FailedLoadingConversation = ConversationDetailState(
-        conversationState = ConversationDetailMetadataState.Error.FailedLoadingData,
+        conversationState = ConversationDetailMetadataState.Error(TextMessageSample.UnknownError),
         messagesState = ConversationDetailsMessagesState.Loading,
         bottomBarState = BottomBarState.Loading
     )
@@ -76,7 +76,7 @@ object ConversationDetailsPreviewData {
     )
 
     val NotLoggedIn = ConversationDetailState(
-        conversationState = ConversationDetailMetadataState.Error.NotLoggedIn,
+        conversationState = ConversationDetailMetadataState.Error(TextMessageSample.NotLoggedIn),
         messagesState = ConversationDetailsMessagesState.Error(TextMessageSample.NotLoggedIn),
         bottomBarState = BottomBarState.Loading
     )

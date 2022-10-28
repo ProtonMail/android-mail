@@ -25,8 +25,10 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -34,6 +36,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,21 +45,25 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
+import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ConversationDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
-    private val observeConversation: ObserveConversation,
-    private val metadataUiModelMapper: ConversationDetailMetadataUiModelMapper,
     private val actionUiModelMapper: ActionUiModelMapper,
+    private val conversationMessageMapper: ConversationDetailMessageUiModelMapper,
+    private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper,
+    private val observeConversation: ObserveConversation,
+    private val observeConversationMessages: ObserveConversationMessages,
     private val observeDetailActions: ObserveConversationDetailActions,
     private val reducer: ConversationDetailReducer,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val uiModelMapper: ConversationDetailMetadataUiModelMapper
 ) : ViewModel() {
 
-    private val primaryUserId = observePrimaryUserId()
+    private val primaryUserId: Flow<UserId?> = observePrimaryUserId()
     private val mutableDetailState = MutableStateFlow(initialState)
 
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
@@ -70,6 +77,7 @@ class ConversationDetailViewModel @Inject constructor(
         }
         val conversationId = ConversationId(conversationIdParam)
         observeConversationMetadata(conversationId)
+        observeConversationMessages(conversationId)
         observeBottomBarActions(conversationId)
     }
 
@@ -85,12 +93,27 @@ class ConversationDetailViewModel @Inject constructor(
             if (userId == null) {
                 return@flatMapLatest flowOf(ConversationDetailEvent.NoPrimaryUser)
             }
-            return@flatMapLatest observeConversation(userId, conversationId)
+            observeConversation(userId, conversationId)
                 .mapLatest { either ->
                     either.fold(
                         ifLeft = { ConversationDetailEvent.ErrorLoadingConversation },
-                        ifRight = { ConversationDetailEvent.ConversationData(metadataUiModelMapper.toUiModel(it)) }
+                        ifRight = { ConversationDetailEvent.ConversationData(conversationMetadataMapper.toUiModel(it)) }
                     )
+                }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun observeConversationMessages(conversationId: ConversationId) {
+        primaryUserId.flatMapLatest { userId ->
+            if (userId == null) {
+                return@flatMapLatest flowOf(ConversationDetailEvent.NoPrimaryUser)
+            }
+            observeConversationMessages(userId, conversationId)
+                .mapLatest { messages ->
+                    val messagesUiModels = messages.map(conversationMessageMapper::toUiModel)
+                    ConversationDetailEvent.MessagesData(messagesUiModels)
                 }
         }.onEach { event ->
             emitNewStateFrom(event)

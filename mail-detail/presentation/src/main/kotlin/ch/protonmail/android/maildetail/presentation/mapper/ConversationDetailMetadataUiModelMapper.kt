@@ -33,5 +33,4 @@ class ConversationDetailMetadataUiModelMapper @Inject constructor() :
         isStarred = conversation.labels.find { it.labelId == SystemLabelId.Starred.labelId } != null,
         messageCount = conversation.numMessages
     )
-
 }

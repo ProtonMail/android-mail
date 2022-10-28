@@ -36,17 +36,21 @@ import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
@@ -69,13 +73,20 @@ import kotlin.test.assertFailsWith
 class ConversationDetailViewModelTest {
 
     private val actionUiModelMapper = ActionUiModelMapper()
-    private val conversationUiModelMapper: ConversationDetailMetadataUiModelMapper = mockk {
+    private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper = mockk {
         every { toUiModel(ConversationSample.WeatherForecast) } returns
             ConversationDetailMetadataUiModelSample.WeatherForecast
+    }
+    private val conversationMessageMapper: ConversationDetailMessageUiModelMapper = mockk {
+        every { toUiModel(message = any()) } returns ConversationDetailMessageUiModel.Collapsed
     }
     private val observeConversation: ObserveConversation = mockk {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
             flowOf(ConversationSample.WeatherForecast.right())
+    }
+    private val observeConversationMessages: ObserveConversationMessages = mockk {
+        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
+            flowOf(listOf(MessageSample.AugWeatherForecast, MessageSample.SepWeatherForecast))
     }
     private val observeConversationDetailActions = mockk<ObserveConversationDetailActions> {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
@@ -95,9 +106,12 @@ class ConversationDetailViewModelTest {
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
-            observePrimaryUserId = observePrimaryUserId,
+            actionUiModelMapper = actionUiModelMapper,
+            conversationMetadataMapper = conversationMetadataMapper,
+            conversationMessageMapper = conversationMessageMapper,
             observeConversation = observeConversation,
-            metadataUiModelMapper = conversationUiModelMapper,
+            observeConversationMessages = observeConversationMessages,
+            conversationMetadataMapper = conversationMetadataMapper,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeConversationDetailActions,
             reducer = reducer,
@@ -168,6 +182,26 @@ class ConversationDetailViewModelTest {
         val expectedOperation = ConversationDetailEvent.ErrorLoadingConversation
         every { observeConversation(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
             DataError.Local.NoDataCached.left()
+        )
+
+        // when
+        viewModel.state.test {
+
+            // then
+            advanceUntilIdle()
+            verify { reducer.newStateFrom(ConversationDetailState.Loading, expectedOperation) }
+            cancelAndConsumeRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `does handle conversation messages data`() = runTest {
+        // given
+        val expectedOperation = ConversationDetailEvent.MessagesData(
+            messagesUiModels = listOf(
+                ConversationDetailMessageUiModel.Collapsed,
+                ConversationDetailMessageUiModel.Collapsed
+            )
         )
 
         // when

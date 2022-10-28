@@ -18,11 +18,14 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import javax.inject.Inject
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 class ConversationDetailMetadataReducer @Inject constructor() {
 
@@ -30,10 +33,16 @@ class ConversationDetailMetadataReducer @Inject constructor() {
     fun newStateFrom(
         currentState: ConversationDetailMetadataState,
         event: ConversationDetailOperation.AffectingConversation
-    ) = when (event) {
-        is ConversationDetailEvent.NoPrimaryUser -> ConversationDetailMetadataState.Error.NotLoggedIn
-        is ConversationDetailEvent.ConversationData -> ConversationDetailMetadataState.Data(event.conversationUiModel)
-        is ConversationDetailEvent.ErrorLoadingConversation -> ConversationDetailMetadataState.Error.FailedLoadingData
+    ): ConversationDetailMetadataState = when (event) {
+        is ConversationDetailEvent.NoPrimaryUser -> ConversationDetailMetadataState.Error(
+            message = TextUiModel(commonString.x_error_not_logged_in)
+        )
+        is ConversationDetailEvent.ConversationData -> ConversationDetailMetadataState.Data(
+            conversationUiModel = event.conversationUiModel
+        )
+        is ConversationDetailEvent.ErrorLoadingConversation -> ConversationDetailMetadataState.Error(
+            message = TextUiModel(string.details_error_loading_conversation)
+        )
         is ConversationDetailViewAction.Star -> TODO()
         is ConversationDetailViewAction.UnStar -> TODO()
     }

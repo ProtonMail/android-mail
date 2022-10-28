@@ -22,28 +22,35 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailcommon.presentation.model.string
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
+import me.proton.core.compose.component.ProtonSnackbarHost
+import me.proton.core.compose.component.ProtonSnackbarHostState
+import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
@@ -78,9 +85,23 @@ fun ConversationDetailScreen(
     modifier: Modifier = Modifier
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val snackbarHostState = ProtonSnackbarHostState()
+
+    if (state.conversationState is ConversationDetailMetadataState.Error) {
+        val message = state.conversationState.message.string()
+        LaunchedEffect(state.conversationState) {
+            snackbarHostState.showSnackbar(
+                type = ProtonSnackbarType.ERROR,
+                message = message
+            )
+        }
+    }
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        snackbarHost = {
+            ProtonSnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             val uiModel = (state.conversationState as? ConversationDetailMetadataState.Data)?.conversationUiModel
             DetailScreenTopBar(
@@ -126,17 +147,16 @@ fun ConversationDetailScreen(
             )
         }
     ) { innerPadding ->
-        when (state.conversationState) {
-            is ConversationDetailMetadataState.Data -> ConversationDetailContent(contentPadding = innerPadding)
-            ConversationDetailMetadataState.Error.NotLoggedIn -> ProtonErrorMessage(
-                modifier = Modifier.padding(innerPadding),
-                errorMessage = stringResource(id = commonString.x_error_not_logged_in)
+        when (state.messagesState) {
+            is ConversationDetailsMessagesState.Data -> MessagesContent(
+                messages = state.messagesState.messages,
+                contentPadding = innerPadding
             )
-            ConversationDetailMetadataState.Error.FailedLoadingData -> ProtonErrorMessage(
+            is ConversationDetailsMessagesState.Error -> ProtonErrorMessage(
                 modifier = Modifier.padding(innerPadding),
-                errorMessage = stringResource(id = string.detail_error_loading_conversation)
+                errorMessage = state.messagesState.message.string()
             )
-            ConversationDetailMetadataState.Loading -> ProtonCenteredProgress(
+            ConversationDetailsMessagesState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
             )
         }.exhaustive
@@ -144,7 +164,8 @@ fun ConversationDetailScreen(
 }
 
 @Composable
-private fun ConversationDetailContent(
+private fun MessagesContent(
+    messages: List<ConversationDetailMessageUiModel>,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -153,10 +174,9 @@ private fun ConversationDetailContent(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        val list = (0..75).map { it.toString() }
-        items(count = list.size) {
+        items(messages) { message ->
             Text(
-                text = list[it],
+                text = requireNotNull(message::class.simpleName),
                 style = ProtonTheme.typography.default,
                 modifier = Modifier
                     .fillMaxWidth()

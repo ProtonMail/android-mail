@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
@@ -26,6 +28,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @RunWith(Parameterized::class)
 class ConversationDetailMetadataReducerTest(
@@ -55,7 +58,9 @@ class ConversationDetailMetadataReducerTest(
                 TestParams.TestInput(
                     currentState = ConversationDetailMetadataState.Loading,
                     event = ConversationDetailEvent.NoPrimaryUser,
-                    expectedState = ConversationDetailMetadataState.Error.NotLoggedIn
+                    expectedState = ConversationDetailMetadataState.Error(
+                        message = TextUiModel(commonString.x_error_not_logged_in)
+                    )
                 )
             ),
             TestParams(
@@ -71,7 +76,9 @@ class ConversationDetailMetadataReducerTest(
                 TestParams.TestInput(
                     currentState = ConversationDetailMetadataState.Loading,
                     event = ConversationDetailEvent.ErrorLoadingConversation,
-                    expectedState = ConversationDetailMetadataState.Error.FailedLoadingData
+                    expectedState = ConversationDetailMetadataState.Error(
+                        message = TextUiModel(string.details_error_loading_conversation)
+                    )
                 )
             )
         )
