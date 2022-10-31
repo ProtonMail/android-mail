@@ -63,6 +63,7 @@ internal class EffectTest {
 
             effect.consume()
             stateFlow.value = effect
+            expectNoEvents()
         }
     }
 
