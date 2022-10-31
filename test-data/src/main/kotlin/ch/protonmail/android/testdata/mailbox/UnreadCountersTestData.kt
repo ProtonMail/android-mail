@@ -20,6 +20,7 @@ package ch.protonmail.android.testdata.mailbox
 
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
+import me.proton.core.label.domain.entity.LabelId
 
 object UnreadCountersTestData {
 
@@ -35,4 +36,12 @@ object UnreadCountersTestData {
     )
 
     val systemUnreadCounters = labelToCounterMap.map { UnreadCounter(it.key, it.value) }
+
+    fun List<UnreadCounter>.update(labelId: LabelId, count: Int) = map { unreadCounter ->
+        if (unreadCounter.labelId == labelId) {
+            unreadCounter.copy(count = count)
+        } else {
+            unreadCounter
+        }
+    }
 }
