@@ -18,8 +18,8 @@
   -->
 <resources>
   <string name="app_name">Proton Mail</string>
-  <string name="title_remove">Remove</string>
-  <string name="title_remove_account">Remove Account</string>
-  <string name="description_remove_account">You will sign out and remove all information associated with this account.</string>
-  <string name="user_select_other_account_content_description">Select another account</string>
+  <string name="title_remove">Fjarlægja</string>
+  <string name="title_remove_account">Fjarlægja notandaaðgang</string>
+  <string name="description_remove_account">Þú munt skrá þig út og fjarlægja allar upplýsingar sem tengjast þessum reikningi.</string>
+  <string name="user_select_other_account_content_description">Velja annan reikning</string>
 </resources>
