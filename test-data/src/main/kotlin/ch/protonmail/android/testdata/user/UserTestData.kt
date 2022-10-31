@@ -50,6 +50,7 @@ object UserTestData {
 
     fun build(
         displayName: String = USER_DISPLAY_NAME_RAW,
+        name: String = USER_NAME_RAW,
         role: Role = Role.NoOrganization,
         userId: UserId = UserIdTestData.Primary
     ) = User(
@@ -61,7 +62,7 @@ object UserTestData {
         keys = emptyList(),
         maxSpace = MAX_SPACE_RAW,
         maxUpload = 1,
-        name = null,
+        name = name,
         private = true,
         role = role,
         services = 1,
