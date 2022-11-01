@@ -33,7 +33,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -126,8 +125,7 @@ private fun Int.exceedsMaxActionsShowed() = this > BottomActionBar.MAX_ACTIONS_C
 private fun BottomBarIcon(
     @DrawableRes iconId: Int,
     @StringRes descriptionId: Int,
-    onClick: () -> Unit,
-    tintId: Int = R.color.icon_norm
+    onClick: () -> Unit
 ) {
     IconButton(
         modifier = Modifier.size(ProtonDimens.DefaultIconSize),
@@ -137,7 +135,7 @@ private fun BottomBarIcon(
             modifier = Modifier,
             painter = painterResource(id = iconId),
             contentDescription = stringResource(id = descriptionId),
-            tint = colorResource(id = tintId)
+            tint = ProtonTheme.colors.iconNorm
         )
     }
 }
