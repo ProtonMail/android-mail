@@ -63,7 +63,7 @@ android {
 
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
         buildConfigField("String", "PROXY_TOKEN", proxyToken.toBuildConfigValue())
-        buildConfigField("String", "HUMAN_VERIFICATION_HOST", "verify.protonmail.com".toBuildConfigValue())
+        buildConfigField("String", "HUMAN_VERIFICATION_HOST", "verify.proton.me".toBuildConfigValue())
     }
 
     testOptions {
