@@ -40,6 +40,8 @@ import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.usersettings.presentation.compose.view.CrashReportSettingsToggleItem
+import me.proton.core.usersettings.presentation.compose.view.TelemetrySettingsToggleItem
 
 const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
 const val TEST_TAG_SETTINGS_LIST = "SettingsListTestTag"
@@ -136,6 +138,8 @@ fun MainSettingsScreen(
                 )
                 Divider()
             }
+            item { TelemetrySettingsToggleItem() }
+            item { CrashReportSettingsToggleItem() }
             item { ProtonSettingsHeader(title = string.mail_settings_app_information) }
             item {
                 ProtonSettingsItem(
