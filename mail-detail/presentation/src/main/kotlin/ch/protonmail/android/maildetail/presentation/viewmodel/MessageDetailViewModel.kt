@@ -119,24 +119,24 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private suspend fun emitNewStateFrom(event: MessageDetailEvent) {
+    private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {
         val updatedDetailState = state.value.copy(
-            messageState = updateMessageState(event),
-            bottomBarState = updateBottomBarState(event)
+            messageState = updateMessageState(operation),
+            bottomBarState = updateBottomBarState(operation)
         )
         mutableDetailState.emit(updatedDetailState)
     }
 
-    private fun updateMessageState(event: MessageDetailEvent) =
-        if (event is MessageDetailOperation.AffectingMessage) {
-            messageStateReducer.newStateFrom(state.value.messageState, event)
+    private fun updateMessageState(operation: MessageDetailOperation) =
+        if (operation is MessageDetailOperation.AffectingMessage) {
+            messageStateReducer.newStateFrom(state.value.messageState, operation)
         } else {
             state.value.messageState
         }
 
-    private fun updateBottomBarState(event: MessageDetailEvent) =
-        if (event is MessageDetailEvent.MessageBottomBarEvent) {
-            bottomBarReducer.newStateFrom(state.value.bottomBarState, event.bottomBarEvent)
+    private fun updateBottomBarState(operation: MessageDetailOperation) =
+        if (operation is MessageDetailEvent.MessageBottomBarEvent) {
+            bottomBarReducer.newStateFrom(state.value.bottomBarState, operation.bottomBarEvent)
         } else {
             state.value.bottomBarState
         }
