@@ -161,7 +161,7 @@ private fun MessageDetailHeader(
                 top.linkTo(senderRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility = if (isExpanded.value) Visibility.Gone else Visibility.Visible
+                visibility = visibleWhen(!isExpanded.value)
             },
             allRecipients = uiModel.allRecipients
         )
@@ -242,7 +242,7 @@ private fun MessageDetailHeader(
                     margin = if (isExpanded.value) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing,
                     goneMargin = if (isExpanded.value) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing
                 )
-                visibility = if (uiModel.labels.isNotEmpty()) Visibility.Visible else Visibility.Gone
+                visibility = visibleWhen(uiModel.labels.isNotEmpty())
             }
         )
 
@@ -315,7 +315,7 @@ private fun MessageDetailHeader(
                         goneMargin = ProtonDimens.SmallSpacing
                     )
                     start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                    visibility = if (isExpanded.value) Visibility.Visible else Visibility.Gone
+                    visibility = visibleWhen(isExpanded.value)
                 }
                 .clickable { isExpanded.value = !isExpanded.value }
         )
@@ -488,7 +488,7 @@ private fun ConstrainScope.constrainRecipientsTitle(
 ) {
     top.linkTo(reference.top)
     end.linkTo(reference.start, margin = ProtonDimens.DefaultSpacing)
-    visibility = if (recipients.isNotEmpty() && isExpanded) Visibility.Visible else Visibility.Gone
+    visibility = visibleWhen(recipients.isNotEmpty() && isExpanded)
 }
 
 private fun ConstrainScope.constrainRecipients(
@@ -506,7 +506,7 @@ private fun ConstrainScope.constrainRecipients(
     )
     start.linkTo(startReference.end, margin = ProtonDimens.SmallSpacing)
     end.linkTo(endReference.start, margin = ProtonDimens.SmallSpacing)
-    visibility = if (recipients.isNotEmpty() && isExpanded) Visibility.Visible else Visibility.Gone
+    visibility = visibleWhen(recipients.isNotEmpty() && isExpanded)
 }
 
 private fun ConstrainScope.constrainExtendedHeaderRow(
@@ -522,8 +522,10 @@ private fun ConstrainScope.constrainExtendedHeaderRow(
     )
     start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
     end.linkTo(endReference.start, margin = ProtonDimens.SmallSpacing)
-    visibility = if (isExpanded) Visibility.Visible else Visibility.Gone
+    visibility = visibleWhen(isExpanded)
 }
+
+private fun visibleWhen(isVisible: Boolean) = if (isVisible) Visibility.Visible else Visibility.Gone
 
 @Preview(showBackground = true)
 @Composable
