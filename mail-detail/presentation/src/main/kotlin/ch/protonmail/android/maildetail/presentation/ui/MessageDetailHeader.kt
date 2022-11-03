@@ -37,7 +37,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -419,7 +418,7 @@ private fun Recipients(
     Column(modifier = modifier) {
         recipients.forEachIndexed { index, participant ->
             Row(verticalAlignment = Alignment.CenterVertically) {
-                ParticipantText(text = participant.participantName, textColor = ProtonTheme.colors.textNorm)
+                ParticipantText(text = participant.participantName, clickable = false)
                 SmallNonClickableIcon(iconId = participant.participantPadlock)
                 ParticipantText(text = participant.participantAddress)
             }
@@ -441,11 +440,16 @@ private fun RecipientsTitle(
 @Composable
 private fun ParticipantText(
     text: String,
-    textColor: Color = ProtonTheme.colors.interactionNorm
+    clickable: Boolean = true
 ) {
     Text(
         text = text,
-        color = textColor,
+        modifier = Modifier.clickable(
+            enabled = clickable,
+            onClickLabel = text,
+            onClick = {}
+        ),
+        color = if (clickable) ProtonTheme.colors.interactionNorm else ProtonTheme.colors.textNorm,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         style = ProtonTheme.typography.caption
