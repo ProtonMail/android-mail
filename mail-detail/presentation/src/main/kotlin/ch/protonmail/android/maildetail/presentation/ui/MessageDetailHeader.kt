@@ -397,7 +397,11 @@ private fun AllRecipients(
     allRecipients: String
 ) {
     Row(modifier = modifier) {
-        Text(text = "${stringResource(R.string.to)} ", style = ProtonTheme.typography.caption)
+        Text(
+            modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing),
+            text = stringResource(R.string.to),
+            style = ProtonTheme.typography.caption
+        )
         Text(
             text = allRecipients,
             maxLines = 1,
