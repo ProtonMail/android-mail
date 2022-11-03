@@ -23,16 +23,31 @@ import androidx.startup.Initializer
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.logging.AppLogger
 import ch.protonmail.android.logging.SentryTree
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
+import me.proton.core.usersettings.domain.DeviceSettingsHandler
+import me.proton.core.usersettings.domain.onDeviceSettingsChanged
 import me.proton.core.util.kotlin.CoreLogger
 import timber.log.Timber
 
 class LoggerInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        } else {
-            Timber.plant(SentryTree())
+        val entryPoint = EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            LoggerInitializerEntryPoint::class.java
+        )
+
+        val tree = if (BuildConfig.DEBUG) Timber.DebugTree() else SentryTree()
+        val handler = entryPoint.handler()
+        handler.onDeviceSettingsChanged {
+            if (it.isCrashReportEnabled) {
+                Timber.plant(tree)
+            } else {
+                Timber.uprootAll()
+            }
         }
 
         // Forward Core Logs to Timber, using AppLogger.
@@ -45,5 +60,11 @@ class LoggerInitializer : Initializer<Unit> {
         } else {
             listOf(SentryInitializer::class.java)
         }
+    }
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface LoggerInitializerEntryPoint {
+        fun handler(): DeviceSettingsHandler
     }
 }
