@@ -65,7 +65,8 @@ fun MessageDetailScreen(
         actions = MessageDetailScreen.Actions(
             onBackClick = onBackClick,
             onStarClick = { viewModel.submit(MessageViewAction.Star) },
-            onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) }
+            onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
+            onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) }
         )
     )
 }
@@ -103,7 +104,7 @@ fun MessageDetailScreen(
                     onReplyAll = { Timber.d("message onReplyAll clicked") },
                     onForward = { Timber.d("message onForward clicked") },
                     onMarkRead = { Timber.d("message onMarkRead clicked") },
-                    onMarkUnread = { Timber.d("message onMarkUnread clicked") },
+                    onMarkUnread = actions.onUnreadClick,
                     onStar = { Timber.d("message onStar clicked") },
                     onUnstar = { Timber.d("message onUnstar clicked") },
                     onMove = { Timber.d("message onMove clicked") },
@@ -169,7 +170,8 @@ object MessageDetailScreen {
     data class Actions(
         val onBackClick: () -> Unit,
         val onStarClick: () -> Unit,
-        val onUnStarClick: () -> Unit
+        val onUnStarClick: () -> Unit,
+        val onUnreadClick: () -> Unit
     ) {
 
         companion object {
@@ -177,7 +179,8 @@ object MessageDetailScreen {
             val Empty = Actions(
                 onBackClick = {},
                 onStarClick = {},
-                onUnStarClick = {}
+                onUnStarClick = {},
+                onUnreadClick = {}
             )
         }
     }

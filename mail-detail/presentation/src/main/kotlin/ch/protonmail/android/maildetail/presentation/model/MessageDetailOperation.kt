@@ -44,4 +44,5 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
 sealed interface MessageViewAction : MessageDetailOperation {
     object Star : MessageViewAction, MessageDetailOperation.AffectingMessage
     object UnStar : MessageViewAction, MessageDetailOperation.AffectingMessage
+    object MarkUnread : MessageViewAction
 }

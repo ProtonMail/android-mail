@@ -31,6 +31,7 @@ class ConversationDetailReducer @Inject constructor(
     private val messagesReducer: ConversationDetailMessagesReducer
 ) {
 
+    @SuppressWarnings("NotImplementedDeclaration")
     fun newStateFrom(
         currentState: ConversationDetailState,
         operation: ConversationDetailOperation
@@ -61,5 +62,6 @@ class ConversationDetailReducer @Inject constructor(
             is ConversationDetailEvent.ConversationBottomBarEvent -> currentState.copy(
                 bottomBarState = bottomBarReducer.newStateFrom(currentState.bottomBarState, operation.bottomBarEvent)
             )
+            is ConversationDetailViewAction.MarkUnread -> TODO()
         }
 }

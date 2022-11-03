@@ -84,6 +84,7 @@ class ConversationDetailViewModel @Inject constructor(
         when (action) {
             is ConversationDetailViewAction.Star -> Timber.d("Star conversation clicked")
             is ConversationDetailViewAction.UnStar -> Timber.d("UnStar conversation clicked")
+            is ConversationDetailViewAction.MarkUnread -> Timber.d("Mark Unread conversation clicked VM")
         }
     }
 

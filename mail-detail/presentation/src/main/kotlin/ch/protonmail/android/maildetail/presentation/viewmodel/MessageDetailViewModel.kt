@@ -81,6 +81,7 @@ class MessageDetailViewModel @Inject constructor(
     fun submit(action: MessageViewAction) = when (action) {
         is MessageViewAction.Star -> Timber.d("Star message clicked")
         is MessageViewAction.UnStar -> Timber.d("UnStar message clicked")
+        is MessageViewAction.MarkUnread -> Timber.d("Mark Unread message clicked VM")
     }
 
     private fun observeMessageMetadata(messageId: MessageId) {

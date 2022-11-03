@@ -52,4 +52,5 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
 
     object Star : ConversationDetailViewAction, ConversationDetailOperation.AffectingConversation
     object UnStar : ConversationDetailViewAction, ConversationDetailOperation.AffectingConversation
+    object MarkUnread : ConversationDetailViewAction
 }
