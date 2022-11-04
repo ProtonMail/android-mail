@@ -28,6 +28,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithCont
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
@@ -48,23 +49,25 @@ import kotlin.math.min
 
 @Singleton
 class ConversationRepositoryImpl @Inject constructor(
-    private val remoteDataSource: ConversationRemoteDataSource,
-    private val localDataSource: ConversationLocalDataSource,
-    coroutineScopeProvider: CoroutineScopeProvider
+    private val conversationLocalDataSource: ConversationLocalDataSource,
+    private val conversationRemoteDataSource: ConversationRemoteDataSource,
+    coroutineScopeProvider: CoroutineScopeProvider,
+    private val messageLocalDataSource: MessageLocalDataSource
 ) : ConversationRepository {
 
     private data class ConversationKey(val userId: UserId, val conversationId: ConversationId)
 
     private val conversationStore: ProtonStore<ConversationKey, Conversation> = StoreBuilder.from(
         fetcher = Fetcher.of { key: ConversationKey ->
-            remoteDataSource.getConversation(key.userId, key.conversationId)
+            conversationRemoteDataSource.getConversationWithMessages(key.userId, key.conversationId)
         },
         sourceOfTruth = SourceOfTruth.of(
             reader = { key: ConversationKey ->
-                localDataSource.observeConversation(key.userId, key.conversationId)
+                conversationLocalDataSource.observeConversation(key.userId, key.conversationId)
             },
-            writer = { key, conversation ->
-                localDataSource.upsertConversation(key.userId, conversation)
+            writer = { key, (conversation, messages) ->
+                conversationLocalDataSource.upsertConversation(key.userId, conversation)
+                messageLocalDataSource.upsertMessages(messages)
             }
         )
     ).scope(coroutineScopeProvider.GlobalIOSupervisedScope).buildProtonStore()
@@ -72,18 +75,18 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey
-    ): List<ConversationWithContext> = localDataSource.getConversations(
+    ): List<ConversationWithContext> = conversationLocalDataSource.getConversations(
         userId = userId,
         pageKey = pageKey
     ).let { conversations ->
-        if (localDataSource.isLocalPageValid(userId, pageKey, conversations)) conversations
+        if (conversationLocalDataSource.isLocalPageValid(userId, pageKey, conversations)) conversations
         else runCatching { fetchConversations(userId, pageKey) }.getOrElse { conversations }
     }
 
     override suspend fun markAsStale(
         userId: UserId,
         labelId: LabelId
-    ) = localDataSource.markAsStale(userId, labelId)
+    ) = conversationLocalDataSource.markAsStale(userId, labelId)
 
     override fun observeConversation(
         userId: UserId,
@@ -97,11 +100,11 @@ class ConversationRepositoryImpl @Inject constructor(
     private suspend fun fetchConversations(
         userId: UserId,
         pageKey: PageKey
-    ) = localDataSource.getClippedPageKey(
+    ) = conversationLocalDataSource.getClippedPageKey(
         userId = userId,
         pageKey = pageKey.copy(size = min(ConversationApi.maxPageSize, pageKey.size))
     ).let { adaptedPageKey ->
-        remoteDataSource.getConversations(
+        conversationRemoteDataSource.getConversations(
             userId = userId,
             pageKey = adaptedPageKey
         ).also { conversations -> insertConversations(userId, adaptedPageKey, conversations) }
@@ -111,7 +114,7 @@ class ConversationRepositoryImpl @Inject constructor(
         userId: UserId,
         pageKey: PageKey,
         conversations: List<ConversationWithContext>
-    ) = localDataSource.upsertConversations(
+    ) = conversationLocalDataSource.upsertConversations(
         userId = userId,
         pageKey = pageKey,
         items = conversations

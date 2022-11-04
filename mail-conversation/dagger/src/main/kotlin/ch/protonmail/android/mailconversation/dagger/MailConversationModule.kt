@@ -25,6 +25,7 @@ import ch.protonmail.android.mailconversation.data.repository.ConversationReposi
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,10 +41,16 @@ object MailConversationModule {
     @Provides
     @Singleton
     fun provideConversationRepositoryImpl(
-        remoteDataSource: ConversationRemoteDataSource,
-        localDataSource: ConversationLocalDataSource,
-        coroutineScopeProvider: CoroutineScopeProvider
-    ): ConversationRepository = ConversationRepositoryImpl(remoteDataSource, localDataSource, coroutineScopeProvider)
+        conversationLocalDataSource: ConversationLocalDataSource,
+        conversationRemoteDataSource: ConversationRemoteDataSource,
+        coroutineScopeProvider: CoroutineScopeProvider,
+        messageLocalDataSource: MessageLocalDataSource
+    ): ConversationRepository = ConversationRepositoryImpl(
+        conversationRemoteDataSource = conversationRemoteDataSource,
+        conversationLocalDataSource = conversationLocalDataSource,
+        coroutineScopeProvider = coroutineScopeProvider,
+        messageLocalDataSource = messageLocalDataSource
+    )
 
     @Provides
     @Singleton

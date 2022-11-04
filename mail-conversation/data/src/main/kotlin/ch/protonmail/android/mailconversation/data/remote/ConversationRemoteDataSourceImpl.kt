@@ -19,8 +19,8 @@
 package ch.protonmail.android.mailconversation.data.remote
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
@@ -63,12 +63,14 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         ).conversations.map { it.toConversationWithContext(userId, pageKey.filter.labelId) }
     }.valueOrThrow
 
-    override suspend fun getConversation(
+    override suspend fun getConversationWithMessages(
         userId: UserId,
         conversationId: ConversationId
-    ): Conversation = apiProvider.get<ConversationApi>(userId).invoke {
-        getConversation(
-            conversationId = conversationId.id
-        ).conversation.toConversation(userId)
+    ): ConversationWithMessages = apiProvider.get<ConversationApi>(userId).invoke {
+        val response = getConversation(conversationId = conversationId.id)
+        ConversationWithMessages(
+            response.conversation.toConversation(userId),
+            messages = response.messages.map { it.toMessage(userId) }
+        )
     }.valueOrThrow
 }

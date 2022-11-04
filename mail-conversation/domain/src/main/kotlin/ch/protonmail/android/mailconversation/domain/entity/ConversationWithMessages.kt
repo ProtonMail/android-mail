@@ -16,22 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.data.remote.response
+package ch.protonmail.android.mailconversation.domain.entity
 
-import ch.protonmail.android.mailconversation.data.remote.resource.ConversationResource
-import ch.protonmail.android.mailmessage.data.remote.resource.MessageResource
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import ch.protonmail.android.mailmessage.domain.entity.Message
 
-@Serializable
-data class GetConversationResponse(
-
-    @SerialName("Code")
-    val code: Int,
-
-    @SerialName("Conversation")
-    val conversation: ConversationResource,
-
-    @SerialName("Messages")
-    val messages: List<MessageResource>
+data class ConversationWithMessages(
+    val conversation: Conversation,
+    val messages: List<Message>
 )

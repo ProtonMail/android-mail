@@ -39,4 +39,5 @@ dependencies {
     implementation(project(":mail-conversation:data"))
     implementation(project(":mail-conversation:domain"))
     implementation(project(":mail-conversation:presentation"))
+    implementation(project(":mail-message:data"))
 }

@@ -24,8 +24,10 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.repository.ConversationRepositoryImpl
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
@@ -38,7 +40,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -46,7 +47,11 @@ class ConversationRepositoryImplTest {
 
     private val userId = UserId("1")
 
-    private val remoteDataSource = mockk<ConversationRemoteDataSource> {
+    private val conversationLocalDataSource = mockk<ConversationLocalDataSource>(relaxUnitFun = true) {
+        coEvery { this@mockk.getConversations(any(), any()) } returns emptyList()
+        coEvery { this@mockk.isLocalPageValid(any(), any(), any()) } returns false
+    }
+    private val conversationRemoteDataSource = mockk<ConversationRemoteDataSource> {
         coEvery { this@mockk.getConversations(any(), any()) } returns listOf(
             ConversationWithContextTestData.conversation1,
             ConversationWithContextTestData.conversation2,
@@ -54,23 +59,17 @@ class ConversationRepositoryImplTest {
             ConversationWithContextTestData.conversation4
         )
     }
-    private val localDataSource = mockk<ConversationLocalDataSource>(relaxUnitFun = true) {
-        coEvery { this@mockk.getConversations(any(), any()) } returns emptyList()
-        coEvery { this@mockk.isLocalPageValid(any(), any(), any()) } returns false
-    }
 
     private val coroutineScopeProvider = TestCoroutineScopeProvider
 
-    private lateinit var conversationRepository: ConversationRepositoryImpl
+    private val messageLocalDataSource: MessageLocalDataSource = mockk(relaxUnitFun = true)
 
-    @Before
-    fun setUp() {
-        conversationRepository = ConversationRepositoryImpl(
-            remoteDataSource,
-            localDataSource,
-            coroutineScopeProvider
-        )
-    }
+    private val conversationRepository = ConversationRepositoryImpl(
+        conversationLocalDataSource = conversationLocalDataSource,
+        conversationRemoteDataSource = conversationRemoteDataSource,
+        coroutineScopeProvider = coroutineScopeProvider,
+        messageLocalDataSource = messageLocalDataSource
+    )
 
     @Test
     fun `return remote if local page is invalid`() = runTest {
@@ -84,19 +83,19 @@ class ConversationRepositoryImplTest {
             ConversationWithContextTestData.conversation2,
             ConversationWithContextTestData.conversation3
         )
-        coEvery { localDataSource.getConversations(any(), any()) } returns local
-        coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
-        coEvery { localDataSource.getClippedPageKey(any(), any()) } returns pageKey
-        coEvery { remoteDataSource.getConversations(any(), any()) } returns remote
+        coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns local
+        coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns false
+        coEvery { conversationLocalDataSource.getClippedPageKey(any(), any()) } returns pageKey
+        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns remote
 
         // When
         val result = conversationRepository.getConversations(userId, pageKey)
 
         // Then
         assertEquals(3, result.size)
-        coVerify(exactly = 1) { localDataSource.isLocalPageValid(userId, pageKey, local) }
-        coVerify(exactly = 1) { remoteDataSource.getConversations(userId, pageKey) }
-        coVerify(exactly = 1) { localDataSource.upsertConversations(userId, pageKey, remote) }
+        coVerify(exactly = 1) { conversationLocalDataSource.isLocalPageValid(userId, pageKey, local) }
+        coVerify(exactly = 1) { conversationRemoteDataSource.getConversations(userId, pageKey) }
+        coVerify(exactly = 1) { conversationLocalDataSource.upsertConversations(userId, pageKey, remote) }
     }
 
     @Test
@@ -107,18 +106,18 @@ class ConversationRepositoryImplTest {
             ConversationWithContextTestData.conversation1,
             ConversationWithContextTestData.conversation2
         )
-        coEvery { localDataSource.getConversations(any(), any()) } returns local
-        coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
-        coEvery { localDataSource.getClippedPageKey(any(), any()) } returns pageKey
-        coEvery { remoteDataSource.getConversations(any(), any()) } throws IOException()
+        coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns local
+        coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns false
+        coEvery { conversationLocalDataSource.getClippedPageKey(any(), any()) } returns pageKey
+        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } throws IOException()
 
         // When
         val result = conversationRepository.getConversations(userId, pageKey)
 
         // Then
         assertEquals(2, result.size)
-        coVerify(exactly = 1) { localDataSource.isLocalPageValid(userId, pageKey, local) }
-        coVerify(exactly = 1) { remoteDataSource.getConversations(userId, pageKey) }
+        coVerify(exactly = 1) { conversationLocalDataSource.isLocalPageValid(userId, pageKey, local) }
+        coVerify(exactly = 1) { conversationRemoteDataSource.getConversations(userId, pageKey) }
     }
 
     @Test
@@ -134,17 +133,17 @@ class ConversationRepositoryImplTest {
             ConversationWithContextTestData.conversation2,
             ConversationWithContextTestData.conversation3
         )
-        coEvery { localDataSource.getConversations(any(), any()) } returns local
-        coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns true
-        coEvery { remoteDataSource.getConversations(any(), any()) } returns remote
+        coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns local
+        coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns true
+        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns remote
 
         // When
         val conversations = conversationRepository.getConversations(userId, pageKey)
 
         // Then
         assertEquals(2, conversations.size)
-        coVerify(exactly = 1) { localDataSource.isLocalPageValid(userId, pageKey, local) }
-        coVerify(exactly = 0) { remoteDataSource.getConversations(any(), any()) }
+        coVerify(exactly = 1) { conversationLocalDataSource.isLocalPageValid(userId, pageKey, local) }
+        coVerify(exactly = 0) { conversationRemoteDataSource.getConversations(any(), any()) }
     }
 
     @Test
@@ -152,19 +151,19 @@ class ConversationRepositoryImplTest {
         // Given
         val pageKey = PageKey()
         val clippedPageKey = PageKey(filter = PageFilter(minTime = 0))
-        coEvery { localDataSource.getConversations(any(), any()) } returns emptyList()
-        coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
-        coEvery { localDataSource.getClippedPageKey(any(), any()) } returns clippedPageKey
-        coEvery { remoteDataSource.getConversations(any(), any()) } returns emptyList()
+        coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns emptyList()
+        coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns false
+        coEvery { conversationLocalDataSource.getClippedPageKey(any(), any()) } returns clippedPageKey
+        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns emptyList()
         // When
         val conversations = conversationRepository.getConversations(userId, pageKey)
 
         // Then
         assertEquals(0, conversations.size)
-        coVerify(exactly = 1) { localDataSource.isLocalPageValid(any(), any(), any()) }
+        coVerify(exactly = 1) { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) }
         coVerify(ordering = Ordering.ORDERED) {
-            localDataSource.getClippedPageKey(userId, pageKey)
-            remoteDataSource.getConversations(userId, clippedPageKey)
+            conversationLocalDataSource.getClippedPageKey(userId, pageKey)
+            conversationRemoteDataSource.getConversations(userId, clippedPageKey)
         }
     }
 
@@ -174,8 +173,9 @@ class ConversationRepositoryImplTest {
         val conversationId = ConversationId("conversationId")
         val conversation = getConversation(userId, conversationId.id)
         val conversationFlow = MutableSharedFlow<Conversation>()
-        coEvery { localDataSource.observeConversation(userId, conversationId) } returns conversationFlow
-        coEvery { remoteDataSource.getConversation(userId, conversationId) } returns conversation
+        coEvery { conversationLocalDataSource.observeConversation(userId, conversationId) } returns conversationFlow
+        coEvery { conversationRemoteDataSource.getConversationWithMessages(userId, conversationId) } returns
+            ConversationWithMessages(conversation = conversation, messages = emptyList())
         // When
         conversationRepository.observeConversation(userId, conversationId).test {
             // Then
@@ -193,12 +193,13 @@ class ConversationRepositoryImplTest {
         // Given
         val conversationId = ConversationId("conversationId")
         val conversation = getConversation(userId, conversationId.id)
-        coEvery { localDataSource.observeConversation(userId, conversationId) } returns flowOf(null)
-        coEvery { remoteDataSource.getConversation(userId, conversationId) } returns conversation
+        coEvery { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(null)
+        coEvery { conversationRemoteDataSource.getConversationWithMessages(userId, conversationId) } returns
+            ConversationWithMessages(conversation = conversation, messages = emptyList())
         // When
         conversationRepository.observeConversation(userId, conversationId).test {
             // Then
-            coVerify { remoteDataSource.getConversation(userId, conversationId) }
+            coVerify { conversationRemoteDataSource.getConversationWithMessages(userId, conversationId) }
         }
     }
 
@@ -208,12 +209,13 @@ class ConversationRepositoryImplTest {
         val conversationId = ConversationId("conversationId")
         val conversation = getConversation(userId, conversationId.id)
         val updatedConversation = conversation.copy(numUnread = 5)
-        coEvery { localDataSource.observeConversation(userId, conversationId) } returns flowOf(conversation)
-        coEvery { remoteDataSource.getConversation(userId, conversationId) } returns updatedConversation
+        coEvery { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(conversation)
+        coEvery { conversationRemoteDataSource.getConversationWithMessages(userId, conversationId) } returns
+            ConversationWithMessages(conversation = updatedConversation, messages = emptyList())
         // When
         conversationRepository.observeConversation(userId, conversationId).test {
             // Then
-            coVerify { localDataSource.upsertConversation(userId, updatedConversation) }
+            coVerify { conversationLocalDataSource.upsertConversation(userId, updatedConversation) }
             cancelAndConsumeRemainingEvents()
         }
     }
