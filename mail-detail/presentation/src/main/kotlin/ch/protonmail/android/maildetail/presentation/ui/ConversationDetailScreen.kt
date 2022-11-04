@@ -37,9 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.model.string
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
-import ch.protonmail.android.maildetail.presentation.R.string
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
@@ -57,7 +56,6 @@ import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.default
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
-import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
 fun ConversationDetailScreen(

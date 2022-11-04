@@ -23,7 +23,7 @@ import ch.protonmail.android.mailmessage.domain.entity.Message
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
 
-class ConversationDetailMessageUiModelMapper @Inject constructor():
+class ConversationDetailMessageUiModelMapper @Inject constructor() :
     Mapper<Message, ConversationDetailMessageUiModel> {
 
     fun toUiModel(@Suppress("UNUSED_PARAMETER") message: Message) = ConversationDetailMessageUiModel.Collapsed

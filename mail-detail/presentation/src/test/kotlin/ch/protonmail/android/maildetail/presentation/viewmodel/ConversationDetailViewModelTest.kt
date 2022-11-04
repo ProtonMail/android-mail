@@ -22,19 +22,15 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import arrow.core.left
-import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
-import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
-import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
@@ -42,18 +38,13 @@ import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
-import ch.protonmail.android.testdata.conversation.ConversationTestData
-import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -63,8 +54,6 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import me.proton.core.test.kotlin.assertIs
-import org.junit.Assert.assertThrows
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -106,13 +95,12 @@ class ConversationDetailViewModelTest {
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
+            observePrimaryUserId = observePrimaryUserId,
             actionUiModelMapper = actionUiModelMapper,
-            conversationMetadataMapper = conversationMetadataMapper,
             conversationMessageMapper = conversationMessageMapper,
+            conversationMetadataMapper = conversationMetadataMapper,
             observeConversation = observeConversation,
             observeConversationMessages = observeConversationMessages,
-            conversationMetadataMapper = conversationMetadataMapper,
-            actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeConversationDetailActions,
             reducer = reducer,
             savedStateHandle = savedStateHandle
@@ -217,48 +205,58 @@ class ConversationDetailViewModelTest {
     @Test
     fun `bottomBar state is data when use case returns actions`() = runTest {
         // Given
+        val initialState = ConversationDetailState.Loading
+        val actions = listOf(Action.Reply, Action.Archive)
+        val actionUiModels = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
+        val expected = initialState.copy(bottomBarState = BottomBarState.Data(actionUiModels))
         every {
             observeConversationDetailActions(UserIdSample.Primary, ConversationIdSample.WeatherForecast)
-        } returns flowOf(listOf(Action.Reply, Action.Archive).right())
+        } returns flowOf(actions.right())
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ConversationDetailEvent.ConversationBottomBarEvent(
+                    bottomBarEvent = BottomBarEvent.ActionsData(actionUiModels)
+                )
+            )
+        } returns expected
 
         // when
         viewModel.state.test {
             initialStateEmitted()
-            conversationStateEmitted()
+
             // Then
-            val actionUiModels = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
-            val expected = BottomBarState.Data(actionUiModels)
-            assertEquals(expected, awaitItem().bottomBarState)
+            assertEquals(expected, awaitItem())
         }
     }
 
     @Test
     fun `bottomBar state is failed loading actions when use case returns error`() = runTest {
         // Given
+        val initialState = ConversationDetailState.Loading
+        val expected = initialState.copy(bottomBarState = BottomBarState.Error.FailedLoadingActions)
         every {
             observeConversationDetailActions(UserIdSample.Primary, ConversationIdSample.WeatherForecast)
         } returns flowOf(DataError.Local.NoDataCached.left())
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions)
+            )
+        } returns expected
+
 
         // When
         viewModel.state.test {
             initialStateEmitted()
-            conversationStateEmitted()
+
             // Then
-            val expected = BottomBarState.Error.FailedLoadingActions
-            assertEquals(expected, awaitItem().bottomBarState)
+            assertEquals(expected, awaitItem())
         }
 
     }
 
     private suspend fun FlowTurbine<ConversationDetailState>.initialStateEmitted() {
         assertEquals(ConversationDetailState.Loading, awaitItem())
-    }
-
-    private suspend fun FlowTurbine<ConversationDetailState>.conversationStateEmitted() {
-        assertIs<ConversationDetailMetadataState.Data>(awaitItem().conversationState)
-    }
-
-    private fun givenNoLoggedInUser() {
-        every { observePrimaryUserId.invoke() } returns flowOf(null)
     }
 }

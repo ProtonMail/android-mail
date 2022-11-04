@@ -59,8 +59,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeConversationMessages: ObserveConversationMessages,
     private val observeDetailActions: ObserveConversationDetailActions,
     private val reducer: ConversationDetailReducer,
-    savedStateHandle: SavedStateHandle,
-    private val uiModelMapper: ConversationDetailMetadataUiModelMapper
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId?> = observePrimaryUserId()

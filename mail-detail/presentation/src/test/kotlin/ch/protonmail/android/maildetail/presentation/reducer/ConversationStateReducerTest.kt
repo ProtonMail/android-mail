@@ -18,15 +18,17 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @RunWith(Parameterized::class)
 class ConversationStateReducerTest(
@@ -58,7 +60,9 @@ class ConversationStateReducerTest(
             TestInput(
                 currentState = ConversationDetailMetadataState.Loading,
                 operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationDetailMetadataState.Error.NotLoggedIn
+                expectedState = ConversationDetailMetadataState.Error(
+                    message = TextUiModel(commonString.x_error_not_logged_in)
+                )
             ),
             TestInput(
                 currentState = ConversationDetailMetadataState.Loading,
@@ -68,7 +72,9 @@ class ConversationStateReducerTest(
             TestInput(
                 currentState = ConversationDetailMetadataState.Loading,
                 operation = ConversationDetailEvent.ErrorLoadingConversation,
-                expectedState = ConversationDetailMetadataState.Error.FailedLoadingData
+                expectedState = ConversationDetailMetadataState.Error(
+                    message = TextUiModel(string.detail_error_loading_conversation)
+                )
             )
         )
 
@@ -76,7 +82,9 @@ class ConversationStateReducerTest(
             TestInput(
                 currentState = ConversationDetailMetadataState.Data(conversationUiModel),
                 operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationDetailMetadataState.Error.NotLoggedIn
+                expectedState = ConversationDetailMetadataState.Error(
+                    message = TextUiModel(commonString.x_error_not_logged_in)
+                )
             ),
             TestInput(
                 currentState = ConversationDetailMetadataState.Data(conversationUiModel),
@@ -86,25 +94,37 @@ class ConversationStateReducerTest(
             TestInput(
                 currentState = ConversationDetailMetadataState.Data(conversationUiModel),
                 operation = ConversationDetailEvent.ErrorLoadingConversation,
-                expectedState = ConversationDetailMetadataState.Error.FailedLoadingData
+                expectedState = ConversationDetailMetadataState.Error(
+                    message = TextUiModel(string.detail_error_loading_conversation)
+                )
             )
         )
 
         private val transitionsFromErrorState = listOf(
             TestInput(
-                currentState = ConversationDetailMetadataState.Error.FailedLoadingData,
+                currentState = ConversationDetailMetadataState.Error(
+                    message = TextUiModel(commonString.x_error_not_logged_in)
+                ),
                 operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationDetailMetadataState.Error.NotLoggedIn
+                expectedState = ConversationDetailMetadataState.Error(
+                    message = TextUiModel(commonString.x_error_not_logged_in)
+                )
             ),
             TestInput(
-                currentState = ConversationDetailMetadataState.Error.FailedLoadingData,
+                currentState = ConversationDetailMetadataState.Error(
+                    message = TextUiModel(commonString.x_error_not_logged_in)
+                ),
                 operation = ConversationDetailEvent.ConversationData(conversationUiModel),
                 expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
             ),
             TestInput(
-                currentState = ConversationDetailMetadataState.Error.FailedLoadingData,
+                currentState = ConversationDetailMetadataState.Error(
+                    message = TextUiModel(commonString.x_error_not_logged_in)
+                ),
                 operation = ConversationDetailEvent.ErrorLoadingConversation,
-                expectedState = ConversationDetailMetadataState.Error.FailedLoadingData
+                expectedState = ConversationDetailMetadataState.Error(
+                    message = TextUiModel(string.detail_error_loading_conversation)
+                )
             )
         )
 
