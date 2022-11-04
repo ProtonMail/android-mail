@@ -20,7 +20,6 @@ package ch.protonmail.android.mailconversation.data.remote.resource
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
-import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentsInfoResource
 import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
@@ -74,31 +73,5 @@ data class ConversationResource(
     fun toConversationWithContext(userId: UserId, contextLabelId: LabelId) = ConversationWithContext(
         toConversation(userId),
         contextLabelId = contextLabelId
-    )
-}
-
-@Serializable
-data class ConversationLabelResource(
-    @SerialName("ID")
-    val id: String,
-    @SerialName("ContextNumUnread")
-    val contextNumUnread: Int,
-    @SerialName("ContextNumMessages")
-    val contextNumMessages: Int,
-    @SerialName("ContextTime")
-    val contextTime: Long,
-    @SerialName("ContextSize")
-    val contextSize: Long,
-    @SerialName("ContextNumAttachments")
-    val contextNumAttachments: Int
-) {
-    fun toConversationLabel(conversationId: ConversationId) = ConversationLabel(
-        conversationId = conversationId,
-        labelId = LabelId(id),
-        contextTime = contextTime,
-        contextSize = contextSize,
-        contextNumMessages = contextNumMessages,
-        contextNumUnread = contextNumUnread,
-        contextNumAttachments = contextNumAttachments
     )
 }
