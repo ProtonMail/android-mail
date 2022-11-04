@@ -62,7 +62,7 @@ class ConversationDetailMessagesReducerTest(
                 currentState = ConversationDetailsMessagesState.Loading,
                 operation = ConversationDetailEvent.ErrorLoadingMessages,
                 expectedState = ConversationDetailsMessagesState.Error(
-                    message = TextUiModel(string.details_error_loading_messages)
+                    message = TextUiModel(string.detail_error_loading_messages)
                 )
             ),
 
@@ -89,13 +89,13 @@ class ConversationDetailMessagesReducerTest(
                 ),
                 operation = ConversationDetailEvent.ErrorLoadingMessages,
                 expectedState = ConversationDetailsMessagesState.Error(
-                    message = TextUiModel(string.details_error_loading_messages)
+                    message = TextUiModel(string.detail_error_loading_messages)
                 )
             ),
 
             Input(
                 currentState = ConversationDetailsMessagesState.Error(
-                    message = TextUiModel(string.details_error_loading_messages)
+                    message = TextUiModel(string.detail_error_loading_messages)
                 ),
                 operation = ConversationDetailEvent.NoPrimaryUser,
                 expectedState = ConversationDetailsMessagesState.Error(
@@ -120,7 +120,7 @@ class ConversationDetailMessagesReducerTest(
                 ),
                 operation = ConversationDetailEvent.ErrorLoadingMessages,
                 expectedState = ConversationDetailsMessagesState.Error(
-                    message = TextUiModel(string.details_error_loading_messages)
+                    message = TextUiModel(string.detail_error_loading_messages)
                 )
             ),
 

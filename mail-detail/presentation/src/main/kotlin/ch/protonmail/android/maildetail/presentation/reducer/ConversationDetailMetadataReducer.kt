@@ -41,7 +41,7 @@ class ConversationDetailMetadataReducer @Inject constructor() {
             conversationUiModel = event.conversationUiModel
         )
         is ConversationDetailEvent.ErrorLoadingConversation -> ConversationDetailMetadataState.Error(
-            message = TextUiModel(string.details_error_loading_conversation)
+            message = TextUiModel(string.detail_error_loading_conversation)
         )
         is ConversationDetailViewAction.Star -> TODO()
         is ConversationDetailViewAction.UnStar -> TODO()

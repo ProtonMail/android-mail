@@ -77,7 +77,7 @@ class ConversationDetailMetadataReducerTest(
                     currentState = ConversationDetailMetadataState.Loading,
                     event = ConversationDetailEvent.ErrorLoadingConversation,
                     expectedState = ConversationDetailMetadataState.Error(
-                        message = TextUiModel(string.details_error_loading_conversation)
+                        message = TextUiModel(string.detail_error_loading_conversation)
                     )
                 )
             )
