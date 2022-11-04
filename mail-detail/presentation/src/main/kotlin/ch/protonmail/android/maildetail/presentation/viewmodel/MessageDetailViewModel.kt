@@ -22,13 +22,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
@@ -56,7 +60,8 @@ class MessageDetailViewModel @Inject constructor(
     private val uiModelMapper: MessageDetailUiModelMapper,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveMessageDetailActions,
-    savedStateHandle: SavedStateHandle
+    private val markUnread: MarkUnread,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -65,23 +70,34 @@ class MessageDetailViewModel @Inject constructor(
     val state: StateFlow<MessageDetailState> = mutableDetailState.asStateFlow()
 
     init {
-        val messageIdParam = savedStateHandle.get<String>(MessageDetailScreen.MESSAGE_ID_KEY)
-        Timber.d("Open detail screen for message ID: $messageIdParam")
-
-        if (messageIdParam == null) {
-            throw IllegalStateException("No Message id given")
-        }
-
-        val messageId = MessageId(messageIdParam)
+        val messageId = requireMessageId()
+        Timber.d("Open detail screen for message ID: $messageId")
         observeMessageMetadata(messageId)
         observeBottomBarActions(messageId)
     }
 
-    @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
-    fun submit(action: MessageViewAction) = when (action) {
-        is MessageViewAction.Star -> Timber.d("Star message clicked")
-        is MessageViewAction.UnStar -> Timber.d("UnStar message clicked")
-        is MessageViewAction.MarkUnread -> Timber.d("Mark Unread message clicked VM")
+    fun submit(action: MessageViewAction) {
+        when (action) {
+            is MessageViewAction.Star -> Timber.d("Star message clicked")
+            is MessageViewAction.UnStar -> Timber.d("UnStar message clicked")
+            is MessageViewAction.MarkUnread -> markMessageUnread()
+        }
+    }
+
+    private fun markMessageUnread() {
+        primaryUserId.flatMapLatest { userId ->
+            if (userId == null) {
+                return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
+            }
+            markUnread(userId, requireMessageId()).mapLatest { either ->
+                either.fold(
+                    ifLeft = { MessageDetailEvent.ErrorMarkingUnread },
+                    ifRight = { MessageDetailEvent.MarkedUnread }
+                )
+            }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
     }
 
     private fun observeMessageMetadata(messageId: MessageId) {
@@ -122,7 +138,12 @@ class MessageDetailViewModel @Inject constructor(
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {
         val updatedDetailState = state.value.copy(
             messageState = updateMessageState(operation),
-            bottomBarState = updateBottomBarState(operation)
+            bottomBarState = updateBottomBarState(operation),
+            dismiss = if (operation is MessageDetailEvent.MarkedUnread) Effect.of(Unit) else Effect.empty(),
+            error = if (operation is MessageDetailEvent.ErrorMarkingUnread)
+                Effect.of(TextUiModel(R.string.error_mark_unread_failed))
+            else
+                Effect.empty()
         )
         mutableDetailState.emit(updatedDetailState)
     }
@@ -140,6 +161,13 @@ class MessageDetailViewModel @Inject constructor(
         } else {
             state.value.bottomBarState
         }
+
+    private fun requireMessageId(): MessageId {
+        val messageIdParam = savedStateHandle.get<String>(MessageDetailScreen.MESSAGE_ID_KEY)
+            ?: throw IllegalStateException("No Message id given")
+
+        return MessageId(messageIdParam)
+    }
 
     companion object {
 

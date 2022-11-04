@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.previewdata
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
@@ -38,17 +39,23 @@ object MessageDetailsPreviewData {
                 ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
-        )
+        ),
+        dismiss = Effect.empty(),
+        error = Effect.empty()
     )
 
     val Loading = MessageDetailState(
         messageState = MessageDetailMetadataState.Loading,
-        bottomBarState = BottomBarState.Loading
+        bottomBarState = BottomBarState.Loading,
+        dismiss = Effect.empty(),
+        error = Effect.empty()
     )
 
     val NotLoggedIn = MessageDetailState(
         messageState = MessageDetailMetadataState.Error.NotLoggedIn,
-        bottomBarState = BottomBarState.Loading
+        bottomBarState = BottomBarState.Loading,
+        dismiss = Effect.empty(),
+        error = Effect.empty()
     )
 }
 

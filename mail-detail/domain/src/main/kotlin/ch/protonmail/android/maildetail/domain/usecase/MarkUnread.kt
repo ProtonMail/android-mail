@@ -16,26 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.maildetail.domain.usecase
 
-import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import arrow.core.Either
+import arrow.core.left
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-data class MessageDetailState(
-    val messageState: MessageDetailMetadataState,
-    val bottomBarState: BottomBarState,
-    val dismiss: Effect<Unit>,
-    val error: Effect<TextUiModel>
-) {
+class MarkUnread @Inject constructor() {
 
-    companion object {
-
-        val Loading = MessageDetailState(
-            messageState = MessageDetailMetadataState.Loading,
-            bottomBarState = BottomBarState.Loading,
-            dismiss = Effect.empty(),
-            error = Effect.empty()
-        )
-    }
+    operator fun invoke(userId: UserId, messageId: MessageId): Flow<Either<DataError, Unit>> =
+        flowOf(DataError.Local.NoDataCached.left())
 }

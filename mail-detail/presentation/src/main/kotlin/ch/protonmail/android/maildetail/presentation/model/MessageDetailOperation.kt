@@ -31,12 +31,12 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
         MessageDetailEvent,
         MessageDetailOperation.AffectingMessage
 
-    data class MessageBody(val message: MessageWithBody) :
-        MessageDetailEvent,
-        MessageDetailOperation.AffectingMessage
+    data class MessageBody(val message: MessageWithBody) : MessageDetailEvent, MessageDetailOperation.AffectingMessage
+    object MarkedUnread : MessageDetailEvent
 
     object NoPrimaryUser : MessageDetailEvent, MessageDetailOperation.AffectingMessage
     object NoCachedMetadata : MessageDetailEvent, MessageDetailOperation.AffectingMessage
+    object ErrorMarkingUnread : MessageDetailEvent
 
     data class MessageBottomBarEvent(val bottomBarEvent: BottomBarEvent) : MessageDetailEvent
 }

@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.Event
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import arrow.core.left
@@ -28,13 +29,17 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -48,6 +53,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Assert.assertThrows
@@ -79,6 +85,9 @@ class MessageDetailViewModelTest {
             nonEmptyListOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
         )
     }
+    private val markUnread = mockk<MarkUnread> {
+        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
+    }
 
     private val viewModel by lazy {
         MessageDetailViewModel(
@@ -89,6 +98,7 @@ class MessageDetailViewModelTest {
             uiModelMapper = messageUiModelMapper,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeDetailActions,
+            markUnread = markUnread,
             savedStateHandle = savedStateHandle
         )
     }
@@ -186,6 +196,39 @@ class MessageDetailViewModelTest {
             // Then
             val expected = BottomBarState.Error.FailedLoadingActions
             assertEquals(expected, awaitItem().bottomBarState)
+        }
+    }
+
+    @Test
+    fun `message detail state is dismiss message screen when mark unread is successful`() = runTest {
+        // Given
+        every { markUnread.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
+
+        viewModel.state.test {
+            initialStateEmitted()
+            // When
+            viewModel.submit(MessageViewAction.MarkUnread)
+            advanceUntilIdle()
+            // Then
+            val events = cancelAndConsumeRemainingEvents()
+            val lastState = (events.last() as Event.Item).value
+            assertEquals(Unit, lastState.dismiss.consume())
+        }
+    }
+
+    @Test
+    fun `message detail state is error marking unread when mark unread fails`() = runTest {
+        // Given
+        every { markUnread.invoke(userId, MessageId(rawMessageId)) } returns flowOf(DataError.Local.NoDataCached.left())
+
+        viewModel.state.test {
+            // When
+            viewModel.submit(MessageViewAction.MarkUnread)
+            advanceUntilIdle()
+            // Then
+            val events = cancelAndConsumeRemainingEvents()
+            val lastState = (events.last() as Event.Item).value
+            assertEquals(TextUiModel(R.string.error_mark_unread_failed), lastState.error.consume())
         }
     }
 
