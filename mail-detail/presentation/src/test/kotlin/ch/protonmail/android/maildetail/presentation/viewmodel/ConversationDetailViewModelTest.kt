@@ -30,16 +30,20 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
+import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
@@ -47,17 +51,16 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 class ConversationDetailViewModelTest {
 
@@ -134,15 +137,19 @@ class ConversationDetailViewModelTest {
     @Test
     fun `does handle user not logged in`() = runTest {
         // given
-        val expectedOperation = ConversationDetailEvent.NoPrimaryUser
+        val initialState = ConversationDetailState.Loading
+        val expectedState = initialState.copy(
+            conversationState = ConversationDetailMetadataState.Error(TextUiModel(commonString.x_error_not_logged_in))
+        )
         every { observePrimaryUserId() } returns flowOf(null)
+        every { reducer.newStateFrom(initialState, ConversationDetailEvent.NoPrimaryUser) } returns expectedState
 
         // when
         viewModel.state.test {
+            initialStateEmitted()
 
             // then
-            advanceUntilIdle()
-            verify { reducer.newStateFrom(ConversationDetailState.Loading, expectedOperation) }
+            assertEquals(expectedState, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -150,55 +157,81 @@ class ConversationDetailViewModelTest {
     @Test
     fun `does handle conversation data`() = runTest {
         // given
-        val expectedOperation = ConversationDetailEvent.ConversationData(
-            conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+        val initialState = ConversationDetailState.Loading
+        val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+        val expectedState = initialState.copy(
+            conversationState = ConversationDetailMetadataState.Data(conversationUiModel)
         )
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ConversationDetailEvent.ConversationData(conversationUiModel)
+            )
+        } returns expectedState
 
         // when
         viewModel.state.test {
+            initialStateEmitted()
 
             // then
-            advanceUntilIdle()
-            verify { reducer.newStateFrom(ConversationDetailState.Loading, expectedOperation) }
-            cancelAndConsumeRemainingEvents()
+            assertEquals(expectedState, awaitItem())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
     fun `does handle conversation error`() = runTest {
         // given
-        val expectedOperation = ConversationDetailEvent.ErrorLoadingConversation
-        every { observeConversation(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
-            DataError.Local.NoDataCached.left()
+        val initialState = ConversationDetailState.Loading
+        val expectedState = initialState.copy(
+            conversationState = ConversationDetailMetadataState.Error(
+                message = TextUiModel(string.detail_error_loading_conversation)
+            )
         )
+        every { observeConversation(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
+            flowOf(DataError.Local.NoDataCached.left())
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ConversationDetailEvent.ErrorLoadingConversation
+            )
+        } returns expectedState
 
         // when
         viewModel.state.test {
+            initialStateEmitted()
 
             // then
-            advanceUntilIdle()
-            verify { reducer.newStateFrom(ConversationDetailState.Loading, expectedOperation) }
-            cancelAndConsumeRemainingEvents()
+            assertEquals(expectedState, awaitItem())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
     fun `does handle conversation messages data`() = runTest {
         // given
-        val expectedOperation = ConversationDetailEvent.MessagesData(
-            messagesUiModels = listOf(
-                ConversationDetailMessageUiModel.Collapsed,
-                ConversationDetailMessageUiModel.Collapsed
-            )
+        val initialState = ConversationDetailState.Loading
+        val messagesUiModels = listOf(
+            ConversationDetailMessageUiModel.Collapsed,
+            ConversationDetailMessageUiModel.Collapsed
         )
+        val expectedState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messagesUiModels)
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ConversationDetailEvent.MessagesData(messagesUiModels)
+            )
+        } returns expectedState
 
         // when
         viewModel.state.test {
+            initialStateEmitted()
 
             // then
-            advanceUntilIdle()
-            verify { reducer.newStateFrom(ConversationDetailState.Loading, expectedOperation) }
-            cancelAndConsumeRemainingEvents()
+            assertEquals(expectedState, awaitItem())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
