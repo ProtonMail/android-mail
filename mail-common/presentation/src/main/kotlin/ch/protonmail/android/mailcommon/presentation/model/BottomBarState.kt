@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.mailcommon.presentation.model
 
-import arrow.core.NonEmptyList
-
 sealed interface BottomBarState {
 
     data class Data(

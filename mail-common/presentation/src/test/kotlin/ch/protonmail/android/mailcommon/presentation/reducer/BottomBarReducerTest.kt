@@ -19,8 +19,6 @@
 package ch.protonmail.android.mailcommon.presentation.reducer
 
 import arrow.core.nonEmptyListOf
-import ch.protonmail.android.mailcommon.domain.model.Action
-import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.testdata.action.ActionUiModelTestData

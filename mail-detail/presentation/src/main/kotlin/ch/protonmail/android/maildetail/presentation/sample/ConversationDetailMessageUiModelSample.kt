@@ -31,7 +31,7 @@ object ConversationDetailMessageUiModelSample {
 
     fun build(
         isExpanded: Boolean = false,
-        message: Message = MessageSample.build()
+        @Suppress("UNUSED_PARAMETER") message: Message = MessageSample.build()
     ) = when {
         isExpanded -> ConversationDetailMessageUiModel.Expanded
         else -> ConversationDetailMessageUiModel.Collapsed

@@ -29,7 +29,7 @@ import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 class ConversationDetailMessagesReducer @Inject constructor() {
 
     fun newStateFrom(
-        currentState: ConversationDetailsMessagesState,
+        @Suppress("UNUSED_PARAMETER") currentState: ConversationDetailsMessagesState,
         operation: ConversationDetailOperation.AffectingMessages
     ): ConversationDetailsMessagesState =
         when (operation) {
