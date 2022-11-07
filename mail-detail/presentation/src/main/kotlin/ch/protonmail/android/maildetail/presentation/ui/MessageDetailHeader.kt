@@ -20,6 +20,12 @@ package ch.protonmail.android.maildetail.presentation.ui
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -63,22 +69,44 @@ import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultSmall
 import me.proton.core.compose.theme.defaultSmallStrong
 
+@ExperimentalAnimationApi
 @Composable
-private fun MessageDetailHeader(
-    modifier: Modifier = Modifier,
+fun MessageDetailHeader(
     uiModel: MessageDetailHeaderUiModel
 ) {
-
     val isExpanded = rememberSaveable(inputs = arrayOf()) {
         mutableStateOf(false)
     }
 
+    AnimatedContent(
+        targetState = isExpanded.value,
+        transitionSpec = {
+            fadeIn() with
+                fadeOut() using
+                SizeTransform()
+        }
+    ) { targetState ->
+        MessageDetailHeaderLayout(
+            uiModel = uiModel,
+            isExpanded = targetState,
+            onClick = { isExpanded.value = !isExpanded.value }
+        )
+    }
+}
+
+@Composable
+private fun MessageDetailHeaderLayout(
+    modifier: Modifier = Modifier,
+    uiModel: MessageDetailHeaderUiModel,
+    isExpanded: Boolean,
+    onClick: () -> Unit
+) {
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()
             .clickable(
-                enabled = !isExpanded.value
-            ) { isExpanded.value = !isExpanded.value }
+                enabled = !isExpanded
+            ) { onClick() }
             .padding(
                 start = ProtonDimens.SmallSpacing,
                 end = ProtonDimens.DefaultSpacing,
@@ -136,7 +164,7 @@ private fun MessageDetailHeader(
                 end.linkTo(timeRef.start)
             },
             uiModel = uiModel,
-            isExpanded = isExpanded.value
+            isExpanded = isExpanded
         )
 
         Time(
@@ -160,7 +188,7 @@ private fun MessageDetailHeader(
                 top.linkTo(senderRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
-                visibility = visibleWhen(!isExpanded.value)
+                visibility = visibleWhen(!isExpanded)
             },
             allRecipients = uiModel.allRecipients
         )
@@ -170,7 +198,7 @@ private fun MessageDetailHeader(
                 constrainRecipientsTitle(
                     reference = toRecipientsRef,
                     recipients = uiModel.toRecipients,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             recipientsTitle = R.string.to
@@ -182,7 +210,7 @@ private fun MessageDetailHeader(
                     startReference = avatarRef,
                     endReference = moreButtonRef,
                     recipients = uiModel.toRecipients,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             recipients = uiModel.toRecipients
@@ -193,7 +221,7 @@ private fun MessageDetailHeader(
                 constrainRecipientsTitle(
                     reference = ccRecipientsRef,
                     recipients = uiModel.ccRecipients,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             recipientsTitle = R.string.cc
@@ -205,7 +233,7 @@ private fun MessageDetailHeader(
                     startReference = avatarRef,
                     endReference = moreButtonRef,
                     recipients = uiModel.ccRecipients,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             recipients = uiModel.ccRecipients
@@ -216,7 +244,7 @@ private fun MessageDetailHeader(
                 constrainRecipientsTitle(
                     reference = bccRecipientsRef,
                     recipients = uiModel.bccRecipients,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             recipientsTitle = R.string.bcc
@@ -228,7 +256,7 @@ private fun MessageDetailHeader(
                     startReference = avatarRef,
                     endReference = moreButtonRef,
                     recipients = uiModel.bccRecipients,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             recipients = uiModel.bccRecipients
@@ -238,8 +266,8 @@ private fun MessageDetailHeader(
             modifier = modifier.constrainAs(labelsRef) {
                 top.linkTo(
                     bccRecipientsRef.bottom,
-                    margin = if (isExpanded.value) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing,
-                    goneMargin = if (isExpanded.value) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing
+                    margin = if (isExpanded) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing,
+                    goneMargin = if (isExpanded) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing
                 )
                 visibility = visibleWhen(uiModel.labels.isNotEmpty())
             }
@@ -250,7 +278,7 @@ private fun MessageDetailHeader(
                 constrainExtendedHeaderRow(
                     topReference = labelsRef,
                     endReference = moreButtonRef,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             icon = R.drawable.ic_proton_calendar_today,
@@ -262,7 +290,7 @@ private fun MessageDetailHeader(
                 constrainExtendedHeaderRow(
                     topReference = extendedTimeRef,
                     endReference = moreButtonRef,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             icon = uiModel.locationIcon,
@@ -274,7 +302,7 @@ private fun MessageDetailHeader(
                 constrainExtendedHeaderRow(
                     topReference = locationRef,
                     endReference = moreButtonRef,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             icon = R.drawable.ic_proton_storage,
@@ -286,7 +314,7 @@ private fun MessageDetailHeader(
                 constrainExtendedHeaderRow(
                     topReference = sizeRef,
                     endReference = moreButtonRef,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             icon = R.drawable.ic_proton_shield,
@@ -298,7 +326,7 @@ private fun MessageDetailHeader(
                 constrainExtendedHeaderRow(
                     topReference = trackerProtectionInfoRef,
                     endReference = moreButtonRef,
-                    isExpanded = isExpanded.value
+                    isExpanded = isExpanded
                 )
             },
             icon = uiModel.encryptionPadlock,
@@ -314,9 +342,9 @@ private fun MessageDetailHeader(
                         goneMargin = ProtonDimens.SmallSpacing
                     )
                     start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                    visibility = visibleWhen(isExpanded.value)
+                    visibility = visibleWhen(isExpanded)
                 }
-                .clickable { isExpanded.value = !isExpanded.value }
+                .clickable { onClick() }
         )
     }
 }
@@ -531,6 +559,7 @@ private fun ConstrainScope.constrainExtendedHeaderRow(
 
 private fun visibleWhen(isVisible: Boolean) = if (isVisible) Visibility.Visible else Visibility.Gone
 
+@ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable
 fun MessageDetailHeaderPreview() {
