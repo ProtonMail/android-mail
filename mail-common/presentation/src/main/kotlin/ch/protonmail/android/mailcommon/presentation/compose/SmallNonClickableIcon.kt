@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
@@ -34,10 +35,18 @@ fun SmallNonClickableIcon(
     @DrawableRes iconId: Int,
     tintId: Int = R.color.icon_weak
 ) {
+    SmallNonClickableIcon(iconId = iconId, iconColor = colorResource(id = tintId))
+}
+
+@Composable
+fun SmallNonClickableIcon(
+    @DrawableRes iconId: Int,
+    iconColor: Color
+) {
     Icon(
         modifier = Modifier.size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = iconId),
         contentDescription = NO_CONTENT_DESCRIPTION,
-        tint = colorResource(id = tintId)
+        tint = iconColor
     )
 }

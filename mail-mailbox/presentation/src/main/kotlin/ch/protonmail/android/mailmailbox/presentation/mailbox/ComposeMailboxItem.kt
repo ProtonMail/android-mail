@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -52,7 +53,6 @@ import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
-import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionWeak
@@ -88,7 +88,7 @@ fun MailboxItem(
                 Participants(participants = item.participants, fontWeight = fontWeight, fontColor = fontColor)
             },
             time = { Time(time = item.time, fontWeight = fontWeight, fontColor = fontColor) },
-            locationIcons = { LocationIcons(iconResIds = item.locationIconResIds) },
+            locationIcons = { LocationIcons(iconResIds = item.locationIconResIds, iconColor = fontColor) },
             subject = { Subject(subject = item.subject, fontWeight = fontWeight, fontColor = fontColor) },
             count = { Count(count = item.numMessages, fontWeight = fontWeight, fontColor = fontColor) },
             icons = { Icons(item = item) },
@@ -282,7 +282,8 @@ private fun Time(
 @Composable
 private fun LocationIcons(
     modifier: Modifier = Modifier,
-    iconResIds: List<Int>
+    iconResIds: List<Int>,
+    iconColor: Color
 ) {
     if (iconResIds.isEmpty()) {
         return
@@ -292,7 +293,7 @@ private fun LocationIcons(
         modifier = modifier,
         horizontalArrangement = Arrangement.Start
     ) {
-        iconResIds.forEach { SmallNonClickableIcon(iconId = it) }
+        iconResIds.forEach { SmallNonClickableIcon(iconId = it, iconColor) }
     }
 }
 
