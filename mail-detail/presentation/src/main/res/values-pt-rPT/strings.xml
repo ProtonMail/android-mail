@@ -18,8 +18,14 @@
   -->
 <resources>
   <string name="detail_error_loading_conversation">Falha ao carregar a conversa</string>
+  <string name="detail_error_loading_messages">Failed loading messages</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d mensagem</item>
     <item quantity="other">%d mensagens</item>
   </plurals>
+  <string name="more_button_content_description">More</string>
+  <string name="to">To:</string>
+  <string name="cc">Cc:</string>
+  <string name="bcc">Bcc:</string>
+  <string name="hide_details">Hide details</string>
 </resources>

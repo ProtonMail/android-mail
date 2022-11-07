@@ -17,9 +17,15 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_conversation">Misslyckades att ladda in konversation</string>
+  <string name="detail_error_loading_conversation">Misslyckades ladda konversation</string>
+  <string name="detail_error_loading_messages">Misslyckades att ladda meddelanden</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d meddelande</item>
     <item quantity="other">%d meddelanden</item>
   </plurals>
+  <string name="more_button_content_description">Mer</string>
+  <string name="to">Till:</string>
+  <string name="cc">Cc:</string>
+  <string name="bcc">Bcc:</string>
+  <string name="hide_details">Dölj detaljer</string>
 </resources>

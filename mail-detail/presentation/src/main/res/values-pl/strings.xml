@@ -18,10 +18,16 @@
   -->
 <resources>
   <string name="detail_error_loading_conversation">Ładowanie wątku nie powiodło się</string>
+  <string name="detail_error_loading_messages">Ładowanie wiadomość nie powiodło się</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d wiadomość</item>
     <item quantity="few">%d wiadomości</item>
     <item quantity="many">%d wiadomości</item>
     <item quantity="other">%d wiadomości</item>
   </plurals>
+  <string name="more_button_content_description">Więcej</string>
+  <string name="to">Do:</string>
+  <string name="cc">Dw:</string>
+  <string name="bcc">Udw:</string>
+  <string name="hide_details">Ukryj szczegóły</string>
 </resources>

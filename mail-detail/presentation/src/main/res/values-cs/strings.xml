@@ -17,11 +17,17 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_conversation">Neúspěšné načtení konverzace</string>
+  <string name="detail_error_loading_conversation">Načtení konverzace selhalo</string>
+  <string name="detail_error_loading_messages">Načtení zpráv selhalo</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d zpráva</item>
     <item quantity="few">%d zprávy</item>
     <item quantity="many">%d zpráv</item>
     <item quantity="other">%d zpráv</item>
   </plurals>
+  <string name="more_button_content_description">Více</string>
+  <string name="to">Komu:</string>
+  <string name="cc">Kopie:</string>
+  <string name="bcc">Skrytá kopie:</string>
+  <string name="hide_details">Skrýt detaily</string>
 </resources>

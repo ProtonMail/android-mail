@@ -18,10 +18,16 @@
   -->
 <resources>
   <string name="detail_error_loading_conversation">Сбой загрузки цепочки сообщений</string>
+  <string name="detail_error_loading_messages">Сбой загрузки сообщений</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d сообщение</item>
     <item quantity="few">%d сообщения</item>
     <item quantity="many">%d сообщений</item>
     <item quantity="other">%d сообщения</item>
   </plurals>
+  <string name="more_button_content_description">Больше</string>
+  <string name="to">Кому:</string>
+  <string name="cc">Cc:</string>
+  <string name="bcc">Bcc:</string>
+  <string name="hide_details">Скрыть подробности</string>
 </resources>

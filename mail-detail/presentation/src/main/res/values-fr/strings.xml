@@ -17,9 +17,15 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_conversation">La conversation n\'a pas pu être chargée.</string>
+  <string name="detail_error_loading_conversation">La conversation n\'a pas pu être chargée</string>
+  <string name="detail_error_loading_messages">Failed loading messages</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d message</item>
     <item quantity="other">%d messages</item>
   </plurals>
+  <string name="more_button_content_description">More</string>
+  <string name="to">To:</string>
+  <string name="cc">Cc:</string>
+  <string name="bcc">Bcc:</string>
+  <string name="hide_details">Hide details</string>
 </resources>

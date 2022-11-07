@@ -20,7 +20,6 @@
     <string name="retry">Retry</string>
     <string name="toolbar_back_content_descritpion">Back to previous screen</string>
     <string name="x_error_not_logged_in">Not logged in</string>
-
     <string name="action_reply_content_description">Reply</string>
     <string name="action_reply_all_content_description">Reply all</string>
     <string name="action_forward_content_description">Forward</string>
@@ -38,10 +37,10 @@
     <string name="action_view_in_dark_mode_content_description">View message in dark mode</string>
     <string name="action_print_content_description">Print</string>
     <string name="action_view_headers_content_description">View headers</string>
-    <string name="action_view_html_content_description">View html</string>
+    <string name="action_view_html_content_description">View HTML</string>
     <string name="action_report_phishing_content_description">Report phishing</string>
     <string name="action_remind_content_description">Remind me</string>
-    <string name="action_save_pdf_content_description">Save as pdf</string>
+    <string name="action_save_pdf_content_description">Save as PDF</string>
     <string name="action_sender_emails_content_description">Set action for future emails from this sender</string>
     <string name="action_save_attachments_content_description">Save attachments</string>
     <string name="common_error_loading_actions">Failed loading actions</string>
