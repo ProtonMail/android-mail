@@ -22,97 +22,59 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
-import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class GetParticipantsResolvedNamesTest {
 
-    private val useCase = GetParticipantsResolvedNames()
+    private val resolveParticipantName = mockk<ResolveParticipantName>()
+    private val useCase = GetParticipantsResolvedNames(resolveParticipantName)
 
     @Test
     fun `when mailbox item is not in all sent or all drafts ui model shows senders names as participants`() {
         // Given
-        val senders = listOf(
-            Recipient("sender@proton.ch", "sender"),
-            Recipient("sender1@proton.ch", "sender1")
-        )
+        val senderName = "sender"
+        val sender1Name = "sender1"
+        val sender = Recipient("sender@proton.ch", senderName)
+        val sender1 = Recipient("sender1@proton.ch", sender1Name)
+        val senders = listOf(sender, sender1)
         val mailboxItem = buildMailboxItem(
             labelIds = listOf(SystemLabelId.Inbox.labelId),
             senders = senders
         )
+        every { resolveParticipantName(sender, ContactTestData.contacts) } returns senderName
+        every { resolveParticipantName(sender1, ContactTestData.contacts) } returns sender1Name
         // When
         val actual = useCase(mailboxItem, ContactTestData.contacts)
         // Then
-        val expected = listOf("sender", "sender1")
+        val expected = listOf(senderName, sender1Name)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `when message is in all sent or all drafts ui model shows recipients names as participants`() {
         // Given
-        val recipients = listOf(
-            Recipient("recipient@proton.ch", "recipient"),
-            Recipient("recipient1@proton.ch", "recipient1")
-        )
+        val recipientName = "recipient"
+        val recipient1Name = "recipient1"
+        val recipient = Recipient("recipient@proton.ch", recipientName)
+        val recipient1 = Recipient("recipient1@proton.ch", recipient1Name)
+        val recipients = listOf(recipient, recipient1)
         val mailboxItem = buildMailboxItem(
             type = MailboxItemType.Message,
             labelIds = listOf(SystemLabelId.AllSent.labelId),
             recipients = recipients
         )
+        every { resolveParticipantName(recipient, ContactTestData.contacts) } returns recipientName
+        every { resolveParticipantName(recipient1, ContactTestData.contacts) } returns recipient1Name
         // When
         val actual = useCase(mailboxItem, ContactTestData.contacts)
         // Then
-        val expected = listOf("recipient", "recipient1")
+        val expected = listOf(recipientName, recipient1Name)
         assertEquals(expected, actual)
     }
-
-    @Test
-    fun `when any participant exists as contact then contact name is mapped to the ui model`() {
-        // Given
-        val contact = ContactTestData.buildContactWith(
-            userId = UserIdTestData.userId,
-            contactEmails = listOf(
-                ContactTestData.buildContactEmailWith(
-                    name = "contact email name",
-                    address = "sender1@proton.ch"
-                )
-            )
-        )
-        val userContacts = listOf(contact, ContactTestData.contact2)
-        val senders = listOf(
-            Recipient("sender@proton.ch", "sender"),
-            Recipient("sender1@proton.ch", "")
-        )
-        val mailboxItem = buildMailboxItem(
-            labelIds = listOf(SystemLabelId.Inbox.labelId),
-            senders = senders
-        )
-        // When
-        val actual = useCase(mailboxItem, userContacts)
-        // Then
-        val expected = listOf("sender", "contact email name")
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `when any participant has no display name defined address is mapped to the ui model`() {
-        // Given
-        val senders = listOf(
-            Recipient("sender@proton.ch", "sender"),
-            Recipient("sender1@proton.ch", "")
-        )
-        val mailboxItem = buildMailboxItem(
-            labelIds = listOf(SystemLabelId.Inbox.labelId),
-            senders = senders
-        )
-        // When
-        val actual = useCase(mailboxItem, ContactTestData.contacts)
-        // Then
-        val expected = listOf("sender", "sender1@proton.ch")
-        assertEquals(expected, actual)
-    }
-
 }

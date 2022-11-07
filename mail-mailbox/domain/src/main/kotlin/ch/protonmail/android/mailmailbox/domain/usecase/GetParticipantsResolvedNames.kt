@@ -21,12 +21,13 @@ package ch.protonmail.android.mailmailbox.domain.usecase
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import me.proton.core.contact.domain.entity.Contact
-import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
-class GetParticipantsResolvedNames @Inject constructor() {
+class GetParticipantsResolvedNames @Inject constructor(
+    private val resolveParticipantName: ResolveParticipantName
+) {
 
     operator fun invoke(mailboxItem: MailboxItem, contacts: List<Contact>): List<String> {
         val displayRecipientLocations = setOf(
@@ -36,18 +37,9 @@ class GetParticipantsResolvedNames @Inject constructor() {
         val shouldDisplayRecipients = mailboxItem.labelIds.any { it in displayRecipientLocations }
 
         return if (shouldDisplayRecipients && mailboxItem.type == MailboxItemType.Message) {
-            mailboxItem.recipients.map { getPreferredName(contacts, it) }
+            mailboxItem.recipients.map { resolveParticipantName(it, contacts) }
         } else {
-            mailboxItem.senders.map { getPreferredName(contacts, it) }
+            mailboxItem.senders.map { resolveParticipantName(it, contacts) }
         }
     }
-
-    private fun getPreferredName(contacts: List<Contact>, recipient: Recipient): String {
-        val contactEmail = contacts.firstNotNullOfOrNull { contact ->
-            contact.contactEmails.find { it.email == recipient.address }
-        }
-
-        return contactEmail?.name?.takeIfNotBlank() ?: recipient.name.ifEmpty { recipient.address }
-    }
-
 }
