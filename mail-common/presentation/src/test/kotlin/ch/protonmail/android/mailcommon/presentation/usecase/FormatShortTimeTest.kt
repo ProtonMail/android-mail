@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox
+package ch.protonmail.android.mailcommon.presentation.usecase
 
 import java.util.Calendar
 import java.util.Date
@@ -26,7 +26,6 @@ import ch.protonmail.android.mailcommon.domain.usecase.GetAppLocale
 import ch.protonmail.android.mailcommon.domain.usecase.GetLocalisedCalendar
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -42,12 +41,12 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
-class FormatMailboxItemTimeTest {
+class FormatShortTimeTest {
 
     private val getLocalisedCalendar = mockk<GetLocalisedCalendar>()
     private val getAppLocale = mockk<GetAppLocale>()
 
-    private val formatter = FormatMailboxItemTime(
+    private val formatter = FormatShortTime(
         getLocalisedCalendar,
         getAppLocale
     )

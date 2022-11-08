@@ -21,13 +21,13 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 import androidx.compose.ui.graphics.Color
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
+import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.arch.Mapper
@@ -39,7 +39,7 @@ import kotlin.time.Duration.Companion.seconds
 class MailboxItemUiModelMapper @Inject constructor(
     private val avatarUiModelMapper: AvatarUiModelMapper,
     private val colorMapper: ColorMapper,
-    private val formatMailboxItemTime: FormatMailboxItemTime,
+    private val formatMailboxItemTime: FormatShortTime,
     private val getMailboxItemLocationIcons: GetMailboxItemLocationIcons,
     private val getParticipantsResolvedNames: GetParticipantsResolvedNames
 ) : Mapper<MailboxItem, MailboxItemUiModel> {

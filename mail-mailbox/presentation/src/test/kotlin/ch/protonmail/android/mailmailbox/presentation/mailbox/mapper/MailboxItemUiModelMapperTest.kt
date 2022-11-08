@@ -24,12 +24,12 @@ import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
-import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.FormatMailboxItemTime
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
@@ -61,7 +61,7 @@ class MailboxItemUiModelMapperTest {
     private val getMailboxItemLocationIcons = mockk<GetMailboxItemLocationIcons> {
         every { this@mockk(any()) } returns GetMailboxItemLocationIcons.Result.None
     }
-    private val formatMailboxItemTime: FormatMailboxItemTime = mockk()
+    private val formatMailboxItemTime: FormatShortTime = mockk()
 
     private val getParticipantsResolvedNames = mockk<GetParticipantsResolvedNames> {
         every { this@mockk.invoke(any(), any()) } returns listOf("default mocked name")

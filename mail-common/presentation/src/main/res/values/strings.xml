@@ -44,4 +44,5 @@
     <string name="action_sender_emails_content_description">Set action for future emails from this sender</string>
     <string name="action_save_attachments_content_description">Save attachments</string>
     <string name="common_error_loading_actions">Failed loading actions</string>
+    <string name="yesterday">Yesterday</string>
 </resources>

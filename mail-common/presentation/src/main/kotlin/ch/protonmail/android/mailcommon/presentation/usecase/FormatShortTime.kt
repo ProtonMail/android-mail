@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
+package ch.protonmail.android.mailcommon.presentation.usecase
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -24,12 +24,12 @@ import java.util.Calendar
 import java.util.Date
 import ch.protonmail.android.mailcommon.domain.usecase.GetAppLocale
 import ch.protonmail.android.mailcommon.domain.usecase.GetLocalisedCalendar
+import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailmailbox.presentation.R
 import javax.inject.Inject
 import kotlin.time.Duration
 
-class FormatMailboxItemTime @Inject constructor(
+class FormatShortTime @Inject constructor(
     private val getLocalisedCalendar: GetLocalisedCalendar,
     private val getAppLocale: GetAppLocale
 ) {
