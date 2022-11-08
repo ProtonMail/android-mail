@@ -83,7 +83,7 @@ fun MailboxItem(
 
         MailboxItemLayout(
             avatar = { Avatar(avatarUiModel = item.avatar) },
-            actionIcons = { ActionIcons(item = item) },
+            actionIcons = { ActionIcons(item = item, iconColor = fontColor) },
             participants = {
                 Participants(participants = item.participants, fontWeight = fontWeight, fontColor = fontColor)
             },
@@ -91,7 +91,7 @@ fun MailboxItem(
             locationIcons = { LocationIcons(iconResIds = item.locationIconResIds, iconColor = fontColor) },
             subject = { Subject(subject = item.subject, fontWeight = fontWeight, fontColor = fontColor) },
             count = { Count(count = item.numMessages, fontWeight = fontWeight, fontColor = fontColor) },
-            icons = { Icons(item = item) },
+            icons = { Icons(item = item, iconColor = fontColor) },
             expirationLabel = { ExpirationLabel(hasExpirationTime = item.shouldShowExpirationLabel) },
             labels = { Labels(labels = item.labels) }
         )
@@ -223,7 +223,8 @@ private fun MailboxItemLayout(
 @Composable
 private fun ActionIcons(
     modifier: Modifier = Modifier,
-    item: MailboxItemUiModel
+    item: MailboxItemUiModel,
+    iconColor: Color
 ) {
     val someIconShown = item.shouldShowRepliedIcon || item.shouldShowRepliedAllIcon || item.shouldShowForwardedIcon
     if (!someIconShown) {
@@ -235,13 +236,13 @@ private fun ActionIcons(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (item.shouldShowRepliedIcon) {
-            SmallNonClickableIcon(R.drawable.ic_proton_arrow_up_and_left)
+            SmallNonClickableIcon(R.drawable.ic_proton_arrow_up_and_left, iconColor = iconColor)
         }
         if (item.shouldShowRepliedAllIcon) {
-            SmallNonClickableIcon(R.drawable.ic_proton_arrows_up_and_left)
+            SmallNonClickableIcon(R.drawable.ic_proton_arrows_up_and_left, iconColor = iconColor)
         }
         if (item.shouldShowForwardedIcon) {
-            SmallNonClickableIcon(R.drawable.ic_proton_arrow_right)
+            SmallNonClickableIcon(R.drawable.ic_proton_arrow_right, iconColor = iconColor)
         }
     }
 }
@@ -342,17 +343,18 @@ private fun Count(
 @Composable
 private fun Icons(
     modifier: Modifier = Modifier,
-    item: MailboxItemUiModel
+    item: MailboxItemUiModel,
+    iconColor: Color
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.End
     ) {
         if (item.shouldShowCalendarIcon) {
-            SmallNonClickableIcon(iconId = R.drawable.ic_proton_calendar_grid)
+            SmallNonClickableIcon(iconId = R.drawable.ic_proton_calendar_grid, iconColor = iconColor)
         }
         if (item.shouldShowAttachmentIcon) {
-            SmallNonClickableIcon(iconId = R.drawable.ic_proton_paper_clip)
+            SmallNonClickableIcon(iconId = R.drawable.ic_proton_paper_clip, iconColor = iconColor)
         }
         if (item.showStar) {
             SmallNonClickableIcon(iconId = R.drawable.ic_proton_star_filled, tintId = R.color.sunglow)
