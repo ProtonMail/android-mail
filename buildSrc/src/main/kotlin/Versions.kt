@@ -24,7 +24,6 @@ object Versions {
 
     object Android {
         const val material = "1.6.1"
-        const val material3 = "1.0.0"
     }
 
     object AndroidX {
@@ -32,7 +31,6 @@ object Versions {
         const val activity = "1.5.1"
         const val annotation = "1.2.0"
         const val appCompat = "1.6.0-alpha05"
-        const val arch = "2.1.0"
         const val compose = "1.2.0-rc02"
         const val constraintLayoutCompose = "1.0.1"
         const val customView = "1.2.0-alpha01"
@@ -49,7 +47,6 @@ object Versions {
         const val test = "1.4.1"
         const val testOrchestrator = "1.4.1"
         const val testEspresso = "3.4.0"
-        const val testExtJunit = "1.1.4"
         const val testUiautomator = "2.2.0"
         const val work = "2.7.1"
     }
@@ -77,10 +74,6 @@ object Versions {
         const val kotlinGradlePlugin = Kotlin.kotlin
         const val jacocoGradlePlugin = "0.8.8"
         const val sentryGradlePlugin = "3.1.4"
-    }
-
-    object JaCoCo {
-        const val tool = "0.8.8"
     }
 
     object JakeWharton {

@@ -93,15 +93,6 @@ object AndroidX {
         const val work = "androidx.hilt:hilt-work:$version"
     }
 
-    object Lifecycle {
-        private const val version = Versions.AndroidX.lifecycle
-
-        const val viewmodelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
-        const val viewmodelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
-        const val process = "androidx.lifecycle:lifecycle-process:$version"
-        const val runtimeTesting = "androidx.lifecycle:lifecycle-runtime-testing:$version"
-    }
-
     object Navigation {
         private const val version = Versions.AndroidX.navigation
 
@@ -129,7 +120,6 @@ object AndroidX {
         const val core = "androidx.test:core:$version"
         const val coreKtx = "androidx.test:core-ktx:$version"
         const val espresso = "androidx.test.espresso:espresso-core:${Versions.AndroidX.testEspresso}"
-        const val extJunit = "androidx.test.ext:junit:${Versions.AndroidX.testExtJunit}"
         const val orchestrator = "androidx.test:orchestrator:${Versions.AndroidX.testOrchestrator}"
         const val runner = "androidx.test:runner:$version"
         const val rules = "androidx.test:rules:$version"
