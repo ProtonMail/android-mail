@@ -29,14 +29,16 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val resolveParticipantName: ResolveParticipantName
 ) {
 
-    fun toUiModel(message: Message, contacts: List<Contact>): ConversationDetailMessageUiModel =
-        ConversationDetailMessageUiModel.Collapsed(
+    fun toUiModel(message: Message, contacts: List<Contact>): ConversationDetailMessageUiModel {
+        val senderResolvedName = resolveParticipantName(message.sender, contacts)
+        return ConversationDetailMessageUiModel.Collapsed(
             avatar = avatarUiModelMapper(
                 message,
-                senderResolvedName = resolveParticipantName(message.sender, contacts)
+                senderResolvedName = senderResolvedName
             ),
             isUnread = message.unread,
-            subject = message.subject
+            sender = senderResolvedName
         )
+    }
 }
 

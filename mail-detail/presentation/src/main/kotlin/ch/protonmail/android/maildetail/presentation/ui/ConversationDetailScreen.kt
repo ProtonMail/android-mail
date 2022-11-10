@@ -203,7 +203,7 @@ private fun MessagesContent(
                     Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
                     Text(
                         modifier = Modifier.weight(1f),
-                        text = message.subject,
+                        text = message.sender,
                         fontWeight = if (message.isUnread) FontWeight.Bold else FontWeight.Normal,
                         style = ProtonTheme.typography.default
                     )

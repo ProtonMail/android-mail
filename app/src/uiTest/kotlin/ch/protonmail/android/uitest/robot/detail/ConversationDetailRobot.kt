@@ -47,6 +47,12 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
                 .assertIsDisplayed()
         }
 
+        fun senderIsDisplayed(sender: String) {
+            composeTestRule.onAllNodesWithText(sender)
+                .onFirst()
+                .assertIsDisplayed()
+        }
+
         fun subjectIsDisplayed(subject: String) {
             composeTestRule.onNodeWithText(subject)
                 .assertIsDisplayed()

@@ -51,7 +51,7 @@ class ConversationDetailScreenTest {
     }
 
     @Test
-    fun whenMessagesAreLoadedThenSubjectIsDisplayed() {
+    fun whenMessagesAreLoadedThenSenderIsDisplayed() {
         // given
         val state = ConversationDetailsPreviewData.Success
 
@@ -62,7 +62,7 @@ class ConversationDetailScreenTest {
         robot.verify {
             val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
             val firstMessage = messagesState.messages.first()
-            subjectIsDisplayed(firstMessage.subject)
+            senderIsDisplayed(firstMessage.sender)
         }
     }
 

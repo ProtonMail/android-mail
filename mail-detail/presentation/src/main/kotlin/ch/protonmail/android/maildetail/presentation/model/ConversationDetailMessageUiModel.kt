@@ -24,17 +24,17 @@ sealed interface ConversationDetailMessageUiModel {
 
     val avatar: AvatarUiModel
     val isUnread: Boolean
-    val subject: String
+    val sender: String
 
     data class Collapsed(
         override val avatar: AvatarUiModel,
         override val isUnread: Boolean,
-        override val subject: String
+        override val sender: String
     ) : ConversationDetailMessageUiModel
 
     data class Expanded(
         override val avatar: AvatarUiModel,
         override val isUnread: Boolean,
-        override val subject: String
+        override val sender: String
     ) : ConversationDetailMessageUiModel
 }

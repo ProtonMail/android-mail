@@ -39,24 +39,24 @@ object ConversationDetailMessageUiModelSample {
         isExpanded -> ConversationDetailMessageUiModel.Expanded(
             avatar = avatar,
             isUnread = message.unread,
-            subject = message.subject
+            sender = message.sender.name
         )
         else -> ConversationDetailMessageUiModel.Collapsed(
             avatar = avatar,
             isUnread = message.unread,
-            subject = message.subject
+            sender = message.sender.name
         )
     }
 
     fun ConversationDetailMessageUiModel.Collapsed.expand() = ConversationDetailMessageUiModel.Expanded(
         avatar = avatar,
         isUnread = isUnread,
-        subject = subject
+        sender = sender
     )
 
     fun ConversationDetailMessageUiModel.Expanded.collapse() = ConversationDetailMessageUiModel.Collapsed(
         avatar = avatar,
         isUnread = isUnread,
-        subject = subject
+        sender = sender
     )
 }

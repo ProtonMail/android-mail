@@ -20,10 +20,11 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.every
 import io.mockk.mockk
-import me.proton.core.util.kotlin.EMPTY_STRING
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -34,7 +35,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
             ConversationDetailMessageUiModelSample.AugWeatherForecast.avatar
     }
     private val resolveParticipantName: ResolveParticipantName = mockk {
-        every { this@mockk(contacts = any(), participant = any()) } returns EMPTY_STRING
+        every { this@mockk(contacts = any(), participant = RecipientSample.Doe) } returns ContactSample.Doe.name
+        every { this@mockk(contacts = any(), participant = RecipientSample.John) } returns ContactSample.John.name
     }
     private val mapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = avatarUiModelMapper,
