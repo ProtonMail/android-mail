@@ -19,10 +19,12 @@
 package ch.protonmail.android.uitest.screen.detail
 
 import androidx.compose.ui.test.junit4.createComposeRule
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewData
+import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import org.junit.Rule
@@ -58,11 +60,45 @@ class ConversationDetailScreenTest {
 
         // then
         robot.verify {
-            val messages = state.messagesState as ConversationDetailsMessagesState.Data
-            for (message in messages.messages) {
-                subjectIsDisplayed(message.subject)
-            }
+            val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
+            val firstMessage = messagesState.messages.first()
+            subjectIsDisplayed(firstMessage.subject)
         }
+    }
+
+    @Test
+    fun whenMessageIsLoadedSenderInitialIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify {
+            val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
+            val firstMessage = messagesState.messages.first()
+            val initial = firstMessage.avatar as AvatarUiModel.ParticipantInitial
+            senderInitialIsDisplayed(initial = initial.value)
+        }
+    }
+
+    @Test
+    fun whenDraftMessageIsLoadedSenderInitialIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                messages = listOf(
+                    ConversationDetailMessageUiModelSample.EmptyDraft
+                )
+            )
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify { draftIconAvatarIsDisplayed() }
     }
 
     private fun setupScreen(

@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="retry">Coba lagi</string>
-  <string name="toolbar_back_content_descritpion">Kembali ke layar sebelumnya</string>
+  <string name="toolbar_back_content_description">Kembali ke layar sebelumnya</string>
   <string name="x_error_not_logged_in">Tidak masuk</string>
   <string name="action_reply_content_description">Balas</string>
   <string name="action_reply_all_content_description">Balas semua</string>

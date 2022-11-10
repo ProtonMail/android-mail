@@ -40,6 +40,10 @@ object MessageSample {
         subject = "August weather forecast",
         time = Aug2022
     )
+    val EmptyDraft = build(
+        subject = "",
+        labelIds = listOf(LabelIdSample.AllDraft)
+    )
     val Invoice = build(
         messageId = MessageIdSample.Invoice,
         labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document),
@@ -68,6 +72,7 @@ object MessageSample {
         sender: Recipient = RecipientSample.John,
         subject: String = "subject",
         time: Long = 1000,
+        toList: List<Recipient> = emptyList(),
         userId: UserId = UserIdSample.Primary
     ) = Message(
         addressId = addressId,
@@ -89,7 +94,7 @@ object MessageSample {
         size = 0,
         subject = subject,
         time = time,
-        toList = emptyList(),
+        toList = toList,
         unread = false,
         userId = userId
     )

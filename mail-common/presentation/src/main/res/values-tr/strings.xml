@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="retry">Yeniden dene</string>
-  <string name="toolbar_back_content_descritpion">Önceki ekrana dön</string>
+  <string name="toolbar_back_content_description">Önceki ekrana dön</string>
   <string name="x_error_not_logged_in">Oturum açılmamış</string>
   <string name="action_reply_content_description">Yanıtla</string>
   <string name="action_reply_all_content_description">Tümünü yanıtla</string>

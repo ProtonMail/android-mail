@@ -21,9 +21,11 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
@@ -40,6 +42,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
@@ -55,6 +58,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val actionUiModelMapper: ActionUiModelMapper,
     private val conversationMessageMapper: ConversationDetailMessageUiModelMapper,
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper,
+    private val observeContacts: ObserveContacts,
     private val observeConversation: ObserveConversation,
     private val observeConversationMessages: ObserveConversationMessages,
     private val observeDetailActions: ObserveConversationDetailActions,
@@ -110,11 +114,17 @@ class ConversationDetailViewModel @Inject constructor(
             if (userId == null) {
                 return@flatMapLatest flowOf(ConversationDetailEvent.NoPrimaryUser)
             }
-            observeConversationMessages(userId, conversationId)
-                .mapLatest { messages ->
-                    val messagesUiModels = messages.map(conversationMessageMapper::toUiModel)
-                    ConversationDetailEvent.MessagesData(messagesUiModels)
+            combine(
+                observeContacts(userId),
+                observeConversationMessages(userId, conversationId)
+            ) { contactsEither, messages ->
+                val contacts = contactsEither.getOrElse {
+                    Timber.i("Failed getting contacts for displaying initials. Fallback to display name")
+                    emptyList()
                 }
+                val messagesUiModels = messages.map { conversationMessageMapper.toUiModel(it, contacts) }
+                ConversationDetailEvent.MessagesData(messagesUiModels)
+            }
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)

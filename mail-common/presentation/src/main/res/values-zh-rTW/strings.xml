@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="retry">重試</string>
-  <string name="toolbar_back_content_descritpion">回到前一個畫面</string>
+  <string name="toolbar_back_content_description">回到前一個畫面</string>
   <string name="x_error_not_logged_in">尚未登入</string>
   <string name="action_reply_content_description">回覆</string>
   <string name="action_reply_all_content_description">回覆全部收件者</string>

@@ -20,6 +20,7 @@
 
 package ch.protonmail.android.maildetail.presentation.sample
 
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -27,28 +28,34 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 object ConversationDetailMessageUiModelSample {
 
     val AugWeatherForecast = build(message = MessageSample.AugWeatherForecast)
+    val EmptyDraft = build(message = MessageSample.EmptyDraft, avatar = AvatarUiModel.DraftIcon)
     val SepWeatherForecast = build(message = MessageSample.SepWeatherForecast)
 
     fun build(
         isExpanded: Boolean = false,
-        @Suppress("UNUSED_PARAMETER") message: Message = MessageSample.build()
+        @Suppress("UNUSED_PARAMETER") message: Message = MessageSample.build(),
+        avatar: AvatarUiModel = AvatarUiModel.ParticipantInitial(message.sender.name.substring(0, 1))
     ): ConversationDetailMessageUiModel = when {
         isExpanded -> ConversationDetailMessageUiModel.Expanded(
+            avatar = avatar,
             isUnread = message.unread,
             subject = message.subject
         )
         else -> ConversationDetailMessageUiModel.Collapsed(
+            avatar = avatar,
             isUnread = message.unread,
             subject = message.subject
         )
     }
 
     fun ConversationDetailMessageUiModel.Collapsed.expand() = ConversationDetailMessageUiModel.Expanded(
+        avatar = avatar,
         isUnread = isUnread,
         subject = subject
     )
 
     fun ConversationDetailMessageUiModel.Expanded.collapse() = ConversationDetailMessageUiModel.Collapsed(
+        avatar = avatar,
         isUnread = isUnread,
         subject = subject
     )

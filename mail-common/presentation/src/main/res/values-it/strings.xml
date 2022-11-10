@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="retry">Riprova</string>
-  <string name="toolbar_back_content_descritpion">Passa alla schermata precedente</string>
+  <string name="toolbar_back_content_description">Passa alla schermata precedente</string>
   <string name="x_error_not_logged_in">Accesso non effettuato</string>
   <string name="action_reply_content_description">Rispondi</string>
   <string name="action_reply_all_content_description">Rispondi a tutti</string>

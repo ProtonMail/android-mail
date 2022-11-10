@@ -31,6 +31,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
@@ -56,6 +57,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.contact.domain.entity.Contact
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -70,7 +72,13 @@ class ConversationDetailViewModelTest {
             ConversationDetailMetadataUiModelSample.WeatherForecast
     }
     private val conversationMessageMapper: ConversationDetailMessageUiModelMapper = mockk {
-        every { toUiModel(message = any()) } returns ConversationDetailMessageUiModelSample.AugWeatherForecast
+        every { toUiModel(message = MessageSample.AugWeatherForecast, contacts = any()) } returns
+            ConversationDetailMessageUiModelSample.AugWeatherForecast
+        every { toUiModel(message = MessageSample.SepWeatherForecast, contacts = any()) } returns
+            ConversationDetailMessageUiModelSample.SepWeatherForecast
+    }
+    private val observeContacts: ObserveContacts = mockk {
+        every { this@mockk(userId = UserIdSample.Primary) } returns flowOf(emptyList<Contact>().right())
     }
     private val observeConversation: ObserveConversation = mockk {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
@@ -102,6 +110,7 @@ class ConversationDetailViewModelTest {
             actionUiModelMapper = actionUiModelMapper,
             conversationMessageMapper = conversationMessageMapper,
             conversationMetadataMapper = conversationMetadataMapper,
+            observeContacts = observeContacts,
             observeConversation = observeConversation,
             observeConversationMessages = observeConversationMessages,
             observeDetailActions = observeConversationDetailActions,

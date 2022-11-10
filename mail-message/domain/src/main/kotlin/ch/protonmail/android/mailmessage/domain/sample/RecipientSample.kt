@@ -22,14 +22,14 @@ import ch.protonmail.android.mailmessage.domain.entity.Recipient
 
 object RecipientSample {
 
-    val John = build(
-        address = "jhon@pm.me",
-        name = "John"
-    )
-
     val Doe = build(
         address = "doe@pm.me",
         name = "Doe"
+    )
+
+    val John = build(
+        address = "john@pm.me",
+        name = "John"
     )
 
     fun build(

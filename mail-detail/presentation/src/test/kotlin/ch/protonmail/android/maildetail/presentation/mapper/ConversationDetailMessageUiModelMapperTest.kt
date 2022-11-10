@@ -20,12 +20,26 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import io.mockk.every
+import io.mockk.mockk
+import me.proton.core.util.kotlin.EMPTY_STRING
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class ConversationDetailMessageUiModelMapperTest {
 
-    private val mapper = ConversationDetailMessageUiModelMapper()
+    private val avatarUiModelMapper: DetailAvatarUiModelMapper = mockk {
+        every { this@mockk(message = MessageSample.AugWeatherForecast, senderResolvedName = any()) } returns
+            ConversationDetailMessageUiModelSample.AugWeatherForecast.avatar
+    }
+    private val resolveParticipantName: ResolveParticipantName = mockk {
+        every { this@mockk(contacts = any(), participant = any()) } returns EMPTY_STRING
+    }
+    private val mapper = ConversationDetailMessageUiModelMapper(
+        avatarUiModelMapper = avatarUiModelMapper,
+        resolveParticipantName = resolveParticipantName
+    )
 
     @Test
     fun `map to ui model returns collapsed model`() {
@@ -34,7 +48,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val expected = ConversationDetailMessageUiModelSample.AugWeatherForecast
 
         // when
-        val result = mapper.toUiModel(message)
+        val result = mapper.toUiModel(message, contacts = emptyList())
 
         // then
         assertEquals(expected, result)

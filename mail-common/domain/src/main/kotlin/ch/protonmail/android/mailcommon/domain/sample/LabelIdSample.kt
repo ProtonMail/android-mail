@@ -22,6 +22,7 @@ import me.proton.core.label.domain.entity.LabelId
 
 object LabelIdSample {
 
+    val AllDraft = LabelId("1")
     val Archive = LabelId("archive")
     val Document = LabelId("document")
     val News = LabelId("news")

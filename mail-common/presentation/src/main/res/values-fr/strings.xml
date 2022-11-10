@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="retry">Réessayer</string>
-  <string name="toolbar_back_content_descritpion">Retour à l\'écran précédent</string>
+  <string name="toolbar_back_content_description">Retour à l\'écran précédent</string>
   <string name="x_error_not_logged_in">Non connecté</string>
   <string name="action_reply_content_description">Répondre</string>
   <string name="action_reply_all_content_description">Répondre à tous</string>

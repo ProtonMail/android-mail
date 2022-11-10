@@ -46,6 +46,7 @@ android {
 dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
+    implementation(Proton.Core.contactDomain)
     implementation(Proton.Core.label)
 
     implementation(Dependencies.moduleDomainLibs)

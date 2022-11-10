@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="retry">Opakovat</string>
-  <string name="toolbar_back_content_descritpion">Zpět na předchozí obrazovku</string>
+  <string name="toolbar_back_content_description">Zpět na předchozí obrazovku</string>
   <string name="x_error_not_logged_in">Nepřihlášeno</string>
   <string name="action_reply_content_description">Odpovědět</string>
   <string name="action_reply_all_content_description">Odpovědět všem</string>

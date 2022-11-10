@@ -21,7 +21,11 @@ package ch.protonmail.android.uitest.robot.detail
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
+import ch.protonmail.android.uitest.util.onNodeWithContentDescription
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
@@ -31,6 +35,17 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
     }
 
     class Verify(private val composeTestRule: ComposeContentTestRule) {
+
+        fun draftIconAvatarIsDisplayed() {
+            composeTestRule.onNodeWithContentDescription(commonString.draft_avatar_icon_description)
+                .assertIsDisplayed()
+        }
+
+        fun senderInitialIsDisplayed(initial: String) {
+            composeTestRule.onAllNodesWithText(initial, substring = false)
+                .onFirst()
+                .assertIsDisplayed()
+        }
 
         fun subjectIsDisplayed(subject: String) {
             composeTestRule.onNodeWithText(subject)

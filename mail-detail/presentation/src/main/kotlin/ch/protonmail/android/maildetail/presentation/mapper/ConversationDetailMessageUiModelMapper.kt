@@ -20,12 +20,21 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import me.proton.core.contact.domain.entity.Contact
 import javax.inject.Inject
 
-class ConversationDetailMessageUiModelMapper @Inject constructor() {
+class ConversationDetailMessageUiModelMapper @Inject constructor(
+    private val avatarUiModelMapper: DetailAvatarUiModelMapper,
+    private val resolveParticipantName: ResolveParticipantName
+) {
 
-    fun toUiModel(message: Message): ConversationDetailMessageUiModel =
+    fun toUiModel(message: Message, contacts: List<Contact>): ConversationDetailMessageUiModel =
         ConversationDetailMessageUiModel.Collapsed(
+            avatar = avatarUiModelMapper(
+                message,
+                senderResolvedName = resolveParticipantName(message.sender, contacts)
+            ),
             isUnread = message.unread,
             subject = message.subject
         )

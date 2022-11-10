@@ -18,17 +18,22 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+
 sealed interface ConversationDetailMessageUiModel {
 
+    val avatar: AvatarUiModel
     val isUnread: Boolean
     val subject: String
 
     data class Collapsed(
+        override val avatar: AvatarUiModel,
         override val isUnread: Boolean,
         override val subject: String
     ) : ConversationDetailMessageUiModel
 
     data class Expanded(
+        override val avatar: AvatarUiModel,
         override val isUnread: Boolean,
         override val subject: String
     ) : ConversationDetailMessageUiModel

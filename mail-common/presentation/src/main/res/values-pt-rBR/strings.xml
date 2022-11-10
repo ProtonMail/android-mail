@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="retry">Tentar novamente</string>
-  <string name="toolbar_back_content_descritpion">Voltar para a tela anterior</string>
+  <string name="toolbar_back_content_description">Voltar para a tela anterior</string>
   <string name="x_error_not_logged_in">Não iniciado sessão</string>
   <string name="action_reply_content_description">Responder</string>
   <string name="action_reply_all_content_description">Responder a todos</string>

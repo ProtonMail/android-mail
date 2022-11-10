@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="retry">Reîncercare</string>
-  <string name="toolbar_back_content_descritpion">Înapoi la ecranul anterior</string>
+  <string name="toolbar_back_content_description">Înapoi la ecranul anterior</string>
   <string name="x_error_not_logged_in">Neconectat</string>
   <string name="action_reply_content_description">Răspuns</string>
   <string name="action_reply_all_content_description">Răspuns tuturor</string>
