@@ -19,32 +19,34 @@
 object Versions {
 
     object Accompanist {
-        const val accompanist = "0.25.0"
+        const val accompanist = "0.27.0"
     }
 
     object Android {
-        const val material = "1.6.1"
+
+        const val material = "1.7.0"
     }
 
     object AndroidX {
 
-        const val activity = "1.5.1"
+        const val activity = "1.6.1"
         const val annotation = "1.2.0"
         const val appCompat = "1.6.0-alpha05"
         const val compose = "1.2.0-rc02"
         const val constraintLayoutCompose = "1.0.1"
-        const val customView = "1.2.0-alpha01"
+        const val customView = "1.2.0-alpha02"
         const val customViewPoolingContainer = "1.0.0"
         const val datastore = "1.0.0"
         const val hilt = "1.0.0"
-        const val lifecycle = "2.4.2"
         const val material3 = "1.0.0"
         const val navigation = "2.5.3"
         const val paging = "3.1.1"
         const val pagingCompose = "1.0.0-alpha14"
         const val room = "2.4.3"
         const val splashscreen = "1.0.0"
-        const val test = "1.4.1"
+        const val testCore = "1.4.1-alpha07"
+        const val testRunner = "1.4.1-alpha03"
+        const val testRules = "1.4.1-beta01"
         const val testOrchestrator = "1.4.1"
         const val testEspresso = "3.4.0"
         const val testUiautomator = "2.2.0"
@@ -52,7 +54,8 @@ object Versions {
     }
 
     object Arrow {
-        const val core = "1.1.2"
+
+        const val core = "1.1.3"
     }
 
     object Cash {
@@ -68,8 +71,9 @@ object Versions {
     }
 
     object Gradle {
+
         const val androidGradlePlugin = "7.3.1"
-        const val benManesVersionsPlugin = "0.42.0"
+        const val benManesVersionsPlugin = "0.43.0"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
         const val jacocoGradlePlugin = "0.8.8"
@@ -94,7 +98,7 @@ object Versions {
 
     object KotlinX {
         const val coroutines = "1.6.4"
-        const val serializationJson = "1.3.3"
+        const val serializationJson = "1.4.1"
     }
 
     object Mockk {
@@ -113,6 +117,7 @@ object Versions {
     }
 
     object Sentry {
-        const val sentry = "6.3.1"
+
+        const val sentry = "6.7.0"
     }
 }

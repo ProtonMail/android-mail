@@ -115,14 +115,13 @@ object AndroidX {
     }
 
     object Test {
-        private const val version = Versions.AndroidX.test
 
-        const val core = "androidx.test:core:$version"
-        const val coreKtx = "androidx.test:core-ktx:$version"
+        const val core = "androidx.test:core:${Versions.AndroidX.testCore}"
+        const val coreKtx = "androidx.test:core-ktx:${Versions.AndroidX.testCore}"
         const val espresso = "androidx.test.espresso:espresso-core:${Versions.AndroidX.testEspresso}"
         const val orchestrator = "androidx.test:orchestrator:${Versions.AndroidX.testOrchestrator}"
-        const val runner = "androidx.test:runner:$version"
-        const val rules = "androidx.test:rules:$version"
+        const val runner = "androidx.test:runner:${Versions.AndroidX.testRunner}"
+        const val rules = "androidx.test:rules:${Versions.AndroidX.testRules}"
         const val uiautomator = "androidx.test.uiautomator:uiautomator:${Versions.AndroidX.testUiautomator}"
     }
 
