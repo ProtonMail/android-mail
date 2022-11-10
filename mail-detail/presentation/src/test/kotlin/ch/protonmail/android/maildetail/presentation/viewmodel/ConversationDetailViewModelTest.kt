@@ -40,11 +40,11 @@ import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
+import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -70,7 +70,7 @@ class ConversationDetailViewModelTest {
             ConversationDetailMetadataUiModelSample.WeatherForecast
     }
     private val conversationMessageMapper: ConversationDetailMessageUiModelMapper = mockk {
-        every { toUiModel(message = any()) } returns ConversationDetailMessageUiModel.Collapsed
+        every { toUiModel(message = any()) } returns ConversationDetailMessageUiModelSample.AugWeatherForecast
     }
     private val observeConversation: ObserveConversation = mockk {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
@@ -212,8 +212,8 @@ class ConversationDetailViewModelTest {
         // given
         val initialState = ConversationDetailState.Loading
         val messagesUiModels = listOf(
-            ConversationDetailMessageUiModel.Collapsed,
-            ConversationDetailMessageUiModel.Collapsed
+            ConversationDetailMessageUiModelSample.AugWeatherForecast,
+            ConversationDetailMessageUiModelSample.SepWeatherForecast
         )
         val expectedState = initialState.copy(
             messagesState = ConversationDetailsMessagesState.Data(messagesUiModels)

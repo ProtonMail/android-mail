@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.screen.detail
 import androidx.compose.ui.test.junit4.createComposeRule
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
@@ -44,6 +45,23 @@ class ConversationDetailScreenTest {
         robot.verify {
             val conversationState = state.conversationState as ConversationDetailMetadataState.Data
             subjectIsDisplayed(conversationState.conversationUiModel.subject)
+        }
+    }
+
+    @Test
+    fun whenMessagesAreLoadedThenSubjectIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify {
+            val messages = state.messagesState as ConversationDetailsMessagesState.Data
+            for (message in messages.messages) {
+                subjectIsDisplayed(message.subject)
+            }
         }
     }
 

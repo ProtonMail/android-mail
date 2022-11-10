@@ -32,12 +32,24 @@ object ConversationDetailMessageUiModelSample {
     fun build(
         isExpanded: Boolean = false,
         @Suppress("UNUSED_PARAMETER") message: Message = MessageSample.build()
-    ) = when {
-        isExpanded -> ConversationDetailMessageUiModel.Expanded
-        else -> ConversationDetailMessageUiModel.Collapsed
+    ): ConversationDetailMessageUiModel = when {
+        isExpanded -> ConversationDetailMessageUiModel.Expanded(
+            isUnread = message.unread,
+            subject = message.subject
+        )
+        else -> ConversationDetailMessageUiModel.Collapsed(
+            isUnread = message.unread,
+            subject = message.subject
+        )
     }
 
-    fun ConversationDetailMessageUiModel.Collapsed.expand() = ConversationDetailMessageUiModel.Expanded
+    fun ConversationDetailMessageUiModel.Collapsed.expand() = ConversationDetailMessageUiModel.Expanded(
+        isUnread = isUnread,
+        subject = subject
+    )
 
-    fun ConversationDetailMessageUiModel.Expanded.collapse() = ConversationDetailMessageUiModel.Collapsed
+    fun ConversationDetailMessageUiModel.Expanded.collapse() = ConversationDetailMessageUiModel.Collapsed(
+        isUnread = isUnread,
+        subject = subject
+    )
 }

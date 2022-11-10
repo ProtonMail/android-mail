@@ -20,12 +20,14 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
-import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
 
-class ConversationDetailMessageUiModelMapper @Inject constructor() :
-    Mapper<Message, ConversationDetailMessageUiModel> {
+class ConversationDetailMessageUiModelMapper @Inject constructor() {
 
-    fun toUiModel(@Suppress("UNUSED_PARAMETER") message: Message) = ConversationDetailMessageUiModel.Collapsed
+    fun toUiModel(message: Message): ConversationDetailMessageUiModel =
+        ConversationDetailMessageUiModel.Collapsed(
+            isUnread = message.unread,
+            subject = message.subject
+        )
 }
 

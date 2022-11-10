@@ -37,16 +37,19 @@ object MessageSample {
         conversationId = ConversationIdSample.WeatherForecast,
         messageId = MessageIdSample.AugWeatherForecast,
         labelIds = listOf(LabelIdSample.Archive),
+        subject = "August weather forecast",
         time = Aug2022
     )
     val Invoice = build(
         messageId = MessageIdSample.Invoice,
-        labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document)
+        labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document),
+        subject = "Invoice"
     )
     val SepWeatherForecast = build(
         conversationId = ConversationIdSample.WeatherForecast,
         messageId = MessageIdSample.SepWeatherForecast,
         labelIds = listOf(LabelIdSample.Archive),
+        subject = "September weather forecast",
         time = Sep2022
     )
 

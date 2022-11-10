@@ -16,20 +16,27 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.maildetail.presentation.mapper
 
-sealed interface ConversationDetailMessageUiModel {
+import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-    val isUnread: Boolean
-    val subject: String
+internal class ConversationDetailMessageUiModelMapperTest {
 
-    data class Collapsed(
-        override val isUnread: Boolean,
-        override val subject: String
-    ) : ConversationDetailMessageUiModel
+    private val mapper = ConversationDetailMessageUiModelMapper()
 
-    data class Expanded(
-        override val isUnread: Boolean,
-        override val subject: String
-    ) : ConversationDetailMessageUiModel
+    @Test
+    fun `map to ui model returns collapsed model`() {
+        // given
+        val message = MessageSample.AugWeatherForecast
+        val expected = ConversationDetailMessageUiModelSample.AugWeatherForecast
+
+        // when
+        val result = mapper.toUiModel(message)
+
+        // then
+        assertEquals(expected, result)
+    }
 }
