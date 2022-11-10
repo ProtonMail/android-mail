@@ -40,8 +40,9 @@ import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.flow.rememberAsState
-import me.proton.core.usersettings.presentation.compose.view.CrashReportSettingsToggleItem
-import me.proton.core.usersettings.presentation.compose.view.TelemetrySettingsToggleItem
+import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.usersettings.presentation.compose.view.CrashReportSettingToggleItem
+import me.proton.core.usersettings.presentation.compose.view.TelemetrySettingToggleItem
 
 const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
 const val TEST_TAG_SETTINGS_LIST = "SettingsListTestTag"
@@ -138,8 +139,8 @@ fun MainSettingsScreen(
                 )
                 Divider()
             }
-            item { TelemetrySettingsToggleItem() }
-            item { CrashReportSettingsToggleItem() }
+            item { TelemetrySettingToggleItem() }
+            item { CrashReportSettingToggleItem() }
             item { ProtonSettingsHeader(title = string.mail_settings_app_information) }
             item {
                 ProtonSettingsItem(
@@ -275,27 +276,29 @@ object MainSettingsScreen {
 )
 @Composable
 fun PreviewMainSettingsScreen() {
-    MainSettingsScreen(
-        state = Data(
-            AccountInfo("ProtonUser", "user@proton.ch"),
-            AppSettings(
-                hasAutoLock = false,
-                hasAlternativeRouting = true,
-                customAppLanguage = null,
-                hasCombinedContacts = true
+    ProtonTheme {
+        MainSettingsScreen(
+            state = Data(
+                AccountInfo("ProtonUser", "user@proton.ch"),
+                AppSettings(
+                    hasAutoLock = false,
+                    hasAlternativeRouting = true,
+                    customAppLanguage = null,
+                    hasCombinedContacts = true
+                ),
+                AppInformation(appVersionName = "6.0.0-alpha")
             ),
-            AppInformation(appVersionName = "6.0.0-alpha")
-        ),
-        actions = MainSettingsScreen.Actions(
-            onAccountClick = { },
-            onThemeClick = {},
-            onPushNotificationsClick = {},
-            onAutoLockClick = {},
-            onAlternativeRoutingClick = {},
-            onAppLanguageClick = {},
-            onCombinedContactsClick = {},
-            onSwipeActionsClick = {},
-            onBackClick = {}
+            actions = MainSettingsScreen.Actions(
+                onAccountClick = { },
+                onThemeClick = {},
+                onPushNotificationsClick = {},
+                onAutoLockClick = {},
+                onAlternativeRoutingClick = {},
+                onAppLanguageClick = {},
+                onCombinedContactsClick = {},
+                onSwipeActionsClick = {},
+                onBackClick = {}
+            )
         )
-    )
+    }
 }
