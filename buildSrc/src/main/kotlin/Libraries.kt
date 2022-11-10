@@ -130,7 +130,7 @@ object AndroidX {
         const val coreKtx = "androidx.test:core-ktx:$version"
         const val espresso = "androidx.test.espresso:espresso-core:${Versions.AndroidX.testEspresso}"
         const val extJunit = "androidx.test.ext:junit:${Versions.AndroidX.testExtJunit}"
-        const val orchestrator = "androidx.test:orchestrator:$version"
+        const val orchestrator = "androidx.test:orchestrator:${Versions.AndroidX.testOrchestrator}"
         const val runner = "androidx.test:runner:$version"
         const val rules = "androidx.test:rules:$version"
         const val uiautomator = "androidx.test.uiautomator:uiautomator:${Versions.AndroidX.testUiautomator}"
