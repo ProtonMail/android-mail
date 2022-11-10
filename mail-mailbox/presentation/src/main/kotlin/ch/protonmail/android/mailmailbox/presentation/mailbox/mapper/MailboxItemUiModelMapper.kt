@@ -37,7 +37,7 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapper @Inject constructor(
-    private val avatarUiModelMapper: AvatarUiModelMapper,
+    private val mailboxAvatarUiModelMapper: MailboxAvatarUiModelMapper,
     private val colorMapper: ColorMapper,
     private val formatMailboxItemTime: FormatShortTime,
     private val getMailboxItemLocationIcons: GetMailboxItemLocationIcons,
@@ -48,7 +48,7 @@ class MailboxItemUiModelMapper @Inject constructor(
         val participantsResolvedNames = getParticipantsResolvedNames(mailboxItem, contacts)
 
         return MailboxItemUiModel(
-            avatar = avatarUiModelMapper(mailboxItem, participantsResolvedNames),
+            avatar = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames),
             type = mailboxItem.type,
             id = mailboxItem.id,
             userId = mailboxItem.userId,

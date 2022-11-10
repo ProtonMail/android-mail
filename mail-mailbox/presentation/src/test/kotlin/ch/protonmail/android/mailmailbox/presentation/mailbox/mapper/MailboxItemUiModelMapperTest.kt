@@ -52,7 +52,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class MailboxItemUiModelMapperTest {
 
-    private val avatarUiModelMapper: AvatarUiModelMapper = mockk {
+    private val mailboxAvatarUiModelMapper: MailboxAvatarUiModelMapper = mockk {
         every { this@mockk.invoke(any(), any()) } returns mockk()
     }
     private val colorMapper: ColorMapper = mockk {
@@ -68,7 +68,7 @@ class MailboxItemUiModelMapperTest {
     }
 
     private val mapper = MailboxItemUiModelMapper(
-        avatarUiModelMapper = avatarUiModelMapper,
+        mailboxAvatarUiModelMapper = mailboxAvatarUiModelMapper,
         colorMapper = colorMapper,
         formatMailboxItemTime = formatMailboxItemTime,
         getMailboxItemLocationIcons = getMailboxItemLocationIcons,
@@ -249,7 +249,7 @@ class MailboxItemUiModelMapperTest {
         val mailboxItem = buildMailboxItem()
         val resolvedNames = listOf("contact name", "display name")
         every { getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts) } returns resolvedNames
-        every { avatarUiModelMapper(mailboxItem, resolvedNames) } returns avatarUiModel
+        every { mailboxAvatarUiModelMapper(mailboxItem, resolvedNames) } returns avatarUiModel
         // When
         val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then

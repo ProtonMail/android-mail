@@ -25,11 +25,11 @@ import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class AvatarUiModelMapperTest {
+class MailboxAvatarUiModelMapperTest {
 
     private val participantsResolvedNames = listOf("Test")
 
-    private val avatarUiModelMapper = AvatarUiModelMapper()
+    private val mailboxAvatarUiModelMapper = MailboxAvatarUiModelMapper()
 
     @Test
     fun `avatar should show draft icon for all drafts in message mode`() {
@@ -41,7 +41,7 @@ class AvatarUiModelMapperTest {
         val expectedResult = AvatarUiModel.DraftIcon
 
         // When
-        val result = avatarUiModelMapper(mailboxItem, participantsResolvedNames)
+        val result = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames)
 
         // Then
         assertEquals(expectedResult, result)
@@ -57,7 +57,7 @@ class AvatarUiModelMapperTest {
         val expectedResult = AvatarUiModel.ParticipantInitial(value = "T")
 
         // When
-        val result = avatarUiModelMapper(mailboxItem, participantsResolvedNames)
+        val result = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames)
 
         // Then
         assertEquals(expectedResult, result)
@@ -73,7 +73,7 @@ class AvatarUiModelMapperTest {
         val expectedResult = AvatarUiModel.ParticipantInitial(value = "T")
 
         // When
-        val result = avatarUiModelMapper(mailboxItem, participantsResolvedNames)
+        val result = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames)
 
         // Then
         assertEquals(expectedResult, result)
@@ -87,7 +87,7 @@ class AvatarUiModelMapperTest {
         val expectedResult = AvatarUiModel.ParticipantInitial(value = "\uD83D\uDC7D")
 
         // When
-        val result = avatarUiModelMapper(mailboxItem, participantsResolvedNames)
+        val result = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames)
 
         // Then
         assertEquals(expectedResult, result)

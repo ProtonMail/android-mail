@@ -24,7 +24,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import javax.inject.Inject
 
-class AvatarUiModelMapper @Inject constructor() {
+class MailboxAvatarUiModelMapper @Inject constructor() {
 
     operator fun invoke(mailboxItem: MailboxItem, participantsResolvedNames: List<String>): AvatarUiModel {
 
