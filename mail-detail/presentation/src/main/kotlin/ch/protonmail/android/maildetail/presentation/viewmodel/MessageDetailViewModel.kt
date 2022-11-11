@@ -43,8 +43,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
@@ -85,10 +85,7 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun markMessageUnread() {
-        primaryUserId.flatMapLatest { userId ->
-            if (userId == null) {
-                return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
-            }
+        primaryUserId.filterNotNull().flatMapLatest { userId ->
             markUnread(userId, requireMessageId()).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.ErrorMarkingUnread },
@@ -101,10 +98,7 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun observeMessageMetadata(messageId: MessageId) {
-        primaryUserId.flatMapLatest { userId ->
-            if (userId == null) {
-                return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
-            }
+        primaryUserId.filterNotNull().flatMapLatest { userId ->
             return@flatMapLatest observeMessage(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.NoCachedMetadata },
@@ -117,10 +111,7 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun observeBottomBarActions(messageId: MessageId) {
-        primaryUserId.flatMapLatest { userId ->
-            if (userId == null) {
-                return@flatMapLatest flowOf(MessageDetailEvent.NoPrimaryUser)
-            }
+        primaryUserId.filterNotNull().flatMapLatest { userId ->
             observeDetailActions(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },

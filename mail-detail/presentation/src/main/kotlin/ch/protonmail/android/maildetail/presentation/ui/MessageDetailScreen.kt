@@ -32,7 +32,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,7 +46,6 @@ import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsP
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
-import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
@@ -57,7 +55,6 @@ import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.default
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
-import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
 fun MessageDetailScreen(
@@ -149,10 +146,6 @@ fun MessageDetailScreen(
     ) { innerPadding ->
         when (state.messageState) {
             is MessageDetailMetadataState.Data -> MessageDetailContent(contentPadding = innerPadding)
-            MessageDetailMetadataState.Error.NotLoggedIn -> ProtonErrorMessage(
-                modifier = Modifier.padding(innerPadding),
-                errorMessage = stringResource(id = commonString.x_error_not_logged_in)
-            )
             MessageDetailMetadataState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
             )

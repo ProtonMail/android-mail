@@ -56,11 +56,6 @@ class MessageStateReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MessageDetailMetadataState.Loading,
-                operation = MessageDetailEvent.NoPrimaryUser,
-                expectedState = MessageDetailMetadataState.Error.NotLoggedIn
-            ),
-            TestInput(
-                currentState = MessageDetailMetadataState.Loading,
                 operation = MessageDetailEvent.MessageMetadata(messageUiModel),
                 expectedState = MessageDetailMetadataState.Data(messageUiModel)
             )
@@ -69,28 +64,12 @@ class MessageStateReducerTest(
         private val transitionsFromDataState = listOf(
             TestInput(
                 currentState = MessageDetailMetadataState.Data(messageUiModel),
-                operation = MessageDetailEvent.NoPrimaryUser,
-                expectedState = MessageDetailMetadataState.Error.NotLoggedIn
-            ),
-            TestInput(
-                currentState = MessageDetailMetadataState.Data(messageUiModel),
                 operation = MessageDetailEvent.MessageMetadata(updatedMessageUiModel),
                 expectedState = MessageDetailMetadataState.Data(updatedMessageUiModel)
             )
         )
 
-        private val transitionsFromErrorState = listOf(
-            TestInput(
-                currentState = MessageDetailMetadataState.Error.NotLoggedIn,
-                operation = MessageDetailEvent.NoPrimaryUser,
-                expectedState = MessageDetailMetadataState.Error.NotLoggedIn
-            ),
-            TestInput(
-                currentState = MessageDetailMetadataState.Error.NotLoggedIn,
-                operation = MessageDetailEvent.MessageMetadata(messageUiModel),
-                expectedState = MessageDetailMetadataState.Data(messageUiModel)
-            )
-        )
+        private val transitionsFromErrorState = listOf<TestInput>()
 
         @JvmStatic
         @Parameterized.Parameters

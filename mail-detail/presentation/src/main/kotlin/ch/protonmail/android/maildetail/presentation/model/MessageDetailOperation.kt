@@ -34,7 +34,6 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     data class MessageBody(val message: MessageWithBody) : MessageDetailEvent, MessageDetailOperation.AffectingMessage
     object MarkedUnread : MessageDetailEvent
 
-    object NoPrimaryUser : MessageDetailEvent, MessageDetailOperation.AffectingMessage
     object NoCachedMetadata : MessageDetailEvent, MessageDetailOperation.AffectingMessage
     object ErrorMarkingUnread : MessageDetailEvent
 

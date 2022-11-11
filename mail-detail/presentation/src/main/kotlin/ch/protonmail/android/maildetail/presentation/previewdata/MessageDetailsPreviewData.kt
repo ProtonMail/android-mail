@@ -50,20 +50,12 @@ object MessageDetailsPreviewData {
         dismiss = Effect.empty(),
         error = Effect.empty()
     )
-
-    val NotLoggedIn = MessageDetailState(
-        messageState = MessageDetailMetadataState.Error.NotLoggedIn,
-        bottomBarState = BottomBarState.Loading,
-        dismiss = Effect.empty(),
-        error = Effect.empty()
-    )
 }
 
 class MessageDetailsPreviewProvider : PreviewParameterProvider<MessageDetailState> {
 
     override val values = sequenceOf(
         MessageDetailsPreviewData.Message,
-        MessageDetailsPreviewData.Loading,
-        MessageDetailsPreviewData.NotLoggedIn
+        MessageDetailsPreviewData.Loading
     )
 }

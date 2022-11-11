@@ -118,15 +118,13 @@ class MessageDetailViewModelTest {
     }
 
     @Test
-    fun `message state is not logged in when there is no primary user`() = runTest {
+    fun `no message state is emitted when there is no primary user`() = runTest {
         // Given
         givenNoLoggedInUser()
 
         // When
         viewModel.state.test {
             initialStateEmitted()
-            // Then
-            assertEquals(MessageDetailMetadataState.Error.NotLoggedIn, awaitItem().messageState)
         }
     }
 

@@ -26,7 +26,5 @@ sealed interface MessageDetailMetadataState {
 
     object Loading : MessageDetailMetadataState
 
-    sealed interface Error : MessageDetailMetadataState {
-        object NotLoggedIn : Error
-    }
+    sealed interface Error : MessageDetailMetadataState
 }

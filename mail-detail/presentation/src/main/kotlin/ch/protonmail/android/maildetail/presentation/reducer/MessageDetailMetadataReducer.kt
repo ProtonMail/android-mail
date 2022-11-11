@@ -19,8 +19,8 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import javax.inject.Inject
 
@@ -32,8 +32,6 @@ class MessageDetailMetadataReducer @Inject constructor() {
         event: MessageDetailOperation.AffectingMessage
     ): MessageDetailMetadataState {
         return when (event) {
-            is MessageDetailEvent.NoPrimaryUser -> MessageDetailMetadataState.Error.NotLoggedIn
-
             is MessageDetailEvent.MessageMetadata -> MessageDetailMetadataState.Data(event.messageUiModel)
 
             is MessageDetailEvent.NoCachedMetadata -> TODO(
