@@ -22,6 +22,7 @@ import android.text.format.Formatter
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
+import ch.protonmail.android.maildetail.domain.model.MessageDetailItem
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
@@ -43,27 +44,27 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
     private val resolveParticipantName: ResolveParticipantName
 ) : Mapper<Message, MessageDetailMetadataUiModel> {
 
-    fun toUiModel(message: Message, contacts: List<Contact>): MessageDetailHeaderUiModel {
-        val senderResolvedName = resolveParticipantName(message.sender, contacts)
-        val messageLocation = messageLocationUiModelMapper(message.labelIds)
+    fun toUiModel(messageDetailItem: MessageDetailItem, contacts: List<Contact>): MessageDetailHeaderUiModel {
+        val senderResolvedName = resolveParticipantName(messageDetailItem.message.sender, contacts)
+        val messageLocation = messageLocationUiModelMapper(messageDetailItem.message.labelIds)
 
         return MessageDetailHeaderUiModel(
-            avatar = detailAvatarUiModelMapper(message, senderResolvedName),
-            sender = participantUiModelMapper.toUiModel(message.sender, contacts),
+            avatar = detailAvatarUiModelMapper(messageDetailItem.message, senderResolvedName),
+            sender = participantUiModelMapper.toUiModel(messageDetailItem.message.sender, contacts),
             shouldShowTrackerProtectionIcon = false,
-            shouldShowAttachmentIcon = message.hasNonCalendarAttachments(),
-            shouldShowStar = message.isStarred(),
+            shouldShowAttachmentIcon = messageDetailItem.message.hasNonCalendarAttachments(),
+            shouldShowStar = messageDetailItem.message.isStarred(),
             locationIcon = messageLocation.icon,
             location = messageLocation.name,
-            time = formatShortTime(message.time.toDuration(DurationUnit.MILLISECONDS)),
-            extendedTime = formatExtendedTime(message.time.toDuration(DurationUnit.MILLISECONDS)),
-            shouldShowUndisclosedRecipients = message.hasUndisclosedRecipients(),
-            allRecipients = message.allRecipients(contacts),
-            toRecipients = message.toList.map { participantUiModelMapper.toUiModel(it, contacts) },
-            ccRecipients = message.ccList.map { participantUiModelMapper.toUiModel(it, contacts) },
-            bccRecipients = message.bccList.map { participantUiModelMapper.toUiModel(it, contacts) },
+            time = formatShortTime(messageDetailItem.message.time.toDuration(DurationUnit.MILLISECONDS)),
+            extendedTime = formatExtendedTime(messageDetailItem.message.time.toDuration(DurationUnit.MILLISECONDS)),
+            shouldShowUndisclosedRecipients = messageDetailItem.message.hasUndisclosedRecipients(),
+            allRecipients = messageDetailItem.message.allRecipients(contacts),
+            toRecipients = messageDetailItem.message.toList.map { participantUiModelMapper.toUiModel(it, contacts) },
+            ccRecipients = messageDetailItem.message.ccList.map { participantUiModelMapper.toUiModel(it, contacts) },
+            bccRecipients = messageDetailItem.message.bccList.map { participantUiModelMapper.toUiModel(it, contacts) },
             labels = emptyList(),
-            size = Formatter.formatShortFileSize(null, message.size),
+            size = Formatter.formatShortFileSize(null, messageDetailItem.message.size),
             encryptionPadlock = R.drawable.ic_proton_lock,
             encryptionInfo = "End-to-end encrypted and signed message"
         )

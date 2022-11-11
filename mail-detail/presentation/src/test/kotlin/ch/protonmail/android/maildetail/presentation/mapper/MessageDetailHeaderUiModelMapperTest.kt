@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.mailcommon.presentation.R.drawable.ic_proton_archive_box
 import ch.protonmail.android.mailcommon.presentation.R.drawable.ic_proton_lock
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.domain.model.MessageDetailItem
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
@@ -33,6 +34,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.testdata.contact.ContactTestData
+import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -60,6 +62,15 @@ class MessageDetailHeaderUiModelMapperTest {
         ParticipantUiModel("Recipient3", "recipient3@pm.com", ic_proton_lock)
 
     private val message = MessageTestData.starredMessageInArchiveWithAttachments
+    private val labels = listOf(
+        LabelTestData.buildLabel(id = SystemLabelId.Archive.labelId.id),
+        LabelTestData.buildLabel(id = SystemLabelId.AllMail.labelId.id),
+        LabelTestData.buildLabel(id = SystemLabelId.Starred.labelId.id)
+    )
+    private val messageDetailItem = MessageDetailItem(
+        message = message,
+        labels = labels
+    )
     private val expectedResult = MessageDetailHeaderUiModel(
         avatar = avatarUiModel,
         sender = senderUiModel,
@@ -149,7 +160,7 @@ class MessageDetailHeaderUiModelMapperTest {
     @Test
     fun `map to ui model returns a correct model`() {
         // When
-        val result = messageDetailHeaderUiModelMapper.toUiModel(message, ContactTestData.contacts)
+        val result = messageDetailHeaderUiModelMapper.toUiModel(messageDetailItem, ContactTestData.contacts)
         // Then
         assertEquals(expectedResult, result)
     }
@@ -157,10 +168,16 @@ class MessageDetailHeaderUiModelMapperTest {
     @Test
     fun `when there are no attachments that are not calendar attachments, don't show attachment icon`() {
         // Given
-        val message = message.copy(numAttachments = 1, attachmentCount = AttachmentCount(1))
+        val messageDetailItem =
+            messageDetailItem.copy(
+                message = message.copy(
+                    numAttachments = 1,
+                    attachmentCount = AttachmentCount(1)
+                )
+            )
         val expectedResult = expectedResult.copy(shouldShowAttachmentIcon = false)
         // When
-        val result = messageDetailHeaderUiModelMapper.toUiModel(message, ContactTestData.contacts)
+        val result = messageDetailHeaderUiModelMapper.toUiModel(messageDetailItem, ContactTestData.contacts)
         // Then
         assertEquals(expectedResult, result)
     }
@@ -168,10 +185,17 @@ class MessageDetailHeaderUiModelMapperTest {
     @Test
     fun `when the message is not starred, don't show star icon`() {
         // Given
-        val message = message.copy(labelIds = listOf(SystemLabelId.Archive.labelId, SystemLabelId.AllMail.labelId))
+        val messageDetailItem = messageDetailItem.copy(
+            message = message.copy(
+                labelIds = listOf(
+                    SystemLabelId.Archive.labelId,
+                    SystemLabelId.AllMail.labelId
+                )
+            )
+        )
         val expectedResult = expectedResult.copy(shouldShowStar = false)
         // When
-        val result = messageDetailHeaderUiModelMapper.toUiModel(message, ContactTestData.contacts)
+        val result = messageDetailHeaderUiModelMapper.toUiModel(messageDetailItem, ContactTestData.contacts)
         // Then
         assertEquals(expectedResult, result)
     }
@@ -179,7 +203,12 @@ class MessageDetailHeaderUiModelMapperTest {
     @Test
     fun `when TO, CC and BCC lists are empty, show undisclosed recipients`() {
         // Given
-        val message = message.copy(toList = emptyList(), ccList = emptyList())
+        val messageDetailItem = messageDetailItem.copy(
+            message = message.copy(
+                toList = emptyList(),
+                ccList = emptyList()
+            )
+        )
         val expectedResult = expectedResult.copy(
             shouldShowUndisclosedRecipients = true,
             allRecipients = TextUiModel.TextRes(undisclosed_recipients),
@@ -187,7 +216,7 @@ class MessageDetailHeaderUiModelMapperTest {
             ccRecipients = emptyList()
         )
         // When
-        val result = messageDetailHeaderUiModelMapper.toUiModel(message, ContactTestData.contacts)
+        val result = messageDetailHeaderUiModelMapper.toUiModel(messageDetailItem, ContactTestData.contacts)
         // Then
         assertEquals(expectedResult, result)
     }
