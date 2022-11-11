@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 
 object MessageDetailHeaderPreviewData {
@@ -36,8 +37,7 @@ object MessageDetailHeaderPreviewData {
         shouldShowTrackerProtectionIcon = true,
         shouldShowAttachmentIcon = true,
         shouldShowStar = true,
-        locationIcon = R.drawable.ic_proton_inbox,
-        location = "Inbox",
+        location = MessageLocationUiModel("Inbox", R.drawable.ic_proton_inbox),
         time = TextUiModel.Text("11:48"),
         extendedTime = TextUiModel.Text("19-10-2022 at 11:48AM"),
         shouldShowUndisclosedRecipients = false,

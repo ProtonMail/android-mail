@@ -19,8 +19,10 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 import androidx.annotation.DrawableRes
+import androidx.compose.ui.graphics.Color
 
 data class MessageLocationUiModel(
     val name: String,
-    @DrawableRes val icon: Int
+    @DrawableRes val icon: Int,
+    val color: Color? = null
 )

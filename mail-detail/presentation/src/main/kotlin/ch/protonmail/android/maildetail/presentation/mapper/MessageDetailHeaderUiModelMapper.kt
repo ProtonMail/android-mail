@@ -46,7 +46,6 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
 
     fun toUiModel(messageDetailItem: MessageDetailItem, contacts: List<Contact>): MessageDetailHeaderUiModel {
         val senderResolvedName = resolveParticipantName(messageDetailItem.message.sender, contacts)
-        val messageLocation = messageLocationUiModelMapper(messageDetailItem.message.labelIds)
 
         return MessageDetailHeaderUiModel(
             avatar = detailAvatarUiModelMapper(messageDetailItem.message, senderResolvedName),
@@ -54,8 +53,7 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             shouldShowTrackerProtectionIcon = false,
             shouldShowAttachmentIcon = messageDetailItem.message.hasNonCalendarAttachments(),
             shouldShowStar = messageDetailItem.message.isStarred(),
-            locationIcon = messageLocation.icon,
-            location = messageLocation.name,
+            location = messageLocationUiModelMapper(messageDetailItem.message.labelIds, messageDetailItem.labels),
             time = formatShortTime(messageDetailItem.message.time.toDuration(DurationUnit.MILLISECONDS)),
             extendedTime = formatExtendedTime(messageDetailItem.message.time.toDuration(DurationUnit.MILLISECONDS)),
             shouldShowUndisclosedRecipients = messageDetailItem.message.hasUndisclosedRecipients(),

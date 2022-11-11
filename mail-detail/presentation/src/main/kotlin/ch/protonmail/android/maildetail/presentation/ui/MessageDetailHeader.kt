@@ -43,6 +43,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -296,8 +297,9 @@ private fun MessageDetailHeaderLayout(
                     isExpanded = isExpanded
                 )
             },
-            icon = uiModel.locationIcon,
-            text = uiModel.location
+            icon = uiModel.location.icon,
+            iconColor = uiModel.location.color,
+            text = uiModel.location.name
         )
 
         ExtendedHeaderRow(
@@ -388,7 +390,11 @@ private fun Icons(
             SmallNonClickableIcon(iconId = R.drawable.ic_proton_star_filled, tintId = R.color.notification_warning)
         }
         if (!isExpanded) {
-            SmallNonClickableIcon(iconId = uiModel.locationIcon)
+            if (uiModel.location.color != null) {
+                SmallNonClickableIcon(iconId = uiModel.location.icon, iconColor = uiModel.location.color)
+            } else {
+                SmallNonClickableIcon(iconId = uiModel.location.icon)
+            }
         }
     }
 }
@@ -496,15 +502,20 @@ private fun ParticipantText(
 @Composable
 private fun ExtendedHeaderRow(
     modifier: Modifier = Modifier,
+    text: String,
     @DrawableRes icon: Int,
-    text: String
+    iconColor: Color? = null
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        SmallNonClickableIcon(iconId = icon)
+        if (iconColor != null) {
+            SmallNonClickableIcon(iconId = icon, iconColor = iconColor)
+        } else {
+            SmallNonClickableIcon(iconId = icon)
+        }
         Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
         Text(text = text, style = ProtonTheme.typography.captionWeak)
     }

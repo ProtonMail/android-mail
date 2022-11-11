@@ -77,8 +77,7 @@ class MessageDetailHeaderUiModelMapperTest {
         shouldShowTrackerProtectionIcon = false,
         shouldShowAttachmentIcon = true,
         shouldShowStar = true,
-        locationIcon = ic_proton_archive_box,
-        location = SystemLabelId.Archive.name,
+        location = messageLocationUiModel,
         time = shortTimeTextUiModel,
         extendedTime = extendedTimeTestUiModel,
         shouldShowUndisclosedRecipients = false,
@@ -102,7 +101,7 @@ class MessageDetailHeaderUiModelMapperTest {
         every { this@mockk.invoke(message.time.milliseconds) } returns shortTimeTextUiModel
     }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
-        every { this@mockk.invoke(any()) } returns messageLocationUiModel
+        every { this@mockk.invoke(any(), labels) } returns messageLocationUiModel
     }
     private val participantUiModelMapper: ParticipantUiModelMapper = mockk {
         every { this@mockk.toUiModel(MessageTestData.sender, ContactTestData.contacts) } returns senderUiModel
