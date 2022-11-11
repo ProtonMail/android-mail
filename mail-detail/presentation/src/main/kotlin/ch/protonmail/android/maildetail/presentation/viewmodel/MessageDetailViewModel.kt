@@ -31,6 +31,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
@@ -63,8 +64,9 @@ class MessageDetailViewModel @Inject constructor(
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveMessageDetailActions,
     private val markUnread: MarkUnread,
-    private val savedStateHandle: SavedStateHandle,
-    private val getContacts: GetContacts
+    private val getContacts: GetContacts,
+    private val starMessage: StarMessage,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -81,10 +83,23 @@ class MessageDetailViewModel @Inject constructor(
 
     fun submit(action: MessageViewAction) {
         when (action) {
-            is MessageViewAction.Star -> Timber.d("Star message clicked")
+            is MessageViewAction.Star -> starMessage()
             is MessageViewAction.UnStar -> Timber.d("UnStar message clicked")
             is MessageViewAction.MarkUnread -> markMessageUnread()
         }
+    }
+
+    private fun starMessage() {
+        primaryUserId.filterNotNull().flatMapLatest { userId ->
+            starMessage(userId, requireMessageId()).mapLatest { either ->
+                either.fold(
+                    ifLeft = { MessageDetailEvent.ErrorAddingStar },
+                    ifRight = { MessageDetailEvent.Starred }
+                )
+            }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
     }
 
     private fun markMessageUnread() {
@@ -142,10 +157,11 @@ class MessageDetailViewModel @Inject constructor(
             messageState = updateMessageState(operation),
             bottomBarState = updateBottomBarState(operation),
             dismiss = if (operation is MessageDetailEvent.MarkedUnread) Effect.of(Unit) else Effect.empty(),
-            error = if (operation is MessageDetailEvent.ErrorMarkingUnread)
-                Effect.of(TextUiModel(R.string.error_mark_unread_failed))
-            else
-                Effect.empty()
+            error = when (operation) {
+                is MessageDetailEvent.ErrorMarkingUnread -> Effect.of(TextUiModel(R.string.error_mark_unread_failed))
+                is MessageDetailEvent.ErrorAddingStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
+                else -> Effect.empty()
+            }
         )
         mutableDetailState.emit(updatedDetailState)
     }

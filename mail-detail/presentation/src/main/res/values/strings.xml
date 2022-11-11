@@ -31,4 +31,5 @@
     <string name="bcc">Bcc:</string>
     <string name="hide_details">Hide details</string>
     <string name="undisclosed_recipients">Undisclosed recipients</string>
+    <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
 </resources>

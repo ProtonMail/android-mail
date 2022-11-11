@@ -36,6 +36,7 @@ import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
@@ -67,6 +68,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 class MessageDetailViewModelTest {
 
@@ -102,6 +104,8 @@ class MessageDetailViewModelTest {
     }
     private val getContacts = mockk<GetContacts> {
         coEvery { this@mockk.invoke(userId) } returns ContactTestData.contacts.right()
+    private val starMessage = mockk<StarMessage> {
+        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
     }
 
     private val viewModel by lazy {
@@ -114,8 +118,9 @@ class MessageDetailViewModelTest {
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeDetailActions,
             markUnread = markUnread,
-            savedStateHandle = savedStateHandle,
-            getContacts = getContacts
+            getContacts = getContacts,
+            starMessage = starMessage,
+            savedStateHandle = savedStateHandle
         )
     }
 
@@ -288,6 +293,42 @@ class MessageDetailViewModelTest {
             val events = cancelAndConsumeRemainingEvents()
             val lastState = (events.last() as Event.Item).value
             assertEquals(TextUiModel(R.string.error_mark_unread_failed), lastState.error.consume())
+        }
+    }
+
+    @Test
+    fun `starred message metadata is emitted when star action is successful`() = runTest {
+        // Given
+        every { starMessage.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
+
+        viewModel.state.test {
+            initialStateEmitted()
+            // When
+            viewModel.submit(MessageViewAction.Star)
+            advanceUntilIdle()
+            // Then
+            val events = cancelAndConsumeRemainingEvents()
+            val lastState = (events.last() as Event.Item).value
+            val actual = assertIs<MessageDetailMetadataState.Data>(lastState.messageState)
+            assertTrue(actual.messageUiModel.isStarred)
+        }
+    }
+
+    @Test
+    fun `error starring message is emitted when star action fails`() = runTest {
+        // Given
+        val messageId = MessageId(rawMessageId)
+        every { starMessage.invoke(userId, messageId) } returns flowOf(DataError.Local.NoDataCached.left())
+
+        viewModel.state.test {
+            initialStateEmitted()
+            // When
+            viewModel.submit(MessageViewAction.Star)
+            advanceUntilIdle()
+            // Then
+            val events = cancelAndConsumeRemainingEvents()
+            val lastState = (events.last() as Event.Item).value
+            assertEquals(TextUiModel(R.string.error_star_operation_failed), lastState.error.consume())
         }
     }
 

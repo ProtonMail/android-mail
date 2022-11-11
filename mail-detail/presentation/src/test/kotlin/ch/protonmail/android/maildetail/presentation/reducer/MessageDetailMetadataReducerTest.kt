@@ -48,17 +48,46 @@ class MessageDetailMetadataReducerTest(
             "This email is about subjects"
         )
 
+        private val starredMessageUiModel = MessageUiModelTestData.buildMessageUiModel(
+            "messageId",
+            "This email is about subjects",
+            true
+        )
+
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MessageDetailMetadataState.Loading,
                 event = MessageDetailEvent.MessageMetadata(messageUiModel),
+                expectedState = MessageDetailMetadataState.Data(messageUiModel)
+            ).toArray(),
+            TestInput(
+                currentState = MessageDetailMetadataState.Loading,
+                event = MessageDetailEvent.Starred,
+                expectedState = MessageDetailMetadataState.Loading
+            ).toArray(),
+            TestInput(
+                currentState = MessageDetailMetadataState.Loading,
+                operation = MessageDetailEvent.ErrorAddingStar,
+                expectedState = MessageDetailMetadataState.Loading
+            ).toArray()
+        )
+
+        private val transitionsFromDataState = listOf(
+            TestInput(
+                currentState = MessageDetailMetadataState.Data(messageUiModel),
+                event = MessageDetailEvent.Starred,
+                expectedState = MessageDetailMetadataState.Data(starredMessageUiModel)
+            ).toArray(),
+            TestInput(
+                currentState = MessageDetailMetadataState.Data(starredMessageUiModel),
+                operation = MessageDetailEvent.ErrorAddingStar,
                 expectedState = MessageDetailMetadataState.Data(messageUiModel)
             ).toArray()
         )
 
         @JvmStatic
         @Parameterized.Parameters
-        fun data(): Collection<Array<TestInput>> = transitionsFromLoadingState
+        fun data(): Collection<Array<TestInput>> = transitionsFromLoadingState + transitionsFromDataState
     }
 
     class TestInput(

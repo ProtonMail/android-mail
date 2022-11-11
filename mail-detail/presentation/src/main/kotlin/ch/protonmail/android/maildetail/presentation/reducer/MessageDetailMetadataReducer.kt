@@ -40,6 +40,19 @@ class MessageDetailMetadataReducer @Inject constructor() {
             is MessageDetailEvent.MessageBody -> TODO("Implement when adding message body flow")
             is MessageViewAction.Star -> TODO()
             is MessageViewAction.UnStar -> TODO()
+            is MessageDetailEvent.Starred -> currentState.toNewStateForStarredMessage()
+            is MessageDetailEvent.ErrorAddingStar -> currentState.toNewStateForErrorAddingStar()
         }
     }
+
+    private fun MessageDetailMetadataState.toNewStateForStarredMessage() = when (this) {
+        is MessageDetailMetadataState.Loading -> this
+        is MessageDetailMetadataState.Data -> copy(messageUiModel.copy(isStarred = true))
+    }
+
+    private fun MessageDetailMetadataState.toNewStateForErrorAddingStar() = when (this) {
+        is MessageDetailMetadataState.Loading -> this
+        is MessageDetailMetadataState.Data -> copy(messageUiModel.copy(isStarred = false))
+    }
+
 }
