@@ -18,6 +18,9 @@
   -->
 <resources>
     <string name="draft_avatar_icon_description">Draft message</string>
+    <string name="forwarded_icon_description">Forwarded message</string>
+    <string name="replied_icon_description">Replied message</string>
+    <string name="replied_all_icon_description">Replied all message</string>
     <string name="retry">Retry</string>
     <string name="toolbar_back_content_description">Back to previous screen</string>
     <string name="x_error_not_logged_in">Not logged in</string>

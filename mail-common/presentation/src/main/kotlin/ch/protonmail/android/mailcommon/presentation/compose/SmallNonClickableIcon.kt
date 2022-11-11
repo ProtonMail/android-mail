@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcommon.presentation.compose
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
@@ -26,27 +27,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailcommon.presentation.R
 import me.proton.core.compose.theme.ProtonDimens
 
 @Composable
 fun SmallNonClickableIcon(
     @DrawableRes iconId: Int,
-    tintId: Int = R.color.icon_weak
+    tintId: Int = R.color.icon_weak,
+    @StringRes contentDescriptionId: Int? = null
 ) {
-    SmallNonClickableIcon(iconId = iconId, iconColor = colorResource(id = tintId))
+    SmallNonClickableIcon(
+        iconId = iconId,
+        iconColor = colorResource(id = tintId),
+        contentDescriptionId = contentDescriptionId
+    )
 }
 
 @Composable
 fun SmallNonClickableIcon(
     @DrawableRes iconId: Int,
-    iconColor: Color
+    iconColor: Color,
+    @StringRes contentDescriptionId: Int? = null
 ) {
     Icon(
         modifier = Modifier.size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = iconId),
-        contentDescription = NO_CONTENT_DESCRIPTION,
+        contentDescription = contentDescriptionId?.let { stringResource(it) },
         tint = iconColor
     )
 }

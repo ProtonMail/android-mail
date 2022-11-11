@@ -41,6 +41,21 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
                 .assertIsDisplayed()
         }
 
+        fun forwardedIconIsDisplayed() {
+            composeTestRule.onNodeWithContentDescription(commonString.forwarded_icon_description)
+                .assertIsDisplayed()
+        }
+
+        fun repliedAllIconIsDisplayed() {
+            composeTestRule.onNodeWithContentDescription(commonString.replied_all_icon_description)
+                .assertIsDisplayed()
+        }
+
+        fun repliedIconIsDisplayed() {
+            composeTestRule.onNodeWithContentDescription(commonString.replied_icon_description)
+                .assertIsDisplayed()
+        }
+
         fun senderInitialIsDisplayed(initial: String) {
             composeTestRule.onAllNodesWithText(initial, substring = false)
                 .onFirst()

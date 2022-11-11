@@ -36,9 +36,27 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
                 message,
                 senderResolvedName = senderResolvedName
             ),
+            forwardedIcon = getForwardedIcon(isForwarded = message.isForwarded),
             isUnread = message.unread,
+            repliedIcon = getRepliedIcon(isReplied = message.isReplied, isRepliedAll = message.isRepliedAll),
             sender = senderResolvedName
         )
+    }
+
+    private fun getForwardedIcon(
+        isForwarded: Boolean
+    ): ConversationDetailMessageUiModel.ForwardedIcon = when {
+        isForwarded -> ConversationDetailMessageUiModel.ForwardedIcon.Forwarded
+        else -> ConversationDetailMessageUiModel.ForwardedIcon.None
+    }
+
+    private fun getRepliedIcon(
+        isReplied: Boolean,
+        isRepliedAll: Boolean
+    ): ConversationDetailMessageUiModel.RepliedIcon = when {
+        isRepliedAll -> ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
+        isReplied -> ConversationDetailMessageUiModel.RepliedIcon.Replied
+        else -> ConversationDetailMessageUiModel.RepliedIcon.None
     }
 }
 

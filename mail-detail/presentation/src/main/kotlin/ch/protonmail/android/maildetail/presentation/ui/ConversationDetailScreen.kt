@@ -17,7 +17,6 @@
  */
 package ch.protonmail.android.maildetail.presentation.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -28,6 +27,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -45,7 +45,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailcommon.presentation.R.string
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
+import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -65,6 +67,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.default
+import me.proton.core.presentation.R.drawable
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 
@@ -194,17 +197,46 @@ private fun MessagesContent(
         verticalArrangement = Arrangement.spacedBy(ProtonDimens.SmallSpacing)
     ) {
         items(messages) { message ->
-            ElevatedCard(modifier = Modifier.background(ProtonTheme.colors.backgroundNorm)) {
+            val fontWeight = if (message.isUnread) FontWeight.Bold else FontWeight.Normal
+            val fontColor = if (message.isUnread) ProtonTheme.colors.textNorm else ProtonTheme.colors.textWeak
+
+            ElevatedCard(
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = ProtonTheme.colors.backgroundNorm
+                )
+            ) {
                 Row(
                     modifier = Modifier.padding(ProtonDimens.SmallSpacing),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Avatar(avatarUiModel = message.avatar)
                     Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
+                    when (message.forwardedIcon) {
+                        ConversationDetailMessageUiModel.ForwardedIcon.None -> Unit
+                        ConversationDetailMessageUiModel.ForwardedIcon.Forwarded -> SmallNonClickableIcon(
+                            iconId = drawable.ic_proton_arrow_right,
+                            iconColor = fontColor,
+                            contentDescriptionId = string.forwarded_icon_description
+                        )
+                    }.exhaustive
+                    when (message.repliedIcon) {
+                        ConversationDetailMessageUiModel.RepliedIcon.None -> Unit
+                        ConversationDetailMessageUiModel.RepliedIcon.Replied -> SmallNonClickableIcon(
+                            iconId = drawable.ic_proton_arrow_up_and_left,
+                            iconColor = fontColor,
+                            contentDescriptionId = string.replied_icon_description
+                        )
+                        ConversationDetailMessageUiModel.RepliedIcon.RepliedAll -> SmallNonClickableIcon(
+                            iconId = drawable.ic_proton_arrows_up_and_left,
+                            iconColor = fontColor,
+                            contentDescriptionId = string.replied_all_icon_description
+                        )
+                    }.exhaustive
                     Text(
                         modifier = Modifier.weight(1f),
                         text = message.sender,
-                        fontWeight = if (message.isUnread) FontWeight.Bold else FontWeight.Normal,
+                        fontWeight = fontWeight,
+                        color = fontColor,
                         style = ProtonTheme.typography.default
                     )
                 }

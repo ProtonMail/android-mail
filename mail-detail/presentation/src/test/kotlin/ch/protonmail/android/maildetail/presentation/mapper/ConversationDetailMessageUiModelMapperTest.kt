@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
@@ -31,7 +32,7 @@ import kotlin.test.assertEquals
 internal class ConversationDetailMessageUiModelMapperTest {
 
     private val avatarUiModelMapper: DetailAvatarUiModelMapper = mockk {
-        every { this@mockk(message = MessageSample.AugWeatherForecast, senderResolvedName = any()) } returns
+        every { this@mockk(message = any(), senderResolvedName = any()) } returns
             ConversationDetailMessageUiModelSample.AugWeatherForecast.avatar
     }
     private val resolveParticipantName: ResolveParticipantName = mockk {
@@ -48,6 +49,77 @@ internal class ConversationDetailMessageUiModelMapperTest {
         // given
         val message = MessageSample.AugWeatherForecast
         val expected = ConversationDetailMessageUiModelSample.AugWeatherForecast
+
+        // when
+        val result = mapper.toUiModel(message, contacts = emptyList())
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `when message is forwarded, ui model contains forwarded icon`() {
+        // given
+        val message = MessageSample.AugWeatherForecast.copy(isForwarded = true)
+        val expected = with(ConversationDetailMessageUiModelSample) {
+            AugWeatherForecast.collapse().copy(
+                forwardedIcon = ConversationDetailMessageUiModel.ForwardedIcon.Forwarded
+            )
+        }
+
+        // when
+        val result = mapper.toUiModel(message, contacts = emptyList())
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `when message is replied, ui model contains replied icon`() {
+        // given
+        val message = MessageSample.AugWeatherForecast.copy(isReplied = true)
+        val expected = with(ConversationDetailMessageUiModelSample) {
+            AugWeatherForecast.collapse().copy(
+                repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.Replied
+            )
+        }
+
+        // when
+        val result = mapper.toUiModel(message, contacts = emptyList())
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `when message is replied all, ui model contains replied all icon`() {
+        // given
+        val message = MessageSample.AugWeatherForecast.copy(isRepliedAll = true)
+        val expected = with(ConversationDetailMessageUiModelSample) {
+            AugWeatherForecast.collapse().copy(
+                repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
+            )
+        }
+
+        // when
+        val result = mapper.toUiModel(message, contacts = emptyList())
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `when message is replied and replied all, ui model contains replied all icon`() {
+        // given
+        val message = MessageSample.AugWeatherForecast.copy(
+            isReplied = true,
+            isRepliedAll = true
+        )
+        val expected = with(ConversationDetailMessageUiModelSample) {
+            AugWeatherForecast.collapse().copy(
+                repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
+            )
+        }
 
         // when
         val result = mapper.toUiModel(message, contacts = emptyList())

@@ -51,22 +51,6 @@ class ConversationDetailScreenTest {
     }
 
     @Test
-    fun whenMessagesAreLoadedThenSenderIsDisplayed() {
-        // given
-        val state = ConversationDetailsPreviewData.Success
-
-        // when
-        val robot = setupScreen(state = state)
-
-        // then
-        robot.verify {
-            val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
-            val firstMessage = messagesState.messages.first()
-            senderIsDisplayed(firstMessage.sender)
-        }
-    }
-
-    @Test
     fun whenMessageIsLoadedSenderInitialIsDisplayed() {
         // given
         val state = ConversationDetailsPreviewData.Success
@@ -84,7 +68,7 @@ class ConversationDetailScreenTest {
     }
 
     @Test
-    fun whenDraftMessageIsLoadedSenderInitialIsDisplayed() {
+    fun whenDraftMessageIsLoadedDraftIconIsDisplayed() {
         // given
         val state = ConversationDetailsPreviewData.Success.copy(
             messagesState = ConversationDetailsMessagesState.Data(
@@ -99,6 +83,76 @@ class ConversationDetailScreenTest {
 
         // then
         robot.verify { draftIconAvatarIsDisplayed() }
+    }
+
+    @Test
+    fun whenRepliedMessageIsLoadedRepliedIconIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                messages = listOf(
+                    ConversationDetailMessageUiModelSample.InvoiceReplied
+                )
+            )
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify { repliedIconIsDisplayed() }
+    }
+
+    @Test
+    fun whenRepliedAllMessageIsLoadedRepliedIconIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                messages = listOf(
+                    ConversationDetailMessageUiModelSample.InvoiceRepliedAll
+                )
+            )
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify { repliedAllIconIsDisplayed() }
+    }
+
+    @Test
+    fun whenForwardedMessageIsLoadedForwardedIconIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                messages = listOf(
+                    ConversationDetailMessageUiModelSample.InvoiceForwarded
+                )
+            )
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify { forwardedIconIsDisplayed() }
+    }
+
+    @Test
+    fun whenMessagesAreLoadedThenSenderIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify {
+            val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
+            val firstMessage = messagesState.messages.first()
+            senderIsDisplayed(firstMessage.sender)
+        }
     }
 
     private fun setupScreen(

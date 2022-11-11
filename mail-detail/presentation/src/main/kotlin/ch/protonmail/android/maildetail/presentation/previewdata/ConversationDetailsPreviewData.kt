@@ -39,7 +39,8 @@ object ConversationDetailsPreviewData {
         messagesState = ConversationDetailsMessagesState.Data(
             messages = listOf(
                 ConversationDetailMessageUiModelSample.AugWeatherForecast,
-                ConversationDetailMessageUiModelSample.SepWeatherForecast
+                ConversationDetailMessageUiModelSample.InvoiceRepliedAll,
+                ConversationDetailMessageUiModelSample.InvoiceForwarded
             )
         ),
         bottomBarState = BottomBarState.Data(
