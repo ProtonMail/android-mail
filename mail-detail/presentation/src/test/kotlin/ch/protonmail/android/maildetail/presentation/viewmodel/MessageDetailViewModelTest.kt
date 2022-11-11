@@ -46,6 +46,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadata
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
+import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -76,8 +77,10 @@ class MessageDetailViewModelTest {
     private val actionUiModelMapper = ActionUiModelMapper()
     private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper>()
     private val messageUiModelMapper = MessageDetailUiModelMapper(messageDetailHeaderUiModelMapper)
-    private val messageStateReducer = MessageDetailMetadataReducer()
-    private val bottomBarReducer = BottomBarReducer()
+    private val messageDetailReducer = MessageDetailReducer(
+        MessageDetailMetadataReducer(),
+        BottomBarReducer()
+    )
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
@@ -111,8 +114,7 @@ class MessageDetailViewModelTest {
     private val viewModel by lazy {
         MessageDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
-            messageStateReducer = messageStateReducer,
-            bottomBarReducer = bottomBarReducer,
+            messageDetailReducer = messageDetailReducer,
             observeMessageWithLabels = observeMessageWithLabels,
             uiModelMapper = messageUiModelMapper,
             actionUiModelMapper = actionUiModelMapper,

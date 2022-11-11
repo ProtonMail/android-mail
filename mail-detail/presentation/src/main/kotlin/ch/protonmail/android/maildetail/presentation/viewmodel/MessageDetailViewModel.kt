@@ -23,7 +23,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -32,14 +31,13 @@ import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
-import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
-import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
+import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,9 +55,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
-    private val messageStateReducer: MessageDetailMetadataReducer,
-    private val bottomBarReducer: BottomBarReducer,
     private val observeMessageWithLabels: ObserveMessageWithLabels,
+    private val messageDetailReducer: MessageDetailReducer,
     private val uiModelMapper: MessageDetailUiModelMapper,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveMessageDetailActions,
@@ -153,32 +150,9 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {
-        val updatedDetailState = state.value.copy(
-            messageState = updateMessageState(operation),
-            bottomBarState = updateBottomBarState(operation),
-            dismiss = if (operation is MessageDetailEvent.MarkedUnread) Effect.of(Unit) else Effect.empty(),
-            error = when (operation) {
-                is MessageDetailEvent.ErrorMarkingUnread -> Effect.of(TextUiModel(R.string.error_mark_unread_failed))
-                is MessageDetailEvent.ErrorAddingStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
-                else -> Effect.empty()
-            }
-        )
-        mutableDetailState.emit(updatedDetailState)
+        val updatedState = messageDetailReducer.newStateFrom(state.value, operation)
+        mutableDetailState.emit(updatedState)
     }
-
-    private fun updateMessageState(operation: MessageDetailOperation) =
-        if (operation is MessageDetailOperation.AffectingMessage) {
-            messageStateReducer.newStateFrom(state.value.messageState, operation)
-        } else {
-            state.value.messageState
-        }
-
-    private fun updateBottomBarState(operation: MessageDetailOperation) =
-        if (operation is MessageDetailEvent.MessageBottomBarEvent) {
-            bottomBarReducer.newStateFrom(state.value.bottomBarState, operation.bottomBarEvent)
-        } else {
-            state.value.bottomBarState
-        }
 
     private fun requireMessageId(): MessageId {
         val messageIdParam = savedStateHandle.get<String>(MessageDetailScreen.MESSAGE_ID_KEY)
