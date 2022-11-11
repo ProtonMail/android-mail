@@ -69,13 +69,13 @@ class MessageDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val primaryUserId = observePrimaryUserId()
+    private val messageId = requireMessageId()
+    private val primaryUserId = observePrimaryUserId().filterNotNull()
     private val mutableDetailState = MutableStateFlow(initialState)
 
     val state: StateFlow<MessageDetailState> = mutableDetailState.asStateFlow()
 
     init {
-        val messageId = requireMessageId()
         Timber.d("Open detail screen for message ID: $messageId")
         observeMessageWithLabels(messageId)
         observeBottomBarActions(messageId)
@@ -90,8 +90,8 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun starMessage() {
-        primaryUserId.filterNotNull().flatMapLatest { userId ->
-            starMessage(userId, requireMessageId()).mapLatest { either ->
+        primaryUserId.flatMapLatest { userId ->
+            starMessage(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.ErrorAddingStar },
                     ifRight = { MessageDetailEvent.Starred }
@@ -103,8 +103,8 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun markMessageUnread() {
-        primaryUserId.filterNotNull().flatMapLatest { userId ->
-            markUnread(userId, requireMessageId()).mapLatest { either ->
+        primaryUserId.flatMapLatest { userId ->
+            markUnread(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.ErrorMarkingUnread },
                     ifRight = { MessageDetailEvent.MarkedUnread }
@@ -116,7 +116,7 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun observeMessageWithLabels(messageId: MessageId) {
-        primaryUserId.filterNotNull().flatMapLatest { userId ->
+        primaryUserId.flatMapLatest { userId ->
             val contacts = getContacts(userId)
             return@flatMapLatest observeMessageWithLabels(userId, messageId).mapLatest { either ->
                 either.fold(
@@ -137,7 +137,7 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun observeBottomBarActions(messageId: MessageId) {
-        primaryUserId.filterNotNull().flatMapLatest { userId ->
+        primaryUserId.flatMapLatest { userId ->
             observeDetailActions(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },

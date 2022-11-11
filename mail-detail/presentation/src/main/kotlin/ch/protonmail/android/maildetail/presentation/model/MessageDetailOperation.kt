@@ -27,13 +27,15 @@ sealed interface MessageDetailOperation {
 
 sealed interface MessageDetailEvent : MessageDetailOperation {
 
-    data class MessageMetadata(val messageUiModel: MessageDetailMetadataUiModel) :
-        MessageDetailEvent,
+    data class MessageMetadata(
+        val messageUiModel: MessageDetailMetadataUiModel
+    ) : MessageDetailEvent,
         MessageDetailOperation.AffectingMessage
 
-    data class MessageBody(val message: MessageWithBody) : MessageDetailEvent, MessageDetailOperation.AffectingMessage
-    object MarkedUnread : MessageDetailEvent
-    object Starred : MessageDetailEvent, MessageDetailOperation.AffectingMessage
+    data class MessageBody(
+        val message: MessageWithBody
+    ) : MessageDetailEvent,
+        MessageDetailOperation.AffectingMessage
 
     object NoCachedMetadata : MessageDetailEvent, MessageDetailOperation.AffectingMessage
     object ErrorMarkingUnread : MessageDetailEvent
