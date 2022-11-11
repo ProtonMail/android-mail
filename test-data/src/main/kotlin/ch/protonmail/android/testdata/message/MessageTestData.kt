@@ -36,6 +36,11 @@ object MessageTestData {
     const val RAW_MESSAGE_ID = "rawMessageId"
     const val RAW_SUBJECT = "Here's a new message"
 
+    val sender = Recipient("sender@pm.me", "Sender")
+    val recipient1 = Recipient("recipient1@pm.me", "Recipient1")
+    val recipient2 = Recipient("recipient2@pm.me", "Recipient2")
+    val recipient3 = Recipient("recipient3@pm.me", "Recipient3")
+
     val message = buildMessage(
         userId = userId,
         id = RAW_MESSAGE_ID,
@@ -48,10 +53,7 @@ object MessageTestData {
         id = RAW_MESSAGE_ID,
         subject = RAW_SUBJECT,
         labelIds = listOf(SystemLabelId.Inbox.labelId.id),
-        toList = listOf(
-            Recipient("recipient1@pm.me", "recipient1"),
-            Recipient("recipient2@pm.me", "recipient2")
-        )
+        toList = listOf(recipient1, recipient2)
     )
 
     val trashedMessage = buildMessage(
@@ -83,8 +85,25 @@ object MessageTestData {
         id = RAW_MESSAGE_ID,
         subject = RAW_SUBJECT,
         labelIds = listOf(SystemLabelId.Spam.labelId.id),
-        toList = listOf(Recipient("recipient1@pm.me", "recipient1")),
-        ccList = listOf(Recipient("recipient2@pm.me", "recipient2"))
+        toList = listOf(recipient1),
+        ccList = listOf(recipient2)
+    )
+
+    val starredMessageInArchiveWithAttachments = buildMessage(
+        userId = userId,
+        id = RAW_MESSAGE_ID,
+        sender = sender,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(
+            SystemLabelId.Archive.labelId.id,
+            SystemLabelId.AllMail.labelId.id,
+            SystemLabelId.Starred.labelId.id
+        ),
+        numAttachments = 2,
+        attachmentCount = AttachmentCount(1),
+        time = 1_667_924_198L,
+        toList = listOf(recipient1, recipient2),
+        ccList = listOf(recipient3)
     )
 
     fun buildMessage(
@@ -92,27 +111,30 @@ object MessageTestData {
         id: String,
         order: Long = 1000,
         time: Long = 1000,
+        size: Long = 0,
         labelIds: List<String> = listOf("0"),
         subject: String = "subject",
+        sender: Recipient = Recipient("address", "name"),
         numAttachments: Int = 0,
         expirationTime: Long = 0,
         attachmentCount: AttachmentCount = AttachmentCount(0),
         toList: List<Recipient> = emptyList(),
-        ccList: List<Recipient> = emptyList()
+        ccList: List<Recipient> = emptyList(),
+        bccList: List<Recipient> = emptyList()
     ) = Message(
         userId = userId,
         messageId = MessageId(id),
         conversationId = ConversationId(id),
         time = time,
-        size = 0,
+        size = size,
         order = order,
         labelIds = labelIds.map { LabelId(it) },
         subject = subject,
         unread = false,
-        sender = Recipient("address", "name"),
+        sender = sender,
         toList = toList,
         ccList = ccList,
-        bccList = emptyList(),
+        bccList = bccList,
         expirationTime = expirationTime,
         isReplied = false,
         isRepliedAll = false,

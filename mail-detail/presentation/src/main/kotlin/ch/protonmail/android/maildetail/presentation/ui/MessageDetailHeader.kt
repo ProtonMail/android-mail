@@ -198,7 +198,8 @@ private fun MessageDetailHeaderLayout(
                 constrainRecipientsTitle(
                     reference = toRecipientsRef,
                     recipients = uiModel.toRecipients,
-                    isExpanded = isExpanded
+                    isExpanded = isExpanded,
+                    hasUndisclosedRecipients = uiModel.shouldShowUndisclosedRecipients
                 )
             },
             recipientsTitle = R.string.to
@@ -210,10 +211,12 @@ private fun MessageDetailHeaderLayout(
                     startReference = avatarRef,
                     endReference = moreButtonRef,
                     recipients = uiModel.toRecipients,
-                    isExpanded = isExpanded
+                    isExpanded = isExpanded,
+                    hasUndisclosedRecipients = uiModel.shouldShowUndisclosedRecipients
                 )
             },
-            recipients = uiModel.toRecipients
+            recipients = uiModel.toRecipients,
+            hasUndisclosedRecipients = uiModel.shouldShowUndisclosedRecipients
         )
 
         RecipientsTitle(
@@ -282,7 +285,7 @@ private fun MessageDetailHeaderLayout(
                 )
             },
             icon = R.drawable.ic_proton_calendar_today,
-            text = uiModel.extendedTime
+            text = uiModel.extendedTime.string()
         )
 
         ExtendedHeaderRow(
@@ -421,7 +424,7 @@ private fun MoreButton(
 @Composable
 private fun AllRecipients(
     modifier: Modifier = Modifier,
-    allRecipients: String
+    allRecipients: TextUiModel
 ) {
     Row(modifier = modifier) {
         Text(
@@ -430,7 +433,7 @@ private fun AllRecipients(
             style = ProtonTheme.typography.caption
         )
         Text(
-            text = allRecipients,
+            text = allRecipients.string(),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = ProtonTheme.typography.captionWeak
@@ -441,9 +444,15 @@ private fun AllRecipients(
 @Composable
 private fun Recipients(
     modifier: Modifier = Modifier,
-    recipients: List<ParticipantUiModel>
+    recipients: List<ParticipantUiModel>,
+    hasUndisclosedRecipients: Boolean = false
 ) {
     Column(modifier = modifier) {
+        if (hasUndisclosedRecipients) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                ParticipantText(text = stringResource(id = R.string.undisclosed_recipients), clickable = false)
+            }
+        }
         recipients.forEachIndexed { index, participant ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 ParticipantText(text = participant.participantName, clickable = false)
@@ -516,11 +525,12 @@ private fun HideDetails(
 private fun ConstrainScope.constrainRecipientsTitle(
     reference: ConstrainedLayoutReference,
     recipients: List<ParticipantUiModel>,
-    isExpanded: Boolean
+    isExpanded: Boolean,
+    hasUndisclosedRecipients: Boolean = false
 ) {
     top.linkTo(reference.top)
     end.linkTo(reference.start, margin = ProtonDimens.DefaultSpacing)
-    visibility = visibleWhen(recipients.isNotEmpty() && isExpanded)
+    visibility = visibleWhen((recipients.isNotEmpty() || hasUndisclosedRecipients) && isExpanded)
 }
 
 private fun ConstrainScope.constrainRecipients(
@@ -528,7 +538,8 @@ private fun ConstrainScope.constrainRecipients(
     startReference: ConstrainedLayoutReference,
     endReference: ConstrainedLayoutReference,
     recipients: List<ParticipantUiModel>,
-    isExpanded: Boolean
+    isExpanded: Boolean,
+    hasUndisclosedRecipients: Boolean = false
 ) {
     width = Dimension.fillToConstraints
     top.linkTo(
@@ -538,7 +549,7 @@ private fun ConstrainScope.constrainRecipients(
     )
     start.linkTo(startReference.end, margin = ProtonDimens.SmallSpacing)
     end.linkTo(endReference.start, margin = ProtonDimens.SmallSpacing)
-    visibility = visibleWhen(recipients.isNotEmpty() && isExpanded)
+    visibility = visibleWhen((recipients.isNotEmpty() || hasUndisclosedRecipients) && isExpanded)
 }
 
 private fun ConstrainScope.constrainExtendedHeaderRow(

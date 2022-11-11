@@ -30,4 +30,5 @@
     <string name="cc">Cc:</string>
     <string name="bcc">Bcc:</string>
     <string name="hide_details">Hide details</string>
+    <string name="undisclosed_recipients">Undisclosed recipients</string>
 </resources>

@@ -39,8 +39,9 @@ object MessageDetailHeaderPreviewData {
         locationIcon = R.drawable.ic_proton_inbox,
         location = "Inbox",
         time = TextUiModel.Text("11:48"),
-        extendedTime = "19-10-2022 at 11:48AM",
-        allRecipients = "Recipient One, Recipient Two, Recipient Three, Recipient Four",
+        extendedTime = TextUiModel.Text("19-10-2022 at 11:48AM"),
+        shouldShowUndisclosedRecipients = false,
+        allRecipients = TextUiModel.Text("Recipient One, Recipient Two, Recipient Three, Recipient Four"),
         toRecipients = listOf(
             ParticipantUiModel(
                 participantName = "Recipient One",
