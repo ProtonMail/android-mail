@@ -173,6 +173,24 @@ class ConversationDetailScreenTest {
         robot.verify { expirationIsDisplayed("12h") }
     }
 
+    @Test
+    fun whenStarredMessageIsLoadedThenStarIconIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                messages = listOf(
+                    ConversationDetailMessageUiModelSample.StarredInvoice
+                )
+            )
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify { starIconIsDisplayed() }
+    }
+
     private fun setupScreen(
         state: ConversationDetailState,
         actions: ConversationDetailScreen.Actions = ConversationDetailScreen.Actions.Empty

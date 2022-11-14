@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExpiration
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import me.proton.core.contact.domain.entity.Contact
@@ -41,6 +42,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             ),
             expiration = message.expirationTime.takeIf { it > 0 }?.let { formatExpiration(it.seconds) },
             forwardedIcon = getForwardedIcon(isForwarded = message.isForwarded),
+            isStarred = SystemLabelId.Starred.labelId in message.labelIds,
             isUnread = message.unread,
             repliedIcon = getRepliedIcon(isReplied = message.isReplied, isRepliedAll = message.isRepliedAll),
             sender = senderResolvedName

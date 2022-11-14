@@ -30,6 +30,7 @@ class ConversationDetailCollapsedMessageHeaderPreviewData :
         ConversationDetailMessageUiModelSample.InvoiceForwarded,
         ConversationDetailMessageUiModelSample.InvoiceReplied,
         ConversationDetailMessageUiModelSample.EmptyDraft,
-        ConversationDetailMessageUiModelSample.ExpiringInvitation
+        ConversationDetailMessageUiModelSample.ExpiringInvitation,
+        ConversationDetailMessageUiModelSample.StarredInvoice
     )
 }

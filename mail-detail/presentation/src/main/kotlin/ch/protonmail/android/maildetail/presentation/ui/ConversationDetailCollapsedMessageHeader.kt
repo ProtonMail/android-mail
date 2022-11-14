@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -55,6 +56,7 @@ import me.proton.core.compose.theme.default
 import me.proton.core.compose.theme.overline
 import me.proton.core.presentation.R.drawable
 import me.proton.core.util.kotlin.exhaustive
+import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
 internal fun ConversationDetailCollapsedMessageHeader(message: ConversationDetailMessageUiModel.Collapsed) {
@@ -78,9 +80,14 @@ internal fun ConversationDetailCollapsedMessageHeader(message: ConversationDetai
             RepliedIcon(message, fontColor).exhaustive
             Sender(message, fontWeight, fontColor)
             Expiration(message)
+            // TODO labels
+            Spacer(modifier = Modifier.weight(1f))
+            StarIcon(message = message)
         }
     }
 }
+
+
 
 @Composable
 private fun Expiration(message: ConversationDetailMessageUiModel.Collapsed) {
@@ -155,6 +162,17 @@ private fun Sender(
         color = fontColor,
         style = ProtonTheme.typography.default
     )
+}
+
+@Composable
+private fun StarIcon(message: ConversationDetailMessageUiModel.Collapsed) {
+    if (message.isStarred) {
+        Icon(
+            painter = painterResource(id = drawable.ic_proton_star_filled),
+            tint = ProtonTheme.colors.notificationWarning,
+            contentDescription = stringResource(id = commonString.starred_icon_description)
+        )
+    }
 }
 
 object ConversationDetailCollapsedMessageHeader {

@@ -81,6 +81,11 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
             composeTestRule.onNodeWithText(subject)
                 .assertIsDisplayed()
         }
+
+        fun starIconIsDisplayed() {
+            composeTestRule.onNodeWithContentDescription(commonString.starred_icon_description)
+                .assertIsDisplayed()
+        }
     }
 }
 

@@ -61,17 +61,24 @@ object ConversationDetailMessageUiModelSample {
         message = MessageSample.SepWeatherForecast
     ).collapse()
 
+    val StarredInvoice = build(
+        message = MessageSample.Invoice,
+        isStarred = true,
+    ).collapse()
+
     private fun build(
         message: Message = MessageSample.build(),
         avatar: AvatarUiModel = AvatarUiModel.ParticipantInitial(message.sender.name.substring(0, 1)),
         expiration: TextUiModel? = null,
         forwardedIcon: ConversationDetailMessageUiModel.ForwardedIcon =
             ConversationDetailMessageUiModel.ForwardedIcon.None,
-        repliedIcon: ConversationDetailMessageUiModel.RepliedIcon = ConversationDetailMessageUiModel.RepliedIcon.None
+        repliedIcon: ConversationDetailMessageUiModel.RepliedIcon = ConversationDetailMessageUiModel.RepliedIcon.None,
+        isStarred: Boolean = false,
     ): ConversationDetailMessageUiModel = ConversationDetailMessageUiModel.Collapsed(
         avatar = avatar,
         expiration = expiration,
         forwardedIcon = forwardedIcon,
+        isStarred = isStarred,
         isUnread = message.unread,
         repliedIcon = repliedIcon,
         sender = message.sender.name
@@ -81,6 +88,7 @@ object ConversationDetailMessageUiModelSample {
         avatar = avatar,
         expiration = expiration,
         forwardedIcon = forwardedIcon,
+        isStarred = isStarred,
         isUnread = isUnread,
         repliedIcon = repliedIcon,
         sender = sender
@@ -90,6 +98,7 @@ object ConversationDetailMessageUiModelSample {
         avatar = avatar,
         expiration = expiration,
         forwardedIcon = forwardedIcon,
+        isStarred = isStarred,
         isUnread = isUnread,
         repliedIcon = repliedIcon,
         sender = sender

@@ -26,6 +26,7 @@ sealed interface ConversationDetailMessageUiModel {
     val avatar: AvatarUiModel
     val expiration: TextUiModel?
     val forwardedIcon: ForwardedIcon
+    val isStarred: Boolean
     val isUnread: Boolean
     val repliedIcon: RepliedIcon
     val sender: String
@@ -34,6 +35,7 @@ sealed interface ConversationDetailMessageUiModel {
         override val avatar: AvatarUiModel,
         override val expiration: TextUiModel?,
         override val forwardedIcon: ForwardedIcon,
+        override val isStarred: Boolean,
         override val isUnread: Boolean,
         override val repliedIcon: RepliedIcon,
         override val sender: String
@@ -43,6 +45,7 @@ sealed interface ConversationDetailMessageUiModel {
         override val avatar: AvatarUiModel,
         override val expiration: TextUiModel?,
         override val forwardedIcon: ForwardedIcon,
+        override val isStarred: Boolean,
         override val isUnread: Boolean,
         override val repliedIcon: RepliedIcon,
         override val sender: String
