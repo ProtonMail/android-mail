@@ -32,6 +32,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val avatarUiModelMapper: DetailAvatarUiModelMapper,
     private val formatExpiration: FormatExpiration,
     private val formatShortTime: FormatShortTime,
+    private val messageLocationUiModelMapper: MessageLocationUiModelMapper,
     private val resolveParticipantName: ResolveParticipantName
 ) {
 
@@ -47,6 +48,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             hasAttachments = message.numAttachments > message.attachmentCount.calendar,
             isStarred = SystemLabelId.Starred.labelId in message.labelIds,
             isUnread = message.unread,
+            locationIcon = messageLocationUiModelMapper(message.labelIds),
             repliedIcon = getRepliedIcon(isReplied = message.isReplied, isRepliedAll = message.isRepliedAll),
             sender = senderResolvedName,
             shortTime = formatShortTime(message.time.seconds)

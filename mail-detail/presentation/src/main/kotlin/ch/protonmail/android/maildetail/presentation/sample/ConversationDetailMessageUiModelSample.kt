@@ -81,6 +81,7 @@ object ConversationDetailMessageUiModelSample {
         hasAttachments = message.numAttachments > message.attachmentCount.calendar,
         isStarred = isStarred,
         isUnread = message.unread,
+        locationIcon = MessageLocationUiModelSample.AllMail,
         repliedIcon = repliedIcon,
         sender = message.sender.name,
         shortTime = TextUiModel("10:00")
@@ -93,6 +94,7 @@ object ConversationDetailMessageUiModelSample {
         hasAttachments = hasAttachments,
         isStarred = isStarred,
         isUnread = isUnread,
+        locationIcon = locationIcon,
         repliedIcon = repliedIcon,
         sender = sender,
         shortTime = shortTime
@@ -105,6 +107,7 @@ object ConversationDetailMessageUiModelSample {
         hasAttachments = hasAttachments,
         isStarred = isStarred,
         isUnread = isUnread,
+        locationIcon = locationIcon,
         repliedIcon = repliedIcon,
         sender = sender,
         shortTime = shortTime

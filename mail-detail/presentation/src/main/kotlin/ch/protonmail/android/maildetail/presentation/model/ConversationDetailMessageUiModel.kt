@@ -29,6 +29,7 @@ sealed interface ConversationDetailMessageUiModel {
     val hasAttachments: Boolean
     val isStarred: Boolean
     val isUnread: Boolean
+    val locationIcon: MessageLocationUiModel
     val repliedIcon: RepliedIcon
     val sender: String
     val shortTime: TextUiModel
@@ -40,6 +41,7 @@ sealed interface ConversationDetailMessageUiModel {
         override val hasAttachments: Boolean,
         override val isStarred: Boolean,
         override val isUnread: Boolean,
+        override val locationIcon: MessageLocationUiModel,
         override val repliedIcon: RepliedIcon,
         override val sender: String,
         override val shortTime: TextUiModel
@@ -52,6 +54,7 @@ sealed interface ConversationDetailMessageUiModel {
         override val hasAttachments: Boolean,
         override val isStarred: Boolean,
         override val isUnread: Boolean,
+        override val locationIcon: MessageLocationUiModel,
         override val repliedIcon: RepliedIcon,
         override val sender: String,
         override val shortTime: TextUiModel

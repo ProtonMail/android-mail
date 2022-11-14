@@ -43,7 +43,7 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
     class Verify(private val composeTestRule: ComposeContentTestRule) {
 
         fun attachmentIconIsDisplayed() {
-            composeTestRule.onAllNodesWithContentDescription(commonString.attachment_message_icon_description)
+            composeTestRule.onAllNodesWithContentDescription(commonString.message_attachment_icon_description)
                 .onFirst()
                 .assertIsDisplayed()
         }

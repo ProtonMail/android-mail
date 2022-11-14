@@ -85,7 +85,7 @@ internal fun ConversationDetailCollapsedMessageHeader(message: ConversationDetai
             Spacer(modifier = Modifier.weight(1f))
             StarIcon(message = message)
             AttachmentIcon(message = message, fontColor = fontColor)
-            // TODO Location icon
+            LocationIcon(message = message, fontColor = fontColor)
             Time(message, fontColor)
         }
     }
@@ -98,7 +98,7 @@ private fun AttachmentIcon(message: ConversationDetailMessageUiModel.Collapsed, 
             modifier = Modifier.size(ProtonDimens.SmallIconSize),
             painter = painterResource(id = drawable.ic_proton_paper_clip),
             tint = fontColor,
-            contentDescription = stringResource(id = commonString.attachment_message_icon_description)
+            contentDescription = stringResource(id = commonString.message_attachment_icon_description)
         )
     }
 }
@@ -142,6 +142,16 @@ private fun ForwardedIcon(
             iconColor = fontColor
         )
     }.exhaustive
+}
+
+@Composable
+private fun LocationIcon(message: ConversationDetailMessageUiModel.Collapsed, fontColor: Color) {
+    Icon(
+        modifier = Modifier.size(ProtonDimens.SmallIconSize),
+        painter = painterResource(id = message.locationIcon.icon),
+        tint = fontColor,
+        contentDescription = NO_CONTENT_DESCRIPTION
+    )
 }
 
 @Composable

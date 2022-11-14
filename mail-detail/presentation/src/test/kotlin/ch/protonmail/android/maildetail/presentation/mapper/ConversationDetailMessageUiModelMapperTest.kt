@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.usecase.FormatExpiration
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
+import ch.protonmail.android.maildetail.presentation.sample.MessageLocationUiModelSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
@@ -45,6 +46,9 @@ internal class ConversationDetailMessageUiModelMapperTest {
         every { this@mockk(itemTime = any()) } returns
             requireNotNull(ConversationDetailMessageUiModelSample.AugWeatherForecast.shortTime)
     }
+    private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
+        every { this@mockk(labelIds = any()) } returns MessageLocationUiModelSample.AllMail
+    }
     private val resolveParticipantName: ResolveParticipantName = mockk {
         every { this@mockk(contacts = any(), participant = RecipientSample.Doe) } returns ContactSample.Doe.name
         every { this@mockk(contacts = any(), participant = RecipientSample.John) } returns ContactSample.John.name
@@ -53,6 +57,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         avatarUiModelMapper = avatarUiModelMapper,
         formatExpiration = formatExpiration,
         formatShortTime = formatShortTime,
+        messageLocationUiModelMapper = messageLocationUiModelMapper,
         resolveParticipantName = resolveParticipantName
     )
 
