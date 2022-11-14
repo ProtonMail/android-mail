@@ -46,6 +46,7 @@ class MessageDetailReducer @Inject constructor(
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) = when (operation) {
         is MessageDetailEvent.ErrorMarkingUnread -> Effect.of(TextUiModel(R.string.error_mark_unread_failed))
         is MessageDetailEvent.ErrorAddingStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
+        is MessageDetailEvent.ErrorRemovingStar -> Effect.of(TextUiModel(R.string.error_unstar_operation_failed))
         else -> error
     }
 

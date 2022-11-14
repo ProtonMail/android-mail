@@ -106,6 +106,13 @@ object MessageTestData {
         ccList = listOf(recipient3)
     )
 
+    val starredMessage = buildMessage(
+        userId = userId,
+        id = RAW_MESSAGE_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(SystemLabelId.Starred.labelId.id)
+    )
+
     fun buildMessage(
         userId: UserId = UserIdTestData.userId,
         id: String,

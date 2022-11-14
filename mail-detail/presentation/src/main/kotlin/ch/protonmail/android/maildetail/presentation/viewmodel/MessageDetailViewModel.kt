@@ -24,13 +24,12 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
+import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
@@ -63,6 +62,7 @@ class MessageDetailViewModel @Inject constructor(
     private val markUnread: MarkUnread,
     private val getContacts: GetContacts,
     private val starMessage: StarMessage,
+    private val unStarMessage: UnStarMessage,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -81,7 +81,7 @@ class MessageDetailViewModel @Inject constructor(
     fun submit(action: MessageViewAction) {
         when (action) {
             is MessageViewAction.Star -> starMessage()
-            is MessageViewAction.UnStar -> Timber.d("UnStar message clicked")
+            is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
         }
     }
@@ -92,6 +92,19 @@ class MessageDetailViewModel @Inject constructor(
                 either.fold(
                     ifLeft = { MessageDetailEvent.ErrorAddingStar },
                     ifRight = { MessageViewAction.Star }
+                )
+            }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun unStarMessage() {
+        primaryUserId.filterNotNull().flatMapLatest { userId ->
+            unStarMessage(userId, messageId).mapLatest { either ->
+                either.fold(
+                    ifLeft = { MessageDetailEvent.ErrorRemovingStar },
+                    ifRight = { MessageViewAction.UnStar }
                 )
             }
         }.onEach { event ->

@@ -37,11 +37,15 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     ) : MessageDetailEvent,
         MessageDetailOperation.AffectingMessage
 
+    data class MessageBottomBarEvent(
+        val bottomBarEvent: BottomBarEvent
+    ) : MessageDetailEvent
+
     object NoCachedMetadata : MessageDetailEvent, MessageDetailOperation.AffectingMessage
     object ErrorAddingStar : MessageDetailEvent, MessageDetailOperation.AffectingMessage
-    object ErrorMarkingUnread : MessageDetailEvent
+    object ErrorRemovingStar : MessageDetailEvent, MessageDetailOperation.AffectingMessage
 
-    data class MessageBottomBarEvent(val bottomBarEvent: BottomBarEvent) : MessageDetailEvent
+    object ErrorMarkingUnread : MessageDetailEvent
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {

@@ -178,6 +178,13 @@ class MessageDetailReducerTest(
                 shouldReduceToErrorEffect = true
             ),
             TestInput(
+                MessageDetailEvent.ErrorRemovingStar,
+                shouldReduceMessageMetadataState = true,
+                shouldReduceBottomBarState = false,
+                shouldReduceToDismissEffect = false,
+                shouldReduceToErrorEffect = true
+            ),
+            TestInput(
                 MessageDetailEvent.ErrorMarkingUnread,
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,

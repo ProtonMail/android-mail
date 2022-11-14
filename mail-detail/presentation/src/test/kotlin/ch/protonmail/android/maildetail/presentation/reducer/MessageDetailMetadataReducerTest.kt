@@ -49,11 +49,7 @@ class MessageDetailMetadataReducerTest(
             "This email is about subjects"
         )
 
-        private val starredMessageUiModel = MessageUiModelTestData.buildMessageUiModel(
-            "messageId",
-            "This email is about subjects",
-            true
-        )
+        private val starredMessageUiModel = messageUiModel.copy(isStarred = true)
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
@@ -70,6 +66,11 @@ class MessageDetailMetadataReducerTest(
                 currentState = MessageDetailMetadataState.Loading,
                 operation = MessageDetailEvent.ErrorAddingStar,
                 expectedState = MessageDetailMetadataState.Loading
+            ).toArray(),
+            TestInput(
+                currentState = MessageDetailMetadataState.Loading,
+                operation = MessageDetailEvent.ErrorRemovingStar,
+                expectedState = MessageDetailMetadataState.Loading
             ).toArray()
         )
 
@@ -83,6 +84,11 @@ class MessageDetailMetadataReducerTest(
                 currentState = MessageDetailMetadataState.Data(starredMessageUiModel),
                 operation = MessageDetailEvent.ErrorAddingStar,
                 expectedState = MessageDetailMetadataState.Data(messageUiModel)
+            ).toArray(),
+            TestInput(
+                currentState = MessageDetailMetadataState.Data(messageUiModel),
+                operation = MessageDetailEvent.ErrorRemovingStar,
+                expectedState = MessageDetailMetadataState.Data(starredMessageUiModel)
             ).toArray()
         )
 
