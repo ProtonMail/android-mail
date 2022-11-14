@@ -25,7 +25,6 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Arama</string>
   <string name="mailbox_toolbar_selected_count">%d seçilmiş</string>
-  <string name="yesterday">dün</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d okunmamış</item>
     <item quantity="other">%d okunmamış</item>

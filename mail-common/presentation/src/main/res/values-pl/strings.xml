@@ -37,11 +37,12 @@
   <string name="action_view_in_dark_mode_content_description">Pokaż wiadomość w ciemnym motywie</string>
   <string name="action_print_content_description">Drukuj</string>
   <string name="action_view_headers_content_description">Pokaż nagłówki</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">Widok HTML</string>
   <string name="action_report_phishing_content_description">Zgłoś próbę wyłudzenia informacji</string>
   <string name="action_remind_content_description">Przypomnij</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Zapisz jako plik PDF</string>
   <string name="action_sender_emails_content_description">Ustaw akcję dla przyszłych wiadomości od tego nadawcy</string>
   <string name="action_save_attachments_content_description">Zapisz załączniki</string>
   <string name="common_error_loading_actions">Ładowanie akcji nie powiodło się</string>
+  <string name="yesterday">Wczoraj</string>
 </resources>

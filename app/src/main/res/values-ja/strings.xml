@@ -20,6 +20,6 @@
   <string name="app_name">Proton Mail</string>
   <string name="title_remove">削除</string>
   <string name="title_remove_account">アカウントの削除</string>
-  <string name="description_remove_account">サインアウトしてこのアカウントに関連付けられているすべて情報の情報を削除します。</string>
+  <string name="description_remove_account">自動的にサインアウトされ、このアカウントのすべて情報が削除されます。</string>
   <string name="user_select_other_account_content_description">別のアカウントを選択</string>
 </resources>

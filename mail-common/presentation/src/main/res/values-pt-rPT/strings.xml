@@ -44,4 +44,5 @@
   <string name="action_sender_emails_content_description">Definir ação para futuros e-mails deste remetente</string>
   <string name="action_save_attachments_content_description">Gravar anexos</string>
   <string name="common_error_loading_actions">Falha ao carregar as ações</string>
+  <string name="yesterday">Yesterday</string>
 </resources>

@@ -25,9 +25,8 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Keresés</string>
   <string name="mailbox_toolbar_selected_count">%d kiválasztva</string>
-  <string name="yesterday">yesterday</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d unread</item>
+    <item quantity="one">%d olvasatlan</item>
     <item quantity="other">%d unread</item>
   </plurals>
 </resources>

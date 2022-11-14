@@ -37,11 +37,12 @@
   <string name="action_view_in_dark_mode_content_description">Bericht bekijken in donkere modus</string>
   <string name="action_print_content_description">Afdrukken</string>
   <string name="action_view_headers_content_description">Headers bekijken</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">Bekijk HTML</string>
   <string name="action_report_phishing_content_description">Phishing rapporteren</string>
   <string name="action_remind_content_description">Herinner mij</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Opslaan als PDF</string>
   <string name="action_sender_emails_content_description">Actie instellen voor toekomstige e-mails van deze afzender</string>
   <string name="action_save_attachments_content_description">Bijlagen opslaan</string>
   <string name="common_error_loading_actions">Acties laden mislukt</string>
+  <string name="yesterday">Yesterday</string>
 </resources>

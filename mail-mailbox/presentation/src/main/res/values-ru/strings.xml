@@ -25,7 +25,6 @@
   <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
   <string name="mailbox_toolbar_search_button_content_description">Поиск</string>
   <string name="mailbox_toolbar_selected_count">Выбрано %d</string>
-  <string name="yesterday">вчера</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d непрочитанное</item>
     <item quantity="few">%d непрочитанных</item>

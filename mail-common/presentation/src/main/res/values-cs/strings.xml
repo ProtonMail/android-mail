@@ -37,11 +37,12 @@
   <string name="action_view_in_dark_mode_content_description">Zobrazit zprávu v tmavém režimu</string>
   <string name="action_print_content_description">Tisk</string>
   <string name="action_view_headers_content_description">Zobrazit záhlaví</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">Zobrazit HTML</string>
   <string name="action_report_phishing_content_description">Nahlásit phishing</string>
   <string name="action_remind_content_description">Připomenout</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Uložit jako PDF</string>
   <string name="action_sender_emails_content_description">Nastavit akci pro budoucí e-maily od tohoto odesílatele</string>
   <string name="action_save_attachments_content_description">Uložit přílohy</string>
   <string name="common_error_loading_actions">Načtení akcí selhalo</string>
+  <string name="yesterday">Včera</string>
 </resources>

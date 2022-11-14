@@ -27,7 +27,7 @@
   </plurals>
   <string name="more_button_content_description">Больше</string>
   <string name="to">Кому:</string>
-  <string name="cc">Cc:</string>
-  <string name="bcc">Bcc:</string>
+  <string name="cc">Копия:</string>
+  <string name="bcc">Скрытая копия:</string>
   <string name="hide_details">Скрыть подробности</string>
 </resources>

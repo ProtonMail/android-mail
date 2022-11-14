@@ -37,11 +37,12 @@
   <string name="action_view_in_dark_mode_content_description">Посмотреть сообщение в тёмном оформлении</string>
   <string name="action_print_content_description">Распечатать</string>
   <string name="action_view_headers_content_description">Посмотреть заголовки</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">Просмотреть HTML-код</string>
   <string name="action_report_phishing_content_description">Сообщить о фишинге</string>
   <string name="action_remind_content_description">Напомнить</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Сохранить как PDF</string>
   <string name="action_sender_emails_content_description">Установить действие для последующих писем от этого отправителя</string>
   <string name="action_save_attachments_content_description">Сохранить вложения</string>
   <string name="common_error_loading_actions">Сбой загрузки действий</string>
+  <string name="yesterday">Вчера</string>
 </resources>

@@ -37,11 +37,12 @@
   <string name="action_view_in_dark_mode_content_description">在深色模式下阅读邮件</string>
   <string name="action_print_content_description">打印</string>
   <string name="action_view_headers_content_description">查看邮件头信息</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">查看 HTML 代码</string>
   <string name="action_report_phishing_content_description">举报欺诈邮件</string>
   <string name="action_remind_content_description">稍后提醒我</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">保存为 PDF 文件</string>
   <string name="action_sender_emails_content_description">对此发件人今后的邮件设置收信规则</string>
   <string name="action_save_attachments_content_description">保存附件</string>
   <string name="common_error_loading_actions">加载操作失败</string>
+  <string name="yesterday">昨天</string>
 </resources>

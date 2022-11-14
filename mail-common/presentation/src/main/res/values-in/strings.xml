@@ -37,11 +37,12 @@
   <string name="action_view_in_dark_mode_content_description">Tampilkan pesan dalam mode gelap</string>
   <string name="action_print_content_description">Cetak</string>
   <string name="action_view_headers_content_description">Lihat header</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">Lihat HTML</string>
   <string name="action_report_phishing_content_description">Laporkan phishing</string>
   <string name="action_remind_content_description">Ingatkan saya</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Simpan sebagai PDF</string>
   <string name="action_sender_emails_content_description">Tentukan tindakan untuk email dari pengirim ini ke depannya</string>
   <string name="action_save_attachments_content_description">Simpan lampiran</string>
   <string name="common_error_loading_actions">Tindakan gagal dimuat</string>
+  <string name="yesterday">Kemarin</string>
 </resources>

@@ -37,11 +37,12 @@
   <string name="action_view_in_dark_mode_content_description">Vizualizare mesaj pe fond întunecat</string>
   <string name="action_print_content_description">Tipărire</string>
   <string name="action_view_headers_content_description">Afișare antete</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">Afișare HTML</string>
   <string name="action_report_phishing_content_description">Raportare înșelăciune</string>
   <string name="action_remind_content_description">Aminitește-mi</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Salvare ca PDF</string>
   <string name="action_sender_emails_content_description">Setare acțiuni mesaje ulterioare de la acest expeditor</string>
   <string name="action_save_attachments_content_description">Salvare atașamente</string>
   <string name="common_error_loading_actions">Încărcarea acțiunilor a eșuat.</string>
+  <string name="yesterday">Ieri</string>
 </resources>

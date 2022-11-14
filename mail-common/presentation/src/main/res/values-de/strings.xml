@@ -37,11 +37,12 @@
   <string name="action_view_in_dark_mode_content_description">Nachricht im dunklen Modus anzeigen</string>
   <string name="action_print_content_description">Drucken</string>
   <string name="action_view_headers_content_description">Kopfzeilen anzeigen</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">Als HTML anzeigen</string>
   <string name="action_report_phishing_content_description">Phishing melden</string>
   <string name="action_remind_content_description">Erinnere mich</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Als PDF speichern</string>
   <string name="action_sender_emails_content_description">Aktion für zukünftige E-Mails von diesem Absender festlegen</string>
   <string name="action_save_attachments_content_description">Anhänge speichern</string>
   <string name="common_error_loading_actions">Aktionen konnten nicht geladen werden</string>
+  <string name="yesterday">Gestern</string>
 </resources>

@@ -65,7 +65,7 @@
   <string name="mail_settings_conversation_mode_hint">Gruppiere E-Mails zum gleichen Thema in deinem Posteingang oder zeige diese getrennt an</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Wischgesten</string>
-  <string name="mail_settings_swipe_actions_subtitle">Richten Sie Wischgesten für den Zugriff auf die am häufigsten verwendeten Aktionen ein.</string>
+  <string name="mail_settings_swipe_actions_subtitle">Richte Wischgesten für den Zugriff auf die am häufigsten verwendeten Aktionen ein.</string>
   <string name="mail_settings_swipe_right_name">Von links nach rechts</string>
   <string name="mail_settings_swipe_left_name">Von rechts nach links</string>
   <string name="mail_settings_swipe_action_archive_title">Archivieren</string>

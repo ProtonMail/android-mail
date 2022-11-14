@@ -37,11 +37,12 @@
   <string name="action_view_in_dark_mode_content_description">以深色模式檢視郵件訊息</string>
   <string name="action_print_content_description">列印</string>
   <string name="action_view_headers_content_description">檢視表頭</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">以 HTML 瀏覽</string>
   <string name="action_report_phishing_content_description">提報釣魚郵件</string>
   <string name="action_remind_content_description">提醒我</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">儲存為 PDF</string>
   <string name="action_sender_emails_content_description">設定動作套用於日後接獲寄件者傳送的電郵</string>
   <string name="action_save_attachments_content_description">儲存附件</string>
   <string name="common_error_loading_actions">無法載入動作</string>
+  <string name="yesterday">昨天</string>
 </resources>

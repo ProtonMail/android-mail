@@ -25,8 +25,8 @@
   <string name="action_forward_content_description">Переслати</string>
   <string name="action_mark_read_content_description">Позначити прочитаним</string>
   <string name="action_mark_unread_content_description">Позначити непрочитаним</string>
-  <string name="action_star_content_description">Позначити зіркою</string>
-  <string name="action_unstar_content_description">Прибрати зірку</string>
+  <string name="action_star_content_description">Позначити зірочкою</string>
+  <string name="action_unstar_content_description">Прибрати зірочку</string>
   <string name="action_label_content_description">Позначити міткою</string>
   <string name="action_move_content_description">Перемістити у</string>
   <string name="action_trash_content_description">Смітник</string>
@@ -35,13 +35,14 @@
   <string name="action_spam_content_description">Спам</string>
   <string name="action_view_in_light_mode_content_description">Переглянути повідомлення у світлому режимі</string>
   <string name="action_view_in_dark_mode_content_description">Переглянути повідомлення в темному режимі</string>
-  <string name="action_print_content_description">Друк</string>
+  <string name="action_print_content_description">Друкувати</string>
   <string name="action_view_headers_content_description">Переглянути заголовки</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">Переглянути HTML</string>
   <string name="action_report_phishing_content_description">Повідомити про шахрайство</string>
   <string name="action_remind_content_description">Нагадати мені</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Зберегти як PDF</string>
   <string name="action_sender_emails_content_description">Налаштувати дію для майбутніх листів від цього відправника</string>
   <string name="action_save_attachments_content_description">Зберегти вкладення</string>
   <string name="common_error_loading_actions">Не вдалося завантажити дії</string>
+  <string name="yesterday">Учора</string>
 </resources>

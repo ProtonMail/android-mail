@@ -37,11 +37,12 @@
   <string name="action_view_in_dark_mode_content_description">Visa meddelande i mörkt läge</string>
   <string name="action_print_content_description">Skriv ut</string>
   <string name="action_view_headers_content_description">Visa rubriker</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">Visa HTML</string>
   <string name="action_report_phishing_content_description">Rapportera nätfiske</string>
   <string name="action_remind_content_description">Påminn mig</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Spara som PDF</string>
   <string name="action_sender_emails_content_description">Ställ in åtgärder för framtida e-postmeddelanden från denna avsändare</string>
   <string name="action_save_attachments_content_description">Spara bilagorna</string>
   <string name="common_error_loading_actions">Misslyckades ladda åtgärder</string>
+  <string name="yesterday">Igår</string>
 </resources>

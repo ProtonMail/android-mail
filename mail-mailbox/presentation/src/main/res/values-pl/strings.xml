@@ -25,7 +25,6 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Szukaj</string>
   <string name="mailbox_toolbar_selected_count">%d zaznaczone</string>
-  <string name="yesterday">wczoraj</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d nieprzeczytana</item>
     <item quantity="few">%d nieprzeczytane</item>

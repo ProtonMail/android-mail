@@ -18,13 +18,13 @@
   -->
 <resources>
   <string name="detail_error_loading_conversation">会话加载失败</string>
-  <string name="detail_error_loading_messages">Failed loading messages</string>
+  <string name="detail_error_loading_messages">邮件加载失败</string>
   <plurals name="message_count_label_text">
     <item quantity="other">%d 封邮件</item>
   </plurals>
-  <string name="more_button_content_description">More</string>
-  <string name="to">To:</string>
-  <string name="cc">Cc:</string>
-  <string name="bcc">Bcc:</string>
-  <string name="hide_details">Hide details</string>
+  <string name="more_button_content_description">更多</string>
+  <string name="to">收件人：</string>
+  <string name="cc">抄送：</string>
+  <string name="bcc">密送：</string>
+  <string name="hide_details">隐藏详情</string>
 </resources>
