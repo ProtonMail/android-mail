@@ -26,6 +26,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 class MessageDetailReducer @Inject constructor(
@@ -43,12 +44,17 @@ class MessageDetailReducer @Inject constructor(
         error = currentState.toNewErrorStateFrom(operation)
     )
 
-    private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) = when (operation) {
-        is MessageDetailEvent.ErrorMarkingUnread -> Effect.of(TextUiModel(R.string.error_mark_unread_failed))
-        is MessageDetailEvent.ErrorAddingStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
-        is MessageDetailEvent.ErrorRemovingStar -> Effect.of(TextUiModel(R.string.error_unstar_operation_failed))
-        else -> error
-    }
+    private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
+        if (operation is MessageDetailOperation.AffectingErrorBar) {
+            when (operation) {
+                is MessageDetailEvent.ErrorMarkingUnread -> Effect.of(TextUiModel(R.string.error_mark_unread_failed))
+                is MessageDetailEvent.ErrorAddingStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
+                is MessageDetailEvent.ErrorRemovingStar ->
+                    Effect.of(TextUiModel(R.string.error_unstar_operation_failed))
+            }.exhaustive
+        } else {
+            error
+        }
 
     private fun MessageDetailState.toNewDismissStateFrom(operation: MessageDetailOperation) =
         if (operation is MessageViewAction.MarkUnread) {
