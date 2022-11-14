@@ -30,63 +30,52 @@ object ConversationDetailMessageUiModelSample {
 
     val AugWeatherForecast = build(
         message = MessageSample.AugWeatherForecast
-    )
+    ).collapse()
 
     val EmptyDraft = build(
         message = MessageSample.EmptyDraft,
         avatar = AvatarUiModel.DraftIcon
-    )
+    ).collapse()
 
     val ExpiringInvitation = build(
         message = MessageSample.ExpiringInvitation,
         expiration = TextUiModel("12h")
-    )
+    ).collapse()
 
     val InvoiceForwarded = build(
         message = MessageSample.Invoice,
         forwardedIcon = ConversationDetailMessageUiModel.ForwardedIcon.Forwarded
-    )
+    ).collapse()
 
     val InvoiceReplied = build(
         message = MessageSample.Invoice,
         repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.Replied
-    )
+    ).collapse()
 
     val InvoiceRepliedAll = build(
         message = MessageSample.Invoice,
         repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
-    )
+    ).collapse()
 
     val SepWeatherForecast = build(
         message = MessageSample.SepWeatherForecast
-    )
+    ).collapse()
 
-    fun build(
-        isExpanded: Boolean = false,
-        @Suppress("UNUSED_PARAMETER") message: Message = MessageSample.build(),
+    private fun build(
+        message: Message = MessageSample.build(),
         avatar: AvatarUiModel = AvatarUiModel.ParticipantInitial(message.sender.name.substring(0, 1)),
         expiration: TextUiModel? = null,
         forwardedIcon: ConversationDetailMessageUiModel.ForwardedIcon =
             ConversationDetailMessageUiModel.ForwardedIcon.None,
         repliedIcon: ConversationDetailMessageUiModel.RepliedIcon = ConversationDetailMessageUiModel.RepliedIcon.None
-    ): ConversationDetailMessageUiModel = when {
-        isExpanded -> ConversationDetailMessageUiModel.Expanded(
-            avatar = avatar,
-            expiration = expiration,
-            forwardedIcon = forwardedIcon,
-            isUnread = message.unread,
-            repliedIcon = repliedIcon,
-            sender = message.sender.name
-        )
-        else -> ConversationDetailMessageUiModel.Collapsed(
-            avatar = avatar,
-            expiration = expiration,
-            forwardedIcon = forwardedIcon,
-            isUnread = message.unread,
-            repliedIcon = repliedIcon,
-            sender = message.sender.name
-        )
-    }
+    ): ConversationDetailMessageUiModel = ConversationDetailMessageUiModel.Collapsed(
+        avatar = avatar,
+        expiration = expiration,
+        forwardedIcon = forwardedIcon,
+        isUnread = message.unread,
+        repliedIcon = repliedIcon,
+        sender = message.sender.name
+    )
 
     fun ConversationDetailMessageUiModel.expand() = ConversationDetailMessageUiModel.Expanded(
         avatar = avatar,
