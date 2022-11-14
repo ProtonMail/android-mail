@@ -52,6 +52,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollap
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
+import me.proton.core.compose.theme.caption
 import me.proton.core.compose.theme.default
 import me.proton.core.compose.theme.overline
 import me.proton.core.presentation.R.drawable
@@ -77,17 +78,30 @@ internal fun ConversationDetailCollapsedMessageHeader(message: ConversationDetai
             Avatar(avatarUiModel = message.avatar)
             Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
             ForwardedIcon(message, fontColor)
-            RepliedIcon(message, fontColor).exhaustive
+            RepliedIcon(message, fontColor)
             Sender(message, fontWeight, fontColor)
             Expiration(message)
             // TODO labels
             Spacer(modifier = Modifier.weight(1f))
             StarIcon(message = message)
+            AttachmentIcon(message = message, fontColor = fontColor)
+            // TODO Location icon
+            Time(message, fontColor)
         }
     }
 }
 
-
+@Composable
+private fun AttachmentIcon(message: ConversationDetailMessageUiModel.Collapsed, fontColor: Color) {
+    if (message.hasAttachments) {
+        Icon(
+            modifier = Modifier.size(ProtonDimens.SmallIconSize),
+            painter = painterResource(id = drawable.ic_proton_paper_clip),
+            tint = fontColor,
+            contentDescription = stringResource(id = commonString.attachment_message_icon_description)
+        )
+    }
+}
 
 @Composable
 private fun Expiration(message: ConversationDetailMessageUiModel.Collapsed) {
@@ -147,7 +161,7 @@ private fun RepliedIcon(
             iconId = drawable.ic_proton_arrows_up_and_left,
             iconColor = fontColor
         )
-    }
+    }.exhaustive
 }
 
 @Composable
@@ -168,11 +182,25 @@ private fun Sender(
 private fun StarIcon(message: ConversationDetailMessageUiModel.Collapsed) {
     if (message.isStarred) {
         Icon(
+            modifier = Modifier.size(ProtonDimens.SmallIconSize),
             painter = painterResource(id = drawable.ic_proton_star_filled),
             tint = ProtonTheme.colors.notificationWarning,
             contentDescription = stringResource(id = commonString.starred_icon_description)
         )
     }
+}
+
+@Composable
+private fun Time(
+    message: ConversationDetailMessageUiModel.Collapsed,
+    fontColor: Color
+) {
+    Text(
+        modifier = Modifier.padding(horizontal = ProtonDimens.ExtraSmallSpacing),
+        text = message.shortTime.string(),
+        color = fontColor,
+        style = ProtonTheme.typography.caption
+    )
 }
 
 object ConversationDetailCollapsedMessageHeader {

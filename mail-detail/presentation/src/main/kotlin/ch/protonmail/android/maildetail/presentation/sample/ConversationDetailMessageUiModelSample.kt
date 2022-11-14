@@ -63,7 +63,7 @@ object ConversationDetailMessageUiModelSample {
 
     val StarredInvoice = build(
         message = MessageSample.Invoice,
-        isStarred = true,
+        isStarred = true
     ).collapse()
 
     private fun build(
@@ -73,34 +73,40 @@ object ConversationDetailMessageUiModelSample {
         forwardedIcon: ConversationDetailMessageUiModel.ForwardedIcon =
             ConversationDetailMessageUiModel.ForwardedIcon.None,
         repliedIcon: ConversationDetailMessageUiModel.RepliedIcon = ConversationDetailMessageUiModel.RepliedIcon.None,
-        isStarred: Boolean = false,
+        isStarred: Boolean = false
     ): ConversationDetailMessageUiModel = ConversationDetailMessageUiModel.Collapsed(
         avatar = avatar,
         expiration = expiration,
         forwardedIcon = forwardedIcon,
+        hasAttachments = message.numAttachments > message.attachmentCount.calendar,
         isStarred = isStarred,
         isUnread = message.unread,
         repliedIcon = repliedIcon,
-        sender = message.sender.name
+        sender = message.sender.name,
+        shortTime = TextUiModel("10:00")
     )
 
     fun ConversationDetailMessageUiModel.expand() = ConversationDetailMessageUiModel.Expanded(
         avatar = avatar,
         expiration = expiration,
         forwardedIcon = forwardedIcon,
+        hasAttachments = hasAttachments,
         isStarred = isStarred,
         isUnread = isUnread,
         repliedIcon = repliedIcon,
-        sender = sender
+        sender = sender,
+        shortTime = shortTime
     )
 
     fun ConversationDetailMessageUiModel.collapse() = ConversationDetailMessageUiModel.Collapsed(
         avatar = avatar,
         expiration = expiration,
         forwardedIcon = forwardedIcon,
+        hasAttachments = hasAttachments,
         isStarred = isStarred,
         isUnread = isUnread,
         repliedIcon = repliedIcon,
-        sender = sender
+        sender = sender,
+        shortTime = shortTime
     )
 }

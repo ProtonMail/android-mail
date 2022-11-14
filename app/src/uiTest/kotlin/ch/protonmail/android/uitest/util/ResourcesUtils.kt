@@ -21,6 +21,13 @@ package ch.protonmail.android.uitest.util
 import androidx.annotation.StringRes
 import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.App
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+
+fun getString(text: TextUiModel): String = when (text) {
+    is TextUiModel.Text -> text.value
+    is TextUiModel.TextRes -> getString(text.value)
+    is TextUiModel.TextResWithArgs -> getString(text.value, *text.formatArgs.toTypedArray())
+}
 
 fun getString(@StringRes resId: Int): String =
     ApplicationProvider.getApplicationContext<App>().getString(resId)

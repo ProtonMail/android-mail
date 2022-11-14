@@ -68,6 +68,22 @@ class ConversationDetailScreenTest {
     }
 
     @Test
+    fun whenMessageIsLoadedTimeIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify {
+            val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
+            val firstMessage = messagesState.messages.first()
+            timeIsDisplayed(time = firstMessage.shortTime)
+        }
+    }
+
+    @Test
     fun whenDraftMessageIsLoadedDraftIconIsDisplayed() {
         // given
         val state = ConversationDetailsPreviewData.Success.copy(
@@ -189,6 +205,18 @@ class ConversationDetailScreenTest {
 
         // then
         robot.verify { starIconIsDisplayed() }
+    }
+
+    @Test
+    fun whenMessageWithAttachmentIsLoadedThenAttachmentIconIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify { attachmentIconIsDisplayed() }
     }
 
     private fun setupScreen(

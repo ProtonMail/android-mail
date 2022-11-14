@@ -26,29 +26,35 @@ sealed interface ConversationDetailMessageUiModel {
     val avatar: AvatarUiModel
     val expiration: TextUiModel?
     val forwardedIcon: ForwardedIcon
+    val hasAttachments: Boolean
     val isStarred: Boolean
     val isUnread: Boolean
     val repliedIcon: RepliedIcon
     val sender: String
+    val shortTime: TextUiModel
 
     data class Collapsed(
         override val avatar: AvatarUiModel,
         override val expiration: TextUiModel?,
         override val forwardedIcon: ForwardedIcon,
+        override val hasAttachments: Boolean,
         override val isStarred: Boolean,
         override val isUnread: Boolean,
         override val repliedIcon: RepliedIcon,
-        override val sender: String
+        override val sender: String,
+        override val shortTime: TextUiModel
     ) : ConversationDetailMessageUiModel
 
     data class Expanded(
         override val avatar: AvatarUiModel,
         override val expiration: TextUiModel?,
         override val forwardedIcon: ForwardedIcon,
+        override val hasAttachments: Boolean,
         override val isStarred: Boolean,
         override val isUnread: Boolean,
         override val repliedIcon: RepliedIcon,
-        override val sender: String
+        override val sender: String,
+        override val shortTime: TextUiModel
     ) : ConversationDetailMessageUiModel
 
     enum class ForwardedIcon {

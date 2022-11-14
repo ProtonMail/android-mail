@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExpiration
+import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -40,6 +41,10 @@ internal class ConversationDetailMessageUiModelMapperTest {
         every { this@mockk(epochTime = any()) } returns
             requireNotNull(ConversationDetailMessageUiModelSample.ExpiringInvitation.expiration)
     }
+    private val formatShortTime: FormatShortTime = mockk {
+        every { this@mockk(itemTime = any()) } returns
+            requireNotNull(ConversationDetailMessageUiModelSample.AugWeatherForecast.shortTime)
+    }
     private val resolveParticipantName: ResolveParticipantName = mockk {
         every { this@mockk(contacts = any(), participant = RecipientSample.Doe) } returns ContactSample.Doe.name
         every { this@mockk(contacts = any(), participant = RecipientSample.John) } returns ContactSample.John.name
@@ -47,6 +52,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     private val mapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = avatarUiModelMapper,
         formatExpiration = formatExpiration,
+        formatShortTime = formatShortTime,
         resolveParticipantName = resolveParticipantName
     )
 
@@ -136,6 +142,19 @@ internal class ConversationDetailMessageUiModelMapperTest {
 
     @Test
     fun `when message has expiration, ui model contains formatted time`() {
+        // given
+        val message = MessageSample.ExpiringInvitation
+        val expected = ConversationDetailMessageUiModelSample.ExpiringInvitation
+
+        // when
+        val result = mapper.toUiModel(message, contacts = emptyList())
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `when message has only calendar attachments, ui model has not attachments`() {
         // given
         val message = MessageSample.ExpiringInvitation
         val expected = ConversationDetailMessageUiModelSample.ExpiringInvitation

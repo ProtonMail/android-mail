@@ -22,9 +22,18 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionCollection
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+
+fun SemanticsNodeInteractionsProvider.onAllNodesWithText(
+    text: TextUiModel,
+    substring: Boolean = false,
+    ignoreCase: Boolean = false,
+    useUnmergedTree: Boolean = false
+): SemanticsNodeInteractionCollection = onAllNodesWithText(getString(text), substring, ignoreCase, useUnmergedTree)
 
 fun SemanticsNodeInteractionsProvider.onAllNodesWithText(
     @StringRes textRes: Int,
@@ -39,6 +48,25 @@ fun SemanticsNodeInteractionsProvider.onNodeWithContentDescription(
     ignoreCase: Boolean = false,
     useUnmergedTree: Boolean = false
 ): SemanticsNodeInteraction = onNodeWithContentDescription(getString(labelRes), substring, ignoreCase, useUnmergedTree)
+
+fun SemanticsNodeInteractionsProvider.onAllNodesWithContentDescription(
+    @StringRes labelRes: Int,
+    substring: Boolean = false,
+    ignoreCase: Boolean = false,
+    useUnmergedTree: Boolean = false
+): SemanticsNodeInteractionCollection = onAllNodesWithContentDescription(
+    label = getString(labelRes),
+    substring = substring,
+    ignoreCase = ignoreCase,
+    useUnmergedTree = useUnmergedTree
+)
+
+fun SemanticsNodeInteractionsProvider.onNodeWithText(
+    text: TextUiModel,
+    substring: Boolean = false,
+    ignoreCase: Boolean = false,
+    useUnmergedTree: Boolean = false
+): SemanticsNodeInteraction = onNodeWithText(getString(text), substring, ignoreCase, useUnmergedTree)
 
 fun SemanticsNodeInteractionsProvider.onNodeWithText(
     @StringRes textRes: Int,

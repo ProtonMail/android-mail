@@ -47,12 +47,15 @@ object MessageSample {
     )
 
     val ExpiringInvitation = build(
+        attachmentCount = AttachmentCountSample.CalendarInvite,
+        numAttachments = AttachmentCountSample.CalendarInvite.calendar,
         expirationTime = Aug2022
     )
 
     val Invoice = build(
         messageId = MessageIdSample.Invoice,
         labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document),
+        numAttachments = 1,
         subject = "Invoice"
     )
 

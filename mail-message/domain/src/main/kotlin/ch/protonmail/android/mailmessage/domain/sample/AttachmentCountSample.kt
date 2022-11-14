@@ -22,7 +22,11 @@ import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 
 object AttachmentCountSample {
 
-    fun build() = AttachmentCount(
-        calendar = 0
+    val CalendarInvite = AttachmentCount(calendar = 1)
+
+    fun build(
+        calendar: Int = 0
+    ) = AttachmentCount(
+        calendar = calendar
     )
 }
