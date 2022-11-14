@@ -24,7 +24,6 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
@@ -32,6 +31,6 @@ class StarMessage @Inject constructor(
     private val messageRepository: MessageRepository
 ) {
 
-    operator fun invoke(userId: UserId, messageId: MessageId): Flow<Either<DataError, Message>> =
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Message> =
         messageRepository.addLabel(userId, messageId, SystemLabelId.Starred.labelId)
 }

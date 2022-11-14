@@ -116,11 +116,10 @@ class MessageDetailViewModelTest {
         coEvery { this@mockk.invoke(userId) } returns ContactTestData.contacts.right()
     }
     private val starMessage = mockk<StarMessage> {
-        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns
-            flowOf(MessageTestData.starredMessage.right())
+        coEvery { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns MessageTestData.starredMessage.right()
     }
     private val unStarMessage = mockk<UnStarMessage> {
-        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
+        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns MessageTestData.message.right()
     }
 
     private val viewModel by lazy {
@@ -302,7 +301,7 @@ class MessageDetailViewModelTest {
     @Test
     fun `starred message metadata is emitted when star action is successful`() = runTest {
         viewModel.state.test {
-            initialStateEmitted()
+            advanceUntilIdle()
             // When
             viewModel.submit(MessageViewAction.Star)
             advanceUntilIdle()
@@ -318,7 +317,7 @@ class MessageDetailViewModelTest {
     fun `error starring message is emitted when star action fails`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        every { starMessage.invoke(userId, messageId) } returns flowOf(DataError.Local.NoDataCached.left())
+        coEvery { starMessage.invoke(userId, messageId) } returns DataError.Local.NoDataCached.left()
 
         viewModel.state.test {
             initialStateEmitted()
@@ -338,10 +337,9 @@ class MessageDetailViewModelTest {
         val messageId = MessageId(rawMessageId)
         val messageWithLabels = MessageWithLabels(MessageTestData.starredMessage, emptyList())
         every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
-        every { unStarMessage.invoke(userId, messageId) } returns flowOf(Unit.right())
 
         viewModel.state.test {
-            initialStateEmitted()
+            advanceUntilIdle()
             // When
             viewModel.submit(MessageViewAction.UnStar)
             advanceUntilIdle()
@@ -357,7 +355,7 @@ class MessageDetailViewModelTest {
     fun `error unStarring message is emitted when unstar action fails`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        every { unStarMessage.invoke(userId, messageId) } returns flowOf(DataError.Local.NoDataCached.left())
+        every { unStarMessage.invoke(userId, messageId) } returns DataError.Local.NoDataCached.left()
 
         viewModel.state.test {
             initialStateEmitted()

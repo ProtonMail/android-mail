@@ -87,26 +87,22 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun starMessage() {
-        primaryUserId.flatMapLatest { userId ->
-            starMessage(userId, messageId).mapLatest { either ->
-                either.fold(
-                    ifLeft = { MessageDetailEvent.ErrorAddingStar },
-                    ifRight = { MessageViewAction.Star }
-                )
-            }
+        primaryUserId.mapLatest { userId ->
+            starMessage(userId, messageId).fold(
+                ifLeft = { MessageDetailEvent.ErrorAddingStar },
+                ifRight = { MessageViewAction.Star }
+            )
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)
     }
 
     private fun unStarMessage() {
-        primaryUserId.filterNotNull().flatMapLatest { userId ->
-            unStarMessage(userId, messageId).mapLatest { either ->
-                either.fold(
-                    ifLeft = { MessageDetailEvent.ErrorRemovingStar },
-                    ifRight = { MessageViewAction.UnStar }
-                )
-            }
+        primaryUserId.mapLatest { userId ->
+            unStarMessage(userId, messageId).fold(
+                ifLeft = { MessageDetailEvent.ErrorRemovingStar },
+                ifRight = { MessageViewAction.UnStar }
+            )
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)

@@ -66,9 +66,9 @@ interface MessageRepository {
     /**
      * Adds the given labelId to the message with the given messageId]
      */
-    fun addLabel(
+    suspend fun addLabel(
         userId: UserId,
         messageId: MessageId,
         labelId: LabelId
-    ): Flow<Either<DataError.Local, Message>>
+    ): Either<DataError.Local, Message>
 }
