@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import ch.protonmail.android.mailcommon.presentation.usecase.FormatExpiration
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -35,12 +36,17 @@ internal class ConversationDetailMessageUiModelMapperTest {
         every { this@mockk(message = any(), senderResolvedName = any()) } returns
             ConversationDetailMessageUiModelSample.AugWeatherForecast.avatar
     }
+    private val formatExpiration: FormatExpiration = mockk {
+        every { this@mockk(epochTime = any()) } returns
+            requireNotNull(ConversationDetailMessageUiModelSample.ExpiringInvitation.expiration)
+    }
     private val resolveParticipantName: ResolveParticipantName = mockk {
         every { this@mockk(contacts = any(), participant = RecipientSample.Doe) } returns ContactSample.Doe.name
         every { this@mockk(contacts = any(), participant = RecipientSample.John) } returns ContactSample.John.name
     }
     private val mapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = avatarUiModelMapper,
+        formatExpiration = formatExpiration,
         resolveParticipantName = resolveParticipantName
     )
 
@@ -120,6 +126,19 @@ internal class ConversationDetailMessageUiModelMapperTest {
                 repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
             )
         }
+
+        // when
+        val result = mapper.toUiModel(message, contacts = emptyList())
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `when message has expiration, ui model contains formatted time`() {
+        // given
+        val message = MessageSample.ExpiringInvitation
+        val expected = ConversationDetailMessageUiModelSample.ExpiringInvitation
 
         // when
         val result = mapper.toUiModel(message, contacts = emptyList())

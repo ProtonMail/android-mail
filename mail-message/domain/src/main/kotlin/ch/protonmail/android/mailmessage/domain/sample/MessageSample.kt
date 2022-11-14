@@ -40,15 +40,22 @@ object MessageSample {
         subject = "August weather forecast",
         time = Aug2022
     )
+
     val EmptyDraft = build(
         subject = "",
         labelIds = listOf(LabelIdSample.AllDraft)
     )
+
+    val ExpiringInvitation = build(
+        expirationTime = Aug2022
+    )
+
     val Invoice = build(
         messageId = MessageIdSample.Invoice,
         labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document),
         subject = "Invoice"
     )
+
     val SepWeatherForecast = build(
         conversationId = ConversationIdSample.WeatherForecast,
         messageId = MessageIdSample.SepWeatherForecast,

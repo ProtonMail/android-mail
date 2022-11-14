@@ -155,6 +155,24 @@ class ConversationDetailScreenTest {
         }
     }
 
+    @Test
+    fun whenMessageWithExpirationIsLoadedThenExpirationIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                messages = listOf(
+                    ConversationDetailMessageUiModelSample.ExpiringInvitation
+                )
+            )
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify { expirationIsDisplayed("12h") }
+    }
+
     private fun setupScreen(
         state: ConversationDetailState,
         actions: ConversationDetailScreen.Actions = ConversationDetailScreen.Actions.Empty

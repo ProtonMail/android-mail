@@ -17,19 +17,23 @@
  */
 package ch.protonmail.android.maildetail.presentation.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -41,12 +45,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.R.string
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
@@ -67,6 +75,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.default
+import me.proton.core.compose.theme.overline
 import me.proton.core.presentation.R.drawable
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
@@ -207,7 +216,9 @@ private fun MessagesContent(
                 )
             ) {
                 Row(
-                    modifier = Modifier.padding(ProtonDimens.SmallSpacing),
+                    modifier = Modifier
+                        .padding(ProtonDimens.SmallSpacing)
+                        .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Avatar(avatarUiModel = message.avatar)
@@ -234,12 +245,33 @@ private fun MessagesContent(
                         )
                     }.exhaustive
                     Text(
-                        modifier = Modifier.weight(1f),
                         text = message.sender,
                         fontWeight = fontWeight,
                         color = fontColor,
                         style = ProtonTheme.typography.default
                     )
+                    message.expiration?.let { expiration ->
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = ProtonDimens.ExtraSmallSpacing)
+                                .background(
+                                    color = ProtonTheme.colors.interactionWeakNorm,
+                                    shape = ProtonTheme.shapes.medium
+                                )
+                                .padding(horizontal = ProtonDimens.ExtraSmallSpacing),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(MailDimens.TinyIcon),
+                                painter = painterResource(id = drawable.ic_proton_hourglass),
+                                contentDescription = NO_CONTENT_DESCRIPTION
+                            )
+                            Text(
+                                text = expiration.string(),
+                                style = ProtonTheme.typography.overline
+                            )
+                        }
+                    }
                 }
             }
         }

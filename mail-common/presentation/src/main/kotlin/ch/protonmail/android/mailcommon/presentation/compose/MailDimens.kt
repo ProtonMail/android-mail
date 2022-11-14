@@ -34,4 +34,6 @@ object MailDimens {
     val AvatarMinSize = 32.dp
 
     val ProgressDefaultSize = 24.dp
+
+    val TinyIcon = 12.dp
 }

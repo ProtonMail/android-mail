@@ -21,6 +21,7 @@
 package ch.protonmail.android.maildetail.presentation.sample
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -34,6 +35,11 @@ object ConversationDetailMessageUiModelSample {
     val EmptyDraft = build(
         message = MessageSample.EmptyDraft,
         avatar = AvatarUiModel.DraftIcon
+    )
+
+    val ExpiringInvitation = build(
+        message = MessageSample.ExpiringInvitation,
+        expiration = TextUiModel("12h")
     )
 
     val InvoiceForwarded = build(
@@ -59,12 +65,14 @@ object ConversationDetailMessageUiModelSample {
         isExpanded: Boolean = false,
         @Suppress("UNUSED_PARAMETER") message: Message = MessageSample.build(),
         avatar: AvatarUiModel = AvatarUiModel.ParticipantInitial(message.sender.name.substring(0, 1)),
+        expiration: TextUiModel? = null,
         forwardedIcon: ConversationDetailMessageUiModel.ForwardedIcon =
             ConversationDetailMessageUiModel.ForwardedIcon.None,
         repliedIcon: ConversationDetailMessageUiModel.RepliedIcon = ConversationDetailMessageUiModel.RepliedIcon.None
     ): ConversationDetailMessageUiModel = when {
         isExpanded -> ConversationDetailMessageUiModel.Expanded(
             avatar = avatar,
+            expiration = expiration,
             forwardedIcon = forwardedIcon,
             isUnread = message.unread,
             repliedIcon = repliedIcon,
@@ -72,6 +80,7 @@ object ConversationDetailMessageUiModelSample {
         )
         else -> ConversationDetailMessageUiModel.Collapsed(
             avatar = avatar,
+            expiration = expiration,
             forwardedIcon = forwardedIcon,
             isUnread = message.unread,
             repliedIcon = repliedIcon,
@@ -81,6 +90,7 @@ object ConversationDetailMessageUiModelSample {
 
     fun ConversationDetailMessageUiModel.expand() = ConversationDetailMessageUiModel.Expanded(
         avatar = avatar,
+        expiration = expiration,
         forwardedIcon = forwardedIcon,
         isUnread = isUnread,
         repliedIcon = repliedIcon,
@@ -89,6 +99,7 @@ object ConversationDetailMessageUiModelSample {
 
     fun ConversationDetailMessageUiModel.collapse() = ConversationDetailMessageUiModel.Collapsed(
         avatar = avatar,
+        expiration = expiration,
         forwardedIcon = forwardedIcon,
         isUnread = isUnread,
         repliedIcon = repliedIcon,

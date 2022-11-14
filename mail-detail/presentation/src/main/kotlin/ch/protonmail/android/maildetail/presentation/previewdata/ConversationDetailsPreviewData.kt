@@ -40,7 +40,8 @@ object ConversationDetailsPreviewData {
             messages = listOf(
                 ConversationDetailMessageUiModelSample.AugWeatherForecast,
                 ConversationDetailMessageUiModelSample.InvoiceRepliedAll,
-                ConversationDetailMessageUiModelSample.InvoiceForwarded
+                ConversationDetailMessageUiModelSample.InvoiceForwarded,
+                ConversationDetailMessageUiModelSample.ExpiringInvitation
             )
         ),
         bottomBarState = BottomBarState.Data(

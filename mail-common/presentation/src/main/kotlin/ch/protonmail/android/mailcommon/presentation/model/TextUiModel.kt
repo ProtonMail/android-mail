@@ -27,11 +27,9 @@ import androidx.compose.ui.res.stringResource
 @Immutable
 sealed interface TextUiModel {
 
-    @JvmInline
-    value class Text(val value: String) : TextUiModel
+    data class Text(val value: String) : TextUiModel
 
-    @JvmInline
-    value class TextRes(@StringRes val value: Int) : TextUiModel
+    data class TextRes(@StringRes val value: Int) : TextUiModel
 
     data class TextResWithArgs(
         @StringRes val value: Int,

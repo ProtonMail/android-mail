@@ -18,10 +18,11 @@
 
 package ch.protonmail.android.mailcommon.domain.usecase
 
+import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-class GetCurrentEpochTimeDuration(
+class GetCurrentEpochTimeDuration @Inject constructor(
     private val getLocalisedCalendar: GetLocalisedCalendar
 ) {
 

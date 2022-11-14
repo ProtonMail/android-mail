@@ -42,6 +42,11 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
                 .assertIsDisplayed()
         }
 
+        fun expirationIsDisplayed(expiration: String) {
+            composeTestRule.onNodeWithText(expiration)
+                .assertIsDisplayed()
+        }
+
         fun forwardedIconIsDisplayed() {
             composeTestRule
                 .onNodeWithTag(ConversationDetailScreen.ForwardedMessageTestTag)
