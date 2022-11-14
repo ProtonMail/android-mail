@@ -62,4 +62,13 @@ interface MessageRepository {
         userId: UserId,
         conversationId: ConversationId
     ): Flow<List<Message>>
+
+    /**
+     * Adds the given labelId to the message with the given messageId]
+     */
+    fun addLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    ): Flow<Either<DataError.Local, Message>>
 }

@@ -70,6 +70,14 @@ class MessageRepositoryImpl @Inject constructor(
     override fun observeCachedMessages(userId: UserId, conversationId: ConversationId): Flow<List<Message>> =
         localDataSource.observeMessages(userId, conversationId)
 
+    override fun addLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    ): Flow<Either<DataError.Local, Message>> {
+        TODO("Not yet implemented")
+    }
+
     private suspend fun fetchMessages(
         userId: UserId,
         pageKey: PageKey

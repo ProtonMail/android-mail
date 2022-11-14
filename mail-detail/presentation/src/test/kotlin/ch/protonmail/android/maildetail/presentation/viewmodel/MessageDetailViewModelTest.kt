@@ -116,7 +116,8 @@ class MessageDetailViewModelTest {
         coEvery { this@mockk.invoke(userId) } returns ContactTestData.contacts.right()
     }
     private val starMessage = mockk<StarMessage> {
-        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
+        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns
+            flowOf(MessageTestData.starredMessage.right())
     }
     private val unStarMessage = mockk<UnStarMessage> {
         every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
@@ -300,9 +301,6 @@ class MessageDetailViewModelTest {
 
     @Test
     fun `starred message metadata is emitted when star action is successful`() = runTest {
-        // Given
-        every { starMessage.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
-
         viewModel.state.test {
             initialStateEmitted()
             // When
