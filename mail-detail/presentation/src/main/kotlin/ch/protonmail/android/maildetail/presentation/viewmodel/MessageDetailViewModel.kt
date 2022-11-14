@@ -91,7 +91,7 @@ class MessageDetailViewModel @Inject constructor(
             starMessage(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.ErrorAddingStar },
-                    ifRight = { MessageDetailEvent.Starred }
+                    ifRight = { MessageViewAction.Star }
                 )
             }
         }.onEach { event ->
@@ -104,7 +104,7 @@ class MessageDetailViewModel @Inject constructor(
             markUnread(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.ErrorMarkingUnread },
-                    ifRight = { MessageDetailEvent.MarkedUnread }
+                    ifRight = { MessageViewAction.MarkUnread }
                 )
             }
         }.onEach { event ->

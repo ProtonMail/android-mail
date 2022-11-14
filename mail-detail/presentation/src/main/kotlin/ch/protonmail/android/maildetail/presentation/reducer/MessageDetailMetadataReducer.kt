@@ -33,14 +33,12 @@ class MessageDetailMetadataReducer @Inject constructor() {
     ): MessageDetailMetadataState {
         return when (event) {
             is MessageDetailEvent.MessageMetadata -> MessageDetailMetadataState.Data(event.messageUiModel)
-
             is MessageDetailEvent.NoCachedMetadata -> TODO(
                 "This should never happen. Handle by following the 'load message body' flow (once implemented)"
             )
             is MessageDetailEvent.MessageBody -> TODO("Implement when adding message body flow")
-            is MessageViewAction.Star -> TODO()
+            is MessageViewAction.Star -> currentState.toNewStateForStarredMessage()
             is MessageViewAction.UnStar -> TODO()
-            is MessageDetailEvent.Starred -> currentState.toNewStateForStarredMessage()
             is MessageDetailEvent.ErrorAddingStar -> currentState.toNewStateForErrorAddingStar()
         }
     }

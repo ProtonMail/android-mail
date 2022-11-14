@@ -25,6 +25,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import javax.inject.Inject
 
 class MessageDetailReducer @Inject constructor(
@@ -49,7 +50,7 @@ class MessageDetailReducer @Inject constructor(
     }
 
     private fun MessageDetailState.toNewDismissStateFrom(operation: MessageDetailOperation) =
-        if (operation is MessageDetailEvent.MarkedUnread) {
+        if (operation is MessageViewAction.MarkUnread) {
             Effect.of(Unit)
         } else {
             dismiss

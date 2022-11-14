@@ -38,8 +38,8 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
         MessageDetailOperation.AffectingMessage
 
     object NoCachedMetadata : MessageDetailEvent, MessageDetailOperation.AffectingMessage
-    object ErrorMarkingUnread : MessageDetailEvent
     object ErrorAddingStar : MessageDetailEvent, MessageDetailOperation.AffectingMessage
+    object ErrorMarkingUnread : MessageDetailEvent
 
     data class MessageBottomBarEvent(val bottomBarEvent: BottomBarEvent) : MessageDetailEvent
 }

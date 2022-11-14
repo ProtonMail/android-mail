@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
+import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.testdata.message.MessageUiModelTestData
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -36,7 +37,7 @@ class MessageDetailMetadataReducerTest(
 
     @Test
     fun `should produce the expected new state`() {
-        val actualState = detailReducer.newStateFrom(testInput.currentState, testInput.event)
+        val actualState = detailReducer.newStateFrom(testInput.currentState, testInput.operation)
 
         assertEquals(testInput.expectedState, actualState)
     }
@@ -57,12 +58,12 @@ class MessageDetailMetadataReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MessageDetailMetadataState.Loading,
-                event = MessageDetailEvent.MessageMetadata(messageUiModel),
+                operation = MessageDetailEvent.MessageMetadata(messageUiModel),
                 expectedState = MessageDetailMetadataState.Data(messageUiModel)
             ).toArray(),
             TestInput(
                 currentState = MessageDetailMetadataState.Loading,
-                event = MessageDetailEvent.Starred,
+                operation = MessageViewAction.Star,
                 expectedState = MessageDetailMetadataState.Loading
             ).toArray(),
             TestInput(
@@ -75,7 +76,7 @@ class MessageDetailMetadataReducerTest(
         private val transitionsFromDataState = listOf(
             TestInput(
                 currentState = MessageDetailMetadataState.Data(messageUiModel),
-                event = MessageDetailEvent.Starred,
+                operation = MessageViewAction.Star,
                 expectedState = MessageDetailMetadataState.Data(starredMessageUiModel)
             ).toArray(),
             TestInput(
@@ -92,7 +93,7 @@ class MessageDetailMetadataReducerTest(
 
     class TestInput(
         val currentState: MessageDetailMetadataState,
-        val event: MessageDetailOperation.AffectingMessage,
+        val operation: MessageDetailOperation.AffectingMessage,
         val expectedState: MessageDetailMetadataState
     ) {
 
