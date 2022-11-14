@@ -112,6 +112,7 @@ fun ConversationDetailScreen(
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        containerColor = ProtonTheme.colors.backgroundDeep,
         snackbarHost = {
             ProtonSnackbarHost(hostState = snackbarHostState)
         },
