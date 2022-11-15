@@ -22,7 +22,7 @@ import android.text.format.Formatter
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
-import ch.protonmail.android.maildetail.domain.model.MessageDetailItem
+import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
@@ -44,25 +44,25 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
     private val resolveParticipantName: ResolveParticipantName
 ) : Mapper<Message, MessageDetailMetadataUiModel> {
 
-    fun toUiModel(messageDetailItem: MessageDetailItem, contacts: List<Contact>): MessageDetailHeaderUiModel {
-        val senderResolvedName = resolveParticipantName(messageDetailItem.message.sender, contacts)
+    fun toUiModel(messageWithLabels: MessageWithLabels, contacts: List<Contact>): MessageDetailHeaderUiModel {
+        val senderResolvedName = resolveParticipantName(messageWithLabels.message.sender, contacts)
 
         return MessageDetailHeaderUiModel(
-            avatar = detailAvatarUiModelMapper(messageDetailItem.message, senderResolvedName),
-            sender = participantUiModelMapper.toUiModel(messageDetailItem.message.sender, contacts),
+            avatar = detailAvatarUiModelMapper(messageWithLabels.message, senderResolvedName),
+            sender = participantUiModelMapper.toUiModel(messageWithLabels.message.sender, contacts),
             shouldShowTrackerProtectionIcon = false,
-            shouldShowAttachmentIcon = messageDetailItem.message.hasNonCalendarAttachments(),
-            shouldShowStar = messageDetailItem.message.isStarred(),
-            location = messageLocationUiModelMapper(messageDetailItem.message.labelIds, messageDetailItem.labels),
-            time = formatShortTime(messageDetailItem.message.time.toDuration(DurationUnit.MILLISECONDS)),
-            extendedTime = formatExtendedTime(messageDetailItem.message.time.toDuration(DurationUnit.MILLISECONDS)),
-            shouldShowUndisclosedRecipients = messageDetailItem.message.hasUndisclosedRecipients(),
-            allRecipients = messageDetailItem.message.allRecipients(contacts),
-            toRecipients = messageDetailItem.message.toList.map { participantUiModelMapper.toUiModel(it, contacts) },
-            ccRecipients = messageDetailItem.message.ccList.map { participantUiModelMapper.toUiModel(it, contacts) },
-            bccRecipients = messageDetailItem.message.bccList.map { participantUiModelMapper.toUiModel(it, contacts) },
+            shouldShowAttachmentIcon = messageWithLabels.message.hasNonCalendarAttachments(),
+            shouldShowStar = messageWithLabels.message.isStarred(),
+            location = messageLocationUiModelMapper(messageWithLabels.message.labelIds, messageWithLabels.labels),
+            time = formatShortTime(messageWithLabels.message.time.toDuration(DurationUnit.MILLISECONDS)),
+            extendedTime = formatExtendedTime(messageWithLabels.message.time.toDuration(DurationUnit.MILLISECONDS)),
+            shouldShowUndisclosedRecipients = messageWithLabels.message.hasUndisclosedRecipients(),
+            allRecipients = messageWithLabels.message.allRecipients(contacts),
+            toRecipients = messageWithLabels.message.toList.map { participantUiModelMapper.toUiModel(it, contacts) },
+            ccRecipients = messageWithLabels.message.ccList.map { participantUiModelMapper.toUiModel(it, contacts) },
+            bccRecipients = messageWithLabels.message.bccList.map { participantUiModelMapper.toUiModel(it, contacts) },
             labels = emptyList(),
-            size = Formatter.formatShortFileSize(null, messageDetailItem.message.size),
+            size = Formatter.formatShortFileSize(null, messageWithLabels.message.size),
             encryptionPadlock = R.drawable.ic_proton_lock,
             encryptionInfo = "End-to-end encrypted and signed message"
         )

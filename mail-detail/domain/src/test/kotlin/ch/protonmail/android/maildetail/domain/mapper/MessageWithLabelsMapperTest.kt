@@ -18,14 +18,14 @@
 
 package ch.protonmail.android.maildetail.domain.mapper
 
-import ch.protonmail.android.maildetail.domain.model.MessageDetailItem
+import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class MessageDetailItemMapperTest {
+class MessageWithLabelsMapperTest {
 
     private val message = MessageTestData.buildMessage(id = "messageId")
     private val labels = listOf(
@@ -33,14 +33,14 @@ class MessageDetailItemMapperTest {
         LabelTestData.buildLabel(id = "CustomLabelId")
     )
 
-    private val messageDetailItemMapper = MessageDetailItemMapper()
+    private val messageWithLabelsMapper = MessageWithLabelsMapper()
 
     @Test
     fun `message and labels are correctly mapped in a message detail item model`() {
         // Given
-        val expectedResult = MessageDetailItem(message, labels)
+        val expectedResult = MessageWithLabels(message, labels)
         // When
-        val result = messageDetailItemMapper.toUiModel(message, labels)
+        val result = messageWithLabelsMapper.toUiModel(message, labels)
         // Then
         assertEquals(expectedResult, result)
     }
