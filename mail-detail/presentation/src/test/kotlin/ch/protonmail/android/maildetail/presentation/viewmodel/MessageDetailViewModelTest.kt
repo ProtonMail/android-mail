@@ -230,12 +230,11 @@ class MessageDetailViewModelTest {
 
         // When
         viewModel.state.test {
-            initialStateEmitted()
-            messageStateEmitted()
+            advanceUntilIdle()
             // Then
             val actionUiModels = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
             val expected = BottomBarState.Data(actionUiModels)
-            assertEquals(expected, awaitItem().bottomBarState)
+            assertEquals(expected, lastEmittedItem().bottomBarState)
         }
     }
 
@@ -257,11 +256,10 @@ class MessageDetailViewModelTest {
 
         // When
         viewModel.state.test {
-            initialStateEmitted()
-            messageStateEmitted()
+            advanceUntilIdle()
             // Then
             val expected = BottomBarState.Error.FailedLoadingActions
-            assertEquals(expected, awaitItem().bottomBarState)
+            assertEquals(expected, lastEmittedItem().bottomBarState)
         }
     }
 
@@ -276,9 +274,7 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.MarkUnread)
             advanceUntilIdle()
             // Then
-            val events = cancelAndConsumeRemainingEvents()
-            val lastState = (events.last() as Event.Item).value
-            assertEquals(Unit, lastState.dismiss.consume())
+            assertEquals(Unit, lastEmittedItem().dismiss.consume())
         }
     }
 
@@ -292,9 +288,7 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.MarkUnread)
             advanceUntilIdle()
             // Then
-            val events = cancelAndConsumeRemainingEvents()
-            val lastState = (events.last() as Event.Item).value
-            assertEquals(TextUiModel(R.string.error_mark_unread_failed), lastState.error.consume())
+            assertEquals(TextUiModel(R.string.error_mark_unread_failed), lastEmittedItem().error.consume())
         }
     }
 
@@ -306,9 +300,7 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.Star)
             advanceUntilIdle()
             // Then
-            val events = cancelAndConsumeRemainingEvents()
-            val lastState = (events.last() as Event.Item).value
-            val actual = assertIs<MessageDetailMetadataState.Data>(lastState.messageState)
+            val actual = assertIs<MessageDetailMetadataState.Data>(lastEmittedItem().messageState)
             assertTrue(actual.messageUiModel.isStarred)
         }
     }
@@ -325,9 +317,7 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.Star)
             advanceUntilIdle()
             // Then
-            val events = cancelAndConsumeRemainingEvents()
-            val lastState = (events.last() as Event.Item).value
-            assertEquals(TextUiModel(R.string.error_star_operation_failed), lastState.error.consume())
+            assertEquals(TextUiModel(R.string.error_star_operation_failed), lastEmittedItem().error.consume())
         }
     }
 
@@ -344,9 +334,7 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.UnStar)
             advanceUntilIdle()
             // Then
-            val events = cancelAndConsumeRemainingEvents()
-            val lastState = (events.last() as Event.Item).value
-            val actual = assertIs<MessageDetailMetadataState.Data>(lastState.messageState)
+            val actual = assertIs<MessageDetailMetadataState.Data>(lastEmittedItem().messageState)
             assertFalse(actual.messageUiModel.isStarred)
         }
     }
@@ -363,14 +351,8 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.UnStar)
             advanceUntilIdle()
             // Then
-            val events = cancelAndConsumeRemainingEvents()
-            val lastState = (events.last() as Event.Item).value
-            assertEquals(TextUiModel(R.string.error_unstar_operation_failed), lastState.error.consume())
+            assertEquals(TextUiModel(R.string.error_unstar_operation_failed), lastEmittedItem().error.consume())
         }
-    }
-
-    private suspend fun FlowTurbine<MessageDetailState>.messageStateEmitted() {
-        assertIs<MessageDetailMetadataState.Data>(awaitItem().messageState)
     }
 
     private suspend fun FlowTurbine<MessageDetailState>.initialStateEmitted() {
@@ -379,6 +361,11 @@ class MessageDetailViewModelTest {
 
     private fun givenNoLoggedInUser() {
         every { observePrimaryUserId.invoke() } returns flowOf(null)
+    }
+
+    private fun FlowTurbine<MessageDetailState>.lastEmittedItem(): MessageDetailState {
+        val events = cancelAndConsumeRemainingEvents()
+        return (events.last() as Event.Item).value
     }
 
 }
