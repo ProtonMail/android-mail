@@ -32,17 +32,17 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Ordering
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -58,10 +58,9 @@ class MessageRepositoryImplTest {
             getMessage(id = "4", time = 4000)
         )
     }
-    private val localDataSource = mockk<MessageLocalDataSource> {
+    private val localDataSource = mockk<MessageLocalDataSource>(relaxUnitFun = true) {
         coEvery { getMessages(userId = any(), pageKey = any()) } returns emptyList()
         coEvery { isLocalPageValid(userId = any(), pageKey = any(), items = any()) } returns false
-        coEvery { upsertMessages(userId = any(), pageKey = any(), items = any()) } just Runs
     }
 
     private val messageRepository = MessageRepositoryImpl(
@@ -211,5 +210,31 @@ class MessageRepositoryImplTest {
             verify { localDataSource.observeMessages(userId, conversationId) }
             awaitComplete()
         }
+    }
+
+    @Test
+    fun `add label emits message with label when upsert was successful`() = runTest {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(
+            MessageTestData.message
+        )
+        // When
+        val actual = messageRepository.addLabel(userId, messageId, LabelId("10"))
+        // Then
+        val starredMessage = MessageTestData.starredMessage
+        coVerify { localDataSource.upsertMessage(starredMessage) }
+        assertEquals(starredMessage.right(), actual)
+    }
+
+    @Test
+    fun `add label emits no data cached error when message does not exist in local cache`() = runTest {
+        // Given
+        val messageId = MessageId("messageId")
+        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(null)
+        // When
+        val actual = messageRepository.addLabel(userId, messageId, LabelId("42"))
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
 }

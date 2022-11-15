@@ -31,6 +31,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -75,7 +76,13 @@ class MessageRepositoryImpl @Inject constructor(
         messageId: MessageId,
         labelId: LabelId
     ): Either<DataError.Local, Message> {
-        TODO("Not yet implemented")
+        val message = localDataSource.observeMessage(userId, messageId).first()
+            ?: return DataError.Local.NoDataCached.left()
+        val updatedMessage = message.copy(
+            labelIds = message.labelIds + labelId
+        )
+        localDataSource.upsertMessage(updatedMessage)
+        return updatedMessage.right()
     }
 
     private suspend fun fetchMessages(

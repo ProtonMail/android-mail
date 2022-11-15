@@ -110,7 +110,10 @@ object MessageTestData {
         userId = userId,
         id = RAW_MESSAGE_ID,
         subject = RAW_SUBJECT,
-        labelIds = listOf(SystemLabelId.Starred.labelId.id)
+        labelIds = listOf(
+            SystemLabelId.Inbox.labelId.id,
+            SystemLabelId.Starred.labelId.id
+        )
     )
 
     fun buildMessage(

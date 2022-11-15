@@ -23,15 +23,18 @@ import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageWithLabels
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
+import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageItemType
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.coEvery
 import io.mockk.coInvoke
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -143,7 +146,7 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
-    fun `observe message returns message from DB when existing`() = runTest {
+    fun `observe message returns local message when existing`() = runTest {
         // Given
         val messageId = MessageId("MessageId")
         val messageWithLabels = getMessageWithLabels(userId1, "1")
@@ -159,7 +162,7 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
-    fun `observe message returns null when message does not exist in DB`() = runTest {
+    fun `observe message returns null when message does not exist locally`() = runTest {
         // Given
         val messageId = MessageId("MessageId")
         coEvery { messageDao.observe(userId1, messageId) } returns flowOf(null)
@@ -169,6 +172,24 @@ class MessageLocalDataSourceImplTest {
             // Then
             assertNull(awaitItem())
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `upsert message inserts message and related labels locally`() = runTest {
+        val message = MessageTestData.spamMessage
+        // When
+        messageLocalDataSource.upsertMessage(message)
+        // Then
+        coVerify { messageDao.insertOrUpdate(message.toEntity()) }
+        coVerifyOrder {
+            labelDao.deleteAll(message.userId, listOf(message.messageId))
+            val spamLabelEntity = MessageLabelEntity(
+                message.userId,
+                message.labelIds.first(),
+                message.messageId
+            )
+            labelDao.insertOrUpdate(spamLabelEntity)
         }
     }
 }

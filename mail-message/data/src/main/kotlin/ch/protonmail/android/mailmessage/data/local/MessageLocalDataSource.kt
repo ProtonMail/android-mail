@@ -105,6 +105,13 @@ interface MessageLocalDataSource {
     /**
      * Update or insert [Message].
      */
+    suspend fun upsertMessage(
+        message: Message
+    )
+
+    /**
+     * Update or insert a list of [Message].
+     */
     suspend fun upsertMessages(
         items: List<Message>
     )

@@ -95,6 +95,13 @@ class MessageLocalDataSourceImpl @Inject constructor(
         .observeAll(userId, pageKey)
         .mapLatest { list -> list.map { it.toMessage() } }
 
+
+    override suspend fun upsertMessage(
+        message: Message
+    ) = db.inTransaction {
+        upsertMessages(listOf(message))
+    }
+
     override suspend fun upsertMessages(
         items: List<Message>
     ) = db.inTransaction {
