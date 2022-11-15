@@ -57,6 +57,10 @@ object ConversationDetailMessageUiModelSample {
         repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
     ).collapse()
 
+    val LotteryScam = build(
+        message = MessageSample.LotteryScam
+    ).collapse()
+
     val SepWeatherForecast = build(
         message = MessageSample.SepWeatherForecast
     ).collapse()

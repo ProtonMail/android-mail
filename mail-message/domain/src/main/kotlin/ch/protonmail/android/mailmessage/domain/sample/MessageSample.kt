@@ -56,13 +56,19 @@ object MessageSample {
         messageId = MessageIdSample.Invoice,
         labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document),
         numAttachments = 1,
+        sender = RecipientSample.PreciWeather,
         subject = "Invoice"
+    )
+
+    val LotteryScam = build(
+        sender = RecipientSample.Scammer
     )
 
     val SepWeatherForecast = build(
         conversationId = ConversationIdSample.WeatherForecast,
         messageId = MessageIdSample.SepWeatherForecast,
         labelIds = listOf(LabelIdSample.Archive),
+        sender = RecipientSample.PreciWeather,
         subject = "September weather forecast",
         time = Sep2022
     )

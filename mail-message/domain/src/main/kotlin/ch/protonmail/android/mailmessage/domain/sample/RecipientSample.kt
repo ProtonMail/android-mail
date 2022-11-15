@@ -32,6 +32,16 @@ object RecipientSample {
         name = "John"
     )
 
+    val PreciWeather = build(
+        address = "info@preciweather.com",
+        name = "PreciWeather"
+    )
+
+    val Scammer = build(
+        address = "definitely-not-a-scam@totally-legit.com",
+        name = "definitely-not-a-scam@totally-legit.com"
+    )
+
     fun build(
         address: String = "email@pm.me",
         name: String = "name"

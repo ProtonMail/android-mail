@@ -19,12 +19,11 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -37,8 +36,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import androidx.constraintlayout.compose.Visibility
+import androidx.constraintlayout.compose.atLeast
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
@@ -46,6 +51,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIc
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailCollapsedMessageHeaderPreviewData
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.MinLabelsWidth
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.ForwardedIconTestTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.RepliedAllIconTestTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.RepliedIconTestTag
@@ -56,6 +62,7 @@ import me.proton.core.compose.theme.caption
 import me.proton.core.compose.theme.default
 import me.proton.core.compose.theme.overline
 import me.proton.core.presentation.R.drawable
+import me.proton.core.util.kotlin.EMPTY_STRING
 import me.proton.core.util.kotlin.exhaustive
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
@@ -69,75 +76,170 @@ internal fun ConversationDetailCollapsedMessageHeader(message: ConversationDetai
             containerColor = ProtonTheme.colors.backgroundNorm
         )
     ) {
-        Row(
+        ConstraintLayout(
             modifier = Modifier
                 .padding(ProtonDimens.SmallSpacing)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
         ) {
-            Avatar(avatarUiModel = message.avatar)
-            Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
-            ForwardedIcon(message, fontColor)
-            RepliedIcon(message, fontColor)
-            Sender(message, fontWeight, fontColor)
-            Expiration(message)
-            // TODO labels
-            Spacer(modifier = Modifier.weight(1f))
-            StarIcon(message = message)
-            AttachmentIcon(message = message, fontColor = fontColor)
-            LocationIcon(message = message, fontColor = fontColor)
-            Time(message, fontColor)
-        }
-    }
-}
+            val (
+                avatarRef,
+                forwardedIconRef,
+                repliedIconRef,
+                senderRef,
+                expirationRef,
+                labelsRef,
+                starIconRef,
+                attachmentIconRef,
+                locationIconRef,
+                timeRef
+            ) = createRefs()
 
-@Composable
-private fun AttachmentIcon(message: ConversationDetailMessageUiModel.Collapsed, fontColor: Color) {
-    if (message.hasAttachments) {
-        Icon(
-            modifier = Modifier.size(ProtonDimens.SmallIconSize),
-            painter = painterResource(id = drawable.ic_proton_paper_clip),
-            tint = fontColor,
-            contentDescription = stringResource(id = commonString.message_attachment_icon_description)
-        )
-    }
-}
-
-@Composable
-private fun Expiration(message: ConversationDetailMessageUiModel.Collapsed) {
-    if (message.expiration != null) {
-        Row(
-            modifier = Modifier
-                .padding(horizontal = ProtonDimens.ExtraSmallSpacing)
-                .background(
-                    color = ProtonTheme.colors.interactionWeakNorm,
-                    shape = ProtonTheme.shapes.large
-                )
-                .padding(ProtonDimens.ExtraSmallSpacing),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                modifier = Modifier.size(MailDimens.TinyIcon),
-                painter = painterResource(id = drawable.ic_proton_hourglass),
-                contentDescription = NO_CONTENT_DESCRIPTION
+            createHorizontalChain(
+                avatarRef,
+                forwardedIconRef,
+                repliedIconRef,
+                senderRef,
+                expirationRef,
+                labelsRef,
+                starIconRef,
+                attachmentIconRef,
+                locationIconRef,
+                timeRef
             )
+
+            Avatar(
+                modifier = Modifier.constrainAs(avatarRef) {
+                    centerVerticallyTo(parent)
+                },
+                avatarUiModel = message.avatar
+            )
+
+            ForwardedIcon(
+                modifier = Modifier.constrainAs(forwardedIconRef) {
+                    centerVerticallyTo(parent)
+                },
+                message = message,
+                fontColor = fontColor
+            )
+
+            RepliedIcon(
+                modifier = Modifier.constrainAs(repliedIconRef) {
+                    centerVerticallyTo(parent)
+                },
+                message = message,
+                fontColor = fontColor
+            )
+
+            Sender(
+                modifier = Modifier.constrainAs(senderRef) {
+                    width = Dimension.preferredWrapContent
+                    centerVerticallyTo(parent)
+                },
+                message = message,
+                fontWeight = fontWeight,
+                fontColor = fontColor
+            )
+
+            Expiration(
+                modifier = Modifier.constrainAs(expirationRef) {
+                    visibility = visibleWhen(message.expiration != null)
+                    centerVerticallyTo(parent)
+                },
+                message = message
+            )
+
             Text(
-                text = message.expiration.string(),
-                style = ProtonTheme.typography.overline
+                modifier = Modifier.constrainAs(labelsRef) {
+                    width = Dimension.fillToConstraints.atLeast(MinLabelsWidth)
+                    centerVerticallyTo(parent)
+                },
+                text = "Labels",
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
+            )
+
+            StarIcon(
+                modifier = Modifier.constrainAs(starIconRef) {
+                    visibility = visibleWhen(message.isStarred)
+                    centerVerticallyTo(parent)
+                }
+            )
+
+            AttachmentIcon(
+                fontColor = fontColor,
+                modifier = Modifier.constrainAs(attachmentIconRef) {
+                    visibility = visibleWhen(message.hasAttachments)
+                    centerVerticallyTo(parent)
+                }
+            )
+
+            LocationIcon(
+                modifier = Modifier.constrainAs(locationIconRef) {
+                    centerVerticallyTo(parent)
+                },
+                message = message,
+                fontColor = fontColor
+            )
+
+            Time(
+                modifier = Modifier.constrainAs(timeRef) {
+                    centerVerticallyTo(parent)
+                },
+                message = message,
+                fontWeight = fontWeight,
+                fontColor = fontColor
             )
         }
+    }
+}
+
+@Composable
+private fun AttachmentIcon(
+    fontColor: Color,
+    modifier: Modifier
+) {
+    Icon(
+        modifier = modifier.size(ProtonDimens.SmallIconSize),
+        painter = painterResource(id = drawable.ic_proton_paper_clip),
+        tint = fontColor,
+        contentDescription = stringResource(id = commonString.message_attachment_icon_description)
+    )
+}
+
+@Composable
+private fun Expiration(message: ConversationDetailMessageUiModel.Collapsed, modifier: Modifier) {
+    Row(
+        modifier = modifier
+            .padding(horizontal = ProtonDimens.ExtraSmallSpacing)
+            .background(
+                color = ProtonTheme.colors.interactionWeakNorm,
+                shape = ProtonTheme.shapes.large
+            )
+            .padding(ProtonDimens.ExtraSmallSpacing),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier.size(MailDimens.TinyIcon),
+            painter = painterResource(id = drawable.ic_proton_hourglass),
+            contentDescription = NO_CONTENT_DESCRIPTION
+        )
+        Text(
+            text = message.expiration?.string() ?: EMPTY_STRING,
+            style = ProtonTheme.typography.overline
+        )
     }
 }
 
 @Composable
 private fun ForwardedIcon(
     message: ConversationDetailMessageUiModel.Collapsed,
-    fontColor: Color
+    fontColor: Color,
+    modifier: Modifier
 ) {
     when (message.forwardedIcon) {
-        ConversationDetailMessageUiModel.ForwardedIcon.None -> Unit
+        ConversationDetailMessageUiModel.ForwardedIcon.None -> Box(modifier)
         ConversationDetailMessageUiModel.ForwardedIcon.Forwarded -> SmallNonClickableIcon(
-            modifier = Modifier.testTag(ForwardedIconTestTag),
+            modifier = modifier.testTag(ForwardedIconTestTag),
             iconId = drawable.ic_proton_arrow_right,
             iconColor = fontColor
         )
@@ -145,9 +247,13 @@ private fun ForwardedIcon(
 }
 
 @Composable
-private fun LocationIcon(message: ConversationDetailMessageUiModel.Collapsed, fontColor: Color) {
+private fun LocationIcon(
+    message: ConversationDetailMessageUiModel.Collapsed,
+    fontColor: Color,
+    modifier: Modifier
+) {
     Icon(
-        modifier = Modifier.size(ProtonDimens.SmallIconSize),
+        modifier = modifier.size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = message.locationIcon.icon),
         tint = fontColor,
         contentDescription = NO_CONTENT_DESCRIPTION
@@ -157,17 +263,18 @@ private fun LocationIcon(message: ConversationDetailMessageUiModel.Collapsed, fo
 @Composable
 private fun RepliedIcon(
     message: ConversationDetailMessageUiModel.Collapsed,
-    fontColor: Color
+    fontColor: Color,
+    modifier: Modifier
 ) {
     when (message.repliedIcon) {
-        ConversationDetailMessageUiModel.RepliedIcon.None -> Unit
+        ConversationDetailMessageUiModel.RepliedIcon.None -> Box(modifier)
         ConversationDetailMessageUiModel.RepliedIcon.Replied -> SmallNonClickableIcon(
-            modifier = Modifier.testTag(RepliedIconTestTag),
+            modifier = modifier.testTag(RepliedIconTestTag),
             iconId = drawable.ic_proton_arrow_up_and_left,
             iconColor = fontColor
         )
         ConversationDetailMessageUiModel.RepliedIcon.RepliedAll -> SmallNonClickableIcon(
-            modifier = Modifier.testTag(RepliedAllIconTestTag),
+            modifier = modifier.testTag(RepliedAllIconTestTag),
             iconId = drawable.ic_proton_arrows_up_and_left,
             iconColor = fontColor
         )
@@ -178,39 +285,52 @@ private fun RepliedIcon(
 private fun Sender(
     message: ConversationDetailMessageUiModel.Collapsed,
     fontWeight: FontWeight,
-    fontColor: Color
+    fontColor: Color,
+    modifier: Modifier
 ) {
     Text(
+        modifier = modifier,
         text = message.sender,
         fontWeight = fontWeight,
         color = fontColor,
-        style = ProtonTheme.typography.default
+        style = ProtonTheme.typography.default,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1
     )
 }
 
 @Composable
-private fun StarIcon(message: ConversationDetailMessageUiModel.Collapsed) {
-    if (message.isStarred) {
-        Icon(
-            modifier = Modifier.size(ProtonDimens.SmallIconSize),
-            painter = painterResource(id = drawable.ic_proton_star_filled),
-            tint = ProtonTheme.colors.notificationWarning,
-            contentDescription = stringResource(id = commonString.starred_icon_description)
-        )
-    }
+private fun StarIcon(modifier: Modifier) {
+    Icon(
+        modifier = modifier.size(ProtonDimens.SmallIconSize),
+        painter = painterResource(id = drawable.ic_proton_star_filled),
+        tint = ProtonTheme.colors.notificationWarning,
+        contentDescription = stringResource(id = commonString.starred_icon_description)
+    )
 }
 
 @Composable
 private fun Time(
     message: ConversationDetailMessageUiModel.Collapsed,
-    fontColor: Color
+    fontWeight: FontWeight,
+    fontColor: Color,
+    modifier: Modifier
 ) {
     Text(
-        modifier = Modifier.padding(horizontal = ProtonDimens.ExtraSmallSpacing),
+        modifier = modifier.padding(horizontal = ProtonDimens.ExtraSmallSpacing),
         text = message.shortTime.string(),
+        fontWeight = fontWeight,
         color = fontColor,
-        style = ProtonTheme.typography.caption
+        style = ProtonTheme.typography.caption,
+        maxLines = 1
     )
+}
+
+private fun visibleWhen(isVisible: Boolean) = if (isVisible) Visibility.Visible else Visibility.Gone
+
+object ConversationDetailCollapsedMessageHeader {
+
+    internal val MinLabelsWidth = 40.dp
 }
 
 object ConversationDetailCollapsedMessageHeader {
