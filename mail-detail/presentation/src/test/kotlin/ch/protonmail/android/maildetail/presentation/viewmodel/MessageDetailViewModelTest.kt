@@ -119,7 +119,7 @@ class MessageDetailViewModelTest {
         coEvery { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns MessageTestData.starredMessage.right()
     }
     private val unStarMessage = mockk<UnStarMessage> {
-        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns MessageTestData.message.right()
+        coEvery { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns MessageTestData.message.right()
     }
 
     private val viewModel by lazy {
@@ -343,7 +343,7 @@ class MessageDetailViewModelTest {
     fun `error unStarring message is emitted when unstar action fails`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        every { unStarMessage.invoke(userId, messageId) } returns DataError.Local.NoDataCached.left()
+        coEvery { unStarMessage.invoke(userId, messageId) } returns DataError.Local.NoDataCached.left()
 
         viewModel.state.test {
             initialStateEmitted()
