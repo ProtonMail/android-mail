@@ -85,6 +85,20 @@ class MessageRepositoryImpl @Inject constructor(
         return updatedMessage.right()
     }
 
+    override suspend fun removeLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    ): Either<DataError.Local, Message> {
+        val message = localDataSource.observeMessage(userId, messageId).first()
+            ?: return DataError.Local.NoDataCached.left()
+        val updatedMessage = message.copy(
+            labelIds = message.labelIds - labelId
+        )
+        localDataSource.upsertMessage(updatedMessage)
+        return updatedMessage.right()
+    }
+
     private suspend fun fetchMessages(
         userId: UserId,
         pageKey: PageKey

@@ -237,4 +237,30 @@ class MessageRepositoryImplTest {
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
+
+    @Test
+    fun `remove label emits message with label when upsert was successful`() = runTest {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(
+            MessageTestData.starredMessage
+        )
+        // When
+        val actual = messageRepository.removeLabel(userId, messageId, LabelId("10"))
+        // Then
+        val unstarredMessage = MessageTestData.message
+        coVerify { localDataSource.upsertMessage(unstarredMessage) }
+        assertEquals(unstarredMessage.right(), actual)
+    }
+
+    @Test
+    fun `remove label emits no data cached error when message does not exist in local cache`() = runTest {
+        // Given
+        val messageId = MessageId("messageId")
+        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(null)
+        // When
+        val actual = messageRepository.removeLabel(userId, messageId, LabelId("42"))
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
+    }
 }

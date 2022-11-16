@@ -64,9 +64,18 @@ interface MessageRepository {
     ): Flow<List<Message>>
 
     /**
-     * Adds the given labelId to the message with the given messageId]
+     * Adds the given [labelId] to the message with the given [messageId]
      */
     suspend fun addLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    ): Either<DataError.Local, Message>
+
+    /**
+     * Removes the given [labelId] to the message with the given [messageId]
+     */
+    suspend fun removeLabel(
         userId: UserId,
         messageId: MessageId,
         labelId: LabelId
