@@ -31,10 +31,14 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
@@ -44,10 +48,12 @@ import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetada
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
+import ch.protonmail.android.testdata.contact.ContactTestData
+import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -66,7 +72,8 @@ class MessageDetailViewModelTest {
 
     private val rawMessageId = "detailMessageId"
     private val actionUiModelMapper = ActionUiModelMapper()
-    private val messageUiModelMapper = MessageDetailUiModelMapper()
+    private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper>()
+    private val messageUiModelMapper = MessageDetailUiModelMapper(messageDetailHeaderUiModelMapper)
     private val messageStateReducer = MessageDetailMetadataReducer()
     private val bottomBarReducer = BottomBarReducer()
 
@@ -74,8 +81,13 @@ class MessageDetailViewModelTest {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
 
-    private val observeMessage = mockk<ObserveMessage> {
-        every { this@mockk.invoke(userId, any()) } returns flowOf(MessageTestData.message.right())
+    private val observeMessageWithLabels = mockk<ObserveMessageWithLabels> {
+        every { this@mockk.invoke(userId, any()) } returns flowOf(
+            MessageWithLabels(
+                MessageTestData.message,
+                emptyList()
+            ).right()
+        )
     }
     private val savedStateHandle = mockk<SavedStateHandle> {
         every { this@mockk.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns rawMessageId
@@ -88,18 +100,22 @@ class MessageDetailViewModelTest {
     private val markUnread = mockk<MarkUnread> {
         every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
     }
+    private val getContacts = mockk<GetContacts> {
+        coEvery { this@mockk.invoke(userId) } returns ContactTestData.contacts.right()
+    }
 
     private val viewModel by lazy {
         MessageDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
             messageStateReducer = messageStateReducer,
             bottomBarReducer = bottomBarReducer,
-            observeMessage = observeMessage,
+            observeMessageWithLabels = observeMessageWithLabels,
             uiModelMapper = messageUiModelMapper,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeDetailActions,
             markUnread = markUnread,
-            savedStateHandle = savedStateHandle
+            savedStateHandle = savedStateHandle,
+            getContacts = getContacts
         )
     }
 
@@ -151,13 +167,27 @@ class MessageDetailViewModelTest {
             subject = subject,
             labelIds = listOf(SystemLabelId.Starred.labelId.id)
         )
-        every { observeMessage.invoke(userId, messageId) } returns flowOf(cachedMessage.right())
+        val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
+        every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
+        every {
+            messageDetailHeaderUiModelMapper.toUiModel(
+                messageWithLabels,
+                ContactTestData.contacts
+            )
+        } returns MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 
         // When
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            val expected = MessageDetailMetadataState.Data(MessageDetailMetadataUiModel(messageId, subject, isStarred))
+            val expected = MessageDetailMetadataState.Data(
+                MessageDetailMetadataUiModel(
+                    messageId,
+                    subject,
+                    isStarred,
+                    MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+                )
+            )
             assertEquals(expected, awaitItem().messageState)
             cancelAndIgnoreRemainingEvents()
         }
@@ -166,6 +196,21 @@ class MessageDetailViewModelTest {
     @Test
     fun `bottomBar state is data when use case returns actions`() = runTest {
         // Given
+        val messageId = MessageId(rawMessageId)
+        val cachedMessage = MessageTestData.buildMessage(
+            userId = userId,
+            id = messageId.id,
+            subject = "message subject",
+            labelIds = listOf(SystemLabelId.Starred.labelId.id)
+        )
+        val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
+        every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
+        every {
+            messageDetailHeaderUiModelMapper.toUiModel(
+                messageWithLabels,
+                ContactTestData.contacts
+            )
+        } returns MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
         every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
             nonEmptyListOf(Action.Reply, Action.Archive).right()
         )
@@ -184,6 +229,22 @@ class MessageDetailViewModelTest {
     @Test
     fun `bottomBar state is failed loading actions when use case returns no actions`() = runTest {
         // Given
+        val messageId = MessageId(rawMessageId)
+        val cachedMessage = MessageTestData.buildMessage(
+            userId = userId,
+            id = messageId.id,
+            subject = "message subject",
+            labelIds = listOf(SystemLabelId.Starred.labelId.id)
+        )
+        val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
+        every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
+        every {
+            messageDetailHeaderUiModelMapper.toUiModel(
+                messageWithLabels,
+                ContactTestData.contacts
+            )
+        } returns MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+
         every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns
             flowOf(DataError.Local.NoDataCached.left())
 

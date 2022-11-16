@@ -21,13 +21,16 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
@@ -38,7 +41,6 @@ import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -56,12 +58,13 @@ class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val messageStateReducer: MessageDetailMetadataReducer,
     private val bottomBarReducer: BottomBarReducer,
-    private val observeMessage: ObserveMessage,
+    private val observeMessageWithLabels: ObserveMessageWithLabels,
     private val uiModelMapper: MessageDetailUiModelMapper,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveMessageDetailActions,
     private val markUnread: MarkUnread,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val getContacts: GetContacts
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -72,7 +75,7 @@ class MessageDetailViewModel @Inject constructor(
     init {
         val messageId = requireMessageId()
         Timber.d("Open detail screen for message ID: $messageId")
-        observeMessageMetadata(messageId)
+        observeMessageWithLabels(messageId)
         observeBottomBarActions(messageId)
     }
 
@@ -97,12 +100,20 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun observeMessageMetadata(messageId: MessageId) {
+    private fun observeMessageWithLabels(messageId: MessageId) {
         primaryUserId.filterNotNull().flatMapLatest { userId ->
-            return@flatMapLatest observeMessage(userId, messageId).mapLatest { either ->
+            val contacts = getContacts(userId)
+            return@flatMapLatest observeMessageWithLabels(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.NoCachedMetadata },
-                    ifRight = { MessageDetailEvent.MessageMetadata(uiModelMapper.toUiModel(it)) }
+                    ifRight = {
+                        MessageDetailEvent.MessageMetadata(
+                            uiModelMapper.toUiModel(
+                                it,
+                                contacts.getOrElse { emptyList() }
+                            )
+                        )
+                    }
                 )
             }
         }.onEach { event ->

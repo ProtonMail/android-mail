@@ -18,18 +18,28 @@
 
 package ch.protonmail.android.maildetail.presentation.message.mapper
 
+import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.testdata.contact.ContactTestData
+import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData.buildMessage
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class MessageDetailUiModelMapperTest {
 
-    private val mapper = MessageDetailUiModelMapper()
+    private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper = mockk {
+        every { toUiModel(any(), any()) } returns MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+    }
+
+    private val mapper = MessageDetailUiModelMapper(messageDetailHeaderUiModelMapper)
 
     @Test
     fun `map message to message ui model`() {
@@ -39,13 +49,15 @@ class MessageDetailUiModelMapperTest {
             id = RAW_MESSAGE_ID,
             subject = SUBJECT
         )
+        val messageWithLabels = MessageWithLabels(message, emptyList())
         // When
-        val actual = mapper.toUiModel(message)
+        val actual = mapper.toUiModel(messageWithLabels, ContactTestData.contacts)
         // Then
         val expected = MessageDetailMetadataUiModel(
             MessageId(RAW_MESSAGE_ID),
             SUBJECT,
-            false
+            false,
+            MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
         )
         assertEquals(expected, actual)
     }
@@ -58,8 +70,9 @@ class MessageDetailUiModelMapperTest {
             id = RAW_MESSAGE_ID,
             labelIds = listOf("10")
         )
+        val messageWithLabels = MessageWithLabels(message, emptyList())
         // When
-        val actual = mapper.toUiModel(message)
+        val actual = mapper.toUiModel(messageWithLabels, emptyList())
         // Then
         assertTrue(actual.isStarred)
     }

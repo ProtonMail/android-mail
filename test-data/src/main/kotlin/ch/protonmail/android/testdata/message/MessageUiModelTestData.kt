@@ -20,6 +20,7 @@ package ch.protonmail.android.testdata.message
 
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 
 object MessageUiModelTestData {
 
@@ -38,6 +39,7 @@ object MessageUiModelTestData {
     ) = MessageDetailMetadataUiModel(
         messageId = MessageId(messageId),
         subject = subject,
-        isStarred = isStarred
+        isStarred = isStarred,
+        messageDetailHeader = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
     )
 }

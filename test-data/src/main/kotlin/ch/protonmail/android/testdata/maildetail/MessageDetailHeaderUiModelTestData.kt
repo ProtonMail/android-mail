@@ -16,20 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.previewdata
+package ch.protonmail.android.testdata.maildetail
 
 import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
-object MessageDetailsUiModelPreviewData {
+object MessageDetailHeaderUiModelTestData {
 
-    private val messageDetailHeaderUiModel = MessageDetailHeaderUiModel(
+    val messageDetailHeaderUiModel = MessageDetailHeaderUiModel(
         avatar = AvatarUiModel.ParticipantInitial("S"),
         sender = ParticipantUiModel("Sender", "sender@pm.com", R.drawable.ic_proton_lock),
         shouldShowTrackerProtectionIcon = false,
@@ -50,21 +48,5 @@ object MessageDetailsUiModelPreviewData {
         size = "12 MB",
         encryptionPadlock = R.drawable.ic_proton_lock,
         encryptionInfo = "End-to-end encrypted and signed message"
-    )
-
-    val FirstWeekOfAugWeatherForecast = MessageDetailMetadataUiModel(
-        messageId = MessageId("Weather Forecast for the first week of August"),
-        subject = "Weather Forecast for the first week of August",
-        isStarred = true,
-        messageDetailHeader = messageDetailHeaderUiModel
-    )
-
-    val LoremIpsum30words = MessageDetailMetadataUiModel(
-        messageId = MessageId("Lorem Ipsum"),
-        subject = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In volutpat elit vitae massa bibendum, " +
-            "sed vestibulum velit feugiat. Suspendisse molestie purus at ornare cursus. Mauris placerat tortor est, " +
-            "et elementum.",
-        isStarred = false,
-        messageDetailHeader = messageDetailHeaderUiModel
     )
 }

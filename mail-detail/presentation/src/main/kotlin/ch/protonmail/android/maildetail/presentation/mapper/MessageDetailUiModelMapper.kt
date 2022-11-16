@@ -18,19 +18,24 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.Message
+import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
 
-class MessageDetailUiModelMapper @Inject constructor() : Mapper<Message, MessageDetailMetadataUiModel> {
+class MessageDetailUiModelMapper @Inject constructor(
+    private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper
+) : Mapper<Message, MessageDetailMetadataUiModel> {
 
-    fun toUiModel(message: Message): MessageDetailMetadataUiModel {
+    fun toUiModel(messageWithLabels: MessageWithLabels, contacts: List<Contact>): MessageDetailMetadataUiModel {
         return MessageDetailMetadataUiModel(
-            messageId = message.messageId,
-            subject = message.subject,
-            isStarred = message.labelIds.contains(SystemLabelId.Starred.labelId)
+            messageId = messageWithLabels.message.messageId,
+            subject = messageWithLabels.message.subject,
+            isStarred = messageWithLabels.message.labelIds.contains(SystemLabelId.Starred.labelId),
+            messageDetailHeader = messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contacts)
         )
     }
 }
