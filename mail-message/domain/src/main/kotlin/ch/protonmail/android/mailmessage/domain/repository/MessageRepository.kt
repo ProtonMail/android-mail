@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.domain.repository
 
 import arrow.core.Either
+import arrow.core.Nel
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.entity.Message
@@ -61,7 +62,7 @@ interface MessageRepository {
     fun observeCachedMessages(
         userId: UserId,
         conversationId: ConversationId
-    ): Flow<List<Message>>
+    ): Flow<Either<DataError.Local, Nel<Message>>>
 
     /**
      * Adds the given [labelId] to the message with the given [messageId]

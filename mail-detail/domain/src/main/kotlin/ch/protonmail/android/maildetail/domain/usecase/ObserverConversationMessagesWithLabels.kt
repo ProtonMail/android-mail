@@ -21,8 +21,6 @@ package ch.protonmail.android.maildetail.domain.usecase
 import arrow.core.Either
 import arrow.core.Nel
 import arrow.core.continuations.either
-import arrow.core.left
-import arrow.core.toNonEmptyListOrNull
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -48,13 +46,12 @@ internal class ObserverConversationMessagesWithLabels @Inject constructor(
             labelRepository.observeLabels(userId, type = LabelType.MessageLabel).mapToEither(),
             labelRepository.observeLabels(userId, type = LabelType.MessageFolder).mapToEither(),
             messageRepository.observeCachedMessages(userId, conversationId)
-        ) { labelsEither, foldersEither, messages ->
+        ) { labelsEither, foldersEither, messagesEither ->
             either {
                 val labels = labelsEither.bind()
                 val folders = foldersEither.bind()
-                val m = messages.toNonEmptyListOrNull()
-                    ?: DataError.Local.NoDataCached.left().bind()
-                m.map { message ->
+                val messages = messagesEither.bind()
+                messages.map { message ->
                     MessageWithLabels(
                         message = message,
                         labels = labels + folders

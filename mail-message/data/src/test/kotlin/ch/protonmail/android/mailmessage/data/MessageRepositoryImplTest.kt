@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data
 import java.io.IOException
 import app.cash.turbine.test
 import arrow.core.left
+import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
@@ -34,9 +35,11 @@ import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Ordering
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
@@ -196,7 +199,7 @@ class MessageRepositoryImplTest {
         // given
         val userId = UserIdSample.Primary
         val conversationId = ConversationIdSample.WeatherForecast
-        val messages = listOf(
+        val messages = nonEmptyListOf(
             MessageSample.AugWeatherForecast,
             MessageSample.SepWeatherForecast
         )
@@ -206,8 +209,22 @@ class MessageRepositoryImplTest {
         messageRepository.observeCachedMessages(userId, conversationId).test {
 
             // then
-            assertEquals(messages, awaitItem())
+            assertEquals(messages.right(), awaitItem())
             verify { localDataSource.observeMessages(userId, conversationId) }
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe cached messages for a conversation emits error when the list is empty`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val conversationId = ConversationIdSample.WeatherForecast
+        every { localDataSource.observeMessages(userId, conversationId) } returns flowOf(emptyList())
+        // When
+        messageRepository.observeCachedMessages(userId, conversationId).test {
+            // Then
+            assertEquals(DataError.Local.NoDataCached.left(), awaitItem())
             awaitComplete()
         }
     }

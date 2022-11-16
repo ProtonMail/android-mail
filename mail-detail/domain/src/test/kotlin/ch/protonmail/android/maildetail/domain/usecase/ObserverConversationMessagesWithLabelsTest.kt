@@ -56,7 +56,7 @@ internal class ObserverConversationMessagesWithLabelsTest {
     }
     private val messageRepository: MessageRepository = mockk {
         every { observeCachedMessages(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
-            flowOf(listOf(MessageSample.AugWeatherForecast))
+            flowOf(nonEmptyListOf(MessageSample.AugWeatherForecast).right())
     }
     private val observerConversationMessagesWithLabels = ObserverConversationMessagesWithLabels(
         labelRepository = labelRepository,
@@ -101,7 +101,7 @@ internal class ObserverConversationMessagesWithLabelsTest {
                 UserIdSample.Primary,
                 ConversationIdSample.WeatherForecast
             )
-        } returns flowOf(emptyList())
+        } returns flowOf(DataError.Local.NoDataCached.left())
 
         // when
         observerConversationMessagesWithLabels(

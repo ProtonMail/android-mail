@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
@@ -35,4 +36,5 @@ class ObserveConversationMessages @Inject constructor(
         conversationId: ConversationId
     ): Flow<List<Message>> =
         messageRepository.observeCachedMessages(userId, conversationId)
+            .map { it.orNull()!! }
 }

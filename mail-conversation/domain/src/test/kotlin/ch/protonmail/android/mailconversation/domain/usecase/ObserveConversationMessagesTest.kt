@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailconversation.domain.usecase
 
 import app.cash.turbine.test
+import arrow.core.nonEmptyListOf
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -41,11 +43,11 @@ class ObserveConversationMessagesTest {
         // given
         val userId = UserIdSample.Primary
         val conversationId = ConversationIdSample.WeatherForecast
-        val messages = listOf(
+        val messages = nonEmptyListOf(
             MessageSample.AugWeatherForecast,
             MessageSample.SepWeatherForecast
         )
-        every { messageRepository.observeCachedMessages(userId, conversationId) } returns flowOf(messages)
+        every { messageRepository.observeCachedMessages(userId, conversationId) } returns flowOf(messages.right())
 
         // when
         observeConversationMessages(userId, conversationId).test {
