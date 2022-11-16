@@ -16,23 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.domain.usecase
+package ch.protonmail.android.maildetail.domain.sample
 
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import kotlinx.coroutines.flow.Flow
-import me.proton.core.domain.entity.UserId
-import javax.inject.Inject
+import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 
-// TODO
-class ObserveConversationMessages @Inject constructor(
-    private val messageRepository: MessageRepository
-) {
+object MessageWithLabelsSample {
 
-    operator fun invoke(
-        userId: UserId,
-        conversationId: ConversationId
-    ): Flow<List<Message>> =
-        messageRepository.observeCachedMessages(userId, conversationId)
+    val AugWeatherForecast = MessageWithLabels(
+        message = MessageSample.AugWeatherForecast,
+        labels = listOf()
+    )
 }

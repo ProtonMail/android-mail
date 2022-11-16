@@ -19,8 +19,10 @@
 package ch.protonmail.android.mailmessage.data.repository
 
 import arrow.core.Either
+import arrow.core.Nel
 import arrow.core.left
 import arrow.core.right
+import arrow.core.toNonEmptyListOrNull
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
@@ -68,8 +70,13 @@ class MessageRepositoryImpl @Inject constructor(
         it?.right() ?: DataError.Local.NoDataCached.left()
     }
 
-    override fun observeCachedMessages(userId: UserId, conversationId: ConversationId): Flow<List<Message>> =
-        localDataSource.observeMessages(userId, conversationId)
+    override fun observeCachedMessages(
+        userId: UserId,
+        conversationId: ConversationId
+    ): Flow<Either<DataError.Local, Nel<Message>>> =
+        localDataSource.observeMessages(userId, conversationId).mapLatest { list ->
+            list.toNonEmptyListOrNull()?.right() ?: DataError.Local.NoDataCached.left()
+        }
 
     override suspend fun addLabel(
         userId: UserId,
