@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import android.content.Context
 import android.text.format.Formatter
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
@@ -29,6 +30,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.entity.Message
+import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
@@ -36,6 +38,8 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 class MessageDetailHeaderUiModelMapper @Inject constructor(
+    @ApplicationContext
+    private val context: Context,
     private val detailAvatarUiModelMapper: DetailAvatarUiModelMapper,
     private val formatExtendedTime: FormatExtendedTime,
     private val formatShortTime: FormatShortTime,
@@ -62,7 +66,7 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             ccRecipients = messageWithLabels.message.ccList.map { participantUiModelMapper.toUiModel(it, contacts) },
             bccRecipients = messageWithLabels.message.bccList.map { participantUiModelMapper.toUiModel(it, contacts) },
             labels = emptyList(),
-            size = Formatter.formatShortFileSize(null, messageWithLabels.message.size),
+            size = Formatter.formatShortFileSize(context, messageWithLabels.message.size),
             encryptionPadlock = R.drawable.ic_proton_lock,
             encryptionInfo = "End-to-end encrypted and signed message"
         )

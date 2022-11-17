@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import android.content.Context
 import android.text.format.Formatter
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
@@ -91,6 +92,7 @@ class MessageDetailHeaderUiModelMapperTest {
         encryptionInfo = "End-to-end encrypted and signed message"
     )
 
+    private val context: Context = mockk()
     private val detailAvatarUiModelMapper: DetailAvatarUiModelMapper = mockk {
         every { this@mockk.invoke(any(), MessageTestData.sender.name) } returns avatarUiModel
     }
@@ -137,6 +139,7 @@ class MessageDetailHeaderUiModelMapperTest {
     }
 
     private val messageDetailHeaderUiModelMapper = MessageDetailHeaderUiModelMapper(
+        context = context,
         detailAvatarUiModelMapper = detailAvatarUiModelMapper,
         formatExtendedTime = formatExtendedTime,
         formatShortTime = formatShortTime,
