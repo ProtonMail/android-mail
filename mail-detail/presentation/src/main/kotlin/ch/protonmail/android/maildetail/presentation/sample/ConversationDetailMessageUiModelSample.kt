@@ -22,56 +22,58 @@ package ch.protonmail.android.maildetail.presentation.sample
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 
 object ConversationDetailMessageUiModelSample {
 
     val AugWeatherForecast = build(
-        message = MessageSample.AugWeatherForecast
+        messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
     ).collapse()
 
     val EmptyDraft = build(
-        message = MessageSample.EmptyDraft,
+        messageWithLabels = MessageWithLabelsSample.EmptyDraft,
         avatar = AvatarUiModel.DraftIcon
     ).collapse()
 
     val ExpiringInvitation = build(
-        message = MessageSample.ExpiringInvitation,
+        messageWithLabels = MessageWithLabelsSample.ExpiringInvitation,
         expiration = TextUiModel("12h")
     ).collapse()
 
     val InvoiceForwarded = build(
-        message = MessageSample.Invoice,
+        messageWithLabels = MessageWithLabelsSample.Invoice,
         forwardedIcon = ConversationDetailMessageUiModel.ForwardedIcon.Forwarded
     ).collapse()
 
     val InvoiceReplied = build(
-        message = MessageSample.Invoice,
+        messageWithLabels = MessageWithLabelsSample.Invoice,
         repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.Replied
     ).collapse()
 
     val InvoiceRepliedAll = build(
-        message = MessageSample.Invoice,
+        messageWithLabels = MessageWithLabelsSample.Invoice,
         repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
     ).collapse()
 
     val LotteryScam = build(
-        message = MessageSample.LotteryScam
+        messageWithLabels = MessageWithLabelsSample.LotteryScam
     ).collapse()
 
     val SepWeatherForecast = build(
-        message = MessageSample.SepWeatherForecast
+        messageWithLabels = MessageWithLabelsSample.SepWeatherForecast
     ).collapse()
 
     val StarredInvoice = build(
-        message = MessageSample.Invoice,
+        messageWithLabels = MessageWithLabelsSample.Invoice,
         isStarred = true
     ).collapse()
 
     private fun build(
-        message: Message = MessageSample.build(),
+        messageWithLabels: MessageWithLabels = MessageWithLabelsSample.build(),
+        message: Message = messageWithLabels.message,
         avatar: AvatarUiModel = AvatarUiModel.ParticipantInitial(message.sender.name.substring(0, 1)),
         expiration: TextUiModel? = null,
         forwardedIcon: ConversationDetailMessageUiModel.ForwardedIcon =

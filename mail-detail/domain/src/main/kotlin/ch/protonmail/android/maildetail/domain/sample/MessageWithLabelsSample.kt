@@ -19,12 +19,41 @@
 package ch.protonmail.android.maildetail.domain.sample
 
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import me.proton.core.label.domain.entity.Label
 
 object MessageWithLabelsSample {
 
-    val AugWeatherForecast = MessageWithLabels(
-        message = MessageSample.AugWeatherForecast,
-        labels = listOf()
+    val AugWeatherForecast = build(
+        message = MessageSample.AugWeatherForecast
+    )
+
+    val EmptyDraft = build(
+        message = MessageSample.EmptyDraft
+    )
+
+    val ExpiringInvitation = build(
+        message = MessageSample.ExpiringInvitation
+    )
+
+    val Invoice = build(
+        message = MessageSample.Invoice
+    )
+
+    val LotteryScam = build(
+        message = MessageSample.LotteryScam
+    )
+
+    val SepWeatherForecast = build(
+        message = MessageSample.SepWeatherForecast
+    )
+
+    fun build(
+        message: Message = MessageSample.build(),
+        labels: List<Label> = emptyList()
+    ) = MessageWithLabels(
+        message = message,
+        labels = labels
     )
 }

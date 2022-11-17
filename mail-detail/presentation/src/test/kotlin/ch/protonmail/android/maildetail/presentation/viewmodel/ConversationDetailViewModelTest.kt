@@ -23,6 +23,7 @@ import app.cash.turbine.Event
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import arrow.core.left
+import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -36,11 +37,13 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
+import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
+import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
@@ -53,7 +56,6 @@ import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailR
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
-import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
@@ -84,9 +86,9 @@ class ConversationDetailViewModelTest {
             ConversationDetailMetadataUiModelSample.WeatherForecast
     }
     private val conversationMessageMapper: ConversationDetailMessageUiModelMapper = mockk {
-        every { toUiModel(message = MessageSample.AugWeatherForecast, contacts = any()) } returns
+        every { toUiModel(messageWithLabels = MessageWithLabelsSample.AugWeatherForecast, contacts = any()) } returns
             ConversationDetailMessageUiModelSample.AugWeatherForecast
-        every { toUiModel(message = MessageSample.SepWeatherForecast, contacts = any()) } returns
+        every { toUiModel(messageWithLabels = MessageWithLabelsSample.SepWeatherForecast, contacts = any()) } returns
             ConversationDetailMessageUiModelSample.SepWeatherForecast
     }
     private val observeContacts: ObserveContacts = mockk {
@@ -96,9 +98,13 @@ class ConversationDetailViewModelTest {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
             flowOf(ConversationSample.WeatherForecast.right())
     }
-    private val observeConversationMessages: ObserveConversationMessages = mockk {
-        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
-            flowOf(listOf(MessageSample.AugWeatherForecast, MessageSample.SepWeatherForecast))
+    private val observeConversationMessagesWithLabels: ObserveConversationMessagesWithLabels = mockk {
+        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
+            nonEmptyListOf(
+                MessageWithLabelsSample.AugWeatherForecast,
+                MessageWithLabelsSample.SepWeatherForecast
+            ).right()
+        )
     }
     private val observeConversationDetailActions = mockk<ObserveConversationDetailActions> {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
@@ -130,7 +136,7 @@ class ConversationDetailViewModelTest {
             conversationMetadataMapper = conversationMetadataMapper,
             observeContacts = observeContacts,
             observeConversation = observeConversation,
-            observeConversationMessages = observeConversationMessages,
+            observeConversationMessages = observeConversationMessagesWithLabels,
             observeDetailActions = observeConversationDetailActions,
             reducer = reducer,
             savedStateHandle = savedStateHandle,

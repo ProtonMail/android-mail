@@ -83,6 +83,7 @@ class ConversationDetailReducerTest(
         private val operations = listOf(
             ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions),
             ConversationDetailEvent.ConversationData(ConversationDetailMetadataUiModelSample.WeatherForecast),
+            ConversationDetailEvent.ErrorLoadingContacts,
             ConversationDetailEvent.ErrorLoadingConversation,
             ConversationDetailEvent.ErrorLoadingMessages,
             ConversationDetailEvent.MessagesData(emptyList()),

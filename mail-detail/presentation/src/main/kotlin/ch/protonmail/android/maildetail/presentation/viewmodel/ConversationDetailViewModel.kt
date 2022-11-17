@@ -21,14 +21,14 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import arrow.core.getOrElse
+import arrow.core.getOrHandle
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
+import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
@@ -63,7 +63,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper,
     private val observeContacts: ObserveContacts,
     private val observeConversation: ObserveConversation,
-    private val observeConversationMessages: ObserveConversationMessages,
+    private val observeConversationMessages: ObserveConversationMessagesWithLabels,
     private val observeDetailActions: ObserveConversationDetailActions,
     private val reducer: ConversationDetailReducer,
     private val starConversation: StarConversation,
@@ -112,17 +112,18 @@ class ConversationDetailViewModel @Inject constructor(
             combine(
                 observeContacts(userId),
                 observeConversationMessages(userId, conversationId)
-            ) { contactsEither, messages ->
-                val contacts = contactsEither.getOrElse {
-                    Timber.i("Failed getting contacts for displaying initials. Fallback to display name")
-                    emptyList()
+            ) { contactsEither, messagesEither ->
+                val contacts = contactsEither.getOrHandle {
+                    return@combine ConversationDetailEvent.ErrorLoadingContacts
+                }
+                val messages = messagesEither.getOrHandle {
+                    return@combine ConversationDetailEvent.ErrorLoadingMessages
                 }
                 val messagesUiModels = messages.map { conversationMessageMapper.toUiModel(it, contacts) }
                 ConversationDetailEvent.MessagesData(messagesUiModels)
             }
-        }.onEach { event ->
-            emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
+        }.onEach(::emitNewStateFrom)
+            .launchIn(viewModelScope)
     }
 
     private fun observeBottomBarActions(conversationId: ConversationId) {

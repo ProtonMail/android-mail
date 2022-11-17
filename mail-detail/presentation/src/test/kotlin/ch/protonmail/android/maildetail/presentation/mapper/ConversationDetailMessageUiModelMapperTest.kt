@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExpiration
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
+import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.MessageLocationUiModelSample
@@ -64,11 +65,11 @@ internal class ConversationDetailMessageUiModelMapperTest {
     @Test
     fun `map to ui model returns collapsed model`() {
         // given
-        val message = MessageSample.AugWeatherForecast
+        val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
         val expected = ConversationDetailMessageUiModelSample.AugWeatherForecast
 
         // when
-        val result = mapper.toUiModel(message, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
 
         // then
         assertEquals(expected, result)
@@ -78,6 +79,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     fun `when message is forwarded, ui model contains forwarded icon`() {
         // given
         val message = MessageSample.AugWeatherForecast.copy(isForwarded = true)
+        val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
         val expected = with(ConversationDetailMessageUiModelSample) {
             AugWeatherForecast.collapse().copy(
                 forwardedIcon = ConversationDetailMessageUiModel.ForwardedIcon.Forwarded
@@ -85,7 +87,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(message, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
 
         // then
         assertEquals(expected, result)
@@ -95,6 +97,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     fun `when message is replied, ui model contains replied icon`() {
         // given
         val message = MessageSample.AugWeatherForecast.copy(isReplied = true)
+        val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
         val expected = with(ConversationDetailMessageUiModelSample) {
             AugWeatherForecast.collapse().copy(
                 repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.Replied
@@ -102,7 +105,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(message, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
 
         // then
         assertEquals(expected, result)
@@ -112,6 +115,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     fun `when message is replied all, ui model contains replied all icon`() {
         // given
         val message = MessageSample.AugWeatherForecast.copy(isRepliedAll = true)
+        val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
         val expected = with(ConversationDetailMessageUiModelSample) {
             AugWeatherForecast.collapse().copy(
                 repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
@@ -119,7 +123,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(message, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
 
         // then
         assertEquals(expected, result)
@@ -132,6 +136,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
             isReplied = true,
             isRepliedAll = true
         )
+        val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
         val expected = with(ConversationDetailMessageUiModelSample) {
             AugWeatherForecast.collapse().copy(
                 repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
@@ -139,7 +144,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(message, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
 
         // then
         assertEquals(expected, result)
@@ -149,10 +154,11 @@ internal class ConversationDetailMessageUiModelMapperTest {
     fun `when message has expiration, ui model contains formatted time`() {
         // given
         val message = MessageSample.ExpiringInvitation
+        val messageWithLabels = MessageWithLabelsSample.ExpiringInvitation.copy(message = message)
         val expected = ConversationDetailMessageUiModelSample.ExpiringInvitation
 
         // when
-        val result = mapper.toUiModel(message, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
 
         // then
         assertEquals(expected, result)
@@ -162,10 +168,11 @@ internal class ConversationDetailMessageUiModelMapperTest {
     fun `when message has only calendar attachments, ui model has not attachments`() {
         // given
         val message = MessageSample.ExpiringInvitation
+        val messageWithLabels = MessageWithLabelsSample.ExpiringInvitation.copy(message = message)
         val expected = ConversationDetailMessageUiModelSample.ExpiringInvitation
 
         // when
-        val result = mapper.toUiModel(message, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
 
         // then
         assertEquals(expected, result)

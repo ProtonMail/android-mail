@@ -20,9 +20,9 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExpiration
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
+import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import me.proton.core.contact.domain.entity.Contact
 import javax.inject.Inject
@@ -36,7 +36,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val resolveParticipantName: ResolveParticipantName
 ) {
 
-    fun toUiModel(message: Message, contacts: List<Contact>): ConversationDetailMessageUiModel {
+    fun toUiModel(messageWithLabels: MessageWithLabels, contacts: List<Contact>): ConversationDetailMessageUiModel {
+        val (message, labels) = messageWithLabels
         val senderResolvedName = resolveParticipantName(message.sender, contacts)
         return ConversationDetailMessageUiModel.Collapsed(
             avatar = avatarUiModelMapper(
@@ -48,7 +49,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             hasAttachments = message.numAttachments > message.attachmentCount.calendar,
             isStarred = SystemLabelId.Starred.labelId in message.labelIds,
             isUnread = message.unread,
-            locationIcon = messageLocationUiModelMapper(message.labelIds, TODO()),
+            locationIcon = messageLocationUiModelMapper(message.labelIds, labels),
             repliedIcon = getRepliedIcon(isReplied = message.isReplied, isRepliedAll = message.isRepliedAll),
             sender = senderResolvedName,
             shortTime = formatShortTime(message.time.seconds)

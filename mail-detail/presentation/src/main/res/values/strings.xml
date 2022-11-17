@@ -18,6 +18,7 @@
 
 <resources>
 
+    <string name="detail_error_loading_contacts">Failed loading contacts</string>
     <string name="detail_error_loading_conversation">Failed loading conversation</string>
     <string name="detail_error_loading_messages">Failed loading messages</string>
     <string name="error_mark_unread_failed">Mark unread failed. Please try again</string>

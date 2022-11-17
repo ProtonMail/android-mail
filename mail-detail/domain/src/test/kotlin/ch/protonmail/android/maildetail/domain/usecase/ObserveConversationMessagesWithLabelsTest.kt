@@ -46,7 +46,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class ObserverConversationMessagesWithLabelsTest {
+internal class ObserveConversationMessagesWithLabelsTest {
 
     private val messageLabelsFlow = flowOf(DataResult.Success(ResponseSource.Local, listOf(LabelSample.Archive)))
     private val messageFoldersFlow = flowOf(DataResult.Success(ResponseSource.Local, listOf(LabelSample.Document)))
@@ -58,7 +58,7 @@ internal class ObserverConversationMessagesWithLabelsTest {
         every { observeCachedMessages(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
             flowOf(nonEmptyListOf(MessageSample.AugWeatherForecast).right())
     }
-    private val observerConversationMessagesWithLabels = ObserverConversationMessagesWithLabels(
+    private val observeConversationMessagesWithLabels = ObserveConversationMessagesWithLabels(
         labelRepository = labelRepository,
         messageRepository = messageRepository
     )
@@ -81,7 +81,7 @@ internal class ObserverConversationMessagesWithLabelsTest {
         val expected = nonEmptyListOf(MessageWithLabelsSample.AugWeatherForecast).right()
 
         // when
-        observerConversationMessagesWithLabels(
+        observeConversationMessagesWithLabels(
             UserIdSample.Primary,
             ConversationIdSample.WeatherForecast
         ).test {
@@ -104,7 +104,7 @@ internal class ObserverConversationMessagesWithLabelsTest {
         } returns flowOf(DataError.Local.NoDataCached.left())
 
         // when
-        observerConversationMessagesWithLabels(
+        observeConversationMessagesWithLabels(
             UserIdSample.Primary,
             ConversationIdSample.WeatherForecast
         ).test {
@@ -122,7 +122,7 @@ internal class ObserverConversationMessagesWithLabelsTest {
         every { messageLabelsFlow.mapToEither() } returns flowOf(expected)
 
         // when
-        observerConversationMessagesWithLabels(
+        observeConversationMessagesWithLabels(
             UserIdSample.Primary,
             ConversationIdSample.WeatherForecast
         ).test {
@@ -140,7 +140,7 @@ internal class ObserverConversationMessagesWithLabelsTest {
         every { messageFoldersFlow.mapToEither() } returns flowOf(expected)
 
         // when
-        observerConversationMessagesWithLabels(
+        observeConversationMessagesWithLabels(
             UserIdSample.Primary,
             ConversationIdSample.WeatherForecast
         ).test {

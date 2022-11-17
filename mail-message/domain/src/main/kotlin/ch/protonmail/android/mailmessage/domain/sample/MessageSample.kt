@@ -37,6 +37,7 @@ object MessageSample {
         conversationId = ConversationIdSample.WeatherForecast,
         messageId = MessageIdSample.AugWeatherForecast,
         labelIds = listOf(LabelIdSample.Archive),
+        sender = RecipientSample.PreciWeather,
         subject = "August weather forecast",
         time = Aug2022
     )
@@ -56,7 +57,6 @@ object MessageSample {
         messageId = MessageIdSample.Invoice,
         labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document),
         numAttachments = 1,
-        sender = RecipientSample.PreciWeather,
         subject = "Invoice"
     )
 

@@ -33,7 +33,7 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
-internal class ObserverConversationMessagesWithLabels @Inject constructor(
+class ObserveConversationMessagesWithLabels @Inject constructor(
     private val labelRepository: LabelRepository,
     private val messageRepository: MessageRepository
 ) {

@@ -40,7 +40,7 @@ class ConversationDetailMessagesReducerTest(
     fun test() {
         val reducer = ConversationDetailMessagesReducer()
         val result = reducer.newStateFrom(input.currentState, input.operation)
-        assertEquals(input.expectedState, result)
+        assertEquals(input.expectedState, result, testName)
     }
 
     data class Input(
@@ -57,6 +57,14 @@ class ConversationDetailMessagesReducerTest(
         )
 
         private val fromLoadingState = listOf(
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Loading,
+                operation = ConversationDetailEvent.ErrorLoadingContacts,
+                expectedState = ConversationDetailsMessagesState.Error(
+                    message = TextUiModel(string.detail_error_loading_contacts)
+                )
+            ),
 
             Input(
                 currentState = ConversationDetailsMessagesState.Loading,
@@ -79,6 +87,16 @@ class ConversationDetailMessagesReducerTest(
                 currentState = ConversationDetailsMessagesState.Error(
                     message = TextUiModel(commonString.x_error_not_logged_in)
                 ),
+                operation = ConversationDetailEvent.ErrorLoadingContacts,
+                expectedState = ConversationDetailsMessagesState.Error(
+                    message = TextUiModel(string.detail_error_loading_contacts)
+                )
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Error(
+                    message = TextUiModel(commonString.x_error_not_logged_in)
+                ),
                 operation = ConversationDetailEvent.ErrorLoadingMessages,
                 expectedState = ConversationDetailsMessagesState.Error(
                     message = TextUiModel(string.detail_error_loading_messages)
@@ -95,6 +113,16 @@ class ConversationDetailMessagesReducerTest(
         )
 
         private val fromSuccessState = listOf(
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(
+                    messages = emptyList()
+                ),
+                operation = ConversationDetailEvent.ErrorLoadingContacts,
+                expectedState = ConversationDetailsMessagesState.Error(
+                    message = TextUiModel(string.detail_error_loading_contacts)
+                )
+            ),
 
             Input(
                 currentState = ConversationDetailsMessagesState.Data(
