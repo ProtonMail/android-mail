@@ -26,6 +26,7 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -107,6 +108,7 @@ private fun MessageDetailHeaderLayout(
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()
+            .background(ProtonTheme.colors.backgroundNorm)
             .clickable(
                 enabled = !isExpanded
             ) { onClick() }
