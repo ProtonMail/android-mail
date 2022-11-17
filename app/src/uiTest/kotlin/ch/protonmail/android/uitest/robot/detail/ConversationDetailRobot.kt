@@ -23,9 +23,10 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import ch.protonmail.android.uitest.util.onNodeWithContentDescription
-import ch.protonmail.android.mailcommon.presentation.R.string as commonString
+import ch.protonmail.android.mailcommon.presentation.compose.Avatar
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
@@ -37,22 +38,25 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
     class Verify(private val composeTestRule: ComposeContentTestRule) {
 
         fun draftIconAvatarIsDisplayed() {
-            composeTestRule.onNodeWithContentDescription(commonString.draft_avatar_icon_description)
+            composeTestRule.onNodeWithTag(Avatar.DraftTestTag)
                 .assertIsDisplayed()
         }
 
         fun forwardedIconIsDisplayed() {
-            composeTestRule.onNodeWithContentDescription(commonString.forwarded_icon_description)
+            composeTestRule
+                .onNodeWithTag(ConversationDetailScreen.ForwardedMessageTestTag)
                 .assertIsDisplayed()
         }
 
         fun repliedAllIconIsDisplayed() {
-            composeTestRule.onNodeWithContentDescription(commonString.replied_all_icon_description)
+            composeTestRule
+                .onNodeWithTag(ConversationDetailScreen.RepliedAllMessageTestTag)
                 .assertIsDisplayed()
         }
 
         fun repliedIconIsDisplayed() {
-            composeTestRule.onNodeWithContentDescription(commonString.replied_icon_description)
+            composeTestRule
+                .onNodeWithTag(ConversationDetailScreen.RepliedMessageTestTag)
                 .assertIsDisplayed()
         }
 

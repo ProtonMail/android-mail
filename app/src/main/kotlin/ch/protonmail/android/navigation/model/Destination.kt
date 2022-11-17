@@ -20,7 +20,7 @@ package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.CONVERSATION_ID_KEY
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
@@ -32,9 +32,9 @@ sealed class Destination(val route: String) {
     object Screen {
         object Mailbox : Destination("mailbox")
 
-        object Conversation : Destination("mailbox/conversation/${CONVERSATION_ID_KEY.wrap()}") {
+        object Conversation : Destination("mailbox/conversation/${ConversationIdKey.wrap()}") {
             operator fun invoke(conversationId: ConversationId) =
-                route.replace(CONVERSATION_ID_KEY.wrap(), conversationId.id)
+                route.replace(ConversationIdKey.wrap(), conversationId.id)
         }
 
         object Message : Destination("mailbox/message/${MESSAGE_ID_KEY.wrap()}") {

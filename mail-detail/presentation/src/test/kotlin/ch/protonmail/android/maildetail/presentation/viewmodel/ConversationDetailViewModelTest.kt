@@ -100,7 +100,7 @@ class ConversationDetailViewModelTest {
         every { newStateFrom(currentState = any(), operation = any()) } returns ConversationDetailState.Loading
     }
     private val savedStateHandle: SavedStateHandle = mockk {
-        every { get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns
+        every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns
             ConversationIdSample.WeatherForecast.id
     }
 
@@ -136,7 +136,7 @@ class ConversationDetailViewModelTest {
     @Test
     fun `throws exception when conversation id parameter was not provided as input`() = runTest {
         // Given
-        every { savedStateHandle.get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY) } returns null
+        every { savedStateHandle.get<String>(ConversationDetailScreen.ConversationIdKey) } returns null
         // When
         val thrown = assertFailsWith<IllegalStateException> { viewModel.state }
         // Then

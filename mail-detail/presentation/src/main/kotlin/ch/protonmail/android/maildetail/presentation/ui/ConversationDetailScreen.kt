@@ -41,11 +41,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
-import ch.protonmail.android.mailcommon.presentation.R.string
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.string
@@ -214,22 +214,22 @@ private fun MessagesContent(
                     when (message.forwardedIcon) {
                         ConversationDetailMessageUiModel.ForwardedIcon.None -> Unit
                         ConversationDetailMessageUiModel.ForwardedIcon.Forwarded -> SmallNonClickableIcon(
+                            modifier = Modifier.testTag(ConversationDetailScreen.ForwardedMessageTestTag),
                             iconId = drawable.ic_proton_arrow_right,
-                            iconColor = fontColor,
-                            contentDescriptionId = string.forwarded_icon_description
+                            iconColor = fontColor
                         )
                     }.exhaustive
                     when (message.repliedIcon) {
                         ConversationDetailMessageUiModel.RepliedIcon.None -> Unit
                         ConversationDetailMessageUiModel.RepliedIcon.Replied -> SmallNonClickableIcon(
+                            modifier = Modifier.testTag(ConversationDetailScreen.RepliedMessageTestTag),
                             iconId = drawable.ic_proton_arrow_up_and_left,
-                            iconColor = fontColor,
-                            contentDescriptionId = string.replied_icon_description
+                            iconColor = fontColor
                         )
                         ConversationDetailMessageUiModel.RepliedIcon.RepliedAll -> SmallNonClickableIcon(
+                            modifier = Modifier.testTag(ConversationDetailScreen.RepliedAllMessageTestTag),
                             iconId = drawable.ic_proton_arrows_up_and_left,
-                            iconColor = fontColor,
-                            contentDescriptionId = string.replied_all_icon_description
+                            iconColor = fontColor
                         )
                     }.exhaustive
                     Text(
@@ -247,7 +247,10 @@ private fun MessagesContent(
 
 object ConversationDetailScreen {
 
-    const val CONVERSATION_ID_KEY = "conversation id"
+    const val ConversationIdKey = "conversation id"
+    const val ForwardedMessageTestTag = "forwarded_message"
+    const val RepliedMessageTestTag = "replied_message"
+    const val RepliedAllMessageTestTag = "replied_all_message"
 
     data class Actions(
         val onBackClick: () -> Unit,

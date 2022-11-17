@@ -72,7 +72,7 @@ class ConversationDetailViewModel @Inject constructor(
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
 
     init {
-        val conversationIdParam = savedStateHandle.get<String>(ConversationDetailScreen.CONVERSATION_ID_KEY)
+        val conversationIdParam = savedStateHandle.get<String>(ConversationDetailScreen.ConversationIdKey)
         Timber.d("Open detail screen for conversation ID: $conversationIdParam")
 
         if (conversationIdParam == null) {
