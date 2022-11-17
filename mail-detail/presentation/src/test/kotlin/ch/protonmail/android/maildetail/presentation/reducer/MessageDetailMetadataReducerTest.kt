@@ -54,7 +54,7 @@ class MessageDetailMetadataReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MessageDetailMetadataState.Loading,
-                operation = MessageDetailEvent.MessageMetadata(messageUiModel),
+                operation = MessageDetailEvent.MessageWithLabels(messageUiModel),
                 expectedState = MessageDetailMetadataState.Data(messageUiModel)
             ).toArray(),
             TestInput(

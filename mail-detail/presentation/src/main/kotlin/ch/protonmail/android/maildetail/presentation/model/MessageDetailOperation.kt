@@ -30,7 +30,7 @@ sealed interface MessageDetailOperation {
 
 sealed interface MessageDetailEvent : MessageDetailOperation {
 
-    data class MessageMetadata(
+    data class MessageWithLabels(
         val messageUiModel: MessageDetailMetadataUiModel
     ) : MessageDetailEvent,
         AffectingMessage

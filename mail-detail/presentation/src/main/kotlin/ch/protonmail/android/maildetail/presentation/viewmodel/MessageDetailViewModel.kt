@@ -128,7 +128,7 @@ class MessageDetailViewModel @Inject constructor(
                 either.fold(
                     ifLeft = { MessageDetailEvent.NoCachedMetadata },
                     ifRight = {
-                        MessageDetailEvent.MessageMetadata(
+                        MessageDetailEvent.MessageWithLabels(
                             uiModelMapper.toUiModel(
                                 it,
                                 contacts.getOrElse { emptyList() }

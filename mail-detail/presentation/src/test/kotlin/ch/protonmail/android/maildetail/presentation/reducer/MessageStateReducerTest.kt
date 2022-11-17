@@ -56,7 +56,7 @@ class MessageStateReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = MessageDetailMetadataState.Loading,
-                operation = MessageDetailEvent.MessageMetadata(messageUiModel),
+                operation = MessageDetailEvent.MessageWithLabels(messageUiModel),
                 expectedState = MessageDetailMetadataState.Data(messageUiModel)
             )
         )
@@ -64,7 +64,7 @@ class MessageStateReducerTest(
         private val transitionsFromDataState = listOf(
             TestInput(
                 currentState = MessageDetailMetadataState.Data(messageUiModel),
-                operation = MessageDetailEvent.MessageMetadata(updatedMessageUiModel),
+                operation = MessageDetailEvent.MessageWithLabels(updatedMessageUiModel),
                 expectedState = MessageDetailMetadataState.Data(updatedMessageUiModel)
             )
         )

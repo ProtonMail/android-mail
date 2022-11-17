@@ -70,9 +70,10 @@ import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultSmall
 import me.proton.core.compose.theme.defaultSmallStrong
 
-@ExperimentalAnimationApi
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MessageDetailHeader(
+    modifier: Modifier = Modifier,
     uiModel: MessageDetailHeaderUiModel
 ) {
     val isExpanded = rememberSaveable(inputs = arrayOf()) {
@@ -88,6 +89,7 @@ fun MessageDetailHeader(
         }
     ) { targetState ->
         MessageDetailHeaderLayout(
+            modifier = modifier,
             uiModel = uiModel,
             isExpanded = targetState,
             onClick = { isExpanded.value = !isExpanded.value }
@@ -581,7 +583,6 @@ private fun ConstrainScope.constrainExtendedHeaderRow(
 
 private fun visibleWhen(isVisible: Boolean) = if (isVisible) Visibility.Visible else Visibility.Gone
 
-@ExperimentalAnimationApi
 @Preview(showBackground = true)
 @Composable
 fun MessageDetailHeaderPreview() {

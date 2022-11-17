@@ -139,7 +139,7 @@ class MessageDetailReducerTest(
 
         private val events = listOf(
             TestInput(
-                MessageDetailEvent.MessageMetadata(
+                MessageDetailEvent.MessageWithLabels(
                     MessageDetailMetadataUiModel(
                         MessageId("id"), "subject", false, detailHeaderUiModel
                     )

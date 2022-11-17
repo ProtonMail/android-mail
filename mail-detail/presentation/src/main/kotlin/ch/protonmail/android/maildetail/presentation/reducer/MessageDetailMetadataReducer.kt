@@ -32,7 +32,7 @@ class MessageDetailMetadataReducer @Inject constructor() {
         event: MessageDetailOperation.AffectingMessage
     ): MessageDetailMetadataState {
         return when (event) {
-            is MessageDetailEvent.MessageMetadata -> MessageDetailMetadataState.Data(event.messageUiModel)
+            is MessageDetailEvent.MessageWithLabels -> MessageDetailMetadataState.Data(event.messageUiModel)
             is MessageDetailEvent.NoCachedMetadata -> TODO(
                 "This should never happen. Handle by following the 'load message body' flow (once implemented)"
             )
