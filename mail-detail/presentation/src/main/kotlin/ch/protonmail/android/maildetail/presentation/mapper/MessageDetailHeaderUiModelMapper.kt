@@ -34,8 +34,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
+import kotlin.time.Duration.Companion.seconds
 
 class MessageDetailHeaderUiModelMapper @Inject constructor(
     @ApplicationContext
@@ -58,8 +57,8 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             shouldShowAttachmentIcon = messageWithLabels.message.hasNonCalendarAttachments(),
             shouldShowStar = messageWithLabels.message.isStarred(),
             location = messageLocationUiModelMapper(messageWithLabels.message.labelIds, messageWithLabels.labels),
-            time = formatShortTime(messageWithLabels.message.time.toDuration(DurationUnit.MILLISECONDS)),
-            extendedTime = formatExtendedTime(messageWithLabels.message.time.toDuration(DurationUnit.MILLISECONDS)),
+            time = formatShortTime(messageWithLabels.message.time.seconds),
+            extendedTime = formatExtendedTime(messageWithLabels.message.time.seconds),
             shouldShowUndisclosedRecipients = messageWithLabels.message.hasUndisclosedRecipients(),
             allRecipients = messageWithLabels.message.allRecipients(contacts),
             toRecipients = messageWithLabels.message.toList.map { participantUiModelMapper.toUiModel(it, contacts) },

@@ -45,7 +45,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 class MessageDetailHeaderUiModelMapperTest {
 
@@ -97,10 +97,10 @@ class MessageDetailHeaderUiModelMapperTest {
         every { this@mockk.invoke(any(), MessageTestData.sender.name) } returns avatarUiModel
     }
     private val formatExtendedTime: FormatExtendedTime = mockk {
-        every { this@mockk.invoke(message.time.milliseconds) } returns extendedTimeTestUiModel
+        every { this@mockk.invoke(message.time.seconds) } returns extendedTimeTestUiModel
     }
     private val formatShortTime: FormatShortTime = mockk {
-        every { this@mockk.invoke(message.time.milliseconds) } returns shortTimeTextUiModel
+        every { this@mockk.invoke(message.time.seconds) } returns shortTimeTextUiModel
     }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
         every { this@mockk.invoke(any(), labels) } returns messageLocationUiModel
