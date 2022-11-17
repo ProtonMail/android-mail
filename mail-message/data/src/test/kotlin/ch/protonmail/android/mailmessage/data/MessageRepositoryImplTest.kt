@@ -239,7 +239,7 @@ class MessageRepositoryImplTest {
     }
 
     @Test
-    fun `remove label emits message with label when upsert was successful`() = runTest {
+    fun `remove label returns message with label when upsert was successful`() = runTest {
         // Given
         val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
         every { localDataSource.observeMessage(userId, messageId) } returns flowOf(

@@ -116,6 +116,26 @@ object MessageTestData {
         )
     )
 
+    val unStarredMessagesByConversation = listOf(
+        buildMessage(id = "123", conversationId = ConversationId("conversation")),
+        buildMessage(id = "124", conversationId = ConversationId("conversation")),
+    )
+
+    val starredMessagesByConversation = listOf(
+        buildMessage(
+            id = "123", conversationId = ConversationId("conversation"), labelIds = listOf(
+                SystemLabelId.Inbox.labelId.id,
+                SystemLabelId.Starred.labelId.id
+            )
+        ),
+        buildMessage(
+            id = "124", conversationId = ConversationId("conversation"), labelIds = listOf(
+                SystemLabelId.Inbox.labelId.id,
+                SystemLabelId.Starred.labelId.id
+            )
+        ),
+    )
+
     fun buildMessage(
         userId: UserId = UserIdTestData.userId,
         id: String,
@@ -130,11 +150,12 @@ object MessageTestData {
         attachmentCount: AttachmentCount = AttachmentCount(0),
         toList: List<Recipient> = emptyList(),
         ccList: List<Recipient> = emptyList(),
-        bccList: List<Recipient> = emptyList()
+        bccList: List<Recipient> = emptyList(),
+        conversationId: ConversationId = ConversationId(id)
     ) = Message(
         userId = userId,
         messageId = MessageId(id),
-        conversationId = ConversationId(id),
+        conversationId = conversationId,
         time = time,
         size = size,
         order = order,

@@ -52,4 +52,13 @@ interface ConversationRepository {
      * Message metadata is fetched and returned as available
      */
     fun observeConversation(userId: UserId, id: ConversationId): Flow<Either<DataError, Conversation>>
+
+    /**
+     * Adds the given [labelId] to the message with the given [conversationId]
+     */
+    suspend fun addLabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId
+    ): Either<DataError, Conversation>
 }

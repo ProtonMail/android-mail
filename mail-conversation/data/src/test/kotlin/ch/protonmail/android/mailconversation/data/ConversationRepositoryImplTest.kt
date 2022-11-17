@@ -30,16 +30,21 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationRemo
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
+import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Ordering
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
+import org.junit.Ignore
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -62,7 +67,11 @@ class ConversationRepositoryImplTest {
 
     private val coroutineScopeProvider = TestCoroutineScopeProvider
 
-    private val messageLocalDataSource: MessageLocalDataSource = mockk(relaxUnitFun = true)
+    private val messageLocalDataSource: MessageLocalDataSource = mockk(relaxUnitFun = true) {
+        coEvery { this@mockk.observeMessages(any(), any<ConversationId>()) } returns flowOf(
+            MessageTestData.unStarredMessagesByConversation
+        )
+    }
 
     private val conversationRepository = ConversationRepositoryImpl(
         conversationLocalDataSource = conversationLocalDataSource,
@@ -210,13 +219,103 @@ class ConversationRepositoryImplTest {
         val conversation = getConversation(userId, conversationId.id)
         val updatedConversation = conversation.copy(numUnread = 5)
         coEvery { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(conversation)
-        coEvery { conversationRemoteDataSource.getConversationWithMessages(userId, conversationId) } returns
-            ConversationWithMessages(conversation = updatedConversation, messages = emptyList())
+        coEvery {
+            conversationRemoteDataSource.getConversationWithMessages(
+                userId,
+                conversationId
+            )
+        } returns ConversationWithMessages(conversation = updatedConversation, messages = emptyList())
         // When
         conversationRepository.observeConversation(userId, conversationId).test {
             // Then
             coVerify { conversationLocalDataSource.upsertConversation(userId, updatedConversation) }
             cancelAndConsumeRemainingEvents()
         }
+    }
+
+    @Test
+    fun `add label returns conversation with label when upsert was successful`() = runTest {
+        // Given
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.conversation
+        )
+
+        every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
+            MessageTestData.unStarredMessagesByConversation
+        )
+        // When
+        val actual = conversationRepository.addLabel(
+            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
+        )
+        // Then
+        assertEquals(ConversationTestData.starredConversation.right(), actual)
+        coVerify { conversationLocalDataSource.upsertConversation(userId, ConversationTestData.starredConversation) }
+    }
+
+    @Test
+    fun `add label to stored messages of conversation`() = runTest {
+        // Given
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.conversation
+        )
+        // When
+        conversationRepository.addLabel(
+            userId,
+            ConversationId(ConversationTestData.RAW_CONVERSATION_ID),
+            LabelId("10")
+        )
+        // Then
+        coVerify { messageLocalDataSource.upsertMessages(MessageTestData.starredMessagesByConversation) }
+    }
+
+    @Test
+    fun `add label returns updated conversation containing new label with latest message time`() = runTest {
+        // Given
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.conversationWithConversationLabels
+        )
+        // When
+        val actual = conversationRepository.addLabel(
+            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
+        )
+        // Then
+        val actualTime = actual.orNull()!!.labels.first { it.labelId == LabelId("10") }.contextTime
+        assertEquals(10, actualTime)
+    }
+
+    @Test
+    fun `add label returns updated conversation containing new label with conversation values`() = runTest {
+        // Given
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.conversationWithInformation
+        )
+        // When
+        val actual = conversationRepository.addLabel(
+            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
+        )
+        // Then
+        val actualAddedLabel = actual.orNull()!!.labels.first { it.labelId == LabelId("10") }
+        assertEquals(1, actualAddedLabel.contextNumMessages)
+        assertEquals(5, actualAddedLabel.contextNumAttachments)
+        assertEquals(6, actualAddedLabel.contextNumUnread)
+    }
+
+    @Test
+    @Ignore
+    fun `add label conversation even if no messages are stored`() = runTest {
+        // Given
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.conversation
+        )
+
+        every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
+            listOf()
+        )
+        // When
+        val actual = conversationRepository.addLabel(
+            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
+        )
+        // Then
+        assertEquals(ConversationTestData.starredConversation.right(), actual)
     }
 }

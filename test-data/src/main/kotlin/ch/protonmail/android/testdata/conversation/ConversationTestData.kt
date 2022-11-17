@@ -41,6 +41,16 @@ object ConversationTestData {
         numMessages = 1
     )
 
+    val conversationWithInformation = buildConversation(
+        userId = userId,
+        id = RAW_CONVERSATION_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(SystemLabelId.Inbox.labelId.id),
+        numMessages = 1,
+        numAttachments = 5,
+        numUnRead = 6
+    )
+
     val conversationWith3Messages = buildConversation(
         userId = userId,
         id = RAW_CONVERSATION_ID,
@@ -52,7 +62,11 @@ object ConversationTestData {
         userId = userId,
         id = RAW_CONVERSATION_ID,
         subject = RAW_SUBJECT,
-        labelIds = listOf(SystemLabelId.Starred.labelId.id)
+        labelIds = listOf(
+            SystemLabelId.Inbox.labelId.id,
+            SystemLabelId.Starred.labelId.id
+        ),
+        numMessages = 1
     )
 
     val trashAndSpamConversation = buildConversation(
@@ -77,6 +91,16 @@ object ConversationTestData {
         )
     )
 
+    val conversationWithConversationLabels = buildConversationWithConversationLabels(
+        userId = userId,
+        id = RAW_CONVERSATION_ID,
+        subject = RAW_SUBJECT,
+        conversationLabels = listOf(
+            buildConversationLabel(RAW_CONVERSATION_ID, "1", time = 0),
+            buildConversationLabel(RAW_CONVERSATION_ID, "2", time = 10)
+        )
+    )
+
     private fun buildConversation(
         userId: UserId,
         id: String,
@@ -85,12 +109,37 @@ object ConversationTestData {
         labelIds: List<String> = listOf("0"),
         numAttachments: Int = 0,
         expirationTime: Long = 0,
+        attachmentCount: AttachmentCount = AttachmentCount(0),
+        numUnRead: Int = 0
+    ) = Conversation(
+        userId = userId,
+        conversationId = ConversationId(id),
+        order = 0,
+        labels = labelIds.map { buildConversationLabel(id, it, numMessages = numMessages) },
+        subject = subject,
+        senders = listOf(Recipient("address", "name")),
+        recipients = emptyList(),
+        expirationTime = expirationTime,
+        numMessages = numMessages,
+        numUnread = numUnRead,
+        numAttachments = numAttachments,
+        attachmentCount = attachmentCount
+    )
+
+    private fun buildConversationWithConversationLabels(
+        userId: UserId,
+        id: String,
+        subject: String,
+        numMessages: Int = 1,
+        conversationLabels: List<ConversationLabel>,
+        numAttachments: Int = 0,
+        expirationTime: Long = 0,
         attachmentCount: AttachmentCount = AttachmentCount(0)
     ) = Conversation(
         userId = userId,
         conversationId = ConversationId(id),
         order = 0,
-        labels = labelIds.map { buildConversationLabel(id, it) },
+        labels = conversationLabels,
         subject = subject,
         senders = listOf(Recipient("address", "name")),
         recipients = emptyList(),
@@ -105,13 +154,14 @@ object ConversationTestData {
         conversationId: String,
         labelId: String,
         time: Long = 0,
-        size: Long = 0
+        size: Long = 0,
+        numMessages: Int = 0
     ) = ConversationLabel(
         conversationId = ConversationId(conversationId),
         labelId = LabelId(labelId),
         contextTime = time,
         contextSize = size,
-        contextNumMessages = 0,
+        contextNumMessages = numMessages,
         contextNumUnread = 0,
         contextNumAttachments = 0
     )

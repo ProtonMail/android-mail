@@ -19,11 +19,14 @@
 package ch.protonmail.android.mailconversation.data.repository
 
 import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
@@ -36,6 +39,7 @@ import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.StoreRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.data.arch.ProtonStore
 import me.proton.core.data.arch.buildProtonStore
@@ -96,6 +100,43 @@ class ConversationRepositoryImpl @Inject constructor(
     ).mapLatest { it.toDataResult() }
         .mapToEither()
         .distinctUntilChanged()
+
+    override suspend fun addLabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId
+    ): Either<DataError, Conversation> {
+        val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
+            ?: return DataError.Local.NoDataCached.left()
+
+        val conversationLabel = ConversationLabel(
+            conversationId = conversationId,
+            labelId = labelId,
+            contextTime = conversation.labels.maxOf { it.contextTime },
+            contextSize = 0L,
+            contextNumMessages = conversation.numMessages,
+            contextNumUnread = conversation.numUnread,
+            contextNumAttachments = conversation.numAttachments
+        )
+
+        val updatedConversation = conversation.copy(
+            labels = conversation.labels + conversationLabel
+        )
+
+        conversationLocalDataSource.upsertConversation(userId, updatedConversation)
+
+        val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
+        messages.map {
+            it.copy(
+                labelIds = it.labelIds + labelId
+            )
+        }.let {
+            messageLocalDataSource.upsertMessages(it)
+        }
+
+        return updatedConversation.right()
+
+    }
 
     private suspend fun fetchConversations(
         userId: UserId,
