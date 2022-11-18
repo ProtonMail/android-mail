@@ -60,5 +60,5 @@ fun TextUiModel(@StringRes value: Int, vararg formatArgs: Any): TextUiModel =
 fun TextUiModel.string() = when (this) {
     is TextUiModel.Text -> value
     is TextUiModel.TextRes -> stringResource(value)
-    is TextUiModel.TextResWithArgs -> stringResource(value, formatArgs.toTypedArray())
+    is TextUiModel.TextResWithArgs -> stringResource(value, *formatArgs.toTypedArray())
 }
