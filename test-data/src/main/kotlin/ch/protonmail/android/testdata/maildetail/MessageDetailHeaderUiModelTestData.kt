@@ -30,7 +30,7 @@ object MessageDetailHeaderUiModelTestData {
     val messageDetailHeaderUiModel = MessageDetailHeaderUiModel(
         avatar = AvatarUiModel.ParticipantInitial("S"),
         sender = ParticipantUiModel("Sender", "sender@pm.com", R.drawable.ic_proton_lock),
-        shouldShowTrackerProtectionIcon = false,
+        shouldShowTrackerProtectionIcon = true,
         shouldShowAttachmentIcon = true,
         shouldShowStar = true,
         location = MessageLocationUiModel("Archive", R.drawable.ic_proton_archive_box),

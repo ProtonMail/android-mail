@@ -51,7 +51,7 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
         return MessageDetailHeaderUiModel(
             avatar = detailAvatarUiModelMapper(messageWithLabels.message, senderResolvedName),
             sender = participantUiModelMapper.toUiModel(messageWithLabels.message.sender, contacts),
-            shouldShowTrackerProtectionIcon = false,
+            shouldShowTrackerProtectionIcon = true,
             shouldShowAttachmentIcon = messageWithLabels.message.hasNonCalendarAttachments(),
             shouldShowStar = messageWithLabels.message.isStarred(),
             location = messageLocationUiModelMapper(messageWithLabels.message.labelIds, messageWithLabels.labels),

@@ -75,7 +75,7 @@ class MessageDetailHeaderUiModelMapperTest {
     private val expectedResult = MessageDetailHeaderUiModel(
         avatar = avatarUiModel,
         sender = senderUiModel,
-        shouldShowTrackerProtectionIcon = false,
+        shouldShowTrackerProtectionIcon = true,
         shouldShowAttachmentIcon = true,
         shouldShowStar = true,
         location = messageLocationUiModel,
