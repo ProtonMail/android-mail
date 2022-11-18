@@ -83,7 +83,6 @@ class MessageDetailViewModelTest {
 
     private val messageUiModelMapper = mockk<MessageDetailUiModelMapper> {
         every { toUiModel(any(), any()) } returns MessageDetailMetadataUiModel(
-            messageId = MessageTestData.message.messageId,
             subject = MessageTestData.message.subject,
             isStarred = false,
             messageDetailHeader = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
@@ -189,7 +188,6 @@ class MessageDetailViewModelTest {
         val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
         every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
         every { messageUiModelMapper.toUiModel(any(), any()) } returns MessageDetailMetadataUiModel(
-            messageId = messageId,
             subject = subject,
             isStarred = isStarred,
             messageDetailHeader = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
@@ -201,7 +199,6 @@ class MessageDetailViewModelTest {
             // Then
             val expected = MessageDetailMetadataState.Data(
                 MessageDetailMetadataUiModel(
-                    messageId,
                     subject,
                     isStarred,
                     MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel

@@ -22,7 +22,6 @@ import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData.buildMessage
@@ -54,7 +53,6 @@ class MessageDetailUiModelMapperTest {
         val actual = mapper.toUiModel(messageWithLabels, ContactTestData.contacts)
         // Then
         val expected = MessageDetailMetadataUiModel(
-            MessageId(RAW_MESSAGE_ID),
             SUBJECT,
             false,
             MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel

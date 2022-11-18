@@ -18,10 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
-
 data class MessageDetailMetadataUiModel(
-    val messageId: MessageId,
     val subject: String,
     val isStarred: Boolean,
     val messageDetailHeader: MessageDetailHeaderUiModel

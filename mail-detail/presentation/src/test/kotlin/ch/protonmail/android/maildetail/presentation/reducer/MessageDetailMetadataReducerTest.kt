@@ -45,7 +45,6 @@ class MessageDetailMetadataReducerTest(
     companion object {
 
         private val messageUiModel = MessageUiModelTestData.buildMessageUiModel(
-            "messageId",
             "This email is about subjects"
         )
 

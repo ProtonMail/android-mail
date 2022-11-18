@@ -29,7 +29,6 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadata
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
@@ -140,9 +139,7 @@ class MessageDetailReducerTest(
         private val events = listOf(
             TestInput(
                 MessageDetailEvent.MessageWithLabels(
-                    MessageDetailMetadataUiModel(
-                        MessageId("id"), "subject", false, detailHeaderUiModel
-                    )
+                    MessageDetailMetadataUiModel("subject", false, detailHeaderUiModel)
                 ),
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,

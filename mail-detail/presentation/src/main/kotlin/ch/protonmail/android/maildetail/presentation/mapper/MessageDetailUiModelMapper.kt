@@ -32,7 +32,6 @@ class MessageDetailUiModelMapper @Inject constructor(
 
     fun toUiModel(messageWithLabels: MessageWithLabels, contacts: List<Contact>): MessageDetailMetadataUiModel {
         return MessageDetailMetadataUiModel(
-            messageId = messageWithLabels.message.messageId,
             subject = messageWithLabels.message.subject,
             isStarred = messageWithLabels.message.labelIds.contains(SystemLabelId.Starred.labelId),
             messageDetailHeader = messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contacts)

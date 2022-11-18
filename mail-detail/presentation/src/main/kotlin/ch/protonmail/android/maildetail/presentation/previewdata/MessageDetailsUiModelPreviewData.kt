@@ -25,7 +25,6 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUi
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
 object MessageDetailsUiModelPreviewData {
 
@@ -53,14 +52,12 @@ object MessageDetailsUiModelPreviewData {
     )
 
     val FirstWeekOfAugWeatherForecast = MessageDetailMetadataUiModel(
-        messageId = MessageId("Weather Forecast for the first week of August"),
         subject = "Weather Forecast for the first week of August",
         isStarred = true,
         messageDetailHeader = messageDetailHeaderUiModel
     )
 
     val LoremIpsum30words = MessageDetailMetadataUiModel(
-        messageId = MessageId("Lorem Ipsum"),
         subject = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In volutpat elit vitae massa bibendum, " +
             "sed vestibulum velit feugiat. Suspendisse molestie purus at ornare cursus. Mauris placerat tortor est, " +
             "et elementum.",

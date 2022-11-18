@@ -45,11 +45,9 @@ class MessageStateReducerTest(
     companion object {
 
         private val messageUiModel = MessageUiModelTestData.buildMessageUiModel(
-            "messageId",
             "This email is about subjects"
         )
         private val updatedMessageUiModel = MessageUiModelTestData.buildMessageUiModel(
-            "messageId1",
             "[Re] This email is about subjects"
         )
 
