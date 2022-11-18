@@ -38,7 +38,7 @@ class MessageDetailReducer @Inject constructor(
         currentState: MessageDetailState,
         operation: MessageDetailOperation
     ): MessageDetailState = currentState.copy(
-        messageState = currentState.toNewMessageStateFrom(operation),
+        messageMetadataState = currentState.toNewMessageStateFrom(operation),
         bottomBarState = currentState.toNewBottomBarStateFrom(operation),
         dismiss = currentState.toNewDismissStateFrom(operation),
         error = currentState.toNewErrorStateFrom(operation)
@@ -65,9 +65,9 @@ class MessageDetailReducer @Inject constructor(
 
     private fun MessageDetailState.toNewMessageStateFrom(operation: MessageDetailOperation) =
         if (operation is MessageDetailOperation.AffectingMessage) {
-            messageMetadataReducer.newStateFrom(messageState, operation)
+            messageMetadataReducer.newStateFrom(messageMetadataState, operation)
         } else {
-            messageState
+            messageMetadataState
         }
 
     private fun MessageDetailState.toNewBottomBarStateFrom(operation: MessageDetailOperation) =

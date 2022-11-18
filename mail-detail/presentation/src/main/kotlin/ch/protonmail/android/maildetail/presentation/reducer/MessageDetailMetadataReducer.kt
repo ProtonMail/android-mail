@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import javax.inject.Inject
@@ -28,11 +28,14 @@ class MessageDetailMetadataReducer @Inject constructor() {
 
     @SuppressWarnings("NotImplementedDeclaration")
     fun newStateFrom(
-        @Suppress("UNUSED_PARAMETER") currentState: MessageDetailMetadataState,
+        @Suppress("UNUSED_PARAMETER") currentState: MessageMetadataState,
         event: MessageDetailOperation.AffectingMessage
-    ): MessageDetailMetadataState {
+    ): MessageMetadataState {
         return when (event) {
-            is MessageDetailEvent.MessageWithLabels -> MessageDetailMetadataState.Data(event.messageUiModel)
+            is MessageDetailEvent.MessageWithLabelsEvent -> MessageMetadataState.Data(
+                event.messageDetailActionBar,
+                event.messageDetailHeader
+            )
             is MessageDetailEvent.NoCachedMetadata -> TODO(
                 "This should never happen. Handle by following the 'load message body' flow (once implemented)"
             )
@@ -44,24 +47,24 @@ class MessageDetailMetadataReducer @Inject constructor() {
         }
     }
 
-    private fun MessageDetailMetadataState.toNewStateForStarredMessage() = when (this) {
-        is MessageDetailMetadataState.Loading -> this
-        is MessageDetailMetadataState.Data -> copy(messageUiModel.copy(isStarred = true))
+    private fun MessageMetadataState.toNewStateForStarredMessage() = when (this) {
+        is MessageMetadataState.Loading -> this
+        is MessageMetadataState.Data -> copy(messageDetailActionBar.copy(isStarred = true))
     }
 
-    private fun MessageDetailMetadataState.toNewStateForUnStarredMessage() = when (this) {
-        is MessageDetailMetadataState.Loading -> this
-        is MessageDetailMetadataState.Data -> copy(messageUiModel.copy(isStarred = false))
+    private fun MessageMetadataState.toNewStateForUnStarredMessage() = when (this) {
+        is MessageMetadataState.Loading -> this
+        is MessageMetadataState.Data -> copy(messageDetailActionBar.copy(isStarred = false))
     }
 
-    private fun MessageDetailMetadataState.toNewStateForErrorAddingStar() = when (this) {
-        is MessageDetailMetadataState.Loading -> this
-        is MessageDetailMetadataState.Data -> copy(messageUiModel.copy(isStarred = false))
+    private fun MessageMetadataState.toNewStateForErrorAddingStar() = when (this) {
+        is MessageMetadataState.Loading -> this
+        is MessageMetadataState.Data -> copy(messageDetailActionBar.copy(isStarred = false))
     }
 
-    private fun MessageDetailMetadataState.toNewStateForErrorRemovingStar() = when (this) {
-        is MessageDetailMetadataState.Loading -> this
-        is MessageDetailMetadataState.Data -> copy(messageUiModel.copy(isStarred = true))
+    private fun MessageMetadataState.toNewStateForErrorRemovingStar() = when (this) {
+        is MessageMetadataState.Loading -> this
+        is MessageMetadataState.Data -> copy(messageDetailActionBar.copy(isStarred = true))
     }
 
 }

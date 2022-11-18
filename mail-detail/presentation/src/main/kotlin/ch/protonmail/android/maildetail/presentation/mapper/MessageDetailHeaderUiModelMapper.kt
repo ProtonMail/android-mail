@@ -27,12 +27,10 @@ import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.core.contact.domain.entity.Contact
-import me.proton.core.domain.arch.Mapper
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -45,7 +43,7 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper,
     private val participantUiModelMapper: ParticipantUiModelMapper,
     private val resolveParticipantName: ResolveParticipantName
-) : Mapper<Message, MessageDetailMetadataUiModel> {
+) {
 
     fun toUiModel(messageWithLabels: MessageWithLabels, contacts: List<Contact>): MessageDetailHeaderUiModel {
         val senderResolvedName = resolveParticipantName(messageWithLabels.message.sender, contacts)

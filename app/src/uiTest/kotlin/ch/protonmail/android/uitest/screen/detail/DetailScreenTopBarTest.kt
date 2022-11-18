@@ -21,7 +21,7 @@ package ch.protonmail.android.uitest.screen.detail
 import androidx.compose.ui.test.junit4.createComposeRule
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
@@ -91,8 +91,8 @@ class DetailScreenTopBarTest {
 
         // then
         robot.verify {
-            val messageState = state.messageState as MessageDetailMetadataState.Data
-            subjectIsDisplayed(messageState.messageUiModel.subject)
+            val messageState = state.messageMetadataState as MessageMetadataState.Data
+            subjectIsDisplayed(messageState.messageDetailActionBar.subject)
         }
     }
 

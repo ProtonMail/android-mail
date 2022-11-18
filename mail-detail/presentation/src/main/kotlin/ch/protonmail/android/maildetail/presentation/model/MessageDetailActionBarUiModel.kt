@@ -16,26 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.message
+package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
-import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
-
-object MessageUiModelTestData {
-
-    const val RAW_MESSAGE_ID = "rawMessageId"
-    const val RAW_SUBJECT = "Here's a new email"
-
-    val uiModel = buildMessageUiModel(
-        RAW_SUBJECT
-    )
-
-    fun buildMessageUiModel(
-        subject: String,
-        isStarred: Boolean = false
-    ) = MessageDetailMetadataUiModel(
-        subject = subject,
-        isStarred = isStarred,
-        messageDetailHeader = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
-    )
-}
+data class MessageDetailActionBarUiModel(
+    val subject: String,
+    val isStarred: Boolean
+)

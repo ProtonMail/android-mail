@@ -16,26 +16,24 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.testdata.message
 
-import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 
-data class MessageDetailState(
-    val messageMetadataState: MessageMetadataState,
-    val bottomBarState: BottomBarState,
-    val dismiss: Effect<Unit>,
-    val error: Effect<TextUiModel>
-) {
+object MessageDetailActionBarUiModelTestData {
 
-    companion object {
+    const val RAW_MESSAGE_ID = "rawMessageId"
+    const val RAW_SUBJECT = "Here's a new email"
 
-        val Loading = MessageDetailState(
-            messageMetadataState = MessageMetadataState.Loading,
-            bottomBarState = BottomBarState.Loading,
-            dismiss = Effect.empty(),
-            error = Effect.empty()
-        )
-    }
+    val uiModel = buildMessageDetailActionBarUiModel(
+        RAW_SUBJECT
+    )
+
+    fun buildMessageDetailActionBarUiModel(
+        subject: String,
+        isStarred: Boolean = false
+    ) = MessageDetailActionBarUiModel(
+        subject = subject,
+        isStarred = isStarred
+    )
 }

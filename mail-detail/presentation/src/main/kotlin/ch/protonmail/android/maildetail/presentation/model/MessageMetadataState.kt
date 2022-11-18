@@ -18,24 +18,14 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+sealed interface MessageMetadataState {
 
-data class MessageDetailState(
-    val messageMetadataState: MessageMetadataState,
-    val bottomBarState: BottomBarState,
-    val dismiss: Effect<Unit>,
-    val error: Effect<TextUiModel>
-) {
+    data class Data(
+        val messageDetailActionBar: MessageDetailActionBarUiModel,
+        val messageDetailHeader: MessageDetailHeaderUiModel
+    ) : MessageMetadataState
 
-    companion object {
+    object Loading : MessageMetadataState
 
-        val Loading = MessageDetailState(
-            messageMetadataState = MessageMetadataState.Loading,
-            bottomBarState = BottomBarState.Loading,
-            dismiss = Effect.empty(),
-            error = Effect.empty()
-        )
-    }
+    sealed interface Error : MessageMetadataState
 }

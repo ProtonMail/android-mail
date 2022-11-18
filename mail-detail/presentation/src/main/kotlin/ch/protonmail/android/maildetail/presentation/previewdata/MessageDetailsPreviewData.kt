@@ -21,18 +21,48 @@ package ch.protonmail.android.maildetail.presentation.previewdata
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
+import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 
 object MessageDetailsPreviewData {
 
+    private val messageDetailHeaderUiModel = MessageDetailHeaderUiModel(
+        avatar = AvatarUiModel.ParticipantInitial("S"),
+        sender = ParticipantUiModel("Sender", "sender@pm.com", R.drawable.ic_proton_lock),
+        shouldShowTrackerProtectionIcon = false,
+        shouldShowAttachmentIcon = true,
+        shouldShowStar = true,
+        location = MessageLocationUiModel("Archive", R.drawable.ic_proton_archive_box),
+        time = TextUiModel.Text("08/11/2022"),
+        extendedTime = TextUiModel.Text("08/11/2022, 17:16"),
+        shouldShowUndisclosedRecipients = false,
+        allRecipients = TextUiModel.Text("Recipient1, Recipient2, Recipient3"),
+        toRecipients = listOf(
+            ParticipantUiModel("Recipient1", "recipient1@pm.com", R.drawable.ic_proton_lock),
+            ParticipantUiModel("Recipient2", "recipient2@pm.com", R.drawable.ic_proton_lock)
+        ),
+        ccRecipients = listOf(ParticipantUiModel("Recipient3", "recipient3@pm.com", R.drawable.ic_proton_lock)),
+        bccRecipients = emptyList(),
+        labels = emptyList(),
+        size = "12 MB",
+        encryptionPadlock = R.drawable.ic_proton_lock,
+        encryptionInfo = "End-to-end encrypted and signed message"
+    )
+
     val Message = MessageDetailState(
-        messageState = MessageDetailMetadataState.Data(
-            messageUiModel = MessageDetailsUiModelPreviewData.FirstWeekOfAugWeatherForecast
+        messageMetadataState = MessageMetadataState.Data(
+            messageDetailActionBar = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast,
+            messageDetailHeader = messageDetailHeaderUiModel
         ),
         bottomBarState = BottomBarState.Data(
             listOf(
@@ -45,7 +75,7 @@ object MessageDetailsPreviewData {
     )
 
     val Loading = MessageDetailState(
-        messageState = MessageDetailMetadataState.Loading,
+        messageMetadataState = MessageMetadataState.Loading,
         bottomBarState = BottomBarState.Loading,
         dismiss = Effect.empty(),
         error = Effect.empty()

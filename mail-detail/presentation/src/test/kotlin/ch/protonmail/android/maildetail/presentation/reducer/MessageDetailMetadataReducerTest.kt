@@ -19,10 +19,11 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
-import ch.protonmail.android.testdata.message.MessageUiModelTestData
+import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
@@ -44,50 +45,57 @@ class MessageDetailMetadataReducerTest(
 
     companion object {
 
-        private val messageUiModel = MessageUiModelTestData.buildMessageUiModel(
-            "This email is about subjects"
-        )
-
-        private val starredMessageUiModel = messageUiModel.copy(isStarred = true)
+        private val notStarredActionBarUiModel =
+            MessageDetailActionBarUiModelTestData.buildMessageDetailActionBarUiModel(
+                subject = "This email is about subjects",
+                isStarred = false
+            )
+        private val starredActionBarUiModel = notStarredActionBarUiModel.copy(isStarred = true)
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
-                currentState = MessageDetailMetadataState.Loading,
-                operation = MessageDetailEvent.MessageWithLabels(messageUiModel),
-                expectedState = MessageDetailMetadataState.Data(messageUiModel)
+                currentState = MessageMetadataState.Loading,
+                operation = MessageDetailEvent.MessageWithLabelsEvent(
+                    notStarredActionBarUiModel,
+                    messageDetailHeaderUiModel
+                ),
+                expectedState = MessageMetadataState.Data(
+                    notStarredActionBarUiModel,
+                    messageDetailHeaderUiModel
+                )
             ).toArray(),
             TestInput(
-                currentState = MessageDetailMetadataState.Loading,
+                currentState = MessageMetadataState.Loading,
                 operation = MessageViewAction.Star,
-                expectedState = MessageDetailMetadataState.Loading
+                expectedState = MessageMetadataState.Loading
             ).toArray(),
             TestInput(
-                currentState = MessageDetailMetadataState.Loading,
+                currentState = MessageMetadataState.Loading,
                 operation = MessageDetailEvent.ErrorAddingStar,
-                expectedState = MessageDetailMetadataState.Loading
+                expectedState = MessageMetadataState.Loading
             ).toArray(),
             TestInput(
-                currentState = MessageDetailMetadataState.Loading,
+                currentState = MessageMetadataState.Loading,
                 operation = MessageDetailEvent.ErrorRemovingStar,
-                expectedState = MessageDetailMetadataState.Loading
+                expectedState = MessageMetadataState.Loading
             ).toArray()
         )
 
         private val transitionsFromDataState = listOf(
             TestInput(
-                currentState = MessageDetailMetadataState.Data(messageUiModel),
+                currentState = MessageMetadataState.Data(notStarredActionBarUiModel, messageDetailHeaderUiModel),
                 operation = MessageViewAction.Star,
-                expectedState = MessageDetailMetadataState.Data(starredMessageUiModel)
+                expectedState = MessageMetadataState.Data(starredActionBarUiModel, messageDetailHeaderUiModel)
             ).toArray(),
             TestInput(
-                currentState = MessageDetailMetadataState.Data(starredMessageUiModel),
+                currentState = MessageMetadataState.Data(starredActionBarUiModel, messageDetailHeaderUiModel),
                 operation = MessageDetailEvent.ErrorAddingStar,
-                expectedState = MessageDetailMetadataState.Data(messageUiModel)
+                expectedState = MessageMetadataState.Data(notStarredActionBarUiModel, messageDetailHeaderUiModel)
             ).toArray(),
             TestInput(
-                currentState = MessageDetailMetadataState.Data(messageUiModel),
+                currentState = MessageMetadataState.Data(notStarredActionBarUiModel, messageDetailHeaderUiModel),
                 operation = MessageDetailEvent.ErrorRemovingStar,
-                expectedState = MessageDetailMetadataState.Data(starredMessageUiModel)
+                expectedState = MessageMetadataState.Data(starredActionBarUiModel, messageDetailHeaderUiModel)
             ).toArray()
         )
 
@@ -97,9 +105,9 @@ class MessageDetailMetadataReducerTest(
     }
 
     class TestInput(
-        val currentState: MessageDetailMetadataState,
+        val currentState: MessageMetadataState,
         val operation: MessageDetailOperation.AffectingMessage,
-        val expectedState: MessageDetailMetadataState
+        val expectedState: MessageMetadataState
     ) {
 
         fun toArray() = arrayOf(this)

@@ -19,9 +19,10 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
-import ch.protonmail.android.testdata.message.MessageUiModelTestData
+import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
@@ -44,26 +45,29 @@ class MessageStateReducerTest(
 
     companion object {
 
-        private val messageUiModel = MessageUiModelTestData.buildMessageUiModel(
+        private val messageUiModel = MessageDetailActionBarUiModelTestData.buildMessageDetailActionBarUiModel(
             "This email is about subjects"
         )
-        private val updatedMessageUiModel = MessageUiModelTestData.buildMessageUiModel(
+        private val updatedMessageUiModel = MessageDetailActionBarUiModelTestData.buildMessageDetailActionBarUiModel(
             "[Re] This email is about subjects"
         )
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
-                currentState = MessageDetailMetadataState.Loading,
-                operation = MessageDetailEvent.MessageWithLabels(messageUiModel),
-                expectedState = MessageDetailMetadataState.Data(messageUiModel)
+                currentState = MessageMetadataState.Loading,
+                operation = MessageDetailEvent.MessageWithLabelsEvent(messageUiModel, messageDetailHeaderUiModel),
+                expectedState = MessageMetadataState.Data(messageUiModel, messageDetailHeaderUiModel)
             )
         )
 
         private val transitionsFromDataState = listOf(
             TestInput(
-                currentState = MessageDetailMetadataState.Data(messageUiModel),
-                operation = MessageDetailEvent.MessageWithLabels(updatedMessageUiModel),
-                expectedState = MessageDetailMetadataState.Data(updatedMessageUiModel)
+                currentState = MessageMetadataState.Data(messageUiModel, messageDetailHeaderUiModel),
+                operation = MessageDetailEvent.MessageWithLabelsEvent(
+                    updatedMessageUiModel,
+                    messageDetailHeaderUiModel
+                ),
+                expectedState = MessageMetadataState.Data(updatedMessageUiModel, messageDetailHeaderUiModel)
             )
         )
 
@@ -84,8 +88,8 @@ class MessageStateReducerTest(
     }
 
     data class TestInput(
-        val currentState: MessageDetailMetadataState,
+        val currentState: MessageMetadataState,
         val operation: MessageDetailOperation.AffectingMessage,
-        val expectedState: MessageDetailMetadataState
+        val expectedState: MessageMetadataState
     )
 }

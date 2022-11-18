@@ -40,10 +40,11 @@ import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
-import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
@@ -52,7 +53,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
-import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
+import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
@@ -76,18 +77,12 @@ class MessageDetailViewModelTest {
 
     private val rawMessageId = "detailMessageId"
     private val actionUiModelMapper = ActionUiModelMapper()
+    private val messageDetailActionBarUiModelMapper = MessageDetailActionBarUiModelMapper()
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(),
         BottomBarReducer()
     )
 
-    private val messageUiModelMapper = mockk<MessageDetailUiModelMapper> {
-        every { toUiModel(any(), any()) } returns MessageDetailMetadataUiModel(
-            subject = MessageTestData.message.subject,
-            isStarred = false,
-            messageDetailHeader = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
-        )
-    }
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
@@ -120,20 +115,24 @@ class MessageDetailViewModelTest {
     private val unStarMessage = mockk<UnStarMessage> {
         coEvery { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns MessageTestData.message.right()
     }
+    private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper> {
+        every { toUiModel(any(), ContactTestData.contacts) } returns messageDetailHeaderUiModel
+    }
 
     private val viewModel by lazy {
         MessageDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
             messageDetailReducer = messageDetailReducer,
             observeMessageWithLabels = observeMessageWithLabels,
-            uiModelMapper = messageUiModelMapper,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeDetailActions,
             markUnread = markUnread,
             getContacts = getContacts,
             starMessage = starMessage,
             unStarMessage = unStarMessage,
-            savedStateHandle = savedStateHandle
+            savedStateHandle = savedStateHandle,
+            messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
+            messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper
         )
     }
 
@@ -187,24 +186,19 @@ class MessageDetailViewModelTest {
         )
         val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
         every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
-        every { messageUiModelMapper.toUiModel(any(), any()) } returns MessageDetailMetadataUiModel(
-            subject = subject,
-            isStarred = isStarred,
-            messageDetailHeader = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
-        )
 
         // When
         viewModel.state.test {
             initialStateEmitted()
             // Then
-            val expected = MessageDetailMetadataState.Data(
-                MessageDetailMetadataUiModel(
+            val expected = MessageMetadataState.Data(
+                MessageDetailActionBarUiModel(
                     subject,
-                    isStarred,
-                    MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
-                )
+                    isStarred
+                ),
+                messageDetailHeaderUiModel
             )
-            assertEquals(expected, awaitItem().messageState)
+            assertEquals(expected, awaitItem().messageMetadataState)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -297,8 +291,8 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.Star)
             advanceUntilIdle()
             // Then
-            val actual = assertIs<MessageDetailMetadataState.Data>(lastEmittedItem().messageState)
-            assertTrue(actual.messageUiModel.isStarred)
+            val actual = assertIs<MessageMetadataState.Data>(lastEmittedItem().messageMetadataState)
+            assertTrue(actual.messageDetailActionBar.isStarred)
         }
     }
 
@@ -331,8 +325,8 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.UnStar)
             advanceUntilIdle()
             // Then
-            val actual = assertIs<MessageDetailMetadataState.Data>(lastEmittedItem().messageState)
-            assertFalse(actual.messageUiModel.isStarred)
+            val actual = assertIs<MessageMetadataState.Data>(lastEmittedItem().messageMetadataState)
+            assertFalse(actual.messageDetailActionBar.isStarred)
         }
     }
 

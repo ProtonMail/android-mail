@@ -30,8 +30,9 @@ sealed interface MessageDetailOperation {
 
 sealed interface MessageDetailEvent : MessageDetailOperation {
 
-    data class MessageWithLabels(
-        val messageUiModel: MessageDetailMetadataUiModel
+    data class MessageWithLabelsEvent(
+        val messageDetailActionBar: MessageDetailActionBarUiModel,
+        val messageDetailHeader: MessageDetailHeaderUiModel
     ) : MessageDetailEvent,
         AffectingMessage
 

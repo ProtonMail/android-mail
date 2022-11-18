@@ -31,7 +31,8 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
-import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -56,14 +57,15 @@ class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMessageWithLabels: ObserveMessageWithLabels,
     private val messageDetailReducer: MessageDetailReducer,
-    private val uiModelMapper: MessageDetailUiModelMapper,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveMessageDetailActions,
     private val markUnread: MarkUnread,
     private val getContacts: GetContacts,
     private val starMessage: StarMessage,
     private val unStarMessage: UnStarMessage,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
+    private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -123,16 +125,14 @@ class MessageDetailViewModel @Inject constructor(
 
     private fun observeMessageWithLabels(messageId: MessageId) {
         primaryUserId.flatMapLatest { userId ->
-            val contacts = getContacts(userId)
+            val contacts = getContacts(userId).getOrElse { emptyList() }
             return@flatMapLatest observeMessageWithLabels(userId, messageId).mapLatest { either ->
                 either.fold(
                     ifLeft = { MessageDetailEvent.NoCachedMetadata },
-                    ifRight = {
-                        MessageDetailEvent.MessageWithLabels(
-                            uiModelMapper.toUiModel(
-                                it,
-                                contacts.getOrElse { emptyList() }
-                            )
+                    ifRight = { messageWithLabels ->
+                        MessageDetailEvent.MessageWithLabelsEvent(
+                            messageDetailActionBarUiModelMapper.toUiModel(messageWithLabels.message),
+                            messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contacts)
                         )
                     }
                 )

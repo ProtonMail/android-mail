@@ -51,29 +51,29 @@ object DetailsScreenTopBarPreviewData {
     )
 
     val FirstWeekOfAugWeatherForecastExpanded = DetailsScreenTopBarPreview(
-        title = MessageDetailsUiModelPreviewData.FirstWeekOfAugWeatherForecast.subject,
-        isStarred = MessageDetailsUiModelPreviewData.FirstWeekOfAugWeatherForecast.isStarred,
+        title = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast.subject,
+        isStarred = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast.isStarred,
         messageCount = null,
         isExpanded = true
     )
 
     val FirstWeekOfAugWeatherForecastCollapsed = DetailsScreenTopBarPreview(
-        title = MessageDetailsUiModelPreviewData.FirstWeekOfAugWeatherForecast.subject,
-        isStarred = MessageDetailsUiModelPreviewData.FirstWeekOfAugWeatherForecast.isStarred,
+        title = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast.subject,
+        isStarred = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast.isStarred,
         messageCount = null,
         isExpanded = false
     )
 
     val LoremIpsum30wordsExpanded = DetailsScreenTopBarPreview(
-        title = MessageDetailsUiModelPreviewData.LoremIpsum30words.subject,
-        isStarred = MessageDetailsUiModelPreviewData.LoremIpsum30words.isStarred,
+        title = MessageDetailActionBarUiModelPreviewData.LoremIpsum30words.subject,
+        isStarred = MessageDetailActionBarUiModelPreviewData.LoremIpsum30words.isStarred,
         messageCount = null,
         isExpanded = true
     )
 
     val LoremIpsum30wordsCollapsed = DetailsScreenTopBarPreview(
-        title = MessageDetailsUiModelPreviewData.LoremIpsum30words.subject,
-        isStarred = MessageDetailsUiModelPreviewData.LoremIpsum30words.isStarred,
+        title = MessageDetailActionBarUiModelPreviewData.LoremIpsum30words.subject,
+        isStarred = MessageDetailActionBarUiModelPreviewData.LoremIpsum30words.isStarred,
         messageCount = null,
         isExpanded = false
     )

@@ -23,17 +23,17 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
+import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
-import ch.protonmail.android.testdata.message.MessageUiModelTestData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -50,7 +50,7 @@ class MessageDetailReducerTest(
 ) {
 
     private val messageMetadataReducer: MessageDetailMetadataReducer = mockk {
-        every { newStateFrom(any(), any()) } returns reducedState.messageState
+        every { newStateFrom(any(), any()) } returns reducedState.messageMetadataState
     }
 
     private val bottomBarReducer: BottomBarReducer = mockk {
@@ -69,12 +69,12 @@ class MessageDetailReducerTest(
         if (shouldReduceMessageMetadataState) {
             verify {
                 messageMetadataReducer.newStateFrom(
-                    currentState.messageState,
+                    currentState.messageMetadataState,
                     operation as MessageDetailOperation.AffectingMessage
                 )
             }
         } else {
-            assertEquals(currentState.messageState, nextState.messageState, testName)
+            assertEquals(currentState.messageMetadataState, nextState.messageMetadataState, testName)
         }
 
         if (shouldReduceBottomBarState) {
@@ -104,9 +104,10 @@ class MessageDetailReducerTest(
     companion object {
 
         private val detailHeaderUiModel = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+        private val actionBarUiModel = MessageDetailActionBarUiModelTestData.uiModel
         private val currentState = MessageDetailState.Loading
         private val reducedState = MessageDetailState(
-            messageState = MessageDetailMetadataState.Data(MessageUiModelTestData.uiModel),
+            messageMetadataState = MessageMetadataState.Data(actionBarUiModel, detailHeaderUiModel),
             bottomBarState = BottomBarState.Data(listOf(ActionUiModelTestData.markUnread)),
             dismiss = Effect.empty(),
             error = Effect.empty()
@@ -138,8 +139,9 @@ class MessageDetailReducerTest(
 
         private val events = listOf(
             TestInput(
-                MessageDetailEvent.MessageWithLabels(
-                    MessageDetailMetadataUiModel("subject", false, detailHeaderUiModel)
+                MessageDetailEvent.MessageWithLabelsEvent(
+                    MessageDetailActionBarUiModel("subject", false),
+                    detailHeaderUiModel
                 ),
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,

@@ -35,7 +35,7 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
-import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
@@ -94,7 +94,7 @@ fun MessageDetailScreen(
             ProtonSnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            val uiModel = (state.messageState as? MessageDetailMetadataState.Data)?.messageUiModel
+            val uiModel = (state.messageMetadataState as? MessageMetadataState.Data)?.messageDetailActionBar
             DetailScreenTopBar(
                 title = uiModel?.subject ?: DetailScreenTopBar.NoTitle,
                 isStarred = uiModel?.isStarred,
@@ -138,12 +138,12 @@ fun MessageDetailScreen(
             )
         }
     ) { innerPadding ->
-        when (state.messageState) {
-            is MessageDetailMetadataState.Data -> MessageDetailContent(
-                messageState = state.messageState,
+        when (state.messageMetadataState) {
+            is MessageMetadataState.Data -> MessageDetailContent(
+                messageMetadataState = state.messageMetadataState,
                 modifier = Modifier.padding(innerPadding)
             )
-            MessageDetailMetadataState.Loading -> ProtonCenteredProgress(
+            MessageMetadataState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
             )
         }.exhaustive
@@ -152,14 +152,14 @@ fun MessageDetailScreen(
 
 @Composable
 private fun MessageDetailContent(
-    messageState: MessageDetailMetadataState.Data,
+    messageMetadataState: MessageMetadataState.Data,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
         item {
-            MessageDetailHeader(uiModel = messageState.messageUiModel.messageDetailHeader)
+            MessageDetailHeader(uiModel = messageMetadataState.messageDetailHeader)
         }
     }
 }

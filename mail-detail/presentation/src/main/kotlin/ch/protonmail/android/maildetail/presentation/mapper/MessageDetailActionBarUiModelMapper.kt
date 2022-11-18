@@ -16,15 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.maildetail.presentation.mapper
 
-sealed interface MessageDetailMetadataState {
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmessage.domain.entity.Message
+import javax.inject.Inject
 
-    data class Data(
-        val messageUiModel: MessageDetailMetadataUiModel
-    ) : MessageDetailMetadataState
+class MessageDetailActionBarUiModelMapper @Inject constructor() {
 
-    object Loading : MessageDetailMetadataState
-
-    sealed interface Error : MessageDetailMetadataState
+    fun toUiModel(message: Message) = MessageDetailActionBarUiModel(
+        subject = message.subject,
+        isStarred = message.labelIds.contains(SystemLabelId.Starred.labelId)
+    )
 }

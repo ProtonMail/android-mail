@@ -16,10 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.maildetail.presentation.previewdata
 
-data class MessageDetailMetadataUiModel(
-    val subject: String,
-    val isStarred: Boolean,
-    val messageDetailHeader: MessageDetailHeaderUiModel
-)
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
+
+object MessageDetailActionBarUiModelPreviewData {
+
+    val FirstWeekOfAugWeatherForecast = MessageDetailActionBarUiModel(
+        subject = "Weather Forecast for the first week of August",
+        isStarred = true
+    )
+
+    val LoremIpsum30words = MessageDetailActionBarUiModel(
+        subject = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In volutpat elit vitae massa bibendum, " +
+            "sed vestibulum velit feugiat. Suspendisse molestie purus at ornare cursus. Mauris placerat tortor est, " +
+            "et elementum.",
+        isStarred = false
+    )
+}
