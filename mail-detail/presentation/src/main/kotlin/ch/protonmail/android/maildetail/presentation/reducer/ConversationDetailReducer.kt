@@ -22,7 +22,6 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import javax.inject.Inject
 
 class ConversationDetailReducer @Inject constructor(
@@ -35,33 +34,30 @@ class ConversationDetailReducer @Inject constructor(
     fun newStateFrom(
         currentState: ConversationDetailState,
         operation: ConversationDetailOperation
-    ): ConversationDetailState =
-        when (operation) {
-            is ConversationDetailEvent.ConversationData -> currentState.copy(
-                conversationState = metadataReducer.newStateFrom(currentState.conversationState, operation)
-            )
-            is ConversationDetailEvent.ErrorLoadingConversation -> currentState.copy(
-                conversationState = metadataReducer.newStateFrom(currentState.conversationState, operation)
-            )
-            is ConversationDetailEvent.ErrorLoadingMessages -> currentState.copy(
-                messagesState = messagesReducer.newStateFrom(currentState.messagesState, operation)
-            )
-            is ConversationDetailEvent.MessagesData -> currentState.copy(
-                messagesState = messagesReducer.newStateFrom(currentState.messagesState, operation)
-            )
-            is ConversationDetailEvent.NoPrimaryUser -> currentState.copy(
-                conversationState = metadataReducer.newStateFrom(currentState.conversationState, operation),
-                messagesState = messagesReducer.newStateFrom(currentState.messagesState, operation)
-            )
-            is ConversationDetailViewAction.Star -> currentState.copy(
-                conversationState = metadataReducer.newStateFrom(currentState.conversationState, operation)
-            )
-            is ConversationDetailViewAction.UnStar -> currentState.copy(
-                conversationState = metadataReducer.newStateFrom(currentState.conversationState, operation)
-            )
-            is ConversationDetailEvent.ConversationBottomBarEvent -> currentState.copy(
-                bottomBarState = bottomBarReducer.newStateFrom(currentState.bottomBarState, operation.bottomBarEvent)
-            )
-            is ConversationDetailViewAction.MarkUnread -> TODO()
+    ): ConversationDetailState = currentState.copy(
+        conversationState = currentState.toNewConversationState(operation),
+        messagesState = currentState.toNewMessageState(operation),
+        bottomBarState = currentState.toNewBottomBarState(operation)
+    )
+
+    private fun ConversationDetailState.toNewConversationState(operation: ConversationDetailOperation) =
+        if (operation is ConversationDetailOperation.AffectingConversation) {
+            metadataReducer.newStateFrom(conversationState, operation)
+        } else {
+            conversationState
+        }
+
+    private fun ConversationDetailState.toNewMessageState(operation: ConversationDetailOperation) =
+        if (operation is ConversationDetailOperation.AffectingMessages) {
+            messagesReducer.newStateFrom(messagesState, operation)
+        } else {
+            messagesState
+        }
+
+    private fun ConversationDetailState.toNewBottomBarState(operation: ConversationDetailOperation) =
+        if (operation is ConversationDetailEvent.ConversationBottomBarEvent) {
+            bottomBarReducer.newStateFrom(bottomBarState, operation.bottomBarEvent)
+        } else {
+            bottomBarState
         }
 }
