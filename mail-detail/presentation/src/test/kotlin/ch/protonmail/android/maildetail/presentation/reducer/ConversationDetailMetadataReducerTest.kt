@@ -73,9 +73,20 @@ class ConversationDetailMetadataReducerTest(
             )
         )
 
+        private val transitionsFromDataState = listOf(
+            TestParams(
+                "from data to starred conversation data",
+                TestParams.TestInput(
+                    currentState = ConversationDetailMetadataState.Data(conversationUiModel),
+                    event = ConversationDetailViewAction.Star,
+                    expectedState = ConversationDetailMetadataState.Data(conversationUiModel.copy(isStarred = true))
+                )
+            )
+        )
+
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
-        fun data() = transitionsFromLoadingState
+        fun data() = (transitionsFromLoadingState + transitionsFromDataState)
             .map { arrayOf(it.testName, it.testInput) }
     }
 

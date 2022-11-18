@@ -19,6 +19,8 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingConversation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
 
 sealed interface ConversationDetailOperation {
 
@@ -32,22 +34,22 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
 
     data class ConversationData(
         val conversationUiModel: ConversationDetailMetadataUiModel
-    ) : ConversationDetailEvent, ConversationDetailOperation.AffectingConversation
+    ) : ConversationDetailEvent, AffectingConversation
 
-    object ErrorLoadingConversation : ConversationDetailEvent, ConversationDetailOperation.AffectingConversation
+    object ErrorLoadingConversation : ConversationDetailEvent, AffectingConversation
 
-    object ErrorLoadingMessages : ConversationDetailEvent, ConversationDetailOperation.AffectingMessages
+    object ErrorLoadingMessages : ConversationDetailEvent, AffectingMessages
 
     data class MessagesData(
         val messagesUiModels: List<ConversationDetailMessageUiModel>
-    ) : ConversationDetailEvent, ConversationDetailOperation.AffectingMessages
+    ) : ConversationDetailEvent, AffectingMessages
 
     object ErrorAddStar : ConversationDetailEvent, AffectingConversation
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {
 
-    object Star : ConversationDetailViewAction, ConversationDetailOperation.AffectingConversation
-    object UnStar : ConversationDetailViewAction, ConversationDetailOperation.AffectingConversation
+    object Star : ConversationDetailViewAction, AffectingConversation
+    object UnStar : ConversationDetailViewAction, AffectingConversation
     object MarkUnread : ConversationDetailViewAction
 }

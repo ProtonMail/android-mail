@@ -37,6 +37,13 @@ object ConversationUiModelTestData {
         messageCount = 3
     )
 
+    val conversationUiModelStarred = ConversationDetailMetadataUiModel(
+        conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID),
+        subject = ConversationTestData.RAW_SUBJECT,
+        isStarred = true,
+        messageCount = 1
+    )
+
     fun buildConversationUiModel(
         conversationId: String,
         subject: String,

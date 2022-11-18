@@ -39,8 +39,15 @@ class ConversationDetailMetadataReducer @Inject constructor() {
         is ConversationDetailEvent.ErrorLoadingConversation -> ConversationDetailMetadataState.Error(
             message = TextUiModel(string.detail_error_loading_conversation)
         )
-        is ConversationDetailViewAction.Star -> TODO()
+        is ConversationDetailViewAction.Star -> currentState.toNewStateForStarredConversation()
         is ConversationDetailViewAction.UnStar -> TODO()
+        is ConversationDetailEvent.ErrorAddStar -> TODO()
     }
 
+    private fun ConversationDetailMetadataState.toNewStateForStarredConversation() =
+        when (this) {
+            is ConversationDetailMetadataState.Data -> copy(conversationUiModel.copy(isStarred = true))
+            is ConversationDetailMetadataState.Error -> this
+            is ConversationDetailMetadataState.Loading -> this
+        }
 }

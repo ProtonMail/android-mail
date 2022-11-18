@@ -29,10 +29,12 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
+import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
@@ -63,22 +65,19 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeConversationMessages: ObserveConversationMessages,
     private val observeDetailActions: ObserveConversationDetailActions,
     private val reducer: ConversationDetailReducer,
-    savedStateHandle: SavedStateHandle
+    private val starConversation: StarConversation,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
     private val mutableDetailState = MutableStateFlow(initialState)
 
+    private val conversationId = requireConversationId()
+
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
 
     init {
-        val conversationIdParam = savedStateHandle.get<String>(ConversationDetailScreen.ConversationIdKey)
-        Timber.d("Open detail screen for conversation ID: $conversationIdParam")
-
-        if (conversationIdParam == null) {
-            throw IllegalStateException("No Conversation id given")
-        }
-        val conversationId = ConversationId(conversationIdParam)
+        Timber.d("Open detail screen for conversation ID: $conversationId")
         observeConversationMetadata(conversationId)
         observeConversationMessages(conversationId)
         observeBottomBarActions(conversationId)
@@ -86,7 +85,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     fun submit(action: ConversationDetailViewAction) {
         when (action) {
-            is ConversationDetailViewAction.Star -> Timber.d("Star conversation clicked")
+            is ConversationDetailViewAction.Star -> starConversation()
             is ConversationDetailViewAction.UnStar -> Timber.d("UnStar conversation clicked")
             is ConversationDetailViewAction.MarkUnread -> Timber.d("Mark Unread conversation clicked VM")
         }
@@ -140,8 +139,26 @@ class ConversationDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private suspend fun emitNewStateFrom(event: ConversationDetailEvent) {
+    private fun requireConversationId(): ConversationId {
+        val conversationId = savedStateHandle.get<String>(ConversationDetailScreen.ConversationIdKey)
+            ?: throw IllegalStateException("No Conversation id given")
+        return ConversationId(conversationId)
+    }
+
+    private suspend fun emitNewStateFrom(event: ConversationDetailOperation) {
         mutableDetailState.emit(reducer.newStateFrom(state.value, event))
+    }
+
+    private fun starConversation() {
+        Timber.d("Star conversation clicked")
+        primaryUserId.mapLatest { userId ->
+            starConversation(userId, conversationId).fold(
+                ifLeft = { ConversationDetailEvent.ErrorAddStar },
+                ifRight = { ConversationDetailViewAction.Star }
+            )
+        }
+            .onEach { event -> emitNewStateFrom(event) }
+            .launchIn(viewModelScope)
     }
 
     companion object {

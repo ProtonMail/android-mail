@@ -105,7 +105,10 @@ class ConversationLocalDataSourceImpl @Inject constructor(
             .mapLatest { it?.toConversation() }
 
     override suspend fun upsertConversation(userId: UserId, conversation: Conversation) {
-        conversationDao.insertOrUpdate(conversation.toEntity())
+        db.inTransaction {
+            conversationDao.insertOrUpdate(conversation.toEntity())
+            updateLabels(listOf(conversation))
+        }
     }
 
     private suspend fun upsertPageInterval(

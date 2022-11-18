@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.Event
 import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import arrow.core.left
@@ -36,6 +37,7 @@ import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
+import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
@@ -43,6 +45,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
@@ -50,11 +53,15 @@ import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
+import ch.protonmail.android.testdata.conversation.ConversationTestData
+import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
@@ -62,6 +69,8 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 class ConversationDetailViewModelTest {
 
@@ -102,6 +111,9 @@ class ConversationDetailViewModelTest {
         every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns
             ConversationIdSample.WeatherForecast.id
     }
+    private val starConversation: StarConversation = mockk {
+        coEvery { this@mockk.invoke(any(), any()) } returns ConversationTestData.starredConversation.right()
+    }
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -114,7 +126,8 @@ class ConversationDetailViewModelTest {
             observeConversationMessages = observeConversationMessages,
             observeDetailActions = observeConversationDetailActions,
             reducer = reducer,
-            savedStateHandle = savedStateHandle
+            savedStateHandle = savedStateHandle,
+            starConversation = starConversation
         )
     }
 
@@ -277,7 +290,34 @@ class ConversationDetailViewModelTest {
 
     }
 
+    @Test
+    fun `starred conversation metadata is emitted when star action is successful`() = runTest {
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ConversationDetailViewAction.Star
+            )
+        } returns ConversationDetailState.Loading.copy(
+            conversationState = ConversationDetailMetadataState.Data(ConversationUiModelTestData.conversationUiModelStarred)
+        )
+
+        viewModel.state.test {
+            advanceUntilIdle()
+            // When
+            viewModel.submit(ConversationDetailViewAction.Star)
+            advanceUntilIdle()
+            // Then
+            val actual = assertIs<ConversationDetailMetadataState.Data>(lastEmittedItem().conversationState)
+            assertTrue(actual.conversationUiModel.isStarred)
+        }
+    }
+
     private suspend fun FlowTurbine<ConversationDetailState>.initialStateEmitted() {
         assertEquals(ConversationDetailState.Loading, awaitItem())
+    }
+
+    private fun FlowTurbine<ConversationDetailState>.lastEmittedItem(): ConversationDetailState {
+        val events = cancelAndConsumeRemainingEvents()
+        return (events.last() as Event.Item).value
     }
 }
