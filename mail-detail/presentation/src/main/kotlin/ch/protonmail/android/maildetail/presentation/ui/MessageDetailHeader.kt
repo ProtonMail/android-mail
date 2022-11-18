@@ -121,7 +121,8 @@ private fun MessageDetailHeaderLayout(
 
         val (
             avatarRef,
-            senderRef,
+            senderNameRef,
+            senderAddressRef,
             iconsRef,
             timeRef,
             moreButtonRef,
@@ -134,11 +135,11 @@ private fun MessageDetailHeaderLayout(
             bccRecipientsRef,
             labelsRef,
             extendedTimeRef,
-            locationRef,
-            sizeRef
+            locationRef
         ) = createRefs()
 
         val (
+            sizeRef,
             trackerProtectionInfoRef,
             encryptionInfoRef,
             hideDetailsRef
@@ -152,8 +153,8 @@ private fun MessageDetailHeaderLayout(
             avatarUiModel = uiModel.avatar
         )
 
-        Sender(
-            modifier = modifier.constrainAs(senderRef) {
+        SenderName(
+            modifier = modifier.constrainAs(senderNameRef) {
                 width = Dimension.fillToConstraints
                 top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
@@ -162,11 +163,21 @@ private fun MessageDetailHeaderLayout(
             participantUiModel = uiModel.sender
         )
 
+        SenderAddress(
+            modifier = modifier.constrainAs(senderAddressRef) {
+                width = Dimension.fillToConstraints
+                top.linkTo(senderNameRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
+                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
+                end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
+            },
+            participantUiModel = uiModel.sender
+        )
+
         Icons(
             modifier = modifier.constrainAs(iconsRef) {
                 top.linkTo(timeRef.top)
                 bottom.linkTo(timeRef.bottom)
-                end.linkTo(timeRef.start)
+                end.linkTo(timeRef.start, margin = ProtonDimens.ExtraSmallSpacing)
             },
             uiModel = uiModel,
             isExpanded = isExpanded
@@ -190,7 +201,7 @@ private fun MessageDetailHeaderLayout(
         AllRecipients(
             modifier = modifier.constrainAs(allRecipientsRef) {
                 width = Dimension.fillToConstraints
-                top.linkTo(senderRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
+                top.linkTo(senderAddressRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
                 visibility = visibleWhen(!isExpanded)
@@ -359,21 +370,30 @@ private fun MessageDetailHeaderLayout(
 }
 
 @Composable
-private fun Sender(
+private fun SenderName(
     modifier: Modifier = Modifier,
     participantUiModel: ParticipantUiModel
 ) {
-    Column(modifier = modifier) {
-        Text(
-            text = participantUiModel.participantName,
-            overflow = TextOverflow.Ellipsis,
-            style = ProtonTheme.typography.defaultSmallStrong
-        )
-        Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            SmallNonClickableIcon(iconId = participantUiModel.participantPadlock)
-            ParticipantText(text = participantUiModel.participantAddress)
-        }
+    Text(
+        modifier = modifier,
+        text = participantUiModel.participantName,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        style = ProtonTheme.typography.defaultSmallStrong
+    )
+}
+
+@Composable
+private fun SenderAddress(
+    modifier: Modifier = Modifier,
+    participantUiModel: ParticipantUiModel
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        SmallNonClickableIcon(iconId = participantUiModel.participantPadlock)
+        ParticipantText(text = participantUiModel.participantAddress)
     }
 }
 
@@ -412,7 +432,7 @@ private fun Time(
         modifier = modifier,
         text = time.string(),
         maxLines = 1,
-        style = ProtonTheme.typography.caption
+        style = ProtonTheme.typography.captionWeak
     )
 }
 
