@@ -38,13 +38,17 @@ import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
+const val TEST_TAG_AVATAR = "avatar"
+
 @Composable
 fun Avatar(
     modifier: Modifier = Modifier,
     avatarUiModel: AvatarUiModel
 ) {
     Box(
-        modifier = modifier.size(MailDimens.DefaultTouchTargetSize),
+        modifier = modifier
+            .size(MailDimens.DefaultTouchTargetSize)
+            .testTag(TEST_TAG_AVATAR),
         contentAlignment = Alignment.Center
     ) {
         when (avatarUiModel) {

@@ -45,6 +45,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -70,6 +71,8 @@ import me.proton.core.compose.theme.caption
 import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultSmall
 import me.proton.core.compose.theme.defaultSmallStrong
+
+const val TEST_TAG_MESSAGE_HEADER = "messageHeader"
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -117,6 +120,7 @@ private fun MessageDetailHeaderLayout(
                 end = ProtonDimens.DefaultSpacing,
                 bottom = ProtonDimens.SmallSpacing
             )
+            .testTag(TEST_TAG_MESSAGE_HEADER)
     ) {
 
         val (
