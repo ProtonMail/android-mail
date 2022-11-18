@@ -78,7 +78,6 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorLoadingConversation,
             ConversationDetailEvent.ErrorLoadingMessages,
             ConversationDetailEvent.MessagesData(emptyList()),
-            ConversationDetailEvent.NoPrimaryUser,
             ConversationDetailViewAction.Star,
             ConversationDetailViewAction.UnStar
         )

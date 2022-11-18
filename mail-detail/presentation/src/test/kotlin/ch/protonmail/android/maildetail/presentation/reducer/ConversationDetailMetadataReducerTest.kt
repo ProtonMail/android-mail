@@ -28,7 +28,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
-import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @RunWith(Parameterized::class)
 class ConversationDetailMetadataReducerTest(
@@ -53,16 +52,6 @@ class ConversationDetailMetadataReducerTest(
         )
 
         private val transitionsFromLoadingState = listOf(
-            TestParams(
-                "from loading to no primary user",
-                TestParams.TestInput(
-                    currentState = ConversationDetailMetadataState.Loading,
-                    event = ConversationDetailEvent.NoPrimaryUser,
-                    expectedState = ConversationDetailMetadataState.Error(
-                        message = TextUiModel(commonString.x_error_not_logged_in)
-                    )
-                )
-            ),
             TestParams(
                 "from loading to conversation data",
                 TestParams.TestInput(

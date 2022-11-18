@@ -43,8 +43,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
@@ -66,7 +66,7 @@ class ConversationDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val primaryUserId: Flow<UserId?> = observePrimaryUserId()
+    private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
     private val mutableDetailState = MutableStateFlow(initialState)
 
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
@@ -94,9 +94,6 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun observeConversationMetadata(conversationId: ConversationId) {
         primaryUserId.flatMapLatest { userId ->
-            if (userId == null) {
-                return@flatMapLatest flowOf(ConversationDetailEvent.NoPrimaryUser)
-            }
             observeConversation(userId, conversationId)
                 .mapLatest { either ->
                     either.fold(
@@ -111,9 +108,6 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun observeConversationMessages(conversationId: ConversationId) {
         primaryUserId.flatMapLatest { userId ->
-            if (userId == null) {
-                return@flatMapLatest flowOf(ConversationDetailEvent.NoPrimaryUser)
-            }
             combine(
                 observeContacts(userId),
                 observeConversationMessages(userId, conversationId)
@@ -132,9 +126,6 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun observeBottomBarActions(conversationId: ConversationId) {
         primaryUserId.flatMapLatest { userId ->
-            if (userId == null) {
-                return@flatMapLatest flowOf(ConversationDetailEvent.NoPrimaryUser)
-            }
             observeDetailActions(userId, conversationId).mapLatest { either ->
                 either.fold(
                     ifLeft = { ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },

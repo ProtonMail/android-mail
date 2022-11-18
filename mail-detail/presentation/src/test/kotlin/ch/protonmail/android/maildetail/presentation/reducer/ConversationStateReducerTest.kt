@@ -59,13 +59,6 @@ class ConversationStateReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = ConversationDetailMetadataState.Loading,
-                operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationDetailMetadataState.Error(
-                    message = TextUiModel(commonString.x_error_not_logged_in)
-                )
-            ),
-            TestInput(
-                currentState = ConversationDetailMetadataState.Loading,
                 operation = ConversationDetailEvent.ConversationData(conversationUiModel),
                 expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
             ),
@@ -81,13 +74,6 @@ class ConversationStateReducerTest(
         private val transitionsFromDataState = listOf(
             TestInput(
                 currentState = ConversationDetailMetadataState.Data(conversationUiModel),
-                operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationDetailMetadataState.Error(
-                    message = TextUiModel(commonString.x_error_not_logged_in)
-                )
-            ),
-            TestInput(
-                currentState = ConversationDetailMetadataState.Data(conversationUiModel),
                 operation = ConversationDetailEvent.ConversationData(updatedConversationUiModel),
                 expectedState = ConversationDetailMetadataState.Data(updatedConversationUiModel)
             ),
@@ -101,15 +87,6 @@ class ConversationStateReducerTest(
         )
 
         private val transitionsFromErrorState = listOf(
-            TestInput(
-                currentState = ConversationDetailMetadataState.Error(
-                    message = TextUiModel(commonString.x_error_not_logged_in)
-                ),
-                operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationDetailMetadataState.Error(
-                    message = TextUiModel(commonString.x_error_not_logged_in)
-                )
-            ),
             TestInput(
                 currentState = ConversationDetailMetadataState.Error(
                     message = TextUiModel(commonString.x_error_not_logged_in)

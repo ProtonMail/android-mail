@@ -62,7 +62,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 class ConversationDetailViewModelTest {
 
@@ -141,26 +140,6 @@ class ConversationDetailViewModelTest {
         val thrown = assertFailsWith<IllegalStateException> { viewModel.state }
         // Then
         assertEquals("No Conversation id given", thrown.message)
-    }
-
-    @Test
-    fun `does handle user not logged in`() = runTest {
-        // given
-        val initialState = ConversationDetailState.Loading
-        val expectedState = initialState.copy(
-            conversationState = ConversationDetailMetadataState.Error(TextUiModel(commonString.x_error_not_logged_in))
-        )
-        every { observePrimaryUserId() } returns flowOf(null)
-        every { reducer.newStateFrom(initialState, ConversationDetailEvent.NoPrimaryUser) } returns expectedState
-
-        // when
-        viewModel.state.test {
-            initialStateEmitted()
-
-            // then
-            assertEquals(expectedState, awaitItem())
-            cancelAndIgnoreRemainingEvents()
-        }
     }
 
     @Test

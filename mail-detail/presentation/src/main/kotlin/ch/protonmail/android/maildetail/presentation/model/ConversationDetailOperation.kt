@@ -42,10 +42,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val messagesUiModels: List<ConversationDetailMessageUiModel>
     ) : ConversationDetailEvent, ConversationDetailOperation.AffectingMessages
 
-    object NoPrimaryUser :
-        ConversationDetailEvent,
-        ConversationDetailOperation.AffectingConversation,
-        ConversationDetailOperation.AffectingMessages
+    object ErrorAddStar : ConversationDetailEvent, AffectingConversation
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {

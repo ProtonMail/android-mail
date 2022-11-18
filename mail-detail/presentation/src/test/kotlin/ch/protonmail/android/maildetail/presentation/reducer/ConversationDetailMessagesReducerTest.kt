@@ -68,14 +68,6 @@ class ConversationDetailMessagesReducerTest(
 
             Input(
                 currentState = ConversationDetailsMessagesState.Loading,
-                operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationDetailsMessagesState.Error(
-                    message = TextUiModel(commonString.x_error_not_logged_in)
-                )
-            ),
-
-            Input(
-                currentState = ConversationDetailsMessagesState.Loading,
                 operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             )
@@ -90,16 +82,6 @@ class ConversationDetailMessagesReducerTest(
                 operation = ConversationDetailEvent.ErrorLoadingMessages,
                 expectedState = ConversationDetailsMessagesState.Error(
                     message = TextUiModel(string.detail_error_loading_messages)
-                )
-            ),
-
-            Input(
-                currentState = ConversationDetailsMessagesState.Error(
-                    message = TextUiModel(string.detail_error_loading_messages)
-                ),
-                operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationDetailsMessagesState.Error(
-                    message = TextUiModel(commonString.x_error_not_logged_in)
                 )
             ),
 
@@ -121,14 +103,6 @@ class ConversationDetailMessagesReducerTest(
                 operation = ConversationDetailEvent.ErrorLoadingMessages,
                 expectedState = ConversationDetailsMessagesState.Error(
                     message = TextUiModel(string.detail_error_loading_messages)
-                )
-            ),
-
-            Input(
-                currentState = ConversationDetailsMessagesState.Data(messages = allMessages),
-                operation = ConversationDetailEvent.NoPrimaryUser,
-                expectedState = ConversationDetailsMessagesState.Error(
-                    message = TextUiModel(commonString.x_error_not_logged_in)
                 )
             ),
 
