@@ -33,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +45,9 @@ import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIc
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailCollapsedMessageHeaderPreviewData
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.ForwardedIconTestTag
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.RepliedAllIconTestTag
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.RepliedIconTestTag
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
@@ -51,7 +55,6 @@ import me.proton.core.compose.theme.default
 import me.proton.core.compose.theme.overline
 import me.proton.core.presentation.R.drawable
 import me.proton.core.util.kotlin.exhaustive
-import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
 internal fun ConversationDetailCollapsedMessageHeader(message: ConversationDetailMessageUiModel.Collapsed) {
@@ -113,9 +116,9 @@ private fun ForwardedIcon(
     when (message.forwardedIcon) {
         ConversationDetailMessageUiModel.ForwardedIcon.None -> Unit
         ConversationDetailMessageUiModel.ForwardedIcon.Forwarded -> SmallNonClickableIcon(
+            modifier = Modifier.testTag(ForwardedIconTestTag),
             iconId = drawable.ic_proton_arrow_right,
-            iconColor = fontColor,
-            contentDescriptionId = commonString.forwarded_icon_description
+            iconColor = fontColor
         )
     }.exhaustive
 }
@@ -128,14 +131,14 @@ private fun RepliedIcon(
     when (message.repliedIcon) {
         ConversationDetailMessageUiModel.RepliedIcon.None -> Unit
         ConversationDetailMessageUiModel.RepliedIcon.Replied -> SmallNonClickableIcon(
+            modifier = Modifier.testTag(RepliedIconTestTag),
             iconId = drawable.ic_proton_arrow_up_and_left,
-            iconColor = fontColor,
-            contentDescriptionId = commonString.replied_icon_description
+            iconColor = fontColor
         )
         ConversationDetailMessageUiModel.RepliedIcon.RepliedAll -> SmallNonClickableIcon(
+            modifier = Modifier.testTag(RepliedAllIconTestTag),
             iconId = drawable.ic_proton_arrows_up_and_left,
-            iconColor = fontColor,
-            contentDescriptionId = commonString.replied_all_icon_description
+            iconColor = fontColor
         )
     }
 }
@@ -152,6 +155,13 @@ private fun Sender(
         color = fontColor,
         style = ProtonTheme.typography.default
     )
+}
+
+object ConversationDetailCollapsedMessageHeader {
+
+    const val ForwardedIconTestTag = "forwarded_icon"
+    const val RepliedAllIconTestTag = "replied_all_icon"
+    const val RepliedIconTestTag = "replied_icon"
 }
 
 @Preview

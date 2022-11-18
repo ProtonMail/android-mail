@@ -35,9 +35,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
@@ -200,7 +197,7 @@ private fun MessagesContent(
 
 object ConversationDetailScreen {
 
-    const val CONVERSATION_ID_KEY = "conversation id"
+    const val ConversationIdKey = "conversation id"
 
     data class Actions(
         val onBackClick: () -> Unit,

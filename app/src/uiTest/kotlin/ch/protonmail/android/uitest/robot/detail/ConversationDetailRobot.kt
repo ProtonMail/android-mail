@@ -26,7 +26,7 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
-import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
@@ -49,19 +49,19 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
 
         fun forwardedIconIsDisplayed() {
             composeTestRule
-                .onNodeWithTag(ConversationDetailScreen.ForwardedMessageTestTag)
+                .onNodeWithTag(ConversationDetailCollapsedMessageHeader.ForwardedIconTestTag)
                 .assertIsDisplayed()
         }
 
         fun repliedAllIconIsDisplayed() {
             composeTestRule
-                .onNodeWithTag(ConversationDetailScreen.RepliedAllMessageTestTag)
+                .onNodeWithTag(ConversationDetailCollapsedMessageHeader.RepliedAllIconTestTag)
                 .assertIsDisplayed()
         }
 
         fun repliedIconIsDisplayed() {
             composeTestRule
-                .onNodeWithTag(ConversationDetailScreen.RepliedMessageTestTag)
+                .onNodeWithTag(ConversationDetailCollapsedMessageHeader.RepliedIconTestTag)
                 .assertIsDisplayed()
         }
 
