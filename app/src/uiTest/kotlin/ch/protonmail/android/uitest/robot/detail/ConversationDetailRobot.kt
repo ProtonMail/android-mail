@@ -21,17 +21,15 @@ package ch.protonmail.android.uitest.robot.detail
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.uitest.util.onAllNodesWithContentDescription
-import ch.protonmail.android.uitest.util.onAllNodesWithText
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
-import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
-import ch.protonmail.android.mailcommon.presentation.R.string as commonString
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader
+import ch.protonmail.android.uitest.util.onAllNodesWithText
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
@@ -43,7 +41,7 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
     class Verify(private val composeTestRule: ComposeContentTestRule) {
 
         fun attachmentIconIsDisplayed() {
-            composeTestRule.onAllNodesWithContentDescription(commonString.message_attachment_icon_description)
+            composeTestRule.onAllNodesWithTag(ConversationDetailCollapsedMessageHeader.AttachmentIconTestTag)
                 .onFirst()
                 .assertIsDisplayed()
         }
@@ -94,7 +92,8 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
         }
 
         fun starIconIsDisplayed() {
-            composeTestRule.onNodeWithContentDescription(commonString.starred_icon_description)
+            composeTestRule.onAllNodesWithTag(ConversationDetailCollapsedMessageHeader.StarIconTestTag)
+                .onFirst()
                 .assertIsDisplayed()
         }
 

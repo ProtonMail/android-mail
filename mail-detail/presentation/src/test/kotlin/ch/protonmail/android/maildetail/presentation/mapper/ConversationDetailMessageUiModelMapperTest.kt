@@ -47,7 +47,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
             requireNotNull(ConversationDetailMessageUiModelSample.AugWeatherForecast.shortTime)
     }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
-        every { this@mockk(labelIds = any()) } returns MessageLocationUiModelSample.AllMail
+        every { this@mockk(labelIds = any(), labels = any()) } returns MessageLocationUiModelSample.AllMail
     }
     private val resolveParticipantName: ResolveParticipantName = mockk {
         every { this@mockk(contacts = any(), participant = RecipientSample.Doe) } returns ContactSample.Doe.name

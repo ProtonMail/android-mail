@@ -34,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,10 +50,12 @@ import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIc
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailCollapsedMessageHeaderPreviewData
-import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.MinLabelsWidth
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.AttachmentIconTestTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.ForwardedIconTestTag
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.MinLabelsWidth
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.RepliedAllIconTestTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.RepliedIconTestTag
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.StarIconTestTag
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
@@ -64,7 +65,6 @@ import me.proton.core.compose.theme.overline
 import me.proton.core.presentation.R.drawable
 import me.proton.core.util.kotlin.EMPTY_STRING
 import me.proton.core.util.kotlin.exhaustive
-import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @Composable
 internal fun ConversationDetailCollapsedMessageHeader(message: ConversationDetailMessageUiModel.Collapsed) {
@@ -199,10 +199,10 @@ private fun AttachmentIcon(
     modifier: Modifier
 ) {
     Icon(
-        modifier = modifier.size(ProtonDimens.SmallIconSize),
+        modifier = modifier.testTag(AttachmentIconTestTag).size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = drawable.ic_proton_paper_clip),
         tint = fontColor,
-        contentDescription = stringResource(id = commonString.message_attachment_icon_description)
+        contentDescription = NO_CONTENT_DESCRIPTION
     )
 }
 
@@ -302,10 +302,10 @@ private fun Sender(
 @Composable
 private fun StarIcon(modifier: Modifier) {
     Icon(
-        modifier = modifier.size(ProtonDimens.SmallIconSize),
+        modifier = modifier.testTag(StarIconTestTag).size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = drawable.ic_proton_star_filled),
         tint = ProtonTheme.colors.notificationWarning,
-        contentDescription = stringResource(id = commonString.starred_icon_description)
+        contentDescription = NO_CONTENT_DESCRIPTION
     )
 }
 
@@ -330,14 +330,12 @@ private fun visibleWhen(isVisible: Boolean) = if (isVisible) Visibility.Visible 
 
 object ConversationDetailCollapsedMessageHeader {
 
-    internal val MinLabelsWidth = 40.dp
-}
-
-object ConversationDetailCollapsedMessageHeader {
-
+    const val AttachmentIconTestTag = "attachment_icon"
     const val ForwardedIconTestTag = "forwarded_icon"
     const val RepliedAllIconTestTag = "replied_all_icon"
     const val RepliedIconTestTag = "replied_icon"
+    const val StarIconTestTag = "star_icon"
+    internal val MinLabelsWidth = 40.dp
 }
 
 @Preview
