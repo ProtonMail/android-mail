@@ -451,6 +451,7 @@ private fun MoreButton(
             onClick = {}
         ),
         painter = painterResource(id = R.drawable.ic_proton_three_dots_horizontal),
+        tint = ProtonTheme.colors.iconWeak,
         contentDescription = NO_CONTENT_DESCRIPTION
     )
 }
