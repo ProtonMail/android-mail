@@ -19,6 +19,7 @@
 <resources>
   <string name="detail_error_loading_conversation">会话加载失败</string>
   <string name="detail_error_loading_messages">邮件加载失败</string>
+  <string name="error_mark_unread_failed">标为未读失败，请重试</string>
   <plurals name="message_count_label_text">
     <item quantity="other">%d 封邮件</item>
   </plurals>
@@ -27,4 +28,5 @@
   <string name="cc">抄送：</string>
   <string name="bcc">密送：</string>
   <string name="hide_details">隐藏详情</string>
+  <string name="undisclosed_recipients">匿名收件人</string>
 </resources>

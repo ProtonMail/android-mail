@@ -27,6 +27,6 @@
   <string name="mailbox_toolbar_selected_count">%d kiválasztva</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d olvasatlan</item>
-    <item quantity="other">%d unread</item>
+    <item quantity="other">%d olvasatlan</item>
   </plurals>
 </resources>

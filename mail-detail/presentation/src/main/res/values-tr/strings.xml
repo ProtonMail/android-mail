@@ -19,6 +19,7 @@
 <resources>
   <string name="detail_error_loading_conversation">Yazışma yüklenemedi</string>
   <string name="detail_error_loading_messages">İletiler yüklenemedi</string>
+  <string name="error_mark_unread_failed">Okunmamış olarak işaretlenemedi. Lütfen yeniden deneyin</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d ileti</item>
     <item quantity="other">%d ileti</item>
@@ -28,4 +29,5 @@
   <string name="cc">Kopya:</string>
   <string name="bcc">Gizli kopya:</string>
   <string name="hide_details">Ayrıntıları gizle</string>
+  <string name="undisclosed_recipients">Gizli alıcılar</string>
 </resources>

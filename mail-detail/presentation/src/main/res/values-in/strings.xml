@@ -19,6 +19,7 @@
 <resources>
   <string name="detail_error_loading_conversation">Percakapan gagal dimuat</string>
   <string name="detail_error_loading_messages">Pesan gagal dimuat</string>
+  <string name="error_mark_unread_failed">Pesan gagal ditandai sebagai belum dibaca. Silakan coba lagi</string>
   <plurals name="message_count_label_text">
     <item quantity="other">%d pesan</item>
   </plurals>
@@ -27,4 +28,5 @@
   <string name="cc">Cc:</string>
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Sembunyikan rincian</string>
+  <string name="undisclosed_recipients">Penerima yang dirahasiakan</string>
 </resources>
