@@ -38,6 +38,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
     private val avatarUiModelMapper: DetailAvatarUiModelMapper = mockk {
         every { this@mockk(message = any(), senderResolvedName = any()) } returns
             ConversationDetailMessageUiModelSample.AugWeatherForecast.avatar
+        every { this@mockk(message = MessageSample.ExpiringInvitation, senderResolvedName = any()) } returns
+            ConversationDetailMessageUiModelSample.ExpiringInvitation.avatar
     }
     private val formatExpiration: FormatExpiration = mockk {
         every { this@mockk(epochTime = any()) } returns
@@ -53,6 +55,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
     private val resolveParticipantName: ResolveParticipantName = mockk {
         every { this@mockk(contacts = any(), participant = RecipientSample.Doe) } returns ContactSample.Doe.name
         every { this@mockk(contacts = any(), participant = RecipientSample.John) } returns ContactSample.John.name
+        every { this@mockk(contacts = any(), participant = RecipientSample.PreciWeather) } returns
+            RecipientSample.PreciWeather.name
     }
     private val mapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = avatarUiModelMapper,
