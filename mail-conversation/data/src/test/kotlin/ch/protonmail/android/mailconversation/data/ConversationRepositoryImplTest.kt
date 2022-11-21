@@ -316,4 +316,21 @@ class ConversationRepositoryImplTest {
         // Then
         assertEquals(ConversationTestData.starredConversation.right(), actual)
     }
+
+    @Test
+    fun `add label to messages of a conversation`() = runTest {
+        // Given
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.conversation
+        )
+        every { messageLocalDataSource.observeMessages(userId, any<ConversationId>()) } returns flowOf(
+            MessageTestData.unStarredMessagesByConversation
+        )
+
+        // When
+        conversationRepository.addLabel(userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10"))
+        // Then
+        val expectedMessage = MessageTestData.starredMessagesByConversation
+        coVerify { messageLocalDataSource.upsertMessages(expectedMessage) }
+    }
 }
