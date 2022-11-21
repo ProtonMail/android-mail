@@ -90,9 +90,9 @@ private fun Expiration(message: ConversationDetailMessageUiModel.Collapsed) {
                 .padding(horizontal = ProtonDimens.ExtraSmallSpacing)
                 .background(
                     color = ProtonTheme.colors.interactionWeakNorm,
-                    shape = ProtonTheme.shapes.medium
+                    shape = ProtonTheme.shapes.large
                 )
-                .padding(horizontal = ProtonDimens.ExtraSmallSpacing),
+                .padding(ProtonDimens.ExtraSmallSpacing),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
