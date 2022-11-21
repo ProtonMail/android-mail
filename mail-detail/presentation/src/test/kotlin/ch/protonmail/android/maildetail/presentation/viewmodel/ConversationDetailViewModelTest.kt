@@ -236,7 +236,7 @@ class ConversationDetailViewModelTest {
         every {
             reducer.newStateFrom(
                 currentState = initialState,
-                operation = ConversationDetailEvent.MessagesData(messagesUiModels)
+                operation = any<ConversationDetailEvent.MessagesData>()
             )
         } returns expectedState
 
