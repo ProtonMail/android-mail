@@ -30,6 +30,7 @@ import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
+import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
@@ -66,6 +67,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeDetailActions: ObserveConversationDetailActions,
     private val reducer: ConversationDetailReducer,
     private val starConversation: StarConversation,
+    private val unStarConversation: UnStarConversation,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -86,7 +88,7 @@ class ConversationDetailViewModel @Inject constructor(
     fun submit(action: ConversationDetailViewAction) {
         when (action) {
             is ConversationDetailViewAction.Star -> starConversation()
-            is ConversationDetailViewAction.UnStar -> Timber.d("UnStar conversation clicked")
+            is ConversationDetailViewAction.UnStar -> unStarConversation()
             is ConversationDetailViewAction.MarkUnread -> Timber.d("Mark Unread conversation clicked VM")
         }
     }
@@ -155,9 +157,21 @@ class ConversationDetailViewModel @Inject constructor(
                 ifLeft = { ConversationDetailEvent.ErrorAddStar },
                 ifRight = { ConversationDetailViewAction.Star }
             )
-        }
-            .onEach { event -> emitNewStateFrom(event) }
-            .launchIn(viewModelScope)
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun unStarConversation() {
+        Timber.d("UnStar conversation clicked")
+        primaryUserId.mapLatest { userId ->
+            unStarConversation(userId, conversationId).fold(
+                ifLeft = { ConversationDetailEvent.ErrorAddStar },
+                ifRight = { ConversationDetailViewAction.UnStar }
+            )
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
     }
 
     companion object {

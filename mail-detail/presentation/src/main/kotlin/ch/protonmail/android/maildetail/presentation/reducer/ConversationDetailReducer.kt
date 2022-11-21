@@ -18,7 +18,10 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -36,7 +39,8 @@ class ConversationDetailReducer @Inject constructor(
     ): ConversationDetailState = currentState.copy(
         conversationState = currentState.toNewConversationState(operation),
         messagesState = currentState.toNewMessageState(operation),
-        bottomBarState = currentState.toNewBottomBarState(operation)
+        bottomBarState = currentState.toNewBottomBarState(operation),
+        error = currentState.toErrorState(operation)
     )
 
     private fun ConversationDetailState.toNewConversationState(operation: ConversationDetailOperation) =
@@ -59,4 +63,12 @@ class ConversationDetailReducer @Inject constructor(
         } else {
             bottomBarState
         }
+
+    private fun ConversationDetailState.toErrorState(operation: ConversationDetailOperation) =
+        if (operation is ConversationDetailEvent.ErrorAddStar) {
+            Effect.of(TextUiModel(R.string.error_star_operation_failed))
+        } else {
+            error
+        }
+
 }

@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -38,7 +39,8 @@ import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationMessages
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
-import ch.protonmail.android.maildetail.presentation.R.string
+import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
@@ -58,6 +60,7 @@ import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -69,6 +72,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
@@ -114,6 +118,9 @@ class ConversationDetailViewModelTest {
     private val starConversation: StarConversation = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns ConversationTestData.starredConversation.right()
     }
+    private val unStarConversation: UnStarConversation = mockk {
+        coEvery { this@mockk.invoke(any(), any()) } returns ConversationTestData.conversation.right()
+    }
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -127,7 +134,8 @@ class ConversationDetailViewModelTest {
             observeDetailActions = observeConversationDetailActions,
             reducer = reducer,
             savedStateHandle = savedStateHandle,
-            starConversation = starConversation
+            starConversation = starConversation,
+            unStarConversation = unStarConversation
         )
     }
 
@@ -186,7 +194,7 @@ class ConversationDetailViewModelTest {
         val initialState = ConversationDetailState.Loading
         val expectedState = initialState.copy(
             conversationState = ConversationDetailMetadataState.Error(
-                message = TextUiModel(string.detail_error_loading_conversation)
+                message = TextUiModel(R.string.detail_error_loading_conversation)
             )
         )
         every { observeConversation(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
@@ -329,6 +337,55 @@ class ConversationDetailViewModelTest {
 
             val actual = assertIs<ConversationDetailMetadataState.Data>(awaitItem().conversationState)
             assertTrue(actual.conversationUiModel.isStarred)
+        }
+    }
+
+    @Test
+    fun `error starring conversation is emitted when star action fails`() = runTest {
+        // Given
+        coEvery { starConversation.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
+        every {
+            reducer.newStateFrom(
+                any(),
+                any()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            error = Effect.of(
+                TextUiModel(R.string.error_star_operation_failed)
+            )
+        )
+        viewModel.state.test {
+            initialStateEmitted()
+            // When
+            viewModel.submit(ConversationDetailViewAction.Star)
+            advanceUntilIdle()
+            // Then
+            assertEquals(TextUiModel(R.string.error_star_operation_failed), lastEmittedItem().error.consume())
+            verify(exactly = 1) { reducer.newStateFrom(any(), ConversationDetailEvent.ErrorAddStar) }
+        }
+    }
+
+    @Test
+    fun `unStarred conversation metadata is emitted when unStar action is successful`() = runTest {
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ConversationDetailViewAction.UnStar
+            )
+        } returns ConversationDetailState.Loading.copy(
+            conversationState = ConversationDetailMetadataState.Data(
+                ConversationUiModelTestData.conversationUiModel
+            )
+        )
+
+        viewModel.state.test {
+            advanceUntilIdle()
+            // When
+            viewModel.submit(ConversationDetailViewAction.UnStar)
+            advanceUntilIdle()
+            // Then
+            val actual = assertIs<ConversationDetailMetadataState.Data>(lastEmittedItem().conversationState)
+            assertFalse(actual.conversationUiModel.isStarred)
         }
     }
 

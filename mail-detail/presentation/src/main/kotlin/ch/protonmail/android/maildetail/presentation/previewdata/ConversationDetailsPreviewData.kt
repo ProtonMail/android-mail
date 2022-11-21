@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.previewdata
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
@@ -49,37 +50,43 @@ object ConversationDetailsPreviewData {
                 ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
-        )
+        ),
+        error = Effect.empty()
     )
 
     val FailedLoadingConversation = ConversationDetailState(
         conversationState = ConversationDetailMetadataState.Error(TextMessageSample.UnknownError),
         messagesState = ConversationDetailsMessagesState.Loading,
-        bottomBarState = BottomBarState.Loading
+        bottomBarState = BottomBarState.Loading,
+        error = Effect.empty()
     )
 
     val FailedLoadingMessages = ConversationDetailState(
         conversationState = ConversationDetailMetadataState.Loading,
         messagesState = ConversationDetailsMessagesState.Error(TextMessageSample.NoNetwork),
-        bottomBarState = BottomBarState.Loading
+        bottomBarState = BottomBarState.Loading,
+        error = Effect.empty()
     )
 
     val FailedLoadingBottomBar = ConversationDetailState(
         conversationState = ConversationDetailMetadataState.Loading,
         messagesState = ConversationDetailsMessagesState.Loading,
-        bottomBarState = BottomBarState.Error.FailedLoadingActions
+        bottomBarState = BottomBarState.Error.FailedLoadingActions,
+        error = Effect.empty()
     )
 
     val Loading = ConversationDetailState(
         conversationState = ConversationDetailMetadataState.Loading,
         messagesState = ConversationDetailsMessagesState.Loading,
-        bottomBarState = BottomBarState.Loading
+        bottomBarState = BottomBarState.Loading,
+        error = Effect.empty()
     )
 
     val NotLoggedIn = ConversationDetailState(
         conversationState = ConversationDetailMetadataState.Error(TextMessageSample.NotLoggedIn),
         messagesState = ConversationDetailsMessagesState.Error(TextMessageSample.NotLoggedIn),
-        bottomBarState = BottomBarState.Loading
+        bottomBarState = BottomBarState.Loading,
+        error = Effect.empty()
     )
 }
 

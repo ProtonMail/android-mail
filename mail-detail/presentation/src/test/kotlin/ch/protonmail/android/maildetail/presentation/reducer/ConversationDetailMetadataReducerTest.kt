@@ -25,6 +25,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
+import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData.conversationUiModelStarred
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -89,6 +90,16 @@ class ConversationDetailMetadataReducerTest(
                     event = ConversationDetailEvent.ErrorLoadingConversation,
                     expectedState = ConversationDetailMetadataState.Error(
                         message = TextUiModel(string.detail_error_loading_conversation)
+                    )
+                )
+            ),
+            TestParams(
+                testName = "from data to unStarred conversation data",
+                TestParams.TestInput(
+                    currentState = ConversationDetailMetadataState.Data(conversationUiModelStarred),
+                    event = ConversationDetailViewAction.UnStar,
+                    expectedState = ConversationDetailMetadataState.Data(
+                        conversationUiModelStarred.copy(isStarred = false)
                     )
                 )
             )

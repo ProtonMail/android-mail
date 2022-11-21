@@ -18,12 +18,15 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
 data class ConversationDetailState(
     val conversationState: ConversationDetailMetadataState,
     val messagesState: ConversationDetailsMessagesState,
-    val bottomBarState: BottomBarState
+    val bottomBarState: BottomBarState,
+    val error: Effect<TextUiModel>
 ) {
 
     companion object {
@@ -31,7 +34,8 @@ data class ConversationDetailState(
         val Loading = ConversationDetailState(
             conversationState = ConversationDetailMetadataState.Loading,
             messagesState = ConversationDetailsMessagesState.Loading,
-            bottomBarState = BottomBarState.Loading
+            bottomBarState = BottomBarState.Loading,
+            error = Effect.empty()
         )
     }
 }

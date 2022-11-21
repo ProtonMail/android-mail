@@ -95,11 +95,13 @@ fun DetailScreenTopBar(
             },
             actions = {
                 if (isStarred != null) {
-                    fun onStarIconClicked() = when (isStarred) {
-                        true -> actions.onUnStarClick()
-                        false -> actions.onStarClick()
+                    val onStarIconClick = {
+                        when (isStarred) {
+                            true -> actions.onUnStarClick()
+                            false -> actions.onStarClick()
+                        }
                     }
-                    IconButton(onClick = ::onStarIconClicked) {
+                    IconButton(onClick = onStarIconClick) {
                         Icon(
                             modifier = Modifier.size(ProtonDimens.DefaultIconSize),
                             painter = getStarredIcon(isStarred),

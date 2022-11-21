@@ -40,13 +40,19 @@ class ConversationDetailMetadataReducer @Inject constructor() {
             message = TextUiModel(string.detail_error_loading_conversation)
         )
         is ConversationDetailViewAction.Star -> currentState.toNewStateForStarredConversation()
-        is ConversationDetailViewAction.UnStar -> TODO()
-        is ConversationDetailEvent.ErrorAddStar -> TODO()
+        is ConversationDetailViewAction.UnStar -> currentState.toNewStateForUnStarredConversation()
     }
 
     private fun ConversationDetailMetadataState.toNewStateForStarredConversation() =
         when (this) {
             is ConversationDetailMetadataState.Data -> copy(conversationUiModel.copy(isStarred = true))
+            is ConversationDetailMetadataState.Error -> this
+            is ConversationDetailMetadataState.Loading -> this
+        }
+
+    private fun ConversationDetailMetadataState.toNewStateForUnStarredConversation() =
+        when (this) {
+            is ConversationDetailMetadataState.Data -> copy(conversationUiModel.copy(isStarred = false))
             is ConversationDetailMetadataState.Error -> this
             is ConversationDetailMetadataState.Loading -> this
         }
