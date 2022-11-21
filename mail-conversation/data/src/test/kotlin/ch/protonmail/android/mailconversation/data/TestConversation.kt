@@ -68,7 +68,7 @@ fun getConversation(
 ) = getConversationResource(
     id = id,
     order = order,
-    labels = labelIds.map { getConversationLabelResource(id, contextTime = time) }
+    labels = labelIds.map { getConversationLabelResource(it, contextTime = time) }
 ).toConversation(userId)
 
 fun getConversationWithLabels(

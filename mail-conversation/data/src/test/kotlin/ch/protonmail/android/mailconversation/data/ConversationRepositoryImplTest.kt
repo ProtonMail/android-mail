@@ -44,7 +44,6 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
-import org.junit.Ignore
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -301,7 +300,6 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    @Ignore
     fun `add label conversation even if no messages are stored`() = runTest {
         // Given
         every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
