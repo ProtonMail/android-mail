@@ -298,7 +298,9 @@ class ConversationDetailViewModelTest {
                 operation = ConversationDetailViewAction.Star
             )
         } returns ConversationDetailState.Loading.copy(
-            conversationState = ConversationDetailMetadataState.Data(ConversationUiModelTestData.conversationUiModelStarred)
+            conversationState = ConversationDetailMetadataState.Data(
+                ConversationUiModelTestData.conversationUiModelStarred
+            )
         )
 
         viewModel.state.test {

@@ -118,22 +118,24 @@ object MessageTestData {
 
     val unStarredMessagesByConversation = listOf(
         buildMessage(id = "123", conversationId = ConversationId("conversation")),
-        buildMessage(id = "124", conversationId = ConversationId("conversation")),
+        buildMessage(id = "124", conversationId = ConversationId("conversation"))
     )
 
     val starredMessagesByConversation = listOf(
         buildMessage(
-            id = "123", conversationId = ConversationId("conversation"), labelIds = listOf(
+            id = "123", conversationId = ConversationId("conversation"),
+            labelIds = listOf(
                 SystemLabelId.Inbox.labelId.id,
                 SystemLabelId.Starred.labelId.id
             )
         ),
         buildMessage(
-            id = "124", conversationId = ConversationId("conversation"), labelIds = listOf(
+            id = "124", conversationId = ConversationId("conversation"),
+            labelIds = listOf(
                 SystemLabelId.Inbox.labelId.id,
                 SystemLabelId.Starred.labelId.id
             )
-        ),
+        )
     )
 
     fun buildMessage(
