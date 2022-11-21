@@ -137,6 +137,30 @@ class ConversationRepositoryImpl @Inject constructor(
         return updatedConversation.right()
     }
 
+    override suspend fun removeLabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId
+    ): Either<DataError, Conversation> {
+        val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
+            ?: return DataError.Local.NoDataCached.left()
+        val updatedConversation = conversation.copy(
+            labels = conversation.labels.filterNot { it.labelId == labelId }
+        )
+        conversationLocalDataSource.upsertConversation(userId, updatedConversation)
+
+        val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
+        messages.map {
+            it.copy(
+                labelIds = it.labelIds - labelId
+            )
+        }.let {
+            messageLocalDataSource.upsertMessages(it)
+        }
+
+        return updatedConversation.right()
+    }
+
     private suspend fun fetchConversations(
         userId: UserId,
         pageKey: PageKey

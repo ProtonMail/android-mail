@@ -368,4 +368,36 @@ class ConversationRepositoryImplTest {
         val expectedMessage = MessageTestData.starredMessagesByConversation
         coVerify { messageLocalDataSource.upsertMessages(expectedMessage) }
     }
+
+    @Test
+    fun `remove label returns updated conversation without label when upsert was successful`() = runTest {
+        // Given
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.starredConversation
+        )
+        // When
+        val actual = conversationRepository.removeLabel(
+            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
+        )
+        // Then
+        val unStaredConversation = ConversationTestData.conversation
+        assertEquals(unStaredConversation.right(), actual)
+    }
+
+    @Test
+    fun `remove label of messages when removing labels from conversation was successful`() = runTest {
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.starredConversation
+        )
+        every { messageLocalDataSource.observeMessages(userId, any<ConversationId>()) } returns flowOf(
+            MessageTestData.starredMessagesByConversation
+        )
+        // When
+        conversationRepository.removeLabel(
+            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
+        )
+        // Then
+        val expectedMessages = MessageTestData.unStarredMessagesByConversation
+        coVerify { messageLocalDataSource.upsertMessages(expectedMessages) }
+    }
 }
