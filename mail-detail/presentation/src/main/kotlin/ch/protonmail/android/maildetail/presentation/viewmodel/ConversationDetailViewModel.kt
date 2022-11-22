@@ -166,7 +166,7 @@ class ConversationDetailViewModel @Inject constructor(
         Timber.d("UnStar conversation clicked")
         primaryUserId.mapLatest { userId ->
             unStarConversation(userId, conversationId).fold(
-                ifLeft = { ConversationDetailEvent.ErrorAddStar },
+                ifLeft = { ConversationDetailEvent.ErrorRemoveStar },
                 ifRight = { ConversationDetailViewAction.UnStar }
             )
         }.onEach { event ->

@@ -389,6 +389,31 @@ class ConversationDetailViewModelTest {
         }
     }
 
+    @Test
+    fun `error unStarring conversation is emitted when unStar action fails`() = runTest {
+        // Given
+        coEvery { unStarConversation.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
+        every {
+            reducer.newStateFrom(
+                any(),
+                any()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            error = Effect.of(
+                TextUiModel(R.string.error_unstar_operation_failed)
+            )
+        )
+        viewModel.state.test {
+            initialStateEmitted()
+            // When
+            viewModel.submit(ConversationDetailViewAction.UnStar)
+            advanceUntilIdle()
+            // Then
+            assertEquals(TextUiModel(R.string.error_unstar_operation_failed), lastEmittedItem().error.consume())
+            verify(exactly = 1) { reducer.newStateFrom(any(), ConversationDetailEvent.ErrorRemoveStar) }
+        }
+    }
+
     private fun givenReducerReturnsBottomActions() {
         val actionUiModels = listOf(
             ActionUiModelTestData.reply,

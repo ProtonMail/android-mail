@@ -26,6 +26,7 @@ sealed interface ConversationDetailOperation {
 
     sealed interface AffectingConversation : ConversationDetailOperation
     sealed interface AffectingMessages : ConversationDetailOperation
+    sealed interface AffectingErrorBar
 }
 
 sealed interface ConversationDetailEvent : ConversationDetailOperation {
@@ -44,7 +45,8 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val messagesUiModels: List<ConversationDetailMessageUiModel>
     ) : ConversationDetailEvent, AffectingMessages
 
-    object ErrorAddStar : ConversationDetailEvent
+    object ErrorAddStar : ConversationDetailEvent, ConversationDetailOperation.AffectingErrorBar
+    object ErrorRemoveStar : ConversationDetailEvent, ConversationDetailOperation.AffectingErrorBar
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {

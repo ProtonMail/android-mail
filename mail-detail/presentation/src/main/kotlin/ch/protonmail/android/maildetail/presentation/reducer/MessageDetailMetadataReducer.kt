@@ -28,7 +28,7 @@ class MessageDetailMetadataReducer @Inject constructor() {
 
     @SuppressWarnings("NotImplementedDeclaration")
     fun newStateFrom(
-        @Suppress("UNUSED_PARAMETER") currentState: MessageMetadataState,
+        currentState: MessageMetadataState,
         event: MessageDetailOperation.AffectingMessage
     ): MessageMetadataState {
         return when (event) {

@@ -31,6 +31,7 @@ import io.mockk.verify
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
+import kotlin.test.assertNotNull
 
 @RunWith(Parameterized::class)
 class ConversationDetailReducerTest(
@@ -49,7 +50,14 @@ class ConversationDetailReducerTest(
 
     @Test
     fun `does call the correct sub-reducers`() {
-        reducer.newStateFrom(ConversationDetailState.Loading, operation)
+        val nextState = reducer.newStateFrom(ConversationDetailState.Loading, operation)
+
+        if (operation is ConversationDetailOperation.AffectingErrorBar) {
+            verify { messagesReducer wasNot Called }
+            verify { metadataReducer wasNot Called }
+            verify { bottomBarReducer wasNot Called }
+            assertNotNull(nextState.error.consume())
+        }
 
         if (operation is ConversationDetailOperation.AffectingMessages) {
             verify { messagesReducer.newStateFrom(any(), operation) }
@@ -79,7 +87,9 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorLoadingMessages,
             ConversationDetailEvent.MessagesData(emptyList()),
             ConversationDetailViewAction.Star,
-            ConversationDetailViewAction.UnStar
+            ConversationDetailViewAction.UnStar,
+            ConversationDetailEvent.ErrorAddStar,
+            ConversationDetailEvent.ErrorRemoveStar
         )
 
         @JvmStatic

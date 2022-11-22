@@ -25,6 +25,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 class ConversationDetailReducer @Inject constructor(
@@ -65,10 +66,15 @@ class ConversationDetailReducer @Inject constructor(
         }
 
     private fun ConversationDetailState.toErrorState(operation: ConversationDetailOperation) =
-        if (operation is ConversationDetailEvent.ErrorAddStar) {
-            Effect.of(TextUiModel(R.string.error_star_operation_failed))
-        } else {
+        if (operation is ConversationDetailOperation.AffectingErrorBar) {
+            when (operation) {
+                is ConversationDetailEvent.ErrorAddStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
+                is ConversationDetailEvent.ErrorRemoveStar -> Effect.of(
+                    TextUiModel(R.string.error_unstar_operation_failed)
+                )
+            }.exhaustive
+        } else
             error
-        }
+
 
 }
