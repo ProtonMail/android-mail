@@ -107,7 +107,7 @@ object Versions {
 
     object Proton {
         const val core = "9.4.0"
-        const val corePlugin = "1.0.0"
+        const val corePlugin = "1.1.1"
     }
 
     object Squareup {

@@ -19,11 +19,10 @@
 rootProject.name = "ProtonMail"
 
 plugins {
-    id("me.proton.core.gradle-plugins.include-core-build") version "1.0.0"
+    id("me.proton.core.gradle-plugins.include-core-build") version "1.1.1"
 }
 
 includeCoreBuild {
-    uri.set("https://github.com/ProtonMail/protoncore_android.git")
     branch.set("main")
     includeBuild("gopenpgp")
 }
