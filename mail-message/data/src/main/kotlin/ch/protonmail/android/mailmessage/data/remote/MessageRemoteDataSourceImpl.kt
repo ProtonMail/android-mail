@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.remote
 
+import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
@@ -26,12 +27,14 @@ import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 class MessageRemoteDataSourceImpl @Inject constructor(
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
+    private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer
 ) : MessageRemoteDataSource {
 
     override suspend fun getMessages(
@@ -70,4 +73,12 @@ class MessageRemoteDataSourceImpl @Inject constructor(
             messageId = messageId.id
         ).message.toMessageWithBody(userId)
     }.valueOrThrow
+
+    override fun addLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    ) {
+        addLabelMessageWorker.enqueue(userId, messageId, labelId)
+    }
 }

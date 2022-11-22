@@ -23,6 +23,7 @@ import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSourceImpl
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl
+import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import dagger.Module
@@ -46,8 +47,9 @@ object MailMessageModule {
     @Provides
     @Singleton
     fun provideMessageRemoteDataSource(
-        apiProvider: ApiProvider
-    ): MessageRemoteDataSource = MessageRemoteDataSourceImpl(apiProvider)
+        apiProvider: ApiProvider,
+        addLabelMessageWorker: AddLabelMessageWorker.Enqueuer
+    ): MessageRemoteDataSource = MessageRemoteDataSourceImpl(apiProvider, addLabelMessageWorker)
 
     @Provides
     @Singleton

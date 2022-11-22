@@ -23,6 +23,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 
 interface MessageRemoteDataSource {
     /**
@@ -40,4 +41,13 @@ interface MessageRemoteDataSource {
         userId: UserId,
         messageId: MessageId
     ): MessageWithBody
+
+    /**
+     * Add a [LabelId] to the given [MessageId]
+     */
+    fun addLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    )
 }

@@ -1,0 +1,117 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.mailmessage.data.remote.worker
+
+import android.content.Context
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
+import ch.protonmail.android.mailmessage.data.remote.MessageApi
+import ch.protonmail.android.mailmessage.data.remote.resource.AddLabelBody
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.testdata.message.MessageTestData
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
+import kotlinx.coroutines.test.runTest
+import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.network.data.ApiManagerFactory
+import me.proton.core.network.data.ApiProvider
+import me.proton.core.network.domain.session.SessionId
+import me.proton.core.network.domain.session.SessionProvider
+import me.proton.core.test.android.api.TestApiManager
+import me.proton.core.util.kotlin.DefaultDispatcherProvider
+import org.junit.Before
+import org.junit.Test
+import kotlin.test.assertEquals
+
+internal class AddLabelMessageWorkerTest {
+
+    private val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+    private val labelId = LabelId("10")
+
+    private val workManager: WorkManager = mockk {
+        coEvery { enqueue(any<OneTimeWorkRequest>()) } returns mockk()
+    }
+    private val parameters: WorkerParameters = mockk {
+        every { getTaskExecutor() } returns mockk(relaxed = true)
+        every { inputData.getString(KEY_ADD_LABEL_WORK_RAW_USER_ID) } returns userId.id
+        every { inputData.getString(KEY_ADD_LABEL_WORK_RAW_MESSAGE_ID) } returns messageId.id
+        every { inputData.getString(KEY_ADD_LABEL_WORK_RAW_LABEL_ID) } returns labelId.id
+    }
+    private val context: Context = mockk()
+
+    private val sessionProvider = mockk<SessionProvider> {
+        coEvery { getSessionId(userId) } returns SessionId("testSessionId")
+    }
+    private val messageApi = mockk<MessageApi> {
+        coEvery { addLabel(any()) } returns Unit
+    }
+    private val apiManagerFactory = mockk<ApiManagerFactory> {
+        every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
+    }
+    private lateinit var apiProvider: ApiProvider
+    private lateinit var addLabelMessageWorker: AddLabelMessageWorker
+
+    @Before
+    fun setUp() {
+        apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
+        addLabelMessageWorker = AddLabelMessageWorker(
+            context,
+            parameters,
+            apiProvider
+        )
+    }
+
+    @Test
+    fun `worker is enqueued with given parameters`() {
+        // When
+        AddLabelMessageWorker.Enqueuer(workManager).enqueue(
+            userId,
+            messageId,
+            labelId
+        )
+        // Then
+        val requestSlot = slot<OneTimeWorkRequest>()
+        verify { workManager.enqueue(capture(requestSlot)) }
+        val workSpec = requestSlot.captured.workSpec
+        val constraints = workSpec.constraints
+        val inputData = workSpec.input
+        val actualUserId = inputData.getString(KEY_ADD_LABEL_WORK_RAW_USER_ID)
+        val actualMessageId = inputData.getString(KEY_ADD_LABEL_WORK_RAW_MESSAGE_ID)
+        val actualLabelId = inputData.getString(KEY_ADD_LABEL_WORK_RAW_LABEL_ID)
+        assertEquals(userId.id, actualUserId)
+        assertEquals(messageId.id, actualMessageId)
+        assertEquals(labelId.id, actualLabelId)
+        assertEquals(NetworkType.CONNECTED, constraints.requiredNetworkType)
+    }
+
+    @Test
+    fun `when worker is started then api is called with the given parameters`() = runTest {
+        // When
+        addLabelMessageWorker.doWork()
+        // Then
+        coVerify { messageApi.addLabel(AddLabelBody(labelId.id, listOf(messageId.id))) }
+    }
+}

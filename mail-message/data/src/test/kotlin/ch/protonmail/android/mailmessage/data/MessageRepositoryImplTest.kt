@@ -51,7 +51,7 @@ class MessageRepositoryImplTest {
 
     private val userId = UserId("1")
 
-    private val remoteDataSource = mockk<MessageRemoteDataSource> {
+    private val remoteDataSource = mockk<MessageRemoteDataSource>(relaxUnitFun = true) {
         coEvery { getMessages(userId = any(), pageKey = any()) } returns listOf(
             getMessage(id = "1", time = 1000),
             getMessage(id = "2", time = 2000),
@@ -60,6 +60,7 @@ class MessageRepositoryImplTest {
         )
     }
     private val localDataSource = mockk<MessageLocalDataSource>(relaxUnitFun = true) {
+        coEvery { observeMessage(userId = any(), messageId = any()) } returns flowOf(MessageTestData.message)
         coEvery { getMessages(userId = any(), pageKey = any()) } returns emptyList()
         coEvery { isLocalPageValid(userId = any(), pageKey = any(), items = any()) } returns false
     }
@@ -240,6 +241,17 @@ class MessageRepositoryImplTest {
         val starredMessage = MessageTestData.starredMessage
         coVerify { localDataSource.upsertMessage(starredMessage) }
         assertEquals(starredMessage.right(), actual)
+    }
+
+    @Test
+    fun `add label updates remote data source`() = runTest {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        val labelId = LabelId("10")
+        // When
+        messageRepository.addLabel(userId, messageId, labelId)
+        // Then
+        coVerify { remoteDataSource.addLabel(userId, messageId, labelId) }
     }
 
     @Test

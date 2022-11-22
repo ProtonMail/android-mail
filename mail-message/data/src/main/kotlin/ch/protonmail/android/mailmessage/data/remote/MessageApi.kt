@@ -18,10 +18,13 @@
 
 package ch.protonmail.android.mailmessage.data.remote
 
+import ch.protonmail.android.mailmessage.data.remote.resource.AddLabelBody
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessageResponse
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -51,7 +54,13 @@ interface MessageApi : BaseRetrofitApi {
         @Path("messageId") messageId: String
     ): GetMessageResponse
 
+    @PUT("mail/v4/messages/label")
+    suspend fun addLabel(
+        @Body addLabelBody: AddLabelBody
+    )
+
     companion object {
+
         const val maxPageSize = 150
     }
 }

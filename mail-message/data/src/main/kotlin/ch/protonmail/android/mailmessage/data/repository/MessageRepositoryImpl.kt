@@ -89,6 +89,7 @@ class MessageRepositoryImpl @Inject constructor(
             labelIds = message.labelIds + labelId
         )
         localDataSource.upsertMessage(updatedMessage)
+        remoteDataSource.addLabel(userId, messageId, labelId)
         return updatedMessage.right()
     }
 
