@@ -397,6 +397,7 @@ private fun SenderAddress(
         verticalAlignment = Alignment.CenterVertically
     ) {
         SmallNonClickableIcon(iconId = participantUiModel.participantPadlock)
+        Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
         ParticipantText(text = participantUiModel.participantAddress)
     }
 }
@@ -491,7 +492,9 @@ private fun Recipients(
         recipients.forEachIndexed { index, participant ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 ParticipantText(text = participant.participantName, clickable = false)
+                Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
                 SmallNonClickableIcon(iconId = participant.participantPadlock)
+                Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
                 ParticipantText(text = participant.participantAddress)
             }
             if (index != recipients.size - 1) {
