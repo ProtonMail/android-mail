@@ -40,7 +40,6 @@ import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
-import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailMetadataUiModel
@@ -77,13 +76,19 @@ class MessageDetailViewModelTest {
 
     private val rawMessageId = "detailMessageId"
     private val actionUiModelMapper = ActionUiModelMapper()
-    private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper>()
-    private val messageUiModelMapper = MessageDetailUiModelMapper(messageDetailHeaderUiModelMapper)
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(),
         BottomBarReducer()
     )
 
+    private val messageUiModelMapper = mockk<MessageDetailUiModelMapper> {
+        every { toUiModel(any(), any()) } returns MessageDetailMetadataUiModel(
+            messageId = MessageTestData.message.messageId,
+            subject = MessageTestData.message.subject,
+            isStarred = false,
+            messageDetailHeader = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+        )
+    }
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
@@ -109,6 +114,7 @@ class MessageDetailViewModelTest {
     }
     private val getContacts = mockk<GetContacts> {
         coEvery { this@mockk.invoke(userId) } returns ContactTestData.contacts.right()
+    }
     private val starMessage = mockk<StarMessage> {
         every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
     }
@@ -182,12 +188,12 @@ class MessageDetailViewModelTest {
         )
         val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
         every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
-        every {
-            messageDetailHeaderUiModelMapper.toUiModel(
-                messageWithLabels,
-                ContactTestData.contacts
-            )
-        } returns MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+        every { messageUiModelMapper.toUiModel(any(), any()) } returns MessageDetailMetadataUiModel(
+            messageId = messageId,
+            subject = subject,
+            isStarred = isStarred,
+            messageDetailHeader = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+        )
 
         // When
         viewModel.state.test {
@@ -218,12 +224,6 @@ class MessageDetailViewModelTest {
         )
         val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
         every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
-        every {
-            messageDetailHeaderUiModelMapper.toUiModel(
-                messageWithLabels,
-                ContactTestData.contacts
-            )
-        } returns MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
         every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
             nonEmptyListOf(Action.Reply, Action.Archive).right()
         )
@@ -251,12 +251,6 @@ class MessageDetailViewModelTest {
         )
         val messageWithLabels = MessageWithLabels(cachedMessage, emptyList())
         every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
-        every {
-            messageDetailHeaderUiModelMapper.toUiModel(
-                messageWithLabels,
-                ContactTestData.contacts
-            )
-        } returns MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 
         every { observeDetailActions.invoke(userId, MessageId(rawMessageId)) } returns
             flowOf(DataError.Local.NoDataCached.left())
@@ -344,7 +338,8 @@ class MessageDetailViewModelTest {
     fun `unStarred message metadata is emitted when unStar action is successful`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        every { observeMessage.invoke(userId, messageId) } returns flowOf(MessageTestData.starredMessage.right())
+        val messageWithLabels = MessageWithLabels(MessageTestData.starredMessage, emptyList())
+        every { observeMessageWithLabels.invoke(userId, messageId) } returns flowOf(messageWithLabels.right())
         every { unStarMessage.invoke(userId, messageId) } returns flowOf(Unit.right())
 
         viewModel.state.test {
