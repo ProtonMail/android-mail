@@ -52,7 +52,6 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailCollapsedMessageHeaderPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.AttachmentIconTestTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.ForwardedIconTestTag
-import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.MinLabelsWidth
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.RepliedAllIconTestTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.RepliedIconTestTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.StarIconTestTag
@@ -270,12 +269,12 @@ private fun RepliedIcon(
     when (message.repliedIcon) {
         ConversationDetailMessageUiModel.RepliedIcon.None -> Box(modifier)
         ConversationDetailMessageUiModel.RepliedIcon.Replied -> SmallNonClickableIcon(
-            modifier = modifier.testTag(RepliedIconTestTag),
+            modifier = modifier.testTag(RepliedIconTestTag).padding(horizontal = MailDimens.TinySpacing),
             iconId = drawable.ic_proton_arrow_up_and_left,
             iconColor = fontColor
         )
         ConversationDetailMessageUiModel.RepliedIcon.RepliedAll -> SmallNonClickableIcon(
-            modifier = modifier.testTag(RepliedAllIconTestTag),
+            modifier = modifier.testTag(RepliedAllIconTestTag).padding(horizontal = MailDimens.TinySpacing),
             iconId = drawable.ic_proton_arrows_up_and_left,
             iconColor = fontColor
         )
@@ -290,7 +289,7 @@ private fun Sender(
     modifier: Modifier
 ) {
     Text(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = MailDimens.TinySpacing),
         text = message.sender,
         fontWeight = fontWeight,
         color = fontColor,
