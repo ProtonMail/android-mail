@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.remote
 import ch.protonmail.android.mailmessage.data.remote.resource.AddLabelBody
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessageResponse
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
+import ch.protonmail.android.mailmessage.data.remote.response.PutLabelResponse
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -57,7 +58,7 @@ interface MessageApi : BaseRetrofitApi {
     @PUT("mail/v4/messages/label")
     suspend fun addLabel(
         @Body addLabelBody: AddLabelBody
-    )
+    ): PutLabelResponse
 
     companion object {
 

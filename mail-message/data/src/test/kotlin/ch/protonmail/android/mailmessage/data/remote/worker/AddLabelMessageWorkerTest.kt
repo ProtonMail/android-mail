@@ -18,16 +18,20 @@
 
 package ch.protonmail.android.mailmessage.data.remote.worker
 
+import java.net.UnknownHostException
 import android.content.Context
+import androidx.work.ListenableWorker.Result
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.AddLabelBody
+import ch.protonmail.android.mailmessage.data.sample.PutLabelResponseSample
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -35,6 +39,7 @@ import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.SerializationException
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiManagerFactory
 import me.proton.core.network.data.ApiProvider
@@ -66,11 +71,12 @@ internal class AddLabelMessageWorkerTest {
         coEvery { getSessionId(userId) } returns SessionId("testSessionId")
     }
     private val messageApi = mockk<MessageApi> {
-        coEvery { addLabel(any()) } returns Unit
+        coEvery { addLabel(any()) } returns PutLabelResponseSample.putLabelResponseForOneMessage
     }
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
     }
+
     private lateinit var apiProvider: ApiProvider
     private lateinit var addLabelMessageWorker: AddLabelMessageWorker
 
@@ -114,4 +120,66 @@ internal class AddLabelMessageWorkerTest {
         // Then
         coVerify { messageApi.addLabel(AddLabelBody(labelId.id, listOf(messageId.id))) }
     }
+
+    @Test
+    fun `worker returns failure when userid worker parameter is missing`() = runTest {
+        // Given
+        every { parameters.inputData.getString(KEY_ADD_LABEL_WORK_RAW_USER_ID) } returns null
+        // When
+        val result = addLabelMessageWorker.doWork()
+        // Then
+        coVerify { messageApi wasNot Called }
+        assertEquals(Result.failure(), result)
+    }
+
+    @Test
+    fun `worker returns failure when messageId worker parameter is empty`() = runTest {
+        // Given
+        every { parameters.inputData.getString(KEY_ADD_LABEL_WORK_RAW_MESSAGE_ID) } returns ""
+        // When
+        val result = addLabelMessageWorker.doWork()
+        // Then
+        coVerify { messageApi wasNot Called }
+        assertEquals(Result.failure(), result)
+    }
+
+    @Test
+    fun `worker returns failure when labelId worker parameter is blank`() = runTest {
+        // Given
+        every { parameters.inputData.getString(KEY_ADD_LABEL_WORK_RAW_LABEL_ID) } returns " "
+        // When
+        val result = addLabelMessageWorker.doWork()
+        // Then
+        coVerify { messageApi wasNot Called }
+        assertEquals(Result.failure(), result)
+    }
+
+    @Test
+    fun `worker returns success when api call was successful`() = runTest {
+        // When
+        val result = addLabelMessageWorker.doWork()
+        // Then
+        assertEquals(Result.success(), result)
+    }
+
+    @Test
+    fun `worker returns retry when api call fails due to connection error`() = runTest {
+        // Given
+        coEvery { messageApi.addLabel(any()) } throws UnknownHostException()
+        // When
+        val result = addLabelMessageWorker.doWork()
+        // Then
+        assertEquals(Result.retry(), result)
+    }
+
+    @Test
+    fun `worker returns failure when api call fails due to serializationException error`() = runTest {
+        // Given
+        coEvery { messageApi.addLabel(any()) } throws SerializationException()
+        // When
+        val result = addLabelMessageWorker.doWork()
+        // Then
+        assertEquals(Result.failure(), result)
+    }
+
 }

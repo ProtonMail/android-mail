@@ -27,12 +27,17 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import ch.protonmail.android.mailmessage.data.remote.MessageApi
+import ch.protonmail.android.mailmessage.data.remote.resource.AddLabelBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
+import me.proton.core.network.domain.ApiResult
+import me.proton.core.network.domain.isRetryable
+import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 internal const val KEY_ADD_LABEL_WORK_RAW_USER_ID = "addLabelWorkParamUserId"
@@ -47,7 +52,34 @@ class AddLabelMessageWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        TODO("Not yet implemented")
+        val userId = inputData.getString(KEY_ADD_LABEL_WORK_RAW_USER_ID)?.takeIfNotBlank()
+        val messageId = inputData.getString(KEY_ADD_LABEL_WORK_RAW_MESSAGE_ID)?.takeIfNotBlank()
+        val labelId = inputData.getString(KEY_ADD_LABEL_WORK_RAW_LABEL_ID)?.takeIfNotBlank()
+
+        if (userId == null || messageId == null || labelId == null) {
+            return Result.failure()
+        }
+
+        val result = apiProvider.get<MessageApi>(UserId(userId)).invoke {
+            addLabel(
+                AddLabelBody(
+                    labelId = labelId,
+                    messageIds = listOf(messageId)
+                )
+            )
+        }
+
+        return when (result) {
+            is ApiResult.Success -> Result.success()
+            is ApiResult.Error -> handleApiError(result)
+        }
+    }
+
+    private fun handleApiError(error: ApiResult.Error): Result {
+        return when (error.isRetryable()) {
+            true -> Result.retry()
+            false -> Result.failure()
+        }
     }
 
     class Enqueuer @Inject constructor(private val workManager: WorkManager) {
