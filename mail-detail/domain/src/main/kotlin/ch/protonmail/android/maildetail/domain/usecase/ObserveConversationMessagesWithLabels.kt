@@ -25,9 +25,11 @@ import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
@@ -45,7 +47,7 @@ class ObserveConversationMessagesWithLabels @Inject constructor(
         combine(
             labelRepository.observeLabels(userId, type = LabelType.MessageLabel).mapToEither(),
             labelRepository.observeLabels(userId, type = LabelType.MessageFolder).mapToEither(),
-            messageRepository.observeCachedMessages(userId, conversationId)
+            messageRepository.observeCachedMessages(userId, conversationId).ignoreLocalErrors()
         ) { labelsEither, foldersEither, messagesEither ->
             either {
                 val labels = labelsEither.bind()
@@ -58,5 +60,13 @@ class ObserveConversationMessagesWithLabels @Inject constructor(
                     )
                 }
             }
+        }
+
+    private fun Flow<Either<DataError, Nel<Message>>>.ignoreLocalErrors(): Flow<Either<DataError, Nel<Message>>> =
+        filter { either ->
+            either.fold(
+                ifLeft = { error -> error !is DataError.Local },
+                ifRight = { true }
+            )
         }
 }

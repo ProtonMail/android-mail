@@ -93,9 +93,8 @@ internal class ObserveConversationMessagesWithLabelsTest {
     }
 
     @Test
-    fun `when messages emits an error, the error is emitted`() = runTest {
+    fun `when messages emits a local error, the error is ignored`() = runTest {
         // given
-        val expected = DataError.Local.NoDataCached.left()
         every {
             messageRepository.observeCachedMessages(
                 UserIdSample.Primary,
@@ -110,7 +109,6 @@ internal class ObserveConversationMessagesWithLabelsTest {
         ).test {
 
             // then
-            assertEquals(expected, awaitItem())
             awaitComplete()
         }
     }
