@@ -150,7 +150,8 @@ internal fun ConversationDetailCollapsedMessageHeader(message: ConversationDetai
 
             Text(
                 modifier = Modifier.constrainAs(labelsRef) {
-                    width = Dimension.fillToConstraints.atLeast(MinLabelsWidth)
+                    visibility = Visibility.Invisible
+                    width = Dimension.fillToConstraints.atLeast(1.dp)
                     centerVerticallyTo(parent)
                 },
                 text = "Labels",
@@ -335,7 +336,6 @@ object ConversationDetailCollapsedMessageHeader {
     const val RepliedAllIconTestTag = "replied_all_icon"
     const val RepliedIconTestTag = "replied_icon"
     const val StarIconTestTag = "star_icon"
-    internal val MinLabelsWidth = 40.dp
 }
 
 @Preview
