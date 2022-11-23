@@ -174,11 +174,10 @@ internal fun ConversationDetailCollapsedMessageHeader(message: ConversationDetai
             )
 
             LocationIcon(
+                message = message,
                 modifier = Modifier.constrainAs(locationIconRef) {
                     centerVerticallyTo(parent)
-                },
-                message = message,
-                fontColor = fontColor
+                }
             )
 
             Time(
@@ -249,13 +248,12 @@ private fun ForwardedIcon(
 @Composable
 private fun LocationIcon(
     message: ConversationDetailMessageUiModel.Collapsed,
-    fontColor: Color,
     modifier: Modifier
 ) {
     Icon(
         modifier = modifier.size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = message.locationIcon.icon),
-        tint = fontColor,
+        tint = message.locationIcon.color ?: ProtonTheme.colors.iconNorm,
         contentDescription = NO_CONTENT_DESCRIPTION
     )
 }
