@@ -35,11 +35,9 @@ import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Ordering
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
