@@ -151,7 +151,7 @@ fun ConversationDetailScreen(
     ) { innerPadding ->
         when (state.messagesState) {
             is ConversationDetailsMessagesState.Data -> MessagesContent(
-                messages = state.messagesState.messages,
+                uiModels = state.messagesState.messages,
                 padding = innerPadding
             )
             is ConversationDetailsMessagesState.Error -> ProtonErrorMessage(
@@ -167,7 +167,7 @@ fun ConversationDetailScreen(
 
 @Composable
 private fun MessagesContent(
-    messages: List<ConversationDetailMessageUiModel>,
+    uiModels: List<ConversationDetailMessageUiModel>,
     padding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -185,7 +185,7 @@ private fun MessagesContent(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(ProtonDimens.SmallSpacing)
     ) {
-        items(messages) { message ->
+        items(uiModels) { message ->
             when (message) {
                 is ConversationDetailMessageUiModel.Collapsed ->
                     ConversationDetailCollapsedMessageHeader(message = message)
