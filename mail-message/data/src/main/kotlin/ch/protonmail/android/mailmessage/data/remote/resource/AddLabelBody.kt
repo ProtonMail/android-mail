@@ -18,7 +18,13 @@
 
 package ch.protonmail.android.mailmessage.data.remote.resource
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class AddLabelBody(
+    @SerialName("LabelID")
     val labelId: String,
+    @SerialName("IDs")
     val messageIds: List<String>
 )
