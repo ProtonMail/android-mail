@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.usecase
+package ch.protonmail.android.mailcommon.presentation.mapper
 
 import ch.protonmail.android.mailcommon.domain.sample.DurationEpochTimeSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetCurrentEpochTimeDuration
@@ -30,13 +30,13 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
-internal class FormatExpirationTest {
+internal class ExpirationTimeMapperTest {
 
     private val now = DurationEpochTimeSample.Y2022.Dec.D25.Midnight
     private val getCurrentEpochTimeDuration: GetCurrentEpochTimeDuration = mockk {
         every { this@mockk() } returns now
     }
-    private val format = FormatExpiration(getCurrentEpochTimeDuration)
+    private val mapper = ExpirationTimeMapper(getCurrentEpochTimeDuration)
 
     @Test
     fun `when expiration is in the past, then expired is returned`() {
@@ -45,7 +45,7 @@ internal class FormatExpirationTest {
         val expected = TextUiModel(string.expiration_expired)
 
         // when
-        val actual = format(expiration)
+        val actual = mapper.toUiModel(expiration)
 
         // then
         assertEquals(expected, actual)
@@ -58,7 +58,7 @@ internal class FormatExpirationTest {
         val expected = TextUiModel(string.expiration_minutes_arg, 10)
 
         // when
-        val actual = format(expiration)
+        val actual = mapper.toUiModel(expiration)
 
         // then
         assertEquals(expected, actual)
@@ -71,7 +71,7 @@ internal class FormatExpirationTest {
         val expected = TextUiModel(string.expiration_hours_arg, 1)
 
         // when
-        val actual = format(expiration)
+        val actual = mapper.toUiModel(expiration)
 
         // then
         assertEquals(expected, actual)
@@ -84,7 +84,7 @@ internal class FormatExpirationTest {
         val expected = TextUiModel(string.expiration_hours_arg, 1)
 
         // when
-        val actual = format(expiration)
+        val actual = mapper.toUiModel(expiration)
 
         // then
         assertEquals(expected, actual)
@@ -97,7 +97,7 @@ internal class FormatExpirationTest {
         val expected = TextUiModel(string.expiration_days_arg, 1)
 
         // when
-        val actual = format(expiration)
+        val actual = mapper.toUiModel(expiration)
 
         // then
         assertEquals(expected, actual)
@@ -110,7 +110,7 @@ internal class FormatExpirationTest {
         val expected = TextUiModel(string.expiration_days_arg, 365)
 
         // when
-        val actual = format(expiration)
+        val actual = mapper.toUiModel(expiration)
 
         // then
         assertEquals(expected, actual)

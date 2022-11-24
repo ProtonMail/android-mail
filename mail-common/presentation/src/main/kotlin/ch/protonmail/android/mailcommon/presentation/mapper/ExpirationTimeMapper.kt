@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.usecase
+package ch.protonmail.android.mailcommon.presentation.mapper
 
 import ch.protonmail.android.mailcommon.domain.usecase.GetCurrentEpochTimeDuration
 import ch.protonmail.android.mailcommon.presentation.R.string
@@ -27,11 +27,11 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.seconds
 
-class FormatExpiration @Inject constructor(
+class ExpirationTimeMapper @Inject constructor(
     private val getCurrentEpochTimeDuration: GetCurrentEpochTimeDuration
 ) {
 
-    operator fun invoke(epochTime: Duration): TextUiModel {
+    fun toUiModel(epochTime: Duration): TextUiModel {
         val timeDiff = epochTime - getCurrentEpochTimeDuration()
         return when {
             timeDiff <= 0.seconds -> TextUiModel(string.expiration_expired)

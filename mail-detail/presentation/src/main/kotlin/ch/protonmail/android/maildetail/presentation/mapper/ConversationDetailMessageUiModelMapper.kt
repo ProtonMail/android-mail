@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.mailcommon.presentation.usecase.FormatExpiration
+import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -30,7 +30,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val avatarUiModelMapper: DetailAvatarUiModelMapper,
-    private val formatExpiration: FormatExpiration,
+    private val expirationTimeMapper: ExpirationTimeMapper,
     private val formatShortTime: FormatShortTime,
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper,
     private val resolveParticipantName: ResolveParticipantName
@@ -44,7 +44,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
                 message,
                 senderResolvedName = senderResolvedName
             ),
-            expiration = message.expirationTime.takeIf { it > 0 }?.let { formatExpiration(it.seconds) },
+            expiration = message.expirationTime.takeIf { it > 0 }?.let { expirationTimeMapper.toUiModel(it.seconds) },
             forwardedIcon = getForwardedIcon(isForwarded = message.isForwarded),
             hasAttachments = message.numAttachments > message.attachmentCount.calendar,
             isStarred = SystemLabelId.Starred.labelId in message.labelIds,

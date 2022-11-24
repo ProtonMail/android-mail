@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.mailcommon.presentation.usecase.FormatExpiration
+import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -41,8 +41,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
         every { this@mockk(message = MessageSample.ExpiringInvitation, senderResolvedName = any()) } returns
             ConversationDetailMessageUiModelSample.ExpiringInvitation.avatar
     }
-    private val formatExpiration: FormatExpiration = mockk {
-        every { this@mockk(epochTime = any()) } returns
+    private val expirationTimeMapper: ExpirationTimeMapper = mockk {
+        every { toUiModel(epochTime = any()) } returns
             requireNotNull(ConversationDetailMessageUiModelSample.ExpiringInvitation.expiration)
     }
     private val formatShortTime: FormatShortTime = mockk {
@@ -60,7 +60,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
     private val mapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = avatarUiModelMapper,
-        formatExpiration = formatExpiration,
+        expirationTimeMapper = expirationTimeMapper,
         formatShortTime = formatShortTime,
         messageLocationUiModelMapper = messageLocationUiModelMapper,
         resolveParticipantName = resolveParticipantName
