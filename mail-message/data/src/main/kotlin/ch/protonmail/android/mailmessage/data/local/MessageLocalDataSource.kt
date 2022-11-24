@@ -130,5 +130,19 @@ interface MessageLocalDataSource {
     /**
      * Adds [labelId] to given [messageId] related to the same [userId]
      */
-    suspend fun addLabel(userId: UserId, messageId: MessageId, labelId: LabelId): Either<DataError.Local, Message>
+    suspend fun addLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    ): Either<DataError.Local, Message>
+
+
+    /**
+     * Removes [labelId] to given [messageId] related to the same [userId]
+     */
+    suspend fun removeLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    ): Either<DataError.Local, Message>
 }

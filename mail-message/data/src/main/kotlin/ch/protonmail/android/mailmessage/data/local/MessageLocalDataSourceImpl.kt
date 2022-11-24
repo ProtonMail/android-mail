@@ -136,6 +136,20 @@ class MessageLocalDataSourceImpl @Inject constructor(
         return updatedMessage.right()
     }
 
+    override suspend fun removeLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    ): Either<DataError.Local, Message> {
+        val message = observeMessage(userId, messageId).first()
+            ?: return DataError.Local.NoDataCached.left()
+        val updatedMessage = message.copy(
+            labelIds = message.labelIds - labelId
+        )
+        upsertMessage(updatedMessage)
+        return updatedMessage.right()
+    }
+
     private suspend fun updateLabels(
         messages: List<Message>
     ) = with(groupByUserId(messages)) {

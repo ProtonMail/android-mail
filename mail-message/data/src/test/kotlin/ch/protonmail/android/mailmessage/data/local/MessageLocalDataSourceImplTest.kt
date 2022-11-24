@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import app.cash.turbine.test
+import arrow.core.left
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageWithLabels
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
@@ -219,6 +221,18 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
+    fun `add label emits no data cached error when message does not exist locally`() = runTest {
+        // Given
+        val message = MessageTestData.message
+        val labelId = LabelId("10")
+        coEvery { messageDao.observe(UserIdTestData.userId, messageId = MessageId(message.id)) } returns flowOf(null)
+        // When
+        val actual = messageLocalDataSource.addLabel(UserIdTestData.userId, MessageId(message.id), labelId)
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
+    }
+
+    @Test
     fun `add label ignores inserting existing labels`() = runTest {
         // Given
         val message = MessageTestData.message
@@ -230,5 +244,37 @@ class MessageLocalDataSourceImplTest {
             labelDao.deleteAll(UserIdTestData.userId, listOf(message).map { MessageId(it.id) })
             labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, LabelId("0"), MessageId(message.id)))
         }
+    }
+
+    @Test
+    fun `remove label removes labels locally`() = runTest {
+        // Given
+        val message = MessageTestData.starredMessage
+        val labelId = LabelId("10")
+        coEvery { messageDao.observe(userId = any(), messageId = any()) } returns flowOf(
+            MessageWithLabelIds(
+                MessageTestData.message.toEntity(),
+                listOf(LabelId("0"), LabelId("10"))
+            )
+        )
+        // When
+        messageLocalDataSource.removeLabel(UserIdTestData.userId, MessageId(message.id), labelId)
+        // Then
+        coVerifySequence {
+            labelDao.deleteAll(UserIdTestData.userId, listOf(message).map { MessageId(it.id) })
+            labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, LabelId("0"), MessageId(message.id)))
+        }
+    }
+
+    @Test
+    fun `remove label emits no data cached error when message does not exist locally`() = runTest {
+        // Given
+        val message = MessageTestData.message
+        val labelId = LabelId("10")
+        coEvery { messageDao.observe(UserIdTestData.userId, messageId = MessageId(message.id)) } returns flowOf(null)
+        // When
+        val actual = messageLocalDataSource.removeLabel(UserIdTestData.userId, MessageId(message.id), labelId)
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
 }
