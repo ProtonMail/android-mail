@@ -18,7 +18,11 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -116,6 +120,20 @@ class MessageLocalDataSourceImpl @Inject constructor(
     ) = db.inTransaction {
         upsertMessages(items)
         upsertPageInterval(userId, pageKey, items)
+    }
+
+    override suspend fun addLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    ): Either<DataError.Local, Message> {
+        val message = observeMessage(userId, messageId).first()
+            ?: return DataError.Local.NoDataCached.left()
+        val updatedMessage = message.copy(
+            labelIds = message.labelIds.toMutableSet().apply { add(labelId) }.toList()
+        )
+        upsertMessage(updatedMessage)
+        return updatedMessage.right()
     }
 
     private suspend fun updateLabels(

@@ -83,14 +83,11 @@ class MessageRepositoryImpl @Inject constructor(
         messageId: MessageId,
         labelId: LabelId
     ): Either<DataError.Local, Message> {
-        val message = localDataSource.observeMessage(userId, messageId).first()
-            ?: return DataError.Local.NoDataCached.left()
-        val updatedMessage = message.copy(
-            labelIds = message.labelIds + labelId
-        )
-        localDataSource.upsertMessage(updatedMessage)
-        remoteDataSource.addLabel(userId, messageId, labelId)
-        return updatedMessage.right()
+        val messageEither = localDataSource.addLabel(userId, messageId, labelId)
+        if (messageEither.isRight()) {
+            remoteDataSource.addLabel(userId, messageId, labelId)
+        }
+        return messageEither
     }
 
     override suspend fun removeLabel(

@@ -60,6 +60,7 @@ class MessageRepositoryImplTest {
         )
     }
     private val localDataSource = mockk<MessageLocalDataSource>(relaxUnitFun = true) {
+        coEvery { addLabel(userId = any(), messageId = any(), labelId = any()) } returns MessageTestData.message.right()
         coEvery { observeMessage(userId = any(), messageId = any()) } returns flowOf(MessageTestData.message)
         coEvery { getMessages(userId = any(), pageKey = any()) } returns emptyList()
         coEvery { isLocalPageValid(userId = any(), pageKey = any(), items = any()) } returns false
@@ -229,17 +230,22 @@ class MessageRepositoryImplTest {
     }
 
     @Test
-    fun `add label emits message with label when upsert was successful`() = runTest {
+    fun `add label emits message with label when adding label was successful`() = runTest {
         // Given
         val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
-        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(
-            MessageTestData.message
-        )
+        val labelId = LabelId("10")
+        coEvery {
+            localDataSource.addLabel(
+                userId = userId,
+                messageId = messageId,
+                labelId = labelId
+            )
+        } returns MessageTestData.starredMessage.right()
         // When
-        val actual = messageRepository.addLabel(userId, messageId, LabelId("10"))
+        val actual = messageRepository.addLabel(userId, messageId, labelId)
         // Then
         val starredMessage = MessageTestData.starredMessage
-        coVerify { localDataSource.upsertMessage(starredMessage) }
+        coVerify { localDataSource.addLabel(userId, messageId, labelId) }
         assertEquals(starredMessage.right(), actual)
     }
 
@@ -258,9 +264,16 @@ class MessageRepositoryImplTest {
     fun `add label emits no data cached error when message does not exist in local cache`() = runTest {
         // Given
         val messageId = MessageId("messageId")
-        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(null)
+        val labelId = LabelId("42")
+        coEvery {
+            localDataSource.addLabel(
+                userId,
+                messageId,
+                labelId
+            )
+        } returns DataError.Local.NoDataCached.left()
         // When
-        val actual = messageRepository.addLabel(userId, messageId, LabelId("42"))
+        val actual = messageRepository.addLabel(userId, messageId, labelId)
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), actual)
     }

@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmessage.data.getMessageWithLabels
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
+import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
@@ -31,10 +32,12 @@ import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageItemType
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.MessageTestData
+import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.coInvoke
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -52,7 +55,14 @@ class MessageLocalDataSourceImplTest {
     private val userId1 = UserId("1")
     private val userId2 = UserId("2")
 
-    private val messageDao = mockk<MessageDao>(relaxUnitFun = true)
+    private val messageDao = mockk<MessageDao>(relaxUnitFun = true) {
+        coEvery {
+            observe(
+                userId = any(),
+                messageId = any()
+            )
+        } returns flowOf(MessageWithLabelIds(MessageTestData.message.toEntity(), listOf(LabelId("0"))))
+    }
     private val labelDao = mockk<MessageLabelDao>(relaxUnitFun = true)
     private val pageIntervalDao = mockk<PageIntervalDao>(relaxUnitFun = true)
 
@@ -190,6 +200,35 @@ class MessageLocalDataSourceImplTest {
                 message.messageId
             )
             labelDao.insertOrUpdate(spamLabelEntity)
+        }
+    }
+
+    @Test
+    fun `add label insert labels locally`() = runTest {
+        // Given
+        val message = MessageTestData.message
+        val labelId = LabelId("10")
+        // When
+        messageLocalDataSource.addLabel(UserIdTestData.userId, MessageId(message.id), labelId)
+        // Then
+        coVerifyOrder {
+            labelDao.deleteAll(UserIdTestData.userId, listOf(message).map { MessageId(it.id) })
+            labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, LabelId("0"), MessageId(message.id)))
+            labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, LabelId("10"), MessageId(message.id)))
+        }
+    }
+
+    @Test
+    fun `add label ignores inserting existing labels`() = runTest {
+        // Given
+        val message = MessageTestData.message
+        val labelId = LabelId("0")
+        // When
+        messageLocalDataSource.addLabel(UserIdTestData.userId, MessageId(message.id), labelId)
+        // Then
+        coVerifySequence {
+            labelDao.deleteAll(UserIdTestData.userId, listOf(message).map { MessageId(it.id) })
+            labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, LabelId("0"), MessageId(message.id)))
         }
     }
 }
