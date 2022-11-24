@@ -61,6 +61,9 @@ class MessageRepositoryImplTest {
     }
     private val localDataSource = mockk<MessageLocalDataSource>(relaxUnitFun = true) {
         coEvery { addLabel(userId = any(), messageId = any(), labelId = any()) } returns MessageTestData.message.right()
+        coEvery {
+            removeLabel(userId = any(), messageId = any(), labelId = any())
+        } returns MessageTestData.message.right()
         coEvery { observeMessage(userId = any(), messageId = any()) } returns flowOf(MessageTestData.message)
         coEvery { getMessages(userId = any(), pageKey = any()) } returns emptyList()
         coEvery { isLocalPageValid(userId = any(), pageKey = any(), items = any()) } returns false
@@ -291,6 +294,17 @@ class MessageRepositoryImplTest {
         // Then
         val unstarredMessage = MessageTestData.message
         assertEquals(unstarredMessage.right(), actual)
+    }
+
+    @Test
+    fun `remove label updates remote data source`() = runTest {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        val labelId = LabelId("10")
+        // When
+        messageRepository.removeLabel(userId, messageId, labelId)
+        // Then
+        coVerify { remoteDataSource.removeLabel(userId, messageId, labelId) }
     }
 
     @Test

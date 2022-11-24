@@ -50,4 +50,13 @@ interface MessageRemoteDataSource {
         messageId: MessageId,
         labelId: LabelId
     )
+
+    /**
+     * Remove a [LabelId] from the given [MessageId]
+     */
+    fun removeLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    )
 }

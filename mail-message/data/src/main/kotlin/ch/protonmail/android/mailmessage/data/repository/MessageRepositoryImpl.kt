@@ -83,17 +83,21 @@ class MessageRepositoryImpl @Inject constructor(
         labelId: LabelId
     ): Either<DataError.Local, Message> {
         val messageEither = localDataSource.addLabel(userId, messageId, labelId)
-        if (messageEither.isRight()) {
+        return messageEither.tap {
             remoteDataSource.addLabel(userId, messageId, labelId)
         }
-        return messageEither
     }
 
     override suspend fun removeLabel(
         userId: UserId,
         messageId: MessageId,
         labelId: LabelId
-    ): Either<DataError.Local, Message> = localDataSource.removeLabel(userId, messageId, labelId)
+    ): Either<DataError.Local, Message> {
+        val messageEither = localDataSource.removeLabel(userId, messageId, labelId)
+        return messageEither.tap {
+            remoteDataSource.removeLabel(userId, messageId, labelId)
+        }
+    }
 
     private suspend fun fetchMessages(
         userId: UserId,

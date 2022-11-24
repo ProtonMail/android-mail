@@ -30,6 +30,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.util.kotlin.takeIfNotBlank
+import timber.log.Timber
 import javax.inject.Inject
 
 class MessageRemoteDataSourceImpl @Inject constructor(
@@ -80,5 +81,9 @@ class MessageRemoteDataSourceImpl @Inject constructor(
         labelId: LabelId
     ) {
         addLabelMessageWorker.enqueue(userId, messageId, labelId)
+    }
+
+    override fun removeLabel(userId: UserId, messageId: MessageId, labelId: LabelId) {
+        Timber.d("to be implemented")
     }
 }
