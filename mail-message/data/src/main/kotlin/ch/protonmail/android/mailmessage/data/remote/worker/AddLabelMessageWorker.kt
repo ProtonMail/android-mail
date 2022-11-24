@@ -27,6 +27,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.AddLabelBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -48,7 +49,8 @@ internal const val KEY_ADD_LABEL_WORK_RAW_LABEL_ID = "addLabelWorkParamLabelId"
 class AddLabelMessageWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
+    private val messageLocalDataSource: MessageLocalDataSource
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -71,14 +73,12 @@ class AddLabelMessageWorker @AssistedInject constructor(
 
         return when (result) {
             is ApiResult.Success -> Result.success()
-            is ApiResult.Error -> handleApiError(result)
-        }
-    }
+            is ApiResult.Error -> {
+                if (result.isRetryable()) return Result.retry()
 
-    private fun handleApiError(error: ApiResult.Error): Result {
-        return when (error.isRetryable()) {
-            true -> Result.retry()
-            false -> Result.failure()
+                messageLocalDataSource.removeLabel(UserId(userId), MessageId(messageId), LabelId(labelId))
+                Result.failure()
+            }
         }
     }
 

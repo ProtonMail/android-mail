@@ -25,6 +25,8 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import arrow.core.right
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.AddLabelBody
 import ch.protonmail.android.mailmessage.data.sample.PutLabelResponseSample
@@ -76,6 +78,9 @@ internal class AddLabelMessageWorkerTest {
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
     }
+    private val messageLocalDataSource = mockk<MessageLocalDataSource> {
+        coEvery { removeLabel(userId, messageId, labelId) } returns MessageTestData.message.right()
+    }
 
     private lateinit var apiProvider: ApiProvider
     private lateinit var addLabelMessageWorker: AddLabelMessageWorker
@@ -86,7 +91,8 @@ internal class AddLabelMessageWorkerTest {
         addLabelMessageWorker = AddLabelMessageWorker(
             context,
             parameters,
-            apiProvider
+            apiProvider,
+            messageLocalDataSource
         )
     }
 
@@ -182,4 +188,13 @@ internal class AddLabelMessageWorkerTest {
         assertEquals(Result.failure(), result)
     }
 
+    @Test
+    fun `roll back changes to message when api call fails with a non-retryable error`() = runTest {
+        // Given
+        coEvery { messageApi.addLabel(any()) } throws SerializationException()
+        // When
+        addLabelMessageWorker.doWork()
+        // Then
+        coVerify { messageLocalDataSource.removeLabel(userId, messageId, labelId) }
+    }
 }
