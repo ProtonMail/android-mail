@@ -20,16 +20,37 @@ package ch.protonmail.android.mailmessage.domain.usecase
 
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.util.kotlin.EMPTY_STRING
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 class ResolveParticipantName @Inject constructor() {
 
-    operator fun invoke(participant: Recipient, contacts: List<Contact>): String {
+    operator fun invoke(
+        participant: Recipient,
+        contacts: List<Contact>,
+        fallbackType: FallbackType = FallbackType.ADDRESS
+    ): String {
         val contactEmail = contacts.firstNotNullOfOrNull { contact ->
             contact.contactEmails.find { it.email == participant.address }
         }
 
-        return contactEmail?.name?.takeIfNotBlank() ?: participant.name.ifEmpty { participant.address }
+        return contactEmail?.name?.takeIfNotBlank() ?: participant.name.ifEmpty {
+            getFallbackName(participant, fallbackType)
+        }
+    }
+
+    private fun getFallbackName(participant: Recipient, fallbackType: FallbackType): String {
+        return when (fallbackType) {
+            FallbackType.ADDRESS -> participant.address
+            FallbackType.USERNAME -> participant.address.split('@').first()
+            FallbackType.NONE -> EMPTY_STRING
+        }
+    }
+
+    enum class FallbackType {
+        ADDRESS,
+        USERNAME,
+        NONE
     }
 }

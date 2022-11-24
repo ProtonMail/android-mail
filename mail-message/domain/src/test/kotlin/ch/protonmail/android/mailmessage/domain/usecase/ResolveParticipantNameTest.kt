@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.domain.usecase
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ResolveParticipantNameTest {
@@ -50,13 +50,49 @@ class ResolveParticipantNameTest {
     }
 
     @Test
-    fun `when a participant has no display name defined address is returned`() {
+    fun `when a participant has display name then display name is returned`() {
         // Given
-        val participant = Recipient("sender@proton.ch", "")
+        val participant = Recipient("sender@proton.ch", "Sender")
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
         // Then
+        val expected = "Sender"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `when a participant has no display name and we should fall back to address then address is returned`() {
+        // Given
+        val participant = Recipient("sender@proton.ch", "")
+        // When
+        val actual =
+            resolveParticipantName(participant, ContactTestData.contacts, ResolveParticipantName.FallbackType.ADDRESS)
+        // Then
         val expected = "sender@proton.ch"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `when a participant has no display name and we should fall back to username then username is returned`() {
+        // Given
+        val participant = Recipient("sender@proton.ch", "")
+        // When
+        val actual =
+            resolveParticipantName(participant, ContactTestData.contacts, ResolveParticipantName.FallbackType.USERNAME)
+        // Then
+        val expected = "sender"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `when a participant has no display name and we should not fall back then empty string is returned`() {
+        // Given
+        val participant = Recipient("sender@proton.ch", "")
+        // When
+        val actual =
+            resolveParticipantName(participant, ContactTestData.contacts, ResolveParticipantName.FallbackType.NONE)
+        // Then
+        val expected = ""
         assertEquals(expected, actual)
     }
 }

@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.testdata.contact.ContactTestData
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -33,13 +34,13 @@ class ParticipantUiModelMapperTest {
     private val participant = Recipient(address = "test@protonmail.com", name = "Test")
 
     private val resolveParticipantName: ResolveParticipantName = mockk {
-        every { this@mockk.invoke(participant, ContactTestData.contacts) } returns "Test"
+        every { this@mockk.invoke(participant, ContactTestData.contacts, any()) } returns "Test"
     }
 
     private val participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName)
 
     @Test
-    fun `participant is mapped to a ui model`() {
+    fun `sender is mapped to a participant ui model`() {
         // Given
         val expectedResult = ParticipantUiModel(
             participantName = "Test",
@@ -47,8 +48,28 @@ class ParticipantUiModelMapperTest {
             participantPadlock = R.drawable.ic_proton_lock
         )
         // When
-        val result = participantUiModelMapper.toUiModel(participant, ContactTestData.contacts)
+        val result = participantUiModelMapper.senderToUiModel(participant, ContactTestData.contacts)
         // Then
         assertEquals(expectedResult, result)
+        verify {
+            resolveParticipantName(participant, ContactTestData.contacts, ResolveParticipantName.FallbackType.USERNAME)
+        }
+    }
+
+    @Test
+    fun `recipient is mapped to a participant ui model`() {
+        // Given
+        val expectedResult = ParticipantUiModel(
+            participantName = "Test",
+            participantAddress = "test@protonmail.com",
+            participantPadlock = R.drawable.ic_proton_lock
+        )
+        // When
+        val result = participantUiModelMapper.recipientToUiModel(participant, ContactTestData.contacts)
+        // Then
+        assertEquals(expectedResult, result)
+        verify {
+            resolveParticipantName(participant, ContactTestData.contacts, ResolveParticipantName.FallbackType.NONE)
+        }
     }
 }

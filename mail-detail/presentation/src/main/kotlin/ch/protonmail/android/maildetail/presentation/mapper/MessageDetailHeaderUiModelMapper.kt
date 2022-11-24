@@ -50,7 +50,7 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
 
         return MessageDetailHeaderUiModel(
             avatar = detailAvatarUiModelMapper(messageWithLabels.message, senderResolvedName),
-            sender = participantUiModelMapper.toUiModel(messageWithLabels.message.sender, contacts),
+            sender = participantUiModelMapper.senderToUiModel(messageWithLabels.message.sender, contacts),
             shouldShowTrackerProtectionIcon = true,
             shouldShowAttachmentIcon = messageWithLabels.message.hasNonCalendarAttachments(),
             shouldShowStar = messageWithLabels.message.isStarred(),
@@ -59,9 +59,15 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             extendedTime = formatExtendedTime(messageWithLabels.message.time.seconds),
             shouldShowUndisclosedRecipients = messageWithLabels.message.hasUndisclosedRecipients(),
             allRecipients = messageWithLabels.message.allRecipients(contacts),
-            toRecipients = messageWithLabels.message.toList.map { participantUiModelMapper.toUiModel(it, contacts) },
-            ccRecipients = messageWithLabels.message.ccList.map { participantUiModelMapper.toUiModel(it, contacts) },
-            bccRecipients = messageWithLabels.message.bccList.map { participantUiModelMapper.toUiModel(it, contacts) },
+            toRecipients = messageWithLabels.message.toList.map {
+                participantUiModelMapper.recipientToUiModel(it, contacts)
+            },
+            ccRecipients = messageWithLabels.message.ccList.map {
+                participantUiModelMapper.recipientToUiModel(it, contacts)
+            },
+            bccRecipients = messageWithLabels.message.bccList.map {
+                participantUiModelMapper.recipientToUiModel(it, contacts)
+            },
             labels = emptyList(),
             size = Formatter.formatShortFileSize(context, messageWithLabels.message.size),
             encryptionPadlock = R.drawable.ic_proton_lock,

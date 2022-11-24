@@ -106,10 +106,16 @@ class MessageDetailHeaderUiModelMapperTest {
         every { this@mockk.invoke(any(), labels) } returns messageLocationUiModel
     }
     private val participantUiModelMapper: ParticipantUiModelMapper = mockk {
-        every { this@mockk.toUiModel(MessageTestData.sender, ContactTestData.contacts) } returns senderUiModel
-        every { this@mockk.toUiModel(MessageTestData.recipient1, ContactTestData.contacts) } returns participant1UiModel
-        every { this@mockk.toUiModel(MessageTestData.recipient2, ContactTestData.contacts) } returns participant2UiModel
-        every { this@mockk.toUiModel(MessageTestData.recipient3, ContactTestData.contacts) } returns participant3UiModel
+        every { this@mockk.senderToUiModel(MessageTestData.sender, ContactTestData.contacts) } returns senderUiModel
+        every {
+            this@mockk.recipientToUiModel(MessageTestData.recipient1, ContactTestData.contacts)
+        } returns participant1UiModel
+        every {
+            this@mockk.recipientToUiModel(MessageTestData.recipient2, ContactTestData.contacts)
+        } returns participant2UiModel
+        every {
+            this@mockk.recipientToUiModel(MessageTestData.recipient3, ContactTestData.contacts)
+        } returns participant3UiModel
     }
     private val resolveParticipantName: ResolveParticipantName = mockk {
         every {

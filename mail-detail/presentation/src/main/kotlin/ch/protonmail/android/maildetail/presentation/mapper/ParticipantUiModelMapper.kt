@@ -29,8 +29,22 @@ class ParticipantUiModelMapper @Inject constructor(
     private val resolveParticipantName: ResolveParticipantName
 ) {
 
-    fun toUiModel(participant: Recipient, contacts: List<Contact>) = ParticipantUiModel(
-        participantName = resolveParticipantName(participant, contacts),
+    fun senderToUiModel(participant: Recipient, contacts: List<Contact>) =
+        toUiModel(participant, contacts, ResolveParticipantName.FallbackType.USERNAME)
+
+    fun recipientToUiModel(participant: Recipient, contacts: List<Contact>) =
+        toUiModel(participant, contacts, ResolveParticipantName.FallbackType.NONE)
+
+    private fun toUiModel(
+        participant: Recipient,
+        contacts: List<Contact>,
+        fallbackType: ResolveParticipantName.FallbackType
+    ) = ParticipantUiModel(
+        participantName = resolveParticipantName(
+            participant,
+            contacts,
+            fallbackType = fallbackType
+        ),
         participantAddress = participant.address,
         participantPadlock = R.drawable.ic_proton_lock
     )
