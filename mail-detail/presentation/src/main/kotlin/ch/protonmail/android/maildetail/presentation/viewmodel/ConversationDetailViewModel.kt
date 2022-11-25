@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.getOrElse
 import arrow.core.getOrHandle
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
@@ -113,8 +114,9 @@ class ConversationDetailViewModel @Inject constructor(
                 observeContacts(userId),
                 observeConversationMessages(userId, conversationId)
             ) { contactsEither, messagesEither ->
-                val contacts = contactsEither.getOrHandle {
-                    return@combine ConversationDetailEvent.ErrorLoadingContacts
+                val contacts = contactsEither.getOrElse {
+                    Timber.i("Failed getting contacts for displaying initials. Fallback to display name")
+                    emptyList()
                 }
                 val messages = messagesEither.getOrHandle {
                     return@combine ConversationDetailEvent.ErrorLoadingMessages

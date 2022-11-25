@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
@@ -237,6 +238,64 @@ class ConversationDetailViewModelTest {
             reducer.newStateFrom(
                 currentState = initialState,
                 operation = any<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedState
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // then
+            assertEquals(expectedState, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `uses default when contacts error`() = runTest {
+        // given
+        val initialState = ConversationDetailState.Loading
+        val messagesUiModels = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecast,
+            ConversationDetailMessageUiModelSample.SepWeatherForecast
+        )
+        val expectedState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messagesUiModels)
+        )
+        every { observeContacts(UserIdSample.Primary) } returns flowOf(GetContactError.left())
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = any<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedState
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // then
+            assertEquals(expectedState, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `does handle messages error`() = runTest {
+        // given
+        val initialState = ConversationDetailState.Loading
+        val expectedState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Error(
+                message = TextUiModel(string.detail_error_loading_messages)
+            )
+        )
+        every {
+            observeConversationMessagesWithLabels(UserIdSample.Primary, ConversationIdSample.WeatherForecast)
+        } returns flowOf(DataError.Local.NoDataCached.left())
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = any<ConversationDetailEvent.ErrorLoadingMessages>()
             )
         } returns expectedState
 
