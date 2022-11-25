@@ -118,7 +118,8 @@ private fun MessageDetailHeaderLayout(
             .padding(
                 start = ProtonDimens.SmallSpacing,
                 end = ProtonDimens.DefaultSpacing,
-                bottom = ProtonDimens.SmallSpacing
+                top = ProtonDimens.SmallSpacing,
+                bottom = ProtonDimens.DefaultSpacing
             )
             .testTag(TEST_TAG_MESSAGE_HEADER)
     ) {
@@ -137,12 +138,13 @@ private fun MessageDetailHeaderLayout(
             ccRecipientsRef,
             bccRecipientsTitleRef,
             bccRecipientsRef,
+            spacerRef,
             labelsRef,
-            extendedTimeRef,
-            locationRef
+            extendedTimeRef
         ) = createRefs()
 
         val (
+            locationRef,
             sizeRef,
             trackerProtectionInfoRef,
             encryptionInfoRef,
@@ -285,10 +287,17 @@ private fun MessageDetailHeaderLayout(
             recipients = uiModel.bccRecipients
         )
 
+        Spacer(
+            modifier = modifier.constrainAs(spacerRef) {
+                top.linkTo(bccRecipientsRef.bottom)
+                visibility = visibleWhen(isExpanded)
+            }.height(ProtonDimens.SmallSpacing)
+        )
+
         Box(
             modifier = modifier.constrainAs(labelsRef) {
                 top.linkTo(
-                    bccRecipientsRef.bottom,
+                    spacerRef.bottom,
                     margin = if (isExpanded) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing,
                     goneMargin = if (isExpanded) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing
                 )
