@@ -176,7 +176,8 @@ private fun MessageDetailHeaderLayout(
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
             },
-            participantUiModel = uiModel.sender
+            participantUiModel = uiModel.sender,
+            isExpanded = isExpanded
         )
 
         Icons(
@@ -288,10 +289,12 @@ private fun MessageDetailHeaderLayout(
         )
 
         Spacer(
-            modifier = modifier.constrainAs(spacerRef) {
-                top.linkTo(bccRecipientsRef.bottom)
-                visibility = visibleWhen(isExpanded)
-            }.height(ProtonDimens.SmallSpacing)
+            modifier = modifier
+                .constrainAs(spacerRef) {
+                    top.linkTo(bccRecipientsRef.bottom)
+                    visibility = visibleWhen(isExpanded)
+                }
+                .height(ProtonDimens.SmallSpacing)
         )
 
         Box(
@@ -399,7 +402,8 @@ private fun SenderName(
 @Composable
 private fun SenderAddress(
     modifier: Modifier = Modifier,
-    participantUiModel: ParticipantUiModel
+    participantUiModel: ParticipantUiModel,
+    isExpanded: Boolean
 ) {
     Row(
         modifier = modifier,
@@ -407,7 +411,11 @@ private fun SenderAddress(
     ) {
         SmallNonClickableIcon(iconId = participantUiModel.participantPadlock)
         Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
-        ParticipantText(text = participantUiModel.participantAddress)
+        ParticipantText(
+            text = participantUiModel.participantAddress,
+            textColor = ProtonTheme.colors.interactionNorm,
+            clickable = isExpanded
+        )
     }
 }
 
@@ -506,7 +514,7 @@ private fun Recipients(
                 }
                 SmallNonClickableIcon(iconId = participant.participantPadlock)
                 Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
-                ParticipantText(text = participant.participantAddress)
+                ParticipantText(text = participant.participantAddress, textColor = ProtonTheme.colors.interactionNorm)
             }
             if (index != recipients.size - 1) {
                 Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
@@ -526,16 +534,16 @@ private fun RecipientsTitle(
 @Composable
 private fun ParticipantText(
     text: String,
+    textColor: Color = ProtonTheme.colors.textNorm,
     clickable: Boolean = true
 ) {
     Text(
         text = text,
-        modifier = Modifier.clickable(
-            enabled = clickable,
+        modifier = if (clickable) Modifier.clickable(
             onClickLabel = text,
             onClick = {}
-        ),
-        color = if (clickable) ProtonTheme.colors.interactionNorm else ProtonTheme.colors.textNorm,
+        ) else Modifier,
+        color = textColor,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         style = ProtonTheme.typography.caption
