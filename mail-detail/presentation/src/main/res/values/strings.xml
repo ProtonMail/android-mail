@@ -33,4 +33,5 @@
     <string name="undisclosed_recipients">Undisclosed recipients</string>
     <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
     <string name="error_unstar_operation_failed">Remove star operation failed. Please retry.</string>
+    <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
 </resources>

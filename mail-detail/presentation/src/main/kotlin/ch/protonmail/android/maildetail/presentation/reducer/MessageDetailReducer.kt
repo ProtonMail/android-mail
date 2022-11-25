@@ -51,18 +51,23 @@ class MessageDetailReducer @Inject constructor(
                 is MessageDetailEvent.ErrorAddingStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
                 is MessageDetailEvent.ErrorRemovingStar ->
                     Effect.of(TextUiModel(R.string.error_unstar_operation_failed))
-                MessageDetailEvent.ErrorMovingToTrash -> TODO()
+                MessageDetailEvent.ErrorMovingToTrash -> Effect.of(TextUiModel(R.string.error_move_to_trash_failed))
             }.exhaustive
         } else {
             error
         }
 
-    private fun MessageDetailState.toNewDismissStateFrom(operation: MessageDetailOperation) =
-        if (operation is MessageViewAction.MarkUnread) {
+    private fun MessageDetailState.toNewDismissStateFrom(operation: MessageDetailOperation): Effect<Unit> {
+        val dismissOperations = listOf(
+            MessageViewAction.MarkUnread,
+            MessageViewAction.Trash
+        )
+        return if (operation in dismissOperations) {
             Effect.of(Unit)
         } else {
             dismiss
         }
+    }
 
     private fun MessageDetailState.toNewMessageStateFrom(operation: MessageDetailOperation) =
         if (operation is MessageDetailOperation.AffectingMessage) {

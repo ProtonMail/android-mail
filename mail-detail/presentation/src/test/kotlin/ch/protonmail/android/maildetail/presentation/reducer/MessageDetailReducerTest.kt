@@ -134,6 +134,13 @@ class MessageDetailReducerTest(
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = true,
                 shouldReduceToErrorEffect = false
+            ),
+            TestInput(
+                MessageViewAction.Trash,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceToDismissEffect = true,
+                shouldReduceToErrorEffect = false
             )
         )
 
@@ -185,6 +192,13 @@ class MessageDetailReducerTest(
             ),
             TestInput(
                 MessageDetailEvent.ErrorMarkingUnread,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceToDismissEffect = false,
+                shouldReduceToErrorEffect = true
+            ),
+            TestInput(
+                MessageDetailEvent.ErrorMovingToTrash,
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,

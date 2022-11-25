@@ -115,4 +115,8 @@ object MessageSample {
         unread = false,
         userId = userId
     )
+
+    fun Message.moveTo(labelId: LabelId): Message = copy(
+        labelIds = labelIds + labelId
+    )
 }

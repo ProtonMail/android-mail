@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
+import ch.protonmail.android.maildetail.domain.usecase.MoveMessageToTrash
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
@@ -66,7 +67,8 @@ class MessageDetailViewModel @Inject constructor(
     private val unStarMessage: UnStarMessage,
     private val savedStateHandle: SavedStateHandle,
     private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
-    private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper
+    private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper,
+    private val moveMessageToTrash: MoveMessageToTrash
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -86,7 +88,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.Star -> starMessage()
             is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
-            is MessageViewAction.Trash -> TODO()
+            is MessageViewAction.Trash -> trashMessage()
         }.exhaustive
     }
 
@@ -120,6 +122,17 @@ class MessageDetailViewModel @Inject constructor(
                     ifRight = { MessageViewAction.MarkUnread }
                 )
             }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun trashMessage() {
+        primaryUserId.mapLatest { userId ->
+            moveMessageToTrash(userId, messageId).fold(
+                ifLeft = { MessageDetailEvent.ErrorMovingToTrash },
+                ifRight = { MessageViewAction.Trash }
+            )
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)

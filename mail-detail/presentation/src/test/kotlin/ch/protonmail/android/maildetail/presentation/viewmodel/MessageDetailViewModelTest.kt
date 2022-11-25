@@ -27,6 +27,7 @@ import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -34,6 +35,7 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
+import ch.protonmail.android.maildetail.domain.usecase.MoveMessageToTrash
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
@@ -51,6 +53,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReduce
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
@@ -58,6 +61,7 @@ import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestD
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -119,6 +123,10 @@ class MessageDetailViewModelTest {
     private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper> {
         every { toUiModel(any(), ContactTestData.contacts) } returns messageDetailHeaderUiModel
     }
+    private val moveMessageToTrash: MoveMessageToTrash = mockk {
+        coEvery { invoke(userId, messageId = MessageId(rawMessageId)) } returns
+            with(MessageSample) { Invoice.moveTo(LabelIdSample.Trash) }.right()
+    }
 
     private val viewModel by lazy {
         MessageDetailViewModel(
@@ -133,7 +141,8 @@ class MessageDetailViewModelTest {
             unStarMessage = unStarMessage,
             savedStateHandle = savedStateHandle,
             messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
-            messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper
+            messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper,
+            moveMessageToTrash = moveMessageToTrash
         )
     }
 
@@ -345,6 +354,29 @@ class MessageDetailViewModelTest {
             // Then
             assertEquals(TextUiModel(R.string.error_unstar_operation_failed), lastEmittedItem().error.consume())
         }
+    }
+
+    @Test
+    fun `when trash action is submitted, use case is called`() = runTest {
+        // when
+        viewModel.submit(MessageViewAction.Trash)
+        advanceUntilIdle()
+
+        // then
+        coVerify { moveMessageToTrash(userId, MessageId(rawMessageId)) }
+    }
+
+    @Test
+    fun `when error moving to trash, error is emitted`() = runTest {
+        // Given
+        coEvery { moveMessageToTrash(userId, MessageId(rawMessageId)) } returns DataError.Local.NoDataCached.left()
+
+        // When
+        viewModel.submit(MessageViewAction.Trash)
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(TextUiModel(R.string.error_move_to_trash_failed), viewModel.state.value.error.consume())
     }
 
     @Test

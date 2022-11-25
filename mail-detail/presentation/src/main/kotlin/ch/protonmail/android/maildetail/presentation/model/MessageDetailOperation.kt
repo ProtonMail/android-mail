@@ -57,5 +57,5 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object Star : MessageViewAction, AffectingMessage
     object UnStar : MessageViewAction, AffectingMessage
     object MarkUnread : MessageViewAction
-    object Trash : MessageViewAction, AffectingMessage
+    object Trash : MessageViewAction
 }

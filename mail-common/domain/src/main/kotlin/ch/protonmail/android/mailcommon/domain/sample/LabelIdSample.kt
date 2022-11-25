@@ -27,6 +27,7 @@ object LabelIdSample {
     val Document = LabelId("document")
     val News = LabelId("news")
     val Starred = LabelId("10")
+    val Trash = LabelId("3")
 
     fun build() = LabelId("label")
 }

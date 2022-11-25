@@ -44,7 +44,6 @@ class MessageDetailMetadataReducer @Inject constructor() {
             is MessageViewAction.UnStar -> currentState.toNewStateForUnStarredMessage()
             is MessageDetailEvent.ErrorAddingStar -> currentState.toNewStateForErrorAddingStar()
             is MessageDetailEvent.ErrorRemovingStar -> currentState.toNewStateForErrorRemovingStar()
-            MessageViewAction.Trash -> TODO()
         }
     }
 
@@ -67,5 +66,4 @@ class MessageDetailMetadataReducer @Inject constructor() {
         is MessageMetadataState.Loading -> this
         is MessageMetadataState.Data -> copy(messageDetailActionBar.copy(isStarred = true))
     }
-
 }
