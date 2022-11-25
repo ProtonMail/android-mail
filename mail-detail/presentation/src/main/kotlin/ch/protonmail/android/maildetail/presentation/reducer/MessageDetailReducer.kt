@@ -26,6 +26,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 class MessageDetailReducer @Inject constructor(
@@ -50,7 +51,8 @@ class MessageDetailReducer @Inject constructor(
                 is MessageDetailEvent.ErrorAddingStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
                 is MessageDetailEvent.ErrorRemovingStar ->
                     Effect.of(TextUiModel(R.string.error_unstar_operation_failed))
-            }
+                MessageDetailEvent.ErrorMovingToTrash -> TODO()
+            }.exhaustive
         } else {
             error
         }

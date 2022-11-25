@@ -19,17 +19,36 @@
 package ch.protonmail.android.uitest.robot.detail
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import ch.protonmail.android.mailcommon.presentation.compose.TEST_TAG_AVATAR
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.ui.TEST_TAG_MESSAGE_HEADER
+import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
+import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 
 class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
+
+    fun expandHeader(): MessageDetailRobot {
+        composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_HEADER)
+            .performTouchInput { click(Offset.Zero) }
+        return this
+    }
+
+    fun moveToTrash(): MailboxRobot {
+        composeTestRule.onNodeWithContentDescription(string.action_trash_content_description)
+            .performClick()
+
+        return MailboxRobot(composeTestRule)
+    }
 
     fun verify(block: Verify.() -> Unit): MessageDetailRobot {
         Verify(composeTestRule).apply(block)
@@ -74,29 +93,21 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
         }
 
         fun expandedRecipientsAreDisplayed(recipients: List<ParticipantUiModel>) {
-            composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_HEADER)
-                .performClick()
             composeTestRule.onNodeWithText(recipients.first().participantAddress)
                 .assertIsDisplayed()
         }
 
         fun extendedTimeIsDisplayed(extendedTime: TextUiModel.Text) {
-            composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_HEADER)
-                .performClick()
             composeTestRule.onNodeWithText(extendedTime.value)
                 .assertIsDisplayed()
         }
 
         fun locationNameIsDisplayed(locationName: String) {
-            composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_HEADER)
-                .performClick()
             composeTestRule.onNodeWithText(locationName)
                 .assertIsDisplayed()
         }
 
         fun sizeIsDisplayed(size: String) {
-            composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_HEADER)
-                .performClick()
             composeTestRule.onNodeWithText(size)
                 .assertIsDisplayed()
         }

@@ -28,6 +28,9 @@ object ActionUiModelSample {
     val Archive: ActionUiModel =
         build(Action.Archive)
 
+    val Trash: ActionUiModel =
+        build(Action.Trash)
+
     fun build(action: Action) = ActionUiModel(
         action = action,
         icon = action.iconDrawable(),

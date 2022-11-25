@@ -50,10 +50,12 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     object ErrorRemovingStar : MessageDetailEvent, AffectingMessage, AffectingErrorBar
 
     object ErrorMarkingUnread : MessageDetailEvent, AffectingErrorBar
+    object ErrorMovingToTrash : MessageDetailEvent, AffectingErrorBar
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {
     object Star : MessageViewAction, AffectingMessage
     object UnStar : MessageViewAction, AffectingMessage
     object MarkUnread : MessageViewAction
+    object Trash : MessageViewAction, AffectingMessage
 }

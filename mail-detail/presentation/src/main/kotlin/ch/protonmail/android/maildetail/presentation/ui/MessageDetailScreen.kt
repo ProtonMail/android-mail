@@ -35,8 +35,8 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
-import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
@@ -63,6 +63,7 @@ fun MessageDetailScreen(
         actions = MessageDetailScreen.Actions(
             onBackClick = onBackClick,
             onStarClick = { viewModel.submit(MessageViewAction.Star) },
+            onTrashClick = { viewModel.submit(MessageViewAction.Trash) },
             onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
             onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) }
         )
@@ -120,7 +121,7 @@ fun MessageDetailScreen(
                     onUnstar = { Timber.d("message onUnstar clicked") },
                     onMove = { Timber.d("message onMove clicked") },
                     onLabel = { Timber.d("message onLabel clicked") },
-                    onTrash = { Timber.d("message onTrash clicked") },
+                    onTrash = actions.onTrashClick,
                     onDelete = { Timber.d("message onDelete clicked") },
                     onArchive = { Timber.d("message onArchive clicked") },
                     onSpam = { Timber.d("message onSpam clicked") },
@@ -171,6 +172,7 @@ object MessageDetailScreen {
     data class Actions(
         val onBackClick: () -> Unit,
         val onStarClick: () -> Unit,
+        val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
         val onUnreadClick: () -> Unit
     ) {
@@ -180,6 +182,7 @@ object MessageDetailScreen {
             val Empty = Actions(
                 onBackClick = {},
                 onStarClick = {},
+                onTrashClick = {},
                 onUnStarClick = {},
                 onUnreadClick = {}
             )

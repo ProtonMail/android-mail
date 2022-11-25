@@ -19,8 +19,8 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import javax.inject.Inject
 
@@ -44,6 +44,7 @@ class MessageDetailMetadataReducer @Inject constructor() {
             is MessageViewAction.UnStar -> currentState.toNewStateForUnStarredMessage()
             is MessageDetailEvent.ErrorAddingStar -> currentState.toNewStateForErrorAddingStar()
             is MessageDetailEvent.ErrorRemovingStar -> currentState.toNewStateForErrorRemovingStar()
+            MessageViewAction.Trash -> TODO()
         }
     }
 

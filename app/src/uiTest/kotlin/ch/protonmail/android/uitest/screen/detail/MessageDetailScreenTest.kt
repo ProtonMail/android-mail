@@ -19,7 +19,9 @@
 package ch.protonmail.android.uitest.screen.detail
 
 import androidx.compose.ui.test.junit4.createComposeRule
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
@@ -27,6 +29,7 @@ import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import org.junit.Rule
 import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class MessageDetailScreenTest {
 
@@ -128,6 +131,7 @@ class MessageDetailScreenTest {
 
         // when
         val robot = setUpScreen(state = state)
+            .expandHeader()
 
         // then
         robot.verify {
@@ -143,6 +147,7 @@ class MessageDetailScreenTest {
 
         // when
         val robot = setUpScreen(state = state)
+            .expandHeader()
 
         // then
         robot.verify {
@@ -158,6 +163,7 @@ class MessageDetailScreenTest {
 
         // when
         val robot = setUpScreen(state = state)
+            .expandHeader()
 
         // then
         robot.verify {
@@ -173,12 +179,35 @@ class MessageDetailScreenTest {
 
         // when
         val robot = setUpScreen(state = state)
+            .expandHeader()
 
         // then
         robot.verify {
             val messageState = state.messageMetadataState as MessageMetadataState.Data
             sizeIsDisplayed(messageState.messageDetailHeader.size)
         }
+    }
+
+    @Test
+    fun whenTrashIsClickedThenActionIsCalled() {
+        // given
+        val state = MessageDetailsPreviewData.Message.copy(
+            bottomBarState = BottomBarState.Data(
+                actions = listOf(ActionUiModelSample.Trash)
+            )
+        )
+
+        // when
+        var trashClicked = false
+        setUpScreen(
+            state = state,
+            actions = MessageDetailScreen.Actions.Empty.copy(
+                onTrashClick = { trashClicked = true }
+            )
+        ).moveToTrash()
+
+        // then
+        assertTrue(trashClicked)
     }
 
     private fun setUpScreen(
