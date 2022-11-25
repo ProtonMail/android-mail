@@ -73,6 +73,7 @@ fun ConversationDetailScreen(
         actions = ConversationDetailScreen.Actions(
             onBackClick = onBackClick,
             onStarClick = { viewModel.submit(ConversationDetailViewAction.Star) },
+            onTrashClick = { viewModel.submit(ConversationDetailViewAction.Trash) },
             onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) },
             onUnreadClick = { viewModel.submit(ConversationDetailViewAction.MarkUnread) }
         )
@@ -132,7 +133,7 @@ fun ConversationDetailScreen(
                     onUnstar = { Timber.d("conversation onUnstar clicked") },
                     onMove = { Timber.d("conversation onMove clicked") },
                     onLabel = { Timber.d("conversation onLabel clicked") },
-                    onTrash = { Timber.d("conversation onTrash clicked") },
+                    onTrash = actions.onTrashClick,
                     onDelete = { Timber.d("conversation onDelete clicked") },
                     onArchive = { Timber.d("conversation onArchive clicked") },
                     onSpam = { Timber.d("conversation onSpam clicked") },
@@ -206,6 +207,7 @@ object ConversationDetailScreen {
     data class Actions(
         val onBackClick: () -> Unit,
         val onStarClick: () -> Unit,
+        val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
         val onUnreadClick: () -> Unit
     ) {
@@ -215,6 +217,7 @@ object ConversationDetailScreen {
             val Empty = Actions(
                 onBackClick = {},
                 onStarClick = {},
+                onTrashClick = {},
                 onUnStarClick = {},
                 onUnreadClick = {}
             )

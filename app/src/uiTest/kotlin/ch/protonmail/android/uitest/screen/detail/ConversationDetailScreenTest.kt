@@ -20,6 +20,8 @@ package ch.protonmail.android.uitest.screen.detail
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
@@ -30,6 +32,7 @@ import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import org.junit.Ignore
 import org.junit.Rule
 import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class ConversationDetailScreenTest {
 
@@ -219,6 +222,28 @@ class ConversationDetailScreenTest {
 
         // then
         robot.verify { attachmentIconIsDisplayed() }
+    }
+
+    @Test
+    fun whenTrashIsClickedThenActionIsCalled() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            bottomBarState = BottomBarState.Data(
+                actions = listOf(ActionUiModelSample.Trash)
+            )
+        )
+
+        // when
+        var trashClicked = false
+        setupScreen(
+            state = state,
+            actions = ConversationDetailScreen.Actions.Empty.copy(
+                onTrashClick = { trashClicked = true }
+            )
+        ).moveToTrash()
+
+        // then
+        assertTrue(trashClicked)
     }
 
     private fun setupScreen(

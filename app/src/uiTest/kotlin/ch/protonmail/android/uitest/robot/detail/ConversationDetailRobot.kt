@@ -26,12 +26,23 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader
+import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.onAllNodesWithText
+import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
+
+    fun moveToTrash(): MailboxRobot {
+        composeTestRule.onNodeWithContentDescription(string.action_trash_content_description)
+            .performClick()
+
+        return MailboxRobot(composeTestRule)
+    }
 
     fun verify(block: Verify.() -> Unit): ConversationDetailRobot {
         Verify(composeTestRule).apply(block)
