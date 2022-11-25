@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.maildetail.presentation.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -166,6 +167,7 @@ fun ConversationDetailScreen(
 }
 
 @Composable
+@OptIn(ExperimentalFoundationApi::class)
 private fun MessagesContent(
     uiModels: List<ConversationDetailMessageUiModel>,
     padding: PaddingValues,
@@ -187,8 +189,10 @@ private fun MessagesContent(
     ) {
         items(uiModels) { message ->
             when (message) {
-                is ConversationDetailMessageUiModel.Collapsed ->
-                    ConversationDetailCollapsedMessageHeader(message = message)
+                is ConversationDetailMessageUiModel.Collapsed -> ConversationDetailCollapsedMessageHeader(
+                    modifier = Modifier.animateItemPlacement(),
+                    message = message
+                )
                 is ConversationDetailMessageUiModel.Expanded -> Text(text = "Expanded")
             }
         }

@@ -66,11 +66,15 @@ import me.proton.core.util.kotlin.EMPTY_STRING
 import me.proton.core.util.kotlin.exhaustive
 
 @Composable
-internal fun ConversationDetailCollapsedMessageHeader(message: ConversationDetailMessageUiModel.Collapsed) {
+internal fun ConversationDetailCollapsedMessageHeader(
+    message: ConversationDetailMessageUiModel.Collapsed,
+    modifier: Modifier = Modifier
+) {
     val fontWeight = if (message.isUnread) FontWeight.Bold else FontWeight.Normal
     val fontColor = if (message.isUnread) ProtonTheme.colors.textNorm else ProtonTheme.colors.textWeak
 
     ElevatedCard(
+        modifier = modifier,
         colors = CardDefaults.elevatedCardColors(
             containerColor = ProtonTheme.colors.backgroundNorm
         )
