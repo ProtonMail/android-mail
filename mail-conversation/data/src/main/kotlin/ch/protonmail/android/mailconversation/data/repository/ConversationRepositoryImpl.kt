@@ -108,12 +108,13 @@ class ConversationRepositoryImpl @Inject constructor(
     ): Either<DataError, Conversation> {
         val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
+        val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
 
         val conversationLabel = ConversationLabel(
             conversationId = conversationId,
             labelId = labelId,
             contextTime = conversation.labels.maxOf { it.contextTime },
-            contextSize = 0L,
+            contextSize = messages.sumOf { it.size },
             contextNumMessages = conversation.numMessages,
             contextNumUnread = conversation.numUnread,
             contextNumAttachments = conversation.numAttachments
@@ -125,7 +126,6 @@ class ConversationRepositoryImpl @Inject constructor(
 
         conversationLocalDataSource.upsertConversation(userId, updatedConversation)
 
-        val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
         messages.map {
             it.copy(
                 labelIds = it.labelIds + labelId

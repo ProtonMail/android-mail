@@ -293,6 +293,26 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
+    fun `add label returns updated conversation containing new label with sum of messages size`() = runTest {
+        // Given
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.conversationWithConversationLabels
+        )
+        coEvery { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
+            MessageTestData.messagesWithSizeByConversation
+        )
+
+        // When
+        val actual = conversationRepository.addLabel(
+            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
+        )
+
+        // Then
+        val actualSize = actual.orNull()!!.labels.first { it.labelId == LabelId("10") }.contextSize
+        assertEquals(1200L, actualSize)
+    }
+
+    @Test
     fun `add label returns updated conversation containing new label with conversation values`() = runTest {
         // Given
         every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
