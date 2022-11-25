@@ -24,6 +24,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithCont
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 
 interface ConversationRemoteDataSource {
 
@@ -39,4 +40,13 @@ interface ConversationRemoteDataSource {
         userId: UserId,
         conversationId: ConversationId
     ): ConversationWithMessages
+
+    /**
+     * Add [labelId] to the given [conversationId]
+     */
+    fun addLabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId
+    )
 }

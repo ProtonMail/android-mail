@@ -18,19 +18,23 @@
 
 package ch.protonmail.android.mailconversation.data.remote
 
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.getConversationResource
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
+import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelConversationWorker
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
+import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiManagerFactory
@@ -62,6 +66,8 @@ class ConversationRemoteDataSourceImplTest {
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), ConversationApi::class) } returns TestApiManager(conversationApi)
     }
+    private val addLabelConversationMessageWorker: AddLabelConversationWorker.Enqueuer = mockk(relaxUnitFun = true)
+
 
     private lateinit var apiProvider: ApiProvider
     private lateinit var conversationRemoteDataSource: ConversationRemoteDataSourceImpl
@@ -235,5 +241,16 @@ class ConversationRemoteDataSourceImplTest {
                 unread = 1
             )
         }
+    }
+
+    @Test
+    fun `enqueues worker to perform add label API call when add label is called for conversation`() {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val labelId = LabelId("10")
+        // When
+        conversationRemoteDataSource.addLabel(userId, conversationId, labelId)
+        // Then
+        verify { addLabelConversationMessageWorker.enqueue(userId, conversationId, labelId) }
     }
 }

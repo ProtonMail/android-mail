@@ -22,17 +22,20 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
+import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelConversationWorker
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 class ConversationRemoteDataSourceImpl @Inject constructor(
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
+    private val addLabelConversationWorker: AddLabelConversationWorker.Enqueuer
 ) : ConversationRemoteDataSource {
 
     override suspend fun getConversations(
@@ -73,4 +76,8 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
             messages = response.messages.map { it.toMessage(userId) }
         )
     }.valueOrThrow
+
+    override fun addLabel(userId: UserId, conversationId: ConversationId, labelId: LabelId) {
+        addLabelConversationWorker.enqueue(userId, conversationId, labelId)
+    }
 }

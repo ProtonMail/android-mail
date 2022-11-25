@@ -55,7 +55,7 @@ class ConversationRepositoryImplTest {
         coEvery { this@mockk.getConversations(any(), any()) } returns emptyList()
         coEvery { this@mockk.isLocalPageValid(any(), any(), any()) } returns false
     }
-    private val conversationRemoteDataSource = mockk<ConversationRemoteDataSource> {
+    private val conversationRemoteDataSource = mockk<ConversationRemoteDataSource>(relaxUnitFun = true) {
         coEvery { this@mockk.getConversations(any(), any()) } returns listOf(
             ConversationWithContextTestData.conversation1,
             ConversationWithContextTestData.conversation2,
@@ -255,6 +255,27 @@ class ConversationRepositoryImplTest {
         // Then
         assertEquals(ConversationTestData.starredConversation.right(), actual)
         coVerify { conversationLocalDataSource.upsertConversation(userId, ConversationTestData.starredConversation) }
+    }
+
+    @Test
+    fun `add label to conversation updates remote data source`() = runTest {
+        // Given
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.conversation
+        )
+
+        every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
+            MessageTestData.unStarredMessagesByConversation
+        )
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+
+        // When
+        val actual = conversationRepository.addLabel(
+            userId, conversationId, LabelId("10")
+        )
+
+        // Then
+        coVerify { conversationRemoteDataSource.addLabel(userId, conversationId, LabelId("10")) }
     }
 
     @Test

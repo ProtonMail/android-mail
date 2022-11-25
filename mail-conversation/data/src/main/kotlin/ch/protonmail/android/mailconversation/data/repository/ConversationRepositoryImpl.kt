@@ -134,6 +134,8 @@ class ConversationRepositoryImpl @Inject constructor(
             messageLocalDataSource.upsertMessages(it)
         }
 
+        conversationRemoteDataSource.addLabel(userId, conversationId, labelId)
+
         return updatedConversation.right()
     }
 
