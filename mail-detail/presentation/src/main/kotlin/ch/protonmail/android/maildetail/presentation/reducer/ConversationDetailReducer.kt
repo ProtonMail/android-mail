@@ -30,7 +30,6 @@ class ConversationDetailReducer @Inject constructor(
     private val messagesReducer: ConversationDetailMessagesReducer
 ) {
 
-    @SuppressWarnings("NotImplementedDeclaration")
     fun newStateFrom(
         currentState: ConversationDetailState,
         operation: ConversationDetailOperation

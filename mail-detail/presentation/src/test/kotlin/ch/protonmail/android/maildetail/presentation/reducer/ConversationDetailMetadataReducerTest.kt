@@ -81,6 +81,16 @@ class ConversationDetailMetadataReducerTest(
                     event = ConversationDetailViewAction.Star,
                     expectedState = ConversationDetailMetadataState.Data(conversationUiModel.copy(isStarred = true))
                 )
+            ),
+            TestParams(
+                testName = "from data to error loading conversation",
+                TestParams.TestInput(
+                    currentState = ConversationDetailMetadataState.Data(conversationUiModel),
+                    event = ConversationDetailEvent.ErrorLoadingConversation,
+                    expectedState = ConversationDetailMetadataState.Error(
+                        message = TextUiModel(string.detail_error_loading_conversation)
+                    )
+                )
             )
         )
 

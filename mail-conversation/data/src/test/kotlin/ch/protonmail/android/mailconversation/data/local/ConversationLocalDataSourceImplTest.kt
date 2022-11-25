@@ -20,11 +20,11 @@ package ch.protonmail.android.mailconversation.data.local
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailconversation.data.TestConversationLabel
 import ch.protonmail.android.mailconversation.data.getConversation
 import ch.protonmail.android.mailconversation.data.getConversationWithLabels
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationDao
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationLabelDao
-import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
@@ -193,32 +193,15 @@ class ConversationLocalDataSourceImplTest {
         // Given
         val conversationId = ConversationId("convId1")
         val conversation = getConversation(userId, conversationId.id, labelIds = listOf("0", "10"))
+
         // When
         conversationLocalDataSource.upsertConversation(userId, conversation)
+
         // Then
         val expectedLabels = listOf(
-            ConversationLabelEntity(
-                userId = userId,
-                conversationId = conversationId,
-                labelId = LabelId("0"),
-                contextTime = conversation.labels.first().contextTime,
-                contextSize = conversation.labels.first().contextSize,
-                contextNumMessages = conversation.labels.first().contextNumMessages,
-                contextNumUnread = conversation.labels.first().contextNumUnread,
-                contextNumAttachments = conversation.labels.first().contextNumAttachments
-            ),
-            ConversationLabelEntity(
-                userId = userId,
-                conversationId = conversationId,
-                labelId = LabelId("10"),
-                contextTime = conversation.labels.last().contextTime,
-                contextSize = conversation.labels.last().contextSize,
-                contextNumMessages = conversation.labels.last().contextNumMessages,
-                contextNumUnread = conversation.labels.last().contextNumUnread,
-                contextNumAttachments = conversation.labels.last().contextNumAttachments
-            )
+            TestConversationLabel.createConversationLabel(conversationId, conversation, LabelId("0")),
+            TestConversationLabel.createConversationLabel(conversationId, conversation, LabelId("10"))
         )
-
         coVerify { conversationDao.insertOrUpdate(conversation.toEntity()) }
         coVerify { labelDao.deleteAll(userId, listOf(conversation.conversationId)) }
         coVerify { labelDao.insertOrUpdate(expectedLabels.first()) }

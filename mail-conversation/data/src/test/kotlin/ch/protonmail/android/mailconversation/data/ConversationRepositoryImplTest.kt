@@ -163,6 +163,7 @@ class ConversationRepositoryImplTest {
         coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns false
         coEvery { conversationLocalDataSource.getClippedPageKey(any(), any()) } returns clippedPageKey
         coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns emptyList()
+
         // When
         val conversations = conversationRepository.getConversations(userId, pageKey)
 
@@ -184,6 +185,7 @@ class ConversationRepositoryImplTest {
         coEvery { conversationLocalDataSource.observeConversation(userId, conversationId) } returns conversationFlow
         coEvery { conversationRemoteDataSource.getConversationWithMessages(userId, conversationId) } returns
             ConversationWithMessages(conversation = conversation, messages = emptyList())
+
         // When
         conversationRepository.observeConversation(userId, conversationId).test {
             // Then
@@ -204,6 +206,7 @@ class ConversationRepositoryImplTest {
         coEvery { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(null)
         coEvery { conversationRemoteDataSource.getConversationWithMessages(userId, conversationId) } returns
             ConversationWithMessages(conversation = conversation, messages = emptyList())
+
         // When
         conversationRepository.observeConversation(userId, conversationId).test {
             // Then
@@ -224,6 +227,7 @@ class ConversationRepositoryImplTest {
                 conversationId
             )
         } returns ConversationWithMessages(conversation = updatedConversation, messages = emptyList())
+
         // When
         conversationRepository.observeConversation(userId, conversationId).test {
             // Then
@@ -242,10 +246,12 @@ class ConversationRepositoryImplTest {
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
             MessageTestData.unStarredMessagesByConversation
         )
+
         // When
         val actual = conversationRepository.addLabel(
             userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
         )
+
         // Then
         assertEquals(ConversationTestData.starredConversation.right(), actual)
         coVerify { conversationLocalDataSource.upsertConversation(userId, ConversationTestData.starredConversation) }
@@ -257,12 +263,14 @@ class ConversationRepositoryImplTest {
         every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
             ConversationTestData.conversation
         )
+
         // When
         conversationRepository.addLabel(
             userId,
             ConversationId(ConversationTestData.RAW_CONVERSATION_ID),
             LabelId("10")
         )
+
         // Then
         coVerify { messageLocalDataSource.upsertMessages(MessageTestData.starredMessagesByConversation) }
     }
@@ -273,10 +281,12 @@ class ConversationRepositoryImplTest {
         every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
             ConversationTestData.conversationWithConversationLabels
         )
+
         // When
         val actual = conversationRepository.addLabel(
             userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
         )
+
         // Then
         val actualTime = actual.orNull()!!.labels.first { it.labelId == LabelId("10") }.contextTime
         assertEquals(10, actualTime)
@@ -288,10 +298,12 @@ class ConversationRepositoryImplTest {
         every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
             ConversationTestData.conversationWithInformation
         )
+
         // When
         val actual = conversationRepository.addLabel(
             userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
         )
+
         // Then
         val actualAddedLabel = actual.orNull()!!.labels.first { it.labelId == LabelId("10") }
         assertEquals(1, actualAddedLabel.contextNumMessages)
@@ -309,10 +321,12 @@ class ConversationRepositoryImplTest {
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
             listOf()
         )
+
         // When
         val actual = conversationRepository.addLabel(
             userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
         )
+
         // Then
         assertEquals(ConversationTestData.starredConversation.right(), actual)
     }
@@ -329,6 +343,7 @@ class ConversationRepositoryImplTest {
 
         // When
         conversationRepository.addLabel(userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10"))
+
         // Then
         val expectedMessage = MessageTestData.starredMessagesByConversation
         coVerify { messageLocalDataSource.upsertMessages(expectedMessage) }

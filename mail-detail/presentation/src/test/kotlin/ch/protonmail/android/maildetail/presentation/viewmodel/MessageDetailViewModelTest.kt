@@ -54,6 +54,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
@@ -331,7 +332,7 @@ class MessageDetailViewModelTest {
     }
 
     @Test
-    fun `error unStarring message is emitted when unstar action fails`() = runTest {
+    fun `error unStarring message is emitted when unStar action fails`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
         coEvery { unStarMessage.invoke(userId, messageId) } returns DataError.Local.NoDataCached.left()
@@ -343,6 +344,36 @@ class MessageDetailViewModelTest {
             advanceUntilIdle()
             // Then
             assertEquals(TextUiModel(R.string.error_unstar_operation_failed), lastEmittedItem().error.consume())
+        }
+    }
+
+    @Test
+    fun `verify order of emitted states when starring a message`() = runTest {
+        // When
+        viewModel.state.test {
+            // Then
+            initialStateEmitted()
+            val dataState = MessageDetailState.Loading.copy(
+                messageMetadataState = MessageMetadataState.Data(
+                    MessageDetailActionBarUiModelTestData.uiModel,
+                    messageDetailHeaderUiModel
+                )
+            )
+            assertEquals(dataState, awaitItem())
+            val bottomState = dataState.copy(
+                bottomBarState = BottomBarState.Data(
+                    listOf(
+                        ActionUiModelTestData.reply,
+                        ActionUiModelTestData.archive,
+                        ActionUiModelTestData.markUnread
+                    )
+                )
+            )
+            assertEquals(bottomState, awaitItem())
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.Star)
+            val actual = assertIs<MessageMetadataState.Data>(awaitItem().messageMetadataState)
+            assertTrue(actual.messageDetailActionBar.isStarred)
         }
     }
 

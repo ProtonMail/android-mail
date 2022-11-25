@@ -23,7 +23,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBa
 object MessageDetailActionBarUiModelTestData {
 
     const val RAW_MESSAGE_ID = "rawMessageId"
-    const val RAW_SUBJECT = "Here's a new email"
+    const val RAW_SUBJECT = "Here's a new message"
 
     val uiModel = buildMessageDetailActionBarUiModel(
         RAW_SUBJECT

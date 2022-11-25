@@ -260,7 +260,7 @@ class ConversationDetailViewModelTest {
             initialStateEmitted()
 
             // Then
-            assertEquals(expected, awaitItem())
+            assertEquals(expected.bottomBarState, awaitItem().bottomBarState)
         }
     }
 
@@ -285,23 +285,14 @@ class ConversationDetailViewModelTest {
             initialStateEmitted()
 
             // Then
-            assertEquals(expected, awaitItem())
+            assertEquals(expected.bottomBarState, awaitItem().bottomBarState)
         }
 
     }
 
     @Test
     fun `starred conversation metadata is emitted when star action is successful`() = runTest {
-        every {
-            reducer.newStateFrom(
-                currentState = any(),
-                operation = ConversationDetailViewAction.Star
-            )
-        } returns ConversationDetailState.Loading.copy(
-            conversationState = ConversationDetailMetadataState.Data(
-                ConversationUiModelTestData.conversationUiModelStarred
-            )
-        )
+        givenReducerReturnsStarredUiModel()
 
         viewModel.state.test {
             advanceUntilIdle()
@@ -312,6 +303,61 @@ class ConversationDetailViewModelTest {
             val actual = assertIs<ConversationDetailMetadataState.Data>(lastEmittedItem().conversationState)
             assertTrue(actual.conversationUiModel.isStarred)
         }
+    }
+
+    @Test
+    fun `verify order of emitted states when starring a conversation`() = runTest {
+        // Given
+        val actionUiModels = listOf(
+            ActionUiModelTestData.reply,
+            ActionUiModelTestData.archive,
+            ActionUiModelTestData.markUnread
+        )
+        givenReducerReturnsStarredUiModel()
+        givenReducerReturnsBottomActions()
+
+        // When
+        viewModel.state.test {
+            // Then
+            initialStateEmitted()
+            val bottomBarState = ConversationDetailState.Loading.copy(
+                bottomBarState = BottomBarState.Data(actionUiModels)
+            )
+            assertEquals(bottomBarState, awaitItem())
+            advanceUntilIdle()
+            viewModel.submit(ConversationDetailViewAction.Star)
+
+            val actual = assertIs<ConversationDetailMetadataState.Data>(awaitItem().conversationState)
+            assertTrue(actual.conversationUiModel.isStarred)
+        }
+    }
+
+    private fun givenReducerReturnsBottomActions() {
+        val actionUiModels = listOf(
+            ActionUiModelTestData.reply,
+            ActionUiModelTestData.archive,
+            ActionUiModelTestData.markUnread
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ConversationDetailEvent.ConversationBottomBarEvent(
+                    BottomBarEvent.ActionsData(actionUiModels)
+                )
+            )
+        } returns ConversationDetailState.Loading.copy(
+            bottomBarState = BottomBarState.Data(actionUiModels)
+        )
+    }
+
+    private fun givenReducerReturnsStarredUiModel() {
+        every {
+            reducer.newStateFrom(currentState = any(), operation = ConversationDetailViewAction.Star)
+        } returns ConversationDetailState.Loading.copy(
+            conversationState = ConversationDetailMetadataState.Data(
+                ConversationUiModelTestData.conversationUiModelStarred
+            )
+        )
     }
 
     private suspend fun FlowTurbine<ConversationDetailState>.initialStateEmitted() {

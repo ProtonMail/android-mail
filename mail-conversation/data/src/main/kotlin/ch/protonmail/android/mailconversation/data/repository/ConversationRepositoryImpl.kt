@@ -135,7 +135,6 @@ class ConversationRepositoryImpl @Inject constructor(
         }
 
         return updatedConversation.right()
-
     }
 
     private suspend fun fetchConversations(

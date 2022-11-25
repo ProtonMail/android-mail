@@ -150,7 +150,6 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun starConversation() {
-        Timber.d("Star conversation clicked")
         primaryUserId.mapLatest { userId ->
             starConversation(userId, conversationId).fold(
                 ifLeft = { ConversationDetailEvent.ErrorAddStar },
