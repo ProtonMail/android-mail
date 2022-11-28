@@ -27,6 +27,7 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationRemo
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelConversationWorker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,8 +58,10 @@ object MailConversationModule {
     @Singleton
     fun provideConversationRemoteDataSource(
         apiProvider: ApiProvider,
-        addLabelConversationWorker: AddLabelConversationWorker.Enqueuer
-    ): ConversationRemoteDataSource = ConversationRemoteDataSourceImpl(apiProvider, addLabelConversationWorker)
+        addLabelConversationWorker: AddLabelConversationWorker.Enqueuer,
+        removeLabelConversationWorker: RemoveLabelConversationWorker.Enqueuer
+    ): ConversationRemoteDataSource =
+        ConversationRemoteDataSourceImpl(apiProvider, addLabelConversationWorker, removeLabelConversationWorker)
 
     @Provides
     @Singleton

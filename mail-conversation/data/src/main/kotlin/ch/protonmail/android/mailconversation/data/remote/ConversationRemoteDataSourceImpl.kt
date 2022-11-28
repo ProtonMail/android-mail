@@ -23,6 +23,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithCont
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -35,7 +36,8 @@ import javax.inject.Inject
 
 class ConversationRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider,
-    private val addLabelConversationWorker: AddLabelConversationWorker.Enqueuer
+    private val addLabelConversationWorker: AddLabelConversationWorker.Enqueuer,
+    private val removeLabelConversationWorker: RemoveLabelConversationWorker.Enqueuer
 ) : ConversationRemoteDataSource {
 
     override suspend fun getConversations(
@@ -79,5 +81,9 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
 
     override fun addLabel(userId: UserId, conversationId: ConversationId, labelId: LabelId) {
         addLabelConversationWorker.enqueue(userId, conversationId, labelId)
+    }
+
+    override fun removeLabel(userId: UserId, conversationId: ConversationId, labelId: LabelId) {
+        removeLabelConversationWorker.enqueue(userId, conversationId, labelId)
     }
 }

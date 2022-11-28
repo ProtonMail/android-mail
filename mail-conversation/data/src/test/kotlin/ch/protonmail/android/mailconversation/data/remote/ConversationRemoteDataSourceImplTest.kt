@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.getConversationResource
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
@@ -67,6 +68,8 @@ class ConversationRemoteDataSourceImplTest {
         every { create(any(), ConversationApi::class) } returns TestApiManager(conversationApi)
     }
     private val addLabelConversationMessageWorker: AddLabelConversationWorker.Enqueuer = mockk(relaxUnitFun = true)
+    private val removeLabelConversationMessageWorker: RemoveLabelConversationWorker.Enqueuer =
+        mockk(relaxUnitFun = true)
 
 
     private lateinit var apiProvider: ApiProvider
@@ -75,7 +78,11 @@ class ConversationRemoteDataSourceImplTest {
     @Before
     fun setUp() {
         apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
-        conversationRemoteDataSource = ConversationRemoteDataSourceImpl(apiProvider)
+        conversationRemoteDataSource = ConversationRemoteDataSourceImpl(
+            apiProvider,
+            addLabelConversationMessageWorker,
+            removeLabelConversationMessageWorker
+        )
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -253,4 +260,16 @@ class ConversationRemoteDataSourceImplTest {
         // Then
         verify { addLabelConversationMessageWorker.enqueue(userId, conversationId, labelId) }
     }
+
+    @Test
+    fun `enqueues worker to perform remove label API call when remove label is called for conversation`() {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val labelId = LabelId("10")
+        // When
+        conversationRemoteDataSource.removeLabel(userId, conversationId, labelId)
+        // Then
+        verify { removeLabelConversationMessageWorker.enqueue(userId, conversationId, labelId) }
+    }
+
 }

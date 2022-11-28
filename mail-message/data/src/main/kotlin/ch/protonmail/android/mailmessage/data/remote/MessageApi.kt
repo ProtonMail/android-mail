@@ -65,6 +65,11 @@ interface MessageApi : BaseRetrofitApi {
         @Body putLabelBody: PutLabelBody
     ): PutLabelResponse
 
+    @PUT("mail/v4/conversations/unlabel")
+    suspend fun removeLabel(
+        @Body labelBody: ConversationLabelBody
+    ): PutLabelResponse
+
     companion object {
 
         const val maxPageSize = 150

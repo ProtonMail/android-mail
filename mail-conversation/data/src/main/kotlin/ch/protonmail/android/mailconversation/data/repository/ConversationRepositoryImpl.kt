@@ -160,6 +160,8 @@ class ConversationRepositoryImpl @Inject constructor(
             messageLocalDataSource.upsertMessages(it)
         }
 
+        conversationRemoteDataSource.removeLabel(userId, conversationId, labelId)
+
         return updatedConversation.right()
     }
 

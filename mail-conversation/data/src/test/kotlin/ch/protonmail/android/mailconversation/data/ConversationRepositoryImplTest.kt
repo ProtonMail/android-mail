@@ -270,9 +270,7 @@ class ConversationRepositoryImplTest {
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
 
         // When
-        val actual = conversationRepository.addLabel(
-            userId, conversationId, LabelId("10")
-        )
+        conversationRepository.addLabel(userId, conversationId, LabelId("10"))
 
         // Then
         coVerify { conversationRemoteDataSource.addLabel(userId, conversationId, LabelId("10")) }
@@ -420,5 +418,24 @@ class ConversationRepositoryImplTest {
         // Then
         val expectedMessages = MessageTestData.unStarredMessagesByConversation
         coVerify { messageLocalDataSource.upsertMessages(expectedMessages) }
+    }
+
+    @Test
+    fun `remove label from conversation updates remote data source`() = runTest {
+        // Given
+        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
+            ConversationTestData.starredConversation
+        )
+
+        every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
+            MessageTestData.starredMessagesByConversation
+        )
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+
+        // When
+        conversationRepository.removeLabel(userId, conversationId, LabelId("10"))
+
+        // Then
+        coVerify { conversationRemoteDataSource.removeLabel(userId, conversationId, LabelId("10")) }
     }
 }
