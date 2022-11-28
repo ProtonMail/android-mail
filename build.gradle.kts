@@ -46,6 +46,15 @@ plugins {
 }
 
 subprojects {
+    if (project.findProperty("enableComposeCompilerReports") == "true") {
+        kotlinCompilerArgs(
+            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                project.buildDir.absolutePath + "/compose_reports",
+            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                project.buildDir.absolutePath + "/compose_metrics"
+        )
+    }
+
     afterEvaluate {
         dependencies {
             add("detektPlugins", project(":detekt-rules"))
