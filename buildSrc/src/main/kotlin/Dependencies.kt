@@ -163,6 +163,7 @@ object Dependencies {
         add(KotlinX.coroutinesTest)
         add(Mockk.mockk)
         add(Proton.Core.testKotlin)
+        add(Proton.Core.testQuark)
     }
     val androidTestLibs = mutableListOf<String>().apply {
         add(AndroidX.Compose.uiTest)
@@ -179,6 +180,7 @@ object Dependencies {
         add(Mockk.mockkAndroid)
         add(Proton.Core.paymentIap)
         add(Proton.Core.testAndroidInstrumented)
+        add(Proton.Core.testQuark)
     }
 }
 

@@ -19,8 +19,10 @@
 package ch.protonmail.android.uitest
 
 import android.app.Application
+import android.content.Context
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.platform.app.InstrumentationRegistry
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.di.MailTestEntryPoint
 import ch.protonmail.android.test.BuildConfig
@@ -30,9 +32,8 @@ import me.proton.core.auth.domain.entity.SessionInfo
 import me.proton.core.auth.presentation.testing.ProtonTestEntryPoint
 import me.proton.core.mailsettings.domain.repository.getMailSettingsOrNull
 import me.proton.core.test.android.instrumented.utils.Shell.setupDeviceForAutomation
-import me.proton.core.test.android.plugins.Quark
-import me.proton.core.test.android.plugins.data.User
-import me.proton.core.test.android.plugins.data.User.Users
+import me.proton.core.test.quark.Quark
+import me.proton.core.test.quark.data.User
 import org.junit.After
 import org.junit.BeforeClass
 import org.junit.Rule
@@ -95,8 +96,17 @@ open class BaseTest(
             )
         }
 
-        val users = Users("users.json")
-        val quark = Quark(BuildConfig.HOST, BuildConfig.PROXY_TOKEN, "internal_api.json")
+        private val context: Context
+            get() = InstrumentationRegistry.getInstrumentation().context
+
+        val users = User.Users.fromJson(
+            json = context.assets.open("users.json").bufferedReader().use { it.readText() }
+        )
+        val quark = Quark.fromJson(
+            json = context.assets.open("internal_api.json").bufferedReader().use { it.readText() },
+            host = BuildConfig.HOST,
+            proxyToken = BuildConfig.PROXY_TOKEN
+        )
 
         val authHelper by lazy { protonTestEntryPoint.loginTestHelper }
         val mailSettingsRepo by lazy { mailTestEntryPoint.mailSettingsRepository }

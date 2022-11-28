@@ -30,7 +30,7 @@ class SettingsFlowTest : BaseTest() {
 
     @Before
     fun setUp() {
-        loginAndAwaitData(user)
+        loginAndAwaitData(user.first)
     }
 
     @Test

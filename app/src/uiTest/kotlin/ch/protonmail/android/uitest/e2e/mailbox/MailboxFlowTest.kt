@@ -32,7 +32,7 @@ class MailboxFlowTest : BaseTest() {
 
     @Before
     fun setUp() {
-        login(user)
+        login(user.first)
     }
 
     @Test

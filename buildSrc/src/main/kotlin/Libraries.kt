@@ -232,6 +232,7 @@ object Proton {
             "test-android-instrumented",
             Versions.Proton.core
         )
+        val testQuark = coreArtifact("test-quark", Versions.Proton.core)
     }
 }
 
