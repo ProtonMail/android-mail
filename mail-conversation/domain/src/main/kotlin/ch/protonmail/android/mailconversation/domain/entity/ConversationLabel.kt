@@ -21,6 +21,15 @@ package ch.protonmail.android.mailconversation.domain.entity
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import me.proton.core.label.domain.entity.LabelId
 
+/**
+ * @param conversationId the id of the conversation
+ * @param labelId the id of the label
+ * @param contextTime the time of the latest message within the conversation with this [labelId]
+ * @param contextSize the sum of of all messages within the conversation with this [labelId]
+ * @param contextNumMessages the number of all messages within the conversation with this [labelId]
+ * @param contextNumUnread the number of all unread messages within the conversation with this [labelId]
+ * @param contextNumAttachments the number of all attachments within the conversation with this [labelId]
+ */
 data class ConversationLabel(
     val conversationId: ConversationId,
     val labelId: LabelId,
