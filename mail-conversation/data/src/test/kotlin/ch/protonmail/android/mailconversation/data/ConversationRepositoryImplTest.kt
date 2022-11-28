@@ -239,30 +239,28 @@ class ConversationRepositoryImplTest {
     @Test
     fun `add label returns conversation with label when upsert was successful`() = runTest {
         // Given
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.conversation
-        )
+        coEvery { conversationLocalDataSource.addLabel(any(), any(), any()) } returns
+            ConversationTestData.starredConversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
             MessageTestData.unStarredMessagesByConversation
         )
+        val labelId = LabelId("10")
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
 
         // When
-        val actual = conversationRepository.addLabel(
-            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
-        )
+        val actual = conversationRepository.addLabel(userId, conversationId, labelId)
 
         // Then
         assertEquals(ConversationTestData.starredConversation.right(), actual)
-        coVerify { conversationLocalDataSource.upsertConversation(userId, ConversationTestData.starredConversation) }
+        coVerify { conversationLocalDataSource.addLabel(userId, conversationId, labelId) }
     }
 
     @Test
     fun `add label to conversation updates remote data source`() = runTest {
         // Given
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.conversation
-        )
+        coEvery { conversationLocalDataSource.addLabel(any(), any(), any()) } returns
+            ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
             MessageTestData.unStarredMessagesByConversation
@@ -279,9 +277,8 @@ class ConversationRepositoryImplTest {
     @Test
     fun `add label to stored messages of conversation`() = runTest {
         // Given
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.conversation
-        )
+        coEvery { conversationLocalDataSource.addLabel(any(), any(), any()) } returns
+            ConversationTestData.starredConversation.right()
 
         // When
         conversationRepository.addLabel(
@@ -295,67 +292,15 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `add label returns updated conversation containing new label with latest message time`() = runTest {
-        // Given
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.conversationWithConversationLabels
-        )
-
-        // When
-        val actual = conversationRepository.addLabel(
-            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
-        )
-
-        // Then
-        val actualTime = actual.orNull()!!.labels.first { it.labelId == LabelId("10") }.contextTime
-        assertEquals(10, actualTime)
-    }
-
-    @Test
-    fun `add label returns updated conversation containing new label with sum of messages size`() = runTest {
-        // Given
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.conversationWithConversationLabels
-        )
-        coEvery { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
-            MessageTestData.messagesWithSizeByConversation
-        )
-
-        // When
-        val actual = conversationRepository.addLabel(
-            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
-        )
-
-        // Then
-        val actualSize = actual.orNull()!!.labels.first { it.labelId == LabelId("10") }.contextSize
-        assertEquals(1200L, actualSize)
-    }
-
-    @Test
-    fun `add label returns updated conversation containing new label with conversation values`() = runTest {
-        // Given
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.conversationWithInformation
-        )
-
-        // When
-        val actual = conversationRepository.addLabel(
-            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
-        )
-
-        // Then
-        val actualAddedLabel = actual.orNull()!!.labels.first { it.labelId == LabelId("10") }
-        assertEquals(1, actualAddedLabel.contextNumMessages)
-        assertEquals(5, actualAddedLabel.contextNumAttachments)
-        assertEquals(6, actualAddedLabel.contextNumUnread)
-    }
-
-    @Test
     fun `add label conversation even if no messages are stored`() = runTest {
         // Given
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.conversation
-        )
+        coEvery {
+            conversationLocalDataSource.addLabel(
+                any(),
+                any(),
+                any()
+            )
+        } returns ConversationTestData.starredConversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
             listOf()
@@ -373,9 +318,14 @@ class ConversationRepositoryImplTest {
     @Test
     fun `add label to messages of a conversation`() = runTest {
         // Given
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.conversation
-        )
+        coEvery {
+            conversationLocalDataSource.addLabel(
+                any(),
+                any(),
+                any()
+            )
+        } returns ConversationTestData.conversation.right()
+
         every { messageLocalDataSource.observeMessages(userId, any<ConversationId>()) } returns flowOf(
             MessageTestData.unStarredMessagesByConversation
         )

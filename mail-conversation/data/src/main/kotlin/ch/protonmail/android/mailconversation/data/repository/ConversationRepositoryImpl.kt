@@ -26,7 +26,6 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
-import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
@@ -106,37 +105,19 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationId: ConversationId,
         labelId: LabelId
     ): Either<DataError, Conversation> {
-        val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
-            ?: return DataError.Local.NoDataCached.left()
-        val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
+        val conversationEither = conversationLocalDataSource.addLabel(userId, conversationId, labelId)
+        return conversationEither.tap {
+            val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
+            messages.map {
+                it.copy(
+                    labelIds = it.labelIds + labelId
+                )
+            }.let {
+                messageLocalDataSource.upsertMessages(it)
+            }
 
-        val conversationLabel = ConversationLabel(
-            conversationId = conversationId,
-            labelId = labelId,
-            contextTime = conversation.labels.maxOf { it.contextTime },
-            contextSize = messages.sumOf { it.size },
-            contextNumMessages = conversation.numMessages,
-            contextNumUnread = conversation.numUnread,
-            contextNumAttachments = conversation.numAttachments
-        )
-
-        val updatedConversation = conversation.copy(
-            labels = conversation.labels + conversationLabel
-        )
-
-        conversationLocalDataSource.upsertConversation(userId, updatedConversation)
-
-        messages.map {
-            it.copy(
-                labelIds = it.labelIds + labelId
-            )
-        }.let {
-            messageLocalDataSource.upsertMessages(it)
+            conversationRemoteDataSource.addLabel(userId, conversationId, labelId)
         }
-
-        conversationRemoteDataSource.addLabel(userId, conversationId, labelId)
-
-        return updatedConversation.right()
     }
 
     override suspend fun removeLabel(

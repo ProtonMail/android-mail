@@ -25,22 +25,27 @@ import ch.protonmail.android.mailconversation.data.getConversation
 import ch.protonmail.android.mailconversation.data.getConversationWithLabels
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationDao
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationLabelDao
+import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageItemType
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
+import ch.protonmail.android.testdata.conversation.ConversationWithLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import ch.protonmail.android.testdata.user.UserIdTestData.userId1
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coInvoke
 import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.slot
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
@@ -207,4 +212,34 @@ class ConversationLocalDataSourceImplTest {
         coVerify { labelDao.insertOrUpdate(expectedLabels.first()) }
         coVerify { labelDao.insertOrUpdate(expectedLabels.last()) }
     }
+
+    @Test
+    fun `add label insert conversation labels locally`() = runTest {
+        // Given
+        coEvery {
+            conversationDao.observe(
+                userId,
+                ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+            )
+        } returns flowOf(
+            ConversationWithLabelTestData.conversationWithLabel(
+                userId = userId,
+                conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+            )
+        )
+        val conversation = ConversationTestData.conversation
+        val labelId = LabelId("10")
+
+        // When
+        conversationLocalDataSource.addLabel(userId, conversation.conversationId, labelId)
+
+        // Then
+        val slot = slot<ConversationLabelEntity>()
+        coVerifySequence {
+            labelDao.deleteAll(userId, listOf(conversation.conversationId))
+            labelDao.insertOrUpdate(capture(slot))
+            labelDao.insertOrUpdate(capture(slot))
+        }
+    }
+
 }

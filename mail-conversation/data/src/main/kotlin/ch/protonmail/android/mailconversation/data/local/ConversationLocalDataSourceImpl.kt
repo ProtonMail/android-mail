@@ -18,9 +18,14 @@
 
 package ch.protonmail.android.mailconversation.data.local
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailpagination.data.local.getClippedPageKey
@@ -109,6 +114,32 @@ class ConversationLocalDataSourceImpl @Inject constructor(
             conversationDao.insertOrUpdate(conversation.toEntity())
             updateLabels(listOf(conversation))
         }
+    }
+
+    override suspend fun addLabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId
+    ): Either<DataError.Local, Conversation> {
+        val conversation = observeConversation(userId, conversationId).first()
+            ?: return DataError.Local.NoDataCached.left()
+
+        val conversationLabel = ConversationLabel(
+            conversationId = conversationId,
+            labelId = labelId,
+            contextTime = conversation.labels.maxOf { it.contextTime },
+            contextSize = 0L,
+            contextNumMessages = conversation.numMessages,
+            contextNumUnread = conversation.numUnread,
+            contextNumAttachments = conversation.numAttachments
+        )
+
+        val updatedConversation = conversation.copy(
+            labels = conversation.labels + conversationLabel
+        )
+
+        upsertConversation(userId, updatedConversation)
+        return updatedConversation.right()
     }
 
     private suspend fun upsertPageInterval(

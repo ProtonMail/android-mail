@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailconversation.domain.repository
 
+import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -108,4 +110,13 @@ interface ConversationLocalDataSource {
     ): Flow<Conversation?>
 
     suspend fun upsertConversation(userId: UserId, conversation: Conversation)
+
+    /**
+     * Adds [labelId] to given [conversationId] related to the same [userId]
+     */
+    suspend fun addLabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId
+    ): Either<DataError.Local, Conversation>
 }
