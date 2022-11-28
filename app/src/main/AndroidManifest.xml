@@ -33,6 +33,10 @@
         android:taskAffinity=""
         android:theme="@style/ProtonTheme.Mail"
         tools:replace="android:theme,android:supportsRtl">
+        <profileable
+            android:shell="true"
+            tools:targetApi="29" />
+
         <provider
             android:name="io.sentry.android.core.SentryInitProvider"
             android:authorities="io.sentry.android.core"
