@@ -95,4 +95,32 @@ class ResolveParticipantNameTest {
         val expected = ""
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `when a participant's name is the address and we should not fall back then empty string is returned`() {
+        // Given
+        val participant = Recipient("sender@proton.ch", "sender@proton.ch")
+
+        // When
+        val actual =
+            resolveParticipantName(participant, ContactTestData.contacts, ResolveParticipantName.FallbackType.NONE)
+
+        // Then
+        val expected = ""
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `when a participant's name is the address and we should fall back to username then username is returned`() {
+        // Given
+        val participant = Recipient("sender@proton.ch", "sender@proton.ch")
+
+        // When
+        val actual =
+            resolveParticipantName(participant, ContactTestData.contacts, ResolveParticipantName.FallbackType.USERNAME)
+
+        // Then
+        val expected = "sender"
+        assertEquals(expected, actual)
+    }
 }

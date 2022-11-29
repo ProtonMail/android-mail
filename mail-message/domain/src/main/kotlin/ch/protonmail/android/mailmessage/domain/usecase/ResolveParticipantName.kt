@@ -35,9 +35,9 @@ class ResolveParticipantName @Inject constructor() {
             contact.contactEmails.find { it.email == participant.address }
         }
 
-        return contactEmail?.name?.takeIfNotBlank() ?: participant.name.ifEmpty {
-            getFallbackName(participant, fallbackType)
-        }
+        return contactEmail?.name?.takeIfNotBlank()
+            ?: participant.name.takeIf { it != participant.address && it.isNotEmpty() }
+            ?: getFallbackName(participant, fallbackType)
     }
 
     private fun getFallbackName(participant: Recipient, fallbackType: FallbackType): String {
