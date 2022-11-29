@@ -55,5 +55,10 @@ interface ConversationRemoteDataSource {
     /**
      * Remove [labelId] from the given [conversationId]
      */
-    fun removeLabel(userId: UserId, conversationId: ConversationId, labelId: LabelId)
+    fun removeLabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId,
+        messageIds: List<MessageId>
+    )
 }

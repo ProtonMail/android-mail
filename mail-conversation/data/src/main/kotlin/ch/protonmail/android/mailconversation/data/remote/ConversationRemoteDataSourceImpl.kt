@@ -89,7 +89,12 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         addLabelConversationWorker.enqueue(userId, conversationId, labelId, messageIds)
     }
 
-    override fun removeLabel(userId: UserId, conversationId: ConversationId, labelId: LabelId) {
-        removeLabelConversationWorker.enqueue(userId, conversationId, labelId)
+    override fun removeLabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId,
+        messageIds: List<MessageId>
+    ) {
+        removeLabelConversationWorker.enqueue(userId, conversationId, labelId, messageIds)
     }
 }

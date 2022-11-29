@@ -120,6 +120,17 @@ object MessageTestData {
         buildMessage(id = "123", conversationId = ConversationId("conversation")),
         buildMessage(id = "124", conversationId = ConversationId("conversation"))
     )
+    val unStarredMsgByConversationWithStarredMsg = listOf(
+        buildMessage(id = "123", conversationId = ConversationId("conversation")),
+        buildMessage(id = "124", conversationId = ConversationId("conversation")),
+        buildMessage(
+            id = "124", conversationId = ConversationId("conversation"), labelIds =
+            listOf(
+                SystemLabelId.Inbox.labelId.id,
+                SystemLabelId.Starred.labelId.id
+            )
+        )
+    )
 
     val starredMessagesByConversation = listOf(
         buildMessage(
@@ -137,6 +148,29 @@ object MessageTestData {
             )
         )
     )
+    val starredMsgByConversationWithUnStarredMsg = listOf(
+        buildMessage(
+            id = "123", conversationId = ConversationId("conversation"),
+            labelIds = listOf(
+                SystemLabelId.Inbox.labelId.id,
+                SystemLabelId.Starred.labelId.id
+            )
+        ),
+        buildMessage(
+            id = "124", conversationId = ConversationId("conversation"),
+            labelIds = listOf(
+                SystemLabelId.Inbox.labelId.id,
+                SystemLabelId.Starred.labelId.id
+            )
+        ),
+        buildMessage(
+            id = "124", conversationId = ConversationId("conversation"),
+            labelIds = listOf(
+                SystemLabelId.Inbox.labelId.id
+            )
+        )
+    )
+
 
     val messagesWithSizeByConversation = listOf(
         buildMessage(id = "123", conversationId = ConversationId("conversation"), size = 400L),

@@ -258,13 +258,13 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `add label to conversation updates remote data source`() = runTest {
+    fun `add label to conversation updates remote data source and filters only for effected messages`() = runTest {
         // Given
         coEvery { conversationLocalDataSource.addLabel(any(), any(), any()) } returns
             ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
-            MessageTestData.unStarredMessagesByConversation
+            MessageTestData.unStarredMsgByConversationWithStarredMsg
         )
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
 
@@ -379,13 +379,13 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `remove label from conversation updates remote data source`() = runTest {
+    fun `remove label from conversation updates remote data source and filters only for effected messages`() = runTest {
         // Given
         coEvery { conversationLocalDataSource.removeLabel(any(), any(), any()) } returns
             ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
-            MessageTestData.starredMessagesByConversation
+            MessageTestData.starredMsgByConversationWithUnStarredMsg
         )
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
 
@@ -393,6 +393,13 @@ class ConversationRepositoryImplTest {
         conversationRepository.removeLabel(userId, conversationId, LabelId("10"))
 
         // Then
-        coVerify { conversationRemoteDataSource.removeLabel(userId, conversationId, LabelId("10")) }
+        coVerify {
+            conversationRemoteDataSource.removeLabel(
+                userId,
+                conversationId,
+                LabelId("10"),
+                listOf(MessageId("123"), MessageId("124"))
+            )
+        }
     }
 }

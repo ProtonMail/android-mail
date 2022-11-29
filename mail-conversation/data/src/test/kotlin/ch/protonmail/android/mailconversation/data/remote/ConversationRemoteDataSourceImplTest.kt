@@ -268,10 +268,11 @@ class ConversationRemoteDataSourceImplTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val labelId = LabelId("10")
+        val messageIds = listOf(MessageId("123"), MessageId("124"))
         // When
-        conversationRemoteDataSource.removeLabel(userId, conversationId, labelId)
+        conversationRemoteDataSource.removeLabel(userId, conversationId, labelId, messageIds)
         // Then
-        verify { removeLabelConversationMessageWorker.enqueue(userId, conversationId, labelId) }
+        verify { removeLabelConversationMessageWorker.enqueue(userId, conversationId, labelId, messageIds) }
     }
 
 }

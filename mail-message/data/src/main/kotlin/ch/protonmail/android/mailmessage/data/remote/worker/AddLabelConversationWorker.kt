@@ -52,7 +52,7 @@ class AddLabelConversationWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val apiProvider: ApiProvider,
-    private val localDataSource: MessageLocalDataSource
+    private val messageLocalDataSource: MessageLocalDataSource
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -81,7 +81,7 @@ class AddLabelConversationWorker @AssistedInject constructor(
                 if (result.isRetryable()) return Result.retry()
                 else {
                     messageIds?.map { MessageId(it) }?.forEach {
-                        localDataSource.removeLabel(UserId(userId), it, LabelId(labelId))
+                        messageLocalDataSource.removeLabel(UserId(userId), it, LabelId(labelId))
                     }
                     Result.failure()
                 }

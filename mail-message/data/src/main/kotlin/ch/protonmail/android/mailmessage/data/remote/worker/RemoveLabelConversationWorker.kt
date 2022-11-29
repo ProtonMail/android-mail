@@ -28,8 +28,10 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.ConversationLabelBody
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
@@ -43,12 +45,14 @@ import javax.inject.Inject
 internal const val KEY_REMOVE_LABEL_CONV_WORK_RAW_USER_ID = "removeLabelConversationWorkParamUserId"
 internal const val KEY_REMOVE_LABEL_CONV_WORK_RAW_CONV_ID = "removeLabelConversationWorkParamMessageId"
 internal const val KEY_REMOVE_LABEL_CONV_WORK_RAW_LABEL_ID = "removeLabelConversationWorkParamLabelId"
+internal const val KEY_REMOVE_LABEL_CONV_WORK_RAW_MSG_IDS = "removeLabelConversationWorkParamMsgIds"
 
 @HiltWorker
 class RemoveLabelConversationWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
+    private val messageLocalDataSource: MessageLocalDataSource
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
@@ -56,6 +60,7 @@ class RemoveLabelConversationWorker @AssistedInject constructor(
         val conversationId =
             inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_CONV_ID)?.takeIfNotBlank()
         val labelId = inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_LABEL_ID)?.takeIfNotBlank()
+        val messageIds = inputData.getStringArray(KEY_REMOVE_LABEL_CONV_WORK_RAW_MSG_IDS)?.toList()
 
         if (userId == null || conversationId == null || labelId == null) {
             return Result.failure()
@@ -74,7 +79,12 @@ class RemoveLabelConversationWorker @AssistedInject constructor(
             is ApiResult.Success -> Result.success()
             is ApiResult.Error -> {
                 if (result.isRetryable()) return Result.retry()
-                Result.failure()
+                else {
+                    messageIds?.map { MessageId(it) }?.forEach {
+                        messageLocalDataSource.addLabel(UserId(userId), it, LabelId(labelId))
+                    }
+                    Result.failure()
+                }
             }
         }
     }
@@ -84,7 +94,8 @@ class RemoveLabelConversationWorker @AssistedInject constructor(
         fun enqueue(
             userId: UserId,
             conversationId: ConversationId,
-            labelId: LabelId
+            labelId: LabelId,
+            effectedMessageIds: List<MessageId>
         ) {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -93,7 +104,8 @@ class RemoveLabelConversationWorker @AssistedInject constructor(
             val data = workDataOf(
                 KEY_REMOVE_LABEL_CONV_WORK_RAW_USER_ID to userId.id,
                 KEY_REMOVE_LABEL_CONV_WORK_RAW_CONV_ID to conversationId.id,
-                KEY_REMOVE_LABEL_CONV_WORK_RAW_LABEL_ID to labelId.id
+                KEY_REMOVE_LABEL_CONV_WORK_RAW_LABEL_ID to labelId.id,
+                KEY_REMOVE_LABEL_CONV_WORK_RAW_MSG_IDS to effectedMessageIds.map { it.id }.toTypedArray()
             )
 
             val request = OneTimeWorkRequestBuilder<RemoveLabelConversationWorker>()

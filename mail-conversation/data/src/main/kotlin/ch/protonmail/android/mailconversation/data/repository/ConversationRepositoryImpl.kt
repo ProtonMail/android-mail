@@ -130,8 +130,9 @@ class ConversationRepositoryImpl @Inject constructor(
         labelId: LabelId
     ): Either<DataError, Conversation> {
         return conversationLocalDataSource.removeLabel(userId, conversationId, labelId).tap {
-            val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
-            messages.map {
+            val effectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
+                .filter { it.labelIds.contains(labelId) }
+            effectedMessages.map {
                 it.copy(
                     labelIds = it.labelIds - labelId
                 )
@@ -139,7 +140,11 @@ class ConversationRepositoryImpl @Inject constructor(
                 messageLocalDataSource.upsertMessages(it)
             }
 
-            conversationRemoteDataSource.removeLabel(userId, conversationId, labelId)
+            conversationRemoteDataSource.removeLabel(
+                userId,
+                conversationId,
+                labelId,
+                effectedMessages.map { it.messageId })
         }
     }
 
