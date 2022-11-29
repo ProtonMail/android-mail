@@ -25,15 +25,27 @@ import me.proton.core.label.domain.entity.LabelType
 
 object LabelSample {
 
-    val Archive = build(labelId = LabelIdSample.Archive)
-    val Document = build(labelId = LabelIdSample.Document)
+    val Archive = build(
+        labelId = LabelIdSample.Archive,
+        type = LabelType.MessageFolder
+    )
+    val Document = build(
+        labelId = LabelIdSample.Document
+    )
+    val Inbox = build(
+        labelId = LabelIdSample.Inbox,
+        type = LabelType.MessageFolder
+    )
+    val News = build(
+        labelId = LabelIdSample.News
+    )
 
     fun build(
         color: String = "#338AF3",
         isExpanded: Boolean? = null,
         labelId: LabelId = LabelIdSample.build(),
         name: String = labelId.id,
-        order: Int = 0,
+        order: Int = labelId.id.hashCode(),
         parentId: LabelId? = null,
         type: LabelType = LabelType.MessageLabel,
         userId: UserId = UserIdSample.Primary

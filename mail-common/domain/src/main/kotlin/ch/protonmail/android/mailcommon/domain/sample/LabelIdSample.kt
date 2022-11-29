@@ -25,6 +25,7 @@ object LabelIdSample {
     val AllDraft = LabelId("1")
     val Archive = LabelId("archive")
     val Document = LabelId("document")
+    val Inbox = LabelId("0")
     val News = LabelId("news")
     val Starred = LabelId("10")
     val Trash = LabelId("3")

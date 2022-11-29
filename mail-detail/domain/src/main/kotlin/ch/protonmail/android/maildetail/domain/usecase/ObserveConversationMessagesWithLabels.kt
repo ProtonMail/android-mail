@@ -50,14 +50,13 @@ class ObserveConversationMessagesWithLabels @Inject constructor(
             messageRepository.observeCachedMessages(userId, conversationId).ignoreLocalErrors()
         ) { labelsEither, foldersEither, messagesEither ->
             either {
-                val labels = labelsEither.bind()
-                val folders = foldersEither.bind()
+                val allLabelsAndFolders = (labelsEither.bind() + foldersEither.bind()).sortedBy { it.order }
                 val messages = messagesEither.bind()
                 messages.map { message ->
-                    MessageWithLabels(
-                        message = message,
-                        labels = labels + folders
-                    )
+                    val messageLabels = allLabelsAndFolders.filter { label ->
+                        label.labelId in message.labelIds
+                    }
+                    MessageWithLabels(message = message, labels = messageLabels)
                 }
             }
         }

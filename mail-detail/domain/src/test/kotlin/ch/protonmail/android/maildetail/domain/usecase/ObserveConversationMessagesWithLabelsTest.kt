@@ -25,6 +25,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
@@ -84,6 +85,37 @@ internal class ObserveConversationMessagesWithLabelsTest {
         observeConversationMessagesWithLabels(
             UserIdSample.Primary,
             ConversationIdSample.WeatherForecast
+        ).test {
+
+            // then
+            assertEquals(expected, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `model contains only the correct labels and folders`() = runTest {
+        // given
+        val message = MessageSample.Invoice.copy(
+            labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document)
+        )
+        val messageWithLabels = MessageWithLabelsSample.build(
+            message = message,
+            labels = listOf(LabelSample.Archive, LabelSample.Document).sortedBy { it.order }
+        )
+        val allLabels = listOf(LabelSample.Document, LabelSample.News)
+        val allFolders = listOf(LabelSample.Archive, LabelSample.Inbox)
+        val expected = nonEmptyListOf(messageWithLabels).right()
+
+        every { messageLabelsFlow.mapToEither() } returns flowOf(allLabels.right())
+        every { messageFoldersFlow.mapToEither() } returns flowOf(allFolders.right())
+        every { messageRepository.observeCachedMessages(UserIdSample.Primary, ConversationIdSample.Invoices) } returns
+            flowOf(nonEmptyListOf(message).right())
+
+        // when
+        observeConversationMessagesWithLabels(
+            UserIdSample.Primary,
+            ConversationIdSample.Invoices
         ).test {
 
             // then

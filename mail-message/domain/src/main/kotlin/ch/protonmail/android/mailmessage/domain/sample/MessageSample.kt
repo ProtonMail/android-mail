@@ -54,6 +54,7 @@ object MessageSample {
     )
 
     val Invoice = build(
+        conversationId = ConversationIdSample.Invoices,
         messageId = MessageIdSample.Invoice,
         labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document),
         numAttachments = 1,

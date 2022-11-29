@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 
 object ConversationIdSample {
 
+    val Invoices = ConversationId("invoices")
     val WeatherForecast = ConversationId("weather_forecast")
 
     fun build() = ConversationId("conversation")
