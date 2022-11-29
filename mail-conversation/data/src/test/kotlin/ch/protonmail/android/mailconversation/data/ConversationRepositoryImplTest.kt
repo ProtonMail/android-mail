@@ -28,6 +28,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMess
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.conversation.ConversationTestData
@@ -271,7 +272,14 @@ class ConversationRepositoryImplTest {
         conversationRepository.addLabel(userId, conversationId, LabelId("10"))
 
         // Then
-        coVerify { conversationRemoteDataSource.addLabel(userId, conversationId, LabelId("10")) }
+        coVerify {
+            conversationRemoteDataSource.addLabel(
+                userId,
+                conversationId,
+                LabelId("10"),
+                listOf(MessageId("123"), MessageId("124"))
+            )
+        }
     }
 
     @Test

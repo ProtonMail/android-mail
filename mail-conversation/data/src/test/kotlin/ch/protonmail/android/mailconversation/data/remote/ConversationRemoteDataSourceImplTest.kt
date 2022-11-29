@@ -23,6 +23,7 @@ import ch.protonmail.android.mailconversation.data.getConversationResource
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelConversationWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelConversationWorker
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
@@ -255,10 +256,11 @@ class ConversationRemoteDataSourceImplTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val labelId = LabelId("10")
+        val messageIds = listOf(MessageId("123"), MessageId("124"))
         // When
-        conversationRemoteDataSource.addLabel(userId, conversationId, labelId)
+        conversationRemoteDataSource.addLabel(userId, conversationId, labelId, messageIds)
         // Then
-        verify { addLabelConversationMessageWorker.enqueue(userId, conversationId, labelId) }
+        verify { addLabelConversationMessageWorker.enqueue(userId, conversationId, labelId, messageIds) }
     }
 
     @Test

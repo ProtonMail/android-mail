@@ -24,6 +24,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMess
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelConversationWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelConversationWorker
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -79,8 +80,13 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         )
     }.valueOrThrow
 
-    override fun addLabel(userId: UserId, conversationId: ConversationId, labelId: LabelId) {
-        addLabelConversationWorker.enqueue(userId, conversationId, labelId)
+    override fun addLabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId,
+        messageIds: List<MessageId>
+    ) {
+        addLabelConversationWorker.enqueue(userId, conversationId, labelId, messageIds)
     }
 
     override fun removeLabel(userId: UserId, conversationId: ConversationId, labelId: LabelId) {
