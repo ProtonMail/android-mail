@@ -22,4 +22,5 @@
     <string name="title_remove_account">Remove Account</string>
     <string name="description_remove_account">You will sign out and remove all information associated with this account.</string>
     <string name="user_select_other_account_content_description">Select another account</string>
+    <string name="you_are_offline">You are offline</string>
 </resources>
