@@ -19,8 +19,6 @@
 package ch.protonmail.android.mailconversation.data.repository
 
 import arrow.core.Either
-import arrow.core.left
-import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -125,25 +123,18 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationId: ConversationId,
         labelId: LabelId
     ): Either<DataError, Conversation> {
-        val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
-            ?: return DataError.Local.NoDataCached.left()
-        val updatedConversation = conversation.copy(
-            labels = conversation.labels.filterNot { it.labelId == labelId }
-        )
-        conversationLocalDataSource.upsertConversation(userId, updatedConversation)
+        return conversationLocalDataSource.removeLabel(userId, conversationId, labelId).tap {
+            val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
+            messages.map {
+                it.copy(
+                    labelIds = it.labelIds - labelId
+                )
+            }.let {
+                messageLocalDataSource.upsertMessages(it)
+            }
 
-        val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
-        messages.map {
-            it.copy(
-                labelIds = it.labelIds - labelId
-            )
-        }.let {
-            messageLocalDataSource.upsertMessages(it)
+            conversationRemoteDataSource.removeLabel(userId, conversationId, labelId)
         }
-
-        conversationRemoteDataSource.removeLabel(userId, conversationId, labelId)
-
-        return updatedConversation.right()
     }
 
     private suspend fun fetchConversations(

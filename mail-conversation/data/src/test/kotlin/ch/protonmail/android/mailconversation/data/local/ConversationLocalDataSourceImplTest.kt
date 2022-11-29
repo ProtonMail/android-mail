@@ -242,4 +242,30 @@ class ConversationLocalDataSourceImplTest {
         }
     }
 
+    @Test
+    fun `remove label removes conversation labels locally`() = runTest {
+        // Given
+        coEvery {
+            conversationDao.observe(
+                userId,
+                ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+            )
+        } returns flowOf(
+            ConversationWithLabelTestData.conversationWithLabel(
+                userId = userId,
+                conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+            )
+        )
+        val conversation = ConversationTestData.conversation
+        val labelId = LabelId("0")
+
+        // When
+        conversationLocalDataSource.removeLabel(userId, conversation.conversationId, labelId)
+
+        // Then
+        coVerifySequence {
+            labelDao.deleteAll(userId, listOf(conversation.conversationId))
+        }
+    }
+
 }

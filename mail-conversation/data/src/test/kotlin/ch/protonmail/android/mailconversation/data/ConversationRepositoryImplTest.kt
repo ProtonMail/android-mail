@@ -341,9 +341,9 @@ class ConversationRepositoryImplTest {
     @Test
     fun `remove label returns updated conversation without label when upsert was successful`() = runTest {
         // Given
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.starredConversation
-        )
+        coEvery { conversationLocalDataSource.removeLabel(any(), any(), any()) } returns
+            ConversationTestData.conversation.right()
+
         // When
         val actual = conversationRepository.removeLabel(
             userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
@@ -355,9 +355,9 @@ class ConversationRepositoryImplTest {
 
     @Test
     fun `remove label of messages when removing labels from conversation was successful`() = runTest {
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.starredConversation
-        )
+        coEvery { conversationLocalDataSource.removeLabel(any(), any(), any()) } returns
+            ConversationTestData.conversation.right()
+
         every { messageLocalDataSource.observeMessages(userId, any<ConversationId>()) } returns flowOf(
             MessageTestData.starredMessagesByConversation
         )
@@ -373,9 +373,8 @@ class ConversationRepositoryImplTest {
     @Test
     fun `remove label from conversation updates remote data source`() = runTest {
         // Given
-        every { conversationLocalDataSource.observeConversation(any(), any()) } returns flowOf(
-            ConversationTestData.starredConversation
-        )
+        coEvery { conversationLocalDataSource.removeLabel(any(), any(), any()) } returns
+            ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
             MessageTestData.starredMessagesByConversation
