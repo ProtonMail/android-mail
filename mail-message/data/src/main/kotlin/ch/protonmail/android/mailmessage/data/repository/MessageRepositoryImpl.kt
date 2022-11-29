@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.data.repository
 
 import arrow.core.Either
-import arrow.core.Nel
+import arrow.core.NonEmptyList
 import arrow.core.left
 import arrow.core.right
 import arrow.core.toNonEmptyListOrNull
@@ -73,7 +73,7 @@ class MessageRepositoryImpl @Inject constructor(
     override fun observeCachedMessages(
         userId: UserId,
         conversationId: ConversationId
-    ): Flow<Either<DataError.Local, Nel<Message>>> =
+    ): Flow<Either<DataError.Local, NonEmptyList<Message>>> =
         localDataSource.observeMessages(userId, conversationId).mapLatest { list ->
             list.toNonEmptyListOrNull()?.right() ?: DataError.Local.NoDataCached.left()
         }

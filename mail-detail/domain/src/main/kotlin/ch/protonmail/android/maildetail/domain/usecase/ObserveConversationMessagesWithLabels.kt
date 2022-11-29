@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.Either
-import arrow.core.Nel
+import arrow.core.NonEmptyList
 import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -43,7 +43,7 @@ class ObserveConversationMessagesWithLabels @Inject constructor(
     operator fun invoke(
         userId: UserId,
         conversationId: ConversationId
-    ): Flow<Either<DataError, Nel<MessageWithLabels>>> =
+    ): Flow<Either<DataError, NonEmptyList<MessageWithLabels>>> =
         combine(
             labelRepository.observeLabels(userId, type = LabelType.MessageLabel).mapToEither(),
             labelRepository.observeLabels(userId, type = LabelType.MessageFolder).mapToEither(),
@@ -62,7 +62,8 @@ class ObserveConversationMessagesWithLabels @Inject constructor(
             }
         }
 
-    private fun Flow<Either<DataError, Nel<Message>>>.ignoreLocalErrors(): Flow<Either<DataError, Nel<Message>>> =
+    private fun Flow<Either<DataError, NonEmptyList<Message>>>.ignoreLocalErrors():
+        Flow<Either<DataError, NonEmptyList<Message>>> =
         filter { either ->
             either.fold(
                 ifLeft = { error -> error !is DataError.Local },
