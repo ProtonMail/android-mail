@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmessage.domain.entity.expirationTimeOrNull
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import me.proton.core.contact.domain.entity.Contact
 import javax.inject.Inject
@@ -44,7 +45,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
                 message,
                 senderResolvedName = senderResolvedName
             ),
-            expiration = message.expirationTime.takeIf { it > 0 }?.let { expirationTimeMapper.toUiModel(it.seconds) },
+            expiration = message.expirationTimeOrNull()?.let(expirationTimeMapper::toUiModel),
             forwardedIcon = getForwardedIcon(isForwarded = message.isForwarded),
             hasAttachments = message.numAttachments > message.attachmentCount.calendar,
             isStarred = SystemLabelId.Starred.labelId in message.labelIds,

@@ -23,9 +23,16 @@ import ch.protonmail.android.mailpagination.domain.model.PageItem
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.AddressId
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 data class MessageId(val id: String)
 
+/**
+ * @property expirationTime is epoch time in seconds.
+ *  0 means no expiration time.
+ *  @see expirationTimeOrNull
+ */
 data class Message(
     override val userId: UserId,
     val messageId: MessageId,
@@ -54,3 +61,6 @@ data class Message(
     override val read: Boolean by lazy { !unread }
     override val keywords: String by lazy { subject + sender + toList + ccList + bccList }
 }
+
+fun Message.expirationTimeOrNull(): Duration? =
+    expirationTime.takeIf { it > 0 }?.seconds
