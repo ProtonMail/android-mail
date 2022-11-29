@@ -107,6 +107,12 @@ object AndroidX {
         const val compose = "androidx.paging:paging-compose:${Versions.AndroidX.pagingCompose}"
     }
 
+    object ProfileInstaller {
+        private const val version = Versions.ProfileInstaller.profileInstaller
+
+        const val profileInstaller = "androidx.profileinstaller:profileinstaller:$version"
+    }
+
     object Room {
         private const val version = Versions.AndroidX.room
 

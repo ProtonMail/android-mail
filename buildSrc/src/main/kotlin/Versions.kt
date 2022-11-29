@@ -110,6 +110,10 @@ object Versions {
         const val corePlugin = "1.1.1"
     }
 
+    object ProfileInstaller {
+        const val profileInstaller = "1.3.0-alpha02"
+    }
+
     object Squareup {
         const val leakCanary = "2.9.1"
         const val okhttp = "4.10.0"

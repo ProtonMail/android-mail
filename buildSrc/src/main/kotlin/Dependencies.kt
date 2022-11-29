@@ -61,6 +61,7 @@ object Dependencies {
         add(AndroidX.Navigation.compose)
         add(AndroidX.Paging.compose)
         add(AndroidX.Paging.runtime)
+        add(AndroidX.ProfileInstaller.profileInstaller)
         add(AndroidX.Room.ktx)
         add(AndroidX.Work.runtimeKtx)
         add(Arrow.core)
