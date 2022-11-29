@@ -122,9 +122,11 @@ object AndroidX {
 
     object Test {
 
+        const val androidJUnit = "androidx.test.ext:junit:${Versions.AndroidX.testAndroidJUnit}"
         const val core = "androidx.test:core:${Versions.AndroidX.testCore}"
         const val coreKtx = "androidx.test:core-ktx:${Versions.AndroidX.testCore}"
         const val espresso = "androidx.test.espresso:espresso-core:${Versions.AndroidX.testEspresso}"
+        const val macroBenchmark = "androidx.benchmark:benchmark-macro-junit4:${Versions.AndroidX.testMacroBenchmark}"
         const val orchestrator = "androidx.test:orchestrator:${Versions.AndroidX.testOrchestrator}"
         const val runner = "androidx.test:runner:${Versions.AndroidX.testRunner}"
         const val rules = "androidx.test:rules:${Versions.AndroidX.testRules}"

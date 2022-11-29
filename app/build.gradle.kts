@@ -102,6 +102,14 @@ android {
             }
             signingConfig = signingConfigs["release"]
         }
+        create("benchmark") {
+            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            postprocessing {
+                isObfuscate = false
+            }
+        }
     }
 
     flavorDimensions.add("default")

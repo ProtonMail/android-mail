@@ -40,9 +40,12 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -75,6 +78,7 @@ import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MailboxScreen(
     modifier: Modifier = Modifier,
@@ -97,7 +101,7 @@ fun MailboxScreen(
         mailboxState = mailboxState,
         mailboxListItems = mailboxListItems,
         actions = completeActions,
-        modifier = modifier
+        modifier = modifier.semantics { testTagsAsResourceId = true }
     )
 
 }
@@ -241,7 +245,7 @@ private fun MailboxItemsList(
 ) {
     LazyColumn(
         state = listState,
-        modifier = Modifier
+        modifier = Modifier.testTag(MailboxScreen.ListTestTag)
             .fillMaxSize()
             .let { if (BuildConfig.DEBUG) it.verticalScrollbar(listState) else it }
     ) {
@@ -291,6 +295,7 @@ object MailboxScreen {
     const val ListProgressTestTag = "MailboxListProgress"
     const val MailboxEmptyTestTag = "MailboxEmpty"
     const val TestTag = "MailboxScreen"
+    const val ListTestTag = "MailboxList"
 
     data class Actions(
         val navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,

@@ -28,6 +28,7 @@ includeCoreBuild {
 }
 
 include(":app")
+include(":benchmark")
 include(":detekt-rules")
 include(":test-data")
 
