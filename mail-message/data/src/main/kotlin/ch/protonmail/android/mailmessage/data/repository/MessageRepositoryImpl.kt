@@ -99,6 +99,10 @@ class MessageRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun moveToTrash(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> {
+        return DataError.Local.NoDataCached.left()
+    }
+
     private suspend fun fetchMessages(
         userId: UserId,
         pageKey: PageKey

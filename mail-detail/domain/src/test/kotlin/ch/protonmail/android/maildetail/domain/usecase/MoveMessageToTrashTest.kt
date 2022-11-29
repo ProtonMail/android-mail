@@ -19,26 +19,51 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MoveMessageToTrashTest {
 
-    private val move = MoveMessageToTrash()
+    private val userId = UserIdSample.Primary
+    private val messageId = MessageIdSample.AugWeatherForecast
+
+    private val messageRepository: MessageRepository = mockk()
+    private val move = MoveMessageToTrash(
+        messageRepository = messageRepository
+    )
 
     @Test
-    fun `does return error`() = runTest {
+    fun `when move to trash returns error then return error`() = runTest {
         // given
-        val expected = DataError.Local.NoDataCached.left()
+        val error = DataError.Local.NoDataCached.left()
+        coEvery { messageRepository.moveToTrash(userId, messageId) } returns error
 
         // when
-        val result = move(UserIdSample.Primary, MessageIdSample.AugWeatherForecast)
+        val result = move(userId, messageId)
 
         // then
-        assertEquals(expected, result)
+        assertEquals(error, result)
+    }
+
+    @Test
+    fun `when moving a message to trash then repository is called with the given data`() = runTest {
+        // given
+        val message = MessageSample.AugWeatherForecast.right()
+        coEvery { messageRepository.moveToTrash(userId, messageId) } returns message
+
+        // when
+        val result = move(userId, messageId)
+
+        // then
+        assertEquals(message, result)
     }
 }
