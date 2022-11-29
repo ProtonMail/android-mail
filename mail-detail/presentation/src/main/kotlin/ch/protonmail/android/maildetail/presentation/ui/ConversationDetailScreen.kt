@@ -187,11 +187,11 @@ private fun MessagesContent(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(ProtonDimens.SmallSpacing)
     ) {
-        items(uiModels) { message ->
-            when (message) {
+        items(uiModels) { uiModel ->
+            when (uiModel) {
                 is ConversationDetailMessageUiModel.Collapsed -> ConversationDetailCollapsedMessageHeader(
                     modifier = Modifier.animateItemPlacement(),
-                    message = message
+                    uiModel = uiModel
                 )
                 is ConversationDetailMessageUiModel.Expanded -> Text(text = "Expanded")
             }

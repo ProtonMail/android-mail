@@ -67,11 +67,11 @@ import me.proton.core.util.kotlin.exhaustive
 
 @Composable
 internal fun ConversationDetailCollapsedMessageHeader(
-    message: ConversationDetailMessageUiModel.Collapsed,
+    uiModel: ConversationDetailMessageUiModel.Collapsed,
     modifier: Modifier = Modifier
 ) {
-    val fontWeight = if (message.isUnread) FontWeight.Bold else FontWeight.Normal
-    val fontColor = if (message.isUnread) ProtonTheme.colors.textNorm else ProtonTheme.colors.textWeak
+    val fontWeight = if (uiModel.isUnread) FontWeight.Bold else FontWeight.Normal
+    val fontColor = if (uiModel.isUnread) ProtonTheme.colors.textNorm else ProtonTheme.colors.textWeak
 
     ElevatedCard(
         modifier = modifier,
@@ -114,14 +114,14 @@ internal fun ConversationDetailCollapsedMessageHeader(
                 modifier = Modifier.constrainAs(avatarRef) {
                     centerVerticallyTo(parent)
                 },
-                avatarUiModel = message.avatar
+                avatarUiModel = uiModel.avatar
             )
 
             ForwardedIcon(
                 modifier = Modifier.constrainAs(forwardedIconRef) {
                     centerVerticallyTo(parent)
                 },
-                message = message,
+                uiModel = uiModel,
                 fontColor = fontColor
             )
 
@@ -129,7 +129,7 @@ internal fun ConversationDetailCollapsedMessageHeader(
                 modifier = Modifier.constrainAs(repliedIconRef) {
                     centerVerticallyTo(parent)
                 },
-                message = message,
+                uiModel = uiModel,
                 fontColor = fontColor
             )
 
@@ -138,17 +138,17 @@ internal fun ConversationDetailCollapsedMessageHeader(
                     width = Dimension.preferredWrapContent
                     centerVerticallyTo(parent)
                 },
-                message = message,
+                uiModel = uiModel,
                 fontWeight = fontWeight,
                 fontColor = fontColor
             )
 
             Expiration(
                 modifier = Modifier.constrainAs(expirationRef) {
-                    visibility = visibleWhen(message.expiration != null)
+                    visibility = visibleWhen(uiModel.expiration != null)
                     centerVerticallyTo(parent)
                 },
-                message = message
+                uiModel = uiModel
             )
 
             Text(
@@ -164,7 +164,7 @@ internal fun ConversationDetailCollapsedMessageHeader(
 
             StarIcon(
                 modifier = Modifier.constrainAs(starIconRef) {
-                    visibility = visibleWhen(message.isStarred)
+                    visibility = visibleWhen(uiModel.isStarred)
                     centerVerticallyTo(parent)
                 }
             )
@@ -172,13 +172,13 @@ internal fun ConversationDetailCollapsedMessageHeader(
             AttachmentIcon(
                 fontColor = fontColor,
                 modifier = Modifier.constrainAs(attachmentIconRef) {
-                    visibility = visibleWhen(message.hasAttachments)
+                    visibility = visibleWhen(uiModel.hasAttachments)
                     centerVerticallyTo(parent)
                 }
             )
 
             LocationIcon(
-                message = message,
+                uiModel = uiModel,
                 modifier = Modifier.constrainAs(locationIconRef) {
                     centerVerticallyTo(parent)
                 }
@@ -188,7 +188,7 @@ internal fun ConversationDetailCollapsedMessageHeader(
                 modifier = Modifier.constrainAs(timeRef) {
                     centerVerticallyTo(parent)
                 },
-                message = message,
+                uiModel = uiModel,
                 fontWeight = fontWeight,
                 fontColor = fontColor
             )
@@ -210,7 +210,7 @@ private fun AttachmentIcon(
 }
 
 @Composable
-private fun Expiration(message: ConversationDetailMessageUiModel.Collapsed, modifier: Modifier) {
+private fun Expiration(uiModel: ConversationDetailMessageUiModel.Collapsed, modifier: Modifier) {
     Row(
         modifier = modifier
             .padding(horizontal = ProtonDimens.ExtraSmallSpacing)
@@ -227,7 +227,7 @@ private fun Expiration(message: ConversationDetailMessageUiModel.Collapsed, modi
             contentDescription = NO_CONTENT_DESCRIPTION
         )
         Text(
-            text = message.expiration?.string() ?: EMPTY_STRING,
+            text = uiModel.expiration?.string() ?: EMPTY_STRING,
             style = ProtonTheme.typography.overline
         )
     }
@@ -235,11 +235,11 @@ private fun Expiration(message: ConversationDetailMessageUiModel.Collapsed, modi
 
 @Composable
 private fun ForwardedIcon(
-    message: ConversationDetailMessageUiModel.Collapsed,
+    uiModel: ConversationDetailMessageUiModel.Collapsed,
     fontColor: Color,
     modifier: Modifier
 ) {
-    when (message.forwardedIcon) {
+    when (uiModel.forwardedIcon) {
         ConversationDetailMessageUiModel.ForwardedIcon.None -> Box(modifier)
         ConversationDetailMessageUiModel.ForwardedIcon.Forwarded -> SmallNonClickableIcon(
             modifier = modifier.testTag(ForwardedIconTestTag),
@@ -251,24 +251,24 @@ private fun ForwardedIcon(
 
 @Composable
 private fun LocationIcon(
-    message: ConversationDetailMessageUiModel.Collapsed,
+    uiModel: ConversationDetailMessageUiModel.Collapsed,
     modifier: Modifier
 ) {
     Icon(
         modifier = modifier.size(ProtonDimens.SmallIconSize),
-        painter = painterResource(id = message.locationIcon.icon),
-        tint = message.locationIcon.color ?: ProtonTheme.colors.iconNorm,
+        painter = painterResource(id = uiModel.locationIcon.icon),
+        tint = uiModel.locationIcon.color ?: ProtonTheme.colors.iconNorm,
         contentDescription = NO_CONTENT_DESCRIPTION
     )
 }
 
 @Composable
 private fun RepliedIcon(
-    message: ConversationDetailMessageUiModel.Collapsed,
+    uiModel: ConversationDetailMessageUiModel.Collapsed,
     fontColor: Color,
     modifier: Modifier
 ) {
-    when (message.repliedIcon) {
+    when (uiModel.repliedIcon) {
         ConversationDetailMessageUiModel.RepliedIcon.None -> Box(modifier)
         ConversationDetailMessageUiModel.RepliedIcon.Replied -> SmallNonClickableIcon(
             modifier = modifier.testTag(RepliedIconTestTag).padding(horizontal = MailDimens.TinySpacing),
@@ -285,14 +285,14 @@ private fun RepliedIcon(
 
 @Composable
 private fun Sender(
-    message: ConversationDetailMessageUiModel.Collapsed,
+    uiModel: ConversationDetailMessageUiModel.Collapsed,
     fontWeight: FontWeight,
     fontColor: Color,
     modifier: Modifier
 ) {
     Text(
         modifier = modifier.padding(horizontal = MailDimens.TinySpacing),
-        text = message.sender,
+        text = uiModel.sender,
         fontWeight = fontWeight,
         color = fontColor,
         style = ProtonTheme.typography.default,
@@ -313,14 +313,14 @@ private fun StarIcon(modifier: Modifier) {
 
 @Composable
 private fun Time(
-    message: ConversationDetailMessageUiModel.Collapsed,
+    uiModel: ConversationDetailMessageUiModel.Collapsed,
     fontWeight: FontWeight,
     fontColor: Color,
     modifier: Modifier
 ) {
     Text(
         modifier = modifier.padding(horizontal = ProtonDimens.ExtraSmallSpacing),
-        text = message.shortTime.string(),
+        text = uiModel.shortTime.string(),
         fontWeight = fontWeight,
         color = fontColor,
         style = ProtonTheme.typography.caption,
@@ -343,11 +343,11 @@ object ConversationDetailCollapsedMessageHeader {
 @Composable
 private fun CdCollapsedMessageHeaderPreview(
     @PreviewParameter(ConversationDetailCollapsedMessageHeaderPreviewData::class)
-    message: ConversationDetailMessageUiModel.Collapsed
+    uiModel: ConversationDetailMessageUiModel.Collapsed
 ) {
     ProtonTheme3 {
         ProtonTheme {
-            ConversationDetailCollapsedMessageHeader(message = message)
+            ConversationDetailCollapsedMessageHeader(uiModel = uiModel)
         }
     }
 }
