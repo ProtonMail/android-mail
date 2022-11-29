@@ -144,7 +144,8 @@ class ConversationRepositoryImpl @Inject constructor(
                 userId,
                 conversationId,
                 labelId,
-                effectedMessages.map { it.messageId })
+                effectedMessages.map { it.messageId }
+            )
         }
     }
 

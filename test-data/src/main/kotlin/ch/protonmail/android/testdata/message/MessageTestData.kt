@@ -124,10 +124,8 @@ object MessageTestData {
         buildMessage(id = "123", conversationId = ConversationId("conversation")),
         buildMessage(id = "124", conversationId = ConversationId("conversation")),
         buildMessage(
-            id = "124", conversationId = ConversationId("conversation"), labelIds =
-            listOf(
-                SystemLabelId.Inbox.labelId.id,
-                SystemLabelId.Starred.labelId.id
+            id = "124", conversationId = ConversationId("conversation"), labelIds = listOf(
+                SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id
             )
         )
     )
@@ -170,7 +168,6 @@ object MessageTestData {
             )
         )
     )
-
 
     val messagesWithSizeByConversation = listOf(
         buildMessage(id = "123", conversationId = ConversationId("conversation"), size = 400L),
