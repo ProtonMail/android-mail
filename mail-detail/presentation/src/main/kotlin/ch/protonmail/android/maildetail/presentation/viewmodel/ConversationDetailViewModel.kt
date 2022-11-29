@@ -21,13 +21,17 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
+import arrow.core.NonEmptyList
 import arrow.core.getOrElse
 import arrow.core.getOrHandle
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
@@ -47,6 +51,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
@@ -112,7 +117,7 @@ class ConversationDetailViewModel @Inject constructor(
         primaryUserId.flatMapLatest { userId ->
             combine(
                 observeContacts(userId),
-                observeConversationMessages(userId, conversationId)
+                observeConversationMessages(userId, conversationId).ignoreLocalErrors()
             ) { contactsEither, messagesEither ->
                 val contacts = contactsEither.getOrElse {
                     Timber.i("Failed getting contacts for displaying initials. Fallback to display name")
@@ -181,5 +186,17 @@ class ConversationDetailViewModel @Inject constructor(
 
         val initialState = ConversationDetailState.Loading
     }
-
 }
+
+/**
+ * Filters [DataError.Local] from messages flow, as we don't want to show them to the user, because the fetch is being
+ *  done on the conversation flow.
+ */
+private fun Flow<Either<DataError, NonEmptyList<MessageWithLabels>>>.ignoreLocalErrors():
+    Flow<Either<DataError, NonEmptyList<MessageWithLabels>>> =
+    filter { either ->
+        either.fold(
+            ifLeft = { error -> error !is DataError.Local },
+            ifRight = { true }
+        )
+    }

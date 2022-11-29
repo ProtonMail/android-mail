@@ -27,6 +27,7 @@ import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
@@ -281,7 +282,36 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `does handle messages error`() = runTest {
+    fun `does handle messages remote errors`() = runTest {
+        // given
+        val initialState = ConversationDetailState.Loading
+        val expectedState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Error(
+                message = TextUiModel(string.detail_error_loading_messages)
+            )
+        )
+        every {
+            observeConversationMessagesWithLabels(UserIdSample.Primary, ConversationIdSample.WeatherForecast)
+        } returns flowOf(DataError.Remote.Http(NetworkError.NoNetwork).left())
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = any<ConversationDetailEvent.ErrorLoadingMessages>()
+            )
+        } returns expectedState
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // then
+            assertEquals(expectedState, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `does ignore messages local errors`() = runTest {
         // given
         val initialState = ConversationDetailState.Loading
         val expectedState = initialState.copy(
@@ -304,8 +334,7 @@ class ConversationDetailViewModelTest {
             initialStateEmitted()
 
             // then
-            assertEquals(expectedState, awaitItem())
-            cancelAndIgnoreRemainingEvents()
+            expectNoEvents()
         }
     }
 

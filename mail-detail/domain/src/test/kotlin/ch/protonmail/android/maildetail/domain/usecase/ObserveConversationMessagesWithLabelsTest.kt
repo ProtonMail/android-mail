@@ -125,14 +125,15 @@ internal class ObserveConversationMessagesWithLabelsTest {
     }
 
     @Test
-    fun `when messages emits a local error, the error is ignored`() = runTest {
+    fun `when messages emits an error, the error is emitted`() = runTest {
         // given
+        val error = DataError.Local.NoDataCached.left()
         every {
             messageRepository.observeCachedMessages(
                 UserIdSample.Primary,
                 ConversationIdSample.WeatherForecast
             )
-        } returns flowOf(DataError.Local.NoDataCached.left())
+        } returns flowOf(error)
 
         // when
         observeConversationMessagesWithLabels(
@@ -141,6 +142,7 @@ internal class ObserveConversationMessagesWithLabelsTest {
         ).test {
 
             // then
+            assertEquals(error, awaitItem())
             awaitComplete()
         }
     }
@@ -148,8 +150,8 @@ internal class ObserveConversationMessagesWithLabelsTest {
     @Test
     fun `when message labels emits an error, the error is emitted`() = runTest {
         // given
-        val expected = DataError.Local.NoDataCached.left()
-        every { messageLabelsFlow.mapToEither() } returns flowOf(expected)
+        val error = DataError.Local.NoDataCached.left()
+        every { messageLabelsFlow.mapToEither() } returns flowOf(error)
 
         // when
         observeConversationMessagesWithLabels(
@@ -158,7 +160,7 @@ internal class ObserveConversationMessagesWithLabelsTest {
         ).test {
 
             // then
-            assertEquals(expected, awaitItem())
+            assertEquals(error, awaitItem())
             awaitComplete()
         }
     }
@@ -166,8 +168,8 @@ internal class ObserveConversationMessagesWithLabelsTest {
     @Test
     fun `when message folder emits an error, the error is emitted`() = runTest {
         // given
-        val expected = DataError.Local.NoDataCached.left()
-        every { messageFoldersFlow.mapToEither() } returns flowOf(expected)
+        val error = DataError.Local.NoDataCached.left()
+        every { messageFoldersFlow.mapToEither() } returns flowOf(error)
 
         // when
         observeConversationMessagesWithLabels(
@@ -176,7 +178,7 @@ internal class ObserveConversationMessagesWithLabelsTest {
         ).test {
 
             // then
-            assertEquals(expected, awaitItem())
+            assertEquals(error, awaitItem())
             awaitComplete()
         }
     }
