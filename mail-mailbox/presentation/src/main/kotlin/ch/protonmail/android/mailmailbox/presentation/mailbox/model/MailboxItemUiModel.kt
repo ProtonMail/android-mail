@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
+import androidx.compose.runtime.Immutable
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
@@ -25,6 +26,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import me.proton.core.domain.entity.UserId
 
+@Immutable
 data class MailboxItemUiModel(
     val avatar: AvatarUiModel,
     val type: MailboxItemType,
