@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailcommon.presentation.model
 
-sealed interface AvatarUiModel {
-    data class ParticipantInitial(val value: String) : AvatarUiModel
-    object DraftIcon : AvatarUiModel
+sealed class AvatarUiModel {
+    data class ParticipantInitial(val value: String) : AvatarUiModel()
+    object DraftIcon : AvatarUiModel()
 }
