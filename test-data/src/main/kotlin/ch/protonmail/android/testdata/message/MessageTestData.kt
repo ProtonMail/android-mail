@@ -42,10 +42,7 @@ object MessageTestData {
     val recipient3 = Recipient("recipient3@pm.me", "Recipient3")
 
     val message = buildMessage(
-        userId = userId,
-        id = RAW_MESSAGE_ID,
-        subject = RAW_SUBJECT,
-        labelIds = listOf(SystemLabelId.Inbox.labelId.id)
+        userId = userId, id = RAW_MESSAGE_ID, subject = RAW_SUBJECT, labelIds = listOf(SystemLabelId.Inbox.labelId.id)
     )
 
     val multipleRecipientsMessage = buildMessage(
@@ -57,27 +54,18 @@ object MessageTestData {
     )
 
     val trashedMessage = buildMessage(
-        userId = userId,
-        id = RAW_MESSAGE_ID,
-        subject = RAW_SUBJECT,
-        labelIds = listOf(SystemLabelId.Trash.labelId.id)
+        userId = userId, id = RAW_MESSAGE_ID, subject = RAW_SUBJECT, labelIds = listOf(SystemLabelId.Trash.labelId.id)
     )
 
     val trashedMessageWithCustomLabels = buildMessage(
-        userId = userId,
-        id = RAW_MESSAGE_ID,
-        subject = RAW_SUBJECT,
+        userId = userId, id = RAW_MESSAGE_ID, subject = RAW_SUBJECT,
         labelIds = listOf(
-            SystemLabelId.Trash.labelId.id,
-            MailLabelId.Custom.Label(LabelId("Travel")).labelId.id
+            SystemLabelId.Trash.labelId.id, MailLabelId.Custom.Label(LabelId("Travel")).labelId.id
         )
     )
 
     val spamMessage = buildMessage(
-        userId = userId,
-        id = RAW_MESSAGE_ID,
-        subject = RAW_SUBJECT,
-        labelIds = listOf(SystemLabelId.Spam.labelId.id)
+        userId = userId, id = RAW_MESSAGE_ID, subject = RAW_SUBJECT, labelIds = listOf(SystemLabelId.Spam.labelId.id)
     )
 
     val spamMessageWithMultipleRecipients = buildMessage(
@@ -95,9 +83,7 @@ object MessageTestData {
         sender = sender,
         subject = RAW_SUBJECT,
         labelIds = listOf(
-            SystemLabelId.Archive.labelId.id,
-            SystemLabelId.AllMail.labelId.id,
-            SystemLabelId.Starred.labelId.id
+            SystemLabelId.Archive.labelId.id, SystemLabelId.AllMail.labelId.id, SystemLabelId.Starred.labelId.id
         ),
         numAttachments = 2,
         attachmentCount = AttachmentCount(1),
@@ -107,12 +93,9 @@ object MessageTestData {
     )
 
     val starredMessage = buildMessage(
-        userId = userId,
-        id = RAW_MESSAGE_ID,
-        subject = RAW_SUBJECT,
+        userId = userId, id = RAW_MESSAGE_ID, subject = RAW_SUBJECT,
         labelIds = listOf(
-            SystemLabelId.Inbox.labelId.id,
-            SystemLabelId.Starred.labelId.id
+            SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id
         )
     )
 
@@ -124,7 +107,8 @@ object MessageTestData {
         buildMessage(id = "123", conversationId = ConversationId("conversation")),
         buildMessage(id = "124", conversationId = ConversationId("conversation")),
         buildMessage(
-            id = "124", conversationId = ConversationId("conversation"), labelIds = listOf(
+            id = "124", conversationId = ConversationId("conversation"),
+            labelIds = listOf(
                 SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id
             )
         )
@@ -134,15 +118,13 @@ object MessageTestData {
         buildMessage(
             id = "123", conversationId = ConversationId("conversation"),
             labelIds = listOf(
-                SystemLabelId.Inbox.labelId.id,
-                SystemLabelId.Starred.labelId.id
+                SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id
             )
         ),
         buildMessage(
             id = "124", conversationId = ConversationId("conversation"),
             labelIds = listOf(
-                SystemLabelId.Inbox.labelId.id,
-                SystemLabelId.Starred.labelId.id
+                SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id
             )
         )
     )
@@ -150,15 +132,13 @@ object MessageTestData {
         buildMessage(
             id = "123", conversationId = ConversationId("conversation"),
             labelIds = listOf(
-                SystemLabelId.Inbox.labelId.id,
-                SystemLabelId.Starred.labelId.id
+                SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id
             )
         ),
         buildMessage(
             id = "124", conversationId = ConversationId("conversation"),
             labelIds = listOf(
-                SystemLabelId.Inbox.labelId.id,
-                SystemLabelId.Starred.labelId.id
+                SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id
             )
         ),
         buildMessage(
