@@ -85,7 +85,7 @@ interface MessageRepository {
     /**
      * Moves the message for the given [messageId] to trash
      */
-    fun moveToTrash(
+    suspend fun moveToTrash(
         userId: UserId,
         messageId: MessageId
     ): Either<DataError.Local, Message>

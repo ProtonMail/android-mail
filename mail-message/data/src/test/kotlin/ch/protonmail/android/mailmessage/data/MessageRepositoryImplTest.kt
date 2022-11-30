@@ -25,11 +25,14 @@ import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -40,6 +43,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -318,5 +322,60 @@ class MessageRepositoryImplTest {
         val actual = messageRepository.removeLabel(userId, messageId, LabelId("42"))
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), actual)
+    }
+
+    @Test
+    fun `move to trash add the trash label to the message`() = runTest {
+        // given
+        val messageId = MessageIdSample.EmptyDraft
+        val message = MessageSample.EmptyDraft.copy(
+            labelIds = listOf(LabelIdSample.AllDraft)
+        )
+        val trashedMessage = MessageSample.EmptyDraft.copy(
+            labelIds = listOf(LabelIdSample.AllDraft, SystemLabelId.Trash.labelId)
+        )
+        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(message)
+
+        // when
+        val result = messageRepository.moveToTrash(userId, messageId)
+
+        // then
+        assertEquals(trashedMessage.right(), result)
+    }
+
+    @Test
+    fun `move to trash removes all the labels, except AllMail, AllDraft and AllSent`() = runTest {
+        // given
+        val messageId = MessageIdSample.EmptyDraft
+        val message = MessageSample.EmptyDraft.copy(
+            labelIds = listOf(
+                SystemLabelId.AllDrafts.labelId,
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.AllSent.labelId,
+                SystemLabelId.Inbox.labelId,
+                LabelIdSample.Document
+            )
+        )
+        val messageWithoutLabels = MessageSample.EmptyDraft.copy(
+            labelIds = listOf(
+                SystemLabelId.AllDrafts.labelId,
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.AllSent.labelId
+            )
+        )
+        val trashedMessage = messageWithoutLabels.copy(
+            labelIds = messageWithoutLabels.labelIds + SystemLabelId.Trash.labelId
+        )
+        val messageFlow = MutableStateFlow(message)
+        every { localDataSource.observeMessage(userId, messageId) } returns messageFlow
+        coEvery { localDataSource.upsertMessage(messageWithoutLabels) } coAnswers {
+            messageFlow.emit(messageWithoutLabels)
+        }
+
+        // when
+        val result = messageRepository.moveToTrash(userId, messageId)
+
+        // then
+        assertEquals(trashedMessage.right(), result)
     }
 }

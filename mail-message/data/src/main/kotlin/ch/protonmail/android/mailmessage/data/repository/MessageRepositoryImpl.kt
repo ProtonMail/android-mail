@@ -25,6 +25,7 @@ import arrow.core.right
 import arrow.core.toNonEmptyListOrNull
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
@@ -99,8 +100,22 @@ class MessageRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun moveToTrash(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> {
-        return DataError.Local.NoDataCached.left()
+    override suspend fun moveToTrash(
+        userId: UserId,
+        messageId: MessageId
+    ): Either<DataError.Local, Message> {
+        val message = localDataSource.observeMessage(userId, messageId).first()
+            ?: return DataError.Local.NoDataCached.left()
+        val updatedMessage = run {
+            val persistentLabels = listOf(
+                SystemLabelId.AllDrafts.labelId,
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.AllSent.labelId
+            )
+            message.copy(labelIds = message.labelIds.filter { labelId -> labelId in persistentLabels })
+        }
+        localDataSource.upsertMessage(updatedMessage)
+        return addLabel(userId = userId, messageId = messageId, labelId = SystemLabelId.Trash.labelId)
     }
 
     private suspend fun fetchMessages(

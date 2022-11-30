@@ -30,6 +30,6 @@ class MoveMessageToTrash @Inject constructor(
     private val messageRepository: MessageRepository
 ) {
 
-    operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Message> =
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Message> =
         messageRepository.moveToTrash(userId, messageId)
 }
