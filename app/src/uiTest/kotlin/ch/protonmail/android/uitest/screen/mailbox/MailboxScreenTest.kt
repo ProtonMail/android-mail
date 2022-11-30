@@ -124,7 +124,8 @@ internal class MailboxScreenTest {
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = MailLabel.System(systemLabel).text()
                 ),
-                unreadFilterState = UnreadFilterState.Loading
+                unreadFilterState = UnreadFilterState.Loading,
+                networkStatusEffect = Effect.empty()
             )
         }
 

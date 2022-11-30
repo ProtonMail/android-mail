@@ -75,6 +75,8 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
+import me.proton.core.network.domain.NetworkManager
+import me.proton.core.network.domain.NetworkStatus
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -117,6 +119,10 @@ class MailboxViewModelTest {
         coEvery { this@mockk.invoke(userId) } returns Either.Right(ContactTestData.contacts)
     }
 
+    private val networkManager = mockk<NetworkManager> {
+        every { networkStatus } returns NetworkStatus.Disconnected
+    }
+
     private val pagerFactory = mockk<MailboxPagerFactory>()
 
     private val mailboxItemMapper = mockk<MailboxItemUiModelMapper>()
@@ -136,7 +142,8 @@ class MailboxViewModelTest {
             observeUnreadCounters = observeUnreadCounters,
             mailboxItemMapper = mailboxItemMapper,
             getContacts = getContacts,
-            mailboxReducer = mailboxReducer
+            mailboxReducer = mailboxReducer,
+            networkManager = networkManager
         )
     }
 
@@ -159,7 +166,8 @@ class MailboxViewModelTest {
             val expected = MailboxState(
                 mailboxListState = MailboxListState.Loading,
                 topAppBarState = MailboxTopAppBarState.Loading,
-                unreadFilterState = UnreadFilterState.Loading
+                unreadFilterState = UnreadFilterState.Loading,
+                networkStatusEffect = Effect.empty()
             )
 
             assertEquals(expected, actual)
@@ -441,6 +449,26 @@ class MailboxViewModelTest {
 
         // Then
         coVerify { markAsStaleMailboxItems.invoke(listOf(userId), Message, initialLocationMailLabelId.labelId) }
+    }
+
+    @Test
+    fun `on refresh call, new state is produced and emitted`() = runTest {
+        // Given
+        val expectedState = MailboxState.Loading.copy(networkStatusEffect = Effect.of(NetworkStatus.Disconnected))
+        every {
+            mailboxReducer.newStateFrom(
+                MailboxState.Loading,
+                MailboxEvent.NetworkStatusRefreshed(NetworkStatus.Disconnected)
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.Refresh)
+        mailboxViewModel.state.test {
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
     }
 
     @Test

@@ -43,7 +43,8 @@ object MailboxStatePreviewData {
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1
-        )
+        ),
+        networkStatusEffect = Effect.empty()
     )
 
     val AllMail = MailboxState(
@@ -58,6 +59,7 @@ object MailboxStatePreviewData {
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1
-        )
+        ),
+        networkStatusEffect = Effect.empty()
     )
 }

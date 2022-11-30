@@ -20,11 +20,13 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import me.proton.core.mailsettings.domain.entity.ViewMode
+import me.proton.core.network.domain.NetworkStatus
 
 internal sealed interface MailboxOperation {
     sealed interface AffectingTopAppBar
     sealed interface AffectingUnreadFilter
     sealed interface AffectingMailboxList
+    sealed interface AffectingNetworkStatus
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -61,6 +63,11 @@ internal sealed interface MailboxEvent : MailboxOperation {
         val selectedLabelCount: Int
     ) : MailboxEvent,
         MailboxOperation.AffectingUnreadFilter
+
+    data class NetworkStatusRefreshed(
+        val networkStatus: NetworkStatus
+    ) : MailboxEvent,
+        MailboxOperation.AffectingNetworkStatus
 }
 
 

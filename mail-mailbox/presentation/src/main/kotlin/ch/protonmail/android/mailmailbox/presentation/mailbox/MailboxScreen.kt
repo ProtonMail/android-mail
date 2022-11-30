@@ -36,6 +36,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -70,6 +71,7 @@ import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
@@ -78,6 +80,7 @@ fun MailboxScreen(
     modifier: Modifier = Modifier,
     navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
     openDrawerMenu: () -> Unit,
+    showOfflineSnackbar: () -> Unit,
     viewModel: MailboxViewModel = hiltViewModel()
 ) {
     val mailboxState = rememberAsState(viewModel.state, MailboxViewModel.initialState).value
@@ -91,7 +94,8 @@ fun MailboxScreen(
         onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewAction.OpenItemDetails(item)) },
         onOpenSelectionMode = { viewModel.submit(MailboxViewAction.EnterSelectionMode) },
         onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
-        openDrawerMenu = openDrawerMenu
+        openDrawerMenu = openDrawerMenu,
+        showOfflineSnackbar = showOfflineSnackbar
     )
 
     MailboxScreen(
@@ -110,11 +114,19 @@ fun MailboxScreen(
     actions: MailboxScreen.Actions,
     modifier: Modifier = Modifier
 ) {
+    val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val lazyListState = mailboxListItems.rememberLazyListState()
 
+    ConsumableLaunchedEffect(mailboxState.networkStatusEffect) {
+        if (it == NetworkStatus.Disconnected) {
+            actions.showOfflineSnackbar()
+        }
+    }
+
     Scaffold(
         modifier = modifier.testTag(MailboxScreen.TestTag),
+        scaffoldState = scaffoldState,
         topBar = {
             Column {
                 MailboxTopAppBar(
@@ -293,7 +305,8 @@ object MailboxScreen {
         val onNavigateToMailboxItem: (MailboxItemUiModel) -> Unit,
         val onOpenSelectionMode: () -> Unit,
         val onRefreshList: () -> Unit,
-        val openDrawerMenu: () -> Unit
+        val openDrawerMenu: () -> Unit,
+        val showOfflineSnackbar: () -> Unit
     ) {
 
         companion object {
@@ -306,7 +319,8 @@ object MailboxScreen {
                 onNavigateToMailboxItem = {},
                 onOpenSelectionMode = {},
                 onRefreshList = {},
-                openDrawerMenu = {}
+                openDrawerMenu = {},
+                showOfflineSnackbar = {}
             )
         }
     }

@@ -18,11 +18,14 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import me.proton.core.network.domain.NetworkStatus
 import javax.inject.Inject
 
 class MailboxReducer @Inject constructor(
@@ -37,7 +40,8 @@ class MailboxReducer @Inject constructor(
     ): MailboxState = currentState.copy(
         mailboxListState = currentState.toNewMailboxListStateFrom(operation),
         topAppBarState = currentState.toNewTopAppBarStateFrom(operation),
-        unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation)
+        unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
+        networkStatusEffect = getNetworkStatusEffect(operation)
     )
 
     private fun MailboxState.toNewMailboxListStateFrom(
@@ -67,6 +71,16 @@ class MailboxReducer @Inject constructor(
             unreadFilterReducer.newStateFrom(unreadFilterState, operation)
         } else {
             unreadFilterState
+        }
+    }
+
+    private fun getNetworkStatusEffect(
+        operation: MailboxOperation
+    ): Effect<NetworkStatus> {
+        return if (operation is MailboxOperation.AffectingNetworkStatus) {
+            Effect.of((operation as MailboxEvent.NetworkStatusRefreshed).networkStatus)
+        } else {
+            Effect.empty()
         }
     }
 }

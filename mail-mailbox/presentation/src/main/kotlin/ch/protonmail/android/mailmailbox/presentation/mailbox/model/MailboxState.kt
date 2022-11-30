@@ -19,12 +19,15 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import androidx.compose.runtime.Stable
+import ch.protonmail.android.mailcommon.presentation.Effect
+import me.proton.core.network.domain.NetworkStatus
 
 @Stable
 data class MailboxState(
     val mailboxListState: MailboxListState,
     val topAppBarState: MailboxTopAppBarState,
-    val unreadFilterState: UnreadFilterState
+    val unreadFilterState: UnreadFilterState,
+    val networkStatusEffect: Effect<NetworkStatus>
 ) {
 
     companion object {
@@ -32,7 +35,8 @@ data class MailboxState(
         val Loading = MailboxState(
             mailboxListState = MailboxListState.Loading,
             topAppBarState = MailboxTopAppBarState.Loading,
-            unreadFilterState = UnreadFilterState.Loading
+            unreadFilterState = UnreadFilterState.Loading,
+            networkStatusEffect = Effect.empty()
         )
     }
 }

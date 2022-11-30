@@ -25,6 +25,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -64,6 +65,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.mailsettings.domain.entity.ViewMode
+import me.proton.core.network.domain.NetworkManager
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 import javax.inject.Inject
@@ -79,7 +81,8 @@ class MailboxViewModel @Inject constructor(
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val getContacts: GetContacts,
-    private val mailboxReducer: MailboxReducer
+    private val mailboxReducer: MailboxReducer,
+    private val networkManager: NetworkManager
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -138,6 +141,7 @@ class MailboxViewModel @Inject constructor(
             type = observeViewModeByLocation().firstOrDefault().toMailboxItemType(),
             labelId = selectedMailLabelId.flow.value.labelId
         )
+        emitNewStateFrom(MailboxEvent.NetworkStatusRefreshed(networkManager.networkStatus))
     }
 
     private fun observePagingData(): Flow<PagingData<MailboxItemUiModel>> = combine(
@@ -250,7 +254,8 @@ class MailboxViewModel @Inject constructor(
         val initialState = MailboxState(
             mailboxListState = MailboxListState.Loading,
             topAppBarState = MailboxTopAppBarState.Loading,
-            unreadFilterState = UnreadFilterState.Loading
+            unreadFilterState = UnreadFilterState.Loading,
+            networkStatusEffect = Effect.empty()
         )
     }
 }

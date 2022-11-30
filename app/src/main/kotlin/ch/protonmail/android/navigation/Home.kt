@@ -21,6 +21,7 @@ package ch.protonmail.android.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -71,9 +72,7 @@ fun Home(
     val offlineSnackbarMessage = stringResource(id = R.string.you_are_offline)
     LaunchedEffect(state.value) {
         if (state.value == NetworkStatus.Disconnected) {
-            scaffoldState.snackbarHostState.showSnackbar(
-                message = offlineSnackbarMessage
-            )
+            showSnackbar(scaffoldState, offlineSnackbarMessage)
         }
     }
 
@@ -104,7 +103,8 @@ fun Home(
                 addConversationDetail(navController)
                 addMailbox(
                     navController,
-                    openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } }
+                    openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } },
+                    showOfflineSnackbar = { scope.launch { showSnackbar(scaffoldState, offlineSnackbarMessage) } }
                 )
                 addMessageDetail(navController)
                 addRemoveAccountDialog(navController)
@@ -123,6 +123,12 @@ fun Home(
     }
 }
 
+private suspend fun showSnackbar(
+    scaffoldState: ScaffoldState,
+    message: String
+) {
+    scaffoldState.snackbarHostState.showSnackbar(message)
+}
 
 private fun buildSidebarActions(
     navController: NavHostController,

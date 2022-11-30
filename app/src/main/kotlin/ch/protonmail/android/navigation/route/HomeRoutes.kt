@@ -47,7 +47,8 @@ internal fun NavGraphBuilder.addConversationDetail(navController: NavHostControl
 
 internal fun NavGraphBuilder.addMailbox(
     navController: NavHostController,
-    openDrawerMenu: () -> Unit
+    openDrawerMenu: () -> Unit,
+    showOfflineSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.Mailbox.route) {
         MailboxScreen(
@@ -60,7 +61,8 @@ internal fun NavGraphBuilder.addMailbox(
                     }
                 )
             },
-            openDrawerMenu = openDrawerMenu
+            openDrawerMenu = openDrawerMenu,
+            showOfflineSnackbar = showOfflineSnackbar
         )
     }
 }

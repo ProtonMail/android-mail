@@ -36,6 +36,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import me.proton.core.mailsettings.domain.entity.ViewMode
+import me.proton.core.network.domain.NetworkStatus
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -100,6 +101,12 @@ internal class MailboxReducerTest(
         } else {
             assertEquals(currentState.unreadFilterState, nextState.unreadFilterState, testName)
         }
+
+        if (shouldReduceNetworkStatusEffect) {
+            assertEquals(Effect.of(NetworkStatus.Disconnected), nextState.networkStatusEffect, testName)
+        } else {
+            assertEquals(currentState.networkStatusEffect, nextState.networkStatusEffect, testName)
+        }
     }
 
     companion object {
@@ -118,7 +125,8 @@ internal class MailboxReducerTest(
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = 42,
                 isFilterEnabled = false
-            )
+            ),
+            Effect.of(NetworkStatus.Disconnected)
         )
 
         private val actions = listOf(
@@ -126,37 +134,43 @@ internal class MailboxReducerTest(
                 MailboxViewAction.EnterSelectionMode,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = true,
-                shouldReduceUnreadFilterState = false
+                shouldReduceUnreadFilterState = false,
+                shouldReduceNetworkStatusEffect = false
             ),
             TestInput(
                 MailboxViewAction.ExitSelectionMode,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = true,
-                shouldReduceUnreadFilterState = false
+                shouldReduceUnreadFilterState = false,
+                shouldReduceNetworkStatusEffect = false
             ),
             TestInput(
                 MailboxViewAction.OpenItemDetails(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
-                shouldReduceUnreadFilterState = false
+                shouldReduceUnreadFilterState = false,
+                shouldReduceNetworkStatusEffect = false
             ),
             TestInput(
                 MailboxViewAction.Refresh,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
-                shouldReduceUnreadFilterState = false
+                shouldReduceUnreadFilterState = false,
+                shouldReduceNetworkStatusEffect = false
             ),
             TestInput(
                 MailboxViewAction.EnableUnreadFilter,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
-                shouldReduceUnreadFilterState = true
+                shouldReduceUnreadFilterState = true,
+                shouldReduceNetworkStatusEffect = false
             ),
             TestInput(
                 MailboxViewAction.DisableUnreadFilter,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
-                shouldReduceUnreadFilterState = true
+                shouldReduceUnreadFilterState = true,
+                shouldReduceNetworkStatusEffect = false
             )
         )
 
@@ -168,7 +182,8 @@ internal class MailboxReducerTest(
                 ),
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = false,
-                shouldReduceUnreadFilterState = false
+                shouldReduceUnreadFilterState = false,
+                shouldReduceNetworkStatusEffect = false
             ),
             TestInput(
                 MailboxEvent.NewLabelSelected(
@@ -177,19 +192,29 @@ internal class MailboxReducerTest(
                 ),
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
-                shouldReduceUnreadFilterState = true
+                shouldReduceUnreadFilterState = true,
+                shouldReduceNetworkStatusEffect = false
             ),
             TestInput(
                 MailboxEvent.SelectedLabelChanged(LabelTestData.systemLabels.first()),
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
-                shouldReduceUnreadFilterState = false
+                shouldReduceUnreadFilterState = false,
+                shouldReduceNetworkStatusEffect = false
             ),
             TestInput(
                 MailboxEvent.SelectedLabelCountChanged(UnreadCountersTestData.systemUnreadCounters.first().count),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
-                shouldReduceUnreadFilterState = true
+                shouldReduceUnreadFilterState = true,
+                shouldReduceNetworkStatusEffect = false
+            ),
+            TestInput(
+                MailboxEvent.NetworkStatusRefreshed(NetworkStatus.Disconnected),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceNetworkStatusEffect = true
             )
         )
 
@@ -211,6 +236,7 @@ internal class MailboxReducerTest(
         val operation: MailboxOperation,
         val shouldReduceMailboxListState: Boolean,
         val shouldReduceTopAppBarState: Boolean,
-        val shouldReduceUnreadFilterState: Boolean
+        val shouldReduceUnreadFilterState: Boolean,
+        val shouldReduceNetworkStatusEffect: Boolean
     )
 }
