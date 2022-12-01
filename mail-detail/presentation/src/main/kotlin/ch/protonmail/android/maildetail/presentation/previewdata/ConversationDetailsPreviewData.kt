@@ -51,6 +51,7 @@ object ConversationDetailsPreviewData {
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
         ),
+        dismiss = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -58,6 +59,7 @@ object ConversationDetailsPreviewData {
         conversationState = ConversationDetailMetadataState.Error(TextMessageSample.UnknownError),
         messagesState = ConversationDetailsMessagesState.Loading,
         bottomBarState = BottomBarState.Loading,
+        dismiss = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -65,6 +67,7 @@ object ConversationDetailsPreviewData {
         conversationState = ConversationDetailMetadataState.Loading,
         messagesState = ConversationDetailsMessagesState.Error(TextMessageSample.NoNetwork),
         bottomBarState = BottomBarState.Loading,
+        dismiss = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -72,6 +75,7 @@ object ConversationDetailsPreviewData {
         conversationState = ConversationDetailMetadataState.Loading,
         messagesState = ConversationDetailsMessagesState.Loading,
         bottomBarState = BottomBarState.Error.FailedLoadingActions,
+        dismiss = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -79,6 +83,7 @@ object ConversationDetailsPreviewData {
         conversationState = ConversationDetailMetadataState.Loading,
         messagesState = ConversationDetailsMessagesState.Loading,
         bottomBarState = BottomBarState.Loading,
+        dismiss = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -86,6 +91,7 @@ object ConversationDetailsPreviewData {
         conversationState = ConversationDetailMetadataState.Error(TextMessageSample.NotLoggedIn),
         messagesState = ConversationDetailsMessagesState.Error(TextMessageSample.NotLoggedIn),
         bottomBarState = BottomBarState.Loading,
+        dismiss = Effect.empty(),
         error = Effect.empty()
     )
 }

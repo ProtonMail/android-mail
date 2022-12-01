@@ -32,11 +32,12 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 @RunWith(Parameterized::class)
 class ConversationDetailReducerTest(
     @Suppress("unused") private val testName: String,
-    private val operation: ConversationDetailOperation
+    private val testInput: TestInput
 ) {
 
     private val bottomBarReducer = mockk<BottomBarReducer>(relaxed = true)
@@ -50,55 +51,96 @@ class ConversationDetailReducerTest(
 
     @Test
     fun `does call the correct sub-reducers`() {
-        val nextState = reducer.newStateFrom(ConversationDetailState.Loading, operation)
+        with(testInput) {
+            val result = reducer.newStateFrom(ConversationDetailState.Loading, operation)
 
-        if (operation is ConversationDetailOperation.AffectingErrorBar) {
-            verify { messagesReducer wasNot Called }
-            verify { metadataReducer wasNot Called }
-            verify { bottomBarReducer wasNot Called }
-            assertNotNull(nextState.error.consume())
-        }
+            if (reducesMessages) {
+                verify { messagesReducer.newStateFrom(any(), operationAffectingMessages()) }
+            } else {
+                verify { messagesReducer wasNot Called }
+            }
 
-        if (operation is ConversationDetailOperation.AffectingMessages) {
-            verify { messagesReducer.newStateFrom(any(), operation) }
-        } else {
-            verify { messagesReducer wasNot Called }
-        }
+            if (reducesConversation) {
+                verify { metadataReducer.newStateFrom(any(), operationAffectingConversation()) }
+            } else {
+                verify { metadataReducer wasNot Called }
+            }
 
-        if (operation is ConversationDetailOperation.AffectingConversation) {
-            verify { metadataReducer.newStateFrom(any(), operation) }
-        } else {
-            verify { metadataReducer wasNot Called }
-        }
+            if (reducesBottomBar) {
+                verify { bottomBarReducer.newStateFrom(any(), operationAffectingBottomBar().bottomBarEvent) }
+            } else {
+                verify { bottomBarReducer wasNot Called }
+            }
 
-        if (operation is ConversationDetailEvent.ConversationBottomBarEvent) {
-            verify { bottomBarReducer.newStateFrom(any(), operation.bottomBarEvent) }
-        } else {
-            verify { bottomBarReducer wasNot Called }
+            if (reducesDismissEffect) {
+                assertNotNull(result.dismiss.consume())
+            } else {
+                assertNull(result.dismiss.consume())
+            }
+
+            if (reducesErrorBar) {
+                assertNotNull(result.error.consume())
+            } else {
+                assertNull(result.error.consume())
+            }
         }
+    }
+
+    data class TestInput(
+        val operation: ConversationDetailOperation,
+        val reducesConversation: Boolean,
+        val reducesMessages: Boolean,
+        val reducesBottomBar: Boolean,
+        val reducesDismissEffect: Boolean,
+        val reducesErrorBar: Boolean
+    ) {
+
+        fun operationAffectingBottomBar() = operation as ConversationDetailEvent.ConversationBottomBarEvent
+        fun operationAffectingConversation() = operation as ConversationDetailOperation.AffectingConversation
+        fun operationAffectingMessages() = operation as ConversationDetailOperation.AffectingMessages
     }
 
     private companion object {
 
-        private val operations = listOf(
-            ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions),
-            ConversationDetailEvent.ConversationData(ConversationDetailMetadataUiModelSample.WeatherForecast),
-            ConversationDetailEvent.ErrorLoadingContacts,
-            ConversationDetailEvent.ErrorLoadingConversation,
-            ConversationDetailEvent.ErrorLoadingMessages,
-            ConversationDetailEvent.MessagesData(emptyList()),
-            ConversationDetailViewAction.Star,
-            ConversationDetailViewAction.UnStar,
-            ConversationDetailEvent.ErrorAddStar,
-            ConversationDetailEvent.ErrorRemoveStar
+        val actions = listOf(
+            ConversationDetailViewAction.Star affects Conversation,
+            ConversationDetailViewAction.Trash affects Dismiss,
+            ConversationDetailViewAction.UnStar affects Conversation
+        )
+
+        val events = listOf(
+            ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions) affects BottomBar,
+            ConversationDetailEvent.ConversationData(ConversationDetailMetadataUiModelSample.WeatherForecast)
+                affects Conversation,
+            ConversationDetailEvent.ErrorAddStar affects ErrorBar,
+            ConversationDetailEvent.ErrorRemoveStar affects ErrorBar,
+            ConversationDetailEvent.ErrorLoadingConversation affects Conversation,
+            ConversationDetailEvent.ErrorLoadingMessages affects Messages,
+            ConversationDetailEvent.MessagesData(emptyList()) affects Messages
         )
 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
-        fun data() = operations
+        fun data() = (actions + events)
             .map { operation ->
                 val testName = "Operation: $operation"
                 arrayOf(testName, operation)
             }
     }
 }
+
+private infix fun ConversationDetailOperation.affects(entity: Entity) = ConversationDetailReducerTest.TestInput(
+    operation = this,
+    reducesConversation = entity == Conversation,
+    reducesMessages = entity == Messages,
+    reducesBottomBar = entity == BottomBar,
+    reducesDismissEffect = entity == Dismiss,
+    reducesErrorBar = entity == ErrorBar
+)
+
+private sealed interface Entity
+private object Messages : Entity
+private object Conversation : Entity
+private object BottomBar : Entity
+private object Dismiss : Entity
+private object ErrorBar : Entity

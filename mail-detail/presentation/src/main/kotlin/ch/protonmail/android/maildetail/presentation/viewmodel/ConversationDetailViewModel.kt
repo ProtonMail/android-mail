@@ -97,7 +97,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.Star -> starConversation()
             is ConversationDetailViewAction.UnStar -> unStarConversation()
             is ConversationDetailViewAction.MarkUnread -> Timber.d("Mark Unread conversation clicked VM")
-            ConversationDetailViewAction.Trash -> TODO()
+            is ConversationDetailViewAction.Trash -> TODO()
         }.exhaustive
     }
 

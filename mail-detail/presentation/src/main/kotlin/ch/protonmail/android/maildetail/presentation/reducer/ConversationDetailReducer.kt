@@ -25,6 +25,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
@@ -41,7 +42,8 @@ class ConversationDetailReducer @Inject constructor(
         conversationState = currentState.toNewConversationState(operation),
         messagesState = currentState.toNewMessageState(operation),
         bottomBarState = currentState.toNewBottomBarState(operation),
-        error = currentState.toErrorState(operation)
+        error = currentState.toErrorState(operation),
+        dismiss = currentState.toDismissState(operation)
     )
 
     private fun ConversationDetailState.toNewConversationState(operation: ConversationDetailOperation) =
@@ -76,5 +78,9 @@ class ConversationDetailReducer @Inject constructor(
         } else
             error
 
-
+    private fun ConversationDetailState.toDismissState(operation: ConversationDetailOperation) =
+        if (operation is ConversationDetailViewAction.Trash) {
+            Effect.of(Unit)
+        } else
+            dismiss
 }
