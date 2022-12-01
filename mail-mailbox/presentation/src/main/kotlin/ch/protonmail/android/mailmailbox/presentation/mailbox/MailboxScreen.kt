@@ -78,30 +78,25 @@ import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 @Composable
 fun MailboxScreen(
     modifier: Modifier = Modifier,
-    navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
-    openDrawerMenu: () -> Unit,
-    showOfflineSnackbar: () -> Unit,
+    actions: MailboxScreen.Actions,
     viewModel: MailboxViewModel = hiltViewModel()
 ) {
     val mailboxState = rememberAsState(viewModel.state, MailboxViewModel.initialState).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
 
-    val actions = MailboxScreen.Actions(
-        navigateToMailboxItem = navigateToMailboxItem,
+    val completeActions = actions.copy(
         onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
         onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },
         onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
         onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewAction.OpenItemDetails(item)) },
         onOpenSelectionMode = { viewModel.submit(MailboxViewAction.EnterSelectionMode) },
-        onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
-        openDrawerMenu = openDrawerMenu,
-        showOfflineSnackbar = showOfflineSnackbar
+        onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) }
     )
 
     MailboxScreen(
         mailboxState = mailboxState,
         mailboxListItems = mailboxListItems,
-        actions = actions,
+        actions = completeActions,
         modifier = modifier
     )
 

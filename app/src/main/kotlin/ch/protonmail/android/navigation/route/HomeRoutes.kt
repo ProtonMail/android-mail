@@ -52,17 +52,19 @@ internal fun NavGraphBuilder.addMailbox(
 ) {
     composable(route = Destination.Screen.Mailbox.route) {
         MailboxScreen(
-            navigateToMailboxItem = { request ->
-                navController.navigate(
-                    when (request.itemType) {
-                        MailboxItemType.Message -> Destination.Screen.Message(MessageId(request.itemId.value))
-                        MailboxItemType.Conversation ->
-                            Destination.Screen.Conversation(ConversationId(request.itemId.value))
-                    }
-                )
-            },
-            openDrawerMenu = openDrawerMenu,
-            showOfflineSnackbar = showOfflineSnackbar
+            actions = MailboxScreen.Actions.Empty.copy(
+                navigateToMailboxItem = { request ->
+                    navController.navigate(
+                        when (request.itemType) {
+                            MailboxItemType.Message -> Destination.Screen.Message(MessageId(request.itemId.value))
+                            MailboxItemType.Conversation ->
+                                Destination.Screen.Conversation(ConversationId(request.itemId.value))
+                        }
+                    )
+                },
+                openDrawerMenu = openDrawerMenu,
+                showOfflineSnackbar = showOfflineSnackbar
+            )
         )
     }
 }
