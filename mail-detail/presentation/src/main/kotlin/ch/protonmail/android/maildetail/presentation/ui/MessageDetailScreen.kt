@@ -21,6 +21,10 @@ package ch.protonmail.android.maildetail.presentation.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -48,6 +52,7 @@ import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MessageDetailScreen(
     modifier: Modifier = Modifier,
@@ -55,17 +60,33 @@ fun MessageDetailScreen(
     viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
-    MessageDetailScreen(
-        modifier = modifier,
-        state = state,
-        actions = MessageDetailScreen.Actions(
-            onBackClick = onBackClick,
-            onStarClick = { viewModel.submit(MessageViewAction.Star) },
-            onTrashClick = { viewModel.submit(MessageViewAction.Trash) },
-            onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
-            onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) }
+    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val scope = rememberCoroutineScope()
+    ModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetContent = {
+            MoveToBottomSheetContent(
+                folderList = listOf(),
+                onFolderSelected = {})
+        }
+    ) {
+        MessageDetailScreen(
+            modifier = modifier,
+            state = state,
+            actions = MessageDetailScreen.Actions(
+                onBackClick = onBackClick,
+                onStarClick = { viewModel.submit(MessageViewAction.Star) },
+                onTrashClick = { viewModel.submit(MessageViewAction.Trash) },
+                onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
+                onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) },
+                onMoveClick = {
+                    scope.launch {
+                        bottomSheetState.show()
+                    }
+                }
+            )
         )
-    )
+    }
 }
 
 @Composable
@@ -113,7 +134,7 @@ fun MessageDetailScreen(
                     onMarkUnread = actions.onUnreadClick,
                     onStar = { Timber.d("message onStar clicked") },
                     onUnstar = { Timber.d("message onUnstar clicked") },
-                    onMove = { Timber.d("message onMove clicked") },
+                    onMove = actions.onMoveClick,
                     onLabel = { Timber.d("message onLabel clicked") },
                     onTrash = actions.onTrashClick,
                     onDelete = { Timber.d("message onDelete clicked") },
@@ -168,7 +189,8 @@ object MessageDetailScreen {
         val onStarClick: () -> Unit,
         val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
-        val onUnreadClick: () -> Unit
+        val onUnreadClick: () -> Unit,
+        val onMoveClick: () -> Unit
     ) {
 
         companion object {
@@ -178,7 +200,8 @@ object MessageDetailScreen {
                 onStarClick = {},
                 onTrashClick = {},
                 onUnStarClick = {},
-                onUnreadClick = {}
+                onUnreadClick = {},
+                onMoveClick = {}
             )
         }
     }
