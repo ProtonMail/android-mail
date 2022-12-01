@@ -41,10 +41,6 @@ import me.proton.core.network.domain.isRetryable
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
-internal const val KEY_REMOVE_LABEL_WORK_RAW_USER_ID = "removeLabelWorkParamUserId"
-internal const val KEY_REMOVE_LABEL_WORK_RAW_MESSAGE_ID = "removeLabelWorkParamMessageId"
-internal const val KEY_REMOVE_LABEL_WORK_RAW_LABEL_ID = "removeLabelWorkParamLabelId"
-
 @HiltWorker
 class RemoveLabelMessageWorker @AssistedInject constructor(
     @Assisted context: Context,
@@ -54,9 +50,9 @@ class RemoveLabelMessageWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        val userId = inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_USER_ID)?.takeIfNotBlank()
-        val messageId = inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_MESSAGE_ID)?.takeIfNotBlank()
-        val labelId = inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_LABEL_ID)?.takeIfNotBlank()
+        val userId = inputData.getString(RawUserIdKey)?.takeIfNotBlank()
+        val messageId = inputData.getString(RawMessageIdKey)?.takeIfNotBlank()
+        val labelId = inputData.getString(RawLabelIdKey)?.takeIfNotBlank()
 
         if (userId == null || messageId == null || labelId == null) {
             return Result.failure()
@@ -82,6 +78,13 @@ class RemoveLabelMessageWorker @AssistedInject constructor(
         }
     }
 
+    companion object {
+
+        const val RawUserIdKey = "removeLabelWorkParamUserId"
+        const val RawMessageIdKey = "removeLabelWorkParamMessageId"
+        const val RawLabelIdKey = "removeLabelWorkParamLabelId"
+    }
+
     class Enqueuer @Inject constructor(private val workManager: WorkManager) {
 
         fun enqueue(
@@ -94,9 +97,9 @@ class RemoveLabelMessageWorker @AssistedInject constructor(
                 .build()
 
             val data = workDataOf(
-                KEY_REMOVE_LABEL_WORK_RAW_USER_ID to userId.id,
-                KEY_REMOVE_LABEL_WORK_RAW_MESSAGE_ID to messageId.id,
-                KEY_REMOVE_LABEL_WORK_RAW_LABEL_ID to labelId.id
+                RawUserIdKey to userId.id,
+                RawMessageIdKey to messageId.id,
+                RawLabelIdKey to labelId.id
             )
 
             val request = OneTimeWorkRequestBuilder<RemoveLabelMessageWorker>()

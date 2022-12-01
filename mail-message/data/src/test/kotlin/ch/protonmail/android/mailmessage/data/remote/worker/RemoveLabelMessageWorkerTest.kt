@@ -63,9 +63,9 @@ class RemoveLabelMessageWorkerTest {
     }
     private val parameters: WorkerParameters = mockk {
         every { getTaskExecutor() } returns mockk(relaxed = true)
-        every { inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_USER_ID) } returns userId.id
-        every { inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_MESSAGE_ID) } returns messageId.id
-        every { inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_LABEL_ID) } returns labelId.id
+        every { inputData.getString(RemoveLabelMessageWorker.RawUserIdKey) } returns userId.id
+        every { inputData.getString(RemoveLabelMessageWorker.RawMessageIdKey) } returns messageId.id
+        every { inputData.getString(RemoveLabelMessageWorker.RawLabelIdKey) } returns labelId.id
     }
     private val context: Context = mockk()
 
@@ -110,9 +110,9 @@ class RemoveLabelMessageWorkerTest {
         val workSpec = requestSlot.captured.workSpec
         val constraints = workSpec.constraints
         val inputData = workSpec.input
-        val actualUserId = inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_USER_ID)
-        val actualMessageId = inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_MESSAGE_ID)
-        val actualLabelId = inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_LABEL_ID)
+        val actualUserId = inputData.getString(RemoveLabelMessageWorker.RawUserIdKey)
+        val actualMessageId = inputData.getString(RemoveLabelMessageWorker.RawMessageIdKey)
+        val actualLabelId = inputData.getString(RemoveLabelMessageWorker.RawLabelIdKey)
         assertEquals(userId.id, actualUserId)
         assertEquals(messageId.id, actualMessageId)
         assertEquals(labelId.id, actualLabelId)
@@ -130,7 +130,7 @@ class RemoveLabelMessageWorkerTest {
     @Test
     fun `remove label worker returns failure when userid parameter is missing`() = runTest {
         // Given
-        every { parameters.inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_USER_ID) } returns null
+        every { parameters.inputData.getString(RemoveLabelMessageWorker.RawUserIdKey) } returns null
         // When
         val result = removeLabelMessageWorker.doWork()
         // Then
@@ -141,7 +141,7 @@ class RemoveLabelMessageWorkerTest {
     @Test
     fun `remove label worker returns failure when messageId parameter is empty`() = runTest {
         // Given
-        every { parameters.inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_MESSAGE_ID) } returns ""
+        every { parameters.inputData.getString(RemoveLabelMessageWorker.RawMessageIdKey) } returns ""
         // When
         val result = removeLabelMessageWorker.doWork()
         // Then
@@ -152,7 +152,7 @@ class RemoveLabelMessageWorkerTest {
     @Test
     fun `remove label worker returns failure when labelId parameter is blank`() = runTest {
         // Given
-        every { parameters.inputData.getString(KEY_REMOVE_LABEL_WORK_RAW_LABEL_ID) } returns " "
+        every { parameters.inputData.getString(RemoveLabelMessageWorker.RawLabelIdKey) } returns " "
         // When
         val result = removeLabelMessageWorker.doWork()
         // Then

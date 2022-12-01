@@ -63,9 +63,9 @@ internal class AddLabelMessageWorkerTest {
     }
     private val parameters: WorkerParameters = mockk {
         every { getTaskExecutor() } returns mockk(relaxed = true)
-        every { inputData.getString(KEY_ADD_LABEL_WORK_RAW_USER_ID) } returns userId.id
-        every { inputData.getString(KEY_ADD_LABEL_WORK_RAW_MESSAGE_ID) } returns messageId.id
-        every { inputData.getString(KEY_ADD_LABEL_WORK_RAW_LABEL_ID) } returns labelId.id
+        every { inputData.getString(AddLabelMessageWorker.RawUserIdKey) } returns userId.id
+        every { inputData.getString(AddLabelMessageWorker.RawMessageIdKey) } returns messageId.id
+        every { inputData.getString(AddLabelMessageWorker.RawLabelIdKey) } returns labelId.id
     }
     private val context: Context = mockk()
 
@@ -110,9 +110,9 @@ internal class AddLabelMessageWorkerTest {
         val workSpec = requestSlot.captured.workSpec
         val constraints = workSpec.constraints
         val inputData = workSpec.input
-        val actualUserId = inputData.getString(KEY_ADD_LABEL_WORK_RAW_USER_ID)
-        val actualMessageId = inputData.getString(KEY_ADD_LABEL_WORK_RAW_MESSAGE_ID)
-        val actualLabelId = inputData.getString(KEY_ADD_LABEL_WORK_RAW_LABEL_ID)
+        val actualUserId = inputData.getString(AddLabelMessageWorker.RawUserIdKey)
+        val actualMessageId = inputData.getString(AddLabelMessageWorker.RawMessageIdKey)
+        val actualLabelId = inputData.getString(AddLabelMessageWorker.RawLabelIdKey)
         assertEquals(userId.id, actualUserId)
         assertEquals(messageId.id, actualMessageId)
         assertEquals(labelId.id, actualLabelId)
@@ -130,7 +130,7 @@ internal class AddLabelMessageWorkerTest {
     @Test
     fun `worker returns failure when userid worker parameter is missing`() = runTest {
         // Given
-        every { parameters.inputData.getString(KEY_ADD_LABEL_WORK_RAW_USER_ID) } returns null
+        every { parameters.inputData.getString(AddLabelMessageWorker.RawUserIdKey) } returns null
         // When
         val result = addLabelMessageWorker.doWork()
         // Then
@@ -141,7 +141,7 @@ internal class AddLabelMessageWorkerTest {
     @Test
     fun `worker returns failure when messageId worker parameter is empty`() = runTest {
         // Given
-        every { parameters.inputData.getString(KEY_ADD_LABEL_WORK_RAW_MESSAGE_ID) } returns ""
+        every { parameters.inputData.getString(AddLabelMessageWorker.RawMessageIdKey) } returns ""
         // When
         val result = addLabelMessageWorker.doWork()
         // Then
@@ -152,7 +152,7 @@ internal class AddLabelMessageWorkerTest {
     @Test
     fun `worker returns failure when labelId worker parameter is blank`() = runTest {
         // Given
-        every { parameters.inputData.getString(KEY_ADD_LABEL_WORK_RAW_LABEL_ID) } returns " "
+        every { parameters.inputData.getString(AddLabelMessageWorker.RawLabelIdKey) } returns " "
         // When
         val result = addLabelMessageWorker.doWork()
         // Then

@@ -235,14 +235,16 @@ class MessageLocalDataSourceImplTest {
     @Test
     fun `add label ignores inserting existing labels`() = runTest {
         // Given
-        val message = MessageTestData.message
         val labelId = LabelId("0")
+        val message = MessageTestData.message.copy(
+            labelIds = listOf(labelId)
+        )
         // When
         messageLocalDataSource.addLabel(UserIdTestData.userId, MessageId(message.id), labelId)
         // Then
         coVerifySequence {
-            labelDao.deleteAll(UserIdTestData.userId, listOf(message).map { MessageId(it.id) })
-            labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, LabelId("0"), MessageId(message.id)))
+            labelDao.deleteAll(UserIdTestData.userId, listOf(message.messageId))
+            labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, labelId, MessageId(message.id)))
         }
     }
 
