@@ -74,6 +74,9 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailEvent.ErrorRemoveStar -> Effect.of(
                     TextUiModel(R.string.error_unstar_operation_failed)
                 )
+                is ConversationDetailEvent.ErrorMovingToTrash -> Effect.of(
+                    TextUiModel(R.string.error_move_to_trash_failed)
+                )
             }.exhaustive
         } else
             error

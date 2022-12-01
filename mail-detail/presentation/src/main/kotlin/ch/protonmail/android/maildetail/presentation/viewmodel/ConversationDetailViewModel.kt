@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.MoveConversationToTrash
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
@@ -68,6 +69,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val actionUiModelMapper: ActionUiModelMapper,
     private val conversationMessageMapper: ConversationDetailMessageUiModelMapper,
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper,
+    private val moveConversationToTrash: MoveConversationToTrash,
     private val observeContacts: ObserveContacts,
     private val observeConversation: ObserveConversation,
     private val observeConversationMessages: ObserveConversationMessagesWithLabels,
@@ -97,7 +99,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.Star -> starConversation()
             is ConversationDetailViewAction.UnStar -> unStarConversation()
             is ConversationDetailViewAction.MarkUnread -> Timber.d("Mark Unread conversation clicked VM")
-            is ConversationDetailViewAction.Trash -> TODO()
+            is ConversationDetailViewAction.Trash -> moveConversationToTrash()
         }.exhaustive
     }
 
@@ -159,6 +161,16 @@ class ConversationDetailViewModel @Inject constructor(
 
     private suspend fun emitNewStateFrom(event: ConversationDetailOperation) {
         mutableDetailState.emit(reducer.newStateFrom(state.value, event))
+    }
+
+    private fun moveConversationToTrash() {
+        primaryUserId.mapLatest { userId ->
+            moveConversationToTrash(userId, conversationId).fold(
+                ifLeft = { ConversationDetailEvent.ErrorMovingToTrash },
+                ifRight = { ConversationDetailViewAction.Trash }
+            )
+        }.onEach(::emitNewStateFrom)
+            .launchIn(viewModelScope)
     }
 
     private fun starConversation() {

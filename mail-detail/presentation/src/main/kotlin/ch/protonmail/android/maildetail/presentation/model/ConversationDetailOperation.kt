@@ -49,6 +49,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
 
     object ErrorAddStar : ConversationDetailEvent, ConversationDetailOperation.AffectingErrorBar
     object ErrorRemoveStar : ConversationDetailEvent, ConversationDetailOperation.AffectingErrorBar
+    object ErrorMovingToTrash : ConversationDetailEvent, ConversationDetailOperation.AffectingErrorBar
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {

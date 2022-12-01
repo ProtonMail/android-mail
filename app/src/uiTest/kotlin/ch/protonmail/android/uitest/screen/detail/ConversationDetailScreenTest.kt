@@ -19,8 +19,10 @@
 package ch.protonmail.android.uitest.screen.detail
 
 import androidx.compose.ui.test.junit4.createComposeRule
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -244,6 +246,21 @@ class ConversationDetailScreenTest {
 
         // then
         assertTrue(trashClicked)
+    }
+
+    @Test
+    fun whenErrorThenErrorMessageIsDisplayed() {
+        // given
+        val message = TextUiModel("Something terrible happened!")
+        val state = ConversationDetailsPreviewData.Success.copy(
+            error = Effect.of(message)
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify { errorMessageIsDisplayed(message) }
     }
 
     private fun setupScreen(

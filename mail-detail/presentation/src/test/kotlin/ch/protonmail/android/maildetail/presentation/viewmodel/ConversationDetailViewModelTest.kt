@@ -40,6 +40,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.maildetail.domain.usecase.MoveConversationToTrash
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
@@ -77,9 +78,12 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ConversationDetailViewModelTest {
+
+    private val conversationId = ConversationIdSample.WeatherForecast
 
     private val actionUiModelMapper = ActionUiModelMapper()
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper = mockk {
@@ -92,6 +96,7 @@ class ConversationDetailViewModelTest {
         every { toUiModel(messageWithLabels = MessageWithLabelsSample.SepWeatherForecast, contacts = any()) } returns
             ConversationDetailMessageUiModelSample.SepWeatherForecast
     }
+    private val moveToTrash: MoveConversationToTrash = mockk()
     private val observeContacts: ObserveContacts = mockk {
         every { this@mockk(userId = UserIdSample.Primary) } returns flowOf(emptyList<Contact>().right())
     }
@@ -119,8 +124,7 @@ class ConversationDetailViewModelTest {
         every { newStateFrom(currentState = any(), operation = any()) } returns ConversationDetailState.Loading
     }
     private val savedStateHandle: SavedStateHandle = mockk {
-        every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns
-            ConversationIdSample.WeatherForecast.id
+        every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns conversationId.id
     }
     private val starConversation: StarConversation = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns ConversationTestData.starredConversation.right()
@@ -135,6 +139,7 @@ class ConversationDetailViewModelTest {
             actionUiModelMapper = actionUiModelMapper,
             conversationMessageMapper = conversationMessageMapper,
             conversationMetadataMapper = conversationMetadataMapper,
+            moveConversationToTrash = moveToTrash,
             observeContacts = observeContacts,
             observeConversation = observeConversation,
             observeConversationMessages = observeConversationMessagesWithLabels,
@@ -499,6 +504,44 @@ class ConversationDetailViewModelTest {
             // Then
             assertEquals(TextUiModel(string.error_unstar_operation_failed), lastEmittedItem().error.consume())
             verify(exactly = 1) { reducer.newStateFrom(any(), ConversationDetailEvent.ErrorRemoveStar) }
+        }
+    }
+
+    @Test
+    fun `error moving to trash is emitted when action fails`() = runTest {
+        // Given
+        coEvery { moveToTrash(UserIdSample.Primary, conversationId) } returns DataError.Local.NoDataCached.left()
+        every {
+            reducer.newStateFrom(ConversationDetailState.Loading, ConversationDetailEvent.ErrorMovingToTrash)
+        } returns ConversationDetailState.Loading.copy(
+            error = Effect.of(TextUiModel(string.error_move_to_trash_failed))
+        )
+        viewModel.state.test {
+            initialStateEmitted()
+            // When
+            viewModel.submit(ConversationDetailViewAction.Trash)
+            // Then
+            assertEquals(TextUiModel(string.error_move_to_trash_failed), awaitItem().error.consume())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `dismiss is emitted when success moving to trash`() = runTest {
+        // Given
+        coEvery { moveToTrash(UserIdSample.Primary, conversationId) } returns ConversationSample.WeatherForecast.right()
+        every {
+            reducer.newStateFrom(ConversationDetailState.Loading, ConversationDetailViewAction.Trash)
+        } returns ConversationDetailState.Loading.copy(
+            dismiss = Effect.of(Unit)
+        )
+        viewModel.state.test {
+            initialStateEmitted()
+            // When
+            viewModel.submit(ConversationDetailViewAction.Trash)
+            // Then
+            assertNotNull(awaitItem().dismiss.consume())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 

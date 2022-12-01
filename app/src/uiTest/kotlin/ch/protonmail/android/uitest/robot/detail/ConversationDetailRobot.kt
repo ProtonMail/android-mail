@@ -34,6 +34,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollap
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
+import ch.protonmail.android.uitest.util.onNodeWithText
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
@@ -59,6 +60,11 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
 
         fun draftIconAvatarIsDisplayed() {
             composeTestRule.onNodeWithTag(Avatar.DraftTestTag)
+                .assertIsDisplayed()
+        }
+
+        fun errorMessageIsDisplayed(message: TextUiModel) {
+            composeTestRule.onNodeWithText(message)
                 .assertIsDisplayed()
         }
 
