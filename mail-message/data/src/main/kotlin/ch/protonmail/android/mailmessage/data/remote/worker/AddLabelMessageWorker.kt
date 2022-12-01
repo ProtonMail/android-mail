@@ -29,7 +29,7 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
-import ch.protonmail.android.mailmessage.data.remote.resource.LabelBody
+import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -60,7 +60,7 @@ class AddLabelMessageWorker @AssistedInject constructor(
 
         val result = apiProvider.get<MessageApi>(UserId(userId)).invoke {
             addLabel(
-                LabelBody(
+                PutLabelBody(
                     labelId = labelId,
                     messageIds = listOf(messageId)
                 )

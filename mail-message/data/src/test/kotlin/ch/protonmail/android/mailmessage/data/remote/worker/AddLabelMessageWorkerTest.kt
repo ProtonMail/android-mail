@@ -28,7 +28,7 @@ import androidx.work.WorkerParameters
 import arrow.core.right
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
-import ch.protonmail.android.mailmessage.data.remote.resource.LabelBody
+import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
 import ch.protonmail.android.mailmessage.data.sample.PutLabelResponseSample
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.testdata.message.MessageTestData
@@ -124,7 +124,7 @@ internal class AddLabelMessageWorkerTest {
         // When
         addLabelMessageWorker.doWork()
         // Then
-        coVerify { messageApi.addLabel(LabelBody(labelId.id, listOf(messageId.id))) }
+        coVerify { messageApi.addLabel(PutLabelBody(labelId.id, listOf(messageId.id))) }
     }
 
     @Test
