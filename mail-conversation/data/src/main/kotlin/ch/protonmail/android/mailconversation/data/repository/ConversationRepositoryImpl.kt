@@ -19,6 +19,9 @@
 package ch.protonmail.android.mailconversation.data.repository
 
 import arrow.core.Either
+import arrow.core.getOrElse
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -28,6 +31,7 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithCont
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import com.dropbox.android.external.store4.Fetcher
@@ -149,8 +153,25 @@ class ConversationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun moveToTrash(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> =
-        DataError.Local.NoDataCached.left()
+    override suspend fun moveToTrash(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> {
+        val conversation = observeConversation(userId, conversationId).first()
+            .getOrElse { return DataError.Local.NoDataCached.left() }
+
+        val updatedConversation = run {
+            val persistentLabels = listOf(
+                SystemLabelId.AllDrafts.labelId,
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.AllSent.labelId
+            )
+            conversation.copy(
+                labels = conversation.labels.filter { conversationLabel ->
+                    conversationLabel.labelId in persistentLabels
+                }
+            )
+        }
+        conversationLocalDataSource.upsertConversation(userId, updatedConversation)
+        return addLabel(userId, conversationId, SystemLabelId.Trash.labelId)
+    }
 
     private suspend fun fetchConversations(
         userId: UserId,

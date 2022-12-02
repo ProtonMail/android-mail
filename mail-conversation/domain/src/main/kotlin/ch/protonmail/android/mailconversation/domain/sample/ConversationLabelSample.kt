@@ -26,6 +26,39 @@ import me.proton.core.label.domain.entity.LabelId
 
 object ConversationLabelSample {
 
+    object WeatherForecast {
+
+        val AllDrafts = build(
+            conversationId = ConversationIdSample.WeatherForecast,
+            labelId = LabelIdSample.AllDraft
+        )
+
+        val AllMail = build(
+            conversationId = ConversationIdSample.WeatherForecast,
+            labelId = LabelIdSample.AllMail
+        )
+
+        val AllSent = build(
+            conversationId = ConversationIdSample.WeatherForecast,
+            labelId = LabelIdSample.AllSent
+        )
+
+        val Inbox = build(
+            conversationId = ConversationIdSample.WeatherForecast,
+            labelId = LabelIdSample.Inbox
+        )
+
+        val News = build(
+            conversationId = ConversationIdSample.WeatherForecast,
+            labelId = LabelIdSample.News
+        )
+
+        val Trash = build(
+            conversationId = ConversationIdSample.WeatherForecast,
+            labelId = LabelIdSample.Trash
+        )
+    }
+
     fun build(
         conversationId: ConversationId = ConversationIdSample.build(),
         labelId: LabelId = LabelIdSample.build()

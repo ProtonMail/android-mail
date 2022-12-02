@@ -20,10 +20,8 @@ package ch.protonmail.android.mailconversation.data
 
 import java.io.IOException
 import app.cash.turbine.test
-import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.data.repository.ConversationRepositoryImpl
@@ -31,8 +29,12 @@ import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
+import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
+import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.conversation.ConversationTestData
@@ -44,6 +46,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
@@ -54,7 +57,6 @@ import kotlin.test.assertEquals
 class ConversationRepositoryImplTest {
 
     private val userId = UserIdSample.Primary
-    private val conversationId = ConversationIdSample.WeatherForecast
 
     private val conversationLocalDataSource = mockk<ConversationLocalDataSource>(relaxUnitFun = true) {
         coEvery { this@mockk.getConversations(any(), any()) } returns emptyList()
@@ -408,11 +410,69 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `move to trash returns error`() = runTest {
-        // When
-        val actual = conversationRepository.moveToTrash(userId, conversationId)
+    fun `move to trash add the trash label to the conversation`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val conversation = ConversationSample.WeatherForecast.copy(
+            labels = listOf(ConversationLabelSample.WeatherForecast.AllDrafts)
+        )
+        val trashedConversation = ConversationSample.WeatherForecast.copy(
+            labels = listOf(
+                ConversationLabelSample.WeatherForecast.AllDrafts,
+                ConversationLabelSample.WeatherForecast.Trash
+            )
+        )
+        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(conversation)
+        coEvery { conversationLocalDataSource.addLabel(userId, conversationId, SystemLabelId.Trash.labelId) } returns
+            trashedConversation.right()
+        coEvery { messageLocalDataSource.addLabel(userId, any(), SystemLabelId.Trash.labelId) } returns
+            MessageSample.AugWeatherForecast.right()
 
-        // Then
-        assertEquals(DataError.Local.NoDataCached.left(), actual)
+        // when
+        val result = conversationRepository.moveToTrash(userId, conversationId)
+
+        // then
+        assertEquals(trashedConversation.right(), result)
+    }
+
+    @Test
+    fun `move to trash removes all the labels from conversation, except AllMail, AllDraft and AllSent`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+
+        val conversation = ConversationSample.WeatherForecast.copy(
+            labels = listOf(
+                ConversationLabelSample.WeatherForecast.AllDrafts,
+                ConversationLabelSample.WeatherForecast.AllMail,
+                ConversationLabelSample.WeatherForecast.AllSent,
+                ConversationLabelSample.WeatherForecast.Inbox,
+                ConversationLabelSample.WeatherForecast.News
+            )
+        )
+        val conversationWithoutLabels = ConversationSample.WeatherForecast.copy(
+            labels = listOf(
+                ConversationLabelSample.WeatherForecast.AllDrafts,
+                ConversationLabelSample.WeatherForecast.AllMail,
+                ConversationLabelSample.WeatherForecast.AllSent
+            )
+        )
+        val trashedConversation = conversationWithoutLabels.copy(
+            labels = conversationWithoutLabels.labels + ConversationLabelSample.WeatherForecast.Trash
+        )
+        val conversationFlow = MutableStateFlow(conversation)
+        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns conversationFlow
+        coEvery { conversationLocalDataSource.upsertConversation(userId, conversationWithoutLabels) } coAnswers {
+            conversationFlow.emit(conversationWithoutLabels)
+        }
+        coEvery { conversationLocalDataSource.addLabel(userId, conversationId, SystemLabelId.Trash.labelId) } returns
+            trashedConversation.right()
+        coEvery { messageLocalDataSource.addLabel(userId, any(), SystemLabelId.Trash.labelId) } returns
+            MessageSample.AugWeatherForecast.right()
+
+        // when
+        val result = conversationRepository.moveToTrash(userId, conversationId)
+
+        // then
+        assertEquals(trashedConversation.right(), result)
     }
 }

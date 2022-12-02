@@ -23,6 +23,8 @@ import me.proton.core.label.domain.entity.LabelId
 object LabelIdSample {
 
     val AllDraft = LabelId("1")
+    val AllMail = LabelId("5")
+    val AllSent = LabelId("2")
     val Archive = LabelId("archive")
     val Document = LabelId("document")
     val Inbox = LabelId("0")
