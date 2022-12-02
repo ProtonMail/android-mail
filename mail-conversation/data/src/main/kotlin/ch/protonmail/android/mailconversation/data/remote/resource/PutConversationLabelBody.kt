@@ -16,13 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.data.remote.resource
+package ch.protonmail.android.mailconversation.data.remote.resource
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ConversationLabelBody(
+data class PutConversationLabelBody(
     @SerialName("LabelID")
     val labelId: String,
     @SerialName("IDs")

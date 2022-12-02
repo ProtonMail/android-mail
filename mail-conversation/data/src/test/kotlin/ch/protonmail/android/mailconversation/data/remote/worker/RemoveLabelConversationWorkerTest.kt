@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.data.remote.worker
+package ch.protonmail.android.mailconversation.data.remote.worker
 
 import java.net.UnknownHostException
 import android.content.Context
@@ -27,9 +27,10 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailconversation.data.remote.ConversationApi
+import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
+import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
-import ch.protonmail.android.mailmessage.data.remote.MessageApi
-import ch.protonmail.android.mailmessage.data.remote.resource.ConversationLabelBody
 import ch.protonmail.android.mailmessage.data.sample.PutLabelResponseSample
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.testdata.conversation.ConversationTestData
@@ -66,24 +67,28 @@ internal class RemoveLabelConversationWorkerTest {
     }
     private val parameters: WorkerParameters = mockk {
         every { getTaskExecutor() } returns mockk(relaxed = true)
-        every { inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_USER_ID) } returns userId.id
-        every { inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_CONV_ID) } returns conversationId.id
-        every { inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_LABEL_ID) } returns labelId.id
-        every { inputData.getStringArray(KEY_REMOVE_LABEL_CONV_WORK_RAW_MSG_IDS) } returns arrayOf("123", "124")
+        every { inputData.getString(RemoveLabelConversationWorker.RawUserIdKey) } returns userId.id
+        every { inputData.getString(RemoveLabelConversationWorker.RawConversationIdKey) } returns conversationId.id
+        every { inputData.getString(RemoveLabelConversationWorker.RawLabelIdKey) } returns labelId.id
+        every { inputData.getStringArray(RemoveLabelConversationWorker.RawAffectedMessageIds) } returns arrayOf(
+            "123",
+            "124"
+        )
     }
     private val context: Context = mockk()
 
     private val sessionProvider = mockk<SessionProvider> {
         coEvery { getSessionId(userId) } returns SessionId("testSessionId")
     }
-    private val messageApi = mockk<MessageApi> {
+    private val messageApi = mockk<ConversationApi> {
         coEvery {
-            removeLabel(any<ConversationLabelBody>())
+            removeLabel(any())
         } returns PutLabelResponseSample.putLabelResponseForOneMessage
     }
     private val apiManagerFactory = mockk<ApiManagerFactory> {
-        every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
+        every { create(any(), ConversationApi::class) } returns TestApiManager(messageApi)
     }
+    private val conversationLocalDataSource = mockk<ConversationLocalDataSource>()
     private val messageLocalDataSource = mockk<MessageLocalDataSource>()
 
     private lateinit var apiProvider: ApiProvider
@@ -93,7 +98,7 @@ internal class RemoveLabelConversationWorkerTest {
     fun setUp() {
         apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
         removeLabelMessageWorker = RemoveLabelConversationWorker(
-            context, parameters, apiProvider, messageLocalDataSource
+            context, parameters, apiProvider, conversationLocalDataSource, messageLocalDataSource
         )
     }
 
@@ -110,12 +115,12 @@ internal class RemoveLabelConversationWorkerTest {
         val workSpec = requestSlot.captured.workSpec
         val constraints = workSpec.constraints
         val inputData = workSpec.input
-        val actualUserId = inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_USER_ID)
-        val actualMessageId = inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_CONV_ID)
-        val actualLabelId = inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_LABEL_ID)
-        val actualMessageIds = inputData.getStringArray(KEY_REMOVE_LABEL_CONV_WORK_RAW_MSG_IDS)
+        val actualUserId = inputData.getString(RemoveLabelConversationWorker.RawUserIdKey)
+        val actualConversationId = inputData.getString(RemoveLabelConversationWorker.RawConversationIdKey)
+        val actualLabelId = inputData.getString(RemoveLabelConversationWorker.RawLabelIdKey)
+        val actualMessageIds = inputData.getStringArray(RemoveLabelConversationWorker.RawAffectedMessageIds)
         assertEquals(userId.id, actualUserId)
-        assertEquals(conversationId.id, actualMessageId)
+        assertEquals(conversationId.id, actualConversationId)
         assertEquals(labelId.id, actualLabelId)
         assertEquals(messageIds, actualMessageIds?.toList()?.map { MessageId(it) })
         assertEquals(NetworkType.CONNECTED, constraints.requiredNetworkType)
@@ -126,13 +131,13 @@ internal class RemoveLabelConversationWorkerTest {
         // When
         removeLabelMessageWorker.doWork()
         // Then
-        coVerify { messageApi.removeLabel(ConversationLabelBody(labelId.id, listOf(conversationId.id))) }
+        coVerify { messageApi.removeLabel(PutConversationLabelBody(labelId.id, listOf(conversationId.id))) }
     }
 
     @Test
     fun `worker returns failure when userid worker parameter is missing`() = runTest {
         // Given
-        every { parameters.inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_USER_ID) } returns null
+        every { parameters.inputData.getString(RemoveLabelConversationWorker.RawUserIdKey) } returns null
         // When
         val result = removeLabelMessageWorker.doWork()
         // Then
@@ -141,9 +146,9 @@ internal class RemoveLabelConversationWorkerTest {
     }
 
     @Test
-    fun `worker returns failure when messageId worker parameter is empty`() = runTest {
+    fun `worker returns failure when conversationId worker parameter is empty`() = runTest {
         // Given
-        every { parameters.inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_CONV_ID) } returns ""
+        every { parameters.inputData.getString(RemoveLabelConversationWorker.RawConversationIdKey) } returns ""
         // When
         val result = removeLabelMessageWorker.doWork()
         // Then
@@ -154,7 +159,7 @@ internal class RemoveLabelConversationWorkerTest {
     @Test
     fun `worker returns failure when labelId worker parameter is blank`() = runTest {
         // Given
-        every { parameters.inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_LABEL_ID) } returns " "
+        every { parameters.inputData.getString(RemoveLabelConversationWorker.RawLabelIdKey) } returns " "
         // When
         val result = removeLabelMessageWorker.doWork()
         // Then
@@ -173,7 +178,7 @@ internal class RemoveLabelConversationWorkerTest {
     @Test
     fun `worker returns retry when api call fails due to connection error`() = runTest {
         // Given
-        coEvery { messageApi.removeLabel(any<ConversationLabelBody>()) } throws UnknownHostException()
+        coEvery { messageApi.removeLabel(any()) } throws UnknownHostException()
         // When
         val result = removeLabelMessageWorker.doWork()
         // Then
@@ -183,19 +188,19 @@ internal class RemoveLabelConversationWorkerTest {
     @Test
     fun `worker returns failure when api call fails due to serializationException error`() = runTest {
         // Given
-        coEvery { messageApi.removeLabel(any<ConversationLabelBody>()) } throws SerializationException()
+        coEvery { messageApi.removeLabel(any()) } throws SerializationException()
         coEvery {
-            messageLocalDataSource.addLabel(
-                userId,
-                any(),
-                labelId
-            )
+            messageLocalDataSource.addLabel(userId, any(), labelId)
         } returns MessageTestData.message.right()
+        coEvery {
+            conversationLocalDataSource.addLabel(userId, conversationId, labelId)
+        } returns ConversationTestData.conversation.right()
         // When
         val result = removeLabelMessageWorker.doWork()
         // Then
         assertEquals(Result.failure(), result)
         coVerifySequence {
+            conversationLocalDataSource.addLabel(userId, conversationId, labelId)
             messageLocalDataSource.addLabel(userId, MessageId("123"), labelId)
             messageLocalDataSource.addLabel(userId, MessageId("124"), labelId)
         }

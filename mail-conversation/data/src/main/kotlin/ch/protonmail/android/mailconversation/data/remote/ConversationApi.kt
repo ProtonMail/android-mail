@@ -18,10 +18,14 @@
 
 package ch.protonmail.android.mailconversation.data.remote
 
+import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationResponse
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
+import ch.protonmail.android.mailmessage.data.remote.response.PutLabelResponse
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -50,7 +54,18 @@ interface ConversationApi : BaseRetrofitApi {
         @Path("conversationId") conversationId: String
     ): GetConversationResponse
 
+    @PUT("mail/v4/conversations/label")
+    suspend fun addLabel(
+        @Body labelBody: PutConversationLabelBody
+    ): PutLabelResponse
+
+    @PUT("mail/v4/conversations/unlabel")
+    suspend fun removeLabel(
+        @Body labelBody: PutConversationLabelBody
+    ): PutLabelResponse
+
     companion object {
+
         const val maxPageSize = 150
     }
 }

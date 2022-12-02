@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.data.remote.worker
+package ch.protonmail.android.mailconversation.data.remote.worker
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
@@ -28,9 +28,10 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailconversation.data.remote.ConversationApi
+import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
+import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
-import ch.protonmail.android.mailmessage.data.remote.MessageApi
-import ch.protonmail.android.mailmessage.data.remote.resource.ConversationLabelBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -42,33 +43,29 @@ import me.proton.core.network.domain.isRetryable
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
-internal const val KEY_REMOVE_LABEL_CONV_WORK_RAW_USER_ID = "removeLabelConversationWorkParamUserId"
-internal const val KEY_REMOVE_LABEL_CONV_WORK_RAW_CONV_ID = "removeLabelConversationWorkParamMessageId"
-internal const val KEY_REMOVE_LABEL_CONV_WORK_RAW_LABEL_ID = "removeLabelConversationWorkParamLabelId"
-internal const val KEY_REMOVE_LABEL_CONV_WORK_RAW_MSG_IDS = "removeLabelConversationWorkParamMsgIds"
-
 @HiltWorker
-class RemoveLabelConversationWorker @AssistedInject constructor(
+class AddLabelConversationWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val apiProvider: ApiProvider,
+    private val conversationLocalDataSource: ConversationLocalDataSource,
     private val messageLocalDataSource: MessageLocalDataSource
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        val userId = inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_USER_ID)?.takeIfNotBlank()
+        val userId = inputData.getString(RawUserIdKey)?.takeIfNotBlank()
         val conversationId =
-            inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_CONV_ID)?.takeIfNotBlank()
-        val labelId = inputData.getString(KEY_REMOVE_LABEL_CONV_WORK_RAW_LABEL_ID)?.takeIfNotBlank()
-        val messageIds = inputData.getStringArray(KEY_REMOVE_LABEL_CONV_WORK_RAW_MSG_IDS)?.toList()
+            inputData.getString(RawConversationIdKey)?.takeIfNotBlank()
+        val labelId = inputData.getString(RawLabelIdKey)?.takeIfNotBlank()
+        val messageIds = inputData.getStringArray(RawAffectedMessageIds)?.toList()
 
         if (userId == null || conversationId == null || labelId == null) {
             return Result.failure()
         }
 
-        val result = apiProvider.get<MessageApi>(UserId(userId)).invoke {
-            removeLabel(
-                ConversationLabelBody(
+        val result = apiProvider.get<ConversationApi>(UserId(userId)).invoke {
+            addLabel(
+                PutConversationLabelBody(
                     labelId = labelId,
                     conversationIds = listOf(conversationId)
                 )
@@ -80,13 +77,24 @@ class RemoveLabelConversationWorker @AssistedInject constructor(
             is ApiResult.Error -> {
                 if (result.isRetryable()) return Result.retry()
                 else {
+                    val label = LabelId(labelId)
+                    conversationLocalDataSource.removeLabel(UserId(userId), ConversationId(conversationId), label)
                     messageIds?.map { MessageId(it) }?.forEach {
-                        messageLocalDataSource.addLabel(UserId(userId), it, LabelId(labelId))
+                        messageLocalDataSource.removeLabel(UserId(userId), it, label)
                     }
                     Result.failure()
                 }
             }
         }
+    }
+
+    companion object {
+
+        const val RawUserIdKey = "addLabelConversationWorkParamUserId"
+        const val RawConversationIdKey = "addLabelConversationWorkParamMessageId"
+        const val RawLabelIdKey = "addLabelConversationWorkParamLabelId"
+        const val RawAffectedMessageIds = "addLabelConversationWorkParamMsgIds"
+
     }
 
     class Enqueuer @Inject constructor(private val workManager: WorkManager) {
@@ -95,20 +103,20 @@ class RemoveLabelConversationWorker @AssistedInject constructor(
             userId: UserId,
             conversationId: ConversationId,
             labelId: LabelId,
-            effectedMessageIds: List<MessageId>
+            affectMessageIds: List<MessageId>
         ) {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
             val data = workDataOf(
-                KEY_REMOVE_LABEL_CONV_WORK_RAW_USER_ID to userId.id,
-                KEY_REMOVE_LABEL_CONV_WORK_RAW_CONV_ID to conversationId.id,
-                KEY_REMOVE_LABEL_CONV_WORK_RAW_LABEL_ID to labelId.id,
-                KEY_REMOVE_LABEL_CONV_WORK_RAW_MSG_IDS to effectedMessageIds.map { it.id }.toTypedArray()
+                RawUserIdKey to userId.id,
+                RawConversationIdKey to conversationId.id,
+                RawLabelIdKey to labelId.id,
+                RawAffectedMessageIds to affectMessageIds.map { it.id }.toTypedArray()
             )
 
-            val request = OneTimeWorkRequestBuilder<RemoveLabelConversationWorker>()
+            val request = OneTimeWorkRequestBuilder<AddLabelConversationWorker>()
                 .setConstraints(constraints)
                 .setInputData(data)
                 .build()

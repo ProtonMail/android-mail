@@ -21,13 +21,13 @@ package ch.protonmail.android.mailconversation.dagger
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailconversation.data.local.ConversationLocalDataSourceImpl
 import ch.protonmail.android.mailconversation.data.remote.ConversationRemoteDataSourceImpl
+import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.mailconversation.data.repository.ConversationRepositoryImpl
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
-import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelConversationWorker
-import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelConversationWorker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

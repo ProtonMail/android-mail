@@ -105,9 +105,9 @@ class ConversationRepositoryImpl @Inject constructor(
     ): Either<DataError, Conversation> {
         val conversationEither = conversationLocalDataSource.addLabel(userId, conversationId, labelId)
         return conversationEither.tap {
-            val effectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
+            val affectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
                 .filterNot { it.labelIds.contains(labelId) }
-            effectedMessages.map {
+            affectedMessages.map {
                 it.copy(
                     labelIds = it.labelIds + labelId
                 )
@@ -119,7 +119,7 @@ class ConversationRepositoryImpl @Inject constructor(
                 userId,
                 conversationId,
                 labelId,
-                effectedMessages.map { it.messageId }
+                affectedMessages.map { it.messageId }
             )
         }
     }
@@ -130,9 +130,9 @@ class ConversationRepositoryImpl @Inject constructor(
         labelId: LabelId
     ): Either<DataError, Conversation> {
         return conversationLocalDataSource.removeLabel(userId, conversationId, labelId).tap {
-            val effectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
+            val affectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
                 .filter { it.labelIds.contains(labelId) }
-            effectedMessages.map {
+            affectedMessages.map {
                 it.copy(
                     labelIds = it.labelIds - labelId
                 )
@@ -144,7 +144,7 @@ class ConversationRepositoryImpl @Inject constructor(
                 userId,
                 conversationId,
                 labelId,
-                effectedMessages.map { it.messageId }
+                affectedMessages.map { it.messageId }
             )
         }
     }

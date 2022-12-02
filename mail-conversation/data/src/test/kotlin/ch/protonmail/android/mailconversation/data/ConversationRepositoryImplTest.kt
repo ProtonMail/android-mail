@@ -258,7 +258,7 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `add label to conversation updates remote data source and filters only for effected messages`() = runTest {
+    fun `add label to conversation updates remote data source and filters only for affected messages`() = runTest {
         // Given
         coEvery { conversationLocalDataSource.addLabel(any(), any(), any()) } returns
             ConversationTestData.conversation.right()
@@ -379,7 +379,7 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `remove label from conversation updates remote data source and filters only for effected messages`() = runTest {
+    fun `remove label from conversation updates remote data source and filters only for affected messages`() = runTest {
         // Given
         coEvery { conversationLocalDataSource.removeLabel(any(), any(), any()) } returns
             ConversationTestData.conversation.right()
