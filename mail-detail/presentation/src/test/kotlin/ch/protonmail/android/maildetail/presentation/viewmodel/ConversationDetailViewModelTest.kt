@@ -32,7 +32,6 @@ import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
@@ -69,9 +68,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
+import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -156,6 +157,11 @@ class ConversationDetailViewModelTest {
         Dispatchers.setMain(StandardTestDispatcher())
     }
 
+    @AfterTest
+    fun teardown() {
+        Dispatchers.resetMain()
+    }
+
     @Test
     fun `initial state is loading`() = runTest {
         // When
@@ -186,7 +192,7 @@ class ConversationDetailViewModelTest {
         every {
             reducer.newStateFrom(
                 currentState = initialState,
-                operation = ConversationDetailEvent.ConversationData(conversationUiModel)
+                operation = ofType<ConversationDetailEvent.ConversationData>()
             )
         } returns expectedState
 
@@ -300,7 +306,7 @@ class ConversationDetailViewModelTest {
         every {
             reducer.newStateFrom(
                 currentState = initialState,
-                operation = ofType<ConversationDetailEvent.ErrorLoadingMessages>()
+                operation = ConversationDetailEvent.ErrorLoadingMessages
             )
         } returns expectedState
 
@@ -324,7 +330,7 @@ class ConversationDetailViewModelTest {
         every {
             reducer.newStateFrom(
                 currentState = initialState,
-                operation = ofType<ConversationDetailEvent.ErrorLoadingMessages>()
+                operation = ConversationDetailEvent.ErrorLoadingMessages
             )
         } returns mockk()
 
@@ -350,9 +356,7 @@ class ConversationDetailViewModelTest {
         every {
             reducer.newStateFrom(
                 currentState = initialState,
-                operation = ConversationDetailEvent.ConversationBottomBarEvent(
-                    bottomBarEvent = BottomBarEvent.ActionsData(actionUiModels)
-                )
+                operation = ofType<ConversationDetailEvent.ConversationBottomBarEvent>()
             )
         } returns expected
 
@@ -376,7 +380,7 @@ class ConversationDetailViewModelTest {
         every {
             reducer.newStateFrom(
                 currentState = initialState,
-                operation = ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions)
+                operation = ofType<ConversationDetailEvent.ConversationBottomBarEvent>()
             )
         } returns expected
 
@@ -425,7 +429,6 @@ class ConversationDetailViewModelTest {
                 bottomBarState = BottomBarState.Data(actionUiModels)
             )
             assertEquals(bottomBarState, awaitItem())
-            advanceUntilIdle()
             viewModel.submit(ConversationDetailViewAction.Star)
 
             val actual = assertIs<ConversationDetailMetadataState.Data>(awaitItem().conversationState)
@@ -439,8 +442,8 @@ class ConversationDetailViewModelTest {
         coEvery { starConversation.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
         every {
             reducer.newStateFrom(
-                any(),
-                any()
+                currentState = ConversationDetailState.Loading,
+                operation = ConversationDetailEvent.ErrorAddStar
             )
         } returns ConversationDetailState.Loading.copy(
             error = Effect.of(
@@ -451,9 +454,8 @@ class ConversationDetailViewModelTest {
             initialStateEmitted()
             // When
             viewModel.submit(ConversationDetailViewAction.Star)
-            advanceUntilIdle()
             // Then
-            assertEquals(TextUiModel(string.error_star_operation_failed), lastEmittedItem().error.consume())
+            assertEquals(TextUiModel(string.error_star_operation_failed), awaitItem().error.consume())
             verify(exactly = 1) { reducer.newStateFrom(any(), ConversationDetailEvent.ErrorAddStar) }
         }
     }
@@ -462,7 +464,7 @@ class ConversationDetailViewModelTest {
     fun `unStarred conversation metadata is emitted when unStar action is successful`() = runTest {
         every {
             reducer.newStateFrom(
-                currentState = any(),
+                currentState = ConversationDetailState.Loading,
                 operation = ConversationDetailViewAction.UnStar
             )
         } returns ConversationDetailState.Loading.copy(
@@ -488,8 +490,8 @@ class ConversationDetailViewModelTest {
         coEvery { unStarConversation.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
         every {
             reducer.newStateFrom(
-                any(),
-                any()
+                currentState = ConversationDetailState.Loading,
+                operation = ConversationDetailEvent.ErrorRemoveStar
             )
         } returns ConversationDetailState.Loading.copy(
             error = Effect.of(
@@ -500,10 +502,8 @@ class ConversationDetailViewModelTest {
             initialStateEmitted()
             // When
             viewModel.submit(ConversationDetailViewAction.UnStar)
-            advanceUntilIdle()
             // Then
-            assertEquals(TextUiModel(string.error_unstar_operation_failed), lastEmittedItem().error.consume())
-            verify(exactly = 1) { reducer.newStateFrom(any(), ConversationDetailEvent.ErrorRemoveStar) }
+            assertEquals(TextUiModel(string.error_unstar_operation_failed), awaitItem().error.consume())
         }
     }
 
@@ -512,7 +512,10 @@ class ConversationDetailViewModelTest {
         // Given
         coEvery { moveToTrash(UserIdSample.Primary, conversationId) } returns DataError.Local.NoDataCached.left()
         every {
-            reducer.newStateFrom(ConversationDetailState.Loading, ConversationDetailEvent.ErrorMovingToTrash)
+            reducer.newStateFrom(
+                currentState = ConversationDetailState.Loading,
+                operation = ConversationDetailEvent.ErrorMovingToTrash
+            )
         } returns ConversationDetailState.Loading.copy(
             error = Effect.of(TextUiModel(string.error_move_to_trash_failed))
         )
@@ -531,7 +534,10 @@ class ConversationDetailViewModelTest {
         // Given
         coEvery { moveToTrash(UserIdSample.Primary, conversationId) } returns ConversationSample.WeatherForecast.right()
         every {
-            reducer.newStateFrom(ConversationDetailState.Loading, ConversationDetailViewAction.Trash)
+            reducer.newStateFrom(
+                currentState = ConversationDetailState.Loading,
+                operation = ConversationDetailViewAction.Trash
+            )
         } returns ConversationDetailState.Loading.copy(
             dismiss = Effect.of(Unit)
         )
@@ -554,9 +560,7 @@ class ConversationDetailViewModelTest {
         every {
             reducer.newStateFrom(
                 currentState = any(),
-                operation = ConversationDetailEvent.ConversationBottomBarEvent(
-                    BottomBarEvent.ActionsData(actionUiModels)
-                )
+                operation = ofType<ConversationDetailEvent.ConversationBottomBarEvent>()
             )
         } returns ConversationDetailState.Loading.copy(
             bottomBarState = BottomBarState.Data(actionUiModels)
@@ -565,7 +569,10 @@ class ConversationDetailViewModelTest {
 
     private fun givenReducerReturnsStarredUiModel() {
         every {
-            reducer.newStateFrom(currentState = any(), operation = ConversationDetailViewAction.Star)
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ConversationDetailViewAction.Star
+            )
         } returns ConversationDetailState.Loading.copy(
             conversationState = ConversationDetailMetadataState.Data(
                 ConversationUiModelTestData.conversationUiModelStarred
