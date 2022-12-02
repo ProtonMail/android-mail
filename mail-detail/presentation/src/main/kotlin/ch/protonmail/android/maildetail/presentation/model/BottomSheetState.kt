@@ -18,26 +18,26 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 
-data class MessageDetailState(
-    val messageMetadataState: MessageMetadataState,
-    val bottomBarState: BottomBarState,
-    val bottomSheetState: BottomSheetState,
-    val dismiss: Effect<Unit>,
-    val error: Effect<TextUiModel>
-) {
+sealed interface BottomSheetState {
 
-    companion object {
+    data class Data(
+        val moveToDestinations: List<MailLabelUiModel>
+    ) : BottomSheetState
 
-        val Loading = MessageDetailState(
-            messageMetadataState = MessageMetadataState.Loading,
-            bottomBarState = BottomBarState.Loading,
-            bottomSheetState = BottomSheetState.Loading,
-            dismiss = Effect.empty(),
-            error = Effect.empty()
-        )
-    }
+    object Loading : BottomSheetState
+}
+
+sealed interface BottomSheetOperation
+
+sealed interface BottomSheetEvent : BottomSheetOperation {
+
+    data class ActionsData(val actionUiModels: List<MailLabelUiModel>) : BottomSheetEvent
+}
+
+sealed interface BottomSheetAction : BottomSheetOperation {
+
+    data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : BottomSheetAction
 }

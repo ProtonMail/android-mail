@@ -23,15 +23,19 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetEvent
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
+import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.every
@@ -57,9 +61,14 @@ class MessageDetailReducerTest(
         every { newStateFrom(any(), any()) } returns reducedState.bottomBarState
     }
 
+    private val bottomSheetReducer: BottomSheetReducer = mockk {
+        every { newStateFrom(any(), any()) } returns reducedState.bottomSheetState
+    }
+
     private val detailReducer = MessageDetailReducer(
         messageMetadataReducer,
-        bottomBarReducer
+        bottomBarReducer,
+        bottomSheetReducer
     )
 
     @Test
@@ -88,6 +97,17 @@ class MessageDetailReducerTest(
             assertEquals(currentState.bottomBarState, nextState.bottomBarState, testName)
         }
 
+        if (shouldReduceBottomSheetState) {
+            verify {
+                bottomSheetReducer.newStateFrom(
+                    currentState.bottomSheetState,
+                    any()
+                )
+            }
+        } else {
+            assertEquals(currentState.bottomSheetState, nextState.bottomSheetState, testName)
+        }
+
         if (shouldReduceToDismissEffect) {
             assertEquals(Effect.of(Unit), nextState.dismiss)
         } else {
@@ -109,6 +129,7 @@ class MessageDetailReducerTest(
         private val reducedState = MessageDetailState(
             messageMetadataState = MessageMetadataState.Data(actionBarUiModel, detailHeaderUiModel),
             bottomBarState = BottomBarState.Data(listOf(ActionUiModelTestData.markUnread)),
+            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder),
             dismiss = Effect.empty(),
             error = Effect.empty()
         )
@@ -119,28 +140,40 @@ class MessageDetailReducerTest(
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,
-                shouldReduceToErrorEffect = false
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MessageViewAction.UnStar,
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,
-                shouldReduceToErrorEffect = false
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MessageViewAction.MarkUnread,
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = true,
-                shouldReduceToErrorEffect = false
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MessageViewAction.Trash,
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = true,
-                shouldReduceToErrorEffect = false
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MessageViewAction.MoveToSelected(MailLabelId.System.Spam),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceToDismissEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true
             )
         )
 
@@ -153,56 +186,74 @@ class MessageDetailReducerTest(
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,
-                shouldReduceToErrorEffect = false
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MessageDetailEvent.MessageBody(MessageWithBody(MessageTestData.message, null)),
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,
-                shouldReduceToErrorEffect = false
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MessageDetailEvent.NoCachedMetadata,
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,
-                shouldReduceToErrorEffect = false
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions),
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = true,
                 shouldReduceToDismissEffect = false,
-                shouldReduceToErrorEffect = false
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MessageDetailEvent.ErrorAddingStar,
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,
-                shouldReduceToErrorEffect = true
+                shouldReduceToErrorEffect = true,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MessageDetailEvent.ErrorRemovingStar,
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,
-                shouldReduceToErrorEffect = true
+                shouldReduceToErrorEffect = true,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MessageDetailEvent.ErrorMarkingUnread,
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,
-                shouldReduceToErrorEffect = true
+                shouldReduceToErrorEffect = true,
+                shouldReduceBottomSheetState = false
             ),
             TestInput(
                 MessageDetailEvent.ErrorMovingToTrash,
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,
-                shouldReduceToErrorEffect = true
+                shouldReduceToErrorEffect = true,
+                shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MessageDetailEvent.MessageBottomSheetEvent(
+                    BottomSheetEvent.ActionsData(MailLabelUiModelTestData.spamAndCustomFolder)
+                ),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceToDismissEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true
             )
         )
 
@@ -226,6 +277,7 @@ class MessageDetailReducerTest(
         val shouldReduceMessageMetadataState: Boolean,
         val shouldReduceBottomBarState: Boolean,
         val shouldReduceToDismissEffect: Boolean,
-        val shouldReduceToErrorEffect: Boolean
+        val shouldReduceToErrorEffect: Boolean,
+        val shouldReduceBottomSheetState: Boolean
     )
 }

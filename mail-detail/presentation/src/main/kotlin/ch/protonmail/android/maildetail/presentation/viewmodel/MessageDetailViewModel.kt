@@ -40,6 +40,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,6 +52,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import me.proton.core.util.kotlin.exhaustive
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -89,6 +91,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
             is MessageViewAction.Trash -> trashMessage()
+            is MessageViewAction.MoveToSelected -> moveToDestinationSelected(action.mailLabelId)
         }.exhaustive
     }
 
@@ -136,6 +139,12 @@ class MessageDetailViewModel @Inject constructor(
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)
+    }
+
+    private fun moveToDestinationSelected(mailLabelId: MailLabelId) {
+        viewModelScope.launch {
+            emitNewStateFrom(MessageViewAction.MoveToSelected(mailLabelId))
+        }
     }
 
     private fun observeMessageWithLabels(messageId: MessageId) {

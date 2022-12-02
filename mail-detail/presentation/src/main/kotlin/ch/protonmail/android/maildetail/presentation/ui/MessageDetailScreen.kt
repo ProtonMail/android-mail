@@ -66,8 +66,8 @@ fun MessageDetailScreen(
         sheetState = bottomSheetState,
         sheetContent = {
             MoveToBottomSheetContent(
-                folderList = listOf(),
-                onFolderSelected = {})
+                state = state.bottomSheetState,
+                onFolderSelected = { viewModel.submit(MessageViewAction.MoveToSelected(it)) })
         }
     ) {
         MessageDetailScreen(

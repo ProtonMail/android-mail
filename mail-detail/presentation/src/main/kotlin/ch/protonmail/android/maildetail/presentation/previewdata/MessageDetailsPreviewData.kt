@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maillabel.presentation.sample.MailboxItemLabelUiModelSample
@@ -43,6 +44,7 @@ object MessageDetailsPreviewData {
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
         ),
+        bottomSheetState = BottomSheetState.Data(listOf()),
         dismiss = Effect.empty(),
         error = Effect.empty()
     )
@@ -62,6 +64,7 @@ object MessageDetailsPreviewData {
     val Loading = MessageDetailState(
         messageMetadataState = MessageMetadataState.Loading,
         bottomBarState = BottomBarState.Loading,
+        bottomSheetState = BottomSheetState.Loading,
         dismiss = Effect.empty(),
         error = Effect.empty()
     )

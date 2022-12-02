@@ -31,6 +31,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,6 +45,7 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.iconRes
@@ -54,6 +56,18 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.default
 import me.proton.core.compose.theme.interactionNorm
 import me.proton.core.label.domain.entity.LabelId
+
+@Composable
+fun MoveToBottomSheetContent(state: BottomSheetState, onFolderSelected: (MailLabelId) -> Unit) {
+    when (state) {
+        is BottomSheetState.Data -> MoveToBottomSheetContent(state.moveToDestinations, onFolderSelected)
+        is BottomSheetState.Loading ->
+            // It is required by the ModalBottomSheetLayout that some content is provided
+            Surface(modifier = Modifier.height(300.dp)) {
+                Column {}
+            }
+    }
+}
 
 @Composable
 fun MoveToBottomSheetContent(folderList: List<MailLabelUiModel>, onFolderSelected: (MailLabelId) -> Unit) {

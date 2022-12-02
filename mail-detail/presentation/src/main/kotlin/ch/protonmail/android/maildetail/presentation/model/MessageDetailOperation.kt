@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.model
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessage
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 
 sealed interface MessageDetailOperation {
@@ -45,6 +46,10 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
         val bottomBarEvent: BottomBarEvent
     ) : MessageDetailEvent
 
+    data class MessageBottomSheetEvent(
+        val bottomSheetEvent: BottomSheetEvent
+    ) : MessageDetailEvent
+
     object NoCachedMetadata : MessageDetailEvent, AffectingMessage
     object ErrorAddingStar : MessageDetailEvent, AffectingMessage, AffectingErrorBar
     object ErrorRemovingStar : MessageDetailEvent, AffectingMessage, AffectingErrorBar
@@ -58,4 +63,5 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object UnStar : MessageViewAction, AffectingMessage
     object MarkUnread : MessageViewAction
     object Trash : MessageViewAction
+    data class MoveToSelected(val mailLabelId: MailLabelId) : MessageViewAction
 }

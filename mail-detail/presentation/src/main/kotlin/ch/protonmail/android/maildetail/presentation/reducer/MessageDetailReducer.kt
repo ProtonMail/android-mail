@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetAction
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -31,7 +32,8 @@ import javax.inject.Inject
 
 class MessageDetailReducer @Inject constructor(
     private val messageMetadataReducer: MessageDetailMetadataReducer,
-    private val bottomBarReducer: BottomBarReducer
+    private val bottomBarReducer: BottomBarReducer,
+    private val bottomSheetReducer: BottomSheetReducer
 ) {
 
     fun newStateFrom(
@@ -40,6 +42,7 @@ class MessageDetailReducer @Inject constructor(
     ): MessageDetailState = currentState.copy(
         messageMetadataState = currentState.toNewMessageStateFrom(operation),
         bottomBarState = currentState.toNewBottomBarStateFrom(operation),
+        bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
         dismiss = currentState.toNewDismissStateFrom(operation),
         error = currentState.toNewErrorStateFrom(operation)
     )
@@ -82,5 +85,19 @@ class MessageDetailReducer @Inject constructor(
         } else {
             bottomBarState
         }
+
+    private fun MessageDetailState.toNewBottomSheetStateFrom(operation: MessageDetailOperation) =
+        when (operation) {
+            is MessageDetailEvent.MessageBottomSheetEvent -> bottomSheetReducer.newStateFrom(
+                bottomSheetState,
+                operation.bottomSheetEvent
+            )
+            is MessageViewAction.MoveToSelected -> bottomSheetReducer.newStateFrom(
+                bottomSheetState,
+                BottomSheetAction.MoveToDestinationSelected(operation.mailLabelId)
+            )
+            else -> bottomSheetState
+        }
+
 
 }
