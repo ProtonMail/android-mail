@@ -73,7 +73,7 @@ class RemoveLabelMessageWorkerTest {
         coEvery { getSessionId(userId) } returns SessionId("testSessionId")
     }
     private val messageApi = mockk<MessageApi> {
-        coEvery { removeLabel(any<MessageLabelBody>()) } returns PutLabelResponseSample.putLabelResponseForOneMessage
+        coEvery { removeLabel(any()) } returns PutLabelResponseSample.putLabelResponseForOneMessage
     }
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
@@ -171,7 +171,7 @@ class RemoveLabelMessageWorkerTest {
     @Test
     fun `remove label worker returns retry when api call fails due to connection error`() = runTest {
         // Given
-        coEvery { messageApi.removeLabel(any<MessageLabelBody>()) } throws UnknownHostException()
+        coEvery { messageApi.removeLabel(any()) } throws UnknownHostException()
         // When
         val result = removeLabelMessageWorker.doWork()
         // Then
@@ -181,7 +181,7 @@ class RemoveLabelMessageWorkerTest {
     @Test
     fun `remove label worker returns failure when api call fails due to serializationException error`() = runTest {
         // Given
-        coEvery { messageApi.removeLabel(any<MessageLabelBody>()) } throws SerializationException()
+        coEvery { messageApi.removeLabel(any()) } throws SerializationException()
         // When
         val result = removeLabelMessageWorker.doWork()
         // Then
@@ -191,7 +191,7 @@ class RemoveLabelMessageWorkerTest {
     @Test
     fun `remove label roll back changes to message when api call fails with a non-retryable error`() = runTest {
         // Given
-        coEvery { messageApi.removeLabel(any<MessageLabelBody>()) } throws SerializationException()
+        coEvery { messageApi.removeLabel(any()) } throws SerializationException()
         // When
         removeLabelMessageWorker.doWork()
         // Then
