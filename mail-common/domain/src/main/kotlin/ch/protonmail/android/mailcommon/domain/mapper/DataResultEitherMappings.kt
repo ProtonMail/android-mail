@@ -19,6 +19,7 @@
 
 package ch.protonmail.android.mailcommon.domain.mapper
 
+import java.net.UnknownHostException
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
@@ -27,6 +28,7 @@ import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import me.proton.core.domain.arch.DataResult
+import me.proton.core.network.domain.ApiException
 import me.proton.core.util.kotlin.takeIfNotEmpty
 
 fun <T> Flow<DataResult<T>>.mapToEither(): Flow<Either<DataError, T>> = transform { dataResult ->
@@ -49,24 +51,28 @@ private fun toRemoteDataError(dataResult: DataResult.Error.Remote): DataError.Re
     return when {
         dataResult.protonCode != INITIAL_ERROR_CODE -> toProtonDataError(dataResult)
         dataResult.httpCode != INITIAL_ERROR_CODE -> toHttpDataError(dataResult)
-        else -> throw RuntimeException(
-            "Unhandled remote error $dataResult, message = ${messageFrom(dataResult)}",
-            dataResult.cause
-        )
+        else -> toHttpDataError(dataResult)
     }
 }
 
 private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Http {
     @Suppress("MagicNumber")
-    val networkError = when (dataResult.httpCode) {
+    val fromHttpErrorCode = when (dataResult.httpCode) {
         401 -> NetworkError.Unauthorized
         403 -> NetworkError.Forbidden
         404 -> NetworkError.NotFound
         in 500 until 600 -> NetworkError.ServerError
-        else -> throw RuntimeException(
-            "Unhandled http error $dataResult, message = ${messageFrom(dataResult)}",
-            dataResult.cause
-        )
+        else -> null
+    }
+    val networkError = fromHttpErrorCode ?: run {
+        val apiException = dataResult.cause as? ApiException
+        when (apiException?.cause) {
+            is UnknownHostException -> NetworkError.NoNetwork
+            else -> throw RuntimeException(
+                "Unhandled remote error $dataResult, message = ${messageFrom(dataResult)}",
+                dataResult.cause
+            )
+        }
     }
     return DataError.Remote.Http(networkError)
 }

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcommon.domain.mapper
 
 import java.io.IOException
+import java.net.UnknownHostException
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -28,6 +29,9 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.arch.ResponseSource
+import me.proton.core.network.domain.ApiException
+import me.proton.core.network.domain.ApiResult
+import me.proton.core.util.kotlin.EMPTY_STRING
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -208,6 +212,29 @@ internal class DataResultEitherMappingsTest {
 
             // then
             assertExceptionEquals(expectedError, awaitError())
+        }
+    }
+
+    @Test
+    fun `does handle UnknownHostException`() = runTest {
+        // given
+        val cause = ApiException(
+            ApiResult.Error.Http(
+                cause = UnknownHostException(),
+                httpCode = 0,
+                message = EMPTY_STRING
+            )
+        )
+        val dataResult = DataResult.Error.Remote(message = null, cause = cause)
+        val expectedError = DataError.Remote.Http(NetworkError.NoNetwork)
+        val input = flowOf(dataResult)
+
+        // when
+        input.mapToEither().test {
+
+            // then
+            assertEquals(expectedError.left(), awaitItem())
+            awaitComplete()
         }
     }
 
