@@ -19,26 +19,52 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MoveConversationToTrashTest {
 
-    private val move = MoveConversationToTrash()
+    private val userId = UserIdSample.Primary
+    private val conversationId = ConversationIdSample.WeatherForecast
+
+    private val conversationRepository: ConversationRepository = mockk()
+    private val move = MoveConversationToTrash(
+        conversationRepository = conversationRepository
+    )
 
     @Test
-    fun `does return error`() = runTest {
+    fun `when move to trash returns error then return error`() = runTest {
         // given
-        val expected = DataError.Local.NoDataCached.left()
+        val error = DataError.Local.NoDataCached.left()
+        coEvery { conversationRepository.moveToTrash(userId, conversationId) } returns error
 
         // when
-        val result = move(UserIdSample.Primary, ConversationIdSample.WeatherForecast)
+        val result = move(userId, conversationId)
 
         // then
-        assertEquals(expected, result)
+        assertEquals(error, result)
+    }
+
+
+    @Test
+    fun `when moving a conversation to trash then repository is called with the given data`() = runTest {
+        // given
+        val conversation = ConversationSample.WeatherForecast.right()
+        coEvery { conversationRepository.moveToTrash(userId, conversationId) } returns conversation
+
+        // when
+        val result = move(userId, conversationId)
+
+        // then
+        assertEquals(conversation, result)
     }
 }

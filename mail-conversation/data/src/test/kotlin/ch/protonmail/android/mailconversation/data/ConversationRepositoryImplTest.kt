@@ -20,8 +20,12 @@ package ch.protonmail.android.mailconversation.data
 
 import java.io.IOException
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.data.repository.ConversationRepositoryImpl
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
@@ -42,7 +46,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import org.junit.Test
@@ -50,7 +53,8 @@ import kotlin.test.assertEquals
 
 class ConversationRepositoryImplTest {
 
-    private val userId = UserId("1")
+    private val userId = UserIdSample.Primary
+    private val conversationId = ConversationIdSample.WeatherForecast
 
     private val conversationLocalDataSource = mockk<ConversationLocalDataSource>(relaxUnitFun = true) {
         coEvery { this@mockk.getConversations(any(), any()) } returns emptyList()
@@ -401,5 +405,14 @@ class ConversationRepositoryImplTest {
                 listOf(MessageId("123"), MessageId("124"))
             )
         }
+    }
+
+    @Test
+    fun `move to trash returns error`() = runTest {
+        // When
+        val actual = conversationRepository.moveToTrash(userId, conversationId)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
 }

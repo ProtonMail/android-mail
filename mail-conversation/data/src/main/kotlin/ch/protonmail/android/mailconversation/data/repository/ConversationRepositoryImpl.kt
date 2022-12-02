@@ -149,6 +149,9 @@ class ConversationRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun moveToTrash(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> =
+        DataError.Local.NoDataCached.left()
+
     private suspend fun fetchConversations(
         userId: UserId,
         pageKey: PageKey
