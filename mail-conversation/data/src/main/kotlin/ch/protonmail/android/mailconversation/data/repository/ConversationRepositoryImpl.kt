@@ -19,9 +19,7 @@
 package ch.protonmail.android.mailconversation.data.repository
 
 import arrow.core.Either
-import arrow.core.getOrElse
 import arrow.core.left
-import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -154,22 +152,31 @@ class ConversationRepositoryImpl @Inject constructor(
     }
 
     override suspend fun moveToTrash(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> {
-        val conversation = observeConversation(userId, conversationId).first()
-            .getOrElse { return DataError.Local.NoDataCached.left() }
+        val persistentLabels = listOf(
+            SystemLabelId.AllDrafts.labelId,
+            SystemLabelId.AllMail.labelId,
+            SystemLabelId.AllSent.labelId
+        )
 
-        val updatedConversation = run {
-            val persistentLabels = listOf(
-                SystemLabelId.AllDrafts.labelId,
-                SystemLabelId.AllMail.labelId,
-                SystemLabelId.AllSent.labelId
-            )
-            conversation.copy(
-                labels = conversation.labels.filter { conversationLabel ->
-                    conversationLabel.labelId in persistentLabels
+        val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
+            ?: return DataError.Local.NoDataCached.left()
+        val messages = messageLocalDataSource.observeMessages(userId, conversationId).first()
+
+        val updatedConversation = conversation.copy(
+            labels = conversation.labels.filter { conversationLabel ->
+                conversationLabel.labelId in persistentLabels
+            }
+        )
+        val updatedMessages = messages.map { message ->
+            message.copy(
+                labelIds = message.labelIds.filter { labelId ->
+                    labelId in persistentLabels
                 }
             )
         }
+
         conversationLocalDataSource.upsertConversation(userId, updatedConversation)
+        messageLocalDataSource.upsertMessages(updatedMessages)
         return addLabel(userId, conversationId, SystemLabelId.Trash.labelId)
     }
 
