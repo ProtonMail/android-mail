@@ -166,6 +166,7 @@ class ConversationDetailViewModelTest {
     fun `initial state is loading`() = runTest {
         // When
         viewModel.state.test {
+
             // Then
             assertEquals(ConversationDetailState.Loading, awaitItem())
         }
@@ -175,8 +176,10 @@ class ConversationDetailViewModelTest {
     fun `throws exception when conversation id parameter was not provided as input`() = runTest {
         // Given
         every { savedStateHandle.get<String>(ConversationDetailScreen.ConversationIdKey) } returns null
+
         // When
         val thrown = assertFailsWith<IllegalStateException> { viewModel.state }
+
         // Then
         assertEquals("No Conversation id given", thrown.message)
     }
@@ -397,13 +400,16 @@ class ConversationDetailViewModelTest {
 
     @Test
     fun `starred conversation metadata is emitted when star action is successful`() = runTest {
+        // given
         givenReducerReturnsStarredUiModel()
 
         viewModel.state.test {
             advanceUntilIdle()
+
             // When
             viewModel.submit(ConversationDetailViewAction.Star)
             advanceUntilIdle()
+
             // Then
             val actual = assertIs<ConversationDetailMetadataState.Data>(lastEmittedItem().conversationState)
             assertTrue(actual.conversationUiModel.isStarred)
@@ -423,8 +429,9 @@ class ConversationDetailViewModelTest {
 
         // When
         viewModel.state.test {
-            // Then
             initialStateEmitted()
+
+            // Then
             val bottomBarState = ConversationDetailState.Loading.copy(
                 bottomBarState = BottomBarState.Data(actionUiModels)
             )
@@ -452,8 +459,10 @@ class ConversationDetailViewModelTest {
         )
         viewModel.state.test {
             initialStateEmitted()
+
             // When
             viewModel.submit(ConversationDetailViewAction.Star)
+
             // Then
             assertEquals(TextUiModel(string.error_star_operation_failed), awaitItem().error.consume())
             verify(exactly = 1) { reducer.newStateFrom(any(), ConversationDetailEvent.ErrorAddStar) }
@@ -462,6 +471,7 @@ class ConversationDetailViewModelTest {
 
     @Test
     fun `unStarred conversation metadata is emitted when unStar action is successful`() = runTest {
+        // given
         every {
             reducer.newStateFrom(
                 currentState = ConversationDetailState.Loading,
@@ -473,11 +483,12 @@ class ConversationDetailViewModelTest {
             )
         )
 
+        // When
         viewModel.state.test {
             advanceUntilIdle()
-            // When
             viewModel.submit(ConversationDetailViewAction.UnStar)
             advanceUntilIdle()
+
             // Then
             val actual = assertIs<ConversationDetailMetadataState.Data>(lastEmittedItem().conversationState)
             assertFalse(actual.conversationUiModel.isStarred)
@@ -498,10 +509,12 @@ class ConversationDetailViewModelTest {
                 TextUiModel(string.error_unstar_operation_failed)
             )
         )
+
+        // When
         viewModel.state.test {
             initialStateEmitted()
-            // When
             viewModel.submit(ConversationDetailViewAction.UnStar)
+
             // Then
             assertEquals(TextUiModel(string.error_unstar_operation_failed), awaitItem().error.consume())
         }
@@ -519,10 +532,12 @@ class ConversationDetailViewModelTest {
         } returns ConversationDetailState.Loading.copy(
             error = Effect.of(TextUiModel(string.error_move_to_trash_failed))
         )
+
+        // When
         viewModel.state.test {
             initialStateEmitted()
-            // When
             viewModel.submit(ConversationDetailViewAction.Trash)
+
             // Then
             assertEquals(TextUiModel(string.error_move_to_trash_failed), awaitItem().error.consume())
             cancelAndIgnoreRemainingEvents()
@@ -541,10 +556,12 @@ class ConversationDetailViewModelTest {
         } returns ConversationDetailState.Loading.copy(
             exitScreenEffect = Effect.of(Unit)
         )
+
+        // When
         viewModel.state.test {
             initialStateEmitted()
-            // When
             viewModel.submit(ConversationDetailViewAction.Trash)
+
             // Then
             assertNotNull(awaitItem().exitScreenEffect.consume())
             cancelAndIgnoreRemainingEvents()
