@@ -19,6 +19,8 @@
 package ch.protonmail.android.navigation
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.navigation.model.HomeState
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +50,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when initialized then emit initial value `() =
+    fun `when initialized then emit initial state`() =
         runTest {
             // Given
             every { networkManager.observe() } returns emptyFlow()
@@ -56,7 +58,7 @@ class HomeViewModelTest {
             // When
             homeViewModel.state.test {
                 val actualItem = awaitItem()
-                val expectedItem = NetworkStatus.Unmetered
+                val expectedItem = HomeState.Initial
 
                 // Then
                 assertEquals(expectedItem, actualItem)
@@ -75,7 +77,9 @@ class HomeViewModelTest {
                 awaitItem()
                 advanceUntilIdle()
                 val actualItem = awaitItem()
-                val expectedItem = NetworkStatus.Disconnected
+                val expectedItem = HomeState(
+                    Effect.of(NetworkStatus.Disconnected)
+                )
 
                 // Then
                 assertEquals(expectedItem, actualItem)
@@ -94,7 +98,9 @@ class HomeViewModelTest {
                 awaitItem()
                 advanceUntilIdle()
                 val actualItem = awaitItem()
-                val expectedItem = NetworkStatus.Metered
+                val expectedItem = HomeState(
+                    Effect.of(NetworkStatus.Metered)
+                )
 
                 // Then
                 assertEquals(expectedItem, actualItem)
@@ -110,7 +116,9 @@ class HomeViewModelTest {
             // When
             homeViewModel.state.test {
                 val actualItem = awaitItem()
-                val expectedItem = NetworkStatus.Metered
+                val expectedItem = HomeState(
+                    Effect.of(NetworkStatus.Metered)
+                )
 
                 // Then
                 assertEquals(expectedItem, actualItem)

@@ -24,7 +24,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -34,9 +33,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.R
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
+import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.route.addAccountSettings
 import ch.protonmail.android.navigation.route.addAlternativeRoutingSetting
 import ch.protonmail.android.navigation.route.addCombinedContactsSetting
@@ -67,11 +68,11 @@ fun Home(
     val navController = rememberNavController().withSentryObservableEffect()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    val state = rememberAsState(flow = viewModel.state, initial = NetworkStatus.Unmetered)
+    val state = rememberAsState(flow = viewModel.state, initial = HomeState.Initial)
 
     val offlineSnackbarMessage = stringResource(id = R.string.you_are_offline)
-    LaunchedEffect(state.value) {
-        if (state.value == NetworkStatus.Disconnected) {
+    ConsumableLaunchedEffect(state.value.networkStatusEffect) {
+        if (it == NetworkStatus.Disconnected) {
             showSnackbar(scaffoldState, offlineSnackbarMessage)
         }
     }

@@ -20,10 +20,13 @@ package ch.protonmail.android.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.navigation.model.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import me.proton.core.network.domain.NetworkManager
@@ -32,21 +35,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    networkManager: NetworkManager
+    private val networkManager: NetworkManager
 ) : ViewModel() {
 
-    val state: StateFlow<NetworkStatus> = networkManager.observe()
+    val state: StateFlow<HomeState> = observeNetworkStatus()
         .map { networkStatus ->
-            return@map if (networkStatus == NetworkStatus.Disconnected) {
-                delay(5000)
-                networkManager.networkStatus
-            } else {
-                networkStatus
-            }
+            HomeState(
+                networkStatusEffect = if (networkStatus == NetworkStatus.Disconnected) {
+                    delay(5000)
+                    Effect.of(networkManager.networkStatus)
+                } else {
+                    Effect.of(networkStatus)
+                }
+            )
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
-            initialValue = NetworkStatus.Unmetered
+            initialValue = HomeState.Initial
         )
+
+    private fun observeNetworkStatus() = networkManager.observe().distinctUntilChanged()
 }
