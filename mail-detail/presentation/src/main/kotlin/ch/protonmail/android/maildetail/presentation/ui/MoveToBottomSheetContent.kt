@@ -58,9 +58,13 @@ import me.proton.core.compose.theme.interactionNorm
 import me.proton.core.label.domain.entity.LabelId
 
 @Composable
-fun MoveToBottomSheetContent(state: BottomSheetState, onFolderSelected: (MailLabelId) -> Unit) {
+fun MoveToBottomSheetContent(
+    state: BottomSheetState,
+    onFolderSelected: (MailLabelId) -> Unit,
+    onDoneClick: () -> Unit
+) {
     when (state) {
-        is BottomSheetState.Data -> MoveToBottomSheetContent(state.moveToDestinations, onFolderSelected)
+        is BottomSheetState.Data -> MoveToBottomSheetContent(state.moveToDestinations, onFolderSelected, onDoneClick)
         is BottomSheetState.Loading ->
             // It is required by the ModalBottomSheetLayout that some content is provided
             Surface(modifier = Modifier.height(300.dp)) {
@@ -70,7 +74,11 @@ fun MoveToBottomSheetContent(state: BottomSheetState, onFolderSelected: (MailLab
 }
 
 @Composable
-fun MoveToBottomSheetContent(folderList: List<MailLabelUiModel>, onFolderSelected: (MailLabelId) -> Unit) {
+fun MoveToBottomSheetContent(
+    folderList: List<MailLabelUiModel>,
+    onFolderSelected: (MailLabelId) -> Unit,
+    onDoneClick: () -> Unit
+) {
     Column {
         Row(
             modifier = Modifier
@@ -83,9 +91,10 @@ fun MoveToBottomSheetContent(folderList: List<MailLabelUiModel>, onFolderSelecte
                 style = ProtonTheme.typography.default
             )
             Text(
+                modifier = Modifier.clickable { onDoneClick() },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
                 style = ProtonTheme.typography.default,
-                color = ProtonTheme.colors.interactionNorm(false)
+                color = ProtonTheme.colors.interactionNorm(folderList.firstOrNull { it.isSelected } != null)
             )
         }
         Divider()
@@ -173,6 +182,7 @@ fun MoveToBottomSheetContentPreview() {
                 isExpanded = true,
                 iconPaddingStart = ProtonDimens.DefaultSpacing * 2
             )
-        )
-    ) {}
+        ),
+        onFolderSelected = {},
+        onDoneClick = {})
 }

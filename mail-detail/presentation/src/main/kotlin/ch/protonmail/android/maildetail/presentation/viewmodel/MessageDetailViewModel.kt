@@ -34,6 +34,7 @@ import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -41,11 +42,15 @@ import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailFolders
+import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailsettings.domain.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
@@ -63,6 +68,8 @@ class MessageDetailViewModel @Inject constructor(
     private val messageDetailReducer: MessageDetailReducer,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveMessageDetailActions,
+    private val observeMailFolders: ObserveExclusiveMailFolders,
+    private val observeFolderColor: ObserveFolderColorSettings,
     private val markUnread: MarkUnread,
     private val getContacts: GetContacts,
     private val starMessage: StarMessage,
@@ -83,6 +90,7 @@ class MessageDetailViewModel @Inject constructor(
         Timber.d("Open detail screen for message ID: $messageId")
         observeMessageWithLabels(messageId)
         observeBottomBarActions(messageId)
+        observeMailFolders()
     }
 
     fun submit(action: MessageViewAction) {
@@ -92,6 +100,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.MarkUnread -> markMessageUnread()
             is MessageViewAction.Trash -> trashMessage()
             is MessageViewAction.MoveToSelected -> moveToDestinationSelected(action.mailLabelId)
+            is MessageViewAction.BottomSheetDismissed -> onBottomSheetDismissed()
         }.exhaustive
     }
 
@@ -147,6 +156,12 @@ class MessageDetailViewModel @Inject constructor(
         }
     }
 
+    private fun onBottomSheetDismissed() {
+        viewModelScope.launch {
+            emitNewStateFrom(MessageViewAction.BottomSheetDismissed)
+        }
+    }
+
     private fun observeMessageWithLabels(messageId: MessageId) {
         primaryUserId.flatMapLatest { userId ->
             val contacts = getContacts(userId).getOrElse { emptyList() }
@@ -175,6 +190,21 @@ class MessageDetailViewModel @Inject constructor(
                         val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }
                         MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ActionsData(actionUiModels))
                     }
+                )
+            }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun observeMailFolders() {
+        primaryUserId.flatMapLatest { userId ->
+            combine(
+                observeMailFolders(userId),
+                observeFolderColor(userId)
+            ) { folders, color ->
+                MessageDetailEvent.MessageBottomSheetEvent(
+                    BottomSheetEvent.ActionsData(folders.toUiModels(color).let { it.folders + it.systems })
                 )
             }
         }.onEach { event ->

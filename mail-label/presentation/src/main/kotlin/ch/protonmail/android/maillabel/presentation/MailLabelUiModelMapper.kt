@@ -47,23 +47,31 @@ fun MailLabel.toUiModel(
     is MailLabel.Custom -> toCustomUiModel(settings, counters, selected)
 }
 
+fun MailLabels.toUiModels(
+    settings: FolderColorSettings
+): MailLabelsUiModel = MailLabelsUiModel(
+    systems = systemLabels.map { it.toSystemUiModel(settings, emptyMap(), null) },
+    folders = folders.map { it.toCustomUiModel(settings, emptyMap(), null) },
+    labels = labels.map { it.toCustomUiModel(settings, emptyMap(), null) }
+)
+
 fun MailLabel.System.toSystemUiModel(
     settings: FolderColorSettings,
     counters: Map<LabelId, Int?>,
-    selected: MailLabelId
+    selected: MailLabelId?
 ): MailLabelUiModel.System = MailLabelUiModel.System(
     id = id,
     text = text() as TextUiModel.TextRes,
     icon = iconRes(settings),
     iconTint = iconTintColor(settings),
-    isSelected = id.labelId == selected.labelId,
+    isSelected = id.labelId == selected?.labelId,
     count = counters[id.labelId]
 )
 
 fun MailLabel.Custom.toCustomUiModel(
     settings: FolderColorSettings,
     counters: Map<LabelId, Int?>,
-    selected: MailLabelId
+    selected: MailLabelId?
 ): MailLabelUiModel.Custom = MailLabelUiModel.Custom(
     id = id,
     text = text() as TextUiModel.Text,
@@ -71,7 +79,7 @@ fun MailLabel.Custom.toCustomUiModel(
     iconTint = iconTintColor(settings),
     isVisible = parent == null || parent?.isExpanded == true,
     isExpanded = isExpanded,
-    isSelected = id.labelId == selected.labelId,
+    isSelected = id.labelId == selected?.labelId,
     iconPaddingStart = ProtonDimens.DefaultSpacing * level,
     count = counters[id.labelId]
 )

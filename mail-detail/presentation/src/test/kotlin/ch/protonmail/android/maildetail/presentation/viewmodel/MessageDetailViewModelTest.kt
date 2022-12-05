@@ -44,19 +44,28 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailFolders
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailsettings.domain.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -76,6 +85,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class MessageDetailViewModelTest {
@@ -85,7 +95,8 @@ class MessageDetailViewModelTest {
     private val messageDetailActionBarUiModelMapper = MessageDetailActionBarUiModelMapper()
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(),
-        BottomBarReducer()
+        BottomBarReducer(),
+        BottomSheetReducer()
     )
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
@@ -107,6 +118,18 @@ class MessageDetailViewModelTest {
         every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(
             nonEmptyListOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
         )
+    }
+    private val observeMailLabels = mockk<ObserveExclusiveMailFolders> {
+        every { this@mockk.invoke(userId) } returns flowOf(
+            MailLabels(
+                systemLabels = listOf(MailLabel.System(MailLabelId.System.Spam)),
+                folders = listOf(buildCustomFolder(id = "folder1")),
+                labels = listOf()
+            )
+        )
+    }
+    private val observeFolderColorSettings = mockk<ObserveFolderColorSettings> {
+        every { this@mockk.invoke(userId) } returns flowOf(FolderColorSettings())
     }
     private val markUnread = mockk<MarkUnread> {
         every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
@@ -135,6 +158,8 @@ class MessageDetailViewModelTest {
             observeMessageWithLabels = observeMessageWithLabels,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeDetailActions,
+            observeMailFolders = observeMailLabels,
+            observeFolderColor = observeFolderColorSettings,
             markUnread = markUnread,
             getContacts = getContacts,
             starMessage = starMessage,
@@ -402,10 +427,35 @@ class MessageDetailViewModelTest {
                 )
             )
             assertEquals(bottomState, awaitItem())
+            assertIs<BottomSheetState.Data>(awaitItem().bottomSheetState)
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.Star)
             val actual = assertIs<MessageMetadataState.Data>(awaitItem().messageMetadataState)
             assertTrue(actual.messageDetailActionBar.isStarred)
+        }
+    }
+
+    @Test
+    fun `selecting a move to destination emits MailLabelUiModel list with selected option`() = runTest {
+        viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.MoveToSelected(MailLabelId.System.Spam))
+            advanceUntilIdle()
+            val actual = assertIs<BottomSheetState.Data>(lastEmittedItem().bottomSheetState)
+            assertTrue { actual.moveToDestinations.first { it.id == MailLabelId.System.Spam }.isSelected }
+        }
+    }
+
+    @Test
+    fun `deselect move to destination when dismiss action is called`() = runTest {
+        viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.MoveToSelected(MailLabelId.System.Spam))
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.BottomSheetDismissed)
+            advanceUntilIdle()
+            val actual = assertIs<BottomSheetState.Data>(lastEmittedItem().bottomSheetState)
+            assertNull(actual.moveToDestinations.find { it.isSelected })
         }
     }
 

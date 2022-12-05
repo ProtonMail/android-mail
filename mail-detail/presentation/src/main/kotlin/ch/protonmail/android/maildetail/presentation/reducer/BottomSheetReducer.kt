@@ -31,8 +31,9 @@ class BottomSheetReducer @Inject constructor() {
     @SuppressWarnings("UnusedPrivateMember")
     fun newStateFrom(currentState: BottomSheetState, event: BottomSheetOperation): BottomSheetState {
         return when (event) {
-            is BottomSheetEvent.ActionsData -> BottomSheetState.Data(event.actionUiModels)
+            is BottomSheetEvent.ActionsData -> BottomSheetState.Data(event.moveToDestinations)
             is BottomSheetAction.MoveToDestinationSelected -> currentState.toNewSelectedState(event.mailLabelId)
+            is BottomSheetAction.BottomSheetDismissed -> currentState.toNewUnSelectedState()
         }
     }
 
@@ -43,6 +44,18 @@ class BottomSheetReducer @Inject constructor() {
                 when (mailLabelUiModel) {
                     is MailLabelUiModel.Custom -> mailLabelUiModel.copy(isSelected = mailLabelUiModel.id == mailLabelId)
                     is MailLabelUiModel.System -> mailLabelUiModel.copy(isSelected = mailLabelUiModel.id == mailLabelId)
+                }
+            }
+        )
+    }
+
+    private fun BottomSheetState.toNewUnSelectedState() = when (this) {
+        is BottomSheetState.Loading -> this
+        is BottomSheetState.Data -> this.copy(
+            moveToDestinations = moveToDestinations.map { mailLabelUiModel ->
+                when (mailLabelUiModel) {
+                    is MailLabelUiModel.Custom -> mailLabelUiModel.copy(isSelected = false)
+                    is MailLabelUiModel.System -> mailLabelUiModel.copy(isSelected = false)
                 }
             }
         )

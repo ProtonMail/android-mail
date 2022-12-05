@@ -254,6 +254,14 @@ class MessageDetailReducerTest(
                 shouldReduceToDismissEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                operation = MessageViewAction.BottomSheetDismissed,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceToDismissEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true
             )
         )
 

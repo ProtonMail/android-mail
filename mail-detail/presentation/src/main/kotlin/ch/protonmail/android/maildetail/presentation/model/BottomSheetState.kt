@@ -34,10 +34,11 @@ sealed interface BottomSheetOperation
 
 sealed interface BottomSheetEvent : BottomSheetOperation {
 
-    data class ActionsData(val actionUiModels: List<MailLabelUiModel>) : BottomSheetEvent
+    data class ActionsData(val moveToDestinations: List<MailLabelUiModel>) : BottomSheetEvent
 }
 
 sealed interface BottomSheetAction : BottomSheetOperation {
 
     data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : BottomSheetAction
+    object BottomSheetDismissed : BottomSheetAction
 }

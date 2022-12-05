@@ -60,14 +60,22 @@ fun MessageDetailScreen(
     viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden, confirmStateChange = {
+            if (it == ModalBottomSheetValue.Hidden) {
+                viewModel.submit(MessageViewAction.BottomSheetDismissed)
+            }
+            true
+        })
     val scope = rememberCoroutineScope()
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = {
             MoveToBottomSheetContent(
                 state = state.bottomSheetState,
-                onFolderSelected = { viewModel.submit(MessageViewAction.MoveToSelected(it)) })
+                onFolderSelected = { viewModel.submit(MessageViewAction.MoveToSelected(it)) },
+                onDoneClick = { }
+            )
         }
     ) {
         MessageDetailScreen(
