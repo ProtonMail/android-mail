@@ -36,6 +36,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Ordering
 import io.mockk.coEvery
@@ -48,6 +49,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.label.domain.entity.LabelType
+import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -73,9 +76,12 @@ class MessageRepositoryImplTest {
         coEvery { isLocalPageValid(userId = any(), pageKey = any(), items = any()) } returns false
     }
 
+    private val labelRepository = mockk<LabelRepository>()
+
     private val messageRepository = MessageRepositoryImpl(
         remoteDataSource = remoteDataSource,
-        localDataSource = localDataSource
+        localDataSource = localDataSource,
+        labelRepository = labelRepository
     )
 
     @Test
@@ -381,5 +387,68 @@ class MessageRepositoryImplTest {
 
         // then
         assertEquals(trashedMessage.right(), result)
+    }
+
+    @Test
+    fun `move removes previous exclusive label and adds new label`() = runTest {
+        val message = MessageTestData.message.copy(
+            labelIds = listOf(
+                SystemLabelId.Inbox.labelId,
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.Starred.labelId
+            )
+        )
+        coEvery { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
+        coEvery { labelRepository.getLabels(userId, LabelType.MessageFolder) } returns
+            listOf(LabelTestData.buildLabel("42"))
+        val destinationLabel = SystemLabelId.Spam.labelId
+
+        val updatedMessage = message.copy(
+            labelIds = listOf(
+                LabelId("5"),
+                LabelId("10"),
+                destinationLabel
+            )
+        )
+
+        val result = messageRepository.moveTo(userId, MessageId(message.id), destinationLabel)
+        coVerify { localDataSource.upsertMessage(updatedMessage) }
+        verify { remoteDataSource.addLabel(userId, MessageId(message.id), destinationLabel) }
+        assertEquals(updatedMessage.right(), result)
+    }
+
+    @Test
+    fun `move removes previous exclusive label without custom folders and adds new label`() = runTest {
+        val message = MessageTestData.message.copy(
+            labelIds = listOf(
+                SystemLabelId.Inbox.labelId,
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.Starred.labelId
+            )
+        )
+        coEvery { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
+        coEvery { labelRepository.getLabels(userId, LabelType.MessageFolder) } returns listOf()
+        val destinationLabel = SystemLabelId.Spam.labelId
+
+        val updatedMessage = message.copy(
+            labelIds = listOf(
+                LabelId("5"),
+                LabelId("10"),
+                destinationLabel
+            )
+        )
+
+        val result = messageRepository.moveTo(userId, MessageId(message.id), destinationLabel)
+        coVerify { localDataSource.upsertMessage(updatedMessage) }
+        verify { remoteDataSource.addLabel(userId, MessageId(message.id), destinationLabel) }
+        assertEquals(updatedMessage.right(), result)
+    }
+
+    @Test
+    fun `move emits error when local data source fails`() = runTest {
+        coEvery { localDataSource.observeMessage(userId, any()) } returns flowOf(null)
+
+        val result = messageRepository.moveTo(userId, MessageId(MessageTestData.RAW_MESSAGE_ID), LabelId("42"))
+        assertEquals(DataError.Local.NoDataCached.left(), result)
     }
 }

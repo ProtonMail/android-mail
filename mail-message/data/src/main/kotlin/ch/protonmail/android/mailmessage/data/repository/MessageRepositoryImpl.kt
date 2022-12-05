@@ -38,6 +38,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.label.domain.entity.LabelType
+import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.min
@@ -45,7 +47,8 @@ import kotlin.math.min
 @Singleton
 class MessageRepositoryImpl @Inject constructor(
     private val remoteDataSource: MessageRemoteDataSource,
-    private val localDataSource: MessageLocalDataSource
+    private val localDataSource: MessageLocalDataSource,
+    private val labelRepository: LabelRepository
 ) : MessageRepository {
 
     override suspend fun getMessages(
@@ -96,6 +99,7 @@ class MessageRepositoryImpl @Inject constructor(
         labelId: LabelId
     ): Either<DataError.Local, Message> {
         val messageEither = localDataSource.removeLabel(userId, messageId, labelId)
+
         return messageEither.tap {
             remoteDataSource.removeLabel(userId, messageId, labelId)
         }
@@ -117,6 +121,28 @@ class MessageRepositoryImpl @Inject constructor(
         }
         localDataSource.upsertMessage(updatedMessage)
         return addLabel(userId = userId, messageId = messageId, labelId = SystemLabelId.Trash.labelId)
+    }
+
+    override suspend fun moveTo(
+        userId: UserId,
+        messageId: MessageId,
+        destinationLabel: LabelId
+    ): Either<DataError.Local, Message> {
+        val message = localDataSource.observeMessage(userId, messageId).first()
+            ?: return DataError.Local.NoDataCached.left()
+        val exclusiveMailFolders = labelRepository.getLabels(userId, LabelType.MessageFolder)
+            .map { it.labelId } + listOf(
+            SystemLabelId.Inbox.labelId,
+            SystemLabelId.Archive.labelId,
+            SystemLabelId.Spam.labelId,
+            SystemLabelId.Trash.labelId
+        )
+        val cleanedMessageLabels = message.labelIds.filterNot { labelId -> labelId in exclusiveMailFolders }
+        val updatedLabels = cleanedMessageLabels + destinationLabel
+        val updatedMessage = message.copy(labelIds = updatedLabels)
+        localDataSource.upsertMessage(updatedMessage)
+        remoteDataSource.addLabel(userId, messageId, destinationLabel)
+        return updatedMessage.right()
     }
 
     private suspend fun fetchMessages(

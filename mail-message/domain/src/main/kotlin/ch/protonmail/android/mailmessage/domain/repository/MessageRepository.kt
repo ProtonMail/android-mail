@@ -89,4 +89,13 @@ interface MessageRepository {
         userId: UserId,
         messageId: MessageId
     ): Either<DataError.Local, Message>
+
+    /**
+     * Moves the given [messageId] to the [destinationLabel] if needed removes previous exclusive label
+     */
+    suspend fun moveTo(
+        userId: UserId,
+        messageId: MessageId,
+        destinationLabel: LabelId
+    ): Either<DataError.Local, Message>
 }

@@ -149,11 +149,6 @@ object MessageTestData {
         )
     )
 
-    val messagesWithSizeByConversation = listOf(
-        buildMessage(id = "123", conversationId = ConversationId("conversation"), size = 400L),
-        buildMessage(id = "124", conversationId = ConversationId("conversation"), size = 800L)
-    )
-
     fun buildMessage(
         userId: UserId = UserIdTestData.userId,
         id: String,
