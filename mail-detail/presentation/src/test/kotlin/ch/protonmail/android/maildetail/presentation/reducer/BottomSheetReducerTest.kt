@@ -65,6 +65,11 @@ internal class BottomSheetReducerTest(
                 currentState = BottomSheetState.Data(destinations),
                 operation = BottomSheetEvent.Data(updatedDestinations),
                 expectedState = BottomSheetState.Data(updatedDestinations)
+            ),
+            TestInput(
+                currentState = BottomSheetState.Data(updatedDestinations),
+                operation = BottomSheetAction.BottomSheetDismissed,
+                expectedState = BottomSheetState.Data(destinations)
             )
         )
 
