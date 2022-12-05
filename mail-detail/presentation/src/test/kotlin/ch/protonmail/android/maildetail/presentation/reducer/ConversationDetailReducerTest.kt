@@ -73,9 +73,9 @@ class ConversationDetailReducerTest(
             }
 
             if (reducesDismissEffect) {
-                assertNotNull(result.dismiss.consume())
+                assertNotNull(result.exitScreenEffect.consume())
             } else {
-                assertNull(result.dismiss.consume())
+                assertNull(result.exitScreenEffect.consume())
             }
 
             if (reducesErrorBar) {

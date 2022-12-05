@@ -93,7 +93,7 @@ fun ConversationDetailScreen(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
 
-    ConsumableLaunchedEffect(state.dismiss) { actions.onBackClick() }
+    ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onBackClick() }
     ConsumableTextEffect(state.error) { string ->
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
     }

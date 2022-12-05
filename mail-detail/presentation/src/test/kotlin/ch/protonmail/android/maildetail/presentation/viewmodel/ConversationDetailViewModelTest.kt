@@ -539,14 +539,14 @@ class ConversationDetailViewModelTest {
                 operation = ConversationDetailViewAction.Trash
             )
         } returns ConversationDetailState.Loading.copy(
-            dismiss = Effect.of(Unit)
+            exitScreenEffect = Effect.of(Unit)
         )
         viewModel.state.test {
             initialStateEmitted()
             // When
             viewModel.submit(ConversationDetailViewAction.Trash)
             // Then
-            assertNotNull(awaitItem().dismiss.consume())
+            assertNotNull(awaitItem().exitScreenEffect.consume())
             cancelAndIgnoreRemainingEvents()
         }
     }

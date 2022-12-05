@@ -43,7 +43,7 @@ class ConversationDetailReducer @Inject constructor(
         messagesState = currentState.toNewMessageState(operation),
         bottomBarState = currentState.toNewBottomBarState(operation),
         error = currentState.toErrorState(operation),
-        dismiss = currentState.toDismissState(operation)
+        exitScreenEffect = currentState.toDismissState(operation)
     )
 
     private fun ConversationDetailState.toNewConversationState(operation: ConversationDetailOperation) =
@@ -85,5 +85,5 @@ class ConversationDetailReducer @Inject constructor(
         if (operation is ConversationDetailViewAction.Trash) {
             Effect.of(Unit)
         } else
-            dismiss
+            exitScreenEffect
 }
