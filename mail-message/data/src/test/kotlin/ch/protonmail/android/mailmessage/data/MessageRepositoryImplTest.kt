@@ -335,6 +335,8 @@ class MessageRepositoryImplTest {
             labelIds = listOf(LabelIdSample.AllDraft, SystemLabelId.Trash.labelId)
         )
         every { localDataSource.observeMessage(userId, messageId) } returns flowOf(message)
+        coEvery { localDataSource.addLabel(userId, messageId, SystemLabelId.Trash.labelId) } returns
+            trashedMessage.right()
 
         // when
         val result = messageRepository.moveToTrash(userId, messageId)
@@ -371,6 +373,8 @@ class MessageRepositoryImplTest {
         coEvery { localDataSource.upsertMessage(messageWithoutLabels) } coAnswers {
             messageFlow.emit(messageWithoutLabels)
         }
+        coEvery { localDataSource.addLabel(userId, messageId, SystemLabelId.Trash.labelId) } returns
+            trashedMessage.right()
 
         // when
         val result = messageRepository.moveToTrash(userId, messageId)
