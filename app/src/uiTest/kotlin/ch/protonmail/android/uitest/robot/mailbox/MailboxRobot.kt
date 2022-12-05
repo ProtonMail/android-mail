@@ -70,6 +70,17 @@ class MailboxRobot internal constructor(
                 .assertIsDisplayed()
         }
 
+        fun itemLabelIsDisplayed(label: String) {
+            composeTestRule.onNodeWithText(label)
+                .awaitDisplayed(composeTestRule)
+                .assertIsDisplayed()
+        }
+
+        fun itemLabelIsNotDisplayed(label: String) {
+            composeTestRule.onNodeWithText(label)
+                .assertDoesNotExist()
+        }
+
         fun itemWithSubjectIsDisplayed(subject: String) {
             composeTestRule.onNodeWithText(subject)
                 .awaitDisplayed(composeTestRule)

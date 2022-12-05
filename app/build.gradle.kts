@@ -176,6 +176,7 @@ android {
 dependencies {
     implementation(files("../../proton-libs/gopenpgp/gopenpgp.aar"))
     implementation(Dependencies.appLibs)
+    implementation(KotlinX.immutableCollections)
     debugImplementation(Dependencies.appDebug)
 
     implementation(project(":mail-common"))

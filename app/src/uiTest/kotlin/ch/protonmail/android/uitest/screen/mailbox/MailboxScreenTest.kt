@@ -25,6 +25,7 @@ import arrow.core.nonEmptyListOf
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.sample.MailboxItemLabelUiModelSample
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
@@ -37,6 +38,7 @@ import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.ManagedState
 import ch.protonmail.android.uitest.util.StateManager
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Ignore
 import org.junit.Rule
@@ -56,7 +58,7 @@ internal class MailboxScreenTest {
     }
 
     @Test
-    fun givenLoadingCompletedThenItemsAreDisplayed() {
+    fun whenLoadingCompletedThenItemsAreDisplayed() {
         val mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
@@ -67,6 +69,23 @@ internal class MailboxScreenTest {
         val robot = setupScreen(state = mailboxState, items = items)
 
         robot.verify { itemWithSubjectIsDisplayed(items.first().subject) }
+    }
+
+    @Test
+    fun whenLoadingCompletedThenItemsLabelsAreDisplayed() {
+        val mailboxListState = MailboxListState.Data(
+            currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
+            openItemEffect = Effect.empty(),
+            scrollToMailboxTop = Effect.empty()
+        )
+        val mailboxState = MailboxState.Loading.copy(mailboxListState = mailboxListState)
+        val label = MailboxItemLabelUiModelSample.News
+        val item = MailboxItemUiModelTestData.buildMailboxUiModelItem(
+            labels = persistentListOf(label)
+        )
+        val robot = setupScreen(state = mailboxState, items = listOf(item))
+
+        robot.verify { itemLabelIsDisplayed(label.name) }
     }
 
     @Test

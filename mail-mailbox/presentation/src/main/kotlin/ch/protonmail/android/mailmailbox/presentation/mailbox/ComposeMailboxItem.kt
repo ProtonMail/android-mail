@@ -389,9 +389,7 @@ private fun Labels(
     modifier: Modifier = Modifier,
     labels: ImmutableList<MailboxItemLabelUiModel>
 ) {
-    if (labels.isNotEmpty()) {
-        MailboxItemLabels(modifier = modifier, labels = labels)
-    }
+    MailboxItemLabels(modifier = modifier, labels = labels)
 }
 
 

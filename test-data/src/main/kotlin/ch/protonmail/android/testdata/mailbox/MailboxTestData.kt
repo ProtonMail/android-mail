@@ -19,16 +19,18 @@
 package ch.protonmail.android.testdata.mailbox
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
@@ -154,10 +156,11 @@ object MailboxItemUiModelTestData {
     )
 
     fun buildMailboxUiModelItem(
-        id: String,
-        type: MailboxItemType,
+        id: String = "0",
+        type: MailboxItemType = MailboxItemType.Message,
         subject: String = id,
-        isRead: Boolean = true
+        isRead: Boolean = true,
+        labels: ImmutableList<MailboxItemLabelUiModel> = persistentListOf()
     ) = MailboxItemUiModel(
         avatar = AvatarUiModel.ParticipantInitial("T"),
         type = type,
@@ -166,7 +169,7 @@ object MailboxItemUiModelTestData {
         conversationId = ConversationId(id),
         time = TextUiModel.Text("10:42"),
         isRead = isRead,
-        labels = persistentListOf(),
+        labels = labels,
         subject = subject,
         participants = persistentListOf(),
         shouldShowRepliedIcon = false,
