@@ -33,7 +33,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -41,6 +40,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -50,7 +50,6 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
-import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSnackbarHost
@@ -93,12 +92,10 @@ fun ConversationDetailScreen(
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
-    val coroutineScope = rememberCoroutineScope()
 
     ConsumableLaunchedEffect(state.dismiss) { actions.onBackClick() }
-    state.error.consume()?.let { textUiModel ->
-        val errorMessage = textUiModel.string()
-        coroutineScope.launch { snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = errorMessage) }
+    ConsumableTextEffect(state.error) { string ->
+        snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
     }
 
     if (state.conversationState is ConversationDetailMetadataState.Error) {

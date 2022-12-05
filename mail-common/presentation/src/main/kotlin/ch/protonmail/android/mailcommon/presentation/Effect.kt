@@ -20,7 +20,11 @@ package ch.protonmail.android.mailcommon.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.model.string
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * This is a container for single-use state.
@@ -52,10 +56,30 @@ class Effect<T : Any> private constructor(private var event: T?) {
  * @param block will be called only when there is an [Effect.event] to consume
  */
 @Composable
-fun <T : Any> ConsumableLaunchedEffect(effect: Effect<T>, block: suspend CoroutineScope.(T) -> Unit) {
+inline fun <T : Any> ConsumableLaunchedEffect(
+    effect: Effect<T>,
+    crossinline block: suspend CoroutineScope.(T) -> Unit
+) {
     LaunchedEffect(effect) {
         effect.consume()?.let { event ->
             block(event)
         }
+    }
+}
+
+/**
+ * Executes [block] in the scope of [effect]
+ * @param block will be called only when there is an [Effect.event] to consume, resolving the [TextUiModel] to a
+ *  [String]
+ */
+@Composable
+inline fun ConsumableTextEffect(
+    effect: Effect<TextUiModel>,
+    crossinline block: suspend CoroutineScope.(String) -> Unit
+) {
+    val scope = rememberCoroutineScope()
+    effect.consume()?.let { textUiModel ->
+        val string = textUiModel.string()
+        scope.launch { block(string) }
     }
 }
