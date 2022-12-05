@@ -31,6 +31,8 @@ android {
 }
 
 dependencies {
+    implementation(KotlinX.immutableCollections)
+
     implementation(Proton.Core.account)
     implementation(Proton.Core.contact)
     implementation(Proton.Core.domain)

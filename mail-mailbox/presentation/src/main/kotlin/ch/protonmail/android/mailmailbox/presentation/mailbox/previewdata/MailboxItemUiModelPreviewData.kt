@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import kotlinx.collections.immutable.persistentListOf
 import me.proton.core.domain.entity.UserId
 
 object MailboxItemUiModelPreviewData {
@@ -40,10 +41,10 @@ object MailboxItemUiModelPreviewData {
             conversationId = ConversationId("DroidConLondon"),
             id = "DroidConLondon",
             isRead = true,
-            labels = emptyList(),
-            locationIconResIds = listOf(R.drawable.ic_proton_archive_box),
+            labels = persistentListOf(),
+            locationIconResIds = persistentListOf(R.drawable.ic_proton_archive_box),
             numMessages = 2,
-            participants = listOf("DroidCon"),
+            participants = persistentListOf("DroidCon"),
             shouldShowAttachmentIcon = true,
             shouldShowCalendarIcon = true,
             shouldShowExpirationLabel = false,
@@ -62,10 +63,10 @@ object MailboxItemUiModelPreviewData {
             conversationId = WeatherForecastConversationId,
             id = "WeatherForecast",
             isRead = false,
-            labels = emptyList(),
-            locationIconResIds = listOf(R.drawable.ic_proton_inbox, R.drawable.ic_proton_trash),
+            labels = persistentListOf(),
+            locationIconResIds = persistentListOf(R.drawable.ic_proton_inbox, R.drawable.ic_proton_trash),
             numMessages = 2,
-            participants = listOf(AccuWeatherName),
+            participants = persistentListOf(AccuWeatherName),
             shouldShowAttachmentIcon = true,
             shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,
@@ -87,10 +88,10 @@ object MailboxItemUiModelPreviewData {
             conversationId = WeatherForecastConversationId,
             id = "WeatherForecastAugust2022",
             isRead = true,
-            labels = emptyList(),
-            locationIconResIds = emptyList(),
+            labels = persistentListOf(),
+            locationIconResIds = persistentListOf(),
             numMessages = 1,
-            participants = listOf(AccuWeatherName),
+            participants = persistentListOf(AccuWeatherName),
             shouldShowAttachmentIcon = true,
             shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,
@@ -109,10 +110,10 @@ object MailboxItemUiModelPreviewData {
             conversationId = WeatherForecastConversationId,
             id = "WeatherForecastSeptember2022",
             isRead = false,
-            labels = emptyList(),
-            locationIconResIds = emptyList(),
+            labels = persistentListOf(),
+            locationIconResIds = persistentListOf(),
             numMessages = 1,
-            participants = listOf(AccuWeatherName),
+            participants = persistentListOf(AccuWeatherName),
             shouldShowAttachmentIcon = true,
             shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,

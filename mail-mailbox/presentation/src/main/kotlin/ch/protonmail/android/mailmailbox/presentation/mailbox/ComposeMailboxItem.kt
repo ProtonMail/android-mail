@@ -48,10 +48,12 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
+import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionWeak
@@ -84,15 +86,15 @@ fun MailboxItem(
             avatar = { Avatar(avatarUiModel = item.avatar) },
             actionIcons = { ActionIcons(item = item, iconColor = fontColor) },
             participants = {
-                Participants(item = item, fontWeight = fontWeight, fontColor = fontColor)
+                Participants(participants = item.participants, fontWeight = fontWeight, fontColor = fontColor)
             },
             time = { Time(time = item.time, fontWeight = fontWeight, fontColor = fontColor) },
-            locationIcons = { LocationIcons(item = item, iconColor = fontColor) },
+            locationIcons = { LocationIcons(iconResIds = item.locationIconResIds, iconColor = fontColor) },
             subject = { Subject(subject = item.subject, fontWeight = fontWeight, fontColor = fontColor) },
             count = { Count(count = item.numMessages, fontWeight = fontWeight, fontColor = fontColor) },
             icons = { Icons(item = item, iconColor = fontColor) },
             expirationLabel = { ExpirationLabel(hasExpirationTime = item.shouldShowExpirationLabel) },
-            labels = { Labels(item = item) }
+            labels = { Labels(labels = item.labels) }
         )
     }
 }
@@ -249,13 +251,13 @@ private fun ActionIcons(
 @Composable
 private fun Participants(
     modifier: Modifier = Modifier,
-    item: MailboxItemUiModel,
+    participants: ImmutableList<String>,
     fontWeight: FontWeight,
     fontColor: Color
 ) {
     Text(
         modifier = modifier,
-        text = item.participants.joinToString(),
+        text = participants.joinToString(),
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
         style = ProtonTheme.typography.defaultWeak.copy(fontWeight = fontWeight, color = fontColor)
@@ -282,10 +284,10 @@ private fun Time(
 @Composable
 private fun LocationIcons(
     modifier: Modifier = Modifier,
-    item: MailboxItemUiModel,
+    iconResIds: ImmutableList<Int>,
     iconColor: Color
 ) {
-    if (item.locationIconResIds.isEmpty()) {
+    if (iconResIds.isEmpty()) {
         return
     }
 
@@ -293,7 +295,7 @@ private fun LocationIcons(
         modifier = modifier,
         horizontalArrangement = Arrangement.Start
     ) {
-        item.locationIconResIds.forEach { SmallNonClickableIcon(iconId = it, iconColor) }
+        iconResIds.forEach { SmallNonClickableIcon(iconId = it, iconColor) }
     }
 }
 
@@ -385,10 +387,10 @@ private fun ExpirationLabel(
 @Composable
 private fun Labels(
     modifier: Modifier = Modifier,
-    item: MailboxItemUiModel
+    labels: ImmutableList<MailboxItemLabelUiModel>
 ) {
-    if (item.labels.isNotEmpty()) {
-        MailboxItemLabels(modifier = modifier, labels = item.labels)
+    if (labels.isNotEmpty()) {
+        MailboxItemLabels(modifier = modifier, labels = labels)
     }
 }
 

@@ -29,6 +29,8 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.arch.Mapper
 import me.proton.core.label.domain.entity.Label
@@ -45,7 +47,7 @@ class MailboxItemUiModelMapper @Inject constructor(
 ) : Mapper<MailboxItem, MailboxItemUiModel> {
 
     fun toUiModel(mailboxItem: MailboxItem, contacts: List<Contact>): MailboxItemUiModel {
-        val participantsResolvedNames = getParticipantsResolvedNames(mailboxItem, contacts)
+        val participantsResolvedNames = getParticipantsResolvedNames(mailboxItem, contacts).toImmutableList()
 
         return MailboxItemUiModel(
             avatar = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames),
@@ -74,7 +76,7 @@ class MailboxItemUiModelMapper @Inject constructor(
         when (val icons = getMailboxItemLocationIcons(mailboxItem)) {
             is GetMailboxItemLocationIcons.Result.None -> emptyList()
             is GetMailboxItemLocationIcons.Result.Icons -> listOfNotNull(icons.first, icons.second, icons.third)
-        }
+        }.toImmutableList()
 
     private fun hasCalendarAttachment(mailboxItem: MailboxItem) = mailboxItem.calendarAttachmentCount > 0
 
@@ -106,11 +108,11 @@ class MailboxItemUiModelMapper @Inject constructor(
             mailboxItem.isForwarded
         }
 
-    private fun toLabelUiModels(labels: List<Label>): List<MailboxItemLabelUiModel> =
+    private fun toLabelUiModels(labels: List<Label>): ImmutableList<MailboxItemLabelUiModel> =
         labels.filter { it.type == LabelType.MessageLabel }.map { label ->
             MailboxItemLabelUiModel(
                 name = label.name,
                 color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
             )
-        }
+        }.toImmutableList()
 }

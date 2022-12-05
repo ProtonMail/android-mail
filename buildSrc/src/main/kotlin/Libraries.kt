@@ -185,6 +185,8 @@ object Kotlin {
 object KotlinX {
     const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.KotlinX.coroutines}"
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.KotlinX.coroutines}"
+    const val immutableCollections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:" +
+        "${Versions.KotlinX.immutableCollections}"
     const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.KotlinX.serializationJson}"
 }
 

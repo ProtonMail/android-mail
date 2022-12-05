@@ -29,6 +29,7 @@ import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import kotlinx.collections.immutable.persistentListOf
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
@@ -165,15 +166,15 @@ object MailboxItemUiModelTestData {
         conversationId = ConversationId(id),
         time = TextUiModel.Text("10:42"),
         isRead = isRead,
-        labels = emptyList(),
+        labels = persistentListOf(),
         subject = subject,
-        participants = emptyList(),
+        participants = persistentListOf(),
         shouldShowRepliedIcon = false,
         shouldShowRepliedAllIcon = false,
         shouldShowForwardedIcon = false,
         numMessages = null,
         showStar = false,
-        locationIconResIds = emptyList(),
+        locationIconResIds = persistentListOf(),
         shouldShowAttachmentIcon = false,
         shouldShowExpirationLabel = false,
         shouldShowCalendarIcon = false

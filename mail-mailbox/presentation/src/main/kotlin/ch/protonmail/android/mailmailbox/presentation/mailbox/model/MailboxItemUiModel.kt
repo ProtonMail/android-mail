@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.domain.entity.UserId
 
 @Immutable
@@ -35,15 +36,15 @@ data class MailboxItemUiModel(
     val conversationId: ConversationId,
     val time: TextUiModel,
     val isRead: Boolean,
-    val labels: List<MailboxItemLabelUiModel>,
+    val labels: ImmutableList<MailboxItemLabelUiModel>,
     val subject: String,
-    val participants: List<String>,
+    val participants: ImmutableList<String>,
     val shouldShowRepliedIcon: Boolean,
     val shouldShowRepliedAllIcon: Boolean,
     val shouldShowForwardedIcon: Boolean,
     val numMessages: Int?,
     val showStar: Boolean,
-    val locationIconResIds: List<Int>,
+    val locationIconResIds: ImmutableList<Int>,
     val shouldShowAttachmentIcon: Boolean,
     val shouldShowExpirationLabel: Boolean,
     val shouldShowCalendarIcon: Boolean
