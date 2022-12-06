@@ -391,6 +391,7 @@ class MessageRepositoryImplTest {
 
     @Test
     fun `move removes previous exclusive label and adds new label`() = runTest {
+        // Given
         val message = MessageTestData.message.copy(
             labelIds = listOf(
                 SystemLabelId.Inbox.labelId,
@@ -411,7 +412,10 @@ class MessageRepositoryImplTest {
             )
         )
 
+        // When
         val result = messageRepository.moveTo(userId, MessageId(message.id), destinationLabel)
+
+        // Then
         coVerify { localDataSource.upsertMessage(updatedMessage) }
         verify { remoteDataSource.addLabel(userId, MessageId(message.id), destinationLabel) }
         assertEquals(updatedMessage.right(), result)
@@ -419,6 +423,7 @@ class MessageRepositoryImplTest {
 
     @Test
     fun `move removes previous exclusive label without custom folders and adds new label`() = runTest {
+        // Given
         val message = MessageTestData.message.copy(
             labelIds = listOf(
                 SystemLabelId.Inbox.labelId,
@@ -438,7 +443,10 @@ class MessageRepositoryImplTest {
             )
         )
 
+        // When
         val result = messageRepository.moveTo(userId, MessageId(message.id), destinationLabel)
+
+        // Then
         coVerify { localDataSource.upsertMessage(updatedMessage) }
         verify { remoteDataSource.addLabel(userId, MessageId(message.id), destinationLabel) }
         assertEquals(updatedMessage.right(), result)
@@ -446,9 +454,42 @@ class MessageRepositoryImplTest {
 
     @Test
     fun `move emits error when local data source fails`() = runTest {
+        // Given
         coEvery { localDataSource.observeMessage(userId, any()) } returns flowOf(null)
 
+        // When
         val result = messageRepository.moveTo(userId, MessageId(MessageTestData.RAW_MESSAGE_ID), LabelId("42"))
+
+        // Then
         assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
+
+    @Test
+    fun `move to calls move to trash when destinationLabel is trash`() = runTest {
+        // Given
+        val message = MessageTestData.message.copy(
+            labelIds = listOf(
+                SystemLabelId.Inbox.labelId,
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.Starred.labelId
+            )
+        )
+        val trashedMessage = message.copy(
+            labelIds = listOf(
+                LabelIdSample.AllDraft,
+                SystemLabelId.Trash.labelId
+            )
+        )
+
+        val messageId = MessageId(message.id)
+        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(message)
+        coEvery { localDataSource.addLabel(userId, messageId, SystemLabelId.Trash.labelId) } returns
+            trashedMessage.right()
+
+        // When
+        val actual = messageRepository.moveTo(userId, messageId, SystemLabelId.Trash.labelId)
+
+        // Then
+        assertEquals(trashedMessage.right(), actual)
     }
 }

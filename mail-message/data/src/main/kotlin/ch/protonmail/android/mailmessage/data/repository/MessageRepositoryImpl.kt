@@ -128,6 +128,10 @@ class MessageRepositoryImpl @Inject constructor(
         messageId: MessageId,
         destinationLabel: LabelId
     ): Either<DataError.Local, Message> {
+        if (destinationLabel == SystemLabelId.Trash.labelId) {
+            return moveToTrash(userId, messageId)
+        }
+
         val message = localDataSource.observeMessage(userId, messageId).first()
             ?: return DataError.Local.NoDataCached.left()
         val exclusiveMailFolders = labelRepository.getLabels(userId, LabelType.MessageFolder)
