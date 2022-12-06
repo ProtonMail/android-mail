@@ -164,11 +164,12 @@ class MessageDetailViewModel @Inject constructor(
         primaryUserId.mapLatest { userId ->
             val bottomSheetState = state.value.bottomSheetState
             if (bottomSheetState is BottomSheetState.Data) {
-                val destinationLabel = bottomSheetState.moveToDestinations.first { it.isSelected }
-                moveMessage(userId, messageId, destinationLabel.id.labelId).fold(
-                    ifLeft = { MessageDetailEvent.ErrorMovingMessage },
-                    ifRight = { MessageViewAction.MoveToDestinationConfirmed }
-                )
+                bottomSheetState.moveToDestinations.firstOrNull { it.isSelected }?.let {
+                    moveMessage(userId, messageId, it.id.labelId).fold(
+                        ifLeft = { MessageDetailEvent.ErrorMovingMessage },
+                        ifRight = { MessageViewAction.MoveToDestinationConfirmed }
+                    )
+                } ?: MessageDetailEvent.ErrorMovingMessage
             } else {
                 MessageDetailEvent.ErrorMovingMessage
             }

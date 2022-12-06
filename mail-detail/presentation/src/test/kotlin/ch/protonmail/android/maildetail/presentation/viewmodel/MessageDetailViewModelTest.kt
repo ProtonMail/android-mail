@@ -35,6 +35,7 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
+import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessageToTrash
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
@@ -149,6 +150,9 @@ class MessageDetailViewModelTest {
         coEvery { invoke(userId, messageId = MessageId(rawMessageId)) } returns
             with(MessageSample) { Invoice.moveTo(LabelIdSample.Trash) }.right()
     }
+    private val moveMessage = mockk<MoveMessage> {
+        coEvery { this@mockk.invoke(userId, MessageId(rawMessageId), any()) } returns MessageTestData.message.right()
+    }
 
     private val viewModel by lazy {
         MessageDetailViewModel(
@@ -166,7 +170,8 @@ class MessageDetailViewModelTest {
             savedStateHandle = savedStateHandle,
             messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
             messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper,
-            moveMessageToTrash = moveMessageToTrash
+            moveMessageToTrash = moveMessageToTrash,
+            moveMessage = moveMessage
         )
     }
 
@@ -443,6 +448,19 @@ class MessageDetailViewModelTest {
             val actual = assertIs<BottomSheetState.Data>(lastEmittedItem().bottomSheetState)
             assertTrue { actual.moveToDestinations.first { it.id == MailLabelId.System.Spam }.isSelected }
         }
+    }
+
+    @Test
+    fun `when error moving a message, error is emitted`() = runTest {
+        // Given
+        coEvery { moveMessage(userId, MessageId(rawMessageId), any()) } returns DataError.Local.NoDataCached.left()
+
+        // When
+        viewModel.submit(MessageViewAction.MoveToDestinationConfirmed)
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(TextUiModel(R.string.error_move_message_failed), viewModel.state.value.error.consume())
     }
 
     private suspend fun FlowTurbine<MessageDetailState>.initialStateEmitted() {
