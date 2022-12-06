@@ -31,7 +31,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -50,6 +49,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.maillabel.presentation.textRes
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonRawListItem
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -65,11 +65,7 @@ fun MoveToBottomSheetContent(
 ) {
     when (state) {
         is BottomSheetState.Data -> MoveToBottomSheetContent(state.moveToDestinations, onFolderSelected, onDoneClick)
-        is BottomSheetState.Loading ->
-            // It is required by the ModalBottomSheetLayout that some content is provided
-            Surface(modifier = Modifier.height(300.dp)) {
-                Column {}
-            }
+        is BottomSheetState.Loading -> ProtonCenteredProgress()
     }
 }
 

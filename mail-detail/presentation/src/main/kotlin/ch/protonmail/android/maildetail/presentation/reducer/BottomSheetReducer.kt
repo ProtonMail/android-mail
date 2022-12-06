@@ -24,11 +24,11 @@ import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
+import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 class BottomSheetReducer @Inject constructor() {
 
-    @SuppressWarnings("UnusedPrivateMember")
     fun newStateFrom(currentState: BottomSheetState, event: BottomSheetOperation): BottomSheetState {
         return when (event) {
             is BottomSheetEvent.ActionsData -> BottomSheetState.Data(event.moveToDestinations)
@@ -44,7 +44,7 @@ class BottomSheetReducer @Inject constructor() {
                 when (mailLabelUiModel) {
                     is MailLabelUiModel.Custom -> mailLabelUiModel.copy(isSelected = mailLabelUiModel.id == mailLabelId)
                     is MailLabelUiModel.System -> mailLabelUiModel.copy(isSelected = mailLabelUiModel.id == mailLabelId)
-                }
+                }.exhaustive
             }
         )
     }
