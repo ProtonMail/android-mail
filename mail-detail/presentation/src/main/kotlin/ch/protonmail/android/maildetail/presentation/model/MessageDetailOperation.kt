@@ -56,6 +56,7 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
 
     object ErrorMarkingUnread : MessageDetailEvent, AffectingErrorBar
     object ErrorMovingToTrash : MessageDetailEvent, AffectingErrorBar
+    object ErrorMovingMessage : MessageDetailEvent, AffectingErrorBar
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {
@@ -63,5 +64,6 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object UnStar : MessageViewAction, AffectingMessage
     object MarkUnread : MessageViewAction
     object Trash : MessageViewAction
-    data class MoveToSelected(val mailLabelId: MailLabelId) : MessageViewAction
+    data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MessageViewAction
+    object MoveToDestinationConfirmed : MessageViewAction
 }

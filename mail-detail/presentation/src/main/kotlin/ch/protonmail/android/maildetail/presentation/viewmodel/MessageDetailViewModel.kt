@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
+import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessageToTrash
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
@@ -35,6 +36,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetEvent
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -62,6 +64,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
+@Suppress("LongParameterList")
 class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMessageWithLabels: ObserveMessageWithLabels,
@@ -77,7 +80,8 @@ class MessageDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
     private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper,
-    private val moveMessageToTrash: MoveMessageToTrash
+    private val moveMessageToTrash: MoveMessageToTrash,
+    private val moveMessage: MoveMessage
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -99,7 +103,8 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
             is MessageViewAction.Trash -> trashMessage()
-            is MessageViewAction.MoveToSelected -> moveToDestinationSelected(action.mailLabelId)
+            is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
+            is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed()
         }.exhaustive
     }
 
@@ -151,8 +156,25 @@ class MessageDetailViewModel @Inject constructor(
 
     private fun moveToDestinationSelected(mailLabelId: MailLabelId) {
         viewModelScope.launch {
-            emitNewStateFrom(MessageViewAction.MoveToSelected(mailLabelId))
+            emitNewStateFrom(MessageViewAction.MoveToDestinationSelected(mailLabelId))
         }
+    }
+
+    private fun onBottomSheetDestinationConfirmed() {
+        primaryUserId.mapLatest { userId ->
+            val bottomSheetState = state.value.bottomSheetState
+            if (bottomSheetState is BottomSheetState.Data) {
+                val destinationLabel = bottomSheetState.moveToDestinations.first { it.isSelected }
+                moveMessage(userId, messageId, destinationLabel.id.labelId).fold(
+                    ifLeft = { MessageDetailEvent.ErrorMovingMessage },
+                    ifRight = { MessageViewAction.MoveToDestinationConfirmed }
+                )
+            } else {
+                MessageDetailEvent.ErrorMovingMessage
+            }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
     }
 
     private fun observeMessageWithLabels(messageId: MessageId) {

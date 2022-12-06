@@ -168,7 +168,7 @@ class MessageDetailReducerTest(
                 shouldReduceBottomSheetState = false
             ),
             TestInput(
-                MessageViewAction.MoveToSelected(MailLabelId.System.Spam),
+                MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam),
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceToDismissEffect = false,

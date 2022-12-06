@@ -54,7 +54,8 @@ class MessageDetailReducer @Inject constructor(
                 is MessageDetailEvent.ErrorAddingStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
                 is MessageDetailEvent.ErrorRemovingStar ->
                     Effect.of(TextUiModel(R.string.error_unstar_operation_failed))
-                MessageDetailEvent.ErrorMovingToTrash -> Effect.of(TextUiModel(R.string.error_move_to_trash_failed))
+                is MessageDetailEvent.ErrorMovingToTrash -> Effect.of(TextUiModel(R.string.error_move_to_trash_failed))
+                is MessageDetailEvent.ErrorMovingMessage -> Effect.of(TextUiModel(R.string.error_move_message_failed))
             }.exhaustive
         } else {
             error
@@ -63,7 +64,8 @@ class MessageDetailReducer @Inject constructor(
     private fun MessageDetailState.toNewDismissStateFrom(operation: MessageDetailOperation): Effect<Unit> {
         val dismissOperations = listOf(
             MessageViewAction.MarkUnread,
-            MessageViewAction.Trash
+            MessageViewAction.Trash,
+            MessageViewAction.MoveToDestinationConfirmed
         )
         return if (operation in dismissOperations) {
             Effect.of(Unit)
@@ -92,7 +94,7 @@ class MessageDetailReducer @Inject constructor(
                 bottomSheetState,
                 operation.bottomSheetEvent
             )
-            is MessageViewAction.MoveToSelected -> bottomSheetReducer.newStateFrom(
+            is MessageViewAction.MoveToDestinationSelected -> bottomSheetReducer.newStateFrom(
                 bottomSheetState,
                 BottomSheetAction.MoveToDestinationSelected(operation.mailLabelId)
             )

@@ -438,7 +438,7 @@ class MessageDetailViewModelTest {
     fun `selecting a move to destination emits MailLabelUiModel list with selected option`() = runTest {
         viewModel.state.test {
             advanceUntilIdle()
-            viewModel.submit(MessageViewAction.MoveToSelected(MailLabelId.System.Spam))
+            viewModel.submit(MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
             advanceUntilIdle()
             val actual = assertIs<BottomSheetState.Data>(lastEmittedItem().bottomSheetState)
             assertTrue { actual.moveToDestinations.first { it.id == MailLabelId.System.Spam }.isSelected }
