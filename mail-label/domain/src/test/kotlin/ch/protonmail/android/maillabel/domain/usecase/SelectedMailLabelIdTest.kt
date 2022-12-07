@@ -19,21 +19,33 @@
 package ch.protonmail.android.maillabel.domain.usecase
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailcommon.domain.sample.UserSample
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import io.mockk.every
+import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
-import org.junit.Before
+import me.proton.core.user.domain.entity.User
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class SelectedMailLabelIdTest {
 
-    private lateinit var selectedMailLabelId: SelectedMailLabelId
-
-    @Before
-    fun setUp() {
-        selectedMailLabelId = SelectedMailLabelId()
+    private val appScope = TestScope()
+    private val observePrimaryUser: ObservePrimaryUser = mockk {
+        every { this@mockk() } returns emptyFlow()
+    }
+    private val selectedMailLabelId by lazy {
+        SelectedMailLabelId(
+            appScope = appScope,
+            observePrimaryUser = observePrimaryUser
+        )
     }
 
     @Test
@@ -65,6 +77,26 @@ class SelectedMailLabelIdTest {
 
             assertEquals(MailLabelId.System.Archive, awaitItem())
             assertEquals(MailLabelId.Custom.Label(LabelId("lId1")), awaitItem())
+        }
+    }
+
+    @Test
+    fun `emits inbox when primary user changes`() = runTest {
+        // given
+        val userFlow = MutableStateFlow<User?>(null)
+        every { observePrimaryUser() } returns userFlow
+
+        selectedMailLabelId.flow.test {
+            assertEquals(MailLabelId.System.Inbox, awaitItem())
+            selectedMailLabelId.set(MailLabelId.System.Archive)
+            assertEquals(MailLabelId.System.Archive, awaitItem())
+
+            // when
+            userFlow.emit(UserSample.Primary)
+            appScope.advanceUntilIdle()
+
+            // then
+            assertEquals(MailLabelId.System.Inbox, awaitItem())
         }
     }
 }

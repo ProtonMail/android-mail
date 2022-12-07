@@ -18,20 +18,34 @@
 
 package ch.protonmail.android.maillabel.domain
 
+import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SelectedMailLabelId @Inject constructor() {
+class SelectedMailLabelId @Inject constructor(
+    @AppScope appScope: CoroutineScope,
+    observePrimaryUser: ObservePrimaryUser
+) {
 
     private val mutableFlow = MutableStateFlow<MailLabelId>(System.Inbox)
 
     val flow: StateFlow<MailLabelId> = mutableFlow.asStateFlow()
+
+    init {
+        observePrimaryUser()
+            .onEach { set(System.Inbox) }
+            .launchIn(appScope)
+    }
 
     fun set(value: MailLabelId) {
         mutableFlow.value = value
