@@ -27,7 +27,6 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
-import ch.protonmail.android.maildetail.domain.usecase.MoveMessageToTrash
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
@@ -44,6 +43,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailFolders
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -80,7 +80,6 @@ class MessageDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
     private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper,
-    private val moveMessageToTrash: MoveMessageToTrash,
     private val moveMessage: MoveMessage
 ) : ViewModel() {
 
@@ -145,7 +144,7 @@ class MessageDetailViewModel @Inject constructor(
 
     private fun trashMessage() {
         primaryUserId.mapLatest { userId ->
-            moveMessageToTrash(userId, messageId).fold(
+            moveMessage(userId, messageId, SystemLabelId.Trash.labelId).fold(
                 ifLeft = { MessageDetailEvent.ErrorMovingToTrash },
                 ifRight = { MessageViewAction.Trash }
             )

@@ -21,14 +21,19 @@ package ch.protonmail.android.maildetail.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailFolders
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -37,19 +42,63 @@ class MoveMessageTest {
 
     private val userId = UserIdSample.Primary
     private val messageId = MessageIdSample.AugWeatherForecast
-    private val labelId = LabelIdSample.Archive
+    private val fromLabelId = SystemLabelId.Archive.labelId
+    private val toLabelId = SystemLabelId.Spam.labelId
 
-    private val messageRepository: MessageRepository = mockk()
-    private val move = MoveMessage(messageRepository)
+    private val messageRepository: MessageRepository = mockk {
+        every {
+            this@mockk.observeCachedMessage(
+                userId,
+                messageId
+            )
+        } returns flowOf(
+            MessageSample.AugWeatherForecast.copy(
+                labelIds = listOf(fromLabelId)
+            ).right()
+        )
+    }
+    private val observeExclusiveMailFolders: ObserveExclusiveMailFolders = mockk {
+        every { this@mockk.invoke(userId) } returns flowOf(
+            MailLabels(
+                systemLabels = SystemLabelId.exclusiveList.map { it.toMailLabelSystem() },
+                folders = emptyList(),
+                labels = emptyList()
+            )
+        )
+    }
+    private val move = MoveMessage(messageRepository, observeExclusiveMailFolders)
+
+
+    @Test
+    fun `when observer messages returns to returns error then return error`() = runTest {
+        // Given
+        val error = DataError.Local.NoDataCached.left()
+        coEvery {
+            messageRepository.observeCachedMessage(userId, messageId)
+        } returns flowOf(error)
+
+        // When
+        val actual = move(userId, messageId, toLabelId)
+
+        // Then
+        assertEquals(error, actual)
+    }
 
     @Test
     fun `when move to returns error then return error`() = runTest {
         // Given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { messageRepository.moveTo(userId, messageId, labelId) } returns error
+        coEvery {
+            messageRepository.moveTo(
+                userId = userId,
+                messageId = messageId,
+                fromLabels = setOf(fromLabelId),
+                toLabel = toLabelId
+            )
+        } returns error
 
         // When
-        val actual = move(userId, messageId, labelId)
+        val actual = move(userId, messageId, toLabelId)
 
         // Then
         assertEquals(error, actual)
@@ -59,13 +108,20 @@ class MoveMessageTest {
     fun `when move a message then repository is called with the given data`() = runTest {
         // Given
         val message = MessageSample.AugWeatherForecast.right()
-        coEvery { messageRepository.moveTo(userId, messageId, labelId) } returns message
+        coEvery {
+            messageRepository.moveTo(
+                userId,
+                messageId,
+                setOf(fromLabelId),
+                toLabelId
+            )
+        } returns message
 
         // When
-        val actual = move(userId, messageId, labelId)
+        val actual = move(userId, messageId, toLabelId)
 
         // Then
-        coVerify { messageRepository.moveTo(userId, messageId, labelId) }
+        coVerify { messageRepository.moveTo(userId, messageId, setOf(fromLabelId), toLabelId) }
         assertEquals(message, actual)
     }
 }

@@ -36,7 +36,6 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
-import ch.protonmail.android.maildetail.domain.usecase.MoveMessageToTrash
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
@@ -146,12 +145,15 @@ class MessageDetailViewModelTest {
     private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper> {
         every { toUiModel(any(), ContactTestData.contacts) } returns messageDetailHeaderUiModel
     }
-    private val moveMessageToTrash: MoveMessageToTrash = mockk {
-        coEvery { invoke(userId, messageId = MessageId(rawMessageId)) } returns
+    private val moveMessage: MoveMessage = mockk {
+        coEvery {
+            this@mockk.invoke(
+                userId = userId,
+                messageId = MessageId(rawMessageId),
+                labelId = SystemLabelId.Trash.labelId
+            )
+        } returns
             with(MessageSample) { Invoice.moveTo(LabelIdSample.Trash) }.right()
-    }
-    private val moveMessage = mockk<MoveMessage> {
-        coEvery { this@mockk.invoke(userId, MessageId(rawMessageId), any()) } returns MessageTestData.message.right()
     }
 
     private val viewModel by lazy {
@@ -170,7 +172,6 @@ class MessageDetailViewModelTest {
             savedStateHandle = savedStateHandle,
             messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
             messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper,
-            moveMessageToTrash = moveMessageToTrash,
             moveMessage = moveMessage
         )
     }
@@ -392,13 +393,19 @@ class MessageDetailViewModelTest {
         advanceUntilIdle()
 
         // then
-        coVerify { moveMessageToTrash(userId, MessageId(rawMessageId)) }
+        coVerify { moveMessage(userId, MessageId(rawMessageId), SystemLabelId.Trash.labelId) }
     }
 
     @Test
     fun `when error moving to trash, error is emitted`() = runTest {
         // Given
-        coEvery { moveMessageToTrash(userId, MessageId(rawMessageId)) } returns DataError.Local.NoDataCached.left()
+        coEvery {
+            moveMessage(
+                userId,
+                MessageId(rawMessageId),
+                SystemLabelId.Trash.labelId
+            )
+        } returns DataError.Local.NoDataCached.left()
 
         // When
         viewModel.submit(MessageViewAction.Trash)

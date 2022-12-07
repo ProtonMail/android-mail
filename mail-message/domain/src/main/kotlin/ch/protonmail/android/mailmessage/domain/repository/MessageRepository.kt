@@ -83,19 +83,12 @@ interface MessageRepository {
     ): Either<DataError.Local, Message>
 
     /**
-     * Moves the message for the given [messageId] to trash
-     */
-    suspend fun moveToTrash(
-        userId: UserId,
-        messageId: MessageId
-    ): Either<DataError.Local, Message>
-
-    /**
-     * Moves the given [messageId] to the [destinationLabel] if needed removes previous exclusive label
+     * Moves the given [messageId] from the [fromLabel] to the [toLabel]
      */
     suspend fun moveTo(
         userId: UserId,
         messageId: MessageId,
-        destinationLabel: LabelId
+        fromLabels: Set<LabelId>,
+        toLabel: LabelId
     ): Either<DataError.Local, Message>
 }

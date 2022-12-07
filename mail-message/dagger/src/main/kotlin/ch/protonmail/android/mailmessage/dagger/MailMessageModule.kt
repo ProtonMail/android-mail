@@ -31,7 +31,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import me.proton.core.label.domain.repository.LabelRepository
 import me.proton.core.network.data.ApiProvider
 import javax.inject.Singleton
 
@@ -43,9 +42,8 @@ object MailMessageModule {
     @Singleton
     fun provideMessageRepositoryImpl(
         remoteDataSource: MessageRemoteDataSource,
-        localDataSource: MessageLocalDataSource,
-        labelRepository: LabelRepository
-    ): MessageRepository = MessageRepositoryImpl(remoteDataSource, localDataSource, labelRepository)
+        localDataSource: MessageLocalDataSource
+    ): MessageRepository = MessageRepositoryImpl(remoteDataSource, localDataSource)
 
     @Provides
     @Singleton
