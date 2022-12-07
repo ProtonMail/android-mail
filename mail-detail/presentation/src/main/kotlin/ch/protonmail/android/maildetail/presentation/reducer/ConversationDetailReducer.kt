@@ -78,12 +78,14 @@ class ConversationDetailReducer @Inject constructor(
                     TextUiModel(R.string.error_move_to_trash_failed)
                 )
             }.exhaustive
-        } else
+        } else {
             error
+        }
 
     private fun ConversationDetailState.toDismissState(operation: ConversationDetailOperation) =
         if (operation is ConversationDetailViewAction.Trash) {
-            Effect.of(Unit)
-        } else
+            Effect.of(TextUiModel(R.string.conversation_moved_to_trash))
+        } else {
             exitScreenEffect
+        }
 }

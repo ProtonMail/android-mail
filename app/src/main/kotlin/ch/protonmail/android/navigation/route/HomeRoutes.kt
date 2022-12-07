@@ -37,10 +37,16 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
 import timber.log.Timber
 
-internal fun NavGraphBuilder.addConversationDetail(navController: NavHostController) {
+internal fun NavGraphBuilder.addConversationDetail(
+    navController: NavHostController,
+    showSnackbar: (message: String) -> Unit
+) {
     composable(route = Destination.Screen.Conversation.route) {
         ConversationDetailScreen(
-            onBackClick = { navController.popBackStack() }
+            onExit = { message ->
+                navController.popBackStack()
+                message.tap(showSnackbar)
+            }
         )
     }
 }

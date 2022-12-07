@@ -18,8 +18,14 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import androidx.annotation.StringRes
+import arrow.core.Option
+import arrow.core.none
+import arrow.core.some
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -31,6 +37,7 @@ import io.mockk.verify
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -72,11 +79,10 @@ class ConversationDetailReducerTest(
                 verify { bottomBarReducer wasNot Called }
             }
 
-            if (reducesDismissEffect) {
-                assertNotNull(result.exitScreenEffect.consume())
-            } else {
-                assertNull(result.exitScreenEffect.consume())
-            }
+            expectedExitMessage.fold(
+                ifEmpty = { assertNull(result.exitScreenEffect.consume()) },
+                ifSome = { assertEquals(it, result.exitScreenEffect.consume()) }
+            )
 
             if (reducesErrorBar) {
                 assertNotNull(result.error.consume())
@@ -91,8 +97,8 @@ class ConversationDetailReducerTest(
         val reducesConversation: Boolean,
         val reducesMessages: Boolean,
         val reducesBottomBar: Boolean,
-        val reducesDismissEffect: Boolean,
-        val reducesErrorBar: Boolean
+        val reducesErrorBar: Boolean,
+        val expectedExitMessage: Option<TextUiModel>
     ) {
 
         fun operationAffectingBottomBar() = operation as ConversationDetailEvent.ConversationBottomBarEvent
@@ -104,7 +110,7 @@ class ConversationDetailReducerTest(
 
         val actions = listOf(
             ConversationDetailViewAction.Star affects Conversation,
-            ConversationDetailViewAction.Trash affects Dismiss,
+            ConversationDetailViewAction.Trash withExitMessage string.conversation_moved_to_trash,
             ConversationDetailViewAction.UnStar affects Conversation
         )
 
@@ -135,13 +141,23 @@ private infix fun ConversationDetailOperation.affects(entity: Entity) = Conversa
     reducesConversation = entity == Conversation,
     reducesMessages = entity == Messages,
     reducesBottomBar = entity == BottomBar,
-    reducesDismissEffect = entity == Dismiss,
-    reducesErrorBar = entity == ErrorBar
+    reducesErrorBar = entity == ErrorBar,
+    expectedExitMessage = none()
+)
+
+private infix fun ConversationDetailOperation.withExitMessage(
+    @StringRes message: Int
+) = ConversationDetailReducerTest.TestInput(
+    operation = this,
+    reducesConversation = false,
+    reducesMessages = false,
+    reducesBottomBar = false,
+    reducesErrorBar = false,
+    expectedExitMessage = TextUiModel(message).some()
 )
 
 private sealed interface Entity
 private object Messages : Entity
 private object Conversation : Entity
 private object BottomBar : Entity
-private object Dismiss : Entity
 private object ErrorBar : Entity

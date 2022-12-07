@@ -38,8 +38,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
+import arrow.core.Option
+import arrow.core.none
+import arrow.core.some
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
-import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
@@ -65,7 +67,7 @@ import timber.log.Timber
 @Composable
 fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
+    onExit: (message: Option<String>) -> Unit,
     viewModel: ConversationDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
@@ -73,7 +75,7 @@ fun ConversationDetailScreen(
         modifier = modifier,
         state = state,
         actions = ConversationDetailScreen.Actions(
-            onBackClick = onBackClick,
+            onExit = onExit,
             onStarClick = { viewModel.submit(ConversationDetailViewAction.Star) },
             onTrashClick = { viewModel.submit(ConversationDetailViewAction.Trash) },
             onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) },
@@ -93,7 +95,7 @@ fun ConversationDetailScreen(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
 
-    ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onBackClick() }
+    ConsumableTextEffect(state.exitScreenEffect) { message -> actions.onExit(message.some()) }
     ConsumableTextEffect(state.error) { string ->
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
     }
@@ -213,17 +215,19 @@ object ConversationDetailScreen {
     const val ConversationIdKey = "conversation id"
 
     data class Actions(
-        val onBackClick: () -> Unit,
+        val onExit: (message: Option<String>) -> Unit,
         val onStarClick: () -> Unit,
         val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
         val onUnreadClick: () -> Unit
     ) {
 
+        val onBackClick = { onExit(none()) }
+
         companion object {
 
             val Empty = Actions(
-                onBackClick = {},
+                onExit = {},
                 onStarClick = {},
                 onTrashClick = {},
                 onUnStarClick = {},

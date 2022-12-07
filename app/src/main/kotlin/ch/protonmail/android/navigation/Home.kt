@@ -21,7 +21,6 @@ package ch.protonmail.android.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -67,13 +66,17 @@ fun Home(
 ) {
     val navController = rememberNavController().withSentryObservableEffect()
     val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = ProtonSnackbarHostState()
     val scope = rememberCoroutineScope()
     val state = rememberAsState(flow = viewModel.state, initial = HomeState.Initial)
 
     val offlineSnackbarMessage = stringResource(id = R.string.you_are_offline)
     ConsumableLaunchedEffect(state.value.networkStatusEffect) {
         if (it == NetworkStatus.Disconnected) {
-            showSnackbar(scaffoldState, offlineSnackbarMessage)
+            snackbarHostState.showSnackbar(
+                message = offlineSnackbarMessage,
+                type = ProtonSnackbarType.WARNING
+            )
         }
     }
 
@@ -87,11 +90,7 @@ fun Home(
                 navigationActions = buildSidebarActions(navController, launcherActions)
             )
         },
-        snackbarHost = { snackbarHostState ->
-            ProtonSnackbarHost(
-                hostState = ProtonSnackbarHostState(snackbarHostState, ProtonSnackbarType.WARNING)
-            )
-        }
+        snackbarHost = { ProtonSnackbarHost(hostState = snackbarHostState) }
     ) { contentPadding ->
         Box(
             Modifier.padding(contentPadding)
@@ -101,11 +100,28 @@ fun Home(
                 startDestination = Screen.Mailbox.route
             ) {
                 // home
-                addConversationDetail(navController)
+                addConversationDetail(
+                    navController = navController,
+                    showSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.NORM
+                            )
+                        }
+                    }
+                )
                 addMailbox(
                     navController,
                     openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } },
-                    showOfflineSnackbar = { scope.launch { showSnackbar(scaffoldState, offlineSnackbarMessage) } }
+                    showOfflineSnackbar = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = offlineSnackbarMessage,
+                                type = ProtonSnackbarType.WARNING
+                            )
+                        }
+                    }
                 )
                 addMessageDetail(navController)
                 addRemoveAccountDialog(navController)
@@ -122,13 +138,6 @@ fun Home(
             }
         }
     }
-}
-
-private suspend fun showSnackbar(
-    scaffoldState: ScaffoldState,
-    message: String
-) {
-    scaffoldState.snackbarHostState.showSnackbar(message)
 }
 
 private fun buildSidebarActions(

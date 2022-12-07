@@ -35,4 +35,6 @@
     <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
     <string name="error_unstar_operation_failed">Remove star operation failed. Please retry.</string>
     <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
+    <string name="conversation_moved_to_trash">Conversation moved to trash</string>
+    <string name="message_moved_to_trash">Message moved to trash</string>
 </resources>

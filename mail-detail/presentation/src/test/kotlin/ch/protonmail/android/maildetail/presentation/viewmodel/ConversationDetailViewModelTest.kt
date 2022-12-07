@@ -554,7 +554,7 @@ class ConversationDetailViewModelTest {
                 operation = ConversationDetailViewAction.Trash
             )
         } returns ConversationDetailState.Loading.copy(
-            exitScreenEffect = Effect.of(Unit)
+            exitScreenEffect = Effect.of(TextUiModel(string.conversation_moved_to_trash))
         )
 
         // When
