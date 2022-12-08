@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.logging
 
+import java.util.UUID
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -35,6 +36,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class SentryUserObserverTest {
 
@@ -60,11 +62,24 @@ class SentryUserObserverTest {
 
     @Test
     fun `register userId in Sentry for valid primary account`() = runTest {
-        // WHEN
+        // When
         sentryUserObserver.start()
-        // THEN
+        // Then
         val sentryUserSlot = slot<User>()
         verify { Sentry.setUser(capture(sentryUserSlot)) }
         assertEquals(UserIdTestData.userId.id, sentryUserSlot.captured.id)
+    }
+
+    @Test
+    fun `register random UUID in Sentry when no primary account available`() = runTest {
+        // Given
+        every { accountManager.getPrimaryUserId() } returns flowOf(null)
+        // When
+        sentryUserObserver.start()
+        // Then
+        val sentryUserSlot = slot<User>()
+        verify { Sentry.setUser(capture(sentryUserSlot)) }
+        val actual = UUID.fromString(sentryUserSlot.captured.id)
+        assertTrue(actual.toString().isNotBlank())
     }
 }
