@@ -18,23 +18,20 @@
 
 package ch.protonmail.android.useragent
 
-import ch.protonmail.android.mailcommon.domain.usecase.GetAppLocale
 import javax.inject.Inject
 
 class BuildUserAgent @Inject constructor(
     val getAppVersion: GetAppVersion,
     val getAndroidVersion: GetAndroidVersion,
-    val getDeviceData: GetDeviceData,
-    val getAppLocale: GetAppLocale
+    val getDeviceData: GetDeviceData
 ) {
     operator fun invoke(): String {
         val device = getDeviceData()
 
         val protonMailAppVersion = "ProtonMail/${getAppVersion()}"
-        val deviceSpecs = "${device.model}; ${device.brand}; ${device.device};"
+        val deviceSpecs = "${device.brand} ${device.model}"
         val androidInfo = "Android ${getAndroidVersion()}; $deviceSpecs"
-        val language = getAppLocale().language
 
-        return "$protonMailAppVersion ($androidInfo $language)"
+        return "$protonMailAppVersion ($androidInfo)"
     }
 }
