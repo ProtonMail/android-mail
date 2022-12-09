@@ -123,7 +123,17 @@ fun Home(
                         }
                     }
                 )
-                addMessageDetail(navController)
+                addMessageDetail(
+                    navController = navController,
+                    showSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.NORM
+                            )
+                        }
+                    }
+                )
                 addRemoveAccountDialog(navController)
                 addSettings(navController)
                 // settings

@@ -75,10 +75,16 @@ internal fun NavGraphBuilder.addMailbox(
     }
 }
 
-internal fun NavGraphBuilder.addMessageDetail(navController: NavHostController) {
+internal fun NavGraphBuilder.addMessageDetail(
+    navController: NavHostController,
+    showSnackbar: (message: String) -> Unit
+) {
     composable(route = Destination.Screen.Message.route) {
         MessageDetailScreen(
-            onBackClick = { navController.popBackStack() }
+            onExit = { message ->
+                navController.popBackStack()
+                message.tap(showSnackbar)
+            }
         )
     }
 }

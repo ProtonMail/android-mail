@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import arrow.core.Option
+import arrow.core.none
+import arrow.core.some
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -60,17 +63,12 @@ class MessageDetailReducer @Inject constructor(
             error
         }
 
-    private fun MessageDetailState.toNewExitStateFrom(operation: MessageDetailOperation): Effect<Unit> {
-        val exitOperations = listOf(
-            MessageViewAction.MarkUnread,
-            MessageViewAction.Trash,
-            MessageViewAction.MoveToDestinationConfirmed
-        )
-        return if (operation in exitOperations) {
-            Effect.of(Unit)
-        } else {
-            exitScreenEffect
-        }
+    private fun MessageDetailState.toNewExitStateFrom(
+        operation: MessageDetailOperation
+    ): Effect<Option<TextUiModel>> = when (operation) {
+        MessageViewAction.MarkUnread, MessageViewAction.MoveToDestinationConfirmed -> Effect.of(none())
+        MessageViewAction.Trash -> Effect.of(TextUiModel(R.string.message_moved_to_trash).some())
+        else -> exitScreenEffect
     }
 
     private fun MessageDetailState.toNewMessageStateFrom(operation: MessageDetailOperation) =

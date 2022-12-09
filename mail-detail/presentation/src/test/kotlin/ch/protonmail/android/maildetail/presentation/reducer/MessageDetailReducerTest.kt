@@ -18,11 +18,15 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import arrow.core.Option
+import arrow.core.none
+import arrow.core.some
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetEvent
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
@@ -109,7 +113,7 @@ class MessageDetailReducerTest(
         }
 
         if (shouldReduceExitEffect) {
-            assertEquals(Effect.of(Unit), nextState.exitScreenEffect)
+            assertEquals(exitMessage, nextState.exitScreenEffect.consume())
         } else {
             assertEquals(currentState.exitScreenEffect, nextState.exitScreenEffect, testName)
         }
@@ -164,6 +168,7 @@ class MessageDetailReducerTest(
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = true,
+                exitMessage = TextUiModel(string.message_moved_to_trash).some(),
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false
             ),
@@ -277,7 +282,8 @@ class MessageDetailReducerTest(
         val shouldReduceMessageMetadataState: Boolean,
         val shouldReduceBottomBarState: Boolean,
         val shouldReduceExitEffect: Boolean,
+        val shouldReduceBottomSheetState: Boolean,
         val shouldReduceToErrorEffect: Boolean,
-        val shouldReduceBottomSheetState: Boolean
+        val exitMessage: Option<TextUiModel> = none()
     )
 }

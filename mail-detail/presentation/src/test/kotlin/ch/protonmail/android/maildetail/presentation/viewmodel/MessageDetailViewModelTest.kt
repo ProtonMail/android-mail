@@ -24,6 +24,7 @@ import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.nonEmptyListOf
+import arrow.core.none
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -307,7 +308,7 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.MarkUnread)
             advanceUntilIdle()
             // Then
-            assertEquals(Unit, lastEmittedItem().exitScreenEffect.consume())
+            assertEquals(none(), lastEmittedItem().exitScreenEffect.consume())
         }
     }
 

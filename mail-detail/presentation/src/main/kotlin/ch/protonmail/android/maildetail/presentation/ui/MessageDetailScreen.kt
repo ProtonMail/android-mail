@@ -36,8 +36,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
+import arrow.core.Option
+import arrow.core.none
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
-import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableOptionalTextEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -60,7 +62,7 @@ import timber.log.Timber
 @Composable
 fun MessageDetailScreen(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
+    onExit: (message: Option<String>) -> Unit,
     viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
@@ -84,7 +86,7 @@ fun MessageDetailScreen(
             modifier = modifier,
             state = state,
             actions = MessageDetailScreen.Actions(
-                onBackClick = onBackClick,
+                onExit = onExit,
                 onStarClick = { viewModel.submit(MessageViewAction.Star) },
                 onTrashClick = { viewModel.submit(MessageViewAction.Trash) },
                 onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
@@ -105,7 +107,7 @@ fun MessageDetailScreen(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
 
-    ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onBackClick() }
+    ConsumableOptionalTextEffect(state.exitScreenEffect) { optionalMessage -> actions.onExit(optionalMessage) }
     ConsumableTextEffect(state.error) { string ->
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
     }
@@ -191,7 +193,7 @@ object MessageDetailScreen {
     const val MESSAGE_ID_KEY = "message id"
 
     data class Actions(
-        val onBackClick: () -> Unit,
+        val onExit: (message: Option<String>) -> Unit,
         val onStarClick: () -> Unit,
         val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
@@ -199,10 +201,12 @@ object MessageDetailScreen {
         val onMoveClick: () -> Unit
     ) {
 
+        val onBackClick = { onExit(none()) }
+
         companion object {
 
             val Empty = Actions(
-                onBackClick = {},
+                onExit = {},
                 onStarClick = {},
                 onTrashClick = {},
                 onUnStarClick = {},
