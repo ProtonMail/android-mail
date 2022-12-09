@@ -89,17 +89,16 @@ class MessageDetailReducer @Inject constructor(
         }
 
     private fun MessageDetailState.toNewBottomSheetStateFrom(operation: MessageDetailOperation) =
-        when (operation) {
-            is MessageDetailEvent.MessageBottomSheetEvent -> bottomSheetReducer.newStateFrom(
-                bottomSheetState,
-                operation.bottomSheetEvent
-            )
-            is MessageViewAction.MoveToDestinationSelected -> bottomSheetReducer.newStateFrom(
-                bottomSheetState,
-                BottomSheetAction.MoveToDestinationSelected(operation.mailLabelId)
-            )
-            else -> bottomSheetState
+        if (operation is MessageDetailOperation.AffectingBottomSheet) {
+            val bottomSheetOperation = when (operation) {
+                is MessageDetailEvent.MessageBottomSheetEvent -> operation.bottomSheetEvent
+                is MessageViewAction.MoveToDestinationSelected -> BottomSheetAction.MoveToDestinationSelected(
+                    operation.mailLabelId
+                )
+            }
+            bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
+        } else {
+            bottomSheetState
         }
-
 
 }

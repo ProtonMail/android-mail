@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -27,6 +28,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 sealed interface MessageDetailOperation {
     sealed interface AffectingMessage
     sealed interface AffectingErrorBar
+    sealed interface AffectingBottomSheet
 }
 
 sealed interface MessageDetailEvent : MessageDetailOperation {
@@ -47,8 +49,8 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     ) : MessageDetailEvent
 
     data class MessageBottomSheetEvent(
-        val bottomSheetEvent: BottomSheetEvent
-    ) : MessageDetailEvent
+        val bottomSheetEvent: BottomSheetOperation
+    ) : MessageDetailEvent, AffectingBottomSheet
 
     object NoCachedMetadata : MessageDetailEvent, AffectingMessage
     object ErrorAddingStar : MessageDetailEvent, AffectingMessage, AffectingErrorBar
@@ -64,6 +66,6 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object UnStar : MessageViewAction, AffectingMessage
     object MarkUnread : MessageViewAction
     object Trash : MessageViewAction
-    data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MessageViewAction
+    data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MessageViewAction, AffectingBottomSheet
     object MoveToDestinationConfirmed : MessageViewAction
 }
