@@ -42,7 +42,7 @@ class MessageDetailReducer @Inject constructor(
         messageMetadataState = currentState.toNewMessageStateFrom(operation),
         bottomBarState = currentState.toNewBottomBarStateFrom(operation),
         bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
-        dismiss = currentState.toNewDismissStateFrom(operation),
+        exitScreenEffect = currentState.toNewExitStateFrom(operation),
         error = currentState.toNewErrorStateFrom(operation)
     )
 
@@ -60,16 +60,16 @@ class MessageDetailReducer @Inject constructor(
             error
         }
 
-    private fun MessageDetailState.toNewDismissStateFrom(operation: MessageDetailOperation): Effect<Unit> {
-        val dismissOperations = listOf(
+    private fun MessageDetailState.toNewExitStateFrom(operation: MessageDetailOperation): Effect<Unit> {
+        val exitOperations = listOf(
             MessageViewAction.MarkUnread,
             MessageViewAction.Trash,
             MessageViewAction.MoveToDestinationConfirmed
         )
-        return if (operation in dismissOperations) {
+        return if (operation in exitOperations) {
             Effect.of(Unit)
         } else {
-            dismiss
+            exitScreenEffect
         }
     }
 

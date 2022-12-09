@@ -26,7 +26,7 @@ data class MessageDetailState(
     val messageMetadataState: MessageMetadataState,
     val bottomBarState: BottomBarState,
     val bottomSheetState: BottomSheetState,
-    val dismiss: Effect<Unit>,
+    val exitScreenEffect: Effect<Unit>,
     val error: Effect<TextUiModel>
 ) {
 
@@ -36,7 +36,7 @@ data class MessageDetailState(
             messageMetadataState = MessageMetadataState.Loading,
             bottomBarState = BottomBarState.Loading,
             bottomSheetState = BottomSheetState.Loading,
-            dismiss = Effect.empty(),
+            exitScreenEffect = Effect.empty(),
             error = Effect.empty()
         )
     }

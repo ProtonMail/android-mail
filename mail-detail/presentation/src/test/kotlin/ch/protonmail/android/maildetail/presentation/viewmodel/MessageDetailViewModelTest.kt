@@ -307,7 +307,7 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.MarkUnread)
             advanceUntilIdle()
             // Then
-            assertEquals(Unit, lastEmittedItem().dismiss.consume())
+            assertEquals(Unit, lastEmittedItem().exitScreenEffect.consume())
         }
     }
 
