@@ -25,6 +25,7 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
+import arrow.core.some
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
@@ -554,7 +555,7 @@ class ConversationDetailViewModelTest {
                 operation = ConversationDetailViewAction.Trash
             )
         } returns ConversationDetailState.Loading.copy(
-            exitScreenEffect = Effect.of(TextUiModel(string.conversation_moved_to_trash))
+            exitScreenEffect = Effect.of(TextUiModel(string.conversation_moved_to_trash).some())
         )
 
         // When

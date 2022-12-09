@@ -79,15 +79,16 @@ class ConversationDetailReducerTest(
                 verify { bottomBarReducer wasNot Called }
             }
 
-            expectedExitMessage.fold(
-                ifEmpty = { assertNull(result.exitScreenEffect.consume()) },
-                ifSome = { assertEquals(it, result.exitScreenEffect.consume()) }
-            )
-
             if (reducesErrorBar) {
                 assertNotNull(result.error.consume())
             } else {
                 assertNull(result.error.consume())
+            }
+
+            if (reducesExit) {
+                assertEquals(expectedExitMessage, result.exitScreenEffect.consume())
+            } else {
+                assertNull(result.exitScreenEffect.consume())
             }
         }
     }
@@ -98,6 +99,7 @@ class ConversationDetailReducerTest(
         val reducesMessages: Boolean,
         val reducesBottomBar: Boolean,
         val reducesErrorBar: Boolean,
+        val reducesExit: Boolean,
         val expectedExitMessage: Option<TextUiModel>
     ) {
 
@@ -110,7 +112,7 @@ class ConversationDetailReducerTest(
 
         val actions = listOf(
             ConversationDetailViewAction.Star affects Conversation,
-            ConversationDetailViewAction.Trash withExitMessage string.conversation_moved_to_trash,
+            ConversationDetailViewAction.Trash affects Exit withMessage string.conversation_moved_to_trash,
             ConversationDetailViewAction.UnStar affects Conversation
         )
 
@@ -142,22 +144,19 @@ private infix fun ConversationDetailOperation.affects(entity: Entity) = Conversa
     reducesMessages = entity == Messages,
     reducesBottomBar = entity == BottomBar,
     reducesErrorBar = entity == ErrorBar,
-    expectedExitMessage = none()
+    reducesExit = entity is Exit,
+    expectedExitMessage = Option.fromNullable((entity as? Exit)?.message?.orNull())
 )
 
-private infix fun ConversationDetailOperation.withExitMessage(
-    @StringRes message: Int
-) = ConversationDetailReducerTest.TestInput(
-    operation = this,
-    reducesConversation = false,
-    reducesMessages = false,
-    reducesBottomBar = false,
-    reducesErrorBar = false,
-    expectedExitMessage = TextUiModel(message).some()
-)
+private infix fun ConversationDetailReducerTest.TestInput.withMessage(@StringRes message: Int) =
+    copy(expectedExitMessage = TextUiModel(message).some())
 
 private sealed interface Entity
 private object Messages : Entity
 private object Conversation : Entity
 private object BottomBar : Entity
+private open class Exit(val message: Option<TextUiModel>) : Entity {
+
+    companion object : Exit(message = none())
+}
 private object ErrorBar : Entity

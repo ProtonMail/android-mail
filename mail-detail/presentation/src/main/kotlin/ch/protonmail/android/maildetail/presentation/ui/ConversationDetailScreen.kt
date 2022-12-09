@@ -40,8 +40,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import arrow.core.Option
 import arrow.core.none
-import arrow.core.some
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailcommon.presentation.ConsumableOptionalTextEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
@@ -95,7 +95,7 @@ fun ConversationDetailScreen(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
 
-    ConsumableTextEffect(state.exitScreenEffect) { message -> actions.onExit(message.some()) }
+    ConsumableOptionalTextEffect(state.exitScreenEffect) { optionalMessage -> actions.onExit(optionalMessage) }
     ConsumableTextEffect(state.error) { string ->
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
     }
