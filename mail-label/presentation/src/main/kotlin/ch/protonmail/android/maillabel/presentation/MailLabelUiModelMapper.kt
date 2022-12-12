@@ -102,13 +102,13 @@ fun MailLabel.iconRes(settings: ch.protonmail.android.mailcommon.domain.settings
                 }
                 else -> when {
                     children.isEmpty() -> R.drawable.ic_proton_folder
-                else -> R.drawable.ic_proton_folders
+                    else -> R.drawable.ic_proton_folders
+                }
             }
         }
     }
-}
 
-fun MailLabel.iconTintColor(settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings): Color? =
+fun MailLabel.iconTintColor(settings: FolderColorSettings): Color? =
     when (this) {
         is MailLabel.System -> null
         is MailLabel.Custom -> when (id) {
