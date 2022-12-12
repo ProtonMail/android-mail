@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain.model
+package ch.protonmail.android.mailcommon.domain.settings.model
 
 data class FolderColorSettings(
     val useFolderColor: Boolean = true,

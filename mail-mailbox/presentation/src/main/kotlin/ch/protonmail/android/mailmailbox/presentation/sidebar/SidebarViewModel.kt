@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
 import ch.protonmail.android.mailcommon.domain.MailFeatureId.ShowSettings
+import ch.protonmail.android.mailcommon.domain.settings.ObserveFolderColorSettings
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
@@ -32,7 +33,6 @@ import ch.protonmail.android.maillabel.domain.usecase.UpdateLabelExpandedState
 import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction
 import ch.protonmail.android.maillabel.presentation.toUiModels
-import ch.protonmail.android.mailsettings.domain.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted

@@ -20,16 +20,16 @@ package ch.protonmail.android.maillabel.presentation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
-import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.label.domain.entity.LabelId
 
 fun MailLabels.toUiModels(
-    settings: FolderColorSettings,
+    settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings,
     counters: Map<LabelId, Int?>,
     selected: MailLabelId
 ): MailLabelsUiModel = MailLabelsUiModel(
@@ -39,7 +39,7 @@ fun MailLabels.toUiModels(
 )
 
 fun MailLabel.toUiModel(
-    settings: FolderColorSettings,
+    settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings,
     counters: Map<LabelId, Int?>,
     selected: MailLabelId
 ): MailLabelUiModel = when (this) {
@@ -48,7 +48,7 @@ fun MailLabel.toUiModel(
 }
 
 fun MailLabels.toUiModels(
-    settings: FolderColorSettings
+    settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings
 ): MailLabelsUiModel = MailLabelsUiModel(
     systems = systemLabels.map { it.toSystemUiModel(settings, emptyMap(), null) },
     folders = folders.map { it.toCustomUiModel(settings, emptyMap(), null) },
@@ -56,7 +56,7 @@ fun MailLabels.toUiModels(
 )
 
 fun MailLabel.System.toSystemUiModel(
-    settings: FolderColorSettings,
+    settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings,
     counters: Map<LabelId, Int?>,
     selected: MailLabelId?
 ): MailLabelUiModel.System = MailLabelUiModel.System(
@@ -69,7 +69,7 @@ fun MailLabel.System.toSystemUiModel(
 )
 
 fun MailLabel.Custom.toCustomUiModel(
-    settings: FolderColorSettings,
+    settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings,
     counters: Map<LabelId, Int?>,
     selected: MailLabelId?
 ): MailLabelUiModel.Custom = MailLabelUiModel.Custom(
@@ -90,31 +90,33 @@ fun MailLabel.text(): TextUiModel = when (this) {
 }
 
 @DrawableRes
-fun MailLabel.iconRes(settings: FolderColorSettings): Int = when (this) {
-    is MailLabel.System -> id.systemLabelId.iconRes()
-    is MailLabel.Custom -> when (id) {
-        is MailLabelId.Custom.Label -> R.drawable.ic_proton_circle_filled
-        is MailLabelId.Custom.Folder -> when {
-            settings.useFolderColor -> when {
-                children.isEmpty() -> R.drawable.ic_proton_folder_filled
-                else -> R.drawable.ic_proton_folders_filled
-            }
-            else -> when {
-                children.isEmpty() -> R.drawable.ic_proton_folder
+fun MailLabel.iconRes(settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings): Int =
+    when (this) {
+        is MailLabel.System -> id.systemLabelId.iconRes()
+        is MailLabel.Custom -> when (id) {
+            is MailLabelId.Custom.Label -> R.drawable.ic_proton_circle_filled
+            is MailLabelId.Custom.Folder -> when {
+                settings.useFolderColor -> when {
+                    children.isEmpty() -> R.drawable.ic_proton_folder_filled
+                    else -> R.drawable.ic_proton_folders_filled
+                }
+                else -> when {
+                    children.isEmpty() -> R.drawable.ic_proton_folder
                 else -> R.drawable.ic_proton_folders
             }
         }
     }
 }
 
-fun MailLabel.iconTintColor(settings: FolderColorSettings): Color? = when (this) {
-    is MailLabel.System -> null
-    is MailLabel.Custom -> when (id) {
-        is MailLabelId.Custom.Label -> color
-        is MailLabelId.Custom.Folder -> when {
-            settings.inheritParentFolderColor -> parent?.color ?: color
-            settings.useFolderColor -> color
-            else -> null
+fun MailLabel.iconTintColor(settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings): Color? =
+    when (this) {
+        is MailLabel.System -> null
+        is MailLabel.Custom -> when (id) {
+            is MailLabelId.Custom.Label -> color
+            is MailLabelId.Custom.Folder -> when {
+                settings.inheritParentFolderColor -> parent?.color ?: color
+                settings.useFolderColor -> color
+                else -> null
+            }
         }
-    }
-}?.let { Color(it) }
+    }?.let { Color(it) }

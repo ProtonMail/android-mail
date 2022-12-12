@@ -21,9 +21,9 @@ package ch.protonmail.android.maillabel.presentation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
+import ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.label.domain.entity.LabelId
@@ -36,7 +36,10 @@ class MailLabelUiModelMapperTest {
     @Test
     fun `correctly map MailLabels toUiModels`() {
         // Given
-        val settings = FolderColorSettings(useFolderColor = true, inheritParentFolderColor = false)
+        val settings = ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings(
+            useFolderColor = true,
+            inheritParentFolderColor = false
+        )
         val selected = MailLabelId.Custom.Folder(LabelId("0"))
         val counters = emptyMap<LabelId, Int?>()
 
@@ -115,7 +118,10 @@ class MailLabelUiModelMapperTest {
     @Test
     fun `correctly map MailLabels toUiModels according FolderColorSettings`() {
         // Given
-        val settings = FolderColorSettings(useFolderColor = true, inheritParentFolderColor = true)
+        val settings = ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings(
+            useFolderColor = true,
+            inheritParentFolderColor = true
+        )
         val selected = MailLabelId.Custom.Folder(LabelId("0"))
         val counters = emptyMap<LabelId, Int?>()
 
