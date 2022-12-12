@@ -17,9 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="detail_error_loading_contacts">Indlæsning af kontakter mislykkedes</string>
   <string name="detail_error_loading_conversation">Indlæsning af samtale mislykkedes</string>
   <string name="detail_error_loading_messages">Indlæsning af beskeder mislykkedes</string>
-  <string name="error_mark_unread_failed">Markering som ulæst mislykkedes. Prøv igen</string>
+  <string name="error_mark_unread_failed">Markering som ulæst mislykkedes. Prøv igen.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d besked</item>
     <item quantity="other">%d beskeder</item>
@@ -30,4 +31,7 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Skjul detaljer</string>
   <string name="undisclosed_recipients">Ikke-oplyste modtagere</string>
+  <string name="error_star_operation_failed">Tilføjelse af stjerne mislykkedes. Prøv igen.</string>
+  <string name="error_unstar_operation_failed">Fjernelse af stjerne mislykkedes. Prøv igen.</string>
+  <string name="error_move_to_trash_failed">Flytning til papirkurv mislykkedes. Prøv igen.</string>
 </resources>

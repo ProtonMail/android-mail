@@ -17,6 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="expiration_expired">Термін дії закінчився</string>
+  <string name="expiration_days_arg">%dд</string>
+  <string name="expiration_hours_arg">%dгод</string>
+  <string name="expiration_minutes_arg">%dхв</string>
   <string name="retry">Повторити</string>
   <string name="toolbar_back_content_description">Повернутися на попередній екран</string>
   <string name="x_error_not_logged_in">Ви не увійшли</string>
@@ -31,7 +35,7 @@
   <string name="action_move_content_description">Перемістити у</string>
   <string name="action_trash_content_description">Смітник</string>
   <string name="action_delete_content_description">Видалити</string>
-  <string name="action_archive_content_description">Archive</string>
+  <string name="action_archive_content_description">Архівувати</string>
   <string name="action_spam_content_description">Спам</string>
   <string name="action_view_in_light_mode_content_description">Переглянути повідомлення у світлому режимі</string>
   <string name="action_view_in_dark_mode_content_description">Переглянути повідомлення в темному режимі</string>

@@ -17,6 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="expiration_expired">Verlopen</string>
+  <string name="expiration_days_arg">%dd</string>
+  <string name="expiration_hours_arg">%du</string>
+  <string name="expiration_minutes_arg">%dm</string>
   <string name="retry">Opnieuw proberen</string>
   <string name="toolbar_back_content_description">Terug naar vorig scherm</string>
   <string name="x_error_not_logged_in">Niet aangemeld</string>

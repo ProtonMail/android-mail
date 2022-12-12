@@ -17,9 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="detail_error_loading_contacts">載入聯絡人失敗</string>
   <string name="detail_error_loading_conversation">無法載入對話內容</string>
   <string name="detail_error_loading_messages">無法載入訊息</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Plase try again</string>
+  <string name="error_mark_unread_failed">標記未讀失敗。請再試一次</string>
   <plurals name="message_count_label_text">
     <item quantity="other">%d 封郵件</item>
   </plurals>
@@ -28,5 +29,8 @@
   <string name="cc">副本：</string>
   <string name="bcc">密件副本：</string>
   <string name="hide_details">隱藏詳細資料</string>
-  <string name="undisclosed_recipients">Undisclosed recipients</string>
+  <string name="undisclosed_recipients">未知的收件者</string>
+  <string name="error_star_operation_failed">新增星號操作失敗。請重試。</string>
+  <string name="error_unstar_operation_failed">移除星號操作失敗。請重試。</string>
+  <string name="error_move_to_trash_failed">郵件扔進垃圾桶失敗。請再試一次。</string>
 </resources>

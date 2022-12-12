@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="app_name">Proton Mail</string>
   <string name="title_remove">Αφαίρεση</string>
   <string name="title_remove_account">Αφαίρεση Λογαριασμού</string>
   <string name="description_remove_account">Πρόκειται να αποσυνδεθείτε και να αφαιρέσετε όλες τις πληροφορίες που σχετίζονται με αυτόν τον λογαριασμό.</string>
   <string name="user_select_other_account_content_description">Επιλογή άλλου λογαριασμού</string>
+  <string name="you_are_offline">Βρίσκεστε εκτός σύνδεσης</string>
 </resources>

@@ -17,6 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="expiration_expired">有効期限切れ</string>
+  <string name="expiration_days_arg">%d 日</string>
+  <string name="expiration_hours_arg">%d 時間</string>
+  <string name="expiration_minutes_arg">%d 分</string>
   <string name="retry">再試行</string>
   <string name="toolbar_back_content_description">前の画面に戻る</string>
   <string name="x_error_not_logged_in">ログインしていません</string>
@@ -44,5 +48,5 @@
   <string name="action_sender_emails_content_description">この送信者からのメールに既定の動作を設定</string>
   <string name="action_save_attachments_content_description">添付ファイルを保存</string>
   <string name="common_error_loading_actions">動作の読み込みに失敗</string>
-  <string name="yesterday">Yesterday</string>
+  <string name="yesterday">昨日</string>
 </resources>

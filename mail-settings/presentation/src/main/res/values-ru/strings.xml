@@ -62,7 +62,7 @@
   <string name="mail_settings_snooze_notifications">Отложить уведомления</string>
   <string name="mail_settings_conversation_mode">Режим цепочки писем</string>
   <string name="mail_settings_not_set">Не задано</string>
-  <string name="mail_settings_conversation_mode_hint">Группировать сообщения, относящиеся к одной теме в папке \"Входящие\" или отображать их отдельно</string>
+  <string name="mail_settings_conversation_mode_hint">Группировать сообщения, относящиеся к одной теме в папке Входящие или отображать их отдельно</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Действия жестов</string>
   <string name="mail_settings_swipe_actions_subtitle">Настройте действия для пролистываня для доступа к наиболее используемым действиям.</string>

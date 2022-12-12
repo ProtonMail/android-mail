@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="app_name">Proton Mail</string>
   <string name="title_remove">移除</string>
   <string name="title_remove_account">注销账号</string>
   <string name="description_remove_account">您即将退出该账户，并删除此设备上与该账户相关的所有数据。</string>
   <string name="user_select_other_account_content_description">选择其他账户</string>
+  <string name="you_are_offline">网络未连接</string>
 </resources>

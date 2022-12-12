@@ -17,6 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="detail_error_loading_contacts">Načtení kontaktů selhalo</string>
   <string name="detail_error_loading_conversation">Načtení konverzace selhalo</string>
   <string name="detail_error_loading_messages">Načtení zpráv selhalo</string>
   <string name="error_mark_unread_failed">Označit jako nepřečtené se nezdařilo. Zkuste to prosím znovu</string>
@@ -32,4 +33,7 @@
   <string name="bcc">Skrytá kopie:</string>
   <string name="hide_details">Skrýt detaily</string>
   <string name="undisclosed_recipients">Nezveřejnění příjemci</string>
+  <string name="error_star_operation_failed">Operace přidání hvězdičky se nezdařila. Zkuste to prosím znovu.</string>
+  <string name="error_unstar_operation_failed">Operace odebrání hvězdičky se nezdařila. Zkuste to prosím znovu.</string>
+  <string name="error_move_to_trash_failed">Přesunutí do koše se nezdařilo. Zkuste to znovu.</string>
 </resources>

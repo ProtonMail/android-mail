@@ -17,6 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="expiration_expired">Expiré</string>
+  <string name="expiration_days_arg">%dj</string>
+  <string name="expiration_hours_arg">%dh</string>
+  <string name="expiration_minutes_arg">%dm</string>
   <string name="retry">Réessayer</string>
   <string name="toolbar_back_content_description">Retour à l\'écran précédent</string>
   <string name="x_error_not_logged_in">Non connecté</string>
@@ -27,8 +31,8 @@
   <string name="action_mark_unread_content_description">Marquer comme non lu</string>
   <string name="action_star_content_description">Ajouter aux favoris</string>
   <string name="action_unstar_content_description">Retirer des favoris</string>
-  <string name="action_label_content_description">Labelliser comme</string>
-  <string name="action_move_content_description">Déplacer dans</string>
+  <string name="action_label_content_description">Labelliser</string>
+  <string name="action_move_content_description">Déplacer</string>
   <string name="action_trash_content_description">Corbeille</string>
   <string name="action_delete_content_description">Supprimer</string>
   <string name="action_archive_content_description">Archiver</string>
@@ -43,6 +47,6 @@
   <string name="action_save_pdf_content_description">Enregistrer en PDF</string>
   <string name="action_sender_emails_content_description">Définir l\'action pour les prochains messages de cet expéditeur</string>
   <string name="action_save_attachments_content_description">Enregistrer les pièces jointes</string>
-  <string name="common_error_loading_actions">Les actions n\'ont pu être chargées</string>
+  <string name="common_error_loading_actions">Les actions n\'ont pu être chargées.</string>
   <string name="yesterday">Hier</string>
 </resources>

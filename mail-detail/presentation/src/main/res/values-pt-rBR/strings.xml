@@ -17,6 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="detail_error_loading_contacts">Falha ao carregar contatos</string>
   <string name="detail_error_loading_conversation">Falha ao carregar a conversa</string>
   <string name="detail_error_loading_messages">Falha ao carregar mensagens</string>
   <string name="error_mark_unread_failed">Falha ao marcar como não lido. Por favor tente novamente</string>
@@ -30,4 +31,7 @@
   <string name="bcc">Cco:</string>
   <string name="hide_details">Ocultar detalhes</string>
   <string name="undisclosed_recipients">Destinatários ocultos</string>
+  <string name="error_star_operation_failed">Erro ao favoritar. Por favor, tente novamente.</string>
+  <string name="error_unstar_operation_failed">Falha ao remover o favorito. Por favor, tente novamente.</string>
+  <string name="error_move_to_trash_failed">Falha ao mover para a lixeira. Por favor, tente novamente.</string>
 </resources>

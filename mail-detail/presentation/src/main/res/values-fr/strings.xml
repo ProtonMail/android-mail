@@ -17,6 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="detail_error_loading_contacts">Le chargement des contacts a échoué.</string>
   <string name="detail_error_loading_conversation">La conversation n\'a pas pu être chargée.</string>
   <string name="detail_error_loading_messages">Les messages n\'ont pas pu être chargés.</string>
   <string name="error_mark_unread_failed">Le marquage comme non lu a échoué. Nous vous invitons à réessayer.</string>
@@ -30,4 +31,7 @@
   <string name="bcc">Cci :</string>
   <string name="hide_details">Masquer les détails</string>
   <string name="undisclosed_recipients">Destinataires non communiqués</string>
+  <string name="error_star_operation_failed">Le marquage en tant que favori a échoué. Nous vous invitons à réessayer.</string>
+  <string name="error_unstar_operation_failed">La suppression du marquage en tant que favori a échoué. Nous vous invitons à réessayer.</string>
+  <string name="error_move_to_trash_failed">Le déplacement dans le dossier Corbeille a échoué. Veuillez réessayer.</string>
 </resources>

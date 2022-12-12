@@ -17,6 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="detail_error_loading_contacts">Contacten laden mislukt</string>
   <string name="detail_error_loading_conversation">Gesprek laden mislukt</string>
   <string name="detail_error_loading_messages">Berichten laden mislukt</string>
   <string name="error_mark_unread_failed">Bericht als ongelezen markeren is mislukt. Probeer het opnieuw</string>
@@ -30,4 +31,7 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Details verbergen</string>
   <string name="undisclosed_recipients">Niet-openbaar gemaakte ontvangers</string>
+  <string name="error_star_operation_failed">Ster toevoegen is mislukt. Probeer opnieuw.</string>
+  <string name="error_unstar_operation_failed">Ster verwijderen is mislukt. Probeer opnieuw.</string>
+  <string name="error_move_to_trash_failed">Verplaats naar prullenbak is mislukt. Probeer opnieuw.</string>
 </resources>

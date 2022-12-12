@@ -17,6 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="expiration_expired">Löpt ut</string>
+  <string name="expiration_days_arg">%dd</string>
+  <string name="expiration_hours_arg">%dt</string>
+  <string name="expiration_minutes_arg">%d m</string>
   <string name="retry">Försök igen</string>
   <string name="toolbar_back_content_description">Tillbaka till föregående skärm</string>
   <string name="x_error_not_logged_in">Ej inloggad</string>

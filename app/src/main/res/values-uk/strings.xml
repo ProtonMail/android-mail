@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="app_name">Proton Mail</string>
   <string name="title_remove">Вилучити</string>
   <string name="title_remove_account">Вилучити обліковий запис</string>
   <string name="description_remove_account">Ви вийдете, а всі пов\'язані з цим обліковим записом дані буде вилучено.</string>
   <string name="user_select_other_account_content_description">Вибрати інший обліковий запис</string>
+  <string name="you_are_offline">Ви не в мережі</string>
 </resources>

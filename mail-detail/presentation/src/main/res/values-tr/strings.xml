@@ -17,6 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="detail_error_loading_contacts">Kişiler yüklenemedi</string>
   <string name="detail_error_loading_conversation">Yazışma yüklenemedi</string>
   <string name="detail_error_loading_messages">İletiler yüklenemedi</string>
   <string name="error_mark_unread_failed">Okunmamış olarak işaretlenemedi. Lütfen yeniden deneyin</string>
@@ -30,4 +31,7 @@
   <string name="bcc">Gizli kopya:</string>
   <string name="hide_details">Ayrıntıları gizle</string>
   <string name="undisclosed_recipients">Gizli alıcılar</string>
+  <string name="error_star_operation_failed">Yıldız eklenemedi. Lütfen yeniden deneyin.</string>
+  <string name="error_unstar_operation_failed">Yıldız kaldırılamadı. Lütfen yeniden deneyin.</string>
+  <string name="error_move_to_trash_failed">Çöp kutusuna taşınamadı. Lütfen yeniden deneyin.</string>
 </resources>

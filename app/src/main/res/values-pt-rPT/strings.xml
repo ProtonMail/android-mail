@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="app_name">Proton Mail</string>
   <string name="title_remove">Remover</string>
   <string name="title_remove_account">Remover conta</string>
   <string name="description_remove_account">Terminará a sessão e removerá toda a informação associada a esta conta.</string>
   <string name="user_select_other_account_content_description">Selecionar outra conta</string>
+  <string name="you_are_offline">Está offline</string>
 </resources>

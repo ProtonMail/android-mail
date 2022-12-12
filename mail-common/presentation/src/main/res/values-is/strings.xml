@@ -17,8 +17,12 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="expiration_expired">Expired</string>
+  <string name="expiration_days_arg">%dd</string>
+  <string name="expiration_hours_arg">%dh</string>
+  <string name="expiration_minutes_arg">%dm</string>
   <string name="retry">Reyna aftur</string>
-  <string name="toolbar_back_content_description">Til baka á fyrri skjá</string>
+  <string name="toolbar_back_content_description">Back to previous screen</string>
   <string name="x_error_not_logged_in">Ekki skráð inn</string>
   <string name="action_reply_content_description">Reply</string>
   <string name="action_reply_all_content_description">Reply all</string>

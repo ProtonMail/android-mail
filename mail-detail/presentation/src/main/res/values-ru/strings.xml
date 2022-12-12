@@ -17,8 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_conversation">Сбой загрузки цепочки сообщений</string>
-  <string name="detail_error_loading_messages">Сбой загрузки сообщений</string>
+  <string name="detail_error_loading_contacts">Сбой скачивания контактов</string>
+  <string name="detail_error_loading_conversation">Сбой скачивания цепочки сообщений</string>
+  <string name="detail_error_loading_messages">Сбой скачивания сообщений</string>
   <string name="error_mark_unread_failed">Не удалось пометить как непрочитанное. Попробуйте еще раз</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d сообщение</item>
@@ -32,4 +33,7 @@
   <string name="bcc">Скрытая копия:</string>
   <string name="hide_details">Скрыть подробности</string>
   <string name="undisclosed_recipients">Неразглашаемые получатели</string>
+  <string name="error_star_operation_failed">Не удалось отменить звездочкой. Попробуйте еще раз.</string>
+  <string name="error_unstar_operation_failed">Не удалось снять зведочку. Попробуйте еще раз.</string>
+  <string name="error_move_to_trash_failed">Перемещение в корзину не удалось. Пожалуйста, повторите попытку.</string>
 </resources>

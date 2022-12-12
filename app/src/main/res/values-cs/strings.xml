@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="app_name">Proton Mail</string>
   <string name="title_remove">Odstranit</string>
   <string name="title_remove_account">Odstranit účet</string>
   <string name="description_remove_account">Odhlásíte se a odstraníte všechny informace spojené s tímto účtem.</string>
   <string name="user_select_other_account_content_description">Vybrat jiný účet</string>
+  <string name="you_are_offline">Jste v režimu offline</string>
 </resources>

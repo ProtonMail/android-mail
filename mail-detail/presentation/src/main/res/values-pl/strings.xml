@@ -17,6 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="detail_error_loading_contacts">Ładowanie kontaktów nie powiodło się</string>
   <string name="detail_error_loading_conversation">Ładowanie wątku nie powiodło się</string>
   <string name="detail_error_loading_messages">Ładowanie wiadomość nie powiodło się</string>
   <string name="error_mark_unread_failed">Oznaczenie jako nieprzeczytane nie powiodło się. Spróbuj ponownie</string>
@@ -32,4 +33,7 @@
   <string name="bcc">Udw:</string>
   <string name="hide_details">Ukryj szczegóły</string>
   <string name="undisclosed_recipients">Nieznani odbiorcy</string>
+  <string name="error_star_operation_failed">Oznaczenie gwiazdką nie powiodło się. Spróbuj ponownie.</string>
+  <string name="error_unstar_operation_failed">Usunięcie gwiazdki nie powiodło się. Spróbuj ponownie.</string>
+  <string name="error_move_to_trash_failed">Przeniesienie do Kosza nie powiodło się. Spróbuj ponownie.</string>
 </resources>

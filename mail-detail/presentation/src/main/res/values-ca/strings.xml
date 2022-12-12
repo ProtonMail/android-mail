@@ -17,17 +17,21 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_conversation">Failed loading conversation</string>
+  <string name="detail_error_loading_contacts">Error carregant els contactes</string>
+  <string name="detail_error_loading_conversation">Error carregant la conversa</string>
   <string name="detail_error_loading_messages">Error carregant els missatges</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Plase try again</string>
+  <string name="error_mark_unread_failed">Error en marcar com a no llegit. Torneu-ho a provar.</string>
   <plurals name="message_count_label_text">
-    <item quantity="one">%d message</item>
-    <item quantity="other">%d messages</item>
+    <item quantity="one">%d missatge</item>
+    <item quantity="other">%d missatges</item>
   </plurals>
   <string name="more_button_content_description">Més</string>
   <string name="to">Per a:</string>
   <string name="cc">Cc:</string>
   <string name="bcc">Cco:</string>
   <string name="hide_details">Amaga els detalls</string>
-  <string name="undisclosed_recipients">Undisclosed recipients</string>
+  <string name="undisclosed_recipients">Destinataris ocults</string>
+  <string name="error_star_operation_failed">Error en afegir destacat. Torneu-ho a provar.</string>
+  <string name="error_unstar_operation_failed">Error en suprimir destacat. Torneu-ho a provar.</string>
+  <string name="error_move_to_trash_failed">Error en moure a la paperera. Torneu-ho a provar.</string>
 </resources>

@@ -17,6 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="detail_error_loading_contacts">Încărcarea contactelor a eșuat.</string>
   <string name="detail_error_loading_conversation">Eșuare încărcare conversație.</string>
   <string name="detail_error_loading_messages">Încărcarea mesajelor a eșuat.</string>
   <string name="error_mark_unread_failed">Marcarea ca necitit a eșuat. Mai reîncercați.</string>
@@ -31,4 +32,7 @@
   <string name="bcc">CA:</string>
   <string name="hide_details">Ascundere detalii</string>
   <string name="undisclosed_recipients">Destinatari confidențiali</string>
+  <string name="error_star_operation_failed">Operația de marcare cu stea a eșuat. Mai reîncercați.</string>
+  <string name="error_unstar_operation_failed">Operația de eliminare stea a eșuat. Mai reîncercați.</string>
+  <string name="error_move_to_trash_failed">Mutarea în gunoi a eșuat. Reîncercați.</string>
 </resources>

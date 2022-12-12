@@ -17,9 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+  <string name="detail_error_loading_contacts">Failed loading contacts</string>
   <string name="detail_error_loading_conversation">Failed loading conversation</string>
   <string name="detail_error_loading_messages">Failed loading messages</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Plase try again</string>
+  <string name="error_mark_unread_failed">Mark unread failed. Please try again</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d message</item>
     <item quantity="few">%d messages</item>
@@ -31,4 +32,7 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Hide details</string>
   <string name="undisclosed_recipients">Undisclosed recipients</string>
+  <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
+  <string name="error_unstar_operation_failed">Remove star operation failed. Please retry.</string>
+  <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
 </resources>
