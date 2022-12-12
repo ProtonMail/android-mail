@@ -177,7 +177,7 @@ dependencies {
     implementation(files("../../proton-libs/gopenpgp/gopenpgp.aar"))
     implementation(Dependencies.appLibs)
     implementation(KotlinX.immutableCollections)
-    debugImplementation(Dependencies.appDebug)
+    implementation(Proton.Core.proguardRules)
 
     implementation(project(":mail-common"))
     implementation(project(":mail-contact"))
@@ -189,6 +189,7 @@ dependencies {
     implementation(project(":mail-pagination"))
     implementation(project(":mail-settings"))
 
+    debugImplementation(Dependencies.appDebug)
     kapt(Dependencies.appAnnotationProcessors)
 
     testImplementation(Dependencies.testLibs)

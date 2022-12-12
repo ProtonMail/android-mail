@@ -230,6 +230,7 @@ object Proton {
         val plan = coreArtifact("plan", Versions.Proton.core)
         val presentation = coreArtifact("presentation", Versions.Proton.core)
         val presentationCompose = coreArtifact("presentation-compose", Versions.Proton.core)
+        val proguardRules = coreArtifact("proguard-rules", Versions.Proton.core)
         val report = coreArtifact("report", Versions.Proton.core)
         val user = coreArtifact("user", Versions.Proton.core)
         val userSettings = coreArtifact("user-settings", Versions.Proton.core)
