@@ -144,8 +144,8 @@ private infix fun ConversationDetailOperation.affects(entity: Entity) = Conversa
     reducesMessages = entity == Messages,
     reducesBottomBar = entity == BottomBar,
     reducesErrorBar = entity == ErrorBar,
-    reducesExit = entity is Exit,
-    expectedExitMessage = Option.fromNullable((entity as? Exit)?.message?.orNull())
+    reducesExit = entity == Exit,
+    expectedExitMessage = none()
 )
 
 private infix fun ConversationDetailReducerTest.TestInput.withMessage(@StringRes message: Int) =
@@ -155,8 +155,5 @@ private sealed interface Entity
 private object Messages : Entity
 private object Conversation : Entity
 private object BottomBar : Entity
-private open class Exit(val message: Option<TextUiModel>) : Entity {
-
-    companion object : Exit(message = none())
-}
+private object Exit : Entity
 private object ErrorBar : Entity
