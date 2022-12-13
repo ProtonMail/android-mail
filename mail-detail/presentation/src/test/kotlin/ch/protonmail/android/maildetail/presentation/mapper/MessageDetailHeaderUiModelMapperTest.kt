@@ -94,28 +94,22 @@ class MessageDetailHeaderUiModelMapperTest {
 
     private val context: Context = mockk()
     private val detailAvatarUiModelMapper: DetailAvatarUiModelMapper = mockk {
-        every { this@mockk.invoke(any(), MessageTestData.sender.name) } returns avatarUiModel
+        every { this@mockk(any(), MessageTestData.sender.name) } returns avatarUiModel
     }
     private val formatExtendedTime: FormatExtendedTime = mockk {
-        every { this@mockk.invoke(message.time.seconds) } returns extendedTimeTestUiModel
+        every { this@mockk(message.time.seconds) } returns extendedTimeTestUiModel
     }
     private val formatShortTime: FormatShortTime = mockk {
-        every { this@mockk.invoke(message.time.seconds) } returns shortTimeTextUiModel
+        every { this@mockk(message.time.seconds) } returns shortTimeTextUiModel
     }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
-        every { this@mockk.invoke(any(), labels) } returns messageLocationUiModel
+        every { this@mockk(any(), any()) } returns messageLocationUiModel
     }
     private val participantUiModelMapper: ParticipantUiModelMapper = mockk {
-        every { this@mockk.senderToUiModel(MessageTestData.sender, ContactTestData.contacts) } returns senderUiModel
-        every {
-            this@mockk.recipientToUiModel(MessageTestData.recipient1, ContactTestData.contacts)
-        } returns participant1UiModel
-        every {
-            this@mockk.recipientToUiModel(MessageTestData.recipient2, ContactTestData.contacts)
-        } returns participant2UiModel
-        every {
-            this@mockk.recipientToUiModel(MessageTestData.recipient3, ContactTestData.contacts)
-        } returns participant3UiModel
+        every { senderToUiModel(MessageTestData.sender, ContactTestData.contacts) } returns senderUiModel
+        every { recipientToUiModel(MessageTestData.recipient1, ContactTestData.contacts) } returns participant1UiModel
+        every { recipientToUiModel(MessageTestData.recipient2, ContactTestData.contacts) } returns participant2UiModel
+        every { recipientToUiModel(MessageTestData.recipient3, ContactTestData.contacts) } returns participant3UiModel
     }
     private val resolveParticipantName: ResolveParticipantName = mockk {
         every {
