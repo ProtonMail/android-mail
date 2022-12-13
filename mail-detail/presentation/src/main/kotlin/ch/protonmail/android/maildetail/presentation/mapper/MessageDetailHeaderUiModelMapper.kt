@@ -26,11 +26,12 @@ import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
-import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.label.domain.entity.LabelType
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -68,7 +69,7 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             bccRecipients = messageWithLabels.message.bccList.map {
                 participantUiModelMapper.recipientToUiModel(it, contacts)
             },
-            labels = emptyList(),
+            labels = messageWithLabels.labels.filter { it.type == LabelType.MessageLabel }.map { it.name },
             size = Formatter.formatShortFileSize(context, messageWithLabels.message.size),
             encryptionPadlock = R.drawable.ic_proton_lock,
             encryptionInfo = "End-to-end encrypted and signed message"

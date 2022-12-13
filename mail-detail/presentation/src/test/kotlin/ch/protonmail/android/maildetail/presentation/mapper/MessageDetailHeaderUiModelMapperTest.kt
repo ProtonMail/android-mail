@@ -20,17 +20,18 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import android.content.Context
 import android.text.format.Formatter
-import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
-import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
-import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
+import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.presentation.R.drawable.ic_proton_archive_box
 import ch.protonmail.android.mailcommon.presentation.R.drawable.ic_proton_lock
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
+import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.maildetail.presentation.R.string.undisclosed_recipients
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
-import ch.protonmail.android.maildetail.presentation.R.string.undisclosed_recipients
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
@@ -221,5 +222,28 @@ class MessageDetailHeaderUiModelMapperTest {
         val result = messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, ContactTestData.contacts)
         // Then
         assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `ui models contains the correct labels, without folders`() {
+        // Given
+        val input = messageWithLabels.copy(
+            labels = listOf(
+                LabelSample.Archive,
+                LabelSample.Document,
+                LabelSample.Inbox,
+                LabelSample.News,
+            )
+        )
+        val expected = listOf(
+            LabelSample.Document.name,
+            LabelSample.News.name
+        )
+
+        // When
+        val result = messageDetailHeaderUiModelMapper.toUiModel(input, ContactTestData.contacts)
+
+        // Then
+        assertEquals(expected, result.labels)
     }
 }
