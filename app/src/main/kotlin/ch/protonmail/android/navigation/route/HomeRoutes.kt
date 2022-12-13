@@ -43,9 +43,9 @@ internal fun NavGraphBuilder.addConversationDetail(
 ) {
     composable(route = Destination.Screen.Conversation.route) {
         ConversationDetailScreen(
-            onExit = { message ->
+            onExit = { notifyUserMessage ->
                 navController.popBackStack()
-                message.tap(showSnackbar)
+                notifyUserMessage.tap(showSnackbar)
             }
         )
     }

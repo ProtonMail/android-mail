@@ -67,7 +67,7 @@ import timber.log.Timber
 @Composable
 fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
-    onExit: (message: Option<String>) -> Unit,
+    onExit: (notifyUserMessage: Option<String>) -> Unit,
     viewModel: ConversationDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
@@ -215,7 +215,7 @@ object ConversationDetailScreen {
     const val ConversationIdKey = "conversation id"
 
     data class Actions(
-        val onExit: (message: Option<String>) -> Unit,
+        val onExit: (notifyUserMessage: Option<String>) -> Unit,
         val onStarClick: () -> Unit,
         val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
