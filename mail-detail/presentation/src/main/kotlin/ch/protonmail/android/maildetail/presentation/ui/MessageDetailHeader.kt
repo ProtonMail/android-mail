@@ -23,13 +23,13 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -44,6 +44,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -51,20 +52,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.Dp
 import androidx.constraintlayout.compose.ConstrainScope
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.Visibility
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
-import ch.protonmail.android.mailcommon.presentation.compose.Avatar
-import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHeaderPreviewData
+import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHeaderPreview
+import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHeaderPreviewProvider
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
+import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels
+import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.caption
@@ -78,10 +85,11 @@ const val TEST_TAG_MESSAGE_HEADER = "messageHeader"
 @Composable
 fun MessageDetailHeader(
     modifier: Modifier = Modifier,
-    uiModel: MessageDetailHeaderUiModel
+    uiModel: MessageDetailHeaderUiModel,
+    initiallyExpanded: Boolean = false
 ) {
     val isExpanded = rememberSaveable(inputs = arrayOf()) {
-        mutableStateOf(false)
+        mutableStateOf(initiallyExpanded)
     }
 
     AnimatedContent(
@@ -297,15 +305,18 @@ private fun MessageDetailHeaderLayout(
                 .height(ProtonDimens.SmallSpacing)
         )
 
-        Box(
+        Labels(
             modifier = modifier.constrainAs(labelsRef) {
-                top.linkTo(
-                    spacerRef.bottom,
-                    margin = if (isExpanded) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing,
-                    goneMargin = if (isExpanded) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing
+                constrainExtendedHeaderRow(
+                    topReference = spacerRef,
+                    endReference = moreButtonRef,
+                    isExpanded = isExpanded,
+                    topMargin = if (isExpanded) ProtonDimens.SmallSpacing else ProtonDimens.ExtraSmallSpacing
                 )
                 visibility = visibleWhen(uiModel.labels.isNotEmpty())
-            }
+            },
+            uiModels = uiModel.labels,
+            isExpanded = isExpanded
         )
 
         ExtendedHeaderRow(
@@ -551,6 +562,24 @@ private fun ParticipantText(
 }
 
 @Composable
+private fun Labels(
+    modifier: Modifier,
+    uiModels: ImmutableList<MailboxItemLabelUiModel>,
+    isExpanded: Boolean
+) {
+    val iconAlpha = animateFloatAsState(if (isExpanded) 1f else 0f).value
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        SmallNonClickableIcon(modifier = Modifier.alpha(iconAlpha), iconId = R.drawable.ic_proton_tag)
+        Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
+        MailboxItemLabels(labels = uiModels)
+    }
+}
+
+@Composable
 private fun ExtendedHeaderRow(
     modifier: Modifier = Modifier,
     text: String,
@@ -617,13 +646,14 @@ private fun ConstrainScope.constrainRecipients(
 private fun ConstrainScope.constrainExtendedHeaderRow(
     topReference: ConstrainedLayoutReference,
     endReference: ConstrainedLayoutReference,
-    isExpanded: Boolean
+    isExpanded: Boolean,
+    topMargin: Dp = ProtonDimens.SmallSpacing
 ) {
     width = Dimension.fillToConstraints
     top.linkTo(
         topReference.bottom,
-        margin = ProtonDimens.SmallSpacing,
-        goneMargin = ProtonDimens.SmallSpacing
+        margin = topMargin,
+        goneMargin = topMargin
     )
     start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
     end.linkTo(endReference.start, margin = ProtonDimens.SmallSpacing)
@@ -634,10 +664,13 @@ private fun visibleWhen(isVisible: Boolean) = if (isVisible) Visibility.Visible 
 
 @Preview(showBackground = true)
 @Composable
-fun MessageDetailHeaderPreview() {
+fun MessageDetailHeaderPreview(
+    @PreviewParameter(MessageDetailHeaderPreviewProvider::class) preview: MessageDetailHeaderPreview
+) {
     ProtonTheme {
         MessageDetailHeader(
-            uiModel = MessageDetailHeaderPreviewData.MessageHeader
+            uiModel = preview.uiModel,
+            initiallyExpanded = preview.initiallyExpanded
         )
     }
 }

@@ -210,6 +210,19 @@ class MessageDetailScreenTest {
         assertTrue(trashClicked)
     }
 
+    @Test
+    fun whenMessageWithLabelsIsLoadedThenFirstLabelIsDisplayed() {
+        // given
+        val state = MessageDetailsPreviewData.MessageWithLabels
+        val label = (state.messageMetadataState as MessageMetadataState.Data).messageDetailHeader.labels.first()
+
+        // when
+        val robot = setUpScreen(state = state)
+
+        // then
+        robot.verify { labelIsDisplayed(label.name) }
+    }
+
     private fun setUpScreen(
         state: MessageDetailState,
         actions: MessageDetailScreen.Actions = MessageDetailScreen.Actions.Empty

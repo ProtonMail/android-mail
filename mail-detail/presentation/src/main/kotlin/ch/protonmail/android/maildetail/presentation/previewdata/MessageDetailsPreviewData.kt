@@ -25,15 +25,17 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
-import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
+import ch.protonmail.android.maillabel.presentation.sample.MailboxItemLabelUiModelSample
+import kotlinx.collections.immutable.persistentListOf
 
 object MessageDetailsPreviewData {
 
     val Message = MessageDetailState(
         messageMetadataState = MessageMetadataState.Data(
             messageDetailActionBar = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast,
-            messageDetailHeader = MessageDetailHeaderPreviewData.MessageHeader
+            messageDetailHeader = MessageDetailHeaderPreviewData.WithoutLabels
         ),
         bottomBarState = BottomBarState.Data(
             listOf(
@@ -43,6 +45,18 @@ object MessageDetailsPreviewData {
         ),
         dismiss = Effect.empty(),
         error = Effect.empty()
+    )
+
+    val MessageWithLabels = Message.copy(
+        messageMetadataState = MessageMetadataState.Data(
+            messageDetailActionBar = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast,
+            messageDetailHeader = MessageDetailHeaderPreviewData.WithoutLabels.copy(
+                labels = persistentListOf(
+                    MailboxItemLabelUiModelSample.Document,
+                    MailboxItemLabelUiModelSample.News
+                )
+            )
+        )
     )
 
     val Loading = MessageDetailState(
@@ -57,6 +71,7 @@ class MessageDetailsPreviewProvider : PreviewParameterProvider<MessageDetailStat
 
     override val values = sequenceOf(
         MessageDetailsPreviewData.Message,
+        MessageDetailsPreviewData.MessageWithLabels,
         MessageDetailsPreviewData.Loading
     )
 }

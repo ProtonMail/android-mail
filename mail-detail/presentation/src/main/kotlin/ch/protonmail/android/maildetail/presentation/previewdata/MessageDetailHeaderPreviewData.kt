@@ -18,17 +18,19 @@
 
 package ch.protonmail.android.maildetail.presentation.previewdata
 
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
+import ch.protonmail.android.maillabel.presentation.sample.MailboxItemLabelUiModelSample
 import kotlinx.collections.immutable.persistentListOf
 
 object MessageDetailHeaderPreviewData {
 
-    val MessageHeader = MessageDetailHeaderUiModel(
+    val WithoutLabels = MessageDetailHeaderUiModel(
         avatar = AvatarUiModel.ParticipantInitial(value = "P"),
         sender = ParticipantUiModel(
             participantName = "Proton Test Account",
@@ -73,5 +75,39 @@ object MessageDetailHeaderPreviewData {
         size = "6.35 KB",
         encryptionPadlock = R.drawable.ic_proton_lock,
         encryptionInfo = "End-to-end encrypted and signed message"
+    )
+
+    val WithLabels = WithoutLabels.copy(
+        labels = persistentListOf(
+            MailboxItemLabelUiModelSample.Document,
+            MailboxItemLabelUiModelSample.News
+        )
+    )
+}
+
+data class MessageDetailHeaderPreview(
+    val initiallyExpanded: Boolean,
+    val uiModel: MessageDetailHeaderUiModel
+)
+
+class MessageDetailHeaderPreviewProvider : PreviewParameterProvider<MessageDetailHeaderPreview> {
+
+    override val values = sequenceOf(
+        MessageDetailHeaderPreview(
+            initiallyExpanded = false,
+            uiModel = MessageDetailHeaderPreviewData.WithoutLabels
+        ),
+        MessageDetailHeaderPreview(
+            initiallyExpanded = true,
+            uiModel = MessageDetailHeaderPreviewData.WithoutLabels
+        ),
+        MessageDetailHeaderPreview(
+            initiallyExpanded = false,
+            uiModel = MessageDetailHeaderPreviewData.WithLabels
+        ),
+        MessageDetailHeaderPreview(
+            initiallyExpanded = true,
+            uiModel = MessageDetailHeaderPreviewData.WithLabels
+        )
     )
 }

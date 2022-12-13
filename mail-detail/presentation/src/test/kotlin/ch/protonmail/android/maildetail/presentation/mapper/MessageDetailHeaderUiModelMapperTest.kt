@@ -241,7 +241,7 @@ class MessageDetailHeaderUiModelMapperTest {
                 LabelSample.Archive,
                 LabelSample.Document,
                 LabelSample.Inbox,
-                LabelSample.News,
+                LabelSample.News
             )
         )
         val expected = listOf(

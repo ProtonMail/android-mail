@@ -111,6 +111,11 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
             composeTestRule.onNodeWithText(size)
                 .assertIsDisplayed()
         }
+
+        fun labelIsDisplayed(name: String) {
+            composeTestRule.onNodeWithText(name)
+                .assertIsDisplayed()
+        }
     }
 }
 
