@@ -20,6 +20,9 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import android.content.Context
 import android.text.format.Formatter
+import androidx.compose.ui.graphics.Color
+import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
@@ -27,17 +30,21 @@ import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelType
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 class MessageDetailHeaderUiModelMapper @Inject constructor(
-    @ApplicationContext
-    private val context: Context,
+    private val colorMapper: ColorMapper,
+    @ApplicationContext private val context: Context,
     private val detailAvatarUiModelMapper: DetailAvatarUiModelMapper,
     private val formatExtendedTime: FormatExtendedTime,
     private val formatShortTime: FormatShortTime,
@@ -69,7 +76,7 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             bccRecipients = messageWithLabels.message.bccList.map {
                 participantUiModelMapper.recipientToUiModel(it, contacts)
             },
-            labels = messageWithLabels.labels.filter { it.type == LabelType.MessageLabel }.map { it.name },
+            labels = toLabelUiModels(messageWithLabels.labels),
             size = Formatter.formatShortFileSize(context, messageWithLabels.message.size),
             encryptionPadlock = R.drawable.ic_proton_lock,
             encryptionInfo = "End-to-end encrypted and signed message"
@@ -91,4 +98,12 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             TextUiModel.TextRes(R.string.undisclosed_recipients)
         }
     }
+
+    private fun toLabelUiModels(labels: List<Label>): ImmutableList<MailboxItemLabelUiModel> =
+        labels.filter { it.type == LabelType.MessageLabel }.map { label ->
+            MailboxItemLabelUiModel(
+                name = label.name,
+                color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
+            )
+        }.toImmutableList()
 }

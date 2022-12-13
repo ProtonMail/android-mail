@@ -20,9 +20,12 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import android.content.Context
 import android.text.format.Formatter
+import androidx.compose.ui.graphics.Color
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.presentation.R.drawable.ic_proton_archive_box
 import ch.protonmail.android.mailcommon.presentation.R.drawable.ic_proton_lock
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
@@ -33,6 +36,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUi
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.presentation.sample.MailboxItemLabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.testdata.contact.ContactTestData
@@ -42,6 +46,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -87,12 +92,15 @@ class MessageDetailHeaderUiModelMapperTest {
         toRecipients = listOf(participant1UiModel, participant2UiModel),
         ccRecipients = listOf(participant3UiModel),
         bccRecipients = emptyList(),
-        labels = emptyList(),
+        labels = labels.map(MailboxItemLabelUiModelSample::build).toImmutableList(),
         size = "12 MB",
         encryptionPadlock = ic_proton_lock,
         encryptionInfo = "End-to-end encrypted and signed message"
     )
 
+    private val colorMapper: ColorMapper = mockk {
+        every { toColor(any()) } returns Color.Unspecified.right()
+    }
     private val context: Context = mockk()
     private val detailAvatarUiModelMapper: DetailAvatarUiModelMapper = mockk {
         every { this@mockk(any(), MessageTestData.sender.name) } returns avatarUiModel
@@ -140,6 +148,7 @@ class MessageDetailHeaderUiModelMapperTest {
     }
 
     private val messageDetailHeaderUiModelMapper = MessageDetailHeaderUiModelMapper(
+        colorMapper = colorMapper,
         context = context,
         detailAvatarUiModelMapper = detailAvatarUiModelMapper,
         formatExtendedTime = formatExtendedTime,
@@ -236,8 +245,8 @@ class MessageDetailHeaderUiModelMapperTest {
             )
         )
         val expected = listOf(
-            LabelSample.Document.name,
-            LabelSample.News.name
+            MailboxItemLabelUiModelSample.Document,
+            MailboxItemLabelUiModelSample.News
         )
 
         // When

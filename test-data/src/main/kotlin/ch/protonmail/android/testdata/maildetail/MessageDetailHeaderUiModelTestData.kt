@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
+import kotlinx.collections.immutable.persistentListOf
 
 object MessageDetailHeaderUiModelTestData {
 
@@ -44,7 +45,7 @@ object MessageDetailHeaderUiModelTestData {
         ),
         ccRecipients = listOf(ParticipantUiModel("Recipient3", "recipient3@pm.com", R.drawable.ic_proton_lock)),
         bccRecipients = emptyList(),
-        labels = emptyList(),
+        labels = persistentListOf(),
         size = "12 MB",
         encryptionPadlock = R.drawable.ic_proton_lock,
         encryptionInfo = "End-to-end encrypted and signed message"

@@ -19,8 +19,10 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 import androidx.annotation.DrawableRes
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
+import kotlinx.collections.immutable.ImmutableList
 
 data class MessageDetailHeaderUiModel(
     val avatar: AvatarUiModel,
@@ -36,7 +38,7 @@ data class MessageDetailHeaderUiModel(
     val toRecipients: List<ParticipantUiModel>,
     val ccRecipients: List<ParticipantUiModel>,
     val bccRecipients: List<ParticipantUiModel>,
-    val labels: List<String>,
+    val labels: ImmutableList<MailboxItemLabelUiModel>,
     val size: String,
     @DrawableRes val encryptionPadlock: Int,
     val encryptionInfo: String

@@ -25,6 +25,7 @@ import me.proton.core.label.domain.entity.Label
 
 object MailboxItemLabelUiModelSample {
 
+    val Document = build(LabelSample.Document)
     val News = build(LabelSample.News)
 
     fun build(label: Label) = MailboxItemLabelUiModel(
