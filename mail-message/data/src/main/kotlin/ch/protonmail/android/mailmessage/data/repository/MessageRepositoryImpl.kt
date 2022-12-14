@@ -75,7 +75,7 @@ class MessageRepositoryImpl @Inject constructor(
                 localDataSource.upsertMessageWithBody(key.userId, messageWithBody)
             }
         )
-    ).scope(coroutineScopeProvider.GlobalIOSupervisedScope).buildProtonStore()
+    ).buildProtonStore(coroutineScopeProvider)
 
     override suspend fun getMessages(
         userId: UserId,

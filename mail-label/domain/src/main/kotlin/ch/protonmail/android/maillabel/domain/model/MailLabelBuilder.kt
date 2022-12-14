@@ -36,6 +36,7 @@ fun List<Label>.toMailLabelCustom(): List<MailLabel.Custom> {
             LabelType.MessageLabel -> label.toMailLabelCustom(::getMailLabel, ::getChildren)
             LabelType.MessageFolder -> label.toMailLabelCustom(::getMailLabel, ::getChildren)
             LabelType.ContactGroup -> throw UnsupportedOperationException()
+            LabelType.SystemFolder -> throw UnsupportedOperationException()
         }
     }
     return map { getMailLabel(it.labelId) }.sortedBy { it.order }.orderByParent()
@@ -71,4 +72,5 @@ private fun LabelId.toMailLabelId(type: LabelType) = when (type) {
     LabelType.MessageLabel -> MailLabelId.Custom.Label(this)
     LabelType.MessageFolder -> MailLabelId.Custom.Folder(this)
     LabelType.ContactGroup -> throw UnsupportedOperationException()
+    LabelType.SystemFolder -> throw UnsupportedOperationException()
 }

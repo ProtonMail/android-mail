@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.feature.account
 
-import app.cash.turbine.test
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coVerify
 import io.mockk.every
@@ -29,11 +28,12 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.test.kotlin.CoroutinesTest
+import me.proton.core.test.kotlin.flowTest
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class RemoveAccountViewModelTest : CoroutinesTest {
+class RemoveAccountViewModelTest : CoroutinesTest by CoroutinesTest() {
 
     private val accountManager = mockk<AccountManager>(relaxUnitFun = true) {
         every { this@mockk.getPrimaryUserId() } returns flowOf(UserIdTestData.userId)
@@ -58,15 +58,14 @@ class RemoveAccountViewModelTest : CoroutinesTest {
 
     @Test
     fun `when signout emits SigningOut and then SignedOut when completed`() = runTest {
-        viewModel.state.test {
-            // Initial state emitted
-            awaitItem()
-            // WHEN
-            viewModel.remove()
-            // THEN
+        // WHEN
+        viewModel.remove()
+        // THEN
+        flowTest(viewModel.state) {
+            assertEquals(RemoveAccountViewModel.State.Initial, awaitItem())
             assertEquals(RemoveAccountViewModel.State.Removing, awaitItem())
-            coVerify { accountManager.removeAccount(UserIdTestData.userId) }
             assertEquals(RemoveAccountViewModel.State.Removed, awaitItem())
+            coVerify { accountManager.removeAccount(any()) }
         }
     }
 }

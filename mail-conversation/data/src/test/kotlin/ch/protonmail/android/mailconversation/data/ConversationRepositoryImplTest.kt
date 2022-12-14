@@ -53,9 +53,11 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
+import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -76,7 +78,8 @@ class ConversationRepositoryImplTest {
         ).right()
     }
 
-    private val coroutineScopeProvider = TestCoroutineScopeProvider
+    private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
+    private val coroutineScopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
     private val messageLocalDataSource: MessageLocalDataSource = mockk(relaxUnitFun = true) {
         coEvery { this@mockk.observeMessages(any(), any<ConversationId>()) } returns flowOf(

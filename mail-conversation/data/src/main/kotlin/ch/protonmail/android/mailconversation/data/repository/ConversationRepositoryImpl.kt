@@ -75,7 +75,7 @@ class ConversationRepositoryImpl @Inject constructor(
                 messageLocalDataSource.upsertMessages(messages)
             }
         )
-    ).scope(coroutineScopeProvider.GlobalIOSupervisedScope).buildProtonStore()
+    ).buildProtonStore(coroutineScopeProvider)
 
     override suspend fun getConversations(
         userId: UserId,

@@ -29,8 +29,9 @@ import io.mockk.verify
 import io.sentry.Sentry
 import io.sentry.protocol.User
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.test.kotlin.CoroutinesTest
+import me.proton.core.test.kotlin.UnconfinedCoroutinesTest
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import org.junit.After
 import org.junit.Before
@@ -38,7 +39,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class SentryUserObserverTest {
+class SentryUserObserverTest : CoroutinesTest by UnconfinedCoroutinesTest() {
 
     private val accountManager = mockk<AccountManager> {
         every { this@mockk.getPrimaryUserId() } returns flowOf(UserIdTestData.userId)
@@ -50,8 +51,8 @@ class SentryUserObserverTest {
     fun setUp() {
         mockkStatic(Sentry::class)
         sentryUserObserver = SentryUserObserver(
-            TestCoroutineScopeProvider,
-            accountManager
+            scopeProvider = TestCoroutineScopeProvider(),
+            accountManager = accountManager
         )
     }
 
@@ -61,9 +62,9 @@ class SentryUserObserverTest {
     }
 
     @Test
-    fun `register userId in Sentry for valid primary account`() = runTest {
+    fun `register userId in Sentry for valid primary account`() = coroutinesTest {
         // When
-        sentryUserObserver.start()
+        sentryUserObserver.start().join()
         // Then
         val sentryUserSlot = slot<User>()
         verify { Sentry.setUser(capture(sentryUserSlot)) }
@@ -71,11 +72,11 @@ class SentryUserObserverTest {
     }
 
     @Test
-    fun `register random UUID in Sentry when no primary account available`() = runTest {
+    fun `register random UUID in Sentry when no primary account available`() = coroutinesTest {
         // Given
         every { accountManager.getPrimaryUserId() } returns flowOf(null)
         // When
-        sentryUserObserver.start()
+        sentryUserObserver.start().join()
         // Then
         val sentryUserSlot = slot<User>()
         verify { Sentry.setUser(capture(sentryUserSlot)) }

@@ -125,7 +125,11 @@ class LauncherViewModel @Inject constructor(
     }
 
     private fun onAddAccount() {
-        authOrchestrator.startAddAccountWorkflow(requiredAccountType, product)
+        authOrchestrator.startAddAccountWorkflow(
+            requiredAccountType = AccountType.Internal,
+            creatableAccountType = AccountType.Internal,
+            product = product
+        )
     }
 
     private suspend fun onOpenPasswordManagement() {

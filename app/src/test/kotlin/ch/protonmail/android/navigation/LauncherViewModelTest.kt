@@ -189,7 +189,13 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.submit(LauncherViewModel.Action.AddAccount)
         // THEN
-        verify { authOrchestrator.startAddAccountWorkflow(AccountType.Internal, Product.Mail) }
+        verify {
+            authOrchestrator.startAddAccountWorkflow(
+                requiredAccountType = AccountType.Internal,
+                creatableAccountType = AccountType.Internal,
+                product = Product.Mail
+            )
+        }
     }
 
     @Test

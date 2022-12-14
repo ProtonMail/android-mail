@@ -26,6 +26,7 @@ fun LabelType.labelTitleRes() = when (this) {
     LabelType.ContactGroup -> 0
     LabelType.MessageLabel -> R.string.label_title_labels
     LabelType.MessageFolder -> R.string.label_title_folders
+    LabelType.SystemFolder -> throw UnsupportedOperationException()
 }
 
 @StringRes
@@ -33,4 +34,5 @@ fun LabelType.labelAddTitleRes() = when (this) {
     LabelType.ContactGroup -> 0
     LabelType.MessageLabel -> R.string.label_title_add_label
     LabelType.MessageFolder -> R.string.label_title_add_folder
+    LabelType.SystemFolder -> throw UnsupportedOperationException()
 }
