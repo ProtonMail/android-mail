@@ -24,12 +24,13 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.maildetail.domain.mapper.MessageWithLabelsMapper
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
-import ch.protonmail.android.testdata.label.LabelTestData
-import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -38,7 +39,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.arch.ResponseSource
-import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import kotlin.test.AfterTest
@@ -48,12 +48,13 @@ import kotlin.test.assertEquals
 
 class ObserveMessageWithLabelsTest {
 
-    private val userId = UserId("userId")
-    private val messageId = MessageId("messageId")
-    private val message = MessageTestData.buildMessage(id = messageId.id)
-    private val labels = listOf(LabelTestData.buildLabel(id = "customLabel"))
-    private val folders = listOf(LabelTestData.buildLabel(id = "customFolder"))
-    private val labelsAndFolders = labels + folders
+    private val userId = UserIdSample.Primary
+    private val messageId = MessageIdSample.AugWeatherForecast
+    private val message = MessageSample.AugWeatherForecast.copy(
+        labelIds = listOf(LabelIdSample.Inbox, LabelIdSample.News)
+    )
+    private val labels = listOf(LabelSample.Document, LabelSample.News)
+    private val folders = listOf(LabelSample.Archive, LabelSample.Inbox)
     private val localErrorFlow = flowOf(DataResult.Error.Local("error message", IOException()))
 
     private val observeMessage: ObserveMessage = mockk {
@@ -73,12 +74,9 @@ class ObserveMessageWithLabelsTest {
             )
         )
     }
-    private val messageWithLabelsMapper: MessageWithLabelsMapper = mockk {
-        every { toUiModel(message, labelsAndFolders) } returns MessageWithLabels(message, labelsAndFolders)
-    }
 
     private val observeMessageWithLabels =
-        ObserveMessageWithLabels(observeMessage, labelRepository, messageWithLabelsMapper)
+        ObserveMessageWithLabels(observeMessage, labelRepository)
 
     @BeforeTest
     fun setUp() {
@@ -92,13 +90,19 @@ class ObserveMessageWithLabelsTest {
     }
 
     @Test
-    fun `when all calls are successful, return a message with labels`() = runTest {
+    fun `when all calls are successful, return a message with its labels`() = runTest {
         // Given
-        val expectedResult = MessageWithLabels(message, labelsAndFolders).right()
+        val messageLabels = listOf(
+            LabelSample.Inbox,
+            LabelSample.News
+        )
+        val expected = MessageWithLabels(message, messageLabels).right()
+
         // When
         observeMessageWithLabels.invoke(userId, messageId).test {
+
             // Then
-            assertEquals(expectedResult, awaitItem())
+            assertEquals(expected, awaitItem())
             awaitComplete()
         }
     }

@@ -22,7 +22,6 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.maildetail.domain.mapper.MessageWithLabelsMapper
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
@@ -35,8 +34,7 @@ import javax.inject.Inject
 
 class ObserveMessageWithLabels @Inject constructor(
     private val observeMessage: ObserveMessage,
-    private val labelsRepository: LabelRepository,
-    private val messageWithLabelsMapper: MessageWithLabelsMapper
+    private val labelsRepository: LabelRepository
 ) {
 
     operator fun invoke(userId: UserId, messageId: MessageId): Flow<Either<DataError, MessageWithLabels>> {
@@ -47,9 +45,11 @@ class ObserveMessageWithLabels @Inject constructor(
         ) { messageEither, labelsEither, foldersEither ->
             either {
                 val message = messageEither.bind()
-                val labels = labelsEither.bind()
-                val folders = foldersEither.bind()
-                messageWithLabelsMapper.toUiModel(message, labels + folders)
+                val allLabelsAndFolders = (labelsEither.bind() + foldersEither.bind()).sortedBy { it.order }
+                val messageLabels = allLabelsAndFolders.filter { label ->
+                    label.labelId in message.labelIds
+                }
+                MessageWithLabels(message, messageLabels)
             }
         }
     }
