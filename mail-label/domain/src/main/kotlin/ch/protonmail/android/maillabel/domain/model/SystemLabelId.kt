@@ -79,7 +79,9 @@ enum class SystemLabelId(val labelId: LabelId) {
 
         val displayedList = listOf(Inbox, Drafts, Sent, Starred, Archive, Spam, Trash, AllMail)
 
-        val exclusiveList = listOf(Inbox, Archive, Spam, Trash)
+        val exclusiveDestinationList = listOf(Inbox, Archive, Spam, Trash)
+
+        val exclusiveList = exclusiveDestinationList + Drafts + Sent
 
         fun stringOf(value: SystemLabelId): String = value.labelId.id
         fun enumOf(value: String?): SystemLabelId = map[value] ?: Inbox

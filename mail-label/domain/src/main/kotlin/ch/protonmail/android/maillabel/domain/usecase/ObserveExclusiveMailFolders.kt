@@ -18,47 +18,23 @@
 
 package ch.protonmail.android.maillabel.domain.usecase
 
-import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
-import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapLatest
-import me.proton.core.domain.arch.mapSuccessValueOrNull
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class ObserveExclusiveMailFolders @Inject constructor(
-    @DefaultDispatcher
-    private val dispatcher: CoroutineDispatcher,
-    private val labelRepository: LabelRepository
+    private val exclusiveDestinationMailFolders: ObserveExclusiveDestinationMailFolders
 ) {
 
-    operator fun invoke(userId: UserId) = combine(
-        observeSystemLabelIds().map { it.toMailLabelSystem() },
-        observeMessageFolders(userId).map { it.toMailLabelCustom() }
-    ) { defaults, folders ->
-        MailLabels(
-            systemLabels = defaults,
-            labels = emptyList(),
-            folders = folders
+    operator fun invoke(userId: UserId) = exclusiveDestinationMailFolders(userId).map {
+        it.copy(
+            systemLabels = it.systemLabels + listOf(
+                SystemLabelId.Drafts.toMailLabelSystem(),
+                SystemLabelId.Sent.toMailLabelSystem()
+            )
         )
-    }.flowOn(dispatcher)
-
-    private fun observeSystemLabelIds() = flowOf(SystemLabelId.exclusiveList)
-
-    private fun observeMessageFolders(
-        userId: UserId
-    ) = labelRepository.observeLabels(userId, LabelType.MessageFolder)
-        .mapSuccessValueOrNull()
-        .mapLatest { list -> list.orEmpty().sortedBy { it.order } }
-        .flowOn(dispatcher)
+    }
 
 }
