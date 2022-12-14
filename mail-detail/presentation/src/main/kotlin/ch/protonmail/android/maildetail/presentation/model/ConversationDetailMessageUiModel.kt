@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 
 sealed interface ConversationDetailMessageUiModel {
 
@@ -33,6 +34,7 @@ sealed interface ConversationDetailMessageUiModel {
     val repliedIcon: RepliedIcon
     val sender: String
     val shortTime: TextUiModel
+    val labels: List<MailboxItemLabelUiModel>
 
     data class Collapsed(
         override val avatar: AvatarUiModel,
@@ -44,7 +46,8 @@ sealed interface ConversationDetailMessageUiModel {
         override val locationIcon: MessageLocationUiModel,
         override val repliedIcon: RepliedIcon,
         override val sender: String,
-        override val shortTime: TextUiModel
+        override val shortTime: TextUiModel,
+        override val labels: List<MailboxItemLabelUiModel>
     ) : ConversationDetailMessageUiModel
 
     data class Expanded(
@@ -57,7 +60,8 @@ sealed interface ConversationDetailMessageUiModel {
         override val locationIcon: MessageLocationUiModel,
         override val repliedIcon: RepliedIcon,
         override val sender: String,
-        override val shortTime: TextUiModel
+        override val shortTime: TextUiModel,
+        override val labels: List<MailboxItemLabelUiModel>
     ) : ConversationDetailMessageUiModel
 
     enum class ForwardedIcon {

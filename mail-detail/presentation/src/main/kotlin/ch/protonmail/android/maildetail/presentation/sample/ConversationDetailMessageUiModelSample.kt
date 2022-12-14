@@ -90,7 +90,8 @@ object ConversationDetailMessageUiModelSample {
         locationIcon = MessageLocationUiModelSample.AllMail,
         repliedIcon = repliedIcon,
         sender = message.sender.name,
-        shortTime = TextUiModel("10:00")
+        shortTime = TextUiModel("10:00"),
+        labels = emptyList()
     )
 
     fun ConversationDetailMessageUiModel.expand() = ConversationDetailMessageUiModel.Expanded(
@@ -103,7 +104,8 @@ object ConversationDetailMessageUiModelSample {
         locationIcon = locationIcon,
         repliedIcon = repliedIcon,
         sender = sender,
-        shortTime = shortTime
+        shortTime = shortTime,
+        labels = emptyList()
     )
 
     fun ConversationDetailMessageUiModel.collapse() = ConversationDetailMessageUiModel.Collapsed(
@@ -116,6 +118,7 @@ object ConversationDetailMessageUiModelSample {
         locationIcon = locationIcon,
         repliedIcon = repliedIcon,
         sender = sender,
-        shortTime = shortTime
+        shortTime = shortTime,
+        emptyList()
     )
 }

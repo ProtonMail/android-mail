@@ -215,6 +215,7 @@ private fun MailboxItemLayout(
                 width = Dimension.preferredWrapContent
                 top.linkTo(subjectRef.bottom, margin = ProtonDimens.SmallSpacing)
                 start.linkTo(expirationLabelRef.end, margin = ProtonDimens.ExtraSmallSpacing)
+                bottom.linkTo(parent.bottom, margin = ProtonDimens.SmallSpacing)
                 end.linkTo(parent.end)
             }
         ) { labels() }

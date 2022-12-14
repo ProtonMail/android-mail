@@ -18,20 +18,27 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import androidx.compose.ui.graphics.Color
+import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
 import ch.protonmail.android.mailmessage.domain.entity.expirationTimeOrNull
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.LabelType
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val avatarUiModelMapper: DetailAvatarUiModelMapper,
     private val expirationTimeMapper: ExpirationTimeMapper,
+    private val colorMapper: ColorMapper,
     private val formatShortTime: FormatShortTime,
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper,
     private val resolveParticipantName: ResolveParticipantName
@@ -53,7 +60,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             locationIcon = messageLocationUiModelMapper(message.labelIds, labels),
             repliedIcon = getRepliedIcon(isReplied = message.isReplied, isRepliedAll = message.isRepliedAll),
             sender = senderResolvedName,
-            shortTime = formatShortTime(message.time.seconds)
+            shortTime = formatShortTime(message.time.seconds),
+            labels = toLabelUiModels(messageWithLabels.labels)
         )
     }
 
@@ -72,5 +80,13 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         isReplied -> ConversationDetailMessageUiModel.RepliedIcon.Replied
         else -> ConversationDetailMessageUiModel.RepliedIcon.None
     }
+
+    private fun toLabelUiModels(labels: List<Label>): List<MailboxItemLabelUiModel> =
+        labels.filter { it.type == LabelType.MessageLabel }.map { label ->
+            MailboxItemLabelUiModel(
+                name = label.name,
+                color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
+            )
+        }
 }
 

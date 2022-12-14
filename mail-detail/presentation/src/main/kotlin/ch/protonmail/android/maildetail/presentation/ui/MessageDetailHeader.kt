@@ -575,7 +575,7 @@ private fun Labels(
     ) {
         SmallNonClickableIcon(modifier = Modifier.alpha(iconAlpha), iconId = R.drawable.ic_proton_tag)
         Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
-        MailboxItemLabels(labels = uiModels)
+        MailboxItemLabels(labels = uiModels, isExpanded = isExpanded)
     }
 }
 

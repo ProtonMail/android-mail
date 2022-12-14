@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
@@ -34,6 +35,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class ConversationDetailMessageUiModelMapperTest {
+
+
+    private val colorMapper: ColorMapper = mockk()
 
     private val avatarUiModelMapper: DetailAvatarUiModelMapper = mockk {
         every { this@mockk(message = any(), senderResolvedName = any()) } returns
@@ -62,6 +66,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         avatarUiModelMapper = avatarUiModelMapper,
         expirationTimeMapper = expirationTimeMapper,
         formatShortTime = formatShortTime,
+        colorMapper = colorMapper,
         messageLocationUiModelMapper = messageLocationUiModelMapper,
         resolveParticipantName = resolveParticipantName
     )

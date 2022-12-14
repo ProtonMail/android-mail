@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -44,10 +45,15 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.caption
 import me.proton.core.compose.theme.overline
+import kotlin.math.ceil
 
 @Composable
-fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLabelUiModel>) {
-    SubcomposeLayout(modifier) { constraints ->
+fun MailboxItemLabels(
+    modifier: Modifier = Modifier,
+    labels: List<MailboxItemLabelUiModel>,
+    isExpanded: Boolean = false
+) {
+    SubcomposeLayout(modifier = modifier.wrapContentSize()) { constraints ->
 
         val plusOneDigitWidth = measurePlusTextWidth(constraints, Plus1CharLimit)
         val plusTwoDigitWidth = measurePlusTextWidth(constraints, Plus2CharsLimit)
@@ -66,6 +72,7 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
         fun plusPlaceableWidth(): Int {
             val notPlacedCountExcludingCurrent = notPlacedCount - 1
             return when {
+                isExpanded -> 0
                 notPlacedCountExcludingCurrent <= 0 -> 0
                 notPlacedCount <= Plus1CharLimit -> plusOneDigitWidth
                 notPlacedCount <= Plus2CharsLimit -> plusTwoDigitWidth
@@ -75,15 +82,19 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
 
         val labelsPlaceables = labelsMeasurables.map { (label, measurables) ->
             measurables.mapNotNull subMap@{ measurable ->
-                val availableWidth = constraints.maxWidth - labelsWidth - plusPlaceableWidth()
-                val maxWidth = availableWidth.coerceAtLeast(minExpandedLabelWidth)
+                val availableWidth = when (isExpanded) {
+                    true -> constraints.maxWidth
+                    false -> constraints.maxWidth - labelsWidth - plusPlaceableWidth()
+                }
+                val maxWidth = if (availableWidth <= 0) constraints.maxWidth else
+                    availableWidth.coerceAtLeast(minExpandedLabelWidth)
                 val minWidth = when {
                     label.name.length >= MinExpandedLabelLength -> minExpandedLabelWidth
                     else -> 0
                 }
                 val placeable =
                     measurable.measure(constraints.copy(minWidth = minWidth, maxWidth = maxWidth))
-                if (placeable.width > availableWidth) {
+                if (isExpanded.not() && placeable.width > availableWidth) {
                     return@subMap null
                 }
                 labelsWidth += placeable.width
@@ -92,11 +103,31 @@ fun MailboxItemLabels(modifier: Modifier = Modifier, labels: List<MailboxItemLab
             }
         }
 
-        layout(width = constraints.maxWidth, height = labelsPlaceables.flatten().firstOrNull()?.height ?: 0) {
+        val rowsCount = ceil(labelsWidth.toDouble() / constraints.maxWidth.coerceAtLeast(1)).toInt()
+        val rowHeight = labelsPlaceables.flatten().firstOrNull()?.height ?: 0
+
+        layout(
+            width = constraints.maxWidth,
+            height = rowsCount * rowHeight
+        ) {
             var x = 0
+            var y = 0
+            var availableRowWidth = constraints.maxWidth
             labelsPlaceables.flatten().forEach { placeable ->
-                placeable.place(x = x, y = 0)
+
+                val rowCanFitPlaceable = when (isExpanded) {
+                    true -> availableRowWidth - placeable.width >= 0
+                    false -> true
+                }
+
+                if (rowCanFitPlaceable.not()) {
+                    availableRowWidth = constraints.maxWidth
+                    y += rowHeight
+                    x = 0
+                }
+                placeable.place(x = x, y = y)
                 x += placeable.width
+                availableRowWidth -= placeable.width
             }
             if (notPlacedCount > 0) {
                 subcompose(notPlacedCount) { PlusText(count = notPlacedCount) }
@@ -122,7 +153,11 @@ private fun SubcomposeMeasureScope.measureMinExpandedLabelWidth(constraints: Con
 private fun Label(label: MailboxItemLabelUiModel) {
     Text(
         modifier = Modifier
-            .padding(horizontal = MailDimens.TinySpacing)
+            .padding(
+                end = ProtonDimens.ExtraSmallSpacing,
+                top = MailDimens.TinySpacing,
+                bottom = MailDimens.TinySpacing
+            )
             .background(label.color, shape = RoundedCornerShape(percent = 100))
             .padding(horizontal = ProtonDimens.SmallSpacing, vertical = MailDimens.TinySpacing),
         text = label.name,
@@ -135,10 +170,10 @@ private fun Label(label: MailboxItemLabelUiModel) {
 @Composable
 private fun PlusText(count: Int) {
     Text(
-        modifier = Modifier.padding(MailDimens.TinySpacing),
+        modifier = Modifier,
         text = "+$count",
         style = ProtonTheme.typography.caption,
-        maxLines = 1
+        maxLines = 1,
     )
 }
 
