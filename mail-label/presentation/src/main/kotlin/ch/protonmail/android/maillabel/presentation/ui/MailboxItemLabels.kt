@@ -173,7 +173,7 @@ private fun PlusText(count: Int) {
         modifier = Modifier,
         text = "+$count",
         style = ProtonTheme.typography.caption,
-        maxLines = 1,
+        maxLines = 1
     )
 }
 
