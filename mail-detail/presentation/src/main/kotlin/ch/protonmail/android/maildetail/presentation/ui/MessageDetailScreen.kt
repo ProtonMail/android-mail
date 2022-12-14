@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -50,6 +51,7 @@ import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
@@ -72,6 +74,10 @@ fun MessageDetailScreen(
     val scope = rememberCoroutineScope()
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
+        sheetShape = RoundedCornerShape(
+            topStart = ProtonDimens.LargeCornerRadius,
+            topEnd = ProtonDimens.LargeCornerRadius
+        ),
         sheetContent = {
             MoveToBottomSheetContent(
                 state = state.bottomSheetState,
@@ -89,11 +95,7 @@ fun MessageDetailScreen(
                 onTrashClick = { viewModel.submit(MessageViewAction.Trash) },
                 onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
                 onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) },
-                onMoveClick = {
-                    scope.launch {
-                        bottomSheetState.show()
-                    }
-                }
+                onMoveClick = { scope.launch { bottomSheetState.show() } }
             )
         )
     }
