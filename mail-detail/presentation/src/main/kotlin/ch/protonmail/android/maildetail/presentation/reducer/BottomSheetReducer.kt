@@ -31,7 +31,7 @@ class BottomSheetReducer @Inject constructor() {
 
     fun newStateFrom(currentState: BottomSheetState, event: BottomSheetOperation): BottomSheetState {
         return when (event) {
-            is BottomSheetEvent.ActionsData -> BottomSheetState.Data(event.moveToDestinations)
+            is BottomSheetEvent.Data -> BottomSheetState.Data(event.moveToDestinations)
             is BottomSheetAction.MoveToDestinationSelected -> currentState.toNewSelectedState(event.mailLabelId)
             is BottomSheetAction.BottomSheetDismissed -> currentState.toNewUnSelectedState()
         }

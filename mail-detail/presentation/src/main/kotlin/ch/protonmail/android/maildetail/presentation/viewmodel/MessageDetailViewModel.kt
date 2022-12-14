@@ -56,8 +56,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
-import me.proton.core.util.kotlin.exhaustive
 import kotlinx.coroutines.launch
+import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -204,7 +204,7 @@ class MessageDetailViewModel @Inject constructor(
                 observeFolderColor(userId)
             ) { folders, color ->
                 MessageDetailEvent.MessageBottomSheetEvent(
-                    BottomSheetEvent.ActionsData(folders.toUiModels(color).let { it.folders + it.systems })
+                    BottomSheetEvent.Data(folders.toUiModels(color).let { it.folders + it.systems })
                 )
             }
         }.onEach { event ->

@@ -247,7 +247,7 @@ class MessageDetailReducerTest(
             ),
             TestInput(
                 MessageDetailEvent.MessageBottomSheetEvent(
-                    BottomSheetEvent.ActionsData(MailLabelUiModelTestData.spamAndCustomFolder)
+                    BottomSheetEvent.Data(MailLabelUiModelTestData.spamAndCustomFolder)
                 ),
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
