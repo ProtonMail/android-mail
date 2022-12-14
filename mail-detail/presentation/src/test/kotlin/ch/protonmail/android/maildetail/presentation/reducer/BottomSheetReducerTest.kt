@@ -55,7 +55,7 @@ internal class BottomSheetReducerTest(
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = BottomSheetState.Loading,
-                operation = BottomSheetEvent.ActionsData(destinations),
+                operation = BottomSheetEvent.Data(destinations),
                 expectedState = BottomSheetState.Data(destinations)
             )
         )
@@ -63,13 +63,8 @@ internal class BottomSheetReducerTest(
         private val transitionsFromDataState = listOf(
             TestInput(
                 currentState = BottomSheetState.Data(destinations),
-                operation = BottomSheetEvent.ActionsData(updatedDestinations),
+                operation = BottomSheetEvent.Data(updatedDestinations),
                 expectedState = BottomSheetState.Data(updatedDestinations)
-            ),
-            TestInput(
-                currentState = BottomSheetState.Data(updatedDestinations),
-                operation = BottomSheetAction.BottomSheetDismissed,
-                expectedState = BottomSheetState.Data(destinations)
             )
         )
 
@@ -90,16 +85,21 @@ internal class BottomSheetReducerTest(
 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
-        fun data() = (transitionsFromLoadingState + transitionsFromDataState + transitionFromDataStateToSelected)
-            .map { testInput ->
-                val testName = """
+        fun data() =
+            (
+                transitionsFromLoadingState +
+                    transitionsFromDataState +
+                    transitionFromDataStateToSelected
+                )
+                .map { testInput ->
+                    val testName = """
                         Current state: ${testInput.currentState}
                         Operation: ${testInput.operation}
                         Next state: ${testInput.expectedState}
                         
-                """.trimIndent()
-                arrayOf(testName, testInput)
-            }
+                    """.trimIndent()
+                    arrayOf(testName, testInput)
+                }
     }
 
     data class TestInput(

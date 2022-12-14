@@ -85,7 +85,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class MessageDetailViewModelTest {
@@ -443,19 +442,6 @@ class MessageDetailViewModelTest {
             advanceUntilIdle()
             val actual = assertIs<BottomSheetState.Data>(lastEmittedItem().bottomSheetState)
             assertTrue { actual.moveToDestinations.first { it.id == MailLabelId.System.Spam }.isSelected }
-        }
-    }
-
-    @Test
-    fun `deselect move to destination when dismiss action is called`() = runTest {
-        viewModel.state.test {
-            advanceUntilIdle()
-            viewModel.submit(MessageViewAction.MoveToSelected(MailLabelId.System.Spam))
-            advanceUntilIdle()
-            viewModel.submit(MessageViewAction.BottomSheetDismissed)
-            advanceUntilIdle()
-            val actual = assertIs<BottomSheetState.Data>(lastEmittedItem().bottomSheetState)
-            assertNull(actual.moveToDestinations.find { it.isSelected })
         }
     }
 

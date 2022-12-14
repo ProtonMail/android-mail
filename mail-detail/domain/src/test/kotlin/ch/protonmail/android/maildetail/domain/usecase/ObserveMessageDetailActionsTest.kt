@@ -57,7 +57,8 @@ internal class ObserveMessageDetailActionsTest {
                 Action.Reply,
                 Action.MarkUnread,
                 Action.Trash,
-                Action.Label
+                Action.Label,
+                Action.Move
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -77,7 +78,8 @@ internal class ObserveMessageDetailActionsTest {
                 Action.ReplyAll,
                 Action.MarkUnread,
                 Action.Trash,
-                Action.Label
+                Action.Label,
+                Action.Move
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -98,7 +100,8 @@ internal class ObserveMessageDetailActionsTest {
                     Action.ReplyAll,
                     Action.MarkUnread,
                     Action.Delete,
-                    Action.Label
+                    Action.Label,
+                    Action.Move
                 )
                 assertEquals(expected.right(), awaitItem())
                 awaitComplete()
@@ -118,7 +121,8 @@ internal class ObserveMessageDetailActionsTest {
                 Action.Reply,
                 Action.MarkUnread,
                 Action.Delete,
-                Action.Label
+                Action.Label,
+                Action.Move
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -138,7 +142,8 @@ internal class ObserveMessageDetailActionsTest {
                 Action.Reply,
                 Action.MarkUnread,
                 Action.Delete,
-                Action.Label
+                Action.Label,
+                Action.Move
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -158,7 +163,8 @@ internal class ObserveMessageDetailActionsTest {
                 Action.Reply,
                 Action.MarkUnread,
                 Action.Delete,
-                Action.Label
+                Action.Label,
+                Action.Move
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()

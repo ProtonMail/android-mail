@@ -184,5 +184,6 @@ fun MoveToBottomSheetContentPreview() {
             )
         ),
         onFolderSelected = {},
-        onDoneClick = {})
+        onDoneClick = {}
+    )
 }
