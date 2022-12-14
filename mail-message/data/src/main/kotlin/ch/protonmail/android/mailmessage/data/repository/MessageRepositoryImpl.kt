@@ -105,7 +105,7 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun moveTo(
         userId: UserId,
         messageId: MessageId,
-        fromLabels: Set<LabelId>,
+        fromLabel: LabelId?,
         toLabel: LabelId
     ): Either<DataError.Local, Message> {
         if (toLabel == SystemLabelId.Trash.labelId) {
@@ -115,10 +115,12 @@ class MessageRepositoryImpl @Inject constructor(
         val message = localDataSource.observeMessage(userId, messageId).first()
             ?: return DataError.Local.NoDataCached.left()
 
-        val updatedMessage = message.copy(
-            labelIds =
-            message.labelIds - fromLabels + toLabel
-        )
+        val updatedLabels = message.labelIds.toMutableList().apply {
+            fromLabel?.let { this.remove(it) }
+            this.add(toLabel)
+        }
+
+        val updatedMessage = message.copy(labelIds = updatedLabels)
 
         localDataSource.upsertMessage(updatedMessage)
         remoteDataSource.addLabel(userId, messageId, toLabel)

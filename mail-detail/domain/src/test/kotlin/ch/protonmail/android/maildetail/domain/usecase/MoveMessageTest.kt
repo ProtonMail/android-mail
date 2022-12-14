@@ -92,7 +92,7 @@ class MoveMessageTest {
             messageRepository.moveTo(
                 userId = userId,
                 messageId = messageId,
-                fromLabels = setOf(fromLabelId),
+                fromLabel = fromLabelId,
                 toLabel = toLabelId
             )
         } returns error
@@ -112,7 +112,7 @@ class MoveMessageTest {
             messageRepository.moveTo(
                 userId,
                 messageId,
-                setOf(fromLabelId),
+                fromLabelId,
                 toLabelId
             )
         } returns message
@@ -121,7 +121,7 @@ class MoveMessageTest {
         val actual = move(userId, messageId, toLabelId)
 
         // Then
-        coVerify { messageRepository.moveTo(userId, messageId, setOf(fromLabelId), toLabelId) }
+        coVerify { messageRepository.moveTo(userId, messageId, fromLabelId, toLabelId) }
         assertEquals(message, actual)
     }
 }

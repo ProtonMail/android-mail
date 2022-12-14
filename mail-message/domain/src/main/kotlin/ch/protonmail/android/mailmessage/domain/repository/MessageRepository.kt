@@ -88,7 +88,7 @@ interface MessageRepository {
     suspend fun moveTo(
         userId: UserId,
         messageId: MessageId,
-        fromLabels: Set<LabelId>,
+        fromLabel: LabelId?,
         toLabel: LabelId
     ): Either<DataError.Local, Message>
 }

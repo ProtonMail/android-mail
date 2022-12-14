@@ -340,7 +340,7 @@ class MessageRepositoryImplTest {
 
         // when
         val result =
-            messageRepository.moveTo(userId, messageId, setOf(LabelIdSample.AllDraft), SystemLabelId.Trash.labelId)
+            messageRepository.moveTo(userId, messageId, LabelIdSample.AllDraft, SystemLabelId.Trash.labelId)
 
         // then
         assertEquals(trashedMessage.right(), result)
@@ -381,7 +381,7 @@ class MessageRepositoryImplTest {
         val result = messageRepository.moveTo(
             userId,
             messageId,
-            setOf(SystemLabelId.Inbox.labelId),
+            SystemLabelId.Inbox.labelId,
             SystemLabelId.Trash.labelId
         )
 
@@ -415,7 +415,7 @@ class MessageRepositoryImplTest {
             messageRepository.moveTo(
                 userId,
                 MessageId(message.id),
-                setOf(SystemLabelId.Inbox.labelId),
+                SystemLabelId.Inbox.labelId,
                 destinationLabel
             )
 
@@ -440,7 +440,7 @@ class MessageRepositoryImplTest {
         )
 
         // When
-        val result = messageRepository.moveTo(userId, MessageId(message.id), emptySet(), destinationLabel)
+        val result = messageRepository.moveTo(userId, MessageId(message.id), null, destinationLabel)
 
         // Then
         coVerify { localDataSource.upsertMessage(updatedMessage) }
@@ -464,7 +464,7 @@ class MessageRepositoryImplTest {
             localDataSource.addLabel(userId, MessageId(message.id), destinationLabel)
         } returns updatedMessage.right()
         // When
-        val result = messageRepository.moveTo(userId, MessageId(message.id), emptySet(), destinationLabel)
+        val result = messageRepository.moveTo(userId, MessageId(message.id), null, destinationLabel)
 
         // Then
         coVerify { localDataSource.upsertMessage(message) }
@@ -482,7 +482,7 @@ class MessageRepositoryImplTest {
         val result = messageRepository.moveTo(
             userId,
             MessageId(MessageTestData.RAW_MESSAGE_ID),
-            setOf(SystemLabelId.Inbox.labelId),
+            SystemLabelId.Inbox.labelId,
             LabelId("42")
         )
 
@@ -516,7 +516,7 @@ class MessageRepositoryImplTest {
         val actual = messageRepository.moveTo(
             userId,
             messageId,
-            setOf(SystemLabelId.Inbox.labelId),
+            SystemLabelId.Inbox.labelId,
             SystemLabelId.Trash.labelId
         )
 

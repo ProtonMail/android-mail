@@ -44,7 +44,7 @@ class MoveMessage @Inject constructor(
             ifLeft = { DataError.Local.NoDataCached.left() },
             ifRight = { message ->
                 val exclusiveLabelIds = observeExclusiveMailFolders(userId).first().allById.mapKeys { it.key.labelId }
-                val fromLabelIds = message.labelIds.filter { labelId -> labelId in exclusiveLabelIds }.toSet()
+                val fromLabelIds = message.labelIds.firstOrNull { labelId -> labelId in exclusiveLabelIds }
                 messageRepository.moveTo(userId, messageId, fromLabelIds, labelId)
             }
         )
