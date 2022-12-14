@@ -100,7 +100,6 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.MarkUnread -> markMessageUnread()
             is MessageViewAction.Trash -> trashMessage()
             is MessageViewAction.MoveToSelected -> moveToDestinationSelected(action.mailLabelId)
-            is MessageViewAction.BottomSheetDismissed -> onBottomSheetDismissed()
         }.exhaustive
     }
 
@@ -153,12 +152,6 @@ class MessageDetailViewModel @Inject constructor(
     private fun moveToDestinationSelected(mailLabelId: MailLabelId) {
         viewModelScope.launch {
             emitNewStateFrom(MessageViewAction.MoveToSelected(mailLabelId))
-        }
-    }
-
-    private fun onBottomSheetDismissed() {
-        viewModelScope.launch {
-            emitNewStateFrom(MessageViewAction.BottomSheetDismissed)
         }
     }
 

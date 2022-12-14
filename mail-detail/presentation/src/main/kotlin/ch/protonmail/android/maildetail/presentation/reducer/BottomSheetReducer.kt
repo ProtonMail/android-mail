@@ -33,7 +33,6 @@ class BottomSheetReducer @Inject constructor() {
         return when (event) {
             is BottomSheetEvent.Data -> BottomSheetState.Data(event.moveToDestinations)
             is BottomSheetAction.MoveToDestinationSelected -> currentState.toNewSelectedState(event.mailLabelId)
-            is BottomSheetAction.BottomSheetDismissed -> currentState.toNewUnSelectedState()
         }
     }
 
@@ -45,18 +44,6 @@ class BottomSheetReducer @Inject constructor() {
                     is MailLabelUiModel.Custom -> mailLabelUiModel.copy(isSelected = mailLabelUiModel.id == mailLabelId)
                     is MailLabelUiModel.System -> mailLabelUiModel.copy(isSelected = mailLabelUiModel.id == mailLabelId)
                 }.exhaustive
-            }
-        )
-    }
-
-    private fun BottomSheetState.toNewUnSelectedState() = when (this) {
-        is BottomSheetState.Loading -> this
-        is BottomSheetState.Data -> this.copy(
-            moveToDestinations = moveToDestinations.map { mailLabelUiModel ->
-                when (mailLabelUiModel) {
-                    is MailLabelUiModel.Custom -> mailLabelUiModel.copy(isSelected = false)
-                    is MailLabelUiModel.System -> mailLabelUiModel.copy(isSelected = false)
-                }
             }
         )
     }

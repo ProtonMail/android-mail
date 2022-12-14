@@ -40,5 +40,4 @@ sealed interface BottomSheetEvent : BottomSheetOperation {
 sealed interface BottomSheetAction : BottomSheetOperation {
 
     data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : BottomSheetAction
-    object BottomSheetDismissed : BottomSheetAction
 }

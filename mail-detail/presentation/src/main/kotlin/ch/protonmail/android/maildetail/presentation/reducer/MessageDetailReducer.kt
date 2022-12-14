@@ -96,10 +96,6 @@ class MessageDetailReducer @Inject constructor(
                 bottomSheetState,
                 BottomSheetAction.MoveToDestinationSelected(operation.mailLabelId)
             )
-            is MessageViewAction.BottomSheetDismissed -> bottomSheetReducer.newStateFrom(
-                bottomSheetState,
-                BottomSheetAction.BottomSheetDismissed
-            )
             else -> bottomSheetState
         }
 
