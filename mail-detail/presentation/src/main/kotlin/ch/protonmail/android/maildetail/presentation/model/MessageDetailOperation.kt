@@ -49,7 +49,7 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     ) : MessageDetailEvent
 
     data class MessageBottomSheetEvent(
-        val bottomSheetEvent: BottomSheetOperation
+        val bottomSheetOperation: BottomSheetOperation
     ) : MessageDetailEvent, AffectingBottomSheet
 
     object NoCachedMetadata : MessageDetailEvent, AffectingMessage

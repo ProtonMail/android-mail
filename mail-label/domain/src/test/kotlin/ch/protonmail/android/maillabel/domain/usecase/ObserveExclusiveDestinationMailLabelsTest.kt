@@ -43,7 +43,7 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-internal class ObserveExclusiveDestinationMailFoldersTest {
+internal class ObserveExclusiveDestinationMailLabelsTest {
 
     private val userId = UserIdTestData.userId
 
@@ -61,7 +61,7 @@ internal class ObserveExclusiveDestinationMailFoldersTest {
     }
 
     private val TestScope.observeMailLabels
-        get() = ObserveExclusiveDestinationMailFolders(
+        get() = ObserveExclusiveDestinationMailLabels(
             dispatcher = UnconfinedTestDispatcher(testScheduler),
             labelRepository = labelRepository
         )

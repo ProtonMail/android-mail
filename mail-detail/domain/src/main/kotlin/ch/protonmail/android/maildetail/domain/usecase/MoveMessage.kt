@@ -21,7 +21,7 @@ package ch.protonmail.android.maildetail.domain.usecase
 import arrow.core.Either
 import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailFolders
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 class MoveMessage @Inject constructor(
     private val messageRepository: MessageRepository,
-    private val observeExclusiveMailFolders: ObserveExclusiveMailFolders
+    private val observeExclusiveMailLabels: ObserveExclusiveMailLabels
 ) {
 
     suspend operator fun invoke(
@@ -43,9 +43,9 @@ class MoveMessage @Inject constructor(
         return messageRepository.observeCachedMessage(userId, messageId).first().fold(
             ifLeft = { DataError.Local.NoDataCached.left() },
             ifRight = { message ->
-                val exclusiveLabelIds = observeExclusiveMailFolders(userId).first().allById.mapKeys { it.key.labelId }
-                val fromLabelIds = message.labelIds.firstOrNull { labelId -> labelId in exclusiveLabelIds }
-                messageRepository.moveTo(userId, messageId, fromLabelIds, labelId)
+                val exclusiveLabelIds = observeExclusiveMailLabels(userId).first().allById.mapKeys { it.key.labelId }
+                val fromLabelId = message.labelIds.firstOrNull { labelId -> labelId in exclusiveLabelIds }
+                messageRepository.moveTo(userId, messageId, fromLabelId, toLabel = labelId)
             }
         )
     }

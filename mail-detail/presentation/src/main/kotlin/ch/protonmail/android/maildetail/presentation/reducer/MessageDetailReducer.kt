@@ -27,7 +27,6 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
-import me.proton.core.util.kotlin.exhaustive
 import javax.inject.Inject
 
 class MessageDetailReducer @Inject constructor(
@@ -56,7 +55,7 @@ class MessageDetailReducer @Inject constructor(
                     Effect.of(TextUiModel(R.string.error_unstar_operation_failed))
                 is MessageDetailEvent.ErrorMovingToTrash -> Effect.of(TextUiModel(R.string.error_move_to_trash_failed))
                 is MessageDetailEvent.ErrorMovingMessage -> Effect.of(TextUiModel(R.string.error_move_message_failed))
-            }.exhaustive
+            }
         } else {
             error
         }
@@ -91,7 +90,7 @@ class MessageDetailReducer @Inject constructor(
     private fun MessageDetailState.toNewBottomSheetStateFrom(operation: MessageDetailOperation) =
         if (operation is MessageDetailOperation.AffectingBottomSheet) {
             val bottomSheetOperation = when (operation) {
-                is MessageDetailEvent.MessageBottomSheetEvent -> operation.bottomSheetEvent
+                is MessageDetailEvent.MessageBottomSheetEvent -> operation.bottomSheetOperation
                 is MessageViewAction.MoveToDestinationSelected -> BottomSheetAction.MoveToDestinationSelected(
                     operation.mailLabelId
                 )

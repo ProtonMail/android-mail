@@ -35,7 +35,7 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
-class ObserveExclusiveDestinationMailFolders @Inject constructor(
+class ObserveExclusiveDestinationMailLabels @Inject constructor(
     @DefaultDispatcher
     private val dispatcher: CoroutineDispatcher,
     private val labelRepository: LabelRepository

@@ -463,6 +463,7 @@ class MessageRepositoryImplTest {
         coEvery {
             localDataSource.addLabel(userId, MessageId(message.id), destinationLabel)
         } returns updatedMessage.right()
+
         // When
         val result = messageRepository.moveTo(userId, MessageId(message.id), null, destinationLabel)
 

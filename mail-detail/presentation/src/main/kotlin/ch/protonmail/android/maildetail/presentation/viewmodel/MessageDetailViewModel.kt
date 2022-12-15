@@ -45,7 +45,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReduce
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailFolders
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -64,14 +64,13 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-@Suppress("LongParameterList")
 class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMessageWithLabels: ObserveMessageWithLabels,
     private val messageDetailReducer: MessageDetailReducer,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveMessageDetailActions,
-    private val observeMailFolders: ObserveExclusiveMailFolders,
+    private val observeMailFolders: ObserveExclusiveMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
     private val markUnread: MarkUnread,
     private val getContacts: GetContacts,

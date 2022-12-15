@@ -31,11 +31,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-internal class ObserveExclusiveMailFoldersTest {
+internal class ObserveExclusiveMailLabelsTest {
 
     private val userId = UserIdTestData.userId
 
-    private val observeExclusiveDestinationMailFolders = mockk<ObserveExclusiveDestinationMailFolders> {
+    private val observeExclusiveDestinationMailLabels = mockk<ObserveExclusiveDestinationMailLabels> {
         every { this@mockk.invoke(userId) } returns flowOf(
             MailLabels(
                 systemLabels = SystemLabelId.exclusiveDestinationList.map { it.toMailLabelSystem() },
@@ -51,7 +51,7 @@ internal class ObserveExclusiveMailFoldersTest {
     @Test
     fun `return exclusive list with Draft and Sent labels`() = runTest {
         // When
-        ObserveExclusiveMailFolders(observeExclusiveDestinationMailFolders).invoke(userId).test {
+        ObserveExclusiveMailLabels(observeExclusiveDestinationMailLabels).invoke(userId).test {
             // Then
             val item = awaitItem()
             assertEquals(SystemLabelId.exclusiveList.map { it.toMailLabelSystem() }, item.systemLabels)

@@ -29,7 +29,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.label.domain.entity.LabelId
 
 fun MailLabels.toUiModels(
-    settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings,
+    settings: FolderColorSettings,
     counters: Map<LabelId, Int?>,
     selected: MailLabelId
 ): MailLabelsUiModel = MailLabelsUiModel(
@@ -39,7 +39,7 @@ fun MailLabels.toUiModels(
 )
 
 fun MailLabel.toUiModel(
-    settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings,
+    settings: FolderColorSettings,
     counters: Map<LabelId, Int?>,
     selected: MailLabelId
 ): MailLabelUiModel = when (this) {
@@ -48,7 +48,7 @@ fun MailLabel.toUiModel(
 }
 
 fun MailLabels.toUiModels(
-    settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings
+    settings: FolderColorSettings
 ): MailLabelsUiModel = MailLabelsUiModel(
     systems = systemLabels.map { it.toSystemUiModel(settings, emptyMap(), null) },
     folders = folders.map { it.toCustomUiModel(settings, emptyMap(), null) },
@@ -56,7 +56,7 @@ fun MailLabels.toUiModels(
 )
 
 fun MailLabel.System.toSystemUiModel(
-    settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings,
+    settings: FolderColorSettings,
     counters: Map<LabelId, Int?>,
     selected: MailLabelId?
 ): MailLabelUiModel.System = MailLabelUiModel.System(
@@ -69,7 +69,7 @@ fun MailLabel.System.toSystemUiModel(
 )
 
 fun MailLabel.Custom.toCustomUiModel(
-    settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings,
+    settings: FolderColorSettings,
     counters: Map<LabelId, Int?>,
     selected: MailLabelId?
 ): MailLabelUiModel.Custom = MailLabelUiModel.Custom(
@@ -90,7 +90,7 @@ fun MailLabel.text(): TextUiModel = when (this) {
 }
 
 @DrawableRes
-fun MailLabel.iconRes(settings: ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings): Int =
+fun MailLabel.iconRes(settings: FolderColorSettings): Int =
     when (this) {
         is MailLabel.System -> id.systemLabelId.iconRes()
         is MailLabel.Custom -> when (id) {

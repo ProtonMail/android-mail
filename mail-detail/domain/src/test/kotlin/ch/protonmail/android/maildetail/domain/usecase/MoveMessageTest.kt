@@ -25,7 +25,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
-import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailFolders
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -57,7 +57,7 @@ class MoveMessageTest {
             ).right()
         )
     }
-    private val observeExclusiveMailFolders: ObserveExclusiveMailFolders = mockk {
+    private val observeExclusiveMailLabels: ObserveExclusiveMailLabels = mockk {
         every { this@mockk.invoke(userId) } returns flowOf(
             MailLabels(
                 systemLabels = SystemLabelId.exclusiveList.map { it.toMailLabelSystem() },
@@ -66,11 +66,11 @@ class MoveMessageTest {
             )
         )
     }
-    private val move = MoveMessage(messageRepository, observeExclusiveMailFolders)
+    private val move = MoveMessage(messageRepository, observeExclusiveMailLabels)
 
 
     @Test
-    fun `when observer messages returns to returns error then return error`() = runTest {
+    fun `when message repository returns error then return error`() = runTest {
         // Given
         val error = DataError.Local.NoDataCached.left()
         coEvery {

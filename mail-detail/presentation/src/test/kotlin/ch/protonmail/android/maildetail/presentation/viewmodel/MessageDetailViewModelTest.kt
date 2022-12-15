@@ -31,6 +31,7 @@ import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.settings.ObserveFolderColorSettings
 import ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -59,7 +60,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailFolders
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
@@ -118,7 +119,7 @@ class MessageDetailViewModelTest {
             nonEmptyListOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
         )
     }
-    private val observeMailLabels = mockk<ObserveExclusiveMailFolders> {
+    private val observeMailLabels = mockk<ObserveExclusiveMailLabels> {
         every { this@mockk.invoke(userId) } returns flowOf(
             MailLabels(
                 systemLabels = listOf(MailLabel.System(MailLabelId.System.Spam)),
@@ -454,6 +455,31 @@ class MessageDetailViewModelTest {
             advanceUntilIdle()
             val actual = assertIs<BottomSheetState.Data>(lastEmittedItem().bottomSheetState)
             assertTrue { actual.moveToDestinations.first { it.id == MailLabelId.System.Spam }.isSelected }
+        }
+    }
+
+    @Test
+    fun `verify move to is called and dismiss is set when destination gets confirmed`() = runTest {
+        // Given
+        coEvery {
+            moveMessage(
+                userId,
+                MessageId(rawMessageId),
+                MailLabelId.System.Spam.labelId
+            )
+        } returns MessageSample.Invoice.right()
+
+        // When
+        viewModel.state.test {
+            // Then
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.MoveToDestinationConfirmed)
+            advanceUntilIdle()
+            val item = lastEmittedItem()
+            assertEquals(Effect.of(Unit), item.dismiss)
+            coVerify { moveMessage.invoke(userId, MessageId(rawMessageId), MailLabelId.System.Spam.labelId) }
         }
     }
 

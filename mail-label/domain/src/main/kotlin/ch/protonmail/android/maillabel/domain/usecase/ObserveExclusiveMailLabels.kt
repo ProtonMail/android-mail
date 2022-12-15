@@ -24,8 +24,8 @@ import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class ObserveExclusiveMailFolders @Inject constructor(
-    private val exclusiveDestinationMailFolders: ObserveExclusiveDestinationMailFolders
+class ObserveExclusiveMailLabels @Inject constructor(
+    private val exclusiveDestinationMailFolders: ObserveExclusiveDestinationMailLabels
 ) {
 
     operator fun invoke(userId: UserId) = exclusiveDestinationMailFolders(userId).map {

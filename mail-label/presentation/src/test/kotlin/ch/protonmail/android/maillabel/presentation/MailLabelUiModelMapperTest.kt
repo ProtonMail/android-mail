@@ -36,7 +36,7 @@ class MailLabelUiModelMapperTest {
     @Test
     fun `correctly map MailLabels toUiModels`() {
         // Given
-        val settings = ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings(
+        val settings = FolderColorSettings(
             useFolderColor = true,
             inheritParentFolderColor = false
         )
@@ -118,7 +118,7 @@ class MailLabelUiModelMapperTest {
     @Test
     fun `correctly map MailLabels toUiModels according FolderColorSettings`() {
         // Given
-        val settings = ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings(
+        val settings = FolderColorSettings(
             useFolderColor = true,
             inheritParentFolderColor = true
         )
