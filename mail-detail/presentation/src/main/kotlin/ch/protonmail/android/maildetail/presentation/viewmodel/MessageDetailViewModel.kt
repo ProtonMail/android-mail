@@ -45,7 +45,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReduce
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -70,7 +70,7 @@ class MessageDetailViewModel @Inject constructor(
     private val messageDetailReducer: MessageDetailReducer,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveMessageDetailActions,
-    private val observeMailFolders: ObserveExclusiveMailLabels,
+    private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
     private val markUnread: MarkUnread,
     private val getContacts: GetContacts,
@@ -214,7 +214,7 @@ class MessageDetailViewModel @Inject constructor(
     private fun observeMailFolders() {
         primaryUserId.flatMapLatest { userId ->
             combine(
-                observeMailFolders(userId),
+                observeDestinationMailLabels(userId),
                 observeFolderColor(userId)
             ) { folders, color ->
                 MessageDetailEvent.MessageBottomSheetEvent(

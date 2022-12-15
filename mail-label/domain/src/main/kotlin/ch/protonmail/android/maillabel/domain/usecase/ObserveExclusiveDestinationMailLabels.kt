@@ -18,15 +18,12 @@
 
 package ch.protonmail.android.maillabel.domain.usecase
 
-import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.arch.mapSuccessValueOrNull
@@ -36,8 +33,6 @@ import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class ObserveExclusiveDestinationMailLabels @Inject constructor(
-    @DefaultDispatcher
-    private val dispatcher: CoroutineDispatcher,
     private val labelRepository: LabelRepository
 ) {
 
@@ -50,7 +45,7 @@ class ObserveExclusiveDestinationMailLabels @Inject constructor(
             labels = emptyList(),
             folders = folders
         )
-    }.flowOn(dispatcher)
+    }
 
     private fun observeSystemLabelIds() = flowOf(SystemLabelId.exclusiveDestinationList)
 
@@ -59,6 +54,5 @@ class ObserveExclusiveDestinationMailLabels @Inject constructor(
     ) = labelRepository.observeLabels(userId, LabelType.MessageFolder)
         .mapSuccessValueOrNull()
         .mapLatest { list -> list.orEmpty().sortedBy { it.order } }
-        .flowOn(dispatcher)
 
 }

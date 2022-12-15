@@ -32,7 +32,6 @@ import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.arch.ResponseSource
@@ -62,7 +61,6 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
 
     private val TestScope.observeMailLabels
         get() = ObserveExclusiveDestinationMailLabels(
-            dispatcher = UnconfinedTestDispatcher(testScheduler),
             labelRepository = labelRepository
         )
 

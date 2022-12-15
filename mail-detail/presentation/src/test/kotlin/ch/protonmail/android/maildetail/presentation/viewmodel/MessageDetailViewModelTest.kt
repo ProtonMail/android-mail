@@ -60,7 +60,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
@@ -119,7 +119,7 @@ class MessageDetailViewModelTest {
             nonEmptyListOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
         )
     }
-    private val observeMailLabels = mockk<ObserveExclusiveMailLabels> {
+    private val observeMailLabels = mockk<ObserveExclusiveDestinationMailLabels> {
         every { this@mockk.invoke(userId) } returns flowOf(
             MailLabels(
                 systemLabels = listOf(MailLabel.System(MailLabelId.System.Spam)),
@@ -164,7 +164,7 @@ class MessageDetailViewModelTest {
             observeMessageWithLabels = observeMessageWithLabels,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeDetailActions,
-            observeMailFolders = observeMailLabels,
+            observeDestinationMailLabels = observeMailLabels,
             observeFolderColor = observeFolderColorSettings,
             markUnread = markUnread,
             getContacts = getContacts,
