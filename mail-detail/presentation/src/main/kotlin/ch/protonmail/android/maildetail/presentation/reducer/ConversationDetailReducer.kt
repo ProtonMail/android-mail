@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import arrow.core.Option
-import arrow.core.some
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -45,7 +43,8 @@ class ConversationDetailReducer @Inject constructor(
         messagesState = currentState.toNewMessageState(operation),
         bottomBarState = currentState.toNewBottomBarState(operation),
         error = currentState.toErrorState(operation),
-        exitScreenEffect = currentState.toDismissState(operation)
+        exitScreenEffect = currentState.toExitState(),
+        exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation)
     )
 
     private fun ConversationDetailState.toNewConversationState(operation: ConversationDetailOperation) =
@@ -84,10 +83,13 @@ class ConversationDetailReducer @Inject constructor(
             error
         }
 
-    private fun ConversationDetailState.toDismissState(
+    private fun ConversationDetailState.toExitState(): Effect<Unit> =
+        exitScreenEffect
+
+    private fun ConversationDetailState.toExitWithMessageState(
         operation: ConversationDetailOperation
-    ): Effect<Option<TextUiModel>> = when (operation) {
-        is ConversationDetailViewAction.Trash -> Effect.of(TextUiModel(R.string.conversation_moved_to_trash).some())
-        else -> exitScreenEffect
+    ): Effect<TextUiModel> = when (operation) {
+        is ConversationDetailViewAction.Trash -> Effect.of(TextUiModel(R.string.conversation_moved_to_trash))
+        else -> exitScreenWithMessageEffect
     }
 }

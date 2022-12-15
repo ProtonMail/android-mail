@@ -19,9 +19,6 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import androidx.annotation.StringRes
-import arrow.core.Option
-import arrow.core.none
-import arrow.core.some
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -86,9 +83,13 @@ class ConversationDetailReducerTest(
             }
 
             if (reducesExit) {
-                assertEquals(expectedExitMessage, result.exitScreenEffect.consume())
+                assertNotNull(result.exitScreenEffect.consume())
             } else {
                 assertNull(result.exitScreenEffect.consume())
+            }
+
+            if (expectedExitMessage != null) {
+                assertEquals(expectedExitMessage, result.exitScreenWithMessageEffect.consume())
             }
         }
     }
@@ -100,7 +101,7 @@ class ConversationDetailReducerTest(
         val reducesBottomBar: Boolean,
         val reducesErrorBar: Boolean,
         val reducesExit: Boolean,
-        val expectedExitMessage: Option<TextUiModel>
+        val expectedExitMessage: TextUiModel?
     ) {
 
         fun operationAffectingBottomBar() = operation as ConversationDetailEvent.ConversationBottomBarEvent
@@ -112,7 +113,7 @@ class ConversationDetailReducerTest(
 
         val actions = listOf(
             ConversationDetailViewAction.Star affects Conversation,
-            ConversationDetailViewAction.Trash affects Exit withMessage string.conversation_moved_to_trash,
+            ConversationDetailViewAction.Trash affects ExitWithMessage(string.conversation_moved_to_trash),
             ConversationDetailViewAction.UnStar affects Conversation
         )
 
@@ -145,15 +146,13 @@ private infix fun ConversationDetailOperation.affects(entity: Entity) = Conversa
     reducesBottomBar = entity == BottomBar,
     reducesErrorBar = entity == ErrorBar,
     reducesExit = entity == Exit,
-    expectedExitMessage = none()
+    expectedExitMessage = (entity as? ExitWithMessage)?.message?.let(::TextUiModel)
 )
-
-private infix fun ConversationDetailReducerTest.TestInput.withMessage(@StringRes message: Int) =
-    copy(expectedExitMessage = TextUiModel(message).some())
 
 private sealed interface Entity
 private object Messages : Entity
 private object Conversation : Entity
 private object BottomBar : Entity
 private object Exit : Entity
+private data class ExitWithMessage(@StringRes val message: Int) : Entity
 private object ErrorBar : Entity

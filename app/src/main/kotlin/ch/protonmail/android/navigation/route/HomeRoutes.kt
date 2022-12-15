@@ -45,7 +45,7 @@ internal fun NavGraphBuilder.addConversationDetail(
         ConversationDetailScreen(
             onExit = { notifyUserMessage ->
                 navController.popBackStack()
-                notifyUserMessage.tap(showSnackbar)
+                notifyUserMessage?.let(showSnackbar)
             }
         )
     }

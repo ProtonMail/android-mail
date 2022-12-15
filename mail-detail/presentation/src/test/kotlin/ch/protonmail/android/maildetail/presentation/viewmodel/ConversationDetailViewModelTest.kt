@@ -25,7 +25,6 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
-import arrow.core.some
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
@@ -546,7 +545,7 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `dismiss is emitted when success moving to trash`() = runTest {
+    fun `exit with message is emitted when success moving to trash`() = runTest {
         // Given
         coEvery { moveToTrash(UserIdSample.Primary, conversationId) } returns ConversationSample.WeatherForecast.right()
         every {
@@ -555,7 +554,7 @@ class ConversationDetailViewModelTest {
                 operation = ConversationDetailViewAction.Trash
             )
         } returns ConversationDetailState.Loading.copy(
-            exitScreenEffect = Effect.of(TextUiModel(string.conversation_moved_to_trash).some())
+            exitScreenWithMessageEffect = Effect.of(TextUiModel(string.conversation_moved_to_trash))
         )
 
         // When
@@ -564,7 +563,7 @@ class ConversationDetailViewModelTest {
             viewModel.submit(ConversationDetailViewAction.Trash)
 
             // Then
-            assertNotNull(awaitItem().exitScreenEffect.consume())
+            assertNotNull(awaitItem().exitScreenWithMessageEffect.consume())
             cancelAndIgnoreRemainingEvents()
         }
     }

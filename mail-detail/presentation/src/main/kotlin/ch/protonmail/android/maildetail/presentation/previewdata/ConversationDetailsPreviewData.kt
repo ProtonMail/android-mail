@@ -52,6 +52,7 @@ object ConversationDetailsPreviewData {
             )
         ),
         exitScreenEffect = Effect.empty(),
+        exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -60,6 +61,7 @@ object ConversationDetailsPreviewData {
         messagesState = ConversationDetailsMessagesState.Loading,
         bottomBarState = BottomBarState.Loading,
         exitScreenEffect = Effect.empty(),
+        exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -68,6 +70,7 @@ object ConversationDetailsPreviewData {
         messagesState = ConversationDetailsMessagesState.Error(TextMessageSample.NoNetwork),
         bottomBarState = BottomBarState.Loading,
         exitScreenEffect = Effect.empty(),
+        exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -76,6 +79,7 @@ object ConversationDetailsPreviewData {
         messagesState = ConversationDetailsMessagesState.Loading,
         bottomBarState = BottomBarState.Error.FailedLoadingActions,
         exitScreenEffect = Effect.empty(),
+        exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -84,6 +88,7 @@ object ConversationDetailsPreviewData {
         messagesState = ConversationDetailsMessagesState.Loading,
         bottomBarState = BottomBarState.Loading,
         exitScreenEffect = Effect.empty(),
+        exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -92,6 +97,7 @@ object ConversationDetailsPreviewData {
         messagesState = ConversationDetailsMessagesState.Error(TextMessageSample.NotLoggedIn),
         bottomBarState = BottomBarState.Loading,
         exitScreenEffect = Effect.empty(),
+        exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty()
     )
 }

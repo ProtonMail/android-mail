@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcommon.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import arrow.core.Option
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import kotlinx.coroutines.CoroutineScope
@@ -81,23 +80,6 @@ inline fun ConsumableTextEffect(
     val scope = rememberCoroutineScope()
     effect.consume()?.let { textUiModel ->
         val string = textUiModel.string()
-        scope.launch { block(string) }
-    }
-}
-
-/**
- * Variant of [ConsumableTextEffect], where the [TextUiModel] is optional.
- *
- * An example usage is when we want to close a screen, and we may want or we may not want to show a message
- */
-@Composable
-inline fun ConsumableOptionalTextEffect(
-    effect: Effect<Option<TextUiModel>>,
-    crossinline block: suspend CoroutineScope.(Option<String>) -> Unit
-) {
-    val scope = rememberCoroutineScope()
-    effect.consume()?.let { textUiModel ->
-        val string = textUiModel.map { it.string() }
         scope.launch { block(string) }
     }
 }
