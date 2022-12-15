@@ -30,6 +30,6 @@ object MailboxItemLabelUiModelSample {
 
     fun build(label: Label) = MailboxItemLabelUiModel(
         name = label.name,
-        color = Color.Unspecified
+        color = Color.Red
     )
 }

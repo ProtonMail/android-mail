@@ -99,7 +99,7 @@ class MessageDetailHeaderUiModelMapperTest {
     )
 
     private val colorMapper: ColorMapper = mockk {
-        every { toColor(any()) } returns Color.Unspecified.right()
+        every { toColor(any()) } returns Color.Red.right()
     }
     private val context: Context = mockk()
     private val detailAvatarUiModelMapper: DetailAvatarUiModelMapper = mockk {
