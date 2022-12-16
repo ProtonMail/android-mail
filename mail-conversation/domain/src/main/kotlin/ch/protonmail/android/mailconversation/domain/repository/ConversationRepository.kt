@@ -68,8 +68,10 @@ interface ConversationRepository {
         labelId: LabelId
     ): Either<DataError, Conversation>
 
-    suspend fun moveToTrash(
+    suspend fun move(
         userId: UserId,
-        conversationId: ConversationId
+        conversationId: ConversationId,
+        fromLabelId: LabelId?,
+        toLabelId: LabelId
     ): Either<DataError, Conversation>
 }

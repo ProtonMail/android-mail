@@ -20,8 +20,10 @@ package ch.protonmail.android.mailconversation.data
 
 import java.io.IOException
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
@@ -430,7 +432,7 @@ class ConversationRepositoryImplTest {
             MessageSample.AugWeatherForecast.right()
 
         // when
-        val result = conversationRepository.moveToTrash(userId, conversationId)
+        val result = conversationRepository.move(userId, conversationId, null, SystemLabelId.Trash.labelId)
 
         // then
         assertEquals(trashedConversation.right(), result)
@@ -462,7 +464,7 @@ class ConversationRepositoryImplTest {
         }
 
         // when
-        conversationRepository.moveToTrash(userId, conversationId)
+        conversationRepository.move(userId, conversationId, null, SystemLabelId.Trash.labelId)
         messageLocalDataSource.observeMessages(userId, conversationId).test {
 
             // then
@@ -505,7 +507,12 @@ class ConversationRepositoryImplTest {
             MessageSample.AugWeatherForecast.right()
 
         // when
-        val result = conversationRepository.moveToTrash(userId, conversationId)
+        val result = conversationRepository.move(
+            userId,
+            conversationId,
+            SystemLabelId.Inbox.labelId,
+            SystemLabelId.Trash.labelId
+        )
 
         // then
         assertEquals(trashedConversation.right(), result)
@@ -564,11 +571,66 @@ class ConversationRepositoryImplTest {
         }
 
         // when
-        conversationRepository.moveToTrash(userId, conversationId)
+        conversationRepository.move(userId, conversationId, SystemLabelId.Inbox.labelId, SystemLabelId.Trash.labelId)
         messageLocalDataSource.observeMessages(userId, conversationId).test {
 
             // then
             assertEquals(trashedMessages, awaitItem())
         }
+    }
+
+    @Test
+    fun `move removes previous exclusive label and adds new label`() = runTest {
+        val conversation = ConversationTestData.conversation
+        val updatedMessages = MessageTestData.unStarredMessagesByConversation.map {
+            it.copy(labelIds = it.labelIds + SystemLabelId.Archive.labelId)
+        }
+
+        coEvery { conversationLocalDataSource.observeConversation(userId, conversation.conversationId) } returns flowOf(
+            conversation
+        )
+        coEvery {
+            conversationLocalDataSource.removeLabel(
+                userId,
+                conversation.conversationId,
+                SystemLabelId.Inbox.labelId
+            )
+        } returns conversation.copy(labels = listOf()).right()
+        coEvery {
+            conversationLocalDataSource.addLabel(
+                userId,
+                conversation.conversationId,
+                SystemLabelId.Archive.labelId
+            )
+        } returns ConversationTestData.conversationWithArchiveLabel.right()
+
+        val actual = conversationRepository.move(
+            userId,
+            conversation.conversationId,
+            SystemLabelId.Inbox.labelId,
+            SystemLabelId.Archive.labelId
+        )
+
+        coVerify {
+            conversationLocalDataSource.addLabel(userId, conversation.conversationId, SystemLabelId.Archive.labelId)
+        }
+
+        coVerify { messageLocalDataSource.upsertMessages(updatedMessages) }
+        assertEquals(ConversationTestData.conversationWithArchiveLabel.right(), actual)
+    }
+
+    @Test
+    fun `move return error when conversation doesn't exist`() = runTest {
+        val conversation = ConversationTestData.conversation
+        coEvery { conversationLocalDataSource.observeConversation(userId, conversation.conversationId) } returns flowOf(
+            null
+        )
+        val actual = conversationRepository.move(
+            userId,
+            conversation.conversationId,
+            SystemLabelId.Inbox.labelId,
+            SystemLabelId.Archive.labelId
+        )
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
 }

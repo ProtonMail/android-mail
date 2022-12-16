@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -45,7 +46,7 @@ class MoveConversationToTrashTest {
     fun `when move to trash returns error then return error`() = runTest {
         // given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { conversationRepository.moveToTrash(userId, conversationId) } returns error
+        coEvery { conversationRepository.move(userId, conversationId, null, SystemLabelId.Trash.labelId) } returns error
 
         // when
         val result = move(userId, conversationId)
@@ -59,7 +60,14 @@ class MoveConversationToTrashTest {
     fun `when moving a conversation to trash then repository is called with the given data`() = runTest {
         // given
         val conversation = ConversationSample.WeatherForecast.right()
-        coEvery { conversationRepository.moveToTrash(userId, conversationId) } returns conversation
+        coEvery {
+            conversationRepository.move(
+                userId,
+                conversationId,
+                null,
+                SystemLabelId.Trash.labelId
+            )
+        } returns conversation
 
         // when
         val result = move(userId, conversationId)

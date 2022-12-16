@@ -151,7 +151,32 @@ class ConversationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun moveToTrash(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> {
+    override suspend fun move(
+        userId: UserId,
+        conversationId: ConversationId,
+        fromLabelId: LabelId?,
+        toLabelId: LabelId
+    ): Either<DataError, Conversation> {
+        if (toLabelId == SystemLabelId.Trash.labelId) {
+            return moveToTrash(userId, conversationId)
+        }
+
+        val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
+            ?: return DataError.Local.NoDataCached.left()
+
+        val updatedLabels = conversation.labels.toMutableList().apply {
+            fromLabelId?.let { this.filterNot { it.labelId == fromLabelId } }
+        }
+
+        fromLabelId?.let { conversationLocalDataSource.removeLabel(userId, conversationId, it) }
+        messageLocalDataSource.observeMessages(userId, conversationId).first()
+            .map { message -> message.copy(labelIds = updatedLabels.map { it.labelId }) }
+            .run { messageLocalDataSource.upsertMessages(this) }
+
+        return addLabel(userId, conversationId, toLabelId)
+    }
+
+    private suspend fun moveToTrash(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> {
         val persistentLabels = listOf(
             SystemLabelId.AllDrafts.labelId,
             SystemLabelId.AllMail.labelId,

@@ -41,6 +41,14 @@ object ConversationTestData {
         numMessages = 1
     )
 
+    val conversationWithArchiveLabel = buildConversation(
+        userId = userId,
+        id = RAW_CONVERSATION_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(SystemLabelId.Archive.labelId.id),
+        numMessages = 1
+    )
+
     val conversationWithInformation = buildConversation(
         userId = userId,
         id = RAW_CONVERSATION_ID,
