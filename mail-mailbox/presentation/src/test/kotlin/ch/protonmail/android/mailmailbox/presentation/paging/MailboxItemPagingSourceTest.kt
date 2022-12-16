@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.paging
 
 import java.io.IOException
+import android.util.Log
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -46,12 +47,15 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
@@ -95,6 +99,17 @@ class MailboxItemPagingSourceTest {
         filterUnread = isFilterUnreadEnabled,
         type = MailboxItemType.Message
     )
+
+    @BeforeTest
+    fun setUp() {
+        mockkStatic(Log::class)
+        every { Log.isLoggable(any(), any()) } returns false
+    }
+
+    @AfterTest
+    fun tearDown() {
+        unmockkStatic(Log::class)
+    }
 
 
     @Test
