@@ -65,6 +65,7 @@ dependencies {
     implementation(Proton.Core.mailSettings)
 
     implementation(project(":mail-label:domain"))
+    implementation(project(":mail-settings:domain"))
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-common:domain"))
 

@@ -22,11 +22,11 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 
 @Immutable
 sealed interface MailLabelUiModel {
@@ -82,7 +82,7 @@ data class MailLabelsUiModel(
             MailLabelsUiModel(
                 systems = SystemLabelId.displayedList.map {
                     it.toMailLabelSystem().toSystemUiModel(
-                        settings = FolderColorSettings(),
+                        settings = ch.protonmail.android.mailsettings.domain.model.FolderColorSettings(),
                         counters = emptyMap(),
                         selected = MailLabelId.System.Trash
                     )

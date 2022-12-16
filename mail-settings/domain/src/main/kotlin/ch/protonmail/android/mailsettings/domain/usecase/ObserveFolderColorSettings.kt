@@ -16,9 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain.settings
+package ch.protonmail.android.mailsettings.domain.usecase
 
-import ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.arch.mapSuccessValueOrNull
 import me.proton.core.domain.entity.UserId

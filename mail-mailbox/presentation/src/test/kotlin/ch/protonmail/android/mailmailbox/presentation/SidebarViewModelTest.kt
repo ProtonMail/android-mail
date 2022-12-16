@@ -22,8 +22,6 @@ import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
-import ch.protonmail.android.mailcommon.domain.settings.ObserveFolderColorSettings
-import ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
@@ -41,6 +39,8 @@ import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.Action.LabelAction
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Disabled
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Enabled
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.FeatureFlagTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserTestData

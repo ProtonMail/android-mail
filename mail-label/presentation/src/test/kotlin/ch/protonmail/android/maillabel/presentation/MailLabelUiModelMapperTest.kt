@@ -21,9 +21,9 @@ package ch.protonmail.android.maillabel.presentation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.label.domain.entity.LabelId

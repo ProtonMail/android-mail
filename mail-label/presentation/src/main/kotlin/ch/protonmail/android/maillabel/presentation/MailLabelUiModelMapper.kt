@@ -20,11 +20,11 @@ package ch.protonmail.android.maillabel.presentation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
-import ch.protonmail.android.mailcommon.domain.settings.model.FolderColorSettings
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.label.domain.entity.LabelId
 

@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailsettings.domain
 
 import app.cash.turbine.test
-import ch.protonmail.android.mailcommon.domain.settings.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData.buildMailSettings
 import io.mockk.coEvery
 import io.mockk.mockk
