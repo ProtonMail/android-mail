@@ -47,6 +47,6 @@
   <string name="action_save_pdf_content_description">Guardar como PDF</string>
   <string name="action_sender_emails_content_description">Definir acciones para futuros correos de este remitente</string>
   <string name="action_save_attachments_content_description">Guardar adjuntos</string>
-  <string name="common_error_loading_actions">Falló la carga de actiones</string>
+  <string name="common_error_loading_actions">Error al cargar las acciones</string>
   <string name="yesterday">Ayer</string>
 </resources>

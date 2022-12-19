@@ -17,8 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">Failed loading contacts</string>
-  <string name="detail_error_loading_conversation">過去のやりとりの読み込みに失敗しました</string>
+  <string name="detail_error_loading_contacts">連絡先の読み込みに失敗しました</string>
+  <string name="detail_error_loading_conversation">会話の読み込みに失敗しました</string>
   <string name="detail_error_loading_messages">メールの読み込みに失敗しました</string>
   <string name="error_mark_unread_failed">未読にすることができませんでした。再度お試しください</string>
   <plurals name="message_count_label_text">
@@ -32,5 +32,5 @@
   <string name="undisclosed_recipients">非公開の宛先</string>
   <string name="error_star_operation_failed">スターの追加に失敗しました。再度お試しください。</string>
   <string name="error_unstar_operation_failed">スターの削除に失敗しました。再度お試しください。</string>
-  <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
+  <string name="error_move_to_trash_failed">ごみ箱への移動に失敗しました。再試行してください。</string>
 </resources>

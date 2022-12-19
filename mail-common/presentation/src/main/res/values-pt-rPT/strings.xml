@@ -41,12 +41,12 @@
   <string name="action_view_in_dark_mode_content_description">Ver mensagem no modo escuro</string>
   <string name="action_print_content_description">Imprimir</string>
   <string name="action_view_headers_content_description">Ver cabeçalhos</string>
-  <string name="action_view_html_content_description">View HTML</string>
+  <string name="action_view_html_content_description">Ver HTML</string>
   <string name="action_report_phishing_content_description">Reportar como phishing</string>
   <string name="action_remind_content_description">Lembre-me</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Gravar como PDF</string>
   <string name="action_sender_emails_content_description">Definir ação para futuros e-mails deste remetente</string>
   <string name="action_save_attachments_content_description">Gravar anexos</string>
   <string name="common_error_loading_actions">Falha ao carregar as ações</string>
-  <string name="yesterday">Yesterday</string>
+  <string name="yesterday">Ontem</string>
 </resources>

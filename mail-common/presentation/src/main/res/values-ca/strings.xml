@@ -45,7 +45,7 @@
   <string name="action_report_phishing_content_description">Denunciar suplantació d\'identitat</string>
   <string name="action_remind_content_description">Recorda-m\'ho</string>
   <string name="action_save_pdf_content_description">Desa com a PDF</string>
-  <string name="action_sender_emails_content_description">Set action for future emails from this sender</string>
+  <string name="action_sender_emails_content_description">Establir l\'acció per a correus electrònics futurs d\'aquest remitent</string>
   <string name="action_save_attachments_content_description">Desar adjunts</string>
   <string name="common_error_loading_actions">Error carregant les accions</string>
   <string name="yesterday">Ahir</string>

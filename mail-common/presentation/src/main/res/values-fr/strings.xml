@@ -29,8 +29,8 @@
   <string name="action_forward_content_description">Transférer</string>
   <string name="action_mark_read_content_description">Marquer comme lu</string>
   <string name="action_mark_unread_content_description">Marquer comme non lu</string>
-  <string name="action_star_content_description">Ajouter aux favoris</string>
-  <string name="action_unstar_content_description">Retirer des favoris</string>
+  <string name="action_star_content_description">Ajouter aux Favoris</string>
+  <string name="action_unstar_content_description">Retirer des Favoris</string>
   <string name="action_label_content_description">Labelliser</string>
   <string name="action_move_content_description">Déplacer</string>
   <string name="action_trash_content_description">Corbeille</string>
