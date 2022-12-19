@@ -48,8 +48,8 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
-import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
-import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
+import ch.protonmail.android.maillabel.presentation.ui.LabelsList
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
@@ -388,9 +388,9 @@ private fun ExpirationLabel(
 @Composable
 private fun Labels(
     modifier: Modifier = Modifier,
-    labels: ImmutableList<MailboxItemLabelUiModel>
+    labels: ImmutableList<LabelUiModel>
 ) {
-    MailboxItemLabels(modifier = modifier, labels = labels)
+    LabelsList(modifier = modifier, labels = labels)
 }
 
 

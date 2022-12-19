@@ -25,7 +25,7 @@ import arrow.core.nonEmptyListOf
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.maillabel.presentation.sample.MailboxItemLabelUiModelSample
+import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
@@ -79,7 +79,7 @@ internal class MailboxScreenTest {
             scrollToMailboxTop = Effect.empty()
         )
         val mailboxState = MailboxState.Loading.copy(mailboxListState = mailboxListState)
-        val label = MailboxItemLabelUiModelSample.News
+        val label = LabelUiModelSample.News
         val item = MailboxItemUiModelTestData.buildMailboxUiModelItem(
             labels = persistentListOf(label)
         )

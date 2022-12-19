@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Constraints
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.MailboxItemLabelsPreviewDataProvider
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.DummyMinExpandedLabel
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.DummyMinExpandedLabelId
@@ -50,9 +50,9 @@ import me.proton.core.compose.theme.overline
 import kotlin.math.ceil
 
 @Composable
-fun MailboxItemLabels(
+fun LabelsList(
     modifier: Modifier = Modifier,
-    labels: List<MailboxItemLabelUiModel>,
+    labels: List<LabelUiModel>,
     isExpanded: Boolean = false
 ) {
     SubcomposeLayout(modifier = modifier.wrapContentSize()) { constraints ->
@@ -112,9 +112,9 @@ fun MailboxItemLabels(
 
 @Suppress("ComplexMethod")
 private fun SubcomposeMeasureScope.buildPlaceables(
-    labels: List<MailboxItemLabelUiModel>,
+    labels: List<LabelUiModel>,
     isExpanded: Boolean,
-    labelsMeasurables: List<Pair<MailboxItemLabelUiModel, List<Measurable>>>,
+    labelsMeasurables: List<Pair<LabelUiModel, List<Measurable>>>,
     constraints: Constraints
 ): BuildPlaceablesResult {
     val plusOneDigitWidth = measurePlusTextWidth(constraints, Plus1CharLimit)
@@ -179,7 +179,7 @@ private fun SubcomposeMeasureScope.measureMinExpandedLabelWidth(constraints: Con
         .maxOf { it.measure(constraints).width }
 
 @Composable
-private fun Label(label: MailboxItemLabelUiModel) {
+private fun Label(label: LabelUiModel) {
     Text(
         modifier = Modifier
             .padding(
@@ -221,7 +221,7 @@ object MailboxItemLabels {
     internal const val Plus3CharsLimit = 999
     internal const val DummyMinExpandedLabelId = "DummyMinimumExpandedLabelId"
     private const val DummyMinExpandedLabelText = "abc..."
-    internal val DummyMinExpandedLabel = MailboxItemLabelUiModel(
+    internal val DummyMinExpandedLabel = LabelUiModel(
         name = DummyMinExpandedLabelText,
         color = Color.Unspecified
     )
@@ -230,9 +230,9 @@ object MailboxItemLabels {
 @Composable
 @Preview(showBackground = true, widthDp = 400)
 private fun MailboxItemLabelsPreview(
-    @PreviewParameter(MailboxItemLabelsPreviewDataProvider::class) labels: List<MailboxItemLabelUiModel>
+    @PreviewParameter(MailboxItemLabelsPreviewDataProvider::class) labels: List<LabelUiModel>
 ) {
     ProtonTheme {
-        MailboxItemLabels(labels = labels)
+        LabelsList(labels = labels)
     }
 }

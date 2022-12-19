@@ -26,7 +26,7 @@ import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmessage.domain.entity.expirationTimeOrNull
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import me.proton.core.contact.domain.entity.Contact
@@ -81,9 +81,9 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         else -> ConversationDetailMessageUiModel.RepliedIcon.None
     }
 
-    private fun toLabelUiModels(labels: List<Label>): List<MailboxItemLabelUiModel> =
+    private fun toLabelUiModels(labels: List<Label>): List<LabelUiModel> =
         labels.filter { it.type == LabelType.MessageLabel }.map { label ->
-            MailboxItemLabelUiModel(
+            LabelUiModel(
                 name = label.name,
                 color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
             )

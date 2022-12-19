@@ -28,7 +28,7 @@ import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
-import ch.protonmail.android.maillabel.presentation.sample.MailboxItemLabelUiModelSample
+import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import kotlinx.collections.immutable.persistentListOf
 
 object MessageDetailsPreviewData {
@@ -55,8 +55,8 @@ object MessageDetailsPreviewData {
             messageDetailActionBar = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast,
             messageDetailHeader = MessageDetailHeaderPreviewData.WithoutLabels.copy(
                 labels = persistentListOf(
-                    MailboxItemLabelUiModelSample.Document,
-                    MailboxItemLabelUiModelSample.News
+                    LabelUiModelSample.Document,
+                    LabelUiModelSample.News
                 )
             )
         )

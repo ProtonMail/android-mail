@@ -69,8 +69,8 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUi
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHeaderPreview
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHeaderPreviewProvider
-import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
-import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
+import ch.protonmail.android.maillabel.presentation.ui.LabelsList
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -564,7 +564,7 @@ private fun ParticipantText(
 @Composable
 private fun Labels(
     modifier: Modifier,
-    uiModels: ImmutableList<MailboxItemLabelUiModel>,
+    uiModels: ImmutableList<LabelUiModel>,
     isExpanded: Boolean
 ) {
     val iconAlpha = animateFloatAsState(if (isExpanded) 1f else 0f).value
@@ -575,7 +575,7 @@ private fun Labels(
     ) {
         SmallNonClickableIcon(modifier = Modifier.alpha(iconAlpha), iconId = R.drawable.ic_proton_tag)
         Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
-        MailboxItemLabels(labels = uiModels, isExpanded = isExpanded)
+        LabelsList(labels = uiModels, isExpanded = isExpanded)
     }
 }
 

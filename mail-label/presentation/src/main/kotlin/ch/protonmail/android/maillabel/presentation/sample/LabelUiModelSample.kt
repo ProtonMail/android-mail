@@ -20,15 +20,15 @@ package ch.protonmail.android.maillabel.presentation.sample
 
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
-import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import me.proton.core.label.domain.entity.Label
 
-object MailboxItemLabelUiModelSample {
+object LabelUiModelSample {
 
     val Document = build(LabelSample.Document)
     val News = build(LabelSample.News)
 
-    fun build(label: Label) = MailboxItemLabelUiModel(
+    fun build(label: Label) = LabelUiModel(
         name = label.name,
         color = Color.Red
     )

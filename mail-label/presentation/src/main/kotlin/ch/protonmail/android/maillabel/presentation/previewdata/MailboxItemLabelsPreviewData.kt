@@ -20,48 +20,48 @@ package ch.protonmail.android.maillabel.presentation.previewdata
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 
 object MailboxItemLabelsPreviewData {
 
     val NineItems = listOf(
-        MailboxItemLabelUiModel(name = "first", color = Color.Gray),
-        MailboxItemLabelUiModel(name = "second", color = Color.Gray),
-        MailboxItemLabelUiModel(name = "third", color = Color.Gray),
-        MailboxItemLabelUiModel(name = "fourth", color = Color.Gray),
-        MailboxItemLabelUiModel(name = "fifth", color = Color.Gray),
-        MailboxItemLabelUiModel(name = "sixth", color = Color.Gray),
-        MailboxItemLabelUiModel(name = "seventh", color = Color.Gray),
-        MailboxItemLabelUiModel(name = "eighth", color = Color.Gray),
-        MailboxItemLabelUiModel(name = "ninth", color = Color.Gray)
+        LabelUiModel(name = "first", color = Color.Gray),
+        LabelUiModel(name = "second", color = Color.Gray),
+        LabelUiModel(name = "third", color = Color.Gray),
+        LabelUiModel(name = "fourth", color = Color.Gray),
+        LabelUiModel(name = "fifth", color = Color.Gray),
+        LabelUiModel(name = "sixth", color = Color.Gray),
+        LabelUiModel(name = "seventh", color = Color.Gray),
+        LabelUiModel(name = "eighth", color = Color.Gray),
+        LabelUiModel(name = "ninth", color = Color.Gray)
     )
 
     val OneVeryLongLabel = listOf(
-        MailboxItemLabelUiModel(
+        LabelUiModel(
             name = "just an extremely super ultra very long label that exceeds the screen width",
             color = Color.Gray
         )
     )
 
     val OneLabelAndAVeryLongLabel = listOf(
-        MailboxItemLabelUiModel(name = "label", color = Color.Gray),
+        LabelUiModel(name = "label", color = Color.Gray),
         OneVeryLongLabel.first()
     )
 
     val OneLabelAVeryLongLabelAndAnotherLabel = listOf(
-        MailboxItemLabelUiModel(name = "label", color = Color.Gray),
+        LabelUiModel(name = "label", color = Color.Gray),
         OneVeryLongLabel.first(),
-        MailboxItemLabelUiModel(name = "label", color = Color.Gray)
+        LabelUiModel(name = "label", color = Color.Gray)
     )
 
     val ThreeItems = listOf(
-        MailboxItemLabelUiModel(name = "first", color = Color.Gray),
-        MailboxItemLabelUiModel(name = "second", color = Color.Gray),
-        MailboxItemLabelUiModel(name = "third", color = Color.Gray)
+        LabelUiModel(name = "first", color = Color.Gray),
+        LabelUiModel(name = "second", color = Color.Gray),
+        LabelUiModel(name = "third", color = Color.Gray)
     )
 }
 
-class MailboxItemLabelsPreviewDataProvider : PreviewParameterProvider<List<MailboxItemLabelUiModel>> {
+class MailboxItemLabelsPreviewDataProvider : PreviewParameterProvider<List<LabelUiModel>> {
 
     override val values = sequenceOf(
         MailboxItemLabelsPreviewData.NineItems,

@@ -20,10 +20,10 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import androidx.compose.runtime.Immutable
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
-import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.domain.entity.UserId
 
@@ -36,7 +36,7 @@ data class MailboxItemUiModel(
     val conversationId: ConversationId,
     val time: TextUiModel,
     val isRead: Boolean,
-    val labels: ImmutableList<MailboxItemLabelUiModel>,
+    val labels: ImmutableList<LabelUiModel>,
     val subject: String,
     val participants: ImmutableList<String>,
     val shouldShowRepliedIcon: Boolean,

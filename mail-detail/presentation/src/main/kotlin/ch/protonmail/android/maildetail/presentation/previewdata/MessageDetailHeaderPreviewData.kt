@@ -25,7 +25,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
-import ch.protonmail.android.maillabel.presentation.sample.MailboxItemLabelUiModelSample
+import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import kotlinx.collections.immutable.persistentListOf
 
 object MessageDetailHeaderPreviewData {
@@ -79,8 +79,8 @@ object MessageDetailHeaderPreviewData {
 
     val WithLabels = WithoutLabels.copy(
         labels = persistentListOf(
-            MailboxItemLabelUiModelSample.Document,
-            MailboxItemLabelUiModelSample.News
+            LabelUiModelSample.Document,
+            LabelUiModelSample.News
         )
     )
 }

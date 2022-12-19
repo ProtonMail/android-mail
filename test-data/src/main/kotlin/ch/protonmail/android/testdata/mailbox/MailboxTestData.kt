@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.maillabel.presentation.model.MailboxItemLabelUiModel
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -160,7 +160,7 @@ object MailboxItemUiModelTestData {
         type: MailboxItemType = MailboxItemType.Message,
         subject: String = id,
         isRead: Boolean = true,
-        labels: ImmutableList<MailboxItemLabelUiModel> = persistentListOf()
+        labels: ImmutableList<LabelUiModel> = persistentListOf()
     ) = MailboxItemUiModel(
         avatar = AvatarUiModel.ParticipantInitial("T"),
         type = type,

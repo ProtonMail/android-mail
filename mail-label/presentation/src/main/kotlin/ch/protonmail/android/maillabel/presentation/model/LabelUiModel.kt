@@ -20,7 +20,7 @@ package ch.protonmail.android.maillabel.presentation.model
 
 import androidx.compose.ui.graphics.Color
 
-data class MailboxItemLabelUiModel(
+data class LabelUiModel(
     val name: String,
     val color: Color
 )

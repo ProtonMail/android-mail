@@ -36,7 +36,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUi
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.presentation.sample.MailboxItemLabelUiModelSample
+import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.testdata.contact.ContactTestData
@@ -92,7 +92,7 @@ class MessageDetailHeaderUiModelMapperTest {
         toRecipients = listOf(participant1UiModel, participant2UiModel),
         ccRecipients = listOf(participant3UiModel),
         bccRecipients = emptyList(),
-        labels = labels.map(MailboxItemLabelUiModelSample::build).toImmutableList(),
+        labels = labels.map(LabelUiModelSample::build).toImmutableList(),
         size = "12 MB",
         encryptionPadlock = ic_proton_lock,
         encryptionInfo = "End-to-end encrypted and signed message"
@@ -245,8 +245,8 @@ class MessageDetailHeaderUiModelMapperTest {
             )
         )
         val expected = listOf(
-            MailboxItemLabelUiModelSample.Document,
-            MailboxItemLabelUiModelSample.News
+            LabelUiModelSample.Document,
+            LabelUiModelSample.News
         )
 
         // When
