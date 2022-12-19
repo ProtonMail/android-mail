@@ -45,7 +45,7 @@ import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.Plus2Ch
 import ch.protonmail.android.maillabel.presentation.ui.MailboxItemLabels.Plus3CharsLimit
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.caption
+import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.overline
 import kotlin.math.ceil
 
@@ -102,7 +102,7 @@ fun LabelsList(
                 subcompose(notPlacedCount) { PlusText(count = notPlacedCount) }
                     .map { it.measure(constraints) }
                     .forEach { placeable ->
-                        placeable.place(x = x, y = 0)
+                        placeable.place(x = x, y = (rowHeight - placeable.height) / 2)
                         x += placeable.width
                     }
             }
@@ -201,7 +201,7 @@ private fun PlusText(count: Int) {
     Text(
         modifier = Modifier,
         text = "+$count",
-        style = ProtonTheme.typography.caption,
+        style = ProtonTheme.typography.captionWeak,
         maxLines = 1
     )
 }
