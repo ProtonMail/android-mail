@@ -61,6 +61,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.Visibility
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
@@ -571,9 +572,12 @@ private fun Labels(
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
-        SmallNonClickableIcon(modifier = Modifier.alpha(iconAlpha), iconId = R.drawable.ic_proton_tag)
+        SmallNonClickableIcon(
+            modifier = Modifier.alpha(iconAlpha).padding(top = MailDimens.TinySpacing),
+            iconId = R.drawable.ic_proton_tag
+        )
         Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
         LabelsList(labels = uiModels, isExpanded = isExpanded)
     }
