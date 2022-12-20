@@ -51,10 +51,10 @@ class ObserveMessageWithLabelsTest {
     private val userId = UserIdSample.Primary
     private val messageId = MessageIdSample.AugWeatherForecast
     private val message = MessageSample.AugWeatherForecast.copy(
-        labelIds = listOf(LabelIdSample.Inbox, LabelIdSample.News)
+        labelIds = listOf(LabelIdSample.Folder2022, LabelIdSample.News)
     )
     private val labels = listOf(LabelSample.Document, LabelSample.News)
-    private val folders = listOf(LabelSample.Archive, LabelSample.Inbox)
+    private val folders = listOf(LabelSample.Folder2021, LabelSample.Folder2022)
     private val localErrorFlow = flowOf(DataResult.Error.Local("error message", IOException()))
 
     private val observeMessage: ObserveMessage = mockk {
@@ -93,7 +93,7 @@ class ObserveMessageWithLabelsTest {
     fun `when all calls are successful, return a message with its labels`() = runTest {
         // Given
         val messageLabels = listOf(
-            LabelSample.Inbox,
+            LabelSample.Folder2022,
             LabelSample.News
         )
         val expected = MessageWithLabels(message, messageLabels).right()

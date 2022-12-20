@@ -32,6 +32,14 @@ object LabelSample {
     val Document = build(
         labelId = LabelIdSample.Document
     )
+    val Folder2021 = build(
+        labelId = LabelIdSample.Folder2021,
+        type = LabelType.MessageFolder
+    )
+    val Folder2022 = build(
+        labelId = LabelIdSample.Folder2022,
+        type = LabelType.MessageFolder
+    )
     val Inbox = build(
         labelId = LabelIdSample.Inbox,
         type = LabelType.MessageFolder
