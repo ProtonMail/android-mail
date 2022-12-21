@@ -47,7 +47,6 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.overline
-import kotlin.math.ceil
 
 @Composable
 fun LabelsList(
@@ -60,63 +59,34 @@ fun LabelsList(
         val labelsMeasurables = labels.map { label ->
             label to subcompose(label.name) {
                 Label(label = label)
-            }
+            }.single()
         }
 
-        val buildPlaceablesResult = buildPlaceables(
+        val (placeables, height) = measure(
             labels = labels,
             isExpanded = isExpanded,
             labelsMeasurables = labelsMeasurables,
             constraints = constraints
         )
-        val labelsPlaceables = buildPlaceablesResult.placeables
-        val rowsCount = buildPlaceablesResult.rowsCount
-        val rowHeight = buildPlaceablesResult.rowHeight
-        val notPlacedCount = buildPlaceablesResult.notPlacedCount
 
         layout(
             width = constraints.maxWidth,
-            height = rowsCount * rowHeight
+            height = height
         ) {
-            var x = 0
-            var y = 0
-            var availableRowWidth = constraints.maxWidth
-            labelsPlaceables.flatten().forEach { placeable ->
+            placeables.forEach { (placeable, coordinates) ->
 
-                val rowCanFitPlaceable = when (isExpanded) {
-                    true -> availableRowWidth - placeable.width >= 0
-                    false -> true
-                }
-
-                if (rowCanFitPlaceable.not()) {
-                    availableRowWidth = constraints.maxWidth
-                    y += rowHeight
-                    x = 0
-                }
-                placeable.place(x = x, y = y)
-                x += placeable.width
-                availableRowWidth -= placeable.width
-            }
-
-            if (notPlacedCount > 0) {
-                subcompose(notPlacedCount) { PlusText(count = notPlacedCount) }
-                    .map { it.measure(constraints) }
-                    .forEach { placeable ->
-                        placeable.place(x = x, y = (rowHeight - placeable.height) / 2)
-                        x += placeable.width
-                    }
+                placeable.place(x = coordinates.x, y = coordinates.y)
             }
         }
     }
 }
 
-@Suppress("ComplexMethod")
-private fun SubcomposeMeasureScope.buildPlaceables(
+private fun SubcomposeMeasureScope.measure(
     labels: List<LabelUiModel>,
     isExpanded: Boolean,
-    labelsMeasurables: List<Pair<LabelUiModel, List<Measurable>>>,
+    labelsMeasurables: List<Pair<LabelUiModel, Measurable>>,
     constraints: Constraints
-): BuildPlaceablesResult {
+): MeasureResult {
     val plusOneDigitWidth = measurePlusTextWidth(constraints, Plus1CharLimit)
     val plusTwoDigitWidth = measurePlusTextWidth(constraints, Plus2CharsLimit)
     val plusThreeDigitWidth = measurePlusTextWidth(constraints, Plus3CharsLimit)
@@ -136,37 +106,79 @@ private fun SubcomposeMeasureScope.buildPlaceables(
         }
     }
 
-    val labelsPlaceables = labelsMeasurables.map { (label, measurables) ->
-        measurables.mapNotNull subMap@{ measurable ->
-            val availableWidth = when (isExpanded) {
-                true -> constraints.maxWidth
-                false -> constraints.maxWidth - labelsWidth - plusPlaceableWidth()
-            }
-            val maxWidth = if (availableWidth <= 0) constraints.maxWidth else
-                availableWidth.coerceAtLeast(minExpandedLabelWidth)
-            val minWidth = when {
-                label.name.length >= MinExpandedLabelLength -> minExpandedLabelWidth
-                else -> 0
-            }
-            val placeable =
-                measurable.measure(constraints.copy(minWidth = minWidth, maxWidth = maxWidth))
-            if (isExpanded.not() && placeable.width > availableWidth) {
-                return@subMap null
-            }
-            labelsWidth += placeable.width
-            notPlacedCount--
-            placeable
+    val labelsPlaceables = labelsMeasurables.mapNotNull { (label, measurable) ->
+        val availableWidth = when (isExpanded) {
+            true -> constraints.maxWidth
+            false -> constraints.maxWidth - labelsWidth - plusPlaceableWidth()
+        }
+        val maxWidth = if (availableWidth <= 0) constraints.maxWidth else
+            availableWidth.coerceAtLeast(minExpandedLabelWidth)
+        val minWidth = when {
+            label.name.length >= MinExpandedLabelLength -> minExpandedLabelWidth
+            else -> 0
+        }
+        val placeable = measurable.measure(constraints.copy(minWidth = minWidth, maxWidth = maxWidth))
+        if (isExpanded.not() && placeable.width > availableWidth) {
+            return@mapNotNull null
+        }
+        labelsWidth += placeable.width
+        notPlacedCount--
+        placeable
+    }
+
+    return calculateCoordinates(labelsPlaceables, constraints, isExpanded, notPlacedCount)
+}
+
+private fun SubcomposeMeasureScope.calculateCoordinates(
+    labelsPlaceables: List<Placeable>,
+    constraints: Constraints,
+    isExpanded: Boolean,
+    notPlacedCount: Int
+): MeasureResult {
+    val rowHeight = labelsPlaceables.firstOrNull()?.height ?: 0
+    var rowsCount = 1
+
+    var x = 0
+    var y = 0
+    var availableRowWidth = constraints.maxWidth
+    val labelsPlaceablesCoordinates = labelsPlaceables.associateWith { placeable ->
+
+        val rowCanFitPlaceable = when (isExpanded) {
+            true -> availableRowWidth - placeable.width >= 0
+            false -> true
+        }
+
+        if (rowCanFitPlaceable.not()) {
+            rowsCount++
+            availableRowWidth = constraints.maxWidth
+            y += rowHeight
+            x = 0
+        }
+
+        PlaceableCoordinates(x, y).also {
+
+            x += placeable.width
+            availableRowWidth -= placeable.width
         }
     }
 
-    val rowsCount = ceil(labelsWidth.toDouble() / constraints.maxWidth.coerceAtLeast(1)).toInt()
-    val rowHeight = labelsPlaceables.flatten().firstOrNull()?.height ?: 0
+    val placeablesCoordinates = if (notPlacedCount > 0) {
+        val plusSignPlaceable = subcompose(notPlacedCount) { PlusText(count = notPlacedCount) }
+            .single()
+            .measure(constraints)
 
-    return BuildPlaceablesResult(
-        placeables = labelsPlaceables,
-        rowsCount = rowsCount,
-        rowHeight = rowHeight,
-        notPlacedCount = notPlacedCount
+        val plusSignCoordinates = PlaceableCoordinates(
+            x = x,
+            y = (rowsCount - 1) * rowHeight + (rowHeight - plusSignPlaceable.height) / 2
+        )
+        labelsPlaceablesCoordinates + (plusSignPlaceable to plusSignCoordinates)
+    } else {
+        labelsPlaceablesCoordinates
+    }
+
+    return MeasureResult(
+        placeablesCoordinates = placeablesCoordinates,
+        height = rowsCount * rowHeight
     )
 }
 
@@ -206,11 +218,14 @@ private fun PlusText(count: Int) {
     )
 }
 
-private data class BuildPlaceablesResult(
-    val placeables: List<List<Placeable>>,
-    val rowsCount: Int,
-    val rowHeight: Int,
-    val notPlacedCount: Int
+private data class MeasureResult(
+    val placeablesCoordinates: Map<Placeable, PlaceableCoordinates>,
+    val height: Int
+)
+
+private data class PlaceableCoordinates(
+    val x: Int,
+    val y: Int
 )
 
 object MailboxItemLabels {
