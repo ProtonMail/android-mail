@@ -39,7 +39,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
-import ch.protonmail.android.maildetail.domain.usecase.MoveConversationToTrash
+import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
@@ -57,6 +57,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailR
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
@@ -97,7 +98,7 @@ class ConversationDetailViewModelTest {
         every { toUiModel(messageWithLabels = MessageWithLabelsSample.SepWeatherForecast, contacts = any()) } returns
             ConversationDetailMessageUiModelSample.SepWeatherForecast
     }
-    private val moveToTrash: MoveConversationToTrash = mockk()
+    private val move: MoveConversation = mockk()
     private val observeContacts: ObserveContacts = mockk {
         every { this@mockk(userId = UserIdSample.Primary) } returns flowOf(emptyList<Contact>().right())
     }
@@ -140,7 +141,7 @@ class ConversationDetailViewModelTest {
             actionUiModelMapper = actionUiModelMapper,
             conversationMessageMapper = conversationMessageMapper,
             conversationMetadataMapper = conversationMetadataMapper,
-            moveConversationToTrash = moveToTrash,
+            moveConversation = move,
             observeContacts = observeContacts,
             observeConversation = observeConversation,
             observeConversationMessages = observeConversationMessagesWithLabels,
@@ -523,7 +524,13 @@ class ConversationDetailViewModelTest {
     @Test
     fun `error moving to trash is emitted when action fails`() = runTest {
         // Given
-        coEvery { moveToTrash(UserIdSample.Primary, conversationId) } returns DataError.Local.NoDataCached.left()
+        coEvery {
+            move(
+                UserIdSample.Primary,
+                conversationId,
+                SystemLabelId.Trash.labelId
+            )
+        } returns DataError.Local.NoDataCached.left()
         every {
             reducer.newStateFrom(
                 currentState = ConversationDetailState.Loading,
@@ -547,7 +554,13 @@ class ConversationDetailViewModelTest {
     @Test
     fun `exit with message is emitted when success moving to trash`() = runTest {
         // Given
-        coEvery { moveToTrash(UserIdSample.Primary, conversationId) } returns ConversationSample.WeatherForecast.right()
+        coEvery {
+            move(
+                UserIdSample.Primary,
+                conversationId,
+                SystemLabelId.Trash.labelId
+            )
+        } returns ConversationSample.WeatherForecast.right()
         every {
             reducer.newStateFrom(
                 currentState = ConversationDetailState.Loading,

@@ -31,6 +31,7 @@ object LabelIdSample {
     val News = LabelId("news")
     val Starred = LabelId("10")
     val Trash = LabelId("3")
+    val Spam = LabelId("4")
 
     fun build() = LabelId("label")
 }

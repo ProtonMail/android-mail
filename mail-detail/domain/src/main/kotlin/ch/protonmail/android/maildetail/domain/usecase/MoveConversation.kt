@@ -19,18 +19,37 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.Either
+import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
+import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
-class MoveConversationToTrash @Inject constructor(
-    private val conversationRepository: ConversationRepository
+class MoveConversation @Inject constructor(
+    private val conversationRepository: ConversationRepository,
+    private val observeExclusiveMailLabels: ObserveExclusiveMailLabels
 ) {
 
-    suspend operator fun invoke(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> =
-        conversationRepository.move(userId, conversationId, null, SystemLabelId.Trash.labelId)
+    suspend operator fun invoke(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId
+    ): Either<DataError, Conversation> {
+        return conversationRepository.observeConversation(userId, conversationId).first().fold(
+            ifLeft = { DataError.Local.NoDataCached.left() },
+            ifRight = { conversation ->
+                val exclusiveLabelIds = observeExclusiveMailLabels(userId).first().allById.mapKeys { it.key.labelId }
+                val fromLabelId = conversation.labels
+                    .map { it.labelId }
+                    .firstOrNull { labelId -> labelId in exclusiveLabelIds }
+                conversationRepository.move(userId, conversationId, fromLabelId, toLabelId = labelId)
+            }
+        )
+    }
+
 }

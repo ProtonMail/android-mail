@@ -32,7 +32,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
-import ch.protonmail.android.maildetail.domain.usecase.MoveConversationToTrash
+import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
@@ -46,6 +46,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailSta
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -69,7 +70,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val actionUiModelMapper: ActionUiModelMapper,
     private val conversationMessageMapper: ConversationDetailMessageUiModelMapper,
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper,
-    private val moveConversationToTrash: MoveConversationToTrash,
+    private val moveConversation: MoveConversation,
     private val observeContacts: ObserveContacts,
     private val observeConversation: ObserveConversation,
     private val observeConversationMessages: ObserveConversationMessagesWithLabels,
@@ -165,7 +166,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun moveConversationToTrash() {
         primaryUserId.mapLatest { userId ->
-            moveConversationToTrash(userId, conversationId).fold(
+            moveConversation(userId, conversationId, SystemLabelId.Trash.labelId).fold(
                 ifLeft = { ConversationDetailEvent.ErrorMovingToTrash },
                 ifRight = { ConversationDetailViewAction.Trash }
             )

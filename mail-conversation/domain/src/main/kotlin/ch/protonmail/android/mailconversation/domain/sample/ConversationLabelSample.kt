@@ -57,6 +57,11 @@ object ConversationLabelSample {
             conversationId = ConversationIdSample.WeatherForecast,
             labelId = LabelIdSample.Trash
         )
+
+        val Spam = build(
+            conversationId = ConversationIdSample.WeatherForecast,
+            labelId = LabelIdSample.Spam
+        )
     }
 
     fun build(
