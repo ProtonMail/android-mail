@@ -45,9 +45,8 @@ class MoveConversation @Inject constructor(
             ifRight = { conversation ->
                 val exclusiveLabelIds = observeExclusiveMailLabels(userId).first().allById.mapKeys { it.key.labelId }
                 val fromLabelId = conversation.labels
-                    .map { it.labelId }
-                    .firstOrNull { labelId -> labelId in exclusiveLabelIds }
-                conversationRepository.move(userId, conversationId, fromLabelId, toLabelId = labelId)
+                    .firstOrNull { label -> label.labelId in exclusiveLabelIds }
+                conversationRepository.move(userId, conversationId, fromLabelId?.labelId, toLabelId = labelId)
             }
         )
     }

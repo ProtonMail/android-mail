@@ -164,14 +164,14 @@ class ConversationRepositoryImpl @Inject constructor(
         val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
 
-        val updatedLabels = conversation.labels.toMutableList().apply {
-            fromLabelId?.let { this.filterNot { it.labelId == fromLabelId } }
-        }
+        val updatedLabels = conversation.labels.filterNot { label -> label.labelId == fromLabelId }
 
-        fromLabelId?.let { conversationLocalDataSource.removeLabel(userId, conversationId, it) }
+        if (fromLabelId != null) {
+            conversationLocalDataSource.removeLabel(userId, conversationId, fromLabelId)
+        }
         messageLocalDataSource.observeMessages(userId, conversationId).first()
             .map { message -> message.copy(labelIds = updatedLabels.map { it.labelId }) }
-            .run { messageLocalDataSource.upsertMessages(this) }
+            .let { messageLocalDataSource.upsertMessages(it) }
 
         return addLabel(userId, conversationId, toLabelId)
     }
