@@ -23,10 +23,11 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessageBody
 
 sealed interface MessageDetailOperation {
     sealed interface AffectingMessage
+    sealed interface AffectingMessageBody
     sealed interface AffectingErrorBar
     sealed interface AffectingBottomSheet
 }
@@ -39,10 +40,11 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     ) : MessageDetailEvent,
         AffectingMessage
 
-    data class MessageBody(
-        val message: MessageWithBody
+    data class MessageBodyEvent(
+        val messageBody: MessageBodyUiModel
     ) : MessageDetailEvent,
-        AffectingMessage
+        AffectingMessageBody
+    object ErrorGettingMessageBody : MessageDetailEvent, AffectingMessageBody
 
     data class MessageBottomBarEvent(
         val bottomBarEvent: BottomBarEvent

@@ -33,12 +33,10 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
-import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -191,14 +189,6 @@ class MessageDetailReducerTest(
                     MessageDetailActionBarUiModel("subject", false),
                     detailHeaderUiModel
                 ),
-                shouldReduceMessageMetadataState = true,
-                shouldReduceBottomBarState = false,
-                shouldReduceExitEffect = false,
-                shouldReduceToErrorEffect = false,
-                shouldReduceBottomSheetState = false
-            ),
-            TestInput(
-                MessageDetailEvent.MessageBody(MessageWithBody(MessageTestData.message, null)),
                 shouldReduceMessageMetadataState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
