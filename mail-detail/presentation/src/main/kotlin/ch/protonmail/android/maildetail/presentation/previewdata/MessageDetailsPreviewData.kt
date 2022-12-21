@@ -46,6 +46,7 @@ object MessageDetailsPreviewData {
         ),
         bottomSheetState = BottomSheetState.Data(listOf()),
         exitScreenEffect = Effect.empty(),
+        exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty()
     )
 
@@ -66,6 +67,7 @@ object MessageDetailsPreviewData {
         bottomBarState = BottomBarState.Loading,
         bottomSheetState = BottomSheetState.Loading,
         exitScreenEffect = Effect.empty(),
+        exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty()
     )
 }

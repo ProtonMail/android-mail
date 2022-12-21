@@ -18,9 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import arrow.core.Option
-import arrow.core.none
-import arrow.core.some
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -49,6 +46,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 @RunWith(Parameterized::class)
@@ -112,16 +110,20 @@ class MessageDetailReducerTest(
             assertEquals(currentState.bottomSheetState, nextState.bottomSheetState, testName)
         }
 
-        if (shouldReduceExitEffect) {
-            assertEquals(exitMessage, nextState.exitScreenEffect.consume())
-        } else {
-            assertEquals(currentState.exitScreenEffect, nextState.exitScreenEffect, testName)
-        }
-
         if (shouldReduceToErrorEffect) {
             assertTrue(nextState.error.consume() is TextUiModel.TextRes)
         } else {
             assertEquals(currentState.error, nextState.error, testName)
+        }
+
+        if (shouldReduceExitEffect) {
+            assertNotNull(nextState.exitScreenEffect.consume(), testName)
+        } else {
+            assertEquals(currentState.exitScreenEffect, nextState.exitScreenEffect, testName)
+        }
+
+        if (exitMessage != null) {
+            assertEquals(exitMessage, nextState.exitScreenWithMessageEffect.consume())
         }
     }
 
@@ -135,6 +137,7 @@ class MessageDetailReducerTest(
             bottomBarState = BottomBarState.Data(listOf(ActionUiModelTestData.markUnread)),
             bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder),
             exitScreenEffect = Effect.empty(),
+            exitScreenWithMessageEffect = Effect.empty(),
             error = Effect.empty()
         )
 
@@ -167,8 +170,8 @@ class MessageDetailReducerTest(
                 MessageViewAction.Trash,
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
-                shouldReduceExitEffect = true,
-                exitMessage = TextUiModel(string.message_moved_to_trash).some(),
+                shouldReduceExitEffect = false,
+                exitMessage = TextUiModel(string.message_moved_to_trash),
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false
             ),
@@ -176,7 +179,7 @@ class MessageDetailReducerTest(
                 MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam),
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
-                shouldReduceToDismissEffect = false,
+                shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true
             )
@@ -256,7 +259,7 @@ class MessageDetailReducerTest(
                 ),
                 shouldReduceMessageMetadataState = false,
                 shouldReduceBottomBarState = false,
-                shouldReduceToDismissEffect = false,
+                shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true
             )
@@ -284,6 +287,6 @@ class MessageDetailReducerTest(
         val shouldReduceExitEffect: Boolean,
         val shouldReduceBottomSheetState: Boolean,
         val shouldReduceToErrorEffect: Boolean,
-        val exitMessage: Option<TextUiModel> = none()
+        val exitMessage: TextUiModel? = null
     )
 }

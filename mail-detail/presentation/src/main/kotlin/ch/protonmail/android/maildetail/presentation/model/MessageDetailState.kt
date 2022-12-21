@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-import arrow.core.Option
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -27,7 +26,8 @@ data class MessageDetailState(
     val messageMetadataState: MessageMetadataState,
     val bottomBarState: BottomBarState,
     val bottomSheetState: BottomSheetState,
-    val exitScreenEffect: Effect<Option<TextUiModel>>,
+    val exitScreenEffect: Effect<Unit>,
+    val exitScreenWithMessageEffect: Effect<TextUiModel>,
     val error: Effect<TextUiModel>
 ) {
 
@@ -38,6 +38,7 @@ data class MessageDetailState(
             bottomBarState = BottomBarState.Loading,
             bottomSheetState = BottomSheetState.Loading,
             exitScreenEffect = Effect.empty(),
+            exitScreenWithMessageEffect = Effect.empty(),
             error = Effect.empty()
         )
     }

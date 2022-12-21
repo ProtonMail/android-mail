@@ -36,10 +36,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
-import arrow.core.Option
-import arrow.core.none
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
-import ch.protonmail.android.mailcommon.presentation.ConsumableOptionalTextEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -62,7 +60,7 @@ import timber.log.Timber
 @Composable
 fun MessageDetailScreen(
     modifier: Modifier = Modifier,
-    onExit: (message: Option<String>) -> Unit,
+    onExit: (message: String?) -> Unit,
     viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
@@ -107,7 +105,10 @@ fun MessageDetailScreen(
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
 
-    ConsumableOptionalTextEffect(state.exitScreenEffect) { optionalMessage -> actions.onExit(optionalMessage) }
+    ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onExit(null) }
+    ConsumableTextEffect(state.exitScreenWithMessageEffect) { string ->
+        actions.onExit(string)
+    }
     ConsumableTextEffect(state.error) { string ->
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
     }
@@ -124,7 +125,7 @@ fun MessageDetailScreen(
                 isStarred = uiModel?.isStarred,
                 messageCount = null,
                 actions = DetailScreenTopBar.Actions(
-                    onBackClick = actions.onBackClick,
+                    onBackClick = { actions.onExit(null) },
                     onStarClick = actions.onStarClick,
                     onUnStarClick = actions.onUnStarClick
                 ),
@@ -193,15 +194,13 @@ object MessageDetailScreen {
     const val MESSAGE_ID_KEY = "message id"
 
     data class Actions(
-        val onExit: (message: Option<String>) -> Unit,
+        val onExit: (notifyUserMessage: String?) -> Unit,
         val onStarClick: () -> Unit,
         val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
         val onUnreadClick: () -> Unit,
         val onMoveClick: () -> Unit
     ) {
-
-        val onBackClick = { onExit(none()) }
 
         companion object {
 

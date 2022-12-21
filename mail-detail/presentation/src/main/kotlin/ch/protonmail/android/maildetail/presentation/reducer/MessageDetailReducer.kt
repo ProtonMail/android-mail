@@ -18,9 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import arrow.core.Option
-import arrow.core.none
-import arrow.core.some
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -44,9 +41,10 @@ class MessageDetailReducer @Inject constructor(
     ): MessageDetailState = currentState.copy(
         messageMetadataState = currentState.toNewMessageStateFrom(operation),
         bottomBarState = currentState.toNewBottomBarStateFrom(operation),
+        error = currentState.toNewErrorStateFrom(operation),
         bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
         exitScreenEffect = currentState.toNewExitStateFrom(operation),
-        error = currentState.toNewErrorStateFrom(operation)
+        exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation)
     )
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
@@ -65,10 +63,16 @@ class MessageDetailReducer @Inject constructor(
 
     private fun MessageDetailState.toNewExitStateFrom(
         operation: MessageDetailOperation
-    ): Effect<Option<TextUiModel>> = when (operation) {
-        MessageViewAction.MarkUnread, MessageViewAction.MoveToDestinationConfirmed -> Effect.of(none())
-        MessageViewAction.Trash -> Effect.of(TextUiModel(R.string.message_moved_to_trash).some())
+    ): Effect<Unit> = when (operation) {
+        MessageViewAction.MarkUnread, MessageViewAction.MoveToDestinationConfirmed -> Effect.of(Unit)
         else -> exitScreenEffect
+    }
+
+    private fun MessageDetailState.toNewExitWithMessageStateFrom(
+        operation: MessageDetailOperation
+    ): Effect<TextUiModel> = when (operation) {
+        MessageViewAction.Trash -> Effect.of(TextUiModel(R.string.message_moved_to_trash))
+        else -> exitScreenWithMessageEffect
     }
 
     private fun MessageDetailState.toNewMessageStateFrom(operation: MessageDetailOperation) =

@@ -24,13 +24,11 @@ import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.nonEmptyListOf
-import arrow.core.none
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -87,6 +85,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class MessageDetailViewModelTest {
@@ -308,7 +307,7 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.MarkUnread)
             advanceUntilIdle()
             // Then
-            assertEquals(none(), lastEmittedItem().exitScreenEffect.consume())
+            assertNotNull(lastEmittedItem().exitScreenEffect.consume())
         }
     }
 
@@ -480,7 +479,7 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.MoveToDestinationConfirmed)
             advanceUntilIdle()
             val item = lastEmittedItem()
-            assertEquals(Effect.of(Unit), item.dismiss)
+            assertEquals(Unit, item.exitScreenEffect.consume())
             coVerify { moveMessage.invoke(userId, MessageId(rawMessageId), MailLabelId.System.Spam.labelId) }
         }
     }
