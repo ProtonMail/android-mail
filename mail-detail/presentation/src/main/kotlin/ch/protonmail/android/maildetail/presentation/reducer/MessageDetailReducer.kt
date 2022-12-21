@@ -31,6 +31,7 @@ import javax.inject.Inject
 
 class MessageDetailReducer @Inject constructor(
     private val messageMetadataReducer: MessageDetailMetadataReducer,
+    private val messageBodyReducer: MessageBodyReducer,
     private val bottomBarReducer: BottomBarReducer,
     private val bottomSheetReducer: BottomSheetReducer
 ) {
@@ -40,6 +41,7 @@ class MessageDetailReducer @Inject constructor(
         operation: MessageDetailOperation
     ): MessageDetailState = currentState.copy(
         messageMetadataState = currentState.toNewMessageStateFrom(operation),
+        messageBodyState = currentState.toNewMessageBodyStateFrom(operation),
         bottomBarState = currentState.toNewBottomBarStateFrom(operation),
         error = currentState.toNewErrorStateFrom(operation),
         bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
@@ -80,6 +82,13 @@ class MessageDetailReducer @Inject constructor(
             messageMetadataReducer.newStateFrom(messageMetadataState, operation)
         } else {
             messageMetadataState
+        }
+
+    private fun MessageDetailState.toNewMessageBodyStateFrom(operation: MessageDetailOperation) =
+        if (operation is MessageDetailOperation.AffectingMessageBody) {
+            messageBodyReducer.newStateFrom(operation)
+        } else {
+            messageBodyState
         }
 
     private fun MessageDetailState.toNewBottomBarStateFrom(operation: MessageDetailOperation) =

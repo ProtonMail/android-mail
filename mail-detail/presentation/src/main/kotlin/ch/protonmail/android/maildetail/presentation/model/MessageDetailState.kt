@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
 data class MessageDetailState(
     val messageMetadataState: MessageMetadataState,
+    val messageBodyState: MessageBodyState,
     val bottomBarState: BottomBarState,
     val bottomSheetState: BottomSheetState,
     val exitScreenEffect: Effect<Unit>,
@@ -35,6 +36,7 @@ data class MessageDetailState(
 
         val Loading = MessageDetailState(
             messageMetadataState = MessageMetadataState.Loading,
+            messageBodyState = MessageBodyState.Loading,
             bottomBarState = BottomBarState.Loading,
             bottomSheetState = BottomSheetState.Loading,
             exitScreenEffect = Effect.empty(),

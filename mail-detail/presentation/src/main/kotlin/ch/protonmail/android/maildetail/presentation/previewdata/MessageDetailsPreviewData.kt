@@ -26,6 +26,8 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
@@ -37,6 +39,9 @@ object MessageDetailsPreviewData {
         messageMetadataState = MessageMetadataState.Data(
             messageDetailActionBar = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast,
             messageDetailHeader = MessageDetailHeaderPreviewData.WithoutLabels
+        ),
+        messageBodyState = MessageBodyState.Data(
+            messageBodyUiModel = MessageBodyUiModel("This is a message body.")
         ),
         bottomBarState = BottomBarState.Data(
             listOf(
@@ -64,6 +69,7 @@ object MessageDetailsPreviewData {
 
     val Loading = MessageDetailState(
         messageMetadataState = MessageMetadataState.Loading,
+        messageBodyState = MessageBodyState.Loading,
         bottomBarState = BottomBarState.Loading,
         bottomSheetState = BottomSheetState.Loading,
         exitScreenEffect = Effect.empty(),
