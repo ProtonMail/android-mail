@@ -389,13 +389,19 @@ class MessageDetailViewModelTest {
     }
 
     @Test
-    fun `when trash action is submitted, use case is called`() = runTest {
+    fun `when trash action is submitted, use case is called and success message is emitted`() = runTest {
+        // Given
+        val expectedMessage = TextUiModel(R.string.message_moved_to_trash)
+
         // when
         viewModel.submit(MessageViewAction.Trash)
         advanceUntilIdle()
+        viewModel.state.test {
 
-        // then
-        coVerify { moveMessage(userId, MessageId(rawMessageId), SystemLabelId.Trash.labelId) }
+            // then
+            coVerify { moveMessage(userId, MessageId(rawMessageId), SystemLabelId.Trash.labelId) }
+            assertEquals(expectedMessage, awaitItem().exitScreenWithMessageEffect.consume())
+        }
     }
 
     @Test
