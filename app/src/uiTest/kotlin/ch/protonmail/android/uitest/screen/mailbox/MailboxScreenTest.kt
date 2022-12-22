@@ -89,6 +89,12 @@ internal class MailboxScreenTest {
     }
 
     @Test
+    @Ignore(
+        """
+            The current version of the paging library doesn't allow us to test this in the same way. 
+            Wee need to find an alternative
+        """
+    ) // MAILANDR-330
     fun givenLoadingCompletedWhenNoItemThenEmptyMailboxIsDisplayed() {
         val mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
@@ -102,7 +108,7 @@ internal class MailboxScreenTest {
     }
 
     @Test
-    @Ignore("How to verify SwipeRefresh is refreshing?") // MAILANDR-271
+    @Ignore("How to verify SwipeRefresh is refreshing?") // MAILANDR-330
     fun givenEmptyMailboxIsDisplayedWhenSwipeDownThenRefreshIsTriggered() {
         val mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
