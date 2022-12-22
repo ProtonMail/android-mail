@@ -19,14 +19,18 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingConversation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 
 sealed interface ConversationDetailOperation {
 
     sealed interface AffectingConversation : ConversationDetailOperation
     sealed interface AffectingMessages : ConversationDetailOperation
     sealed interface AffectingErrorBar
+    sealed interface AffectingBottomSheet
 }
 
 sealed interface ConversationDetailEvent : ConversationDetailOperation {
@@ -47,9 +51,14 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val messagesUiModels: List<ConversationDetailMessageUiModel>
     ) : ConversationDetailEvent, AffectingMessages
 
-    object ErrorAddStar : ConversationDetailEvent, ConversationDetailOperation.AffectingErrorBar
-    object ErrorRemoveStar : ConversationDetailEvent, ConversationDetailOperation.AffectingErrorBar
-    object ErrorMovingToTrash : ConversationDetailEvent, ConversationDetailOperation.AffectingErrorBar
+    data class ConversationBottomSheetEvent(
+        val bottomSheetOperation: BottomSheetOperation
+    ) : ConversationDetailEvent, AffectingBottomSheet
+
+    object ErrorAddStar : ConversationDetailEvent, AffectingErrorBar
+    object ErrorRemoveStar : ConversationDetailEvent, AffectingErrorBar
+    object ErrorMovingToTrash : ConversationDetailEvent, AffectingErrorBar
+    object ErrorMovingConversation : ConversationDetailEvent, AffectingErrorBar
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {
@@ -58,4 +67,9 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     object UnStar : ConversationDetailViewAction, AffectingConversation
     object MarkUnread : ConversationDetailViewAction
     object Trash : ConversationDetailViewAction
+    data class MoveToDestinationSelected(
+        val mailLabelId: MailLabelId
+    ) : ConversationDetailViewAction, AffectingBottomSheet
+
+    data class MoveToDestinationConfirmed(val mailLabel: String) : ConversationDetailViewAction
 }

@@ -40,13 +40,19 @@ import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetEvent
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.toUiModels
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,6 +65,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
@@ -75,6 +82,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeConversation: ObserveConversation,
     private val observeConversationMessages: ObserveConversationMessagesWithLabels,
     private val observeDetailActions: ObserveConversationDetailActions,
+    private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
+    private val observeFolderColor: ObserveFolderColorSettings,
     private val reducer: ConversationDetailReducer,
     private val starConversation: StarConversation,
     private val unStarConversation: UnStarConversation,
@@ -93,6 +102,7 @@ class ConversationDetailViewModel @Inject constructor(
         observeConversationMetadata(conversationId)
         observeConversationMessages(conversationId)
         observeBottomBarActions(conversationId)
+        observeMailFolders()
     }
 
     fun submit(action: ConversationDetailViewAction) {
@@ -101,6 +111,9 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.UnStar -> unStarConversation()
             is ConversationDetailViewAction.MarkUnread -> Timber.d("Mark Unread conversation clicked VM")
             is ConversationDetailViewAction.Trash -> moveConversationToTrash()
+            is ConversationDetailViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
+            is ConversationDetailViewAction.MoveToDestinationConfirmed ->
+                onBottomSheetDestinationConfirmed(action.mailLabel)
         }.exhaustive
     }
 
@@ -154,6 +167,21 @@ class ConversationDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun observeMailFolders() {
+        primaryUserId.flatMapLatest { userId ->
+            combine(
+                observeDestinationMailLabels(userId),
+                observeFolderColor(userId)
+            ) { folders, color ->
+                ConversationDetailEvent.ConversationBottomSheetEvent(
+                    BottomSheetEvent.Data(folders.toUiModels(color).let { it.folders + it.systems })
+                )
+            }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
     private fun requireConversationId(): ConversationId {
         val conversationId = savedStateHandle.get<String>(ConversationDetailScreen.ConversationIdKey)
             ?: throw IllegalStateException("No Conversation id given")
@@ -192,6 +220,30 @@ class ConversationDetailViewModel @Inject constructor(
                 ifLeft = { ConversationDetailEvent.ErrorRemoveStar },
                 ifRight = { ConversationDetailViewAction.UnStar }
             )
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun moveToDestinationSelected(mailLabelId: MailLabelId) {
+        viewModelScope.launch {
+            emitNewStateFrom(ConversationDetailViewAction.MoveToDestinationSelected(mailLabelId))
+        }
+    }
+
+    private fun onBottomSheetDestinationConfirmed(mailLabel: String) {
+        primaryUserId.mapLatest { userId ->
+            val bottomSheetState = state.value.bottomSheetState
+            if (bottomSheetState is BottomSheetState.Data) {
+                bottomSheetState.moveToDestinations.firstOrNull { it.isSelected }?.let {
+                    moveConversation(userId, conversationId, it.id.labelId).fold(
+                        ifLeft = { ConversationDetailEvent.ErrorMovingConversation },
+                        ifRight = { ConversationDetailViewAction.MoveToDestinationConfirmed(mailLabel) }
+                    )
+                } ?: ConversationDetailEvent.ErrorMovingConversation
+            } else {
+                ConversationDetailEvent.ErrorMovingConversation
+            }
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)

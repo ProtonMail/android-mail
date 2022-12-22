@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import ch.protonmail.android.mailcommon.presentation.sample.TextMessageSample
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
@@ -51,6 +52,9 @@ object ConversationDetailsPreviewData {
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
         ),
+        bottomSheetState = BottomSheetState.Data(
+            moveToDestinations = emptyList()
+        ),
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty()
@@ -62,7 +66,8 @@ object ConversationDetailsPreviewData {
         bottomBarState = BottomBarState.Loading,
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
-        error = Effect.empty()
+        error = Effect.empty(),
+        bottomSheetState = BottomSheetState.Loading
     )
 
     val FailedLoadingMessages = ConversationDetailState(
@@ -71,7 +76,8 @@ object ConversationDetailsPreviewData {
         bottomBarState = BottomBarState.Loading,
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
-        error = Effect.empty()
+        error = Effect.empty(),
+        bottomSheetState = BottomSheetState.Loading
     )
 
     val FailedLoadingBottomBar = ConversationDetailState(
@@ -80,7 +86,8 @@ object ConversationDetailsPreviewData {
         bottomBarState = BottomBarState.Error.FailedLoadingActions,
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
-        error = Effect.empty()
+        error = Effect.empty(),
+        bottomSheetState = BottomSheetState.Loading
     )
 
     val Loading = ConversationDetailState(
@@ -89,7 +96,8 @@ object ConversationDetailsPreviewData {
         bottomBarState = BottomBarState.Loading,
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
-        error = Effect.empty()
+        error = Effect.empty(),
+        bottomSheetState = BottomSheetState.Loading
     )
 
     val NotLoggedIn = ConversationDetailState(
@@ -98,7 +106,8 @@ object ConversationDetailsPreviewData {
         bottomBarState = BottomBarState.Loading,
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
-        error = Effect.empty()
+        error = Effect.empty(),
+        bottomSheetState = BottomSheetState.Loading
     )
 }
 

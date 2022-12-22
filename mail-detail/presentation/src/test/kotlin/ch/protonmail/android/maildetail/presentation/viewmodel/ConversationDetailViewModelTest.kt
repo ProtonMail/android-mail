@@ -48,6 +48,7 @@ import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -57,10 +58,18 @@ import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailR
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
+import ch.protonmail.android.testdata.maillabel.MailLabelTestData
+import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -122,6 +131,19 @@ class ConversationDetailViewModelTest {
     private val observePrimaryUserId: ObservePrimaryUserId = mockk {
         every { this@mockk() } returns flowOf(UserIdSample.Primary)
     }
+    private val observeMailLabels = mockk<ObserveExclusiveDestinationMailLabels> {
+        every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(
+            MailLabels(
+                systemLabels = listOf(MailLabel.System(MailLabelId.System.Spam)),
+                folders = listOf(MailLabelTestData.buildCustomFolder(id = "folder1")),
+                labels = listOf()
+            )
+        )
+    }
+    private val observeFolderColorSettings =
+        mockk<ObserveFolderColorSettings> {
+            every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(FolderColorSettings())
+        }
     private val reducer: ConversationDetailReducer = mockk {
         every { newStateFrom(currentState = any(), operation = any()) } returns ConversationDetailState.Loading
     }
@@ -146,6 +168,8 @@ class ConversationDetailViewModelTest {
             observeConversation = observeConversation,
             observeConversationMessages = observeConversationMessagesWithLabels,
             observeDetailActions = observeConversationDetailActions,
+            observeDestinationMailLabels = observeMailLabels,
+            observeFolderColor = observeFolderColorSettings,
             reducer = reducer,
             savedStateHandle = savedStateHandle,
             starConversation = starConversation,
@@ -370,6 +394,7 @@ class ConversationDetailViewModelTest {
 
             // Then
             assertEquals(expected.bottomBarState, awaitItem().bottomBarState)
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -395,6 +420,7 @@ class ConversationDetailViewModelTest {
 
             // Then
             assertEquals(expected.bottomBarState, awaitItem().bottomBarState)
+            cancelAndIgnoreRemainingEvents()
         }
 
     }
@@ -427,6 +453,7 @@ class ConversationDetailViewModelTest {
         )
         givenReducerReturnsStarredUiModel()
         givenReducerReturnsBottomActions()
+        givenReducerReturnsBottomSheetActions()
 
         // When
         viewModel.state.test {
@@ -437,8 +464,12 @@ class ConversationDetailViewModelTest {
                 bottomBarState = BottomBarState.Data(actionUiModels)
             )
             assertEquals(bottomBarState, awaitItem())
-            viewModel.submit(ConversationDetailViewAction.Star)
 
+            val bottomSheetState = ConversationDetailState.Loading.copy(
+                bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder)
+            )
+            assertEquals(bottomSheetState, awaitItem())
+            viewModel.submit(ConversationDetailViewAction.Star)
             val actual = assertIs<ConversationDetailMetadataState.Data>(awaitItem().conversationState)
             assertTrue(actual.conversationUiModel.isStarred)
         }
@@ -581,6 +612,53 @@ class ConversationDetailViewModelTest {
         }
     }
 
+    @Test
+    fun `verify move to is called and exit with message is emitted when destination get confirmed`() = runTest {
+        // Given
+        coEvery {
+            move(
+                userId = UserIdSample.Primary,
+                conversationId = conversationId,
+                labelId = SystemLabelId.Spam.labelId
+            )
+        } returns ConversationSample.WeatherForecast.right()
+        val selectedLabel = MailLabelUiModelTestData.spamAndCustomFolder.first()
+        val initialState = ConversationDetailState.Loading.copy(
+            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder)
+        )
+
+        coEvery {
+            reducer.newStateFrom(
+                ConversationDetailState.Loading,
+                ConversationDetailViewAction.MoveToDestinationSelected(selectedLabel.id)
+            )
+        } returns initialState.copy(
+            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected)
+        )
+
+        coEvery {
+            reducer.newStateFrom(any(), ConversationDetailViewAction.MoveToDestinationConfirmed("selectedLabel"))
+        } returns ConversationDetailState.Loading.copy(
+            exitScreenWithMessageEffect = Effect.of(
+                TextUiModel(
+                    string.conversation_moved_to_selected_destination,
+                    "selectedLabel"
+                )
+            )
+        )
+
+        // When
+        viewModel.state.test {
+            // Then
+            advanceUntilIdle()
+            viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(selectedLabel.id))
+            advanceUntilIdle()
+            viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed("selectedLabel"))
+            advanceUntilIdle()
+            assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
+        }
+    }
+
     private fun givenReducerReturnsBottomActions() {
         val actionUiModels = listOf(
             ActionUiModelTestData.reply,
@@ -607,6 +685,17 @@ class ConversationDetailViewModelTest {
             conversationState = ConversationDetailMetadataState.Data(
                 ConversationUiModelTestData.conversationUiModelStarred
             )
+        )
+    }
+
+    private fun givenReducerReturnsBottomSheetActions() {
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailEvent.ConversationBottomSheetEvent>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder)
         )
     }
 

@@ -38,6 +38,8 @@
     <string name="conversation_moved_to_trash">Conversation moved to trash</string>
     <string name="message_moved_to_trash">Message moved to trash</string>
     <string name="error_move_message_failed">Moving message failed. Please retry.</string>
+    <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
+    <string name="conversation_moved_to_selected_destination">Conversation moved to %1$s</string>
 
     <!-- Bottom Sheet -->
     <string name="bottom_sheet_move_to_title">Move to...</string>

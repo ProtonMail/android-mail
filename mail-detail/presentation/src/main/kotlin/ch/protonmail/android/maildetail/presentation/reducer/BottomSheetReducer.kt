@@ -28,7 +28,6 @@ import javax.inject.Inject
 
 class BottomSheetReducer @Inject constructor() {
 
-    @SuppressWarnings("UnusedPrivateMember")
     fun newStateFrom(currentState: BottomSheetState, event: BottomSheetOperation): BottomSheetState {
         return when (event) {
             is BottomSheetEvent.Data -> BottomSheetState.Data(event.moveToDestinations)

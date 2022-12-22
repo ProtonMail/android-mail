@@ -28,6 +28,8 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
 import io.mockk.Called
 import io.mockk.mockk
 import io.mockk.verify
@@ -47,10 +49,12 @@ class ConversationDetailReducerTest(
     private val bottomBarReducer = mockk<BottomBarReducer>(relaxed = true)
     private val messagesReducer = mockk<ConversationDetailMessagesReducer>(relaxed = true)
     private val metadataReducer = mockk<ConversationDetailMetadataReducer>(relaxed = true)
+    private val bottomSheetReducer = mockk<BottomSheetReducer>(relaxed = true)
     private val reducer = ConversationDetailReducer(
         bottomBarReducer = bottomBarReducer,
         messagesReducer = messagesReducer,
-        metadataReducer = metadataReducer
+        metadataReducer = metadataReducer,
+        bottomSheetReducer = bottomSheetReducer
     )
 
     @Test
@@ -74,6 +78,12 @@ class ConversationDetailReducerTest(
                 verify { bottomBarReducer.newStateFrom(any(), operationAffectingBottomBar().bottomBarEvent) }
             } else {
                 verify { bottomBarReducer wasNot Called }
+            }
+
+            if (reducesBottomSheet) {
+                verify { bottomSheetReducer.newStateFrom(any(), any()) }
+            } else {
+                verify { bottomSheetReducer wasNot Called }
             }
 
             if (reducesErrorBar) {
@@ -101,7 +111,8 @@ class ConversationDetailReducerTest(
         val reducesBottomBar: Boolean,
         val reducesErrorBar: Boolean,
         val reducesExit: Boolean,
-        val expectedExitMessage: TextUiModel?
+        val expectedExitMessage: TextUiModel?,
+        val reducesBottomSheet: Boolean
     ) {
 
         fun operationAffectingBottomBar() = operation as ConversationDetailEvent.ConversationBottomBarEvent
@@ -113,8 +124,14 @@ class ConversationDetailReducerTest(
 
         val actions = listOf(
             ConversationDetailViewAction.Star affects Conversation,
-            ConversationDetailViewAction.Trash affects ExitWithMessage(string.conversation_moved_to_trash),
-            ConversationDetailViewAction.UnStar affects Conversation
+            ConversationDetailViewAction.Trash affects ExitWithMessage(TextUiModel(string.conversation_moved_to_trash)),
+            ConversationDetailViewAction.UnStar affects Conversation,
+            ConversationDetailViewAction.MoveToDestinationSelected(
+                SystemLabelId.Archive.toMailLabelSystem().id
+            ) affects BottomSheet,
+            ConversationDetailViewAction.MoveToDestinationConfirmed("spam") affects ExitWithMessage(
+                TextUiModel(string.conversation_moved_to_selected_destination, "spam")
+            )
         )
 
         val events = listOf(
@@ -126,7 +143,8 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorLoadingConversation affects Conversation,
             ConversationDetailEvent.ErrorLoadingMessages affects Messages,
             ConversationDetailEvent.ErrorMovingToTrash affects ErrorBar,
-            ConversationDetailEvent.MessagesData(emptyList()) affects Messages
+            ConversationDetailEvent.MessagesData(emptyList()) affects Messages,
+            ConversationDetailEvent.ErrorMovingConversation affects ErrorBar
         )
 
         @JvmStatic
@@ -146,7 +164,8 @@ private infix fun ConversationDetailOperation.affects(entity: Entity) = Conversa
     reducesBottomBar = entity == BottomBar,
     reducesErrorBar = entity == ErrorBar,
     reducesExit = entity == Exit,
-    expectedExitMessage = (entity as? ExitWithMessage)?.message?.let(::TextUiModel)
+    expectedExitMessage = (entity as? ExitWithMessage)?.message,
+    reducesBottomSheet = entity == BottomSheet
 )
 
 private sealed interface Entity
@@ -154,5 +173,6 @@ private object Messages : Entity
 private object Conversation : Entity
 private object BottomBar : Entity
 private object Exit : Entity
-private data class ExitWithMessage(@StringRes val message: Int) : Entity
+private data class ExitWithMessage(@StringRes val message: TextUiModel) : Entity
 private object ErrorBar : Entity
+private object BottomSheet : Entity
