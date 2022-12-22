@@ -20,8 +20,8 @@ package ch.protonmail.android.mailsettings.data.repository
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import arrow.core.Either
-import ch.protonmail.android.mailcommon.data.safeData
-import ch.protonmail.android.mailcommon.data.safeEdit
+import ch.protonmail.android.mailcommon.data.mapper.safeData
+import ch.protonmail.android.mailcommon.data.mapper.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
 import ch.protonmail.android.mailsettings.domain.model.CombinedContactsPreference
