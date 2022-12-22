@@ -30,6 +30,7 @@ import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -78,6 +79,11 @@ class MessageRepositoryImpl @Inject constructor(
         localDataSource.observeMessages(userId, conversationId).mapLatest { list ->
             list.toNonEmptyListOrNull()?.right() ?: DataError.Local.NoDataCached.left()
         }
+
+    @Suppress("NotImplementedDeclaration")
+    override fun getMessageBody(userId: UserId, messageId: MessageId): Either<DataError, MessageBody> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun addLabel(
         userId: UserId,

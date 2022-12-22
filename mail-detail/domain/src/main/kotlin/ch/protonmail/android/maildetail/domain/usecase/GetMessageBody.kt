@@ -31,5 +31,5 @@ class GetMessageBody @Inject constructor(
 ) {
 
     operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, MessageBody> =
-        TODO("Call appropriate repository method")
+        messageRepository.getMessageBody(userId, messageId)
 }
