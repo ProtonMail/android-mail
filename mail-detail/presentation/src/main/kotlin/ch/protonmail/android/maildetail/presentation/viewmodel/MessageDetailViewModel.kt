@@ -25,6 +25,7 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.maildetail.domain.usecase.GetMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
@@ -32,6 +33,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetEvent
@@ -54,6 +56,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
@@ -64,9 +67,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
+@Suppress("LongParameterList")
 class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMessageWithLabels: ObserveMessageWithLabels,
+    private val getMessageBody: GetMessageBody,
     private val messageDetailReducer: MessageDetailReducer,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveMessageDetailActions,
@@ -78,6 +83,7 @@ class MessageDetailViewModel @Inject constructor(
     private val unStarMessage: UnStarMessage,
     private val savedStateHandle: SavedStateHandle,
     private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
+    private val messageBodyUiModelMapper: MessageBodyUiModelMapper,
     private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper,
     private val moveMessage: MoveMessage
 ) : ViewModel() {
@@ -91,6 +97,7 @@ class MessageDetailViewModel @Inject constructor(
     init {
         Timber.d("Open detail screen for message ID: $messageId")
         observeMessageWithLabels(messageId)
+        getMessageBody(messageId)
         observeBottomBarActions(messageId)
         observeMailFolders()
     }
@@ -193,6 +200,17 @@ class MessageDetailViewModel @Inject constructor(
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)
+    }
+
+    private fun getMessageBody(messageId: MessageId) {
+        viewModelScope.launch {
+            val userId = primaryUserId.first()
+            val event = getMessageBody(userId, messageId).fold(
+                ifLeft = { MessageDetailEvent.ErrorGettingMessageBody },
+                ifRight = { MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(it)) }
+            )
+            emitNewStateFrom(event)
+        }
     }
 
     private fun observeBottomBarActions(messageId: MessageId) {

@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.GetMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
@@ -42,9 +43,11 @@ import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
@@ -67,6 +70,8 @@ import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
+import ch.protonmail.android.testdata.message.MessageBodyTestData
+import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -113,6 +118,9 @@ class MessageDetailViewModelTest {
             ).right()
         )
     }
+    private val getMessageBody = mockk<GetMessageBody> {
+        every { this@mockk(userId, any()) } returns MessageBodyTestData.messageBody.right()
+    }
     private val savedStateHandle = mockk<SavedStateHandle> {
         every { this@mockk.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns rawMessageId
     }
@@ -149,6 +157,9 @@ class MessageDetailViewModelTest {
     private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper> {
         every { toUiModel(any(), ContactTestData.contacts) } returns messageDetailHeaderUiModel
     }
+    private val messageBodyUiModelMapper = mockk<MessageBodyUiModelMapper> {
+        every { toUiModel(MessageBodyTestData.messageBody) } returns MessageBodyUiModelTestData.messageBodyUiModel
+    }
     private val moveMessage: MoveMessage = mockk {
         coEvery {
             this@mockk.invoke(
@@ -165,6 +176,7 @@ class MessageDetailViewModelTest {
             observePrimaryUserId = observePrimaryUserId,
             messageDetailReducer = messageDetailReducer,
             observeMessageWithLabels = observeMessageWithLabels,
+            getMessageBody = getMessageBody,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeDetailActions,
             observeDestinationMailLabels = observeMailLabels,
@@ -175,6 +187,7 @@ class MessageDetailViewModelTest {
             unStarMessage = unStarMessage,
             savedStateHandle = savedStateHandle,
             messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
+            messageBodyUiModelMapper = messageBodyUiModelMapper,
             messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper,
             moveMessage = moveMessage
         )
@@ -234,6 +247,7 @@ class MessageDetailViewModelTest {
         // When
         viewModel.state.test {
             initialStateEmitted()
+            messageBodyEmitted()
             // Then
             val expected = MessageMetadataState.Data(
                 MessageDetailActionBarUiModel(
@@ -243,6 +257,38 @@ class MessageDetailViewModelTest {
                 messageDetailHeaderUiModel
             )
             assertEquals(expected, awaitItem().messageMetadataState)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `message body state is data when use case returns body`() = runTest {
+        // When
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // Then
+            val expected = MessageBodyState.Data(
+                MessageBodyUiModelTestData.messageBodyUiModel
+            )
+            assertEquals(expected, awaitItem().messageBodyState)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `message body state is error when use case returns error`() = runTest {
+        // Given
+        val messageId = MessageId(rawMessageId)
+        every { getMessageBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
+
+        // When
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // Then
+            val expected = MessageBodyState.Error
+            assertEquals(expected, awaitItem().messageBodyState)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -431,11 +477,13 @@ class MessageDetailViewModelTest {
         viewModel.state.test {
             // Then
             initialStateEmitted()
+            messageBodyEmitted()
             val dataState = MessageDetailState.Loading.copy(
                 messageMetadataState = MessageMetadataState.Data(
                     MessageDetailActionBarUiModelTestData.uiModel,
                     messageDetailHeaderUiModel
-                )
+                ),
+                messageBodyState = MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyUiModel)
             )
             assertEquals(dataState, awaitItem())
             val bottomState = dataState.copy(
@@ -507,6 +555,15 @@ class MessageDetailViewModelTest {
 
     private suspend fun FlowTurbine<MessageDetailState>.initialStateEmitted() {
         assertEquals(MessageDetailState.Loading, awaitItem())
+    }
+
+    private suspend fun FlowTurbine<MessageDetailState>.messageBodyEmitted() {
+        assertEquals(
+            MessageDetailState.Loading.copy(
+                messageBodyState = MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyUiModel)
+            ),
+            awaitItem()
+        )
     }
 
     private fun givenNoLoggedInUser() {
