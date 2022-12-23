@@ -235,7 +235,7 @@ class ConversationDetailViewModel @Inject constructor(
         primaryUserId.mapLatest { userId ->
             val bottomSheetState = state.value.bottomSheetState
             if (bottomSheetState is BottomSheetState.Data) {
-                bottomSheetState.moveToDestinations.firstOrNull { it.isSelected }?.let { mailLabelUiModel ->
+                bottomSheetState.selected?.let { mailLabelUiModel ->
                     moveConversation(userId, conversationId, mailLabelUiModel.id.labelId).fold(
                         ifLeft = { ConversationDetailEvent.ErrorMovingConversation },
                         ifRight = { ConversationDetailViewAction.MoveToDestinationConfirmed(mailLabelText) }

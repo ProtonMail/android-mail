@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -82,10 +81,8 @@ fun ConversationDetailScreen(
 
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(
-            topStart = ProtonDimens.LargeCornerRadius,
-            topEnd = ProtonDimens.LargeCornerRadius
-        ),
+        sheetShape = ProtonTheme.shapes.bottomSheet,
+        sheetBackgroundColor = ProtonTheme.colors.backgroundNorm,
         sheetContent = {
             MoveToBottomSheetContent(
                 state = state.bottomSheetState,

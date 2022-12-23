@@ -52,6 +52,7 @@ import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
+import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
@@ -72,6 +73,7 @@ fun MessageDetailScreen(
             topStart = ProtonDimens.LargeCornerRadius,
             topEnd = ProtonDimens.LargeCornerRadius
         ),
+        sheetBackgroundColor = ProtonTheme.colors.backgroundNorm,
         sheetContent = {
             MoveToBottomSheetContent(
                 state = state.bottomSheetState,
