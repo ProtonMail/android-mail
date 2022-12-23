@@ -15,8 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
-
 package ch.protonmail.android.mailcommon.data.mapper
+
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
