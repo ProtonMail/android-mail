@@ -109,7 +109,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.MarkUnread -> markMessageUnread()
             is MessageViewAction.Trash -> trashMessage()
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
-            is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed()
+            is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
         }.exhaustive
     }
 
@@ -165,14 +165,14 @@ class MessageDetailViewModel @Inject constructor(
         }
     }
 
-    private fun onBottomSheetDestinationConfirmed() {
+    private fun onBottomSheetDestinationConfirmed(mailLabelText: String) {
         primaryUserId.mapLatest { userId ->
             val bottomSheetState = state.value.bottomSheetState
             if (bottomSheetState is BottomSheetState.Data) {
                 bottomSheetState.moveToDestinations.firstOrNull { it.isSelected }?.let {
                     moveMessage(userId, messageId, it.id.labelId).fold(
                         ifLeft = { MessageDetailEvent.ErrorMovingMessage },
-                        ifRight = { MessageViewAction.MoveToDestinationConfirmed }
+                        ifRight = { MessageViewAction.MoveToDestinationConfirmed(mailLabelText) }
                     )
                 } ?: throw IllegalStateException("No destination selected")
             } else {

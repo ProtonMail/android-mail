@@ -76,7 +76,7 @@ fun MessageDetailScreen(
             MoveToBottomSheetContent(
                 state = state.bottomSheetState,
                 onFolderSelected = { viewModel.submit(MessageViewAction.MoveToDestinationSelected(it)) },
-                onDoneClick = { viewModel.submit(MessageViewAction.MoveToDestinationConfirmed) }
+                onDoneClick = { viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(it)) }
             )
         }
     ) {

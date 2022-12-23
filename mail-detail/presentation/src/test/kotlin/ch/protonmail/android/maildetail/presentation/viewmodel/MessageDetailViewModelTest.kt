@@ -528,14 +528,14 @@ class MessageDetailViewModelTest {
 
         // When
         viewModel.state.test {
-            // Then
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
             advanceUntilIdle()
-            viewModel.submit(MessageViewAction.MoveToDestinationConfirmed)
+            viewModel.submit(MessageViewAction.MoveToDestinationConfirmed("spam"))
             advanceUntilIdle()
-            val item = lastEmittedItem()
-            assertEquals(Unit, item.exitScreenEffect.consume())
+
+            // Then
+            assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
             coVerify { moveMessage.invoke(userId, MessageId(rawMessageId), MailLabelId.System.Spam.labelId) }
         }
     }
@@ -546,7 +546,7 @@ class MessageDetailViewModelTest {
         coEvery { moveMessage(userId, MessageId(rawMessageId), any()) } returns DataError.Local.NoDataCached.left()
 
         // When
-        viewModel.submit(MessageViewAction.MoveToDestinationConfirmed)
+        viewModel.submit(MessageViewAction.MoveToDestinationConfirmed("spam"))
         advanceUntilIdle()
 
         // Then

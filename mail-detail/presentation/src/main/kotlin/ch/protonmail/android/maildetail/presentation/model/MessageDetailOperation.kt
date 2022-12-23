@@ -69,5 +69,5 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object MarkUnread : MessageViewAction
     object Trash : MessageViewAction
     data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MessageViewAction, AffectingBottomSheet
-    object MoveToDestinationConfirmed : MessageViewAction
+    data class MoveToDestinationConfirmed(val mailLabelText: String) : MessageViewAction
 }

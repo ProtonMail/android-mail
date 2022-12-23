@@ -66,7 +66,7 @@ class MessageDetailReducer @Inject constructor(
     private fun MessageDetailState.toNewExitStateFrom(
         operation: MessageDetailOperation
     ): Effect<Unit> = when (operation) {
-        MessageViewAction.MarkUnread, MessageViewAction.MoveToDestinationConfirmed -> Effect.of(Unit)
+        MessageViewAction.MarkUnread -> Effect.of(Unit)
         else -> exitScreenEffect
     }
 
@@ -74,6 +74,12 @@ class MessageDetailReducer @Inject constructor(
         operation: MessageDetailOperation
     ): Effect<TextUiModel> = when (operation) {
         MessageViewAction.Trash -> Effect.of(TextUiModel(R.string.message_moved_to_trash))
+        is MessageViewAction.MoveToDestinationConfirmed -> Effect.of(
+            TextUiModel(
+                R.string.message_moved_to_selected_destination,
+                operation.mailLabelText
+            )
+        )
         else -> exitScreenWithMessageEffect
     }
 
