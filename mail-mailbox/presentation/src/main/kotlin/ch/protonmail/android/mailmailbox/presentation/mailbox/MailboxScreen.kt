@@ -61,8 +61,8 @@ import ch.protonmail.android.mailmailbox.presentation.UnreadItemsFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
@@ -205,6 +205,11 @@ private fun MailboxSwipeRefresh(
     modifier: Modifier = Modifier
 ) {
 
+    val isError = when (items.loadState.refresh) {
+        is LoadState.Error -> true
+        else -> false
+    }
+
     val isLoading = when {
         items.loadState.refresh is LoadState.Loading -> true
         items.loadState.append is LoadState.Loading -> true
@@ -223,7 +228,14 @@ private fun MailboxSwipeRefresh(
         }
     ) {
 
-        if (isLoading.not() && items.itemCount == 0) {
+        if (isError && items.itemCount == 0) {
+            MailboxError(
+                modifier = Modifier.scrollable(
+                    rememberScrollableState(consumeScrollDelta = { 0f }),
+                    orientation = Orientation.Vertical
+                )
+            )
+        } else if (isLoading.not() && items.itemCount == 0) {
             MailboxEmpty(
                 modifier = Modifier.scrollable(
                     rememberScrollableState(consumeScrollDelta = { 0f }),
@@ -290,10 +302,23 @@ private fun MailboxEmpty(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+private fun MailboxError(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .testTag(MailboxScreen.MailboxErrorTestTag)
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text("You are offline, unable to retrieve items")
+    }
+}
+
 object MailboxScreen {
 
     const val ListProgressTestTag = "MailboxListProgress"
     const val MailboxEmptyTestTag = "MailboxEmpty"
+    const val MailboxErrorTestTag = "MailboxError"
     const val TestTag = "MailboxScreen"
     const val ListTestTag = "MailboxList"
 
