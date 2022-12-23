@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import androidx.annotation.StringRes
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -173,6 +172,6 @@ private object Messages : Entity
 private object Conversation : Entity
 private object BottomBar : Entity
 private object Exit : Entity
-private data class ExitWithMessage(@StringRes val message: TextUiModel) : Entity
+private data class ExitWithMessage(val message: TextUiModel) : Entity
 private object ErrorBar : Entity
 private object BottomSheet : Entity

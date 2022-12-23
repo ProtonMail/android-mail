@@ -649,12 +649,13 @@ class ConversationDetailViewModelTest {
 
         // When
         viewModel.state.test {
-            // Then
             advanceUntilIdle()
             viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(selectedLabel.id))
             advanceUntilIdle()
             viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed("selectedLabel"))
             advanceUntilIdle()
+
+            // Then
             assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
         }
     }
