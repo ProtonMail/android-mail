@@ -174,7 +174,7 @@ class MessageDetailViewModel @Inject constructor(
                         ifLeft = { MessageDetailEvent.ErrorMovingMessage },
                         ifRight = { MessageViewAction.MoveToDestinationConfirmed }
                     )
-                } ?: MessageDetailEvent.ErrorMovingMessage
+                } ?: throw IllegalStateException("No destination selected")
             } else {
                 MessageDetailEvent.ErrorMovingMessage
             }

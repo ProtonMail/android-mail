@@ -240,7 +240,7 @@ class ConversationDetailViewModel @Inject constructor(
                         ifLeft = { ConversationDetailEvent.ErrorMovingConversation },
                         ifRight = { ConversationDetailViewAction.MoveToDestinationConfirmed(mailLabel) }
                     )
-                } ?: ConversationDetailEvent.ErrorMovingConversation
+                } ?: throw IllegalStateException("No destination selected")
             } else {
                 ConversationDetailEvent.ErrorMovingConversation
             }
