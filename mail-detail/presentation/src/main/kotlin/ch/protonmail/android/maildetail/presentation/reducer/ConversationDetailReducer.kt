@@ -110,7 +110,7 @@ class ConversationDetailReducer @Inject constructor(
         is ConversationDetailViewAction.MoveToDestinationConfirmed -> Effect.of(
             TextUiModel(
                 R.string.conversation_moved_to_selected_destination,
-                operation.mailLabel
+                operation.mailLabelText
             )
         )
         else -> exitScreenWithMessageEffect

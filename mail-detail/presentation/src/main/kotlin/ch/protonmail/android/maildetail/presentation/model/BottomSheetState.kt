@@ -24,7 +24,8 @@ import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 sealed interface BottomSheetState {
 
     data class Data(
-        val moveToDestinations: List<MailLabelUiModel>
+        val moveToDestinations: List<MailLabelUiModel>,
+        val selected: MailLabelUiModel?
     ) : BottomSheetState
 
     object Loading : BottomSheetState

@@ -30,20 +30,28 @@ class BottomSheetReducer @Inject constructor() {
 
     fun newStateFrom(currentState: BottomSheetState, event: BottomSheetOperation): BottomSheetState {
         return when (event) {
-            is BottomSheetEvent.Data -> BottomSheetState.Data(event.moveToDestinations)
+            is BottomSheetEvent.Data -> BottomSheetState.Data(event.moveToDestinations, null)
             is BottomSheetAction.MoveToDestinationSelected -> currentState.toNewSelectedState(event.mailLabelId)
         }
     }
 
-    private fun BottomSheetState.toNewSelectedState(mailLabelId: MailLabelId) = when (this) {
-        is BottomSheetState.Loading -> this
-        is BottomSheetState.Data -> this.copy(
-            moveToDestinations = moveToDestinations.map { mailLabelUiModel ->
-                when (mailLabelUiModel) {
-                    is MailLabelUiModel.Custom -> mailLabelUiModel.copy(isSelected = mailLabelUiModel.id == mailLabelId)
-                    is MailLabelUiModel.System -> mailLabelUiModel.copy(isSelected = mailLabelUiModel.id == mailLabelId)
-                }
+    private fun BottomSheetState.toNewSelectedState(mailLabelId: MailLabelId): BottomSheetState {
+
+        return when (this) {
+            is BottomSheetState.Loading -> this
+            is BottomSheetState.Data -> {
+                val listWithSelectedLabel = moveToDestinations.map { it.setSelectedIfLabelIdMatch(mailLabelId) }
+                this.copy(
+                    moveToDestinations = listWithSelectedLabel,
+                    selected = listWithSelectedLabel.first { it.id == mailLabelId }
+                )
             }
-        )
+        }
     }
+
+    private fun MailLabelUiModel.setSelectedIfLabelIdMatch(mailLabelId: MailLabelId) =
+        when (this) {
+            is MailLabelUiModel.Custom -> copy(isSelected = id == mailLabelId)
+            is MailLabelUiModel.System -> copy(isSelected = id == mailLabelId)
+        }
 }

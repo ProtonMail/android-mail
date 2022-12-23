@@ -71,5 +71,5 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
         val mailLabelId: MailLabelId
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
-    data class MoveToDestinationConfirmed(val mailLabel: String) : ConversationDetailViewAction
+    data class MoveToDestinationConfirmed(val mailLabelText: String) : ConversationDetailViewAction
 }

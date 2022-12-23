@@ -51,35 +51,37 @@ internal class BottomSheetReducerTest(
         private val updatedDestinations = MailLabelUiModelTestData.systemAndTwoCustomFolders
         private val destinationWithSpamSelected = MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected
         private val destinationWithCustomSelected = MailLabelUiModelTestData.spamAndCustomFolderWithCustomSelected
+        private val spamMailLabel = destinationWithSpamSelected.first()
+        private val customMailLabel = destinationWithCustomSelected.last()
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = BottomSheetState.Loading,
                 operation = BottomSheetEvent.Data(destinations),
-                expectedState = BottomSheetState.Data(destinations)
+                expectedState = BottomSheetState.Data(destinations, null)
             )
         )
 
         private val transitionsFromDataState = listOf(
             TestInput(
-                currentState = BottomSheetState.Data(destinations),
+                currentState = BottomSheetState.Data(destinations, null),
                 operation = BottomSheetEvent.Data(updatedDestinations),
-                expectedState = BottomSheetState.Data(updatedDestinations)
+                expectedState = BottomSheetState.Data(updatedDestinations, null)
             )
         )
 
         private val transitionFromDataStateToSelected = listOf(
             TestInput(
-                currentState = BottomSheetState.Data(destinations),
+                currentState = BottomSheetState.Data(destinations, null),
                 operation = BottomSheetAction.MoveToDestinationSelected(MailLabelId.System.Spam),
-                expectedState = BottomSheetState.Data(destinationWithSpamSelected)
+                expectedState = BottomSheetState.Data(destinationWithSpamSelected, spamMailLabel)
             ),
             TestInput(
-                currentState = BottomSheetState.Data(destinationWithSpamSelected),
+                currentState = BottomSheetState.Data(destinationWithSpamSelected, spamMailLabel),
                 operation = BottomSheetAction.MoveToDestinationSelected(
                     MailLabelId.Custom.Folder(LabelId("folder1"))
                 ),
-                expectedState = BottomSheetState.Data(destinationWithCustomSelected)
+                expectedState = BottomSheetState.Data(destinationWithCustomSelected, customMailLabel)
             )
         )
 

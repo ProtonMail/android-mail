@@ -25,6 +25,11 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,6 +38,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -50,6 +56,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
+import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSnackbarHost
@@ -62,6 +69,7 @@ import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
@@ -69,17 +77,36 @@ fun ConversationDetailScreen(
     viewModel: ConversationDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
-    ConversationDetailScreen(
-        modifier = modifier,
-        state = state,
-        actions = ConversationDetailScreen.Actions(
-            onExit = onExit,
-            onStarClick = { viewModel.submit(ConversationDetailViewAction.Star) },
-            onTrashClick = { viewModel.submit(ConversationDetailViewAction.Trash) },
-            onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) },
-            onUnreadClick = { viewModel.submit(ConversationDetailViewAction.MarkUnread) }
+    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val scope = rememberCoroutineScope()
+
+    ModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetShape = RoundedCornerShape(
+            topStart = ProtonDimens.LargeCornerRadius,
+            topEnd = ProtonDimens.LargeCornerRadius
+        ),
+        sheetContent = {
+            MoveToBottomSheetContent(
+                state = state.bottomSheetState,
+                onFolderSelected = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(it)) },
+                onDoneClick = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed(it)) }
+            )
+        }
+    ) {
+        ConversationDetailScreen(
+            modifier = modifier,
+            state = state,
+            actions = ConversationDetailScreen.Actions(
+                onExit = onExit,
+                onStarClick = { viewModel.submit(ConversationDetailViewAction.Star) },
+                onTrashClick = { viewModel.submit(ConversationDetailViewAction.Trash) },
+                onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) },
+                onUnreadClick = { viewModel.submit(ConversationDetailViewAction.MarkUnread) },
+                onMoveToClick = { scope.launch { bottomSheetState.show() } }
+            )
         )
-    )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -142,7 +169,7 @@ fun ConversationDetailScreen(
                     onMarkUnread = actions.onUnreadClick,
                     onStar = { Timber.d("conversation onStar clicked") },
                     onUnstar = { Timber.d("conversation onUnstar clicked") },
-                    onMove = { Timber.d("conversation onMove clicked") },
+                    onMove = actions.onMoveToClick,
                     onLabel = { Timber.d("conversation onLabel clicked") },
                     onTrash = actions.onTrashClick,
                     onDelete = { Timber.d("conversation onDelete clicked") },
@@ -220,7 +247,8 @@ object ConversationDetailScreen {
         val onStarClick: () -> Unit,
         val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
-        val onUnreadClick: () -> Unit
+        val onUnreadClick: () -> Unit,
+        val onMoveToClick: () -> Unit
     ) {
 
         companion object {
@@ -230,7 +258,8 @@ object ConversationDetailScreen {
                 onStarClick = {},
                 onTrashClick = {},
                 onUnStarClick = {},
-                onUnreadClick = {}
+                onUnreadClick = {},
+                onMoveToClick = {}
             )
         }
     }

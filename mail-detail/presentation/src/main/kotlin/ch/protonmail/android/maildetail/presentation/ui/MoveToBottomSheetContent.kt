@@ -61,20 +61,21 @@ import me.proton.core.label.domain.entity.LabelId
 fun MoveToBottomSheetContent(
     state: BottomSheetState,
     onFolderSelected: (MailLabelId) -> Unit,
-    onDoneClick: () -> Unit
+    onDoneClick: (String) -> Unit
 ) {
     when (state) {
-        is BottomSheetState.Data -> MoveToBottomSheetContent(state.moveToDestinations, onFolderSelected, onDoneClick)
+        is BottomSheetState.Data -> MoveToBottomSheetContent(state, onFolderSelected, onDoneClick)
         is BottomSheetState.Loading -> ProtonCenteredProgress()
     }
 }
 
 @Composable
 fun MoveToBottomSheetContent(
-    folderList: List<MailLabelUiModel>,
+    dataState: BottomSheetState.Data,
     onFolderSelected: (MailLabelId) -> Unit,
-    onDoneClick: () -> Unit
+    onDoneClick: (String) -> Unit
 ) {
+    val selectedMailLabel = dataState.selected?.text?.string()
     Column {
         Row(
             modifier = Modifier
@@ -87,15 +88,15 @@ fun MoveToBottomSheetContent(
                 style = ProtonTheme.typography.default
             )
             Text(
-                modifier = Modifier.clickable { onDoneClick() },
+                modifier = Modifier.clickable { selectedMailLabel?.let(onDoneClick) },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
                 style = ProtonTheme.typography.default,
-                color = ProtonTheme.colors.interactionNorm(folderList.firstOrNull { it.isSelected } != null)
+                color = ProtonTheme.colors.interactionNorm(dataState.selected != null)
             )
         }
         Divider()
         LazyColumn {
-            items(folderList) {
+            items(dataState.moveToDestinations) {
                 ProtonRawListItem(
                     modifier = Modifier
                         .clickable { onFolderSelected(it.id) }
@@ -113,9 +114,10 @@ fun MoveToBottomSheetContent(
                     Text(
                         text = it.text.string(),
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
                     )
-                    Spacer(modifier = Modifier.weight(1f))
+                    Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
                     if (it.isSelected) {
                         Icon(
                             modifier = Modifier
@@ -136,47 +138,61 @@ fun MoveToBottomSheetContent(
 @Composable
 fun MoveToBottomSheetContentPreview() {
     MoveToBottomSheetContent(
-        folderList = listOf(
-            MailLabelUiModel.System(
-                id = MailLabelId.System.Spam,
-                text = TextUiModel.TextRes(MailLabelId.System.Spam.systemLabelId.textRes()),
-                icon = MailLabelId.System.Spam.systemLabelId.iconRes(),
-                iconTint = null,
-                isSelected = true,
-                count = null
-            ),
-            MailLabelUiModel.Custom(
-                id = MailLabelId.Custom.Folder(LabelId("folder1")),
-                text = TextUiModel.Text("Folder1"),
-                icon = R.drawable.ic_proton_folders_filled,
-                iconTint = Color.Blue,
-                isSelected = false,
-                count = 1,
-                isVisible = true,
-                isExpanded = true,
-                iconPaddingStart = 0.dp
-            ),
-            MailLabelUiModel.Custom(
-                id = MailLabelId.Custom.Folder(LabelId("folder2")),
-                text = TextUiModel.Text("Folder2"),
-                icon = R.drawable.ic_proton_folder_filled,
-                iconTint = Color.Red,
-                isSelected = true,
-                count = 2,
-                isVisible = true,
-                isExpanded = true,
-                iconPaddingStart = ProtonDimens.DefaultSpacing * 1
-            ),
-            MailLabelUiModel.Custom(
-                id = MailLabelId.Custom.Folder(LabelId("folder3")),
-                text = TextUiModel.Text("Folder3"),
-                icon = R.drawable.ic_proton_folder_filled,
-                iconTint = Color.Yellow,
-                isSelected = false,
-                count = null,
-                isVisible = true,
-                isExpanded = true,
-                iconPaddingStart = ProtonDimens.DefaultSpacing * 2
+        dataState = BottomSheetState.Data(
+            selected = null,
+            moveToDestinations = listOf(
+                MailLabelUiModel.System(
+                    id = MailLabelId.System.Spam,
+                    text = TextUiModel.TextRes(MailLabelId.System.Spam.systemLabelId.textRes()),
+                    icon = MailLabelId.System.Spam.systemLabelId.iconRes(),
+                    iconTint = null,
+                    isSelected = true,
+                    count = null
+                ),
+                MailLabelUiModel.Custom(
+                    id = MailLabelId.Custom.Folder(LabelId("folder1")),
+                    text = TextUiModel.Text("Folder1"),
+                    icon = R.drawable.ic_proton_folders_filled,
+                    iconTint = Color.Blue,
+                    isSelected = false,
+                    count = 1,
+                    isVisible = true,
+                    isExpanded = true,
+                    iconPaddingStart = 0.dp
+                ),
+                MailLabelUiModel.Custom(
+                    id = MailLabelId.Custom.Folder(LabelId("folder2")),
+                    text = TextUiModel.Text("Folder2"),
+                    icon = R.drawable.ic_proton_folder_filled,
+                    iconTint = Color.Red,
+                    isSelected = true,
+                    count = 2,
+                    isVisible = true,
+                    isExpanded = true,
+                    iconPaddingStart = ProtonDimens.DefaultSpacing * 1
+                ),
+                MailLabelUiModel.Custom(
+                    id = MailLabelId.Custom.Folder(LabelId("folder3")),
+                    text = TextUiModel.Text("Folder3"),
+                    icon = R.drawable.ic_proton_folder_filled,
+                    iconTint = Color.Yellow,
+                    isSelected = false,
+                    count = null,
+                    isVisible = true,
+                    isExpanded = true,
+                    iconPaddingStart = ProtonDimens.DefaultSpacing * 2
+                ),
+                MailLabelUiModel.Custom(
+                    id = MailLabelId.Custom.Folder(LabelId("really long folder name")),
+                    text = TextUiModel.Text("THis folder is really long so that truncation can be tested"),
+                    icon = R.drawable.ic_proton_folders_filled,
+                    iconTint = Color.Blue,
+                    isSelected = true,
+                    count = 1,
+                    isVisible = true,
+                    isExpanded = true,
+                    iconPaddingStart = 0.dp
+                )
             )
         ),
         onFolderSelected = {},

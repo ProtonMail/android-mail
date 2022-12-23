@@ -53,7 +53,8 @@ object ConversationDetailsPreviewData {
             )
         ),
         bottomSheetState = BottomSheetState.Data(
-            moveToDestinations = emptyList()
+            moveToDestinations = emptyList(),
+            selected = null
         ),
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),

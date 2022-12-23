@@ -152,7 +152,7 @@ class MessageDetailReducerTest(
             messageMetadataState = MessageMetadataState.Data(actionBarUiModel, detailHeaderUiModel),
             messageBodyState = MessageBodyState.Data(messageBodyUiModel),
             bottomBarState = BottomBarState.Data(listOf(ActionUiModelTestData.markUnread)),
-            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder),
+            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder, null),
             exitScreenEffect = Effect.empty(),
             exitScreenWithMessageEffect = Effect.empty(),
             error = Effect.empty()

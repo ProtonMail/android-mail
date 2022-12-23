@@ -49,7 +49,7 @@ object MessageDetailsPreviewData {
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
         ),
-        bottomSheetState = BottomSheetState.Data(listOf()),
+        bottomSheetState = BottomSheetState.Data(moveToDestinations = listOf(), selected = null),
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty()

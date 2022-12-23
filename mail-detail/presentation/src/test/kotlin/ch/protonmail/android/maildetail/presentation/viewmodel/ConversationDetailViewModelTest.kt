@@ -466,7 +466,7 @@ class ConversationDetailViewModelTest {
             assertEquals(bottomBarState, awaitItem())
 
             val bottomSheetState = ConversationDetailState.Loading.copy(
-                bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder)
+                bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder, null)
             )
             assertEquals(bottomSheetState, awaitItem())
             viewModel.submit(ConversationDetailViewAction.Star)
@@ -624,7 +624,7 @@ class ConversationDetailViewModelTest {
         } returns ConversationSample.WeatherForecast.right()
         val selectedLabel = MailLabelUiModelTestData.spamAndCustomFolder.first()
         val initialState = ConversationDetailState.Loading.copy(
-            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder)
+            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder, null)
         )
 
         coEvery {
@@ -633,7 +633,10 @@ class ConversationDetailViewModelTest {
                 ConversationDetailViewAction.MoveToDestinationSelected(selectedLabel.id)
             )
         } returns initialState.copy(
-            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected)
+            bottomSheetState = BottomSheetState.Data(
+                MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected,
+                MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected.first()
+            )
         )
 
         coEvery {
@@ -696,7 +699,7 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.ConversationBottomSheetEvent>()
             )
         } returns ConversationDetailState.Loading.copy(
-            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder)
+            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder, null)
         )
     }
 
