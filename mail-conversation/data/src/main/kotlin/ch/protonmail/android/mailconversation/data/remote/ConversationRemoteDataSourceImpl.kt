@@ -18,7 +18,10 @@
 
 package ch.protonmail.android.mailconversation.data.remote
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
@@ -44,7 +47,7 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
     override suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey
-    ): List<ConversationWithContext> = apiProvider.get<ConversationApi>(userId).invoke {
+    ): Either<DataError.Remote, List<ConversationWithContext>> = apiProvider.get<ConversationApi>(userId).invoke {
         require(pageKey.size <= ConversationApi.maxPageSize)
         getConversations(
             labelIds = listOf(pageKey.filter.labelId).map { it.id },
@@ -67,7 +70,7 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
             },
             pageSize = pageKey.size
         ).conversations.map { it.toConversationWithContext(userId, pageKey.filter.labelId) }
-    }.valueOrThrow
+    }.toEither()
 
     override suspend fun getConversationWithMessages(
         userId: UserId,

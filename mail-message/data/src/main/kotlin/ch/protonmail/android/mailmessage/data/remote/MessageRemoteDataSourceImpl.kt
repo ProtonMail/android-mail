@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.mailmessage.data.remote
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.data.mapper.toEither
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
 import ch.protonmail.android.mailmessage.domain.entity.Message
@@ -42,7 +45,7 @@ class MessageRemoteDataSourceImpl @Inject constructor(
     override suspend fun getMessages(
         userId: UserId,
         pageKey: PageKey
-    ): List<Message> = apiProvider.get<MessageApi>(userId).invoke {
+    ): Either<DataError.Remote, List<Message>> = apiProvider.get<MessageApi>(userId).invoke {
         require(pageKey.size <= MessageApi.maxPageSize)
         getMessages(
             labelIds = listOf(pageKey.filter.labelId).map { it.id },
@@ -65,7 +68,7 @@ class MessageRemoteDataSourceImpl @Inject constructor(
             },
             pageSize = pageKey.size
         ).messages.map { it.toMessage(userId) }
-    }.valueOrThrow
+    }.toEither()
 
     override suspend fun getMessage(
         userId: UserId,

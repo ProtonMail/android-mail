@@ -18,19 +18,21 @@
 
 package ch.protonmail.android.mailmessage.data
 
-import java.io.IOException
 import app.cash.turbine.test
+import arrow.core.getOrHandle
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
+import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -64,7 +66,7 @@ class MessageRepositoryImplTest {
             getMessage(id = "2", time = 2000),
             getMessage(id = "3", time = 3000),
             getMessage(id = "4", time = 4000)
-        )
+        ).right()
         coEvery {
             getMessage(userId = any(), messageId = any())
         } returns MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
@@ -103,10 +105,11 @@ class MessageRepositoryImplTest {
         coEvery { localDataSource.getMessages(any(), any()) } returns localMessages
         coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
         coEvery { localDataSource.getClippedPageKey(any(), any()) } returns pageKey
-        coEvery { remoteDataSource.getMessages(any(), any()) } returns remoteMessages
+        coEvery { remoteDataSource.getMessages(any(), any()) } returns remoteMessages.right()
 
         // When
         val result = messageRepository.getMessages(userId, pageKey)
+            .getOrHandle(::error)
 
         // Then
         assertEquals(3, result.size)
@@ -116,23 +119,24 @@ class MessageRepositoryImplTest {
     }
 
     @Test
-    fun `return local if remote fail`() = runTest {
+    fun `return error if remote fails`() = runTest {
         // Given
         val pageKey = PageKey()
         val localMessages = listOf(
             getMessage(id = "1", time = 1000),
             getMessage(id = "2", time = 2000)
         )
+        val error = DataErrorSample.Unreachable.left()
         coEvery { localDataSource.getMessages(any(), any()) } returns localMessages
         coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
         coEvery { localDataSource.getClippedPageKey(any(), any()) } returns pageKey
-        coEvery { remoteDataSource.getMessages(any(), any()) } throws IOException()
+        coEvery { remoteDataSource.getMessages(any(), any()) } returns error
 
         // When
         val result = messageRepository.getMessages(userId, pageKey)
 
         // Then
-        assertEquals(2, result.size)
+        assertEquals(error, result)
         coVerify(exactly = 1) { localDataSource.isLocalPageValid(userId, pageKey, localMessages) }
         coVerify(exactly = 1) { remoteDataSource.getMessages(userId, pageKey) }
     }
@@ -152,10 +156,11 @@ class MessageRepositoryImplTest {
         )
         coEvery { localDataSource.getMessages(any(), any()) } returns localMessages
         coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns true
-        coEvery { remoteDataSource.getMessages(any(), any()) } returns remoteMessages
+        coEvery { remoteDataSource.getMessages(any(), any()) } returns remoteMessages.right()
 
         // When
         val messages = messageRepository.getMessages(userId, pageKey)
+            .getOrHandle(::error)
 
         // Then
         assertEquals(2, messages.size)
@@ -171,9 +176,10 @@ class MessageRepositoryImplTest {
         coEvery { localDataSource.getMessages(any(), any()) } returns emptyList()
         coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
         coEvery { localDataSource.getClippedPageKey(any(), any()) } returns clippedPageKey
-        coEvery { remoteDataSource.getMessages(any(), any()) } returns emptyList()
+        coEvery { remoteDataSource.getMessages(any(), any()) } returns emptyList<Message>().right()
         // When
         val messages = messageRepository.getMessages(userId, pageKey)
+            .getOrHandle(::error)
 
         // Then
         assertEquals(0, messages.size)

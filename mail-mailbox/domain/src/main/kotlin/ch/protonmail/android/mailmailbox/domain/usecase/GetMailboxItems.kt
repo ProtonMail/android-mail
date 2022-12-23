@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmailbox.domain.mapper.ConversationMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
@@ -46,16 +48,20 @@ class GetMailboxItems @Inject constructor(
         userId: UserId,
         type: MailboxItemType,
         pageKey: PageKey = PageKey()
-    ): List<MailboxItem> {
+    ): Either<DataError, List<MailboxItem>> {
         val folders = labelRepository.getLabels(userId, LabelType.MessageFolder)
         val labels = labelRepository.getLabels(userId, LabelType.MessageLabel)
         val labelsMaps = (labels + folders).associateBy { it.labelId }
         return when (type) {
-            MailboxItemType.Message -> messageRepository.getMessages(userId, pageKey).map {
-                messageMailboxItemMapper.toMailboxItem(it, labelsMaps)
+            MailboxItemType.Message -> messageRepository.getMessages(userId, pageKey).map { list ->
+                list.map {
+                    messageMailboxItemMapper.toMailboxItem(it, labelsMaps)
+                }
             }
-            MailboxItemType.Conversation -> conversationRepository.getConversations(userId, pageKey).map {
-                conversationMailboxItemMapper.toMailboxItem(it, labelsMaps)
+            MailboxItemType.Conversation -> conversationRepository.getConversations(userId, pageKey).map { list ->
+                list.map {
+                    conversationMailboxItemMapper.toMailboxItem(it, labelsMaps)
+                }
             }
         }
     }

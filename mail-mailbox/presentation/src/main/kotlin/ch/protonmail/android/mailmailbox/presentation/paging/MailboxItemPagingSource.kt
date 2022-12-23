@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailmailbox.presentation.paging
 
-import java.io.IOException
 import androidx.paging.PagingState
 import androidx.room.RoomDatabase
+import arrow.core.getOrHandle
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -77,25 +77,21 @@ class MailboxItemPagingSource @AssistedInject constructor(
     override suspend fun loadPage(
         params: LoadParams<MailboxPageKey>
     ): LoadResult<MailboxPageKey, MailboxItem> {
-        try {
-            val key = params.key ?: initialPageKey
-            val size = max(key.pageKey.size, params.loadSize)
+        val key = params.key ?: initialPageKey
+        val size = max(key.pageKey.size, params.loadSize)
 
-            val items = getMailboxItems(type, key.copy(pageKey = key.pageKey.copy(size = size)))
-            Timber.d("loadItems: ${items.size}/$size -> ${key.pageKey}")
+        val items = getMailboxItems(type, key.copy(pageKey = key.pageKey.copy(size = size)))
+            .getOrHandle { return LoadResult.Error(RuntimeException(it.toString())) }
+        Timber.d("loadItems: ${items.size}/$size -> ${key.pageKey}")
 
-            val adjacentKeys = getAdjacentPageKeys(items, key.pageKey, initialPageKey.pageKey.size)
-            val prev = key.copy(pageKey = adjacentKeys.prev)
-            val next = key.copy(pageKey = adjacentKeys.next)
-            return LoadResult.Page(
-                data = items,
-                prevKey = prev.takeIf { items.isNotEmpty() },
-                nextKey = next.takeIf { items.isNotEmpty() }
-            )
-        } catch (e: IOException) {
-            Timber.d(e)
-            return LoadResult.Error(e)
-        }
+        val adjacentKeys = getAdjacentPageKeys(items, key.pageKey, initialPageKey.pageKey.size)
+        val prev = key.copy(pageKey = adjacentKeys.prev)
+        val next = key.copy(pageKey = adjacentKeys.next)
+        return LoadResult.Page(
+            data = items,
+            prevKey = prev.takeIf { items.isNotEmpty() },
+            nextKey = next.takeIf { items.isNotEmpty() }
+        )
     }
 
     override fun getRefreshKey(

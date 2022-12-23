@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
+import arrow.core.getOrHandle
+import arrow.core.right
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmailbox.domain.mapper.ConversationMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
@@ -54,13 +56,13 @@ class GetMultiUserMailboxItemsTest {
             buildMessage(userId, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId, "2", time = 2000, labelIds = listOf("4")),
             buildMessage(userId, "3", time = 3000, labelIds = listOf("0", "1"))
-        )
+        ).right()
         coEvery { this@mockk.getMessages(userId1, any()) } returns listOf(
             // userId
             buildMessage(userId1, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId1, "2", time = 2000, labelIds = listOf("4")),
             buildMessage(userId1, "3", time = 3000, labelIds = listOf("0", "1"))
-        )
+        ).right()
     }
     private val conversationRepository = mockk<ConversationRepository> {
         coEvery { getConversations(userId, any()) } returns listOf(
@@ -68,13 +70,13 @@ class GetMultiUserMailboxItemsTest {
             ConversationWithContextTestData.conversation1Labeled,
             ConversationWithContextTestData.conversation2Labeled,
             ConversationWithContextTestData.conversation3Labeled
-        )
+        ).right()
         coEvery { getConversations(userId1, any()) } returns listOf(
             // userId
             ConversationWithContextTestData.User2.conversation1Labeled,
             ConversationWithContextTestData.User2.conversation2Labeled,
             ConversationWithContextTestData.User2.conversation3Labeled
-        )
+        ).right()
     }
     private val labelRepository = mockk<LabelRepository> {
         coEvery { this@mockk.getLabels(userId, any()) } returns listOf(
@@ -126,6 +128,7 @@ class GetMultiUserMailboxItemsTest {
 
         // When
         val mailboxItems = usecase.invoke(Message, mailboxPageKey)
+            .getOrHandle(::error)
 
         // Then
         coVerify { labelRepository.getLabels(userId, MessageLabel) }
@@ -196,6 +199,7 @@ class GetMultiUserMailboxItemsTest {
 
         // When
         val mailboxItems = usecase.invoke(Conversation, mailboxPageKey)
+            .getOrHandle(::error)
 
         // Then
         coVerify { labelRepository.getLabels(userId, MessageLabel) }

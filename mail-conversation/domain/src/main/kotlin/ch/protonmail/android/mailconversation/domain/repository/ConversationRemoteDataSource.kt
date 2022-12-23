@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailconversation.domain.repository
 
+import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
@@ -35,7 +37,7 @@ interface ConversationRemoteDataSource {
     suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey
-    ): List<ConversationWithContext>
+    ): Either<DataError.Remote, List<ConversationWithContext>>
 
     suspend fun getConversationWithMessages(
         userId: UserId,

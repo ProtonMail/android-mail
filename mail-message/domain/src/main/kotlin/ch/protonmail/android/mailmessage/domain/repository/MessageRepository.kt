@@ -38,7 +38,7 @@ interface MessageRepository {
     suspend fun getMessages(
         userId: UserId,
         pageKey: PageKey = PageKey()
-    ): List<Message>
+    ): Either<DataError, List<Message>>
 
     /**
      * Mark local data as stale for [userId], by [labelId].

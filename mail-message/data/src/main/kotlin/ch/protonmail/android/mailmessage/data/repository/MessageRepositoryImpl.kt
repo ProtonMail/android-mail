@@ -79,12 +79,12 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun getMessages(
         userId: UserId,
         pageKey: PageKey
-    ): List<Message> = localDataSource.getMessages(
+    ): Either<DataError, List<Message>> = localDataSource.getMessages(
         userId = userId,
         pageKey = pageKey
     ).let { messages ->
-        if (localDataSource.isLocalPageValid(userId, pageKey, messages)) messages
-        else runCatching { fetchMessages(userId, pageKey) }.getOrElse { messages }
+        if (localDataSource.isLocalPageValid(userId, pageKey, messages)) messages.right()
+        else fetchMessages(userId, pageKey)
     }
 
     override suspend fun markAsStale(
@@ -191,14 +191,14 @@ class MessageRepositoryImpl @Inject constructor(
     private suspend fun fetchMessages(
         userId: UserId,
         pageKey: PageKey
-    ) = localDataSource.getClippedPageKey(
+    ): Either<DataError.Remote, List<Message>> = localDataSource.getClippedPageKey(
         userId = userId,
         pageKey = pageKey.copy(size = min(MessageApi.maxPageSize, pageKey.size))
     ).let { adaptedPageKey ->
         remoteDataSource.getMessages(
             userId = userId,
             pageKey = adaptedPageKey
-        ).also { messages -> insertMessages(userId, adaptedPageKey, messages) }
+        ).tap { messages -> insertMessages(userId, adaptedPageKey, messages) }
     }
 
     private suspend fun insertMessages(

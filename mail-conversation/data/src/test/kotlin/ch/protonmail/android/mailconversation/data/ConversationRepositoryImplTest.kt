@@ -18,17 +18,19 @@
 
 package ch.protonmail.android.mailconversation.data
 
-import java.io.IOException
 import app.cash.turbine.test
+import arrow.core.getOrHandle
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.data.repository.ConversationRepositoryImpl
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
@@ -71,7 +73,7 @@ class ConversationRepositoryImplTest {
             ConversationWithContextTestData.conversation2,
             ConversationWithContextTestData.conversation3,
             ConversationWithContextTestData.conversation4
-        )
+        ).right()
     }
 
     private val coroutineScopeProvider = TestCoroutineScopeProvider
@@ -104,10 +106,11 @@ class ConversationRepositoryImplTest {
         coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns local
         coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns false
         coEvery { conversationLocalDataSource.getClippedPageKey(any(), any()) } returns pageKey
-        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns remote
+        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns remote.right()
 
         // When
         val result = conversationRepository.getConversations(userId, pageKey)
+            .getOrHandle(::error)
 
         // Then
         assertEquals(3, result.size)
@@ -117,23 +120,24 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `return local if remote fail`() = runTest {
+    fun `return error if remote fails`() = runTest {
         // Given
         val pageKey = PageKey()
         val local = listOf(
             ConversationWithContextTestData.conversation1,
             ConversationWithContextTestData.conversation2
         )
+        val error = DataErrorSample.Unreachable.left()
         coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns local
         coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns false
         coEvery { conversationLocalDataSource.getClippedPageKey(any(), any()) } returns pageKey
-        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } throws IOException()
+        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns error
 
         // When
         val result = conversationRepository.getConversations(userId, pageKey)
 
         // Then
-        assertEquals(2, result.size)
+        assertEquals(error, result)
         coVerify(exactly = 1) { conversationLocalDataSource.isLocalPageValid(userId, pageKey, local) }
         coVerify(exactly = 1) { conversationRemoteDataSource.getConversations(userId, pageKey) }
     }
@@ -153,10 +157,11 @@ class ConversationRepositoryImplTest {
         )
         coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns local
         coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns true
-        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns remote
+        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns remote.right()
 
         // When
         val conversations = conversationRepository.getConversations(userId, pageKey)
+            .getOrHandle(::error)
 
         // Then
         assertEquals(2, conversations.size)
@@ -172,10 +177,12 @@ class ConversationRepositoryImplTest {
         coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns emptyList()
         coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns false
         coEvery { conversationLocalDataSource.getClippedPageKey(any(), any()) } returns clippedPageKey
-        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns emptyList()
+        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns
+            emptyList<ConversationWithContext>().right()
 
         // When
         val conversations = conversationRepository.getConversations(userId, pageKey)
+            .getOrHandle(::error)
 
         // Then
         assertEquals(0, conversations.size)

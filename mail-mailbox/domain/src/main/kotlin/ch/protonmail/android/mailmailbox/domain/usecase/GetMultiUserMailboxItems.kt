@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
+import arrow.core.Either
+import arrow.core.sequence
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
@@ -37,10 +40,11 @@ class GetMultiUserMailboxItems @Inject constructor(
     suspend operator fun invoke(
         type: MailboxItemType,
         pageKey: MailboxPageKey
-    ): List<MailboxItem> {
+    ): Either<DataError, List<MailboxItem>> {
         return pageKey.userIds
             .mapAsync { getMailboxItems(userId = it, type = type, pageKey = pageKey.pageKey) }
-            .mergeBy(pageKey)
+            .sequence()
+            .map { list -> list.mergeBy(pageKey) }
     }
 
     private fun List<List<MailboxItem>>.mergeBy(pageKey: MailboxPageKey) = flatten().let { list ->

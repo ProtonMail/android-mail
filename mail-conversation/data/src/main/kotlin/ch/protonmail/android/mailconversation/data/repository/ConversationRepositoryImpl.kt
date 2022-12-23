@@ -20,6 +20,7 @@ package ch.protonmail.android.mailconversation.data.repository
 
 import arrow.core.Either
 import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -78,12 +79,12 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey
-    ): List<ConversationWithContext> = conversationLocalDataSource.getConversations(
+    ): Either<DataError.Remote, List<ConversationWithContext>> = conversationLocalDataSource.getConversations(
         userId = userId,
         pageKey = pageKey
     ).let { conversations ->
-        if (conversationLocalDataSource.isLocalPageValid(userId, pageKey, conversations)) conversations
-        else runCatching { fetchConversations(userId, pageKey) }.getOrElse { conversations }
+        if (conversationLocalDataSource.isLocalPageValid(userId, pageKey, conversations)) conversations.right()
+        else fetchConversations(userId, pageKey)
     }
 
     override suspend fun markAsStale(
@@ -208,14 +209,14 @@ class ConversationRepositoryImpl @Inject constructor(
     private suspend fun fetchConversations(
         userId: UserId,
         pageKey: PageKey
-    ) = conversationLocalDataSource.getClippedPageKey(
+    ): Either<DataError.Remote, List<ConversationWithContext>> = conversationLocalDataSource.getClippedPageKey(
         userId = userId,
         pageKey = pageKey.copy(size = min(ConversationApi.maxPageSize, pageKey.size))
     ).let { adaptedPageKey ->
         conversationRemoteDataSource.getConversations(
             userId = userId,
             pageKey = adaptedPageKey
-        ).also { conversations -> insertConversations(userId, adaptedPageKey, conversations) }
+        ).tap { conversations -> insertConversations(userId, adaptedPageKey, conversations) }
     }
 
     private suspend fun insertConversations(

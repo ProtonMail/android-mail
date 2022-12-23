@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.remote
 
+import arrow.core.right
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
@@ -122,7 +123,7 @@ class MessageRemoteDataSourceImplTest {
             expected = listOf(
                 getMessage(userId, "2", time = 2000),
                 getMessage(userId, "1", time = 1000)
-            ),
+            ).right(),
             actual = messages
         )
     }

@@ -36,7 +36,7 @@ interface ConversationRepository {
     suspend fun getConversations(
         userId: UserId,
         pageKey: PageKey = PageKey()
-    ): List<ConversationWithContext>
+    ): Either<DataError.Remote, List<ConversationWithContext>>
 
     /**
      * Mark local data as stale for [userId], by [labelId].

@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.presentation.paging
 
-import java.io.IOException
 import android.util.Log
 import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
@@ -26,6 +25,9 @@ import androidx.paging.PagingState
 import androidx.room.InvalidationTracker
 import androidx.room.RoomDatabase
 import androidx.room.getQueryDispatcher
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Inbox
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
@@ -80,7 +82,7 @@ class MailboxItemPagingSourceTest {
     }
 
     private val getMailboxItems = mockk<GetMultiUserMailboxItems> {
-        coEvery { this@mockk.invoke(type = any(), pageKey = any()) } returns emptyList()
+        coEvery { this@mockk.invoke(type = any(), pageKey = any()) } returns emptyList<MailboxItem>().right()
     }
 
     private val getAdjacentPageKeys = mockk<GetAdjacentPageKeys> {
@@ -115,7 +117,7 @@ class MailboxItemPagingSourceTest {
     @Test
     fun `paging source load empty list`() = runTest {
         // Given
-        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns emptyList()
+        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns emptyList<MailboxItem>().right()
 
         assertEquals(
             // When
@@ -135,19 +137,15 @@ class MailboxItemPagingSourceTest {
     @Test
     fun `paging source load error`() = runTest {
         // Given
-        val exception = IOException("test")
-        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } throws exception
+        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns DataErrorSample.Unreachable.left()
 
-        assertEquals(
-            // When
-            actual = pagingSource().load(
-                PagingSource.LoadParams.Refresh(key = null, loadSize = 25, false)
-            ),
-            // Then
-            expected = PagingSource.LoadResult.Error(
-                throwable = exception
-            )
-        )
+        // when
+        val result = pagingSource()
+            .load(PagingSource.LoadParams.Refresh(key = null, loadSize = 25, false))
+
+        // then
+        assertIs<PagingSource.LoadResult.Error<MailboxPageKey, MailboxItem>>(result)
+        assertEquals(DataErrorSample.Unreachable.toString(), result.throwable.message)
     }
 
     @Test
@@ -178,7 +176,7 @@ class MailboxItemPagingSourceTest {
             buildMailboxItem(userId, "3", time = 3000),
             buildMailboxItem(userId, "2", time = 2000),
             buildMailboxItem(userId, "1", time = 1000)
-        )
+        ).right()
 
         // When
         val loadResult = pagingSource.load(
@@ -306,7 +304,7 @@ class MailboxItemPagingSourceTest {
             buildMailboxItem(userId, "2", time = 2000),
             buildMailboxItem(userId, "1", time = 1000)
         )
-        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns items
+        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns items.right()
 
         // When
         pagingSource.loadPage(

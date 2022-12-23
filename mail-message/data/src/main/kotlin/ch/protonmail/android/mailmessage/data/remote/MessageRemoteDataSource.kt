@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmessage.data.remote
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
@@ -32,7 +34,7 @@ interface MessageRemoteDataSource {
     suspend fun getMessages(
         userId: UserId,
         pageKey: PageKey
-    ): List<Message>
+    ): Either<DataError.Remote, List<Message>>
 
     /**
      * Get a [Message] for [userId], by [messageId].

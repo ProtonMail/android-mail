@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailconversation.data.remote
 
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.getConversationResource
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
@@ -123,7 +124,7 @@ class ConversationRemoteDataSourceImplTest {
             expected = listOf(
                 ConversationWithContextTestData.conversation2Ordered,
                 ConversationWithContextTestData.conversation1Ordered
-            ),
+            ).right(),
             actual = conversations
         )
     }

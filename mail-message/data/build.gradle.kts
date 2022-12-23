@@ -52,6 +52,7 @@ dependencies {
 
     api(project(":mail-pagination:domain"))
     implementation(project(":mail-pagination:data"))
+    implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-message:domain"))
