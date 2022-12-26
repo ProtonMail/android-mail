@@ -119,7 +119,7 @@ class MessageDetailViewModelTest {
         )
     }
     private val getMessageBody = mockk<GetMessageBody> {
-        every { this@mockk(userId, any()) } returns MessageBodyTestData.messageBody.right()
+        coEvery { this@mockk(userId, any()) } returns MessageBodyTestData.messageBody.right()
     }
     private val savedStateHandle = mockk<SavedStateHandle> {
         every { this@mockk.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns rawMessageId
@@ -280,7 +280,7 @@ class MessageDetailViewModelTest {
     fun `message body state is error when use case returns error`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        every { getMessageBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
+        coEvery { getMessageBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
 
         // When
         viewModel.state.test {

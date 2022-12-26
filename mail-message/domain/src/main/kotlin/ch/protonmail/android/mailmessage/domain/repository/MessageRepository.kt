@@ -23,8 +23,8 @@ import arrow.core.Nel
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
@@ -66,12 +66,20 @@ interface MessageRepository {
     ): Flow<Either<DataError.Local, Nel<Message>>>
 
     /**
-     * Get the [MessageBody] for a given [MessageId], for [userId] from the local storage
+     * Observe the [MessageWithBody] for a given [MessageId], for [userId]
      */
-    fun getMessageBody(
+    fun observeMessageWithBody(
         userId: UserId,
         messageId: MessageId
-    ): Either<DataError, MessageBody>
+    ): Flow<Either<DataError, MessageWithBody>>
+
+    /**
+     * Get the [MessageWithBody] for a given [MessageId], for [userId]
+     */
+    suspend fun getMessageWithBody(
+        userId: UserId,
+        messageId: MessageId
+    ): Either<DataError, MessageWithBody>
 
     /**
      * Adds the given [labelId] to the message with the given [messageId]

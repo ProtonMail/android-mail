@@ -20,5 +20,5 @@ package ch.protonmail.android.mailmessage.domain.entity
 
 data class MessageWithBody(
     val message: Message,
-    val messageBody: MessageBody?
+    val messageBody: MessageBody
 )

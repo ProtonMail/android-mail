@@ -23,6 +23,7 @@ import arrow.core.NonEmptyList
 import arrow.core.left
 import arrow.core.right
 import arrow.core.toNonEmptyListOrNull
+import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -30,15 +31,24 @@ import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.domain.entity.Message
-import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import com.dropbox.android.external.store4.Fetcher
+import com.dropbox.android.external.store4.SourceOfTruth
+import com.dropbox.android.external.store4.StoreBuilder
+import com.dropbox.android.external.store4.StoreRequest
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
+import me.proton.core.data.arch.ProtonStore
+import me.proton.core.data.arch.buildProtonStore
+import me.proton.core.data.arch.toDataResult
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.util.kotlin.CoroutineScopeProvider
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.min
@@ -46,8 +56,25 @@ import kotlin.math.min
 @Singleton
 class MessageRepositoryImpl @Inject constructor(
     private val remoteDataSource: MessageRemoteDataSource,
-    private val localDataSource: MessageLocalDataSource
+    private val localDataSource: MessageLocalDataSource,
+    coroutineScopeProvider: CoroutineScopeProvider
 ) : MessageRepository {
+
+    private data class MessageKey(val userId: UserId, val messageId: MessageId)
+
+    private val messageWithBodyStore: ProtonStore<MessageKey, MessageWithBody> = StoreBuilder.from(
+        fetcher = Fetcher.of { key: MessageKey ->
+            remoteDataSource.getMessage(key.userId, key.messageId)
+        },
+        sourceOfTruth = SourceOfTruth.of(
+            reader = { key: MessageKey ->
+                localDataSource.observeMessageWithBody(key.userId, key.messageId)
+            },
+            writer = { key, messageWithBody ->
+                localDataSource.upsertMessageWithBody(key.userId, messageWithBody)
+            }
+        )
+    ).scope(coroutineScopeProvider.GlobalIOSupervisedScope).buildProtonStore()
 
     override suspend fun getMessages(
         userId: UserId,
@@ -80,8 +107,20 @@ class MessageRepositoryImpl @Inject constructor(
             list.toNonEmptyListOrNull()?.right() ?: DataError.Local.NoDataCached.left()
         }
 
-    override fun getMessageBody(userId: UserId, messageId: MessageId): Either<DataError, MessageBody> =
-        Either.Left(DataError.Local.NoDataCached)
+    override fun observeMessageWithBody(
+        userId: UserId,
+        messageId: MessageId
+    ): Flow<Either<DataError, MessageWithBody>> =
+        messageWithBodyStore.stream(
+            StoreRequest.cached(MessageKey(userId, messageId), false)
+        ).mapLatest { it.toDataResult() }
+            .mapToEither()
+            .distinctUntilChanged()
+
+    override suspend fun getMessageWithBody(
+        userId: UserId,
+        messageId: MessageId
+    ): Either<DataError, MessageWithBody> = observeMessageWithBody(userId, messageId).first()
 
     override suspend fun addLabel(
         userId: UserId,

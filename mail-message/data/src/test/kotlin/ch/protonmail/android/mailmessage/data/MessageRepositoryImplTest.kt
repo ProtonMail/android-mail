@@ -32,10 +32,12 @@ import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Ordering
 import io.mockk.coEvery
@@ -48,7 +50,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
-import org.junit.Test
+import me.proton.core.test.kotlin.TestCoroutineScopeProvider
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MessageRepositoryImplTest {
@@ -62,6 +65,9 @@ class MessageRepositoryImplTest {
             getMessage(id = "3", time = 3000),
             getMessage(id = "4", time = 4000)
         )
+        coEvery {
+            getMessage(userId = any(), messageId = any())
+        } returns MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
     }
     private val localDataSource = mockk<MessageLocalDataSource>(relaxUnitFun = true) {
         coEvery { addLabel(userId = any(), messageId = any(), labelId = any()) } returns MessageTestData.message.right()
@@ -71,11 +77,15 @@ class MessageRepositoryImplTest {
         coEvery { observeMessage(userId = any(), messageId = any()) } returns flowOf(MessageTestData.message)
         coEvery { getMessages(userId = any(), pageKey = any()) } returns emptyList()
         coEvery { isLocalPageValid(userId = any(), pageKey = any(), items = any()) } returns false
+        coEvery {
+            observeMessageWithBody(userId = any(), messageId = any())
+        } returns flowOf(MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody))
     }
 
     private val messageRepository = MessageRepositoryImpl(
         remoteDataSource = remoteDataSource,
-        localDataSource = localDataSource
+        localDataSource = localDataSource,
+        TestCoroutineScopeProvider
     )
 
     @Test
@@ -233,6 +243,61 @@ class MessageRepositoryImplTest {
             // Then
             assertEquals(DataError.Local.NoDataCached.left(), awaitItem())
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe message with body emits cached message with body when it exists`() = runTest {
+        // Given
+        val messageId = MessageIdSample.AugWeatherForecast
+        val expected = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody).right()
+
+        // When
+        messageRepository.observeMessageWithBody(userId, messageId).test {
+
+            // Then
+            assertEquals(expected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `observe message with body fetches remote message with body and saves it locally when cached does not exist`() =
+        runTest {
+            // Given
+            val messageId = MessageIdSample.AugWeatherForecast
+            val expected = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
+            coEvery { localDataSource.observeMessageWithBody(userId, messageId) } returns flowOf(null)
+
+            // When
+            messageRepository.observeMessageWithBody(userId, messageId).test {
+
+                // Then
+                coVerify {
+                    remoteDataSource.getMessage(userId, messageId)
+                    localDataSource.upsertMessageWithBody(userId, expected)
+                }
+            }
+        }
+
+    @Test
+    fun `observe message with body returns an error when remote call fails`() = runTest {
+        // Given
+        val messageId = MessageIdSample.AugWeatherForecast
+        coEvery { localDataSource.observeMessageWithBody(userId, messageId) } returns flowOf(null)
+        coEvery { remoteDataSource.getMessage(userId, messageId) } throws Exception()
+
+        // When
+        messageRepository.observeMessageWithBody(userId, messageId).test {
+
+            // Then
+            awaitError()
+            coVerify(exactly = 1) {
+                localDataSource.observeMessageWithBody(userId, messageId)
+                remoteDataSource.getMessage(userId, messageId)
+            }
+            coVerify(exactly = 0) {
+                localDataSource.upsertMessageWithBody(userId, any())
+            }
         }
     }
 

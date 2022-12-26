@@ -30,6 +30,6 @@ class GetMessageBody @Inject constructor(
     private val messageRepository: MessageRepository
 ) {
 
-    operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, MessageBody> =
-        messageRepository.getMessageBody(userId, messageId)
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, MessageBody> =
+        messageRepository.getMessageWithBody(userId, messageId).map { it.messageBody }
 }

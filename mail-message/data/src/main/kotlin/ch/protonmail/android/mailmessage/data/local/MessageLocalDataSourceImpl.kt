@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailpagination.data.local.getClippedPageKey
 import ch.protonmail.android.mailpagination.data.local.isLocalPageValid
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
@@ -120,6 +121,14 @@ class MessageLocalDataSourceImpl @Inject constructor(
     ) = db.inTransaction {
         upsertMessages(items)
         upsertPageInterval(userId, pageKey, items)
+    }
+
+    override fun observeMessageWithBody(userId: UserId, messageId: MessageId): Flow<MessageWithBody?> {
+        TODO("Not yet implemented")
+    }
+
+    override fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody) {
+        TODO("Not yet implemented")
     }
 
     override suspend fun addLabel(

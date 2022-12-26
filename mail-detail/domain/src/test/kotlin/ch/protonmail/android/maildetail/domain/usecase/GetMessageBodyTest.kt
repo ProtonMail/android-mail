@@ -22,11 +22,14 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.testdata.message.MessageBodyTestData
+import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -35,13 +38,17 @@ class GetMessageBodyTest {
     private val messageId = MessageId("messageId")
 
     private val messageRepository = mockk<MessageRepository> {
-        every { getMessageBody(UserIdTestData.userId, messageId) } returns MessageBodyTestData.messageBody.right()
+        coEvery { getMessageWithBody(UserIdTestData.userId, messageId) } returns
+            MessageWithBody(
+                MessageTestData.message,
+                MessageBodyTestData.messageBody
+            ).right()
     }
 
     private val getMessageBody = GetMessageBody(messageRepository)
 
     @Test
-    fun `when repository method returns a message body then the use case returns the message body`() {
+    fun `when repository method returns a message body then the use case returns the message body`() = runTest {
         // Given
         val expected = MessageBodyTestData.messageBody.right()
 
@@ -53,9 +60,11 @@ class GetMessageBodyTest {
     }
 
     @Test
-    fun `when repository method returns an error then the use case returns the error`() {
+    fun `when repository method returns an error then the use case returns the error`() = runTest {
         // Given
-        every { getMessageBody(UserIdTestData.userId, messageId) } returns DataError.Local.NoDataCached.left()
+        coEvery {
+            messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
+        } returns DataError.Local.NoDataCached.left()
         val expected = DataError.Local.NoDataCached.left()
 
         // When
