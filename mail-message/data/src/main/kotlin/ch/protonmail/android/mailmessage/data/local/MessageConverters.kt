@@ -20,11 +20,13 @@ package ch.protonmail.android.mailmessage.data.local
 
 import androidx.room.TypeConverter
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
+import ch.protonmail.android.mailmessage.data.local.entity.ParsedHeader
+import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethod
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
-import kotlinx.serialization.json.JsonElement
 import me.proton.core.util.kotlin.deserialize
 import me.proton.core.util.kotlin.serialize
 
@@ -43,10 +45,10 @@ class MessageConverters {
     fun fromStringToAttachmentId(value: String?): AttachmentId? = value?.let { AttachmentId(value) }
 
     @TypeConverter
-    fun fromMapStringJsonElementToString(value: Map<String, JsonElement>?) = value?.serialize()
+    fun fromMapStringParsedHeaderToString(value: Map<String, ParsedHeader>?): String? = value?.serialize()
 
     @TypeConverter
-    fun fromStringToMapStringJsonElement(value: String?): Map<String, JsonElement>? = value?.deserialize()
+    fun fromStringToMapStringParsedHeader(value: String?): Map<String, ParsedHeader>? = value?.deserialize()
 
     @TypeConverter
     fun fromOrderByToString(value: OrderBy?): String? = value?.name
@@ -65,4 +67,16 @@ class MessageConverters {
 
     @TypeConverter
     fun fromStringToAttachmentCount(value: String?): AttachmentCountEntity? = value?.deserialize()
+
+    @TypeConverter
+    fun fromRecipientToString(value: Recipient?): String? = value?.serialize()
+
+    @TypeConverter
+    fun fromStringToRecipient(value: String?): Recipient? = value?.deserialize()
+
+    @TypeConverter
+    fun fromUnsubscribeMethodToString(value: UnsubscribeMethod?): String? = value?.serialize()
+
+    @TypeConverter
+    fun fromStringToUnsubscribeMethod(value: String?): UnsubscribeMethod? = value?.deserialize()
 }

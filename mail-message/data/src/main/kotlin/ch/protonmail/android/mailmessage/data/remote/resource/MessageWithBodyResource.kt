@@ -95,7 +95,7 @@ data class MessageWithBodyResource(
     @SerialName("ReplyTos")
     val replyTos: List<RecipientResource>,
     @SerialName("UnsubscribeMethods")
-    val unsubscribeMethods: List<UnsubscribeMethodResource>? = null,
+    val unsubscribeMethods: UnsubscribeMethodResource? = null,
     @SerialName("AttachmentInfo")
     val attachmentsInfo: AttachmentsInfoResource?
 ) {
@@ -135,7 +135,7 @@ data class MessageWithBodyResource(
             spamScore = spamScore,
             replyTo = replyTo.toRecipient(),
             replyTos = replyTos.map { it.toRecipient() },
-            unsubscribeMethods = unsubscribeMethods?.map { it.toUnsubscribeMethod() }
+            unsubscribeMethods = unsubscribeMethods?.toUnsubscribeMethod()
         )
     )
 }
@@ -177,11 +177,11 @@ data class AttachmentResource(
 @Serializable
 data class UnsubscribeMethodResource(
     @SerialName("HttpClient")
-    val httpClient: String?,
+    val httpClient: String? = null,
     @SerialName("OneClick")
-    val oneClick: String?,
+    val oneClick: String? = null,
     @SerialName("Mailto")
-    val mailTo: MailToResource?
+    val mailTo: MailToResource? = null
 ) {
     fun toUnsubscribeMethod() = UnsubscribeMethod(
         httpClient = httpClient,

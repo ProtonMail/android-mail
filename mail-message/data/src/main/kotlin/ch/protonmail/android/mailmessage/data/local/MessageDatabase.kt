@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import androidx.sqlite.db.SupportSQLiteDatabase
+import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
@@ -32,6 +33,7 @@ import me.proton.core.util.kotlin.serialize
 interface MessageDatabase : Database, PageIntervalDatabase {
     fun messageDao(): MessageDao
     fun messageLabelDao(): MessageLabelDao
+    fun messageBodyDao(): MessageBodyDao
 
     companion object {
         val MIGRATION_0 = object : DatabaseMigration {
@@ -72,6 +74,15 @@ interface MessageDatabase : Database, PageIntervalDatabase {
                     type = "TEXT NOT NULL",
                     defaultValue = AttachmentCountEntity(0).serialize()
                 )
+            }
+        }
+
+        val MIGRATION_3 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Created MessageBody table
+                database.execSQL("CREATE TABLE IF NOT EXISTS `MessageBodyEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `body` TEXT, `header` TEXT NOT NULL, `parsedHeaders` TEXT NOT NULL, `mimeType` TEXT NOT NULL, `spamScore` TEXT NOT NULL, `replyTo` TEXT NOT NULL, `replyTos` TEXT NOT NULL, `unsubscribeMethods` TEXT, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_userId` ON `MessageBodyEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_messageId` ON `MessageBodyEntity` (`messageId`)")
             }
         }
     }

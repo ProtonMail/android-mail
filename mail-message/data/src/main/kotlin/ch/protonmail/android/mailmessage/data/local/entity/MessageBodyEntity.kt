@@ -23,6 +23,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.UserEntity
@@ -56,20 +57,28 @@ data class MessageBodyEntity(
     val messageId: MessageId,
     val body: String?, // If null -> file.
     val header: String,
-    val parsedHeaders: Map<String, JsonElement>,
+    val parsedHeaders: Map<String, ParsedHeader>,
     val mimeType: String,
     val spamScore: String,
     val replyTo: Recipient,
     val replyTos: List<Recipient>,
-    val unsubscribeMethods: List<UnsubscribeMethod>?
+    val unsubscribeMethods: UnsubscribeMethod?
 )
 
+@Serializable
+data class ParsedHeader(
+    // We need to wrap JsonElement in a data class because of an issue with the TypeConverter
+    val value: JsonElement
+)
+
+@Serializable
 data class UnsubscribeMethod(
     val httpClient: String?,
     val oneClick: String?,
     val mailTo: MailTo?
 )
 
+@Serializable
 data class MailTo(
     val toList: List<String>,
     val subject: String,
