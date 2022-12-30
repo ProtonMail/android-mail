@@ -139,7 +139,7 @@ interface MessageLocalDataSource {
     /**
      * Update or insert [MessageWithBody] for this [userId].
      */
-    fun upsertMessageWithBody(
+    suspend fun upsertMessageWithBody(
         userId: UserId,
         messageWithBody: MessageWithBody
     )

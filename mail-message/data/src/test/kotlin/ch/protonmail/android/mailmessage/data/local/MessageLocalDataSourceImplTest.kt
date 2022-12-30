@@ -21,18 +21,26 @@ package ch.protonmail.android.mailmessage.data.local
 import app.cash.turbine.test
 import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageWithLabels
+import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
+import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyRelation
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
+import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyRelationMapper
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageItemType
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.message.MessageBodyEntityTestData
+import ch.protonmail.android.testdata.message.MessageBodyTestData
+import ch.protonmail.android.testdata.message.MessageEntityTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
@@ -48,7 +56,7 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -65,16 +73,34 @@ class MessageLocalDataSourceImplTest {
             )
         } returns flowOf(MessageWithLabelIds(MessageTestData.message.toEntity(), listOf(LabelId("0"))))
     }
+    private val messageBodyDao = mockk<MessageBodyDao>(relaxUnitFun = true) {
+        every {
+            observeMessageWithBodyRelation(userId = any(), messageId = any())
+        } returns flowOf(
+            MessageWithBodyRelation(
+                MessageEntityTestData.messageEntity,
+                MessageBodyEntityTestData.messageBodyEntity,
+                listOf(LabelIdSample.Inbox)
+            )
+        )
+    }
     private val labelDao = mockk<MessageLabelDao>(relaxUnitFun = true)
     private val pageIntervalDao = mockk<PageIntervalDao>(relaxUnitFun = true)
 
     private val db = mockk<MessageDatabase>(relaxed = true) {
         every { messageDao() } returns messageDao
+        every { messageBodyDao() } returns messageBodyDao
         every { messageLabelDao() } returns labelDao
         every { pageIntervalDao() } returns pageIntervalDao
         coEvery { inTransaction(captureCoroutine<suspend () -> Any>()) } coAnswers {
             coroutine<suspend () -> Any>().coInvoke()
         }
+    }
+    private val messageWithBodyRelationMapper = mockk<MessageWithBodyRelationMapper> {
+        every {
+            toMessageWithBody(any())
+        } returns MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
+        every { toMessageBodyEntity(any()) } returns MessageBodyEntityTestData.messageBodyEntity
     }
 
     private lateinit var messageLocalDataSource: MessageLocalDataSourceImpl
@@ -82,7 +108,7 @@ class MessageLocalDataSourceImplTest {
     @Before
     fun setUp() {
         mockkStatic(PageIntervalDao::upsertPageInterval)
-        messageLocalDataSource = MessageLocalDataSourceImpl(db)
+        messageLocalDataSource = MessageLocalDataSourceImpl(db, messageWithBodyRelationMapper)
     }
 
     @Test
@@ -203,6 +229,58 @@ class MessageLocalDataSourceImplTest {
             )
             labelDao.insertOrUpdate(spamLabelEntity)
         }
+    }
+
+    @Test
+    fun `observe message with body locally returns a message with body`() = runTest {
+        // Given
+        val expected = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
+
+        // When
+        messageLocalDataSource.observeMessageWithBody(userId1, MessageId("messageId")).test {
+
+            // Then
+            assertEquals(expected, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe message with body locally returns null`() = runTest {
+        // Given
+        every {
+            messageBodyDao.observeMessageWithBodyRelation(userId = any(), messageId = any())
+        } returns flowOf(null)
+
+        // When
+        messageLocalDataSource.observeMessageWithBody(userId1, MessageId("messageId")).test {
+
+            // Then
+            assertNull(awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `upsert message with body inserts the message, message body and labels locally`() = runTest {
+        // Given
+        val messageWithBody = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
+
+        // When
+        messageLocalDataSource.upsertMessageWithBody(userId1, messageWithBody)
+
+        // Then
+        coVerify { messageDao.insertOrUpdate(messageWithBody.message.toEntity()) }
+        coVerifyOrder {
+            labelDao.deleteAll(messageWithBody.message.userId, listOf(messageWithBody.message.messageId))
+            val spamLabelEntity = MessageLabelEntity(
+                messageWithBody.message.userId,
+                messageWithBody.message.labelIds.first(),
+                messageWithBody.message.messageId
+            )
+            labelDao.insertOrUpdate(spamLabelEntity)
+        }
+        coVerify { messageBodyDao.insertOrUpdate(MessageBodyEntityTestData.messageBodyEntity) }
     }
 
     @Test
