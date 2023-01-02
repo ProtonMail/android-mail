@@ -75,10 +75,7 @@ class MessageDetailReducer @Inject constructor(
     ): Effect<TextUiModel> = when (operation) {
         MessageViewAction.Trash -> Effect.of(TextUiModel(R.string.message_moved_to_trash))
         is MessageViewAction.MoveToDestinationConfirmed -> Effect.of(
-            TextUiModel(
-                R.string.message_moved_to_selected_destination,
-                operation.mailLabelText
-            )
+            TextUiModel(R.string.message_moved_to_selected_destination, operation.mailLabelText)
         )
         else -> exitScreenWithMessageEffect
     }

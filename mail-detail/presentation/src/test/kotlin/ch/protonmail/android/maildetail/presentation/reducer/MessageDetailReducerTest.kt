@@ -204,6 +204,16 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                MessageViewAction.MoveToDestinationConfirmed("testLabel"),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                exitMessage = TextUiModel(string.message_moved_to_selected_destination, "testLabel"),
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false
             )
         )
 
