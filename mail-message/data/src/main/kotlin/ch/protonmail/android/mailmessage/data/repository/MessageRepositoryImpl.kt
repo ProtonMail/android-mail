@@ -80,10 +80,8 @@ class MessageRepositoryImpl @Inject constructor(
             list.toNonEmptyListOrNull()?.right() ?: DataError.Local.NoDataCached.left()
         }
 
-    @Suppress("NotImplementedDeclaration")
-    override fun getMessageBody(userId: UserId, messageId: MessageId): Either<DataError, MessageBody> {
-        TODO("Not yet implemented")
-    }
+    override fun getMessageBody(userId: UserId, messageId: MessageId): Either<DataError, MessageBody> =
+        Either.Left(DataError.Local.NoDataCached)
 
     override suspend fun addLabel(
         userId: UserId,
