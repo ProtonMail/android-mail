@@ -230,12 +230,12 @@ private data class PlaceableCoordinates(
 
 object MailboxItemLabels {
 
-    internal const val MinExpandedLabelLength = 4
     internal const val Plus1CharLimit = 9
     internal const val Plus2CharsLimit = 99
     internal const val Plus3CharsLimit = 999
     internal const val DummyMinExpandedLabelId = "DummyMinimumExpandedLabelId"
     private const val DummyMinExpandedLabelText = "abc..."
+    internal const val MinExpandedLabelLength = DummyMinExpandedLabelText.length
     internal val DummyMinExpandedLabel = LabelUiModel(
         name = DummyMinExpandedLabelText,
         color = Color.Unspecified

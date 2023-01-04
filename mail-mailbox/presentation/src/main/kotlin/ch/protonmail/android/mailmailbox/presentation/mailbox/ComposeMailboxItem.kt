@@ -25,6 +25,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -40,8 +41,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
@@ -56,6 +55,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.caption
 import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultWeak
 import me.proton.core.compose.theme.overline
@@ -68,7 +68,7 @@ fun MailboxItem(
     onItemClicked: (MailboxItemUiModel) -> Unit,
     onOpenSelectionMode: () -> Unit
 ) {
-    Box(
+    Row(
         modifier = modifier
             .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
             .padding(
@@ -81,144 +81,71 @@ fun MailboxItem(
     ) {
         val fontWeight = if (item.isRead) FontWeight.Normal else FontWeight.Bold
         val fontColor = if (item.isRead) ProtonTheme.colors.textWeak else ProtonTheme.colors.textNorm
+        val iconColor = if (item.isRead) ProtonTheme.colors.iconWeak else ProtonTheme.colors.iconNorm
 
-        MailboxItemLayout(
-            avatar = { Avatar(avatarUiModel = item.avatar) },
-            actionIcons = { ActionIcons(item = item, iconColor = fontColor) },
-            participants = {
-                Participants(participants = item.participants, fontWeight = fontWeight, fontColor = fontColor)
-            },
-            time = { Time(time = item.time, fontWeight = fontWeight, fontColor = fontColor) },
-            locationIcons = { LocationIcons(iconResIds = item.locationIconResIds, iconColor = fontColor) },
-            subject = { Subject(subject = item.subject, fontWeight = fontWeight, fontColor = fontColor) },
-            count = { Count(count = item.numMessages, fontWeight = fontWeight, fontColor = fontColor) },
-            icons = { Icons(item = item, iconColor = fontColor) },
-            expirationLabel = { ExpirationLabel(hasExpirationTime = item.shouldShowExpirationLabel) },
-            labels = { Labels(labels = item.labels) }
-        )
-    }
-}
-
-
-@Composable
-private fun MailboxItemLayout(
-    modifier: Modifier = Modifier,
-    avatar: @Composable () -> Unit,
-    actionIcons: @Composable () -> Unit,
-    participants: @Composable () -> Unit,
-    time: @Composable () -> Unit,
-    locationIcons: @Composable () -> Unit,
-    subject: @Composable () -> Unit,
-    count: @Composable () -> Unit,
-    icons: @Composable () -> Unit,
-    expirationLabel: @Composable () -> Unit,
-    labels: @Composable () -> Unit
-) {
-    ConstraintLayout(modifier = modifier.fillMaxWidth()) {
-
-        val (
-            avatarRef,
-            actionIconsRef,
-            participantsRef,
-            timeRef,
-            locationIconsRef,
-            subjectRef,
-            countRef, iconsRef,
-            expirationLabelRef,
-            labelsRef
-        ) = createRefs()
-
-        Box(
-            modifier = modifier.constrainAs(avatarRef) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
+        Avatar(avatarUiModel = item.avatar, modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing))
+        Column(modifier = Modifier.padding(top = ProtonDimens.SmallSpacing)) {
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                ActionIcons(
+                    item = item,
+                    iconColor = fontColor,
+                    modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing)
+                )
+                Participants(
+                    participants = item.participants,
+                    fontWeight = fontWeight,
+                    fontColor = fontColor,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = ProtonDimens.ExtraSmallSpacing)
+                )
+                Time(time = item.time, fontWeight = fontWeight, fontColor = fontColor)
             }
-        ) { avatar() }
-
-        Box(
-            modifier = modifier.constrainAs(actionIconsRef) {
-                top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
-                bottom.linkTo(subjectRef.top)
-                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(participantsRef.start, margin = ProtonDimens.ExtraSmallSpacing)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                LocationIcons(
+                    iconResIds = item.locationIconResIds,
+                    iconColor = fontColor,
+                    modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing)
+                )
+                Row(
+                    Modifier
+                        .weight(1f)
+                        .padding(end = ProtonDimens.ExtraSmallSpacing),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Subject(
+                        subject = item.subject,
+                        fontWeight = fontWeight,
+                        fontColor = fontColor,
+                        modifier = Modifier
+                            .weight(1f, fill = false)
+                            .padding(end = ProtonDimens.ExtraSmallSpacing)
+                    )
+                    Count(
+                        count = item.numMessages,
+                        fontWeight = fontWeight,
+                        fontColor = fontColor,
+                        iconColor = iconColor
+                    )
+                }
+                Icons(item = item, iconColor = fontColor)
             }
-        ) { actionIcons() }
-
-        Box(
-            modifier = modifier.constrainAs(participantsRef) {
-                horizontalChainWeight = 0f
-                width = Dimension.fillToConstraints
-                top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
-                bottom.linkTo(subjectRef.top)
-                start.linkTo(actionIconsRef.end)
-                end.linkTo(timeRef.start)
+            Row(
+                modifier = Modifier
+                    .padding(top = ProtonDimens.ExtraSmallSpacing, bottom = ProtonDimens.ExtraSmallSpacing)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ExpirationLabel(
+                    hasExpirationTime = item.shouldShowExpirationLabel,
+                    modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing)
+                )
+                Labels(labels = item.labels)
             }
-        ) { participants() }
-
-        Box(
-            modifier = modifier.constrainAs(timeRef) {
-                top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
-                bottom.linkTo(subjectRef.top)
-                end.linkTo(parent.end)
-            },
-            contentAlignment = Alignment.CenterEnd
-        ) { time() }
-
-        Box(
-            modifier = modifier.constrainAs(locationIconsRef) {
-                horizontalChainWeight = 0f
-                top.linkTo(subjectRef.top)
-                bottom.linkTo(subjectRef.bottom)
-                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(subjectRef.start, margin = ProtonDimens.ExtraSmallSpacing)
-            }
-        ) { locationIcons() }
-
-        Box(
-            modifier = modifier.constrainAs(subjectRef) {
-                horizontalChainWeight = 0f
-                width = Dimension.fillToConstraints
-                top.linkTo(participantsRef.bottom)
-                bottom.linkTo(labelsRef.top)
-                start.linkTo(locationIconsRef.end)
-                end.linkTo(countRef.start)
-            }
-        ) { subject() }
-
-        Box(
-            modifier = modifier.constrainAs(countRef) {
-                horizontalChainWeight = 0f
-                top.linkTo(subjectRef.top)
-                bottom.linkTo(subjectRef.bottom)
-                start.linkTo(subjectRef.end, margin = ProtonDimens.ExtraSmallSpacing)
-                end.linkTo(iconsRef.start, margin = ProtonDimens.ExtraSmallSpacing)
-            }
-        ) { count() }
-
-        Box(
-            modifier = modifier.constrainAs(iconsRef) {
-                top.linkTo(subjectRef.top)
-                bottom.linkTo(subjectRef.bottom)
-                end.linkTo(parent.end)
-            }
-        ) { icons() }
-
-        Box(
-            modifier = modifier.constrainAs(expirationLabelRef) {
-                top.linkTo(subjectRef.bottom, margin = ProtonDimens.SmallSpacing)
-                start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-            }
-        ) { expirationLabel() }
-
-        Box(
-            modifier = modifier.constrainAs(labelsRef) {
-                width = Dimension.preferredWrapContent
-                top.linkTo(subjectRef.bottom, margin = ProtonDimens.SmallSpacing)
-                start.linkTo(expirationLabelRef.end, margin = ProtonDimens.ExtraSmallSpacing)
-                bottom.linkTo(parent.bottom, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(parent.end)
-            }
-        ) { labels() }
+        }
     }
 }
 
@@ -321,23 +248,23 @@ private fun Count(
     modifier: Modifier = Modifier,
     count: Int?,
     fontWeight: FontWeight,
-    fontColor: Color
+    fontColor: Color,
+    iconColor: Color
 ) {
     if (count == null) {
         return
     }
 
-    val stroke = BorderStroke(MailDimens.ThinBorder, ProtonTheme.colors.textNorm)
+    val stroke = BorderStroke(MailDimens.DefaultBorder, iconColor)
     Box(
         modifier = modifier
-            .padding(ProtonDimens.ExtraSmallSpacing)
             .border(stroke, ProtonTheme.shapes.small)
     ) {
         Text(
             modifier = Modifier.padding(horizontal = ProtonDimens.ExtraSmallSpacing),
             text = count.toString(),
             overflow = TextOverflow.Ellipsis,
-            style = ProtonTheme.typography.overline.copy(fontWeight = fontWeight, color = fontColor)
+            style = ProtonTheme.typography.caption.copy(fontWeight = fontWeight, color = fontColor)
         )
     }
 }
@@ -409,11 +336,50 @@ private fun DroidConMailboxItemPreview() {
 
 @Composable
 @Preview(showBackground = true)
+private fun DroidConWithoutCountMailboxItemPreview() {
+    ProtonTheme {
+        MailboxItem(
+            modifier = Modifier,
+            item = MailboxItemUiModelPreviewData.Conversation.DroidConLondonWithZeroMessages,
+            onItemClicked = {},
+            onOpenSelectionMode = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
 private fun WeatherMailboxItemPreview() {
     ProtonTheme {
         MailboxItem(
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.WeatherForecast,
+            onItemClicked = {},
+            onOpenSelectionMode = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun LongRecipientItemPreview() {
+    ProtonTheme {
+        MailboxItem(
+            modifier = Modifier,
+            item = MailboxItemUiModelPreviewData.Conversation.MultipleRecipientWithLabel,
+            onItemClicked = {},
+            onOpenSelectionMode = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun LongSubjectItemPreview() {
+    ProtonTheme {
+        MailboxItem(
+            modifier = Modifier,
+            item = MailboxItemUiModelPreviewData.Conversation.LongSubjectWithoutIcons,
             onItemClicked = {},
             onOpenSelectionMode = {}
         )
