@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailsettings.presentation.settings.swipeactions
 
 import androidx.lifecycle.SavedStateHandle
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
@@ -158,7 +158,7 @@ internal class EditSwipeActionPreferenceViewModelTest {
         coVerify { updateSwipeActionPreference(userId, direction, swipeAction) }
     }
 
-    private suspend fun FlowTurbine<EditSwipeActionPreferenceState>.awaitInitialState() {
+    private suspend fun ReceiveTurbine<EditSwipeActionPreferenceState>.awaitInitialState() {
         assertEquals(viewModel.initial, awaitItem())
     }
 

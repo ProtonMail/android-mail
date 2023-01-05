@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode
 
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
@@ -132,7 +132,7 @@ class ConversationModeSettingViewModelTest {
         every { accountManager.getPrimaryUserId() } returns flowOf(null)
     }
 
-    private suspend fun FlowTurbine<ConversationModeSettingState>.initialStateEmitted() {
+    private suspend fun ReceiveTurbine<ConversationModeSettingState>.initialStateEmitted() {
         awaitItem() as Loading
     }
 

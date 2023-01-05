@@ -63,7 +63,7 @@ object Versions {
     }
 
     object Cash {
-        const val turbine = "0.7.0"
+        const val turbine = "0.12.1"
     }
 
     object Dagger {

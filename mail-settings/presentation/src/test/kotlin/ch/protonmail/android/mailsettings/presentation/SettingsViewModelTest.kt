@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailsettings.presentation
 
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
@@ -159,7 +159,7 @@ class SettingsViewModelTest {
             }
         }
 
-    private suspend fun FlowTurbine<SettingsState>.initialStateEmitted() {
+    private suspend fun ReceiveTurbine<SettingsState>.initialStateEmitted() {
         awaitItem() as Loading
     }
 }

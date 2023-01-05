@@ -19,7 +19,7 @@
 package ch.protonmail.android.db
 
 import androidx.room.withTransaction
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.data.sample.LabelEntitySample
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
@@ -174,7 +174,7 @@ class MessageDaoTest : BaseDatabaseTest() {
         }
     }
 
-    private suspend fun FlowTurbine<List<MessageWithLabelIds>>.assertMessagesEquals(
+    private suspend fun ReceiveTurbine<List<MessageWithLabelIds>>.assertMessagesEquals(
         expected: List<MessageWithLabelIds>
     ) {
         val actual = awaitItem()

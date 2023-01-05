@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings
 
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
@@ -245,7 +245,7 @@ class AccountSettingsViewModelTest {
         every { accountManager.getPrimaryUserId() } returns flowOf(null)
     }
 
-    private suspend fun FlowTurbine<AccountSettingsState>.initialStateEmitted() {
+    private suspend fun ReceiveTurbine<AccountSettingsState>.initialStateEmitted() {
         awaitItem() as Loading
     }
 

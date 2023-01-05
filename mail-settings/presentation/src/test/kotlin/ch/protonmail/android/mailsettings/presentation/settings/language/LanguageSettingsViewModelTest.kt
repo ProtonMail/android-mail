@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.language
 
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
@@ -143,7 +143,7 @@ class LanguageSettingsViewModelTest {
         AppLanguage.CHINESE_TRADITIONAL
     )
 
-    private suspend fun FlowTurbine<LanguageSettingsState>.initialStateEmitted() {
+    private suspend fun ReceiveTurbine<LanguageSettingsState>.initialStateEmitted() {
         awaitItem() as Loading
     }
 }

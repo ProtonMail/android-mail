@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.nonEmptyListOf
@@ -498,6 +498,7 @@ class ConversationDetailViewModelTest {
             // Then
             assertEquals(TextUiModel(string.error_star_operation_failed), awaitItem().error.consume())
             verify(exactly = 1) { reducer.newStateFrom(any(), ConversationDetailEvent.ErrorAddStar) }
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -549,6 +550,7 @@ class ConversationDetailViewModelTest {
 
             // Then
             assertEquals(TextUiModel(string.error_unstar_operation_failed), awaitItem().error.consume())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -703,11 +705,11 @@ class ConversationDetailViewModelTest {
         )
     }
 
-    private suspend fun FlowTurbine<ConversationDetailState>.initialStateEmitted() {
+    private suspend fun ReceiveTurbine<ConversationDetailState>.initialStateEmitted() {
         assertEquals(ConversationDetailState.Loading, awaitItem())
     }
 
-    private fun FlowTurbine<ConversationDetailState>.lastEmittedItem(): ConversationDetailState {
+    private suspend fun ReceiveTurbine<ConversationDetailState>.lastEmittedItem(): ConversationDetailState {
         val events = cancelAndConsumeRemainingEvents()
         return (events.last() as Event.Item).value
     }

@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.nonEmptyListOf
@@ -553,11 +553,11 @@ class MessageDetailViewModelTest {
         assertEquals(TextUiModel(R.string.error_move_message_failed), viewModel.state.value.error.consume())
     }
 
-    private suspend fun FlowTurbine<MessageDetailState>.initialStateEmitted() {
+    private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {
         assertEquals(MessageDetailState.Loading, awaitItem())
     }
 
-    private suspend fun FlowTurbine<MessageDetailState>.messageBodyEmitted() {
+    private suspend fun ReceiveTurbine<MessageDetailState>.messageBodyEmitted() {
         assertEquals(
             MessageDetailState.Loading.copy(
                 messageBodyState = MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyUiModel)
@@ -570,7 +570,7 @@ class MessageDetailViewModelTest {
         every { observePrimaryUserId.invoke() } returns flowOf(null)
     }
 
-    private fun FlowTurbine<MessageDetailState>.lastEmittedItem(): MessageDetailState {
+    private suspend fun ReceiveTurbine<MessageDetailState>.lastEmittedItem(): MessageDetailState {
         val events = cancelAndConsumeRemainingEvents()
         return (events.last() as Event.Item).value
     }

@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.theme
 
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.domain.model.Theme.DARK
@@ -185,7 +185,7 @@ class ThemeSettingsViewModelTest {
         isCurrent
     )
 
-    private suspend fun FlowTurbine<ThemeSettingsState>.initialStateEmitted() {
+    private suspend fun ReceiveTurbine<ThemeSettingsState>.initialStateEmitted() {
         awaitItem() as Loading
     }
 }
