@@ -292,7 +292,7 @@ private fun Icons(
             SmallNonClickableIcon(iconId = R.drawable.ic_proton_paper_clip, iconColor = iconColor)
         }
         if (item.showStar) {
-            SmallNonClickableIcon(iconId = R.drawable.ic_proton_star_filled, tintId = R.color.sunglow)
+            SmallNonClickableIcon(iconId = R.drawable.ic_proton_star_filled, tintId = R.color.notification_warning)
         }
     }
 }

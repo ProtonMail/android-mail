@@ -124,7 +124,7 @@ fun DetailScreenTopBar(
 
 @Composable
 private fun getStarredIconColor(isStarred: Boolean) = if (isStarred) {
-    colorResource(id = color.sunglow)
+    colorResource(id = color.notification_warning)
 } else {
     ProtonTheme.colors.textNorm
 }

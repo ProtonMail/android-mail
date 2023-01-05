@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -81,7 +82,12 @@ internal fun ConversationDetailCollapsedMessageHeader(
     ) {
         ConstraintLayout(
             modifier = Modifier
-                .padding(ProtonDimens.SmallSpacing)
+                .padding(
+                    start = ProtonDimens.SmallSpacing,
+                    top = ProtonDimens.SmallSpacing,
+                    end = ProtonDimens.DefaultSpacing,
+                    bottom = ProtonDimens.SmallSpacing
+                )
                 .fillMaxWidth()
         ) {
             val (
@@ -202,7 +208,9 @@ private fun AttachmentIcon(
     modifier: Modifier
 ) {
     Icon(
-        modifier = modifier.testTag(AttachmentIconTestTag).size(ProtonDimens.SmallIconSize),
+        modifier = modifier
+            .testTag(AttachmentIconTestTag)
+            .size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = drawable.ic_proton_paper_clip),
         tint = fontColor,
         contentDescription = NO_CONTENT_DESCRIPTION
@@ -224,6 +232,7 @@ private fun Expiration(uiModel: ConversationDetailMessageUiModel.Collapsed, modi
         Icon(
             modifier = Modifier.size(MailDimens.TinyIcon),
             painter = painterResource(id = drawable.ic_proton_hourglass),
+            tint = ProtonTheme.colors.iconNorm,
             contentDescription = NO_CONTENT_DESCRIPTION
         )
         Text(
@@ -257,7 +266,7 @@ private fun LocationIcon(
     Icon(
         modifier = modifier.size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = uiModel.locationIcon.icon),
-        tint = uiModel.locationIcon.color ?: ProtonTheme.colors.iconNorm,
+        tint = uiModel.locationIcon.color ?: ProtonTheme.colors.iconWeak,
         contentDescription = NO_CONTENT_DESCRIPTION
     )
 }
@@ -271,12 +280,16 @@ private fun RepliedIcon(
     when (uiModel.repliedIcon) {
         ConversationDetailMessageUiModel.RepliedIcon.None -> Box(modifier)
         ConversationDetailMessageUiModel.RepliedIcon.Replied -> SmallNonClickableIcon(
-            modifier = modifier.testTag(RepliedIconTestTag).padding(horizontal = MailDimens.TinySpacing),
+            modifier = modifier
+                .testTag(RepliedIconTestTag)
+                .padding(horizontal = MailDimens.TinySpacing),
             iconId = drawable.ic_proton_arrow_up_and_left,
             iconColor = fontColor
         )
         ConversationDetailMessageUiModel.RepliedIcon.RepliedAll -> SmallNonClickableIcon(
-            modifier = modifier.testTag(RepliedAllIconTestTag).padding(horizontal = MailDimens.TinySpacing),
+            modifier = modifier
+                .testTag(RepliedAllIconTestTag)
+                .padding(horizontal = MailDimens.TinySpacing),
             iconId = drawable.ic_proton_arrows_up_and_left,
             iconColor = fontColor
         )
@@ -304,7 +317,9 @@ private fun Sender(
 @Composable
 private fun StarIcon(modifier: Modifier) {
     Icon(
-        modifier = modifier.testTag(StarIconTestTag).size(ProtonDimens.SmallIconSize),
+        modifier = modifier
+            .testTag(StarIconTestTag)
+            .size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = drawable.ic_proton_star_filled),
         tint = ProtonTheme.colors.notificationWarning,
         contentDescription = NO_CONTENT_DESCRIPTION
@@ -319,7 +334,7 @@ private fun Time(
     modifier: Modifier
 ) {
     Text(
-        modifier = modifier.padding(horizontal = ProtonDimens.ExtraSmallSpacing),
+        modifier = modifier.padding(start = ProtonDimens.ExtraSmallSpacing),
         text = uiModel.shortTime.string(),
         fontWeight = fontWeight,
         color = fontColor,
@@ -339,7 +354,8 @@ object ConversationDetailCollapsedMessageHeader {
     const val StarIconTestTag = "star_icon"
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun CdCollapsedMessageHeaderPreview(
     @PreviewParameter(ConversationDetailCollapsedMessageHeaderPreviewData::class)
