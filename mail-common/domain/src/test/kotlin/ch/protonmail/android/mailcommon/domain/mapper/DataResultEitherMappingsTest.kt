@@ -34,6 +34,7 @@ import me.proton.core.network.domain.ApiResult
 import me.proton.core.util.kotlin.EMPTY_STRING
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
 
 internal class DataResultEitherMappingsTest {
 
@@ -80,30 +81,31 @@ internal class DataResultEitherMappingsTest {
         // given
         val message = "an error occurred"
         val dataResult = DataResult.Error.Local(message, cause = null)
-        val expectedError = RuntimeException("Unhandled local error $dataResult, message = $message", null)
         val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertExceptionEquals(expectedError, awaitError())
+            awaitError().assertIs<MappingRuntimeException>(
+                expectedMessage = "Unhandled local error $dataResult, message = $message"
+            )
         }
     }
 
     @Test
-    fun `does throw exception with cause from data result for unhandled local error`() = runTest {
+    fun `does throw exception from data result cause for unhandled local error`() = runTest {
         // given
+        val message = "an error occurred"
         val cause = IOException("an error occurred")
         val dataResult = DataResult.Error.Local(message = null, cause = cause)
-        val expectedError = RuntimeException("Unhandled local error $dataResult, message = an error occurred", cause)
         val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertExceptionEquals(expectedError, awaitError())
+            awaitError().assertIs<IOException>(expectedMessage = message)
         }
     }
 
@@ -112,17 +114,13 @@ internal class DataResultEitherMappingsTest {
         // given
         val cause = IOException()
         val dataResult = DataResult.Error.Local(message = null, cause = cause)
-        val expectedError = RuntimeException(
-            "Unhandled local error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED",
-            cause
-        )
         val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertExceptionEquals(expectedError, awaitError())
+            awaitError().assertIs<IOException>(expectedMessage = null)
         }
     }
 
@@ -144,56 +142,49 @@ internal class DataResultEitherMappingsTest {
     fun `does throw exception for unhandled proton error`() = runTest {
         // given
         val dataResult = DataResult.Error.Remote(message = null, cause = null, protonCode = 123)
-        val expectedError = RuntimeException(
-            "Unhandled Proton error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED",
-            null
-        )
         val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertExceptionEquals(expectedError, awaitError())
+            awaitError().assertIs<MappingRuntimeException>(
+                expectedMessage = "Unhandled remote error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED"
+            )
         }
     }
 
     @Test
-    fun `does throw exception with message from data result for unhandled remote error`() = runTest {
-        // given
-        val message = "an error occurred"
-        val dataResult = DataResult.Error.Remote(message = message, cause = null)
-        val expectedError = RuntimeException(
-            "Unhandled remote error $dataResult, message = $message",
-            null
-        )
-        val input = flowOf(dataResult)
+    fun `does throw exception with message from data result for unhandled remote error`() =
+        runTest {
+            // given
+            val message = "an error occurred"
+            val dataResult = DataResult.Error.Remote(message = message, cause = null)
+            val input = flowOf(dataResult)
 
-        // when
-        input.mapToEither().test {
+            // when
+            input.mapToEither().test {
 
-            // then
-            assertExceptionEquals(expectedError, awaitError())
+                // then
+                awaitError().assertIs<MappingRuntimeException>(
+                    expectedMessage = "Unhandled remote error $dataResult, message = $message"
+                )
+            }
         }
-    }
 
     @Test
-    fun `does throw exception with cause from data result for unhandled remote error`() = runTest {
+    fun `does throw exception from data result cause for unhandled remote error`() = runTest {
         // given
         val message = "an error occurred"
         val cause = IOException(message)
         val dataResult = DataResult.Error.Remote(message = null, cause = cause)
-        val expectedError = RuntimeException(
-            "Unhandled remote error $dataResult, message = $message",
-            cause
-        )
         val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertExceptionEquals(expectedError, awaitError())
+            awaitError().assertIs<IOException>(expectedMessage = message)
         }
     }
 
@@ -201,17 +192,15 @@ internal class DataResultEitherMappingsTest {
     fun `does throw exception with no message provided for unhandled remote error`() = runTest {
         // given
         val dataResult = DataResult.Error.Remote(message = null, cause = null)
-        val expectedError = RuntimeException(
-            "Unhandled remote error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED",
-            null
-        )
         val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
 
             // then
-            assertExceptionEquals(expectedError, awaitError())
+            awaitError().assertIs<MappingRuntimeException>(
+                expectedMessage = "Unhandled remote error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED"
+            )
         }
     }
 
@@ -237,10 +226,11 @@ internal class DataResultEitherMappingsTest {
             awaitComplete()
         }
     }
+}
 
-    private fun assertExceptionEquals(expected: Throwable, actual: Throwable) {
-        assertEquals(expected::class, actual::class)
-        assertEquals(expected.message, actual.message)
-        assertEquals(expected.cause, actual.cause)
-    }
+private inline fun <reified T> Throwable.assertIs(
+    expectedMessage: String?
+) {
+    assertIs<T>(value = this)
+    assertEquals(expected = expectedMessage, actual = message)
 }

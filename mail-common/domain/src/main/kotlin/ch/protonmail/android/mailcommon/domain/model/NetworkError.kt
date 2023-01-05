@@ -24,6 +24,11 @@ package ch.protonmail.android.mailcommon.domain.model
 sealed interface NetworkError {
 
     /**
+     * Unknown http error code.
+     */
+    data class Unknown(val code: Int) : NetworkError
+
+    /**
      * Request is forbidden
      * 403 error
      */

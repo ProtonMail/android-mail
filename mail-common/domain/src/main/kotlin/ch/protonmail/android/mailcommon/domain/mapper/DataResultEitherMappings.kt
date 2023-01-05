@@ -41,47 +41,60 @@ fun <T> Flow<DataResult<T>>.mapToEither(): Flow<Either<DataError, T>> = transfor
 }
 
 private fun toLocalError(dataResult: DataResult.Error.Local): DataError.Local {
-    throw RuntimeException(
-        "Unhandled local error $dataResult, message = ${messageFrom(dataResult)}",
-        dataResult.cause
-    )
+    when (val cause = dataResult.cause) {
+        null -> throw dataResult.asWrappedException()
+        else -> throw cause
+    }
 }
 
 private fun toRemoteDataError(dataResult: DataResult.Error.Remote): DataError.Remote {
     return when {
         dataResult.protonCode != INITIAL_ERROR_CODE -> toProtonDataError(dataResult)
         dataResult.httpCode != INITIAL_ERROR_CODE -> toHttpDataError(dataResult)
-        else -> toHttpDataError(dataResult)
+        else -> toNetworkDataError(dataResult)
     }
 }
 
+private fun toProtonDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Proton {
+    when (val cause = dataResult.cause) {
+        null -> throw dataResult.asWrappedException()
+        else -> throw cause
+    }
+}
+
+@Suppress("MagicNumber")
 private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Http {
-    @Suppress("MagicNumber")
-    val fromHttpErrorCode = when (dataResult.httpCode) {
-        401 -> NetworkError.Unauthorized
-        403 -> NetworkError.Forbidden
-        404 -> NetworkError.NotFound
-        in 500 until 600 -> NetworkError.ServerError
-        else -> null
-    }
-    val networkError = fromHttpErrorCode ?: run {
-        val apiException = dataResult.cause as? ApiException
-        when (apiException?.cause) {
-            is UnknownHostException -> NetworkError.NoNetwork
-            else -> throw RuntimeException(
-                "Unhandled remote error $dataResult, message = ${messageFrom(dataResult)}",
-                dataResult.cause
-            )
+    return DataError.Remote.Http(
+        when (dataResult.httpCode) {
+            401 -> NetworkError.Unauthorized
+            403 -> NetworkError.Forbidden
+            404 -> NetworkError.NotFound
+            in 500 until 600 -> NetworkError.ServerError
+            else -> NetworkError.Unknown(dataResult.httpCode)
         }
-    }
-    return DataError.Remote.Http(networkError)
+    )
 }
 
-private fun toProtonDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Proton =
-    throw RuntimeException(
-        "Unhandled Proton error $dataResult, message = ${messageFrom(dataResult)}",
-        dataResult.cause
-    )
+@Suppress("ThrowsCount")
+private fun toNetworkDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Http {
+    return when (val cause = dataResult.cause) {
+        null -> throw dataResult.asWrappedException()
+        is ApiException -> when (val innerCause = cause.cause) {
+            is UnknownHostException -> DataError.Remote.Http(NetworkError.NoNetwork)
+            null -> throw cause
+            else -> throw innerCause
+        }
+        else -> throw cause
+    }
+}
+
+private fun DataResult.Error.asWrappedException(): MappingRuntimeException {
+    val message = when (this) {
+        is DataResult.Error.Local -> "Unhandled local error $this, message = ${messageFrom(this)}"
+        is DataResult.Error.Remote -> "Unhandled remote error $this, message = ${messageFrom(this)}"
+    }
+    return MappingRuntimeException(message, cause)
+}
 
 private fun messageFrom(dataResult: DataResult.Error): String =
     dataResult.message?.takeIfNotEmpty()
@@ -90,3 +103,15 @@ private fun messageFrom(dataResult: DataResult.Error): String =
 
 private const val INITIAL_ERROR_CODE = 0
 internal const val DATA_RESULT_NO_MESSAGE_PROVIDED = "DataResult didn't provide any message"
+
+/**
+ * This type overrides [message] and [cause] which prevents the coroutines stacktrace recovery
+ * from copying this exception (and break referential equality).
+ *
+ * See StackTrace Recovery machinery:
+ * https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/topics/debugging.md#stacktrace-recovery-machinery
+ */
+class MappingRuntimeException(
+    override val message: String?,
+    override val cause: Throwable? = null
+) : RuntimeException(message, cause)
