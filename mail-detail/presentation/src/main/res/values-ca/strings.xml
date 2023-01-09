@@ -34,4 +34,13 @@
   <string name="error_star_operation_failed">Error en afegir destacat. Torneu-ho a provar.</string>
   <string name="error_unstar_operation_failed">Error en suprimir destacat. Torneu-ho a provar.</string>
   <string name="error_move_to_trash_failed">Error en moure a la paperera. Torneu-ho a provar.</string>
+  <string name="message_moved_to_trash">Message moved to trash</string>
+  <string name="message_moved_to_selected_destination">Message moved to %1$s</string>
+  <string name="error_move_message_failed">Moving message failed. Please retry.</string>
+  <string name="conversation_moved_to_trash">Conversation moved to trash</string>
+  <string name="conversation_moved_to_selected_destination">La conversa s\'ha mogut a %1$s</string>
+  <string name="error_move_conversation_failed">No s\'ha pogut moure la conversa. Si us plau, torneu a provar-ho.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Move to...</string>
+  <string name="bottom_sheet_done_action">Done</string>
 </resources>

@@ -33,4 +33,13 @@
   <string name="error_star_operation_failed">Pesan gagal dibintangi. Silakan coba lagi.</string>
   <string name="error_unstar_operation_failed">Bintang pesan gagal dihapus. Silakan coba lagi.</string>
   <string name="error_move_to_trash_failed">Pemindahan ke sampah gagal. Silakan coba lagi.</string>
+  <string name="message_moved_to_trash">Pesan dipindahkan ke sampah</string>
+  <string name="message_moved_to_selected_destination">Pesan dipindahkan ke %1$s</string>
+  <string name="error_move_message_failed">Pesan gagal dipindahkan. Silakan coba lagi.</string>
+  <string name="conversation_moved_to_trash">Percakapan dipindahkan ke sampah</string>
+  <string name="conversation_moved_to_selected_destination">Percakapan dipindahkan ke %1$s</string>
+  <string name="error_move_conversation_failed">Percakapan gagal dipindahkan. Silakan coba lagi.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Pindahkan ke...</string>
+  <string name="bottom_sheet_done_action">Selesai</string>
 </resources>

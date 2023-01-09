@@ -34,4 +34,13 @@
   <string name="error_star_operation_failed">Yıldız eklenemedi. Lütfen yeniden deneyin.</string>
   <string name="error_unstar_operation_failed">Yıldız kaldırılamadı. Lütfen yeniden deneyin.</string>
   <string name="error_move_to_trash_failed">Çöp kutusuna taşınamadı. Lütfen yeniden deneyin.</string>
+  <string name="message_moved_to_trash">İleti çöpe atıldı</string>
+  <string name="message_moved_to_selected_destination">İleti %1$s içine taşındı</string>
+  <string name="error_move_message_failed">İleti taşınamadı. Lütfen yeniden deneyin.</string>
+  <string name="conversation_moved_to_trash">Yazışma çöpe atıldı</string>
+  <string name="conversation_moved_to_selected_destination">Yazışma %1$s klasörüne taşındı</string>
+  <string name="error_move_conversation_failed">Yazışma taşınamadı. Lütfen yeniden deneyin.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Şuraya taşı...</string>
+  <string name="bottom_sheet_done_action">Tamam</string>
 </resources>

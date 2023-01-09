@@ -34,4 +34,13 @@
   <string name="error_star_operation_failed">Aggiunta ai preferiti non riuscita. Per favore riprova.</string>
   <string name="error_unstar_operation_failed">Rimozione dai preferiti non riuscita. Per favore riprova.</string>
   <string name="error_move_to_trash_failed">Spostamento nel cestino non riuscito. Per favore riprova.</string>
+  <string name="message_moved_to_trash">Messaggio spostato nel cestino</string>
+  <string name="message_moved_to_selected_destination">Il messaggio è stato spostato in %1$s</string>
+  <string name="error_move_message_failed">Spostamento del messaggio non riuscito. Per favore riprova.</string>
+  <string name="conversation_moved_to_trash">Conversazione spostata nel cestino</string>
+  <string name="conversation_moved_to_selected_destination">Conversazione spostata in %1$s</string>
+  <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito. Riprova.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Sposta in...</string>
+  <string name="bottom_sheet_done_action">Fatto</string>
 </resources>

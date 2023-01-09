@@ -34,4 +34,13 @@
   <string name="error_star_operation_failed">Det gick inte att stjärnmärka. Försök igen.</string>
   <string name="error_unstar_operation_failed">Det gick inte att ta bort stjärnmarkeringen. Försök igen.</string>
   <string name="error_move_to_trash_failed">Flytt till papperskorg misslyckades. Försök igen.</string>
+  <string name="message_moved_to_trash">Meddelande flyttat till papperskorg</string>
+  <string name="message_moved_to_selected_destination">Meddelandet flyttades till %1$s</string>
+  <string name="error_move_message_failed">Misslyckades att flytta meddelande. Försök igen.</string>
+  <string name="conversation_moved_to_trash">Konversation flyttad till papperskorg</string>
+  <string name="conversation_moved_to_selected_destination">Konversation flyttad till %1$s</string>
+  <string name="error_move_conversation_failed">Misslyckades att flytta konversation. Försök igen.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Flytta till...</string>
+  <string name="bottom_sheet_done_action">Klar</string>
 </resources>

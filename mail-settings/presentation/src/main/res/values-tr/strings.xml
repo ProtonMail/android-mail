@@ -54,7 +54,7 @@
   <string name="mail_settings_default_email_address">Varsayılan e-posta adresi</string>
   <string name="mail_settings_display_name_and_signature">Görüntülenecek ad ve imza</string>
   <string name="mail_settings_mailbox">Posta kutusu</string>
-  <string name="mail_settings_privacy">Kişisel gizlilik</string>
+  <string name="mail_settings_privacy">Gizlilik</string>
   <string name="mail_settings_search_message_content">İleti içeriğinde arama</string>
   <string name="mail_settings_labels_and_folders">Etiketler ve klasörler</string>
   <string name="mail_settings_local_storage">Yerel depolama</string>

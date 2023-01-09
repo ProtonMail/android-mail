@@ -34,4 +34,13 @@
   <string name="error_star_operation_failed">Le marquage comme favori a échoué. Nous vous invitons à réessayer.</string>
   <string name="error_unstar_operation_failed">La suppression du marquage comme favori a échoué. Nous vous invitons à réessayer.</string>
   <string name="error_move_to_trash_failed">Le déplacement dans le dossier Corbeille a échoué. Veuillez réessayer.</string>
+  <string name="message_moved_to_trash">Le message a été déplacé dans le dossier Corbeille.</string>
+  <string name="message_moved_to_selected_destination">Le message a été déplacé dans %1$s.</string>
+  <string name="error_move_message_failed">Le message n\'a pas pu être déplacé. Veuillez réessayer.</string>
+  <string name="conversation_moved_to_trash">La conversation a été déplacée dans le dossier Corbeille.</string>
+  <string name="conversation_moved_to_selected_destination">La conversation a été déplacée dans %1$s.</string>
+  <string name="error_move_conversation_failed">La conversation n\'a pas pu être déplacée. Veuillez réessayer.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Déplacer...</string>
+  <string name="bottom_sheet_done_action">Terminé</string>
 </resources>

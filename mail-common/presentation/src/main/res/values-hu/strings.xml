@@ -43,9 +43,9 @@
   <string name="action_view_headers_content_description">Fejlécek megtekintése</string>
   <string name="action_view_html_content_description">HTML megjelenítése</string>
   <string name="action_report_phishing_content_description">Adathalászat jelentése</string>
-  <string name="action_remind_content_description">Emlékeztess</string>
+  <string name="action_remind_content_description">Emlékeztessen</string>
   <string name="action_save_pdf_content_description">Mentés PDF-ként</string>
-  <string name="action_sender_emails_content_description">Eme feladó a jövőbeli emailjeihez akció</string>
+  <string name="action_sender_emails_content_description">A feladó jövőbeli e-mailjeihez tartozó művelet beállítása</string>
   <string name="action_save_attachments_content_description">Mellékletek mentése</string>
   <string name="common_error_loading_actions">Töltés sikertelen</string>
   <string name="yesterday">Tegnap</string>

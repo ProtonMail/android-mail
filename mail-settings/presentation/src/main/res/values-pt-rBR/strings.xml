@@ -57,7 +57,7 @@
   <string name="mail_settings_privacy">Privacidade</string>
   <string name="mail_settings_search_message_content">Pesquisar conteúdo da mensagem</string>
   <string name="mail_settings_labels_and_folders">Marcadores e pastas</string>
-  <string name="mail_settings_local_storage">Total de armazenamento</string>
+  <string name="mail_settings_local_storage">Armazenamento local</string>
   <string name="mail_settings_snooze">Adiar</string>
   <string name="mail_settings_snooze_notifications">Adiar notificações</string>
   <string name="mail_settings_conversation_mode">Modo de conversa</string>

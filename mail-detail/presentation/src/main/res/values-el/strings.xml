@@ -17,21 +17,30 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">Failed loading contacts</string>
-  <string name="detail_error_loading_conversation">Failed loading conversation</string>
-  <string name="detail_error_loading_messages">Failed loading messages</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Please try again</string>
+  <string name="detail_error_loading_contacts">Αποτυχημένη φόρτωση επαφών</string>
+  <string name="detail_error_loading_conversation">Αποτυχημένη φόρτωση συνομιλίας</string>
+  <string name="detail_error_loading_messages">Αποτυχημένη φόρτωση μηνυμάτων</string>
+  <string name="error_mark_unread_failed">Αποτυχια επισήμανσης μη αναγνωσμένου. Παρακαλώ προσπαθήστε ξανά</string>
   <plurals name="message_count_label_text">
-    <item quantity="one">%d message</item>
-    <item quantity="other">%d messages</item>
+    <item quantity="one">%d μήνυμα</item>
+    <item quantity="other">%d μηνύματα</item>
   </plurals>
-  <string name="more_button_content_description">More</string>
-  <string name="to">To:</string>
-  <string name="cc">Cc:</string>
-  <string name="bcc">Bcc:</string>
-  <string name="hide_details">Hide details</string>
-  <string name="undisclosed_recipients">Undisclosed recipients</string>
-  <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
-  <string name="error_unstar_operation_failed">Remove star operation failed. Please retry.</string>
-  <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
+  <string name="more_button_content_description">Περισσότερα</string>
+  <string name="to">Προς:</string>
+  <string name="cc">Κοιν:</string>
+  <string name="bcc">Κρυφή κοιν:</string>
+  <string name="hide_details">Απόκρυψη λεπτομερειών</string>
+  <string name="undisclosed_recipients">Μη κοινοποιημένοι παραλήπτες</string>
+  <string name="error_star_operation_failed">Η λειτουργία προσθήκης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="error_unstar_operation_failed">Η λειτουργία κατάργησης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="error_move_to_trash_failed">Η μετακίνηση στα Διαγραμμένα απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="message_moved_to_trash">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</string>
+  <string name="message_moved_to_selected_destination">Το μήνυμα μετακινήθηκε στα %1$s</string>
+  <string name="error_move_message_failed">Η μετακινηση μυνημάτων απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="conversation_moved_to_trash">Η συνομιλία μετακινήθηκε στα Διαγραμμένα</string>
+  <string name="conversation_moved_to_selected_destination">Η συνομιλία μετακινήθηκε στο %1$s</string>
+  <string name="error_move_conversation_failed">Η μετακινηση συνομιλίας απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Μετακίνηση σε...</string>
+  <string name="bottom_sheet_done_action">Ολοκληρώθηκε</string>
 </resources>

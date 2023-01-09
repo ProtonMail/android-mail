@@ -27,11 +27,20 @@
   </plurals>
   <string name="more_button_content_description">Meira</string>
   <string name="to">Til:</string>
-  <string name="cc">Cc:</string>
-  <string name="bcc">Bcc:</string>
+  <string name="cc">Afrit:</string>
+  <string name="bcc">Falið afrit:</string>
   <string name="hide_details">Fela nánari upplýsingar</string>
   <string name="undisclosed_recipients">Viðtakendur ekki gefnir upp</string>
   <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
   <string name="error_unstar_operation_failed">Remove star operation failed. Please retry.</string>
   <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
+  <string name="message_moved_to_trash">Skilaboð voru færð í ruslið</string>
+  <string name="message_moved_to_selected_destination">Skilaboð færð í %1$s</string>
+  <string name="error_move_message_failed">Moving message failed. Please retry.</string>
+  <string name="conversation_moved_to_trash">Conversation moved to trash</string>
+  <string name="conversation_moved_to_selected_destination">Samtal fært í %1$s</string>
+  <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Flytja í...</string>
+  <string name="bottom_sheet_done_action">Lokið</string>
 </resources>

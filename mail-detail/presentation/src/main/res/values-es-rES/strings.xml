@@ -34,4 +34,13 @@
   <string name="error_star_operation_failed">Error al marcar como Destacado. Inténtalo de nuevo.</string>
   <string name="error_unstar_operation_failed">Error al desmarcar Destacado. Inténtalo de nuevo.</string>
   <string name="error_move_to_trash_failed">Error al mover a la papelera. Inténtalo de nuevo.</string>
+  <string name="message_moved_to_trash">Mensaje movido a la papelera</string>
+  <string name="message_moved_to_selected_destination">Mensaje movido a %1$s</string>
+  <string name="error_move_message_failed">Error al mover el mensaje. Inténtalo de nuevo.</string>
+  <string name="conversation_moved_to_trash">Conversación movida a la papelera</string>
+  <string name="conversation_moved_to_selected_destination">Conversación movida a $%1$s</string>
+  <string name="error_move_conversation_failed">Error al mover la conversación. Inténtalo de nuevo.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Mover a...</string>
+  <string name="bottom_sheet_done_action">Hecho</string>
 </resources>

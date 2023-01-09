@@ -34,4 +34,13 @@
   <string name="error_star_operation_failed">Erro ao favoritar. Por favor, tente novamente.</string>
   <string name="error_unstar_operation_failed">Falha ao remover o favorito. Por favor, tente novamente.</string>
   <string name="error_move_to_trash_failed">Falha ao mover para a lixeira. Por favor, tente novamente.</string>
+  <string name="message_moved_to_trash">Mensagem movida para a lixeira</string>
+  <string name="message_moved_to_selected_destination">Mensagem movida para %1$s</string>
+  <string name="error_move_message_failed">Falha ao mover para a mensagem. Por favor, tente novamente.</string>
+  <string name="conversation_moved_to_trash">Conversa movida para a lixeira</string>
+  <string name="conversation_moved_to_selected_destination">Conversa movida para %1$s</string>
+  <string name="error_move_conversation_failed">Falha ao mover conversa. Por favor, tente novamente.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Mover para...</string>
+  <string name="bottom_sheet_done_action">Concluído</string>
 </resources>

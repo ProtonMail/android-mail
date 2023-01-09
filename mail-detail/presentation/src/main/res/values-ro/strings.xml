@@ -35,4 +35,13 @@
   <string name="error_star_operation_failed">Operația de marcare cu stea a eșuat. Mai reîncercați.</string>
   <string name="error_unstar_operation_failed">Operația de eliminare stea a eșuat. Mai reîncercați.</string>
   <string name="error_move_to_trash_failed">Mutarea în gunoi a eșuat. Reîncercați.</string>
+  <string name="message_moved_to_trash">Mesajul a fost mutat în gunoi.</string>
+  <string name="message_moved_to_selected_destination">Mesajul a fost mutat în %1$s.</string>
+  <string name="error_move_message_failed">Mutarea mesajului a eșuat. Reîncercați.</string>
+  <string name="conversation_moved_to_trash">Conversația a fost mutată în gunoi.</string>
+  <string name="conversation_moved_to_selected_destination">Conversația a fost mutată în «%1$s».</string>
+  <string name="error_move_conversation_failed">Mutarea conversației a eșuat. Reîncercați.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Mutare în...</string>
+  <string name="bottom_sheet_done_action">Gata</string>
 </resources>

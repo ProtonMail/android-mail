@@ -36,4 +36,13 @@
   <string name="error_star_operation_failed">Oznaczenie gwiazdką nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_unstar_operation_failed">Usunięcie gwiazdki nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_move_to_trash_failed">Przeniesienie do Kosza nie powiodło się. Spróbuj ponownie.</string>
+  <string name="message_moved_to_trash">Wiadomość została przeniesiona do Kosza</string>
+  <string name="message_moved_to_selected_destination">Wiadomość została przeniesiona do folderu %1$s</string>
+  <string name="error_move_message_failed">Przenoszenie wiadomości nie powiodło się. Spróbuj ponownie.</string>
+  <string name="conversation_moved_to_trash">Wątek został przeniesiony do Kosza</string>
+  <string name="conversation_moved_to_selected_destination">Wątek został przeniesiony do folderu %1$s</string>
+  <string name="error_move_conversation_failed">Przenoszenie wątku nie powiodło się. Spróbuj ponownie.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Przenieś do...</string>
+  <string name="bottom_sheet_done_action">Gotowe</string>
 </resources>

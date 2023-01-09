@@ -42,7 +42,7 @@
   <string name="action_print_content_description">Yazdır</string>
   <string name="action_view_headers_content_description">Üst bilgileri görüntüle</string>
   <string name="action_view_html_content_description">HTML olarak görüntüle</string>
-  <string name="action_report_phishing_content_description">Kimlik avını bildir</string>
+  <string name="action_report_phishing_content_description">Kimlik avı girişimi bildir</string>
   <string name="action_remind_content_description">Bana hatırlat</string>
   <string name="action_save_pdf_content_description">PDF olarak kaydet</string>
   <string name="action_sender_emails_content_description">Gelecekte bu göndericinin e-postalarına yapılacak işlemi ayarlayın</string>

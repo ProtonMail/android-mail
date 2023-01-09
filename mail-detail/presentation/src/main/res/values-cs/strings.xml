@@ -36,4 +36,13 @@
   <string name="error_star_operation_failed">Operace přidání hvězdičky se nezdařila. Zkuste to prosím znovu.</string>
   <string name="error_unstar_operation_failed">Operace odebrání hvězdičky se nezdařila. Zkuste to prosím znovu.</string>
   <string name="error_move_to_trash_failed">Přesunutí do koše se nezdařilo. Zkuste to znovu.</string>
+  <string name="message_moved_to_trash">Zpráva byla přesunuta do koše</string>
+  <string name="message_moved_to_selected_destination">Zpráva přesunuta do %1$s</string>
+  <string name="error_move_message_failed">Přesunutí zprávy se nezdařilo. Zkuste to znovu.</string>
+  <string name="conversation_moved_to_trash">Konverzace byla přesunuta do koše</string>
+  <string name="conversation_moved_to_selected_destination">Konverzace přesunuta do %1$s</string>
+  <string name="error_move_conversation_failed">Přesunutí konverzace se nezdařilo. Zkuste to znovu.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Přesunout do...</string>
+  <string name="bottom_sheet_done_action">Hotovo</string>
 </resources>

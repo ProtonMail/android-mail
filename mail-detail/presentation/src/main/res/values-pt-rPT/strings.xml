@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Falha ao carregar os contactos</string>
   <string name="detail_error_loading_conversation">Falha ao carregar a conversa</string>
   <string name="detail_error_loading_messages">Failed loading messages</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Please try again</string>
+  <string name="error_mark_unread_failed">Falhou a marcação como não lida. Por favor tente novamente</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d mensagem</item>
     <item quantity="other">%d mensagens</item>
@@ -31,7 +31,16 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Hide details</string>
   <string name="undisclosed_recipients">Undisclosed recipients</string>
-  <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
-  <string name="error_unstar_operation_failed">Remove star operation failed. Please retry.</string>
-  <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
+  <string name="error_star_operation_failed">A operação de adicionar estrelas falhou. Por favor, tente de novo.</string>
+  <string name="error_unstar_operation_failed">A operação de remover estrelas falhou. Por favor, tente de novo.</string>
+  <string name="error_move_to_trash_failed">O envio para o lixo falhou. Por favor, tente novamente.</string>
+  <string name="message_moved_to_trash">Message moved to trash</string>
+  <string name="message_moved_to_selected_destination">Message moved to %1$s</string>
+  <string name="error_move_message_failed">Moving message failed. Please retry.</string>
+  <string name="conversation_moved_to_trash">Conversation moved to trash</string>
+  <string name="conversation_moved_to_selected_destination">Conversation moved to %1$s</string>
+  <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Move to...</string>
+  <string name="bottom_sheet_done_action">Done</string>
 </resources>

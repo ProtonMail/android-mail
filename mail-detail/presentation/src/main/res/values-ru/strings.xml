@@ -36,4 +36,13 @@
   <string name="error_star_operation_failed">Не удалось отменить звездочкой. Попробуйте еще раз.</string>
   <string name="error_unstar_operation_failed">Не удалось снять зведочку. Попробуйте еще раз.</string>
   <string name="error_move_to_trash_failed">Перемещение в корзину не удалось. Пожалуйста, повторите попытку.</string>
+  <string name="message_moved_to_trash">Сообщение перемещено в корзину</string>
+  <string name="message_moved_to_selected_destination">Сообщение перемещено в %1$s</string>
+  <string name="error_move_message_failed">Не удалось переместить сообщение. Пожалуйста, повторите попытку.</string>
+  <string name="conversation_moved_to_trash">Цепочка писем перемещена в корзину</string>
+  <string name="conversation_moved_to_selected_destination">Цепочка сообщений перемещена в %1$s</string>
+  <string name="error_move_conversation_failed">Не удалось переместить цепочку сообщений. Попробуйте еще раз.</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Переместить в...</string>
+  <string name="bottom_sheet_done_action">Готово</string>
 </resources>
