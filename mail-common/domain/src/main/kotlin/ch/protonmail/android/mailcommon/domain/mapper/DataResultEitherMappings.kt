@@ -62,17 +62,10 @@ private fun toProtonDataError(dataResult: DataResult.Error.Remote): DataError.Re
     }
 }
 
-@Suppress("MagicNumber")
 private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Http {
-    return DataError.Remote.Http(
-        when (dataResult.httpCode) {
-            401 -> NetworkError.Unauthorized
-            403 -> NetworkError.Forbidden
-            404 -> NetworkError.NotFound
-            in 500 until 600 -> NetworkError.ServerError
-            else -> throw dataResult.asWrappedException()
-        }
-    )
+    val networkError = NetworkError.fromHttpCodeOrNull(dataResult.httpCode)
+        ?: throw dataResult.asWrappedException()
+    return DataError.Remote.Http(networkError)
 }
 
 @Suppress("ThrowsCount")
