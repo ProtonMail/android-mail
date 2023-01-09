@@ -19,8 +19,11 @@ package ch.protonmail.android.mailcommon.data.mapper
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.mapper.fromHttpCode
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
+import io.mockk.every
+import io.mockk.mockkStatic
 import me.proton.core.network.domain.ApiResult
 import org.json.JSONException
 import kotlin.test.Test
@@ -84,5 +87,20 @@ class ApiResultEitherMappingTest {
 
         // then
         assertEquals(DataError.Remote.Http(NetworkError.Unreachable).left(), result)
+    }
+
+    @Test
+    fun `returns network error for http errors`() {
+        // given
+        mockkStatic(NetworkError.Companion::fromHttpCode) {
+            every { NetworkError.fromHttpCode(any()) } returns NetworkError.Unreachable
+            val apiResult = ApiResult.Error.Http(404, "message")
+
+            // when
+            val result = apiResult.toEither()
+
+            // then
+            assertEquals(DataError.Remote.Http(NetworkError.Unreachable).left(), result)
+        }
     }
 }

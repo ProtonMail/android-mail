@@ -21,13 +21,14 @@ package ch.protonmail.android.mailcommon.data.mapper
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.mapper.fromHttpCode
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import me.proton.core.network.domain.ApiResult
 
 fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this) {
     is ApiResult.Success -> value.right()
-    is ApiResult.Error.Http -> @Suppress("NotImplementedDeclaration") TODO("Handle Http errors")
+    is ApiResult.Error.Http -> DataError.Remote.Http(NetworkError.fromHttpCode(httpCode)).left()
     is ApiResult.Error.Parse -> throw cause ?: RuntimeException("Parse error without cause")
     is ApiResult.Error.Connection -> DataError.Remote.Http(toNetworkError(this)).left()
 }
