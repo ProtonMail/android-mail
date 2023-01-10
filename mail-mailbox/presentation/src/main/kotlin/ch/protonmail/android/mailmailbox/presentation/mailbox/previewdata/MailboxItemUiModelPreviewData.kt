@@ -133,7 +133,7 @@ object MailboxItemUiModelPreviewData {
             userId = UserId
         )
 
-        val LongSubjectWithoutIcons = MailboxItemUiModel(
+        val LongSubjectWithIcons = MailboxItemUiModel(
             avatar = AccuWeatherAvatar,
             conversationId = WeatherForecastConversationId,
             id = "WeatherForecast",
@@ -149,6 +149,28 @@ object MailboxItemUiModelPreviewData {
             shouldShowRepliedAllIcon = false,
             shouldShowRepliedIcon = false,
             showStar = true,
+            subject = "This is a really long subject without any information",
+            time = Message.WeatherForecastSep.time,
+            type = MailboxItemType.Conversation,
+            userId = UserId
+        )
+
+        val LongSubjectWithoutIcons = MailboxItemUiModel(
+            avatar = AccuWeatherAvatar,
+            conversationId = WeatherForecastConversationId,
+            id = "WeatherForecast",
+            isRead = false,
+            labels = persistentListOf(),
+            locationIconResIds = persistentListOf(),
+            numMessages = 2,
+            participants = persistentListOf(AccuWeatherName),
+            shouldShowAttachmentIcon = false,
+            shouldShowCalendarIcon = false,
+            shouldShowExpirationLabel = false,
+            shouldShowForwardedIcon = false,
+            shouldShowRepliedAllIcon = false,
+            shouldShowRepliedIcon = false,
+            showStar = false,
             subject = "This is a really long subject without any information",
             time = Message.WeatherForecastSep.time,
             type = MailboxItemType.Conversation,

@@ -112,8 +112,7 @@ fun MailboxItem(
                 )
                 Row(
                     Modifier
-                        .weight(1f)
-                        .padding(end = ProtonDimens.ExtraSmallSpacing),
+                        .weight(1f),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Subject(
@@ -131,7 +130,11 @@ fun MailboxItem(
                         iconColor = iconColor
                     )
                 }
-                Icons(item = item, iconColor = fontColor)
+                Icons(
+                    item = item,
+                    iconColor = fontColor,
+                    modifier = Modifier.padding(start = ProtonDimens.ExtraSmallSpacing)
+                )
             }
             Row(
                 modifier = Modifier
@@ -275,6 +278,9 @@ private fun Icons(
     item: MailboxItemUiModel,
     iconColor: Color
 ) {
+
+    if (item.hasIconsToShow().not()) return
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.End
@@ -306,6 +312,7 @@ private fun ExpirationLabel(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_proton_hourglass),
+                tint = ProtonTheme.colors.iconNorm,
                 contentDescription = NO_CONTENT_DESCRIPTION
             )
         }
@@ -376,6 +383,19 @@ private fun LongRecipientItemPreview() {
 @Composable
 @Preview(showBackground = true)
 private fun LongSubjectItemPreview() {
+    ProtonTheme {
+        MailboxItem(
+            modifier = Modifier,
+            item = MailboxItemUiModelPreviewData.Conversation.LongSubjectWithIcons,
+            onItemClicked = {},
+            onOpenSelectionMode = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun LongSubjectWithIconItemPreview() {
     ProtonTheme {
         MailboxItem(
             modifier = Modifier,

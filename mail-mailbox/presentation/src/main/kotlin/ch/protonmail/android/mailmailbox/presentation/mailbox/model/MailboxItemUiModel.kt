@@ -48,4 +48,8 @@ data class MailboxItemUiModel(
     val shouldShowAttachmentIcon: Boolean,
     val shouldShowExpirationLabel: Boolean,
     val shouldShowCalendarIcon: Boolean
-)
+) {
+
+    fun hasIconsToShow() = shouldShowCalendarIcon || shouldShowAttachmentIcon || showStar
+
+}
