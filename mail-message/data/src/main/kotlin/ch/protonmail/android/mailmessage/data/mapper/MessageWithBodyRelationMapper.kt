@@ -21,13 +21,13 @@ package ch.protonmail.android.mailmessage.data.mapper
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
 import ch.protonmail.android.mailmessage.data.local.entity.ParsedHeader
 import ch.protonmail.android.mailmessage.data.local.entity.MailTo as MailToEntity
-import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethod as UnsubscribeMethodEntity
+import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethods as UnsubscribeMethodsEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyRelation
 import ch.protonmail.android.mailmessage.domain.entity.MailTo
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethod
+import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethods
 import javax.inject.Inject
 
 class MessageWithBodyRelationMapper @Inject constructor() {
@@ -93,13 +93,13 @@ class MessageWithBodyRelationMapper @Inject constructor() {
         )
     }
 
-    private fun UnsubscribeMethodEntity.toDomainModel() =
-        UnsubscribeMethod(this.httpClient, this.oneClick, this.mailTo?.toDomainModel())
+    private fun UnsubscribeMethodsEntity.toDomainModel() =
+        UnsubscribeMethods(this.httpClient, this.oneClick, this.mailTo?.toDomainModel())
 
     private fun MailToEntity.toDomainModel() = MailTo(this.toList, this.subject, this.body)
 
-    private fun UnsubscribeMethod.toEntity() =
-        UnsubscribeMethodEntity(this.httpClient, this.oneClick, this.mailTo?.toEntity())
+    private fun UnsubscribeMethods.toEntity() =
+        UnsubscribeMethodsEntity(this.httpClient, this.oneClick, this.mailTo?.toEntity())
 
     private fun MailTo.toEntity() = MailToEntity(this.toList, this.subject, this.body)
 }

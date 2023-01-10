@@ -62,7 +62,7 @@ data class MessageBodyEntity(
     val spamScore: String,
     val replyTo: Recipient,
     val replyTos: List<Recipient>,
-    val unsubscribeMethods: UnsubscribeMethod?
+    val unsubscribeMethods: UnsubscribeMethods?
 )
 
 @Serializable
@@ -72,7 +72,7 @@ data class ParsedHeader(
 )
 
 @Serializable
-data class UnsubscribeMethod(
+data class UnsubscribeMethods(
     val httpClient: String?,
     val oneClick: String?,
     val mailTo: MailTo?

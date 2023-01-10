@@ -19,7 +19,7 @@
 package ch.protonmail.android.testdata.message
 
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
-import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethod
+import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethods
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -38,6 +38,6 @@ object MessageBodyEntityTestData {
         spamScore = "",
         replyTo = RecipientSample.John,
         replyTos = emptyList(),
-        unsubscribeMethods = UnsubscribeMethod(null, null, null)
+        unsubscribeMethods = UnsubscribeMethods(null, null, null)
     )
 }

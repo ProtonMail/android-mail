@@ -26,7 +26,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethod
+import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethods
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
@@ -135,7 +135,7 @@ data class MessageWithBodyResource(
             spamScore = spamScore,
             replyTo = replyTo.toRecipient(),
             replyTos = replyTos.map { it.toRecipient() },
-            unsubscribeMethods = unsubscribeMethods?.toUnsubscribeMethod()
+            unsubscribeMethods = unsubscribeMethods?.toUnsubscribeMethods()
         )
     )
 }
@@ -183,7 +183,7 @@ data class UnsubscribeMethodResource(
     @SerialName("Mailto")
     val mailTo: MailToResource? = null
 ) {
-    fun toUnsubscribeMethod() = UnsubscribeMethod(
+    fun toUnsubscribeMethods() = UnsubscribeMethods(
         httpClient = httpClient,
         oneClick = oneClick,
         mailTo = mailTo?.toMailTo()
