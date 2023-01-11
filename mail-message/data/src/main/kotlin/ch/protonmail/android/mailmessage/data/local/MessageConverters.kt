@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmessage.data.local
 
 import androidx.room.TypeConverter
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
-import ch.protonmail.android.mailmessage.data.local.entity.ParsedHeader
 import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethods
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -43,12 +42,6 @@ class MessageConverters {
 
     @TypeConverter
     fun fromStringToAttachmentId(value: String?): AttachmentId? = value?.let { AttachmentId(value) }
-
-    @TypeConverter
-    fun fromMapStringParsedHeaderToString(value: Map<String, ParsedHeader>?): String? = value?.serialize()
-
-    @TypeConverter
-    fun fromStringToMapStringParsedHeader(value: String?): Map<String, ParsedHeader>? = value?.deserialize()
 
     @TypeConverter
     fun fromOrderByToString(value: OrderBy?): String? = value?.name

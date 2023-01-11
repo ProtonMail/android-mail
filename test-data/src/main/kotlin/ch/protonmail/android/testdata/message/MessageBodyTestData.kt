@@ -34,7 +34,6 @@ object MessageBodyTestData {
         messageId = MessageId(RAW_MESSAGE_ID),
         body = RAW_MESSAGE_BODY,
         header = "",
-        parsedHeaders = emptyMap(),
         attachments = emptyList(),
         mimeType = "",
         spamScore = "",

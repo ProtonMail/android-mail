@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmessage.domain.entity
 
-import kotlinx.serialization.json.JsonElement
 import me.proton.core.domain.entity.UserId
 
 data class MessageBody(
@@ -26,7 +25,6 @@ data class MessageBody(
     val messageId: MessageId,
     val body: String,
     val header: String,
-    val parsedHeaders: Map<String, JsonElement>,
     val attachments: List<MessageAttachment>,
     val mimeType: String,
     val spamScore: String,

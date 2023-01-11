@@ -33,7 +33,6 @@ object MessageBodyEntityTestData {
         messageId = MessageId(MessageTestData.RAW_MESSAGE_ID),
         body = RAW_MESSAGE_BODY,
         header = "",
-        parsedHeaders = emptyMap(),
         mimeType = "",
         spamScore = "",
         replyTo = RecipientSample.John,

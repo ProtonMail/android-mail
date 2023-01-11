@@ -129,7 +129,6 @@ data class MessageWithBodyResource(
             messageId = MessageId(id),
             body = body,
             header = header,
-            parsedHeaders = parsedHeaders,
             attachments = attachments.map { it.toMessageAttachment() },
             mimeType = mimeType,
             spamScore = spamScore,

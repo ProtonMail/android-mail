@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailmessage.data.mapper
 
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
-import ch.protonmail.android.mailmessage.data.local.entity.ParsedHeader
 import ch.protonmail.android.mailmessage.data.local.entity.MailTo as MailToEntity
 import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethods as UnsubscribeMethodsEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyRelation
@@ -66,7 +65,6 @@ class MessageWithBodyRelationMapper @Inject constructor() {
                     messageId = messageId,
                     body = body.orEmpty(),
                     header = header,
-                    parsedHeaders = parsedHeaders.mapValues { it.value.value },
                     attachments = emptyList(), // We don't save the attachments to DB yet
                     mimeType = mimeType,
                     spamScore = spamScore,
@@ -84,7 +82,6 @@ class MessageWithBodyRelationMapper @Inject constructor() {
             messageId = messageId,
             body = body,
             header = header,
-            parsedHeaders = parsedHeaders.mapValues { ParsedHeader(it.value) },
             mimeType = mimeType,
             spamScore = spamScore,
             replyTo = replyTo,
