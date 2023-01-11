@@ -25,7 +25,7 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import me.proton.core.label.domain.entity.LabelId
 
-data class MessageWithBodyRelation(
+data class MessageWithBodyEntity(
     @Embedded val message: MessageEntity,
     @Relation(
         parentColumn = "messageId",

@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.dagger
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSourceImpl
-import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyRelationMapper
+import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
@@ -64,6 +64,6 @@ object MailMessageModule {
     @Singleton
     fun provideMessageLocalDataSource(
         db: MessageDatabase,
-        messageWithBodyRelationMapper: MessageWithBodyRelationMapper
-    ): MessageLocalDataSource = MessageLocalDataSourceImpl(db, messageWithBodyRelationMapper)
+        messageWithBodyEntityMapper: MessageWithBodyEntityMapper
+    ): MessageLocalDataSource = MessageLocalDataSourceImpl(db, messageWithBodyEntityMapper)
 }

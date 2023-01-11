@@ -24,7 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
-import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyRelationMapper
+import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
@@ -42,7 +42,7 @@ import javax.inject.Inject
 
 class MessageLocalDataSourceImpl @Inject constructor(
     private val db: MessageDatabase,
-    private val messageWithBodyRelationMapper: MessageWithBodyRelationMapper
+    private val messageWithBodyEntityMapper: MessageWithBodyEntityMapper
 ) : MessageLocalDataSource {
 
     private val messageDao = db.messageDao()
@@ -127,16 +127,16 @@ class MessageLocalDataSourceImpl @Inject constructor(
     }
 
     override fun observeMessageWithBody(userId: UserId, messageId: MessageId): Flow<MessageWithBody?> {
-        return messageBodyDao.observeMessageWithBodyRelation(userId, messageId).mapLatest { messageWithBodyRelation ->
-            if (messageWithBodyRelation != null) {
-                messageWithBodyRelationMapper.toMessageWithBody(messageWithBodyRelation)
+        return messageBodyDao.observeMessageWithBodyEntity(userId, messageId).mapLatest { messageWithBodyEntity ->
+            if (messageWithBodyEntity != null) {
+                messageWithBodyEntityMapper.toMessageWithBody(messageWithBodyEntity)
             } else null
         }
     }
 
     override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody) = db.inTransaction {
         upsertMessage(messageWithBody.message)
-        messageBodyDao.insertOrUpdate(messageWithBodyRelationMapper.toMessageBodyEntity(messageWithBody.messageBody))
+        messageBodyDao.insertOrUpdate(messageWithBodyEntityMapper.toMessageBodyEntity(messageWithBody.messageBody))
     }
 
     override suspend fun addLabel(

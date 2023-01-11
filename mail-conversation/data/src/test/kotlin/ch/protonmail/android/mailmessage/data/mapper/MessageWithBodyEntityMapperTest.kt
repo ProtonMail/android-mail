@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailmessage.data.mapper
 
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
-import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyRelation
+import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.testdata.message.MessageBodyEntityTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
@@ -28,14 +28,14 @@ import ch.protonmail.android.testdata.message.MessageTestData
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class MessageWithBodyRelationMapperTest {
+class MessageWithBodyEntityMapperTest {
 
-    private val messageWithBodyRelationMapper = MessageWithBodyRelationMapper()
+    private val messageWithBodyEntityMapper = MessageWithBodyEntityMapper()
 
     @Test
     fun `message with body relation is correctly mapped to a message with body domain model`() {
         // Given
-        val messageWithBodyRelation = MessageWithBodyRelation(
+        val messageWithBodyEntity = MessageWithBodyEntity(
             MessageEntityTestData.messageEntity,
             MessageBodyEntityTestData.messageBodyEntity,
             listOf(LabelIdSample.Inbox)
@@ -43,7 +43,7 @@ class MessageWithBodyRelationMapperTest {
         val expected = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
 
         // When
-        val actual = messageWithBodyRelationMapper.toMessageWithBody(messageWithBodyRelation)
+        val actual = messageWithBodyEntityMapper.toMessageWithBody(messageWithBodyEntity)
 
         // Then
         assertEquals(expected, actual)
@@ -56,7 +56,7 @@ class MessageWithBodyRelationMapperTest {
         val expected = MessageBodyEntityTestData.messageBodyEntity
 
         // When
-        val actual = messageWithBodyRelationMapper.toMessageBodyEntity(messageWithBody)
+        val actual = messageWithBodyEntityMapper.toMessageBodyEntity(messageWithBody)
 
         // Then
         assertEquals(expected, actual)

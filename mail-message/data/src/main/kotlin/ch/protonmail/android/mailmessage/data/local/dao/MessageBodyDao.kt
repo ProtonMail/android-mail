@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.data.local.dao
 import androidx.room.Dao
 import androidx.room.Query
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
-import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyRelation
+import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.data.room.db.BaseDao
@@ -43,8 +43,8 @@ abstract class MessageBodyDao : BaseDao<MessageBodyEntity>() {
             AND MessageEntity.messageId = :messageId
         """
     )
-    abstract fun observeMessageWithBodyRelation(
+    abstract fun observeMessageWithBodyEntity(
         userId: UserId,
         messageId: MessageId
-    ): Flow<MessageWithBodyRelation?>
+    ): Flow<MessageWithBodyEntity?>
 }

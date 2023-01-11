@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.data.mapper
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MailTo as MailToEntity
 import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethods as UnsubscribeMethodsEntity
-import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyRelation
+import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.domain.entity.MailTo
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
@@ -29,9 +29,9 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethods
 import javax.inject.Inject
 
-class MessageWithBodyRelationMapper @Inject constructor() {
+class MessageWithBodyEntityMapper @Inject constructor() {
 
-    fun toMessageWithBody(messageWithBodyRelation: MessageWithBodyRelation) = with(messageWithBodyRelation) {
+    fun toMessageWithBody(messageWithBodyEntity: MessageWithBodyEntity) = with(messageWithBodyEntity) {
         MessageWithBody(
             message = with(message) {
                 Message(

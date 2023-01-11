@@ -28,9 +28,9 @@ import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
-import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyRelation
+import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
-import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyRelationMapper
+import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
@@ -75,9 +75,9 @@ class MessageLocalDataSourceImplTest {
     }
     private val messageBodyDao = mockk<MessageBodyDao>(relaxUnitFun = true) {
         every {
-            observeMessageWithBodyRelation(userId = any(), messageId = any())
+            observeMessageWithBodyEntity(userId = any(), messageId = any())
         } returns flowOf(
-            MessageWithBodyRelation(
+            MessageWithBodyEntity(
                 MessageEntityTestData.messageEntity,
                 MessageBodyEntityTestData.messageBodyEntity,
                 listOf(LabelIdSample.Inbox)
@@ -96,7 +96,7 @@ class MessageLocalDataSourceImplTest {
             coroutine<suspend () -> Any>().coInvoke()
         }
     }
-    private val messageWithBodyRelationMapper = mockk<MessageWithBodyRelationMapper> {
+    private val messageWithBodyEntityMapper = mockk<MessageWithBodyEntityMapper> {
         every {
             toMessageWithBody(any())
         } returns MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
@@ -108,7 +108,7 @@ class MessageLocalDataSourceImplTest {
     @Before
     fun setUp() {
         mockkStatic(PageIntervalDao::upsertPageInterval)
-        messageLocalDataSource = MessageLocalDataSourceImpl(db, messageWithBodyRelationMapper)
+        messageLocalDataSource = MessageLocalDataSourceImpl(db, messageWithBodyEntityMapper)
     }
 
     @Test
@@ -249,7 +249,7 @@ class MessageLocalDataSourceImplTest {
     fun `observe message with body locally returns null`() = runTest {
         // Given
         every {
-            messageBodyDao.observeMessageWithBodyRelation(userId = any(), messageId = any())
+            messageBodyDao.observeMessageWithBodyEntity(userId = any(), messageId = any())
         } returns flowOf(null)
 
         // When
