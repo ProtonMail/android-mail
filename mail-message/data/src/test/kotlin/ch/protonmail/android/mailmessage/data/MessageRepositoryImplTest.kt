@@ -119,7 +119,7 @@ class MessageRepositoryImplTest {
     }
 
     @Test
-    fun `return error if remote fails`() = runTest {
+    fun `return cached data if remote fails`() = runTest {
         // Given
         val pageKey = PageKey()
         val localMessages = listOf(
@@ -136,7 +136,7 @@ class MessageRepositoryImplTest {
         val result = messageRepository.getMessages(userId, pageKey)
 
         // Then
-        assertEquals(error, result)
+        assertEquals(localMessages.right(), result)
         coVerify(exactly = 1) { localDataSource.isLocalPageValid(userId, pageKey, localMessages) }
         coVerify(exactly = 1) { remoteDataSource.getMessages(userId, pageKey) }
     }

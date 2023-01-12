@@ -47,6 +47,7 @@ import me.proton.core.data.arch.toDataResult
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.CoroutineScopeProvider
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.min
@@ -82,9 +83,16 @@ class ConversationRepositoryImpl @Inject constructor(
     ): Either<DataError.Remote, List<ConversationWithContext>> = conversationLocalDataSource.getConversations(
         userId = userId,
         pageKey = pageKey
-    ).let { conversations ->
-        if (conversationLocalDataSource.isLocalPageValid(userId, pageKey, conversations)) conversations.right()
-        else fetchConversations(userId, pageKey)
+    ).let { cachedConversations ->
+        val isLocalPageValid = conversationLocalDataSource.isLocalPageValid(userId, pageKey, cachedConversations)
+        if (isLocalPageValid) cachedConversations.right()
+        else fetchConversations(userId, pageKey).fold(
+            ifLeft = { dataError ->
+                Timber.w("Failed to fetch conversations from remote, returning cached conversations. $dataError")
+                cachedConversations.right()
+            },
+            ifRight = { it.right() }
+        )
     }
 
     override suspend fun markAsStale(
