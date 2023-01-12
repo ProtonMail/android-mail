@@ -70,7 +70,7 @@ private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remo
             403 -> NetworkError.Forbidden
             404 -> NetworkError.NotFound
             in 500 until 600 -> NetworkError.ServerError
-            else -> NetworkError.Unknown(dataResult.httpCode)
+            else -> throw dataResult.asWrappedException()
         }
     )
 }
