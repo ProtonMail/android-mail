@@ -22,11 +22,13 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetAction
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import javax.inject.Inject
 
 class ConversationDetailReducer @Inject constructor(
@@ -43,10 +45,11 @@ class ConversationDetailReducer @Inject constructor(
         conversationState = currentState.toNewConversationState(operation),
         messagesState = currentState.toNewMessageState(operation),
         bottomBarState = currentState.toNewBottomBarState(operation),
-        bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
+        bottomSheetContentState = currentState.toNewBottomSheetContentStateFrom(operation),
         error = currentState.toErrorState(operation),
         exitScreenEffect = currentState.toExitState(),
-        exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation)
+        exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation),
+        bottomSheetEffect = currentState.toNewBottomSheetStateFrom(operation)
     )
 
     private fun ConversationDetailState.toNewConversationState(operation: ConversationDetailOperation) =
@@ -70,16 +73,18 @@ class ConversationDetailReducer @Inject constructor(
             bottomBarState
         }
 
-    private fun ConversationDetailState.toNewBottomSheetStateFrom(operation: ConversationDetailOperation) =
+    private fun ConversationDetailState.toNewBottomSheetContentStateFrom(operation: ConversationDetailOperation) =
         if (operation is ConversationDetailOperation.AffectingBottomSheet) {
             val bottomSheetOperation = when (operation) {
                 is ConversationDetailEvent.ConversationBottomSheetEvent -> operation.bottomSheetOperation
                 is ConversationDetailViewAction.MoveToDestinationSelected ->
-                    BottomSheetAction.MoveToDestinationSelected(operation.mailLabelId)
+                    MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected(operation.mailLabelId)
+                is ConversationDetailViewAction.RequestBottomSheet -> operation.requestOperation
+                is ConversationDetailViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
-            bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
+            bottomSheetReducer.newStateFrom(bottomSheetContentState, bottomSheetOperation)
         } else {
-            bottomSheetState
+            bottomSheetContentState
         }
 
     private fun ConversationDetailState.toErrorState(operation: ConversationDetailOperation) =
@@ -115,4 +120,13 @@ class ConversationDetailReducer @Inject constructor(
         )
         else -> exitScreenWithMessageEffect
     }
+
+    private fun ConversationDetailState.toNewBottomSheetStateFrom(
+        operation: ConversationDetailOperation
+    ): Effect<BottomSheetState> =
+        when (operation) {
+            is ConversationDetailViewAction.RequestBottomSheet -> Effect.of(BottomSheetState.Shown)
+            is ConversationDetailViewAction.DismissBottomSheet -> Effect.of(BottomSheetState.Hidden)
+            else -> bottomSheetEffect
+        }
 }

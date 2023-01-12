@@ -48,12 +48,12 @@ import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
@@ -465,10 +465,6 @@ class ConversationDetailViewModelTest {
             )
             assertEquals(bottomBarState, awaitItem())
 
-            val bottomSheetState = ConversationDetailState.Loading.copy(
-                bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder, null)
-            )
-            assertEquals(bottomSheetState, awaitItem())
             viewModel.submit(ConversationDetailViewAction.Star)
             val actual = assertIs<ConversationDetailMetadataState.Data>(awaitItem().conversationState)
             assertTrue(actual.conversationUiModel.isStarred)
@@ -626,7 +622,10 @@ class ConversationDetailViewModelTest {
         } returns ConversationSample.WeatherForecast.right()
         val selectedLabel = MailLabelUiModelTestData.spamAndCustomFolder.first()
         val initialState = ConversationDetailState.Loading.copy(
-            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder, null)
+            bottomSheetContentState = MoveToBottomSheetState.Data(
+                moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
+                selected = null
+            )
         )
 
         coEvery {
@@ -635,7 +634,7 @@ class ConversationDetailViewModelTest {
                 ConversationDetailViewAction.MoveToDestinationSelected(selectedLabel.id)
             )
         } returns initialState.copy(
-            bottomSheetState = BottomSheetState.Data(
+            bottomSheetContentState = MoveToBottomSheetState.Data(
                 MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected,
                 MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected.first()
             )
@@ -701,7 +700,10 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.ConversationBottomSheetEvent>()
             )
         } returns ConversationDetailState.Loading.copy(
-            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder, null)
+            bottomSheetContentState = MoveToBottomSheetState.Data(
+                moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
+                selected = null
+            )
         )
     }
 

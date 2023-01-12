@@ -18,32 +18,39 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetAction
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetEvent
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetContentState
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.Data
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.Loading
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetAction
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetEvent
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import javax.inject.Inject
 
 class BottomSheetReducer @Inject constructor() {
 
-    fun newStateFrom(currentState: BottomSheetState, event: BottomSheetOperation): BottomSheetState {
+    fun newStateFrom(currentState: BottomSheetContentState?, event: BottomSheetOperation): BottomSheetContentState? {
         return when (event) {
-            is BottomSheetEvent.Data -> BottomSheetState.Data(event.moveToDestinations, null)
-            is BottomSheetAction.MoveToDestinationSelected -> currentState.toNewSelectedState(event.mailLabelId)
+            is MoveToBottomSheetEvent.ActionData -> Data(event.moveToDestinations, null)
+            is MoveToBottomSheetAction.MoveToDestinationSelected -> when (currentState) {
+                is MoveToBottomSheetState -> currentState.toNewSelectedState(event.mailLabelId)
+                else -> currentState
+            }
+            MoveToBottomSheetAction.Requested -> currentState
+            BottomSheetOperation.Dismiss -> null
         }
     }
 
-    private fun BottomSheetState.toNewSelectedState(mailLabelId: MailLabelId): BottomSheetState {
-
+    private fun MoveToBottomSheetState.toNewSelectedState(mailLabelId: MailLabelId): MoveToBottomSheetState {
         return when (this) {
-            is BottomSheetState.Loading -> this
-            is BottomSheetState.Data -> {
-                val listWithSelectedLabel = moveToDestinations.map { it.setSelectedIfLabelIdMatch(mailLabelId) }
+            is Loading -> this
+            is Data -> {
+                val listWIthSelectedLabel = moveToDestinations.map { it.setSelectedIfLabelIdMatch(mailLabelId) }
                 this.copy(
-                    moveToDestinations = listWithSelectedLabel,
-                    selected = listWithSelectedLabel.first { it.id == mailLabelId }
+                    moveToDestinations = listWIthSelectedLabel,
+                    selected = listWIthSelectedLabel.first { it.id == mailLabelId }
                 )
             }
         }

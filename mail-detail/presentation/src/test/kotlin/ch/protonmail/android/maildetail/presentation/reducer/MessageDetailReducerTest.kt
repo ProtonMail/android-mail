@@ -24,8 +24,6 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.presentation.R.string
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetEvent
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
@@ -33,6 +31,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
@@ -68,7 +67,7 @@ class MessageDetailReducerTest(
     }
 
     private val bottomSheetReducer: BottomSheetReducer = mockk {
-        every { newStateFrom(any(), any()) } returns reducedState.bottomSheetState
+        every { newStateFrom(any(), any()) } returns reducedState.bottomSheetContentState
     }
 
     private val detailReducer = MessageDetailReducer(
@@ -117,7 +116,7 @@ class MessageDetailReducerTest(
         if (shouldReduceBottomSheetState) {
             verify {
                 bottomSheetReducer.newStateFrom(
-                    currentState.bottomSheetState,
+                    currentState.bottomSheetContentState,
                     any()
                 )
             }
@@ -152,10 +151,11 @@ class MessageDetailReducerTest(
             messageMetadataState = MessageMetadataState.Data(actionBarUiModel, detailHeaderUiModel),
             messageBodyState = MessageBodyState.Data(messageBodyUiModel),
             bottomBarState = BottomBarState.Data(listOf(ActionUiModelTestData.markUnread)),
-            bottomSheetState = BottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder, null),
+            bottomSheetContentState = MoveToBottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder, null),
             exitScreenEffect = Effect.empty(),
             exitScreenWithMessageEffect = Effect.empty(),
-            error = Effect.empty()
+            error = Effect.empty(),
+            bottomSheetState = Effect.empty()
         )
 
         private val actions = listOf(
@@ -297,7 +297,9 @@ class MessageDetailReducerTest(
             ),
             TestInput(
                 MessageDetailEvent.MessageBottomSheetEvent(
-                    BottomSheetEvent.Data(MailLabelUiModelTestData.spamAndCustomFolder)
+                    MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
+                        MailLabelUiModelTestData.spamAndCustomFolder
+                    )
                 ),
                 shouldReduceMessageMetadataState = false,
                 shouldReduceMessageBodyState = false,

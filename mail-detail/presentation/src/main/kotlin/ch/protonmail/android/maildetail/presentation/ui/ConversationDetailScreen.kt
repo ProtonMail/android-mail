@@ -34,6 +34,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -48,11 +49,13 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import kotlinx.coroutines.launch
@@ -79,16 +82,30 @@ fun ConversationDetailScreen(
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
+    ConsumableLaunchedEffect(effect = state.bottomSheetEffect) { bottomSheetVisibilityState ->
+        when (bottomSheetVisibilityState) {
+            BottomSheetState.Hidden -> scope.launch { bottomSheetState.hide() }
+            BottomSheetState.Shown -> scope.launch { bottomSheetState.show() }
+        }
+    }
+
+    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+        DisposableEffect(Unit) { onDispose { viewModel.submit(ConversationDetailViewAction.DismissBottomSheet) } }
+    }
+
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetShape = ProtonTheme.shapes.bottomSheet,
         sheetBackgroundColor = ProtonTheme.colors.backgroundNorm,
         sheetContent = {
-            MoveToBottomSheetContent(
-                state = state.bottomSheetState,
-                onFolderSelected = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(it)) },
-                onDoneClick = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed(it)) }
-            )
+            when (val bottomSheetContentState = state.bottomSheetContentState) {
+                is MoveToBottomSheetState -> MoveToBottomSheetContent(
+                    state = bottomSheetContentState,
+                    onFolderSelected = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(it)) },
+                    onDoneClick = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed(it)) }
+                )
+                null -> ProtonCenteredProgress()
+            }
         }
     ) {
         ConversationDetailScreen(
@@ -100,7 +117,13 @@ fun ConversationDetailScreen(
                 onTrashClick = { viewModel.submit(ConversationDetailViewAction.Trash) },
                 onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) },
                 onUnreadClick = { viewModel.submit(ConversationDetailViewAction.MarkUnread) },
-                onMoveToClick = { scope.launch { bottomSheetState.show() } }
+                onMoveToClick = {
+                    viewModel.submit(
+                        ConversationDetailViewAction.RequestBottomSheet(
+                            MoveToBottomSheetState.MoveToBottomSheetAction.Requested
+                        )
+                    )
+                }
             )
         )
     }

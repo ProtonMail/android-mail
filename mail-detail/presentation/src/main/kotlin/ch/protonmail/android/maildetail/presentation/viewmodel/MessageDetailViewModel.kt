@@ -36,12 +36,11 @@ import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetEvent
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -61,6 +60,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
@@ -99,7 +99,6 @@ class MessageDetailViewModel @Inject constructor(
         observeMessageWithLabels(messageId)
         getMessageBody(messageId)
         observeBottomBarActions(messageId)
-        observeMailFolders()
     }
 
     fun submit(action: MessageViewAction) {
@@ -108,6 +107,8 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
             is MessageViewAction.Trash -> trashMessage()
+            is MessageViewAction.RequestBottomSheet -> showMoveToBottomSheetAndLoadData(action)
+            is MessageViewAction.DismissBottomSheet -> dismissBottomSheet(action)
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
         }.exhaustive
@@ -157,6 +158,10 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun dismissBottomSheet(action: MessageViewAction) {
+        viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
     private fun moveToDestinationSelected(mailLabelId: MailLabelId) {
         viewModelScope.launch {
             emitNewStateFrom(MessageViewAction.MoveToDestinationSelected(mailLabelId))
@@ -165,8 +170,8 @@ class MessageDetailViewModel @Inject constructor(
 
     private fun onBottomSheetDestinationConfirmed(mailLabelText: String) {
         primaryUserId.mapLatest { userId ->
-            val bottomSheetState = state.value.bottomSheetState
-            if (bottomSheetState is BottomSheetState.Data) {
+            val bottomSheetState = state.value.bottomSheetContentState
+            if (bottomSheetState is MoveToBottomSheetState.Data) {
                 bottomSheetState.moveToDestinations.firstOrNull { it.isSelected }?.let {
                     moveMessage(userId, messageId, it.id.labelId).fold(
                         ifLeft = { MessageDetailEvent.ErrorMovingMessage },
@@ -227,16 +232,20 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun observeMailFolders() {
+    private fun showMoveToBottomSheetAndLoadData(initialEvent: MessageViewAction) {
         primaryUserId.flatMapLatest { userId ->
             combine(
                 observeDestinationMailLabels(userId),
                 observeFolderColor(userId)
             ) { folders, color ->
                 MessageDetailEvent.MessageBottomSheetEvent(
-                    BottomSheetEvent.Data(folders.toUiModels(color).let { it.folders + it.systems })
+                    MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
+                        folders.toUiModels(color).let { it.folders + it.systems }
+                    )
                 )
             }
+        }.onStart {
+            emitNewStateFrom(initialEvent)
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)

@@ -46,12 +46,12 @@ import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBodyReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
@@ -496,7 +496,6 @@ class MessageDetailViewModelTest {
                 )
             )
             assertEquals(bottomState, awaitItem())
-            assertIs<BottomSheetState.Data>(awaitItem().bottomSheetState)
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.Star)
             val actual = assertIs<MessageMetadataState.Data>(awaitItem().messageMetadataState)
@@ -508,9 +507,15 @@ class MessageDetailViewModelTest {
     fun `selecting a move to destination emits MailLabelUiModel list with selected option`() = runTest {
         viewModel.state.test {
             advanceUntilIdle()
+            viewModel.submit(
+                MessageViewAction.RequestBottomSheet(
+                    MoveToBottomSheetState.MoveToBottomSheetAction.Requested
+                )
+            )
+            advanceUntilIdle()
             viewModel.submit(MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
             advanceUntilIdle()
-            val actual = assertIs<BottomSheetState.Data>(lastEmittedItem().bottomSheetState)
+            val actual = assertIs<MoveToBottomSheetState.Data>(lastEmittedItem().bottomSheetContentState)
             assertTrue { actual.moveToDestinations.first { it.id == MailLabelId.System.Spam }.isSelected }
         }
     }
@@ -528,6 +533,12 @@ class MessageDetailViewModelTest {
 
         // When
         viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(
+                MessageViewAction.RequestBottomSheet(
+                    MoveToBottomSheetState.MoveToBottomSheetAction.Requested
+                )
+            )
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
             advanceUntilIdle()

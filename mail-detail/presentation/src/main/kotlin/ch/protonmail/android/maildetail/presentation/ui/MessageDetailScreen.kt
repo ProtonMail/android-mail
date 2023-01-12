@@ -30,6 +30,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -40,9 +41,11 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import kotlinx.coroutines.launch
@@ -67,6 +70,17 @@ fun MessageDetailScreen(
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
+
+    ConsumableLaunchedEffect(effect = state.bottomSheetState) { bottomSheetVisibilityState ->
+        when (bottomSheetVisibilityState) {
+            BottomSheetState.Hidden -> scope.launch { bottomSheetState.hide() }
+            BottomSheetState.Shown -> scope.launch { bottomSheetState.show() }
+        }
+    }
+    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+        DisposableEffect(Unit) { onDispose { viewModel.submit(MessageViewAction.DismissBottomSheet) } }
+    }
+
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetShape = RoundedCornerShape(
@@ -75,11 +89,14 @@ fun MessageDetailScreen(
         ),
         sheetBackgroundColor = ProtonTheme.colors.backgroundNorm,
         sheetContent = {
-            MoveToBottomSheetContent(
-                state = state.bottomSheetState,
-                onFolderSelected = { viewModel.submit(MessageViewAction.MoveToDestinationSelected(it)) },
-                onDoneClick = { viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(it)) }
-            )
+            when (val bottomSheetContentState = state.bottomSheetContentState) {
+                is MoveToBottomSheetState -> MoveToBottomSheetContent(
+                    state = bottomSheetContentState,
+                    onFolderSelected = { viewModel.submit(MessageViewAction.MoveToDestinationSelected(it)) },
+                    onDoneClick = { viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(it)) }
+                )
+                null -> ProtonCenteredProgress()
+            }.exhaustive
         }
     ) {
         MessageDetailScreen(
@@ -91,7 +108,11 @@ fun MessageDetailScreen(
                 onTrashClick = { viewModel.submit(MessageViewAction.Trash) },
                 onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
                 onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) },
-                onMoveClick = { scope.launch { bottomSheetState.show() } }
+                onMoveClick = {
+                    viewModel.submit(
+                        MessageViewAction.RequestBottomSheet(MoveToBottomSheetState.MoveToBottomSheetAction.Requested)
+                    )
+                }
             )
         )
     }

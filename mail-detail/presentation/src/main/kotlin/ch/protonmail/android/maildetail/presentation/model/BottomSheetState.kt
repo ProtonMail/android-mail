@@ -22,23 +22,32 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 
 sealed interface BottomSheetState {
+    object Shown : BottomSheetState
+    object Hidden : BottomSheetState
+}
+
+sealed interface BottomSheetContentState
+sealed interface BottomSheetOperation {
+    sealed interface Requested : BottomSheetOperation
+    object Dismiss : BottomSheetOperation
+}
+
+
+sealed interface MoveToBottomSheetState : BottomSheetContentState {
 
     data class Data(
         val moveToDestinations: List<MailLabelUiModel>,
         val selected: MailLabelUiModel?
-    ) : BottomSheetState
+    ) : MoveToBottomSheetState
 
-    object Loading : BottomSheetState
-}
+    object Loading : MoveToBottomSheetState
 
-sealed interface BottomSheetOperation
+    sealed interface MoveToBottomSheetEvent : BottomSheetOperation {
+        data class ActionData(val moveToDestinations: List<MailLabelUiModel>) : MoveToBottomSheetEvent
+    }
 
-sealed interface BottomSheetEvent : BottomSheetOperation {
-
-    data class Data(val moveToDestinations: List<MailLabelUiModel>) : BottomSheetEvent
-}
-
-sealed interface BottomSheetAction : BottomSheetOperation {
-
-    data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : BottomSheetAction
+    sealed interface MoveToBottomSheetAction : BottomSheetOperation {
+        object Requested : BottomSheetOperation.Requested
+        data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MoveToBottomSheetAction
+    }
 }

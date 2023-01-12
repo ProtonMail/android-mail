@@ -44,7 +44,7 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.iconRes
@@ -59,19 +59,19 @@ import me.proton.core.label.domain.entity.LabelId
 
 @Composable
 fun MoveToBottomSheetContent(
-    state: BottomSheetState,
+    state: MoveToBottomSheetState,
     onFolderSelected: (MailLabelId) -> Unit,
     onDoneClick: (String) -> Unit
 ) {
     when (state) {
-        is BottomSheetState.Data -> MoveToBottomSheetContent(state, onFolderSelected, onDoneClick)
-        is BottomSheetState.Loading -> ProtonCenteredProgress()
+        is MoveToBottomSheetState.Data -> MoveToBottomSheetContent(state, onFolderSelected, onDoneClick)
+        else -> ProtonCenteredProgress()
     }
 }
 
 @Composable
 fun MoveToBottomSheetContent(
-    dataState: BottomSheetState.Data,
+    dataState: MoveToBottomSheetState.Data,
     onFolderSelected: (MailLabelId) -> Unit,
     onDoneClick: (String) -> Unit
 ) {
@@ -138,7 +138,7 @@ fun MoveToBottomSheetContent(
 @Composable
 fun MoveToBottomSheetContentPreview() {
     MoveToBottomSheetContent(
-        dataState = BottomSheetState.Data(
+        dataState = MoveToBottomSheetState.Data(
             selected = null,
             moveToDestinations = listOf(
                 MailLabelUiModel.System(

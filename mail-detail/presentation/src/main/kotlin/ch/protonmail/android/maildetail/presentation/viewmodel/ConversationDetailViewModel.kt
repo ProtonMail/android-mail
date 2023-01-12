@@ -40,12 +40,11 @@ import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetEvent
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -65,6 +64,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.exhaustive
@@ -102,7 +102,6 @@ class ConversationDetailViewModel @Inject constructor(
         observeConversationMetadata(conversationId)
         observeConversationMessages(conversationId)
         observeBottomBarActions(conversationId)
-        observeMailFolders()
     }
 
     fun submit(action: ConversationDetailViewAction) {
@@ -111,6 +110,8 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.UnStar -> unStarConversation()
             is ConversationDetailViewAction.MarkUnread -> Timber.d("Mark Unread conversation clicked VM")
             is ConversationDetailViewAction.Trash -> moveConversationToTrash()
+            is ConversationDetailViewAction.DismissBottomSheet -> dismissBottomSheet(action)
+            is ConversationDetailViewAction.RequestBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is ConversationDetailViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is ConversationDetailViewAction.MoveToDestinationConfirmed ->
                 onBottomSheetDestinationConfirmed(action.mailLabelText)
@@ -167,16 +168,20 @@ class ConversationDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun observeMailFolders() {
+    private fun showMoveToBottomSheetAndLoadData(initialEvent: ConversationDetailViewAction) {
         primaryUserId.flatMapLatest { userId ->
             combine(
                 observeDestinationMailLabels(userId),
                 observeFolderColor(userId)
             ) { folders, color ->
                 ConversationDetailEvent.ConversationBottomSheetEvent(
-                    BottomSheetEvent.Data(folders.toUiModels(color).let { it.folders + it.systems })
+                    MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
+                        folders.toUiModels(color).let { it.folders + it.systems }
+                    )
                 )
             }
+        }.onStart {
+            emitNewStateFrom(initialEvent)
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)
@@ -225,6 +230,10 @@ class ConversationDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun dismissBottomSheet(action: ConversationDetailViewAction) {
+        viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
     private fun moveToDestinationSelected(mailLabelId: MailLabelId) {
         viewModelScope.launch {
             emitNewStateFrom(ConversationDetailViewAction.MoveToDestinationSelected(mailLabelId))
@@ -233,8 +242,8 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun onBottomSheetDestinationConfirmed(mailLabelText: String) {
         primaryUserId.mapLatest { userId ->
-            val bottomSheetState = state.value.bottomSheetState
-            if (bottomSheetState is BottomSheetState.Data) {
+            val bottomSheetState = state.value.bottomSheetContentState
+            if (bottomSheetState is MoveToBottomSheetState.Data) {
                 bottomSheetState.selected?.let { mailLabelUiModel ->
                     moveConversation(userId, conversationId, mailLabelUiModel.id.labelId).fold(
                         ifLeft = { ConversationDetailEvent.ErrorMovingConversation },
