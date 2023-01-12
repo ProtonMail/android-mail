@@ -28,18 +28,21 @@ import io.mockk.unmockkStatic
 import io.mockk.verify
 import io.sentry.Sentry
 import io.sentry.protocol.User
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.test.kotlin.CoroutinesTest
-import me.proton.core.test.kotlin.UnconfinedCoroutinesTest
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
+import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class SentryUserObserverTest : CoroutinesTest by UnconfinedCoroutinesTest() {
+class SentryUserObserverTest {
 
     private val accountManager = mockk<AccountManager> {
         every { this@mockk.getPrimaryUserId() } returns flowOf(UserIdTestData.userId)
@@ -49,6 +52,7 @@ class SentryUserObserverTest : CoroutinesTest by UnconfinedCoroutinesTest() {
 
     @Before
     fun setUp() {
+        Dispatchers.setMain(TestDispatcherProvider().Main)
         mockkStatic(Sentry::class)
         sentryUserObserver = SentryUserObserver(
             scopeProvider = TestCoroutineScopeProvider(),
@@ -58,11 +62,12 @@ class SentryUserObserverTest : CoroutinesTest by UnconfinedCoroutinesTest() {
 
     @After
     fun tearDown() {
+        Dispatchers.resetMain()
         unmockkStatic(Sentry::class)
     }
 
     @Test
-    fun `register userId in Sentry for valid primary account`() = coroutinesTest {
+    fun `register userId in Sentry for valid primary account`() = runTest {
         // When
         sentryUserObserver.start().join()
         // Then
@@ -72,7 +77,7 @@ class SentryUserObserverTest : CoroutinesTest by UnconfinedCoroutinesTest() {
     }
 
     @Test
-    fun `register random UUID in Sentry when no primary account available`() = coroutinesTest {
+    fun `register random UUID in Sentry when no primary account available`() = runTest {
         // Given
         every { accountManager.getPrimaryUserId() } returns flowOf(null)
         // When
