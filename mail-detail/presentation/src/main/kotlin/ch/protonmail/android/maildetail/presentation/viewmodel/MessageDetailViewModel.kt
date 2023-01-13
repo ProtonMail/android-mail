@@ -26,7 +26,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.usecase.GetMessageBody
-import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
@@ -77,7 +77,7 @@ class MessageDetailViewModel @Inject constructor(
     private val observeDetailActions: ObserveMessageDetailActions,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
-    private val markUnread: MarkUnread,
+    private val markUnread: MarkMessageAsUnread,
     private val getContacts: GetContacts,
     private val starMessage: StarMessage,
     private val unStarMessage: UnStarMessage,

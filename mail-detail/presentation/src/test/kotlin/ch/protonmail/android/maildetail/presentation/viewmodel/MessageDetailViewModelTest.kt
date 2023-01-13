@@ -35,7 +35,7 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.GetMessageBody
-import ch.protonmail.android.maildetail.domain.usecase.MarkUnread
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
@@ -142,7 +142,7 @@ class MessageDetailViewModelTest {
         mockk<ObserveFolderColorSettings> {
             every { this@mockk.invoke(userId) } returns flowOf(FolderColorSettings())
         }
-    private val markUnread = mockk<MarkUnread> {
+    private val markUnread = mockk<MarkMessageAsUnread> {
         every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
     }
     private val getContacts = mockk<GetContacts> {

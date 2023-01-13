@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.flowOf
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class MarkUnread @Inject constructor() {
+class MarkMessageAsUnread @Inject constructor() {
 
     operator fun invoke(userId: UserId, messageId: MessageId): Flow<Either<DataError, Unit>> =
         flowOf(DataError.Local.NoDataCached.left())
