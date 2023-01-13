@@ -595,4 +595,17 @@ class MessageRepositoryImplTest {
         // Then
         assertEquals(trashedMessage.right(), actual)
     }
+
+    @Test
+    fun `mark unread returns error`() = runTest {
+        // given
+        val messageId = MessageIdSample.Invoice
+        val expected = DataErrorSample.NoCache.left()
+
+        // When
+        val result = messageRepository.markUnread(userId, messageId)
+
+        // Then
+        assertEquals(expected, result)
+    }
 }

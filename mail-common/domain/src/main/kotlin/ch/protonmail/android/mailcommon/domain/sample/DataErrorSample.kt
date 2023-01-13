@@ -23,5 +23,6 @@ import ch.protonmail.android.mailcommon.domain.model.NetworkError
 
 object DataErrorSample {
 
+    val NoCache = DataError.Local.NoDataCached
     val Unreachable = DataError.Remote.Http(NetworkError.Unreachable)
 }

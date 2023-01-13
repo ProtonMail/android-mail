@@ -108,4 +108,12 @@ interface MessageRepository {
         fromLabel: LabelId?,
         toLabel: LabelId
     ): Either<DataError.Local, Message>
+
+    /**
+     * Set the message with the given [messageId] as read
+     */
+    suspend fun markUnread(
+        userId: UserId,
+        messageId: MessageId
+    ): Either<DataError.Local, Message>
 }

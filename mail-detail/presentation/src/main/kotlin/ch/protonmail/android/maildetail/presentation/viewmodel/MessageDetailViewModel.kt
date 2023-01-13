@@ -136,13 +136,11 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun markMessageUnread() {
-        primaryUserId.flatMapLatest { userId ->
-            markUnread(userId, messageId).mapLatest { either ->
-                either.fold(
-                    ifLeft = { MessageDetailEvent.ErrorMarkingUnread },
-                    ifRight = { MessageViewAction.MarkUnread }
-                )
-            }
+        primaryUserId.mapLatest { userId ->
+            markUnread(userId, messageId).fold(
+                ifLeft = { MessageDetailEvent.ErrorMarkingUnread },
+                ifRight = { MessageViewAction.MarkUnread }
+            )
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)

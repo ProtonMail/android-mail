@@ -19,16 +19,17 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.Either
-import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class MarkMessageAsUnread @Inject constructor() {
+class MarkMessageAsUnread @Inject constructor(
+    private val messageRepository: MessageRepository
+) {
 
-    operator fun invoke(userId: UserId, messageId: MessageId): Flow<Either<DataError, Unit>> =
-        flowOf(DataError.Local.NoDataCached.left())
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
+        messageRepository.markUnread(userId, messageId)
 }

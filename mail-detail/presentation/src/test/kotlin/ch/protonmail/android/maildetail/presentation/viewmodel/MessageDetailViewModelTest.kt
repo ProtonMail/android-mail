@@ -143,7 +143,7 @@ class MessageDetailViewModelTest {
             every { this@mockk.invoke(userId) } returns flowOf(FolderColorSettings())
         }
     private val markUnread = mockk<MarkMessageAsUnread> {
-        every { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
+        coEvery { this@mockk(userId, MessageId(rawMessageId)) } returns MessageSample.Invoice.right()
     }
     private val getContacts = mockk<GetContacts> {
         coEvery { this@mockk.invoke(userId) } returns ContactTestData.contacts.right()
@@ -347,7 +347,7 @@ class MessageDetailViewModelTest {
     @Test
     fun `message detail state is dismiss message screen when mark unread is successful`() = runTest {
         // Given
-        every { markUnread.invoke(userId, MessageId(rawMessageId)) } returns flowOf(Unit.right())
+        coEvery { markUnread(userId, MessageId(rawMessageId)) } returns MessageSample.Invoice.right()
 
         viewModel.state.test {
             initialStateEmitted()
@@ -362,7 +362,7 @@ class MessageDetailViewModelTest {
     @Test
     fun `message detail state is error marking unread when mark unread fails`() = runTest {
         // Given
-        every { markUnread.invoke(userId, MessageId(rawMessageId)) } returns flowOf(DataError.Local.NoDataCached.left())
+        coEvery { markUnread(userId, MessageId(rawMessageId)) } returns DataError.Local.NoDataCached.left()
 
         viewModel.state.test {
             // When
