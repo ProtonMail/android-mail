@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Kişiler yüklenemedi</string>
   <string name="detail_error_loading_conversation">Yazışma yüklenemedi</string>
   <string name="detail_error_loading_messages">İletiler yüklenemedi</string>
-  <string name="error_mark_unread_failed">Okunmamış olarak işaretlenemedi. Lütfen yeniden deneyin</string>
+  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d ileti</item>
     <item quantity="other">%d ileti</item>

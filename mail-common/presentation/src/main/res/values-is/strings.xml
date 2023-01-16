@@ -45,8 +45,8 @@
   <string name="action_report_phishing_content_description">Tilkynna um veiðipóst</string>
   <string name="action_remind_content_description">Fá áminningu</string>
   <string name="action_save_pdf_content_description">Vista sem PDF</string>
-  <string name="action_sender_emails_content_description">Set action for future emails from this sender</string>
+  <string name="action_sender_emails_content_description">Stilltu aðgerð fyrir framtíðarpóst frá þessum sendanda</string>
   <string name="action_save_attachments_content_description">Vista viðhengi</string>
-  <string name="common_error_loading_actions">Failed loading actions</string>
+  <string name="common_error_loading_actions">Mistókst að hlaða inn aðgerðum</string>
   <string name="yesterday">Í gær</string>
 </resources>

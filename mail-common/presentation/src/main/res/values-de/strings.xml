@@ -29,8 +29,8 @@
   <string name="action_forward_content_description">Weiterleiten</string>
   <string name="action_mark_read_content_description">Als gelesen markieren</string>
   <string name="action_mark_unread_content_description">Als ungelesen markieren</string>
-  <string name="action_star_content_description">Kennzeichnen</string>
-  <string name="action_unstar_content_description">Kennzeichnung entfernen</string>
+  <string name="action_star_content_description">Markieren</string>
+  <string name="action_unstar_content_description">Markierung entfernen</string>
   <string name="action_label_content_description">Kategorisieren als</string>
   <string name="action_move_content_description">Verschieben nach</string>
   <string name="action_trash_content_description">Papierkorb</string>

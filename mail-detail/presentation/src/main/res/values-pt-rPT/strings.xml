@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Falha ao carregar os contactos</string>
   <string name="detail_error_loading_conversation">Falha ao carregar a conversa</string>
   <string name="detail_error_loading_messages">Failed loading messages</string>
-  <string name="error_mark_unread_failed">Falhou a marcação como não lida. Por favor tente novamente</string>
+  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d mensagem</item>
     <item quantity="other">%d mensagens</item>

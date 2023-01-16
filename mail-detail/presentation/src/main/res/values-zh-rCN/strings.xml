@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">通讯录加载失败</string>
   <string name="detail_error_loading_conversation">会话加载失败</string>
   <string name="detail_error_loading_messages">邮件加载失败</string>
-  <string name="error_mark_unread_failed">标为未读失败。请重试</string>
+  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
   <plurals name="message_count_label_text">
     <item quantity="other">%d 封邮件</item>
   </plurals>
@@ -34,7 +34,7 @@
   <string name="error_unstar_operation_failed">取消星标操作失败。请重试。</string>
   <string name="error_move_to_trash_failed">无法移至垃圾箱。请重试。</string>
   <string name="message_moved_to_trash">消息已移至垃圾箱</string>
-  <string name="message_moved_to_selected_destination">Message moved to %1$s</string>
+  <string name="message_moved_to_selected_destination">邮件已移动到 %1$s</string>
   <string name="error_move_message_failed">移动消息失败。请重试。</string>
   <string name="conversation_moved_to_trash">对话已移至垃圾箱</string>
   <string name="conversation_moved_to_selected_destination">会话已移至 %1$s</string>

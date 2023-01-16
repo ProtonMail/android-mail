@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">連絡先の読み込みに失敗しました</string>
   <string name="detail_error_loading_conversation">会話の読み込みに失敗しました</string>
   <string name="detail_error_loading_messages">メールの読み込みに失敗しました</string>
-  <string name="error_mark_unread_failed">未読にすることができませんでした。再度お試しください</string>
+  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
   <plurals name="message_count_label_text">
     <item quantity="other">%d件のメール</item>
   </plurals>
@@ -35,7 +35,7 @@
   <string name="error_move_to_trash_failed">ごみ箱への移動に失敗しました。再試行してください。</string>
   <string name="message_moved_to_trash">メッセージがごみ箱に移動されました</string>
   <string name="message_moved_to_selected_destination">メッセージが %1$s に移動されました</string>
-  <string name="error_move_message_failed">Moving message failed. Please retry.</string>
+  <string name="error_move_message_failed">メッセージの移動に失敗しました。再試行してください。</string>
   <string name="conversation_moved_to_trash">会話がごみ箱に移動されました</string>
   <string name="conversation_moved_to_selected_destination">会話が %1$s に移動されました</string>
   <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>

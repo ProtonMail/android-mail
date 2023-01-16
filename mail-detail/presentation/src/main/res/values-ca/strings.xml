@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Error carregant els contactes</string>
   <string name="detail_error_loading_conversation">Error carregant la conversa</string>
   <string name="detail_error_loading_messages">Error carregant els missatges</string>
-  <string name="error_mark_unread_failed">Error en marcar com a no llegit. Torneu-ho a provar.</string>
+  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d missatge</item>
     <item quantity="other">%d missatges</item>

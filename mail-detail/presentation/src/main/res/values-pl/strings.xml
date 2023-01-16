@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Ładowanie kontaktów nie powiodło się</string>
   <string name="detail_error_loading_conversation">Ładowanie wątku nie powiodło się</string>
   <string name="detail_error_loading_messages">Ładowanie wiadomość nie powiodło się</string>
-  <string name="error_mark_unread_failed">Oznaczenie jako nieprzeczytane nie powiodło się. Spróbuj ponownie</string>
+  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d wiadomość</item>
     <item quantity="few">%d wiadomości</item>

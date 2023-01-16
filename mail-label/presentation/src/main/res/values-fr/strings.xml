@@ -20,7 +20,7 @@
   <string name="label_title_inbox">Boîte de réception</string>
   <string name="label_title_drafts">Brouillons</string>
   <string name="label_title_sent">Envoyés</string>
-  <string name="label_title_starred">Suivis</string>
+  <string name="label_title_starred">Favoris</string>
   <string name="label_title_archive">Archives</string>
   <string name="label_title_spam">Indésirables/spam</string>
   <string name="label_title_trash">Corbeille</string>

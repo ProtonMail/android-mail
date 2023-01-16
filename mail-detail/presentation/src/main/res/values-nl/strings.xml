@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Contacten laden mislukt</string>
   <string name="detail_error_loading_conversation">Gesprek laden mislukt</string>
   <string name="detail_error_loading_messages">Berichten laden mislukt</string>
-  <string name="error_mark_unread_failed">Bericht als ongelezen markeren is mislukt. Probeer het opnieuw</string>
+  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d bericht</item>
     <item quantity="other">%d berichten</item>

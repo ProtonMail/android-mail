@@ -20,7 +20,7 @@
   <string name="label_title_inbox">Posteingang</string>
   <string name="label_title_drafts">Entwürfe</string>
   <string name="label_title_sent">Gesendet</string>
-  <string name="label_title_starred">Gekennzeichnet</string>
+  <string name="label_title_starred">Markiert</string>
   <string name="label_title_archive">Archiv</string>
   <string name="label_title_spam">Spam</string>
   <string name="label_title_trash">Papierkorb</string>

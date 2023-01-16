@@ -71,12 +71,12 @@
   <string name="mail_settings_swipe_action_archive_title">Archivieren</string>
   <string name="mail_settings_swipe_action_read_title">Ungelesen</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
-  <string name="mail_settings_swipe_action_star_title">Kennzeichnen</string>
+  <string name="mail_settings_swipe_action_star_title">Markieren</string>
   <string name="mail_settings_swipe_action_trash_title">Papierkorb</string>
   <string name="mail_settings_swipe_action_archive_description">In Archiv verschieben</string>
   <string name="mail_settings_swipe_action_read_description">Als „Gelesen”/„Ungelesen” kennzeichnen</string>
   <string name="mail_settings_swipe_action_spam_description">In Spam-Ordner verschieben</string>
-  <string name="mail_settings_swipe_action_star_description">Kennzeichnen/Kennzeichnung aufheben</string>
+  <string name="mail_settings_swipe_action_star_description">Markieren/Markierung entfernen</string>
   <string name="mail_settings_swipe_action_trash_description">In den Papierkorb verschieben</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Es ist ein Fehler aufgetreten. Versuche es erneut.</string>

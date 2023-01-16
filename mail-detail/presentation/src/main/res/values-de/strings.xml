@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Laden der Kontakte fehlgeschlagen</string>
   <string name="detail_error_loading_conversation">Laden der Unterhaltung fehlgeschlagen</string>
   <string name="detail_error_loading_messages">Laden der Nachrichten fehlgeschlagen</string>
-  <string name="error_mark_unread_failed">Nachricht als ungelesen markieren fehlgeschlagen. Bitte versuche es erneut.</string>
+  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d Nachricht</item>
     <item quantity="other">%d Nachrichten</item>
@@ -31,8 +31,8 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Details ausblenden</string>
   <string name="undisclosed_recipients">Verborgene Empfänger</string>
-  <string name="error_star_operation_failed">Der Vorgang „Stern hinzufügen” ist fehlgeschlagen. Bitte erneut versuchen.</string>
-  <string name="error_unstar_operation_failed">Der Vorgang „Stern entfernen” ist fehlgeschlagen. Bitte erneut versuchen.</string>
+  <string name="error_star_operation_failed">Der Vorgang „Markierung hinzufügen“ ist fehlgeschlagen. Bitte erneut versuchen.</string>
+  <string name="error_unstar_operation_failed">Der Vorgang „Markierung entfernen“ ist fehlgeschlagen. Bitte erneut versuchen.</string>
   <string name="error_move_to_trash_failed">Verschieben in den Papierkorb fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="message_moved_to_trash">Nachricht in den Papierkorb verschoben</string>
   <string name="message_moved_to_selected_destination">Nachricht verschoben nach %1$s</string>
