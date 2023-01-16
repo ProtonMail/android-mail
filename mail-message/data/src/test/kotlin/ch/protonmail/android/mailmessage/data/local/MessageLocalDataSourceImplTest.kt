@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local
 
 import app.cash.turbine.test
 import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
@@ -33,6 +34,8 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
 import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
+import ch.protonmail.android.mailmessage.data.sample.MessageEntitySample
+import ch.protonmail.android.mailmessage.data.sample.MessageWithLabelIdsSample
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -362,13 +365,39 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
-    fun `mark unread returns error`() = runTest {
+    fun `mark unread returns updated message`() = runTest {
         // given
+        val userId = UserIdSample.Primary
         val messageId = MessageIdSample.Invoice
-        val error = DataErrorSample.NoCache.left()
+        val message = MessageWithLabelIdsSample.Invoice.copy(
+            message = MessageEntitySample.Invoice.copy(
+                unread = false
+            )
+        )
+        val updatedMessage = message.copy(
+            message = MessageEntitySample.Invoice.copy(
+                unread = true
+            )
+        )
+        every { messageDao.observe(userId, messageId) } returns flowOf(message)
 
         // when
-        val result = messageLocalDataSource.markUnread(UserIdSample.Primary, messageId)
+        val result = messageLocalDataSource.markUnread(userId, messageId)
+
+        // then
+        assertEquals(updatedMessage.toMessage().right(), result)
+    }
+
+    @Test
+    fun `mark unread returns error if message not found`() = runTest {
+        // given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice
+        val error = DataErrorSample.NoCache.left()
+        every { messageDao.observe(userId, messageId) } returns flowOf(null)
+
+        // when
+        val result = messageLocalDataSource.markUnread(userId, messageId)
 
         // then
         assertEquals(error, result)
