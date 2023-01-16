@@ -170,4 +170,12 @@ interface MessageLocalDataSource {
         userId: UserId,
         messageId: MessageId
     ): Either<DataError.Local, Message>
+
+    /**
+     * Marks as read the message for the given [messageId] related to the same [userId]
+     */
+    fun markRead(
+        userId: UserId,
+        messageId: MessageId
+    ): Either<DataError.Local, Message>
 }

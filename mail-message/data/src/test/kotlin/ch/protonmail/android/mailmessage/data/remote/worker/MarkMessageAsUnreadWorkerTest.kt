@@ -24,11 +24,14 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsUnreadBody
 import ch.protonmail.android.mailmessage.data.remote.response.MarkUnreadResponse
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -64,6 +67,9 @@ internal class MarkMessageAsUnreadWorkerTest {
         }
     }
     private val messageApi: MessageApi = mockk()
+    private val messageLocalDataSource: MessageLocalDataSource = mockk {
+        every { markRead(userId, messageId) } returns MessageSample.Invoice.right()
+    }
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(MarkMessageAsUnreadWorker.RawUserIdKey) } returns userId.id
@@ -76,7 +82,8 @@ internal class MarkMessageAsUnreadWorkerTest {
     private val worker = MarkMessageAsUnreadWorker(
         context = mockk(),
         workerParameters = params,
-        apiProvider = apiProvider
+        apiProvider = apiProvider,
+        messageLocalDataSource = messageLocalDataSource
     )
 
     @Test
@@ -161,5 +168,17 @@ internal class MarkMessageAsUnreadWorkerTest {
 
         // then
         assertEquals(Result.failure(), result)
+    }
+
+    @Test
+    fun `rollback unread when api call fails with non-retryable error`() = runTest {
+        // given
+        coEvery { messageApi.markUnread(any()) } throws nonRetryableException
+
+        // when
+        worker.doWork()
+
+        // then
+        coVerify { messageLocalDataSource.markRead(userId, messageId) }
     }
 }

@@ -27,6 +27,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsUnreadBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -43,20 +44,26 @@ import javax.inject.Inject
 class MarkMessageAsUnreadWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
+    private val messageLocalDataSource: MessageLocalDataSource
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        val userId = inputData.getString(RawUserIdKey)?.takeIfNotBlank()
-        val messageId = inputData.getString(RawMessageIdKey)?.takeIfNotBlank()
+        val userId = inputData.getString(RawUserIdKey)
+            ?.takeIfNotBlank()
+            ?.let(::UserId)
+
+        val messageId = inputData.getString(RawMessageIdKey)
+            ?.takeIfNotBlank()
+            ?.let(::MessageId)
 
         if (userId == null || messageId == null) {
             return Result.failure()
         }
 
-        val api = apiProvider.get<MessageApi>(UserId(userId))
+        val api = apiProvider.get<MessageApi>(userId)
         val requestBody = MarkMessageAsUnreadBody(
-            messageIds = listOf(messageId)
+            messageIds = listOf(messageId.id)
         )
         val result = api {
             markUnread(requestBody)
@@ -69,6 +76,7 @@ class MarkMessageAsUnreadWorker @AssistedInject constructor(
                     Result.retry()
 
                 } else {
+                    messageLocalDataSource.markRead(userId, messageId)
                     Result.failure()
                 }
             }
