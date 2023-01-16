@@ -402,4 +402,43 @@ class MessageLocalDataSourceImplTest {
         // then
         assertEquals(error, result)
     }
+
+    @Test
+    fun `mark read returns updated message`() = runTest {
+        // given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice
+        val message = MessageWithLabelIdsSample.Invoice.copy(
+            message = MessageEntitySample.Invoice.copy(
+                unread = true
+            )
+        )
+        val updatedMessage = message.copy(
+            message = MessageEntitySample.Invoice.copy(
+                unread = false
+            )
+        )
+        every { messageDao.observe(userId, messageId) } returns flowOf(message)
+
+        // when
+        val result = messageLocalDataSource.markRead(userId, messageId)
+
+        // then
+        assertEquals(updatedMessage.toMessage().right(), result)
+    }
+
+    @Test
+    fun `mark read returns error if message not found`() = runTest {
+        // given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice
+        val error = DataErrorSample.NoCache.left()
+        every { messageDao.observe(userId, messageId) } returns flowOf(null)
+
+        // when
+        val result = messageLocalDataSource.markRead(userId, messageId)
+
+        // then
+        assertEquals(error, result)
+    }
 }

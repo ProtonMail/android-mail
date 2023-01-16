@@ -174,7 +174,7 @@ interface MessageLocalDataSource {
     /**
      * Marks as read the message for the given [messageId] related to the same [userId]
      */
-    fun markRead(
+    suspend fun markRead(
         userId: UserId,
         messageId: MessageId
     ): Either<DataError.Local, Message>

@@ -68,7 +68,7 @@ internal class MarkMessageAsUnreadWorkerTest {
     }
     private val messageApi: MessageApi = mockk()
     private val messageLocalDataSource: MessageLocalDataSource = mockk {
-        every { markRead(userId, messageId) } returns MessageSample.Invoice.right()
+        coEvery { markRead(userId, messageId) } returns MessageSample.Invoice.right()
     }
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
