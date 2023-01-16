@@ -23,8 +23,10 @@ import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
@@ -45,7 +47,6 @@ import me.proton.core.network.domain.session.SessionId
 import me.proton.core.network.domain.session.SessionProvider
 import me.proton.core.test.android.api.TestApiManager
 import me.proton.core.util.kotlin.DefaultDispatcherProvider
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -71,20 +72,21 @@ class MessageRemoteDataSourceImplTest {
         every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
     }
     private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
+    private val markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer = mockk(relaxUnitFun = true)
     private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
 
-    private lateinit var apiProvider: ApiProvider
-    private lateinit var messageRemoteDataSource: MessageRemoteDataSourceImpl
+    private val apiProvider = ApiProvider(
+        apiManagerFactory = apiManagerFactory,
+        sessionProvider = sessionProvider,
+        dispatcherProvider = DefaultDispatcherProvider()
+    )
 
-    @Before
-    fun setUp() {
-        apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
-        messageRemoteDataSource = MessageRemoteDataSourceImpl(
-            apiProvider,
-            addLabelMessageWorker,
-            removeLabelMessageWorker
-        )
-    }
+    private val messageRemoteDataSource = MessageRemoteDataSourceImpl(
+        apiProvider = apiProvider,
+        addLabelMessageWorker = addLabelMessageWorker,
+        markMessageAsUnreadWorker = markMessageAsUnreadWorker,
+        removeLabelMessageWorker = removeLabelMessageWorker
+    )
 
     @Test(expected = IllegalArgumentException::class)
     fun `pageKey size greater than MessageApi maxPageSize throw Exception`() = runTest {
@@ -274,5 +276,17 @@ class MessageRemoteDataSourceImplTest {
         messageRemoteDataSource.removeLabel(userId, messageId, labelId)
         // Then
         verify { removeLabelMessageWorker.enqueue(userId, messageId, labelId) }
+    }
+
+    @Test
+    fun `enqueues worker to mark message as unread`() {
+        // given
+        val messageId = MessageIdSample.Invoice
+
+        // when
+        messageRemoteDataSource.markUnread(userId, messageId)
+
+        // then
+        verify { markMessageAsUnreadWorker.enqueue(userId, messageId) }
     }
 }

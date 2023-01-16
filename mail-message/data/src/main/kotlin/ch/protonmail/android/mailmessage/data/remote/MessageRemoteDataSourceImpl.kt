@@ -22,6 +22,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -39,6 +40,7 @@ import javax.inject.Inject
 class MessageRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider,
     private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer,
+    private val markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer,
     private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer
 ) : MessageRemoteDataSource {
 
@@ -92,6 +94,6 @@ class MessageRemoteDataSourceImpl @Inject constructor(
     }
 
     override fun markUnread(userId: UserId, messageId: MessageId) {
-        TODO("Not yet implemented")
+        markMessageAsUnreadWorker.enqueue(userId, messageId)
     }
 }
