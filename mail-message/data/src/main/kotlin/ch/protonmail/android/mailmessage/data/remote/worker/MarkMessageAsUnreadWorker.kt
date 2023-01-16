@@ -27,20 +27,52 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import ch.protonmail.android.mailmessage.data.remote.MessageApi
+import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsUnreadBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
+import me.proton.core.network.data.ApiProvider
+import me.proton.core.network.domain.ApiResult
+import me.proton.core.network.domain.isRetryable
+import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 @HiltWorker
 class MarkMessageAsUnreadWorker @AssistedInject constructor(
     @Assisted context: Context,
-    @Assisted workerParameters: WorkerParameters
+    @Assisted workerParameters: WorkerParameters,
+    private val apiProvider: ApiProvider
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        TODO("Not yet implemented")
+        val userId = inputData.getString(RawUserIdKey)?.takeIfNotBlank()
+        val messageId = inputData.getString(RawMessageIdKey)?.takeIfNotBlank()
+
+        if (userId == null || messageId == null) {
+            return Result.failure()
+        }
+
+        val api = apiProvider.get<MessageApi>(UserId(userId))
+        val requestBody = MarkMessageAsUnreadBody(
+            messageIds = listOf(messageId)
+        )
+        val result = api {
+            markUnread(requestBody)
+        }
+
+        return when (result) {
+            is ApiResult.Success -> Result.success()
+            is ApiResult.Error -> {
+                if (result.isRetryable()) {
+                    Result.retry()
+
+                } else {
+                    Result.failure()
+                }
+            }
+        }
     }
 
     companion object {

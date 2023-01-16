@@ -18,17 +18,27 @@
 
 package ch.protonmail.android.mailmessage.data.remote.worker
 
+import java.net.UnknownHostException
+import androidx.work.ListenableWorker.Result
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.data.remote.MessageApi
+import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsUnreadBody
+import ch.protonmail.android.mailmessage.data.remote.response.MarkUnreadResponse
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
+import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.SerializationException
+import me.proton.core.network.data.ApiProvider
+import me.proton.core.network.domain.ApiResult
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -36,7 +46,24 @@ internal class MarkMessageAsUnreadWorkerTest {
 
     private val userId = UserIdSample.Primary
     private val messageId = MessageIdSample.Invoice
+    private val nonRetryableException = SerializationException()
+    private val retryableException = UnknownHostException()
 
+    private val apiProvider: ApiProvider = mockk {
+        coEvery { get<MessageApi>(userId).invoke<MarkUnreadResponse>(block = any()) } coAnswers {
+            val block = secondArg<suspend MessageApi.() -> MarkUnreadResponse>()
+            try {
+                ApiResult.Success(block(messageApi))
+            } catch (e: Exception) {
+                when (e) {
+                    nonRetryableException -> ApiResult.Error.Parse(e)
+                    retryableException -> ApiResult.Error.Connection()
+                    else -> throw e
+                }
+            }
+        }
+    }
+    private val messageApi: MessageApi = mockk()
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(MarkMessageAsUnreadWorker.RawUserIdKey) } returns userId.id
@@ -48,7 +75,8 @@ internal class MarkMessageAsUnreadWorkerTest {
 
     private val worker = MarkMessageAsUnreadWorker(
         context = mockk(),
-        workerParameters = params
+        workerParameters = params,
+        apiProvider = apiProvider
     )
 
     @Test
@@ -85,5 +113,53 @@ internal class MarkMessageAsUnreadWorkerTest {
             expected = messageId.id,
             actual = requestSlot.captured.workSpec.input.getString(MarkMessageAsUnreadWorker.RawMessageIdKey)
         )
+    }
+
+    @Test
+    fun `api is called with the correct parameters`() = runTest {
+        // given
+        coEvery { messageApi.markUnread(any()) } returns mockk()
+
+        // when
+        worker.doWork()
+
+        // then
+        coVerify { messageApi.markUnread(MarkMessageAsUnreadBody(listOf(messageId.id))) }
+    }
+
+    @Test
+    fun `returns success if api call succeeds`() = runTest {
+        // given
+        coEvery { messageApi.markUnread(any()) } returns mockk()
+
+        // when
+        val result = worker.doWork()
+
+        // then
+        assertEquals(Result.success(), result)
+    }
+
+    @Test
+    fun `returns retry if api call fails with retryable error`() = runTest {
+        // given
+        coEvery { messageApi.markUnread(any()) } throws retryableException
+
+        // when
+        val result = worker.doWork()
+
+        // then
+        assertEquals(Result.retry(), result)
+    }
+
+    @Test
+    fun `returns failure if api call fails with non-retryable error`() = runTest {
+        // given
+        coEvery { messageApi.markUnread(any()) } throws nonRetryableException
+
+        // when
+        val result = worker.doWork()
+
+        // then
+        assertEquals(Result.failure(), result)
     }
 }
