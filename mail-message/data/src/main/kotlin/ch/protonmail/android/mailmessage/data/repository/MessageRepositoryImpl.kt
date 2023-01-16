@@ -179,7 +179,7 @@ class MessageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
-        DataError.Local.NoDataCached.left()
+        localDataSource.markUnread(userId, messageId)
 
     private suspend fun moveToTrash(
         userId: UserId,

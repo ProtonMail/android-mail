@@ -21,7 +21,9 @@ package ch.protonmail.android.mailmessage.data.local
 import app.cash.turbine.test
 import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageWithLabels
 import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
@@ -33,6 +35,7 @@ import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
 import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
@@ -356,5 +359,18 @@ class MessageLocalDataSourceImplTest {
         val actual = messageLocalDataSource.removeLabel(UserIdTestData.userId, MessageId(message.id), labelId)
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), actual)
+    }
+
+    @Test
+    fun `mark unread returns error`() = runTest {
+        // given
+        val messageId = MessageIdSample.Invoice
+        val error = DataErrorSample.NoCache.left()
+
+        // when
+        val result = messageLocalDataSource.markUnread(UserIdSample.Primary, messageId)
+
+        // then
+        assertEquals(error, result)
     }
 }

@@ -167,6 +167,9 @@ class MessageLocalDataSourceImpl @Inject constructor(
         return updatedMessage.right()
     }
 
+    override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
+        DataError.Local.NoDataCached.left()
+
     private suspend fun updateLabels(
         messages: List<Message>
     ) = with(groupByUserId(messages)) {

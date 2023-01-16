@@ -597,15 +597,30 @@ class MessageRepositoryImplTest {
     }
 
     @Test
-    fun `mark unread returns error`() = runTest {
+    fun `mark unread returns error when local data source fails`() = runTest {
         // given
         val messageId = MessageIdSample.Invoice
-        val expected = DataErrorSample.NoCache.left()
+        val error = DataErrorSample.NoCache.left()
+        coEvery { localDataSource.markUnread(userId, messageId) } returns error
 
         // When
         val result = messageRepository.markUnread(userId, messageId)
 
         // Then
-        assertEquals(expected, result)
+        assertEquals(error, result)
+    }
+
+    @Test
+    fun `mark unread returns updated message when local data source succeed`() = runTest {
+        // given
+        val messageId = MessageIdSample.Invoice
+        val message = MessageSample.Invoice.right()
+        coEvery { localDataSource.markUnread(userId, messageId) } returns message
+
+        // When
+        val result = messageRepository.markUnread(userId, messageId)
+
+        // Then
+        assertEquals(message, result)
     }
 }
