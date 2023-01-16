@@ -41,6 +41,7 @@ import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
+import io.mockk.Called
 import io.mockk.Ordering
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -608,6 +609,7 @@ class MessageRepositoryImplTest {
 
         // Then
         assertEquals(error, result)
+        verify { remoteDataSource wasNot Called }
     }
 
     @Test
@@ -622,5 +624,6 @@ class MessageRepositoryImplTest {
 
         // Then
         assertEquals(message, result)
+        verify { remoteDataSource.markUnread(userId, messageId) }
     }
 }

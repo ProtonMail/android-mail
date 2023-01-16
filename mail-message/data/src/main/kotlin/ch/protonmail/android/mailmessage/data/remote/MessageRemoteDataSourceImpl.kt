@@ -90,4 +90,8 @@ class MessageRemoteDataSourceImpl @Inject constructor(
     override fun removeLabel(userId: UserId, messageId: MessageId, labelId: LabelId) {
         removeLabelMessageWorker.enqueue(userId, messageId, labelId)
     }
+
+    override fun markUnread(userId: UserId, messageId: MessageId) {
+        TODO("Not yet implemented")
+    }
 }
