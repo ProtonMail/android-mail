@@ -30,7 +30,7 @@ class MessageBodyReducer @Inject constructor() {
     ): MessageBodyState {
         return when (event) {
             is MessageDetailEvent.MessageBodyEvent -> MessageBodyState.Data(event.messageBody)
-            is MessageDetailEvent.ErrorGettingMessageBody -> MessageBodyState.Error
+            is MessageDetailEvent.ErrorGettingMessageBody -> MessageBodyState.Error(event.isNoNetworkError)
         }
     }
 }

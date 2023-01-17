@@ -53,8 +53,12 @@ class MessageBodyReducerTest(
                 MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyUiModel)
             ),
             TestInput(
-                MessageDetailEvent.ErrorGettingMessageBody,
-                MessageBodyState.Error
+                MessageDetailEvent.ErrorGettingMessageBody(isNoNetworkError = true),
+                MessageBodyState.Error(true)
+            ),
+            TestInput(
+                MessageDetailEvent.ErrorGettingMessageBody(isNoNetworkError = false),
+                MessageBodyState.Error(false)
             )
         )
 

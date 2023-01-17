@@ -27,6 +27,7 @@ import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -288,7 +289,24 @@ class MessageDetailViewModelTest {
             initialStateEmitted()
 
             // Then
-            val expected = MessageBodyState.Error
+            val expected = MessageBodyState.Error(isNoNetworkError = false)
+            assertEquals(expected, awaitItem().messageBodyState)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `message body state is no network error when use case returns no network error`() = runTest {
+        // Given
+        val messageId = MessageId(rawMessageId)
+        coEvery { getMessageBody(userId, messageId) } returns DataError.Remote.Http(NetworkError.NoNetwork).left()
+
+        // When
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // Then
+            val expected = MessageBodyState.Error(isNoNetworkError = true)
             assertEquals(expected, awaitItem().messageBodyState)
             cancelAndIgnoreRemainingEvents()
         }

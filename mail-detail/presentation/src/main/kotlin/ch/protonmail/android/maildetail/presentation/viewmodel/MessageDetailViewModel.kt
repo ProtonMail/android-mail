@@ -22,6 +22,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
@@ -209,7 +211,11 @@ class MessageDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = primaryUserId.first()
             val event = getMessageBody(userId, messageId).fold(
-                ifLeft = { MessageDetailEvent.ErrorGettingMessageBody },
+                ifLeft = {
+                    MessageDetailEvent.ErrorGettingMessageBody(
+                        isNoNetworkError = it == DataError.Remote.Http(NetworkError.NoNetwork)
+                    )
+                },
                 ifRight = { MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(it)) }
             )
             emitNewStateFrom(event)
