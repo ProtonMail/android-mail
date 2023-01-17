@@ -183,6 +183,31 @@ class MessageRepositoryImpl @Inject constructor(
             remoteDataSource.markUnread(userId, messageId)
         }
 
+    override suspend fun relabel(
+        userId: UserId,
+        messageId: MessageId,
+        labels: List<LabelId>
+    ): Either<DataError, Message> {
+
+        @Suppress("MagicNumber")
+        if (labels.size > 100) {
+            throw IllegalArgumentException("The labels exceeds the maximum number of 100")
+        }
+
+        val message = localDataSource.observeMessage(userId, messageId).first()
+            ?: return DataError.Local.NoDataCached.left()
+
+        val updatedLabels = message.labelIds.toMutableList().apply {
+            removeAll { labels.contains(it) }
+            addAll(labels.filterNot { message.labelIds.contains(it) })
+        }
+
+        val updatedMessage = message.copy(labelIds = updatedLabels)
+        localDataSource.upsertMessage(updatedMessage)
+
+        return updatedMessage.right()
+    }
+
     private suspend fun moveToTrash(
         userId: UserId,
         messageId: MessageId

@@ -116,4 +116,14 @@ interface MessageRepository {
         userId: UserId,
         messageId: MessageId
     ): Either<DataError.Local, Message>
+
+    /**
+     * Removes or adds the provided [labels] from the message with the given [messageId]
+     * @throws IllegalArgumentException when [labels] is larger than 100 elements
+     */
+    suspend fun relabel(
+        userId: UserId,
+        messageId: MessageId,
+        labels: List<LabelId>
+    ): Either<DataError, Message>
 }

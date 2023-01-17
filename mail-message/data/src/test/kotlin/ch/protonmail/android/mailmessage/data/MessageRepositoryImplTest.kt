@@ -628,4 +628,70 @@ class MessageRepositoryImplTest {
         assertEquals(message, result)
         verify { remoteDataSource.markUnread(userId, messageId) }
     }
+
+    @Test
+    fun `relabel adds missing and removes existing labels from a message`() = runTest {
+        // Given
+        val labelToStay = LabelId("CustomLabel1")
+        val labelToBeAdded = LabelId("CustomLabel3")
+        val labelToBeRemoved = LabelId("CustomLabel2")
+        val message = MessageTestData.message.copy(labelIds = listOf(labelToStay, labelToBeRemoved))
+        every { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
+
+        // When
+        val actual = messageRepository.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded))
+
+        // Then
+        val expectedMessage = message.copy(labelIds = listOf(labelToStay, labelToBeAdded))
+        assertEquals(expectedMessage.right(), actual)
+    }
+
+    @Test
+    fun `relabel emits error when local data source fails`() = runTest {
+        // Given
+        val labelToStay = LabelId("CustomLabel1")
+        val labelToBeAdded = LabelId("CustomLabel3")
+        val labelToBeRemoved = LabelId("CustomLabel2")
+        val message = MessageTestData.message.copy(labelIds = listOf(labelToStay, labelToBeRemoved))
+
+        // When
+        every { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(null)
+        val actual = messageRepository.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded))
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
+    }
+
+    @Test
+    fun `verify relabel calls local data source`() = runTest {
+        // Given
+        val labelToStay = LabelId("CustomLabel1")
+        val labelToBeAdded = LabelId("CustomLabel3")
+        val labelToBeRemoved = LabelId("CustomLabel2")
+        val message = MessageTestData.message.copy(labelIds = listOf(labelToStay, labelToBeRemoved))
+        every { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
+
+        // When
+        messageRepository.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded))
+
+        // Then
+        val expectedMessage = message.copy(labelIds = listOf(labelToStay, labelToBeAdded))
+        coVerify { localDataSource.upsertMessage(expectedMessage) }
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `relabel throws exception when list is larger than 100 items`() = runTest {
+        // Given
+        val labelList = mutableListOf<LabelId>()
+        for (i in 1..101) {
+            labelList.add(LabelId("CustomLabel$i"))
+        }
+        val message = MessageTestData.message.copy(
+            labelIds = listOf(LabelId("CustomLabel1"), LabelId("CustomLabel2"))
+        )
+
+        // When
+        every { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
+        messageRepository.relabel(userId, MessageId(message.id), labelList)
+    }
 }
