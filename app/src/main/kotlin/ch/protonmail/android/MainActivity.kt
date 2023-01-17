@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().setKeepOnScreenCondition {
-            launcherViewModel.state.value != LauncherState.PrimaryExist
+            launcherViewModel.state.value == LauncherState.Processing
         }
         super.onCreate(savedInstanceState)
 
