@@ -28,6 +28,9 @@ object ActionUiModelSample {
     val Archive: ActionUiModel =
         build(Action.Archive)
 
+    val MarkUnread: ActionUiModel =
+        build(Action.MarkUnread)
+
     val Trash: ActionUiModel =
         build(Action.Trash)
 

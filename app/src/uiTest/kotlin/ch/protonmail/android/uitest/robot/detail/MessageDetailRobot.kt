@@ -43,6 +43,12 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
         return this
     }
 
+    fun markAsUnread(): MessageDetailRobot {
+        composeTestRule.onNodeWithContentDescription(string.action_mark_unread_content_description)
+            .performClick()
+        return this
+    }
+
     fun moveToTrash(): MailboxRobot {
         composeTestRule.onNodeWithContentDescription(string.action_trash_content_description)
             .performClick()

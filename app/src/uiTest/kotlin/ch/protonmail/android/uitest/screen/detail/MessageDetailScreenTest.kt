@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.screen.detail
 
 import androidx.compose.ui.test.junit4.createComposeRule
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
@@ -221,6 +222,48 @@ class MessageDetailScreenTest {
 
         // then
         robot.verify { labelIsDisplayed(label.name) }
+    }
+
+    @Test
+    fun whenUnreadClickedThenCallbackIsInvoked() {
+        // given
+        val state = MessageDetailsPreviewData.Message.copy(
+            bottomBarState = BottomBarState.Data(
+                actions = listOf(ActionUiModelSample.MarkUnread)
+            )
+        )
+        var unreadClicked = false
+
+        // when
+        setUpScreen(
+            state = state,
+            actions = MessageDetailScreen.Actions.Empty.copy(
+                onUnreadClick = { unreadClicked = true }
+            )
+        ).markAsUnread()
+
+        // then
+        assertTrue(unreadClicked)
+    }
+
+    @Test
+    fun whenExitStateThenCallbackIsInvoked() {
+        // given
+        val state = MessageDetailsPreviewData.Message.copy(
+            exitScreenEffect = Effect.of(Unit)
+        )
+        var didExit = false
+
+        // when
+        setUpScreen(
+            state = state,
+            actions = MessageDetailScreen.Actions.Empty.copy(
+                onExit = { didExit = true }
+            )
+        )
+
+        // then
+        assertTrue(didExit)
     }
 
     private fun setUpScreen(
