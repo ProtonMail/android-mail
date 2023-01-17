@@ -27,6 +27,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
@@ -38,7 +39,6 @@ import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.network.domain.isRetryable
-import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 @HiltWorker
@@ -50,13 +50,9 @@ class RemoveLabelMessageWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        val userId = inputData.getString(RawUserIdKey)?.takeIfNotBlank()
-        val messageId = inputData.getString(RawMessageIdKey)?.takeIfNotBlank()
-        val labelId = inputData.getString(RawLabelIdKey)?.takeIfNotBlank()
-
-        if (userId == null || messageId == null || labelId == null) {
-            return Result.failure()
-        }
+        val userId = requireNotBlank(inputData.getString(RawUserIdKey), fieldName = "User id")
+        val messageId = requireNotBlank(inputData.getString(RawMessageIdKey), fieldName = "Message id")
+        val labelId = requireNotBlank(inputData.getString(RawLabelIdKey), fieldName = "Label id")
 
         val result = apiProvider.get<MessageApi>(UserId(userId)).invoke {
             removeLabel(

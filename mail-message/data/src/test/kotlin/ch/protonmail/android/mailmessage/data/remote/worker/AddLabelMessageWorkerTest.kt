@@ -52,6 +52,7 @@ import me.proton.core.util.kotlin.DefaultDispatcherProvider
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 internal class AddLabelMessageWorkerTest {
 
@@ -128,36 +129,30 @@ internal class AddLabelMessageWorkerTest {
     }
 
     @Test
-    fun `worker returns failure when userid worker parameter is missing`() = runTest {
+    fun `worker fails when userid worker parameter is missing`() = runTest {
         // Given
         every { parameters.inputData.getString(AddLabelMessageWorker.RawUserIdKey) } returns null
-        // When
-        val result = addLabelMessageWorker.doWork()
-        // Then
+        // When - Then
+        assertFailsWith<IllegalArgumentException> { addLabelMessageWorker.doWork() }
         coVerify { messageApi wasNot Called }
-        assertEquals(Result.failure(), result)
     }
 
     @Test
-    fun `worker returns failure when messageId worker parameter is empty`() = runTest {
+    fun `worker fails when messageId worker parameter is empty`() = runTest {
         // Given
         every { parameters.inputData.getString(AddLabelMessageWorker.RawMessageIdKey) } returns ""
-        // When
-        val result = addLabelMessageWorker.doWork()
-        // Then
+        // When - Then
+        assertFailsWith<IllegalArgumentException> { addLabelMessageWorker.doWork() }
         coVerify { messageApi wasNot Called }
-        assertEquals(Result.failure(), result)
     }
 
     @Test
-    fun `worker returns failure when labelId worker parameter is blank`() = runTest {
+    fun `worker fails when labelId worker parameter is blank`() = runTest {
         // Given
         every { parameters.inputData.getString(AddLabelMessageWorker.RawLabelIdKey) } returns " "
-        // When
-        val result = addLabelMessageWorker.doWork()
-        // Then
+        // When - Then
+        assertFailsWith<IllegalArgumentException> { addLabelMessageWorker.doWork() }
         coVerify { messageApi wasNot Called }
-        assertEquals(Result.failure(), result)
     }
 
     @Test

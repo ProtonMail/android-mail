@@ -52,6 +52,7 @@ import me.proton.core.util.kotlin.DefaultDispatcherProvider
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class RemoveLabelMessageWorkerTest {
 
@@ -128,36 +129,30 @@ class RemoveLabelMessageWorkerTest {
     }
 
     @Test
-    fun `remove label worker returns failure when userid parameter is missing`() = runTest {
+    fun `remove label worker fails when userid parameter is missing`() = runTest {
         // Given
         every { parameters.inputData.getString(RemoveLabelMessageWorker.RawUserIdKey) } returns null
-        // When
-        val result = removeLabelMessageWorker.doWork()
-        // Then
+        // When - Then
+        assertFailsWith<IllegalArgumentException> { removeLabelMessageWorker.doWork() }
         coVerify { messageApi wasNot Called }
-        assertEquals(Result.failure(), result)
     }
 
     @Test
-    fun `remove label worker returns failure when messageId parameter is empty`() = runTest {
+    fun `remove label worker fails when messageId parameter is empty`() = runTest {
         // Given
         every { parameters.inputData.getString(RemoveLabelMessageWorker.RawMessageIdKey) } returns ""
-        // When
-        val result = removeLabelMessageWorker.doWork()
-        // Then
+        // When - Then
+        assertFailsWith<IllegalArgumentException> { removeLabelMessageWorker.doWork() }
         coVerify { messageApi wasNot Called }
-        assertEquals(Result.failure(), result)
     }
 
     @Test
-    fun `remove label worker returns failure when labelId parameter is blank`() = runTest {
+    fun `remove label worker returns fails when labelId parameter is blank`() = runTest {
         // Given
         every { parameters.inputData.getString(RemoveLabelMessageWorker.RawLabelIdKey) } returns " "
-        // When
-        val result = removeLabelMessageWorker.doWork()
-        // Then
+        // When - Then
+        assertFailsWith<IllegalArgumentException> { removeLabelMessageWorker.doWork() }
         coVerify { messageApi wasNot Called }
-        assertEquals(Result.failure(), result)
     }
 
     @Test
