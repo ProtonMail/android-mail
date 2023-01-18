@@ -36,4 +36,8 @@ object MailDimens {
     val ProgressDefaultSize = 24.dp
 
     val TinyIcon = 12.dp
+
+    val ExtraLargeSpacing = 48.dp
+
+    val ErrorIconBoxSize = 80.dp
 }
