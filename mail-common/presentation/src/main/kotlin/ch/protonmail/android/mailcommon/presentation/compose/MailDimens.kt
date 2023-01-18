@@ -27,7 +27,7 @@ object MailDimens {
 
     val TinySpacing = 2.dp
 
-    val ListSeparatorHeight = 1.dp
+    val SeparatorHeight = 1.dp
 
     val DefaultTouchTargetSize = 48.dp
 

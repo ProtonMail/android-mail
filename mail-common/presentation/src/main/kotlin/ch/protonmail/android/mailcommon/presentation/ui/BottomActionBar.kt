@@ -58,7 +58,7 @@ fun BottomActionBar(
 
     Column(modifier = modifier.background(ProtonTheme.colors.backgroundNorm)) {
 
-        Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.ListSeparatorHeight)
+        Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
 
         Row(
             modifier = Modifier

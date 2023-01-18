@@ -273,7 +273,7 @@ private fun MailboxItemsList(
                     onOpenSelectionMode = actions.onOpenSelectionMode
                 )
             }
-            Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.ListSeparatorHeight)
+            Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
         }
         item {
             when (items.loadState.append) {

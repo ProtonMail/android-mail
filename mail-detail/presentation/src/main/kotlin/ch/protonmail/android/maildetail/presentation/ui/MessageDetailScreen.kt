@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,7 +26,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
@@ -40,8 +43,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
@@ -188,9 +193,10 @@ fun MessageDetailScreen(
         when (state.messageMetadataState) {
             is MessageMetadataState.Data -> MessageDetailContent(
                 messageMetadataState = state.messageMetadataState,
+                messageBodyState = state.messageBodyState,
                 modifier = Modifier.padding(innerPadding)
             )
-            MessageMetadataState.Loading -> ProtonCenteredProgress(
+            is MessageMetadataState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
             )
         }.exhaustive
@@ -200,6 +206,7 @@ fun MessageDetailScreen(
 @Composable
 private fun MessageDetailContent(
     messageMetadataState: MessageMetadataState.Data,
+    messageBodyState: MessageBodyState,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -207,8 +214,28 @@ private fun MessageDetailContent(
     ) {
         item {
             MessageDetailHeader(uiModel = messageMetadataState.messageDetailHeader)
+            Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
+            when (messageBodyState) {
+                is MessageBodyState.Loading -> ProtonCenteredProgress()
+                is MessageBodyState.Data -> MessageBody(messageBodyState = messageBodyState)
+                is MessageBodyState.Error -> {}
+            }
         }
     }
+}
+
+@Composable
+private fun MessageBody(
+    modifier: Modifier = Modifier,
+    messageBodyState: MessageBodyState.Data
+) {
+    Text(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(ProtonTheme.colors.backgroundNorm)
+            .padding(ProtonDimens.DefaultSpacing),
+        text = messageBodyState.messageBodyUiModel.messageBody
+    )
 }
 
 object MessageDetailScreen {
