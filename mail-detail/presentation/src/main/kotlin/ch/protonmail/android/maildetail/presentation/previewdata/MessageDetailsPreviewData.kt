@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -49,11 +50,15 @@ object MessageDetailsPreviewData {
                 ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
             )
         ),
-        bottomSheetContentState = MoveToBottomSheetState.Data(moveToDestinations = listOf(), selected = null),
+        bottomSheetState = BottomSheetState(
+            MoveToBottomSheetState.Data(
+                moveToDestinations = listOf(),
+                selected = null
+            )
+        ),
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
-        error = Effect.empty(),
-        bottomSheetState = Effect.empty()
+        error = Effect.empty()
     )
 
     val MessageWithLabels = Message.copy(
@@ -72,11 +77,10 @@ object MessageDetailsPreviewData {
         messageMetadataState = MessageMetadataState.Loading,
         messageBodyState = MessageBodyState.Loading,
         bottomBarState = BottomBarState.Loading,
-        bottomSheetContentState = MoveToBottomSheetState.Loading,
+        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
-        error = Effect.empty(),
-        bottomSheetState = Effect.empty()
+        error = Effect.empty()
     )
 }
 

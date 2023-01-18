@@ -23,7 +23,6 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -46,10 +45,9 @@ class MessageDetailReducer @Inject constructor(
         messageBodyState = currentState.toNewMessageBodyStateFrom(operation),
         bottomBarState = currentState.toNewBottomBarStateFrom(operation),
         error = currentState.toNewErrorStateFrom(operation),
-        bottomSheetContentState = currentState.toNewBottomSheetContentStateFrom(operation),
+        bottomSheetState = currentState.toNewBottomSheetContentStateFrom(operation),
         exitScreenEffect = currentState.toNewExitStateFrom(operation),
-        exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation),
-        bottomSheetState = currentState.toNewBottomSheetStateFrom(operation)
+        exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation)
     )
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
@@ -114,17 +112,8 @@ class MessageDetailReducer @Inject constructor(
                 is MessageViewAction.RequestBottomSheet -> operation.requestOperation
                 is MessageViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
-            bottomSheetReducer.newStateFrom(bottomSheetContentState, bottomSheetOperation)
+            bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {
-            bottomSheetContentState
-        }
-
-    private fun MessageDetailState.toNewBottomSheetStateFrom(
-        operation: MessageDetailOperation
-    ): Effect<BottomSheetState> =
-        when (operation) {
-            is MessageViewAction.RequestBottomSheet -> Effect.of(BottomSheetState.Shown)
-            is MessageViewAction.DismissBottomSheet -> Effect.of(BottomSheetState.Hidden)
-            else -> bottomSheetState
+            bottomSheetState
         }
 }

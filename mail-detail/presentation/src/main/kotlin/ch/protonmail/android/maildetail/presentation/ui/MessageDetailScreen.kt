@@ -41,7 +41,7 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetEffect
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
@@ -71,12 +71,15 @@ fun MessageDetailScreen(
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
-    ConsumableLaunchedEffect(effect = state.bottomSheetState) { bottomSheetVisibilityState ->
-        when (bottomSheetVisibilityState) {
-            BottomSheetState.Hidden -> scope.launch { bottomSheetState.hide() }
-            BottomSheetState.Shown -> scope.launch { bottomSheetState.show() }
+    state.bottomSheetState?.let {
+        ConsumableLaunchedEffect(effect = it.bottomSheetEffect) { bottomSheetEffect ->
+            when (bottomSheetEffect) {
+                BottomSheetEffect.Hide -> scope.launch { bottomSheetState.hide() }
+                BottomSheetEffect.Show -> scope.launch { bottomSheetState.show() }
+            }
         }
     }
+
     if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
         DisposableEffect(Unit) { onDispose { viewModel.submit(MessageViewAction.DismissBottomSheet) } }
     }
@@ -89,7 +92,7 @@ fun MessageDetailScreen(
         ),
         sheetBackgroundColor = ProtonTheme.colors.backgroundNorm,
         sheetContent = {
-            when (val bottomSheetContentState = state.bottomSheetContentState) {
+            when (val bottomSheetContentState = state.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState -> MoveToBottomSheetContent(
                     state = bottomSheetContentState,
                     onFolderSelected = { viewModel.submit(MessageViewAction.MoveToDestinationSelected(it)) },

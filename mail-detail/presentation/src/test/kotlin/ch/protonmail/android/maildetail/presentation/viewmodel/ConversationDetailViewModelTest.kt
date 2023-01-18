@@ -48,6 +48,7 @@ import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -622,9 +623,11 @@ class ConversationDetailViewModelTest {
         } returns ConversationSample.WeatherForecast.right()
         val selectedLabel = MailLabelUiModelTestData.spamAndCustomFolder.first()
         val initialState = ConversationDetailState.Loading.copy(
-            bottomSheetContentState = MoveToBottomSheetState.Data(
-                moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
-                selected = null
+            bottomSheetState = BottomSheetState(
+                MoveToBottomSheetState.Data(
+                    moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
+                    selected = null
+                )
             )
         )
 
@@ -634,9 +637,11 @@ class ConversationDetailViewModelTest {
                 ConversationDetailViewAction.MoveToDestinationSelected(selectedLabel.id)
             )
         } returns initialState.copy(
-            bottomSheetContentState = MoveToBottomSheetState.Data(
-                MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected,
-                MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected.first()
+            bottomSheetState = BottomSheetState(
+                MoveToBottomSheetState.Data(
+                    MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected,
+                    MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected.first()
+                )
             )
         )
 
@@ -700,9 +705,11 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.ConversationBottomSheetEvent>()
             )
         } returns ConversationDetailState.Loading.copy(
-            bottomSheetContentState = MoveToBottomSheetState.Data(
-                moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
-                selected = null
+            bottomSheetState = BottomSheetState(
+                MoveToBottomSheetState.Data(
+                    moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
+                    selected = null
+                )
             )
         )
     }

@@ -170,7 +170,7 @@ class MessageDetailViewModel @Inject constructor(
 
     private fun onBottomSheetDestinationConfirmed(mailLabelText: String) {
         primaryUserId.mapLatest { userId ->
-            val bottomSheetState = state.value.bottomSheetContentState
+            val bottomSheetState = state.value.bottomSheetState?.contentState
             if (bottomSheetState is MoveToBottomSheetState.Data) {
                 bottomSheetState.moveToDestinations.firstOrNull { it.isSelected }?.let {
                     moveMessage(userId, messageId, it.id.labelId).fold(

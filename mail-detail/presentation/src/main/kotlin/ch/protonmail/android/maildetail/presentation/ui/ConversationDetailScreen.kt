@@ -49,7 +49,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetEffect
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -82,10 +82,12 @@ fun ConversationDetailScreen(
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
-    ConsumableLaunchedEffect(effect = state.bottomSheetEffect) { bottomSheetVisibilityState ->
-        when (bottomSheetVisibilityState) {
-            BottomSheetState.Hidden -> scope.launch { bottomSheetState.hide() }
-            BottomSheetState.Shown -> scope.launch { bottomSheetState.show() }
+    state.bottomSheetState?.let {
+        ConsumableLaunchedEffect(effect = it.bottomSheetEffect) { bottomSheetEffect ->
+            when (bottomSheetEffect) {
+                BottomSheetEffect.Hide -> scope.launch { bottomSheetState.hide() }
+                BottomSheetEffect.Show -> scope.launch { bottomSheetState.show() }
+            }
         }
     }
 
@@ -98,7 +100,7 @@ fun ConversationDetailScreen(
         sheetShape = ProtonTheme.shapes.bottomSheet,
         sheetBackgroundColor = ProtonTheme.colors.backgroundNorm,
         sheetContent = {
-            when (val bottomSheetContentState = state.bottomSheetContentState) {
+            when (val bottomSheetContentState = state.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState -> MoveToBottomSheetContent(
                     state = bottomSheetContentState,
                     onFolderSelected = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(it)) },

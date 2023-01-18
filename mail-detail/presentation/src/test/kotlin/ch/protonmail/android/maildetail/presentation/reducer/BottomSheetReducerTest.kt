@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetContentState
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
@@ -35,7 +35,8 @@ internal class BottomSheetReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val reducer = BottomSheetReducer()
+    private val moveToBottomSheetReducer = MoveToBottomSheetReducer()
+    private val reducer = BottomSheetReducer(moveToBottomSheetReducer)
 
     @Test
     fun `should produce the expected new bottom sheet state`() = with(testInput) {
@@ -55,34 +56,49 @@ internal class BottomSheetReducerTest(
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
-                currentState = MoveToBottomSheetState.Loading,
+                currentState = BottomSheetState(MoveToBottomSheetState.Loading),
                 operation = MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(destinations),
-                expectedState = MoveToBottomSheetState.Data(destinations, null)
+                expectedState = BottomSheetState(MoveToBottomSheetState.Data(destinations, null))
             )
         )
 
         private val transitionsFromDataState = listOf(
             TestInput(
-                currentState = MoveToBottomSheetState.Data(destinations, null),
+                currentState = BottomSheetState(MoveToBottomSheetState.Data(destinations, null)),
                 operation = MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(updatedDestinations),
-                expectedState = MoveToBottomSheetState.Data(updatedDestinations, null)
+                expectedState = BottomSheetState(MoveToBottomSheetState.Data(updatedDestinations, null))
             )
         )
 
         private val transitionFromDataStateToSelected = listOf(
             TestInput(
-                currentState = MoveToBottomSheetState.Data(destinations, null),
+                currentState = BottomSheetState(MoveToBottomSheetState.Data(destinations, null)),
                 operation = MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected(
                     MailLabelId.System.Spam
                 ),
-                expectedState = MoveToBottomSheetState.Data(destinationWithSpamSelected, spamMailLabel)
+                expectedState = BottomSheetState(
+                    MoveToBottomSheetState.Data(
+                        destinationWithSpamSelected,
+                        spamMailLabel
+                    )
+                )
             ),
             TestInput(
-                currentState = MoveToBottomSheetState.Data(destinationWithSpamSelected, spamMailLabel),
+                currentState = BottomSheetState(
+                    MoveToBottomSheetState.Data(
+                        destinationWithSpamSelected,
+                        spamMailLabel
+                    )
+                ),
                 operation = MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected(
                     MailLabelId.Custom.Folder(LabelId("folder1"))
                 ),
-                expectedState = MoveToBottomSheetState.Data(destinationWithCustomSelected, customMailLabel)
+                expectedState = BottomSheetState(
+                    MoveToBottomSheetState.Data(
+                        destinationWithCustomSelected,
+                        customMailLabel
+                    )
+                )
             )
         )
 
@@ -106,9 +122,9 @@ internal class BottomSheetReducerTest(
     }
 
     data class TestInput(
-        val currentState: BottomSheetContentState?,
+        val currentState: BottomSheetState?,
         val operation: BottomSheetOperation,
-        val expectedState: BottomSheetContentState?
+        val expectedState: BottomSheetState?
     )
 
 }

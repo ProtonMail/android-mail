@@ -26,11 +26,10 @@ data class ConversationDetailState(
     val conversationState: ConversationDetailMetadataState,
     val messagesState: ConversationDetailsMessagesState,
     val bottomBarState: BottomBarState,
-    val bottomSheetContentState: BottomSheetContentState?,
+    val bottomSheetState: BottomSheetState?,
     val exitScreenEffect: Effect<Unit>,
     val exitScreenWithMessageEffect: Effect<TextUiModel>,
-    val error: Effect<TextUiModel>,
-    val bottomSheetEffect: Effect<BottomSheetState>
+    val error: Effect<TextUiModel>
 ) {
 
     companion object {
@@ -39,11 +38,10 @@ data class ConversationDetailState(
             conversationState = ConversationDetailMetadataState.Loading,
             messagesState = ConversationDetailsMessagesState.Loading,
             bottomBarState = BottomBarState.Loading,
-            bottomSheetContentState = null,
+            bottomSheetState = null,
             exitScreenEffect = Effect.empty(),
             exitScreenWithMessageEffect = Effect.empty(),
-            error = Effect.empty(),
-            bottomSheetEffect = Effect.empty()
+            error = Effect.empty()
         )
     }
 }

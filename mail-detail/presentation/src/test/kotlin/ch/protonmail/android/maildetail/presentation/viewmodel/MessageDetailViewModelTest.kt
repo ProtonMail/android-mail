@@ -56,6 +56,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBodyReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
+import ch.protonmail.android.maildetail.presentation.reducer.MoveToBottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -103,7 +104,7 @@ class MessageDetailViewModelTest {
         MessageDetailMetadataReducer(),
         MessageBodyReducer(),
         BottomBarReducer(),
-        BottomSheetReducer()
+        BottomSheetReducer(MoveToBottomSheetReducer())
     )
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
@@ -515,7 +516,7 @@ class MessageDetailViewModelTest {
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
             advanceUntilIdle()
-            val actual = assertIs<MoveToBottomSheetState.Data>(lastEmittedItem().bottomSheetContentState)
+            val actual = assertIs<MoveToBottomSheetState.Data>(lastEmittedItem().bottomSheetState?.contentState)
             assertTrue { actual.moveToDestinations.first { it.id == MailLabelId.System.Spam }.isSelected }
         }
     }

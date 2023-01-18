@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.presentation.R.string
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
@@ -67,7 +68,7 @@ class MessageDetailReducerTest(
     }
 
     private val bottomSheetReducer: BottomSheetReducer = mockk {
-        every { newStateFrom(any(), any()) } returns reducedState.bottomSheetContentState
+        every { newStateFrom(any(), any()) } returns reducedState.bottomSheetState
     }
 
     private val detailReducer = MessageDetailReducer(
@@ -116,7 +117,7 @@ class MessageDetailReducerTest(
         if (shouldReduceBottomSheetState) {
             verify {
                 bottomSheetReducer.newStateFrom(
-                    currentState.bottomSheetContentState,
+                    currentState.bottomSheetState,
                     any()
                 )
             }
@@ -151,11 +152,15 @@ class MessageDetailReducerTest(
             messageMetadataState = MessageMetadataState.Data(actionBarUiModel, detailHeaderUiModel),
             messageBodyState = MessageBodyState.Data(messageBodyUiModel),
             bottomBarState = BottomBarState.Data(listOf(ActionUiModelTestData.markUnread)),
-            bottomSheetContentState = MoveToBottomSheetState.Data(MailLabelUiModelTestData.spamAndCustomFolder, null),
+            bottomSheetState = BottomSheetState(
+                MoveToBottomSheetState.Data(
+                    MailLabelUiModelTestData.spamAndCustomFolder,
+                    null
+                )
+            ),
             exitScreenEffect = Effect.empty(),
             exitScreenWithMessageEffect = Effect.empty(),
-            error = Effect.empty(),
-            bottomSheetState = Effect.empty()
+            error = Effect.empty()
         )
 
         private val actions = listOf(

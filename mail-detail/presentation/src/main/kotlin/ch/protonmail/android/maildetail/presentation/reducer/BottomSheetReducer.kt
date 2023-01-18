@@ -18,47 +18,24 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetContentState
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetEffect
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.Data
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.Loading
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetAction
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetEvent
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import javax.inject.Inject
 
-class BottomSheetReducer @Inject constructor() {
+class BottomSheetReducer @Inject constructor(
+    private val moveToBottomSheetReducer: MoveToBottomSheetReducer
+) {
 
-    fun newStateFrom(currentState: BottomSheetContentState?, event: BottomSheetOperation): BottomSheetContentState? {
+    fun newStateFrom(currentState: BottomSheetState?, event: BottomSheetOperation): BottomSheetState? {
         return when (event) {
-            is MoveToBottomSheetEvent.ActionData -> Data(event.moveToDestinations, null)
-            is MoveToBottomSheetAction.MoveToDestinationSelected -> when (currentState) {
-                is MoveToBottomSheetState -> currentState.toNewSelectedState(event.mailLabelId)
-                else -> currentState
-            }
-            MoveToBottomSheetAction.Requested -> currentState
-            BottomSheetOperation.Dismiss -> null
+            is MoveToBottomSheetState.MoveToBottomSheetOperation -> moveToBottomSheetReducer.newStateFrom(
+                currentState,
+                event
+            )
+            BottomSheetOperation.Dismiss -> BottomSheetState(null, Effect.of(BottomSheetEffect.Hide))
         }
     }
-
-    private fun MoveToBottomSheetState.toNewSelectedState(mailLabelId: MailLabelId): MoveToBottomSheetState {
-        return when (this) {
-            is Loading -> this
-            is Data -> {
-                val listWIthSelectedLabel = moveToDestinations.map { it.setSelectedIfLabelIdMatch(mailLabelId) }
-                this.copy(
-                    moveToDestinations = listWIthSelectedLabel,
-                    selected = listWIthSelectedLabel.first { it.id == mailLabelId }
-                )
-            }
-        }
-    }
-
-    private fun MailLabelUiModel.setSelectedIfLabelIdMatch(mailLabelId: MailLabelId) =
-        when (this) {
-            is MailLabelUiModel.Custom -> copy(isSelected = id == mailLabelId)
-            is MailLabelUiModel.System -> copy(isSelected = id == mailLabelId)
-        }
 }

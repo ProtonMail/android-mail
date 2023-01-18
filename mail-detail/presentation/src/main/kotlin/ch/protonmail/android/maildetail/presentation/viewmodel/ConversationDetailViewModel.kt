@@ -242,7 +242,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun onBottomSheetDestinationConfirmed(mailLabelText: String) {
         primaryUserId.mapLatest { userId ->
-            val bottomSheetState = state.value.bottomSheetContentState
+            val bottomSheetState = state.value.bottomSheetState?.contentState
             if (bottomSheetState is MoveToBottomSheetState.Data) {
                 bottomSheetState.selected?.let { mailLabelUiModel ->
                     moveConversation(userId, conversationId, mailLabelUiModel.id.labelId).fold(
