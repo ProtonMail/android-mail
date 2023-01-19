@@ -188,8 +188,7 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun markUnread(
         userId: UserId,
         conversationId: ConversationId
-    ): Either<DataError.Local, Conversation> =
-        DataError.Local.NoDataCached.left()
+    ): Either<DataError.Local, Conversation> = conversationLocalDataSource.markUnread(userId, conversationId)
 
     private suspend fun moveToTrash(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> {
         val persistentLabels = listOf(

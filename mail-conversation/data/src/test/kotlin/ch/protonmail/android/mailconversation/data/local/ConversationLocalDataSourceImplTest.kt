@@ -19,7 +19,10 @@
 package ch.protonmail.android.mailconversation.data.local
 
 import app.cash.turbine.test
+import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailconversation.data.TestConversationLabel
 import ch.protonmail.android.mailconversation.data.getConversation
 import ch.protonmail.android.mailconversation.data.getConversationWithLabels
@@ -268,4 +271,15 @@ class ConversationLocalDataSourceImplTest {
         }
     }
 
+    @Test
+    fun `mark unread returns error`() = runTest {
+        // given
+        val error = DataErrorSample.NoCache.left()
+
+        // when
+        val result = conversationLocalDataSource.markUnread(userId, ConversationIdSample.WeatherForecast)
+
+        // then
+        assertEquals(error, result)
+    }
 }

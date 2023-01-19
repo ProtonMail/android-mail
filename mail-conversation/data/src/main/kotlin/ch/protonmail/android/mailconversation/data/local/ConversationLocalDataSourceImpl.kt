@@ -156,6 +156,11 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         return updatedConversation.right()
     }
 
+    override suspend fun markUnread(
+        userId: UserId,
+        conversationId: ConversationId
+    ): Either<DataError.Local, Conversation> = DataError.Local.NoDataCached.left()
+
     private suspend fun upsertPageInterval(
         userId: UserId,
         pageKey: PageKey,
