@@ -39,6 +39,7 @@ import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -650,6 +651,7 @@ class ConversationRepositoryImplTest {
         val conversationId = ConversationIdSample.WeatherForecast
         val error = DataErrorSample.NoCache.left()
         coEvery { conversationLocalDataSource.markUnread(userId, conversationId) } returns error
+        coEvery { messageLocalDataSource.markUnread(userId, any()) } returns MessageSample.build().right()
 
         // when
         val result = conversationRepository.markUnread(userId, conversationId)
@@ -664,11 +666,33 @@ class ConversationRepositoryImplTest {
         val conversationId = ConversationIdSample.WeatherForecast
         val updatedConversation = ConversationSample.WeatherForecast.right()
         coEvery { conversationLocalDataSource.markUnread(userId, conversationId) } returns updatedConversation
+        coEvery { messageLocalDataSource.markUnread(userId, any()) } returns MessageSample.build().right()
 
         // when
         val result = conversationRepository.markUnread(userId, conversationId)
 
         // then
         assertEquals(updatedConversation, result)
+    }
+
+    @Test
+    fun `mark unread marks the most recent read message as unread`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val messages = listOf(
+            MessageSample.AugWeatherForecast.copy(unread = false),
+            MessageSample.SepWeatherForecast.copy(unread = false),
+            MessageSample.OctWeatherForecast.copy(unread = true)
+        )
+        coEvery { conversationLocalDataSource.markUnread(userId, conversationId) } returns
+            ConversationSample.WeatherForecast.right()
+        every { messageLocalDataSource.observeMessages(userId, conversationId) } returns flowOf(messages)
+        coEvery { messageLocalDataSource.markUnread(userId, any()) } returns MessageSample.build().right()
+
+        // when
+        conversationRepository.markUnread(userId, conversationId)
+
+        // then
+        coVerify { messageLocalDataSource.markUnread(userId, MessageIdSample.SepWeatherForecast) }
     }
 }

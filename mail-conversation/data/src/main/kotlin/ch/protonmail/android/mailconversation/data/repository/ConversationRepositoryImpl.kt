@@ -188,7 +188,14 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun markUnread(
         userId: UserId,
         conversationId: ConversationId
-    ): Either<DataError.Local, Conversation> = conversationLocalDataSource.markUnread(userId, conversationId)
+    ): Either<DataError.Local, Conversation> {
+        messageLocalDataSource.observeMessages(userId, conversationId).first()
+            .filter { message -> message.read }
+            .maxByOrNull { message -> message.time }
+            ?.let { message -> messageLocalDataSource.markUnread(userId, message.messageId) }
+
+        return conversationLocalDataSource.markUnread(userId, conversationId)
+    }
 
     private suspend fun moveToTrash(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> {
         val persistentLabels = listOf(

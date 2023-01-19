@@ -65,6 +65,15 @@ object MessageSample {
         sender = RecipientSample.Scammer
     )
 
+    val OctWeatherForecast = build(
+        conversationId = ConversationIdSample.WeatherForecast,
+        messageId = MessageIdSample.OctWeatherForecast,
+        labelIds = listOf(LabelIdSample.Archive),
+        sender = RecipientSample.PreciWeather,
+        subject = "October weather forecast",
+        time = Oct2022
+    )
+
     val SepWeatherForecast = build(
         conversationId = ConversationIdSample.WeatherForecast,
         messageId = MessageIdSample.SepWeatherForecast,
@@ -74,8 +83,9 @@ object MessageSample {
         time = Sep2022
     )
 
-    private val Aug2022 get() = 1_630_403_200_000L
-    private val Sep2022 get() = 1_633_081_600_000L
+    private val Aug2022 get() = 1_659_312_000L
+    private val Oct2022 get() = 1_664_582_400L
+    private val Sep2022 get() = 1_661_990_400L
 
     fun build(
         addressId: AddressId = AddressIdSample.Primary,
