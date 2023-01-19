@@ -508,11 +508,7 @@ class MessageDetailViewModelTest {
     fun `selecting a move to destination emits MailLabelUiModel list with selected option`() = runTest {
         viewModel.state.test {
             advanceUntilIdle()
-            viewModel.submit(
-                MessageViewAction.RequestBottomSheet(
-                    MoveToBottomSheetState.MoveToBottomSheetAction.Requested
-                )
-            )
+            viewModel.submit(MessageViewAction.RequestMoveToBottomSheet)
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
             advanceUntilIdle()
@@ -535,11 +531,7 @@ class MessageDetailViewModelTest {
         // When
         viewModel.state.test {
             advanceUntilIdle()
-            viewModel.submit(
-                MessageViewAction.RequestBottomSheet(
-                    MoveToBottomSheetState.MoveToBottomSheetAction.Requested
-                )
-            )
+            viewModel.submit(MessageViewAction.RequestMoveToBottomSheet)
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
             advanceUntilIdle()

@@ -18,12 +18,14 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
-import me.proton.core.label.domain.entity.LabelId
+import io.mockk.Called
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -35,70 +37,55 @@ internal class BottomSheetReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val moveToBottomSheetReducer = MoveToBottomSheetReducer()
+    private val moveToBottomSheetReducer: MoveToBottomSheetReducer = mockk(relaxed = true)
     private val reducer = BottomSheetReducer(moveToBottomSheetReducer)
 
     @Test
     fun `should produce the expected new bottom sheet state`() = with(testInput) {
         val actualState = reducer.newStateFrom(currentState, operation)
 
-        assertEquals(expectedState, actualState, testName)
+        if (reducesBottomSheetVisibilityEffects) {
+            assertEquals(expectedState, actualState, testName)
+        }
+
+        if (reducesMoveTo) {
+            verify {
+                moveToBottomSheetReducer.newStateFrom(
+                    any(),
+                    testInput.operation as MoveToBottomSheetState.MoveToBottomSheetOperation
+                )
+            }
+        } else {
+            verify { moveToBottomSheetReducer wasNot Called }
+        }
     }
 
     companion object {
 
-        private val destinations = MailLabelUiModelTestData.spamAndCustomFolder
-        private val updatedDestinations = MailLabelUiModelTestData.systemAndTwoCustomFolders
-        private val destinationWithSpamSelected = MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected
-        private val destinationWithCustomSelected = MailLabelUiModelTestData.spamAndCustomFolderWithCustomSelected
-        private val spamMailLabel = destinationWithSpamSelected.first()
-        private val customMailLabel = destinationWithCustomSelected.last()
-
-        private val transitionsFromLoadingState = listOf(
+        private val bottomSheetVisibilityOperations = listOf(
             TestInput(
-                currentState = BottomSheetState(MoveToBottomSheetState.Loading),
-                operation = MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(destinations),
-                expectedState = BottomSheetState(MoveToBottomSheetState.Data(destinations, null))
-            )
-        )
-
-        private val transitionsFromDataState = listOf(
-            TestInput(
-                currentState = BottomSheetState(MoveToBottomSheetState.Data(destinations, null)),
-                operation = MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(updatedDestinations),
-                expectedState = BottomSheetState(MoveToBottomSheetState.Data(updatedDestinations, null))
-            )
-        )
-
-        private val transitionFromDataStateToSelected = listOf(
-            TestInput(
-                currentState = BottomSheetState(MoveToBottomSheetState.Data(destinations, null)),
-                operation = MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected(
-                    MailLabelId.System.Spam
-                ),
-                expectedState = BottomSheetState(
-                    MoveToBottomSheetState.Data(
-                        destinationWithSpamSelected,
-                        spamMailLabel
-                    )
-                )
+                currentState = null,
+                operation = BottomSheetOperation.Requested,
+                expectedState = BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Show)),
+                reducesBottomSheetVisibilityEffects = true,
+                reducesMoveTo = false
             ),
             TestInput(
-                currentState = BottomSheetState(
-                    MoveToBottomSheetState.Data(
-                        destinationWithSpamSelected,
-                        spamMailLabel
-                    )
-                ),
-                operation = MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected(
-                    MailLabelId.Custom.Folder(LabelId("folder1"))
-                ),
-                expectedState = BottomSheetState(
-                    MoveToBottomSheetState.Data(
-                        destinationWithCustomSelected,
-                        customMailLabel
-                    )
-                )
+                currentState = BottomSheetState(MoveToBottomSheetState.Data(listOf(), null)),
+                operation = BottomSheetOperation.Dismiss,
+                expectedState = BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Hide)),
+                reducesBottomSheetVisibilityEffects = true,
+                reducesMoveTo = false
+            )
+        )
+
+        private val moveToBottomSheetOperation = listOf(
+            TestInput(
+                currentState = BottomSheetState(null, Effect.empty()),
+                operation = MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(listOf()),
+                expectedState = BottomSheetState(MoveToBottomSheetState.Data(listOf(), null)),
+                reducesBottomSheetVisibilityEffects = false,
+                reducesMoveTo = true
             )
         )
 
@@ -106,9 +93,8 @@ internal class BottomSheetReducerTest(
         @Parameterized.Parameters(name = "{0}")
         fun data() =
             (
-                transitionsFromLoadingState +
-                    transitionsFromDataState +
-                    transitionFromDataStateToSelected
+                bottomSheetVisibilityOperations +
+                    moveToBottomSheetOperation
                 )
                 .map { testInput ->
                     val testName = """
@@ -124,7 +110,9 @@ internal class BottomSheetReducerTest(
     data class TestInput(
         val currentState: BottomSheetState?,
         val operation: BottomSheetOperation,
-        val expectedState: BottomSheetState?
+        val expectedState: BottomSheetState?,
+        val reducesBottomSheetVisibilityEffects: Boolean,
+        val reducesMoveTo: Boolean
     )
 
 }

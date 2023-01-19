@@ -126,4 +126,25 @@ object MailLabelUiModelTestData {
             iconPaddingStart = ProtonDimens.DefaultSpacing * 1
         )
     )
+    val archiveAndCustomFolder = listOf(
+        MailLabelUiModel.System(
+            id = MailLabelId.System.Archive,
+            text = TextUiModel.TextRes(MailLabelId.System.Archive.systemLabelId.textRes()),
+            icon = MailLabelId.System.Archive.systemLabelId.iconRes(),
+            iconTint = null,
+            isSelected = false,
+            count = null
+        ),
+        MailLabelUiModel.Custom(
+            id = MailLabelId.Custom.Folder(LabelId("folder1")),
+            text = TextUiModel.Text("Folder1"),
+            icon = R.drawable.ic_proton_folders_filled,
+            iconTint = Color.Blue,
+            isSelected = false,
+            count = 1,
+            isVisible = true,
+            isExpanded = true,
+            iconPaddingStart = 0.dp
+        )
+    )
 }

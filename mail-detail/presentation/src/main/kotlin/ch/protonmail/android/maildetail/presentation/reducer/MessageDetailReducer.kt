@@ -45,7 +45,7 @@ class MessageDetailReducer @Inject constructor(
         messageBodyState = currentState.toNewMessageBodyStateFrom(operation),
         bottomBarState = currentState.toNewBottomBarStateFrom(operation),
         error = currentState.toNewErrorStateFrom(operation),
-        bottomSheetState = currentState.toNewBottomSheetContentStateFrom(operation),
+        bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
         exitScreenEffect = currentState.toNewExitStateFrom(operation),
         exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation)
     )
@@ -102,14 +102,14 @@ class MessageDetailReducer @Inject constructor(
             bottomBarState
         }
 
-    private fun MessageDetailState.toNewBottomSheetContentStateFrom(operation: MessageDetailOperation) =
+    private fun MessageDetailState.toNewBottomSheetStateFrom(operation: MessageDetailOperation) =
         if (operation is MessageDetailOperation.AffectingBottomSheet) {
             val bottomSheetOperation = when (operation) {
                 is MessageDetailEvent.MessageBottomSheetEvent -> operation.bottomSheetOperation
                 is MessageViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(
                     operation.mailLabelId
                 )
-                is MessageViewAction.RequestBottomSheet -> operation.requestOperation
+                is MessageViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
                 is MessageViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)

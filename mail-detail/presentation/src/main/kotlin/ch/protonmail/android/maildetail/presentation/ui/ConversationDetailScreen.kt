@@ -49,7 +49,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetEffect
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -83,10 +83,10 @@ fun ConversationDetailScreen(
     val scope = rememberCoroutineScope()
 
     state.bottomSheetState?.let {
-        ConsumableLaunchedEffect(effect = it.bottomSheetEffect) { bottomSheetEffect ->
+        ConsumableLaunchedEffect(effect = it.bottomSheetVisibilityEffect) { bottomSheetEffect ->
             when (bottomSheetEffect) {
-                BottomSheetEffect.Hide -> scope.launch { bottomSheetState.hide() }
-                BottomSheetEffect.Show -> scope.launch { bottomSheetState.show() }
+                BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
+                BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
             }
         }
     }
@@ -119,13 +119,7 @@ fun ConversationDetailScreen(
                 onTrashClick = { viewModel.submit(ConversationDetailViewAction.Trash) },
                 onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) },
                 onUnreadClick = { viewModel.submit(ConversationDetailViewAction.MarkUnread) },
-                onMoveToClick = {
-                    viewModel.submit(
-                        ConversationDetailViewAction.RequestBottomSheet(
-                            MoveToBottomSheetState.MoveToBottomSheetAction.Requested
-                        )
-                    )
-                }
+                onMoveToClick = { viewModel.submit(ConversationDetailViewAction.RequestMoveToBottomSheet) }
             )
         )
     }

@@ -125,6 +125,8 @@ class ConversationDetailReducerTest(
             ConversationDetailViewAction.Star affects Conversation,
             ConversationDetailViewAction.Trash affects ExitWithMessage(TextUiModel(string.conversation_moved_to_trash)),
             ConversationDetailViewAction.UnStar affects Conversation,
+            ConversationDetailViewAction.RequestMoveToBottomSheet affects BottomSheet,
+            ConversationDetailViewAction.DismissBottomSheet affects BottomSheet,
             ConversationDetailViewAction.MoveToDestinationSelected(
                 SystemLabelId.Archive.toMailLabelSystem().id
             ) affects BottomSheet,

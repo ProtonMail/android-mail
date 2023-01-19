@@ -19,7 +19,6 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetEffect
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.Data
@@ -35,30 +34,29 @@ class MoveToBottomSheetReducer @Inject constructor() {
 
     fun newStateFrom(
         currentState: BottomSheetState?,
-        event: MoveToBottomSheetOperation
+        operation: MoveToBottomSheetOperation
     ): BottomSheetState? {
-        return when (event) {
+        return when (operation) {
             is MoveToBottomSheetAction.MoveToDestinationSelected -> when (
                 val contentState =
                     currentState?.contentState
             ) {
                 is Data -> BottomSheetState(
-                    contentState.toNewSelectedState(event.mailLabelId),
-                    currentState.bottomSheetEffect
+                    contentState.toNewSelectedState(operation.mailLabelId),
+                    currentState.bottomSheetVisibilityEffect
                 )
                 else -> currentState
             }
-            is MoveToBottomSheetAction.Requested -> BottomSheetState(null, Effect.of(BottomSheetEffect.Show))
             is MoveToBottomSheetEvent.ActionData -> when (val contentState = currentState?.contentState) {
                 is Data -> BottomSheetState(
                     contentState.copy(
-                        moveToDestinations = event.moveToDestinations
+                        moveToDestinations = operation.moveToDestinations
                     ).let { if (it.selected != null) it.toNewSelectedState(it.selected.id) else it },
-                    currentState.bottomSheetEffect
+                    currentState.bottomSheetVisibilityEffect
                 )
                 else -> BottomSheetState(
-                    Data(event.moveToDestinations, null),
-                    currentState?.bottomSheetEffect ?: Effect.empty()
+                    Data(operation.moveToDestinations, null),
+                    currentState?.bottomSheetVisibilityEffect ?: Effect.empty()
                 )
             }
         }
@@ -68,10 +66,10 @@ class MoveToBottomSheetReducer @Inject constructor() {
         return when (this) {
             is Loading -> this
             is Data -> {
-                val listWIthSelectedLabel = moveToDestinations.map { it.setSelectedIfLabelIdMatch(mailLabelId) }
+                val listWithSelectedLabel = moveToDestinations.map { it.setSelectedIfLabelIdMatch(mailLabelId) }
                 this.copy(
-                    moveToDestinations = listWIthSelectedLabel,
-                    selected = listWIthSelectedLabel.first { it.id == mailLabelId }
+                    moveToDestinations = listWithSelectedLabel,
+                    selected = listWithSelectedLabel.firstOrNull { it.id == mailLabelId }
                 )
             }
         }

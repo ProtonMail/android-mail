@@ -107,7 +107,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
             is MessageViewAction.Trash -> trashMessage()
-            is MessageViewAction.RequestBottomSheet -> showMoveToBottomSheetAndLoadData(action)
+            is MessageViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is MessageViewAction.DismissBottomSheet -> dismissBottomSheet(action)
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)

@@ -202,6 +202,24 @@ class MessageDetailReducerTest(
                 shouldReduceBottomSheetState = false
             ),
             TestInput(
+                MessageViewAction.RequestMoveToBottomSheet,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                MessageViewAction.DismissBottomSheet,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
                 MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam),
                 shouldReduceMessageMetadataState = false,
                 shouldReduceMessageBodyState = false,

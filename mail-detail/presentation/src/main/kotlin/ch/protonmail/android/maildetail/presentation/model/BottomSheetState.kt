@@ -24,17 +24,17 @@ import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 
 data class BottomSheetState(
     val contentState: BottomSheetContentState?,
-    val bottomSheetEffect: Effect<BottomSheetEffect> = Effect.empty()
+    val bottomSheetVisibilityEffect: Effect<BottomSheetVisibilityEffect> = Effect.empty()
 )
 
-sealed interface BottomSheetEffect {
-    object Show : BottomSheetEffect
-    object Hide : BottomSheetEffect
+sealed interface BottomSheetVisibilityEffect {
+    object Show : BottomSheetVisibilityEffect
+    object Hide : BottomSheetVisibilityEffect
 }
 
 sealed interface BottomSheetContentState
 sealed interface BottomSheetOperation {
-    sealed interface Requested : BottomSheetOperation
+    object Requested : BottomSheetOperation
     object Dismiss : BottomSheetOperation
 }
 
@@ -55,7 +55,6 @@ sealed interface MoveToBottomSheetState : BottomSheetContentState {
     }
 
     sealed interface MoveToBottomSheetAction : MoveToBottomSheetOperation {
-        object Requested : BottomSheetOperation.Requested, MoveToBottomSheetAction
         data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MoveToBottomSheetAction
     }
 }

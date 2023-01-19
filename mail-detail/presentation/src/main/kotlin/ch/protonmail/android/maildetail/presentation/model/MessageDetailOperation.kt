@@ -69,10 +69,7 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object UnStar : MessageViewAction, AffectingMessage
     object MarkUnread : MessageViewAction
     object Trash : MessageViewAction
-    data class RequestBottomSheet(
-        val requestOperation: BottomSheetOperation.Requested
-    ) : MessageViewAction, AffectingBottomSheet
-
+    object RequestMoveToBottomSheet : MessageViewAction, AffectingBottomSheet
     object DismissBottomSheet : MessageViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MessageViewAction, AffectingBottomSheet
     data class MoveToDestinationConfirmed(val mailLabelText: String) : MessageViewAction

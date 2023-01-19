@@ -111,7 +111,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.MarkUnread -> Timber.d("Mark Unread conversation clicked VM")
             is ConversationDetailViewAction.Trash -> moveConversationToTrash()
             is ConversationDetailViewAction.DismissBottomSheet -> dismissBottomSheet(action)
-            is ConversationDetailViewAction.RequestBottomSheet -> showMoveToBottomSheetAndLoadData(action)
+            is ConversationDetailViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is ConversationDetailViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is ConversationDetailViewAction.MoveToDestinationConfirmed ->
                 onBottomSheetDestinationConfirmed(action.mailLabelText)

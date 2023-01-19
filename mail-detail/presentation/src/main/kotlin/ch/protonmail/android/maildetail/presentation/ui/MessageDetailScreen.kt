@@ -41,7 +41,7 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetEffect
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
@@ -72,10 +72,10 @@ fun MessageDetailScreen(
     val scope = rememberCoroutineScope()
 
     state.bottomSheetState?.let {
-        ConsumableLaunchedEffect(effect = it.bottomSheetEffect) { bottomSheetEffect ->
+        ConsumableLaunchedEffect(effect = it.bottomSheetVisibilityEffect) { bottomSheetEffect ->
             when (bottomSheetEffect) {
-                BottomSheetEffect.Hide -> scope.launch { bottomSheetState.hide() }
-                BottomSheetEffect.Show -> scope.launch { bottomSheetState.show() }
+                BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
+                BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
             }
         }
     }
@@ -111,11 +111,7 @@ fun MessageDetailScreen(
                 onTrashClick = { viewModel.submit(MessageViewAction.Trash) },
                 onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
                 onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) },
-                onMoveClick = {
-                    viewModel.submit(
-                        MessageViewAction.RequestBottomSheet(MoveToBottomSheetState.MoveToBottomSheetAction.Requested)
-                    )
-                }
+                onMoveClick = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) }
             )
         )
     }

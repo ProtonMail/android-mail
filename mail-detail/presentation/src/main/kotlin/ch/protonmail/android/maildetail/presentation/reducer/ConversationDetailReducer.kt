@@ -44,7 +44,7 @@ class ConversationDetailReducer @Inject constructor(
         conversationState = currentState.toNewConversationState(operation),
         messagesState = currentState.toNewMessageState(operation),
         bottomBarState = currentState.toNewBottomBarState(operation),
-        bottomSheetState = currentState.toNewBottomSheetContentStateFrom(operation),
+        bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
         error = currentState.toErrorState(operation),
         exitScreenEffect = currentState.toExitState(),
         exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation)
@@ -71,13 +71,13 @@ class ConversationDetailReducer @Inject constructor(
             bottomBarState
         }
 
-    private fun ConversationDetailState.toNewBottomSheetContentStateFrom(operation: ConversationDetailOperation) =
+    private fun ConversationDetailState.toNewBottomSheetStateFrom(operation: ConversationDetailOperation) =
         if (operation is ConversationDetailOperation.AffectingBottomSheet) {
             val bottomSheetOperation = when (operation) {
                 is ConversationDetailEvent.ConversationBottomSheetEvent -> operation.bottomSheetOperation
                 is ConversationDetailViewAction.MoveToDestinationSelected ->
                     MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected(operation.mailLabelId)
-                is ConversationDetailViewAction.RequestBottomSheet -> operation.requestOperation
+                is ConversationDetailViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
                 is ConversationDetailViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
