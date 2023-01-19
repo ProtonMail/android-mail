@@ -39,6 +39,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
@@ -72,6 +73,7 @@ import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -95,6 +97,7 @@ import kotlin.test.assertTrue
 
 class ConversationDetailViewModelTest {
 
+    private val userId = UserIdSample.Primary
     private val conversationId = ConversationIdSample.WeatherForecast
 
     private val actionUiModelMapper = ActionUiModelMapper()
@@ -108,6 +111,7 @@ class ConversationDetailViewModelTest {
         every { toUiModel(messageWithLabels = MessageWithLabelsSample.SepWeatherForecast, contacts = any()) } returns
             ConversationDetailMessageUiModelSample.SepWeatherForecast
     }
+    private val markConversationAsUnread: MarkConversationAsUnread = mockk()
     private val move: MoveConversation = mockk()
     private val observeContacts: ObserveContacts = mockk {
         every { this@mockk(userId = UserIdSample.Primary) } returns flowOf(emptyList<Contact>().right())
@@ -164,6 +168,7 @@ class ConversationDetailViewModelTest {
             actionUiModelMapper = actionUiModelMapper,
             conversationMessageMapper = conversationMessageMapper,
             conversationMetadataMapper = conversationMetadataMapper,
+            markConversationAsUnread = markConversationAsUnread,
             moveConversation = move,
             observeContacts = observeContacts,
             observeConversation = observeConversation,
@@ -666,6 +671,67 @@ class ConversationDetailViewModelTest {
 
             // Then
             assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
+        }
+    }
+
+    @Test
+    fun `mark as unread is called correctly when action is submitted`() = runTest {
+        // given
+        coEvery { markConversationAsUnread(userId, conversationId) } returns ConversationSample.WeatherForecast.right()
+
+        // when
+        viewModel.submit(ConversationDetailViewAction.MarkUnread)
+        advanceUntilIdle()
+
+        // then
+        coVerify { markConversationAsUnread(userId, conversationId) }
+    }
+
+    @Test
+    fun `exit state is emitted when marked as unread successfully`() = runTest {
+        // given
+        coEvery { markConversationAsUnread(userId, conversationId) } returns ConversationSample.WeatherForecast.right()
+        every {
+            reducer.newStateFrom(
+                currentState = ConversationDetailState.Loading,
+                operation = ConversationDetailViewAction.MarkUnread
+            )
+        } returns ConversationDetailState.Loading.copy(
+            exitScreenEffect = Effect.of(Unit)
+        )
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+            viewModel.submit(ConversationDetailViewAction.MarkUnread)
+
+            // then
+            assertNotNull(awaitItem().exitScreenEffect.consume())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `error message is emitted when mark as unread fails`() = runTest {
+        // given
+        coEvery { markConversationAsUnread(userId, conversationId) } returns DataError.Local.NoDataCached.left()
+        every {
+            reducer.newStateFrom(
+                currentState = ConversationDetailState.Loading,
+                operation = ConversationDetailEvent.ErrorMarkingAsUnread
+            )
+        } returns ConversationDetailState.Loading.copy(
+            error = Effect.of(TextUiModel(string.error_mark_as_unread_failed))
+        )
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+            viewModel.submit(ConversationDetailViewAction.MarkUnread)
+
+            // then
+            assertEquals(TextUiModel(string.error_mark_as_unread_failed), awaitItem().error.consume())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 

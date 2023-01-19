@@ -31,6 +31,7 @@
     <string name="bcc">Bcc:</string>
     <string name="hide_details">Hide details</string>
     <string name="undisclosed_recipients">Undisclosed recipients</string>
+    <string name="error_mark_as_unread_failed">Mark as unread operation failed. Please retry.</string>
     <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
     <string name="error_unstar_operation_failed">Remove star operation failed. Please retry.</string>
     <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>

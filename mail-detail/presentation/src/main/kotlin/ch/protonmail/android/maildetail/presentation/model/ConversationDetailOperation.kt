@@ -57,6 +57,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
 
     object ErrorAddStar : ConversationDetailEvent, AffectingErrorBar
     object ErrorRemoveStar : ConversationDetailEvent, AffectingErrorBar
+    object ErrorMarkingAsUnread : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingToTrash : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingConversation : ConversationDetailEvent, AffectingErrorBar
 }

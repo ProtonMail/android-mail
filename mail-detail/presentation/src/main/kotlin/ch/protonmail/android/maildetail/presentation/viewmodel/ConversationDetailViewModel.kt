@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
@@ -72,11 +73,13 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
+@Suppress("LongParameterList")
 class ConversationDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val conversationMessageMapper: ConversationDetailMessageUiModelMapper,
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper,
+    private val markConversationAsUnread: MarkConversationAsUnread,
     private val moveConversation: MoveConversation,
     private val observeContacts: ObserveContacts,
     private val observeConversation: ObserveConversation,
@@ -108,7 +111,7 @@ class ConversationDetailViewModel @Inject constructor(
         when (action) {
             is ConversationDetailViewAction.Star -> starConversation()
             is ConversationDetailViewAction.UnStar -> unStarConversation()
-            is ConversationDetailViewAction.MarkUnread -> Timber.d("Mark Unread conversation clicked VM")
+            is ConversationDetailViewAction.MarkUnread -> markAsUnread()
             is ConversationDetailViewAction.Trash -> moveConversationToTrash()
             is ConversationDetailViewAction.DismissBottomSheet -> dismissBottomSheet(action)
             is ConversationDetailViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
@@ -195,6 +198,16 @@ class ConversationDetailViewModel @Inject constructor(
 
     private suspend fun emitNewStateFrom(event: ConversationDetailOperation) {
         mutableDetailState.emit(reducer.newStateFrom(state.value, event))
+    }
+
+    private fun markAsUnread() {
+        primaryUserId.mapLatest { userId ->
+            markConversationAsUnread(userId, conversationId).fold(
+                ifLeft = { ConversationDetailEvent.ErrorMarkingAsUnread },
+                ifRight = { ConversationDetailViewAction.MarkUnread }
+            )
+        }.onEach(::emitNewStateFrom)
+            .launchIn(viewModelScope)
     }
 
     private fun moveConversationToTrash() {

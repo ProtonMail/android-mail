@@ -144,6 +144,7 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorRemoveStar affects ErrorBar,
             ConversationDetailEvent.ErrorLoadingConversation affects Conversation,
             ConversationDetailEvent.ErrorLoadingMessages affects Messages,
+            ConversationDetailEvent.ErrorMarkingAsUnread affects ErrorBar,
             ConversationDetailEvent.ErrorMovingConversation affects ErrorBar,
             ConversationDetailEvent.ErrorMovingToTrash affects ErrorBar,
             ConversationDetailEvent.MessagesData(emptyList()) affects Messages
