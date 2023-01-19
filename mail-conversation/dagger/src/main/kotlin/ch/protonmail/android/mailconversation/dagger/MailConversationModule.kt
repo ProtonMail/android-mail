@@ -22,6 +22,7 @@ import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailconversation.data.local.ConversationLocalDataSourceImpl
 import ch.protonmail.android.mailconversation.data.remote.ConversationRemoteDataSourceImpl
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.mailconversation.data.repository.ConversationRepositoryImpl
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
@@ -59,9 +60,14 @@ object MailConversationModule {
     fun provideConversationRemoteDataSource(
         apiProvider: ApiProvider,
         addLabelConversationWorker: AddLabelConversationWorker.Enqueuer,
+        markConversationAsUnreadWorker: MarkConversationAsUnreadWorker.Enqueuer,
         removeLabelConversationWorker: RemoveLabelConversationWorker.Enqueuer
-    ): ConversationRemoteDataSource =
-        ConversationRemoteDataSourceImpl(apiProvider, addLabelConversationWorker, removeLabelConversationWorker)
+    ): ConversationRemoteDataSource = ConversationRemoteDataSourceImpl(
+        apiProvider = apiProvider,
+        addLabelConversationWorker = addLabelConversationWorker,
+        markConversationAsUnreadWorker = markConversationAsUnreadWorker,
+        removeLabelConversationWorker = removeLabelConversationWorker
+    )
 
     @Provides
     @Singleton

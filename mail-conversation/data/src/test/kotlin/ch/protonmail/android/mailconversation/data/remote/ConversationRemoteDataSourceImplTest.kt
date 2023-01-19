@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailconversation.data.getConversationResource
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
@@ -71,6 +72,7 @@ class ConversationRemoteDataSourceImplTest {
         every { create(any(), ConversationApi::class) } returns TestApiManager(conversationApi)
     }
     private val addLabelConversationMessageWorker: AddLabelConversationWorker.Enqueuer = mockk(relaxUnitFun = true)
+    private val markConversationAsUnreadWorker: MarkConversationAsUnreadWorker.Enqueuer = mockk(relaxUnitFun = true)
     private val removeLabelConversationMessageWorker: RemoveLabelConversationWorker.Enqueuer =
         mockk(relaxUnitFun = true)
 
@@ -84,6 +86,7 @@ class ConversationRemoteDataSourceImplTest {
         conversationRemoteDataSource = ConversationRemoteDataSourceImpl(
             apiProvider,
             addLabelConversationMessageWorker,
+            markConversationAsUnreadWorker,
             removeLabelConversationMessageWorker
         )
     }
@@ -278,7 +281,7 @@ class ConversationRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `mark unread does nothing`() = runTest {
+    fun `mark unread enqueues the worker`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
 
@@ -286,5 +289,6 @@ class ConversationRemoteDataSourceImplTest {
         conversationRemoteDataSource.markUnread(userId, conversationId)
 
         // then
+        verify { markConversationAsUnreadWorker.enqueue() }
     }
 }

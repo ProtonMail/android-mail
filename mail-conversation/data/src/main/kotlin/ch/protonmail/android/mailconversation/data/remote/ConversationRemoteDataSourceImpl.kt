@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
@@ -41,6 +42,7 @@ import javax.inject.Inject
 class ConversationRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider,
     private val addLabelConversationWorker: AddLabelConversationWorker.Enqueuer,
+    private val markConversationAsUnreadWorker: MarkConversationAsUnreadWorker.Enqueuer,
     private val removeLabelConversationWorker: RemoveLabelConversationWorker.Enqueuer
 ) : ConversationRemoteDataSource {
 
@@ -102,6 +104,6 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun markUnread(userId: UserId, conversationId: ConversationId) {
-
+        markConversationAsUnreadWorker.enqueue()
     }
 }
