@@ -263,6 +263,48 @@ class ConversationDetailScreenTest {
         robot.verify { errorMessageIsDisplayed(message) }
     }
 
+    @Test
+    fun whenUnreadClickedThenCallbackIsInvoked() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            bottomBarState = BottomBarState.Data(
+                actions = listOf(ActionUiModelSample.MarkUnread)
+            )
+        )
+        var unreadClicked = false
+
+        // when
+        setupScreen(
+            state = state,
+            actions = ConversationDetailScreen.Actions.Empty.copy(
+                onUnreadClick = { unreadClicked = true }
+            )
+        ).markAsUnread()
+
+        // then
+        assertTrue(unreadClicked)
+    }
+
+    @Test
+    fun whenExitStateThenCallbackIsInvoked() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            exitScreenEffect = Effect.of(Unit)
+        )
+        var didExit = false
+
+        // when
+        setupScreen(
+            state = state,
+            actions = ConversationDetailScreen.Actions.Empty.copy(
+                onExit = { didExit = true }
+            )
+        )
+
+        // then
+        assertTrue(didExit)
+    }
+
     private fun setupScreen(
         state: ConversationDetailState,
         actions: ConversationDetailScreen.Actions = ConversationDetailScreen.Actions.Empty

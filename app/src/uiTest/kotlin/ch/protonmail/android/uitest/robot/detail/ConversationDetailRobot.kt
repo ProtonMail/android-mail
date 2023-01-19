@@ -38,6 +38,12 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
+    fun markAsUnread(): ConversationDetailRobot {
+        composeTestRule.onNodeWithContentDescription(string.action_mark_unread_content_description)
+            .performClick()
+        return this
+    }
+
     fun moveToTrash(): MailboxRobot {
         composeTestRule.onNodeWithContentDescription(string.action_trash_content_description)
             .performClick()
