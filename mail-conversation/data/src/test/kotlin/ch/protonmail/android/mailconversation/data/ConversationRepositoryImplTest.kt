@@ -643,4 +643,16 @@ class ConversationRepositoryImplTest {
         )
         assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
+
+    @Test
+    fun `mark unread returns error`() = runTest {
+        // given
+        val expected = DataErrorSample.NoCache.left()
+
+        // when
+        val result = conversationRepository.markUnread(userId, ConversationIdSample.Invoices)
+
+        // then
+        assertEquals(expected, result)
+    }
 }

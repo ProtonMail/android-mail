@@ -19,26 +19,50 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class MarkConversationAsUnreadTest {
 
-    private val markUnread = MarkConversationAsUnread()
+    private val conversationRepository: ConversationRepository = mockk()
+    private val markUnread = MarkConversationAsUnread(conversationRepository)
 
     @Test
-    fun `returns error`() = runTest {
+    fun `returns error when repository fails`() = runTest {
         // given
-        val expected = DataErrorSample.NoCache.left()
+        val userId = UserIdSample.Primary
+        val conversationId = ConversationIdSample.WeatherForecast
+        val error = DataErrorSample.NoCache.left()
+        coEvery { conversationRepository.markUnread(userId, conversationId) } returns error
 
         // when
-        val result = markUnread(UserIdSample.Primary, ConversationIdSample.Invoices)
+        val result = markUnread(userId, conversationId)
 
         // then
-        assertEquals(expected, result)
+        assertEquals(error, result)
+    }
+
+    @Test
+    fun `returns updated conversation when repository succeeds`() = runTest {
+        // given
+        val userId = UserIdSample.Primary
+        val conversationId = ConversationIdSample.WeatherForecast
+        val conversation = ConversationSample.WeatherForecast.right()
+        coEvery { conversationRepository.markUnread(userId, conversationId) } returns conversation
+
+        // when
+        val result = markUnread(userId, conversationId)
+
+        // then
+        assertEquals(conversation, result)
     }
 }

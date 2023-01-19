@@ -185,6 +185,12 @@ class ConversationRepositoryImpl @Inject constructor(
         return addLabel(userId, conversationId, toLabelId)
     }
 
+    override suspend fun markUnread(
+        userId: UserId,
+        conversationId: ConversationId
+    ): Either<DataError.Local, Conversation> =
+        DataError.Local.NoDataCached.left()
+
     private suspend fun moveToTrash(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> {
         val persistentLabels = listOf(
             SystemLabelId.AllDrafts.labelId,

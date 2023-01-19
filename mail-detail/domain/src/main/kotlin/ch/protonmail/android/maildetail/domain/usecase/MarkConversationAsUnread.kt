@@ -19,18 +19,20 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.Either
-import arrow.core.left
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
+import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class MarkConversationAsUnread @Inject constructor() {
+class MarkConversationAsUnread @Inject constructor(
+    private val conversationRepository: ConversationRepository
+) {
 
     suspend operator fun invoke(
         userId: UserId,
         conversationId: ConversationId
     ): Either<DataError.Local, Conversation> =
-        DataError.Local.NoDataCached.left()
+        conversationRepository.markUnread(userId, conversationId)
 }
