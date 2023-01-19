@@ -20,6 +20,7 @@ package ch.protonmail.android.mailconversation.data.local
 
 import app.cash.turbine.test
 import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
@@ -29,6 +30,9 @@ import ch.protonmail.android.mailconversation.data.getConversationWithLabels
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationDao
 import ch.protonmail.android.mailconversation.data.local.dao.ConversationLabelDao
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
+import ch.protonmail.android.mailconversation.data.sample.ConversationEntitySample
+import ch.protonmail.android.mailconversation.data.sample.ConversationWithLabelsSample
+import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
@@ -272,12 +276,33 @@ class ConversationLocalDataSourceImplTest {
     }
 
     @Test
-    fun `mark unread returns error`() = runTest {
+    fun `mark unread increases unread count by 1`() = runTest {
         // given
-        val error = DataErrorSample.NoCache.left()
+        val conversationId = ConversationIdSample.WeatherForecast
+        val conversation = ConversationWithLabelsSample.WeatherForecast.copy(
+            conversation = ConversationEntitySample.WeatherForecast.copy(
+                numUnread = 2
+            )
+        )
+        val updatedConversation = ConversationSample.WeatherForecast.copy(numUnread = 3)
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
 
         // when
         val result = conversationLocalDataSource.markUnread(userId, ConversationIdSample.WeatherForecast)
+
+        // then
+        assertEquals(updatedConversation.right(), result)
+    }
+
+    @Test
+    fun `mark unread returns error if conversation not found`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val error = DataErrorSample.NoCache.left()
+        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(null)
+
+        // when
+        val result = conversationLocalDataSource.markUnread(userId, conversationId)
 
         // then
         assertEquals(error, result)

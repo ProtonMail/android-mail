@@ -33,6 +33,10 @@ object ConversationSample {
 
     val WeatherForecast = build(
         conversationId = ConversationIdSample.WeatherForecast,
+        labels = listOf(
+            ConversationLabelSample.WeatherForecast.AllMail,
+            ConversationLabelSample.WeatherForecast.News
+        ),
         subject = "Weather Forecast"
     )
 

@@ -159,7 +159,15 @@ class ConversationLocalDataSourceImpl @Inject constructor(
     override suspend fun markUnread(
         userId: UserId,
         conversationId: ConversationId
-    ): Either<DataError.Local, Conversation> = DataError.Local.NoDataCached.left()
+    ): Either<DataError.Local, Conversation> {
+        val conversation = observeConversation(userId, conversationId).first()
+            ?: return DataError.Local.NoDataCached.left()
+        val updatedConversation = conversation.copy(
+            numUnread = conversation.numUnread + 1
+        )
+        upsertConversation(userId, updatedConversation)
+        return updatedConversation.right()
+    }
 
     private suspend fun upsertPageInterval(
         userId: UserId,
