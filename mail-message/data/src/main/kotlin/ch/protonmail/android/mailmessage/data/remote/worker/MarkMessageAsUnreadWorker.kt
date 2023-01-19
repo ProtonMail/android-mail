@@ -59,7 +59,7 @@ class MarkMessageAsUnreadWorker @AssistedInject constructor(
             messageIds = listOf(messageId.id)
         )
         val result = api {
-            markUnread(requestBody)
+            markAsUnread(requestBody)
         }
 
         return when (result) {

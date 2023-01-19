@@ -18,9 +18,11 @@
 
 package ch.protonmail.android.mailconversation.data.remote
 
+import ch.protonmail.android.mailconversation.data.remote.resource.MarkConversationAsUnreadBody
 import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationResponse
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
+import ch.protonmail.android.mailmessage.data.remote.response.MarkUnreadResponse
 import ch.protonmail.android.mailmessage.data.remote.response.PutLabelResponse
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
 import retrofit2.http.Body
@@ -63,6 +65,11 @@ interface ConversationApi : BaseRetrofitApi {
     suspend fun removeLabel(
         @Body labelBody: PutConversationLabelBody
     ): PutLabelResponse
+
+    @PUT("mail/v4/conversations/unread")
+    suspend fun markAsUnread(
+        @Body markUnreadBody: MarkConversationAsUnreadBody
+    ): MarkUnreadResponse
 
     companion object {
 

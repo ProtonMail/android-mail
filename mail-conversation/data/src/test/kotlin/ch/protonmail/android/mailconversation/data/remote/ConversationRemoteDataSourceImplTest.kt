@@ -289,6 +289,6 @@ class ConversationRemoteDataSourceImplTest {
         conversationRemoteDataSource.markUnread(userId, conversationId)
 
         // then
-        verify { markConversationAsUnreadWorker.enqueue() }
+        verify { markConversationAsUnreadWorker.enqueue(userId, conversationId) }
     }
 }

@@ -104,6 +104,6 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun markUnread(userId: UserId, conversationId: ConversationId) {
-        markConversationAsUnreadWorker.enqueue()
+        markConversationAsUnreadWorker.enqueue(userId, conversationId)
     }
 }

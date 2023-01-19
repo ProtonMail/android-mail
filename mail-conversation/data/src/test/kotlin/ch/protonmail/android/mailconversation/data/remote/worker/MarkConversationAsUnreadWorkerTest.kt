@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.data.remote.worker
+package ch.protonmail.android.mailconversation.data.remote.worker
 
 import java.net.UnknownHostException
 import androidx.work.ListenableWorker.Result
@@ -24,14 +24,11 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
-import ch.protonmail.android.mailmessage.data.remote.MessageApi
-import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsUnreadBody
+import ch.protonmail.android.mailconversation.data.remote.ConversationApi
+import ch.protonmail.android.mailconversation.data.remote.resource.MarkConversationAsUnreadBody
 import ch.protonmail.android.mailmessage.data.remote.response.MarkUnreadResponse
-import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -45,18 +42,18 @@ import me.proton.core.network.domain.ApiResult
 import org.junit.Test
 import kotlin.test.assertEquals
 
-internal class MarkMessageAsUnreadWorkerTest {
+internal class MarkConversationAsUnreadWorkerTest {
 
     private val userId = UserIdSample.Primary
-    private val messageId = MessageIdSample.Invoice
+    private val conversationId = ConversationIdSample.WeatherForecast
     private val nonRetryableException = SerializationException()
     private val retryableException = UnknownHostException()
 
     private val apiProvider: ApiProvider = mockk {
-        coEvery { get<MessageApi>(userId).invoke<MarkUnreadResponse>(block = any()) } coAnswers {
-            val block = secondArg<suspend MessageApi.() -> MarkUnreadResponse>()
+        coEvery { get<ConversationApi>(userId).invoke<MarkUnreadResponse>(block = any()) } coAnswers {
+            val block = secondArg<suspend ConversationApi.() -> MarkUnreadResponse>()
             try {
-                ApiResult.Success(block(messageApi))
+                ApiResult.Success(block(conversationApi))
             } catch (e: Exception) {
                 when (e) {
                     nonRetryableException -> ApiResult.Error.Parse(e)
@@ -66,34 +63,31 @@ internal class MarkMessageAsUnreadWorkerTest {
             }
         }
     }
-    private val messageApi: MessageApi = mockk()
-    private val messageLocalDataSource: MessageLocalDataSource = mockk {
-        coEvery { markRead(userId, messageId) } returns MessageSample.Invoice.right()
-    }
+    private val conversationApi: ConversationApi = mockk()
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
-        every { inputData.getString(MarkMessageAsUnreadWorker.RawUserIdKey) } returns userId.id
-        every { inputData.getString(MarkMessageAsUnreadWorker.RawMessageIdKey) } returns messageId.id
+        every { inputData.getString(MarkConversationAsUnreadWorker.RawUserIdKey) } returns userId.id
+        every { inputData.getString(MarkConversationAsUnreadWorker.RawConversationIdKey) } returns conversationId.id
     }
     private val workManager: WorkManager = mockk {
         coEvery { enqueue(ofType<OneTimeWorkRequest>()) } returns mockk()
     }
 
-    private val worker = MarkMessageAsUnreadWorker(
+
+    private val worker = MarkConversationAsUnreadWorker(
         context = mockk(),
         workerParameters = params,
-        apiProvider = apiProvider,
-        messageLocalDataSource = messageLocalDataSource
+        apiProvider = apiProvider
     )
 
     @Test
     fun `worker is enqueued with correct constraints`() {
         // given
-        val enqueuer = MarkMessageAsUnreadWorker.Enqueuer(workManager)
+        val enqueuer = MarkConversationAsUnreadWorker.Enqueuer(workManager)
         val expectedNetworkType = NetworkType.CONNECTED
 
         // when
-        enqueuer.enqueue(userId, messageId)
+        enqueuer.enqueue(userId, conversationId)
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()
@@ -104,40 +98,40 @@ internal class MarkMessageAsUnreadWorkerTest {
     @Test
     fun `worker is enqueued with correct parameters`() {
         // given
-        val enqueuer = MarkMessageAsUnreadWorker.Enqueuer(workManager)
+        val enqueuer = MarkConversationAsUnreadWorker.Enqueuer(workManager)
 
         // when
-        enqueuer.enqueue(userId, messageId)
+        enqueuer.enqueue(userId, conversationId)
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()
         verify { workManager.enqueue(capture(requestSlot)) }
         assertEquals(
             expected = userId.id,
-            actual = requestSlot.captured.workSpec.input.getString(MarkMessageAsUnreadWorker.RawUserIdKey)
+            actual = requestSlot.captured.workSpec.input.getString(MarkConversationAsUnreadWorker.RawUserIdKey)
         )
         assertEquals(
-            expected = messageId.id,
-            actual = requestSlot.captured.workSpec.input.getString(MarkMessageAsUnreadWorker.RawMessageIdKey)
+            expected = conversationId.id,
+            actual = requestSlot.captured.workSpec.input.getString(MarkConversationAsUnreadWorker.RawConversationIdKey)
         )
     }
 
     @Test
     fun `api is called with the correct parameters`() = runTest {
         // given
-        coEvery { messageApi.markAsUnread(any()) } returns mockk()
+        coEvery { conversationApi.markAsUnread(any()) } returns mockk()
 
         // when
         worker.doWork()
 
         // then
-        coVerify { messageApi.markAsUnread(MarkMessageAsUnreadBody(listOf(messageId.id))) }
+        coVerify { conversationApi.markAsUnread(MarkConversationAsUnreadBody(listOf(conversationId.id))) }
     }
 
     @Test
     fun `returns success if api call succeeds`() = runTest {
         // given
-        coEvery { messageApi.markAsUnread(any()) } returns mockk()
+        coEvery { conversationApi.markAsUnread(any()) } returns mockk()
 
         // when
         val result = worker.doWork()
@@ -149,7 +143,7 @@ internal class MarkMessageAsUnreadWorkerTest {
     @Test
     fun `returns retry if api call fails with retryable error`() = runTest {
         // given
-        coEvery { messageApi.markAsUnread(any()) } throws retryableException
+        coEvery { conversationApi.markAsUnread(any()) } throws retryableException
 
         // when
         val result = worker.doWork()
@@ -161,24 +155,12 @@ internal class MarkMessageAsUnreadWorkerTest {
     @Test
     fun `returns failure if api call fails with non-retryable error`() = runTest {
         // given
-        coEvery { messageApi.markAsUnread(any()) } throws nonRetryableException
+        coEvery { conversationApi.markAsUnread(any()) } throws nonRetryableException
 
         // when
         val result = worker.doWork()
 
         // then
         assertEquals(Result.failure(), result)
-    }
-
-    @Test
-    fun `rollback unread when api call fails with non-retryable error`() = runTest {
-        // given
-        coEvery { messageApi.markAsUnread(any()) } throws nonRetryableException
-
-        // when
-        worker.doWork()
-
-        // then
-        coVerify { messageLocalDataSource.markRead(userId, messageId) }
     }
 }

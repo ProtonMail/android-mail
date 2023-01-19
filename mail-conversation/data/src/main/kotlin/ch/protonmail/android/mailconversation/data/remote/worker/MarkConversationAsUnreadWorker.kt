@@ -18,13 +18,82 @@
 
 package ch.protonmail.android.mailconversation.data.remote.worker
 
+import android.content.Context
+import androidx.work.Constraints
+import androidx.work.CoroutineWorker
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
+import androidx.work.workDataOf
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
+import ch.protonmail.android.mailconversation.data.remote.ConversationApi
+import ch.protonmail.android.mailconversation.data.remote.resource.MarkConversationAsUnreadBody
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import me.proton.core.domain.entity.UserId
+import me.proton.core.network.data.ApiProvider
+import me.proton.core.network.domain.ApiResult
+import me.proton.core.network.domain.isRetryable
 import javax.inject.Inject
 
-class MarkConversationAsUnreadWorker {
-    class Enqueuer @Inject constructor() {
+class MarkConversationAsUnreadWorker @AssistedInject constructor(
+    @Assisted context: Context,
+    @Assisted workerParameters: WorkerParameters,
+    private val apiProvider: ApiProvider
+) : CoroutineWorker(context, workerParameters) {
 
-        fun enqueue() {
+    override suspend fun doWork(): Result {
+        val userId = requireNotBlank(inputData.getString(RawUserIdKey), fieldName = "User id")
+            .let(::UserId)
+        val conversationId = requireNotBlank(inputData.getString(RawConversationIdKey), fieldName = "Conversation id")
+            .let(::ConversationId)
 
+        val api = apiProvider.get<ConversationApi>(userId)
+        val requestBody = MarkConversationAsUnreadBody(
+            conversationIds = listOf(conversationId.id)
+        )
+        val result = api {
+            markAsUnread(requestBody)
+        }
+
+        return when (result) {
+            is ApiResult.Success -> Result.success()
+            is ApiResult.Error -> {
+                if (result.isRetryable()) {
+                    Result.retry()
+                } else {
+                    Result.failure()
+                }
+            }
+        }
+    }
+
+    companion object {
+
+        const val RawUserIdKey = "markUnreadWorkParamUserId"
+        const val RawConversationIdKey = "markUnreadWorkParamConversationId"
+    }
+
+    class Enqueuer @Inject constructor(private val workManager: WorkManager) {
+
+        fun enqueue(userId: UserId, conversationId: ConversationId) {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+            val data = workDataOf(
+                RawUserIdKey to userId.id,
+                RawConversationIdKey to conversationId.id
+            )
+
+            val workRequest = OneTimeWorkRequestBuilder<MarkConversationAsUnreadWorker>()
+                .setConstraints(constraints)
+                .setInputData(data)
+                .build()
+
+            workManager.enqueue(workRequest)
         }
     }
 }
