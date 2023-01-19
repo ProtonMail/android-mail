@@ -25,11 +25,11 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.remote.response.MarkUnreadResponse
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsUnreadBody
-import ch.protonmail.android.mailmessage.data.remote.response.MarkUnreadResponse
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import io.mockk.coEvery

@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.data.remote.response
+package ch.protonmail.android.mailcommon.data.remote.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
