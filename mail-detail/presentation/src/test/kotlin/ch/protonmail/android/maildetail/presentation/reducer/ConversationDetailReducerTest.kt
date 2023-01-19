@@ -122,17 +122,18 @@ class ConversationDetailReducerTest(
     private companion object {
 
         val actions = listOf(
-            ConversationDetailViewAction.Star affects Conversation,
-            ConversationDetailViewAction.Trash affects ExitWithMessage(TextUiModel(string.conversation_moved_to_trash)),
-            ConversationDetailViewAction.UnStar affects Conversation,
+            ConversationDetailViewAction.MarkUnread affects Exit,
+            ConversationDetailViewAction.MoveToDestinationConfirmed("spam") affects ExitWithMessage(
+                TextUiModel(string.conversation_moved_to_selected_destination, "spam")
+            ),
             ConversationDetailViewAction.RequestMoveToBottomSheet affects BottomSheet,
             ConversationDetailViewAction.DismissBottomSheet affects BottomSheet,
             ConversationDetailViewAction.MoveToDestinationSelected(
                 SystemLabelId.Archive.toMailLabelSystem().id
             ) affects BottomSheet,
-            ConversationDetailViewAction.MoveToDestinationConfirmed("spam") affects ExitWithMessage(
-                TextUiModel(string.conversation_moved_to_selected_destination, "spam")
-            )
+            ConversationDetailViewAction.Star affects Conversation,
+            ConversationDetailViewAction.Trash affects ExitWithMessage(TextUiModel(string.conversation_moved_to_trash)),
+            ConversationDetailViewAction.UnStar affects Conversation
         )
 
         val events = listOf(
@@ -143,9 +144,9 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorRemoveStar affects ErrorBar,
             ConversationDetailEvent.ErrorLoadingConversation affects Conversation,
             ConversationDetailEvent.ErrorLoadingMessages affects Messages,
+            ConversationDetailEvent.ErrorMovingConversation affects ErrorBar,
             ConversationDetailEvent.ErrorMovingToTrash affects ErrorBar,
-            ConversationDetailEvent.MessagesData(emptyList()) affects Messages,
-            ConversationDetailEvent.ErrorMovingConversation affects ErrorBar
+            ConversationDetailEvent.MessagesData(emptyList()) affects Messages
         )
 
         @JvmStatic

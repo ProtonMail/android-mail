@@ -46,7 +46,7 @@ class ConversationDetailReducer @Inject constructor(
         bottomBarState = currentState.toNewBottomBarState(operation),
         bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
         error = currentState.toErrorState(operation),
-        exitScreenEffect = currentState.toExitState(),
+        exitScreenEffect = currentState.toExitState(operation),
         exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation)
     )
 
@@ -103,8 +103,11 @@ class ConversationDetailReducer @Inject constructor(
             error
         }
 
-    private fun ConversationDetailState.toExitState(): Effect<Unit> =
-        exitScreenEffect
+    private fun ConversationDetailState.toExitState(operation: ConversationDetailOperation): Effect<Unit> =
+        when (operation) {
+            is ConversationDetailViewAction.MarkUnread -> Effect.of(Unit)
+            else -> exitScreenEffect
+        }
 
     private fun ConversationDetailState.toExitWithMessageState(
         operation: ConversationDetailOperation
