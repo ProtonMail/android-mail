@@ -63,4 +63,6 @@ interface ConversationRemoteDataSource {
         labelId: LabelId,
         messageIds: List<MessageId>
     )
+
+    suspend fun markUnread(userId: UserId, conversationId: ConversationId)
 }

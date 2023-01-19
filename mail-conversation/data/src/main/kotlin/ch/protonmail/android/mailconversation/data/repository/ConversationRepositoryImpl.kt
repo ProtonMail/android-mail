@@ -194,6 +194,7 @@ class ConversationRepositoryImpl @Inject constructor(
             .maxByOrNull { message -> message.time }
             ?.let { message -> messageLocalDataSource.markUnread(userId, message.messageId) }
 
+        conversationRemoteDataSource.markUnread(userId, conversationId)
         return conversationLocalDataSource.markUnread(userId, conversationId)
     }
 

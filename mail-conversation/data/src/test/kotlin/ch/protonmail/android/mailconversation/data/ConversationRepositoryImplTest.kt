@@ -695,4 +695,19 @@ class ConversationRepositoryImplTest {
         // then
         coVerify { messageLocalDataSource.markUnread(userId, MessageIdSample.SepWeatherForecast) }
     }
+
+    @Test
+    fun `mark unread calls conversation remote data source`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        coEvery { conversationLocalDataSource.markUnread(userId, conversationId) } returns
+            ConversationSample.WeatherForecast.right()
+        every { messageLocalDataSource.observeMessages(userId, conversationId) } returns flowOf(emptyList())
+
+        // when
+        conversationRepository.markUnread(userId, conversationId)
+
+        // then
+        coVerify { conversationRemoteDataSource.markUnread(userId, conversationId) }
+    }
 }

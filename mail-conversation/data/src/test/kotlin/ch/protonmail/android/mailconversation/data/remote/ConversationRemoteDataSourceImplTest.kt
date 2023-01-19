@@ -20,6 +20,7 @@ package ch.protonmail.android.mailconversation.data.remote
 
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailconversation.data.getConversationResource
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
@@ -47,7 +48,7 @@ import me.proton.core.network.domain.session.SessionProvider
 import me.proton.core.test.android.api.TestApiManager
 import me.proton.core.util.kotlin.DefaultDispatcherProvider
 import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -276,4 +277,14 @@ class ConversationRemoteDataSourceImplTest {
         verify { removeLabelConversationMessageWorker.enqueue(userId, conversationId, labelId, messageIds) }
     }
 
+    @Test
+    fun `mark unread does nothing`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+
+        // when
+        conversationRemoteDataSource.markUnread(userId, conversationId)
+
+        // then
+    }
 }
