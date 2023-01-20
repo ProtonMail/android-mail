@@ -67,6 +67,7 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {
+    object Reload : MessageViewAction, AffectingMessageBody
     object Star : MessageViewAction, AffectingMessage
     object UnStar : MessageViewAction, AffectingMessage
     object MarkUnread : MessageViewAction

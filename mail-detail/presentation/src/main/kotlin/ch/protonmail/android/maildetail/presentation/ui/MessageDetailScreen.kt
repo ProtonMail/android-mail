@@ -124,6 +124,7 @@ fun MessageDetailScreen(
             state = state,
             actions = MessageDetailScreen.Actions(
                 onExit = onExit,
+                onReload = { viewModel.submit(MessageViewAction.Reload) },
                 onStarClick = { viewModel.submit(MessageViewAction.Star) },
                 onTrashClick = { viewModel.submit(MessageViewAction.Trash) },
                 onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
@@ -204,9 +205,10 @@ fun MessageDetailScreen(
     ) { innerPadding ->
         when (state.messageMetadataState) {
             is MessageMetadataState.Data -> MessageDetailContent(
+                modifier = Modifier.padding(innerPadding),
                 messageMetadataState = state.messageMetadataState,
                 messageBodyState = state.messageBodyState,
-                modifier = Modifier.padding(innerPadding)
+                onReload = actions.onReload
             )
             is MessageMetadataState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
@@ -217,9 +219,10 @@ fun MessageDetailScreen(
 
 @Composable
 private fun MessageDetailContent(
+    modifier: Modifier = Modifier,
     messageMetadataState: MessageMetadataState.Data,
     messageBodyState: MessageBodyState,
-    modifier: Modifier = Modifier
+    onReload: () -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
@@ -230,7 +233,10 @@ private fun MessageDetailContent(
             when (messageBodyState) {
                 is MessageBodyState.Loading -> ProtonCenteredProgress()
                 is MessageBodyState.Data -> MessageBody(messageBodyState = messageBodyState)
-                is MessageBodyState.Error -> MessageBodyLoadingError(messageBodyState = messageBodyState)
+                is MessageBodyState.Error -> MessageBodyLoadingError(
+                    messageBodyState = messageBodyState,
+                    onReload = onReload
+                )
             }
         }
     }
@@ -253,7 +259,8 @@ private fun MessageBody(
 @Composable
 private fun MessageBodyLoadingError(
     modifier: Modifier = Modifier,
-    messageBodyState: MessageBodyState.Error
+    messageBodyState: MessageBodyState.Error,
+    onReload: () -> Unit
 ) {
     val isNoNetworkError = messageBodyState.isNoNetworkError
     val errorMessage = stringResource(
@@ -289,7 +296,7 @@ private fun MessageBodyLoadingError(
         if (!isNoNetworkError) {
             ProtonSolidButton(
                 modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing),
-                onClick = {}
+                onClick = { onReload() }
             ) {
                 Text(text = stringResource(id = R.string.reload))
             }
@@ -303,6 +310,7 @@ object MessageDetailScreen {
 
     data class Actions(
         val onExit: (notifyUserMessage: String?) -> Unit,
+        val onReload: () -> Unit,
         val onStarClick: () -> Unit,
         val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
@@ -314,6 +322,7 @@ object MessageDetailScreen {
 
             val Empty = Actions(
                 onExit = {},
+                onReload = {},
                 onStarClick = {},
                 onTrashClick = {},
                 onUnStarClick = {},

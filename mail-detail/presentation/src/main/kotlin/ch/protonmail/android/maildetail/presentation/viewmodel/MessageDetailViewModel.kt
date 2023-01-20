@@ -105,6 +105,7 @@ class MessageDetailViewModel @Inject constructor(
 
     fun submit(action: MessageViewAction) {
         when (action) {
+            is MessageViewAction.Reload -> reloadMessageBody(messageId)
             is MessageViewAction.Star -> starMessage()
             is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
@@ -219,6 +220,13 @@ class MessageDetailViewModel @Inject constructor(
                 ifRight = { MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(it)) }
             )
             emitNewStateFrom(event)
+        }
+    }
+
+    private fun reloadMessageBody(messageId: MessageId) {
+        viewModelScope.launch {
+            emitNewStateFrom(MessageViewAction.Reload)
+            getMessageBody(messageId)
         }
     }
 

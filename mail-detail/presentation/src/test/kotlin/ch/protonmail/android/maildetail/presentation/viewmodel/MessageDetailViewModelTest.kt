@@ -313,6 +313,25 @@ class MessageDetailViewModelTest {
     }
 
     @Test
+    fun `message body state is loading when reload action was triggered`() = runTest {
+        // Given
+        val messageId = MessageId(rawMessageId)
+        coEvery { getMessageBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
+
+        viewModel.state.test {
+            initialStateEmitted()
+            messageBodyErrorEmitted()
+
+            // When
+            viewModel.submit(MessageViewAction.Reload)
+
+            // Then
+            assertEquals(MessageBodyState.Loading, awaitItem().messageBodyState)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `bottomBar state is data when use case returns actions`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
@@ -583,6 +602,15 @@ class MessageDetailViewModelTest {
         assertEquals(
             MessageDetailState.Loading.copy(
                 messageBodyState = MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyUiModel)
+            ),
+            awaitItem()
+        )
+    }
+
+    private suspend fun ReceiveTurbine<MessageDetailState>.messageBodyErrorEmitted() {
+        assertEquals(
+            MessageDetailState.Loading.copy(
+                messageBodyState = MessageBodyState.Error(isNoNetworkError = false)
             ),
             awaitItem()
         )

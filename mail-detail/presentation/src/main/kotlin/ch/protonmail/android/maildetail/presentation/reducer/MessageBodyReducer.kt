@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
+import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import javax.inject.Inject
 
 class MessageBodyReducer @Inject constructor() {
@@ -29,6 +30,7 @@ class MessageBodyReducer @Inject constructor() {
         event: MessageDetailOperation.AffectingMessageBody
     ): MessageBodyState {
         return when (event) {
+            is MessageViewAction.Reload -> MessageBodyState.Loading
             is MessageDetailEvent.MessageBodyEvent -> MessageBodyState.Data(event.messageBody)
             is MessageDetailEvent.ErrorGettingMessageBody -> MessageBodyState.Error(event.isNoNetworkError)
         }

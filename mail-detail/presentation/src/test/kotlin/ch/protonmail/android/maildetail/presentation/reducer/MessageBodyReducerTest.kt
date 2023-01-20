@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
+import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,6 +46,12 @@ class MessageBodyReducerTest(
     }
 
     companion object {
+        private val actions = listOf(
+            TestInput(
+                MessageViewAction.Reload,
+                MessageBodyState.Loading
+            )
+        )
         private val events = listOf(
             TestInput(
                 MessageDetailEvent.MessageBodyEvent(
@@ -65,7 +72,7 @@ class MessageBodyReducerTest(
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data(): Collection<Array<Any>> {
-            return events
+            return (actions + events)
                 .map { testInput ->
                     val testName = """
                         Operation: ${testInput.operation}
