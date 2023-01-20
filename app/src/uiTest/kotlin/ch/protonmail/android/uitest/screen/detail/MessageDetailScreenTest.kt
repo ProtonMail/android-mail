@@ -23,8 +23,10 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
@@ -264,6 +266,52 @@ class MessageDetailScreenTest {
 
         // then
         assertTrue(didExit)
+    }
+
+    @Test
+    fun whenMessageBodyIsLoadedThenMessageBodyIsDisplayed() {
+        // given
+        val state = MessageDetailsPreviewData.Message
+        val messageBody = (state.messageBodyState as MessageBodyState.Data).messageBodyUiModel.messageBody
+
+        // when
+        val robot = setUpScreen(state = state)
+
+        // then
+        robot.verify { messageBodyIsDisplayed(messageBody) }
+    }
+
+    @Test
+    fun whenMessageBodyLoadingFailedWithNoNetworkThenErrorMessageIsShown() {
+        // given
+        val state = MessageDetailsPreviewData.Message.copy(
+            messageBodyState = MessageBodyState.Error(isNoNetworkError = true)
+        )
+        val errorMessage = R.string.error_offline_loading_message
+
+        // when
+        val robot = setUpScreen(state = state)
+
+        // then
+        robot.verify { messageBodyLoadingErrorMessageIsDisplayed(errorMessage) }
+    }
+
+    @Test
+    fun whenMessageBodyLoadingFailedThenErrorMessageAndReloadButtonIsShown() {
+        // given
+        val state = MessageDetailsPreviewData.Message.copy(
+            messageBodyState = MessageBodyState.Error(isNoNetworkError = false)
+        )
+        val errorMessage = R.string.error_loading_message
+
+        // when
+        val robot = setUpScreen(state = state)
+
+        // then
+        robot.verify {
+            messageBodyLoadingErrorMessageIsDisplayed(errorMessage)
+            messageBodyReloadButtonIsDisplayed()
+        }
     }
 
     private fun setUpScreen(

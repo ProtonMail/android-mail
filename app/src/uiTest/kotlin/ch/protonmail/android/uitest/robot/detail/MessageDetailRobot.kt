@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.robot.detail
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.assertIsDisplayed
@@ -29,11 +30,12 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import ch.protonmail.android.mailcommon.presentation.compose.TEST_TAG_AVATAR
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.maildetail.presentation.R.string
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.ui.TEST_TAG_MESSAGE_HEADER
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
+import ch.protonmail.android.uitest.util.onNodeWithText
 
 class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
@@ -44,13 +46,13 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
     }
 
     fun markAsUnread(): MessageDetailRobot {
-        composeTestRule.onNodeWithContentDescription(string.action_mark_unread_content_description)
+        composeTestRule.onNodeWithContentDescription(R.string.action_mark_unread_content_description)
             .performClick()
         return this
     }
 
     fun moveToTrash(): MailboxRobot {
-        composeTestRule.onNodeWithContentDescription(string.action_trash_content_description)
+        composeTestRule.onNodeWithContentDescription(R.string.action_trash_content_description)
             .performClick()
 
         return MailboxRobot(composeTestRule)
@@ -120,6 +122,21 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
         fun labelIsDisplayed(name: String) {
             composeTestRule.onNodeWithText(name)
+                .assertIsDisplayed()
+        }
+
+        fun messageBodyIsDisplayed(messageBody: String) {
+            composeTestRule.onNodeWithText(messageBody)
+                .assertIsDisplayed()
+        }
+
+        fun messageBodyLoadingErrorMessageIsDisplayed(@StringRes errorMessage: Int) {
+            composeTestRule.onNodeWithText(errorMessage)
+                .assertIsDisplayed()
+        }
+
+        fun messageBodyReloadButtonIsDisplayed() {
+            composeTestRule.onNodeWithText(R.string.reload)
                 .assertIsDisplayed()
         }
     }
