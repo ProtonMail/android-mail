@@ -125,5 +125,5 @@ interface MessageRepository {
         userId: UserId,
         messageId: MessageId,
         labels: List<LabelId>
-    ): Either<DataError, Message>
+    ): Either<DataError.Local, Message>
 }
