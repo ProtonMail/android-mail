@@ -307,4 +307,41 @@ class ConversationLocalDataSourceImplTest {
         // then
         assertEquals(error, result)
     }
+
+    @Test
+    fun `mark read returns updated conversation`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val conversation = ConversationWithLabelsSample.WeatherForecast.copy(
+            conversation = ConversationEntitySample.WeatherForecast.copy(
+                numUnread = 9
+            )
+        )
+        val updatedConversation = conversation.copy(
+            conversation = ConversationEntitySample.WeatherForecast.copy(
+                numUnread = 8
+            )
+        )
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+
+        // when
+        val result = conversationLocalDataSource.markRead(userId, conversationId)
+
+        // then
+        assertEquals(updatedConversation.toConversation().right(), result)
+    }
+
+    @Test
+    fun `mark read returns error if message not found`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val error = DataErrorSample.NoCache.left()
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(null)
+
+        // when
+        val result = conversationLocalDataSource.markRead(userId, conversationId)
+
+        // then
+        assertEquals(error, result)
+    }
 }
