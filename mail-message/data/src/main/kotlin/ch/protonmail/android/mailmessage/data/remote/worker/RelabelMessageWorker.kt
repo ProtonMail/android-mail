@@ -61,7 +61,7 @@ class RelabelMessageWorker @AssistedInject constructor(
         val result = apiProvider.get<MessageApi>(UserId(userId)).invoke {
             relabel(
                 messageId = messageId,
-                putLabelBody = PostRelabelBody(labelIds = labelIds.toList())
+                postLabelBody = PostRelabelBody(labelIds = labelIds.toList())
             )
         }
 

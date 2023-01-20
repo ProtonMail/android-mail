@@ -175,7 +175,7 @@ internal class RelabelMessageWorkerTest {
     }
 
     @Test
-    fun `worker returns retry when api call fails to do connection error`() = runTest {
+    fun `worker returns retry when api call fails due to connection error`() = runTest {
         // Given
         coEvery { messageApi.relabel(any(), any()) } throws UnknownHostException()
 
@@ -187,7 +187,7 @@ internal class RelabelMessageWorkerTest {
     }
 
     @Test
-    fun `worker returns failure when api call fails to do non-retryable error`() = runTest {
+    fun `worker returns failure when api call fails due to non-retryable error`() = runTest {
         // Given
         coEvery { messageApi.relabel(any(), any()) } throws SerializationException()
 

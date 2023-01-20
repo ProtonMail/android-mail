@@ -77,7 +77,7 @@ interface MessageApi : BaseRetrofitApi {
     @POST("mail/v4/messages/{messageId}/relabel")
     suspend fun relabel(
         @Path("messageId") messageId: String,
-        @Body putLabelBody: PostRelabelBody
+        @Body postLabelBody: PostRelabelBody
     ): GetMessageResponse
 
 
