@@ -194,7 +194,9 @@ class MessageRepositoryImpl @Inject constructor(
             throw IllegalArgumentException("The labels exceeds the maximum number of $MAX_LABEL_LIST_SIZE")
         }
 
-        return localDataSource.relabel(userId, messageId, labels)
+        return localDataSource.relabel(userId, messageId, labels).tap {
+            remoteDataSource.relabel(userId, messageId, labels)
+        }
     }
 
     private suspend fun moveToTrash(

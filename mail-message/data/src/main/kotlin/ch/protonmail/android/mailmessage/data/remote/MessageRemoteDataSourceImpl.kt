@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.RelabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -41,7 +42,8 @@ class MessageRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider,
     private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer,
     private val markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer,
-    private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer
+    private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer,
+    private val relabelMessageWorker: RelabelMessageWorker.Enqueuer
 ) : MessageRemoteDataSource {
 
     override suspend fun getMessages(
@@ -95,5 +97,9 @@ class MessageRemoteDataSourceImpl @Inject constructor(
 
     override fun markUnread(userId: UserId, messageId: MessageId) {
         markMessageAsUnreadWorker.enqueue(userId, messageId)
+    }
+
+    override fun relabel(userId: UserId, messageId: MessageId, labelIds: List<LabelId>) {
+        relabelMessageWorker.enqueue(userId, messageId, labelIds)
     }
 }

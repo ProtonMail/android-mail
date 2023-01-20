@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.RelabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -74,6 +75,7 @@ class MessageRemoteDataSourceImplTest {
     private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
     private val markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer = mockk(relaxUnitFun = true)
     private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
+    private val relabelMessageWorker: RelabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
 
     private val apiProvider = ApiProvider(
         apiManagerFactory = apiManagerFactory,
@@ -85,7 +87,8 @@ class MessageRemoteDataSourceImplTest {
         apiProvider = apiProvider,
         addLabelMessageWorker = addLabelMessageWorker,
         markMessageAsUnreadWorker = markMessageAsUnreadWorker,
-        removeLabelMessageWorker = removeLabelMessageWorker
+        removeLabelMessageWorker = removeLabelMessageWorker,
+        relabelMessageWorker = relabelMessageWorker
     )
 
     @Test(expected = IllegalArgumentException::class)
@@ -288,5 +291,18 @@ class MessageRemoteDataSourceImplTest {
 
         // then
         verify { markMessageAsUnreadWorker.enqueue(userId, messageId) }
+    }
+
+    @Test
+    fun `enqueues worker to relabel message`() {
+        // Given
+        val messageId = MessageIdSample.Invoice
+        val labelIds = listOf(LabelId("1"), LabelId("2"))
+
+        // When
+        messageRemoteDataSource.relabel(userId, messageId, labelIds)
+
+        // Then
+        verify { relabelMessageWorker.enqueue(userId, messageId, labelIds) }
     }
 }

@@ -66,4 +66,9 @@ interface MessageRemoteDataSource {
      * Mark message with the given [messageId] as unread
      */
     fun markUnread(userId: UserId, messageId: MessageId)
+
+    /**
+     * Relabels the message for the given [messageId] related to the same [userId]
+     */
+    fun relabel(userId: UserId, messageId: MessageId, labelIds: List<LabelId>)
 }

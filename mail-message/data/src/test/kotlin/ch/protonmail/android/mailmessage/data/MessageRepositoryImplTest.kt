@@ -652,6 +652,28 @@ class MessageRepositoryImplTest {
         coVerify { localDataSource.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded)) }
     }
 
+    @Test
+    fun `verify relabel calls remote data source`() = runTest {
+        // Given
+        val labelToStay = LabelId("CustomLabel1")
+        val labelToBeAdded = LabelId("CustomLabel3")
+        val labelToBeRemoved = LabelId("CustomLabel2")
+        val message = MessageTestData.message.copy(labelIds = listOf(labelToStay, labelToBeRemoved))
+        coEvery {
+            localDataSource.relabel(
+                userId,
+                MessageId(message.id),
+                listOf(labelToBeRemoved, labelToBeAdded)
+            )
+        } returns message.copy(labelIds = listOf(labelToStay, labelToBeAdded)).right()
+
+        // When
+        messageRepository.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded))
+
+        // Then
+        coVerify { remoteDataSource.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded)) }
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun `relabel throws exception when list is larger than MAX_LABEL_LIST_SIZE items`() = runTest {
         // Given
