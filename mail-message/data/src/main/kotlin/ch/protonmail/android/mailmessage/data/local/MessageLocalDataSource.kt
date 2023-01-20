@@ -178,4 +178,15 @@ interface MessageLocalDataSource {
         userId: UserId,
         messageId: MessageId
     ): Either<DataError.Local, Message>
+
+    /**
+     * Relabels the message for the given [messageId] related to the same [userId].
+     * Labels are added or removed according to the [labelIds]
+     */
+    suspend fun relabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelIds: List<LabelId>
+    ): Either<DataError.Local, Message>
+
 }

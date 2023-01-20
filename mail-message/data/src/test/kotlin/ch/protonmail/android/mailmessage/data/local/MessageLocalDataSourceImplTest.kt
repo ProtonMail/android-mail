@@ -441,4 +441,42 @@ class MessageLocalDataSourceImplTest {
         // then
         assertEquals(error, result)
     }
+
+    @Test
+    fun `relabel returns a message with added missing and removed existing labels`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice
+
+        val labelToStay = LabelId("CustomLabel1")
+        val labelToBeAdded = LabelId("CustomLabel3")
+        val labelToBeRemoved = LabelId("CustomLabel2")
+        val message = MessageWithLabelIdsSample.Invoice.copy(labelIds = listOf(labelToStay, labelToBeRemoved))
+        every { messageDao.observe(userId, messageId) } returns flowOf(message)
+
+        // When
+        val actual = messageLocalDataSource.relabel(userId, messageId, listOf(labelToBeRemoved, labelToBeAdded))
+
+        // Then
+        val expectedMessage = message.copy(labelIds = listOf(labelToStay, labelToBeAdded))
+        assertEquals(expectedMessage.toMessage().right(), actual)
+    }
+
+    @Test
+    fun `relabel emits error when local data source fails`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val labelToStay = LabelId("CustomLabel1")
+        val labelToBeAdded = LabelId("CustomLabel3")
+        val labelToBeRemoved = LabelId("CustomLabel2")
+        val message = MessageTestData.message.copy(labelIds = listOf(labelToStay, labelToBeRemoved))
+
+        // When
+        every { messageDao.observe(userId, MessageId(message.id)) } returns flowOf(null)
+        val actual =
+            messageLocalDataSource.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded))
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
+    }
 }
