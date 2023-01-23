@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mail_settings_settings">Postavke</string>
-  <string name="mail_settings_toolbar_button_content_description">Back</string>
+  <string name="mail_settings_toolbar_button_content_description">Natrag</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Postavke računa</string>
   <string name="mail_settings_app_settings">Postavke aplikacije</string>
@@ -29,8 +29,8 @@
   <string name="mail_settings_app_language">Jezik aplikacije</string>
   <string name="mail_settings_combined_contacts">Kombinirani kontakti</string>
   <string name="mail_settings_swipe_actions">Swipe akcije</string>
-  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your logged in accounts.</string>
-  <string name="mail_settings_alternative_routing_hint">In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues: We recommend keeping this setting on for greater reliability.</string>
+  <string name="mail_settings_combined_contacts_hint">Uključite ovu značajku za automatsko dovršavanje adresa e-pošte pomoću kontakata sa svih vaših prijavljenih računa.</string>
+  <string name="mail_settings_alternative_routing_hint">U slučaju da su Protonove stranice blokirane, ova postavka omogućuje aplikaciji da isproba alternativno mrežno usmjeravanje do Protona, što može biti korisno u zaobilaženju vatrozida ili problema s mrežom. Preporučujemo da ovu postavku zadržite omogućenom radi veće pouzdanosti.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Zadani sustav</string>
   <string name="mail_settings_theme_light">Svjetlo</string>
@@ -77,7 +77,7 @@
   <string name="mail_settings_swipe_action_read_description">Označi kao nepročitano/pročitano</string>
   <string name="mail_settings_swipe_action_spam_description">Premjesti u neželjenu poštu</string>
   <string name="mail_settings_swipe_action_star_description">Postavi/ukloni zvjezdicu</string>
-  <string name="mail_settings_swipe_action_trash_description">Move to trash</string>
+  <string name="mail_settings_swipe_action_trash_description">Premjesti u otpad</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">An error occurred. Try again.</string>
 </resources>

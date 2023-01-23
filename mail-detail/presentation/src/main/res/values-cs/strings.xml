@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Načtení kontaktů selhalo</string>
   <string name="detail_error_loading_conversation">Načtení konverzace selhalo</string>
   <string name="detail_error_loading_messages">Načtení zpráv selhalo</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
+  <string name="error_mark_unread_failed">Označit jako nepřečtené se nezdařilo. Zkuste to prosím znovu.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d zpráva</item>
     <item quantity="few">%d zprávy</item>

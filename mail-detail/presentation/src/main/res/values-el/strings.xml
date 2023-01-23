@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Αποτυχημένη φόρτωση επαφών</string>
   <string name="detail_error_loading_conversation">Αποτυχημένη φόρτωση συνομιλίας</string>
   <string name="detail_error_loading_messages">Αποτυχημένη φόρτωση μηνυμάτων</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
+  <string name="error_mark_unread_failed">Αποτυχια επισήμανσης μη αναγνωσμένου. Παρακαλώ προσπαθήστε ξανά.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d μήνυμα</item>
     <item quantity="other">%d μηνύματα</item>

@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Névjegyek betöltése sikertelen</string>
   <string name="detail_error_loading_conversation">Beszélgetések betöltése sikertelen</string>
   <string name="detail_error_loading_messages">Üzenetek betöltése sikertelen</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
+  <string name="error_mark_unread_failed">Olvasatlanként megjelölés sikertelen. Próbálja meg újra.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d üzenet</item>
     <item quantity="other">%d üzenet</item>
@@ -34,13 +34,13 @@
   <string name="error_star_operation_failed">Megcsillagozás sikertelen. Próbálja újra.</string>
   <string name="error_unstar_operation_failed">Csillag visszavonása sikertelen. Próbálja újra.</string>
   <string name="error_move_to_trash_failed">A lomtárba helyezés sikertelen. Próbálja újra.</string>
-  <string name="message_moved_to_trash">Message moved to trash</string>
+  <string name="message_moved_to_trash">Üzenet áthelyezve a lomtárba</string>
   <string name="message_moved_to_selected_destination">Message moved to %1$s</string>
   <string name="error_move_message_failed">Moving message failed. Please retry.</string>
-  <string name="conversation_moved_to_trash">Conversation moved to trash</string>
-  <string name="conversation_moved_to_selected_destination">Conversation moved to %1$s</string>
+  <string name="conversation_moved_to_trash">A beszélgetés átkerült a lomtárba</string>
+  <string name="conversation_moved_to_selected_destination">A beszélgetés átkerült a %1$s</string>
   <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Move to...</string>
-  <string name="bottom_sheet_done_action">Done</string>
+  <string name="bottom_sheet_done_action">Kész</string>
 </resources>

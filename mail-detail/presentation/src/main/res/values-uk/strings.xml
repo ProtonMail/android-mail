@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Не вдалося завантажити контакти</string>
   <string name="detail_error_loading_conversation">Не вдалося завантажити розмову</string>
   <string name="detail_error_loading_messages">Не вдалося завантажити повідомлення</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
+  <string name="error_mark_unread_failed">Не вдалося позначити непрочитаним. Повторіть спробу.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d повідомлення</item>
     <item quantity="few">%d повідомлення</item>
@@ -39,7 +39,7 @@
   <string name="message_moved_to_trash">Повідомлення переміщено до смітника</string>
   <string name="message_moved_to_selected_destination">Повідомлення переміщено до %1$s</string>
   <string name="error_move_message_failed">Не вдалося перемістити повідомлення. Повторіть спробу.</string>
-  <string name="conversation_moved_to_trash">Розмову переміщено до кошика</string>
+  <string name="conversation_moved_to_trash">Розмову переміщено до смітника</string>
   <string name="conversation_moved_to_selected_destination">Розмову переміщено до %1$s</string>
   <string name="error_move_conversation_failed">Не вдалося перемістити розмову. Повторіть спробу.</string>
   <!-- Bottom Sheet -->

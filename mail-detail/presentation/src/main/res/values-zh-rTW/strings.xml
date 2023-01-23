@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">載入聯絡人失敗</string>
   <string name="detail_error_loading_conversation">無法載入對話內容</string>
   <string name="detail_error_loading_messages">無法載入訊息</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
+  <string name="error_mark_unread_failed">標記未讀失敗。請再試一次。</string>
   <plurals name="message_count_label_text">
     <item quantity="other">%d 封郵件</item>
   </plurals>

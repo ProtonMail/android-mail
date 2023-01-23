@@ -17,36 +17,36 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Expired</string>
+  <string name="expiration_expired">Isteklo</string>
   <string name="expiration_days_arg">%dd</string>
   <string name="expiration_hours_arg">%dh</string>
   <string name="expiration_minutes_arg">%dm</string>
   <string name="retry">Pokušaj ponovno</string>
   <string name="toolbar_back_content_description">Back to previous screen</string>
   <string name="x_error_not_logged_in">Not logged in</string>
-  <string name="action_reply_content_description">Reply</string>
-  <string name="action_reply_all_content_description">Reply all</string>
-  <string name="action_forward_content_description">Forward</string>
-  <string name="action_mark_read_content_description">Mark read</string>
-  <string name="action_mark_unread_content_description">Mark unread</string>
-  <string name="action_star_content_description">Star</string>
-  <string name="action_unstar_content_description">Unstar</string>
-  <string name="action_label_content_description">Label as</string>
-  <string name="action_move_content_description">Move to</string>
-  <string name="action_trash_content_description">Trash</string>
-  <string name="action_delete_content_description">Delete</string>
-  <string name="action_archive_content_description">Archive</string>
-  <string name="action_spam_content_description">Spam</string>
+  <string name="action_reply_content_description">Odgovori</string>
+  <string name="action_reply_all_content_description">Odgovori svima</string>
+  <string name="action_forward_content_description">Proslijedi</string>
+  <string name="action_mark_read_content_description">Označi kao pročitano</string>
+  <string name="action_mark_unread_content_description">Označi kao nepročitano</string>
+  <string name="action_star_content_description">Zvjezdica</string>
+  <string name="action_unstar_content_description">Ukloni zvjezdicu</string>
+  <string name="action_label_content_description">Označi kao</string>
+  <string name="action_move_content_description">Premjesti u</string>
+  <string name="action_trash_content_description">Otpad</string>
+  <string name="action_delete_content_description">Izbriši</string>
+  <string name="action_archive_content_description">Arhiva</string>
+  <string name="action_spam_content_description">Neželjena pošta</string>
   <string name="action_view_in_light_mode_content_description">View message in light mode</string>
   <string name="action_view_in_dark_mode_content_description">View message in dark mode</string>
-  <string name="action_print_content_description">Print</string>
-  <string name="action_view_headers_content_description">View headers</string>
-  <string name="action_view_html_content_description">View HTML</string>
-  <string name="action_report_phishing_content_description">Report phishing</string>
+  <string name="action_print_content_description">Ispis</string>
+  <string name="action_view_headers_content_description">Pregled zaglavlja</string>
+  <string name="action_view_html_content_description">Pregledaj HTML</string>
+  <string name="action_report_phishing_content_description">Prijavi krađu identiteta</string>
   <string name="action_remind_content_description">Remind me</string>
-  <string name="action_save_pdf_content_description">Save as PDF</string>
+  <string name="action_save_pdf_content_description">Spremi kao PDF</string>
   <string name="action_sender_emails_content_description">Set action for future emails from this sender</string>
   <string name="action_save_attachments_content_description">Save attachments</string>
   <string name="common_error_loading_actions">Failed loading actions</string>
-  <string name="yesterday">Yesterday</string>
+  <string name="yesterday">Jučer</string>
 </resources>

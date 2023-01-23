@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Idioma de la aplicación</string>
   <string name="mail_settings_combined_contacts">Contactos combinados</string>
   <string name="mail_settings_swipe_actions">Gestos de deslizamiento</string>
-  <string name="mail_settings_combined_contacts_hint">Activa esta característica para autocompletar las direcciones de correo usando los contactos de todas tus cuentas conectadas.</string>
+  <string name="mail_settings_combined_contacts_hint">Activa esta función para completar automáticamente las direcciones de correo electrónico usando los contactos de todas tus cuentas conectadas.</string>
   <string name="mail_settings_alternative_routing_hint">En caso de que los servicios de Proton estén bloqueados, esta configuración permite a la aplicación intentar un enrutamiento alternativo para llegar a Proton, lo que puede ser útil para evitar los cortafuegos o los problemas de red. Recomendamos mantener esta configuración activada para una mayor fiabilidad.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Del sistema</string>
@@ -65,7 +65,7 @@
   <string name="mail_settings_conversation_mode_hint">Agrupar correos de una misma conversación en tu bandeja de entrada o mostrarlos por separado</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Gestos de deslizamiento</string>
-  <string name="mail_settings_swipe_actions_subtitle">Establecer gestos de deslizamiento para acceder a las acciones más utilizadas.</string>
+  <string name="mail_settings_swipe_actions_subtitle">Establece gestos de deslizamiento para acceder a las acciones más utilizadas.</string>
   <string name="mail_settings_swipe_right_name">Izquierda a derecha</string>
   <string name="mail_settings_swipe_left_name">Derecha a izquierda</string>
   <string name="mail_settings_swipe_action_archive_title">Archivar</string>
