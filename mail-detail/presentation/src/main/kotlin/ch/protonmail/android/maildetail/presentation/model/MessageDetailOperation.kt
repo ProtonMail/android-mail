@@ -46,7 +46,7 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
         AffectingMessageBody
 
     data class ErrorGettingMessageBody(
-        val isNoNetworkError: Boolean
+        val isNetworkError: Boolean
     ) : MessageDetailEvent, AffectingMessageBody
 
     data class MessageBottomBarEvent(

@@ -289,14 +289,14 @@ class MessageDetailViewModelTest {
             initialStateEmitted()
 
             // Then
-            val expected = MessageBodyState.Error(isNoNetworkError = false)
+            val expected = MessageBodyState.Error(isNetworkError = false)
             assertEquals(expected, awaitItem().messageBodyState)
             cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `message body state is no network error when use case returns no network error`() = runTest {
+    fun `message body state is network error when use case returns network error`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
         coEvery { getMessageBody(userId, messageId) } returns DataError.Remote.Http(NetworkError.NoNetwork).left()
@@ -306,7 +306,7 @@ class MessageDetailViewModelTest {
             initialStateEmitted()
 
             // Then
-            val expected = MessageBodyState.Error(isNoNetworkError = true)
+            val expected = MessageBodyState.Error(isNetworkError = true)
             assertEquals(expected, awaitItem().messageBodyState)
             cancelAndIgnoreRemainingEvents()
         }
@@ -610,7 +610,7 @@ class MessageDetailViewModelTest {
     private suspend fun ReceiveTurbine<MessageDetailState>.messageBodyErrorEmitted() {
         assertEquals(
             MessageDetailState.Loading.copy(
-                messageBodyState = MessageBodyState.Error(isNoNetworkError = false)
+                messageBodyState = MessageBodyState.Error(isNetworkError = false)
             ),
             awaitItem()
         )

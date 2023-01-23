@@ -27,6 +27,6 @@ sealed class MessageBodyState {
     object Loading : MessageBodyState()
 
     data class Error(
-        val isNoNetworkError: Boolean
+        val isNetworkError: Boolean
     ) : MessageBodyState()
 }

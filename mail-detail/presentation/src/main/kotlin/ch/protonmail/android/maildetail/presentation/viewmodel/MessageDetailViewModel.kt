@@ -214,7 +214,7 @@ class MessageDetailViewModel @Inject constructor(
             val event = getMessageBody(userId, messageId).fold(
                 ifLeft = {
                     MessageDetailEvent.ErrorGettingMessageBody(
-                        isNoNetworkError = it == DataError.Remote.Http(NetworkError.NoNetwork)
+                        isNetworkError = it == DataError.Remote.Http(NetworkError.NoNetwork)
                     )
                 },
                 ifRight = { MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(it)) }

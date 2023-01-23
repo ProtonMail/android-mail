@@ -262,9 +262,9 @@ private fun MessageBodyLoadingError(
     messageBodyState: MessageBodyState.Error,
     onReload: () -> Unit
 ) {
-    val isNoNetworkError = messageBodyState.isNoNetworkError
+    val isNetworkError = messageBodyState.isNetworkError
     val errorMessage = stringResource(
-        if (isNoNetworkError) {
+        if (isNetworkError) {
             R.string.error_offline_loading_message
         } else {
             R.string.error_loading_message
@@ -293,7 +293,7 @@ private fun MessageBodyLoadingError(
             textAlign = TextAlign.Center,
             style = ProtonTheme.typography.defaultSmallWeak
         )
-        if (!isNoNetworkError) {
+        if (!isNetworkError) {
             ProtonSolidButton(
                 modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing),
                 onClick = { onReload() }
