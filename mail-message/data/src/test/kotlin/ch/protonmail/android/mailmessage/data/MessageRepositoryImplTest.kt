@@ -35,6 +35,7 @@ import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
@@ -652,10 +653,10 @@ class MessageRepositoryImplTest {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun `relabel throws exception when list is larger than 100 items`() = runTest {
+    fun `relabel throws exception when list is larger than MAX_LABEL_LIST_SIZE items`() = runTest {
         // Given
         val labelList = mutableListOf<LabelId>()
-        for (i in 1..101) {
+        for (i in 1..MessageRepository.MAX_LABEL_LIST_SIZE + 1) {
             labelList.add(LabelId("CustomLabel$i"))
         }
         val message = MessageTestData.message.copy(

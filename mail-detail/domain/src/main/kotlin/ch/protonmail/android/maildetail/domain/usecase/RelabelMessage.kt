@@ -27,6 +27,11 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
+/**
+ * This component will relabel a given message.
+ * The labels parameters will be used to compute a diff of the labels that need to be changed,
+ * adding or removing them as necessary.
+ */
 class RelabelMessage @Inject constructor(
     private val messageRepository: MessageRepository
 ) {
@@ -34,13 +39,13 @@ class RelabelMessage @Inject constructor(
     suspend operator fun invoke(
         userId: UserId,
         messageId: MessageId,
-        oldLabelIds: List<LabelId>,
+        currentLabelIds: List<LabelId>,
         updatedLabelIds: List<LabelId>
     ): Either<DataError.Local, Message> {
-        val diffToNew = oldLabelIds - updatedLabelIds
-        val diffToOld = updatedLabelIds - oldLabelIds
-        val diff = diffToNew + diffToOld
-        return messageRepository.relabel(userId, messageId, diff)
+        val removedLabels = currentLabelIds - updatedLabelIds
+        val addedLabels = updatedLabelIds - currentLabelIds
+        val affectedLabels = removedLabels + addedLabels
+        return messageRepository.relabel(userId, messageId, affectedLabels)
     }
 
 }

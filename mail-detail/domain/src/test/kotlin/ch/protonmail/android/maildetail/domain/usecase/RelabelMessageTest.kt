@@ -46,7 +46,7 @@ internal class RelabelMessageTest {
         val result = relabel(
             userId = UserIdSample.Primary,
             messageId = MessageIdSample.Invoice,
-            oldLabelIds = listOf(LabelId("labelId")),
+            currentLabelIds = listOf(LabelId("labelId")),
             updatedLabelIds = listOf(LabelId("labelId2"))
         )
 

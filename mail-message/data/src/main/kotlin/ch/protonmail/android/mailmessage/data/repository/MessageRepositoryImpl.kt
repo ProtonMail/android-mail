@@ -34,6 +34,7 @@ import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository.Companion.MAX_LABEL_LIST_SIZE
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
@@ -189,9 +190,8 @@ class MessageRepositoryImpl @Inject constructor(
         labels: List<LabelId>
     ): Either<DataError.Local, Message> {
 
-        @Suppress("MagicNumber")
-        if (labels.size > 100) {
-            throw IllegalArgumentException("The labels exceeds the maximum number of 100")
+        if (labels.size > MAX_LABEL_LIST_SIZE) {
+            throw IllegalArgumentException("The labels exceeds the maximum number of $MAX_LABEL_LIST_SIZE")
         }
 
         return localDataSource.relabel(userId, messageId, labels)

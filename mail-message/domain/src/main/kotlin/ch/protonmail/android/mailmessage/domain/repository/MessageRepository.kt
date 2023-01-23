@@ -119,11 +119,16 @@ interface MessageRepository {
 
     /**
      * Removes or adds the provided [labels] from the message with the given [messageId]
-     * @throws IllegalArgumentException when [labels] is larger than 100 elements
+     * @throws IllegalArgumentException when [labels] is larger than [MAX_LABEL_LIST_SIZE] elements
      */
     suspend fun relabel(
         userId: UserId,
         messageId: MessageId,
         labels: List<LabelId>
     ): Either<DataError.Local, Message>
+
+    companion object {
+
+        const val MAX_LABEL_LIST_SIZE = 100
+    }
 }
