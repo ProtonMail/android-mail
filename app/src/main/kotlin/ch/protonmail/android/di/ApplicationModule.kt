@@ -28,7 +28,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.proton.core.account.domain.entity.AccountType
-import me.proton.core.auth.domain.ClientSecret
 import me.proton.core.domain.entity.AppStore
 import me.proton.core.domain.entity.Product
 import javax.inject.Qualifier
@@ -60,10 +59,6 @@ object ApplicationModule {
         appBuildFlavor = BuildConfig.FLAVOR,
         appHost = BuildConfig.HOST
     )
-
-    @Provides
-    @ClientSecret
-    fun provideClientSecret(): String = ""
 
     @Provides
     @Singleton
