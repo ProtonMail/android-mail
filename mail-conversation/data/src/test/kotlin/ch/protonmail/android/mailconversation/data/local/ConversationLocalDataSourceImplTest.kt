@@ -281,10 +281,37 @@ class ConversationLocalDataSourceImplTest {
         val conversationId = ConversationIdSample.WeatherForecast
         val conversation = ConversationWithLabelsSample.WeatherForecast.copy(
             conversation = ConversationEntitySample.WeatherForecast.copy(
+                numMessages = 3,
                 numUnread = 2
             )
         )
-        val updatedConversation = ConversationSample.WeatherForecast.copy(numUnread = 3)
+        val updatedConversation = ConversationSample.WeatherForecast.copy(
+            numMessages = 3,
+            numUnread = 3
+        )
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+
+        // when
+        val result = conversationLocalDataSource.markUnread(userId, ConversationIdSample.WeatherForecast)
+
+        // then
+        assertEquals(updatedConversation.right(), result)
+    }
+
+    @Test
+    fun `mark unread doesn't increase unread count when inconsistent`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val conversation = ConversationWithLabelsSample.WeatherForecast.copy(
+            conversation = ConversationEntitySample.WeatherForecast.copy(
+                numMessages = 2,
+                numUnread = 2
+            )
+        )
+        val updatedConversation = ConversationSample.WeatherForecast.copy(
+            numMessages = 2,
+            numUnread = 2
+        )
         every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
 
         // when

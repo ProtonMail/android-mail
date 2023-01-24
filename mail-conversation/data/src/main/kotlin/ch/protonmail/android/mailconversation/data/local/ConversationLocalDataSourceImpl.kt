@@ -163,7 +163,7 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         val conversation = observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
         val updatedConversation = conversation.copy(
-            numUnread = conversation.numUnread + 1
+            numUnread = (conversation.numUnread + 1).coerceAtMost(conversation.numMessages)
         )
         upsertConversation(userId, updatedConversation)
         return updatedConversation.right()
@@ -176,7 +176,7 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         val conversation = observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
         val updatedConversation = conversation.copy(
-            numUnread = conversation.numUnread - 1
+            numUnread = (conversation.numUnread - 1).coerceAtLeast(0)
         )
         upsertConversation(userId, updatedConversation)
         return updatedConversation.right()
