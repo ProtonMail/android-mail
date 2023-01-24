@@ -41,6 +41,6 @@ data class UnsubscribeMethods(
 
 data class MailTo(
     val toList: List<String>,
-    val subject: String,
-    val body: String
+    val subject: String?,
+    val body: String?
 )

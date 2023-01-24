@@ -73,6 +73,6 @@ data class UnsubscribeMethods(
 @Serializable
 data class MailTo(
     val toList: List<String>,
-    val subject: String,
-    val body: String
+    val subject: String?,
+    val body: String?
 )

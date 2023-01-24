@@ -194,9 +194,9 @@ data class MailToResource(
     @SerialName("ToList")
     val toList: List<String>,
     @SerialName("Subject")
-    val subject: String,
+    val subject: String? = null,
     @SerialName("Body")
-    val body: String
+    val body: String? = null
 ) {
     fun toMailTo() = MailTo(
         toList = toList,
