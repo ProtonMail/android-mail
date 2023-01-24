@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import me.proton.core.data.room.db.Database
 import me.proton.core.data.room.db.extension.addTableColumn
+import me.proton.core.data.room.db.extension.dropTable
 import me.proton.core.data.room.db.migration.DatabaseMigration
 import me.proton.core.util.kotlin.serialize
 
@@ -81,6 +82,16 @@ interface MessageDatabase : Database, PageIntervalDatabase {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Created MessageBody table
                 database.execSQL("CREATE TABLE IF NOT EXISTS `MessageBodyEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `body` TEXT, `header` TEXT NOT NULL, `mimeType` TEXT NOT NULL, `spamScore` TEXT NOT NULL, `replyTo` TEXT NOT NULL, `replyTos` TEXT NOT NULL, `unsubscribeMethods` TEXT, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_userId` ON `MessageBodyEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_messageId` ON `MessageBodyEntity` (`messageId`)")
+            }
+        }
+
+        val MIGRATION_4 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Recreate message body table to rename `unsubscribeMethodsEntity` column
+                database.dropTable("MessageBodyEntity")
+                database.execSQL("CREATE TABLE IF NOT EXISTS `MessageBodyEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `body` TEXT, `header` TEXT NOT NULL, `mimeType` TEXT NOT NULL, `spamScore` TEXT NOT NULL, `replyTo` TEXT NOT NULL, `replyTos` TEXT NOT NULL, `unsubscribeMethodsEntity` TEXT, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_userId` ON `MessageBodyEntity` (`userId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_messageId` ON `MessageBodyEntity` (`messageId`)")
             }

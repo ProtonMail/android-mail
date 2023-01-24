@@ -60,18 +60,18 @@ data class MessageBodyEntity(
     val spamScore: String,
     val replyTo: Recipient,
     val replyTos: List<Recipient>,
-    val unsubscribeMethods: UnsubscribeMethods?
+    val unsubscribeMethodsEntity: UnsubscribeMethodsEntity?
 )
 
 @Serializable
-data class UnsubscribeMethods(
+data class UnsubscribeMethodsEntity(
     val httpClient: String?,
     val oneClick: String?,
-    val mailTo: MailTo?
+    val mailToEntity: MailToEntity?
 )
 
 @Serializable
-data class MailTo(
+data class MailToEntity(
     val toList: List<String>,
     val subject: String?,
     val body: String?

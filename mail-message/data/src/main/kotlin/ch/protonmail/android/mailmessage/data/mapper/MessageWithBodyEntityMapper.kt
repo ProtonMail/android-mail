@@ -18,9 +18,9 @@
 
 package ch.protonmail.android.mailmessage.data.mapper
 
+import ch.protonmail.android.mailmessage.data.local.entity.MailToEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
-import ch.protonmail.android.mailmessage.data.local.entity.MailTo as MailToEntity
-import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethods as UnsubscribeMethodsEntity
+import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethodsEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.domain.entity.MailTo
 import ch.protonmail.android.mailmessage.domain.entity.Message
@@ -70,7 +70,7 @@ class MessageWithBodyEntityMapper @Inject constructor() {
                     spamScore = spamScore,
                     replyTo = replyTo,
                     replyTos = replyTos,
-                    unsubscribeMethods = unsubscribeMethods?.toDomainModel()
+                    unsubscribeMethods = unsubscribeMethodsEntity?.toDomainModel()
                 )
             }
         )
@@ -86,12 +86,12 @@ class MessageWithBodyEntityMapper @Inject constructor() {
             spamScore = spamScore,
             replyTo = replyTo,
             replyTos = replyTos,
-            unsubscribeMethods = unsubscribeMethods?.toEntity()
+            unsubscribeMethodsEntity = unsubscribeMethods?.toEntity()
         )
     }
 
     private fun UnsubscribeMethodsEntity.toDomainModel() =
-        UnsubscribeMethods(this.httpClient, this.oneClick, this.mailTo?.toDomainModel())
+        UnsubscribeMethods(this.httpClient, this.oneClick, this.mailToEntity?.toDomainModel())
 
     private fun MailToEntity.toDomainModel() = MailTo(this.toList, this.subject, this.body)
 

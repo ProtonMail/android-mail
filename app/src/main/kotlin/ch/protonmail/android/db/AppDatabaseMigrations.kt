@@ -117,4 +117,10 @@ object AppDatabaseMigrations {
             MessageDatabase.MIGRATION_3.migrate(database)
         }
     }
+
+    val MIGRATION_13_14 = object : Migration(13, 14) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            MessageDatabase.MIGRATION_4.migrate(database)
+        }
+    }
 }

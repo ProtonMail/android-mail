@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmessage.data.local
 
 import androidx.room.TypeConverter
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
-import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethods
+import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethodsEntity
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
@@ -68,8 +68,8 @@ class MessageConverters {
     fun fromStringToRecipient(value: String?): Recipient? = value?.deserialize()
 
     @TypeConverter
-    fun fromUnsubscribeMethodsToString(value: UnsubscribeMethods?): String? = value?.serialize()
+    fun fromUnsubscribeMethodsToString(value: UnsubscribeMethodsEntity?): String? = value?.serialize()
 
     @TypeConverter
-    fun fromStringToUnsubscribeMethods(value: String?): UnsubscribeMethods? = value?.deserialize()
+    fun fromStringToUnsubscribeMethods(value: String?): UnsubscribeMethodsEntity? = value?.deserialize()
 }
