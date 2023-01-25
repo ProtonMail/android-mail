@@ -216,7 +216,7 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `does handle conversation data`() = runTest {
+    fun `conversation state is data when use case succeeds`() = runTest {
         // given
         val initialState = ConversationDetailState.Loading
         val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
@@ -241,7 +241,7 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `does handle conversation error`() = runTest {
+    fun `conversation state is error loading when use case fails`() = runTest {
         // given
         val initialState = ConversationDetailState.Loading
         val expectedState = initialState.copy(
@@ -269,7 +269,7 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `does handle conversation messages data`() = runTest {
+    fun `conversation messages state is data when use case succeeds`() = runTest {
         // given
         val initialState = ConversationDetailState.Loading
         val messagesUiModels = listOf(
@@ -297,7 +297,7 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `uses default when contacts error`() = runTest {
+    fun `fallback on empty contacts list when contacts use case fails`() = runTest {
         // given
         val initialState = ConversationDetailState.Loading
         val messagesUiModels = listOf(
@@ -326,7 +326,7 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `does handle messages remote errors`() = runTest {
+    fun `conversation messages state is error loading when use case fails with remote error`() = runTest {
         // given
         val initialState = ConversationDetailState.Loading
         val expectedState = initialState.copy(
@@ -355,7 +355,7 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `does ignore messages local errors`() = runTest {
+    fun `conversation messages state does not change when use case fails with local error`() = runTest {
         // given
         val initialState = ConversationDetailState.Loading
         every {
@@ -378,7 +378,7 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `bottomBar state is data when use case returns actions`() = runTest {
+    fun `bottom bar state is data when use case returns actions`() = runTest {
         // Given
         val initialState = ConversationDetailState.Loading
         val actions = listOf(Action.Reply, Action.Archive)
@@ -405,7 +405,7 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `bottomBar state is failed loading actions when use case returns error`() = runTest {
+    fun `bottom bar state is failed loading actions when use case returns error`() = runTest {
         // Given
         val initialState = ConversationDetailState.Loading
         val expected = initialState.copy(bottomBarState = BottomBarState.Error.FailedLoadingActions)
