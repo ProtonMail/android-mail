@@ -162,7 +162,7 @@ private fun MessageDetailHeaderLayout(
 
         Avatar(
             modifier = modifier.constrainAs(avatarRef) {
-                top.linkTo(parent.top)
+                top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
                 start.linkTo(parent.start)
             },
             avatarUiModel = uiModel.avatar
@@ -575,7 +575,9 @@ private fun Labels(
         verticalAlignment = Alignment.Top
     ) {
         SmallNonClickableIcon(
-            modifier = Modifier.alpha(iconAlpha).padding(top = MailDimens.TinySpacing),
+            modifier = Modifier
+                .alpha(iconAlpha)
+                .padding(top = MailDimens.TinySpacing),
             iconId = R.drawable.ic_proton_tag
         )
         Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))

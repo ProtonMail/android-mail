@@ -83,7 +83,10 @@ fun MailboxItem(
         val fontColor = if (item.isRead) ProtonTheme.colors.textWeak else ProtonTheme.colors.textNorm
         val iconColor = if (item.isRead) ProtonTheme.colors.iconWeak else ProtonTheme.colors.iconNorm
 
-        Avatar(avatarUiModel = item.avatar, modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing))
+        Avatar(
+            avatarUiModel = item.avatar,
+            modifier = Modifier.padding(top = ProtonDimens.SmallSpacing, end = ProtonDimens.ExtraLargeCornerRadius)
+        )
         Column(modifier = Modifier.padding(top = ProtonDimens.SmallSpacing)) {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 ActionIcons(

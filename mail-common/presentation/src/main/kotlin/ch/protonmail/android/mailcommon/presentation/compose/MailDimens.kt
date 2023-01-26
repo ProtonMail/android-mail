@@ -29,9 +29,9 @@ object MailDimens {
 
     val SeparatorHeight = 1.dp
 
-    val DefaultTouchTargetSize = 48.dp
+    val DefaultTouchTargetSize = 32.dp
 
-    val AvatarMinSize = 32.dp
+    val AvatarMinSize = 28.dp
 
     val ProgressDefaultSize = 24.dp
 

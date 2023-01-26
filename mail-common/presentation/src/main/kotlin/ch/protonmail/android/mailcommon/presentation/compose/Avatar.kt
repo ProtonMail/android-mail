@@ -54,7 +54,7 @@ fun Avatar(
         when (avatarUiModel) {
             is AvatarUiModel.DraftIcon ->
                 Box(
-                    modifier = modifier
+                    modifier = Modifier
                         .testTag(Avatar.DraftTestTag)
                         .sizeIn(
                             minWidth = MailDimens.AvatarMinSize,
@@ -75,7 +75,7 @@ fun Avatar(
                 }
             is AvatarUiModel.ParticipantInitial ->
                 Box(
-                    modifier = modifier
+                    modifier = Modifier
                         .sizeIn(
                             minWidth = MailDimens.AvatarMinSize,
                             minHeight = MailDimens.AvatarMinSize

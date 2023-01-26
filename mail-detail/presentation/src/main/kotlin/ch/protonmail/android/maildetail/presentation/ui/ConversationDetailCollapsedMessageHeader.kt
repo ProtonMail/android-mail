@@ -118,9 +118,11 @@ internal fun ConversationDetailCollapsedMessageHeader(
             )
 
             Avatar(
-                modifier = Modifier.constrainAs(avatarRef) {
-                    centerVerticallyTo(parent)
-                },
+                modifier = Modifier
+                    .padding(end = ProtonDimens.SmallSpacing)
+                    .constrainAs(avatarRef) {
+                        centerVerticallyTo(parent)
+                    },
                 avatarUiModel = uiModel.avatar
             )
 
