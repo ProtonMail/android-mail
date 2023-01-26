@@ -56,9 +56,8 @@ import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.caption
-import me.proton.core.compose.theme.captionWeak
-import me.proton.core.compose.theme.defaultWeak
-import me.proton.core.compose.theme.overline
+import me.proton.core.compose.theme.default
+import me.proton.core.compose.theme.defaultSmall
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -72,7 +71,7 @@ fun MailboxItem(
         modifier = modifier
             .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
             .padding(
-                start = ProtonDimens.SmallSpacing,
+                start = ProtonDimens.DefaultSpacing,
                 end = ProtonDimens.DefaultSpacing,
                 top = ProtonDimens.ExtraSmallSpacing,
                 bottom = ProtonDimens.ExtraSmallSpacing
@@ -85,9 +84,9 @@ fun MailboxItem(
 
         Avatar(
             avatarUiModel = item.avatar,
-            modifier = Modifier.padding(top = ProtonDimens.SmallSpacing, end = ProtonDimens.ExtraLargeCornerRadius)
+            modifier = Modifier.padding(top = ProtonDimens.SmallSpacing, end = ProtonDimens.ExtraSmallSpacing)
         )
-        Column(modifier = Modifier.padding(top = ProtonDimens.SmallSpacing)) {
+        Column(modifier = Modifier.padding(start = ProtonDimens.SmallSpacing, top = ProtonDimens.SmallSpacing)) {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 ActionIcons(
                     item = item,
@@ -194,7 +193,7 @@ private fun Participants(
         text = participants.joinToString(),
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
-        style = ProtonTheme.typography.defaultWeak.copy(fontWeight = fontWeight, color = fontColor)
+        style = ProtonTheme.typography.default.copy(fontWeight = fontWeight, color = fontColor)
     )
 
 }
@@ -211,7 +210,7 @@ private fun Time(
         text = time.string(),
         maxLines = 1,
         textAlign = TextAlign.End,
-        style = ProtonTheme.typography.overline.copy(fontWeight = fontWeight, color = fontColor)
+        style = ProtonTheme.typography.caption.copy(fontWeight = fontWeight, color = fontColor)
     )
 }
 
@@ -245,7 +244,7 @@ private fun Subject(
         text = subject,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
-        style = ProtonTheme.typography.captionWeak.copy(fontWeight = fontWeight, color = fontColor)
+        style = ProtonTheme.typography.defaultSmall.copy(fontWeight = fontWeight, color = fontColor)
     )
 }
 
