@@ -160,8 +160,8 @@ class MessageRepositoryImpl @Inject constructor(
         fromLabel: LabelId?,
         toLabel: LabelId
     ): Either<DataError.Local, Message> {
-        if (toLabel == SystemLabelId.Trash.labelId) {
-            return moveToTrash(userId, messageId)
+        if (toLabel == SystemLabelId.Trash.labelId || toLabel == SystemLabelId.Spam.labelId) {
+            return moveToTrashOrSpam(userId, messageId, toLabel)
         }
 
         val message = localDataSource.observeMessage(userId, messageId).first()
@@ -178,6 +178,7 @@ class MessageRepositoryImpl @Inject constructor(
         remoteDataSource.addLabel(userId, messageId, toLabel)
         return updatedMessage.right()
     }
+
 
     override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
         localDataSource.markUnread(userId, messageId).tap { message ->
@@ -199,10 +200,15 @@ class MessageRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun moveToTrash(
+    private suspend fun moveToTrashOrSpam(
         userId: UserId,
-        messageId: MessageId
+        messageId: MessageId,
+        labelId: LabelId
     ): Either<DataError.Local, Message> {
+        if (labelId != SystemLabelId.Trash.labelId && labelId != SystemLabelId.Spam.labelId) {
+            throw IllegalArgumentException("Invalid system label id: $labelId")
+        }
+
         val message = localDataSource.observeMessage(userId, messageId).first()
             ?: return DataError.Local.NoDataCached.left()
         val updatedMessage = run {
@@ -214,7 +220,7 @@ class MessageRepositoryImpl @Inject constructor(
             message.copy(labelIds = message.labelIds.filter { labelId -> labelId in persistentLabels })
         }
         localDataSource.upsertMessage(updatedMessage)
-        return addLabel(userId = userId, messageId = messageId, labelId = SystemLabelId.Trash.labelId)
+        return addLabel(userId = userId, messageId = messageId, labelId = labelId)
     }
 
     private suspend fun fetchMessages(

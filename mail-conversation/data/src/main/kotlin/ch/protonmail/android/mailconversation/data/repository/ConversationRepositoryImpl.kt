@@ -166,8 +166,8 @@ class ConversationRepositoryImpl @Inject constructor(
         fromLabelId: LabelId?,
         toLabelId: LabelId
     ): Either<DataError, Conversation> {
-        if (toLabelId == SystemLabelId.Trash.labelId) {
-            return moveToTrash(userId, conversationId)
+        if (toLabelId == SystemLabelId.Trash.labelId || toLabelId == SystemLabelId.Spam.labelId) {
+            return moveToTrashOrSpam(userId, conversationId, toLabelId)
         }
 
         val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
@@ -198,7 +198,15 @@ class ConversationRepositoryImpl @Inject constructor(
         return conversationLocalDataSource.markUnread(userId, conversationId)
     }
 
-    private suspend fun moveToTrash(userId: UserId, conversationId: ConversationId): Either<DataError, Conversation> {
+    private suspend fun moveToTrashOrSpam(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelId: LabelId
+    ): Either<DataError, Conversation> {
+        if (labelId != SystemLabelId.Trash.labelId && labelId != SystemLabelId.Spam.labelId) {
+            throw IllegalArgumentException("Invalid system label id: $labelId")
+        }
+
         val persistentLabels = listOf(
             SystemLabelId.AllDrafts.labelId,
             SystemLabelId.AllMail.labelId,
@@ -224,7 +232,7 @@ class ConversationRepositoryImpl @Inject constructor(
 
         conversationLocalDataSource.upsertConversation(userId, updatedConversation)
         messageLocalDataSource.upsertMessages(updatedMessages)
-        return addLabel(userId, conversationId, SystemLabelId.Trash.labelId)
+        return addLabel(userId, conversationId, labelId)
     }
 
     private suspend fun fetchConversations(

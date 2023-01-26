@@ -465,6 +465,49 @@ class MessageRepositoryImplTest {
     }
 
     @Test
+    fun `move to spam removes all the labels, except AllMail, AllDraft and AllSent`() = runTest {
+        // given
+        val messageId = MessageIdSample.EmptyDraft
+        val message = MessageSample.EmptyDraft.copy(
+            labelIds = listOf(
+                SystemLabelId.AllDrafts.labelId,
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.AllSent.labelId,
+                SystemLabelId.Inbox.labelId,
+                LabelIdSample.Document
+            )
+        )
+        val messageWithoutLabels = MessageSample.EmptyDraft.copy(
+            labelIds = listOf(
+                SystemLabelId.AllDrafts.labelId,
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.AllSent.labelId
+            )
+        )
+        val spammedMessage = messageWithoutLabels.copy(
+            labelIds = messageWithoutLabels.labelIds + SystemLabelId.Spam.labelId
+        )
+        val messageFlow = MutableStateFlow(message)
+        every { localDataSource.observeMessage(userId, messageId) } returns messageFlow
+        coEvery { localDataSource.upsertMessage(messageWithoutLabels) } coAnswers {
+            messageFlow.emit(messageWithoutLabels)
+        }
+        coEvery { localDataSource.addLabel(userId, messageId, SystemLabelId.Spam.labelId) } returns
+            spammedMessage.right()
+
+        // when
+        val result = messageRepository.moveTo(
+            userId,
+            messageId,
+            SystemLabelId.Inbox.labelId,
+            SystemLabelId.Spam.labelId
+        )
+
+        // then
+        assertEquals(spammedMessage.right(), result)
+    }
+
+    @Test
     fun `move removes previous exclusive label and adds new label`() = runTest {
         // Given
         val message = MessageTestData.message.copy(
@@ -475,7 +518,7 @@ class MessageRepositoryImplTest {
             )
         )
         coEvery { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
-        val destinationLabel = SystemLabelId.Spam.labelId
+        val destinationLabel = SystemLabelId.Archive.labelId
 
         val updatedMessage = message.copy(
             labelIds = listOf(
@@ -505,7 +548,7 @@ class MessageRepositoryImplTest {
         // Given
         val message = MessageTestData.message.copy(labelIds = listOf(SystemLabelId.AllMail.labelId))
         coEvery { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
-        val destinationLabel = SystemLabelId.Spam.labelId
+        val destinationLabel = SystemLabelId.Archive.labelId
 
         val updatedMessage = message.copy(
             labelIds = listOf(

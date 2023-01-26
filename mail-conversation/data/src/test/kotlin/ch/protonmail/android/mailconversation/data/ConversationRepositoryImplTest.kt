@@ -530,6 +530,52 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
+    fun `move to spam removes all the labels from conversation, except AllMail, AllDraft and AllSent`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+
+        val conversation = ConversationSample.WeatherForecast.copy(
+            labels = listOf(
+                ConversationLabelSample.WeatherForecast.AllDrafts,
+                ConversationLabelSample.WeatherForecast.AllMail,
+                ConversationLabelSample.WeatherForecast.AllSent,
+                ConversationLabelSample.WeatherForecast.Inbox,
+                ConversationLabelSample.WeatherForecast.News
+            )
+        )
+        val conversationWithoutLabels = ConversationSample.WeatherForecast.copy(
+            labels = listOf(
+                ConversationLabelSample.WeatherForecast.AllDrafts,
+                ConversationLabelSample.WeatherForecast.AllMail,
+                ConversationLabelSample.WeatherForecast.AllSent
+            )
+        )
+        val spammedConversation = conversationWithoutLabels.copy(
+            labels = conversationWithoutLabels.labels + ConversationLabelSample.WeatherForecast.Spam
+        )
+        val conversationFlow = MutableStateFlow(conversation)
+        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns conversationFlow
+        coEvery { conversationLocalDataSource.upsertConversation(userId, conversationWithoutLabels) } coAnswers {
+            conversationFlow.emit(conversationWithoutLabels)
+        }
+        coEvery { conversationLocalDataSource.addLabel(userId, conversationId, SystemLabelId.Spam.labelId) } returns
+            spammedConversation.right()
+        coEvery { messageLocalDataSource.addLabel(userId, any(), SystemLabelId.Spam.labelId) } returns
+            MessageSample.AugWeatherForecast.right()
+
+        // when
+        val result = conversationRepository.move(
+            userId,
+            conversationId,
+            SystemLabelId.Inbox.labelId,
+            SystemLabelId.Spam.labelId
+        )
+
+        // then
+        assertEquals(spammedConversation.right(), result)
+    }
+
+    @Test
     fun `move to trash removes all the labels from messages, except AllMail, AllDraft and AllSent`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
