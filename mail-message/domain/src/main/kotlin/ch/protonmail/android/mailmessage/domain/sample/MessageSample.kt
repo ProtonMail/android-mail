@@ -61,6 +61,15 @@ object MessageSample {
         subject = "Invoice"
     )
 
+    val UnreadInvoice = build(
+        conversationId = ConversationIdSample.Invoices,
+        messageId = MessageIdSample.Invoice,
+        labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document),
+        numAttachments = 1,
+        subject = "Invoice",
+        unread = true
+    )
+
     val LotteryScam = build(
         sender = RecipientSample.Scammer
     )
@@ -101,7 +110,8 @@ object MessageSample {
         subject: String = "subject",
         time: Long = 1000,
         toList: List<Recipient> = emptyList(),
-        userId: UserId = UserIdSample.Primary
+        userId: UserId = UserIdSample.Primary,
+        unread: Boolean = false
     ) = Message(
         addressId = addressId,
         attachmentCount = attachmentCount,
@@ -123,7 +133,7 @@ object MessageSample {
         subject = subject,
         time = time,
         toList = toList,
-        unread = false,
+        unread = unread,
         userId = userId
     )
 

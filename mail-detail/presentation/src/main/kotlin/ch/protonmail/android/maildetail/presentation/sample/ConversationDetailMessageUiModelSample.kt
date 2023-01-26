@@ -68,8 +68,12 @@ object ConversationDetailMessageUiModelSample {
 
     val StarredInvoice = build(
         messageWithLabels = MessageWithLabelsSample.Invoice,
-        message = MessageWithLabelsSample.Invoice.message.copy(unread = true),
+        message = MessageWithLabelsSample.Invoice.message,
         isStarred = true
+    ).collapse()
+
+    val UnreadInvoice = build(
+        messageWithLabels = MessageWithLabelsSample.UnreadInvoice
     ).collapse()
 
     private fun build(

@@ -41,6 +41,10 @@ object MessageWithLabelsSample {
         message = MessageSample.Invoice
     )
 
+    val UnreadInvoice = build(
+        message = MessageSample.UnreadInvoice
+    )
+
     val LotteryScam = build(
         message = MessageSample.LotteryScam
     )

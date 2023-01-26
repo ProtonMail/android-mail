@@ -32,6 +32,7 @@ class ConversationDetailCollapsedMessageHeaderPreviewData :
         ConversationDetailMessageUiModelSample.EmptyDraft,
         ConversationDetailMessageUiModelSample.ExpiringInvitation,
         ConversationDetailMessageUiModelSample.StarredInvoice,
-        ConversationDetailMessageUiModelSample.LotteryScam
+        ConversationDetailMessageUiModelSample.LotteryScam,
+        ConversationDetailMessageUiModelSample.UnreadInvoice
     )
 }
