@@ -29,6 +29,8 @@ sealed interface DataError {
     sealed interface Local : DataError {
 
         object NoDataCached : Local
+
+        data class DecryptionError(val encryptedMessageBody: String) : Local
     }
 
     /**

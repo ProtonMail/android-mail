@@ -18,20 +18,22 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
-import ch.protonmail.android.testdata.message.MessageBodyTestData
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MessageBodyUiModelMapperTest {
+
+    private val decryptedMessageBody = "Decrypted message body."
 
     private val messageBodyUiModelMapper = MessageBodyUiModelMapper()
 
     @Test
     fun `message body is correctly mapped to a message body ui model`() {
         // Given
-        val messageBody = MessageBodyTestData.messageBody
-        val expected = MessageBodyUiModel(MessageBodyTestData.RAW_MESSAGE_BODY)
+        val messageBody = DecryptedMessageBody(decryptedMessageBody)
+        val expected = MessageBodyUiModel(decryptedMessageBody)
 
         // When
         val actual = messageBodyUiModelMapper.toUiModel(messageBody)

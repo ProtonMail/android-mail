@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.GetMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
@@ -72,7 +73,6 @@ import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
-import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
@@ -99,6 +99,7 @@ import kotlin.test.assertTrue
 class MessageDetailViewModelTest {
 
     private val rawMessageId = "detailMessageId"
+    private val decryptedMessageBody = DecryptedMessageBody("Decrypted message body.")
     private val actionUiModelMapper = ActionUiModelMapper()
     private val messageDetailActionBarUiModelMapper = MessageDetailActionBarUiModelMapper()
     private val messageDetailReducer = MessageDetailReducer(
@@ -121,7 +122,7 @@ class MessageDetailViewModelTest {
         )
     }
     private val getMessageBody = mockk<GetMessageBody> {
-        coEvery { this@mockk(userId, any()) } returns MessageBodyTestData.messageBody.right()
+        coEvery { this@mockk(userId, any()) } returns decryptedMessageBody.right()
     }
     private val savedStateHandle = mockk<SavedStateHandle> {
         every { this@mockk.get<String>(MessageDetailScreen.MESSAGE_ID_KEY) } returns rawMessageId
@@ -160,7 +161,7 @@ class MessageDetailViewModelTest {
         every { toUiModel(any(), ContactTestData.contacts) } returns messageDetailHeaderUiModel
     }
     private val messageBodyUiModelMapper = mockk<MessageBodyUiModelMapper> {
-        every { toUiModel(MessageBodyTestData.messageBody) } returns MessageBodyUiModelTestData.messageBodyUiModel
+        every { toUiModel(decryptedMessageBody) } returns MessageBodyUiModelTestData.messageBodyUiModel
     }
     private val moveMessage: MoveMessage = mockk {
         coEvery {

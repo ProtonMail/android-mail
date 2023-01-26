@@ -26,12 +26,12 @@ import ch.protonmail.android.testdata.user.UserIdTestData
 
 object MessageBodyEntityTestData {
 
-    private const val RAW_MESSAGE_BODY = "This is a raw message body."
+    private const val RAW_ENCRYPTED_MESSAGE_BODY = "This is a raw encrypted message body."
 
     val messageBodyEntity = MessageBodyEntity(
         userId = UserIdTestData.userId,
         messageId = MessageId(MessageTestData.RAW_MESSAGE_ID),
-        body = RAW_MESSAGE_BODY,
+        body = RAW_ENCRYPTED_MESSAGE_BODY,
         header = "",
         mimeType = "",
         spamScore = "",

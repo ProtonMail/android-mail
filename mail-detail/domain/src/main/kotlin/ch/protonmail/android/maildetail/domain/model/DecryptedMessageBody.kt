@@ -16,15 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.mapper
+package ch.protonmail.android.maildetail.domain.model
 
-import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
-import javax.inject.Inject
-
-class MessageBodyUiModelMapper @Inject constructor() {
-
-    fun toUiModel(decryptedMessageBody: DecryptedMessageBody) = MessageBodyUiModel(
-        messageBody = decryptedMessageBody.value
-    )
-}
+@JvmInline
+value class DecryptedMessageBody(
+    val value: String
+)

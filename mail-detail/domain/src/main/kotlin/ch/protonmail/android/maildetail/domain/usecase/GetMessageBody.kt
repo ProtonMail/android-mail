@@ -19,17 +19,58 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.Either
+import arrow.core.flatMap
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import me.proton.core.crypto.common.context.CryptoContext
+import me.proton.core.crypto.common.pgp.DecryptedData
+import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.domain.entity.UserId
+import me.proton.core.key.domain.decryptAndVerifyData
+import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
+import me.proton.core.key.domain.useKeys
+import me.proton.core.user.domain.UserAddressManager
+import timber.log.Timber
 import javax.inject.Inject
 
 class GetMessageBody @Inject constructor(
-    private val messageRepository: MessageRepository
+    private val cryptoContext: CryptoContext,
+    private val messageRepository: MessageRepository,
+    private val userAddressManager: UserAddressManager
 ) {
 
-    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, MessageBody> =
-        messageRepository.getMessageWithBody(userId, messageId).map { it.messageBody }
+    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, DecryptedMessageBody> {
+        return messageRepository.getMessageWithBody(userId, messageId).flatMap { messageWithBody ->
+            val userAddress = userAddressManager.getAddress(userId, messageWithBody.message.addressId)
+            return@flatMap if (userAddress != null) {
+                try {
+                    DecryptedMessageBody(
+                        messageBody = userAddress.useKeys(cryptoContext) {
+                            decryptMessageBody(messageWithBody.messageBody).data.decodeToString()
+                        }
+                    ).right()
+                } catch (cryptoException: CryptoException) {
+                    Timber.e(cryptoException, "Error decrypting message")
+                    DataError.Local.DecryptionError(messageWithBody.messageBody.body).left()
+                }
+            } else {
+                DataError.Local.DecryptionError(messageWithBody.messageBody.body).left()
+            }
+        }
+    }
+
+    @Suppress("NotImplementedDeclaration")
+    private fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedData {
+        return if (messageBody.mimeType == "multipart/mixed") {
+            // Will be implemented with MAILANDR-368
+            throw NotImplementedError()
+        } else {
+            decryptAndVerifyData(messageBody.body)
+        }
+    }
 }

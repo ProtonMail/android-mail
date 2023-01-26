@@ -142,6 +142,7 @@ object Dependencies {
 
     val moduleDomainLibs = mutableListOf<String>().apply {
         add(Arrow.core)
+        add(JakeWharton.timber)
         add(JavaX.inject)
         add(KotlinX.coroutinesCore)
         add(Proton.Core.domain)
