@@ -100,6 +100,7 @@ class ConversationDetailViewModelTest {
 
     private val userId = UserIdSample.Primary
     private val conversationId = ConversationIdSample.WeatherForecast
+    private val initialState = ConversationDetailState.Loading
 
     private val actionUiModelMapper = ActionUiModelMapper()
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper = mockk {
@@ -219,7 +220,6 @@ class ConversationDetailViewModelTest {
     @Test
     fun `conversation state is data when use case succeeds`() = runTest {
         // given
-        val initialState = ConversationDetailState.Loading
         val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
         val expectedState = initialState.copy(
             conversationState = ConversationDetailMetadataState.Data(conversationUiModel)
@@ -244,7 +244,6 @@ class ConversationDetailViewModelTest {
     @Test
     fun `conversation state is error loading when use case fails`() = runTest {
         // given
-        val initialState = ConversationDetailState.Loading
         val expectedState = initialState.copy(
             conversationState = ConversationDetailMetadataState.Error(
                 message = TextUiModel(string.detail_error_loading_conversation)
@@ -272,7 +271,6 @@ class ConversationDetailViewModelTest {
     @Test
     fun `reducer is called with no network error when observe conversation fails with no network error`() = runTest {
         // given
-        val initialState = ConversationDetailState.Loading
         val dataState = initialState.copy(
             conversationState = ConversationDetailMetadataState.Data(
                 ConversationDetailMetadataUiModelSample.WeatherForecast
@@ -304,7 +302,6 @@ class ConversationDetailViewModelTest {
     @Test
     fun `conversation messages state is data when use case succeeds`() = runTest {
         // given
-        val initialState = ConversationDetailState.Loading
         val messagesUiModels = listOf(
             ConversationDetailMessageUiModelSample.AugWeatherForecast,
             ConversationDetailMessageUiModelSample.SepWeatherForecast
@@ -332,7 +329,6 @@ class ConversationDetailViewModelTest {
     @Test
     fun `fallback on empty contacts list when contacts use case fails`() = runTest {
         // given
-        val initialState = ConversationDetailState.Loading
         val messagesUiModels = listOf(
             ConversationDetailMessageUiModelSample.AugWeatherForecast,
             ConversationDetailMessageUiModelSample.SepWeatherForecast
@@ -361,7 +357,6 @@ class ConversationDetailViewModelTest {
     @Test
     fun `conversation messages state is error loading when use case fails with remote error`() = runTest {
         // given
-        val initialState = ConversationDetailState.Loading
         val expectedState = initialState.copy(
             messagesState = ConversationDetailsMessagesState.Error(
                 message = TextUiModel(string.detail_error_loading_messages)
@@ -390,7 +385,6 @@ class ConversationDetailViewModelTest {
     @Test
     fun `conversation messages state does not change when use case fails with local error`() = runTest {
         // given
-        val initialState = ConversationDetailState.Loading
         every {
             observeConversationMessagesWithLabels(UserIdSample.Primary, ConversationIdSample.WeatherForecast)
         } returns flowOf(DataError.Local.NoDataCached.left())
@@ -413,7 +407,6 @@ class ConversationDetailViewModelTest {
     @Test
     fun `bottom bar state is data when use case returns actions`() = runTest {
         // Given
-        val initialState = ConversationDetailState.Loading
         val actions = listOf(Action.Reply, Action.Archive)
         val actionUiModels = listOf(ActionUiModelTestData.reply, ActionUiModelTestData.archive)
         val expected = initialState.copy(bottomBarState = BottomBarState.Data(actionUiModels))
@@ -440,7 +433,6 @@ class ConversationDetailViewModelTest {
     @Test
     fun `bottom bar state is failed loading actions when use case returns error`() = runTest {
         // Given
-        val initialState = ConversationDetailState.Loading
         val expected = initialState.copy(bottomBarState = BottomBarState.Error.FailedLoadingActions)
         every {
             observeConversationDetailActions(UserIdSample.Primary, ConversationIdSample.WeatherForecast)
@@ -660,7 +652,7 @@ class ConversationDetailViewModelTest {
             )
         } returns ConversationSample.WeatherForecast.right()
         val selectedLabel = MailLabelUiModelTestData.spamAndCustomFolder.first()
-        val initialState = ConversationDetailState.Loading.copy(
+        val dataState = ConversationDetailState.Loading.copy(
             bottomSheetState = BottomSheetState(
                 MoveToBottomSheetState.Data(
                     moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
@@ -674,7 +666,7 @@ class ConversationDetailViewModelTest {
                 ConversationDetailState.Loading,
                 ConversationDetailViewAction.MoveToDestinationSelected(selectedLabel.id)
             )
-        } returns initialState.copy(
+        } returns dataState.copy(
             bottomSheetState = BottomSheetState(
                 MoveToBottomSheetState.Data(
                     MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected,
