@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -76,6 +77,7 @@ internal fun ConversationDetailCollapsedMessageHeader(
 
     ElevatedCard(
         modifier = modifier,
+        shape = RoundedCornerShape(MailDimens.ConversationDetailMessageRadius),
         colors = CardDefaults.elevatedCardColors(
             containerColor = ProtonTheme.colors.backgroundNorm
         )
@@ -185,6 +187,7 @@ internal fun ConversationDetailCollapsedMessageHeader(
 
             LocationIcon(
                 uiModel = uiModel,
+                fontColor = fontColor,
                 modifier = Modifier.constrainAs(locationIconRef) {
                     centerVerticallyTo(parent)
                 }
@@ -261,12 +264,13 @@ private fun ForwardedIcon(
 @Composable
 private fun LocationIcon(
     uiModel: ConversationDetailMessageUiModel.Collapsed,
+    fontColor: Color,
     modifier: Modifier
 ) {
     Icon(
         modifier = modifier.size(ProtonDimens.SmallIconSize),
         painter = painterResource(id = uiModel.locationIcon.icon),
-        tint = uiModel.locationIcon.color ?: ProtonTheme.colors.iconWeak,
+        tint = uiModel.locationIcon.color ?: fontColor,
         contentDescription = NO_CONTENT_DESCRIPTION
     )
 }
