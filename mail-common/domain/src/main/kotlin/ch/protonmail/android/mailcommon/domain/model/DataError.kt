@@ -47,3 +47,5 @@ sealed interface DataError {
         data class Proton(val protonError: ProtonError) : Remote
     }
 }
+
+fun DataError.isOfflineError() = this is DataError.Remote.Http && this.networkError is NetworkError.NoNetwork

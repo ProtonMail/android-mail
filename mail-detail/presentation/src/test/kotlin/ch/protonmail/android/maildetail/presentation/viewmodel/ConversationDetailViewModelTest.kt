@@ -78,6 +78,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -266,6 +267,38 @@ class ConversationDetailViewModelTest {
             assertEquals(expectedState, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    @Test
+    fun `reducer is called with no network error when observe conversation fails with no network error`() = runTest {
+        // given
+        val initialState = ConversationDetailState.Loading
+        val dataState = initialState.copy(
+            conversationState = ConversationDetailMetadataState.Data(
+                ConversationDetailMetadataUiModelSample.WeatherForecast
+            )
+        )
+
+        every {
+            observeConversation(UserIdSample.Primary, ConversationIdSample.WeatherForecast)
+        } returns flow {
+            emit(ConversationSample.WeatherForecast.right())
+            emit(DataError.Remote.Http(NetworkError.NoNetwork).left())
+        }
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ofType<ConversationDetailEvent.ConversationData>()
+            )
+        } returns dataState
+
+        viewModel.state.test {
+            initialStateEmitted()
+            // then
+            assertEquals(dataState, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+        verify { reducer.newStateFrom(currentState = dataState, operation = ConversationDetailEvent.NoNetworkError) }
     }
 
     @Test

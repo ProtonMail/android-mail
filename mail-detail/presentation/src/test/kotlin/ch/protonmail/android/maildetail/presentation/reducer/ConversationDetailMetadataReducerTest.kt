@@ -102,6 +102,14 @@ class ConversationDetailMetadataReducerTest(
                         conversationUiModelStarred.copy(isStarred = false)
                     )
                 )
+            ),
+            TestParams(
+                testName = "from data to data",
+                TestParams.TestInput(
+                    currentState = ConversationDetailMetadataState.Data(conversationUiModel),
+                    event = ConversationDetailEvent.NoNetworkError,
+                    expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
+                )
             )
         )
 

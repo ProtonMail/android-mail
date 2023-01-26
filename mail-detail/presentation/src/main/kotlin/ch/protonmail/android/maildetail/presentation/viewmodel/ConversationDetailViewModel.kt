@@ -27,6 +27,7 @@ import arrow.core.getOrElse
 import arrow.core.getOrHandle
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
@@ -126,7 +127,13 @@ class ConversationDetailViewModel @Inject constructor(
             observeConversation(userId, conversationId)
                 .mapLatest { either ->
                     either.fold(
-                        ifLeft = { ConversationDetailEvent.ErrorLoadingConversation },
+                        ifLeft = {
+                            if (it.isOfflineError()) {
+                                ConversationDetailEvent.NoNetworkError
+                            } else {
+                                ConversationDetailEvent.ErrorLoadingConversation
+                            }
+                        },
                         ifRight = { ConversationDetailEvent.ConversationData(conversationMetadataMapper.toUiModel(it)) }
                     )
                 }
