@@ -30,6 +30,8 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationWithCont
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maillabel.domain.extension.isSpam
+import ch.protonmail.android.maillabel.domain.extension.isTrash
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -166,7 +168,7 @@ class ConversationRepositoryImpl @Inject constructor(
         fromLabelId: LabelId?,
         toLabelId: LabelId
     ): Either<DataError, Conversation> {
-        if (toLabelId == SystemLabelId.Trash.labelId || toLabelId == SystemLabelId.Spam.labelId) {
+        if (toLabelId.isTrash() || toLabelId.isSpam()) {
             return moveToTrashOrSpam(userId, conversationId, toLabelId)
         }
 
@@ -203,7 +205,7 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationId: ConversationId,
         labelId: LabelId
     ): Either<DataError, Conversation> {
-        if (labelId != SystemLabelId.Trash.labelId && labelId != SystemLabelId.Spam.labelId) {
+        if (labelId.isTrash().not() && labelId.isSpam().not()) {
             throw IllegalArgumentException("Invalid system label id: $labelId")
         }
 

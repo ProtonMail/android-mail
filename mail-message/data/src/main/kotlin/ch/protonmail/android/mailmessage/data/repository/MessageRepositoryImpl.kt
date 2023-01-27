@@ -26,6 +26,8 @@ import arrow.core.toNonEmptyListOrNull
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.maillabel.domain.extension.isSpam
+import ch.protonmail.android.maillabel.domain.extension.isTrash
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
@@ -160,7 +162,7 @@ class MessageRepositoryImpl @Inject constructor(
         fromLabel: LabelId?,
         toLabel: LabelId
     ): Either<DataError.Local, Message> {
-        if (toLabel == SystemLabelId.Trash.labelId || toLabel == SystemLabelId.Spam.labelId) {
+        if (toLabel.isTrash() || toLabel.isSpam()) {
             return moveToTrashOrSpam(userId, messageId, toLabel)
         }
 
@@ -205,7 +207,7 @@ class MessageRepositoryImpl @Inject constructor(
         messageId: MessageId,
         labelId: LabelId
     ): Either<DataError.Local, Message> {
-        if (labelId != SystemLabelId.Trash.labelId && labelId != SystemLabelId.Spam.labelId) {
+        if (labelId.isTrash().not() && labelId.isSpam().not()) {
             throw IllegalArgumentException("Invalid system label id: $labelId")
         }
 
