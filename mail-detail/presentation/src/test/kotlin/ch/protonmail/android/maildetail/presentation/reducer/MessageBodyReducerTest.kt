@@ -61,11 +61,15 @@ class MessageBodyReducerTest(
             ),
             TestInput(
                 MessageDetailEvent.ErrorGettingMessageBody(isNetworkError = true),
-                MessageBodyState.Error(true)
+                MessageBodyState.Error.Data(true)
             ),
             TestInput(
                 MessageDetailEvent.ErrorGettingMessageBody(isNetworkError = false),
-                MessageBodyState.Error(false)
+                MessageBodyState.Error.Data(false)
+            ),
+            TestInput(
+                MessageDetailEvent.ErrorDecryptingMessageBody(MessageBodyUiModelTestData.messageBodyUiModel),
+                MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.messageBodyUiModel)
             )
         )
 

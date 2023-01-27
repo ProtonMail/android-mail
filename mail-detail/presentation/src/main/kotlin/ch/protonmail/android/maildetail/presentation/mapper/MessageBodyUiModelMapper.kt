@@ -27,4 +27,8 @@ class MessageBodyUiModelMapper @Inject constructor() {
     fun toUiModel(decryptedMessageBody: DecryptedMessageBody) = MessageBodyUiModel(
         messageBody = decryptedMessageBody.value
     )
+
+    fun toUiModel(encryptedMessageBody: String) = MessageBodyUiModel(
+        messageBody = encryptedMessageBody
+    )
 }

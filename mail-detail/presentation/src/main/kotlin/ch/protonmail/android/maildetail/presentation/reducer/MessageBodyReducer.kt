@@ -32,7 +32,8 @@ class MessageBodyReducer @Inject constructor() {
         return when (event) {
             is MessageViewAction.Reload -> MessageBodyState.Loading
             is MessageDetailEvent.MessageBodyEvent -> MessageBodyState.Data(event.messageBody)
-            is MessageDetailEvent.ErrorGettingMessageBody -> MessageBodyState.Error(event.isNetworkError)
+            is MessageDetailEvent.ErrorGettingMessageBody -> MessageBodyState.Error.Data(event.isNetworkError)
+            is MessageDetailEvent.ErrorDecryptingMessageBody -> MessageBodyState.Error.Decryption(event.messageBody)
         }
     }
 }

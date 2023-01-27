@@ -285,7 +285,7 @@ class MessageDetailScreenTest {
     fun whenMessageBodyLoadingFailedWithNoNetworkThenErrorMessageIsShown() {
         // given
         val state = MessageDetailsPreviewData.Message.copy(
-            messageBodyState = MessageBodyState.Error(isNetworkError = true)
+            messageBodyState = MessageBodyState.Error.Data(isNetworkError = true)
         )
         val errorMessage = R.string.error_offline_loading_message
 
@@ -300,7 +300,7 @@ class MessageDetailScreenTest {
     fun whenMessageBodyLoadingFailedThenErrorMessageAndReloadButtonIsShown() {
         // given
         val state = MessageDetailsPreviewData.Message.copy(
-            messageBodyState = MessageBodyState.Error(isNetworkError = false)
+            messageBodyState = MessageBodyState.Error.Data(isNetworkError = false)
         )
         val errorMessage = R.string.error_loading_message
 

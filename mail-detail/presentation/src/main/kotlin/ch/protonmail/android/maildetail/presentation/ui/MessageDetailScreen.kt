@@ -57,6 +57,7 @@ import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
@@ -232,10 +233,13 @@ private fun MessageDetailContent(
             Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
             when (messageBodyState) {
                 is MessageBodyState.Loading -> ProtonCenteredProgress()
-                is MessageBodyState.Data -> MessageBody(messageBodyState = messageBodyState)
-                is MessageBodyState.Error -> MessageBodyLoadingError(
+                is MessageBodyState.Data -> MessageBody(messageBodyUiModel = messageBodyState.messageBodyUiModel)
+                is MessageBodyState.Error.Data -> MessageBodyLoadingError(
                     messageBodyState = messageBodyState,
                     onReload = onReload
+                )
+                is MessageBodyState.Error.Decryption -> MessageBody(
+                    messageBodyUiModel = messageBodyState.encryptedMessageBody
                 )
             }
         }
@@ -245,21 +249,21 @@ private fun MessageDetailContent(
 @Composable
 private fun MessageBody(
     modifier: Modifier = Modifier,
-    messageBodyState: MessageBodyState.Data
+    messageBodyUiModel: MessageBodyUiModel
 ) {
     Text(
         modifier = modifier
             .fillMaxWidth()
             .background(ProtonTheme.colors.backgroundNorm)
             .padding(ProtonDimens.DefaultSpacing),
-        text = messageBodyState.messageBodyUiModel.messageBody
+        text = messageBodyUiModel.messageBody
     )
 }
 
 @Composable
 private fun MessageBodyLoadingError(
     modifier: Modifier = Modifier,
-    messageBodyState: MessageBodyState.Error,
+    messageBodyState: MessageBodyState.Error.Data,
     onReload: () -> Unit
 ) {
     val isNetworkError = messageBodyState.isNetworkError

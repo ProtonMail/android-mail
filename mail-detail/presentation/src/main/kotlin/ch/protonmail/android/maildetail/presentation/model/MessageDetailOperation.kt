@@ -49,6 +49,10 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
         val isNetworkError: Boolean
     ) : MessageDetailEvent, AffectingMessageBody
 
+    data class ErrorDecryptingMessageBody(
+        val messageBody: MessageBodyUiModel
+    ) : MessageDetailEvent, AffectingMessageBody
+
     data class MessageBottomBarEvent(
         val bottomBarEvent: BottomBarEvent
     ) : MessageDetailEvent

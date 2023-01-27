@@ -73,6 +73,7 @@ import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
+import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
@@ -162,6 +163,9 @@ class MessageDetailViewModelTest {
     }
     private val messageBodyUiModelMapper = mockk<MessageBodyUiModelMapper> {
         every { toUiModel(decryptedMessageBody) } returns MessageBodyUiModelTestData.messageBodyUiModel
+        every {
+            toUiModel(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
+        } returns MessageBodyUiModelTestData.messageBodyUiModel
     }
     private val moveMessage: MoveMessage = mockk {
         coEvery {
@@ -290,7 +294,7 @@ class MessageDetailViewModelTest {
             initialStateEmitted()
 
             // Then
-            val expected = MessageBodyState.Error(isNetworkError = false)
+            val expected = MessageBodyState.Error.Data(isNetworkError = false)
             assertEquals(expected, awaitItem().messageBodyState)
             cancelAndIgnoreRemainingEvents()
         }
@@ -307,7 +311,7 @@ class MessageDetailViewModelTest {
             initialStateEmitted()
 
             // Then
-            val expected = MessageBodyState.Error(isNetworkError = true)
+            val expected = MessageBodyState.Error.Data(isNetworkError = true)
             assertEquals(expected, awaitItem().messageBodyState)
             cancelAndIgnoreRemainingEvents()
         }
@@ -321,13 +325,32 @@ class MessageDetailViewModelTest {
 
         viewModel.state.test {
             initialStateEmitted()
-            messageBodyErrorEmitted()
+            messageBodyLoadingErrorEmitted()
 
             // When
             viewModel.submit(MessageViewAction.Reload)
 
             // Then
             assertEquals(MessageBodyState.Loading, awaitItem().messageBodyState)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `message body state is decryption error when use case returns decryption error`() = runTest {
+        // Given
+        val messageId = MessageId(rawMessageId)
+        coEvery {
+            getMessageBody(userId, messageId)
+        } returns DataError.Local.DecryptionError(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY).left()
+
+        // When
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // Then
+            val expected = MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.messageBodyUiModel)
+            assertEquals(expected, awaitItem().messageBodyState)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -608,10 +631,10 @@ class MessageDetailViewModelTest {
         )
     }
 
-    private suspend fun ReceiveTurbine<MessageDetailState>.messageBodyErrorEmitted() {
+    private suspend fun ReceiveTurbine<MessageDetailState>.messageBodyLoadingErrorEmitted() {
         assertEquals(
             MessageDetailState.Loading.copy(
-                messageBodyState = MessageBodyState.Error(isNetworkError = false)
+                messageBodyState = MessageBodyState.Error.Data(isNetworkError = false)
             ),
             awaitItem()
         )

@@ -212,10 +212,16 @@ class MessageDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = primaryUserId.first()
             val event = getMessageBody(userId, messageId).fold(
-                ifLeft = {
-                    MessageDetailEvent.ErrorGettingMessageBody(
-                        isNetworkError = it == DataError.Remote.Http(NetworkError.NoNetwork)
-                    )
+                ifLeft = { dataError ->
+                    if (dataError is DataError.Local.DecryptionError) {
+                        MessageDetailEvent.ErrorDecryptingMessageBody(
+                            messageBodyUiModelMapper.toUiModel(dataError.encryptedMessageBody)
+                        )
+                    } else {
+                        MessageDetailEvent.ErrorGettingMessageBody(
+                            isNetworkError = dataError == DataError.Remote.Http(NetworkError.NoNetwork)
+                        )
+                    }
                 },
                 ifRight = { MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(it)) }
             )
