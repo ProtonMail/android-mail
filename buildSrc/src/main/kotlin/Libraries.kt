@@ -158,6 +158,7 @@ object Dagger {
     private const val version = Versions.Dagger.dagger
 
     const val hiltAndroid = "com.google.dagger:hilt-android:$version"
+    const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:$version"
     const val hiltDaggerCompiler = "com.google.dagger:hilt-compiler:$version"
 }
 

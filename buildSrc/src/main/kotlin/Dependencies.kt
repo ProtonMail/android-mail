@@ -194,6 +194,12 @@ fun DependencyHandler.kapt(list: List<String>) {
     }
 }
 
+fun DependencyHandler.kaptAndroidTest(list: List<String>) {
+    list.forEach { dependency ->
+        add("kaptAndroidTest", dependency)
+    }
+}
+
 fun DependencyHandler.implementation(list: List<String>) {
     list.forEach { dependency ->
         add("implementation", dependency)

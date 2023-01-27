@@ -28,5 +28,7 @@ fun Project.setAsHiltModule() {
     dependencies {
         implementation(listOf(Dagger.hiltAndroid))
         kapt(listOf(Dagger.hiltDaggerCompiler, AndroidX.Hilt.compiler))
+        androidTestImplementation(listOf(Dagger.hiltAndroidTesting))
+        kaptAndroidTest(listOf(Dagger.hiltDaggerCompiler))
     }
 }
