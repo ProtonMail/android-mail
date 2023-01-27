@@ -111,9 +111,28 @@ class ConversationDetailMetadataReducerTest(
             )
         )
 
+        private val transitionsFromErrorState = listOf(
+            TestParams(
+                "from error to conversation data",
+                TestParams.TestInput(
+                    currentState = ConversationDetailMetadataState.Error(TextUiModel("any error")),
+                    event = ConversationDetailEvent.ConversationData(conversationUiModel),
+                    expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
+                )
+            ),
+            TestParams(
+                "from error does not change state on no network error",
+                TestParams.TestInput(
+                    currentState = ConversationDetailMetadataState.Error(TextUiModel("any error")),
+                    event = ConversationDetailEvent.NoNetworkError,
+                    expectedState = ConversationDetailMetadataState.Error(TextUiModel("any error"))
+                )
+            )
+        )
+
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
-        fun data() = (transitionsFromLoadingState + transitionsFromDataState)
+        fun data() = (transitionsFromLoadingState + transitionsFromDataState + transitionsFromErrorState)
             .map { arrayOf(it.testName, it.testInput) }
     }
 
