@@ -580,7 +580,7 @@ private fun Labels(
                 .padding(top = MailDimens.TinySpacing),
             iconId = R.drawable.ic_proton_tag
         )
-        Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
+        Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
         LabelsList(labels = uiModels, isExpanded = isExpanded)
     }
 }
@@ -602,7 +602,7 @@ private fun ExtendedHeaderRow(
         } else {
             SmallNonClickableIcon(iconId = icon)
         }
-        Spacer(modifier = Modifier.width(ProtonDimens.DefaultSpacing))
+        Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
         Text(text = text, style = ProtonTheme.typography.captionWeak)
     }
 }
@@ -626,7 +626,7 @@ private fun ConstrainScope.constrainRecipientsTitle(
     hasUndisclosedRecipients: Boolean = false
 ) {
     top.linkTo(reference.top)
-    end.linkTo(reference.start, margin = ProtonDimens.DefaultSpacing)
+    end.linkTo(reference.start, margin = ProtonDimens.SmallSpacing)
     visibility = visibleWhen((recipients.isNotEmpty() || hasUndisclosedRecipients) && isExpanded)
 }
 
@@ -661,8 +661,8 @@ private fun ConstrainScope.constrainExtendedHeaderRow(
         margin = topMargin,
         goneMargin = topMargin
     )
-    start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
-    end.linkTo(endReference.start, margin = ProtonDimens.SmallSpacing)
+    start.linkTo(parent.start, margin = ProtonDimens.DefaultSpacing)
+    end.linkTo(endReference.end)
     visibility = visibleWhen(isExpanded)
 }
 

@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -88,7 +87,7 @@ fun Avatar(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        modifier = Modifier.wrapContentSize().padding(horizontal = ProtonDimens.SmallSpacing),
+                        modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
                         textAlign = TextAlign.Center,
                         text = avatarUiModel.value
                     )

@@ -83,12 +83,8 @@ internal fun ConversationDetailCollapsedMessageHeader(
     ) {
         ConstraintLayout(
             modifier = Modifier
-                .padding(
-                    start = ProtonDimens.SmallSpacing,
-                    top = ProtonDimens.SmallSpacing,
-                    end = ProtonDimens.DefaultSpacing,
-                    bottom = ProtonDimens.SmallSpacing
-                )
+                .padding(ProtonDimens.SmallSpacing)
+                .padding(ProtonDimens.ExtraSmallSpacing)
                 .fillMaxWidth()
         ) {
             val (
