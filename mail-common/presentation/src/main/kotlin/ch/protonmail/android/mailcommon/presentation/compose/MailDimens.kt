@@ -40,6 +40,4 @@ object MailDimens {
     val ExtraLargeSpacing = 48.dp
 
     val ErrorIconBoxSize = 80.dp
-
-    val ConversationDetailMessageRadius = 16.dp
 }

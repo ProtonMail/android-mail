@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -77,7 +76,7 @@ internal fun ConversationDetailCollapsedMessageHeader(
 
     ElevatedCard(
         modifier = modifier,
-        shape = RoundedCornerShape(MailDimens.ConversationDetailMessageRadius),
+        shape = ProtonTheme.shapes.large,
         colors = CardDefaults.elevatedCardColors(
             containerColor = ProtonTheme.colors.backgroundNorm
         )
