@@ -25,6 +25,8 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.arch.DataResult
@@ -32,6 +34,7 @@ import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.network.domain.ApiException
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.util.kotlin.EMPTY_STRING
+import retrofit2.HttpException
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -223,6 +226,30 @@ internal class DataResultEitherMappingsTest {
 
             // then
             assertEquals(expectedError.left(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `does handle nested Http Exceptions mapping them to http errors`() = runTest {
+        // given
+        val httpException = mockk<HttpException> {
+            every { message } returns "HTTP 505 HTTP Version Not Supported"
+            every { code() } returns 505
+        }
+        val input = flowOf(
+            DataResult.Error.Remote(
+                message = "HTTP 505 HTTP Version Not Supported",
+                cause = ApiException(ApiResult.Error.Parse(httpException)),
+                httpCode = 0
+            )
+        )
+
+        // when
+        input.mapToEither().test {
+
+            // then
+            assertEquals(DataError.Remote.Http(NetworkError.ServerError).left(), awaitItem())
             awaitComplete()
         }
     }

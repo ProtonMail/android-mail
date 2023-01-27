@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.transform
 import me.proton.core.domain.arch.DataResult
 import me.proton.core.network.domain.ApiException
 import me.proton.core.util.kotlin.takeIfNotEmpty
+import retrofit2.HttpException
 
 fun <T> Flow<DataResult<T>>.mapToEither(): Flow<Either<DataError, T>> = transform { dataResult ->
     when (dataResult) {
@@ -74,6 +75,7 @@ private fun toNetworkDataError(dataResult: DataResult.Error.Remote): DataError.R
         null -> throw dataResult.asWrappedException()
         is ApiException -> when (val innerCause = cause.cause) {
             is UnknownHostException -> DataError.Remote.Http(NetworkError.NoNetwork)
+            is HttpException -> toHttpDataError(dataResult.copy(httpCode = innerCause.code()))
             null -> throw cause
             else -> throw innerCause
         }
