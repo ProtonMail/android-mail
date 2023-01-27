@@ -54,6 +54,7 @@ class MailboxFlowTest : BaseTest() {
      */
     @Test
     fun filterUnreadMessages() {
+        mailboxRobot.verify { mailboxScreenDisplayed() }
         mailboxRobot.verify { unreadFilterIsDisplayed() }
 
         mailboxRobot
