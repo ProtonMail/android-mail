@@ -69,7 +69,7 @@ internal class BottomBarReducerTest(
             TestInput(
                 currentState = BottomBarState.Data(actions),
                 operation = BottomBarEvent.ErrorLoadingActions,
-                expectedState = BottomBarState.Error.FailedLoadingActions
+                expectedState = BottomBarState.Data(actions)
             )
         )
 

@@ -28,7 +28,13 @@ class BottomBarReducer @Inject constructor() {
     fun newStateFrom(currentState: BottomBarState, event: BottomBarEvent): BottomBarState {
         return when (event) {
             is BottomBarEvent.ActionsData -> BottomBarState.Data(event.actionUiModels)
-            is BottomBarEvent.ErrorLoadingActions -> BottomBarState.Error.FailedLoadingActions
+            is BottomBarEvent.ErrorLoadingActions -> currentState.toNewStateForErrorLoading()
         }
+    }
+
+    private fun BottomBarState.toNewStateForErrorLoading() = when (this) {
+        is BottomBarState.Data -> this
+        is BottomBarState.Error.FailedLoadingActions -> this
+        is BottomBarState.Loading -> BottomBarState.Error.FailedLoadingActions
     }
 }
