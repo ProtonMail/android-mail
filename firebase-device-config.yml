@@ -1,10 +1,10 @@
 fullTest:
   device:
     - model: Pixel2.arm
-      version: 32
-    - model: f2q
-      version: 30
-    - model: a10
+      version: 33
+    - model: b2q
+      version: 31
+    - model: crownqlteue
       version: 29
     - model: HWANE-LX2
       version: 28
