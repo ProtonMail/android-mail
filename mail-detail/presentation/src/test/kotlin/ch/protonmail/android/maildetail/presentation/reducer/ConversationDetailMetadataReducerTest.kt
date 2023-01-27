@@ -84,16 +84,6 @@ class ConversationDetailMetadataReducerTest(
                 )
             ),
             TestParams(
-                testName = "from data to error loading conversation",
-                TestParams.TestInput(
-                    currentState = ConversationDetailMetadataState.Data(conversationUiModel),
-                    event = ConversationDetailEvent.ErrorLoadingConversation,
-                    expectedState = ConversationDetailMetadataState.Error(
-                        message = TextUiModel(string.detail_error_loading_conversation)
-                    )
-                )
-            ),
-            TestParams(
                 testName = "from data to unStarred conversation data",
                 TestParams.TestInput(
                     currentState = ConversationDetailMetadataState.Data(conversationUiModelStarred),
@@ -104,7 +94,15 @@ class ConversationDetailMetadataReducerTest(
                 )
             ),
             TestParams(
-                testName = "from data to data",
+                testName = "from data does not change state on error loading conversation",
+                TestParams.TestInput(
+                    currentState = ConversationDetailMetadataState.Data(conversationUiModel),
+                    event = ConversationDetailEvent.ErrorLoadingConversation,
+                    expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
+                )
+            ),
+            TestParams(
+                testName = "from data does not change state on no network error",
                 TestParams.TestInput(
                     currentState = ConversationDetailMetadataState.Data(conversationUiModel),
                     event = ConversationDetailEvent.NoNetworkError,
