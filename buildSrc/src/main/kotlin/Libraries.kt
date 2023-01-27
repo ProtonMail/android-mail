@@ -252,6 +252,7 @@ object Proton {
 
 object Squareup {
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.Squareup.leakCanary}"
+    const val mockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.Squareup.okhttp}"
     const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.Squareup.okhttp}"
     const val plumber = "com.squareup.leakcanary:plumber-android:${Versions.Squareup.leakCanary}"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.Squareup.retrofit}"
