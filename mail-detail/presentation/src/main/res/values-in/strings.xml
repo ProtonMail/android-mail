@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Kontak gagal dimuat</string>
   <string name="detail_error_loading_conversation">Percakapan gagal dimuat</string>
   <string name="detail_error_loading_messages">Pesan gagal dimuat</string>
-  <string name="error_mark_unread_failed">Gagal menandai belum dibaca. Silakan coba lagi.</string>
+  <string name="error_mark_unread_failed">Tanda belum dibaca gagal disematkan. Silakan coba lagi.</string>
   <plurals name="message_count_label_text">
     <item quantity="other">%d pesan</item>
   </plurals>
@@ -30,6 +30,7 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Sembunyikan rincian</string>
   <string name="undisclosed_recipients">Penerima yang dirahasiakan</string>
+  <string name="error_mark_as_unread_failed">Tandai sebagai belum dibaca gagal. Silahkan coba lagi.</string>
   <string name="error_star_operation_failed">Pesan gagal dibintangi. Silakan coba lagi.</string>
   <string name="error_unstar_operation_failed">Bintang pesan gagal dihapus. Silakan coba lagi.</string>
   <string name="error_move_to_trash_failed">Pemindahan ke sampah gagal. Silakan coba lagi.</string>
@@ -39,6 +40,9 @@
   <string name="conversation_moved_to_trash">Percakapan dipindahkan ke sampah</string>
   <string name="conversation_moved_to_selected_destination">Percakapan dipindahkan ke %1$s</string>
   <string name="error_move_conversation_failed">Percakapan gagal dipindahkan. Silakan coba lagi.</string>
+  <string name="error_loading_message">Terjadi suatu kesalahan. Silakan coba lagi.</string>
+  <string name="error_offline_loading_message">Anda sedang offline. Koneksi internet diperlukan untuk menampilkan konten pesan ini.</string>
+  <string name="reload">Muat ulang</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Pindahkan ke...</string>
   <string name="bottom_sheet_done_action">Selesai</string>

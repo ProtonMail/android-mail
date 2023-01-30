@@ -17,30 +17,34 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">Failed loading contacts</string>
-  <string name="detail_error_loading_conversation">Failed loading conversation</string>
-  <string name="detail_error_loading_messages">Failed loading messages</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
+  <string name="detail_error_loading_contacts">Asali n yinermisen yecceḍ</string>
+  <string name="detail_error_loading_conversation">Asali n udiwenni yecceḍ</string>
+  <string name="detail_error_loading_messages">Asali n yiznan yecceḍ</string>
+  <string name="error_mark_unread_failed">Ticreḍt ur yettwaɣra ara tecceḍ. Ttxil ɛreḍ tikkelt-nniḍen.</string>
   <plurals name="message_count_label_text">
-    <item quantity="one">%d message</item>
-    <item quantity="other">%d messages</item>
+    <item quantity="one">%d n yizen</item>
+    <item quantity="other">%d n yiznan</item>
   </plurals>
-  <string name="more_button_content_description">More</string>
-  <string name="to">To:</string>
-  <string name="cc">Cc:</string>
-  <string name="bcc">Bcc:</string>
-  <string name="hide_details">Hide details</string>
-  <string name="undisclosed_recipients">Undisclosed recipients</string>
-  <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
-  <string name="error_unstar_operation_failed">Remove star operation failed. Please retry.</string>
-  <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
-  <string name="message_moved_to_trash">Message moved to trash</string>
-  <string name="message_moved_to_selected_destination">Message moved to %1$s</string>
-  <string name="error_move_message_failed">Moving message failed. Please retry.</string>
-  <string name="conversation_moved_to_trash">Conversation moved to trash</string>
-  <string name="conversation_moved_to_selected_destination">Conversation moved to %1$s</string>
-  <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
+  <string name="more_button_content_description">Ugar</string>
+  <string name="to">Ɣer:</string>
+  <string name="cc">Anɣ. I:</string>
+  <string name="bcc">Anɣ. Uff. I:</string>
+  <string name="hide_details">Ffer ifutas</string>
+  <string name="undisclosed_recipients">Iɣerwaḍen ur ttwaskanen ara</string>
+  <string name="error_mark_as_unread_failed">Tamhelt ur yettwaɣer ara tecceḍ. Ttxil ɛawed-as.</string>
+  <string name="error_star_operation_failed">Tamhelt n tmerniwt n yitri tecceḍ. Ttxil ɛawed-as.</string>
+  <string name="error_unstar_operation_failed">Tamhelt n tukksa n yitri tecceḍ. Ttxil ɛawed-as.</string>
+  <string name="error_move_to_trash_failed">Asenkez ɣer yiḍumman yecceḍ. Ttxil ɛawed-as.</string>
+  <string name="message_moved_to_trash">Izen yettwasnekez ɣer yiḍumman</string>
+  <string name="message_moved_to_selected_destination">Izen yettwasenkez ɣer %1$s</string>
+  <string name="error_move_message_failed">Asenkez n yiznan yecceḍ. Ttxil ɛawed-as.</string>
+  <string name="conversation_moved_to_trash">Adiwenni yettwasenkez ɣer yiḍumman</string>
+  <string name="conversation_moved_to_selected_destination">Adiwenni yettwasenkez ɣer %1$s</string>
+  <string name="error_move_conversation_failed">Asenkez n udiwenni yecceḍ. Ttxil ɛawed-as.</string>
+  <string name="error_loading_message">Something went wrong, please try again.</string>
+  <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>
+  <string name="reload">Reload</string>
   <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Move to...</string>
-  <string name="bottom_sheet_done_action">Done</string>
+  <string name="bottom_sheet_move_to_title">Senkez ɣer...</string>
+  <string name="bottom_sheet_done_action">Immed</string>
 </resources>

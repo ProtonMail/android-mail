@@ -26,7 +26,7 @@
   <string name="mailbox_toolbar_search_button_content_description">Nadi</string>
   <string name="mailbox_toolbar_selected_count">%d Yettwafren</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d unread</item>
-    <item quantity="other">%d unread</item>
+    <item quantity="one">%d ur yettwaɣer ara</item>
+    <item quantity="other">%d ur ttwaɣren ara</item>
   </plurals>
 </resources>

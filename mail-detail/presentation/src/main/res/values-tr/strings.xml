@@ -31,6 +31,7 @@
   <string name="bcc">Gizli kopya:</string>
   <string name="hide_details">Ayrıntıları gizle</string>
   <string name="undisclosed_recipients">Gizli alıcılar</string>
+  <string name="error_mark_as_unread_failed">Okunmamış olarak işaretlenemedi. Lütfen yeniden deneyin.</string>
   <string name="error_star_operation_failed">Yıldız eklenemedi. Lütfen yeniden deneyin.</string>
   <string name="error_unstar_operation_failed">Yıldız kaldırılamadı. Lütfen yeniden deneyin.</string>
   <string name="error_move_to_trash_failed">Çöp kutusuna taşınamadı. Lütfen yeniden deneyin.</string>
@@ -40,6 +41,9 @@
   <string name="conversation_moved_to_trash">Yazışma çöpe atıldı</string>
   <string name="conversation_moved_to_selected_destination">Yazışma %1$s klasörüne taşındı</string>
   <string name="error_move_conversation_failed">Yazışma taşınamadı. Lütfen yeniden deneyin.</string>
+  <string name="error_loading_message">Bir şeyler ters gitti. Lütfen yeniden deneyin.</string>
+  <string name="error_offline_loading_message">Çevrimdışısınız. Bu iletinin içeriğini görüntüleyebilmek için internete bağlı olmalısınız.</string>
+  <string name="reload">Yeniden yükle</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Şuraya taşı...</string>
   <string name="bottom_sheet_done_action">Tamam</string>

@@ -32,6 +32,7 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Sakrij detalje</string>
   <string name="undisclosed_recipients">Nedefinirani primatelji</string>
+  <string name="error_mark_as_unread_failed">Mark as unread operation failed. Please retry.</string>
   <string name="error_star_operation_failed">Add star operation failed. Please retry.</string>
   <string name="error_unstar_operation_failed">Remove star operation failed. Please retry.</string>
   <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
@@ -41,6 +42,9 @@
   <string name="conversation_moved_to_trash">Razgovor premješten u otpad</string>
   <string name="conversation_moved_to_selected_destination">Razgovor premješten u $%1$s</string>
   <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
+  <string name="error_loading_message">Something went wrong, please try again.</string>
+  <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>
+  <string name="reload">Reload</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Premjesti u...</string>
   <string name="bottom_sheet_done_action">Gotovo</string>

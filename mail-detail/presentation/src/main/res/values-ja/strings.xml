@@ -30,6 +30,7 @@
   <string name="bcc">BCC:</string>
   <string name="hide_details">詳細を非表示</string>
   <string name="undisclosed_recipients">非公開の宛先</string>
+  <string name="error_mark_as_unread_failed">Mark as unread operation failed. Please retry.</string>
   <string name="error_star_operation_failed">スターの追加に失敗しました。再度お試しください。</string>
   <string name="error_unstar_operation_failed">スターの削除に失敗しました。再度お試しください。</string>
   <string name="error_move_to_trash_failed">ごみ箱への移動に失敗しました。再試行してください。</string>
@@ -39,6 +40,9 @@
   <string name="conversation_moved_to_trash">会話がごみ箱に移動されました</string>
   <string name="conversation_moved_to_selected_destination">会話が %1$s に移動されました</string>
   <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
+  <string name="error_loading_message">問題が発生しました。再度お試しください。</string>
+  <string name="error_offline_loading_message">現在、オフラインです。このメッセージの内容を表示するには、インターネット接続が必要です。</string>
+  <string name="reload">再読み込み</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Move to...</string>
   <string name="bottom_sheet_done_action">完了</string>

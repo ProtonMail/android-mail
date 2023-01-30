@@ -31,6 +31,7 @@
   <string name="bcc">Ccn:</string>
   <string name="hide_details">Nascondi dettagli</string>
   <string name="undisclosed_recipients">Destinatari nascosti</string>
+  <string name="error_mark_as_unread_failed">Impossibile contrassegnare come non letto. Per favore riprova.</string>
   <string name="error_star_operation_failed">Aggiunta ai preferiti non riuscita. Per favore riprova.</string>
   <string name="error_unstar_operation_failed">Rimozione dai preferiti non riuscita. Per favore riprova.</string>
   <string name="error_move_to_trash_failed">Spostamento nel cestino non riuscito. Per favore riprova.</string>
@@ -40,6 +41,9 @@
   <string name="conversation_moved_to_trash">Conversazione spostata nel cestino</string>
   <string name="conversation_moved_to_selected_destination">Conversazione spostata in %1$s</string>
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito. Riprova.</string>
+  <string name="error_loading_message">Qualcosa è andato storto, sei pregato di riprovare.</string>
+  <string name="error_offline_loading_message">Sei offline. Una connessione a Internet è necessaria per mostrare i contenuti di questo messaggio.</string>
+  <string name="reload">Ricarica</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Sposta in...</string>
   <string name="bottom_sheet_done_action">Fatto</string>

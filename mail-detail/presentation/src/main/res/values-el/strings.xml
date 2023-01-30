@@ -31,6 +31,7 @@
   <string name="bcc">Κρυφή κοιν:</string>
   <string name="hide_details">Απόκρυψη λεπτομερειών</string>
   <string name="undisclosed_recipients">Μη κοινοποιημένοι παραλήπτες</string>
+  <string name="error_mark_as_unread_failed">Η λειτουργία σήμανσης ως μη αναγνωσμένα απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_star_operation_failed">Η λειτουργία προσθήκης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_unstar_operation_failed">Η λειτουργία κατάργησης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_move_to_trash_failed">Η μετακίνηση στα Διαγραμμένα απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
@@ -40,6 +41,9 @@
   <string name="conversation_moved_to_trash">Η συνομιλία μετακινήθηκε στα Διαγραμμένα</string>
   <string name="conversation_moved_to_selected_destination">Η συνομιλία μετακινήθηκε στο %1$s</string>
   <string name="error_move_conversation_failed">Η μετακινηση συνομιλίας απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="error_loading_message">Κάτι πήγε στραβά, παρακαλούμε δοκιμάστε ξανά.</string>
+  <string name="error_offline_loading_message">Είστε εκτός σύνδεσης. Απαιτείται σύνδεση στο Διαδύκτιο για την εμφάνιση του περιεχομένου αυτού του μηνύματος.</string>
+  <string name="reload">Ανανέωση</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Μετακίνηση σε...</string>
   <string name="bottom_sheet_done_action">Ολοκληρώθηκε</string>

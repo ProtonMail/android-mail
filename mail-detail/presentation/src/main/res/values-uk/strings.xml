@@ -33,6 +33,7 @@
   <string name="bcc">Прихована копія:</string>
   <string name="hide_details">Сховати подробиці</string>
   <string name="undisclosed_recipients">Приховані отримувачі</string>
+  <string name="error_mark_as_unread_failed">Не вдалося позначити непрочитаним. Повторіть спробу.</string>
   <string name="error_star_operation_failed">Не вдалося додати зірочку. Повторіть спробу.</string>
   <string name="error_unstar_operation_failed">Не вдалося вилучити зірочку. Повторіть спробу.</string>
   <string name="error_move_to_trash_failed">Не вдалося перемістити до смітника. Повторіть спробу.</string>
@@ -42,6 +43,9 @@
   <string name="conversation_moved_to_trash">Розмову переміщено до смітника</string>
   <string name="conversation_moved_to_selected_destination">Розмову переміщено до %1$s</string>
   <string name="error_move_conversation_failed">Не вдалося перемістити розмову. Повторіть спробу.</string>
+  <string name="error_loading_message">Щось пішло не так, повторіть спробу.</string>
+  <string name="error_offline_loading_message">Ви офлайн. Для показів вмісту цього повідомлення потрібне з\'єднання з інтернетом.</string>
+  <string name="reload">Перезавантажити</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Перемістити до...</string>
   <string name="bottom_sheet_done_action">Готово</string>

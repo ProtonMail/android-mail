@@ -31,6 +31,7 @@
   <string name="bcc">Titkos másolat:</string>
   <string name="hide_details">Részletek elrejtése</string>
   <string name="undisclosed_recipients">Meg nem nevezett címzettek</string>
+  <string name="error_mark_as_unread_failed">Mark as unread operation failed. Please retry.</string>
   <string name="error_star_operation_failed">Megcsillagozás sikertelen. Próbálja újra.</string>
   <string name="error_unstar_operation_failed">Csillag visszavonása sikertelen. Próbálja újra.</string>
   <string name="error_move_to_trash_failed">A lomtárba helyezés sikertelen. Próbálja újra.</string>
@@ -40,6 +41,9 @@
   <string name="conversation_moved_to_trash">A beszélgetés átkerült a lomtárba</string>
   <string name="conversation_moved_to_selected_destination">A beszélgetés átkerült a %1$s</string>
   <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
+  <string name="error_loading_message">Something went wrong, please try again.</string>
+  <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>
+  <string name="reload">Reload</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Move to...</string>
   <string name="bottom_sheet_done_action">Kész</string>

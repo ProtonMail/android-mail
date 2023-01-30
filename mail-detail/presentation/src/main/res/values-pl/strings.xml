@@ -33,6 +33,7 @@
   <string name="bcc">Udw:</string>
   <string name="hide_details">Ukryj szczegóły</string>
   <string name="undisclosed_recipients">Nieznani odbiorcy</string>
+  <string name="error_mark_as_unread_failed">Oznaczenie jako nieprzeczytane nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_star_operation_failed">Oznaczenie gwiazdką nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_unstar_operation_failed">Usunięcie gwiazdki nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_move_to_trash_failed">Przeniesienie do Kosza nie powiodło się. Spróbuj ponownie.</string>
@@ -42,6 +43,9 @@
   <string name="conversation_moved_to_trash">Wątek został przeniesiony do Kosza</string>
   <string name="conversation_moved_to_selected_destination">Wątek został przeniesiony do folderu %1$s</string>
   <string name="error_move_conversation_failed">Przenoszenie wątku nie powiodło się. Spróbuj ponownie.</string>
+  <string name="error_loading_message">Coś poszło nie tak. Spróbuj ponownie później.</string>
+  <string name="error_offline_loading_message">Jesteś w trybie offline. Połączenie internetowe jest wymagane, aby wyświetlić zawartość wiadomości.</string>
+  <string name="reload">Odśwież</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Przenieś do...</string>
   <string name="bottom_sheet_done_action">Gotowe</string>

@@ -31,6 +31,7 @@
   <string name="bcc">Hemlig kopia:</string>
   <string name="hide_details">Dölj detaljer</string>
   <string name="undisclosed_recipients">Hemliga mottagare</string>
+  <string name="error_mark_as_unread_failed">Åtgärd att markera som oläst misslyckades. Försök igen.</string>
   <string name="error_star_operation_failed">Det gick inte att stjärnmärka. Försök igen.</string>
   <string name="error_unstar_operation_failed">Det gick inte att ta bort stjärnmarkeringen. Försök igen.</string>
   <string name="error_move_to_trash_failed">Flytt till papperskorg misslyckades. Försök igen.</string>
@@ -40,6 +41,9 @@
   <string name="conversation_moved_to_trash">Konversation flyttad till papperskorg</string>
   <string name="conversation_moved_to_selected_destination">Konversation flyttad till %1$s</string>
   <string name="error_move_conversation_failed">Misslyckades att flytta konversation. Försök igen.</string>
+  <string name="error_loading_message">Något gick fel, försök igen.</string>
+  <string name="error_offline_loading_message">Du är offline. En Internetanslutning krävs för att visa innehållet i detta meddelande.</string>
+  <string name="reload">Ladda om</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flytta till...</string>
   <string name="bottom_sheet_done_action">Klar</string>

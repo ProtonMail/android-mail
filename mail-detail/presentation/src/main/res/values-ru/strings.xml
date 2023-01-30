@@ -33,6 +33,7 @@
   <string name="bcc">Скрытая копия:</string>
   <string name="hide_details">Скрыть подробности</string>
   <string name="undisclosed_recipients">Неразглашаемые получатели</string>
+  <string name="error_mark_as_unread_failed">Не удалось пометить как непрочитанное. Попробуйте еще раз.</string>
   <string name="error_star_operation_failed">Не удалось отменить звездочкой. Попробуйте еще раз.</string>
   <string name="error_unstar_operation_failed">Не удалось снять зведочку. Попробуйте еще раз.</string>
   <string name="error_move_to_trash_failed">Перемещение в корзину не удалось. Пожалуйста, повторите попытку.</string>
@@ -42,6 +43,9 @@
   <string name="conversation_moved_to_trash">Цепочка писем перемещена в корзину</string>
   <string name="conversation_moved_to_selected_destination">Цепочка сообщений перемещена в %1$s</string>
   <string name="error_move_conversation_failed">Не удалось переместить цепочку сообщений. Попробуйте еще раз.</string>
+  <string name="error_loading_message">Что-то пошло не так, попробуйте снова.</string>
+  <string name="error_offline_loading_message">Вы находитесь офлайн. Для отображения содержимого этого сообщения требуется подключение к Интернету.</string>
+  <string name="reload">Перезагрузить</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Переместить в...</string>
   <string name="bottom_sheet_done_action">Готово</string>

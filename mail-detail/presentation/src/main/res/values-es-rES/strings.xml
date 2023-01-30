@@ -31,6 +31,7 @@
   <string name="bcc">Cco:</string>
   <string name="hide_details">Ocultar detalles</string>
   <string name="undisclosed_recipients">Destinatarios ocultos</string>
+  <string name="error_mark_as_unread_failed">Error al marcar como no leído. Inténtalo de nuevo.</string>
   <string name="error_star_operation_failed">Error al marcar como Destacado. Inténtalo de nuevo.</string>
   <string name="error_unstar_operation_failed">Error al desmarcar Destacado. Inténtalo de nuevo.</string>
   <string name="error_move_to_trash_failed">Error al mover a la papelera. Inténtalo de nuevo.</string>
@@ -40,6 +41,9 @@
   <string name="conversation_moved_to_trash">Conversación movida a la papelera</string>
   <string name="conversation_moved_to_selected_destination">Conversación movida a $%1$s</string>
   <string name="error_move_conversation_failed">Error al mover la conversación. Inténtalo de nuevo.</string>
+  <string name="error_loading_message">Ha ocurrido un problema. Inténtalo de nuevo más tarde.</string>
+  <string name="error_offline_loading_message">No estás conectado. Se necesita una conexión a internet para mostrar el contenido de este mensaje.</string>
+  <string name="reload">Recargar</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover a...</string>
   <string name="bottom_sheet_done_action">Hecho</string>

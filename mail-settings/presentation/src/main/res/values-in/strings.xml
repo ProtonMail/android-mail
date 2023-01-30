@@ -74,7 +74,7 @@
   <string name="mail_settings_swipe_action_star_title">Berbintang</string>
   <string name="mail_settings_swipe_action_trash_title">Sampah</string>
   <string name="mail_settings_swipe_action_archive_description">Pindahkan ke arsip</string>
-  <string name="mail_settings_swipe_action_read_description">Tandai sebagai telah dibaca/belum dibaca</string>
+  <string name="mail_settings_swipe_action_read_description">Tandai belum/telah dibaca</string>
   <string name="mail_settings_swipe_action_spam_description">Pindahkan ke spam</string>
   <string name="mail_settings_swipe_action_star_description">Bintangi/Hapus Bintang</string>
   <string name="mail_settings_swipe_action_trash_description">Pindahkan ke sampah</string>

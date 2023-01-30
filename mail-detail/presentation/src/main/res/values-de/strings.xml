@@ -31,6 +31,7 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Details ausblenden</string>
   <string name="undisclosed_recipients">Verborgene Empfänger</string>
+  <string name="error_mark_as_unread_failed">Der Vorgang „Als ungelesen markieren“ ist fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="error_star_operation_failed">Der Vorgang „Markierung hinzufügen“ ist fehlgeschlagen. Bitte erneut versuchen.</string>
   <string name="error_unstar_operation_failed">Der Vorgang „Markierung entfernen“ ist fehlgeschlagen. Bitte erneut versuchen.</string>
   <string name="error_move_to_trash_failed">Verschieben in den Papierkorb fehlgeschlagen. Bitte versuche es erneut.</string>
@@ -40,6 +41,9 @@
   <string name="conversation_moved_to_trash">Unterhaltung in den Papierkorb verschoben.</string>
   <string name="conversation_moved_to_selected_destination">Unterhaltung nach „%1$s“ verschoben</string>
   <string name="error_move_conversation_failed">Verschieben der Unterhaltung fehlgeschlagen. Bitte versuche es erneut.</string>
+  <string name="error_loading_message">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
+  <string name="error_offline_loading_message">Du bist offline. Um den Inhalt dieser Nachricht anzuzeigen, ist eine Internetverbindung erforderlich.</string>
+  <string name="reload">Neu laden</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Verschieben nach...</string>
   <string name="bottom_sheet_done_action">Fertig</string>

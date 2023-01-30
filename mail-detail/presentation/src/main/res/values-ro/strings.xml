@@ -32,6 +32,7 @@
   <string name="bcc">CA:</string>
   <string name="hide_details">Ascundere detalii</string>
   <string name="undisclosed_recipients">Destinatari confidențiali</string>
+  <string name="error_mark_as_unread_failed">Operația de marcare ca mesaj citit a eșuat. Reîncercați.</string>
   <string name="error_star_operation_failed">Operația de marcare cu stea a eșuat. Mai reîncercați.</string>
   <string name="error_unstar_operation_failed">Operația de eliminare stea a eșuat. Mai reîncercați.</string>
   <string name="error_move_to_trash_failed">Mutarea în gunoi a eșuat. Reîncercați.</string>
@@ -41,6 +42,9 @@
   <string name="conversation_moved_to_trash">Conversația a fost mutată în gunoi.</string>
   <string name="conversation_moved_to_selected_destination">Conversația a fost mutată în «%1$s».</string>
   <string name="error_move_conversation_failed">Mutarea conversației a eșuat. Reîncercați.</string>
+  <string name="error_loading_message">Ceva nu a funcționat bine. Mai încercați.</string>
+  <string name="error_offline_loading_message">Nu aveți conexiune. Pentru a afișa conținutul acestui mesaj aveți nevoie de conexiune la internet.</string>
+  <string name="reload">Reîncărcare</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mutare în...</string>
   <string name="bottom_sheet_done_action">Gata</string>

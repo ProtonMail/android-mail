@@ -31,6 +31,7 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Hide details</string>
   <string name="undisclosed_recipients">Undisclosed recipients</string>
+  <string name="error_mark_as_unread_failed">Mark as unread operation failed. Please retry.</string>
   <string name="error_star_operation_failed">A operação de adicionar estrelas falhou. Por favor, tente de novo.</string>
   <string name="error_unstar_operation_failed">A operação de remover estrelas falhou. Por favor, tente de novo.</string>
   <string name="error_move_to_trash_failed">O envio para o lixo falhou. Por favor, tente novamente.</string>
@@ -40,6 +41,9 @@
   <string name="conversation_moved_to_trash">Conversation moved to trash</string>
   <string name="conversation_moved_to_selected_destination">Conversation moved to %1$s</string>
   <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
+  <string name="error_loading_message">Algo correu mal. Por favor, tente mais tarde.</string>
+  <string name="error_offline_loading_message">Está offline. A ligação à internet é necessária para mostraro conteúdo desta mensagem.</string>
+  <string name="reload">Reload</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Move to...</string>
   <string name="bottom_sheet_done_action">Done</string>

@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Les contacts n\'ont pas pu être chargés.</string>
   <string name="detail_error_loading_conversation">La conversation n\'a pas pu être chargée.</string>
   <string name="detail_error_loading_messages">Les messages n\'ont pas pu être chargés.</string>
-  <string name="error_mark_unread_failed">Le marquage comme non lu a échoué. Veuillez réessayer.</string>
+  <string name="error_mark_unread_failed">Le marquage comme non lu a échoué. Nous vous invitons à réessayer.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d message</item>
     <item quantity="other">%d messages</item>
@@ -31,6 +31,7 @@
   <string name="bcc">Cci :</string>
   <string name="hide_details">Masquer les détails</string>
   <string name="undisclosed_recipients">Destinataires non communiqués</string>
+  <string name="error_mark_as_unread_failed">Le marquage comme non lu a échoué. Nous vous invitons à réessayer.</string>
   <string name="error_star_operation_failed">Le marquage comme favori a échoué. Nous vous invitons à réessayer.</string>
   <string name="error_unstar_operation_failed">La suppression du marquage comme favori a échoué. Nous vous invitons à réessayer.</string>
   <string name="error_move_to_trash_failed">Le déplacement dans le dossier Corbeille a échoué. Veuillez réessayer.</string>
@@ -40,6 +41,9 @@
   <string name="conversation_moved_to_trash">La conversation a été déplacée dans le dossier Corbeille.</string>
   <string name="conversation_moved_to_selected_destination">La conversation a été déplacée dans %1$s.</string>
   <string name="error_move_conversation_failed">La conversation n\'a pas pu être déplacée. Veuillez réessayer.</string>
+  <string name="error_loading_message">Un problème est survenu, veuillez réessayer.</string>
+  <string name="error_offline_loading_message">Vous n\'êtes pas connecté. Une connexion internet est nécessaire pour afficher le contenu de ce message.</string>
+  <string name="reload">Recharger</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Déplacer...</string>
   <string name="bottom_sheet_done_action">Terminé</string>
