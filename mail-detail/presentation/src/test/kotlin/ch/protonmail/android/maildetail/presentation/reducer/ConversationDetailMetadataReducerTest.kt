@@ -100,14 +100,6 @@ class ConversationDetailMetadataReducerTest(
                     event = ConversationDetailEvent.ErrorLoadingConversation,
                     expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
                 )
-            ),
-            TestParams(
-                testName = "from data does not change state on no network error",
-                TestParams.TestInput(
-                    currentState = ConversationDetailMetadataState.Data(conversationUiModel),
-                    event = ConversationDetailEvent.NoNetworkError,
-                    expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
-                )
             )
         )
 
@@ -118,14 +110,6 @@ class ConversationDetailMetadataReducerTest(
                     currentState = ConversationDetailMetadataState.Error(TextUiModel("any error")),
                     event = ConversationDetailEvent.ConversationData(conversationUiModel),
                     expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
-                )
-            ),
-            TestParams(
-                "from error does not change state on no network error",
-                TestParams.TestInput(
-                    currentState = ConversationDetailMetadataState.Error(TextUiModel("any error")),
-                    event = ConversationDetailEvent.NoNetworkError,
-                    expectedState = ConversationDetailMetadataState.Error(TextUiModel("any error"))
                 )
             )
         )

@@ -37,7 +37,6 @@ class ConversationDetailMetadataReducer @Inject constructor() {
             conversationUiModel = event.conversationUiModel
         )
         is ConversationDetailEvent.ErrorLoadingConversation -> currentState.toNewStateForErrorLoading()
-        is ConversationDetailEvent.NoNetworkError -> currentState
         is ConversationDetailViewAction.Star -> currentState.toNewStateForStarredConversation()
         is ConversationDetailViewAction.UnStar -> currentState.toNewStateForUnStarredConversation()
     }
