@@ -28,7 +28,6 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.crypto.common.context.CryptoContext
-import me.proton.core.crypto.common.pgp.DecryptedData
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.domain.entity.UserId
 import me.proton.core.key.domain.decryptAndVerifyData
@@ -38,7 +37,7 @@ import me.proton.core.user.domain.UserAddressManager
 import timber.log.Timber
 import javax.inject.Inject
 
-class GetMessageBody @Inject constructor(
+class GetDecryptedMessageBody @Inject constructor(
     private val cryptoContext: CryptoContext,
     private val messageRepository: MessageRepository,
     private val userAddressManager: UserAddressManager
@@ -46,31 +45,32 @@ class GetMessageBody @Inject constructor(
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, DecryptedMessageBody> {
         return messageRepository.getMessageWithBody(userId, messageId).flatMap { messageWithBody ->
-            val userAddress = userAddressManager.getAddress(userId, messageWithBody.message.addressId)
+            val addressId = messageWithBody.message.addressId
+            val userAddress = userAddressManager.getAddress(userId, addressId)
             return@flatMap if (userAddress != null) {
                 try {
-                    DecryptedMessageBody(
-                        messageBody = userAddress.useKeys(cryptoContext) {
-                            decryptMessageBody(messageWithBody.messageBody).data.decodeToString()
-                        }
-                    ).right()
+                    userAddress.useKeys(cryptoContext) {
+                        decryptMessageBody(messageWithBody.messageBody)
+                    }.right()
                 } catch (cryptoException: CryptoException) {
                     Timber.e(cryptoException, "Error decrypting message")
                     DataError.Local.DecryptionError(messageWithBody.messageBody.body).left()
                 }
             } else {
+                Timber.e("Decryption error. Could not get UserAddress for user id ${userId.id}")
                 DataError.Local.DecryptionError(messageWithBody.messageBody.body).left()
             }
         }
     }
 
     @Suppress("NotImplementedDeclaration")
-    private fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedData {
+    private fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedMessageBody {
         return if (messageBody.mimeType == "multipart/mixed") {
-            // Will be implemented with MAILANDR-368
-            throw NotImplementedError()
+            throw NotImplementedError("Will be implemented with MAILANDR-368")
         } else {
-            decryptAndVerifyData(messageBody.body)
+            decryptAndVerifyData(messageBody.body).run {
+                DecryptedMessageBody(data.decodeToString())
+            }
         }
     }
 }

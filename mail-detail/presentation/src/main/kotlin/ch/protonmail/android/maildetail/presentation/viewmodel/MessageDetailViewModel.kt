@@ -27,7 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
-import ch.protonmail.android.maildetail.domain.usecase.GetMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
@@ -73,7 +73,7 @@ import javax.inject.Inject
 class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMessageWithLabels: ObserveMessageWithLabels,
-    private val getMessageBody: GetMessageBody,
+    private val getDecryptedMessageBody: GetDecryptedMessageBody,
     private val messageDetailReducer: MessageDetailReducer,
     private val actionUiModelMapper: ActionUiModelMapper,
     private val observeDetailActions: ObserveMessageDetailActions,
@@ -211,7 +211,7 @@ class MessageDetailViewModel @Inject constructor(
     private fun getMessageBody(messageId: MessageId) {
         viewModelScope.launch {
             val userId = primaryUserId.first()
-            val event = getMessageBody(userId, messageId).fold(
+            val event = getDecryptedMessageBody(userId, messageId).fold(
                 ifLeft = { dataError ->
                     if (dataError is DataError.Local.DecryptionError) {
                         MessageDetailEvent.ErrorDecryptingMessageBody(

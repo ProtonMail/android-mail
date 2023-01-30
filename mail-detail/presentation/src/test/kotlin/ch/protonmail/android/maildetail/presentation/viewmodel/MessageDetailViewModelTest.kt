@@ -36,7 +36,7 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
-import ch.protonmail.android.maildetail.domain.usecase.GetMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
@@ -122,7 +122,7 @@ class MessageDetailViewModelTest {
             ).right()
         )
     }
-    private val getMessageBody = mockk<GetMessageBody> {
+    private val getDecryptedMessageBody = mockk<GetDecryptedMessageBody> {
         coEvery { this@mockk(userId, any()) } returns decryptedMessageBody.right()
     }
     private val savedStateHandle = mockk<SavedStateHandle> {
@@ -183,7 +183,7 @@ class MessageDetailViewModelTest {
             observePrimaryUserId = observePrimaryUserId,
             messageDetailReducer = messageDetailReducer,
             observeMessageWithLabels = observeMessageWithLabels,
-            getMessageBody = getMessageBody,
+            getDecryptedMessageBody = getDecryptedMessageBody,
             actionUiModelMapper = actionUiModelMapper,
             observeDetailActions = observeDetailActions,
             observeDestinationMailLabels = observeMailLabels,
@@ -287,7 +287,7 @@ class MessageDetailViewModelTest {
     fun `message body state is error when use case returns error`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        coEvery { getMessageBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
+        coEvery { getDecryptedMessageBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
 
         // When
         viewModel.state.test {
@@ -304,7 +304,9 @@ class MessageDetailViewModelTest {
     fun `message body state is network error when use case returns network error`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        coEvery { getMessageBody(userId, messageId) } returns DataError.Remote.Http(NetworkError.NoNetwork).left()
+        coEvery {
+            getDecryptedMessageBody(userId, messageId)
+        } returns DataError.Remote.Http(NetworkError.NoNetwork).left()
 
         // When
         viewModel.state.test {
@@ -321,7 +323,7 @@ class MessageDetailViewModelTest {
     fun `message body state is loading when reload action was triggered`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        coEvery { getMessageBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
+        coEvery { getDecryptedMessageBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
 
         viewModel.state.test {
             initialStateEmitted()
@@ -341,7 +343,7 @@ class MessageDetailViewModelTest {
         // Given
         val messageId = MessageId(rawMessageId)
         coEvery {
-            getMessageBody(userId, messageId)
+            getDecryptedMessageBody(userId, messageId)
         } returns DataError.Local.DecryptionError(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY).left()
 
         // When

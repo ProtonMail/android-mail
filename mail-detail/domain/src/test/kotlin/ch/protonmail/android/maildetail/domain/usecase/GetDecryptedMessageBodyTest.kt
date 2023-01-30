@@ -41,7 +41,7 @@ import me.proton.core.user.domain.UserAddressManager
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class GetMessageBodyTest {
+class GetDecryptedMessageBodyTest {
 
     private val messageId = MessageId("messageId")
     private val decryptedMessageBody = "Decrypted message body."
@@ -63,7 +63,7 @@ class GetMessageBodyTest {
         }
     }
 
-    private val getMessageBody = GetMessageBody(cryptoContext, messageRepository, userAddressManager)
+    private val getDecryptedMessageBody = GetDecryptedMessageBody(cryptoContext, messageRepository, userAddressManager)
 
     @Test
     fun `when repository gets message body and decryption is successful then the decrypted message body is returned`() =
@@ -80,7 +80,7 @@ class GetMessageBodyTest {
             } returns DecryptedData(decryptedMessageBody.toByteArray(), VerificationStatus.Success)
 
             // When
-            val actual = getMessageBody(UserIdTestData.userId, messageId)
+            val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
 
             // Then
             assertEquals(expected, actual)
@@ -101,7 +101,7 @@ class GetMessageBodyTest {
             } throws CryptoException()
 
             // When
-            val actual = getMessageBody(UserIdTestData.userId, messageId)
+            val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
 
             // Then
             assertEquals(expected, actual)
@@ -117,7 +117,7 @@ class GetMessageBodyTest {
             } returns null
 
             // When
-            val actual = getMessageBody(UserIdTestData.userId, messageId)
+            val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
 
             // Then
             assertEquals(expected, actual)
@@ -132,7 +132,7 @@ class GetMessageBodyTest {
         } returns DataError.Local.NoDataCached.left()
 
         // When
-        val actual = getMessageBody(UserIdTestData.userId, messageId)
+        val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
 
         // Then
         assertEquals(expected, actual)
