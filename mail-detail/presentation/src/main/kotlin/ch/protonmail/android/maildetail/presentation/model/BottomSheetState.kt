@@ -21,6 +21,8 @@ package ch.protonmail.android.maildetail.presentation.model
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
+import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelectedState
+import me.proton.core.label.domain.entity.LabelId
 
 data class BottomSheetState(
     val contentState: BottomSheetContentState?,
@@ -56,5 +58,28 @@ sealed interface MoveToBottomSheetState : BottomSheetContentState {
 
     sealed interface MoveToBottomSheetAction : MoveToBottomSheetOperation {
         data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MoveToBottomSheetAction
+    }
+}
+
+sealed interface LabelAsBottomSheetState : BottomSheetContentState {
+
+    data class Data(
+        val labelUiModelsWithSelectedState: List<LabelUiModelWithSelectedState>
+    ) : LabelAsBottomSheetState
+
+    object Loading : LabelAsBottomSheetState
+
+    sealed interface LabelAsBottomSheetOperation : BottomSheetOperation
+
+    sealed interface LabelAsBottomSheetEvent : LabelAsBottomSheetOperation {
+        data class ActionData(
+            val customLabelList: List<MailLabelUiModel.Custom>,
+            val selectedLabels: List<LabelId>
+        ) :
+            LabelAsBottomSheetEvent
+    }
+
+    sealed interface LabelAsBottomSheetAction : LabelAsBottomSheetOperation {
+        data class LabelToggled(val labelId: LabelId) : LabelAsBottomSheetAction
     }
 }

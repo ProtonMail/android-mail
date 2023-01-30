@@ -56,6 +56,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.maildetail.presentation.reducer.LabelAsBottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBodyReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
@@ -108,7 +109,7 @@ class MessageDetailViewModelTest {
         MessageDetailMetadataReducer(),
         MessageBodyReducer(),
         BottomBarReducer(),
-        BottomSheetReducer(MoveToBottomSheetReducer())
+        BottomSheetReducer(MoveToBottomSheetReducer(), LabelAsBottomSheetReducer())
     )
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {

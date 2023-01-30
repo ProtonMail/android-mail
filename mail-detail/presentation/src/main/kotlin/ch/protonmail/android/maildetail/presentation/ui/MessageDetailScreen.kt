@@ -56,6 +56,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -117,6 +118,7 @@ fun MessageDetailScreen(
                     onFolderSelected = { viewModel.submit(MessageViewAction.MoveToDestinationSelected(it)) },
                     onDoneClick = { viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(it)) }
                 )
+                is LabelAsBottomSheetState -> ProtonCenteredProgress()
                 null -> ProtonCenteredProgress()
             }.exhaustive
         }

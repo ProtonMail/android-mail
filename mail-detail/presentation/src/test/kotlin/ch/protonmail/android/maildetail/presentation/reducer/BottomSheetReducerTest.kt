@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
+import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import io.mockk.Called
 import io.mockk.mockk
@@ -38,7 +39,8 @@ internal class BottomSheetReducerTest(
 ) {
 
     private val moveToBottomSheetReducer: MoveToBottomSheetReducer = mockk(relaxed = true)
-    private val reducer = BottomSheetReducer(moveToBottomSheetReducer)
+    private val labelAsBottomSheetReducer: LabelAsBottomSheetReducer = mockk(relaxed = true)
+    private val reducer = BottomSheetReducer(moveToBottomSheetReducer, labelAsBottomSheetReducer)
 
     @Test
     fun `should produce the expected new bottom sheet state`() = with(testInput) {
@@ -68,14 +70,16 @@ internal class BottomSheetReducerTest(
                 operation = BottomSheetOperation.Requested,
                 expectedState = BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Show)),
                 reducesBottomSheetVisibilityEffects = true,
-                reducesMoveTo = false
+                reducesMoveTo = false,
+                reducesLabelAs = false
             ),
             TestInput(
                 currentState = BottomSheetState(MoveToBottomSheetState.Data(listOf(), null)),
                 operation = BottomSheetOperation.Dismiss,
                 expectedState = BottomSheetState(null, Effect.of(BottomSheetVisibilityEffect.Hide)),
                 reducesBottomSheetVisibilityEffects = true,
-                reducesMoveTo = false
+                reducesMoveTo = false,
+                reducesLabelAs = false
             )
         )
 
@@ -85,7 +89,16 @@ internal class BottomSheetReducerTest(
                 operation = MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(listOf()),
                 expectedState = BottomSheetState(MoveToBottomSheetState.Data(listOf(), null)),
                 reducesBottomSheetVisibilityEffects = false,
-                reducesMoveTo = true
+                reducesMoveTo = true,
+                reducesLabelAs = false
+            ),
+            TestInput(
+                currentState = BottomSheetState(null, Effect.empty()),
+                operation = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(listOf(), listOf()),
+                expectedState = BottomSheetState(LabelAsBottomSheetState.Data(listOf())),
+                reducesBottomSheetVisibilityEffects = false,
+                reducesLabelAs = true,
+                reducesMoveTo = false
             )
         )
 
@@ -112,7 +125,8 @@ internal class BottomSheetReducerTest(
         val operation: BottomSheetOperation,
         val expectedState: BottomSheetState?,
         val reducesBottomSheetVisibilityEffects: Boolean,
-        val reducesMoveTo: Boolean
+        val reducesMoveTo: Boolean,
+        val reducesLabelAs: Boolean
     )
 
 }

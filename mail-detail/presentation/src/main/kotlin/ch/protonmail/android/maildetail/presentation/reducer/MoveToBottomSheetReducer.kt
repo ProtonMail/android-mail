@@ -38,8 +38,7 @@ class MoveToBottomSheetReducer @Inject constructor() {
     ): BottomSheetState? {
         return when (operation) {
             is MoveToBottomSheetAction.MoveToDestinationSelected -> when (
-                val contentState =
-                    currentState?.contentState
+                val contentState = currentState?.contentState
             ) {
                 is Data -> BottomSheetState(
                     contentState.toNewSelectedState(operation.mailLabelId),

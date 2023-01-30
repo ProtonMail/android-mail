@@ -22,16 +22,22 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
+import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import javax.inject.Inject
 
 class BottomSheetReducer @Inject constructor(
-    private val moveToBottomSheetReducer: MoveToBottomSheetReducer
+    private val moveToBottomSheetReducer: MoveToBottomSheetReducer,
+    private val labelAsBottomSheetReducer: LabelAsBottomSheetReducer
 ) {
 
     fun newStateFrom(currentState: BottomSheetState?, operation: BottomSheetOperation): BottomSheetState? {
         return when (operation) {
             is MoveToBottomSheetState.MoveToBottomSheetOperation -> moveToBottomSheetReducer.newStateFrom(
+                currentState,
+                operation
+            )
+            is LabelAsBottomSheetState.LabelAsBottomSheetOperation -> labelAsBottomSheetReducer.newStateFrom(
                 currentState,
                 operation
             )
