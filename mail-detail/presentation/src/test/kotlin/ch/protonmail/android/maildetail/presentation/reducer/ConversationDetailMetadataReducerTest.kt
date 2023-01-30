@@ -52,6 +52,10 @@ class ConversationDetailMetadataReducerTest(
             "conversationId",
             "This email is about subjects"
         )
+        private val updatedConversationUiModel = ConversationUiModelTestData.buildConversationUiModel(
+            "conversationId1",
+            "[Re] This email is about subjects"
+        )
 
         private val transitionsFromLoadingState = listOf(
             TestParams(
@@ -100,6 +104,14 @@ class ConversationDetailMetadataReducerTest(
                     event = ConversationDetailEvent.ErrorLoadingConversation,
                     expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
                 )
+            ),
+            TestParams(
+                testName = "from data to updated data state on new data",
+                TestParams.TestInput(
+                    currentState = ConversationDetailMetadataState.Data(conversationUiModel),
+                    event = ConversationDetailEvent.ConversationData(updatedConversationUiModel),
+                    expectedState = ConversationDetailMetadataState.Data(updatedConversationUiModel)
+                )
             )
         )
 
@@ -110,6 +122,18 @@ class ConversationDetailMetadataReducerTest(
                     currentState = ConversationDetailMetadataState.Error(TextUiModel("any error")),
                     event = ConversationDetailEvent.ConversationData(conversationUiModel),
                     expectedState = ConversationDetailMetadataState.Data(conversationUiModel)
+                )
+            ),
+            TestParams(
+                "from error to updated error on error",
+                TestParams.TestInput(
+                    currentState = ConversationDetailMetadataState.Error(
+                        message = TextUiModel(string.x_error_not_logged_in)
+                    ),
+                    event = ConversationDetailEvent.ErrorLoadingConversation,
+                    expectedState = ConversationDetailMetadataState.Error(
+                        message = TextUiModel(string.detail_error_loading_conversation)
+                    )
                 )
             )
         )
