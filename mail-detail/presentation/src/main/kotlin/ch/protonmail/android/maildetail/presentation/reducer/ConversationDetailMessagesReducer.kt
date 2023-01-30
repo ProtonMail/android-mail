@@ -28,7 +28,7 @@ import javax.inject.Inject
 class ConversationDetailMessagesReducer @Inject constructor() {
 
     fun newStateFrom(
-        @Suppress("UNUSED_PARAMETER") currentState: ConversationDetailsMessagesState,
+        currentState: ConversationDetailsMessagesState,
         operation: ConversationDetailOperation.AffectingMessages
     ): ConversationDetailsMessagesState =
         when (operation) {
@@ -41,5 +41,14 @@ class ConversationDetailMessagesReducer @Inject constructor() {
             is ConversationDetailEvent.MessagesData -> ConversationDetailsMessagesState.Data(
                 messages = operation.messagesUiModels
             )
+            is ConversationDetailEvent.NoNetworkError -> currentState.toNewStateForNoNetworkError()
+        }
+
+    private fun ConversationDetailsMessagesState.toNewStateForNoNetworkError() =
+        when (this) {
+            is ConversationDetailsMessagesState.Data -> this
+            is ConversationDetailsMessagesState.Offline,
+            is ConversationDetailsMessagesState.Loading,
+            is ConversationDetailsMessagesState.Error -> ConversationDetailsMessagesState.Offline
         }
 }

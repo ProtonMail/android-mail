@@ -42,6 +42,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
@@ -49,6 +50,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
@@ -214,8 +216,12 @@ fun ConversationDetailScreen(
                 modifier = Modifier.padding(innerPadding),
                 errorMessage = state.messagesState.message.string()
             )
-            ConversationDetailsMessagesState.Loading -> ProtonCenteredProgress(
+            is ConversationDetailsMessagesState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
+            )
+            is ConversationDetailsMessagesState.Offline -> ProtonErrorMessage(
+                modifier = Modifier.padding(innerPadding),
+                errorMessage = stringResource(id = R.string.please_go_back_online_to_load_messages)
             )
         }.exhaustive
     }

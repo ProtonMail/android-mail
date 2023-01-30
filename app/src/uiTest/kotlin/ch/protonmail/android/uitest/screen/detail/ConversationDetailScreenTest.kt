@@ -305,6 +305,21 @@ class ConversationDetailScreenTest {
         assertTrue(didExit)
     }
 
+    @Test
+    fun whenOfflineStateThenOfflineErrorMessageIsDisplayed() {
+        // given
+        val message = TextUiModel("You're offline. Please go back online to load messages")
+        val state = ConversationDetailsPreviewData.Success.copy(
+            messagesState = ConversationDetailsMessagesState.Offline
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify { errorMessageIsDisplayed(message) }
+    }
+
     private fun setupScreen(
         state: ConversationDetailState,
         actions: ConversationDetailScreen.Actions = ConversationDetailScreen.Actions.Empty

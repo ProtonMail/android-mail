@@ -27,6 +27,7 @@ sealed interface ConversationDetailsMessagesState {
     ) : ConversationDetailsMessagesState
 
     object Loading : ConversationDetailsMessagesState
+    object Offline : ConversationDetailsMessagesState
 
     data class Error(val message: TextUiModel) : ConversationDetailsMessagesState
 }

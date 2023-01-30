@@ -44,7 +44,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorLoadingContacts : ConversationDetailEvent, AffectingMessages
     object ErrorLoadingConversation : ConversationDetailEvent, AffectingConversation
     object ErrorLoadingMessages : ConversationDetailEvent, AffectingMessages
-    object NoNetworkError : ConversationDetailEvent, AffectingConversation
+    object NoNetworkError : ConversationDetailEvent, AffectingConversation, AffectingMessages
 
     data class MessagesData(
         val messagesUiModels: List<ConversationDetailMessageUiModel>
