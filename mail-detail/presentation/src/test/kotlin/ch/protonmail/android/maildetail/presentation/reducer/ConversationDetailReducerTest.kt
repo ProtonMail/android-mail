@@ -142,7 +142,7 @@ class ConversationDetailReducerTest(
                 affects Conversation,
             ConversationDetailEvent.ErrorAddStar affects ErrorBar,
             ConversationDetailEvent.ErrorRemoveStar affects ErrorBar,
-            ConversationDetailEvent.ErrorLoadingConversation affects Conversation,
+            ConversationDetailEvent.ErrorLoadingConversation affects listOf(Conversation, Messages),
             ConversationDetailEvent.ErrorLoadingMessages affects Messages,
             ConversationDetailEvent.ErrorMarkingAsUnread affects ErrorBar,
             ConversationDetailEvent.ErrorMovingConversation affects ErrorBar,
@@ -160,16 +160,21 @@ class ConversationDetailReducerTest(
     }
 }
 
-private infix fun ConversationDetailOperation.affects(entity: Entity) = ConversationDetailReducerTest.TestInput(
+
+private infix fun ConversationDetailOperation.affects(entities: List<Entity>) = ConversationDetailReducerTest.TestInput(
     operation = this,
-    reducesConversation = entity == Conversation,
-    reducesMessages = entity == Messages,
-    reducesBottomBar = entity == BottomBar,
-    reducesErrorBar = entity == ErrorBar,
-    reducesExit = entity == Exit,
-    expectedExitMessage = (entity as? ExitWithMessage)?.message,
-    reducesBottomSheet = entity == BottomSheet
+    reducesConversation = entities.contains(Conversation),
+    reducesMessages = entities.contains(Messages),
+    reducesBottomBar = entities.contains(BottomBar),
+    reducesErrorBar = entities.contains(ErrorBar),
+    reducesExit = entities.contains(Exit),
+    expectedExitMessage = entities.map { (it as? ExitWithMessage)?.message }.firstOrNull(),
+    reducesBottomSheet = entities.contains(
+        BottomSheet
+    )
 )
+
+private infix fun ConversationDetailOperation.affects(entity: Entity) = this.affects(listOf(entity))
 
 private sealed interface Entity
 private object Messages : Entity

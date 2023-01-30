@@ -84,6 +84,14 @@ class ConversationDetailMessagesReducerTest(
                 currentState = ConversationDetailsMessagesState.Loading,
                 operation = ConversationDetailEvent.NoNetworkError,
                 expectedState = ConversationDetailsMessagesState.Offline
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Loading,
+                operation = ConversationDetailEvent.ErrorLoadingConversation,
+                expectedState = ConversationDetailsMessagesState.Error(
+                    message = TextUiModel(string.detail_error_loading_messages)
+                )
             )
         )
 
@@ -149,6 +157,12 @@ class ConversationDetailMessagesReducerTest(
             Input(
                 currentState = ConversationDetailsMessagesState.Data(messages = allMessages),
                 operation = ConversationDetailEvent.NoNetworkError,
+                expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(messages = allMessages),
+                operation = ConversationDetailEvent.ErrorLoadingConversation,
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             )
         )

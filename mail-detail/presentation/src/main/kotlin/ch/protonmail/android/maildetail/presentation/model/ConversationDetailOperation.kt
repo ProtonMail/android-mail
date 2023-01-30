@@ -42,7 +42,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     ) : ConversationDetailEvent, AffectingConversation
 
     object ErrorLoadingContacts : ConversationDetailEvent, AffectingMessages
-    object ErrorLoadingConversation : ConversationDetailEvent, AffectingConversation
+    object ErrorLoadingConversation : ConversationDetailEvent, AffectingConversation, AffectingMessages
     object ErrorLoadingMessages : ConversationDetailEvent, AffectingMessages
     object NoNetworkError : ConversationDetailEvent, AffectingMessages
 

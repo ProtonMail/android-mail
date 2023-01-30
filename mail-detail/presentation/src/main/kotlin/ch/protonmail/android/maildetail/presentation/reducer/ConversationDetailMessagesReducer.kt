@@ -35,13 +35,14 @@ class ConversationDetailMessagesReducer @Inject constructor() {
             ConversationDetailEvent.ErrorLoadingContacts -> ConversationDetailsMessagesState.Error(
                 message = TextUiModel(string.detail_error_loading_contacts)
             )
-            ConversationDetailEvent.ErrorLoadingMessages -> ConversationDetailsMessagesState.Error(
+            is ConversationDetailEvent.ErrorLoadingMessages -> ConversationDetailsMessagesState.Error(
                 message = TextUiModel(string.detail_error_loading_messages)
             )
             is ConversationDetailEvent.MessagesData -> ConversationDetailsMessagesState.Data(
                 messages = operation.messagesUiModels
             )
             is ConversationDetailEvent.NoNetworkError -> currentState.toNewStateForNoNetworkError()
+            is ConversationDetailEvent.ErrorLoadingConversation -> currentState.toNewStateForErrorLoadingConversation()
         }
 
     private fun ConversationDetailsMessagesState.toNewStateForNoNetworkError() =
@@ -50,5 +51,15 @@ class ConversationDetailMessagesReducer @Inject constructor() {
             is ConversationDetailsMessagesState.Offline,
             is ConversationDetailsMessagesState.Loading,
             is ConversationDetailsMessagesState.Error -> ConversationDetailsMessagesState.Offline
+        }
+
+    private fun ConversationDetailsMessagesState.toNewStateForErrorLoadingConversation() =
+        when (this) {
+            is ConversationDetailsMessagesState.Data -> this
+            is ConversationDetailsMessagesState.Offline,
+            is ConversationDetailsMessagesState.Loading,
+            is ConversationDetailsMessagesState.Error -> ConversationDetailsMessagesState.Error(
+                message = TextUiModel(string.detail_error_loading_messages)
+            )
         }
 }
