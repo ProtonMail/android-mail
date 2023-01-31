@@ -16,21 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.util
+package ch.protonmail.android.uitest
 
 import android.app.Application
-import androidx.annotation.StringRes
-import androidx.test.core.app.ApplicationProvider
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import android.content.Context
+import androidx.test.runner.AndroidJUnitRunner
+import dagger.hilt.android.testing.HiltTestApplication
 
-fun getString(text: TextUiModel): String = when (text) {
-    is TextUiModel.Text -> text.value
-    is TextUiModel.TextRes -> getString(text.value)
-    is TextUiModel.TextResWithArgs -> getString(text.value, *text.formatArgs.toTypedArray())
+@Suppress("unused") // Used in Gradle config
+class HiltTestRunner : AndroidJUnitRunner() {
+
+    override fun newApplication(
+        cl: ClassLoader?,
+        name: String?,
+        context: Context?
+    ): Application = super.newApplication(cl, HiltTestApplication::class.java.name, context)
 }
-
-fun getString(@StringRes resId: Int): String =
-    ApplicationProvider.getApplicationContext<Application>().getString(resId)
-
-fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
-    ApplicationProvider.getApplicationContext<Application>().getString(resId, formatArgs)

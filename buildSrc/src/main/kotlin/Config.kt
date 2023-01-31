@@ -21,7 +21,7 @@ object Config {
     const val compileSdk = 33
     const val minSdk = 24
     const val targetSdk = 33
-    const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    const val testInstrumentationRunner = "ch.protonmail.android.uitest.HiltTestRunner"
     const val versionCode = 1
     const val versionName = "6.0.0"
 }
