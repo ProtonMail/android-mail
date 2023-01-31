@@ -47,6 +47,8 @@
     <!-- Bottom Sheet -->
     <string name="bottom_sheet_move_to_title">Move to...</string>
     <string name="bottom_sheet_done_action">Done</string>
+    <string name="bottom_sheet_archive_action">Also archive?</string>
+    <string name="bottom_sheet_label_as_title">Label as...</string>
     <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
     <string name="decryption_error">Message decryption failed.</string>
 </resources>
