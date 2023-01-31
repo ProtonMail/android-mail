@@ -22,8 +22,8 @@ import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -43,24 +43,31 @@ class GetDecryptedMessageBody @Inject constructor(
     private val userAddressManager: UserAddressManager
 ) {
 
-    suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, DecryptedMessageBody> {
-        return messageRepository.getMessageWithBody(userId, messageId).flatMap { messageWithBody ->
-            val addressId = messageWithBody.message.addressId
-            val userAddress = userAddressManager.getAddress(userId, addressId)
-            return@flatMap if (userAddress != null) {
-                try {
-                    userAddress.useKeys(cryptoContext) {
-                        decryptMessageBody(messageWithBody.messageBody)
-                    }.right()
-                } catch (cryptoException: CryptoException) {
-                    Timber.e(cryptoException, "Error decrypting message")
-                    DataError.Local.DecryptionError(messageWithBody.messageBody.body).left()
+    suspend operator fun invoke(
+        userId: UserId,
+        messageId: MessageId
+    ): Either<GetDecryptedMessageBodyError, DecryptedMessageBody> {
+        return messageRepository.getMessageWithBody(userId, messageId)
+            .mapLeft { GetDecryptedMessageBodyError.Data(it) }
+            .flatMap { messageWithBody ->
+                val addressId = messageWithBody.message.addressId
+                val userAddress = userAddressManager.getAddress(userId, addressId)
+                val messageBody = messageWithBody.messageBody
+
+                return@flatMap if (userAddress != null) {
+                    try {
+                        userAddress.useKeys(cryptoContext) {
+                            decryptMessageBody(messageBody)
+                        }.right()
+                    } catch (cryptoException: CryptoException) {
+                        Timber.e(cryptoException, "Error decrypting message")
+                        GetDecryptedMessageBodyError.Decryption(messageBody.body).left()
+                    }
+                } else {
+                    Timber.e("Decryption error. Could not get UserAddress for user id ${userId.id}")
+                    GetDecryptedMessageBodyError.Decryption(messageBody.body).left()
                 }
-            } else {
-                Timber.e("Decryption error. Could not get UserAddress for user id ${userId.id}")
-                DataError.Local.DecryptionError(messageWithBody.messageBody.body).left()
             }
-        }
     }
 
     @Suppress("NotImplementedDeclaration")

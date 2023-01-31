@@ -22,6 +22,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -90,7 +91,8 @@ class GetDecryptedMessageBodyTest {
     fun `when repository gets message body and decryption has failed then a decryption error is returned`() =
         runTest {
             // Given
-            val expected = DataError.Local.DecryptionError(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY).left()
+            val expected = GetDecryptedMessageBodyError.Decryption(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
+                .left()
             every {
                 pgpCryptoMock.decryptAndVerifyData(
                     message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
@@ -111,7 +113,8 @@ class GetDecryptedMessageBodyTest {
     fun `when repository gets message body and user address is null then a decryption error is returned`() =
         runTest {
             // Given
-            val expected = DataError.Local.DecryptionError(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY).left()
+            val expected = GetDecryptedMessageBodyError.Decryption(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
+                .left()
             coEvery {
                 userAddressManager.getAddress(UserIdTestData.userId, MessageTestData.message.addressId)
             } returns null
@@ -126,7 +129,7 @@ class GetDecryptedMessageBodyTest {
     @Test
     fun `when repository method returns an error then the use case returns the error`() = runTest {
         // Given
-        val expected = DataError.Local.NoDataCached.left()
+        val expected = GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
         coEvery {
             messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
         } returns DataError.Local.NoDataCached.left()

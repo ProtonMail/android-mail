@@ -35,6 +35,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
@@ -287,7 +288,9 @@ class MessageDetailViewModelTest {
     fun `message body state is error when use case returns error`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        coEvery { getDecryptedMessageBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
+        coEvery {
+            getDecryptedMessageBody(userId, messageId)
+        } returns GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
 
         // When
         viewModel.state.test {
@@ -306,7 +309,7 @@ class MessageDetailViewModelTest {
         val messageId = MessageId(rawMessageId)
         coEvery {
             getDecryptedMessageBody(userId, messageId)
-        } returns DataError.Remote.Http(NetworkError.NoNetwork).left()
+        } returns GetDecryptedMessageBodyError.Data(DataError.Remote.Http(NetworkError.NoNetwork)).left()
 
         // When
         viewModel.state.test {
@@ -323,7 +326,9 @@ class MessageDetailViewModelTest {
     fun `message body state is loading when reload action was triggered`() = runTest {
         // Given
         val messageId = MessageId(rawMessageId)
-        coEvery { getDecryptedMessageBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
+        coEvery {
+            getDecryptedMessageBody(userId, messageId)
+        } returns GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
 
         viewModel.state.test {
             initialStateEmitted()
@@ -344,7 +349,7 @@ class MessageDetailViewModelTest {
         val messageId = MessageId(rawMessageId)
         coEvery {
             getDecryptedMessageBody(userId, messageId)
-        } returns DataError.Local.DecryptionError(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY).left()
+        } returns GetDecryptedMessageBodyError.Decryption(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY).left()
 
         // When
         viewModel.state.test {

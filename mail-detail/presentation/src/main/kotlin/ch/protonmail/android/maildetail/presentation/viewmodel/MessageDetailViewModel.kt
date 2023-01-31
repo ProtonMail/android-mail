@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
@@ -212,15 +213,22 @@ class MessageDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = primaryUserId.first()
             val event = getDecryptedMessageBody(userId, messageId).fold(
-                ifLeft = { dataError ->
-                    if (dataError is DataError.Local.DecryptionError) {
-                        MessageDetailEvent.ErrorDecryptingMessageBody(
-                            messageBodyUiModelMapper.toUiModel(dataError.encryptedMessageBody)
-                        )
-                    } else {
-                        MessageDetailEvent.ErrorGettingMessageBody(
-                            isNetworkError = dataError == DataError.Remote.Http(NetworkError.NoNetwork)
-                        )
+                ifLeft = { getDecryptedMessageBodyError ->
+                    when (getDecryptedMessageBodyError) {
+                        is GetDecryptedMessageBodyError.Decryption -> {
+                            MessageDetailEvent.ErrorDecryptingMessageBody(
+                                messageBody = messageBodyUiModelMapper.toUiModel(
+                                    getDecryptedMessageBodyError.encryptedMessageBody
+                                )
+                            )
+                        }
+                        is GetDecryptedMessageBodyError.Data -> {
+                            MessageDetailEvent.ErrorGettingMessageBody(
+                                isNetworkError = getDecryptedMessageBodyError.dataError == DataError.Remote.Http(
+                                    NetworkError.NoNetwork
+                                )
+                            )
+                        }
                     }
                 },
                 ifRight = { MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(it)) }
