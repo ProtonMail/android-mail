@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest
 
 import android.app.Application
 import android.content.Context
+import android.os.StrictMode
 import androidx.test.runner.AndroidJUnitRunner
 import dagger.hilt.android.testing.HiltTestApplication
 
@@ -30,5 +31,8 @@ class HiltTestRunner : AndroidJUnitRunner() {
         cl: ClassLoader?,
         name: String?,
         context: Context?
-    ): Application = super.newApplication(cl, HiltTestApplication::class.java.name, context)
+    ): Application {
+        StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().permitAll().build())
+        return super.newApplication(cl, HiltTestApplication::class.java.name, context)
+    }
 }
