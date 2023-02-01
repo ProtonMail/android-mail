@@ -19,7 +19,14 @@
 package ch.protonmail.android
 
 import android.app.Application
+import ch.protonmail.android.initializer.MainInitializer
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class App : Application()
+class App : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        MainInitializer.init(this)
+    }
+}
