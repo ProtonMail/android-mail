@@ -54,10 +54,6 @@ object NetworkModule {
     const val BASE_URL = "https://$API_HOST"
 
     @Provides
-    @BaseProtonApiUrl
-    fun provideProtonApiUrl(): HttpUrl = BASE_URL.toHttpUrl()
-
-    @Provides
     @Singleton
     fun provideApiClient(
         buildUserAgent: BuildUserAgent,
@@ -108,4 +104,13 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideDohAlternativesListener(): DohAlternativesListener? = null
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkConfigModule {
+
+    @Provides
+    @BaseProtonApiUrl
+    fun provideProtonApiUrl(): HttpUrl = NetworkModule.BASE_URL.toHttpUrl()
 }
