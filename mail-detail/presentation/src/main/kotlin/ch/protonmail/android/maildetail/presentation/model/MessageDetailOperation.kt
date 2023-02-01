@@ -82,6 +82,6 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object DismissBottomSheet : MessageViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MessageViewAction, AffectingBottomSheet
     data class MoveToDestinationConfirmed(val mailLabelText: String) : MessageViewAction
-    data class LabelAsToggleAction(val labelId: LabelId) : MessageViewAction, AffectingMessage
+    data class LabelAsToggleAction(val labelId: LabelId) : MessageViewAction, AffectingBottomSheet
 
 }

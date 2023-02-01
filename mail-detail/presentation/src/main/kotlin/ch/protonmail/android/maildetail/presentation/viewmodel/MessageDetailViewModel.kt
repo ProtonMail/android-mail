@@ -68,6 +68,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
@@ -120,7 +121,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.DismissBottomSheet -> dismissBottomSheet(action)
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
-            is MessageViewAction.LabelAsToggleAction -> {}
+            is MessageViewAction.LabelAsToggleAction -> onLabelSelected(action.labelId)
             is MessageViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
         }.exhaustive
     }
@@ -318,6 +319,10 @@ class MessageDetailViewModel @Inject constructor(
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)
+    }
+
+    private fun onLabelSelected(labelId: LabelId) {
+        viewModelScope.launch { emitNewStateFrom(MessageViewAction.LabelAsToggleAction(labelId)) }
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {

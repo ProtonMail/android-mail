@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
+import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -106,9 +107,8 @@ class MessageDetailReducer @Inject constructor(
         if (operation is MessageDetailOperation.AffectingBottomSheet) {
             val bottomSheetOperation = when (operation) {
                 is MessageDetailEvent.MessageBottomSheetEvent -> operation.bottomSheetOperation
-                is MessageViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(
-                    operation.mailLabelId
-                )
+                is MessageViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(operation.mailLabelId)
+                is MessageViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
                 is MessageViewAction.RequestLabelAsBottomSheet,
                 is MessageViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
                 is MessageViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss

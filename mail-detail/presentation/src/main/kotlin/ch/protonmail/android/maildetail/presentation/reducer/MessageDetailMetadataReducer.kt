@@ -43,7 +43,6 @@ class MessageDetailMetadataReducer @Inject constructor() {
             is MessageViewAction.UnStar -> currentState.toNewStateForUnStarredMessage()
             is MessageDetailEvent.ErrorAddingStar -> currentState.toNewStateForErrorAddingStar()
             is MessageDetailEvent.ErrorRemovingStar -> currentState.toNewStateForErrorRemovingStar()
-            is MessageViewAction.LabelAsToggleAction -> TODO()
         }
     }
 

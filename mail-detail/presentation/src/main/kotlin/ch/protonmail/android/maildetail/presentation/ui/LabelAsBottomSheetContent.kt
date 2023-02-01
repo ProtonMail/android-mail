@@ -118,13 +118,13 @@ fun LabelAsBottomSheetContent(
                     )
                     Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
                     TriStateCheckbox(
-                        modifier = Modifier.padding(end = ProtonDimens.DefaultSpacing),
+                        modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing),
                         state = when (itemLabel.selectedState) {
                             LabelSelectedState.Selected -> ToggleableState.On
                             LabelSelectedState.NotSelected -> ToggleableState.Off
                             LabelSelectedState.PartiallySelected -> ToggleableState.Indeterminate
                         },
-                        onClick = null
+                        onClick = { onLabelAsSelected(itemLabel.labelUiModel.id.labelId) }
                     )
                 }
             }
