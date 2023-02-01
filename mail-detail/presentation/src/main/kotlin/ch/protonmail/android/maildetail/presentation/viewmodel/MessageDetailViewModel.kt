@@ -39,6 +39,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -48,7 +49,9 @@ import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReduce
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -65,6 +68,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 import javax.inject.Inject
@@ -80,6 +84,7 @@ class MessageDetailViewModel @Inject constructor(
     private val observeDetailActions: ObserveMessageDetailActions,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
+    private val observeCustomMailLabels: ObserveCustomMailLabels,
     private val markUnread: MarkMessageAsUnread,
     private val getContacts: GetContacts,
     private val starMessage: StarMessage,
@@ -115,6 +120,8 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.DismissBottomSheet -> dismissBottomSheet(action)
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
+            is MessageViewAction.LabelAsToggleAction -> TODO()
+            is MessageViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
         }.exhaustive
     }
 
@@ -269,6 +276,36 @@ class MessageDetailViewModel @Inject constructor(
                 MessageDetailEvent.MessageBottomSheetEvent(
                     MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
                         folders.toUiModels(color).let { it.folders + it.systems }
+                    )
+                )
+            }
+        }.onStart {
+            emitNewStateFrom(initialEvent)
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun showLabelAsBottomSheetAndLoadData(initialEvent: MessageViewAction) {
+        primaryUserId.flatMapLatest { userId ->
+            combine(
+                observeCustomMailLabels(userId),
+                observeFolderColor(userId),
+                observeMessageWithLabels(userId, messageId),
+            ) { labels, color, message ->
+                val selectedLabels = message.fold(
+                    ifLeft = { emptyList() },
+                    ifRight = { messageWithLabels ->
+                        messageWithLabels.labels
+                            .filter { it.type == LabelType.MessageLabel }
+                            .map { it.labelId }
+                    }
+                )
+
+                MessageDetailEvent.MessageBottomSheetEvent(
+                    LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+                        customLabelList = labels.map { it.toCustomUiModel(color, emptyMap(), null) },
+                        selectedLabels = selectedLabels
                     )
                 )
             }

@@ -109,6 +109,7 @@ class MessageDetailReducer @Inject constructor(
                 is MessageViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(
                     operation.mailLabelId
                 )
+                is MessageViewAction.RequestLabelAsBottomSheet,
                 is MessageViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
                 is MessageViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }

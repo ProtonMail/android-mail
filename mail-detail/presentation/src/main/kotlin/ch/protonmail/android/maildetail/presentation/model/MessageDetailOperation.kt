@@ -24,6 +24,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessage
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessageBody
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import me.proton.core.label.domain.entity.LabelId
 
 sealed interface MessageDetailOperation {
     sealed interface AffectingMessage
@@ -77,7 +78,10 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object MarkUnread : MessageViewAction
     object Trash : MessageViewAction
     object RequestMoveToBottomSheet : MessageViewAction, AffectingBottomSheet
+    object RequestLabelAsBottomSheet : MessageViewAction, AffectingBottomSheet
     object DismissBottomSheet : MessageViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MessageViewAction, AffectingBottomSheet
     data class MoveToDestinationConfirmed(val mailLabelText: String) : MessageViewAction
+    data class LabelAsToggleAction(val labelId: LabelId) : MessageViewAction, AffectingMessage
+
 }

@@ -66,6 +66,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -75,6 +76,7 @@ import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
+import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomLabel
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
@@ -148,6 +150,14 @@ class MessageDetailViewModelTest {
         mockk<ObserveFolderColorSettings> {
             every { this@mockk.invoke(userId) } returns flowOf(FolderColorSettings())
         }
+    private val observeCustomMailLabels = mockk<ObserveCustomMailLabels> {
+        every { this@mockk.invoke(userId) } returns flowOf(
+            listOf(
+                buildCustomLabel(id = "label1"),
+                buildCustomLabel(id = "label2")
+            )
+        )
+    }
     private val markUnread = mockk<MarkMessageAsUnread> {
         coEvery { this@mockk(userId, MessageId(rawMessageId)) } returns MessageSample.Invoice.right()
     }
@@ -190,6 +200,7 @@ class MessageDetailViewModelTest {
             observeDetailActions = observeDetailActions,
             observeDestinationMailLabels = observeMailLabels,
             observeFolderColor = observeFolderColorSettings,
+            observeCustomMailLabels = observeCustomMailLabels,
             markUnread = markUnread,
             getContacts = getContacts,
             starMessage = starMessage,

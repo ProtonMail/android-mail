@@ -54,8 +54,8 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
-import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
@@ -91,7 +91,7 @@ fun MessageDetailScreen(
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
-    state.bottomSheetState?.let {
+    state.bottomSheetState?.takeIf { it.contentState != null }?.let {
         ConsumableLaunchedEffect(effect = it.bottomSheetVisibilityEffect) { bottomSheetEffect ->
             when (bottomSheetEffect) {
                 BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
@@ -118,7 +118,9 @@ fun MessageDetailScreen(
                     onFolderSelected = { viewModel.submit(MessageViewAction.MoveToDestinationSelected(it)) },
                     onDoneClick = { viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(it)) }
                 )
-                is LabelAsBottomSheetState -> ProtonCenteredProgress()
+                is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
+                    state = bottomSheetContentState,
+                    onLabelAsSelected = { viewModel.submit(MessageViewAction.LabelAsToggleAction(it)) })
                 null -> ProtonCenteredProgress()
             }.exhaustive
         }
@@ -133,7 +135,8 @@ fun MessageDetailScreen(
                 onTrashClick = { viewModel.submit(MessageViewAction.Trash) },
                 onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
                 onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) },
-                onMoveClick = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) }
+                onMoveClick = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) },
+                onLabelAsClick = { viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet) }
             )
         )
     }
@@ -188,7 +191,7 @@ fun MessageDetailScreen(
                     onStar = { Timber.d("message onStar clicked") },
                     onUnstar = { Timber.d("message onUnstar clicked") },
                     onMove = actions.onMoveClick,
-                    onLabel = { Timber.d("message onLabel clicked") },
+                    onLabel = actions.onLabelAsClick,
                     onTrash = actions.onTrashClick,
                     onDelete = { Timber.d("message onDelete clicked") },
                     onArchive = { Timber.d("message onArchive clicked") },
@@ -323,7 +326,8 @@ object MessageDetailScreen {
         val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
         val onUnreadClick: () -> Unit,
-        val onMoveClick: () -> Unit
+        val onMoveClick: () -> Unit,
+        val onLabelAsClick: () -> Unit
     ) {
 
         companion object {
@@ -335,7 +339,8 @@ object MessageDetailScreen {
                 onTrashClick = {},
                 onUnStarClick = {},
                 onUnreadClick = {},
-                onMoveClick = {}
+                onMoveClick = {},
+                onLabelAsClick = {}
             )
         }
     }
