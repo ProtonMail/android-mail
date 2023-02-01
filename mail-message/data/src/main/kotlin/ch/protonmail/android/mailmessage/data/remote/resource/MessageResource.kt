@@ -69,7 +69,7 @@ data class MessageResource(
     @SerialName("NumAttachments")
     val numAttachments: Int,
     @SerialName("Flags")
-    val flags: Int,
+    val flags: Long,
     @SerialName("AttachmentInfo")
     val attachmentsInfo: AttachmentsInfoResource? = null
 ) {

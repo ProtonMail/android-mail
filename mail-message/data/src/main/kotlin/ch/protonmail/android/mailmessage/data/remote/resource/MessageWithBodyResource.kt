@@ -76,7 +76,7 @@ data class MessageWithBodyResource(
     @SerialName("NumAttachments")
     val numAttachments: Int,
     @SerialName("Flags")
-    val flags: Int,
+    val flags: Long,
     // --- Extended properties ---
     @SerialName("Body")
     val body: String,

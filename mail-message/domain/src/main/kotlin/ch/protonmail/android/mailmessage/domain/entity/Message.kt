@@ -54,7 +54,7 @@ data class Message(
     val addressId: AddressId,
     val externalId: String?,
     val numAttachments: Int,
-    val flags: Int,
+    val flags: Long,
     val attachmentCount: AttachmentCount
 ) : PageItem {
     override val id: String = messageId.id

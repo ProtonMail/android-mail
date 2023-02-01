@@ -103,7 +103,7 @@ data class MessageEntity(
      * Phishing auto = 1073741824 (2^30)
      * Phishing manual = 2147483648 (2^31)
      */
-    val flags: Int,
+    val flags: Long,
     val attachmentCount: AttachmentCountEntity
 )
 
