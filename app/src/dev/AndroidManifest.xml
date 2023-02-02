@@ -24,4 +24,5 @@
     <application
         android:networkSecurityConfig="@xml/pm_network_security_config"
         tools:ignore="MissingApplicationIcon" />
+
 </manifest>
