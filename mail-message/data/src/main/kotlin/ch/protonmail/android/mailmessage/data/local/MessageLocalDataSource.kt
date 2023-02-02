@@ -34,35 +34,24 @@ interface MessageLocalDataSource {
     /**
      * Delete all messages for [userId].
      */
-    suspend fun deleteAllMessages(
-        userId: UserId
-    )
+    suspend fun deleteAllMessages(userId: UserId)
 
     /**
      * Delete Message(s) for [userId], by [ids].
      */
-    suspend fun deleteMessage(
-        userId: UserId,
-        ids: List<MessageId>
-    )
+    suspend fun deleteMessage(userId: UserId, ids: List<MessageId>)
 
     /**
      * Return clipped [PageKey] according already persisted intervals.
      *
      * Note: Usually used to trim unnecessary interval from the [PageKey] before fetching.
      */
-    suspend fun getClippedPageKey(
-        userId: UserId,
-        pageKey: PageKey
-    ): PageKey
+    suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey
 
     /**
      * Get all [Message] by [userId] for this [pageKey].
      */
-    suspend fun getMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): List<Message>
+    suspend fun getMessages(userId: UserId, pageKey: PageKey): List<Message>
 
     /**
      * Return true if all [Message] are considered locally up-to-date according the given [pageKey].
@@ -76,48 +65,32 @@ interface MessageLocalDataSource {
     /**
      * Mark local data as stale for [userId], by [labelId].
      */
-    suspend fun markAsStale(
-        userId: UserId,
-        labelId: LabelId
-    )
+    suspend fun markAsStale(userId: UserId, labelId: LabelId)
 
     /**
      * Observe [Message] by [UserId] and [MessageId]
      */
-    fun observeMessage(
-        userId: UserId,
-        messageId: MessageId
-    ): Flow<Message?>
+    fun observeMessage(userId: UserId, messageId: MessageId): Flow<Message?>
 
     /**
      * Observe all [Message] by [userId] for given [conversationId].
      */
-    fun observeMessages(
-        userId: UserId,
-        conversationId: ConversationId
-    ): Flow<List<Message>>
+    fun observeMessages(userId: UserId, conversationId: ConversationId): Flow<List<Message>>
 
     /**
      * Observe all [Message] by [userId] for this [pageKey].
      */
-    fun observeMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): Flow<List<Message>>
+    fun observeMessages(userId: UserId, pageKey: PageKey): Flow<List<Message>>
 
     /**
      * Update or insert [Message].
      */
-    suspend fun upsertMessage(
-        message: Message
-    )
+    suspend fun upsertMessage(message: Message)
 
     /**
      * Update or insert a list of [Message].
      */
-    suspend fun upsertMessages(
-        items: List<Message>
-    )
+    suspend fun upsertMessages(items: List<Message>)
 
     /**
      * Update or insert [Message] related to the same [userId] and [pageKey].
@@ -131,18 +104,12 @@ interface MessageLocalDataSource {
     /**
      * Observe [MessageWithBody] by [messageId] for this [userId].
      */
-    fun observeMessageWithBody(
-        userId: UserId,
-        messageId: MessageId
-    ): Flow<MessageWithBody?>
+    fun observeMessageWithBody(userId: UserId, messageId: MessageId): Flow<MessageWithBody?>
 
     /**
      * Update or insert [MessageWithBody] for this [userId].
      */
-    suspend fun upsertMessageWithBody(
-        userId: UserId,
-        messageWithBody: MessageWithBody
-    )
+    suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody)
 
     /**
      * Adds [labelId] to given [messageId] related to the same [userId]
@@ -153,6 +120,14 @@ interface MessageLocalDataSource {
         labelId: LabelId
     ): Either<DataError.Local, Message>
 
+    /**
+     * Adds all [labelIds] to given [messageId] related to the same [userId]
+     */
+    suspend fun addLabels(
+        userId: UserId,
+        messageId: MessageId,
+        labelIds: List<LabelId>
+    ): Either<DataError.Local, Message>
 
     /**
      * Removes [labelId] to given [messageId] related to the same [userId]
@@ -164,29 +139,21 @@ interface MessageLocalDataSource {
     ): Either<DataError.Local, Message>
 
     /**
-     * Marks as unread the message for the given [messageId] related to the same [userId]
+     * Removes all [labelIds] to given [messageId] related to the same [userId]
      */
-    suspend fun markUnread(
-        userId: UserId,
-        messageId: MessageId
-    ): Either<DataError.Local, Message>
-
-    /**
-     * Marks as read the message for the given [messageId] related to the same [userId]
-     */
-    suspend fun markRead(
-        userId: UserId,
-        messageId: MessageId
-    ): Either<DataError.Local, Message>
-
-    /**
-     * Relabels the message for the given [messageId] related to the same [userId].
-     * Labels are added or removed according to the [labelIds]
-     */
-    suspend fun relabel(
+    suspend fun removeLabels(
         userId: UserId,
         messageId: MessageId,
         labelIds: List<LabelId>
     ): Either<DataError.Local, Message>
 
+    /**
+     * Marks as unread the message for the given [messageId] related to the same [userId]
+     */
+    suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
+
+    /**
+     * Marks as read the message for the given [messageId] related to the same [userId]
+     */
+    suspend fun markRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
 }

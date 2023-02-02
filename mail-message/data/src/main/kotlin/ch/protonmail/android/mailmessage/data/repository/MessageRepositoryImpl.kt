@@ -190,15 +190,23 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun relabel(
         userId: UserId,
         messageId: MessageId,
-        labels: List<LabelId>
+        labelsToBeRemoved: List<LabelId>,
+        labelsToBeAdded: List<LabelId>
     ): Either<DataError.Local, Message> {
-
-        if (labels.size > MAX_LABEL_LIST_SIZE) {
-            throw IllegalArgumentException("The labels exceeds the maximum number of $MAX_LABEL_LIST_SIZE")
+        require(labelsToBeRemoved.size <= MAX_LABEL_LIST_SIZE) {
+            "The labels to be removed exceeds the maximum number of $MAX_LABEL_LIST_SIZE"
+        }
+        require(labelsToBeAdded.size <= MAX_LABEL_LIST_SIZE) {
+            "The labels to be added exceeds the maximum number of $MAX_LABEL_LIST_SIZE"
         }
 
-        return localDataSource.relabel(userId, messageId, labels).tap {
-            remoteDataSource.relabel(userId, messageId, labels)
+        val removeOperation = localDataSource.removeLabels(userId, messageId, labelsToBeRemoved).tap {
+            remoteDataSource.removeLabels(userId, messageId, labelsToBeRemoved)
+        }
+        if (removeOperation.isLeft()) return removeOperation
+
+        return localDataSource.addLabels(userId, messageId, labelsToBeAdded).tap {
+            remoteDataSource.addLabels(userId, messageId, labelsToBeAdded)
         }
     }
 

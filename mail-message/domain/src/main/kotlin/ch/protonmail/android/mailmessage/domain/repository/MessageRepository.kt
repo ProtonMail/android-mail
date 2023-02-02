@@ -35,27 +35,18 @@ interface MessageRepository {
     /**
      * Get all [Message] for [userId].
      */
-    suspend fun getMessages(
-        userId: UserId,
-        pageKey: PageKey = PageKey()
-    ): Either<DataError, List<Message>>
+    suspend fun getMessages(userId: UserId, pageKey: PageKey = PageKey()): Either<DataError, List<Message>>
 
     /**
      * Mark local data as stale for [userId], by [labelId].
      */
-    suspend fun markAsStale(
-        userId: UserId,
-        labelId: LabelId
-    )
+    suspend fun markAsStale(userId: UserId, labelId: LabelId)
 
     /**
      * Gets a [Message] metadata for [userId] from the local storage
      * @return either the [Message] or a [DataError.Local]
      */
-    fun observeCachedMessage(
-        userId: UserId,
-        messageId: MessageId
-    ): Flow<Either<DataError.Local, Message>>
+    fun observeCachedMessage(userId: UserId, messageId: MessageId): Flow<Either<DataError.Local, Message>>
 
     /**
      * Get all the [Message]s metadata for a given [ConversationId], for [userId] from the local storage
@@ -68,18 +59,12 @@ interface MessageRepository {
     /**
      * Observe the [MessageWithBody] for a given [MessageId], for [userId]
      */
-    fun observeMessageWithBody(
-        userId: UserId,
-        messageId: MessageId
-    ): Flow<Either<DataError, MessageWithBody>>
+    fun observeMessageWithBody(userId: UserId, messageId: MessageId): Flow<Either<DataError, MessageWithBody>>
 
     /**
      * Get the [MessageWithBody] for a given [MessageId], for [userId]
      */
-    suspend fun getMessageWithBody(
-        userId: UserId,
-        messageId: MessageId
-    ): Either<DataError, MessageWithBody>
+    suspend fun getMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
 
     /**
      * Adds the given [labelId] to the message with the given [messageId]
@@ -112,19 +97,18 @@ interface MessageRepository {
     /**
      * Set the message with the given [messageId] as read
      */
-    suspend fun markUnread(
-        userId: UserId,
-        messageId: MessageId
-    ): Either<DataError.Local, Message>
+    suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
 
     /**
-     * Removes or adds the provided [labels] from the message with the given [messageId]
-     * @throws IllegalArgumentException when [labels] is larger than [MAX_LABEL_LIST_SIZE] elements
+     * Removes [labelsToBeRemoved] and adds [labelsToBeAdded] from the message with the given [messageId]
+     * @throws IllegalArgumentException when [labelsToBeRemoved]
+     * or [labelsToBeAdded] is larger than [MAX_LABEL_LIST_SIZE] elements
      */
     suspend fun relabel(
         userId: UserId,
         messageId: MessageId,
-        labels: List<LabelId>
+        labelsToBeRemoved: List<LabelId>,
+        labelsToBeAdded: List<LabelId>
     ): Either<DataError.Local, Message>
 
     companion object {

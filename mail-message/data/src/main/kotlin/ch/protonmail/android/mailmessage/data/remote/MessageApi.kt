@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailmessage.data.remote
 
 import ch.protonmail.android.mailmessage.data.remote.resource.MarkMessageAsUnreadBody
-import ch.protonmail.android.mailmessage.data.remote.resource.PostRelabelBody
 import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessageResponse
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
@@ -28,7 +27,6 @@ import ch.protonmail.android.mailmessage.data.remote.response.PutLabelResponse
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -73,13 +71,6 @@ interface MessageApi : BaseRetrofitApi {
     suspend fun markAsUnread(
         @Body markUnreadBody: MarkMessageAsUnreadBody
     ): MarkUnreadResponse
-
-    @POST("mail/v4/messages/{messageId}/relabel")
-    suspend fun relabel(
-        @Path("messageId") messageId: String,
-        @Body postLabelBody: PostRelabelBody
-    ): GetMessageResponse
-
 
     companion object {
 

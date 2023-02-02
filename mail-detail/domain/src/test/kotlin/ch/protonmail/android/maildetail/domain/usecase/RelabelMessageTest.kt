@@ -40,7 +40,7 @@ internal class RelabelMessageTest {
     fun `when repository fails then error is returned`() = runTest {
         // Given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { messageRepository.relabel(any(), any(), any()) } returns error
+        coEvery { messageRepository.relabel(any(), any(), any(), any()) } returns error
 
         // When
         val result = relabel(
@@ -58,25 +58,28 @@ internal class RelabelMessageTest {
     fun `use case only forwards affected labels to repository`() = runTest {
         // Given
         val oldLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("3"))
-        val updatedLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("4"))
-        val diffLabelList = listOf(LabelId("3"), LabelId("4"))
+        val newLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("4"))
+        val removedLabels = listOf(LabelId("3"))
+        val addedLabels = listOf(LabelId("4"))
         coEvery {
             messageRepository.relabel(
-                UserIdSample.Primary,
-                MessageIdSample.Invoice,
-                diffLabelList
+                userId = UserIdSample.Primary,
+                messageId = MessageIdSample.Invoice,
+                labelsToBeRemoved = removedLabels,
+                labelsToBeAdded = addedLabels
             )
         } returns mockk()
 
         // When
-        relabel(UserIdSample.Primary, MessageIdSample.Invoice, oldLabelIds, updatedLabelIds)
+        relabel(UserIdSample.Primary, MessageIdSample.Invoice, oldLabelIds, newLabelIds)
 
         // Then
         coVerify {
             messageRepository.relabel(
-                UserIdSample.Primary,
-                MessageIdSample.Invoice,
-                diffLabelList
+                userId = UserIdSample.Primary,
+                messageId = MessageIdSample.Invoice,
+                labelsToBeRemoved = removedLabels,
+                labelsToBeAdded = addedLabels
             )
         }
     }

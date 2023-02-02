@@ -24,7 +24,6 @@ import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
-import ch.protonmail.android.mailmessage.data.remote.worker.RelabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -75,7 +74,6 @@ class MessageRemoteDataSourceImplTest {
     private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
     private val markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer = mockk(relaxUnitFun = true)
     private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
-    private val relabelMessageWorker: RelabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
 
     private val apiProvider = ApiProvider(
         apiManagerFactory = apiManagerFactory,
@@ -87,8 +85,7 @@ class MessageRemoteDataSourceImplTest {
         apiProvider = apiProvider,
         addLabelMessageWorker = addLabelMessageWorker,
         markMessageAsUnreadWorker = markMessageAsUnreadWorker,
-        removeLabelMessageWorker = removeLabelMessageWorker,
-        relabelMessageWorker = relabelMessageWorker
+        removeLabelMessageWorker = removeLabelMessageWorker
     )
 
     @Test(expected = IllegalArgumentException::class)
@@ -271,6 +268,19 @@ class MessageRemoteDataSourceImplTest {
     }
 
     @Test
+    fun `enqueues workers to perform multiple add label API call when add labels is called for message`() {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        val labelId = LabelId("10")
+        val labelId2 = LabelId("11")
+        // When
+        messageRemoteDataSource.addLabels(userId, messageId, listOf(labelId, labelId2))
+        // Then
+        verify { addLabelMessageWorker.enqueue(userId, messageId, labelId) }
+        verify { addLabelMessageWorker.enqueue(userId, messageId, labelId2) }
+    }
+
+    @Test
     fun `enqueues worker to perform remove label API call when add label is called for message`() {
         // Given
         val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
@@ -279,6 +289,19 @@ class MessageRemoteDataSourceImplTest {
         messageRemoteDataSource.removeLabel(userId, messageId, labelId)
         // Then
         verify { removeLabelMessageWorker.enqueue(userId, messageId, labelId) }
+    }
+
+    @Test
+    fun `enqueues workers to perform multiple remove label API call when remove labels is called for message`() {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        val labelId = LabelId("10")
+        val labelId2 = LabelId("11")
+        // When
+        messageRemoteDataSource.removeLabels(userId, messageId, listOf(labelId, labelId2))
+        // Then
+        verify { removeLabelMessageWorker.enqueue(userId, messageId, labelId) }
+        verify { removeLabelMessageWorker.enqueue(userId, messageId, labelId2) }
     }
 
     @Test
@@ -291,18 +314,5 @@ class MessageRemoteDataSourceImplTest {
 
         // then
         verify { markMessageAsUnreadWorker.enqueue(userId, messageId) }
-    }
-
-    @Test
-    fun `enqueues worker to relabel message`() {
-        // Given
-        val messageId = MessageIdSample.Invoice
-        val labelIds = listOf(LabelId("1"), LabelId("2"))
-
-        // When
-        messageRemoteDataSource.relabel(userId, messageId, labelIds)
-
-        // Then
-        verify { relabelMessageWorker.enqueue(userId, messageId, labelIds) }
     }
 }

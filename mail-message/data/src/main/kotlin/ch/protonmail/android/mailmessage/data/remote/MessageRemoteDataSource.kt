@@ -54,6 +54,15 @@ interface MessageRemoteDataSource {
     )
 
     /**
+     * Adds [labelIds] to the given [MessageId]
+     */
+    fun addLabels(
+        userId: UserId,
+        messageId: MessageId,
+        labelIds: List<LabelId>
+    )
+
+    /**
      * Remove a [LabelId] from the given [MessageId]
      */
     fun removeLabel(
@@ -63,12 +72,16 @@ interface MessageRemoteDataSource {
     )
 
     /**
+     * Removes [labelIds] from the given [MessageId]
+     */
+    fun removeLabels(
+        userId: UserId,
+        messageId: MessageId,
+        labelIds: List<LabelId>
+    )
+
+    /**
      * Mark message with the given [messageId] as unread
      */
     fun markUnread(userId: UserId, messageId: MessageId)
-
-    /**
-     * Relabels the message for the given [messageId] related to the same [userId]
-     */
-    fun relabel(userId: UserId, messageId: MessageId, labelIds: List<LabelId>)
 }

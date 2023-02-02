@@ -23,7 +23,6 @@ import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
-import ch.protonmail.android.mailmessage.data.remote.worker.RelabelMessageWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -42,64 +41,71 @@ class MessageRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider,
     private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer,
     private val markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer,
-    private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer,
-    private val relabelMessageWorker: RelabelMessageWorker.Enqueuer
+    private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer
 ) : MessageRemoteDataSource {
 
-    override suspend fun getMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): Either<DataError.Remote, List<Message>> = apiProvider.get<MessageApi>(userId).invoke {
-        require(pageKey.size <= MessageApi.maxPageSize)
-        getMessages(
-            labelIds = listOf(pageKey.filter.labelId).map { it.id },
-            beginTime = pageKey.filter.minTime.takeIf { it != Long.MIN_VALUE },
-            endTime = pageKey.filter.maxTime.takeIf { it != Long.MAX_VALUE },
-            beginId = pageKey.filter.minId,
-            endId = pageKey.filter.maxId,
-            keyword = pageKey.filter.keyword.takeIfNotBlank(),
-            unread = when (pageKey.filter.read) {
-                ReadStatus.All -> null
-                ReadStatus.Read -> 0
-                ReadStatus.Unread -> 1
-            },
-            sort = when (pageKey.orderBy) {
-                OrderBy.Time -> "Time"
-            },
-            desc = when (pageKey.orderDirection) {
-                OrderDirection.Ascending -> 0
-                OrderDirection.Descending -> 1
-            },
-            pageSize = pageKey.size
-        ).messages.map { it.toMessage(userId) }
-    }.toEither()
+    override suspend fun getMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> =
+        apiProvider.get<MessageApi>(userId).invoke {
+            require(pageKey.size <= MessageApi.maxPageSize)
+            getMessages(
+                labelIds = listOf(pageKey.filter.labelId).map { it.id },
+                beginTime = pageKey.filter.minTime.takeIf { it != Long.MIN_VALUE },
+                endTime = pageKey.filter.maxTime.takeIf { it != Long.MAX_VALUE },
+                beginId = pageKey.filter.minId,
+                endId = pageKey.filter.maxId,
+                keyword = pageKey.filter.keyword.takeIfNotBlank(),
+                unread = when (pageKey.filter.read) {
+                    ReadStatus.All -> null
+                    ReadStatus.Read -> 0
+                    ReadStatus.Unread -> 1
+                },
+                sort = when (pageKey.orderBy) {
+                    OrderBy.Time -> "Time"
+                },
+                desc = when (pageKey.orderDirection) {
+                    OrderDirection.Ascending -> 0
+                    OrderDirection.Descending -> 1
+                },
+                pageSize = pageKey.size
+            ).messages.map { it.toMessage(userId) }
+        }.toEither()
 
-    override suspend fun getMessage(
-        userId: UserId,
-        messageId: MessageId
-    ): MessageWithBody = apiProvider.get<MessageApi>(userId).invoke {
-        getMessage(
-            messageId = messageId.id
-        ).message.toMessageWithBody(userId)
-    }.valueOrThrow
+    override suspend fun getMessage(userId: UserId, messageId: MessageId): MessageWithBody =
+        apiProvider.get<MessageApi>(userId).invoke {
+            getMessage(
+                messageId = messageId.id
+            ).message.toMessageWithBody(userId)
+        }.valueOrThrow
 
     override fun addLabel(
         userId: UserId,
         messageId: MessageId,
         labelId: LabelId
+    ) = addLabels(userId, messageId, listOf(labelId))
+
+    override fun addLabels(
+        userId: UserId,
+        messageId: MessageId,
+        labelIds: List<LabelId>
     ) {
-        addLabelMessageWorker.enqueue(userId, messageId, labelId)
+        labelIds.forEach { labelId -> addLabelMessageWorker.enqueue(userId, messageId, labelId) }
     }
 
-    override fun removeLabel(userId: UserId, messageId: MessageId, labelId: LabelId) {
-        removeLabelMessageWorker.enqueue(userId, messageId, labelId)
+    override fun removeLabel(
+        userId: UserId,
+        messageId: MessageId,
+        labelId: LabelId
+    ) = removeLabels(userId, messageId, listOf(labelId))
+
+    override fun removeLabels(
+        userId: UserId,
+        messageId: MessageId,
+        labelIds: List<LabelId>
+    ) {
+        labelIds.forEach { labelId -> removeLabelMessageWorker.enqueue(userId, messageId, labelId) }
     }
 
     override fun markUnread(userId: UserId, messageId: MessageId) {
         markMessageAsUnreadWorker.enqueue(userId, messageId)
-    }
-
-    override fun relabel(userId: UserId, messageId: MessageId, labelIds: List<LabelId>) {
-        relabelMessageWorker.enqueue(userId, messageId, labelIds)
     }
 }

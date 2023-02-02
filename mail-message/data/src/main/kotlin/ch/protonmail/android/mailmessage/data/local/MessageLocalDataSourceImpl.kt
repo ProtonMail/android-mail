@@ -143,11 +143,17 @@ class MessageLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         labelId: LabelId
+    ): Either<DataError.Local, Message> = addLabels(userId, messageId, listOf(labelId))
+
+    override suspend fun addLabels(
+        userId: UserId,
+        messageId: MessageId,
+        labelIds: List<LabelId>
     ): Either<DataError.Local, Message> {
         val message = observeMessage(userId, messageId).first()
             ?: return DataError.Local.NoDataCached.left()
         val updatedMessage = message.copy(
-            labelIds = message.labelIds.toMutableSet().apply { add(labelId) }.toList()
+            labelIds = message.labelIds.toMutableSet().apply { addAll(labelIds) }.toList()
         )
         upsertMessage(updatedMessage)
         return updatedMessage.right()
@@ -157,11 +163,17 @@ class MessageLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         labelId: LabelId
+    ): Either<DataError.Local, Message> = removeLabels(userId, messageId, listOf(labelId))
+
+    override suspend fun removeLabels(
+        userId: UserId,
+        messageId: MessageId,
+        labelIds: List<LabelId>
     ): Either<DataError.Local, Message> {
         val message = observeMessage(userId, messageId).first()
             ?: return DataError.Local.NoDataCached.left()
         val updatedMessage = message.copy(
-            labelIds = message.labelIds - labelId
+            labelIds = message.labelIds - labelIds
         )
         upsertMessage(updatedMessage)
         return updatedMessage.right()
@@ -183,22 +195,6 @@ class MessageLocalDataSourceImpl @Inject constructor(
         val updatedMessage = message.copy(
             unread = false
         )
-        upsertMessage(updatedMessage)
-        return updatedMessage.right()
-    }
-
-    override suspend fun relabel(
-        userId: UserId,
-        messageId: MessageId,
-        labelIds: List<LabelId>
-    ): Either<DataError.Local, Message> {
-        val message = observeMessage(userId, messageId).first()
-            ?: return DataError.Local.NoDataCached.left()
-        val updatedLabels = message.labelIds.toMutableList().apply {
-            removeAll { labelIds.contains(it) }
-            addAll(labelIds.filterNot { message.labelIds.contains(it) })
-        }
-        val updatedMessage = message.copy(labelIds = updatedLabels)
         upsertMessage(updatedMessage)
         return updatedMessage.right()
     }

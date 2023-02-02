@@ -305,6 +305,23 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
+    fun `add labels insert labels locally`() = runTest {
+        // Given
+        val message = MessageTestData.message
+        val labelId = LabelId("10")
+        val labelId2 = LabelId("11")
+        // When
+        messageLocalDataSource.addLabels(UserIdTestData.userId, MessageId(message.id), listOf(labelId, labelId2))
+        // Then
+        coVerifyOrder {
+            labelDao.deleteAll(UserIdTestData.userId, listOf(message).map { MessageId(it.id) })
+            labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, LabelId("0"), MessageId(message.id)))
+            labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, LabelId("10"), MessageId(message.id)))
+            labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, LabelId("11"), MessageId(message.id)))
+        }
+    }
+
+    @Test
     fun `add label emits no data cached error when message does not exist locally`() = runTest {
         // Given
         val message = MessageTestData.message
@@ -345,6 +362,27 @@ class MessageLocalDataSourceImplTest {
         )
         // When
         messageLocalDataSource.removeLabel(UserIdTestData.userId, MessageId(message.id), labelId)
+        // Then
+        coVerifySequence {
+            labelDao.deleteAll(UserIdTestData.userId, listOf(message).map { MessageId(it.id) })
+            labelDao.insertOrUpdate(MessageLabelEntity(UserIdTestData.userId, LabelId("0"), MessageId(message.id)))
+        }
+    }
+
+    @Test
+    fun `remove labels removes labels locally`() = runTest {
+        // Given
+        val message = MessageTestData.starredMessage
+        val labelId = LabelId("10")
+        val labelId2 = LabelId("11")
+        coEvery { messageDao.observe(userId = any(), messageId = any()) } returns flowOf(
+            MessageWithLabelIds(
+                MessageTestData.message.toEntity(),
+                listOf(LabelId("0"), LabelId("10"), LabelId("11"))
+            )
+        )
+        // When
+        messageLocalDataSource.removeLabels(UserIdTestData.userId, MessageId(message.id), listOf(labelId, labelId2))
         // Then
         coVerifySequence {
             labelDao.deleteAll(UserIdTestData.userId, listOf(message).map { MessageId(it.id) })
@@ -440,43 +478,5 @@ class MessageLocalDataSourceImplTest {
 
         // then
         assertEquals(error, result)
-    }
-
-    @Test
-    fun `relabel returns a message with added missing and removed existing labels`() = runTest {
-        // Given
-        val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice
-
-        val labelToStay = LabelId("CustomLabel1")
-        val labelToBeAdded = LabelId("CustomLabel3")
-        val labelToBeRemoved = LabelId("CustomLabel2")
-        val message = MessageWithLabelIdsSample.Invoice.copy(labelIds = listOf(labelToStay, labelToBeRemoved))
-        every { messageDao.observe(userId, messageId) } returns flowOf(message)
-
-        // When
-        val actual = messageLocalDataSource.relabel(userId, messageId, listOf(labelToBeRemoved, labelToBeAdded))
-
-        // Then
-        val expectedMessage = message.copy(labelIds = listOf(labelToStay, labelToBeAdded))
-        assertEquals(expectedMessage.toMessage().right(), actual)
-    }
-
-    @Test
-    fun `relabel emits error when local data source fails`() = runTest {
-        // Given
-        val userId = UserIdSample.Primary
-        val labelToStay = LabelId("CustomLabel1")
-        val labelToBeAdded = LabelId("CustomLabel3")
-        val labelToBeRemoved = LabelId("CustomLabel2")
-        val message = MessageTestData.message.copy(labelIds = listOf(labelToStay, labelToBeRemoved))
-
-        // When
-        every { messageDao.observe(userId, MessageId(message.id)) } returns flowOf(null)
-        val actual =
-            messageLocalDataSource.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded))
-
-        // Then
-        assertEquals(DataError.Local.NoDataCached.left(), actual)
     }
 }

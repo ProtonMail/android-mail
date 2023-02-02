@@ -59,6 +59,7 @@ import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 
 class MessageRepositoryImplTest {
 
@@ -680,19 +681,34 @@ class MessageRepositoryImplTest {
         val labelToBeAdded = LabelId("CustomLabel3")
         val labelToBeRemoved = LabelId("CustomLabel2")
         val message = MessageTestData.message.copy(labelIds = listOf(labelToStay, labelToBeRemoved))
+
         coEvery {
-            localDataSource.relabel(
+            localDataSource.removeLabels(
                 userId,
                 MessageId(message.id),
-                listOf(labelToBeRemoved, labelToBeAdded)
+                listOf(labelToBeRemoved)
+            )
+        } returns MessageTestData.message.copy(labelIds = listOf(labelToStay)).right()
+
+        coEvery {
+            localDataSource.addLabels(
+                userId,
+                MessageId(message.id),
+                listOf(labelToBeAdded)
             )
         } returns mockk()
 
         // When
-        messageRepository.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded))
+        messageRepository.relabel(
+            userId,
+            MessageId(message.id),
+            labelsToBeRemoved = listOf(labelToBeRemoved),
+            labelsToBeAdded = listOf(labelToBeAdded)
+        )
 
         // Then
-        coVerify { localDataSource.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded)) }
+        coVerify { localDataSource.removeLabels(userId, MessageId(message.id), listOf(labelToBeRemoved)) }
+        coVerify { localDataSource.addLabels(userId, MessageId(message.id), listOf(labelToBeAdded)) }
     }
 
     @Test
@@ -703,22 +719,35 @@ class MessageRepositoryImplTest {
         val labelToBeRemoved = LabelId("CustomLabel2")
         val message = MessageTestData.message.copy(labelIds = listOf(labelToStay, labelToBeRemoved))
         coEvery {
-            localDataSource.relabel(
+            localDataSource.removeLabels(
                 userId,
                 MessageId(message.id),
-                listOf(labelToBeRemoved, labelToBeAdded)
+                listOf(labelToBeRemoved)
+            )
+        } returns message.copy(labelIds = listOf(labelToStay)).right()
+        coEvery {
+            localDataSource.addLabels(
+                userId,
+                MessageId(message.id),
+                listOf(labelToBeAdded)
             )
         } returns message.copy(labelIds = listOf(labelToStay, labelToBeAdded)).right()
 
         // When
-        messageRepository.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded))
+        messageRepository.relabel(
+            userId,
+            MessageId(message.id),
+            labelsToBeRemoved = listOf(labelToBeRemoved),
+            labelsToBeAdded = listOf(labelToBeAdded)
+        )
 
         // Then
-        coVerify { remoteDataSource.relabel(userId, MessageId(message.id), listOf(labelToBeRemoved, labelToBeAdded)) }
+        coVerify { remoteDataSource.addLabels(userId, MessageId(message.id), listOf(labelToBeAdded)) }
+        coVerify { remoteDataSource.removeLabels(userId, MessageId(message.id), listOf(labelToBeRemoved)) }
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun `relabel throws exception when list is larger than MAX_LABEL_LIST_SIZE items`() = runTest {
+    @Test
+    fun `relabel throws exception when labels to be added list is larger than MAX_LABEL_LIST_SIZE items`() = runTest {
         // Given
         val labelList = mutableListOf<LabelId>()
         for (i in 1..MessageRepository.MAX_LABEL_LIST_SIZE + 1) {
@@ -730,6 +759,36 @@ class MessageRepositoryImplTest {
 
         // When
         every { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
-        messageRepository.relabel(userId, MessageId(message.id), labelList)
+        assertFails {
+            messageRepository.relabel(
+                userId,
+                MessageId(message.id),
+                labelsToBeRemoved = listOf(),
+                labelsToBeAdded = labelList
+            )
+        }
+    }
+
+    @Test
+    fun `relabel throws exception when labels to be removed is larger than MAX_LABEL_LIST_SIZE items`() = runTest {
+        // Given
+        val labelList = mutableListOf<LabelId>()
+        for (i in 1..MessageRepository.MAX_LABEL_LIST_SIZE + 1) {
+            labelList.add(LabelId("CustomLabel$i"))
+        }
+        val message = MessageTestData.message.copy(
+            labelIds = listOf(LabelId("CustomLabel1"), LabelId("CustomLabel2"))
+        )
+
+        // When
+        every { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
+        assertFails {
+            messageRepository.relabel(
+                userId,
+                MessageId(message.id),
+                labelsToBeRemoved = labelList,
+                labelsToBeAdded = listOf()
+            )
+        }
     }
 }

@@ -44,8 +44,12 @@ class RelabelMessage @Inject constructor(
     ): Either<DataError.Local, Message> {
         val removedLabels = currentLabelIds - updatedLabelIds
         val addedLabels = updatedLabelIds - currentLabelIds
-        val affectedLabels = removedLabels + addedLabels
-        return messageRepository.relabel(userId, messageId, affectedLabels)
+        return messageRepository.relabel(
+            userId = userId,
+            messageId = messageId,
+            labelsToBeRemoved = removedLabels,
+            labelsToBeAdded = addedLabels
+        )
     }
 
 }
