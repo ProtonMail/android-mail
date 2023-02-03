@@ -101,8 +101,6 @@ interface MessageRepository {
 
     /**
      * Removes [labelsToBeRemoved] and adds [labelsToBeAdded] from the message with the given [messageId]
-     * @throws IllegalArgumentException when [labelsToBeRemoved]
-     * or [labelsToBeAdded] is larger than [MAX_LABEL_LIST_SIZE] elements
      */
     suspend fun relabel(
         userId: UserId,
@@ -110,9 +108,4 @@ interface MessageRepository {
         labelsToBeRemoved: List<LabelId>,
         labelsToBeAdded: List<LabelId>
     ): Either<DataError.Local, Message>
-
-    companion object {
-
-        const val MAX_LABEL_LIST_SIZE = 100
-    }
 }

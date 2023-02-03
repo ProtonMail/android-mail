@@ -35,7 +35,6 @@ import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
@@ -59,7 +58,6 @@ import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFails
 
 class MessageRepositoryImplTest {
 
@@ -518,7 +516,7 @@ class MessageRepositoryImplTest {
                 SystemLabelId.Starred.labelId
             )
         )
-        coEvery { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
+        coEvery { localDataSource.observeMessage(userId, message.messageId) } returns flowOf(message)
         val destinationLabel = SystemLabelId.Archive.labelId
 
         val updatedMessage = message.copy(
@@ -533,14 +531,14 @@ class MessageRepositoryImplTest {
         val result =
             messageRepository.moveTo(
                 userId,
-                MessageId(message.id),
+                message.messageId,
                 SystemLabelId.Inbox.labelId,
                 destinationLabel
             )
 
         // Then
         coVerify { localDataSource.upsertMessage(updatedMessage) }
-        verify { remoteDataSource.addLabel(userId, MessageId(message.id), destinationLabel) }
+        verify { remoteDataSource.addLabel(userId, message.messageId, destinationLabel) }
         assertEquals(updatedMessage.right(), result)
     }
 
@@ -548,7 +546,7 @@ class MessageRepositoryImplTest {
     fun `move message without exclusive labels adds new label`() = runTest {
         // Given
         val message = MessageTestData.message.copy(labelIds = listOf(SystemLabelId.AllMail.labelId))
-        coEvery { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
+        coEvery { localDataSource.observeMessage(userId, message.messageId) } returns flowOf(message)
         val destinationLabel = SystemLabelId.Archive.labelId
 
         val updatedMessage = message.copy(
@@ -559,11 +557,11 @@ class MessageRepositoryImplTest {
         )
 
         // When
-        val result = messageRepository.moveTo(userId, MessageId(message.id), null, destinationLabel)
+        val result = messageRepository.moveTo(userId, message.messageId, null, destinationLabel)
 
         // Then
         coVerify { localDataSource.upsertMessage(updatedMessage) }
-        verify { remoteDataSource.addLabel(userId, MessageId(message.id), destinationLabel) }
+        verify { remoteDataSource.addLabel(userId, message.messageId, destinationLabel) }
         assertEquals(updatedMessage.right(), result)
     }
 
@@ -575,21 +573,21 @@ class MessageRepositoryImplTest {
                 SystemLabelId.AllMail.labelId
             )
         )
-        coEvery { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
+        coEvery { localDataSource.observeMessage(userId, message.messageId) } returns flowOf(message)
         val destinationLabel = SystemLabelId.Trash.labelId
 
         val updatedMessage = message.copy(labelIds = listOf(destinationLabel))
         coEvery {
-            localDataSource.addLabel(userId, MessageId(message.id), destinationLabel)
+            localDataSource.addLabel(userId, message.messageId, destinationLabel)
         } returns updatedMessage.right()
 
         // When
-        val result = messageRepository.moveTo(userId, MessageId(message.id), null, destinationLabel)
+        val result = messageRepository.moveTo(userId, message.messageId, null, destinationLabel)
 
         // Then
         coVerify { localDataSource.upsertMessage(message) }
-        coVerify { localDataSource.addLabel(userId, MessageId(message.id), destinationLabel) }
-        verify { remoteDataSource.addLabel(userId, MessageId(message.id), destinationLabel) }
+        coVerify { localDataSource.addLabel(userId, message.messageId, destinationLabel) }
+        verify { remoteDataSource.addLabel(userId, message.messageId, destinationLabel) }
         assertEquals(updatedMessage.right(), result)
     }
 
@@ -685,7 +683,7 @@ class MessageRepositoryImplTest {
         coEvery {
             localDataSource.removeLabels(
                 userId,
-                MessageId(message.id),
+                message.messageId,
                 listOf(labelToBeRemoved)
             )
         } returns MessageTestData.message.copy(labelIds = listOf(labelToStay)).right()
@@ -693,7 +691,7 @@ class MessageRepositoryImplTest {
         coEvery {
             localDataSource.addLabels(
                 userId,
-                MessageId(message.id),
+                message.messageId,
                 listOf(labelToBeAdded)
             )
         } returns mockk()
@@ -701,14 +699,14 @@ class MessageRepositoryImplTest {
         // When
         messageRepository.relabel(
             userId,
-            MessageId(message.id),
+            message.messageId,
             labelsToBeRemoved = listOf(labelToBeRemoved),
             labelsToBeAdded = listOf(labelToBeAdded)
         )
 
         // Then
-        coVerify { localDataSource.removeLabels(userId, MessageId(message.id), listOf(labelToBeRemoved)) }
-        coVerify { localDataSource.addLabels(userId, MessageId(message.id), listOf(labelToBeAdded)) }
+        coVerify { localDataSource.removeLabels(userId, message.messageId, listOf(labelToBeRemoved)) }
+        coVerify { localDataSource.addLabels(userId, message.messageId, listOf(labelToBeAdded)) }
     }
 
     @Test
@@ -721,14 +719,14 @@ class MessageRepositoryImplTest {
         coEvery {
             localDataSource.removeLabels(
                 userId,
-                MessageId(message.id),
+                message.messageId,
                 listOf(labelToBeRemoved)
             )
         } returns message.copy(labelIds = listOf(labelToStay)).right()
         coEvery {
             localDataSource.addLabels(
                 userId,
-                MessageId(message.id),
+                message.messageId,
                 listOf(labelToBeAdded)
             )
         } returns message.copy(labelIds = listOf(labelToStay, labelToBeAdded)).right()
@@ -736,59 +734,13 @@ class MessageRepositoryImplTest {
         // When
         messageRepository.relabel(
             userId,
-            MessageId(message.id),
+            message.messageId,
             labelsToBeRemoved = listOf(labelToBeRemoved),
             labelsToBeAdded = listOf(labelToBeAdded)
         )
 
         // Then
-        coVerify { remoteDataSource.addLabels(userId, MessageId(message.id), listOf(labelToBeAdded)) }
-        coVerify { remoteDataSource.removeLabels(userId, MessageId(message.id), listOf(labelToBeRemoved)) }
-    }
-
-    @Test
-    fun `relabel throws exception when labels to be added list is larger than MAX_LABEL_LIST_SIZE items`() = runTest {
-        // Given
-        val labelList = mutableListOf<LabelId>()
-        for (i in 1..MessageRepository.MAX_LABEL_LIST_SIZE + 1) {
-            labelList.add(LabelId("CustomLabel$i"))
-        }
-        val message = MessageTestData.message.copy(
-            labelIds = listOf(LabelId("CustomLabel1"), LabelId("CustomLabel2"))
-        )
-
-        // When
-        every { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
-        assertFails {
-            messageRepository.relabel(
-                userId,
-                MessageId(message.id),
-                labelsToBeRemoved = listOf(),
-                labelsToBeAdded = labelList
-            )
-        }
-    }
-
-    @Test
-    fun `relabel throws exception when labels to be removed is larger than MAX_LABEL_LIST_SIZE items`() = runTest {
-        // Given
-        val labelList = mutableListOf<LabelId>()
-        for (i in 1..MessageRepository.MAX_LABEL_LIST_SIZE + 1) {
-            labelList.add(LabelId("CustomLabel$i"))
-        }
-        val message = MessageTestData.message.copy(
-            labelIds = listOf(LabelId("CustomLabel1"), LabelId("CustomLabel2"))
-        )
-
-        // When
-        every { localDataSource.observeMessage(userId, MessageId(message.id)) } returns flowOf(message)
-        assertFails {
-            messageRepository.relabel(
-                userId,
-                MessageId(message.id),
-                labelsToBeRemoved = labelList,
-                labelsToBeAdded = listOf()
-            )
-        }
+        coVerify { remoteDataSource.addLabels(userId, message.messageId, listOf(labelToBeAdded)) }
+        coVerify { remoteDataSource.removeLabels(userId, message.messageId, listOf(labelToBeRemoved)) }
     }
 }

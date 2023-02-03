@@ -36,7 +36,6 @@ import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository.Companion.MAX_LABEL_LIST_SIZE
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
@@ -193,13 +192,6 @@ class MessageRepositoryImpl @Inject constructor(
         labelsToBeRemoved: List<LabelId>,
         labelsToBeAdded: List<LabelId>
     ): Either<DataError.Local, Message> {
-        require(labelsToBeRemoved.size <= MAX_LABEL_LIST_SIZE) {
-            "The labels to be removed exceeds the maximum number of $MAX_LABEL_LIST_SIZE"
-        }
-        require(labelsToBeAdded.size <= MAX_LABEL_LIST_SIZE) {
-            "The labels to be added exceeds the maximum number of $MAX_LABEL_LIST_SIZE"
-        }
-
         val removeOperation = localDataSource.removeLabels(userId, messageId, labelsToBeRemoved).tap {
             remoteDataSource.removeLabels(userId, messageId, labelsToBeRemoved)
         }
