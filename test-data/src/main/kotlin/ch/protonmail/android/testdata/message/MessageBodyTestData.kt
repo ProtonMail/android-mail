@@ -18,28 +18,52 @@
 
 package ch.protonmail.android.testdata.message
 
+import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethods
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.testdata.message.MessageTestData.RAW_MESSAGE_ID
-import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import ch.protonmail.android.testdata.user.UserIdTestData
+import me.proton.core.domain.entity.UserId
 
 object MessageBodyTestData {
 
     const val RAW_ENCRYPTED_MESSAGE_BODY = "This is a raw encrypted message body."
 
-    val messageBody = MessageBody(
+    val messageBody = buildMessageBody()
+
+    val htmlMessageBody = buildMessageBody(
+        mimeType = MimeType.PlainText
+    )
+
+    val multipartMixedMessageBody = buildMessageBody(
+        mimeType = MimeType.MultipartMixed
+    )
+
+    fun buildMessageBody(
+        userId: UserId = UserIdTestData.userId,
+        messageId: MessageId = MessageId(RAW_MESSAGE_ID),
+        body: String = RAW_ENCRYPTED_MESSAGE_BODY,
+        header: String = "",
+        attachments: List<MessageAttachment> = emptyList(),
+        mimeType: MimeType = MimeType.PlainText,
+        spamScore: String = "",
+        replyTo: Recipient = RecipientSample.John,
+        replyTos: List<Recipient> = emptyList(),
+        unsubscribeMethods: UnsubscribeMethods? = UnsubscribeMethods(null, null, null)
+    ) = MessageBody(
         userId = userId,
-        messageId = MessageId(RAW_MESSAGE_ID),
-        body = RAW_ENCRYPTED_MESSAGE_BODY,
-        header = "",
-        attachments = emptyList(),
-        mimeType = MimeType.PlainText,
-        spamScore = "",
-        replyTo = RecipientSample.John,
-        replyTos = emptyList(),
-        unsubscribeMethods = UnsubscribeMethods(null, null, null)
+        messageId = messageId,
+        body = body,
+        header = header,
+        attachments = attachments,
+        mimeType = mimeType,
+        spamScore = spamScore,
+        replyTo = replyTo,
+        replyTos = replyTos,
+        unsubscribeMethods = unsubscribeMethods
     )
 }

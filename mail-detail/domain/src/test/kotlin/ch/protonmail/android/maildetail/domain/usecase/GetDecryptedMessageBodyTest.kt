@@ -25,6 +25,7 @@ import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
@@ -35,14 +36,22 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.DecryptedData
+import me.proton.core.crypto.common.pgp.DecryptedMimeBody
+import me.proton.core.crypto.common.pgp.DecryptedMimeMessage
 import me.proton.core.crypto.common.pgp.PGPCrypto
 import me.proton.core.crypto.common.pgp.VerificationStatus
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.user.domain.UserAddressManager
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class GetDecryptedMessageBodyTest {
+@RunWith(Parameterized::class)
+class GetDecryptedMessageBodyTest(
+    private val testName: String,
+    private val testInput: TestInput
+) {
 
     private val messageId = MessageId("messageId")
     private val decryptedMessageBody = "Decrypted message body."
@@ -51,13 +60,7 @@ class GetDecryptedMessageBodyTest {
     private val cryptoContext = mockk<CryptoContext>(relaxed = true) {
         every { pgpCrypto } returns pgpCryptoMock
     }
-    private val messageRepository = mockk<MessageRepository> {
-        coEvery { getMessageWithBody(UserIdTestData.userId, messageId) } returns
-            MessageWithBody(
-                MessageTestData.message,
-                MessageBodyTestData.messageBody
-            ).right()
-    }
+    private val messageRepository = mockk<MessageRepository>()
     private val userAddressManager = mockk<UserAddressManager> {
         coEvery { getAddress(UserIdTestData.userId, MessageTestData.message.addressId) } returns mockk {
             every { keys } returns emptyList()
@@ -71,60 +74,53 @@ class GetDecryptedMessageBodyTest {
         runTest {
             // Given
             val expected = DecryptedMessageBody(decryptedMessageBody).right()
-            every {
-                pgpCryptoMock.decryptAndVerifyData(
-                    message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
-                    publicKeys = any(),
-                    unlockedKeys = any(),
-                    time = any()
-                )
-            } returns DecryptedData(decryptedMessageBody.toByteArray(), VerificationStatus.Success)
-
-            // When
-            val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
-
-            // Then
-            assertEquals(expected, actual)
-        }
-
-    @Test
-    fun `when repository gets message body and decryption has failed then a decryption error is returned`() =
-        runTest {
-            // Given
-            val expected = GetDecryptedMessageBodyError.Decryption(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
-                .left()
-            every {
-                pgpCryptoMock.decryptAndVerifyData(
-                    message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
-                    publicKeys = any(),
-                    unlockedKeys = any(),
-                    time = any()
-                )
-            } throws CryptoException()
-
-            // When
-            val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
-
-            // Then
-            assertEquals(expected, actual)
-        }
-
-    @Test
-    fun `when repository gets message body and user address is null then a decryption error is returned`() =
-        runTest {
-            // Given
-            val expected = GetDecryptedMessageBodyError.Decryption(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
-                .left()
             coEvery {
-                userAddressManager.getAddress(UserIdTestData.userId, MessageTestData.message.addressId)
-            } returns null
+                messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
+            } returns testInput.messageWithBody.right()
+            mockDecryptionIsSuccessful()
 
             // When
             val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
 
             // Then
-            assertEquals(expected, actual)
+            assertEquals(expected, actual, testName)
         }
+
+    @Test
+    fun `when repository gets message body and decryption has failed then a decryption error is returned`() = runTest {
+        // Given
+        val expected = GetDecryptedMessageBodyError.Decryption(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
+            .left()
+        coEvery {
+            messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
+        } returns testInput.messageWithBody.right()
+        mockDecryptionFails()
+
+        // When
+        val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
+
+        // Then
+        assertEquals(expected, actual, testName)
+    }
+
+    @Test
+    fun `when repository gets message body and user address is null then a decryption error is returned`() = runTest {
+        // Given
+        val expected = GetDecryptedMessageBodyError.Decryption(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
+            .left()
+        coEvery {
+            messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
+        } returns testInput.messageWithBody.right()
+        coEvery {
+            userAddressManager.getAddress(UserIdTestData.userId, MessageTestData.message.addressId)
+        } returns null
+
+        // When
+        val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
+
+        // Then
+        assertEquals(expected, actual, testName)
+    }
 
     @Test
     fun `when repository method returns an error then the use case returns the error`() = runTest {
@@ -138,6 +134,89 @@ class GetDecryptedMessageBodyTest {
         val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
 
         // Then
-        assertEquals(expected, actual)
+        assertEquals(expected, actual, testName)
     }
+
+    private fun mockDecryptionIsSuccessful() {
+        if (testInput.mimeType == MimeType.MultipartMixed) {
+            every {
+                pgpCryptoMock.decryptAndVerifyMimeMessage(
+                    message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
+                    publicKeys = any(),
+                    unlockedKeys = any(),
+                    time = any()
+                )
+            } returns DecryptedMimeMessage(
+                emptyList(),
+                DecryptedMimeBody(testInput.mimeType.value, decryptedMessageBody),
+                emptyList(),
+                VerificationStatus.Success
+            )
+        } else {
+            every {
+                pgpCryptoMock.decryptAndVerifyData(
+                    message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
+                    publicKeys = any(),
+                    unlockedKeys = any(),
+                    time = any()
+                )
+            } returns DecryptedData(
+                decryptedMessageBody.toByteArray(),
+                VerificationStatus.Success
+            )
+        }
+    }
+
+    private fun mockDecryptionFails() {
+        if (testInput.mimeType == MimeType.MultipartMixed) {
+            every {
+                pgpCryptoMock.decryptAndVerifyMimeMessage(
+                    message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
+                    publicKeys = any(),
+                    unlockedKeys = any(),
+                    time = any()
+                )
+            } throws CryptoException()
+        } else {
+            every {
+                pgpCryptoMock.decryptAndVerifyData(
+                    message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
+                    publicKeys = any(),
+                    unlockedKeys = any(),
+                    time = any()
+                )
+            } throws CryptoException()
+        }
+    }
+
+    companion object {
+
+        private val testInputList = listOf(
+            TestInput(
+                MimeType.Html,
+                MessageWithBody(MessageTestData.message, MessageBodyTestData.htmlMessageBody)
+            ),
+            TestInput(
+                MimeType.MultipartMixed,
+                MessageWithBody(MessageTestData.message, MessageBodyTestData.multipartMixedMessageBody)
+            )
+        )
+
+        @JvmStatic
+        @Parameterized.Parameters(name = "{0}")
+        fun data(): Collection<Array<Any>> {
+            return testInputList
+                .map { testInput ->
+                    val testName = """
+                        Message type: ${testInput.mimeType}
+                    """.trimIndent()
+                    arrayOf(testName, testInput)
+                }
+        }
+    }
+
+    data class TestInput(
+        val mimeType: MimeType,
+        val messageWithBody: MessageWithBody
+    )
 }

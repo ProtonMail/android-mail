@@ -32,6 +32,7 @@ import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.domain.entity.UserId
 import me.proton.core.key.domain.decryptAndVerifyData
+import me.proton.core.key.domain.decryptAndVerifyMimeMessage
 import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
 import me.proton.core.key.domain.useKeys
 import me.proton.core.user.domain.UserAddressManager
@@ -71,10 +72,11 @@ class GetDecryptedMessageBody @Inject constructor(
             }
     }
 
-    @Suppress("NotImplementedDeclaration")
     private fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedMessageBody {
         return if (messageBody.mimeType == MimeType.MultipartMixed) {
-            throw NotImplementedError("Will be implemented with MAILANDR-368")
+            decryptAndVerifyMimeMessage(messageBody.body).run {
+                DecryptedMessageBody(body.content)
+            }
         } else {
             decryptAndVerifyData(messageBody.body).run {
                 DecryptedMessageBody(data.decodeToString())
