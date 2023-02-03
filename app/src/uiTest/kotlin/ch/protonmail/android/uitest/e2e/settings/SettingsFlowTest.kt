@@ -20,9 +20,11 @@ package ch.protonmail.android.uitest.e2e.settings
 
 import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Test
 
+@HiltAndroidTest
 class SettingsFlowTest : BaseTest() {
 
     private val user = quark.userCreate()

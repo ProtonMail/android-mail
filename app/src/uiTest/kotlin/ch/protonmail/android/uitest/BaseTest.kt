@@ -18,28 +18,30 @@
 
 package ch.protonmail.android.uitest
 
-import android.app.Application
 import android.content.Context
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.protonmail.android.MainActivity
-import ch.protonmail.android.di.MailTestEntryPoint
+import ch.protonmail.android.initializer.MainInitializer
 import ch.protonmail.android.test.BuildConfig
-import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.android.testing.HiltAndroidRule
 import kotlinx.coroutines.runBlocking
 import me.proton.core.auth.domain.entity.SessionInfo
-import me.proton.core.auth.presentation.testing.ProtonTestEntryPoint
+import me.proton.core.auth.domain.testing.LoginTestHelper
+import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import me.proton.core.mailsettings.domain.repository.getMailSettingsOrNull
 import me.proton.core.test.android.instrumented.utils.Shell.setupDeviceForAutomation
 import me.proton.core.test.quark.Quark
 import me.proton.core.test.quark.data.User
 import org.junit.After
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.rules.RuleChain
 import org.junit.rules.TestName
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * @param logoutUsersOnTearDown by default, revoke the user's session against the API
@@ -52,18 +54,34 @@ open class BaseTest(
 ) {
 
     val composeTestRule = createAndroidComposeRule<MainActivity>()
+    private val hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var loginTestHelper: LoginTestHelper
+
+    @Inject
+    lateinit var mailSettingsRepo: MailSettingsRepository
 
     @Rule
     @JvmField
     val ruleChain: RuleChain = RuleChain
-        .outerRule(TestName())
+        .outerRule(hiltRule)
+        .around(TestName())
         .around(composeTestRule)
+
+    @Before
+    fun setup() {
+        MainInitializer.init(ApplicationProvider.getApplicationContext())
+        hiltRule.inject()
+        setupDeviceForAutomation(true)
+        loginTestHelper.logoutAll()
+    }
 
     @After
     fun cleanup() {
         if (logoutUsersOnTearDown) {
             Timber.d("Finishing Testing: Revoking user sessions and logging out")
-            authHelper.logoutAll()
+            loginTestHelper.logoutAll()
         }
     }
 
@@ -77,24 +95,10 @@ open class BaseTest(
 
     fun login(user: User): SessionInfo {
         Timber.d("Login user: ${user.name}")
-        return authHelper.login(user.name, user.password)
+        return loginTestHelper.login(user.name, user.password)
     }
 
     companion object {
-
-        private val protonTestEntryPoint by lazy {
-            EntryPointAccessors.fromApplication(
-                ApplicationProvider.getApplicationContext<Application>(),
-                ProtonTestEntryPoint::class.java
-            )
-        }
-
-        private val mailTestEntryPoint by lazy {
-            EntryPointAccessors.fromApplication(
-                ApplicationProvider.getApplicationContext<Application>(),
-                MailTestEntryPoint::class.java
-            )
-        }
 
         private val context: Context
             get() = InstrumentationRegistry.getInstrumentation().context
@@ -108,14 +112,10 @@ open class BaseTest(
             proxyToken = BuildConfig.PROXY_TOKEN
         )
 
-        val authHelper by lazy { protonTestEntryPoint.loginTestHelper }
-        val mailSettingsRepo by lazy { mailTestEntryPoint.mailSettingsRepository }
-
         @JvmStatic
         @BeforeClass
         fun prepare() {
             setupDeviceForAutomation(true)
-            authHelper.logoutAll()
         }
     }
 }

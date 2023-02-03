@@ -21,9 +21,11 @@ package ch.protonmail.android.uitest.e2e.mailbox
 import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Test
 
+@HiltAndroidTest
 class MailboxFlowTest : BaseTest() {
 
     private val user = quark.userCreate()

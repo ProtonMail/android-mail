@@ -20,12 +20,14 @@ package ch.protonmail.android.uitest.e2e.login
 
 import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import dagger.hilt.android.testing.HiltAndroidTest
 import me.proton.core.test.android.robots.auth.AddAccountRobot
 import me.proton.core.test.android.robots.auth.login.LoginRobot
 import me.proton.core.test.android.robots.auth.login.MailboxPasswordRobot
 import org.junit.Before
 import org.junit.Test
 
+@HiltAndroidTest
 class LoginFlowTests : BaseTest() {
 
     private val addAccountRobot = AddAccountRobot()
