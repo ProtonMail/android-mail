@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailconversation.data.remote.worker
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.NetworkType
@@ -39,6 +40,7 @@ import me.proton.core.network.domain.ApiResult
 import me.proton.core.network.domain.isRetryable
 import javax.inject.Inject
 
+@HiltWorker
 class MarkConversationAsUnreadWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
