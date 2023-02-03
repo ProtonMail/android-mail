@@ -26,6 +26,7 @@ import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.exception.CryptoException
@@ -72,7 +73,7 @@ class GetDecryptedMessageBody @Inject constructor(
 
     @Suppress("NotImplementedDeclaration")
     private fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedMessageBody {
-        return if (messageBody.mimeType == "multipart/mixed") {
+        return if (messageBody.mimeType == MimeType.MultipartMixed) {
             throw NotImplementedError("Will be implemented with MAILANDR-368")
         } else {
             decryptAndVerifyData(messageBody.body).run {

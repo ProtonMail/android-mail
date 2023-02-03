@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local
 
 import androidx.room.TypeConverter
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
+import ch.protonmail.android.mailmessage.data.local.entity.MimeTypeEntity
 import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethodsEntity
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -72,4 +73,10 @@ class MessageConverters {
 
     @TypeConverter
     fun fromStringToUnsubscribeMethods(value: String?): UnsubscribeMethodsEntity? = value?.deserialize()
+
+    @TypeConverter
+    fun fromMimeTypeToString(value: MimeTypeEntity?): String? = value?.value
+
+    @TypeConverter
+    fun fromStringToMimeType(value: String?): MimeTypeEntity? = value?.let { MimeTypeEntity.from(it) }
 }

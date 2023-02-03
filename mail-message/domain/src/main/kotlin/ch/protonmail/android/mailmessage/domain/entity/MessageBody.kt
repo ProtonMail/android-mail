@@ -26,12 +26,22 @@ data class MessageBody(
     val body: String,
     val header: String,
     val attachments: List<MessageAttachment>,
-    val mimeType: String,
+    val mimeType: MimeType,
     val spamScore: String,
     val replyTo: Recipient,
     val replyTos: List<Recipient>,
     val unsubscribeMethods: UnsubscribeMethods?
 )
+
+enum class MimeType(val value: String) {
+    PlainText("text/plain"),
+    Html("text/html"),
+    MultipartMixed("multipart/mixed");
+
+    companion object {
+        fun from(value: String) = values().find { it.value == value } ?: PlainText
+    }
+}
 
 data class UnsubscribeMethods(
     val httpClient: String?,

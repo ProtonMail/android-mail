@@ -20,12 +20,14 @@ package ch.protonmail.android.mailmessage.data.mapper
 
 import ch.protonmail.android.mailmessage.data.local.entity.MailToEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
+import ch.protonmail.android.mailmessage.data.local.entity.MimeTypeEntity
 import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethodsEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.domain.entity.MailTo
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethods
 import javax.inject.Inject
 
@@ -66,7 +68,7 @@ class MessageWithBodyEntityMapper @Inject constructor() {
                     body = body.orEmpty(),
                     header = header,
                     attachments = emptyList(), // We don't save the attachments to DB yet
-                    mimeType = mimeType,
+                    mimeType = MimeType.valueOf(mimeType.name),
                     spamScore = spamScore,
                     replyTo = replyTo,
                     replyTos = replyTos,
@@ -82,7 +84,7 @@ class MessageWithBodyEntityMapper @Inject constructor() {
             messageId = messageId,
             body = body,
             header = header,
-            mimeType = mimeType,
+            mimeType = MimeTypeEntity.valueOf(mimeType.name),
             spamScore = spamScore,
             replyTo = replyTo,
             replyTos = replyTos,

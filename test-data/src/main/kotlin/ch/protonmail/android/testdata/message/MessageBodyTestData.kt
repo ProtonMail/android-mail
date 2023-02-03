@@ -20,6 +20,7 @@ package ch.protonmail.android.testdata.message
 
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethods
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.testdata.message.MessageTestData.RAW_MESSAGE_ID
@@ -35,7 +36,7 @@ object MessageBodyTestData {
         body = RAW_ENCRYPTED_MESSAGE_BODY,
         header = "",
         attachments = emptyList(),
-        mimeType = "",
+        mimeType = MimeType.PlainText,
         spamScore = "",
         replyTo = RecipientSample.John,
         replyTos = emptyList(),

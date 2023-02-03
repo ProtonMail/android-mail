@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.entity.UnsubscribeMethods
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -130,7 +131,7 @@ data class MessageWithBodyResource(
             body = body,
             header = header,
             attachments = attachments.map { it.toMessageAttachment() },
-            mimeType = mimeType,
+            mimeType = MimeType.from(mimeType),
             spamScore = spamScore,
             replyTo = replyTo.toRecipient(),
             replyTos = replyTos.map { it.toRecipient() },

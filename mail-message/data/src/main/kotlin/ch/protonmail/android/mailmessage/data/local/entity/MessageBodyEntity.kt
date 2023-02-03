@@ -56,12 +56,22 @@ data class MessageBodyEntity(
     val messageId: MessageId,
     val body: String?, // If null -> file.
     val header: String,
-    val mimeType: String,
+    val mimeType: MimeTypeEntity,
     val spamScore: String,
     val replyTo: Recipient,
     val replyTos: List<Recipient>,
     val unsubscribeMethodsEntity: UnsubscribeMethodsEntity?
 )
+
+enum class MimeTypeEntity(val value: String) {
+    PlainText("text/plain"),
+    Html("text/html"),
+    MultipartMixed("multipart/mixed");
+
+    companion object {
+        fun from(value: String) = values().find { it.value == value } ?: PlainText
+    }
+}
 
 @Serializable
 data class UnsubscribeMethodsEntity(
