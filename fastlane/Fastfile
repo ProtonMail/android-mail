@@ -76,7 +76,8 @@ platform :android do
       android_artifact_path: 'app/build/outputs/apk/alpha/release/app-alpha-release.apk',
       # Service account is created on the CI from an env var each run (destroyed when finishing)
       service_credentials_file: '/tmp/service-account.json',
-      groups: 'v6-dev-builds-testers'
+      groups: 'v6-dev-builds-testers',
+      release_notes_file: '/tmp/release_notes.txt'
     )
   end
 
@@ -87,7 +88,8 @@ platform :android do
       android_artifact_path: 'app/build/outputs/apk/alpha/release/app-alpha-release.apk',
       # Service account is created on the CI from an env var each run (destroyed when finishing)
       service_credentials_file: '/tmp/service-account.json',
-      groups: 'v6-internal-alpha-testers'
+      groups: 'v6-internal-alpha-testers',
+      release_notes_file: '/tmp/release_notes.txt'
     )
   end
 
