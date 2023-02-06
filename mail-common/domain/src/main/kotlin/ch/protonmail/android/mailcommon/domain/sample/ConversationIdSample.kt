@@ -24,6 +24,7 @@ object ConversationIdSample {
 
     val Invoices = ConversationId("invoices")
     val WeatherForecast = ConversationId("weather_forecast")
+    val AlphaAppFeedback = ConversationId("alpha_app_feedback")
 
     fun build() = ConversationId("conversation")
 }

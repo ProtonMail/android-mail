@@ -64,13 +64,34 @@ object ConversationLabelSample {
         )
     }
 
+    object AlphaAppFeedback {
+
+        val AllMail = build(
+            conversationId = ConversationIdSample.AlphaAppFeedback,
+            labelId = LabelIdSample.AllMail
+        )
+
+        val Inbox = build(
+            conversationId = ConversationIdSample.AlphaAppFeedback,
+            labelId = LabelIdSample.Inbox,
+            numMessages = 1
+        )
+
+        val Archive = build(
+            conversationId = ConversationIdSample.AlphaAppFeedback,
+            labelId = LabelIdSample.Archive,
+            numMessages = 3
+        )
+    }
+
     fun build(
         conversationId: ConversationId = ConversationIdSample.build(),
-        labelId: LabelId = LabelIdSample.build()
+        labelId: LabelId = LabelIdSample.build(),
+        numMessages: Int = 0
     ) = ConversationLabel(
         conversationId = conversationId,
         contextNumAttachments = 0,
-        contextNumMessages = 0,
+        contextNumMessages = numMessages,
         contextNumUnread = 0,
         contextSize = 0,
         contextTime = 0,

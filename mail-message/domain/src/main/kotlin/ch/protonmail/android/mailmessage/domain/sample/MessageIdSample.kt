@@ -27,6 +27,8 @@ object MessageIdSample {
     val Invoice = MessageId("invoice")
     val OctWeatherForecast = MessageId("oct_weather_forecast")
     val SepWeatherForecast = MessageId("sep_weather_forecast")
+    val AlphaAppQAReport = MessageId("QA_testing_report")
+    val AlphaAppInfoRequest = MessageId("alpha_app_info_request")
 
     fun build() = MessageId("message")
 }

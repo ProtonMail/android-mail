@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmessage.data.sample.AttachmentCountEntitySample
 object ConversationEntitySample {
 
     val WeatherForecast: ConversationEntity = build(ConversationSample.WeatherForecast)
+    val AlphaAppFeedback: ConversationEntity = build(ConversationSample.AlphaAppFeedback)
 
     fun build(conversation: Conversation = ConversationSample.build()) = ConversationEntity(
         attachmentCount = AttachmentCountEntitySample.build(),

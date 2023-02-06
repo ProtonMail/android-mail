@@ -30,4 +30,12 @@ object ConversationWithLabelsSample {
             ConversationLabelSample.WeatherForecast.News
         )
     )
+    val AlphaAppFeedback = ConversationWithLabels(
+        conversation = ConversationEntitySample.AlphaAppFeedback,
+        labels = listOf(
+            ConversationLabelSample.AlphaAppFeedback.AllMail,
+            ConversationLabelSample.AlphaAppFeedback.Inbox,
+            ConversationLabelSample.AlphaAppFeedback.Archive
+        )
+    )
 }

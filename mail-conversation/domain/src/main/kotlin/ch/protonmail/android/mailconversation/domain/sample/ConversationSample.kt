@@ -40,6 +40,16 @@ object ConversationSample {
         subject = "Weather Forecast"
     )
 
+    val AlphaAppFeedback = build(
+        conversationId = ConversationIdSample.AlphaAppFeedback,
+        labels = listOf(
+            ConversationLabelSample.AlphaAppFeedback.Inbox,
+            ConversationLabelSample.AlphaAppFeedback.Archive
+        ),
+        subject = "Request for feedback on the new alpha app",
+        numMessages = 4
+    )
+
     fun build(
         attachmentCount: AttachmentCount = AttachmentCountSample.build(),
         conversationId: ConversationId = ConversationIdSample.build(),
@@ -47,14 +57,15 @@ object ConversationSample {
         recipients: List<Recipient> = listOf(RecipientSample.Doe),
         senders: List<Recipient> = listOf(RecipientSample.John),
         subject: String = "subject",
-        userId: UserId = UserIdSample.Primary
+        userId: UserId = UserIdSample.Primary,
+        numMessages: Int = 0
     ) = Conversation(
         attachmentCount = attachmentCount,
         conversationId = conversationId,
         expirationTime = 0,
         labels = labels,
         numAttachments = 0,
-        numMessages = 0,
+        numMessages = numMessages,
         numUnread = 0,
         order = 0,
         recipients = recipients,

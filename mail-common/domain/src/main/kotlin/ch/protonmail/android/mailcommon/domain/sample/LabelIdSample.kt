@@ -25,7 +25,7 @@ object LabelIdSample {
     val AllDraft = LabelId("1")
     val AllMail = LabelId("5")
     val AllSent = LabelId("2")
-    val Archive = LabelId("archive")
+    val Archive = LabelId("6")
     val Document = LabelId("document")
     val Folder2021 = LabelId("2021")
     val Folder2022 = LabelId("2022")

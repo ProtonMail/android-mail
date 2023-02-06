@@ -92,9 +92,39 @@ object MessageSample {
         time = Sep2022
     )
 
+    val AlphaAppInfoRequest = build(
+        conversationId = ConversationIdSample.AlphaAppFeedback,
+        messageId = MessageIdSample.AlphaAppInfoRequest,
+        labelIds = listOf(LabelIdSample.Inbox),
+        sender = RecipientSample.John,
+        subject = "Request for details on features to test",
+        time = Jan2023
+    )
+
+    val AlphaAppQAReport = build(
+        conversationId = ConversationIdSample.AlphaAppFeedback,
+        messageId = MessageIdSample.AlphaAppQAReport,
+        labelIds = listOf(LabelIdSample.Inbox),
+        sender = RecipientSample.John,
+        subject = "QA testing session findings",
+        time = Feb2023
+    )
+
+    val AlphaAppArchivedFeedback = build(
+        conversationId = ConversationIdSample.AlphaAppFeedback,
+        messageId = MessageIdSample.AlphaAppQAReport,
+        labelIds = listOf(LabelIdSample.Archive),
+        sender = RecipientSample.Doe,
+        subject = "Is this a known issue?",
+        time = Feb2023
+    )
+
+
     private val Aug2022 get() = 1_659_312_000L
     private val Oct2022 get() = 1_664_582_400L
     private val Sep2022 get() = 1_661_990_400L
+    private val Jan2023 get() = 1_672_531_200L
+    private val Feb2023 get() = 1_675_209_600L
 
     fun build(
         addressId: AddressId = AddressIdSample.Primary,
