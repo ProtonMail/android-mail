@@ -35,6 +35,7 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationLoca
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.network.domain.isRetryable
@@ -53,10 +54,13 @@ class MarkConversationAsUnreadWorker @AssistedInject constructor(
             .let(::UserId)
         val conversationId = requireNotBlank(inputData.getString(RawConversationIdKey), fieldName = "Conversation id")
             .let(::ConversationId)
+        val contextLabelId = requireNotBlank(inputData.getString(RawContextLabelId), fieldName = "Context Label id")
+            .let(::LabelId)
 
         val api = apiProvider.get<ConversationApi>(userId)
         val requestBody = MarkConversationAsUnreadBody(
-            conversationIds = listOf(conversationId.id)
+            conversationIds = listOf(conversationId.id),
+            labelId = contextLabelId.id
         )
         val result = api {
             markAsUnread(requestBody)
@@ -79,18 +83,24 @@ class MarkConversationAsUnreadWorker @AssistedInject constructor(
 
         const val RawUserIdKey = "markUnreadWorkParamUserId"
         const val RawConversationIdKey = "markUnreadWorkParamConversationId"
+        const val RawContextLabelId = "markUnreadWorkParamContextLabelId"
     }
 
     class Enqueuer @Inject constructor(private val workManager: WorkManager) {
 
-        fun enqueue(userId: UserId, conversationId: ConversationId) {
+        fun enqueue(
+            userId: UserId,
+            conversationId: ConversationId,
+            contextLabelId: LabelId
+        ) {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
             val data = workDataOf(
                 RawUserIdKey to userId.id,
-                RawConversationIdKey to conversationId.id
+                RawConversationIdKey to conversationId.id,
+                RawContextLabelId to contextLabelId.id
             )
 
             val workRequest = OneTimeWorkRequestBuilder<MarkConversationAsUnreadWorker>()

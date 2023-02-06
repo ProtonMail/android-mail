@@ -103,7 +103,11 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         removeLabelConversationWorker.enqueue(userId, conversationId, labelId, messageIds)
     }
 
-    override suspend fun markUnread(userId: UserId, conversationId: ConversationId) {
-        markConversationAsUnreadWorker.enqueue(userId, conversationId)
+    override suspend fun markUnread(
+        userId: UserId,
+        conversationId: ConversationId,
+        contextLabelId: LabelId
+    ) {
+        markConversationAsUnreadWorker.enqueue(userId, conversationId, contextLabelId)
     }
 }

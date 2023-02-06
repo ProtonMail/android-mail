@@ -158,12 +158,24 @@ class ConversationLocalDataSourceImpl @Inject constructor(
 
     override suspend fun markUnread(
         userId: UserId,
-        conversationId: ConversationId
+        conversationId: ConversationId,
+        contextLabelId: LabelId
     ): Either<DataError.Local, Conversation> {
         val conversation = observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
+
+        val updatedLabels = conversation.labels.map { label ->
+            if (label.labelId == contextLabelId) {
+                return@map label.copy(
+                    contextNumUnread = label.contextNumUnread.incrementUpTo(label.contextNumMessages)
+                )
+            }
+            label
+        }
+
         val updatedConversation = conversation.copy(
-            numUnread = (conversation.numUnread + 1).coerceAtMost(conversation.numMessages)
+            numUnread = conversation.numUnread.incrementUpTo(conversation.numMessages),
+            labels = updatedLabels
         )
         upsertConversation(userId, updatedConversation)
         return updatedConversation.right()
@@ -228,3 +240,5 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         }
     }
 }
+
+private fun Int.incrementUpTo(max: Int) = (this + 1).coerceAtMost(max)

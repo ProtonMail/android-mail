@@ -32,7 +32,9 @@ import ch.protonmail.android.mailconversation.data.local.dao.ConversationLabelDa
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailconversation.data.sample.ConversationEntitySample
 import ch.protonmail.android.mailconversation.data.sample.ConversationWithLabelsSample
+import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailpagination.data.local.dao.PageIntervalDao
 import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
@@ -62,6 +64,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class ConversationLocalDataSourceImplTest {
+
+    private val contextLabelId = MailLabelId.System.Archive.labelId
 
     private val conversationDao = mockk<ConversationDao> {
         coEvery { this@mockk.insertOrUpdate(entities = anyVararg()) } just Runs
@@ -276,7 +280,7 @@ class ConversationLocalDataSourceImplTest {
     }
 
     @Test
-    fun `mark unread increases unread count by 1`() = runTest {
+    fun `mark unread increments the conversation's overall unread count`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         val conversation = ConversationWithLabelsSample.WeatherForecast.copy(
@@ -292,7 +296,45 @@ class ConversationLocalDataSourceImplTest {
         every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
 
         // when
-        val result = conversationLocalDataSource.markUnread(userId, ConversationIdSample.WeatherForecast)
+        val result = conversationLocalDataSource.markUnread(
+            userId,
+            ConversationIdSample.WeatherForecast,
+            contextLabelId
+        )
+
+        // then
+        assertEquals(updatedConversation.right(), result)
+    }
+
+    @Test
+    fun `mark unread increments the unread count for the given context label only`() = runTest {
+        // given
+        val contextLabelId = MailLabelId.System.Inbox.labelId
+        val conversationId = ConversationIdSample.AlphaAppFeedback
+        val conversation = ConversationWithLabelsSample.AlphaAppFeedback.copy(
+            conversation = ConversationEntitySample.AlphaAppFeedback.copy(
+                numMessages = 2,
+                numUnread = 0
+            )
+        )
+        val updatedLabels = listOf(
+            ConversationLabelSample.AlphaAppFeedback.AllMail,
+            ConversationLabelSample.AlphaAppFeedback.Inbox.copy(contextNumUnread = 1),
+            ConversationLabelSample.AlphaAppFeedback.Archive
+        )
+        val updatedConversation = ConversationSample.AlphaAppFeedback.copy(
+            numMessages = 2,
+            numUnread = 1,
+            labels = updatedLabels
+        )
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+
+        // when
+        val result = conversationLocalDataSource.markUnread(
+            userId,
+            ConversationIdSample.AlphaAppFeedback,
+            contextLabelId
+        )
 
         // then
         assertEquals(updatedConversation.right(), result)
@@ -315,7 +357,11 @@ class ConversationLocalDataSourceImplTest {
         every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
 
         // when
-        val result = conversationLocalDataSource.markUnread(userId, ConversationIdSample.WeatherForecast)
+        val result = conversationLocalDataSource.markUnread(
+            userId,
+            ConversationIdSample.WeatherForecast,
+            contextLabelId
+        )
 
         // then
         assertEquals(updatedConversation.right(), result)
@@ -329,7 +375,7 @@ class ConversationLocalDataSourceImplTest {
         every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(null)
 
         // when
-        val result = conversationLocalDataSource.markUnread(userId, conversationId)
+        val result = conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId)
 
         // then
         assertEquals(error, result)

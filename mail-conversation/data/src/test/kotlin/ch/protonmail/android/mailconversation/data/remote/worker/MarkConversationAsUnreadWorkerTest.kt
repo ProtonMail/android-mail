@@ -31,6 +31,7 @@ import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.data.remote.resource.MarkConversationAsUnreadBody
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.data.remote.response.MarkUnreadResponse
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -46,6 +47,8 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 internal class MarkConversationAsUnreadWorkerTest {
+
+    private val contextLabelId = MailLabelId.System.Archive.labelId
 
     private val userId = UserIdSample.Primary
     private val conversationId = ConversationIdSample.WeatherForecast
@@ -74,6 +77,7 @@ internal class MarkConversationAsUnreadWorkerTest {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(MarkConversationAsUnreadWorker.RawUserIdKey) } returns userId.id
         every { inputData.getString(MarkConversationAsUnreadWorker.RawConversationIdKey) } returns conversationId.id
+        every { inputData.getString(MarkConversationAsUnreadWorker.RawContextLabelId) } returns contextLabelId.id
     }
     private val workManager: WorkManager = mockk {
         coEvery { enqueue(ofType<OneTimeWorkRequest>()) } returns mockk()
@@ -94,7 +98,7 @@ internal class MarkConversationAsUnreadWorkerTest {
         val expectedNetworkType = NetworkType.CONNECTED
 
         // when
-        enqueuer.enqueue(userId, conversationId)
+        enqueuer.enqueue(userId, conversationId, contextLabelId)
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()
@@ -108,7 +112,7 @@ internal class MarkConversationAsUnreadWorkerTest {
         val enqueuer = MarkConversationAsUnreadWorker.Enqueuer(workManager)
 
         // when
-        enqueuer.enqueue(userId, conversationId)
+        enqueuer.enqueue(userId, conversationId, contextLabelId)
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()
@@ -132,7 +136,9 @@ internal class MarkConversationAsUnreadWorkerTest {
         worker.doWork()
 
         // then
-        coVerify { conversationApi.markAsUnread(MarkConversationAsUnreadBody(listOf(conversationId.id))) }
+        coVerify {
+            conversationApi.markAsUnread(MarkConversationAsUnreadBody(listOf(conversationId.id), contextLabelId.id))
+        }
     }
 
     @Test

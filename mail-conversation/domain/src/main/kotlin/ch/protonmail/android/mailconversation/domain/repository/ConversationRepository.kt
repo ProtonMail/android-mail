@@ -75,5 +75,9 @@ interface ConversationRepository {
         toLabelId: LabelId
     ): Either<DataError, Conversation>
 
-    suspend fun markUnread(userId: UserId, conversationId: ConversationId): Either<DataError.Local, Conversation>
+    suspend fun markUnread(
+        userId: UserId,
+        conversationId: ConversationId,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, Conversation>
 }

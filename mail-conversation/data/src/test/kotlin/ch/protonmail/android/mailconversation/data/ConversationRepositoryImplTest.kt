@@ -36,6 +36,7 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationLoca
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
 import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -65,6 +66,7 @@ import kotlin.test.assertEquals
 class ConversationRepositoryImplTest {
 
     private val userId = UserIdSample.Primary
+    private val contextLabelId = MailLabelId.System.Inbox.labelId
 
     private val conversationLocalDataSource = mockk<ConversationLocalDataSource>(relaxUnitFun = true) {
         coEvery { this@mockk.getConversations(any(), any()) } returns emptyList()
@@ -696,11 +698,11 @@ class ConversationRepositoryImplTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         val error = DataErrorSample.NoCache.left()
-        coEvery { conversationLocalDataSource.markUnread(userId, conversationId) } returns error
+        coEvery { conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId) } returns error
         coEvery { messageLocalDataSource.markUnread(userId, any()) } returns MessageSample.build().right()
 
         // when
-        val result = conversationRepository.markUnread(userId, conversationId)
+        val result = conversationRepository.markUnread(userId, conversationId, contextLabelId)
 
         // then
         assertEquals(error, result)
@@ -711,49 +713,57 @@ class ConversationRepositoryImplTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         val updatedConversation = ConversationSample.WeatherForecast.right()
-        coEvery { conversationLocalDataSource.markUnread(userId, conversationId) } returns updatedConversation
+        coEvery {
+            conversationLocalDataSource.markUnread(
+                userId,
+                conversationId,
+                contextLabelId
+            )
+        } returns updatedConversation
         coEvery { messageLocalDataSource.markUnread(userId, any()) } returns MessageSample.build().right()
 
         // when
-        val result = conversationRepository.markUnread(userId, conversationId)
+        val result = conversationRepository.markUnread(userId, conversationId, contextLabelId)
 
         // then
         assertEquals(updatedConversation, result)
     }
 
     @Test
-    fun `mark unread marks the most recent read message as unread`() = runTest {
+    fun `mark unread marks the most recent read message with the current label as unread`() = runTest {
         // given
-        val conversationId = ConversationIdSample.WeatherForecast
+        val conversationId = ConversationIdSample.AlphaAppFeedback
         val messages = listOf(
-            MessageSample.AugWeatherForecast.copy(unread = false),
-            MessageSample.SepWeatherForecast.copy(unread = false),
-            MessageSample.OctWeatherForecast.copy(unread = true)
+            MessageSample.AlphaAppArchivedFeedback.copy(unread = false),
+            MessageSample.AlphaAppInfoRequest.copy(unread = false),
+            MessageSample.AlphaAppQAReport.copy(unread = false),
+            MessageSample.AlphaAppArchivedFeedback.copy(unread = false),
+            MessageSample.AlphaAppArchivedFeedback.copy(unread = true)
         )
-        coEvery { conversationLocalDataSource.markUnread(userId, conversationId) } returns
+        coEvery { conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId) } returns
             ConversationSample.WeatherForecast.right()
         every { messageLocalDataSource.observeMessages(userId, conversationId) } returns flowOf(messages)
         coEvery { messageLocalDataSource.markUnread(userId, any()) } returns MessageSample.build().right()
 
         // when
-        conversationRepository.markUnread(userId, conversationId)
+        conversationRepository.markUnread(userId, conversationId, contextLabelId)
 
         // then
-        coVerify { messageLocalDataSource.markUnread(userId, MessageIdSample.SepWeatherForecast) }
+        coVerify { messageLocalDataSource.markUnread(userId, MessageIdSample.AlphaAppQAReport) }
     }
 
     @Test
     fun `mark unread calls conversation remote data source`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
-        coEvery { conversationLocalDataSource.markUnread(userId, conversationId) } returns
+        coEvery { conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId) } returns
             ConversationSample.WeatherForecast.right()
         every { messageLocalDataSource.observeMessages(userId, conversationId) } returns flowOf(emptyList())
 
         // when
-        conversationRepository.markUnread(userId, conversationId)
+        conversationRepository.markUnread(userId, conversationId, contextLabelId)
 
         // then
-        coVerify { conversationRemoteDataSource.markUnread(userId, conversationId) }
+        coVerify { conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId) }
     }
 }

@@ -26,6 +26,7 @@ import ch.protonmail.android.mailconversation.data.remote.response.GetConversati
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
@@ -54,6 +55,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class ConversationRemoteDataSourceImplTest {
+
+    private val contextLabelId = MailLabelId.System.Archive.labelId
 
     private val sessionProvider = mockk<SessionProvider> {
         coEvery { getSessionId(userId) } returns SessionId("testSessionId")
@@ -281,14 +284,14 @@ class ConversationRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `mark unread enqueues the worker`() = runTest {
+    fun `enqueues worker to perform mark unread API call when mark unread is called for conversation`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
 
         // when
-        conversationRemoteDataSource.markUnread(userId, conversationId)
+        conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId)
 
         // then
-        verify { markConversationAsUnreadWorker.enqueue(userId, conversationId) }
+        verify { markConversationAsUnreadWorker.enqueue(userId, conversationId, contextLabelId) }
     }
 }

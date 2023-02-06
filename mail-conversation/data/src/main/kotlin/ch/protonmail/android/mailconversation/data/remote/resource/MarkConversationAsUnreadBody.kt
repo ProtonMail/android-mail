@@ -25,5 +25,7 @@ import kotlinx.serialization.Serializable
 data class MarkConversationAsUnreadBody(
 
     @SerialName("IDs")
-    val conversationIds: List<String>
+    val conversationIds: List<String>,
+    @SerialName("LabelID")
+    val labelId: String
 )

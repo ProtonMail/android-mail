@@ -23,16 +23,20 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MarkConversationAsUnread @Inject constructor(
-    private val conversationRepository: ConversationRepository
+    private val conversationRepository: ConversationRepository,
+    private val selectedMailLabelId: SelectedMailLabelId
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         conversationId: ConversationId
-    ): Either<DataError.Local, Conversation> =
-        conversationRepository.markUnread(userId, conversationId)
+    ): Either<DataError.Local, Conversation> {
+        val contextLabelId = selectedMailLabelId.flow.value.labelId
+        return conversationRepository.markUnread(userId, conversationId, contextLabelId)
+    }
 }

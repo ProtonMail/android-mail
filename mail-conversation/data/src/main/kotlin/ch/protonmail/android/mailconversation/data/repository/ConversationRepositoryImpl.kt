@@ -189,15 +189,16 @@ class ConversationRepositoryImpl @Inject constructor(
 
     override suspend fun markUnread(
         userId: UserId,
-        conversationId: ConversationId
+        conversationId: ConversationId,
+        contextLabelId: LabelId
     ): Either<DataError.Local, Conversation> {
         messageLocalDataSource.observeMessages(userId, conversationId).first()
-            .filter { message -> message.read }
+            .filter { message -> message.read && message.labelIds.contains(contextLabelId) }
             .maxByOrNull { message -> message.time }
             ?.let { message -> messageLocalDataSource.markUnread(userId, message.messageId) }
 
-        conversationRemoteDataSource.markUnread(userId, conversationId)
-        return conversationLocalDataSource.markUnread(userId, conversationId)
+        conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId)
+        return conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId)
     }
 
     private suspend fun moveToTrashOrSpam(
