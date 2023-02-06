@@ -45,7 +45,44 @@
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
-            tools:node="remove" />
+            tools:node="remove">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+            <meta-data
+                android:name="ch.protonmail.android.initializer.AccountStateHandlerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+            <meta-data
+                android:name="ch.protonmail.android.initializer.SentryInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+            <meta-data
+                android:name="ch.protonmail.android.initializer.EventManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+            <meta-data
+                android:name="ch.protonmail.android.initializer.LoggerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+            <meta-data
+                android:name="ch.protonmail.android.initializer.MainInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+            <meta-data
+                android:name="ch.protonmail.android.initializer.strictmode.StrictModeInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+            <meta-data
+                android:name="ch.protonmail.android.initializer.ThemeObserverInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+            <meta-data
+                android:name="ch.protonmail.android.initializer.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+        </provider>
 
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
