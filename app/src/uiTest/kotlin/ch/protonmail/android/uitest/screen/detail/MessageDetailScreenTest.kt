@@ -29,6 +29,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import org.junit.Rule
 import kotlin.test.Test
@@ -311,6 +312,24 @@ class MessageDetailScreenTest {
         robot.verify {
             messageBodyLoadingErrorMessageIsDisplayed(errorMessage)
             messageBodyReloadButtonIsDisplayed()
+        }
+    }
+
+    @Test
+    fun whenMessageBodyDecryptionFailedThenEncryptedBodyAndErrorMessageAreShown() {
+        // given
+        val state = MessageDetailsPreviewData.Message.copy(
+            messageBodyState = MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.messageBodyUiModel)
+        )
+        val messageBody = (state.messageBodyState as MessageBodyState.Error.Decryption).encryptedMessageBody.messageBody
+
+        // when
+        val robot = setUpScreen(state = state)
+
+        // then
+        robot.verify {
+            messageBodyDecryptionErrorMessageIsDisplayed()
+            messageBodyIsDisplayed(messageBody)
         }
     }
 

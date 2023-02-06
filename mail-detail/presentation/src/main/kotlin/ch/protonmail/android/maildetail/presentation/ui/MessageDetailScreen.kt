@@ -66,6 +66,7 @@ import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsP
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
@@ -238,9 +239,10 @@ private fun MessageDetailContent(
                     messageBodyState = messageBodyState,
                     onReload = onReload
                 )
-                is MessageBodyState.Error.Decryption -> MessageBody(
-                    messageBodyUiModel = messageBodyState.encryptedMessageBody
-                )
+                is MessageBodyState.Error.Decryption -> {
+                    ProtonErrorMessage(errorMessage = stringResource(id = R.string.decryption_error))
+                    MessageBody(messageBodyUiModel = messageBodyState.encryptedMessageBody)
+                }
             }
         }
     }

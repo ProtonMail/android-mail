@@ -139,6 +139,11 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
             composeTestRule.onNodeWithText(R.string.reload)
                 .assertIsDisplayed()
         }
+
+        fun messageBodyDecryptionErrorMessageIsDisplayed() {
+            composeTestRule.onNodeWithText(R.string.decryption_error)
+                .assertIsDisplayed()
+        }
     }
 }
 

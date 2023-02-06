@@ -125,7 +125,7 @@ private fun MessageDetailHeaderLayout(
                 enabled = !isExpanded
             ) { onClick() }
             .padding(
-                start = ProtonDimens.SmallSpacing,
+                start = ProtonDimens.SmallSpacing + ProtonDimens.ExtraSmallSpacing,
                 end = ProtonDimens.DefaultSpacing,
                 top = ProtonDimens.SmallSpacing,
                 bottom = ProtonDimens.DefaultSpacing
