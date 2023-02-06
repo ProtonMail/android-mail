@@ -147,4 +147,28 @@ object MailLabelUiModelTestData {
             iconPaddingStart = 0.dp
         )
     )
+    val customLabelList = listOf(
+        MailLabelUiModel.Custom(
+            id = MailLabelId.Custom.Label(LabelId("label1")),
+            text = TextUiModel.Text("Label1"),
+            icon = R.drawable.ic_proton_circle_filled,
+            iconTint = Color.Blue,
+            isSelected = false,
+            count = 1,
+            isVisible = true,
+            isExpanded = true,
+            iconPaddingStart = 0.dp
+        ),
+        MailLabelUiModel.Custom(
+            id = MailLabelId.Custom.Label(LabelId("label2")),
+            text = TextUiModel.Text("Label2"),
+            icon = R.drawable.ic_proton_circle_filled,
+            iconTint = Color.Red,
+            isSelected = true,
+            count = 2,
+            isVisible = true,
+            isExpanded = true,
+            iconPaddingStart = ProtonDimens.DefaultSpacing * 1
+        )
+    )
 }

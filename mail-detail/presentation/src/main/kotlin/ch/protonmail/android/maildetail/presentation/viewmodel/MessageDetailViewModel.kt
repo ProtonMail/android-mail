@@ -352,7 +352,7 @@ class MessageDetailViewModel @Inject constructor(
                 userId = userId,
                 messageId = messageId,
                 currentLabelIds = previousSelectedLabels,
-                updatedLabelIds = newSelectedLabels + SystemLabelId.Archive.labelId
+                updatedLabelIds = newSelectedLabels
             ).fold(
                 ifLeft = {
                     Timber.e("Relabel message failed: $it")

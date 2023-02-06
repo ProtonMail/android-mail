@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
@@ -42,6 +43,7 @@ import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestD
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import me.proton.core.label.domain.entity.LabelId
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
@@ -237,6 +239,34 @@ class MessageDetailReducerTest(
                 exitMessage = TextUiModel(string.message_moved_to_selected_destination, "testLabel"),
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false
+            ),
+            TestInput(
+                MessageViewAction.LabelAsToggleAction(LabelId("customLabel")),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                MessageViewAction.LabelAsConfirmed(false),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                MessageViewAction.LabelAsConfirmed(true),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                exitMessage = TextUiModel(string.message_moved_to_archive),
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true
             )
         )
 
@@ -322,6 +352,20 @@ class MessageDetailReducerTest(
                 MessageDetailEvent.MessageBottomSheetEvent(
                     MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
                         MailLabelUiModelTestData.spamAndCustomFolder
+                    )
+                ),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true
+            ),
+            TestInput(
+                MessageDetailEvent.MessageBottomSheetEvent(
+                    LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+                        customLabelList = MailLabelUiModelTestData.customLabelList,
+                        selectedLabels = listOf()
                     )
                 ),
                 shouldReduceMessageMetadataState = false,

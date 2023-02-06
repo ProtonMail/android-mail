@@ -170,4 +170,8 @@ object MessageSample {
     fun Message.moveTo(labelId: LabelId): Message = copy(
         labelIds = labelIds + labelId
     )
+
+    fun Message.labelAs(labelIds: List<LabelId>): Message = copy(
+        labelIds = labelIds
+    )
 }

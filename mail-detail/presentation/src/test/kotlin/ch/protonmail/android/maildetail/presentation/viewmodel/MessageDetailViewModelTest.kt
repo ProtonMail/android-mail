@@ -42,6 +42,7 @@ import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.R
@@ -49,6 +50,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBarUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -68,6 +70,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -75,8 +78,8 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
-import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomLabel
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
@@ -84,6 +87,7 @@ import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -99,6 +103,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class MessageDetailViewModelTest {
@@ -153,8 +158,8 @@ class MessageDetailViewModelTest {
     private val observeCustomMailLabels = mockk<ObserveCustomMailLabels> {
         every { this@mockk.invoke(userId) } returns flowOf(
             listOf(
-                buildCustomLabel(id = "label1"),
-                buildCustomLabel(id = "label2")
+                MailLabelTestData.customLabelOne,
+                MailLabelTestData.customLabelTwo
             ).right()
         )
     }
@@ -189,6 +194,23 @@ class MessageDetailViewModelTest {
         } returns
             with(MessageSample) { Invoice.moveTo(LabelIdSample.Trash) }.right()
     }
+    private val relabelMessage: RelabelMessage = mockk {
+        coEvery {
+            this@mockk.invoke(
+                userId = userId,
+                messageId = MessageId(rawMessageId),
+                currentLabelIds = any(),
+                updatedLabelIds = any()
+            )
+        } returns with(MessageSample) {
+            Invoice.labelAs(
+                listOf(
+                    MailLabelTestData.customLabelOne.id.labelId,
+                    MailLabelTestData.customLabelTwo.id.labelId
+                )
+            )
+        }.right()
+    }
 
     private val viewModel by lazy {
         MessageDetailViewModel(
@@ -209,7 +231,8 @@ class MessageDetailViewModelTest {
             messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
             messageBodyUiModelMapper = messageBodyUiModelMapper,
             messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper,
-            moveMessage = moveMessage
+            moveMessage = moveMessage,
+            relabelMessage = relabelMessage
         )
     }
 
@@ -635,6 +658,134 @@ class MessageDetailViewModelTest {
 
         // Then
         assertEquals(TextUiModel(R.string.error_move_message_failed), viewModel.state.value.error.consume())
+    }
+
+    @Test
+    fun `toggle a label emits LabelUiModelWithSelectedState list with selected option`() = runTest {
+        viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet)
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.LabelAsToggleAction(MailLabelTestData.customLabelOne.id.labelId))
+            advanceUntilIdle()
+            val actual = assertIs<LabelAsBottomSheetState.Data>(lastEmittedItem().bottomSheetState?.contentState)
+            assertTrue {
+                actual.labelUiModelsWithSelectedState
+                    .first { it.labelUiModel.id.labelId == MailLabelTestData.customLabelOne.id.labelId }
+                    .selectedState == LabelSelectedState.Selected
+            }
+        }
+    }
+
+    @Test
+    fun `verify relabel message is called when destination gets confirmed`() = runTest {
+        // Given
+        coEvery {
+            relabelMessage(
+                userId = userId,
+                messageId = MessageId(rawMessageId),
+                currentLabelIds = listOf(),
+                updatedLabelIds = listOf(
+                    MailLabelTestData.customLabelOne.id.labelId,
+                    MailLabelTestData.customLabelTwo.id.labelId
+                )
+            )
+        } returns MessageSample.Invoice.right()
+
+        // When
+        viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet)
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.LabelAsToggleAction(MailLabelTestData.customLabelOne.id.labelId))
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.LabelAsToggleAction(MailLabelTestData.customLabelTwo.id.labelId))
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.LabelAsConfirmed(false))
+            advanceUntilIdle()
+
+            // Then
+            assertNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
+            coVerify {
+                relabelMessage.invoke(
+                    userId = userId,
+                    messageId = MessageId(rawMessageId),
+                    currentLabelIds = listOf(),
+                    updatedLabelIds = listOf(
+                        MailLabelTestData.customLabelOne.id.labelId,
+                        MailLabelTestData.customLabelTwo.id.labelId
+                    )
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `verify relabel message and move to is called and dismiss is set when destination gets confirmed`() = runTest {
+        // Given
+        coEvery { moveMessage(userId, MessageId(rawMessageId), any()) } returns MessageSample.Invoice.right()
+
+        coEvery {
+            relabelMessage(
+                userId = userId,
+                messageId = MessageId(rawMessageId),
+                currentLabelIds = listOf(),
+                updatedLabelIds = listOf(
+                    MailLabelTestData.customLabelOne.id.labelId,
+                    MailLabelTestData.customLabelTwo.id.labelId
+                )
+            )
+        } returns MessageSample.Invoice.right()
+
+        // When
+        viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet)
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.LabelAsToggleAction(MailLabelTestData.customLabelOne.id.labelId))
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.LabelAsToggleAction(MailLabelTestData.customLabelTwo.id.labelId))
+            advanceUntilIdle()
+            viewModel.submit(MessageViewAction.LabelAsConfirmed(true))
+            advanceUntilIdle()
+
+            // Then
+            assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
+            coVerifySequence {
+                moveMessage(userId, MessageId(rawMessageId), MailLabelId.System.Archive.labelId)
+                relabelMessage.invoke(
+                    userId = userId,
+                    messageId = MessageId(rawMessageId),
+                    currentLabelIds = listOf(),
+                    updatedLabelIds = listOf(
+                        MailLabelTestData.customLabelOne.id.labelId,
+                        MailLabelTestData.customLabelTwo.id.labelId
+                    )
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `when error relabeling a message, error is emitted`() = runTest {
+        // Given
+        coEvery {
+            relabelMessage(
+                userId = userId,
+                messageId = MessageId(rawMessageId),
+                currentLabelIds = any(),
+                updatedLabelIds = any()
+            )
+        } returns DataError.Local.NoDataCached.left()
+
+        // When
+        viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet)
+        advanceUntilIdle()
+        viewModel.submit(MessageViewAction.LabelAsConfirmed(false))
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(TextUiModel(R.string.error_relabel_message_failed), viewModel.state.value.error.consume())
     }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {
