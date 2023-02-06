@@ -46,7 +46,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.AndroidX.compose
+        kotlinCompilerExtensionVersion = Versions.AndroidX.composeCompiler
     }
 
     packagingOptions {

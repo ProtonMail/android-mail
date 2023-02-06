@@ -19,12 +19,12 @@
 object Versions {
 
     object Accompanist {
-        const val accompanist = "0.27.0"
+        const val accompanist = "0.28.0"
     }
 
     object Android {
 
-        const val material = "1.7.0"
+        const val material = "1.8.0"
     }
 
     object AndroidX {
@@ -32,7 +32,8 @@ object Versions {
         const val activity = "1.6.1"
         const val annotation = "1.2.0"
         const val appCompat = "1.6.0-alpha05"
-        const val compose = "1.3.2"
+        const val compose = "1.3.3"
+        const val composeCompiler = "1.3.2"
         const val composeFoundation = "1.3.1"
         const val composeMaterial = "1.3.1"
         const val constraintLayoutCompose = "1.0.1"
@@ -40,26 +41,26 @@ object Versions {
         const val customViewPoolingContainer = "1.0.0"
         const val datastore = "1.0.0"
         const val hilt = "1.0.0"
-        const val material3 = "1.0.0"
+        const val material3 = "1.0.1"
         const val navigation = "2.5.3"
         const val paging = "3.1.1"
         const val pagingCompose = "1.0.0-alpha17"
         const val room = "2.4.3"
         const val splashscreen = "1.0.0"
-        const val testAndroidJUnit = "1.1.4"
-        const val testCore = "1.4.1-alpha07"
+        const val testAndroidJUnit = "1.1.5"
+        const val testCore = "1.5.0"
         const val testMacroBenchmark = "1.1.0-beta05"
-        const val testRunner = "1.4.1-alpha03"
-        const val testRules = "1.4.1-beta01"
-        const val testOrchestrator = "1.4.1"
-        const val testEspresso = "3.4.0"
+        const val testRunner = "1.5.2"
+        const val testRules = "1.5.0"
+        const val testOrchestrator = "1.4.2"
+        const val testEspresso = "3.5.1"
         const val testUiautomator = "2.2.0"
         const val work = "2.7.1"
     }
 
     object Arrow {
 
-        const val core = "1.1.3"
+        const val core = "1.1.5"
     }
 
     object Cash {
@@ -67,17 +68,19 @@ object Versions {
     }
 
     object Dagger {
-        const val dagger = "2.44"
+
+        const val dagger = "2.44.2"
     }
 
     object Detekt {
-        const val detekt = "1.21.0"
+
+        const val detekt = "1.22.0"
     }
 
     object Gradle {
 
         const val androidGradlePlugin = "7.3.1"
-        const val benManesVersionsPlugin = "0.43.0"
+        const val benManesVersionsPlugin = "0.45.0"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
         const val jacocoGradlePlugin = "0.8.8"
@@ -120,7 +123,7 @@ object Versions {
     }
 
     object Squareup {
-        const val leakCanary = "2.9.1"
+        const val leakCanary = "2.10"
         const val okhttp = "4.10.0"
         const val retrofit = "2.9.0"
     }
