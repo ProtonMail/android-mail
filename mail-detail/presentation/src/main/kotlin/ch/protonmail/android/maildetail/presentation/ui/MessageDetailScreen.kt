@@ -91,7 +91,10 @@ fun MessageDetailScreen(
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
-    state.bottomSheetState?.takeIf { it.contentState != null }?.let {
+    state.bottomSheetState?.let {
+        // Avoids a "jumping" of the bottom sheet
+        if (it.isShowEffectWithoutContent()) return@let
+
         ConsumableLaunchedEffect(effect = it.bottomSheetVisibilityEffect) { bottomSheetEffect ->
             when (bottomSheetEffect) {
                 BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
@@ -120,7 +123,8 @@ fun MessageDetailScreen(
                 )
                 is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
                     state = bottomSheetContentState,
-                    onLabelAsSelected = { viewModel.submit(MessageViewAction.LabelAsToggleAction(it)) }
+                    onLabelAsSelected = { viewModel.submit(MessageViewAction.LabelAsToggleAction(it)) },
+                    onDoneClick = { viewModel.submit(MessageViewAction.LabelAsConfirmed(it)) }
                 )
                 null -> ProtonCenteredProgress()
             }.exhaustive

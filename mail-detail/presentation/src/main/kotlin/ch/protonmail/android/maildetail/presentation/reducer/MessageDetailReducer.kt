@@ -60,6 +60,8 @@ class MessageDetailReducer @Inject constructor(
                     Effect.of(TextUiModel(R.string.error_unstar_operation_failed))
                 is MessageDetailEvent.ErrorMovingToTrash -> Effect.of(TextUiModel(R.string.error_move_to_trash_failed))
                 is MessageDetailEvent.ErrorMovingMessage -> Effect.of(TextUiModel(R.string.error_move_message_failed))
+                is MessageDetailEvent.ErrorLabelingMessage ->
+                    Effect.of(TextUiModel(R.string.error_relabel_message_failed))
             }
         } else {
             error
@@ -79,6 +81,10 @@ class MessageDetailReducer @Inject constructor(
         is MessageViewAction.MoveToDestinationConfirmed -> Effect.of(
             TextUiModel(R.string.message_moved_to_selected_destination, operation.mailLabelText)
         )
+        is MessageViewAction.LabelAsConfirmed -> when (operation.archiveSelected) {
+            true -> Effect.of(TextUiModel(R.string.message_moved_to_archive))
+            else -> exitScreenWithMessageEffect
+        }
         else -> exitScreenWithMessageEffect
     }
 
@@ -111,6 +117,7 @@ class MessageDetailReducer @Inject constructor(
                 is MessageViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
                 is MessageViewAction.RequestLabelAsBottomSheet,
                 is MessageViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
+                is MessageViewAction.LabelAsConfirmed,
                 is MessageViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)

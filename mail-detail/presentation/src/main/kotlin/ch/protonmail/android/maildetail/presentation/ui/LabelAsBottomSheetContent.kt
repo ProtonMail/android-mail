@@ -34,6 +34,10 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TriStateCheckbox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -55,13 +59,17 @@ import me.proton.core.compose.theme.interactionNorm
 import me.proton.core.label.domain.entity.LabelId
 
 @Composable
-fun LabelAsBottomSheetContent(state: LabelAsBottomSheetState, onLabelAsSelected: (LabelId) -> Unit) {
+fun LabelAsBottomSheetContent(
+    state: LabelAsBottomSheetState,
+    onLabelAsSelected: (LabelId) -> Unit,
+    onDoneClick: (archiveSelected: Boolean) -> Unit
+) {
 
     when (state) {
         is LabelAsBottomSheetState.Data -> LabelAsBottomSheetContent(
             labelAsDataState = state,
             onLabelAsSelected = onLabelAsSelected,
-            onDoneClick = {}
+            onDoneClick = onDoneClick
         )
         else -> ProtonCenteredProgress()
     }
@@ -71,8 +79,11 @@ fun LabelAsBottomSheetContent(state: LabelAsBottomSheetState, onLabelAsSelected:
 fun LabelAsBottomSheetContent(
     labelAsDataState: LabelAsBottomSheetState.Data,
     onLabelAsSelected: (LabelId) -> Unit,
-    onDoneClick: () -> Unit
+    onDoneClick: (archiveSelected: Boolean) -> Unit
 ) {
+
+    var archiveSelectedState by remember { mutableStateOf(false) }
+
     Column {
         Row(
             modifier = Modifier
@@ -85,7 +96,7 @@ fun LabelAsBottomSheetContent(
                 style = ProtonTheme.typography.default
             )
             Text(
-                modifier = Modifier.clickable { onDoneClick() },
+                modifier = Modifier.clickable { onDoneClick(archiveSelectedState) },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
                 style = ProtonTheme.typography.default,
                 color = ProtonTheme.colors.interactionNorm()
@@ -94,8 +105,8 @@ fun LabelAsBottomSheetContent(
         Divider()
         ProtonSettingsToggleItem(
             name = stringResource(id = R.string.bottom_sheet_archive_action),
-            value = false,
-            onToggle = {}
+            value = archiveSelectedState,
+            onToggle = { archiveSelectedState = !archiveSelectedState }
         )
         LazyColumn {
             items(labelAsDataState.labelUiModelsWithSelectedState) { itemLabel ->

@@ -69,6 +69,7 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     object ErrorMarkingUnread : MessageDetailEvent, AffectingErrorBar
     object ErrorMovingToTrash : MessageDetailEvent, AffectingErrorBar
     object ErrorMovingMessage : MessageDetailEvent, AffectingErrorBar
+    object ErrorLabelingMessage : MessageDetailEvent, AffectingErrorBar
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {
@@ -83,5 +84,6 @@ sealed interface MessageViewAction : MessageDetailOperation {
     data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MessageViewAction, AffectingBottomSheet
     data class MoveToDestinationConfirmed(val mailLabelText: String) : MessageViewAction
     data class LabelAsToggleAction(val labelId: LabelId) : MessageViewAction, AffectingBottomSheet
+    data class LabelAsConfirmed(val archiveSelected: Boolean) : MessageViewAction, AffectingBottomSheet
 
 }

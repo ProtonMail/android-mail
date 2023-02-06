@@ -33,6 +33,7 @@ import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
 import ch.protonmail.android.maildetail.domain.usecase.StarMessage
 import ch.protonmail.android.maildetail.domain.usecase.UnStarMessage
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
@@ -51,6 +52,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -94,7 +96,8 @@ class MessageDetailViewModel @Inject constructor(
     private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper,
     private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper,
-    private val moveMessage: MoveMessage
+    private val moveMessage: MoveMessage,
+    private val relabelMessage: RelabelMessage
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -121,8 +124,9 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.DismissBottomSheet -> dismissBottomSheet(action)
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
-            is MessageViewAction.LabelAsToggleAction -> onLabelSelected(action.labelId)
             is MessageViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
+            is MessageViewAction.LabelAsToggleAction -> onLabelSelected(action.labelId)
+            is MessageViewAction.LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
         }.exhaustive
     }
 
@@ -287,38 +291,76 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun showLabelAsBottomSheetAndLoadData(initialEvent: MessageViewAction) {
-        primaryUserId.flatMapLatest { userId ->
-            combine(
-                observeCustomMailLabels(userId),
-                observeFolderColor(userId),
-                observeMessageWithLabels(userId, messageId)
-            ) { labels, color, message ->
-                val mappedLabels = labels.tapLeft {
-                    Timber.e("Error while observing custom labels")
-                }.getOrElse { emptyList() }
+    private fun showLabelAsBottomSheetAndLoadData(initialEvent: MessageViewAction) = viewModelScope.launch {
+        emitNewStateFrom(initialEvent)
 
-                val selectedLabels = message.fold(
-                    ifLeft = { emptyList() },
-                    ifRight = { messageWithLabels ->
-                        messageWithLabels.labels
-                            .filter { it.type == LabelType.MessageLabel }
-                            .map { it.labelId }
-                    }
-                )
+        val userId = primaryUserId.first()
+        val labels = observeCustomMailLabels(userId).first()
+        val color = observeFolderColor(userId).first()
+        val message = observeMessageWithLabels(userId, messageId).first()
 
-                MessageDetailEvent.MessageBottomSheetEvent(
-                    LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                        customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) },
-                        selectedLabels = selectedLabels
-                    )
-                )
+        val mappedLabels = labels.tapLeft {
+            Timber.e("Error while observing custom labels")
+        }.getOrElse { emptyList() }
+
+        val selectedLabels = message.fold(
+            ifLeft = { emptyList() },
+            ifRight = { messageWithLabels ->
+                messageWithLabels.labels
+                    .filter { it.type == LabelType.MessageLabel }
+                    .map { it.labelId }
             }
-        }.onStart {
-            emitNewStateFrom(initialEvent)
-        }.onEach { event ->
-            emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
+        )
+
+        val event = MessageDetailEvent.MessageBottomSheetEvent(
+            LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+                customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) },
+                selectedLabels = selectedLabels
+            )
+        )
+        emitNewStateFrom(event)
+    }
+
+    private fun onLabelAsConfirmed(archiveSelected: Boolean) = viewModelScope.launch {
+        val userId = primaryUserId.first()
+        val messageWithLabels = checkNotNull(
+            observeMessageWithLabels(userId, messageId).first().orNull()
+        ) { "Message not found" }
+
+        val previousSelectedLabels = messageWithLabels.labels
+            .filter { it.type == LabelType.MessageLabel }
+            .map { it.labelId }
+
+        val labelAsData =
+            mutableDetailState.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
+                ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
+
+        val newSelectedLabels = labelAsData.labelUiModelsWithSelectedState
+            .filter { it.selectedState == LabelSelectedState.Selected }
+            .map { it.labelUiModel.id.labelId }
+
+        if (archiveSelected) {
+            moveMessage(
+                userId,
+                messageId,
+                SystemLabelId.Archive.labelId
+            ).tapLeft { Timber.e("Move message failed: $it") }
+        }
+
+        val operation =
+            relabelMessage(
+                userId = userId,
+                messageId = messageId,
+                currentLabelIds = previousSelectedLabels,
+                updatedLabelIds = newSelectedLabels + SystemLabelId.Archive.labelId
+            ).fold(
+                ifLeft = {
+                    Timber.e("Relabel message failed: $it")
+                    MessageDetailEvent.ErrorLabelingMessage
+                },
+                ifRight = { MessageViewAction.LabelAsConfirmed(archiveSelected) }
+            )
+        emitNewStateFrom(operation)
     }
 
     private fun onLabelSelected(labelId: LabelId) {
