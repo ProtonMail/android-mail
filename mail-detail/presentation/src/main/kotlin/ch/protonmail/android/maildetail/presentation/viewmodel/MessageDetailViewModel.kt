@@ -120,7 +120,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.DismissBottomSheet -> dismissBottomSheet(action)
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
-            is MessageViewAction.LabelAsToggleAction -> TODO()
+            is MessageViewAction.LabelAsToggleAction -> {}
             is MessageViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
         }.exhaustive
     }
@@ -291,8 +291,12 @@ class MessageDetailViewModel @Inject constructor(
             combine(
                 observeCustomMailLabels(userId),
                 observeFolderColor(userId),
-                observeMessageWithLabels(userId, messageId),
+                observeMessageWithLabels(userId, messageId)
             ) { labels, color, message ->
+                val mappedLabels = labels.tapLeft {
+                    Timber.e("Error while observing custom labels")
+                }.getOrElse { emptyList() }
+
                 val selectedLabels = message.fold(
                     ifLeft = { emptyList() },
                     ifRight = { messageWithLabels ->
@@ -304,7 +308,7 @@ class MessageDetailViewModel @Inject constructor(
 
                 MessageDetailEvent.MessageBottomSheetEvent(
                     LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                        customLabelList = labels.map { it.toCustomUiModel(color, emptyMap(), null) },
+                        customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) },
                         selectedLabels = selectedLabels
                     )
                 )

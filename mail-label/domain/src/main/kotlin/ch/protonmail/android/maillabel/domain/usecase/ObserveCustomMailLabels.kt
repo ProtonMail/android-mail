@@ -18,10 +18,13 @@
 
 package ch.protonmail.android.maillabel.domain.usecase
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
-import me.proton.core.domain.arch.mapSuccessValueOrNull
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
@@ -31,10 +34,12 @@ class ObserveCustomMailLabels @Inject constructor(
     private val labelRepository: LabelRepository
 ) {
 
-    operator fun invoke(userId: UserId) = labelRepository.observeLabels(userId, LabelType.MessageLabel)
-        .mapSuccessValueOrNull()
-        .mapLatest { list ->
-            list.orEmpty().sortedBy { it.order }
-        }
-        .map { it.toMailLabelCustom() }
+    operator fun invoke(userId: UserId): Flow<Either<DataError, List<MailLabel.Custom>>> =
+        labelRepository.observeLabels(userId, LabelType.MessageLabel)
+            .mapToEither()
+            .mapLatest { labelList ->
+                labelList
+                    .map { labels -> labels.sortedBy { it.order } }
+                    .map { it.toMailLabelCustom() }
+            }
 }

@@ -120,7 +120,8 @@ fun MessageDetailScreen(
                 )
                 is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
                     state = bottomSheetContentState,
-                    onLabelAsSelected = { viewModel.submit(MessageViewAction.LabelAsToggleAction(it)) })
+                    onLabelAsSelected = { viewModel.submit(MessageViewAction.LabelAsToggleAction(it)) }
+                )
                 null -> ProtonCenteredProgress()
             }.exhaustive
         }

@@ -98,29 +98,28 @@ fun LabelAsBottomSheetContent(
             onToggle = {}
         )
         LazyColumn {
-            items(labelAsDataState.labelUiModelsWithSelectedState) {
+            items(labelAsDataState.labelUiModelsWithSelectedState) { itemLabel ->
                 ProtonRawListItem(
                     modifier = Modifier
-                        .clickable { onLabelAsSelected(it.labelUiModel.id.labelId) }
+                        .clickable { onLabelAsSelected(itemLabel.labelUiModel.id.labelId) }
                         .height(ProtonDimens.ListItemHeight)
                 ) {
                     Icon(
-                        painter = painterResource(id = it.labelUiModel.icon),
+                        modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
+                        painter = painterResource(id = itemLabel.labelUiModel.icon),
                         contentDescription = NO_CONTENT_DESCRIPTION,
-                        modifier = Modifier
-                            .padding(horizontal = ProtonDimens.DefaultSpacing),
-                        tint = it.labelUiModel.iconTint ?: ProtonTheme.colors.iconWeak
+                        tint = itemLabel.labelUiModel.iconTint ?: ProtonTheme.colors.iconWeak
                     )
                     Text(
-                        text = it.labelUiModel.text.value,
+                        modifier = Modifier.weight(1f),
+                        text = itemLabel.labelUiModel.text.value,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f)
+                        overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
                     TriStateCheckbox(
                         modifier = Modifier.padding(end = ProtonDimens.DefaultSpacing),
-                        state = when (it.selectedState) {
+                        state = when (itemLabel.selectedState) {
                             LabelSelectedState.Selected -> ToggleableState.On
                             LabelSelectedState.NotSelected -> ToggleableState.Off
                             LabelSelectedState.PartiallySelected -> ToggleableState.Indeterminate

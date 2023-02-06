@@ -71,15 +71,16 @@ class ObserveCustomMailLabelsTest {
     fun `return correct value and order on success`() = runTest {
         observeCustomLabels(userId).test {
             val item = awaitItem()
+            val result = checkNotNull(item.orNull())
 
-            assertEquals(3, item.size)
+            assertEquals(3, result.size)
             assertEquals(
                 expected = listOf(
                     buildLabel(userId = userId, type = LabelType.MessageLabel, id = "0", order = 0),
                     buildLabel(userId = userId, type = LabelType.MessageLabel, id = "1", order = 1),
                     buildLabel(userId = userId, type = LabelType.MessageLabel, id = "2", order = 2)
                 ).toMailLabelCustom(),
-                actual = item
+                actual = result
             )
             cancelAndIgnoreRemainingEvents()
         }

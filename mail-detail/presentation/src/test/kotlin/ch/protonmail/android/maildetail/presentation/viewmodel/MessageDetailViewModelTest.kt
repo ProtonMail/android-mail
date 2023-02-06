@@ -155,7 +155,7 @@ class MessageDetailViewModelTest {
             listOf(
                 buildCustomLabel(id = "label1"),
                 buildCustomLabel(id = "label2")
-            )
+            ).right()
         )
     }
     private val markUnread = mockk<MarkMessageAsUnread> {
