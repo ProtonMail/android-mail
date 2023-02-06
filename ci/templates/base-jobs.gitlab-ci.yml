@@ -38,6 +38,7 @@ cache: &cache
   before_script:
     - bundle install
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
+    - ./buildSrc/generate_fad_release_notes.sh /tmp/release_notes.txt
   rules:
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
