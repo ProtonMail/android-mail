@@ -48,4 +48,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mutare în...</string>
   <string name="bottom_sheet_done_action">Gata</string>
+  <string name="please_go_back_online_to_load_messages">Nu aveți conexiune. Reconectați-vă pentru a se încărca mesajele.</string>
 </resources>

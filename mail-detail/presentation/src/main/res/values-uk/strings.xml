@@ -49,4 +49,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Перемістити до...</string>
   <string name="bottom_sheet_done_action">Готово</string>
+  <string name="please_go_back_online_to_load_messages">Ви зараз офлайн. Під\'єднайтеся до інтернету, щоб завантажити повідомлення</string>
 </resources>

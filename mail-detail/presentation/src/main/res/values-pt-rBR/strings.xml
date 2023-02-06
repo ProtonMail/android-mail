@@ -47,4 +47,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover para...</string>
   <string name="bottom_sheet_done_action">Concluído</string>
+  <string name="please_go_back_online_to_load_messages">Você está desconectado. Volte a se conectar para carregar as mensagens</string>
 </resources>

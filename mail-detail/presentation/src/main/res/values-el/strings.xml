@@ -47,4 +47,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Μετακίνηση σε...</string>
   <string name="bottom_sheet_done_action">Ολοκληρώθηκε</string>
+  <string name="please_go_back_online_to_load_messages">Είσαστε αποσυνδεμένοι. Παρακαλούμε συνδεθήτε ξανά για να φορτώσετε μηνύματα</string>
 </resources>

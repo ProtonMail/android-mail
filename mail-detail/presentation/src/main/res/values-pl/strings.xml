@@ -49,4 +49,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Przenieś do...</string>
   <string name="bottom_sheet_done_action">Gotowe</string>
+  <string name="please_go_back_online_to_load_messages">Jesteś w trybie offline. Połącz się z Internetem, aby załadować wiadomość</string>
 </resources>

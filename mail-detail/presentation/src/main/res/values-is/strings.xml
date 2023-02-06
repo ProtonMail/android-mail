@@ -47,4 +47,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flytja í...</string>
   <string name="bottom_sheet_done_action">Lokið</string>
+  <string name="please_go_back_online_to_load_messages">Þú ert ekki tengdur. Vinsamlegast farðu aftur á netið til að hlaða inn skilaboðum</string>
 </resources>

@@ -47,4 +47,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flytta till...</string>
   <string name="bottom_sheet_done_action">Klar</string>
+  <string name="please_go_back_online_to_load_messages">Du är offline. Gå tillbaka online för att ladda meddelanden</string>
 </resources>

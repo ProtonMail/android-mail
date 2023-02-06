@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Caducado</string>
+  <string name="expiration_expired">Expirado</string>
   <string name="expiration_days_arg">%dd</string>
   <string name="expiration_hours_arg">%dh</string>
   <string name="expiration_minutes_arg">%dm</string>
@@ -36,7 +36,7 @@
   <string name="action_trash_content_description">Papelera</string>
   <string name="action_delete_content_description">Eliminar</string>
   <string name="action_archive_content_description">Archivar</string>
-  <string name="action_spam_content_description">Correo no deseado</string>
+  <string name="action_spam_content_description">Spam</string>
   <string name="action_view_in_light_mode_content_description">Ver mensaje en modo claro</string>
   <string name="action_view_in_dark_mode_content_description">Ver mensaje en modo oscuro</string>
   <string name="action_print_content_description">Imprimir</string>

@@ -47,4 +47,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flyt til...</string>
   <string name="bottom_sheet_done_action">Udført</string>
+  <string name="please_go_back_online_to_load_messages">Du er offline. Sørg for at være online igen for at indlæse beskeder</string>
 </resources>

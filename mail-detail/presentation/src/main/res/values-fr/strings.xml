@@ -47,4 +47,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Déplacer...</string>
   <string name="bottom_sheet_done_action">Terminé</string>
+  <string name="please_go_back_online_to_load_messages">Vous êtes hors ligne. Veuillez vous reconnecter pour charger les messages.</string>
 </resources>

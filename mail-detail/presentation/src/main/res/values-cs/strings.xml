@@ -49,4 +49,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Přesunout do...</string>
   <string name="bottom_sheet_done_action">Hotovo</string>
+  <string name="please_go_back_online_to_load_messages">Jste odpojeni (offline). Pro načtení zpráv se prosím znovu připojte</string>
 </resources>

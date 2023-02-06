@@ -46,4 +46,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移动至…</string>
   <string name="bottom_sheet_done_action">完成</string>
+  <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
 </resources>

@@ -41,10 +41,11 @@
   <string name="conversation_moved_to_trash">Gesprek verplaatst naar prullenbak</string>
   <string name="conversation_moved_to_selected_destination">Gesprek verplaatst naar %1$s</string>
   <string name="error_move_conversation_failed">Gesprek verplaatsen mislukt. Probeer opnieuw.</string>
-  <string name="error_loading_message">Something went wrong, please try again.</string>
+  <string name="error_loading_message">Er ging iets mis. Probeer opnieuw.</string>
   <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>
-  <string name="reload">Reload</string>
+  <string name="reload">Opnieuw laden</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Verplaatsen naar...</string>
   <string name="bottom_sheet_done_action">Klaar</string>
+  <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
 </resources>

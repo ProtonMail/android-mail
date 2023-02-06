@@ -41,10 +41,11 @@
   <string name="conversation_moved_to_trash">Conversación movida a la papelera</string>
   <string name="conversation_moved_to_selected_destination">Conversación movida a $%1$s</string>
   <string name="error_move_conversation_failed">Error al mover la conversación. Inténtalo de nuevo.</string>
-  <string name="error_loading_message">Ha ocurrido un problema. Inténtalo de nuevo más tarde.</string>
+  <string name="error_loading_message">Se ha detectado un problema. Inténtalo de nuevo más tarde.</string>
   <string name="error_offline_loading_message">No estás conectado. Se necesita una conexión a internet para mostrar el contenido de este mensaje.</string>
   <string name="reload">Recargar</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover a...</string>
   <string name="bottom_sheet_done_action">Hecho</string>
+  <string name="please_go_back_online_to_load_messages">Estás desconectado. Vuelve a conectarte para cargar los mensajes.</string>
 </resources>

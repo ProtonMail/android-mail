@@ -47,4 +47,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Şuraya taşı...</string>
   <string name="bottom_sheet_done_action">Tamam</string>
+  <string name="please_go_back_online_to_load_messages">Çevrimdışısınız. İletilerin yüklenmesi için lütfen çevrimiçi olun</string>
 </resources>

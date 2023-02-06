@@ -46,4 +46,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Pindahkan ke...</string>
   <string name="bottom_sheet_done_action">Selesai</string>
+  <string name="please_go_back_online_to_load_messages">Anda sedang offline. Silakan sambungkan diri Anda ke internet untuk memuat pesan</string>
 </resources>

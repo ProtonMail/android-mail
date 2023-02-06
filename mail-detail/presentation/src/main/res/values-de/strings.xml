@@ -47,4 +47,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Verschieben nach...</string>
   <string name="bottom_sheet_done_action">Fertig</string>
+  <string name="please_go_back_online_to_load_messages">Du bist offline. Bitte gehe wieder online, um Nachrichten zu laden.</string>
 </resources>

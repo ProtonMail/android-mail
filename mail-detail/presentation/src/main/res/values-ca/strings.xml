@@ -47,4 +47,5 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Moure a...</string>
   <string name="bottom_sheet_done_action">Fet</string>
+  <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
 </resources>
