@@ -291,76 +291,80 @@ class MessageDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun showLabelAsBottomSheetAndLoadData(initialEvent: MessageViewAction) = viewModelScope.launch {
-        emitNewStateFrom(initialEvent)
+    private fun showLabelAsBottomSheetAndLoadData(initialEvent: MessageViewAction) {
+        viewModelScope.launch {
+            emitNewStateFrom(initialEvent)
 
-        val userId = primaryUserId.first()
-        val labels = observeCustomMailLabels(userId).first()
-        val color = observeFolderColor(userId).first()
-        val message = observeMessageWithLabels(userId, messageId).first()
+            val userId = primaryUserId.first()
+            val labels = observeCustomMailLabels(userId).first()
+            val color = observeFolderColor(userId).first()
+            val message = observeMessageWithLabels(userId, messageId).first()
 
-        val mappedLabels = labels.tapLeft {
-            Timber.e("Error while observing custom labels")
-        }.getOrElse { emptyList() }
+            val mappedLabels = labels.tapLeft {
+                Timber.e("Error while observing custom labels")
+            }.getOrElse { emptyList() }
 
-        val selectedLabels = message.fold(
-            ifLeft = { emptyList() },
-            ifRight = { messageWithLabels ->
-                messageWithLabels.labels
-                    .filter { it.type == LabelType.MessageLabel }
-                    .map { it.labelId }
-            }
-        )
-
-        val event = MessageDetailEvent.MessageBottomSheetEvent(
-            LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) },
-                selectedLabels = selectedLabels
+            val selectedLabels = message.fold(
+                ifLeft = { emptyList() },
+                ifRight = { messageWithLabels ->
+                    messageWithLabels.labels
+                        .filter { it.type == LabelType.MessageLabel }
+                        .map { it.labelId }
+                }
             )
-        )
-        emitNewStateFrom(event)
+
+            val event = MessageDetailEvent.MessageBottomSheetEvent(
+                LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+                    customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) },
+                    selectedLabels = selectedLabels
+                )
+            )
+            emitNewStateFrom(event)
+        }
     }
 
-    private fun onLabelAsConfirmed(archiveSelected: Boolean) = viewModelScope.launch {
-        val userId = primaryUserId.first()
-        val messageWithLabels = checkNotNull(
-            observeMessageWithLabels(userId, messageId).first().orNull()
-        ) { "Message not found" }
+    private fun onLabelAsConfirmed(archiveSelected: Boolean) {
+        viewModelScope.launch {
+            val userId = primaryUserId.first()
+            val messageWithLabels = checkNotNull(
+                observeMessageWithLabels(userId, messageId).first().orNull()
+            ) { "Message not found" }
 
-        val previousSelectedLabels = messageWithLabels.labels
-            .filter { it.type == LabelType.MessageLabel }
-            .map { it.labelId }
+            val previousSelectedLabels = messageWithLabels.labels
+                .filter { it.type == LabelType.MessageLabel }
+                .map { it.labelId }
 
-        val labelAsData =
-            mutableDetailState.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
-                ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
+            val labelAsData =
+                mutableDetailState.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
+                    ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
 
-        val newSelectedLabels = labelAsData.labelUiModelsWithSelectedState
-            .filter { it.selectedState == LabelSelectedState.Selected }
-            .map { it.labelUiModel.id.labelId }
+            val newSelectedLabels = labelAsData.labelUiModelsWithSelectedState
+                .filter { it.selectedState == LabelSelectedState.Selected }
+                .map { it.labelUiModel.id.labelId }
 
-        if (archiveSelected) {
-            moveMessage(
-                userId,
-                messageId,
-                SystemLabelId.Archive.labelId
-            ).tapLeft { Timber.e("Move message failed: $it") }
+            if (archiveSelected) {
+                moveMessage(
+                    userId,
+                    messageId,
+                    SystemLabelId.Archive.labelId
+                ).tapLeft { Timber.e("Move message failed: $it") }
+            }
+
+            val operation =
+                relabelMessage(
+                    userId = userId,
+                    messageId = messageId,
+                    currentLabelIds = previousSelectedLabels,
+                    updatedLabelIds = newSelectedLabels
+                ).fold(
+                    ifLeft = {
+                        Timber.e("Relabel message failed: $it")
+                        MessageDetailEvent.ErrorLabelingMessage
+                    },
+                    ifRight = { MessageViewAction.LabelAsConfirmed(archiveSelected) }
+                )
+            emitNewStateFrom(operation)
         }
-
-        val operation =
-            relabelMessage(
-                userId = userId,
-                messageId = messageId,
-                currentLabelIds = previousSelectedLabels,
-                updatedLabelIds = newSelectedLabels
-            ).fold(
-                ifLeft = {
-                    Timber.e("Relabel message failed: $it")
-                    MessageDetailEvent.ErrorLabelingMessage
-                },
-                ifRight = { MessageViewAction.LabelAsConfirmed(archiveSelected) }
-            )
-        emitNewStateFrom(operation)
     }
 
     private fun onLabelSelected(labelId: LabelId) {
