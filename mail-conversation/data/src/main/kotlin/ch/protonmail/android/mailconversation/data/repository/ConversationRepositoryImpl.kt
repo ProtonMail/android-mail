@@ -153,11 +153,11 @@ class ConversationRepositoryImpl @Inject constructor(
         return conversationLocalDataSource.removeLabels(userId, conversationId, labelIds).tap {
             val affectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
                 .filter { it.labelIds.any { labelId -> labelIds.contains(labelId) } }
-            affectedMessages.map {
+            affectedMessages.takeIf { it.isNotEmpty() }?.map {
                 it.copy(
                     labelIds = it.labelIds - labelIds
                 )
-            }.let {
+            }?.let {
                 messageLocalDataSource.upsertMessages(it)
             }
 
@@ -207,6 +207,18 @@ class ConversationRepositoryImpl @Inject constructor(
 
         conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId)
         return conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId)
+    }
+
+    override suspend fun relabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelsToBeRemoved: List<LabelId>,
+        labelsToBeAdded: List<LabelId>
+    ): Either<DataError, Conversation> {
+        val removeOperation = removeLabels(userId, conversationId, labelsToBeRemoved)
+        if (removeOperation.isLeft()) return removeOperation
+
+        return addLabels(userId, conversationId, labelsToBeAdded)
     }
 
     private suspend fun moveToTrashOrSpam(

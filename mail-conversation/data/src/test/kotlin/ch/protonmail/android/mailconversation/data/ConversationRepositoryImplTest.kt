@@ -50,6 +50,7 @@ import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Ordering
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -857,5 +858,53 @@ class ConversationRepositoryImplTest {
 
         // then
         coVerify { conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId) }
+    }
+
+    @Test
+    fun `relabel conversation removes and adds provided labels`() = runTest {
+        // given
+        val conversation = ConversationTestData.conversationWithConversationLabels
+        val conversationId = conversation.conversationId
+        val toBeRemovedLabels = listOf(LabelId("1"))
+        val toBeAddedLabels = listOf(LabelId("10"), LabelId("11"))
+        coEvery { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(
+            conversation
+        )
+        coEvery {
+            messageLocalDataSource.observeMessages(userId, conversationId)
+        } returns flowOf(MessageTestData.unStarredMessagesByConversation)
+        coEvery {
+            conversationLocalDataSource.removeLabels(userId, conversationId, toBeRemovedLabels)
+        } returns conversation.right()
+        coEvery {
+            conversationLocalDataSource.addLabels(userId, conversationId, toBeAddedLabels)
+        } returns conversation.right()
+
+        // when
+        conversationRepository.relabel(
+            userId = userId,
+            conversationId = conversationId,
+            labelsToBeRemoved = toBeRemovedLabels,
+            labelsToBeAdded = toBeAddedLabels
+        )
+
+        // then
+        coVerifySequence {
+            conversationLocalDataSource.removeLabels(userId, conversationId, toBeRemovedLabels)
+            messageLocalDataSource.observeMessages(userId, conversationId)
+            conversationRemoteDataSource.removeLabels(userId, conversationId, toBeRemovedLabels, listOf())
+            conversationLocalDataSource.addLabels(userId, conversationId, toBeAddedLabels)
+            messageLocalDataSource.observeMessages(userId, conversationId)
+            messageLocalDataSource.upsertMessages(
+                MessageTestData.unStarredMessagesByConversation
+                    .map { it.copy(labelIds = it.labelIds + toBeAddedLabels) }
+            )
+            conversationRemoteDataSource.addLabels(
+                userId,
+                conversationId,
+                toBeAddedLabels,
+                MessageTestData.unStarredMessagesByConversation.map { it.messageId }
+            )
+        }
     }
 }

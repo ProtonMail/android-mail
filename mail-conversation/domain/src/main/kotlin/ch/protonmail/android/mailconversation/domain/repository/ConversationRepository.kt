@@ -92,4 +92,11 @@ interface ConversationRepository {
         conversationId: ConversationId,
         contextLabelId: LabelId
     ): Either<DataError.Local, Conversation>
+
+    suspend fun relabel(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelsToBeRemoved: List<LabelId>,
+        labelsToBeAdded: List<LabelId>
+    ): Either<DataError, Conversation>
 }
