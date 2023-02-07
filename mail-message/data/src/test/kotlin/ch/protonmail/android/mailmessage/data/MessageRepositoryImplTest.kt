@@ -694,7 +694,7 @@ class MessageRepositoryImplTest {
                 message.messageId,
                 listOf(labelToBeAdded)
             )
-        } returns mockk()
+        } returns MessageSample.build().right()
 
         // When
         messageRepository.relabel(
