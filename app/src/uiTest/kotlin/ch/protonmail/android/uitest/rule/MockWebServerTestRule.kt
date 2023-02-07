@@ -23,7 +23,6 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.uitest.mockwebserver.MockWebServerDispatcher
 import dagger.hilt.android.testing.HiltAndroidRule
-import me.proton.core.network.data.di.BaseProtonApiUrl
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.rules.RuleChain
 import org.junit.rules.TestWatcher
@@ -54,11 +53,13 @@ import org.junit.runner.Description
  *  [ComposeTestRule].
  * @param hiltRule The [HiltAndroidRule] to be used in the [RuleChain].
  *  It will be used to setup the [MockWebServer] and provide it to the Dagger's graph.
+ * @param loginTestRule The [LoginTestRule] to be used in the [RuleChain].
  */
 fun <T : Any> T.createMockWebServerRuleChain(
     mockWebServer: () -> MockWebServer,
     composeTestRule: ComposeTestRule = createAndroidComposeRule<MainActivity>(),
-    hiltRule: HiltAndroidRule = HiltAndroidRule(this)
+    hiltRule: HiltAndroidRule = HiltAndroidRule(this),
+    loginTestRule: LoginTestRule = NoLoginTestRule
 ): RuleChain {
     val mockWebServerTestRule = MockWebServerTestRule(hiltRule = hiltRule, mockWebServer = mockWebServer)
 
@@ -66,11 +67,11 @@ fun <T : Any> T.createMockWebServerRuleChain(
         .outerRule(hiltRule)
         .around(composeTestRule)
         .around(mockWebServerTestRule)
+        .around(loginTestRule)
 }
 
 /**
  * A [TestWatcher] that setup a [MockWebServer] before each test and shuts it down after each test.
- * It also provides a [BaseProtonApiUrl] to the Dagger's graph.
  */
 class MockWebServerTestRule(
     private val hiltRule: HiltAndroidRule,
