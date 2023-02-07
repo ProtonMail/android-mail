@@ -55,12 +55,32 @@ interface ConversationRemoteDataSource {
     )
 
     /**
+     * Add the provided [labelIds] to the given [conversationId]
+     */
+    fun addLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>,
+        messageIds: List<MessageId>
+    )
+
+    /**
      * Remove [labelId] from the given [conversationId]
      */
     fun removeLabel(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId,
+        messageIds: List<MessageId>
+    )
+
+    /**
+     * Remove the provided [labelIds] from the given [conversationId]
+     */
+    fun removeLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>,
         messageIds: List<MessageId>
     )
 

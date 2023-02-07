@@ -120,22 +120,30 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId
+    ): Either<DataError.Local, Conversation> = addLabels(userId, conversationId, listOf(labelId))
+
+    override suspend fun addLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>
     ): Either<DataError.Local, Conversation> {
         val conversation = observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
 
-        val conversationLabel = ConversationLabel(
-            conversationId = conversationId,
-            labelId = labelId,
-            contextTime = conversation.labels.maxOf { it.contextTime },
-            contextSize = 0L,
-            contextNumMessages = conversation.numMessages,
-            contextNumUnread = conversation.numUnread,
-            contextNumAttachments = conversation.numAttachments
-        )
+        val conversationLabels = labelIds.map { labelId ->
+            ConversationLabel(
+                conversationId = conversationId,
+                labelId = labelId,
+                contextTime = conversation.labels.maxOf { it.contextTime },
+                contextSize = 0L,
+                contextNumMessages = conversation.numMessages,
+                contextNumUnread = conversation.numUnread,
+                contextNumAttachments = conversation.numAttachments
+            )
+        }
 
         val updatedConversation = conversation.copy(
-            labels = conversation.labels + conversationLabel
+            labels = conversation.labels + conversationLabels
         )
 
         upsertConversation(userId, updatedConversation)
@@ -146,11 +154,17 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId
+    ): Either<DataError.Local, Conversation> = removeLabels(userId, conversationId, listOf(labelId))
+
+    override suspend fun removeLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>
     ): Either<DataError.Local, Conversation> {
         val conversation = observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
         val updatedConversation = conversation.copy(
-            labels = conversation.labels.filterNot { it.labelId == labelId }
+            labels = conversation.labels.filterNot { labelIds.contains(it.labelId) }
         )
         upsertConversation(userId, updatedConversation)
         return updatedConversation.right()

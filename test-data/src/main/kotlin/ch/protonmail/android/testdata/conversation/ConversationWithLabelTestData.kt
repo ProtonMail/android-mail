@@ -60,4 +60,55 @@ object ConversationWithLabelTestData {
             )
         )
     )
+
+    fun conversationWithMultipleLabels(
+        userId: UserId = UserIdTestData.userId,
+        conversationId: ConversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+    ) = ConversationWithLabels(
+        conversation = ConversationEntity(
+            userId = userId,
+            conversationId = conversationId,
+            order = 1000,
+            subject = "subject",
+            senders = emptyList(),
+            recipients = emptyList(),
+            expirationTime = 0,
+            numMessages = 1,
+            numUnread = 0,
+            numAttachments = 2,
+            attachmentCount = AttachmentCountEntity(
+                calendar = 0
+            )
+        ),
+        labels = listOf(
+            ConversationLabel(
+                conversationId = conversationId,
+                labelId = LabelId("0"),
+                contextTime = 1000,
+                contextSize = 0,
+                contextNumMessages = 0,
+                contextNumUnread = 0,
+                contextNumAttachments = 0
+            ),
+            ConversationLabel(
+                conversationId = conversationId,
+                labelId = LabelId("1"),
+                contextTime = 1000,
+                contextSize = 0,
+                contextNumMessages = 0,
+                contextNumUnread = 0,
+                contextNumAttachments = 0
+            ),
+            ConversationLabel(
+                conversationId = conversationId,
+                labelId = LabelId("2"),
+                contextTime = 1000,
+                contextSize = 0,
+                contextNumMessages = 0,
+                contextNumUnread = 0,
+                contextNumAttachments = 0
+            )
+        )
+    )
+
 }

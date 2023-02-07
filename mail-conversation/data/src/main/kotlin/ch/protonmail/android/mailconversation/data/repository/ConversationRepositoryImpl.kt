@@ -111,23 +111,29 @@ class ConversationRepositoryImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId
+    ): Either<DataError, Conversation> = addLabels(userId, conversationId, listOf(labelId))
+
+    override suspend fun addLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>
     ): Either<DataError, Conversation> {
-        val conversationEither = conversationLocalDataSource.addLabel(userId, conversationId, labelId)
+        val conversationEither = conversationLocalDataSource.addLabels(userId, conversationId, labelIds)
         return conversationEither.tap {
             val affectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
-                .filterNot { it.labelIds.contains(labelId) }
+                .filterNot { it.labelIds.containsAll(labelIds) }
             affectedMessages.map {
                 it.copy(
-                    labelIds = it.labelIds + labelId
+                    labelIds = it.labelIds.union(labelIds).toList()
                 )
             }.let {
                 messageLocalDataSource.upsertMessages(it)
             }
 
-            conversationRemoteDataSource.addLabel(
+            conversationRemoteDataSource.addLabels(
                 userId,
                 conversationId,
-                labelId,
+                labelIds,
                 affectedMessages.map { it.messageId }
             )
         }
@@ -137,22 +143,28 @@ class ConversationRepositoryImpl @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId
+    ): Either<DataError, Conversation> = removeLabels(userId, conversationId, listOf(labelId))
+
+    override suspend fun removeLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>
     ): Either<DataError, Conversation> {
-        return conversationLocalDataSource.removeLabel(userId, conversationId, labelId).tap {
+        return conversationLocalDataSource.removeLabels(userId, conversationId, labelIds).tap {
             val affectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
-                .filter { it.labelIds.contains(labelId) }
+                .filter { it.labelIds.any { labelId -> labelIds.contains(labelId) } }
             affectedMessages.map {
                 it.copy(
-                    labelIds = it.labelIds - labelId
+                    labelIds = it.labelIds - labelIds
                 )
             }.let {
                 messageLocalDataSource.upsertMessages(it)
             }
 
-            conversationRemoteDataSource.removeLabel(
+            conversationRemoteDataSource.removeLabels(
                 userId,
                 conversationId,
-                labelId,
+                labelIds,
                 affectedMessages.map { it.messageId }
             )
         }

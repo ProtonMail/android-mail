@@ -41,6 +41,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import io.mockk.verifySequence
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiManagerFactory
@@ -272,6 +273,21 @@ class ConversationRemoteDataSourceImplTest {
     }
 
     @Test
+    fun `enqueues worker to perform multiple add label API calls when add labels is called for conversation`() {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val labelList = listOf(LabelId("10"), LabelId("11"))
+        val messageIds = listOf(MessageId("123"), MessageId("124"))
+        // When
+        conversationRemoteDataSource.addLabels(userId, conversationId, labelList, messageIds)
+        // Then
+        verifySequence {
+            addLabelConversationMessageWorker.enqueue(userId, conversationId, labelList.first(), messageIds)
+            addLabelConversationMessageWorker.enqueue(userId, conversationId, labelList.last(), messageIds)
+        }
+    }
+
+    @Test
     fun `enqueues worker to perform remove label API call when remove label is called for conversation`() {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
@@ -281,6 +297,21 @@ class ConversationRemoteDataSourceImplTest {
         conversationRemoteDataSource.removeLabel(userId, conversationId, labelId, messageIds)
         // Then
         verify { removeLabelConversationMessageWorker.enqueue(userId, conversationId, labelId, messageIds) }
+    }
+
+    @Test
+    fun `enqueues worker to perform multiple remove label API calls when remove labels is called for conversation`() {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val labelList = listOf(LabelId("10"), LabelId("11"))
+        val messageIds = listOf(MessageId("123"), MessageId("124"))
+        // When
+        conversationRemoteDataSource.removeLabels(userId, conversationId, labelList, messageIds)
+        // Then
+        verifySequence {
+            removeLabelConversationMessageWorker.enqueue(userId, conversationId, labelList.first(), messageIds)
+            removeLabelConversationMessageWorker.enqueue(userId, conversationId, labelList.last(), messageIds)
+        }
     }
 
     @Test

@@ -91,7 +91,18 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         labelId: LabelId,
         messageIds: List<MessageId>
     ) {
-        addLabelConversationWorker.enqueue(userId, conversationId, labelId, messageIds)
+        addLabels(userId, conversationId, listOf(labelId), messageIds)
+    }
+
+    override fun addLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>,
+        messageIds: List<MessageId>
+    ) {
+        labelIds.forEach { labelId ->
+            addLabelConversationWorker.enqueue(userId, conversationId, labelId, messageIds)
+        }
     }
 
     override fun removeLabel(
@@ -100,7 +111,23 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         labelId: LabelId,
         messageIds: List<MessageId>
     ) {
-        removeLabelConversationWorker.enqueue(userId, conversationId, labelId, messageIds)
+        removeLabels(userId, conversationId, listOf(labelId), messageIds)
+    }
+
+    override fun removeLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>,
+        messageIds: List<MessageId>
+    ) {
+        labelIds.forEach { labelId ->
+            removeLabelConversationWorker.enqueue(
+                userId,
+                conversationId,
+                labelId,
+                messageIds
+            )
+        }
     }
 
     override suspend fun markUnread(

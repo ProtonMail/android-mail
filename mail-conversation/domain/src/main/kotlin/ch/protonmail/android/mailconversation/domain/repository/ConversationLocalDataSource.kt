@@ -121,12 +121,30 @@ interface ConversationLocalDataSource {
     ): Either<DataError.Local, Conversation>
 
     /**
+     * Adds provided [labelIds] to given [conversationId] related to the same [userId]
+     */
+    suspend fun addLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>
+    ): Either<DataError.Local, Conversation>
+
+    /**
      * Removes [labelId] from given [conversationId] related to the same [userId]
      */
     suspend fun removeLabel(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId
+    ): Either<DataError.Local, Conversation>
+
+    /**
+     * Removes provided [labelIds] from given [conversationId] related to the same [userId]
+     */
+    suspend fun removeLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>
     ): Either<DataError.Local, Conversation>
 
     suspend fun markUnread(

@@ -254,6 +254,40 @@ class ConversationLocalDataSourceImplTest {
     }
 
     @Test
+    fun `add labels insert all passed conversation labels locally`() = runTest {
+        // Given
+        coEvery {
+            conversationDao.observe(
+                userId,
+                ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+            )
+        } returns flowOf(
+            ConversationWithLabelTestData.conversationWithLabel(
+                userId = userId,
+                conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+            )
+        )
+        val conversation = ConversationTestData.conversation
+        val labelList = listOf(LabelId("10"), LabelId("11"))
+
+        // When
+        conversationLocalDataSource.addLabels(userId, conversation.conversationId, labelList)
+
+        // Then
+        val list = mutableListOf<ConversationLabelEntity>()
+        coVerifySequence {
+            labelDao.deleteAll(userId, listOf(conversation.conversationId))
+            labelDao.insertOrUpdate(capture(list))
+            labelDao.insertOrUpdate(capture(list))
+            labelDao.insertOrUpdate(capture(list))
+        }
+        assertEquals(3, list.size)
+        assertEquals("0", list[0].labelId.id)
+        assertEquals("10", list[1].labelId.id)
+        assertEquals("11", list[2].labelId.id)
+    }
+
+    @Test
     fun `remove label removes conversation labels locally`() = runTest {
         // Given
         coEvery {
@@ -278,6 +312,50 @@ class ConversationLocalDataSourceImplTest {
             labelDao.deleteAll(userId, listOf(conversation.conversationId))
         }
     }
+
+    @Test
+    fun `remove labels removes all passed conversation labels locally`() = runTest {
+        // Given
+        coEvery {
+            conversationDao.observe(
+                userId,
+                ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+            )
+        } returns flowOf(
+            ConversationWithLabelTestData.conversationWithMultipleLabels(
+                userId = userId,
+                conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+            )
+        )
+        val conversation = ConversationTestData.conversation
+        val labelList = listOf(
+            LabelId("0"),
+            LabelId("1")
+        )
+
+        // When
+        conversationLocalDataSource.removeLabels(userId, conversation.conversationId, labelList)
+
+        // Then
+        coVerifySequence {
+            labelDao.deleteAll(userId, listOf(conversation.conversationId))
+            labelDao.insertOrUpdate(
+                entities = arrayOf(
+                    ConversationLabelEntity(
+                        userId = userId,
+                        conversationId = conversation.conversationId,
+                        labelId = LabelId("2"),
+                        contextTime = 1000,
+                        contextSize = 0,
+                        contextNumMessages = 0,
+                        contextNumUnread = 0,
+                        contextNumAttachments = 0
+                    )
+                )
+            )
+        }
+    }
+
 
     @Test
     fun `mark unread increments the conversation's overall unread count`() = runTest {

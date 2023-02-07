@@ -262,7 +262,7 @@ class ConversationRepositoryImplTest {
     @Test
     fun `add label returns conversation with label when upsert was successful`() = runTest {
         // Given
-        coEvery { conversationLocalDataSource.addLabel(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.addLabels(any(), any(), any()) } returns
             ConversationTestData.starredConversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
@@ -276,13 +276,13 @@ class ConversationRepositoryImplTest {
 
         // Then
         assertEquals(ConversationTestData.starredConversation.right(), actual)
-        coVerify { conversationLocalDataSource.addLabel(userId, conversationId, labelId) }
+        coVerify { conversationLocalDataSource.addLabels(userId, conversationId, listOf(labelId)) }
     }
 
     @Test
     fun `add label to conversation updates remote data source and filters only for affected messages`() = runTest {
         // Given
-        coEvery { conversationLocalDataSource.addLabel(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.addLabels(any(), any(), any()) } returns
             ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
@@ -295,10 +295,10 @@ class ConversationRepositoryImplTest {
 
         // Then
         coVerify {
-            conversationRemoteDataSource.addLabel(
+            conversationRemoteDataSource.addLabels(
                 userId,
                 conversationId,
-                LabelId("10"),
+                listOf(LabelId("10")),
                 listOf(MessageId("123"), MessageId("124"))
             )
         }
@@ -307,7 +307,7 @@ class ConversationRepositoryImplTest {
     @Test
     fun `add label to stored messages of conversation`() = runTest {
         // Given
-        coEvery { conversationLocalDataSource.addLabel(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.addLabels(any(), any(), any()) } returns
             ConversationTestData.starredConversation.right()
 
         // When
@@ -325,7 +325,7 @@ class ConversationRepositoryImplTest {
     fun `add label conversation even if no messages are stored`() = runTest {
         // Given
         coEvery {
-            conversationLocalDataSource.addLabel(
+            conversationLocalDataSource.addLabels(
                 any(),
                 any(),
                 any()
@@ -349,7 +349,7 @@ class ConversationRepositoryImplTest {
     fun `add label to messages of a conversation`() = runTest {
         // Given
         coEvery {
-            conversationLocalDataSource.addLabel(
+            conversationLocalDataSource.addLabels(
                 any(),
                 any(),
                 any()
@@ -369,9 +369,27 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
+    fun `add multiple labels to messages of a conversation`() = runTest {
+        // Given
+        val labelList = listOf(LabelId("10"), LabelId("11"))
+        val messages = MessageTestData.unStarredMsgByConversationWithStarredMsg
+        coEvery {
+            messageLocalDataSource.observeMessages(userId = userId, conversationId = any())
+        } returns flowOf(messages)
+        coEvery { conversationLocalDataSource.addLabels(any(), any(), any()) } returns
+            ConversationTestData.conversation.right()
+
+        // When
+        conversationRepository.addLabels(userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), labelList)
+
+        // Then
+        coVerify { messageLocalDataSource.upsertMessages(MessageTestData.starredMsgByConversationWithCustomLabel) }
+    }
+
+    @Test
     fun `remove label returns updated conversation without label when upsert was successful`() = runTest {
         // Given
-        coEvery { conversationLocalDataSource.removeLabel(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
             ConversationTestData.conversation.right()
 
         // When
@@ -385,7 +403,7 @@ class ConversationRepositoryImplTest {
 
     @Test
     fun `remove label of messages when removing labels from conversation was successful`() = runTest {
-        coEvery { conversationLocalDataSource.removeLabel(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
             ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(userId, any<ConversationId>()) } returns flowOf(
@@ -403,7 +421,7 @@ class ConversationRepositoryImplTest {
     @Test
     fun `remove label from conversation updates remote data source and filters only for affected messages`() = runTest {
         // Given
-        coEvery { conversationLocalDataSource.removeLabel(any(), any(), any()) } returns
+        coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
             ConversationTestData.conversation.right()
 
         every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
@@ -416,13 +434,58 @@ class ConversationRepositoryImplTest {
 
         // Then
         coVerify {
-            conversationRemoteDataSource.removeLabel(
+            conversationRemoteDataSource.removeLabels(
                 userId,
                 conversationId,
-                LabelId("10"),
+                listOf(LabelId("10")),
                 listOf(MessageId("123"), MessageId("124"))
             )
         }
+    }
+
+    @Test
+    fun `remove labels updates remote data source and filters only for affected messages also with unknown labels`() {
+        runTest {
+            // Given
+            coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
+                ConversationTestData.conversation.right()
+
+            every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
+                MessageTestData.starredMsgByConversationWithUnStarredMsg
+            )
+            val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+
+            // When
+            conversationRepository.removeLabels(userId, conversationId, listOf(LabelId("10"), LabelId("11")))
+
+            // Then
+            coVerify {
+                conversationRemoteDataSource.removeLabels(
+                    userId,
+                    conversationId,
+                    listOf(LabelId("10"), LabelId("11")),
+                    listOf(MessageId("123"), MessageId("124"))
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `remove multiple labels from messages of a conversation`() = runTest {
+        // Given
+        val labelList = listOf(LabelId("10"), LabelId("11"))
+        val messages = MessageTestData.starredMsgByConversationWithCustomLabel
+        coEvery {
+            messageLocalDataSource.observeMessages(userId = userId, conversationId = any())
+        } returns flowOf(messages)
+        coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
+            ConversationTestData.conversation.right()
+
+        // When
+        conversationRepository.removeLabels(userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), labelList)
+
+        // Then
+        coVerify { messageLocalDataSource.upsertMessages(MessageTestData.unStarredMessagesByConversation) }
     }
 
     @Test
@@ -439,8 +502,13 @@ class ConversationRepositoryImplTest {
             )
         )
         every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(conversation)
-        coEvery { conversationLocalDataSource.addLabel(userId, conversationId, SystemLabelId.Trash.labelId) } returns
-            trashedConversation.right()
+        coEvery {
+            conversationLocalDataSource.addLabels(
+                userId = userId,
+                conversationId = conversationId,
+                labelIds = listOf(SystemLabelId.Trash.labelId)
+            )
+        } returns trashedConversation.right()
         coEvery { messageLocalDataSource.addLabel(userId, any(), SystemLabelId.Trash.labelId) } returns
             MessageSample.AugWeatherForecast.right()
 
@@ -469,8 +537,13 @@ class ConversationRepositoryImplTest {
         }
         val messagesFlow = MutableStateFlow(messages)
         every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(conversation)
-        coEvery { conversationLocalDataSource.addLabel(userId, conversationId, SystemLabelId.Trash.labelId) } returns
-            ConversationSample.WeatherForecast.right()
+        coEvery {
+            conversationLocalDataSource.addLabels(
+                userId = userId,
+                conversationId = conversationId,
+                labelIds = listOf(SystemLabelId.Trash.labelId)
+            )
+        } returns ConversationSample.WeatherForecast.right()
         every { messageLocalDataSource.observeMessages(userId, conversationId) } returns messagesFlow
         coEvery { messageLocalDataSource.upsertMessages(trashedMessages) } coAnswers {
             messagesFlow.emit(trashedMessages)
@@ -514,9 +587,14 @@ class ConversationRepositoryImplTest {
         coEvery { conversationLocalDataSource.upsertConversation(userId, conversationWithoutLabels) } coAnswers {
             conversationFlow.emit(conversationWithoutLabels)
         }
-        coEvery { conversationLocalDataSource.addLabel(userId, conversationId, SystemLabelId.Trash.labelId) } returns
-            trashedConversation.right()
-        coEvery { messageLocalDataSource.addLabel(userId, any(), SystemLabelId.Trash.labelId) } returns
+        coEvery {
+            conversationLocalDataSource.addLabels(
+                userId = userId,
+                conversationId = conversationId,
+                labelIds = listOf(SystemLabelId.Trash.labelId)
+            )
+        } returns trashedConversation.right()
+        coEvery { messageLocalDataSource.addLabels(userId, any(), listOf(SystemLabelId.Trash.labelId)) } returns
             MessageSample.AugWeatherForecast.right()
 
         // when
@@ -560,8 +638,13 @@ class ConversationRepositoryImplTest {
         coEvery { conversationLocalDataSource.upsertConversation(userId, conversationWithoutLabels) } coAnswers {
             conversationFlow.emit(conversationWithoutLabels)
         }
-        coEvery { conversationLocalDataSource.addLabel(userId, conversationId, SystemLabelId.Spam.labelId) } returns
-            spammedConversation.right()
+        coEvery {
+            conversationLocalDataSource.addLabels(
+                userId = userId,
+                conversationId = conversationId,
+                labelIds = listOf(SystemLabelId.Spam.labelId)
+            )
+        } returns spammedConversation.right()
         coEvery { messageLocalDataSource.addLabel(userId, any(), SystemLabelId.Spam.labelId) } returns
             MessageSample.AugWeatherForecast.right()
 
@@ -619,8 +702,13 @@ class ConversationRepositoryImplTest {
         }
         val messagesFlow = MutableStateFlow(messages)
         every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(conversation)
-        coEvery { conversationLocalDataSource.addLabel(userId, conversationId, SystemLabelId.Trash.labelId) } returns
-            ConversationSample.WeatherForecast.right()
+        coEvery {
+            conversationLocalDataSource.addLabels(
+                userId = userId,
+                conversationId = conversationId,
+                labelIds = listOf(SystemLabelId.Trash.labelId)
+            )
+        } returns ConversationSample.WeatherForecast.right()
         every { messageLocalDataSource.observeMessages(userId, conversationId) } returns messagesFlow
         coEvery { messageLocalDataSource.upsertMessages(messagesWithoutLabels) } coAnswers {
             messagesFlow.emit(messagesWithoutLabels)
@@ -656,10 +744,10 @@ class ConversationRepositoryImplTest {
             )
         } returns conversation.copy(labels = listOf()).right()
         coEvery {
-            conversationLocalDataSource.addLabel(
+            conversationLocalDataSource.addLabels(
                 userId,
                 conversation.conversationId,
-                SystemLabelId.Archive.labelId
+                listOf(SystemLabelId.Archive.labelId)
             )
         } returns ConversationTestData.conversationWithArchiveLabel.right()
 
@@ -671,7 +759,11 @@ class ConversationRepositoryImplTest {
         )
 
         coVerify {
-            conversationLocalDataSource.addLabel(userId, conversation.conversationId, SystemLabelId.Archive.labelId)
+            conversationLocalDataSource.addLabels(
+                userId = userId,
+                conversationId = conversation.conversationId,
+                labelIds = listOf(SystemLabelId.Archive.labelId)
+            )
         }
 
         coVerify { messageLocalDataSource.upsertMessages(updatedMessages) }

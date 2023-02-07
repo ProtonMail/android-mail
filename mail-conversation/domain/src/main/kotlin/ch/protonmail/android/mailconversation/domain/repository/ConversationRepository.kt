@@ -62,10 +62,22 @@ interface ConversationRepository {
         labelId: LabelId
     ): Either<DataError, Conversation>
 
+    suspend fun addLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>
+    ): Either<DataError, Conversation>
+
     suspend fun removeLabel(
         userId: UserId,
         conversationId: ConversationId,
         labelId: LabelId
+    ): Either<DataError, Conversation>
+
+    suspend fun removeLabels(
+        userId: UserId,
+        conversationId: ConversationId,
+        labelIds: List<LabelId>
     ): Either<DataError, Conversation>
 
     suspend fun move(
