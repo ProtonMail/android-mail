@@ -79,35 +79,28 @@ class MessageRepositoryImpl @Inject constructor(
         )
     ).buildProtonStore(coroutineScopeProvider)
 
-    override suspend fun getMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): Either<DataError, List<Message>> = localDataSource.getMessages(
-        userId = userId,
-        pageKey = pageKey
-    ).let { cachedMessages ->
-        val isLocalPageValid = localDataSource.isLocalPageValid(userId, pageKey, cachedMessages)
-        if (isLocalPageValid) cachedMessages.right()
-        else fetchMessages(userId, pageKey).fold(
-            ifLeft = { dataError ->
-                Timber.w("Failed to fetch messages from remote, returning cached messages. $dataError")
-                cachedMessages.right()
-            },
-            ifRight = { it.right() }
-        )
-    }
+    override suspend fun getMessages(userId: UserId, pageKey: PageKey): Either<DataError, List<Message>> =
+        localDataSource.getMessages(
+            userId = userId,
+            pageKey = pageKey
+        ).let { cachedMessages ->
+            val isLocalPageValid = localDataSource.isLocalPageValid(userId, pageKey, cachedMessages)
+            if (isLocalPageValid) cachedMessages.right()
+            else fetchMessages(userId, pageKey).fold(
+                ifLeft = { dataError ->
+                    Timber.w("Failed to fetch messages from remote, returning cached messages. $dataError")
+                    cachedMessages.right()
+                },
+                ifRight = { it.right() }
+            )
+        }
 
-    override suspend fun markAsStale(
-        userId: UserId,
-        labelId: LabelId
-    ) = localDataSource.markAsStale(userId, labelId)
+    override suspend fun markAsStale(userId: UserId, labelId: LabelId) = localDataSource.markAsStale(userId, labelId)
 
-    override fun observeCachedMessage(
-        userId: UserId,
-        messageId: MessageId
-    ): Flow<Either<DataError.Local, Message>> = localDataSource.observeMessage(userId, messageId).mapLatest {
-        it?.right() ?: DataError.Local.NoDataCached.left()
-    }
+    override fun observeCachedMessage(userId: UserId, messageId: MessageId): Flow<Either<DataError.Local, Message>> =
+        localDataSource.observeMessage(userId, messageId).mapLatest {
+            it?.right() ?: DataError.Local.NoDataCached.left()
+        }
 
     override fun observeCachedMessages(
         userId: UserId,
@@ -120,17 +113,14 @@ class MessageRepositoryImpl @Inject constructor(
     override fun observeMessageWithBody(
         userId: UserId,
         messageId: MessageId
-    ): Flow<Either<DataError, MessageWithBody>> =
-        messageWithBodyStore.stream(
-            StoreRequest.cached(MessageKey(userId, messageId), false)
-        ).mapLatest { it.toDataResult() }
-            .mapToEither()
-            .distinctUntilChanged()
+    ): Flow<Either<DataError, MessageWithBody>> = messageWithBodyStore.stream(
+        StoreRequest.cached(MessageKey(userId, messageId), false)
+    ).mapLatest { it.toDataResult() }
+        .mapToEither()
+        .distinctUntilChanged()
 
-    override suspend fun getMessageWithBody(
-        userId: UserId,
-        messageId: MessageId
-    ): Either<DataError, MessageWithBody> = observeMessageWithBody(userId, messageId).first()
+    override suspend fun getMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody> =
+        observeMessageWithBody(userId, messageId).first()
 
     override suspend fun addLabel(
         userId: UserId,
@@ -182,7 +172,7 @@ class MessageRepositoryImpl @Inject constructor(
 
 
     override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
-        localDataSource.markUnread(userId, messageId).tap { message ->
+        localDataSource.markUnread(userId, messageId).tap {
             remoteDataSource.markUnread(userId, messageId)
         }
 
@@ -207,9 +197,7 @@ class MessageRepositoryImpl @Inject constructor(
         messageId: MessageId,
         labelId: LabelId
     ): Either<DataError.Local, Message> {
-        if (labelId.isTrash().not() && labelId.isSpam().not()) {
-            throw IllegalArgumentException("Invalid system label id: $labelId")
-        }
+        require(labelId.isTrash() || labelId.isSpam()) { "Invalid system label id: $labelId" }
 
         val message = localDataSource.observeMessage(userId, messageId).first()
             ?: return DataError.Local.NoDataCached.left()
@@ -225,18 +213,16 @@ class MessageRepositoryImpl @Inject constructor(
         return addLabel(userId = userId, messageId = messageId, labelId = labelId)
     }
 
-    private suspend fun fetchMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): Either<DataError.Remote, List<Message>> = localDataSource.getClippedPageKey(
-        userId = userId,
-        pageKey = pageKey.copy(size = min(MessageApi.maxPageSize, pageKey.size))
-    ).let { adaptedPageKey ->
-        remoteDataSource.getMessages(
+    private suspend fun fetchMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> =
+        localDataSource.getClippedPageKey(
             userId = userId,
-            pageKey = adaptedPageKey
-        ).tap { messages -> insertMessages(userId, adaptedPageKey, messages) }
-    }
+            pageKey = pageKey.copy(size = min(MessageApi.maxPageSize, pageKey.size))
+        ).let { adaptedPageKey ->
+            remoteDataSource.getMessages(
+                userId = userId,
+                pageKey = adaptedPageKey
+            ).tap { messages -> insertMessages(userId, adaptedPageKey, messages) }
+        }
 
     private suspend fun insertMessages(
         userId: UserId,

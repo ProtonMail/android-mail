@@ -97,19 +97,15 @@ class ConversationRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun markAsStale(
-        userId: UserId,
-        labelId: LabelId
-    ) = conversationLocalDataSource.markAsStale(userId, labelId)
+    override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
+        conversationLocalDataSource.markAsStale(userId, labelId)
 
-    override fun observeConversation(
-        userId: UserId,
-        id: ConversationId
-    ): Flow<Either<DataError, Conversation>> = conversationStore.stream(
-        StoreRequest.cached(ConversationKey(userId, id), true)
-    ).mapLatest { it.toDataResult() }
-        .mapToEither()
-        .distinctUntilChanged()
+    override fun observeConversation(userId: UserId, id: ConversationId): Flow<Either<DataError, Conversation>> =
+        conversationStore.stream(
+            StoreRequest.cached(ConversationKey(userId, id), true)
+        ).mapLatest { it.toDataResult() }
+            .mapToEither()
+            .distinctUntilChanged()
 
     override suspend fun addLabel(
         userId: UserId,
@@ -206,9 +202,7 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationId: ConversationId,
         labelId: LabelId
     ): Either<DataError, Conversation> {
-        if (labelId.isTrash().not() && labelId.isSpam().not()) {
-            throw IllegalArgumentException("Invalid system label id: $labelId")
-        }
+        require(labelId.isTrash() || labelId.isSpam()) { "Invalid system label id: $labelId" }
 
         val persistentLabels = listOf(
             SystemLabelId.AllDrafts.labelId,
