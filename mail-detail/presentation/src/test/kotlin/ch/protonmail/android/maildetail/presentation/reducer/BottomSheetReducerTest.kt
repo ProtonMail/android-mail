@@ -27,6 +27,7 @@ import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetStat
 import io.mockk.Called
 import io.mockk.mockk
 import io.mockk.verify
+import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -53,12 +54,23 @@ internal class BottomSheetReducerTest(
         if (reducesMoveTo) {
             verify {
                 moveToBottomSheetReducer.newStateFrom(
-                    any(),
+                    currentState,
                     testInput.operation as MoveToBottomSheetState.MoveToBottomSheetOperation
                 )
             }
         } else {
             verify { moveToBottomSheetReducer wasNot Called }
+        }
+
+        if (reducesLabelAs) {
+            verify {
+                labelAsBottomSheetReducer.newStateFrom(
+                    currentState,
+                    testInput.operation as LabelAsBottomSheetState.LabelAsBottomSheetOperation
+                )
+            }
+        } else {
+            verify { labelAsBottomSheetReducer wasNot Called }
         }
     }
 
@@ -91,10 +103,21 @@ internal class BottomSheetReducerTest(
                 reducesBottomSheetVisibilityEffects = false,
                 reducesMoveTo = true,
                 reducesLabelAs = false
-            ),
+            )
+        )
+
+        private val labelAsBottomSheetOperation = listOf(
             TestInput(
                 currentState = BottomSheetState(null, Effect.empty()),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(listOf(), listOf()),
+                expectedState = BottomSheetState(LabelAsBottomSheetState.Data(listOf())),
+                reducesBottomSheetVisibilityEffects = false,
+                reducesLabelAs = true,
+                reducesMoveTo = false
+            ),
+            TestInput(
+                currentState = BottomSheetState(LabelAsBottomSheetState.Data(listOf())),
+                operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(LabelId("labelId")),
                 expectedState = BottomSheetState(LabelAsBottomSheetState.Data(listOf())),
                 reducesBottomSheetVisibilityEffects = false,
                 reducesLabelAs = true,
@@ -107,7 +130,8 @@ internal class BottomSheetReducerTest(
         fun data() =
             (
                 bottomSheetVisibilityOperations +
-                    moveToBottomSheetOperation
+                    moveToBottomSheetOperation +
+                    labelAsBottomSheetOperation
                 )
                 .map { testInput ->
                     val testName = """
