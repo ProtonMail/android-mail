@@ -75,6 +75,11 @@ class LabelAsBottomSheetReducerTest(
                 expectedState = BottomSheetState(
                     LabelAsBottomSheetState.Data(labelListWithSelection)
                 )
+            ),
+            TestInput(
+                currentState = BottomSheetState(LabelAsBottomSheetState.Loading),
+                operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(LabelId("label1")),
+                expectedState = BottomSheetState(LabelAsBottomSheetState.Loading)
             )
         )
 
@@ -110,6 +115,7 @@ class LabelAsBottomSheetReducerTest(
                     Current state: ${testInput.currentState}
                     Operation: ${testInput.operation}
                     Next state: ${testInput.expectedState}
+                    
                 """.trimIndent()
                 arrayOf(testName, testInput)
             }

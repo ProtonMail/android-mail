@@ -75,8 +75,7 @@ sealed interface LabelAsBottomSheetState : BottomSheetContentState {
         data class ActionData(
             val customLabelList: List<MailLabelUiModel.Custom>,
             val selectedLabels: List<LabelId>
-        ) :
-            LabelAsBottomSheetEvent
+        ) : LabelAsBottomSheetEvent
     }
 
     sealed interface LabelAsBottomSheetAction : LabelAsBottomSheetOperation {

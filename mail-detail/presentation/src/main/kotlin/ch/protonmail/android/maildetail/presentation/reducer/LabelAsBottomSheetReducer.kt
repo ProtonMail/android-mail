@@ -58,17 +58,17 @@ class LabelAsBottomSheetReducer @Inject constructor() {
     private fun LabelToggled.toNewBottomSheetState(currentState: BottomSheetState?): BottomSheetState? {
         return when (val contentState = currentState?.contentState) {
             is Data -> {
-                val newLabelList = contentState.labelUiModelsWithSelectedState.map { label ->
-                    if (label.labelUiModel.id.labelId.id == labelId.id) {
-                        label.copy(
-                            selectedState = when (label.selectedState) {
+                val newLabelList = contentState.labelUiModelsWithSelectedState.map { labelUiModelWithSelectedState ->
+                    if (labelUiModelWithSelectedState.labelUiModel.id.labelId.id == labelId.id) {
+                        labelUiModelWithSelectedState.copy(
+                            selectedState = when (labelUiModelWithSelectedState.selectedState) {
                                 is LabelSelectedState.NotSelected,
                                 is LabelSelectedState.PartiallySelected -> LabelSelectedState.Selected
                                 is LabelSelectedState.Selected -> LabelSelectedState.NotSelected
                             }
                         )
                     } else {
-                        label
+                        labelUiModelWithSelectedState
                     }
                 }
                 BottomSheetState(
@@ -76,7 +76,7 @@ class LabelAsBottomSheetReducer @Inject constructor() {
                     bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect
                 )
             }
-            else -> null
+            else -> currentState
         }
     }
 
