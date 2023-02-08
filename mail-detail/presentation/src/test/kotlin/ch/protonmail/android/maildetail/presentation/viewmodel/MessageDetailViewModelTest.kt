@@ -737,7 +737,6 @@ class MessageDetailViewModelTest {
 
         // When
         viewModel.state.test {
-            advanceUntilIdle()
             viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet)
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.LabelAsToggleAction(MailLabelTestData.customLabelOne.id.labelId))
