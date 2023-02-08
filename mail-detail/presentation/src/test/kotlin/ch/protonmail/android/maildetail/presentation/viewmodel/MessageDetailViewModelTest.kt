@@ -663,7 +663,6 @@ class MessageDetailViewModelTest {
     @Test
     fun `toggle a label emits LabelUiModelWithSelectedState list with selected option`() = runTest {
         viewModel.state.test {
-            advanceUntilIdle()
             viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet)
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.LabelAsToggleAction(MailLabelTestData.customLabelOne.id.labelId))
@@ -694,7 +693,6 @@ class MessageDetailViewModelTest {
 
         // When
         viewModel.state.test {
-            advanceUntilIdle()
             viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet)
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.LabelAsToggleAction(MailLabelTestData.customLabelOne.id.labelId))
