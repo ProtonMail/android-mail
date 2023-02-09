@@ -126,7 +126,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.MoveToDestinationConfirmed ->
                 onBottomSheetDestinationConfirmed(action.mailLabelText)
             is ConversationDetailViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
-            is ConversationDetailViewAction.LabelAsToggleAction -> {}
+            is ConversationDetailViewAction.LabelAsToggleAction -> onLabelToggled(action.labelId)
             is ConversationDetailViewAction.LabelAsConfirmed -> {}
         }.exhaustive
     }
@@ -243,6 +243,10 @@ class ConversationDetailViewModel @Inject constructor(
             )
             emitNewStateFrom(event)
         }
+    }
+
+    private fun onLabelToggled(labelId: LabelId) {
+        viewModelScope.launch { emitNewStateFrom(ConversationDetailViewAction.LabelAsToggleAction(labelId)) }
     }
 
     private fun List<MessageWithLabels>.allContainsLabel(labelId: LabelId): Boolean {
