@@ -47,6 +47,12 @@ object LabelSample {
     val News = build(
         labelId = LabelIdSample.News
     )
+    val Label2021 = build(
+        labelId = LabelIdSample.Label2021
+    )
+    val Label2022 = build(
+        labelId = LabelIdSample.Label2022
+    )
 
     fun build(
         color: String = "#338AF3",

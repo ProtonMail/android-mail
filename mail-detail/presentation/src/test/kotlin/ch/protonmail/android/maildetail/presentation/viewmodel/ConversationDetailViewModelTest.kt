@@ -108,10 +108,10 @@ class ConversationDetailViewModelTest {
             ConversationDetailMetadataUiModelSample.WeatherForecast
     }
     private val conversationMessageMapper: ConversationDetailMessageUiModelMapper = mockk {
-        every { toUiModel(messageWithLabels = MessageWithLabelsSample.AugWeatherForecast, contacts = any()) } returns
-            ConversationDetailMessageUiModelSample.AugWeatherForecast
-        every { toUiModel(messageWithLabels = MessageWithLabelsSample.SepWeatherForecast, contacts = any()) } returns
-            ConversationDetailMessageUiModelSample.SepWeatherForecast
+        every { toUiModel(messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel, contacts = any()) } returns
+            ConversationDetailMessageUiModelSample.InvoiceWithLabel
+        every { toUiModel(messageWithLabels = MessageWithLabelsSample.InvoiceWithTwoLabels, contacts = any()) } returns
+            ConversationDetailMessageUiModelSample.InvoiceWithTwoLabels
     }
     private val markConversationAsUnread: MarkConversationAsUnread = mockk()
     private val move: MoveConversation = mockk()
@@ -125,8 +125,8 @@ class ConversationDetailViewModelTest {
     private val observeConversationMessagesWithLabels: ObserveConversationMessagesWithLabels = mockk {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
             nonEmptyListOf(
-                MessageWithLabelsSample.AugWeatherForecast,
-                MessageWithLabelsSample.SepWeatherForecast
+                MessageWithLabelsSample.InvoiceWithLabel,
+                MessageWithLabelsSample.InvoiceWithTwoLabels
             ).right()
         )
     }
@@ -303,8 +303,8 @@ class ConversationDetailViewModelTest {
     fun `conversation messages state is data when use case succeeds`() = runTest {
         // given
         val messagesUiModels = listOf(
-            ConversationDetailMessageUiModelSample.AugWeatherForecast,
-            ConversationDetailMessageUiModelSample.SepWeatherForecast
+            ConversationDetailMessageUiModelSample.InvoiceWithLabel,
+            ConversationDetailMessageUiModelSample.InvoiceWithTwoLabels
         )
         val expectedState = initialState.copy(
             messagesState = ConversationDetailsMessagesState.Data(messagesUiModels)
@@ -330,8 +330,8 @@ class ConversationDetailViewModelTest {
     fun `fallback on empty contacts list when contacts use case fails`() = runTest {
         // given
         val messagesUiModels = listOf(
-            ConversationDetailMessageUiModelSample.AugWeatherForecast,
-            ConversationDetailMessageUiModelSample.SepWeatherForecast
+            ConversationDetailMessageUiModelSample.InvoiceWithLabel,
+            ConversationDetailMessageUiModelSample.InvoiceWithTwoLabels
         )
         val expectedState = initialState.copy(
             messagesState = ConversationDetailsMessagesState.Data(messagesUiModels)

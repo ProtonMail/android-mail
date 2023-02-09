@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.domain.sample
 
+import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -53,10 +54,24 @@ object MessageWithLabelsSample {
         message = MessageSample.SepWeatherForecast
     )
 
-    fun build(
-        message: Message = MessageSample.build(),
-        labels: List<Label> = emptyList()
-    ) = MessageWithLabels(
+    val InvoiceWithTwoLabels = build(
+        message = MessageSample.Invoice,
+        labels = listOf(
+            LabelSample.Document,
+            LabelSample.Label2021,
+            LabelSample.Label2022
+        )
+    )
+
+    val InvoiceWithLabel = build(
+        message = MessageSample.Invoice,
+        labels = listOf(
+            LabelSample.Document,
+            LabelSample.Label2021
+        )
+    )
+
+    fun build(message: Message = MessageSample.build(), labels: List<Label> = emptyList()) = MessageWithLabels(
         message = message,
         labels = labels
     )
