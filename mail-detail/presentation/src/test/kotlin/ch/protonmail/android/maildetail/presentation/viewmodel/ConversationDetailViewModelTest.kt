@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -55,6 +56,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
@@ -64,7 +66,9 @@ import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
@@ -151,6 +155,11 @@ class ConversationDetailViewModelTest {
         mockk<ObserveFolderColorSettings> {
             every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(FolderColorSettings())
         }
+    private val observeCustomMailLabels = mockk<ObserveCustomMailLabels> {
+        every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(
+            MailLabelTestData.listOfCustomLabels.right()
+        )
+    }
     private val reducer: ConversationDetailReducer = mockk {
         every { newStateFrom(currentState = any(), operation = any()) } returns ConversationDetailState.Loading
     }
@@ -178,6 +187,7 @@ class ConversationDetailViewModelTest {
             observeDetailActions = observeConversationDetailActions,
             observeDestinationMailLabels = observeMailLabels,
             observeFolderColor = observeFolderColorSettings,
+            observeCustomMailLabels = observeCustomMailLabels,
             reducer = reducer,
             savedStateHandle = savedStateHandle,
             starConversation = starConversation,
@@ -696,6 +706,50 @@ class ConversationDetailViewModelTest {
 
             // Then
             assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
+        }
+    }
+
+    @Test
+    fun `verify label as action data is build according to the labels of messages`() = runTest {
+        // Given
+        val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+            customLabelList = MailLabelUiModelTestData.customLabelList,
+            selectedLabels = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId),
+            partiallySelectedLabels = listOf(LabelSample.Label2022.labelId)
+        )
+
+        val expectedResult = ConversationDetailState.Loading.copy(
+            bottomSheetState = BottomSheetState(
+                LabelAsBottomSheetState.Data(
+                    LabelUiModelWithSelectedStateSample.customLabelListWithPartialSelection
+                )
+            )
+        )
+
+        coEvery { observeConversationMessagesWithLabels(userId, conversationId) } returns flowOf(
+            nonEmptyListOf(
+                MessageWithLabelsSample.InvoiceWithTwoLabels,
+                MessageWithLabelsSample.InvoiceWithLabel
+            ).right()
+        )
+
+        coEvery {
+            reducer.newStateFrom(
+                any(),
+                ConversationDetailEvent.ConversationBottomSheetEvent(event)
+            )
+        } returns expectedResult
+
+        // When
+        viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(ConversationDetailViewAction.RequestLabelAsBottomSheet)
+            // Request bottom Sheet call, we can ignore that
+            awaitItem()
+
+            // Then
+            val lastItem = awaitItem()
+            assertEquals(expectedResult, lastItem)
         }
     }
 

@@ -86,6 +86,9 @@ fun ConversationDetailScreen(
     val scope = rememberCoroutineScope()
 
     state.bottomSheetState?.let {
+        // Avoids a "jumping" of the bottom sheet
+        if (it.isShowEffectWithoutContent()) return@let
+
         ConsumableLaunchedEffect(effect = it.bottomSheetVisibilityEffect) { bottomSheetEffect ->
             when (bottomSheetEffect) {
                 BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
@@ -109,7 +112,11 @@ fun ConversationDetailScreen(
                     onFolderSelected = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(it)) },
                     onDoneClick = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed(it)) }
                 )
-                is LabelAsBottomSheetState -> ProtonCenteredProgress()
+                is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
+                    state = bottomSheetContentState,
+                    onLabelAsSelected = { viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(it)) },
+                    onDoneClick = { viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(it)) }
+                )
                 null -> ProtonCenteredProgress()
             }
         }
@@ -123,7 +130,8 @@ fun ConversationDetailScreen(
                 onTrashClick = { viewModel.submit(ConversationDetailViewAction.Trash) },
                 onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) },
                 onUnreadClick = { viewModel.submit(ConversationDetailViewAction.MarkUnread) },
-                onMoveToClick = { viewModel.submit(ConversationDetailViewAction.RequestMoveToBottomSheet) }
+                onMoveToClick = { viewModel.submit(ConversationDetailViewAction.RequestMoveToBottomSheet) },
+                onLabelAsClick = { viewModel.submit(ConversationDetailViewAction.RequestLabelAsBottomSheet) },
             )
         )
     }
@@ -190,7 +198,7 @@ fun ConversationDetailScreen(
                     onStar = { Timber.d("conversation onStar clicked") },
                     onUnstar = { Timber.d("conversation onUnstar clicked") },
                     onMove = actions.onMoveToClick,
-                    onLabel = { Timber.d("conversation onLabel clicked") },
+                    onLabel = actions.onLabelAsClick,
                     onTrash = actions.onTrashClick,
                     onDelete = { Timber.d("conversation onDelete clicked") },
                     onArchive = { Timber.d("conversation onArchive clicked") },
@@ -272,7 +280,8 @@ object ConversationDetailScreen {
         val onTrashClick: () -> Unit,
         val onUnStarClick: () -> Unit,
         val onUnreadClick: () -> Unit,
-        val onMoveToClick: () -> Unit
+        val onMoveToClick: () -> Unit,
+        val onLabelAsClick: () -> Unit,
     ) {
 
         companion object {
@@ -283,7 +292,8 @@ object ConversationDetailScreen {
                 onTrashClick = {},
                 onUnStarClick = {},
                 onUnreadClick = {},
-                onMoveToClick = {}
+                onMoveToClick = {},
+                onLabelAsClick = {}
             )
         }
     }

@@ -46,12 +46,15 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
+import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -62,6 +65,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
@@ -69,6 +73,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 import javax.inject.Inject
@@ -88,6 +93,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeDetailActions: ObserveConversationDetailActions,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
+    private val observeCustomMailLabels: ObserveCustomMailLabels,
     private val reducer: ConversationDetailReducer,
     private val starConversation: StarConversation,
     private val unStarConversation: UnStarConversation,
@@ -119,7 +125,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is ConversationDetailViewAction.MoveToDestinationConfirmed ->
                 onBottomSheetDestinationConfirmed(action.mailLabelText)
-            is ConversationDetailViewAction.RequestLabelAsBottomSheet -> {}
+            is ConversationDetailViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
             is ConversationDetailViewAction.LabelAsToggleAction -> {}
             is ConversationDetailViewAction.LabelAsConfirmed -> {}
         }.exhaustive
@@ -198,6 +204,57 @@ class ConversationDetailViewModel @Inject constructor(
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)
+    }
+
+    private fun showLabelAsBottomSheetAndLoadData(initialEvent: ConversationDetailViewAction) {
+        viewModelScope.launch {
+            emitNewStateFrom(initialEvent)
+
+            val userId = primaryUserId.first()
+            val labels = observeCustomMailLabels(userId).first()
+            val color = observeFolderColor(userId).first()
+            val conversationWithMessagesAndLabels = observeConversationMessages(userId, conversationId).first()
+
+            val mappedLabels = labels.tapLeft {
+                Timber.e("Error while observing custom labels")
+            }.getOrElse { emptyList() }
+
+            val messagesWithLabels = conversationWithMessagesAndLabels.tapLeft {
+                Timber.e("Error while observing conversation messages")
+            }.getOrElse { emptyList() }
+
+            val selectedLabels = mutableListOf<LabelId>()
+            val partiallySelectedLabels = mutableListOf<LabelId>()
+
+            mappedLabels.forEach { label ->
+                if (messagesWithLabels.allContainsLabel(label.id.labelId)) {
+                    selectedLabels.add(label.id.labelId)
+                } else if (messagesWithLabels.partiallyContainsLabel(label.id.labelId)) {
+                    partiallySelectedLabels.add(label.id.labelId)
+                }
+            }
+
+            val event = ConversationDetailEvent.ConversationBottomSheetEvent(
+                LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+                    customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) },
+                    selectedLabels = selectedLabels,
+                    partiallySelectedLabels = partiallySelectedLabels
+                )
+            )
+            emitNewStateFrom(event)
+        }
+    }
+
+    private fun List<MessageWithLabels>.allContainsLabel(labelId: LabelId): Boolean {
+        return this.all { messageWithLabel ->
+            messageWithLabel.labels.any { it.labelId == labelId }
+        }
+    }
+
+    private fun List<MessageWithLabels>.partiallyContainsLabel(labelId: LabelId): Boolean {
+        return this.any { messageWithLabel ->
+            messageWithLabel.labels.any { it.labelId == labelId }
+        }
     }
 
     private fun requireConversationId(): ConversationId {
@@ -292,10 +349,9 @@ class ConversationDetailViewModel @Inject constructor(
  *  done on the conversation flow.
  */
 private fun Flow<Either<DataError, NonEmptyList<MessageWithLabels>>>.ignoreLocalErrors():
-    Flow<Either<DataError, NonEmptyList<MessageWithLabels>>> =
-    filter { either ->
-        either.fold(
-            ifLeft = { error -> error !is DataError.Local },
-            ifRight = { true }
-        )
-    }
+    Flow<Either<DataError, NonEmptyList<MessageWithLabels>>> = filter { either ->
+    either.fold(
+        ifLeft = { error -> error !is DataError.Local },
+        ifRight = { true }
+    )
+}
