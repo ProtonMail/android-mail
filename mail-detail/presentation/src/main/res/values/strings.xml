@@ -41,6 +41,7 @@
     <string name="error_move_message_failed">Moving message failed. Please retry.</string>
     <string name="conversation_moved_to_trash">Conversation moved to trash</string>
     <string name="conversation_moved_to_selected_destination">Conversation moved to %1$s</string>
+    <string name="conversation_moved_to_archive">Conversation moved to archive</string>
     <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
     <string name="error_loading_message">Something went wrong, please try again.</string>
     <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>

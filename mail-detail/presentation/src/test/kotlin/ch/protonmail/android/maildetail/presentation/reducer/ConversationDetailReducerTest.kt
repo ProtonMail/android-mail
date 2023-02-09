@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -133,7 +134,14 @@ class ConversationDetailReducerTest(
             ) affects BottomSheet,
             ConversationDetailViewAction.Star affects Conversation,
             ConversationDetailViewAction.Trash affects ExitWithMessage(TextUiModel(string.conversation_moved_to_trash)),
-            ConversationDetailViewAction.UnStar affects Conversation
+            ConversationDetailViewAction.UnStar affects Conversation,
+            ConversationDetailViewAction.RequestLabelAsBottomSheet affects BottomSheet,
+            ConversationDetailViewAction.LabelAsToggleAction(LabelIdSample.Label2022) affects BottomSheet,
+            ConversationDetailViewAction.LabelAsConfirmed(false) affects BottomSheet,
+            ConversationDetailViewAction.LabelAsConfirmed(true) affects listOf(
+                BottomSheet,
+                ExitWithMessage(TextUiModel(string.conversation_moved_to_archive))
+            )
         )
 
         val events = listOf(
@@ -168,10 +176,8 @@ private infix fun ConversationDetailOperation.affects(entities: List<Entity>) = 
     reducesBottomBar = entities.contains(BottomBar),
     reducesErrorBar = entities.contains(ErrorBar),
     reducesExit = entities.contains(Exit),
-    expectedExitMessage = entities.map { (it as? ExitWithMessage)?.message }.firstOrNull(),
-    reducesBottomSheet = entities.contains(
-        BottomSheet
-    )
+    expectedExitMessage = entities.firstNotNullOfOrNull { (it as? ExitWithMessage)?.message },
+    reducesBottomSheet = entities.contains(BottomSheet)
 )
 
 private infix fun ConversationDetailOperation.affects(entity: Entity) = this.affects(listOf(entity))

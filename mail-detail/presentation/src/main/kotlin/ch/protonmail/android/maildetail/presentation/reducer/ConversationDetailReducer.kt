@@ -27,7 +27,8 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
-import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
+import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
 import javax.inject.Inject
 
 class ConversationDetailReducer @Inject constructor(
@@ -76,8 +77,11 @@ class ConversationDetailReducer @Inject constructor(
             val bottomSheetOperation = when (operation) {
                 is ConversationDetailEvent.ConversationBottomSheetEvent -> operation.bottomSheetOperation
                 is ConversationDetailViewAction.MoveToDestinationSelected ->
-                    MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected(operation.mailLabelId)
+                    MoveToDestinationSelected(operation.mailLabelId)
+                is ConversationDetailViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
+                is ConversationDetailViewAction.RequestLabelAsBottomSheet,
                 is ConversationDetailViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
+                is ConversationDetailViewAction.LabelAsConfirmed,
                 is ConversationDetailViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
@@ -122,6 +126,10 @@ class ConversationDetailReducer @Inject constructor(
                 operation.mailLabelText
             )
         )
+        is ConversationDetailViewAction.LabelAsConfirmed -> when (operation.archiveSelected) {
+            true -> Effect.of(TextUiModel(R.string.conversation_moved_to_archive))
+            false -> exitScreenWithMessageEffect
+        }
         else -> exitScreenWithMessageEffect
     }
 }

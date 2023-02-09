@@ -119,6 +119,9 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is ConversationDetailViewAction.MoveToDestinationConfirmed ->
                 onBottomSheetDestinationConfirmed(action.mailLabelText)
+            is ConversationDetailViewAction.RequestLabelAsBottomSheet -> {}
+            is ConversationDetailViewAction.LabelAsToggleAction -> {}
+            is ConversationDetailViewAction.LabelAsConfirmed -> {}
         }.exhaustive
     }
 

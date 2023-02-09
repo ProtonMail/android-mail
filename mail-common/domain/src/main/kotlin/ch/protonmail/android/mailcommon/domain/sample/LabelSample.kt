@@ -40,18 +40,20 @@ object LabelSample {
         labelId = LabelIdSample.Folder2022,
         type = LabelType.MessageFolder
     )
+    val Label2021 = build(
+        labelId = LabelIdSample.Label2021,
+        type = LabelType.MessageLabel
+    )
+    val Label2022 = build(
+        labelId = LabelIdSample.Label2022,
+        type = LabelType.MessageLabel
+    )
     val Inbox = build(
         labelId = LabelIdSample.Inbox,
         type = LabelType.MessageFolder
     )
     val News = build(
         labelId = LabelIdSample.News
-    )
-    val Label2021 = build(
-        labelId = LabelIdSample.Label2021
-    )
-    val Label2022 = build(
-        labelId = LabelIdSample.Label2022
     )
 
     fun build(

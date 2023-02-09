@@ -24,6 +24,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import me.proton.core.label.domain.entity.LabelId
 
 sealed interface ConversationDetailOperation {
 
@@ -74,4 +75,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
     data class MoveToDestinationConfirmed(val mailLabelText: String) : ConversationDetailViewAction
+    object RequestLabelAsBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
+    data class LabelAsToggleAction(val labelId: LabelId) : ConversationDetailViewAction, AffectingBottomSheet
+    data class LabelAsConfirmed(val archiveSelected: Boolean) : ConversationDetailViewAction, AffectingBottomSheet
 }
