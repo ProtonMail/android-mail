@@ -47,7 +47,8 @@ class LabelAsBottomSheetReducer @Inject constructor() {
             contentState = Data(
                 customLabelList.map { label ->
                     LabelUiModelWithSelectedState(
-                        labelUiModel = label, selectedState = label.id.toLabelSelectedState(selectedLabels)
+                        labelUiModel = label,
+                        selectedState = label.id.toLabelSelectedState(selectedLabels, partiallySelectedLabels)
                     )
                 }
             ),
@@ -80,11 +81,17 @@ class LabelAsBottomSheetReducer @Inject constructor() {
         }
     }
 
-    private fun MailLabelId.toLabelSelectedState(selectedMailLabels: List<LabelId>) =
-        if (selectedMailLabels.contains(this.labelId)) {
+    private fun MailLabelId.toLabelSelectedState(
+        selectedLabels: List<LabelId>,
+        partiallySelectedLabels: List<LabelId>
+    ): LabelSelectedState {
+        return if (selectedLabels.contains(this.labelId)) {
             LabelSelectedState.Selected
+        } else if (partiallySelectedLabels.contains(this.labelId)) {
+            LabelSelectedState.PartiallySelected
         } else {
             LabelSelectedState.NotSelected
         }
+    }
 
 }

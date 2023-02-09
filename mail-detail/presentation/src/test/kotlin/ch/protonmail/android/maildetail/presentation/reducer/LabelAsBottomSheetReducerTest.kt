@@ -80,6 +80,21 @@ class LabelAsBottomSheetReducerTest(
                 currentState = BottomSheetState(LabelAsBottomSheetState.Loading),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(LabelId("label1")),
                 expectedState = BottomSheetState(LabelAsBottomSheetState.Loading)
+            ),
+            TestInput(
+                currentState = BottomSheetState(LabelAsBottomSheetState.Loading),
+                operation = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+                    customLabelList = labelListWithPartialSelection.map { it.labelUiModel },
+                    selectedLabels = labelListWithPartialSelection
+                        .filter { it.selectedState == LabelSelectedState.Selected }
+                        .map { it.labelUiModel.id.labelId },
+                    partiallySelectedLabels = labelListWithPartialSelection
+                        .filter { it.selectedState == LabelSelectedState.PartiallySelected }
+                        .map { it.labelUiModel.id.labelId }
+                ),
+                expectedState = BottomSheetState(
+                    LabelAsBottomSheetState.Data(labelListWithPartialSelection)
+                )
             )
         )
 
