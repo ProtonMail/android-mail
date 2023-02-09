@@ -23,6 +23,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.uitest.mockwebserver.MockWebServerDispatcher
 import dagger.hilt.android.testing.HiltAndroidRule
+import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.rules.RuleChain
 import org.junit.rules.TestWatcher
@@ -47,6 +48,7 @@ import org.junit.runner.Description
  *
  * **Optional**
  * @param T The type of the test class to be provided to [HiltAndroidRule].
+ * @param dispatcher The [Dispatcher] to be used for the [MockWebServer].
  * @param composeTestRule The [ComposeTestRule] to be used in the [RuleChain].
  *  If not provided, a [ComposeTestRule] for [MainActivity] will be created.
  *  Provide an explicit [ComposeTestRule] if you need a reference to it in your test suite or you need a different
@@ -57,11 +59,16 @@ import org.junit.runner.Description
  */
 fun <T : Any> T.createMockWebServerRuleChain(
     mockWebServer: () -> MockWebServer,
+    dispatcher: Dispatcher = MockWebServerDispatcher(),
     composeTestRule: ComposeTestRule = createAndroidComposeRule<MainActivity>(),
     hiltRule: HiltAndroidRule = HiltAndroidRule(this),
     loginTestRule: LoginTestRule = NoLoginTestRule
 ): RuleChain {
-    val mockWebServerTestRule = MockWebServerTestRule(hiltRule = hiltRule, mockWebServer = mockWebServer)
+    val mockWebServerTestRule = MockWebServerTestRule(
+        hiltRule = hiltRule,
+        mockWebServer = mockWebServer,
+        dispatcher = dispatcher
+    )
 
     return RuleChain
         .outerRule(hiltRule)
@@ -75,7 +82,8 @@ fun <T : Any> T.createMockWebServerRuleChain(
  */
 class MockWebServerTestRule(
     private val hiltRule: HiltAndroidRule,
-    mockWebServer: () -> MockWebServer
+    mockWebServer: () -> MockWebServer,
+    private val dispatcher: Dispatcher
 ) : TestWatcher() {
 
     private val mockWebServer by lazy {
@@ -85,7 +93,7 @@ class MockWebServerTestRule(
 
     override fun starting(description: Description) {
         super.starting(description)
-        mockWebServer.dispatcher = MockWebServerDispatcher()
+        mockWebServer.dispatcher = dispatcher
     }
 
     override fun finished(description: Description) {
