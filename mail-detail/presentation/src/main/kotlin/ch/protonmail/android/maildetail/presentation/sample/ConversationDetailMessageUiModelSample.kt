@@ -84,6 +84,14 @@ object ConversationDetailMessageUiModelSample {
         messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel
     ).collapse()
 
+    val InvoiceWithoutLabels = build(
+        messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels
+    ).collapse()
+
+    val AnotherInvoiceWithoutLabels = build(
+        messageWithLabels = MessageWithLabelsSample.AnotherInvoiceWithoutLabels
+    ).collapse()
+
     private fun build(
         messageWithLabels: MessageWithLabels = MessageWithLabelsSample.build(),
         message: Message = messageWithLabels.message,

@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.presentation.sample
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
@@ -162,6 +163,141 @@ object LabelUiModelWithSelectedStateSample {
                 iconPaddingStart = 0.dp
             ),
             selectedState = LabelSelectedState.NotSelected
+        )
+    )
+
+    val customLabelListWithDocumentSelected = listOf(
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Label(LabelIdSample.Document),
+                text = TextUiModel.Text("Label1"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Blue,
+                isSelected = false,
+                count = 1,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.Selected
+        ),
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Folder(LabelIdSample.Label2021),
+                text = TextUiModel.Text("This is a label with a really unnecessary long name"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Red,
+                isSelected = false,
+                count = 2,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.NotSelected
+        ),
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Folder(LabelIdSample.Label2022),
+                text = TextUiModel.Text("Label3"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Green,
+                isSelected = false,
+                count = 3,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.NotSelected
+        )
+    )
+
+    val customLabelListWithVariousStates = listOf(
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Label(LabelIdSample.Document),
+                text = TextUiModel.Text("Label1"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Blue,
+                isSelected = false,
+                count = 1,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.Selected
+        ),
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Folder(LabelIdSample.Label2021),
+                text = TextUiModel.Text("This is a label with a really unnecessary long name"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Red,
+                isSelected = false,
+                count = 2,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.Selected
+        ),
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Folder(LabelIdSample.Label2022),
+                text = TextUiModel.Text("Label3"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Green,
+                isSelected = false,
+                count = 3,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.PartiallySelected
+        )
+    )
+
+    val customLabelListAllSelected = listOf(
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Label(LabelIdSample.Document),
+                text = TextUiModel.Text("Label1"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Blue,
+                isSelected = false,
+                count = 1,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.Selected
+        ),
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Folder(LabelIdSample.Label2021),
+                text = TextUiModel.Text("This is a label with a really unnecessary long name"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Red,
+                isSelected = false,
+                count = 2,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.Selected
+        ),
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Folder(LabelIdSample.Label2022),
+                text = TextUiModel.Text("Label3"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Green,
+                isSelected = false,
+                count = 3,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.Selected
         )
     )
 }

@@ -77,6 +77,7 @@ import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
+import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -99,6 +100,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ConversationDetailViewModelTest {
@@ -117,6 +119,15 @@ class ConversationDetailViewModelTest {
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
         every { toUiModel(messageWithLabels = MessageWithLabelsSample.InvoiceWithTwoLabels, contacts = any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithTwoLabels
+        every { toUiModel(messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels, contacts = any()) } returns
+            ConversationDetailMessageUiModelSample.InvoiceWithoutLabels
+        every {
+            toUiModel(
+                messageWithLabels = MessageWithLabelsSample.AnotherInvoiceWithoutLabels,
+                contacts = any()
+            )
+        } returns
+            ConversationDetailMessageUiModelSample.AnotherInvoiceWithoutLabels
     }
     private val markConversationAsUnread: MarkConversationAsUnread = mockk()
     private val move: MoveConversation = mockk()
@@ -752,6 +763,254 @@ class ConversationDetailViewModelTest {
             // Then
             val lastItem = awaitItem()
             assertEquals(expectedResult, lastItem)
+        }
+    }
+
+    @Test
+    fun `verify relabel is called and exit is not called when labels get confirmed`() = runTest {
+        // Given
+
+        val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+            customLabelList = MailLabelUiModelTestData.customLabelList,
+            selectedLabels = listOf(),
+            partiallySelectedLabels = listOf()
+        )
+
+        val dataState = ConversationDetailState.Loading.copy(
+            bottomSheetState = BottomSheetState(
+                LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection)
+            )
+        )
+
+        coEvery {
+            relabelConversation(
+                userId,
+                conversationId,
+                currentLabelIds = emptyList(),
+                currentPartialSelectedLabelIds = emptyList(),
+                updatedLabelIds = listOf(LabelSample.Document.labelId),
+                updatedPartialSelectedLabelIds = listOf()
+            )
+        } returns ConversationSample.WeatherForecast.right()
+
+        coEvery { observeConversationMessagesWithLabels(userId, conversationId) } returns flowOf(
+            nonEmptyListOf(
+                MessageWithLabelsSample.InvoiceWithoutLabels,
+                MessageWithLabelsSample.AnotherInvoiceWithoutLabels
+            ).right()
+        )
+        coEvery {
+            reducer.newStateFrom(
+                any(),
+                ConversationDetailEvent.ConversationBottomSheetEvent(event)
+            )
+        } returns dataState
+
+        coEvery {
+            reducer.newStateFrom(
+                ConversationDetailState.Loading,
+                ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Document.labelId)
+            )
+        } returns dataState.copy(
+            bottomSheetState = BottomSheetState(
+                LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithDocumentSelected)
+            )
+        )
+
+        // When
+        viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Document.labelId))
+            advanceUntilIdle()
+            viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(false))
+            advanceUntilIdle()
+
+            // Then
+            coVerify {
+                relabelConversation(
+                    userId, conversationId,
+                    currentLabelIds = emptyList(),
+                    currentPartialSelectedLabelIds = emptyList(),
+                    updatedLabelIds = listOf(LabelSample.Document.labelId),
+                    updatedPartialSelectedLabelIds = emptyList()
+                )
+            }
+            verify { move wasNot Called }
+            assertNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
+        }
+    }
+
+    @Test
+    fun `verify relabel and move is called and exit is set when labels get confirmed and should be archived`() =
+        runTest {
+            // Given
+            val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+                customLabelList = MailLabelUiModelTestData.customLabelList,
+                selectedLabels = listOf(),
+                partiallySelectedLabels = listOf()
+            )
+
+            val dataState = ConversationDetailState.Loading.copy(
+                bottomSheetState = BottomSheetState(
+                    LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection)
+                )
+            )
+
+            coEvery {
+                relabelConversation(
+                    userId = userId,
+                    conversationId = conversationId,
+                    currentLabelIds = emptyList(),
+                    currentPartialSelectedLabelIds = emptyList(),
+                    updatedLabelIds = listOf(LabelSample.Document.labelId),
+                    updatedPartialSelectedLabelIds = listOf()
+                )
+            } returns ConversationSample.WeatherForecast.right()
+
+            coEvery {
+                move(
+                    userId = userId,
+                    conversationId = conversationId,
+                    labelId = SystemLabelId.Archive.labelId
+                )
+            } returns ConversationSample.WeatherForecast.right()
+
+            coEvery { observeConversationMessagesWithLabels(userId, conversationId) } returns flowOf(
+                nonEmptyListOf(
+                    MessageWithLabelsSample.InvoiceWithoutLabels,
+                    MessageWithLabelsSample.AnotherInvoiceWithoutLabels
+                ).right()
+            )
+            coEvery {
+                reducer.newStateFrom(
+                    any(),
+                    ConversationDetailEvent.ConversationBottomSheetEvent(event)
+                )
+            } returns dataState
+
+            coEvery {
+                reducer.newStateFrom(
+                    ConversationDetailState.Loading,
+                    ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Document.labelId)
+                )
+            } returns dataState.copy(
+                bottomSheetState = BottomSheetState(
+                    LabelAsBottomSheetState.Data(
+                        LabelUiModelWithSelectedStateSample.customLabelListWithDocumentSelected
+                    )
+                )
+            )
+
+            coEvery {
+                reducer.newStateFrom(any(), ConversationDetailViewAction.LabelAsConfirmed(true))
+            } returns ConversationDetailState.Loading.copy(
+                exitScreenWithMessageEffect = Effect.of(TextUiModel(string.conversation_moved_to_archive))
+            )
+
+            // When
+            viewModel.state.test {
+                advanceUntilIdle()
+                viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Document.labelId))
+                advanceUntilIdle()
+                viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(true))
+                advanceUntilIdle()
+
+                // Then
+                coVerify {
+                    relabelConversation(
+                        userId, conversationId,
+                        currentLabelIds = emptyList(),
+                        currentPartialSelectedLabelIds = emptyList(),
+                        updatedLabelIds = listOf(LabelSample.Document.labelId),
+                        updatedPartialSelectedLabelIds = emptyList()
+                    )
+                }
+                coVerify { move(userId, conversationId, SystemLabelId.Archive.labelId) }
+                assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
+            }
+        }
+
+    @Test
+    fun `verify relabel adds previously partially selected label`() = runTest {
+        // Given
+
+        val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+            customLabelList = MailLabelUiModelTestData.customLabelList,
+            selectedLabels = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId),
+            partiallySelectedLabels = listOf(LabelSample.Label2022.labelId)
+        )
+
+        val dataState = ConversationDetailState.Loading.copy(
+            bottomSheetState = BottomSheetState(
+                LabelAsBottomSheetState.Data(
+                    LabelUiModelWithSelectedStateSample.customLabelListWithVariousStates
+                )
+            )
+        )
+
+        coEvery {
+            relabelConversation(
+                userId,
+                conversationId,
+                currentLabelIds = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId),
+                currentPartialSelectedLabelIds = listOf(LabelSample.Label2022.labelId),
+                updatedLabelIds = listOf(
+                    LabelSample.Document.labelId,
+                    LabelSample.Label2021.labelId,
+                    LabelSample.Label2022.labelId
+                ),
+                updatedPartialSelectedLabelIds = listOf()
+            )
+        } returns ConversationSample.WeatherForecast.right()
+
+        coEvery { observeConversationMessagesWithLabels(userId, conversationId) } returns flowOf(
+            nonEmptyListOf(
+                MessageWithLabelsSample.InvoiceWithLabel,
+                MessageWithLabelsSample.InvoiceWithTwoLabels
+            ).right()
+        )
+        coEvery {
+            reducer.newStateFrom(
+                any(),
+                ConversationDetailEvent.ConversationBottomSheetEvent(event)
+            )
+        } returns dataState
+
+        coEvery {
+            reducer.newStateFrom(
+                ConversationDetailState.Loading,
+                ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Label2022.labelId)
+            )
+        } returns dataState.copy(
+            bottomSheetState = BottomSheetState(
+                LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListAllSelected)
+            )
+        )
+
+        // When
+        viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Label2022.labelId))
+            advanceUntilIdle()
+            viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(false))
+            advanceUntilIdle()
+
+            // Then
+            coVerify {
+                relabelConversation(
+                    userId, conversationId,
+                    currentLabelIds = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId),
+                    currentPartialSelectedLabelIds = listOf(LabelSample.Label2022.labelId),
+                    updatedLabelIds = listOf(
+                        LabelSample.Document.labelId,
+                        LabelSample.Label2021.labelId,
+                        LabelSample.Label2022.labelId
+                    ),
+                    updatedPartialSelectedLabelIds = emptyList()
+                )
+            }
+            verify { move wasNot Called }
+            assertNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
         }
     }
 

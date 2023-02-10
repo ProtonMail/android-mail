@@ -71,6 +71,16 @@ object MessageWithLabelsSample {
         )
     )
 
+    val InvoiceWithoutLabels = build(
+        message = MessageSample.Invoice,
+        labels = emptyList()
+    )
+
+    val AnotherInvoiceWithoutLabels = build(
+        message = MessageSample.Invoice,
+        labels = emptyList()
+    )
+
     fun build(message: Message = MessageSample.build(), labels: List<Label> = emptyList()) = MessageWithLabels(
         message = message,
         labels = labels

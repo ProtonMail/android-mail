@@ -31,6 +31,7 @@ class RelabelConversation @Inject constructor(
     private val conversationRepository: ConversationRepository
 ) {
 
+    @SuppressWarnings("LongParameterList")
     suspend operator fun invoke(
         userId: UserId,
         conversationId: ConversationId,
