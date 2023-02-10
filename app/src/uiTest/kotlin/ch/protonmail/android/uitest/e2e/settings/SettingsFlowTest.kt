@@ -21,7 +21,6 @@ package ch.protonmail.android.uitest.e2e.settings
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.di.NetworkConfigModule
-import ch.protonmail.android.initializer.MainInitializer
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import ch.protonmail.android.uitest.rule.createMockLoginTestRule
 import ch.protonmail.android.uitest.rule.createMockWebServerRuleChain
@@ -38,7 +37,6 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
-import kotlin.test.BeforeTest
 
 @HiltAndroidTest
 @UninstallModules(NetworkConfigModule::class)
@@ -64,11 +62,6 @@ class SettingsFlowTest {
     )
 
     private val menuRobot = MenuRobot(composeTestRule)
-
-    @BeforeTest
-    fun setup() {
-        MainInitializer.init(composeTestRule.activity)
-    }
 
     @Test
     fun openAccountSettings() {

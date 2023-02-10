@@ -39,7 +39,9 @@ class StrictModeHackArrayList : ArrayList<Any>() {
         // Reading from file
         "ch.protonmail.android.initializer.SentryInitializer.create",
         // Reading from SharedPreferences
-        "me.proton.core.util.android.sharedpreferences.ExtensionsKt.nullableGet"
+        "me.proton.core.util.android.sharedpreferences.ExtensionsKt.nullableGet",
+        // MockWebServer.start is called (from MockWebServer.url) when the Hilt graph is created
+        "okhttp3.mockwebserver.MockWebServer.start"
     )
 
     override fun add(element: Any): Boolean {

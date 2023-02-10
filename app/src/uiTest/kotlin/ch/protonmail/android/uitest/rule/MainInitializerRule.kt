@@ -16,19 +16,22 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest
+package ch.protonmail.android.uitest.rule
 
-import android.app.Application
-import android.content.Context
-import androidx.test.runner.AndroidJUnitRunner
-import dagger.hilt.android.testing.HiltTestApplication
+import androidx.test.core.app.ApplicationProvider
+import ch.protonmail.android.initializer.MainInitializer
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
 
-@Suppress("unused") // Used in Gradle config
-class HiltTestRunner : AndroidJUnitRunner() {
+fun createMainInitializerRule() = MainInitializerRule()
 
-    override fun newApplication(
-        cl: ClassLoader?,
-        name: String?,
-        context: Context?
-    ): Application = super.newApplication(cl, HiltTestApplication::class.java.name, context)
+/**
+ * A [TestWatcher] that initializes the [MainInitializer] before each test.
+ */
+class MainInitializerRule : TestWatcher() {
+
+    override fun starting(description: Description) {
+        super.starting(description)
+        MainInitializer.init(ApplicationProvider.getApplicationContext())
+    }
 }

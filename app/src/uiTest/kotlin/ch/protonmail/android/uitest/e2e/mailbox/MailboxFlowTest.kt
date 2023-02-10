@@ -21,7 +21,6 @@ package ch.protonmail.android.uitest.e2e.mailbox
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.di.NetworkConfigModule
-import ch.protonmail.android.initializer.MainInitializer
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import ch.protonmail.android.uitest.rule.createMockLoginTestRule
@@ -39,7 +38,6 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
-import kotlin.test.BeforeTest
 
 @HiltAndroidTest
 @UninstallModules(NetworkConfigModule::class)
@@ -63,11 +61,6 @@ class MailboxFlowTest {
 
     private val mailboxRobot = InboxRobot(composeTestRule)
     private val menuRobot = MenuRobot(composeTestRule)
-
-    @BeforeTest
-    fun setup() {
-        MainInitializer.init(composeTestRule.activity)
-    }
 
     @Test
     fun openMailboxAndSwitchLocation() {

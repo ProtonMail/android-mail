@@ -72,6 +72,7 @@ fun <T : Any> T.createMockWebServerRuleChain(
 
     return RuleChain
         .outerRule(hiltRule)
+        .around(createMainInitializerRule())
         .around(composeTestRule)
         .around(mockWebServerTestRule)
         .around(loginTestRule)
