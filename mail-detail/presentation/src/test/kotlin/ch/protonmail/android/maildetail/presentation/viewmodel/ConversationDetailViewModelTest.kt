@@ -44,6 +44,7 @@ import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.R.string
@@ -119,6 +120,7 @@ class ConversationDetailViewModelTest {
     }
     private val markConversationAsUnread: MarkConversationAsUnread = mockk()
     private val move: MoveConversation = mockk()
+    private val relabelConversation: RelabelConversation = mockk()
     private val observeContacts: ObserveContacts = mockk {
         every { this@mockk(userId = UserIdSample.Primary) } returns flowOf(emptyList<Contact>().right())
     }
@@ -181,6 +183,7 @@ class ConversationDetailViewModelTest {
             conversationMetadataMapper = conversationMetadataMapper,
             markConversationAsUnread = markConversationAsUnread,
             moveConversation = move,
+            relabelConversation = relabelConversation,
             observeContacts = observeContacts,
             observeConversation = observeConversation,
             observeConversationMessages = observeConversationMessagesWithLabels,

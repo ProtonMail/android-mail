@@ -52,6 +52,7 @@
     <string name="bottom_sheet_archive_action">Also archive?</string>
     <string name="bottom_sheet_label_as_title">Label as...</string>
     <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
+    <string name="error_relabel_conversation_failed">Failed to relabel conversation. Please retry</string>
     <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
     <string name="decryption_error">Message decryption failed.</string>
 </resources>

@@ -35,14 +35,19 @@ class RelabelConversation @Inject constructor(
         userId: UserId,
         conversationId: ConversationId,
         currentLabelIds: List<LabelId>,
-        updatedLabelIds: List<LabelId>
+        currentPartialSelectedLabelIds: List<LabelId>,
+        updatedLabelIds: List<LabelId>,
+        updatedPartialSelectedLabelIds: List<LabelId>
     ): Either<DataError, Conversation> {
         val removedLabels = currentLabelIds - updatedLabelIds
         val addedLabels = updatedLabelIds - currentLabelIds
+
+        val removedPartialSelectedLabels = currentPartialSelectedLabelIds - updatedPartialSelectedLabelIds
+
         return conversationRepository.relabel(
             userId = userId,
             conversationId = conversationId,
-            labelsToBeRemoved = removedLabels,
+            labelsToBeRemoved = removedLabels + removedPartialSelectedLabels,
             labelsToBeAdded = addedLabels
         )
     }

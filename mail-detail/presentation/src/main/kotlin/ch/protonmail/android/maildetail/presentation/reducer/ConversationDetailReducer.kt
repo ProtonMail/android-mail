@@ -105,6 +105,9 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailEvent.ErrorMovingConversation -> Effect.of(
                     TextUiModel(R.string.error_move_conversation_failed)
                 )
+                is ConversationDetailEvent.ErrorLabelingConversation -> Effect.of(
+                    TextUiModel(R.string.error_relabel_message_failed)
+                )
             }
         } else {
             error

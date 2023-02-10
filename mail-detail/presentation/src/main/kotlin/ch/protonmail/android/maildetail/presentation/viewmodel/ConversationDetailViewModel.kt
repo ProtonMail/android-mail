@@ -32,11 +32,13 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
@@ -50,10 +52,12 @@ import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetSta
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -87,6 +91,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper,
     private val markConversationAsUnread: MarkConversationAsUnread,
     private val moveConversation: MoveConversation,
+    private val relabelConversation: RelabelConversation,
     private val observeContacts: ObserveContacts,
     private val observeConversation: ObserveConversation,
     private val observeConversationMessages: ObserveConversationMessagesWithLabels,
@@ -127,7 +132,7 @@ class ConversationDetailViewModel @Inject constructor(
                 onBottomSheetDestinationConfirmed(action.mailLabelText)
             is ConversationDetailViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
             is ConversationDetailViewAction.LabelAsToggleAction -> onLabelToggled(action.labelId)
-            is ConversationDetailViewAction.LabelAsConfirmed -> {}
+            is ConversationDetailViewAction.LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
         }.exhaustive
     }
 
@@ -223,16 +228,7 @@ class ConversationDetailViewModel @Inject constructor(
                 Timber.e("Error while observing conversation messages")
             }.getOrElse { emptyList() }
 
-            val selectedLabels = mutableListOf<LabelId>()
-            val partiallySelectedLabels = mutableListOf<LabelId>()
-
-            mappedLabels.forEach { label ->
-                if (messagesWithLabels.allContainsLabel(label.id.labelId)) {
-                    selectedLabels.add(label.id.labelId)
-                } else if (messagesWithLabels.partiallyContainsLabel(label.id.labelId)) {
-                    partiallySelectedLabels.add(label.id.labelId)
-                }
-            }
+            val (selectedLabels, partiallySelectedLabels) = mappedLabels.getLabelSelectionState(messagesWithLabels)
 
             val event = ConversationDetailEvent.ConversationBottomSheetEvent(
                 LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
@@ -247,6 +243,80 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun onLabelToggled(labelId: LabelId) {
         viewModelScope.launch { emitNewStateFrom(ConversationDetailViewAction.LabelAsToggleAction(labelId)) }
+    }
+
+    private fun onLabelAsConfirmed(archiveSelected: Boolean) {
+        viewModelScope.launch {
+            val userId = primaryUserId.first()
+            val labels = observeCustomMailLabels(userId).first().tapLeft {
+                Timber.e("Error while observing custom labels")
+            }.getOrElse { emptyList() }
+            val messagesWithLabels = observeConversationMessages(userId, conversationId).first().tapLeft {
+                Timber.e("Error while observing custom labels")
+            }.getOrElse { emptyList() }
+
+            val (previousSelectedLabels, previousPartiallySelectedLabels) = labels.getLabelSelectionState(
+                messagesWithLabels
+            )
+
+            val labelAsData = mutableDetailState.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
+                ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
+
+            val (updatedLabelSelection, updatedPartialLabelSelection) = labelAsData.getLabelSelectionState()
+
+            if (archiveSelected) {
+                moveConversation(
+                    userId = userId,
+                    conversationId = conversationId,
+                    labelId = SystemLabelId.Archive.labelId
+                ).tapLeft { Timber.e("Error while archiving conversation: $it") }
+            }
+            val operation = relabelConversation(
+                userId = userId,
+                conversationId = conversationId,
+                currentLabelIds = previousSelectedLabels,
+                updatedLabelIds = updatedLabelSelection,
+                currentPartialSelectedLabelIds = previousPartiallySelectedLabels,
+                updatedPartialSelectedLabelIds = updatedPartialLabelSelection
+            ).fold(
+                ifLeft = {
+                    Timber.e("Error while relabeling conversation: $it")
+                    ConversationDetailEvent.ErrorLabelingConversation
+                },
+                ifRight = { ConversationDetailViewAction.LabelAsConfirmed(archiveSelected) }
+            )
+            emitNewStateFrom(operation)
+        }
+    }
+
+    private fun List<MailLabel.Custom>.getLabelSelectionState(messages: List<MessageWithLabels>): LabelSelectionList {
+        val previousSelectedLabels = mutableListOf<LabelId>()
+        val previousPartiallySelectedLabels = mutableListOf<LabelId>()
+        this.forEach { label ->
+            if (messages.allContainsLabel(label.id.labelId)) {
+                previousSelectedLabels.add(label.id.labelId)
+            } else if (messages.partiallyContainsLabel(label.id.labelId)) {
+                previousPartiallySelectedLabels.add(label.id.labelId)
+            }
+        }
+        return LabelSelectionList(
+            selectedLabels = previousSelectedLabels,
+            partiallySelectionLabels = previousPartiallySelectedLabels
+        )
+    }
+
+    private fun LabelAsBottomSheetState.Data.getLabelSelectionState(): LabelSelectionList {
+        val selectedLabels = this.labelUiModelsWithSelectedState
+            .filter { it.selectedState == LabelSelectedState.Selected }
+            .map { it.labelUiModel.id.labelId }
+
+        val partiallySelectedLabels = this.labelUiModelsWithSelectedState
+            .filter { it.selectedState == LabelSelectedState.PartiallySelected }
+            .map { it.labelUiModel.id.labelId }
+        return LabelSelectionList(
+            selectedLabels = selectedLabels,
+            partiallySelectionLabels = partiallySelectedLabels
+        )
     }
 
     private fun List<MessageWithLabels>.allContainsLabel(labelId: LabelId): Boolean {

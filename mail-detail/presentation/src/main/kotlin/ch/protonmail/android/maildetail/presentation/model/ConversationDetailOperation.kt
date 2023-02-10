@@ -60,6 +60,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorMarkingAsUnread : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingToTrash : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingConversation : ConversationDetailEvent, AffectingErrorBar
+    object ErrorLabelingConversation : ConversationDetailEvent, AffectingErrorBar
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {

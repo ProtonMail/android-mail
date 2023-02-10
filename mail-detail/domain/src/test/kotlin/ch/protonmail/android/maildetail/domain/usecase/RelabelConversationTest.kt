@@ -47,7 +47,9 @@ class RelabelConversationTest {
             userId = UserIdSample.Primary,
             conversationId = ConversationIdSample.Invoices,
             currentLabelIds = listOf(LabelId("labelId")),
-            updatedLabelIds = listOf(LabelId("labelId2"))
+            currentPartialSelectedLabelIds = emptyList(),
+            updatedLabelIds = listOf(LabelId("labelId2")),
+            updatedPartialSelectedLabelIds = emptyList()
         )
 
         // Then
@@ -71,7 +73,90 @@ class RelabelConversationTest {
         } returns mockk()
 
         // When
-        relabelConversation(UserIdSample.Primary, ConversationIdSample.Invoices, oldLabelIds, newLabelIds)
+        relabelConversation(
+            UserIdSample.Primary,
+            ConversationIdSample.Invoices,
+            currentLabelIds = oldLabelIds,
+            currentPartialSelectedLabelIds = emptyList(),
+            updatedLabelIds = newLabelIds,
+            updatedPartialSelectedLabelIds = emptyList()
+        )
+
+        // Then
+        coVerify {
+            conversationRepository.relabel(
+                userId = UserIdSample.Primary,
+                conversationId = ConversationIdSample.Invoices,
+                labelsToBeRemoved = removedLabels,
+                labelsToBeAdded = addedLabels
+            )
+        }
+    }
+
+    @Test
+    fun `use case passing correct add and remove label lists when partial selection is changed`() = runTest {
+        // Given
+        val oldLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("3"))
+        val oldPartialSelectedLabels = listOf(LabelId("5"))
+        val newLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("4"))
+        val removedLabels = listOf(LabelId("3"), LabelId("5"))
+        val addedLabels = listOf(LabelId("4"))
+        coEvery {
+            conversationRepository.relabel(
+                userId = UserIdSample.Primary,
+                conversationId = ConversationIdSample.Invoices,
+                labelsToBeRemoved = removedLabels,
+                labelsToBeAdded = addedLabels
+            )
+        } returns mockk()
+
+        // When
+        relabelConversation(
+            UserIdSample.Primary,
+            ConversationIdSample.Invoices,
+            currentLabelIds = oldLabelIds,
+            currentPartialSelectedLabelIds = oldPartialSelectedLabels,
+            updatedLabelIds = newLabelIds,
+            updatedPartialSelectedLabelIds = emptyList()
+        )
+
+        // Then
+        coVerify {
+            conversationRepository.relabel(
+                userId = UserIdSample.Primary,
+                conversationId = ConversationIdSample.Invoices,
+                labelsToBeRemoved = removedLabels,
+                labelsToBeAdded = addedLabels
+            )
+        }
+    }
+
+    @Test
+    fun `use case passing correct add and remove label lists when partial selection is unchanged`() = runTest {
+        // Given
+        val oldLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("3"))
+        val partialSelectionLabels = listOf(LabelId("5"))
+        val newLabelIds = listOf(LabelId("1"), LabelId("2"), LabelId("4"))
+        val removedLabels = listOf(LabelId("3"))
+        val addedLabels = listOf(LabelId("4"))
+        coEvery {
+            conversationRepository.relabel(
+                userId = UserIdSample.Primary,
+                conversationId = ConversationIdSample.Invoices,
+                labelsToBeRemoved = removedLabels,
+                labelsToBeAdded = addedLabels
+            )
+        } returns mockk()
+
+        // When
+        relabelConversation(
+            UserIdSample.Primary,
+            ConversationIdSample.Invoices,
+            currentLabelIds = oldLabelIds,
+            currentPartialSelectedLabelIds = partialSelectionLabels,
+            updatedLabelIds = newLabelIds,
+            updatedPartialSelectedLabelIds = partialSelectionLabels
+        )
 
         // Then
         coVerify {
