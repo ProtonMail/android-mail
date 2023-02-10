@@ -50,7 +50,7 @@ import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Ordering
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.coVerifySequence
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -388,6 +388,25 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
+    fun `add labels doesn't call upsert message when no message was affected`() = runTest {
+        // Given
+        val labelList = listOf(LabelIdSample.Starred, LabelIdSample.Inbox)
+        val messages = MessageTestData.starredMessagesByConversation
+        coEvery {
+            messageLocalDataSource.observeMessages(userId = userId, conversationId = any())
+        } returns flowOf(messages)
+        coEvery { conversationLocalDataSource.addLabels(any(), any(), any()) } returns
+            ConversationTestData.conversation.right()
+
+        // When
+        conversationRepository.addLabels(userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), labelList)
+
+        // Then
+        coVerify(exactly = 0) { messageLocalDataSource.upsertMessages(any()) }
+    }
+
+
+    @Test
     fun `remove label returns updated conversation without label when upsert was successful`() = runTest {
         // Given
         coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
@@ -468,6 +487,26 @@ class ConversationRepositoryImplTest {
                     listOf(MessageId("123"), MessageId("124"))
                 )
             }
+        }
+    }
+
+    @Test
+    fun `remove labels doesn't call upsert messages when no messages are affected`() {
+        runTest {
+            // Given
+            coEvery { conversationLocalDataSource.removeLabels(any(), any(), any()) } returns
+                ConversationTestData.conversation.right()
+
+            every { messageLocalDataSource.observeMessages(any(), any<ConversationId>()) } returns flowOf(
+                MessageTestData.unStarredMessagesByConversation
+            )
+            val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+
+            // When
+            conversationRepository.removeLabels(userId, conversationId, listOf(LabelId("10"), LabelId("11")))
+
+            // Then
+            coVerify(exactly = 0) { messageLocalDataSource.upsertMessages(any()) }
         }
     }
 
@@ -889,16 +928,10 @@ class ConversationRepositoryImplTest {
         )
 
         // then
-        coVerifySequence {
+        coVerifyOrder {
             conversationLocalDataSource.removeLabels(userId, conversationId, toBeRemovedLabels)
-            messageLocalDataSource.observeMessages(userId, conversationId)
             conversationRemoteDataSource.removeLabels(userId, conversationId, toBeRemovedLabels, listOf())
             conversationLocalDataSource.addLabels(userId, conversationId, toBeAddedLabels)
-            messageLocalDataSource.observeMessages(userId, conversationId)
-            messageLocalDataSource.upsertMessages(
-                MessageTestData.unStarredMessagesByConversation
-                    .map { it.copy(labelIds = it.labelIds + toBeAddedLabels) }
-            )
             conversationRemoteDataSource.addLabels(
                 userId,
                 conversationId,

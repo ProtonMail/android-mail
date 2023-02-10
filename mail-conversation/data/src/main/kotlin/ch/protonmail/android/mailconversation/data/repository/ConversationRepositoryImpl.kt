@@ -122,12 +122,12 @@ class ConversationRepositoryImpl @Inject constructor(
         return conversationEither.tap {
             val affectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
                 .filterNot { it.labelIds.containsAll(labelIds) }
-            affectedMessages.map {
-                it.copy(
-                    labelIds = it.labelIds.union(labelIds).toList()
-                )
-            }.let {
-                messageLocalDataSource.upsertMessages(it)
+            val updatedMessages = affectedMessages.map {
+                it.copy(labelIds = it.labelIds.union(labelIds).toList())
+            }
+
+            if (updatedMessages.isNotEmpty()) {
+                messageLocalDataSource.upsertMessages(updatedMessages)
             }
 
             conversationRemoteDataSource.addLabels(
@@ -152,13 +152,12 @@ class ConversationRepositoryImpl @Inject constructor(
     ): Either<DataError, Conversation> {
         return conversationLocalDataSource.removeLabels(userId, conversationId, labelIds).tap {
             val affectedMessages = messageLocalDataSource.observeMessages(userId, conversationId).first()
-                .filter { it.labelIds.any { labelId -> labelIds.contains(labelId) } }
-            affectedMessages.takeIf { it.isNotEmpty() }?.map {
-                it.copy(
-                    labelIds = it.labelIds - labelIds
-                )
-            }?.let {
-                messageLocalDataSource.upsertMessages(it)
+                .filter { it.labelIds.intersect(labelIds).isNotEmpty() }
+            val updatedMessages = affectedMessages.map {
+                it.copy(labelIds = it.labelIds - labelIds)
+            }
+            if (updatedMessages.isNotEmpty()) {
+                messageLocalDataSource.upsertMessages(updatedMessages)
             }
 
             conversationRemoteDataSource.removeLabels(
