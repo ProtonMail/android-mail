@@ -49,9 +49,6 @@ object Dependencies {
     }
 
     val appLibs = mutableListOf<String>().apply {
-        add(Accompanist.insets)
-        add(Accompanist.pager)
-        add(Accompanist.systemUiController)
         add(AndroidX.Activity.ktx)
         add(AndroidX.AppCompat.appCompat)
         add(AndroidX.Core.splashscreen)
@@ -121,6 +118,7 @@ object Dependencies {
 
     val modulePresentationLibs = mutableListOf<String>().apply {
         add(Accompanist.swipeRefresh)
+        add(Accompanist.webview)
         add(AndroidX.Activity.ktx)
         add(AndroidX.Hilt.navigationCompose)
         add(AndroidX.Navigation.compose)

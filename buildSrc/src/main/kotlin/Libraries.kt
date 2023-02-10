@@ -19,10 +19,8 @@
 object Accompanist {
     private const val version = Versions.Accompanist.accompanist
 
-    const val insets = "com.google.accompanist:accompanist-insets:$version"
-    const val pager = "com.google.accompanist:accompanist-pager:$version"
-    const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
     const val swipeRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
+    const val webview = "com.google.accompanist:accompanist-webview:$version"
 }
 
 object AndroidX {

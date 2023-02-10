@@ -19,7 +19,7 @@
 object Versions {
 
     object Accompanist {
-        const val accompanist = "0.28.0"
+        const val accompanist = "0.29.1-alpha"
     }
 
     object Android {
@@ -29,13 +29,13 @@ object Versions {
 
     object AndroidX {
 
-        const val activity = "1.6.1"
+        const val activity = "1.7.0-beta01"
         const val annotation = "1.2.0"
         const val appCompat = "1.6.0-alpha05"
-        const val compose = "1.3.3"
-        const val composeCompiler = "1.3.2"
-        const val composeFoundation = "1.3.1"
-        const val composeMaterial = "1.3.1"
+        const val compose = "1.4.0-beta01"
+        const val composeCompiler = "1.4.2"
+        const val composeFoundation = "1.4.0-beta01"
+        const val composeMaterial = "1.4.0-beta01"
         const val constraintLayoutCompose = "1.0.1"
         const val customView = "1.2.0-alpha02"
         const val customViewPoolingContainer = "1.0.0"
@@ -100,7 +100,7 @@ object Versions {
     }
 
     object Kotlin {
-        const val kotlin = "1.7.20"
+        const val kotlin = "1.8.10"
     }
 
     object KotlinX {
