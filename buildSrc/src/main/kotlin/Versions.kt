@@ -79,12 +79,12 @@ object Versions {
 
     object Gradle {
 
-        const val androidGradlePlugin = "7.3.1"
+        const val androidGradlePlugin = "7.4.1"
         const val benManesVersionsPlugin = "0.45.0"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
         const val jacocoGradlePlugin = "0.8.8"
-        const val sentryGradlePlugin = "3.1.4"
+        const val sentryGradlePlugin = "3.4.2"
     }
 
     object JakeWharton {
@@ -130,6 +130,6 @@ object Versions {
 
     object Sentry {
 
-        const val sentry = "6.7.0"
+        const val sentry = "6.13.1"
     }
 }
