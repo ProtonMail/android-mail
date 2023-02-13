@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.maildetail.domain.model
 
-@JvmInline
-value class DecryptedMessageBody(
-    val value: String
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
+
+data class DecryptedMessageBody(
+    val value: String,
+    val mimeType: MimeType
 )

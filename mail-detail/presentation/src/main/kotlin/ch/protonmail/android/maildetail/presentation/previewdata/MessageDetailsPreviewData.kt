@@ -30,6 +30,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
+import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import kotlinx.collections.immutable.persistentListOf
@@ -42,7 +43,9 @@ object MessageDetailsPreviewData {
             messageDetailHeader = MessageDetailHeaderPreviewData.WithoutLabels
         ),
         messageBodyState = MessageBodyState.Data(
-            messageBodyUiModel = MessageBodyUiModel("This is a message body.")
+            messageBodyUiModel = MessageBodyUiModel(
+                "This is a message body.", MimeTypeUiModel.PlainText
+            )
         ),
         bottomBarState = BottomBarState.Data(
             listOf(

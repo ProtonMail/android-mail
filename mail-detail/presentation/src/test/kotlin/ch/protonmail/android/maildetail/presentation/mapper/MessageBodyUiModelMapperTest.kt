@@ -20,6 +20,8 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -31,10 +33,23 @@ class MessageBodyUiModelMapperTest {
     private val messageBodyUiModelMapper = MessageBodyUiModelMapper()
 
     @Test
-    fun `message body is correctly mapped to a message body ui model`() {
+    fun `plain text message body is correctly mapped to a message body ui model`() {
         // Given
-        val messageBody = DecryptedMessageBody(decryptedMessageBody)
-        val expected = MessageBodyUiModel(decryptedMessageBody)
+        val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.PlainText)
+        val expected = MessageBodyUiModel(decryptedMessageBody, MimeTypeUiModel.PlainText)
+
+        // When
+        val actual = messageBodyUiModelMapper.toUiModel(messageBody)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `multipart mixed message body is correctly mapped to a message body ui model`() {
+        // Given
+        val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.MultipartMixed)
+        val expected = MessageBodyUiModel(decryptedMessageBody, MimeTypeUiModel.Html)
 
         // When
         val actual = messageBodyUiModelMapper.toUiModel(messageBody)
@@ -47,7 +62,7 @@ class MessageBodyUiModelMapperTest {
     fun `string is correctly mapped to a message body ui model`() {
         // Given
         val messageBody = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
-        val expected = MessageBodyUiModel(messageBody)
+        val expected = MessageBodyUiModel(messageBody, MimeTypeUiModel.PlainText)
 
         // When
         val actual = messageBodyUiModelMapper.toUiModel(messageBody)

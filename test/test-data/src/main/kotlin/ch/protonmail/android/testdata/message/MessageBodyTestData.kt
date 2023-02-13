@@ -36,7 +36,7 @@ object MessageBodyTestData {
     val messageBody = buildMessageBody()
 
     val htmlMessageBody = buildMessageBody(
-        mimeType = MimeType.PlainText
+        mimeType = MimeType.Html
     )
 
     val multipartMixedMessageBody = buildMessageBody(

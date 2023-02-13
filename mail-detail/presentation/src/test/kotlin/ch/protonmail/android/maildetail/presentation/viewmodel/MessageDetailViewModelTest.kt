@@ -73,6 +73,7 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -110,7 +111,7 @@ import kotlin.test.assertTrue
 class MessageDetailViewModelTest {
 
     private val rawMessageId = "detailMessageId"
-    private val decryptedMessageBody = DecryptedMessageBody("Decrypted message body.")
+    private val decryptedMessageBody = DecryptedMessageBody("Decrypted message body.", MimeType.PlainText)
     private val actionUiModelMapper = ActionUiModelMapper()
     private val messageDetailActionBarUiModelMapper = MessageDetailActionBarUiModelMapper()
     private val messageDetailReducer = MessageDetailReducer(

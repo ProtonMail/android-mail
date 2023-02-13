@@ -75,11 +75,11 @@ class GetDecryptedMessageBody @Inject constructor(
     private fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedMessageBody {
         return if (messageBody.mimeType == MimeType.MultipartMixed) {
             decryptAndVerifyMimeMessage(messageBody.body).run {
-                DecryptedMessageBody(body.content)
+                DecryptedMessageBody(body.content, messageBody.mimeType)
             }
         } else {
             decryptAndVerifyData(messageBody.body).run {
-                DecryptedMessageBody(data.decodeToString())
+                DecryptedMessageBody(data.decodeToString(), messageBody.mimeType)
             }
         }
     }

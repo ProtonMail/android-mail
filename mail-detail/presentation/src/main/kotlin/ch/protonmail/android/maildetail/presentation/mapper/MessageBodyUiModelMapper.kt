@@ -20,15 +20,24 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import javax.inject.Inject
 
 class MessageBodyUiModelMapper @Inject constructor() {
 
     fun toUiModel(decryptedMessageBody: DecryptedMessageBody) = MessageBodyUiModel(
-        messageBody = decryptedMessageBody.value
+        messageBody = decryptedMessageBody.value,
+        mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel()
     )
 
     fun toUiModel(encryptedMessageBody: String) = MessageBodyUiModel(
-        messageBody = encryptedMessageBody
+        messageBody = encryptedMessageBody,
+        mimeType = MimeTypeUiModel.PlainText
     )
+
+    private fun MimeType.toMimeTypeUiModel() = when (this) {
+        MimeType.PlainText -> MimeTypeUiModel.PlainText
+        MimeType.Html, MimeType.MultipartMixed -> MimeTypeUiModel.Html
+    }
 }

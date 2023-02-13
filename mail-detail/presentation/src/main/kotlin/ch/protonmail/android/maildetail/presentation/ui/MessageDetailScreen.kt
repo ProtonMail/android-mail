@@ -285,7 +285,10 @@ private fun MessageBody(
     messageBodyUiModel: MessageBodyUiModel,
     onMessageBodyLinkClicked: (view: WebView?, request: WebResourceRequest?) -> Unit
 ) {
-    val state = rememberWebViewStateWithHTMLData(data = messageBodyUiModel.messageBody)
+    val state = rememberWebViewStateWithHTMLData(
+        data = messageBodyUiModel.messageBody,
+        mimeType = messageBodyUiModel.mimeType.value
+    )
 
     val client = remember {
         object : AccompanistWebViewClient() {

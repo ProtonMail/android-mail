@@ -19,5 +19,11 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 data class MessageBodyUiModel(
-    val messageBody: String
+    val messageBody: String,
+    val mimeType: MimeTypeUiModel
 )
+
+enum class MimeTypeUiModel(val value: String) {
+    PlainText("text/plain"),
+    Html("text/html")
+}

@@ -73,7 +73,7 @@ class GetDecryptedMessageBodyTest(
     fun `when repository gets message body and decryption is successful then the decrypted message body is returned`() =
         runTest {
             // Given
-            val expected = DecryptedMessageBody(decryptedMessageBody).right()
+            val expected = DecryptedMessageBody(decryptedMessageBody, testInput.mimeType).right()
             coEvery {
                 messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
             } returns testInput.messageWithBody.right()

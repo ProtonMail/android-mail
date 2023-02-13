@@ -19,10 +19,12 @@
 package ch.protonmail.android.testdata.message
 
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 
 object MessageBodyUiModelTestData {
 
     val messageBodyUiModel = MessageBodyUiModel(
-        MessageBodyTestData.messageBody.body
+        MessageBodyTestData.messageBody.body,
+        mimeType = MimeTypeUiModel.PlainText
     )
 }
