@@ -35,6 +35,7 @@
   <string name="error_unstar_operation_failed">移除星號操作失敗。請重試。</string>
   <string name="error_move_to_trash_failed">郵件扔進垃圾桶失敗。請再試一次。</string>
   <string name="message_moved_to_trash">將訊息丟進垃圾桶</string>
+  <string name="message_moved_to_archive">要移動到至「封存」的郵件</string>
   <string name="message_moved_to_selected_destination">訊息已移至 %1$s</string>
   <string name="error_move_message_failed">郵件扔進垃圾桶失敗，請再嘗試。</string>
   <string name="conversation_moved_to_trash">將交談丟進垃圾桶</string>
@@ -46,5 +47,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移至...</string>
   <string name="bottom_sheet_done_action">已完成</string>
+  <string name="bottom_sheet_archive_action">同時封存？</string>
+  <string name="bottom_sheet_label_as_title">將郵件加上標籤……</string>
+  <string name="error_relabel_message_failed">重新為郵件加上標籤失敗。請重試</string>
   <string name="please_go_back_online_to_load_messages">您已離線。請重新連線以載入訊息。</string>
+  <string name="decryption_error">訊息解密失敗。</string>
 </resources>

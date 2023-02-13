@@ -38,6 +38,7 @@
   <string name="error_unstar_operation_failed">Не удалось снять зведочку. Попробуйте еще раз.</string>
   <string name="error_move_to_trash_failed">Перемещение в корзину не удалось. Пожалуйста, повторите попытку.</string>
   <string name="message_moved_to_trash">Сообщение перемещено в корзину</string>
+  <string name="message_moved_to_archive">Сообщение перемещено в архив</string>
   <string name="message_moved_to_selected_destination">Сообщение перемещено в %1$s</string>
   <string name="error_move_message_failed">Не удалось переместить сообщение. Пожалуйста, повторите попытку.</string>
   <string name="conversation_moved_to_trash">Цепочка писем перемещена в корзину</string>
@@ -49,5 +50,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Переместить в...</string>
   <string name="bottom_sheet_done_action">Готово</string>
+  <string name="bottom_sheet_archive_action">Также перенести в архив?</string>
+  <string name="bottom_sheet_label_as_title">Отметить, как...</string>
+  <string name="error_relabel_message_failed">Не удалось изменить ярлык сообщения. Пожалуйста, повторите попытку</string>
   <string name="please_go_back_online_to_load_messages">Вы офлайн. Чтобы загружать сообщения, перейдите обратно в режим онлайн</string>
+  <string name="decryption_error">Дешифрование сообщения не удалось.</string>
 </resources>

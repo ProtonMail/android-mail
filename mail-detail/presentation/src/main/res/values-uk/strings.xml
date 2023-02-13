@@ -38,6 +38,7 @@
   <string name="error_unstar_operation_failed">Не вдалося вилучити зірочку. Повторіть спробу.</string>
   <string name="error_move_to_trash_failed">Не вдалося перемістити до смітника. Повторіть спробу.</string>
   <string name="message_moved_to_trash">Повідомлення переміщено до смітника</string>
+  <string name="message_moved_to_archive">Повідомлення переміщено до архіву</string>
   <string name="message_moved_to_selected_destination">Повідомлення переміщено до %1$s</string>
   <string name="error_move_message_failed">Не вдалося перемістити повідомлення. Повторіть спробу.</string>
   <string name="conversation_moved_to_trash">Розмову переміщено до смітника</string>
@@ -49,5 +50,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Перемістити до...</string>
   <string name="bottom_sheet_done_action">Готово</string>
+  <string name="bottom_sheet_archive_action">Також архівувати?</string>
+  <string name="bottom_sheet_label_as_title">Позначити як...</string>
+  <string name="error_relabel_message_failed">Не вдалося змінити мітку повідомлення. Спробуйте ще раз</string>
   <string name="please_go_back_online_to_load_messages">Ви зараз офлайн. Під\'єднайтеся до інтернету, щоб завантажити повідомлення</string>
+  <string name="decryption_error">Не вдалося розшифрувати повідомлення.</string>
 </resources>

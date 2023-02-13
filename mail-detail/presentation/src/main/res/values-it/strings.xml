@@ -36,6 +36,7 @@
   <string name="error_unstar_operation_failed">Rimozione dai preferiti non riuscita. Per favore riprova.</string>
   <string name="error_move_to_trash_failed">Spostamento nel cestino non riuscito. Per favore riprova.</string>
   <string name="message_moved_to_trash">Messaggio spostato nel cestino</string>
+  <string name="message_moved_to_archive">Messaggio spostato nell\'archivio</string>
   <string name="message_moved_to_selected_destination">Il messaggio è stato spostato in %1$s</string>
   <string name="error_move_message_failed">Spostamento del messaggio non riuscito. Per favore riprova.</string>
   <string name="conversation_moved_to_trash">Conversazione spostata nel cestino</string>
@@ -47,5 +48,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Sposta in...</string>
   <string name="bottom_sheet_done_action">Fatto</string>
+  <string name="bottom_sheet_archive_action">Vuoi anche archiviare?</string>
+  <string name="bottom_sheet_label_as_title">Etichettare come...</string>
+  <string name="error_relabel_message_failed">Impossibile rietichettare il messaggio. Per favore riprova</string>
   <string name="please_go_back_online_to_load_messages">Sei scollegato da internet. Collegati per caricare i messaggi</string>
+  <string name="decryption_error">Decriptazione del messaggio non riuscita.</string>
 </resources>

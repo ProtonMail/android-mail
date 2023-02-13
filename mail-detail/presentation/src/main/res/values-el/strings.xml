@@ -36,6 +36,7 @@
   <string name="error_unstar_operation_failed">Η λειτουργία κατάργησης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_move_to_trash_failed">Η μετακίνηση στα Διαγραμμένα απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="message_moved_to_trash">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</string>
+  <string name="message_moved_to_archive">Μήνυμα μετακινήθηκε στο αρχείο</string>
   <string name="message_moved_to_selected_destination">Το μήνυμα μετακινήθηκε στα %1$s</string>
   <string name="error_move_message_failed">Η μετακινηση μυνημάτων απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="conversation_moved_to_trash">Η συνομιλία μετακινήθηκε στα Διαγραμμένα</string>
@@ -47,5 +48,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Μετακίνηση σε...</string>
   <string name="bottom_sheet_done_action">Ολοκληρώθηκε</string>
+  <string name="bottom_sheet_archive_action">Επίσης αρχειοθέτηση;</string>
+  <string name="bottom_sheet_label_as_title">Ορίστε ετικέτα...</string>
+  <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
   <string name="please_go_back_online_to_load_messages">Είσαστε αποσυνδεμένοι. Παρακαλούμε συνδεθήτε ξανά για να φορτώσετε μηνύματα</string>
+  <string name="decryption_error">Η αποκρυπτογράφηση του μηνύματος απέτυχε.</string>
 </resources>

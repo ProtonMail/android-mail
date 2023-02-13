@@ -36,6 +36,7 @@
   <string name="error_unstar_operation_failed">Aðgerð að fjarlægja stjörnu mistókst. Vinsamlegast reyndu aftur.</string>
   <string name="error_move_to_trash_failed">Mistókst að færa í ruslið. Vinsamlegast reyndu aftur.</string>
   <string name="message_moved_to_trash">Skilaboð voru færð í ruslið</string>
+  <string name="message_moved_to_archive">Skilaboð færð í skjalasafn</string>
   <string name="message_moved_to_selected_destination">Skilaboð færð í %1$s</string>
   <string name="error_move_message_failed">Mistókst að færa skilaboð. Vinsamlegast reyndu aftur.</string>
   <string name="conversation_moved_to_trash">Samtal fært í ruslið</string>
@@ -47,5 +48,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flytja í...</string>
   <string name="bottom_sheet_done_action">Lokið</string>
+  <string name="bottom_sheet_archive_action">Einnig skjalasafn?</string>
+  <string name="bottom_sheet_label_as_title">Merkja sem...</string>
+  <string name="error_relabel_message_failed">Mistókst að endurmerkja skilaboð. Vinsamlegast reyndu aftur</string>
   <string name="please_go_back_online_to_load_messages">Þú ert ekki tengdur. Vinsamlegast farðu aftur á netið til að hlaða inn skilaboðum</string>
+  <string name="decryption_error">Afkóðun skilaboða mistókst.</string>
 </resources>

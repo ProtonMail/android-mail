@@ -35,6 +35,7 @@
   <string name="error_unstar_operation_failed">スターの削除に失敗しました。再度お試しください。</string>
   <string name="error_move_to_trash_failed">ごみ箱への移動に失敗しました。再試行してください。</string>
   <string name="message_moved_to_trash">メッセージがごみ箱に移動されました</string>
+  <string name="message_moved_to_archive">Message moved to archive</string>
   <string name="message_moved_to_selected_destination">メッセージが %1$s に移動されました</string>
   <string name="error_move_message_failed">メッセージの移動に失敗しました。再試行してください。</string>
   <string name="conversation_moved_to_trash">会話がごみ箱に移動されました</string>
@@ -46,5 +47,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Move to...</string>
   <string name="bottom_sheet_done_action">完了</string>
+  <string name="bottom_sheet_archive_action">Also archive?</string>
+  <string name="bottom_sheet_label_as_title">Label as...</string>
+  <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
   <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
+  <string name="decryption_error">Message decryption failed.</string>
 </resources>

@@ -31,21 +31,26 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Details verbergen</string>
   <string name="undisclosed_recipients">Niet-openbaar gemaakte ontvangers</string>
-  <string name="error_mark_as_unread_failed">Mark as unread operation failed. Please retry.</string>
+  <string name="error_mark_as_unread_failed">Markeren als ongelezen mislukt. Probeer opnieuw.</string>
   <string name="error_star_operation_failed">Ster toevoegen is mislukt. Probeer opnieuw.</string>
   <string name="error_unstar_operation_failed">Ster verwijderen is mislukt. Probeer opnieuw.</string>
   <string name="error_move_to_trash_failed">Verplaatsen naar prullenbak is mislukt. Probeer opnieuw.</string>
   <string name="message_moved_to_trash">Bericht verplaatst naar prullenbak</string>
+  <string name="message_moved_to_archive">Bericht verplaatst naar archief</string>
   <string name="message_moved_to_selected_destination">Bericht verplaatst naar %1$s</string>
   <string name="error_move_message_failed">Bericht verplaatsen mislukt. Probeer opnieuw.</string>
   <string name="conversation_moved_to_trash">Gesprek verplaatst naar prullenbak</string>
   <string name="conversation_moved_to_selected_destination">Gesprek verplaatst naar %1$s</string>
   <string name="error_move_conversation_failed">Gesprek verplaatsen mislukt. Probeer opnieuw.</string>
   <string name="error_loading_message">Er ging iets mis. Probeer opnieuw.</string>
-  <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>
+  <string name="error_offline_loading_message">U bent offline. Een internetverbinding is verplicht om de inhoud van dit bericht te tonen.</string>
   <string name="reload">Opnieuw laden</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Verplaatsen naar...</string>
   <string name="bottom_sheet_done_action">Klaar</string>
+  <string name="bottom_sheet_archive_action">Ook archiveren?</string>
+  <string name="bottom_sheet_label_as_title">Label als...</string>
+  <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
   <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
+  <string name="decryption_error">Decoderen van bericht mislukt.</string>
 </resources>

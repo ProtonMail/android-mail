@@ -36,6 +36,7 @@
   <string name="error_unstar_operation_failed">Error al desmarcar Destacado. Inténtalo de nuevo.</string>
   <string name="error_move_to_trash_failed">Error al mover a la papelera. Inténtalo de nuevo.</string>
   <string name="message_moved_to_trash">Mensaje movido a la papelera</string>
+  <string name="message_moved_to_archive">Mensaje movido al archivo</string>
   <string name="message_moved_to_selected_destination">Mensaje movido a %1$s</string>
   <string name="error_move_message_failed">Error al mover el mensaje. Inténtalo de nuevo.</string>
   <string name="conversation_moved_to_trash">Conversación movida a la papelera</string>
@@ -47,5 +48,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover a...</string>
   <string name="bottom_sheet_done_action">Hecho</string>
+  <string name="bottom_sheet_archive_action">¿También archivar?</string>
+  <string name="bottom_sheet_label_as_title">Etiquetar como...</string>
+  <string name="error_relabel_message_failed">Error al etiquetar de nuevo el mensaje. Inténtalo de nuevo.</string>
   <string name="please_go_back_online_to_load_messages">Estás desconectado. Vuelve a conectarte para cargar los mensajes.</string>
+  <string name="decryption_error">Error al descifrar el mensaje.</string>
 </resources>

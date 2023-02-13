@@ -36,6 +36,7 @@
   <string name="error_unstar_operation_failed">Tamhelt n tukksa n yitri tecceḍ. Ttxil ɛawed-as.</string>
   <string name="error_move_to_trash_failed">Asenkez ɣer yiḍumman yecceḍ. Ttxil ɛawed-as.</string>
   <string name="message_moved_to_trash">Izen yettwasnekez ɣer yiḍumman</string>
+  <string name="message_moved_to_archive">Message moved to archive</string>
   <string name="message_moved_to_selected_destination">Izen yettwasenkez ɣer %1$s</string>
   <string name="error_move_message_failed">Asenkez n yiznan yecceḍ. Ttxil ɛawed-as.</string>
   <string name="conversation_moved_to_trash">Adiwenni yettwasenkez ɣer yiḍumman</string>
@@ -47,5 +48,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Senkez ɣer...</string>
   <string name="bottom_sheet_done_action">Immed</string>
+  <string name="bottom_sheet_archive_action">Also archive?</string>
+  <string name="bottom_sheet_label_as_title">Label as...</string>
+  <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
   <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
+  <string name="decryption_error">Message decryption failed.</string>
 </resources>

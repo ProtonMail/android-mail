@@ -36,6 +36,7 @@
   <string name="error_unstar_operation_failed">Falha ao remover o favorito. Por favor, tente novamente.</string>
   <string name="error_move_to_trash_failed">Falha ao mover para a lixeira. Tente novamente.</string>
   <string name="message_moved_to_trash">Mensagem movida para a lixeira</string>
+  <string name="message_moved_to_archive">Mensagem movida para o arquivo</string>
   <string name="message_moved_to_selected_destination">Mensagem movida para %1$s</string>
   <string name="error_move_message_failed">Falha ao mover a mensagem. Por favor, tente novamente.</string>
   <string name="conversation_moved_to_trash">Conversa movida para a lixeira</string>
@@ -47,5 +48,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover para...</string>
   <string name="bottom_sheet_done_action">Concluído</string>
+  <string name="bottom_sheet_archive_action">Também arquivar?</string>
+  <string name="bottom_sheet_label_as_title">Marcar como...</string>
+  <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
   <string name="please_go_back_online_to_load_messages">Você está desconectado. Volte a se conectar para carregar as mensagens</string>
+  <string name="decryption_error">A descriptografia da mensagem falhou.</string>
 </resources>

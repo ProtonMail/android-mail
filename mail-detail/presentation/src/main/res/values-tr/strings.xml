@@ -36,6 +36,7 @@
   <string name="error_unstar_operation_failed">Yıldız kaldırılamadı. Lütfen yeniden deneyin.</string>
   <string name="error_move_to_trash_failed">Çöp kutusuna taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="message_moved_to_trash">İleti çöpe atıldı</string>
+  <string name="message_moved_to_archive">Ileti arşive taşındı</string>
   <string name="message_moved_to_selected_destination">İleti %1$s içine taşındı</string>
   <string name="error_move_message_failed">İleti taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="conversation_moved_to_trash">Yazışma çöpe atıldı</string>
@@ -47,5 +48,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Şuraya taşı...</string>
   <string name="bottom_sheet_done_action">Tamam</string>
+  <string name="bottom_sheet_archive_action">Arşive de taşınsın mı?</string>
+  <string name="bottom_sheet_label_as_title">Etiketle...</string>
+  <string name="error_relabel_message_failed">İleti yeniden etiketlenemedi. Lütfen yeniden deneyin</string>
   <string name="please_go_back_online_to_load_messages">Çevrimdışısınız. İletilerin yüklenmesi için lütfen çevrimiçi olun</string>
+  <string name="decryption_error">İletinin kodu çözülemedi.</string>
 </resources>

@@ -35,6 +35,7 @@
   <string name="error_unstar_operation_failed">取消星标失败，请重试。</string>
   <string name="error_move_to_trash_failed">移至废件箱失败，请重试。</string>
   <string name="message_moved_to_trash">邮件已移至废件箱</string>
+  <string name="message_moved_to_archive">Message moved to archive</string>
   <string name="message_moved_to_selected_destination">邮件已移至 %1$s</string>
   <string name="error_move_message_failed">邮件移动失败，请重试。</string>
   <string name="conversation_moved_to_trash">会话已移至废件箱</string>
@@ -46,5 +47,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移动至…</string>
   <string name="bottom_sheet_done_action">完成</string>
+  <string name="bottom_sheet_archive_action">Also archive?</string>
+  <string name="bottom_sheet_label_as_title">Label as...</string>
+  <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
   <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
+  <string name="decryption_error">Message decryption failed.</string>
 </resources>

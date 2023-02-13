@@ -35,6 +35,7 @@
   <string name="error_unstar_operation_failed">Bintang pesan gagal dihapus. Silakan coba lagi.</string>
   <string name="error_move_to_trash_failed">Pemindahan ke sampah gagal. Silakan coba lagi.</string>
   <string name="message_moved_to_trash">Pesan dipindahkan ke sampah</string>
+  <string name="message_moved_to_archive">Pesan dipindahkan ke arsip</string>
   <string name="message_moved_to_selected_destination">Pesan dipindahkan ke %1$s</string>
   <string name="error_move_message_failed">Pesan gagal dipindahkan. Silakan coba lagi.</string>
   <string name="conversation_moved_to_trash">Percakapan dipindahkan ke sampah</string>
@@ -46,5 +47,9 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Pindahkan ke...</string>
   <string name="bottom_sheet_done_action">Selesai</string>
+  <string name="bottom_sheet_archive_action">Arsipkan juga?</string>
+  <string name="bottom_sheet_label_as_title">Label sebagai...</string>
+  <string name="error_relabel_message_failed">Pesan gagal dilabeli ulang. Silakan coba lagi</string>
   <string name="please_go_back_online_to_load_messages">Anda sedang offline. Silakan sambungkan diri Anda ke internet untuk memuat pesan</string>
+  <string name="decryption_error">Dekripsi pesan gagal.</string>
 </resources>
