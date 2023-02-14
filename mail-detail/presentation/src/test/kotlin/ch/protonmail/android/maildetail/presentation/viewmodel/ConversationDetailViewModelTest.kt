@@ -742,7 +742,6 @@ class ConversationDetailViewModelTest {
 
         // When
         viewModel.state.test {
-            advanceUntilIdle()
             viewModel.submit(ConversationDetailViewAction.RequestLabelAsBottomSheet)
             // Request bottom Sheet call, we can ignore that
             awaitItem()
