@@ -39,6 +39,7 @@ import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
@@ -769,7 +770,6 @@ class ConversationDetailViewModelTest {
     @Test
     fun `verify relabel is called and exit is not called when labels get confirmed`() = runTest {
         // Given
-
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
             customLabelList = MailLabelUiModelTestData.customLabelList,
             selectedLabels = listOf(),
@@ -786,10 +786,14 @@ class ConversationDetailViewModelTest {
             relabelConversation(
                 userId,
                 conversationId,
-                currentLabelIds = emptyList(),
-                currentPartialSelectedLabelIds = emptyList(),
-                updatedLabelIds = listOf(LabelSample.Document.labelId),
-                updatedPartialSelectedLabelIds = listOf()
+                currentSelections = LabelSelectionList(
+                    selectedLabels = emptyList(),
+                    partiallySelectionLabels = emptyList()
+                ),
+                updatedSelections = LabelSelectionList(
+                    selectedLabels = listOf(LabelSample.Document.labelId),
+                    partiallySelectionLabels = emptyList()
+                )
             )
         } returns ConversationSample.WeatherForecast.right()
 
@@ -829,10 +833,14 @@ class ConversationDetailViewModelTest {
             coVerify {
                 relabelConversation(
                     userId, conversationId,
-                    currentLabelIds = emptyList(),
-                    currentPartialSelectedLabelIds = emptyList(),
-                    updatedLabelIds = listOf(LabelSample.Document.labelId),
-                    updatedPartialSelectedLabelIds = emptyList()
+                    currentSelections = LabelSelectionList(
+                        selectedLabels = emptyList(),
+                        partiallySelectionLabels = emptyList()
+                    ),
+                    updatedSelections = LabelSelectionList(
+                        selectedLabels = listOf(LabelSample.Document.labelId),
+                        partiallySelectionLabels = emptyList()
+                    )
                 )
             }
             verify { move wasNot Called }
@@ -860,10 +868,14 @@ class ConversationDetailViewModelTest {
                 relabelConversation(
                     userId = userId,
                     conversationId = conversationId,
-                    currentLabelIds = emptyList(),
-                    currentPartialSelectedLabelIds = emptyList(),
-                    updatedLabelIds = listOf(LabelSample.Document.labelId),
-                    updatedPartialSelectedLabelIds = listOf()
+                    currentSelections = LabelSelectionList(
+                        selectedLabels = emptyList(),
+                        partiallySelectionLabels = emptyList()
+                    ),
+                    updatedSelections = LabelSelectionList(
+                        selectedLabels = listOf(LabelSample.Document.labelId),
+                        partiallySelectionLabels = emptyList()
+                    )
                 )
             } returns ConversationSample.WeatherForecast.right()
 
@@ -919,10 +931,14 @@ class ConversationDetailViewModelTest {
                 coVerify {
                     relabelConversation(
                         userId, conversationId,
-                        currentLabelIds = emptyList(),
-                        currentPartialSelectedLabelIds = emptyList(),
-                        updatedLabelIds = listOf(LabelSample.Document.labelId),
-                        updatedPartialSelectedLabelIds = emptyList()
+                        currentSelections = LabelSelectionList(
+                            selectedLabels = emptyList(),
+                            partiallySelectionLabels = emptyList()
+                        ),
+                        updatedSelections = LabelSelectionList(
+                            selectedLabels = listOf(LabelSample.Document.labelId),
+                            partiallySelectionLabels = emptyList()
+                        )
                     )
                 }
                 coVerify { move(userId, conversationId, SystemLabelId.Archive.labelId) }
@@ -952,14 +968,18 @@ class ConversationDetailViewModelTest {
             relabelConversation(
                 userId,
                 conversationId,
-                currentLabelIds = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId),
-                currentPartialSelectedLabelIds = listOf(LabelSample.Label2022.labelId),
-                updatedLabelIds = listOf(
-                    LabelSample.Document.labelId,
-                    LabelSample.Label2021.labelId,
-                    LabelSample.Label2022.labelId
+                currentSelections = LabelSelectionList(
+                    selectedLabels = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId),
+                    partiallySelectionLabels = listOf(LabelSample.Label2022.labelId)
                 ),
-                updatedPartialSelectedLabelIds = listOf()
+                updatedSelections = LabelSelectionList(
+                    selectedLabels = listOf(
+                        LabelSample.Document.labelId,
+                        LabelSample.Label2021.labelId,
+                        LabelSample.Label2022.labelId
+                    ),
+                    partiallySelectionLabels = emptyList()
+                )
             )
         } returns ConversationSample.WeatherForecast.right()
 
@@ -999,14 +1019,18 @@ class ConversationDetailViewModelTest {
             coVerify {
                 relabelConversation(
                     userId, conversationId,
-                    currentLabelIds = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId),
-                    currentPartialSelectedLabelIds = listOf(LabelSample.Label2022.labelId),
-                    updatedLabelIds = listOf(
-                        LabelSample.Document.labelId,
-                        LabelSample.Label2021.labelId,
-                        LabelSample.Label2022.labelId
+                    currentSelections = LabelSelectionList(
+                        selectedLabels = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId),
+                        partiallySelectionLabels = listOf(LabelSample.Label2022.labelId)
                     ),
-                    updatedPartialSelectedLabelIds = emptyList()
+                    updatedSelections = LabelSelectionList(
+                        selectedLabels = listOf(
+                            LabelSample.Document.labelId,
+                            LabelSample.Label2021.labelId,
+                            LabelSample.Label2022.labelId
+                        ),
+                        partiallySelectionLabels = emptyList()
+                    )
                 )
             }
             verify { move wasNot Called }

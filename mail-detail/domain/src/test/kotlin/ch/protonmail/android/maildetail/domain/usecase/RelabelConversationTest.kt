@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -46,10 +47,14 @@ class RelabelConversationTest {
         val result = relabelConversation(
             userId = UserIdSample.Primary,
             conversationId = ConversationIdSample.Invoices,
-            currentLabelIds = listOf(LabelId("labelId")),
-            currentPartialSelectedLabelIds = emptyList(),
-            updatedLabelIds = listOf(LabelId("labelId2")),
-            updatedPartialSelectedLabelIds = emptyList()
+            currentSelections = LabelSelectionList(
+                selectedLabels = listOf(LabelId("labelId")),
+                partiallySelectionLabels = emptyList()
+            ),
+            updatedSelections = LabelSelectionList(
+                selectedLabels = listOf(LabelId("labelId2")),
+                partiallySelectionLabels = emptyList()
+            )
         )
 
         // Then
@@ -76,10 +81,14 @@ class RelabelConversationTest {
         relabelConversation(
             UserIdSample.Primary,
             ConversationIdSample.Invoices,
-            currentLabelIds = oldLabelIds,
-            currentPartialSelectedLabelIds = emptyList(),
-            updatedLabelIds = newLabelIds,
-            updatedPartialSelectedLabelIds = emptyList()
+            currentSelections = LabelSelectionList(
+                selectedLabels = oldLabelIds,
+                partiallySelectionLabels = emptyList()
+            ),
+            updatedSelections = LabelSelectionList(
+                selectedLabels = newLabelIds,
+                partiallySelectionLabels = emptyList()
+            )
         )
 
         // Then
@@ -114,10 +123,14 @@ class RelabelConversationTest {
         relabelConversation(
             UserIdSample.Primary,
             ConversationIdSample.Invoices,
-            currentLabelIds = oldLabelIds,
-            currentPartialSelectedLabelIds = oldPartialSelectedLabels,
-            updatedLabelIds = newLabelIds,
-            updatedPartialSelectedLabelIds = emptyList()
+            currentSelections = LabelSelectionList(
+                selectedLabels = oldLabelIds,
+                partiallySelectionLabels = oldPartialSelectedLabels
+            ),
+            updatedSelections = LabelSelectionList(
+                selectedLabels = newLabelIds,
+                partiallySelectionLabels = emptyList()
+            )
         )
 
         // Then
@@ -152,10 +165,14 @@ class RelabelConversationTest {
         relabelConversation(
             UserIdSample.Primary,
             ConversationIdSample.Invoices,
-            currentLabelIds = oldLabelIds,
-            currentPartialSelectedLabelIds = partialSelectionLabels,
-            updatedLabelIds = newLabelIds,
-            updatedPartialSelectedLabelIds = partialSelectionLabels
+            currentSelections = LabelSelectionList(
+                selectedLabels = oldLabelIds,
+                partiallySelectionLabels = partialSelectionLabels
+            ),
+            updatedSelections = LabelSelectionList(
+                selectedLabels = newLabelIds,
+                partiallySelectionLabels = partialSelectionLabels
+            )
         )
 
         // Then

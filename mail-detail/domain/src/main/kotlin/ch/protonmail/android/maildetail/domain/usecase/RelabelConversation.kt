@@ -23,27 +23,25 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class RelabelConversation @Inject constructor(
     private val conversationRepository: ConversationRepository
 ) {
 
-    @SuppressWarnings("LongParameterList")
     suspend operator fun invoke(
         userId: UserId,
         conversationId: ConversationId,
-        currentLabelIds: List<LabelId>,
-        currentPartialSelectedLabelIds: List<LabelId>,
-        updatedLabelIds: List<LabelId>,
-        updatedPartialSelectedLabelIds: List<LabelId>
+        currentSelections: LabelSelectionList,
+        updatedSelections: LabelSelectionList
     ): Either<DataError, Conversation> {
-        val removedLabels = currentLabelIds - updatedLabelIds
-        val addedLabels = updatedLabelIds - currentLabelIds
+        val removedLabels = currentSelections.selectedLabels - updatedSelections.selectedLabels
+        val addedLabels = updatedSelections.selectedLabels - currentSelections.selectedLabels
 
-        val removedPartialSelectedLabels = currentPartialSelectedLabelIds - updatedPartialSelectedLabelIds
+        val removedPartialSelectedLabels =
+            currentSelections.partiallySelectionLabels - updatedSelections.partiallySelectionLabels
 
         return conversationRepository.relabel(
             userId = userId,

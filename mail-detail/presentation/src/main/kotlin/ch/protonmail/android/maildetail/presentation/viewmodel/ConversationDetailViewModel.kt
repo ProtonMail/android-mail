@@ -249,35 +249,31 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = primaryUserId.first()
             val labels = observeCustomMailLabels(userId).first().tapLeft {
-                Timber.e("Error while observing custom labels")
+                Timber.e("Error while observing custom labels when relabeling got confirmed: $it")
             }.getOrElse { emptyList() }
             val messagesWithLabels = observeConversationMessages(userId, conversationId).first().tapLeft {
-                Timber.e("Error while observing custom labels")
+                Timber.e("Error while observing conversation message when relabeling got confirmed: $it")
             }.getOrElse { emptyList() }
 
-            val (previousSelectedLabels, previousPartiallySelectedLabels) = labels.getLabelSelectionState(
-                messagesWithLabels
-            )
+            val previousSelection = labels.getLabelSelectionState(messagesWithLabels)
 
             val labelAsData = mutableDetailState.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
                 ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
 
-            val (updatedLabelSelection, updatedPartialLabelSelection) = labelAsData.getLabelSelectionState()
+            val updatedSelections = labelAsData.getLabelSelectionState()
 
             if (archiveSelected) {
                 moveConversation(
                     userId = userId,
                     conversationId = conversationId,
                     labelId = SystemLabelId.Archive.labelId
-                ).tapLeft { Timber.e("Error while archiving conversation: $it") }
+                ).tapLeft { Timber.e("Error while archiving conversation when relabeling got confirmed: $it") }
             }
             val operation = relabelConversation(
                 userId = userId,
                 conversationId = conversationId,
-                currentLabelIds = previousSelectedLabels,
-                updatedLabelIds = updatedLabelSelection,
-                currentPartialSelectedLabelIds = previousPartiallySelectedLabels,
-                updatedPartialSelectedLabelIds = updatedPartialLabelSelection
+                currentSelections = previousSelection,
+                updatedSelections = updatedSelections
             ).fold(
                 ifLeft = {
                     Timber.e("Error while relabeling conversation: $it")
