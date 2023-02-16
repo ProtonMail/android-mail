@@ -41,7 +41,7 @@ platform :android do
 
   desc "Runs Unit Tests"
   lane :unitTest do
-    gradle(task: "test")
+    gradle(tasks: ["testDevDebugUnitTest", "testDebugUnitTest"])
   end
 
   desc "Runs Instrumented Tests on Firebase"
