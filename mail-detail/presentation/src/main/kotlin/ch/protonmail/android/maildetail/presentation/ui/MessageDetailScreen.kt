@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.os.Build
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,10 +42,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -65,6 +70,9 @@ import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
+import com.google.accompanist.web.AccompanistWebViewClient
+import com.google.accompanist.web.WebView
+import com.google.accompanist.web.rememberWebViewStateWithHTMLData
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
@@ -79,6 +87,8 @@ import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
+
+const val TEST_TAG_MESSAGE_BODY_WEB_VIEW = "MessageBodyWebView"
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -141,7 +151,10 @@ fun MessageDetailScreen(
                 onUnStarClick = { viewModel.submit(MessageViewAction.UnStar) },
                 onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) },
                 onMoveClick = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) },
-                onLabelAsClick = { viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet) }
+                onLabelAsClick = { viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet) },
+                onMessageBodyLinkClicked = { view, request ->
+                    viewModel.submit(MessageViewAction.MessageBodyLinkClicked(view, request))
+                }
             )
         )
     }
@@ -220,7 +233,8 @@ fun MessageDetailScreen(
                 modifier = Modifier.padding(innerPadding),
                 messageMetadataState = state.messageMetadataState,
                 messageBodyState = state.messageBodyState,
-                onReload = actions.onReload
+                onReload = actions.onReload,
+                onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked
             )
             is MessageMetadataState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
@@ -234,7 +248,8 @@ private fun MessageDetailContent(
     modifier: Modifier = Modifier,
     messageMetadataState: MessageMetadataState.Data,
     messageBodyState: MessageBodyState,
-    onReload: () -> Unit
+    onReload: () -> Unit,
+    onMessageBodyLinkClicked: (view: WebView?, request: WebResourceRequest?) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
@@ -244,14 +259,20 @@ private fun MessageDetailContent(
             Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
             when (messageBodyState) {
                 is MessageBodyState.Loading -> ProtonCenteredProgress()
-                is MessageBodyState.Data -> MessageBody(messageBodyUiModel = messageBodyState.messageBodyUiModel)
+                is MessageBodyState.Data -> MessageBody(
+                    messageBodyUiModel = messageBodyState.messageBodyUiModel,
+                    onMessageBodyLinkClicked = onMessageBodyLinkClicked
+                )
                 is MessageBodyState.Error.Data -> MessageBodyLoadingError(
                     messageBodyState = messageBodyState,
                     onReload = onReload
                 )
                 is MessageBodyState.Error.Decryption -> {
                     ProtonErrorMessage(errorMessage = stringResource(id = R.string.decryption_error))
-                    MessageBody(messageBodyUiModel = messageBodyState.encryptedMessageBody)
+                    MessageBody(
+                        messageBodyUiModel = messageBodyState.encryptedMessageBody,
+                        onMessageBodyLinkClicked = onMessageBodyLinkClicked
+                    )
                 }
             }
         }
@@ -261,14 +282,37 @@ private fun MessageDetailContent(
 @Composable
 private fun MessageBody(
     modifier: Modifier = Modifier,
-    messageBodyUiModel: MessageBodyUiModel
+    messageBodyUiModel: MessageBodyUiModel,
+    onMessageBodyLinkClicked: (view: WebView?, request: WebResourceRequest?) -> Unit
 ) {
-    Text(
+    val state = rememberWebViewStateWithHTMLData(data = messageBodyUiModel.messageBody)
+
+    val client = remember {
+        object : AccompanistWebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                onMessageBodyLinkClicked(view, request)
+                return true
+            }
+        }
+    }
+
+    WebView(
+        onCreated = {
+            it.settings.builtInZoomControls = true
+            it.settings.displayZoomControls = false
+            it.settings.javaScriptEnabled = false
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it.settings.isAlgorithmicDarkeningAllowed = true
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                it.settings.safeBrowsingEnabled = true
+            }
+        },
+        state = state,
         modifier = modifier
             .fillMaxWidth()
-            .background(ProtonTheme.colors.backgroundNorm)
-            .padding(ProtonDimens.DefaultSpacing),
-        text = messageBodyUiModel.messageBody
+            .testTag(TEST_TAG_MESSAGE_BODY_WEB_VIEW),
+        client = client
     )
 }
 
@@ -332,7 +376,8 @@ object MessageDetailScreen {
         val onUnStarClick: () -> Unit,
         val onUnreadClick: () -> Unit,
         val onMoveClick: () -> Unit,
-        val onLabelAsClick: () -> Unit
+        val onLabelAsClick: () -> Unit,
+        val onMessageBodyLinkClicked: (view: WebView?, request: WebResourceRequest?) -> Unit
     ) {
 
         companion object {
@@ -345,7 +390,8 @@ object MessageDetailScreen {
                 onUnStarClick = {},
                 onUnreadClick = {},
                 onMoveClick = {},
-                onLabelAsClick = {}
+                onLabelAsClick = {},
+                onMessageBodyLinkClicked = { _, _ -> }
             )
         }
     }

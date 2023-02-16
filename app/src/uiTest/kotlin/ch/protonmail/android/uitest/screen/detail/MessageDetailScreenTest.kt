@@ -270,16 +270,15 @@ class MessageDetailScreenTest {
     }
 
     @Test
-    fun whenMessageBodyIsLoadedThenMessageBodyIsDisplayed() {
+    fun whenMessageBodyIsLoadedThenMessageBodyWebViewIsDisplayed() {
         // given
         val state = MessageDetailsPreviewData.Message
-        val messageBody = (state.messageBodyState as MessageBodyState.Data).messageBodyUiModel.messageBody
 
         // when
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify { messageBodyIsDisplayed(messageBody) }
+        robot.verify { messageBodyWebViewIsDisplayed() }
     }
 
     @Test
@@ -321,7 +320,6 @@ class MessageDetailScreenTest {
         val state = MessageDetailsPreviewData.Message.copy(
             messageBodyState = MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.messageBodyUiModel)
         )
-        val messageBody = (state.messageBodyState as MessageBodyState.Error.Decryption).encryptedMessageBody.messageBody
 
         // when
         val robot = setUpScreen(state = state)
@@ -329,7 +327,7 @@ class MessageDetailScreenTest {
         // then
         robot.verify {
             messageBodyDecryptionErrorMessageIsDisplayed()
-            messageBodyIsDisplayed(messageBody)
+            messageBodyWebViewIsDisplayed()
         }
     }
 

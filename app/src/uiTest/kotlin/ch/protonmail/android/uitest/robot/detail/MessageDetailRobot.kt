@@ -32,8 +32,10 @@ import ch.protonmail.android.mailcommon.presentation.compose.TEST_TAG_AVATAR
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
+import ch.protonmail.android.maildetail.presentation.ui.TEST_TAG_MESSAGE_BODY_WEB_VIEW
 import ch.protonmail.android.maildetail.presentation.ui.TEST_TAG_MESSAGE_HEADER
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
 
@@ -125,8 +127,9 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
                 .assertIsDisplayed()
         }
 
-        fun messageBodyIsDisplayed(messageBody: String) {
-            composeTestRule.onNodeWithText(messageBody)
+        fun messageBodyWebViewIsDisplayed() {
+            composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_BODY_WEB_VIEW)
+                .awaitDisplayed(composeTestRule)
                 .assertIsDisplayed()
         }
 
