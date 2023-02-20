@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="drawer_title_more">Больш</string>
+  <string name="drawer_title_contacts">Кантакты</string>
+  <string name="drawer_title_subscription">Падпіска</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Напісаць новае паведамленне</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Выйсці з меню выбару</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
+  <string name="mailbox_toolbar_search_button_content_description">Пошук</string>
+  <string name="mailbox_toolbar_selected_count">Выбрана: %d</string>
+  <plurals name="filter_unread_button_text">
+    <item quantity="one">%d непрачытаны</item>
+    <item quantity="few">%d непрачытаныя</item>
+    <item quantity="many">%d непрачытаных</item>
+    <item quantity="other">%d непрачытаныя</item>
+  </plurals>
+</resources>

@@ -38,11 +38,12 @@
   <string name="error_unstar_operation_failed">Operace odebrání hvězdičky se nezdařila. Zkuste to prosím znovu.</string>
   <string name="error_move_to_trash_failed">Přesunutí do koše se nezdařilo. Zkuste to znovu.</string>
   <string name="message_moved_to_trash">Zpráva byla přesunuta do koše</string>
-  <string name="message_moved_to_archive">Message moved to archive</string>
+  <string name="message_moved_to_archive">Zpráva přesunuta do archivu</string>
   <string name="message_moved_to_selected_destination">Zpráva přesunuta do %1$s</string>
   <string name="error_move_message_failed">Přesunutí zprávy se nezdařilo. Zkuste to znovu.</string>
   <string name="conversation_moved_to_trash">Konverzace byla přesunuta do koše</string>
   <string name="conversation_moved_to_selected_destination">Konverzace přesunuta do %1$s</string>
+  <string name="conversation_moved_to_archive">Konverzace přesunuta do archivu</string>
   <string name="error_move_conversation_failed">Přesunutí konverzace se nezdařilo. Zkuste to znovu.</string>
   <string name="error_loading_message">Něco se pokazilo, prosím zkuste to znovu.</string>
   <string name="error_offline_loading_message">Jste offline. Pro zobrazení obsahu této zprávy je nutné připojení k internetu.</string>
@@ -50,9 +51,10 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Přesunout do...</string>
   <string name="bottom_sheet_done_action">Hotovo</string>
-  <string name="bottom_sheet_archive_action">Also archive?</string>
-  <string name="bottom_sheet_label_as_title">Label as...</string>
-  <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
+  <string name="bottom_sheet_archive_action">Také archivovat?</string>
+  <string name="bottom_sheet_label_as_title">Přidat štítek...</string>
+  <string name="error_relabel_message_failed">Nepodařilo se přeznačit zprávu. Zkuste to prosím znovu</string>
+  <string name="error_relabel_conversation_failed">Nepodařilo se přeznačit konverzaci. Zkuste to prosím znovu</string>
   <string name="please_go_back_online_to_load_messages">Jste odpojeni (offline). Pro načtení zpráv se prosím znovu připojte</string>
   <string name="decryption_error">Dešifrování zprávy se nezdařilo.</string>
 </resources>

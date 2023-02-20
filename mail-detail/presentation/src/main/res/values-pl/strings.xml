@@ -43,6 +43,7 @@
   <string name="error_move_message_failed">Przenoszenie wiadomości nie powiodło się. Spróbuj ponownie.</string>
   <string name="conversation_moved_to_trash">Wątek został przeniesiony do Kosza</string>
   <string name="conversation_moved_to_selected_destination">Wątek został przeniesiony do folderu %1$s</string>
+  <string name="conversation_moved_to_archive">Wątek został przeniesiony do Archiwum</string>
   <string name="error_move_conversation_failed">Przenoszenie wątku nie powiodło się. Spróbuj ponownie.</string>
   <string name="error_loading_message">Coś poszło nie tak. Spróbuj ponownie później.</string>
   <string name="error_offline_loading_message">Jesteś w trybie offline. Połączenie internetowe jest wymagane, aby wyświetlić zawartość wiadomości.</string>
@@ -53,6 +54,7 @@
   <string name="bottom_sheet_archive_action">Również archiwizuj?</string>
   <string name="bottom_sheet_label_as_title">Oznacz jako...</string>
   <string name="error_relabel_message_failed">Nie udało się zmienić etykiet wiadomości. Spróbuj ponownie</string>
+  <string name="error_relabel_conversation_failed">Nie udało się zmienić etykiet wątku. Spróbuj ponownie</string>
   <string name="please_go_back_online_to_load_messages">Jesteś w trybie offline. Połącz się z Internetem, aby załadować wiadomość</string>
   <string name="decryption_error">Odszyfrowanie wiadomości nie powiodło się.</string>
 </resources>

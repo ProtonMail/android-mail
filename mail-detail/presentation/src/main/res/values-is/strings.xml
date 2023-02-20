@@ -41,6 +41,7 @@
   <string name="error_move_message_failed">Mistókst að færa skilaboð. Vinsamlegast reyndu aftur.</string>
   <string name="conversation_moved_to_trash">Samtal fært í ruslið</string>
   <string name="conversation_moved_to_selected_destination">Samtal fært í %1$s</string>
+  <string name="conversation_moved_to_archive">Samtal fært í skjalasafn</string>
   <string name="error_move_conversation_failed">Ekki tókst að færa samtal. Vinsamlegast reyndu aftur.</string>
   <string name="error_loading_message">Eitthvað fór úrskeiðis, vinsamlegast reyndu aftur.</string>
   <string name="error_offline_loading_message">Þú ert ótengdur. Nettenging er nauðsynleg til að birta innihald þessarar skilaboða.</string>
@@ -51,6 +52,7 @@
   <string name="bottom_sheet_archive_action">Einnig skjalasafn?</string>
   <string name="bottom_sheet_label_as_title">Merkja sem...</string>
   <string name="error_relabel_message_failed">Mistókst að endurmerkja skilaboð. Vinsamlegast reyndu aftur</string>
+  <string name="error_relabel_conversation_failed">Mistókst að endurmerkja samtal. Vinsamlegast reyndu aftur</string>
   <string name="please_go_back_online_to_load_messages">Þú ert ekki tengdur. Vinsamlegast farðu aftur á netið til að hlaða inn skilaboðum</string>
   <string name="decryption_error">Afkóðun skilaboða mistókst.</string>
 </resources>

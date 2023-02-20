@@ -41,6 +41,7 @@
   <string name="error_move_message_failed">Error al mover el mensaje. Inténtalo de nuevo.</string>
   <string name="conversation_moved_to_trash">Conversación movida a la papelera</string>
   <string name="conversation_moved_to_selected_destination">Conversación movida a $%1$s</string>
+  <string name="conversation_moved_to_archive">Conversación movida al archivo</string>
   <string name="error_move_conversation_failed">Error al mover la conversación. Inténtalo de nuevo.</string>
   <string name="error_loading_message">Se ha detectado un problema. Inténtalo de nuevo más tarde.</string>
   <string name="error_offline_loading_message">No estás conectado. Se necesita una conexión a internet para mostrar el contenido de este mensaje.</string>
@@ -51,6 +52,7 @@
   <string name="bottom_sheet_archive_action">¿También archivar?</string>
   <string name="bottom_sheet_label_as_title">Etiquetar como...</string>
   <string name="error_relabel_message_failed">Error al etiquetar de nuevo el mensaje. Inténtalo de nuevo.</string>
+  <string name="error_relabel_conversation_failed">Error al reetiquetar la conversación. Vuelve a intentarlo</string>
   <string name="please_go_back_online_to_load_messages">Estás desconectado. Vuelve a conectarte para cargar los mensajes.</string>
   <string name="decryption_error">Error al descifrar el mensaje.</string>
 </resources>

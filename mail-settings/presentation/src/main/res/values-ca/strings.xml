@@ -32,7 +32,7 @@
   <string name="mail_settings_combined_contacts_hint">Activeu aquesta funcionalitat per completar automàticament les adreces de correu utilitzant els contactes de tots els comptes amb sessió iniciada.</string>
   <string name="mail_settings_alternative_routing_hint">En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l\'aplicació provar l\'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat.</string>
   <!-- Theme settings -->
-  <string name="mail_settings_system_default">Predeterminat del sistema</string>
+  <string name="mail_settings_system_default">Valors per defecte del sistema</string>
   <string name="mail_settings_theme_light">Clar</string>
   <string name="mail_settings_theme_dark">Fosc</string>
   <!-- Settings item states -->

@@ -41,6 +41,7 @@
   <string name="error_move_message_failed">Flytning af besked mislykkedes. Prøv igen.</string>
   <string name="conversation_moved_to_trash">Samtale flyttet til papirkurv</string>
   <string name="conversation_moved_to_selected_destination">Samtale flyttet til %1$s</string>
+  <string name="conversation_moved_to_archive">Samtale flyttet til arkiv</string>
   <string name="error_move_conversation_failed">Flytning af samtale mislykkedes. Prøv igen.</string>
   <string name="error_loading_message">Noget gik galt, prøv venligst igen.</string>
   <string name="error_offline_loading_message">Du er offline. En internetforbindelse er nødvendig, for at vise indholdet af denne besked.</string>
@@ -51,6 +52,7 @@
   <string name="bottom_sheet_archive_action">Arkivér også?</string>
   <string name="bottom_sheet_label_as_title">Anvend etiketten...</string>
   <string name="error_relabel_message_failed">Beskeden kunne ikke ommærkes. Prøv venligst igen</string>
+  <string name="error_relabel_conversation_failed">Samtalen kunne ikke ommærkes. Prøv venligst igen</string>
   <string name="please_go_back_online_to_load_messages">Du er offline. Sørg for at være online igen for at indlæse beskeder</string>
   <string name="decryption_error">Dekryptering af besked mislykkedes.</string>
 </resources>

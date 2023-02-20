@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Αποτυχημένη φόρτωση επαφών</string>
   <string name="detail_error_loading_conversation">Αποτυχημένη φόρτωση συνομιλίας</string>
   <string name="detail_error_loading_messages">Αποτυχημένη φόρτωση μηνυμάτων</string>
-  <string name="error_mark_unread_failed">Αποτυχια επισήμανσης μη αναγνωσμένου. Παρακαλώ προσπαθήστε ξανά.</string>
+  <string name="error_mark_unread_failed">Αποτυχία σήμανσης μη διαβασμένου. Παρακαλούμε δοκιμάστε ξανά.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d μήνυμα</item>
     <item quantity="other">%d μηνύματα</item>
@@ -31,26 +31,28 @@
   <string name="bcc">Κρυφή κοιν:</string>
   <string name="hide_details">Απόκρυψη λεπτομερειών</string>
   <string name="undisclosed_recipients">Μη κοινοποιημένοι παραλήπτες</string>
-  <string name="error_mark_as_unread_failed">Η λειτουργία σήμανσης ως μη αναγνωσμένα απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
+  <string name="error_mark_as_unread_failed">Αποτυχία σήμανσης ως μη διαβασμένου. Παρακαλούμε ξαναδοκιμάστε.</string>
   <string name="error_star_operation_failed">Η λειτουργία προσθήκης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_unstar_operation_failed">Η λειτουργία κατάργησης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_move_to_trash_failed">Η μετακίνηση στα Διαγραμμένα απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="message_moved_to_trash">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</string>
-  <string name="message_moved_to_archive">Μήνυμα μετακινήθηκε στο αρχείο</string>
+  <string name="message_moved_to_archive">Το μήνυμα μετακινήθηκε στα Αρχειοθετημένα</string>
   <string name="message_moved_to_selected_destination">Το μήνυμα μετακινήθηκε στα %1$s</string>
   <string name="error_move_message_failed">Η μετακινηση μυνημάτων απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="conversation_moved_to_trash">Η συνομιλία μετακινήθηκε στα Διαγραμμένα</string>
   <string name="conversation_moved_to_selected_destination">Η συνομιλία μετακινήθηκε στο %1$s</string>
+  <string name="conversation_moved_to_archive">Conversation moved to archive</string>
   <string name="error_move_conversation_failed">Η μετακινηση συνομιλίας απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_loading_message">Κάτι πήγε στραβά, παρακαλούμε δοκιμάστε ξανά.</string>
-  <string name="error_offline_loading_message">Είστε εκτός σύνδεσης. Απαιτείται σύνδεση στο Διαδύκτιο για την εμφάνιση του περιεχομένου αυτού του μηνύματος.</string>
-  <string name="reload">Ανανέωση</string>
+  <string name="error_offline_loading_message">Βρίσκεστε εκτός σύνδεσης. Για εμφάνιση του περιεχομένου αυτού του μηνύματος, απαιτείται σύνδεση στο διαδίκτυο.</string>
+  <string name="reload">Επαναφόρτωση</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Μετακίνηση σε...</string>
   <string name="bottom_sheet_done_action">Ολοκληρώθηκε</string>
   <string name="bottom_sheet_archive_action">Επίσης αρχειοθέτηση;</string>
   <string name="bottom_sheet_label_as_title">Ορίστε ετικέτα...</string>
-  <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
+  <string name="error_relabel_message_failed">Σφάλμα κατά την αλλαγή ετικέτας μηνύματος. Παρακαλώ προσπαθήστε ξανά</string>
+  <string name="error_relabel_conversation_failed">Failed to relabel conversation. Please retry</string>
   <string name="please_go_back_online_to_load_messages">Είσαστε αποσυνδεμένοι. Παρακαλούμε συνδεθήτε ξανά για να φορτώσετε μηνύματα</string>
-  <string name="decryption_error">Η αποκρυπτογράφηση του μηνύματος απέτυχε.</string>
+  <string name="decryption_error">Αποτυχία αποκρυπτογράφησης μηνύματος.</string>
 </resources>

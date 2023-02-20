@@ -41,6 +41,7 @@
   <string name="error_move_message_failed">Bericht verplaatsen mislukt. Probeer opnieuw.</string>
   <string name="conversation_moved_to_trash">Gesprek verplaatst naar prullenbak</string>
   <string name="conversation_moved_to_selected_destination">Gesprek verplaatst naar %1$s</string>
+  <string name="conversation_moved_to_archive">Gesprek verplaatst naar archief</string>
   <string name="error_move_conversation_failed">Gesprek verplaatsen mislukt. Probeer opnieuw.</string>
   <string name="error_loading_message">Er ging iets mis. Probeer opnieuw.</string>
   <string name="error_offline_loading_message">U bent offline. Een internetverbinding is verplicht om de inhoud van dit bericht te tonen.</string>
@@ -50,7 +51,8 @@
   <string name="bottom_sheet_done_action">Klaar</string>
   <string name="bottom_sheet_archive_action">Ook archiveren?</string>
   <string name="bottom_sheet_label_as_title">Label als...</string>
-  <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
+  <string name="error_relabel_message_failed">Kon het bericht niet opnieuw labelen. Probeer opnieuw.</string>
+  <string name="error_relabel_conversation_failed">Kon het gesprek niet opnieuw labelen. Probeer opnieuw.</string>
   <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
   <string name="decryption_error">Decoderen van bericht mislukt.</string>
 </resources>

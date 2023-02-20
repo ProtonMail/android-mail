@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="expiration_expired">Пратэрмінавана</string>
+  <string name="expiration_days_arg">%dд</string>
+  <string name="expiration_hours_arg">%dг</string>
+  <string name="expiration_minutes_arg">%dхв</string>
+  <string name="retry">Паўтарыць</string>
+  <string name="toolbar_back_content_description">Вярнуцца на папярэдні экран</string>
+  <string name="x_error_not_logged_in">Уваход не выкананы</string>
+  <string name="action_reply_content_description">Адказаць</string>
+  <string name="action_reply_all_content_description">Адказаць усім</string>
+  <string name="action_forward_content_description">Пераслаць</string>
+  <string name="action_mark_read_content_description">Пазначыць прачытаным</string>
+  <string name="action_mark_unread_content_description">Пазначыць непрачытаным</string>
+  <string name="action_star_content_description">Пазначыць зорачкай</string>
+  <string name="action_unstar_content_description">Прыбраць зорачку</string>
+  <string name="action_label_content_description">Пазначыць як</string>
+  <string name="action_move_content_description">Перамясціць у</string>
+  <string name="action_trash_content_description">Сметніца</string>
+  <string name="action_delete_content_description">Выдаліць</string>
+  <string name="action_archive_content_description">Архіваваць</string>
+  <string name="action_spam_content_description">Спам</string>
+  <string name="action_view_in_light_mode_content_description">Паглядзець паведамленні ў светлым рэжыме</string>
+  <string name="action_view_in_dark_mode_content_description">Паглядзець паведамленні ў цёмным рэжыме</string>
+  <string name="action_print_content_description">Друкаваць</string>
+  <string name="action_view_headers_content_description">Прагледзець загалоўкі</string>
+  <string name="action_view_html_content_description">Паглядзець HTML</string>
+  <string name="action_report_phishing_content_description">Паведаміць пра фішынг</string>
+  <string name="action_remind_content_description">Нагадаць мне</string>
+  <string name="action_save_pdf_content_description">Захаваць як PDF</string>
+  <string name="action_sender_emails_content_description">Задаць дзеянне для будучых лістоў ад гэтага адпраўніка</string>
+  <string name="action_save_attachments_content_description">Захаваць далучэнні</string>
+  <string name="common_error_loading_actions">Не ўдалося загрузіць дзеянні</string>
+  <string name="yesterday">Учора</string>
+</resources>

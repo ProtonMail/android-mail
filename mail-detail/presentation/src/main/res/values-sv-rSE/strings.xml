@@ -41,6 +41,7 @@
   <string name="error_move_message_failed">Misslyckades att flytta meddelande. Försök igen.</string>
   <string name="conversation_moved_to_trash">Konversation flyttad till papperskorg</string>
   <string name="conversation_moved_to_selected_destination">Konversation flyttad till %1$s</string>
+  <string name="conversation_moved_to_archive">Konversation flyttad till arkiv</string>
   <string name="error_move_conversation_failed">Misslyckades att flytta konversation. Försök igen.</string>
   <string name="error_loading_message">Något gick fel, försök igen.</string>
   <string name="error_offline_loading_message">Du är offline. En Internetanslutning krävs för att visa innehållet i detta meddelande.</string>
@@ -51,6 +52,7 @@
   <string name="bottom_sheet_archive_action">Arkivera också?</string>
   <string name="bottom_sheet_label_as_title">Märk som...</string>
   <string name="error_relabel_message_failed">Misslyckades att märka om meddelande. Försök igen</string>
+  <string name="error_relabel_conversation_failed">Misslyckades att märka om konversation. Försök igen</string>
   <string name="please_go_back_online_to_load_messages">Du är offline. Gå tillbaka online för att ladda meddelanden</string>
   <string name="decryption_error">Dekryptering av meddelande misslyckades.</string>
 </resources>

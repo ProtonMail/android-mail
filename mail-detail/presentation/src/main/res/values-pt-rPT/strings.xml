@@ -36,21 +36,23 @@
   <string name="error_unstar_operation_failed">A operação de remover estrelas falhou. Por favor, tente de novo.</string>
   <string name="error_move_to_trash_failed">O envio para o lixo falhou. Por favor, tente novamente.</string>
   <string name="message_moved_to_trash">Mensagem movida para o lixo</string>
-  <string name="message_moved_to_archive">Message moved to archive</string>
-  <string name="message_moved_to_selected_destination">Message moved to %1$s</string>
+  <string name="message_moved_to_archive">Mensagem movida para Arquivo</string>
+  <string name="message_moved_to_selected_destination">Mensagem movida para %1$s</string>
   <string name="error_move_message_failed">Moving message failed. Please retry.</string>
   <string name="conversation_moved_to_trash">Conversation moved to trash</string>
-  <string name="conversation_moved_to_selected_destination">Conversation moved to %1$s</string>
+  <string name="conversation_moved_to_selected_destination">Conversa movida para %1$s</string>
+  <string name="conversation_moved_to_archive">Conversation moved to archive</string>
   <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
   <string name="error_loading_message">Algo correu mal. Por favor, tente mais tarde.</string>
   <string name="error_offline_loading_message">Está offline. A ligação à internet é necessária para mostraro conteúdo desta mensagem.</string>
-  <string name="reload">Reload</string>
+  <string name="reload">Recarregar</string>
   <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Move to...</string>
-  <string name="bottom_sheet_done_action">Done</string>
-  <string name="bottom_sheet_archive_action">Also archive?</string>
-  <string name="bottom_sheet_label_as_title">Label as...</string>
-  <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
+  <string name="bottom_sheet_move_to_title">Mover para...</string>
+  <string name="bottom_sheet_done_action">Concluído</string>
+  <string name="bottom_sheet_archive_action">Arquivar também?</string>
+  <string name="bottom_sheet_label_as_title">Etiquetar como...</string>
+  <string name="error_relabel_message_failed">Falha ao etiquetar de novo a mensagem. Tente novamente.</string>
+  <string name="error_relabel_conversation_failed">Falha ao etiquetar de novo a conversa. Tente novamente.</string>
   <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
-  <string name="decryption_error">Message decryption failed.</string>
+  <string name="decryption_error">Falha ao desencriptar mensagem.</string>
 </resources>

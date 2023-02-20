@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="detail_error_loading_contacts">Не ўдалося загрузіць кантакты</string>
+  <string name="detail_error_loading_conversation">Не ўдалося загрузіць размову</string>
+  <string name="detail_error_loading_messages">Не ўдалося загрузіць паведамленні</string>
+  <string name="error_mark_unread_failed">Не ўдалося пазначыць непрачытанае. Паспрабуйце яшчэ раз.</string>
+  <plurals name="message_count_label_text">
+    <item quantity="one">%d паведамленне</item>
+    <item quantity="few">%d паведамленні</item>
+    <item quantity="many">%d паведамленняў</item>
+    <item quantity="other">%d паведамленні</item>
+  </plurals>
+  <string name="more_button_content_description">Больш</string>
+  <string name="to">Каму:</string>
+  <string name="cc">Копія:</string>
+  <string name="bcc">Схаваная копія:</string>
+  <string name="hide_details">Схаваць падрабязнасці</string>
+  <string name="undisclosed_recipients">Схаваныя атрымальнікі</string>
+  <string name="error_mark_as_unread_failed">Не ўдалося пазначыць як непрачытанае. Паўтарыце спробу.</string>
+  <string name="error_star_operation_failed">Не ўдалося дадаць зорачку. Паўтарыце спробу.</string>
+  <string name="error_unstar_operation_failed">Не ўдалося выдаліць зорачку. Паўтарыце спробу.</string>
+  <string name="error_move_to_trash_failed">Не ўдалося перамясціць у сметніцу. Паўтарыце спробу.</string>
+  <string name="message_moved_to_trash">Паведамленне перамешчана ў сметніцу</string>
+  <string name="message_moved_to_archive">Паведамленне перамешчана ў архіў</string>
+  <string name="message_moved_to_selected_destination">Паведамленне перамешчана ў %1$s</string>
+  <string name="error_move_message_failed">Не ўдалося перамясціць паведамленне. Паўтарыце спробу.</string>
+  <string name="conversation_moved_to_trash">Размова перамешчана ў сметніцу</string>
+  <string name="conversation_moved_to_selected_destination">Размова перамешчана ў %1$s</string>
+  <string name="conversation_moved_to_archive">Размова перамешчана ў архіў</string>
+  <string name="error_move_conversation_failed">Не ўдалося перамясціць размову. Паўтарыце спробу.</string>
+  <string name="error_loading_message">Нешта пайшло не так. Паспрабуйце яшчэ раз.</string>
+  <string name="error_offline_loading_message">Вы па-за сеткай. Для адлюстравання змесціва гэтага паведамлення неабходна злучэнне з інтэрнэтам.</string>
+  <string name="reload">Перазагрузіць</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Перамясціць у...</string>
+  <string name="bottom_sheet_done_action">Гатова</string>
+  <string name="bottom_sheet_archive_action">Таксама архіваваць?</string>
+  <string name="bottom_sheet_label_as_title">Пазначыць як...</string>
+  <string name="error_relabel_message_failed">Не ўдалося паўторна пазначыць паведамленне. Паўтарыце спробу</string>
+  <string name="error_relabel_conversation_failed">Не ўдалося змяніць метку размовы. Паўтарыце спробу</string>
+  <string name="please_go_back_online_to_load_messages">Вы па-за сеткай. Для загрузкі паведамленняў неабходна злучэнне з інтэрнэтам</string>
+  <string name="decryption_error">Не ўдалося расшыфраваць паведамленне.</string>
+</resources>

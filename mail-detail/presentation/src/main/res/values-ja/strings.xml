@@ -40,6 +40,7 @@
   <string name="error_move_message_failed">メッセージの移動に失敗しました。再試行してください。</string>
   <string name="conversation_moved_to_trash">会話がごみ箱に移動されました</string>
   <string name="conversation_moved_to_selected_destination">会話が %1$s に移動されました</string>
+  <string name="conversation_moved_to_archive">Conversation moved to archive</string>
   <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
   <string name="error_loading_message">問題が発生しました。再度お試しください。</string>
   <string name="error_offline_loading_message">現在、オフラインです。このメッセージの内容を表示するには、インターネット接続が必要です。</string>
@@ -50,6 +51,7 @@
   <string name="bottom_sheet_archive_action">Also archive?</string>
   <string name="bottom_sheet_label_as_title">Label as...</string>
   <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
+  <string name="error_relabel_conversation_failed">Failed to relabel conversation. Please retry</string>
   <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
   <string name="decryption_error">Message decryption failed.</string>
 </resources>

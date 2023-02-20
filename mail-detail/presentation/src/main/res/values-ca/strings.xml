@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Error carregant els contactes</string>
   <string name="detail_error_loading_conversation">Error carregant la conversa</string>
   <string name="detail_error_loading_messages">Error carregant els missatges</string>
-  <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
+  <string name="error_mark_unread_failed">Error en marcar com a no llegit. Torneu-ho a provar.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d missatge</item>
     <item quantity="other">%d missatges</item>
@@ -36,21 +36,23 @@
   <string name="error_unstar_operation_failed">Error en suprimir destacat. Torneu-ho a provar.</string>
   <string name="error_move_to_trash_failed">Error en moure a la paperera. Torneu-ho a provar.</string>
   <string name="message_moved_to_trash">S\'ha mogut el missatge a la paperera</string>
-  <string name="message_moved_to_archive">Message moved to archive</string>
+  <string name="message_moved_to_archive">Missatge mogut a l\'arxiu</string>
   <string name="message_moved_to_selected_destination">Missatge mogut a $%1$s</string>
-  <string name="error_move_message_failed">No s\'ha pogut moure el missatge. Si us plau, torneu a provar-ho.</string>
+  <string name="error_move_message_failed">No s\'ha pogut moure el missatge. Torneu a provar-ho.</string>
   <string name="conversation_moved_to_trash">Conversa moguda a la paperera</string>
   <string name="conversation_moved_to_selected_destination">La conversa s\'ha mogut a %1$s</string>
-  <string name="error_move_conversation_failed">No s\'ha pogut moure la conversa. Si us plau, torneu a provar-ho.</string>
-  <string name="error_loading_message">Alguna cosa ha anat malament, si us plau, intenta-ho més tard.</string>
+  <string name="conversation_moved_to_archive">Conversa moguda a l\'arxiu</string>
+  <string name="error_move_conversation_failed">No s\'ha pogut moure la conversa. Torneu a provar-ho.</string>
+  <string name="error_loading_message">S\'ha produït un error. Intenta-ho més tard.</string>
   <string name="error_offline_loading_message">No està connectat. Es necessita una connexió a internet per a mostrar el contingut d\'aquest missatge.</string>
   <string name="reload">Recarregar</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Moure a...</string>
   <string name="bottom_sheet_done_action">Fet</string>
-  <string name="bottom_sheet_archive_action">Also archive?</string>
-  <string name="bottom_sheet_label_as_title">Label as...</string>
+  <string name="bottom_sheet_archive_action">Arxivar també?</string>
+  <string name="bottom_sheet_label_as_title">Etiquetar com...</string>
   <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
+  <string name="error_relabel_conversation_failed">Failed to relabel conversation. Please retry</string>
   <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
   <string name="decryption_error">Message decryption failed.</string>
 </resources>

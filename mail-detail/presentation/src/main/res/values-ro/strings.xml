@@ -42,6 +42,7 @@
   <string name="error_move_message_failed">Mutarea mesajului a eșuat. Reîncercați.</string>
   <string name="conversation_moved_to_trash">Conversația a fost mutată în gunoi.</string>
   <string name="conversation_moved_to_selected_destination">Conversația a fost mutată în «%1$s».</string>
+  <string name="conversation_moved_to_archive">Conversația a fost mutată în «Arhivă».</string>
   <string name="error_move_conversation_failed">Mutarea conversației a eșuat. Reîncercați.</string>
   <string name="error_loading_message">Ceva nu a funcționat bine. Mai încercați.</string>
   <string name="error_offline_loading_message">Nu aveți conexiune. Pentru a afișa conținutul acestui mesaj aveți nevoie de conexiune la internet.</string>
@@ -52,6 +53,7 @@
   <string name="bottom_sheet_archive_action">Și arhivare?</string>
   <string name="bottom_sheet_label_as_title">Etichetare cu...</string>
   <string name="error_relabel_message_failed">Nu s-a reușit reetichetarea mesajului. Reîncercați.</string>
+  <string name="error_relabel_conversation_failed">Nu s-a reușit reetichetarea mesajului. Reîncercați.</string>
   <string name="please_go_back_online_to_load_messages">Nu aveți conexiune. Reconectați-vă pentru a se încărca mesajele.</string>
   <string name="decryption_error">Decriptarea mesajului a eșuat.</string>
 </resources>

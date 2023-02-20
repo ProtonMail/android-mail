@@ -41,6 +41,7 @@
   <string name="error_move_message_failed">Verschieben der Nachricht fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="conversation_moved_to_trash">Unterhaltung in den Papierkorb verschoben.</string>
   <string name="conversation_moved_to_selected_destination">Unterhaltung nach „%1$s“ verschoben</string>
+  <string name="conversation_moved_to_archive">Unterhaltung ins Archiv verschoben</string>
   <string name="error_move_conversation_failed">Verschieben der Unterhaltung fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="error_loading_message">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
   <string name="error_offline_loading_message">Du bist offline. Um den Inhalt dieser Nachricht anzuzeigen, ist eine Internetverbindung erforderlich.</string>
@@ -51,6 +52,7 @@
   <string name="bottom_sheet_archive_action">Ebenfalls archivieren?</string>
   <string name="bottom_sheet_label_as_title">Kategorisieren als…</string>
   <string name="error_relabel_message_failed">Fehler beim Ändern der Kategorie. Bitte versuche es erneut.</string>
+  <string name="error_relabel_conversation_failed">Unterhaltung konnte nicht neu kategorisiert werden. Bitte versuche es erneut.</string>
   <string name="please_go_back_online_to_load_messages">Du bist offline. Bitte gehe wieder online, um Nachrichten zu laden.</string>
   <string name="decryption_error">Entschlüsseln der Nachricht fehlgeschlagen.</string>
 </resources>

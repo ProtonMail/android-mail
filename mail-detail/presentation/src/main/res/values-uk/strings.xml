@@ -43,6 +43,7 @@
   <string name="error_move_message_failed">Не вдалося перемістити повідомлення. Повторіть спробу.</string>
   <string name="conversation_moved_to_trash">Розмову переміщено до смітника</string>
   <string name="conversation_moved_to_selected_destination">Розмову переміщено до %1$s</string>
+  <string name="conversation_moved_to_archive">Розмову переміщено до архіву</string>
   <string name="error_move_conversation_failed">Не вдалося перемістити розмову. Повторіть спробу.</string>
   <string name="error_loading_message">Щось пішло не так, повторіть спробу.</string>
   <string name="error_offline_loading_message">Ви офлайн. Для показів вмісту цього повідомлення потрібне з\'єднання з інтернетом.</string>
@@ -53,6 +54,7 @@
   <string name="bottom_sheet_archive_action">Також архівувати?</string>
   <string name="bottom_sheet_label_as_title">Позначити як...</string>
   <string name="error_relabel_message_failed">Не вдалося змінити мітку повідомлення. Спробуйте ще раз</string>
+  <string name="error_relabel_conversation_failed">Не вдалося змінити мітку розмови. Спробуйте ще раз</string>
   <string name="please_go_back_online_to_load_messages">Ви зараз офлайн. Під\'єднайтеся до інтернету, щоб завантажити повідомлення</string>
   <string name="decryption_error">Не вдалося розшифрувати повідомлення.</string>
 </resources>

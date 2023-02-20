@@ -41,6 +41,7 @@
   <string name="error_move_message_failed">Le message n\'a pas pu être déplacé. Veuillez réessayer.</string>
   <string name="conversation_moved_to_trash">La conversation a été déplacée dans le dossier Corbeille.</string>
   <string name="conversation_moved_to_selected_destination">La conversation a été déplacée dans %1$s.</string>
+  <string name="conversation_moved_to_archive">La conversation a été déplacée dans le dossier Archives.</string>
   <string name="error_move_conversation_failed">La conversation n\'a pas pu être déplacée. Veuillez réessayer.</string>
   <string name="error_loading_message">Un problème est survenu, veuillez réessayer.</string>
   <string name="error_offline_loading_message">Vous n\'êtes pas connecté. Une connexion internet est nécessaire pour afficher le contenu de ce message.</string>
@@ -51,6 +52,7 @@
   <string name="bottom_sheet_archive_action">Archiver également ?</string>
   <string name="bottom_sheet_label_as_title">Labelliser comme…</string>
   <string name="error_relabel_message_failed">Le nouveau label n\'a pas pu être appliqué au message. Réessayez.</string>
+  <string name="error_relabel_conversation_failed">Le nouveau label n\'a pas pu être appliqué à la conversation. Réessayez.</string>
   <string name="please_go_back_online_to_load_messages">Vous êtes hors ligne. Veuillez vous reconnecter pour charger les messages.</string>
   <string name="decryption_error">Le message n\'a pas pu être déchiffré.</string>
 </resources>

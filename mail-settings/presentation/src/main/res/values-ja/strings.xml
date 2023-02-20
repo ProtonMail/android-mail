@@ -43,7 +43,7 @@
   <string name="mail_settings_denied">拒否</string>
   <string name="mail_settings_auto_detect">自動検出</string>
   <string name="mail_settings_app_information">情報</string>
-  <string name="mail_settings_app_version">バージョン</string>
+  <string name="mail_settings_app_version">アプリのバージョン</string>
   <string name="mail_settings_account">アカウント</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">サブスクリプション</string>
