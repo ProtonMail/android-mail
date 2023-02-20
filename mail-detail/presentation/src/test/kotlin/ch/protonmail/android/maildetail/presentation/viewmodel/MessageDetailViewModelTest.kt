@@ -38,6 +38,7 @@ import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
@@ -166,6 +167,9 @@ class MessageDetailViewModelTest {
     private val markUnread = mockk<MarkMessageAsUnread> {
         coEvery { this@mockk(userId, MessageId(rawMessageId)) } returns MessageSample.Invoice.right()
     }
+    private val markRead = mockk<MarkMessageAsRead> {
+        coEvery { this@mockk(userId, MessageId(rawMessageId)) } returns MessageSample.Invoice.right()
+    }
     private val getContacts = mockk<GetContacts> {
         coEvery { this@mockk.invoke(userId) } returns ContactTestData.contacts.right()
     }
@@ -224,6 +228,7 @@ class MessageDetailViewModelTest {
             observeFolderColor = observeFolderColorSettings,
             observeCustomMailLabels = observeCustomMailLabels,
             markUnread = markUnread,
+            markRead = markRead,
             getContacts = getContacts,
             starMessage = starMessage,
             unStarMessage = unStarMessage,
@@ -783,6 +788,40 @@ class MessageDetailViewModelTest {
 
         // Then
         assertEquals(TextUiModel(R.string.error_relabel_message_failed), viewModel.state.value.error.consume())
+    }
+
+    @Test
+    fun `should mark message as read on the read event`() = runTest {
+        viewModel.submit(MessageViewAction.MarkRead)
+
+        advanceUntilIdle()
+
+        coVerify { markRead.invoke(userId, MessageId(rawMessageId)) }
+    }
+
+    @Test
+    fun `should mark the message as read on message decryption`() = runTest {
+        viewModel.state.test {
+            initialStateEmitted()
+            messageBodyEmitted()
+
+            coVerify { markRead.invoke(userId, MessageId(rawMessageId)) }
+        }
+    }
+
+    @Test
+    fun `should not mark the message as read if there is an error reading the message`() = runTest {
+        val messageId = MessageId(rawMessageId)
+        coEvery {
+            getDecryptedMessageBody(userId, messageId)
+        } returns GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
+
+        viewModel.state.test {
+            initialStateEmitted()
+            messageBodyLoadingErrorEmitted()
+
+            coVerify(exactly = 0) { markRead.invoke(any(), any()) }
+        }
     }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {

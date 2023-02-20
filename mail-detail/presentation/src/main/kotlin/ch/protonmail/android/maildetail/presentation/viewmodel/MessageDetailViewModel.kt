@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
@@ -89,6 +90,7 @@ class MessageDetailViewModel @Inject constructor(
     private val observeFolderColor: ObserveFolderColorSettings,
     private val observeCustomMailLabels: ObserveCustomMailLabels,
     private val markUnread: MarkMessageAsUnread,
+    private val markRead: MarkMessageAsRead,
     private val getContacts: GetContacts,
     private val starMessage: StarMessage,
     private val unStarMessage: UnStarMessage,
@@ -119,6 +121,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.Star -> starMessage()
             is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
+            is MessageViewAction.MarkRead -> markMessageRead()
             is MessageViewAction.Trash -> trashMessage()
             is MessageViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is MessageViewAction.DismissBottomSheet -> dismissBottomSheet(action)
@@ -157,6 +160,17 @@ class MessageDetailViewModel @Inject constructor(
             markUnread(userId, messageId).fold(
                 ifLeft = { MessageDetailEvent.ErrorMarkingUnread },
                 ifRight = { MessageViewAction.MarkUnread }
+            )
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun markMessageRead() {
+        primaryUserId.mapLatest { userId ->
+            markRead(userId, messageId).fold(
+                ifLeft = { MessageDetailEvent.ErrorMarkingRead },
+                ifRight = { MessageViewAction.MarkRead }
             )
         }.onEach { event ->
             emitNewStateFrom(event)
@@ -224,7 +238,9 @@ class MessageDetailViewModel @Inject constructor(
     private fun getMessageBody(messageId: MessageId) {
         viewModelScope.launch {
             val userId = primaryUserId.first()
-            val event = getDecryptedMessageBody(userId, messageId).fold(
+            val decryptionResult = getDecryptedMessageBody(userId, messageId)
+            decryptionResult.onRight { submit(MessageViewAction.MarkRead) }
+            val event = decryptionResult.fold(
                 ifLeft = { getDecryptedMessageBodyError ->
                     when (getDecryptedMessageBodyError) {
                         is GetDecryptedMessageBodyError.Decryption -> {
@@ -300,7 +316,7 @@ class MessageDetailViewModel @Inject constructor(
             val color = observeFolderColor(userId).first()
             val message = observeMessageWithLabels(userId, messageId).first()
 
-            val mappedLabels = labels.tapLeft {
+            val mappedLabels = labels.onLeft {
                 Timber.e("Error while observing custom labels")
             }.getOrElse { emptyList() }
 
@@ -327,7 +343,7 @@ class MessageDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = primaryUserId.first()
             val messageWithLabels = checkNotNull(
-                observeMessageWithLabels(userId, messageId).first().orNull()
+                observeMessageWithLabels(userId, messageId).first().getOrNull()
             ) { "Message not found" }
 
             val previousSelectedLabels = messageWithLabels.labels
@@ -347,7 +363,7 @@ class MessageDetailViewModel @Inject constructor(
                     userId,
                     messageId,
                     SystemLabelId.Archive.labelId
-                ).tapLeft { Timber.e("Move message failed: $it") }
+                ).onLeft { Timber.e("Move message failed: $it") }
             }
 
             val operation =

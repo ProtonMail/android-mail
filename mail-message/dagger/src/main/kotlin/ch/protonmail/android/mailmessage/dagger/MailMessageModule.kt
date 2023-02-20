@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
@@ -55,11 +56,13 @@ object MailMessageModule {
         apiProvider: ApiProvider,
         addLabelMessageWorker: AddLabelMessageWorker.Enqueuer,
         markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer,
+        markMessageAsReadWorker: MarkMessageAsReadWorker.Enqueuer,
         removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer
     ): MessageRemoteDataSource = MessageRemoteDataSourceImpl(
         apiProvider = apiProvider,
         addLabelMessageWorker = addLabelMessageWorker,
         markMessageAsUnreadWorker = markMessageAsUnreadWorker,
+        markMessageAsReadWorker = markMessageAsReadWorker,
         removeLabelMessageWorker = removeLabelMessageWorker
     )
 

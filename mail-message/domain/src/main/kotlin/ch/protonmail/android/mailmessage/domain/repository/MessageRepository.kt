@@ -95,9 +95,14 @@ interface MessageRepository {
     ): Either<DataError.Local, Message>
 
     /**
-     * Set the message with the given [messageId] as read
+     * Set the message with the given [messageId] as unread
      */
     suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
+
+    /**
+     * Set the message with the given [messageId] as read
+     */
+    suspend fun markRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
 
     /**
      * Removes [labelsToBeRemoved] and adds [labelsToBeAdded] from the message with the given [messageId]

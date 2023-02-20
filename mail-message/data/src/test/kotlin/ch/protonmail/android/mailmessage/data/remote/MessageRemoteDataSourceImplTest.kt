@@ -23,6 +23,7 @@ import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
+import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -73,6 +74,7 @@ class MessageRemoteDataSourceImplTest {
     }
     private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
     private val markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer = mockk(relaxUnitFun = true)
+    private val markMessageAsReadWorker: MarkMessageAsReadWorker.Enqueuer = mockk(relaxUnitFun = true)
     private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
 
     private val apiProvider = ApiProvider(
@@ -85,6 +87,7 @@ class MessageRemoteDataSourceImplTest {
         apiProvider = apiProvider,
         addLabelMessageWorker = addLabelMessageWorker,
         markMessageAsUnreadWorker = markMessageAsUnreadWorker,
+        markMessageAsReadWorker = markMessageAsReadWorker,
         removeLabelMessageWorker = removeLabelMessageWorker
     )
 
@@ -314,5 +317,17 @@ class MessageRemoteDataSourceImplTest {
 
         // then
         verify { markMessageAsUnreadWorker.enqueue(userId, messageId) }
+    }
+
+    @Test
+    fun `enqueues worker to mark message as read`() {
+        // given
+        val messageId = MessageIdSample.Invoice
+
+        // when
+        messageRemoteDataSource.markRead(userId, messageId)
+
+        // then
+        verify { markMessageAsReadWorker.enqueue(userId, messageId) }
     }
 }

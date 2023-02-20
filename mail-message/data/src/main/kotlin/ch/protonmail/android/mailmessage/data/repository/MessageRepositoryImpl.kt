@@ -128,7 +128,7 @@ class MessageRepositoryImpl @Inject constructor(
         labelId: LabelId
     ): Either<DataError.Local, Message> {
         val messageEither = localDataSource.addLabel(userId, messageId, labelId)
-        return messageEither.tap {
+        return messageEither.onRight {
             remoteDataSource.addLabel(userId, messageId, labelId)
         }
     }
@@ -140,7 +140,7 @@ class MessageRepositoryImpl @Inject constructor(
     ): Either<DataError.Local, Message> {
         val messageEither = localDataSource.removeLabel(userId, messageId, labelId)
 
-        return messageEither.tap {
+        return messageEither.onRight {
             remoteDataSource.removeLabel(userId, messageId, labelId)
         }
     }
@@ -172,8 +172,13 @@ class MessageRepositoryImpl @Inject constructor(
 
 
     override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
-        localDataSource.markUnread(userId, messageId).tap {
+        localDataSource.markUnread(userId, messageId).onRight {
             remoteDataSource.markUnread(userId, messageId)
+        }
+
+    override suspend fun markRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
+        localDataSource.markRead(userId, messageId).onRight {
+            remoteDataSource.markRead(userId, messageId)
         }
 
     override suspend fun relabel(
@@ -182,12 +187,12 @@ class MessageRepositoryImpl @Inject constructor(
         labelsToBeRemoved: List<LabelId>,
         labelsToBeAdded: List<LabelId>
     ): Either<DataError.Local, Message> {
-        val removeOperation = localDataSource.removeLabels(userId, messageId, labelsToBeRemoved).tap {
+        val removeOperation = localDataSource.removeLabels(userId, messageId, labelsToBeRemoved).onRight {
             remoteDataSource.removeLabels(userId, messageId, labelsToBeRemoved)
         }
         if (removeOperation.isLeft()) return removeOperation
 
-        return localDataSource.addLabels(userId, messageId, labelsToBeAdded).tap {
+        return localDataSource.addLabels(userId, messageId, labelsToBeAdded).onRight {
             remoteDataSource.addLabels(userId, messageId, labelsToBeAdded)
         }
     }
@@ -221,7 +226,7 @@ class MessageRepositoryImpl @Inject constructor(
             remoteDataSource.getMessages(
                 userId = userId,
                 pageKey = adaptedPageKey
-            ).tap { messages -> insertMessages(userId, adaptedPageKey, messages) }
+            ).onRight { messages -> insertMessages(userId, adaptedPageKey, messages) }
         }
 
     private suspend fun insertMessages(
