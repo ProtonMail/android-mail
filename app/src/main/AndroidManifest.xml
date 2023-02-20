@@ -45,7 +45,7 @@
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
-            tools:node="remove">
+            tools:node="merge">
             <meta-data
                 android:name="androidx.work.WorkManagerInitializer"
                 android:value="androidx.startup"
@@ -82,6 +82,33 @@
                 android:name="ch.protonmail.android.initializer.WorkManagerInitializer"
                 android:value="androidx.startup"
                 tools:node="remove"/>
+
+            <meta-data
+                android:name="me.proton.core.auth.presentation.MissingScopeInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+
+            <meta-data
+                android:name="me.proton.core.humanverification.presentation.HumanVerificationInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+
+            <meta-data
+                android:name="me.proton.core.network.presentation.init.UnAuthSessionFetcherInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+
+            <meta-data
+                android:name="me.proton.core.plan.presentation.UnredeemedPurchaseInitializer"
+                android:value="androidx.startup"
+                tools:node="remove"/>
+
+            <!--
+             Left Initializers:
+             - androidx.lifecycle.ProcessLifecycleInitializer
+             - androidx.profileinstaller.ProfileInstallerInitializer
+            -->
+
         </provider>
 
         <service
