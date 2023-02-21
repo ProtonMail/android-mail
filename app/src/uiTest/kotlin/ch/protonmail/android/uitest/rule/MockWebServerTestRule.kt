@@ -21,7 +21,7 @@ package ch.protonmail.android.uitest.rule
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import ch.protonmail.android.MainActivity
-import ch.protonmail.android.uitest.mockwebserver.MockWebServerDispatcher
+import ch.protonmail.android.networkmocks.mockwebserver.MockWebServerDispatcher
 import dagger.hilt.android.testing.HiltAndroidRule
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockWebServer

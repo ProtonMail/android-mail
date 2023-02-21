@@ -22,5 +22,10 @@ plugins {
 }
 
 dependencies {
+    kapt(Dagger.hiltDaggerCompiler)
+
+    api(Squareup.mockWebServer)
+    implementation(Dagger.hiltCore)
+
     testImplementation(Junit.junit)
 }

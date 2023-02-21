@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.mockwebserver
+package ch.protonmail.android.networkmocks.di
 
 import dagger.Module
 import dagger.Provides

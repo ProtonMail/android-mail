@@ -195,10 +195,10 @@ dependencies {
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
 
-    androidTestImplementation(Squareup.mockWebServer)
     androidTestImplementation(Dependencies.androidTestLibs)
-    androidTestImplementation(project(":test:test-data"))
     androidTestImplementation(Proton.Core.accountManagerPresentationCompose)
+    androidTestImplementation(project(":test:test-data"))
+    androidTestImplementation(project(":test:network-mocks"))
 
     androidTestUtil(AndroidX.Test.orchestrator)
 }

@@ -16,14 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.mockwebserver
+package ch.protonmail.android.networkmocks.mockwebserver
 
 import java.io.InputStream
+import java.util.logging.Logger
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import timber.log.Timber
 
 /**
  * Default [Dispatcher] for [MockWebServer].
@@ -37,6 +37,7 @@ import timber.log.Timber
 class MockWebServerDispatcher : Dispatcher() {
 
     private val classLoader = javaClass.classLoader
+    private val logger = Logger.getLogger(this::class.java.name)
 
     override fun dispatch(request: RecordedRequest): MockResponse {
         val inputStream = getAssetInputStreamOrNull(request)
@@ -54,6 +55,6 @@ class MockWebServerDispatcher : Dispatcher() {
 
     private fun log(request: RecordedRequest, isAssetAvailable: Boolean) {
         val response = if (isAssetAvailable) "✅ Response from assets" else "⚠️️ Empty response, asset not found"
-        Timber.i("Request path ${request.path} >> $response.")
+        logger.info("Request path ${request.path} >> $response.")
     }
 }
