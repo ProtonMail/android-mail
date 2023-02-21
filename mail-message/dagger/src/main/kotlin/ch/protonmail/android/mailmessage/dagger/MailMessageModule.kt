@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.dagger
 
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSourceImpl
@@ -25,7 +26,6 @@ import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl
 import ch.protonmail.android.mailmessage.data.remote.worker.AddLabelMessageWorker
-import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsReadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.MarkMessageAsUnreadWorker
 import ch.protonmail.android.mailmessage.data.remote.worker.RemoveLabelMessageWorker
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
@@ -56,14 +56,14 @@ object MailMessageModule {
         apiProvider: ApiProvider,
         addLabelMessageWorker: AddLabelMessageWorker.Enqueuer,
         markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer,
-        markMessageAsReadWorker: MarkMessageAsReadWorker.Enqueuer,
-        removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer
+        removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer,
+        enqueuer: Enqueuer
     ): MessageRemoteDataSource = MessageRemoteDataSourceImpl(
         apiProvider = apiProvider,
         addLabelMessageWorker = addLabelMessageWorker,
         markMessageAsUnreadWorker = markMessageAsUnreadWorker,
-        markMessageAsReadWorker = markMessageAsReadWorker,
-        removeLabelMessageWorker = removeLabelMessageWorker
+        removeLabelMessageWorker = removeLabelMessageWorker,
+        enqueuer = enqueuer
     )
 
     @Provides

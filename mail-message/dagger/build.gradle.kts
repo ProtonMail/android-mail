@@ -36,6 +36,7 @@ dependencies {
     implementation(Proton.Core.network)
     implementation(Proton.Core.labelDomain)
 
+    implementation(project(":mail-common:data"))
     implementation(project(":mail-message:data"))
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-message:presentation"))

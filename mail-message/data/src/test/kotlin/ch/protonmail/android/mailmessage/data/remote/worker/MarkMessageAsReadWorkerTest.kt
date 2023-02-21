@@ -25,6 +25,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
@@ -89,11 +90,11 @@ internal class MarkMessageAsReadWorkerTest {
     @Test
     fun `worker is enqueued with correct constraints`() {
         // given
-        val enqueuer = MarkMessageAsReadWorker.Enqueuer(workManager)
+        val enqueuer = Enqueuer(workManager)
         val expectedNetworkType = NetworkType.CONNECTED
 
         // when
-        enqueuer.enqueue(userId, messageId)
+        enqueuer.enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId))
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()
@@ -104,10 +105,10 @@ internal class MarkMessageAsReadWorkerTest {
     @Test
     fun `worker is enqueued with correct parameters`() {
         // given
-        val enqueuer = MarkMessageAsReadWorker.Enqueuer(workManager)
+        val enqueuer = Enqueuer(workManager)
 
         // when
-        enqueuer.enqueue(userId, messageId)
+        enqueuer.enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId))
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()

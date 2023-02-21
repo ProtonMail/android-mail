@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.remote
 
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageResource
 import ch.protonmail.android.mailmessage.data.remote.response.GetMessagesResponse
@@ -74,7 +75,9 @@ class MessageRemoteDataSourceImplTest {
     }
     private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
     private val markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer = mockk(relaxUnitFun = true)
-    private val markMessageAsReadWorker: MarkMessageAsReadWorker.Enqueuer = mockk(relaxUnitFun = true)
+    private val enqueuer: Enqueuer = mockk {
+        every { this@mockk.enqueue(any(), any()) } returns mockk()
+    }
     private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
 
     private val apiProvider = ApiProvider(
@@ -87,8 +90,8 @@ class MessageRemoteDataSourceImplTest {
         apiProvider = apiProvider,
         addLabelMessageWorker = addLabelMessageWorker,
         markMessageAsUnreadWorker = markMessageAsUnreadWorker,
-        markMessageAsReadWorker = markMessageAsReadWorker,
-        removeLabelMessageWorker = removeLabelMessageWorker
+        removeLabelMessageWorker = removeLabelMessageWorker,
+        enqueuer = enqueuer
     )
 
     @Test(expected = IllegalArgumentException::class)
@@ -328,6 +331,6 @@ class MessageRemoteDataSourceImplTest {
         messageRemoteDataSource.markRead(userId, messageId)
 
         // then
-        verify { markMessageAsReadWorker.enqueue(userId, messageId) }
+        verify { enqueuer.enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId)) }
     }
 }
