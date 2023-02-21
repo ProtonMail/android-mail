@@ -61,7 +61,8 @@ object MessageDetailsPreviewData {
         ),
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
-        error = Effect.empty()
+        error = Effect.empty(),
+        openMessageBodyLinkEffect = Effect.empty()
     )
 
     val MessageWithLabels = Message.copy(
@@ -83,7 +84,8 @@ object MessageDetailsPreviewData {
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
-        error = Effect.empty()
+        error = Effect.empty(),
+        openMessageBodyLinkEffect = Effect.empty()
     )
 }
 

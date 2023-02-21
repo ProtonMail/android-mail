@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation.route
 
+import android.net.Uri
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -77,14 +78,16 @@ internal fun NavGraphBuilder.addMailbox(
 
 internal fun NavGraphBuilder.addMessageDetail(
     navController: NavHostController,
-    showSnackbar: (notifyUserMessage: String) -> Unit
+    showSnackbar: (notifyUserMessage: String) -> Unit,
+    openMessageBodyLink: (uri: Uri) -> Unit
 ) {
     composable(route = Destination.Screen.Message.route) {
         MessageDetailScreen(
             onExit = { notifyUserMessage ->
                 navController.popBackStack()
                 notifyUserMessage?.let(showSnackbar)
-            }
+            },
+            openMessageBodyLink = openMessageBodyLink
         )
     }
 }

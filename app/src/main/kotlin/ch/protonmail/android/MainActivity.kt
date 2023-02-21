@@ -18,6 +18,8 @@
 
 package ch.protonmail.android
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -45,8 +47,21 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             ProtonTheme {
-                Launcher(launcherViewModel)
+                Launcher(
+                    Actions { openInActivityInNewTask(it) },
+                    launcherViewModel
+                )
             }
         }
     }
+
+    private fun openInActivityInNewTask(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+
+    data class Actions(
+        val openInActivityInNewTask: (uri: Uri) -> Unit
+    )
 }

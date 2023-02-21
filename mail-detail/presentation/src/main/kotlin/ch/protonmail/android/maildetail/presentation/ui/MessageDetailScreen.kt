@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.net.Uri
 import android.os.Build
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -95,6 +96,7 @@ const val TEST_TAG_MESSAGE_BODY_WEB_VIEW = "MessageBodyWebView"
 fun MessageDetailScreen(
     modifier: Modifier = Modifier,
     onExit: (message: String?) -> Unit,
+    openMessageBodyLink: (uri: Uri) -> Unit,
     viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
@@ -152,9 +154,8 @@ fun MessageDetailScreen(
                 onUnreadClick = { viewModel.submit(MessageViewAction.MarkUnread) },
                 onMoveClick = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) },
                 onLabelAsClick = { viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet) },
-                onMessageBodyLinkClicked = { view, request ->
-                    viewModel.submit(MessageViewAction.MessageBodyLinkClicked(view, request))
-                }
+                onMessageBodyLinkClicked = { viewModel.submit(MessageViewAction.MessageBodyLinkClicked(it)) },
+                onOpenMessageBodyLink = openMessageBodyLink
             )
         )
     }
@@ -176,6 +177,9 @@ fun MessageDetailScreen(
     }
     ConsumableTextEffect(state.error) { string ->
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
+    }
+    ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) {
+        actions.onOpenMessageBodyLink(it)
     }
 
     Scaffold(
@@ -249,7 +253,7 @@ private fun MessageDetailContent(
     messageMetadataState: MessageMetadataState.Data,
     messageBodyState: MessageBodyState,
     onReload: () -> Unit,
-    onMessageBodyLinkClicked: (view: WebView?, request: WebResourceRequest?) -> Unit
+    onMessageBodyLinkClicked: (uri: Uri) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
@@ -283,7 +287,7 @@ private fun MessageDetailContent(
 private fun MessageBody(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
-    onMessageBodyLinkClicked: (view: WebView?, request: WebResourceRequest?) -> Unit
+    onMessageBodyLinkClicked: (uri: Uri) -> Unit
 ) {
     val state = rememberWebViewStateWithHTMLData(
         data = messageBodyUiModel.messageBody,
@@ -293,7 +297,7 @@ private fun MessageBody(
     val client = remember {
         object : AccompanistWebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                onMessageBodyLinkClicked(view, request)
+                request?.let { onMessageBodyLinkClicked(it.url) }
                 return true
             }
         }
@@ -380,7 +384,8 @@ object MessageDetailScreen {
         val onUnreadClick: () -> Unit,
         val onMoveClick: () -> Unit,
         val onLabelAsClick: () -> Unit,
-        val onMessageBodyLinkClicked: (view: WebView?, request: WebResourceRequest?) -> Unit
+        val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
+        val onOpenMessageBodyLink: (uri: Uri) -> Unit
     ) {
 
         companion object {
@@ -394,7 +399,8 @@ object MessageDetailScreen {
                 onUnreadClick = {},
                 onMoveClick = {},
                 onLabelAsClick = {},
-                onMessageBodyLinkClicked = { _, _ -> }
+                onMessageBodyLinkClicked = {},
+                onOpenMessageBodyLink = {}
             )
         }
     }

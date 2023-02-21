@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
@@ -61,6 +62,7 @@ import me.proton.core.network.domain.NetworkStatus
 
 @Composable
 fun Home(
+    activityActions: MainActivity.Actions,
     launcherActions: Launcher.Actions,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -132,7 +134,8 @@ fun Home(
                                 type = ProtonSnackbarType.NORM
                             )
                         }
-                    }
+                    },
+                    openMessageBodyLink = activityActions.openInActivityInNewTask
                 )
                 addRemoveAccountDialog(navController)
                 addSettings(navController)

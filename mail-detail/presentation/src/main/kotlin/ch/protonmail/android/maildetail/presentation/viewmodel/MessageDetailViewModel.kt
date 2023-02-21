@@ -18,9 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
-import android.content.Intent
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -132,7 +130,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
             is MessageViewAction.LabelAsToggleAction -> onLabelSelected(action.labelId)
             is MessageViewAction.LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
-            is MessageViewAction.MessageBodyLinkClicked -> onMessageBodyLinkClicked(action.view, action.request)
+            is MessageViewAction.MessageBodyLinkClicked -> onMessageBodyLinkClicked(action.uri)
         }.exhaustive
     }
 
@@ -385,10 +383,8 @@ class MessageDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(MessageViewAction.LabelAsToggleAction(labelId)) }
     }
 
-    private fun onMessageBodyLinkClicked(view: WebView?, request: WebResourceRequest?) {
-        val intent = Intent(Intent.ACTION_VIEW, request?.url)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        view?.context?.startActivity(intent)
+    private fun onMessageBodyLinkClicked(uri: Uri) {
+        viewModelScope.launch { emitNewStateFrom(MessageViewAction.MessageBodyLinkClicked(uri)) }
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {

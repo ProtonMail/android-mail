@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
@@ -30,6 +31,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -818,6 +820,25 @@ class MessageDetailViewModelTest {
 
             // Then
             coVerify(exactly = 0) { markRead.invoke(any(), any()) }
+        }
+    }
+
+    @Test
+    fun `state should contain uri when message body link is clicked`() = runTest {
+        // Given
+        val uri = mockk<Uri>()
+        val expected = Effect.of(uri)
+
+        viewModel.state.test {
+            initialStateEmitted()
+            messageBodyEmitted()
+
+            // When
+            viewModel.submit(MessageViewAction.MessageBodyLinkClicked(uri))
+
+            // Then
+            assertEquals(expected, awaitItem().openMessageBodyLinkEffect)
+            cancelAndIgnoreRemainingEvents()
         }
     }
 

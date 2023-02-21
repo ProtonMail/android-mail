@@ -18,8 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
+import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingErrorBar
@@ -87,6 +86,5 @@ sealed interface MessageViewAction : MessageDetailOperation {
     data class MoveToDestinationConfirmed(val mailLabelText: String) : MessageViewAction
     data class LabelAsToggleAction(val labelId: LabelId) : MessageViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(val archiveSelected: Boolean) : MessageViewAction, AffectingBottomSheet
-
-    data class MessageBodyLinkClicked(val view: WebView?, val request: WebResourceRequest?) : MessageViewAction
+    data class MessageBodyLinkClicked(val uri: Uri) : MessageViewAction
 }

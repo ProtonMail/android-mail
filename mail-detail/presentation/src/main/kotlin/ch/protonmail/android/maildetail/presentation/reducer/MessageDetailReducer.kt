@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -48,7 +49,8 @@ class MessageDetailReducer @Inject constructor(
         error = currentState.toNewErrorStateFrom(operation),
         bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
         exitScreenEffect = currentState.toNewExitStateFrom(operation),
-        exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation)
+        exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation),
+        openMessageBodyLinkEffect = currentState.toNewOpenMessageBodyLinkStateFrom(operation)
     )
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
@@ -124,4 +126,11 @@ class MessageDetailReducer @Inject constructor(
         } else {
             bottomSheetState
         }
+
+    private fun MessageDetailState.toNewOpenMessageBodyLinkStateFrom(
+        operation: MessageDetailOperation
+    ): Effect<Uri> = when (operation) {
+        is MessageViewAction.MessageBodyLinkClicked -> Effect.of(operation.uri)
+        else -> openMessageBodyLinkEffect
+    }
 }

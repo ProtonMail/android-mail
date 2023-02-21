@@ -24,12 +24,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.MainActivity
 import ch.protonmail.android.navigation.model.LauncherState
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.domain.entity.UserId
 
 @Composable
 fun Launcher(
+    activityActions: MainActivity.Actions,
     viewModel: LauncherViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState(LauncherState.Processing)
@@ -38,6 +40,7 @@ fun Launcher(
     when (state) {
         LauncherState.AccountNeeded -> viewModel.submit(LauncherViewModel.Action.AddAccount)
         LauncherState.PrimaryExist -> Home(
+            activityActions = activityActions,
             launcherActions = Launcher.Actions(
                 onPasswordManagement = { viewModel.submit(LauncherViewModel.Action.OpenPasswordManagement) },
                 onRecoveryEmail = { viewModel.submit(LauncherViewModel.Action.OpenRecoveryEmail) },
