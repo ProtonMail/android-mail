@@ -74,6 +74,7 @@ include(":mail-settings:data")
 include(":mail-settings:domain")
 include(":mail-settings:presentation")
 
+include(":test:network-mocks")
 include(":test:test-data")
 
 buildCache {
