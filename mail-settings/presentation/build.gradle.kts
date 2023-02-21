@@ -73,5 +73,5 @@ dependencies {
 
     testImplementation(Dependencies.testLibs)
     testImplementation(Proton.Core.network)
-    testImplementation(project(":test-data"))
+    testImplementation(project(":test:test-data"))
 }

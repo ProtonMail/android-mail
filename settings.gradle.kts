@@ -30,7 +30,6 @@ includeCoreBuild {
 include(":app")
 include(":benchmark")
 include(":detekt-rules")
-include(":test-data")
 
 include(":mail-common:dagger")
 include(":mail-common:data")
@@ -74,6 +73,8 @@ include(":mail-settings:dagger")
 include(":mail-settings:data")
 include(":mail-settings:domain")
 include(":mail-settings:presentation")
+
+include(":test:test-data")
 
 buildCache {
     local {

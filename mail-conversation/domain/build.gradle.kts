@@ -56,5 +56,5 @@ dependencies {
     implementation(project(":mail-message:domain"))
 
     testImplementation(Dependencies.testLibs)
-    testImplementation(project(":test-data"))
+    testImplementation(project(":test:test-data"))
 }

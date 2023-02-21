@@ -193,11 +193,11 @@ dependencies {
     kapt(Dependencies.appAnnotationProcessors)
 
     testImplementation(Dependencies.testLibs)
-    testImplementation(project(":test-data"))
+    testImplementation(project(":test:test-data"))
 
     androidTestImplementation(Squareup.mockWebServer)
     androidTestImplementation(Dependencies.androidTestLibs)
-    androidTestImplementation(project(":test-data"))
+    androidTestImplementation(project(":test:test-data"))
     androidTestImplementation(Proton.Core.accountManagerPresentationCompose)
 
     androidTestUtil(AndroidX.Test.orchestrator)

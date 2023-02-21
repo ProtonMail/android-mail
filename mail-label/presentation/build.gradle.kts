@@ -70,5 +70,5 @@ dependencies {
     implementation(project(":mail-common:domain"))
 
     testImplementation(Dependencies.testLibs)
-    testImplementation(project(":test-data"))
+    testImplementation(project(":test:test-data"))
 }

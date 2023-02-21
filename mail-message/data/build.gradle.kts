@@ -57,7 +57,7 @@ dependencies {
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-message:domain"))
 
-    testImplementation(project(":test-data"))
+    testImplementation(project(":test:test-data"))
     testImplementation(Dependencies.testLibs)
     testImplementation(Proton.Core.testAndroid)
 }
