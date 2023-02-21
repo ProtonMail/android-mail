@@ -121,7 +121,6 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.Star -> starMessage()
             is MessageViewAction.UnStar -> unStarMessage()
             is MessageViewAction.MarkUnread -> markMessageUnread()
-            is MessageViewAction.MarkRead -> markMessageRead()
             is MessageViewAction.Trash -> trashMessage()
             is MessageViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is MessageViewAction.DismissBottomSheet -> dismissBottomSheet(action)
@@ -168,12 +167,7 @@ class MessageDetailViewModel @Inject constructor(
 
     private fun markMessageRead() {
         primaryUserId.mapLatest { userId ->
-            markRead(userId, messageId).fold(
-                ifLeft = { MessageDetailEvent.ErrorMarkingRead },
-                ifRight = { MessageViewAction.MarkRead }
-            )
-        }.onEach { event ->
-            emitNewStateFrom(event)
+            markRead(userId, messageId).getOrNull()
         }.launchIn(viewModelScope)
     }
 
@@ -239,7 +233,7 @@ class MessageDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = primaryUserId.first()
             val decryptionResult = getDecryptedMessageBody(userId, messageId)
-            decryptionResult.onRight { submit(MessageViewAction.MarkRead) }
+            decryptionResult.onRight { markMessageRead() }
             val event = decryptionResult.fold(
                 ifLeft = { getDecryptedMessageBodyError ->
                     when (getDecryptedMessageBodyError) {

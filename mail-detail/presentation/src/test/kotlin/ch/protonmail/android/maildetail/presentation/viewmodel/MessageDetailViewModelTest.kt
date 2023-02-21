@@ -791,35 +791,31 @@ class MessageDetailViewModelTest {
     }
 
     @Test
-    fun `should mark message as read on the read event`() = runTest {
-        viewModel.submit(MessageViewAction.MarkRead)
-
-        advanceUntilIdle()
-
-        coVerify { markRead.invoke(userId, MessageId(rawMessageId)) }
-    }
-
-    @Test
     fun `should mark the message as read on message decryption`() = runTest {
         viewModel.state.test {
+            // When
             initialStateEmitted()
             messageBodyEmitted()
 
+            // Then
             coVerify { markRead.invoke(userId, MessageId(rawMessageId)) }
         }
     }
 
     @Test
     fun `should not mark the message as read if there is an error reading the message`() = runTest {
-        val messageId = MessageId(rawMessageId)
-        coEvery {
-            getDecryptedMessageBody(userId, messageId)
-        } returns GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
-
         viewModel.state.test {
+            // Given
+            val messageId = MessageId(rawMessageId)
+            coEvery {
+                getDecryptedMessageBody(userId, messageId)
+            } returns GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
+
+            // When
             initialStateEmitted()
             messageBodyLoadingErrorEmitted()
 
+            // Then
             coVerify(exactly = 0) { markRead.invoke(any(), any()) }
         }
     }

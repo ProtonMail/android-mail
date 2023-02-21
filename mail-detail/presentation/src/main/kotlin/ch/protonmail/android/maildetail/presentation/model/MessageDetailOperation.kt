@@ -67,7 +67,6 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     object ErrorRemovingStar : MessageDetailEvent, AffectingMessage, AffectingErrorBar
 
     object ErrorMarkingUnread : MessageDetailEvent, AffectingErrorBar
-    object ErrorMarkingRead : MessageDetailEvent
     object ErrorMovingToTrash : MessageDetailEvent, AffectingErrorBar
     object ErrorMovingMessage : MessageDetailEvent, AffectingErrorBar
     object ErrorLabelingMessage : MessageDetailEvent, AffectingErrorBar
@@ -78,7 +77,6 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object Star : MessageViewAction, AffectingMessage
     object UnStar : MessageViewAction, AffectingMessage
     object MarkUnread : MessageViewAction
-    object MarkRead : MessageViewAction
     object Trash : MessageViewAction
     object RequestMoveToBottomSheet : MessageViewAction, AffectingBottomSheet
     object RequestLabelAsBottomSheet : MessageViewAction, AffectingBottomSheet

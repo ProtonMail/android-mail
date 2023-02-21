@@ -673,6 +673,36 @@ class MessageRepositoryImplTest {
     }
 
     @Test
+    fun `mark read returns updated message when local data source succeed`() = runTest {
+        // given
+        val messageId = MessageIdSample.Invoice
+        val message = MessageSample.Invoice.right()
+        coEvery { localDataSource.markRead(userId, messageId) } returns message
+
+        // When
+        val result = messageRepository.markRead(userId, messageId)
+
+        // Then
+        assertEquals(message, result)
+        verify { remoteDataSource.markRead(userId, messageId) }
+    }
+
+    @Test
+    fun `mark read returns error when local data source fails`() = runTest {
+        // given
+        val messageId = MessageIdSample.Invoice
+        val error = DataErrorSample.NoCache.left()
+        coEvery { localDataSource.markRead(userId, messageId) } returns error
+
+        // When
+        val result = messageRepository.markRead(userId, messageId)
+
+        // Then
+        assertEquals(error, result)
+        verify { remoteDataSource wasNot Called }
+    }
+
+    @Test
     fun `verify relabel calls local data source`() = runTest {
         // Given
         val labelToStay = LabelId("CustomLabel1")
