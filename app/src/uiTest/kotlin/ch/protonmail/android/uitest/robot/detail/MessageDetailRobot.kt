@@ -28,16 +28,22 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.web.assertion.WebViewAssertions.webMatches
+import androidx.test.espresso.web.sugar.Web.onWebView
+import androidx.test.espresso.web.webdriver.DriverAtoms.findElement
+import androidx.test.espresso.web.webdriver.DriverAtoms.getText
+import androidx.test.espresso.web.webdriver.Locator
 import ch.protonmail.android.mailcommon.presentation.compose.TEST_TAG_AVATAR
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
-import ch.protonmail.android.maildetail.presentation.ui.TEST_TAG_MESSAGE_BODY_WEB_VIEW
 import ch.protonmail.android.maildetail.presentation.ui.TEST_TAG_MESSAGE_HEADER
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
-import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.Matchers
 
 class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
@@ -127,10 +133,11 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
                 .assertIsDisplayed()
         }
 
-        fun messageBodyWebViewIsDisplayed() {
-            composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_BODY_WEB_VIEW)
-                .awaitDisplayed(composeTestRule)
-                .assertIsDisplayed()
+        fun messageBodyIsDisplayedInWebView(messageBody: String, tagName: String = "html") {
+            onWebView(ViewMatchers.withClassName(Matchers.equalTo("android.webkit.WebView")))
+                .forceJavascriptEnabled()
+                .withElement(findElement(Locator.TAG_NAME, tagName))
+                .check(webMatches(getText(), containsString(messageBody)))
         }
 
         fun messageBodyLoadingErrorMessageIsDisplayed(@StringRes errorMessage: Int) {

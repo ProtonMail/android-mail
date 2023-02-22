@@ -186,10 +186,10 @@ class MessageDetailViewModelTest {
         every { toUiModel(any(), ContactTestData.contacts) } returns messageDetailHeaderUiModel
     }
     private val messageBodyUiModelMapper = mockk<MessageBodyUiModelMapper> {
-        every { toUiModel(decryptedMessageBody) } returns MessageBodyUiModelTestData.messageBodyUiModel
+        every { toUiModel(decryptedMessageBody) } returns MessageBodyUiModelTestData.plainTextMessageBodyUiModel
         every {
             toUiModel(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
-        } returns MessageBodyUiModelTestData.messageBodyUiModel
+        } returns MessageBodyUiModelTestData.plainTextMessageBodyUiModel
     }
     private val moveMessage: MoveMessage = mockk {
         coEvery {
@@ -320,7 +320,7 @@ class MessageDetailViewModelTest {
 
             // Then
             val expected = MessageBodyState.Data(
-                MessageBodyUiModelTestData.messageBodyUiModel
+                MessageBodyUiModelTestData.plainTextMessageBodyUiModel
             )
             assertEquals(expected, awaitItem().messageBodyState)
             cancelAndIgnoreRemainingEvents()
@@ -399,7 +399,7 @@ class MessageDetailViewModelTest {
             initialStateEmitted()
 
             // Then
-            val expected = MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.messageBodyUiModel)
+            val expected = MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.plainTextMessageBodyUiModel)
             assertEquals(expected, awaitItem().messageBodyState)
             cancelAndIgnoreRemainingEvents()
         }
@@ -595,7 +595,7 @@ class MessageDetailViewModelTest {
                     MessageDetailActionBarUiModelTestData.uiModel,
                     messageDetailHeaderUiModel
                 ),
-                messageBodyState = MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyUiModel)
+                messageBodyState = MessageBodyState.Data(MessageBodyUiModelTestData.plainTextMessageBodyUiModel)
             )
             assertEquals(dataState, awaitItem())
             val bottomState = dataState.copy(
@@ -849,7 +849,7 @@ class MessageDetailViewModelTest {
     private suspend fun ReceiveTurbine<MessageDetailState>.messageBodyEmitted() {
         assertEquals(
             MessageDetailState.Loading.copy(
-                messageBodyState = MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyUiModel)
+                messageBodyState = MessageBodyState.Data(MessageBodyUiModelTestData.plainTextMessageBodyUiModel)
             ),
             awaitItem()
         )

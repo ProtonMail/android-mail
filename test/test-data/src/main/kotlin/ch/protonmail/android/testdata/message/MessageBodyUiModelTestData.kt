@@ -23,8 +23,20 @@ import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 
 object MessageBodyUiModelTestData {
 
-    val messageBodyUiModel = MessageBodyUiModel(
+    val plainTextMessageBodyUiModel = MessageBodyUiModel(
         MessageBodyTestData.messageBody.body,
         mimeType = MimeTypeUiModel.PlainText
+    )
+
+    val htmlMessageBodyUiModel = MessageBodyUiModel(
+        """
+            <div>
+                <p>Dear Test,</p>
+                <p>This is an HTML message body.</p>
+                <p>Kind regards,<br>
+                Developer</p>
+            </div>
+        """.trimIndent(),
+        mimeType = MimeTypeUiModel.Html
     )
 }

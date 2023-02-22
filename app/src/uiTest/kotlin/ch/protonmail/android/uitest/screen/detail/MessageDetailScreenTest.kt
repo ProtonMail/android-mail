@@ -272,15 +272,36 @@ class MessageDetailScreenTest {
     }
 
     @Test
-    fun whenMessageBodyIsLoadedThenMessageBodyWebViewIsDisplayed() {
+    fun whenPlainTextMessageBodyIsLoadedThenPlainTextMessageBodyIsDisplayedInWebView() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageBody = (state.messageBodyState as MessageBodyState.Data).messageBodyUiModel.messageBody
 
         // when
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify { messageBodyWebViewIsDisplayed() }
+        robot.verify { messageBodyIsDisplayedInWebView(messageBody) }
+    }
+
+    @Test
+    fun whenHtmlMessageBodyIsLoadedThenHtmlMessageBodyIsDisplayedInWebView() {
+        // given
+        val state = MessageDetailsPreviewData.Message.copy(
+            messageBodyState = MessageBodyState.Data(MessageBodyUiModelTestData.htmlMessageBodyUiModel)
+        )
+        val messageBody = """
+            Dear Test,
+            This is an HTML message body.
+            Kind regards,
+            Developer
+        """.trimIndent()
+
+        // when
+        val robot = setUpScreen(state = state)
+
+        // then
+        robot.verify { messageBodyIsDisplayedInWebView(messageBody, tagName = "div") }
     }
 
     @Test
@@ -320,8 +341,9 @@ class MessageDetailScreenTest {
     fun whenMessageBodyDecryptionFailedThenEncryptedBodyAndErrorMessageAreShown() {
         // given
         val state = MessageDetailsPreviewData.Message.copy(
-            messageBodyState = MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.messageBodyUiModel)
+            messageBodyState = MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.plainTextMessageBodyUiModel)
         )
+        val messageBody = (state.messageBodyState as MessageBodyState.Error.Decryption).encryptedMessageBody.messageBody
 
         // when
         val robot = setUpScreen(state = state)
@@ -329,7 +351,7 @@ class MessageDetailScreenTest {
         // then
         robot.verify {
             messageBodyDecryptionErrorMessageIsDisplayed()
-            messageBodyWebViewIsDisplayed()
+            messageBodyIsDisplayedInWebView(messageBody)
         }
     }
 

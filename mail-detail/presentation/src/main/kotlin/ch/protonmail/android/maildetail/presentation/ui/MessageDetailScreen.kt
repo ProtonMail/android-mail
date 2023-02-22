@@ -48,7 +48,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -88,8 +87,6 @@ import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
-
-const val TEST_TAG_MESSAGE_BODY_WEB_VIEW = "MessageBodyWebView"
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -316,9 +313,7 @@ private fun MessageBody(
             }
         },
         state = state,
-        modifier = modifier
-            .fillMaxWidth()
-            .testTag(TEST_TAG_MESSAGE_BODY_WEB_VIEW),
+        modifier = modifier.fillMaxWidth(),
         client = client
     )
 }

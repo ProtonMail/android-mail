@@ -55,9 +55,9 @@ class MessageBodyReducerTest(
         private val events = listOf(
             TestInput(
                 MessageDetailEvent.MessageBodyEvent(
-                    messageBody = MessageBodyUiModelTestData.messageBodyUiModel
+                    messageBody = MessageBodyUiModelTestData.plainTextMessageBodyUiModel
                 ),
-                MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyUiModel)
+                MessageBodyState.Data(MessageBodyUiModelTestData.plainTextMessageBodyUiModel)
             ),
             TestInput(
                 MessageDetailEvent.ErrorGettingMessageBody(isNetworkError = true),
@@ -68,8 +68,8 @@ class MessageBodyReducerTest(
                 MessageBodyState.Error.Data(false)
             ),
             TestInput(
-                MessageDetailEvent.ErrorDecryptingMessageBody(MessageBodyUiModelTestData.messageBodyUiModel),
-                MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.messageBodyUiModel)
+                MessageDetailEvent.ErrorDecryptingMessageBody(MessageBodyUiModelTestData.plainTextMessageBodyUiModel),
+                MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.plainTextMessageBodyUiModel)
             )
         )
 

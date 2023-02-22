@@ -172,6 +172,7 @@ object Dependencies {
         add(AndroidX.Test.core)
         add(AndroidX.Test.coreKtx)
         add(AndroidX.Test.espresso)
+        add(AndroidX.Test.espressoWeb)
         add(AndroidX.Test.rules)
         add(AndroidX.Test.runner)
         add(AndroidX.Test.uiautomator)

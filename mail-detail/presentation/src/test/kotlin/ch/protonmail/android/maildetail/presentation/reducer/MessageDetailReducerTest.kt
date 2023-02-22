@@ -153,7 +153,7 @@ class MessageDetailReducerTest(
     companion object {
 
         private val detailHeaderUiModel = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
-        private val messageBodyUiModel = MessageBodyUiModelTestData.messageBodyUiModel
+        private val messageBodyUiModel = MessageBodyUiModelTestData.plainTextMessageBodyUiModel
         private val actionBarUiModel = MessageDetailActionBarUiModelTestData.uiModel
         private val currentState = MessageDetailState.Loading
         private val reducedState = MessageDetailState(
@@ -314,7 +314,7 @@ class MessageDetailReducerTest(
             ),
             TestInput(
                 MessageDetailEvent.MessageBodyEvent(
-                    MessageBodyUiModelTestData.messageBodyUiModel
+                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel
                 ),
                 shouldReduceMessageMetadataState = false,
                 shouldReduceMessageBodyState = true,
