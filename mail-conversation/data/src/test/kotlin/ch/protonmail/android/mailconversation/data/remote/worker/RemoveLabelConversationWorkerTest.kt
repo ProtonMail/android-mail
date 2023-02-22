@@ -26,6 +26,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
@@ -106,8 +107,13 @@ internal class RemoveLabelConversationWorkerTest {
     fun `worker is enqueued with given parameters`() {
         // When
         val messageIds = listOf(MessageId("123"), MessageId("124"))
-        RemoveLabelConversationWorker.Enqueuer(workManager).enqueue(
-            userId, conversationId, labelId, messageIds
+        Enqueuer(workManager).enqueue<RemoveLabelConversationWorker>(
+            RemoveLabelConversationWorker.params(
+                userId,
+                conversationId,
+                labelId,
+                messageIds
+            )
         )
         // Then
         val requestSlot = slot<OneTimeWorkRequest>()

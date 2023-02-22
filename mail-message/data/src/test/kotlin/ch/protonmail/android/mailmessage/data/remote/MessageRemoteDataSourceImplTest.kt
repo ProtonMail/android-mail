@@ -73,12 +73,10 @@ class MessageRemoteDataSourceImplTest {
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
     }
-    private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
-    private val markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer = mockk(relaxUnitFun = true)
+
     private val enqueuer: Enqueuer = mockk {
         every { this@mockk.enqueue(any(), any()) } returns mockk()
     }
-    private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer = mockk(relaxUnitFun = true)
 
     private val apiProvider = ApiProvider(
         apiManagerFactory = apiManagerFactory,
@@ -88,9 +86,6 @@ class MessageRemoteDataSourceImplTest {
 
     private val messageRemoteDataSource = MessageRemoteDataSourceImpl(
         apiProvider = apiProvider,
-        addLabelMessageWorker = addLabelMessageWorker,
-        markMessageAsUnreadWorker = markMessageAsUnreadWorker,
-        removeLabelMessageWorker = removeLabelMessageWorker,
         enqueuer = enqueuer
     )
 
@@ -270,7 +265,7 @@ class MessageRemoteDataSourceImplTest {
         // When
         messageRemoteDataSource.addLabel(userId, messageId, labelId)
         // Then
-        verify { addLabelMessageWorker.enqueue(userId, messageId, labelId) }
+        verify { enqueuer.enqueue<AddLabelMessageWorker>(AddLabelMessageWorker.params(userId, messageId, labelId)) }
     }
 
     @Test
@@ -282,8 +277,8 @@ class MessageRemoteDataSourceImplTest {
         // When
         messageRemoteDataSource.addLabels(userId, messageId, listOf(labelId, labelId2))
         // Then
-        verify { addLabelMessageWorker.enqueue(userId, messageId, labelId) }
-        verify { addLabelMessageWorker.enqueue(userId, messageId, labelId2) }
+        verify { enqueuer.enqueue<AddLabelMessageWorker>(AddLabelMessageWorker.params(userId, messageId, labelId)) }
+        verify { enqueuer.enqueue<AddLabelMessageWorker>(AddLabelMessageWorker.params(userId, messageId, labelId2)) }
     }
 
     @Test
@@ -294,7 +289,15 @@ class MessageRemoteDataSourceImplTest {
         // When
         messageRemoteDataSource.removeLabel(userId, messageId, labelId)
         // Then
-        verify { removeLabelMessageWorker.enqueue(userId, messageId, labelId) }
+        verify {
+            enqueuer.enqueue<RemoveLabelMessageWorker>(
+                RemoveLabelMessageWorker.params(
+                    userId,
+                    messageId,
+                    labelId
+                )
+            )
+        }
     }
 
     @Test
@@ -306,8 +309,24 @@ class MessageRemoteDataSourceImplTest {
         // When
         messageRemoteDataSource.removeLabels(userId, messageId, listOf(labelId, labelId2))
         // Then
-        verify { removeLabelMessageWorker.enqueue(userId, messageId, labelId) }
-        verify { removeLabelMessageWorker.enqueue(userId, messageId, labelId2) }
+        verify {
+            enqueuer.enqueue<RemoveLabelMessageWorker>(
+                RemoveLabelMessageWorker.params(
+                    userId,
+                    messageId,
+                    labelId
+                )
+            )
+        }
+        verify {
+            enqueuer.enqueue<RemoveLabelMessageWorker>(
+                RemoveLabelMessageWorker.params(
+                    userId,
+                    messageId,
+                    labelId2
+                )
+            )
+        }
     }
 
     @Test
@@ -319,7 +338,7 @@ class MessageRemoteDataSourceImplTest {
         messageRemoteDataSource.markUnread(userId, messageId)
 
         // then
-        verify { markMessageAsUnreadWorker.enqueue(userId, messageId) }
+        verify { enqueuer.enqueue<MarkMessageAsUnreadWorker>(MarkMessageAsUnreadWorker.params(userId, messageId)) }
     }
 
     @Test

@@ -18,12 +18,10 @@
 
 package ch.protonmail.android.mailconversation.dagger
 
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailconversation.data.local.ConversationLocalDataSourceImpl
 import ch.protonmail.android.mailconversation.data.remote.ConversationRemoteDataSourceImpl
-import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
-import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
-import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.mailconversation.data.repository.ConversationRepositoryImpl
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
@@ -59,14 +57,10 @@ object MailConversationModule {
     @Singleton
     fun provideConversationRemoteDataSource(
         apiProvider: ApiProvider,
-        addLabelConversationWorker: AddLabelConversationWorker.Enqueuer,
-        markConversationAsUnreadWorker: MarkConversationAsUnreadWorker.Enqueuer,
-        removeLabelConversationWorker: RemoveLabelConversationWorker.Enqueuer
+        enqueuer: Enqueuer,
     ): ConversationRemoteDataSource = ConversationRemoteDataSourceImpl(
         apiProvider = apiProvider,
-        addLabelConversationWorker = addLabelConversationWorker,
-        markConversationAsUnreadWorker = markConversationAsUnreadWorker,
-        removeLabelConversationWorker = removeLabelConversationWorker
+        enqueuer = enqueuer
     )
 
     @Provides

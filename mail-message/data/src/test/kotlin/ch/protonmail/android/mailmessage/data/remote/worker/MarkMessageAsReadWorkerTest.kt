@@ -90,11 +90,10 @@ internal class MarkMessageAsReadWorkerTest {
     @Test
     fun `worker is enqueued with correct constraints`() {
         // given
-        val enqueuer = Enqueuer(workManager)
         val expectedNetworkType = NetworkType.CONNECTED
 
         // when
-        enqueuer.enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId))
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()
@@ -104,11 +103,8 @@ internal class MarkMessageAsReadWorkerTest {
 
     @Test
     fun `worker is enqueued with correct parameters`() {
-        // given
-        val enqueuer = Enqueuer(workManager)
-
         // when
-        enqueuer.enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId))
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()

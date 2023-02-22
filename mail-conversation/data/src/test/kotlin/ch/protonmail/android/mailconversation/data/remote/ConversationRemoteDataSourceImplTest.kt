@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailconversation.data.remote
 
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailconversation.data.getConversationResource
@@ -75,11 +76,9 @@ class ConversationRemoteDataSourceImplTest {
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), ConversationApi::class) } returns TestApiManager(conversationApi)
     }
-    private val addLabelConversationMessageWorker: AddLabelConversationWorker.Enqueuer = mockk(relaxUnitFun = true)
-    private val markConversationAsUnreadWorker: MarkConversationAsUnreadWorker.Enqueuer = mockk(relaxUnitFun = true)
-    private val removeLabelConversationMessageWorker: RemoveLabelConversationWorker.Enqueuer =
-        mockk(relaxUnitFun = true)
-
+    private val enqueuer: Enqueuer = mockk {
+        every { this@mockk.enqueue(any(), any()) } returns mockk()
+    }
 
     private lateinit var apiProvider: ApiProvider
     private lateinit var conversationRemoteDataSource: ConversationRemoteDataSourceImpl
@@ -89,9 +88,7 @@ class ConversationRemoteDataSourceImplTest {
         apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
         conversationRemoteDataSource = ConversationRemoteDataSourceImpl(
             apiProvider,
-            addLabelConversationMessageWorker,
-            markConversationAsUnreadWorker,
-            removeLabelConversationMessageWorker
+            enqueuer
         )
     }
 
@@ -269,7 +266,17 @@ class ConversationRemoteDataSourceImplTest {
         // When
         conversationRemoteDataSource.addLabel(userId, conversationId, labelId, messageIds)
         // Then
-        verify { addLabelConversationMessageWorker.enqueue(userId, conversationId, labelId, messageIds) }
+        val expectedParams = AddLabelConversationWorker.params(
+            userId,
+            conversationId,
+            labelId,
+            messageIds
+        )
+        verify {
+            enqueuer.enqueue<AddLabelConversationWorker>(
+                match { mapDeepEquals(it, expectedParams) }
+            )
+        }
     }
 
     @Test
@@ -282,8 +289,24 @@ class ConversationRemoteDataSourceImplTest {
         conversationRemoteDataSource.addLabels(userId, conversationId, labelList, messageIds)
         // Then
         verifySequence {
-            addLabelConversationMessageWorker.enqueue(userId, conversationId, labelList.first(), messageIds)
-            addLabelConversationMessageWorker.enqueue(userId, conversationId, labelList.last(), messageIds)
+            val expectedFirst = AddLabelConversationWorker.params(
+                userId,
+                conversationId,
+                labelList.first(),
+                messageIds
+            )
+            enqueuer.enqueue<AddLabelConversationWorker>(
+                match { mapDeepEquals(it, expectedFirst) }
+            )
+            val expectedLast = AddLabelConversationWorker.params(
+                userId,
+                conversationId,
+                labelList.last(),
+                messageIds
+            )
+            enqueuer.enqueue<AddLabelConversationWorker>(
+                match { mapDeepEquals(it, expectedLast) }
+            )
         }
     }
 
@@ -296,7 +319,17 @@ class ConversationRemoteDataSourceImplTest {
         // When
         conversationRemoteDataSource.removeLabel(userId, conversationId, labelId, messageIds)
         // Then
-        verify { removeLabelConversationMessageWorker.enqueue(userId, conversationId, labelId, messageIds) }
+        val expected = RemoveLabelConversationWorker.params(
+            userId,
+            conversationId,
+            labelId,
+            messageIds
+        )
+        verify {
+            enqueuer.enqueue<RemoveLabelConversationWorker>(
+                match { mapDeepEquals(it, expected) }
+            )
+        }
     }
 
     @Test
@@ -309,8 +342,24 @@ class ConversationRemoteDataSourceImplTest {
         conversationRemoteDataSource.removeLabels(userId, conversationId, labelList, messageIds)
         // Then
         verifySequence {
-            removeLabelConversationMessageWorker.enqueue(userId, conversationId, labelList.first(), messageIds)
-            removeLabelConversationMessageWorker.enqueue(userId, conversationId, labelList.last(), messageIds)
+            val expectedFirst = RemoveLabelConversationWorker.params(
+                userId,
+                conversationId,
+                labelList.first(),
+                messageIds
+            )
+            enqueuer.enqueue<RemoveLabelConversationWorker>(
+                match { mapDeepEquals(it, expectedFirst) }
+            )
+            val expectedLast = RemoveLabelConversationWorker.params(
+                userId,
+                conversationId,
+                labelList.last(),
+                messageIds
+            )
+            enqueuer.enqueue<RemoveLabelConversationWorker>(
+                match { mapDeepEquals(it, expectedLast) }
+            )
         }
     }
 
@@ -323,6 +372,18 @@ class ConversationRemoteDataSourceImplTest {
         conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId)
 
         // then
-        verify { markConversationAsUnreadWorker.enqueue(userId, conversationId, contextLabelId) }
+        verify {
+            enqueuer.enqueue<MarkConversationAsUnreadWorker>(
+                MarkConversationAsUnreadWorker.params(
+                    userId,
+                    conversationId,
+                    contextLabelId
+                )
+            )
+        }
     }
+
+    private fun mapDeepEquals(expected: Map<String, Any?>, actual: Map<String, Any?>): Boolean =
+        expected.keys == actual.keys &&
+            expected.values.toTypedArray().contentDeepEquals(actual.values.toTypedArray())
 }

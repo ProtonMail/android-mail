@@ -20,13 +20,8 @@ package ch.protonmail.android.mailconversation.data.remote.worker
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
-import androidx.work.Constraints
 import androidx.work.CoroutineWorker
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import androidx.work.workDataOf
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
 import ch.protonmail.android.mailconversation.data.remote.resource.PutConversationLabelBody
@@ -41,7 +36,6 @@ import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.network.domain.isRetryable
 import me.proton.core.util.kotlin.takeIfNotBlank
-import javax.inject.Inject
 
 @HiltWorker
 class RemoveLabelConversationWorker @AssistedInject constructor(
@@ -93,38 +87,21 @@ class RemoveLabelConversationWorker @AssistedInject constructor(
 
     companion object {
 
-        const val RawUserIdKey = "removeLabelConversationWorkParamUserId"
-        const val RawConversationIdKey = "removeLabelConversationWorkParamMessageId"
-        const val RawLabelIdKey = "removeLabelConversationWorkParamLabelId"
-        const val RawAffectedMessageIds = "removeLabelConversationWorkParamMsgIds"
+        internal const val RawUserIdKey = "removeLabelConversationWorkParamUserId"
+        internal const val RawConversationIdKey = "removeLabelConversationWorkParamMessageId"
+        internal const val RawLabelIdKey = "removeLabelConversationWorkParamLabelId"
+        internal const val RawAffectedMessageIds = "removeLabelConversationWorkParamMsgIds"
 
-    }
-
-    class Enqueuer @Inject constructor(private val workManager: WorkManager) {
-
-        fun enqueue(
+        fun params(
             userId: UserId,
             conversationId: ConversationId,
             labelId: LabelId,
             affectedMessageIds: List<MessageId>
-        ) {
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-            val data = workDataOf(
-                RawUserIdKey to userId.id,
-                RawConversationIdKey to conversationId.id,
-                RawLabelIdKey to labelId.id,
-                RawAffectedMessageIds to affectedMessageIds.map { it.id }.toTypedArray()
-            )
-
-            val request = OneTimeWorkRequestBuilder<RemoveLabelConversationWorker>()
-                .setConstraints(constraints)
-                .setInputData(data)
-                .build()
-
-            workManager.enqueue(request)
-        }
+        ) = mapOf(
+            RawUserIdKey to userId.id,
+            RawConversationIdKey to conversationId.id,
+            RawLabelIdKey to labelId.id,
+            RawAffectedMessageIds to affectedMessageIds.map { it.id }.toTypedArray()
+        )
     }
 }

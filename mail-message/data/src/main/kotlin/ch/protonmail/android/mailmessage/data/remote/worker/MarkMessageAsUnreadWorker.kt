@@ -20,13 +20,8 @@ package ch.protonmail.android.mailmessage.data.remote.worker
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker
-import androidx.work.Constraints
 import androidx.work.CoroutineWorker
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import androidx.work.workDataOf
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
@@ -38,7 +33,6 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.network.domain.isRetryable
-import javax.inject.Inject
 
 @HiltWorker
 class MarkMessageAsUnreadWorker @AssistedInject constructor(
@@ -77,28 +71,12 @@ class MarkMessageAsUnreadWorker @AssistedInject constructor(
 
     companion object {
 
-        const val RawUserIdKey = "markUnreadWorkParamUserId"
-        const val RawMessageIdKey = "markUnreadWorkParamMessageId"
-    }
+        internal const val RawUserIdKey = "markUnreadWorkParamUserId"
+        internal const val RawMessageIdKey = "markUnreadWorkParamMessageId"
 
-    class Enqueuer @Inject constructor(private val workManager: WorkManager) {
-
-        fun enqueue(userId: UserId, messageId: MessageId) {
-            val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-            val data = workDataOf(
-                RawUserIdKey to userId.id,
-                RawMessageIdKey to messageId.id
-            )
-
-            val workRequest = OneTimeWorkRequestBuilder<MarkMessageAsUnreadWorker>()
-                .setConstraints(constraints)
-                .setInputData(data)
-                .build()
-
-            workManager.enqueue(workRequest)
-        }
+        fun params(userId: UserId, messageId: MessageId) = mapOf(
+            RawUserIdKey to userId.id,
+            RawMessageIdKey to messageId.id
+        )
     }
 }

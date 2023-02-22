@@ -26,6 +26,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.resource.PutLabelBody
@@ -100,10 +101,12 @@ internal class AddLabelMessageWorkerTest {
     @Test
     fun `worker is enqueued with given parameters`() {
         // When
-        AddLabelMessageWorker.Enqueuer(workManager).enqueue(
-            userId,
-            messageId,
-            labelId
+        Enqueuer(workManager).enqueue<AddLabelMessageWorker>(
+            AddLabelMessageWorker.params(
+                userId,
+                messageId,
+                labelId
+            )
         )
         // Then
         val requestSlot = slot<OneTimeWorkRequest>()

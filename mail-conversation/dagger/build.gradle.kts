@@ -36,6 +36,7 @@ android {
 dependencies {
     implementation(Proton.Core.network)
 
+    implementation(project(":mail-common:data"))
     implementation(project(":mail-conversation:data"))
     implementation(project(":mail-conversation:domain"))
     implementation(project(":mail-conversation:presentation"))

@@ -41,10 +41,7 @@ import javax.inject.Inject
 
 class MessageRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider,
-    private val addLabelMessageWorker: AddLabelMessageWorker.Enqueuer,
-    private val markMessageAsUnreadWorker: MarkMessageAsUnreadWorker.Enqueuer,
-    private val enqueuer: Enqueuer,
-    private val removeLabelMessageWorker: RemoveLabelMessageWorker.Enqueuer
+    private val enqueuer: Enqueuer
 ) : MessageRemoteDataSource {
 
     override suspend fun getMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> =
@@ -91,7 +88,9 @@ class MessageRemoteDataSourceImpl @Inject constructor(
         messageId: MessageId,
         labelIds: List<LabelId>
     ) {
-        labelIds.forEach { labelId -> addLabelMessageWorker.enqueue(userId, messageId, labelId) }
+        labelIds.forEach { labelId ->
+            enqueuer.enqueue<AddLabelMessageWorker>(AddLabelMessageWorker.params(userId, messageId, labelId))
+        }
     }
 
     override fun removeLabel(
@@ -105,11 +104,13 @@ class MessageRemoteDataSourceImpl @Inject constructor(
         messageId: MessageId,
         labelIds: List<LabelId>
     ) {
-        labelIds.forEach { labelId -> removeLabelMessageWorker.enqueue(userId, messageId, labelId) }
+        labelIds.forEach { labelId ->
+            enqueuer.enqueue<RemoveLabelMessageWorker>(RemoveLabelMessageWorker.params(userId, messageId, labelId))
+        }
     }
 
     override fun markUnread(userId: UserId, messageId: MessageId) {
-        markMessageAsUnreadWorker.enqueue(userId, messageId)
+        enqueuer.enqueue<MarkMessageAsUnreadWorker>(MarkMessageAsUnreadWorker.params(userId, messageId))
     }
 
     override fun markRead(userId: UserId, messageId: MessageId) {

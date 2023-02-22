@@ -20,6 +20,7 @@ package ch.protonmail.android.mailconversation.data.remote
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.data.mapper.toEither
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
@@ -41,9 +42,7 @@ import javax.inject.Inject
 
 class ConversationRemoteDataSourceImpl @Inject constructor(
     private val apiProvider: ApiProvider,
-    private val addLabelConversationWorker: AddLabelConversationWorker.Enqueuer,
-    private val markConversationAsUnreadWorker: MarkConversationAsUnreadWorker.Enqueuer,
-    private val removeLabelConversationWorker: RemoveLabelConversationWorker.Enqueuer
+    private val enqueuer: Enqueuer
 ) : ConversationRemoteDataSource {
 
     override suspend fun getConversations(
@@ -101,7 +100,14 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         messageIds: List<MessageId>
     ) {
         labelIds.forEach { labelId ->
-            addLabelConversationWorker.enqueue(userId, conversationId, labelId, messageIds)
+            enqueuer.enqueue<AddLabelConversationWorker>(
+                AddLabelConversationWorker.params(
+                    userId,
+                    conversationId,
+                    labelId,
+                    messageIds
+                )
+            )
         }
     }
 
@@ -121,11 +127,13 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         messageIds: List<MessageId>
     ) {
         labelIds.forEach { labelId ->
-            removeLabelConversationWorker.enqueue(
-                userId,
-                conversationId,
-                labelId,
-                messageIds
+            enqueuer.enqueue<RemoveLabelConversationWorker>(
+                RemoveLabelConversationWorker.params(
+                    userId,
+                    conversationId,
+                    labelId,
+                    messageIds
+                )
             )
         }
     }
@@ -135,6 +143,12 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
         conversationId: ConversationId,
         contextLabelId: LabelId
     ) {
-        markConversationAsUnreadWorker.enqueue(userId, conversationId, contextLabelId)
+        enqueuer.enqueue<MarkConversationAsUnreadWorker>(
+            MarkConversationAsUnreadWorker.params(
+                userId,
+                conversationId,
+                contextLabelId
+            )
+        )
     }
 }
