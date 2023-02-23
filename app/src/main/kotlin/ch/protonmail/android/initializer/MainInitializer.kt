@@ -25,6 +25,7 @@ import ch.protonmail.android.initializer.strictmode.StrictModeInitializer
 import me.proton.core.auth.presentation.MissingScopeInitializer
 import me.proton.core.crypto.validator.presentation.init.CryptoValidatorInitializer
 import me.proton.core.humanverification.presentation.HumanVerificationInitializer
+import me.proton.core.network.presentation.init.UnAuthSessionFetcherInitializer
 import me.proton.core.plan.presentation.UnredeemedPurchaseInitializer
 
 class MainInitializer : Initializer<Unit> {
@@ -39,7 +40,8 @@ class MainInitializer : Initializer<Unit> {
         CryptoValidatorInitializer::class.java,
         HumanVerificationInitializer::class.java,
         MissingScopeInitializer::class.java,
-        UnredeemedPurchaseInitializer::class.java
+        UnredeemedPurchaseInitializer::class.java,
+        UnAuthSessionFetcherInitializer::class.java
     )
 
     private fun mailDependencies() = listOf(
@@ -49,13 +51,16 @@ class MainInitializer : Initializer<Unit> {
         SentryInitializer::class.java,
         StrictModeInitializer::class.java,
         ThemeObserverInitializer::class.java,
-        WorkManagerInitializer::class.java
     )
 
     companion object {
 
         fun init(appContext: Context) {
-            AppInitializer.getInstance(appContext).initializeComponent(MainInitializer::class.java)
+            with(AppInitializer.getInstance(appContext)) {
+                // WorkManager need to be initialized before any other dependant initializer.
+                initializeComponent(WorkManagerInitializer::class.java)
+                initializeComponent(MainInitializer::class.java)
+            }
         }
     }
 }

@@ -82,6 +82,7 @@ object Dependencies {
         add(Proton.Core.label)
         add(Proton.Core.mailSettings)
         add(Proton.Core.network)
+        add(Proton.Core.observability)
         add(Proton.Core.payment)
         add(Proton.Core.plan)
         add(Proton.Core.presentation)

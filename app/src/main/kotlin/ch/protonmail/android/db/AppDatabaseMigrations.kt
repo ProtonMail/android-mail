@@ -28,6 +28,7 @@ import me.proton.core.challenge.data.db.ChallengeDatabase
 import me.proton.core.featureflag.data.db.FeatureFlagDatabase
 import me.proton.core.humanverification.data.db.HumanVerificationDatabase
 import me.proton.core.label.data.local.LabelDatabase
+import me.proton.core.observability.data.db.ObservabilityDatabase
 import me.proton.core.payment.data.local.db.PaymentDatabase
 import me.proton.core.user.data.db.AddressDatabase
 import me.proton.core.user.data.db.UserDatabase
@@ -127,6 +128,12 @@ object AppDatabaseMigrations {
     val MIGRATION_14_15 = object : Migration(14, 15) {
         override fun migrate(database: SupportSQLiteDatabase) {
             AccountDatabase.MIGRATION_5.migrate(database)
+        }
+    }
+
+    val MIGRATION_15_16 = object : Migration(15, 16) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            ObservabilityDatabase.MIGRATION_0.migrate(database)
         }
     }
 }

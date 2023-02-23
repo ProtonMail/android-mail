@@ -228,6 +228,7 @@ object Proton {
         val labelDomain = coreArtifact("label-domain", Versions.Proton.core)
         val mailSettings = coreArtifact("mail-settings", Versions.Proton.core)
         val network = coreArtifact("network", Versions.Proton.core)
+        val observability = coreArtifact("observability", Versions.Proton.core)
         val payment = coreArtifact("payment", Versions.Proton.core)
         val paymentIap = coreArtifact("payment-iap", Versions.Proton.core)
         val plan = coreArtifact("plan", Versions.Proton.core)
