@@ -6,7 +6,7 @@ fullTest:
       version: 31
     - model: crownqlteue
       version: 29
-    - model: dreamlte
+    - model: Pixel2
       version: 28
     - model: walleye
       version: 27
@@ -16,7 +16,7 @@ smokeTest:
   device:
     - model: oriole
       version: 31
-    - model: dreamlte
+    - model: Pixel2
       version: 28
     - model: G8142
       version: 25
