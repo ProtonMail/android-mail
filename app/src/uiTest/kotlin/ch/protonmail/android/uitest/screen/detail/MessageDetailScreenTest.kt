@@ -32,7 +32,6 @@ import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsP
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
-import io.mockk.mockk
 import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -358,7 +357,7 @@ class MessageDetailScreenTest {
     @Test
     fun whenMessageBodyLinkWasClickedThenCallbackIsInvoked() {
         // Given
-        val uri = mockk<Uri>()
+        val uri = Uri.EMPTY
         val state = MessageDetailsPreviewData.Message.copy(
             openMessageBodyLinkEffect = Effect.of(uri)
         )
