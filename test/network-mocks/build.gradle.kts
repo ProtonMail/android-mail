@@ -27,5 +27,7 @@ dependencies {
     api(Squareup.mockWebServer)
     implementation(Dagger.hiltCore)
 
+    testImplementation(KotlinX.coroutinesTest)
+    testImplementation(Squareup.okhttp)
     testImplementation(Junit.junit)
 }
