@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.initializer.strictmode
 
-import java.lang.reflect.Method
 import timber.log.Timber
+import java.lang.reflect.Method
 
 /**
  * Special array list that skip additions for matching ViolationInfo instances as per
@@ -39,11 +39,10 @@ class StrictModeHackArrayList : ArrayList<Any>() {
         // Reading from file
         "ch.protonmail.android.initializer.SentryInitializer.create",
         // Reading from SharedPreferences
-        "me.proton.core.util.android.sharedpreferences.ExtensionsKt.nullableGet",
-        // MockWebServer.start is called (from MockWebServer.url) when the Hilt graph is created
-        "okhttp3.mockwebserver.MockWebServer.start"
+        "me.proton.core.util.android.sharedpreferences.ExtensionsKt.nullableGet"
     )
 
+    @SuppressWarnings("ReturnCount")
     override fun add(element: Any): Boolean {
         val hasDeclaredMethod = element.javaClass.declaredMethods.any { it.name == "getStackTrace" }
         if (!hasDeclaredMethod) {
