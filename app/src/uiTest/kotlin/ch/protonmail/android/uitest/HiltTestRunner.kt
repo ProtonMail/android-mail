@@ -24,7 +24,7 @@ import androidx.test.runner.AndroidJUnitRunner
 import dagger.hilt.android.testing.HiltTestApplication
 
 @Suppress("unused") // Used in Gradle config
-class HiltTestRunner : AndroidJUnitRunner() {
+internal class HiltTestRunner : AndroidJUnitRunner() {
 
     override fun newApplication(
         cl: ClassLoader?,
