@@ -19,8 +19,12 @@
 package ch.protonmail.android.uitest.e2e.login
 
 import ch.protonmail.android.uitest.BaseTest
+import ch.protonmail.android.uitest.di.LocalhostApi
+import ch.protonmail.android.uitest.di.LocalhostApiModule
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.UninstallModules
 import me.proton.core.test.android.robots.auth.AddAccountRobot
 import me.proton.core.test.android.robots.auth.login.LoginRobot
 import me.proton.core.test.android.robots.auth.login.MailboxPasswordRobot
@@ -28,7 +32,11 @@ import org.junit.Before
 import org.junit.Test
 
 @HiltAndroidTest
+@UninstallModules(LocalhostApiModule::class)
 class LoginFlowTests : BaseTest() {
+
+    @JvmField @BindValue @LocalhostApi
+    val localhostApi = false
 
     private val addAccountRobot = AddAccountRobot()
     private val loginRobot = LoginRobot()

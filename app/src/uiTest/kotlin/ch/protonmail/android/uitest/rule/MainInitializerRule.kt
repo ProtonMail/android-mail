@@ -20,18 +20,15 @@ package ch.protonmail.android.uitest.rule
 
 import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.initializer.MainInitializer
-import org.junit.rules.TestWatcher
-import org.junit.runner.Description
-
-fun createMainInitializerRule() = MainInitializerRule()
+import org.junit.rules.ExternalResource
 
 /**
- * A [TestWatcher] that initializes the [MainInitializer] before each test.
+ * A custom rule to initialize the [MainInitializer] before each test.
  */
-class MainInitializerRule : TestWatcher() {
+internal class MainInitializerRule : ExternalResource() {
 
-    override fun starting(description: Description) {
-        super.starting(description)
+    override fun before() {
+        super.before()
         MainInitializer.init(ApplicationProvider.getApplicationContext())
     }
 }

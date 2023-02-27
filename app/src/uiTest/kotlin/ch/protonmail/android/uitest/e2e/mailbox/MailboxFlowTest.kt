@@ -18,49 +18,24 @@
 
 package ch.protonmail.android.uitest.e2e.mailbox
 
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import ch.protonmail.android.MainActivity
-import ch.protonmail.android.di.NetworkConfigModule
+import ch.protonmail.android.uitest.MockedNetworkTest
+import ch.protonmail.android.uitest.helpers.network.defaultNetworkDispatcher
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
-import ch.protonmail.android.uitest.rule.createMockLoginTestRule
-import ch.protonmail.android.uitest.rule.createMockWebServerRuleChain
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
-import dagger.hilt.components.SingletonComponent
-import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.network.data.di.BaseProtonApiUrl
-import me.proton.core.user.domain.UserManager
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.Rule
+import org.junit.Before
 import org.junit.Test
-import javax.inject.Inject
 
 @HiltAndroidTest
-@UninstallModules(NetworkConfigModule::class)
-class MailboxFlowTest {
-
-    @Inject lateinit var accountManager: AccountManager
-
-    @Inject lateinit var userManager: UserManager
-
-    @Inject lateinit var mockWebServer: MockWebServer
-
-    private val composeTestRule = createAndroidComposeRule<MainActivity>()
-    private val loginTestRule = createMockLoginTestRule(::accountManager, ::userManager)
-
-    @get:Rule
-    val ruleChain = createMockWebServerRuleChain(
-        mockWebServer = ::mockWebServer,
-        composeTestRule = composeTestRule,
-        loginTestRule = loginTestRule
-    )
+internal class MailboxFlowTest : MockedNetworkTest() {
 
     private val mailboxRobot = InboxRobot(composeTestRule)
     private val menuRobot = MenuRobot(composeTestRule)
+
+    @Before
+    fun setupDispatcher() {
+        mockWebServer.dispatcher = defaultNetworkDispatcher()
+    }
 
     @Test
     fun openMailboxAndSwitchLocation() {
@@ -87,14 +62,5 @@ class MailboxFlowTest {
         mailboxRobot
             .filterUnreadMessages()
             .verify { unreadFilterIsSelected() }
-    }
-
-    @Module
-    @InstallIn(SingletonComponent::class)
-    object TestModule {
-
-        @Provides
-        @BaseProtonApiUrl
-        fun baseProtonApiUrl(mockWebServer: MockWebServer) = mockWebServer.url("/")
     }
 }

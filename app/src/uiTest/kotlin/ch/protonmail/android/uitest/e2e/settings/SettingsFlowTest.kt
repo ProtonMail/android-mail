@@ -18,50 +18,22 @@
 
 package ch.protonmail.android.uitest.e2e.settings
 
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import ch.protonmail.android.MainActivity
-import ch.protonmail.android.di.NetworkConfigModule
+import ch.protonmail.android.uitest.MockedNetworkTest
+import ch.protonmail.android.uitest.helpers.network.defaultNetworkDispatcher
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
-import ch.protonmail.android.uitest.rule.createMockLoginTestRule
-import ch.protonmail.android.uitest.rule.createMockWebServerRuleChain
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
-import dagger.hilt.components.SingletonComponent
-import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.network.data.di.BaseProtonApiUrl
-import me.proton.core.user.domain.UserManager
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.Rule
+import org.junit.Before
 import org.junit.Test
-import javax.inject.Inject
 
 @HiltAndroidTest
-@UninstallModules(NetworkConfigModule::class)
-class SettingsFlowTest {
-
-    @Inject
-    lateinit var accountManager: AccountManager
-
-    @Inject
-    lateinit var userManager: UserManager
-
-    @Inject
-    lateinit var mockWebServer: MockWebServer
-
-    private val composeTestRule = createAndroidComposeRule<MainActivity>()
-    private val loginTestRule = createMockLoginTestRule(::accountManager, ::userManager)
-
-    @get:Rule
-    val ruleChain = createMockWebServerRuleChain(
-        mockWebServer = ::mockWebServer,
-        composeTestRule = composeTestRule,
-        loginTestRule = loginTestRule
-    )
+internal class SettingsFlowTest : MockedNetworkTest() {
 
     private val menuRobot = MenuRobot(composeTestRule)
+
+    @Before
+    fun setupDispatcher() {
+        mockWebServer.dispatcher = defaultNetworkDispatcher()
+    }
 
     @Test
     fun openAccountSettings() {
@@ -170,14 +142,5 @@ class SettingsFlowTest {
             .openAlternativeRoutingSettings()
             .turnOffAlternativeRouting()
             .verify { alternativeRoutingSettingIsToggled() }
-    }
-
-    @Module
-    @InstallIn(SingletonComponent::class)
-    object TestModule {
-
-        @Provides
-        @BaseProtonApiUrl
-        fun baseProtonApiUrl(mockWebServer: MockWebServer) = mockWebServer.url("/")
     }
 }
