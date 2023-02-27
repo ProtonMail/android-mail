@@ -96,9 +96,4 @@ class MockWebServerTestRule(
         super.starting(description)
         mockWebServer.dispatcher = dispatcher
     }
-
-    override fun finished(description: Description) {
-        super.finished(description)
-        mockWebServer.shutdown()
-    }
 }
