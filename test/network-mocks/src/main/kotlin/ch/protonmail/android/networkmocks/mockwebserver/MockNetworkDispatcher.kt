@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.networkmocks.mockwebserver
 
-import java.util.logging.Logger
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequest
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateAssetNotFoundResponse
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateResponse
@@ -27,13 +26,41 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
+import java.util.logging.Logger
 
 /**
- * A custom [Dispatcher] for [MockWebServer].
+ * A custom [Dispatcher] for [MockWebServer] that checks for matches between the incoming [RecordedRequest.path]
+ * and a list of known [MockRequest]s. For each request, it will log whether the related asset has been found.
  *
- * It checks for matches between the incoming [RecordedRequest.path] and the known [MockRequest]s.
+ * In order to define a custom routing strategy, the [MockNetworkDispatcher] shall be instantiated,
+ * populated with [MockRequest]s and assigned to the [MockWebServer] for every test.
  *
- * For each request, it will log whether the related asset has been found.
+ * Further optimizations can be done on a test suite level, for instance by defining convenience methods
+ * or default dispatchers that can be enriched with additional mock requests definitions.
+ *
+ * Example:
+ *  ```kotlin
+ * class MyTestSuite {
+ *    @Inject
+ *    lateinit var mockWebServer: MockWebServer
+ *
+ *    // Other rules and setup code.
+ *
+ *    @Test
+ *    fun testCase() {
+ *        // Simple usage and definition of a custom dispatcher.
+ *        mockWebServer.dispatcher = MockNetworkDispatcher().apply {
+ *            addMockRequests(
+ *                 "/api/v1/path" respondWith "/api/v1/localPath" withStatusCode 200,
+ *                 "/api/v1/path2" respondWith "/api/v1/localPath2" withStatusCode 401
+ *             )
+ *        }
+ *
+ *        // Test execution code.
+ *    }
+ * }
+ *  ```
+ * For further examples, please check `MockNetworkDispatcherTests.kt`.
  *
  * @param assetsRootPath a custom root path for the assets.
  */
@@ -44,7 +71,6 @@ class MockNetworkDispatcher(
     private val knownRequests = mutableListOf<MockRequest>()
 
     override fun dispatch(request: RecordedRequest): MockResponse {
-
         // For our use-case this should never happen, just leveraging smart cast with Elvis operator here.
         val remotePath = request.path
             ?: throw UnsupportedMockNetworkDispatcherException("❌ Handling requests with `null` path is unsupported.")
