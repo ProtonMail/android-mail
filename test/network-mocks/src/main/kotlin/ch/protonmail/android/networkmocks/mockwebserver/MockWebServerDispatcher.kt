@@ -34,7 +34,7 @@ import okhttp3.mockwebserver.RecordedRequest
  *
  * For each request, it will print to log whether the related asset has been found.
  */
-@Deprecated(message = "Do not write further UI tests with this Dispatcher as it's going to be removed soon.")
+@Deprecated(message = "Do not write further UI tests with this Dispatcher as it's being removed with MAILANDR-411.")
 class MockWebServerDispatcher : Dispatcher() {
 
     private val classLoader = javaClass.classLoader
