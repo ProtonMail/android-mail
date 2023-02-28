@@ -36,24 +36,13 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 
-@Suppress("MaxLineLength")
 internal class MockNetworkDispatcherTests {
 
     private val client = OkHttpClient.Builder().build()
     private val mockWebServer = MockWebServer()
-    private lateinit var url: HttpUrl
-
-    @Before
-    fun setup() {
-        runBlocking {
-            withContext(Dispatchers.IO) {
-                url = mockWebServer.url("/")
-            }
-        }
-    }
+    private val url: HttpUrl = mockWebServer.url("/")
 
     @After
     fun tearDown() {
@@ -119,7 +108,7 @@ internal class MockNetworkDispatcherTests {
     }
 
     @Test
-    fun `when ignoreQueryParams is set, the dispatcher matches the request ignoring the query parameters`() {
+    fun `when query parameters are ignored, the dispatcher matches against a generic path`() {
         // Given
         val expectedStatusCode = 200
         val expectedBody = """{ "a": 1 }"""
@@ -140,7 +129,7 @@ internal class MockNetworkDispatcherTests {
     }
 
     @Test
-    fun `when wildCardMatches is set, the dispatcher matches requests by ignoring wildcard paths`() {
+    fun `when wildcard matching paths, the dispatcher matches against a generic path`() {
         // Given
         val expectedStatusCode = 200
         val expectedBody = """{ "a": 1 }"""
@@ -161,7 +150,7 @@ internal class MockNetworkDispatcherTests {
     }
 
     @Test
-    fun `when matchWildcards and ignoreQueryParams are set, the dispatcher ignores query params and wildcards`() {
+    fun `when wildcard matching and ignoring query params, the dispatcher matches against a generic path`() {
         // Given
         val expectedStatusCode = 200
         val expectedBody = """{ "a": 1 }"""
@@ -169,7 +158,8 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                "/api/*/test" respondWith "/api/v1/test_1.json" withStatusCode 200 ignoreQueryParams true matchWildcards true
+                "/api/*/test" respondWith "/api/v1/test_1.json" withStatusCode 200
+                        ignoreQueryParams true matchWildcards true
             )
         }
 
@@ -182,7 +172,7 @@ internal class MockNetworkDispatcherTests {
     }
 
     @Test
-    fun `when serveOnce is set, the dispatcher serves the request only once`() {
+    fun `when the mock request is set to be served once, the dispatcher serves the request only once`() {
         // Given
         val firstExpectedStatusCode = 200
         val expectedBody = """{ "a": 1 }"""
@@ -208,7 +198,7 @@ internal class MockNetworkDispatcherTests {
     }
 
     @Test
-    fun `when serveOnce is set, multiple different responses are handled properly for a given path`() {
+    fun `when a mock request is served once, multiple different responses are handled properly for a given path`() {
         // Given
         val firstExpectedStatusCode = 200
         val firstExpectedBody = """{ "a": 1 }"""
@@ -273,7 +263,8 @@ internal class MockNetworkDispatcherTests {
         assertEquals(expectedStatusCode, response.code)
     }
 
-    private fun mockNetworkDispatcher(func: MockNetworkDispatcher.() -> Unit) = MockNetworkDispatcher().apply(func)
+    private fun mockNetworkDispatcher(func: MockNetworkDispatcher.() -> Unit) =
+        MockNetworkDispatcher().apply(func)
 
     private fun buildRequest(path: String) = Request.Builder().url("${url}$path").build()
 
