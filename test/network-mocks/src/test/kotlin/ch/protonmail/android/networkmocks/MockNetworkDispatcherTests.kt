@@ -159,7 +159,7 @@ internal class MockNetworkDispatcherTests {
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
                 "/api/*/test" respondWith "/api/v1/test_1.json" withStatusCode 200
-                        ignoreQueryParams true matchWildcards true
+                    ignoreQueryParams true matchWildcards true
             )
         }
 
