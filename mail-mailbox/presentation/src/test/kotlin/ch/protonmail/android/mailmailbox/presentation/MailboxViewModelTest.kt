@@ -38,7 +38,6 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.helper.MailboxAsyncPagingDataDiffer
@@ -118,10 +117,6 @@ class MailboxViewModelTest {
         )
     }
 
-    private val markAsStaleMailboxItems = mockk<MarkAsStaleMailboxItems> {
-        coEvery { this@mockk(any(), any(), any()) } returns Unit
-    }
-
     private val observeCurrentViewMode = mockk<ObserveCurrentViewMode> {
         coEvery { this@mockk(userId = any()) } returns flowOf(NoConversationGrouping)
         coEvery { this@mockk(any(), any()) } returns flowOf(NoConversationGrouping)
@@ -156,7 +151,6 @@ class MailboxViewModelTest {
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
-            markAsStaleMailboxItems = markAsStaleMailboxItems,
             mailboxPagerFactory = pagerFactory,
             observeCurrentViewMode = observeCurrentViewMode,
             observePrimaryUserId = observePrimaryUserId,
@@ -525,15 +519,6 @@ class MailboxViewModelTest {
 
             coVerify { mailboxItemMapper.toUiModel(any(), ContactTestData.contacts, defaultFolderColorSettings) }
         }
-    }
-
-    @Test
-    fun `on refresh call mark as stale mailbox items`() = runTest {
-        // When
-        mailboxViewModel.submit(MailboxViewAction.Refresh)
-
-        // Then
-        coVerify { markAsStaleMailboxItems.invoke(listOf(userId), Message, initialLocationMailLabelId.labelId) }
     }
 
     @Test

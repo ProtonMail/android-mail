@@ -34,10 +34,8 @@ import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
-import ch.protonmail.android.mailmailbox.domain.extension.firstOrDefault
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
-import ch.protonmail.android.mailmailbox.domain.usecase.MarkAsStaleMailboxItems
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
@@ -75,7 +73,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MailboxViewModel @Inject constructor(
-    private val markAsStaleMailboxItems: MarkAsStaleMailboxItems,
     private val mailboxPagerFactory: MailboxPagerFactory,
     private val observeCurrentViewMode: ObserveCurrentViewMode,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -148,12 +145,7 @@ class MailboxViewModel @Inject constructor(
         )
     }
 
-    private suspend fun onRefresh() {
-        markAsStaleMailboxItems(
-            userIds = listOfNotNull(primaryUserId.firstOrNull()),
-            type = observeViewModeByLocation().firstOrDefault().toMailboxItemType(),
-            labelId = selectedMailLabelId.flow.value.labelId
-        )
+    private fun onRefresh() {
         emitNewStateFrom(MailboxEvent.NetworkStatusRefreshed(networkManager.networkStatus))
     }
 
