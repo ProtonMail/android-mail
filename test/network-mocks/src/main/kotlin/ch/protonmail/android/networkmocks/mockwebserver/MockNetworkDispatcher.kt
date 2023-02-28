@@ -71,44 +71,36 @@ class MockNetworkDispatcher(
     private val knownRequests = mutableListOf<MockRequest>()
 
     override fun dispatch(request: RecordedRequest): MockResponse {
-        // For our use-case this should never happen, just leveraging smart cast with Elvis operator here.
+        // This should never happen, just leveraging smart cast with Elvis operator here.
         val remotePath = request.path
             ?: throw UnsupportedMockNetworkDispatcherException("❌ Handling requests with `null` path is unsupported.")
 
-        val iterator = knownRequests.iterator()
-        while (iterator.hasNext()) {
-            val mockRequest = iterator.next()
-
-            val isRequestValid = when {
-                mockRequest.ignoreQueryParams &&
-                    mockRequest.wildcardMatch -> remotePath.stripQueryParams().wildcardMatches(mockRequest.remotePath)
+        val validRequest = knownRequests.find { mockRequest ->
+            when {
+                mockRequest.ignoreQueryParams && mockRequest.wildcardMatch -> remotePath.stripQueryParams()
+                    .wildcardMatches(mockRequest.remotePath)
 
                 mockRequest.ignoreQueryParams -> remotePath.stripQueryParams() == mockRequest.remotePath
 
                 mockRequest.wildcardMatch -> remotePath.wildcardMatches(mockRequest.remotePath)
 
-                else -> request.path == mockRequest.remotePath
+                else -> remotePath == mockRequest.remotePath
             }
-
-            // If we don't have a match, continue iterating.
-            if (!isRequestValid) continue
-            if (mockRequest.serveOnce) iterator.remove()
-
-            logger.info("✅ Match found for '$remotePath'.")
-
-            // Check if the local asset can be read, if not, log and return a 404 status code with custom JSON content.
-            val body = getBodyFromLocalAsset(mockRequest.localFilePath) ?: run {
-                logger.severe("⚠️ Unable to retrieve content for asset '${mockRequest.localFilePath}.")
-                return generateAssetNotFoundResponse(mockRequest.localFilePath)
-            }
-
-            logger.info("➡️ Serving ${request.method} $remotePath with $mockRequest.")
-            return generateResponse(mockRequest.statusCode, body, mockRequest.networkDelay)
+        } ?: run {
+            logger.severe("⚠️ Unknown path '$remotePath', check the mocked network definitions.")
+            return generateUnhandledPathResponse(remotePath)
         }
 
-        // If the path can't be handled, log and return a 404 status code with custom JSON content.
-        logger.severe("⚠️ Unknown path '$remotePath', check the mocked network definitions.")
-        return generateUnhandledPathResponse(remotePath)
+        if (validRequest.serveOnce) knownRequests.remove(validRequest)
+        logger.info("✅ Match found for '$remotePath'.")
+
+        val body = getBodyFromLocalAsset(validRequest.localFilePath) ?: run {
+            logger.severe("⚠️ Unable to retrieve content for asset '${validRequest.localFilePath}.")
+            return generateAssetNotFoundResponse(validRequest.localFilePath)
+        }
+
+        logger.info("➡️ Serving ${request.method} $remotePath with $validRequest.")
+        return generateResponse(validRequest.statusCode, body, validRequest.networkDelay)
     }
 
     /**
@@ -132,13 +124,10 @@ class MockNetworkDispatcher(
         val paths = split("/")
         val valuePaths = value.split("/")
 
-        // If paths have different sizes, no need to make further checks.
         if (paths.size != valuePaths.size) return false
 
         for (pathPair in paths zip valuePaths) {
-            // Both conditions are not necessary, but ordering here shouldn't be assumed.
             if (pathPair.first == "*" || pathPair.second == "*") continue
-
             if (pathPair.first != pathPair.second) return false
         }
 
