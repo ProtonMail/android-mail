@@ -43,6 +43,5 @@ object LocalhostApiModule {
 
     @Provides
     @LocalhostApi
-    @SuppressWarnings("FunctionOnlyReturningConstant")
     fun useLocalhostApi(): Boolean = true
 }

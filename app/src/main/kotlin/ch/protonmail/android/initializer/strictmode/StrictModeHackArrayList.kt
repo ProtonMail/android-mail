@@ -42,7 +42,6 @@ class StrictModeHackArrayList : ArrayList<Any>() {
         "me.proton.core.util.android.sharedpreferences.ExtensionsKt.nullableGet"
     )
 
-    @SuppressWarnings("ReturnCount")
     override fun add(element: Any): Boolean {
         val hasDeclaredMethod = element.javaClass.declaredMethods.any { it.name == "getStackTrace" }
         if (!hasDeclaredMethod) {
