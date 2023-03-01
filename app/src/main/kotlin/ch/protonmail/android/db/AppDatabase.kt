@@ -181,29 +181,9 @@ abstract class AppDatabase :
     companion object {
 
         const val name = "db-mail"
-        const val version = 16
-
-        internal val migrations = listOf(
-            AppDatabaseMigrations.MIGRATION_1_2,
-            AppDatabaseMigrations.MIGRATION_2_3,
-            AppDatabaseMigrations.MIGRATION_3_4,
-            AppDatabaseMigrations.MIGRATION_4_5,
-            AppDatabaseMigrations.MIGRATION_5_6,
-            AppDatabaseMigrations.MIGRATION_6_7,
-            AppDatabaseMigrations.MIGRATION_7_8,
-            AppDatabaseMigrations.MIGRATION_8_9,
-            AppDatabaseMigrations.MIGRATION_9_10,
-            AppDatabaseMigrations.MIGRATION_10_11,
-            AppDatabaseMigrations.MIGRATION_11_12,
-            AppDatabaseMigrations.MIGRATION_12_13,
-            AppDatabaseMigrations.MIGRATION_13_14,
-            AppDatabaseMigrations.MIGRATION_14_15,
-            AppDatabaseMigrations.MIGRATION_15_16,
-        )
+        const val version = 1
 
         fun buildDatabase(context: Context): AppDatabase =
-            databaseBuilder<AppDatabase>(context, name)
-                .apply { migrations.forEach { addMigrations(it) } }
-                .build()
+            databaseBuilder<AppDatabase>(context, name).build()
     }
 }
