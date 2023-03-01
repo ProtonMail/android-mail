@@ -155,8 +155,6 @@ private fun MessageDetailHeaderLayout(
         val (
             locationRef,
             sizeRef,
-            trackerProtectionInfoRef,
-            encryptionInfoRef,
             hideDetailsRef
         ) = createRefs()
 
@@ -357,35 +355,37 @@ private fun MessageDetailHeaderLayout(
             text = uiModel.size
         )
 
-        ExtendedHeaderRow(
-            modifier = modifier.constrainAs(trackerProtectionInfoRef) {
-                constrainExtendedHeaderRow(
-                    topReference = sizeRef,
-                    endReference = moreButtonRef,
-                    isExpanded = isExpanded
-                )
-            },
-            icon = R.drawable.ic_proton_shield,
-            text = "Placeholder text"
-        )
+        // Display it when the handling is implemented https://jira.protontech.ch/browse/MAILANDR-214
+        //        ExtendedHeaderRow(
+        //            modifier = modifier.constrainAs(trackerProtectionInfoRef) {
+        //                constrainExtendedHeaderRow(
+        //                    topReference = sizeRef,
+        //                    endReference = moreButtonRef,
+        //                    isExpanded = isExpanded
+        //                )
+        //            },
+        //            icon = R.drawable.ic_proton_shield,
+        //            text = "Placeholder text"
+        //        )
 
-        ExtendedHeaderRow(
-            modifier = modifier.constrainAs(encryptionInfoRef) {
-                constrainExtendedHeaderRow(
-                    topReference = trackerProtectionInfoRef,
-                    endReference = moreButtonRef,
-                    isExpanded = isExpanded
-                )
-            },
-            icon = uiModel.encryptionPadlock,
-            text = uiModel.encryptionInfo
-        )
+        // Display it when the handling is implemented https://jira.protontech.ch/browse/MAILANDR-213
+        //        ExtendedHeaderRow(
+        //            modifier = modifier.constrainAs(encryptionInfoRef) {
+        //                constrainExtendedHeaderRow(
+        //                    topReference = trackerProtectionInfoRef,
+        //                    endReference = moreButtonRef,
+        //                    isExpanded = isExpanded
+        //                )
+        //            },
+        //            icon = uiModel.encryptionPadlock,
+        //            text = uiModel.encryptionInfo
+        //        )
 
         HideDetails(
             modifier = modifier
                 .constrainAs(hideDetailsRef) {
                     top.linkTo(
-                        encryptionInfoRef.bottom,
+                        sizeRef.bottom,
                         margin = ProtonDimens.SmallSpacing,
                         goneMargin = ProtonDimens.SmallSpacing
                     )
@@ -421,8 +421,9 @@ private fun SenderAddress(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        SmallNonClickableIcon(iconId = participantUiModel.participantPadlock)
-        Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
+        // Display the padlock once the handling is implemented https://jira.protontech.ch/browse/MAILANDR-213
+        // SmallNonClickableIcon(iconId = participantUiModel.participantPadlock)
+        // Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
         ParticipantText(
             text = participantUiModel.participantAddress,
             textColor = ProtonTheme.colors.interactionNorm,
@@ -438,9 +439,10 @@ private fun Icons(
     isExpanded: Boolean
 ) {
     Row(modifier = modifier) {
-        if (uiModel.shouldShowTrackerProtectionIcon && !isExpanded) {
-            SmallNonClickableIcon(iconId = R.drawable.ic_proton_shield)
-        }
+        // Display it when the handling is implemented https://jira.protontech.ch/browse/MAILANDR-214
+        //        if (uiModel.shouldShowTrackerProtectionIcon && !isExpanded) {
+        //            SmallNonClickableIcon(iconId = R.drawable.ic_proton_shield)
+        //        }
         if (uiModel.shouldShowAttachmentIcon) {
             SmallNonClickableIcon(iconId = R.drawable.ic_proton_paper_clip)
         }
@@ -524,8 +526,9 @@ private fun Recipients(
                     ParticipantText(text = participant.participantName, clickable = false)
                     Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
                 }
-                SmallNonClickableIcon(iconId = participant.participantPadlock)
-                Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
+                // Display the padlock once the handling is implemented https://jira.protontech.ch/browse/MAILANDR-213
+                // SmallNonClickableIcon(iconId = participant.participantPadlock)
+                // Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
                 ParticipantText(text = participant.participantAddress, textColor = ProtonTheme.colors.interactionNorm)
             }
             if (index != recipients.size - 1) {
