@@ -69,7 +69,7 @@ internal open class MockedNetworkTest(
     )
 
     @Before
-    fun init() {
+    fun setup() {
         hiltAndroidRule.inject()
 
         handleLogin()
