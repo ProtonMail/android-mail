@@ -23,11 +23,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
+import javax.inject.Qualifier
 
 /**
  * Convenient annotation to ease the injection of the [Boolean] flag indicating whether we want to force
  * the use of localhost when resolving the base URL for UI Tests.
  */
+@Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class LocalhostApi
 
