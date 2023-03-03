@@ -20,16 +20,52 @@ package ch.protonmail.android.networkmocks.di
 
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.mockwebserver.MockWebServer
+import okhttp3.tls.HandshakeCertificates
+import okhttp3.tls.HeldCertificate
+import java.net.InetAddress
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import javax.net.ssl.SSLSocketFactory
 
+/**
+ * A test module that provides a [MockWebServer] instance with HTTPS support enabled by a custom [SSLSocketFactory].
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object MockWebServerModule {
 
     @Provides
     @Singleton
-    fun mockWebServer(): MockWebServer = MockWebServer()
+    fun provideMockWebServer(@TestServerSSLSocketFactory socketFactory: SSLSocketFactory): MockWebServer {
+        return MockWebServer().apply { useHttps(socketFactory, false) }
+    }
+
+    @Provides
+    @Reusable
+    @TestServerSSLSocketFactory
+    fun provideTestSSLSocketFactory(): SSLSocketFactory {
+        val localhost = runBlocking {
+            withContext(Dispatchers.IO) {
+                InetAddress.getByName("localhost").canonicalHostName
+            }
+        }
+
+        val localhostCertificate = HeldCertificate.Builder()
+            .addSubjectAlternativeName(localhost)
+            .duration(1, TimeUnit.DAYS)
+            .build()
+
+        val handshakeCertificates = HandshakeCertificates.Builder()
+            .heldCertificate(localhostCertificate)
+            .build()
+
+        return handshakeCertificates.sslSocketFactory()
+    }
 }

@@ -18,9 +18,6 @@
   -->
 
 <network-security-config>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">localhost</domain>
-    </domain-config>
     <base-config>
         <trust-anchors>
             <certificates src="system" />
