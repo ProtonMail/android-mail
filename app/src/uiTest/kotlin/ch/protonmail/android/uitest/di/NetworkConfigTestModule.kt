@@ -33,7 +33,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.mockwebserver.MockWebServer
 
 /**
- * The test module used to override the [BaseProtonApiUrl] in UI Tests.
+ * A test module used to override the [BaseProtonApiUrl] in UI Tests.
  */
 @Module
 @TestInstallIn(components = [SingletonComponent::class], replaces = [NetworkConfigModule::class])
@@ -41,7 +41,7 @@ object NetworkConfigTestModule {
 
     @Provides
     @BaseProtonApiUrl
-    fun baseProtonApiUrl(@LocalhostApi localhostApi: Boolean, mockWebServer: MockWebServer): HttpUrl {
+    fun provideBaseProtonApiUrl(@LocalhostApi localhostApi: Boolean, mockWebServer: MockWebServer): HttpUrl {
         return if (localhostApi) {
             runBlocking {
                 withContext(Dispatchers.IO) {
