@@ -139,7 +139,7 @@ fun ConversationDetailScreen(
                 onExpandMessage = { viewModel.submit(ConversationDetailViewAction.ExpandMessage(it)) },
                 onCollapseMessage = { viewModel.submit(ConversationDetailViewAction.CollapseMessage(it)) },
                 onMessageBodyLinkClicked = {
-                    viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(it.toString()))
+                    viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(it))
                 },
                 onOpenMessageBodyLink = openMessageBodyLink,
                 onRequestScrollTo = { viewModel.submit(ConversationDetailViewAction.RequestScrollTo(it)) },
@@ -149,6 +149,7 @@ fun ConversationDetailScreen(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("LongMethod")
 @Composable
 fun ConversationDetailScreen(
     state: ConversationDetailState,
@@ -235,23 +236,32 @@ fun ConversationDetailScreen(
         }
     ) { innerPadding ->
         when (state.messagesState) {
-            is ConversationDetailsMessagesState.Data -> MessagesContent(
-                uiModels = state.messagesState.messages,
-                padding = innerPadding,
-                onExpand = actions.onExpandMessage,
-                onCollapse = actions.onCollapseMessage,
-                onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
-                requestScrollTo = actions.onRequestScrollTo,
-                scrollToMessageId = scrollToMessage,
-                onScrollToMessageCompleted = { scrollToMessage = null }
-            )
+            is ConversationDetailsMessagesState.Data -> {
+                val conversationDetailItemActions = ConversationDetailItem.Actions(
+                    onExpand = actions.onExpandMessage,
+                    onCollapse = actions.onCollapseMessage,
+                    onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
+                    onRequestScrollTo = actions.onRequestScrollTo,
+                    onOpenMessageBodyLink = actions.onOpenMessageBodyLink
+                )
+                MessagesContent(
+                    uiModels = state.messagesState.messages,
+                    padding = innerPadding,
+                    scrollToMessageId = scrollToMessage,
+                    onScrollToMessageCompleted = { scrollToMessage = null },
+                    actions = conversationDetailItemActions
+                )
+            }
+
             is ConversationDetailsMessagesState.Error -> ProtonErrorMessage(
                 modifier = Modifier.padding(innerPadding),
                 errorMessage = state.messagesState.message.string()
             )
+
             is ConversationDetailsMessagesState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
             )
+
             is ConversationDetailsMessagesState.Offline -> ProtonErrorMessage(
                 modifier = Modifier.padding(innerPadding),
                 errorMessage = stringResource(id = R.string.please_go_back_online_to_load_messages)
@@ -262,16 +272,14 @@ fun ConversationDetailScreen(
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
+@Suppress("LongParameterList")
 private fun MessagesContent(
     uiModels: List<ConversationDetailMessageUiModel>,
     padding: PaddingValues,
-    modifier: Modifier = Modifier,
-    onExpand: (MessageId) -> Unit,
-    onCollapse: (MessageId) -> Unit,
-    onMessageBodyLinkClicked: (url: String) -> Unit,
-    requestScrollTo: (MessageId) -> Unit,
     scrollToMessageId: String?,
-    onScrollToMessageCompleted: () -> Unit
+    onScrollToMessageCompleted: () -> Unit,
+    modifier: Modifier = Modifier,
+    actions: ConversationDetailItem.Actions
 ) {
     val listState = rememberLazyListState()
     val layoutDirection = LocalLayoutDirection.current
@@ -310,11 +318,8 @@ private fun MessagesContent(
             ConversationDetailItem(
                 uiModel = uiModel,
                 modifier = Modifier.animateItemPlacement(),
-                onExpand = onExpand,
-                onCollapse = onCollapse,
-                onMessageBodyLinkClicked = onMessageBodyLinkClicked,
                 listState = listState,
-                requestScrollTo = requestScrollTo
+                actions = actions
             )
         }
     }

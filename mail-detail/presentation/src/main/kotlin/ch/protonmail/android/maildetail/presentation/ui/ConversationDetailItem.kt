@@ -48,12 +48,9 @@ import me.proton.core.compose.theme.ProtonTheme
 @Composable
 fun ConversationDetailItem(
     uiModel: ConversationDetailMessageUiModel,
-    onExpand: (MessageId) -> Unit,
-    onCollapse: (MessageId) -> Unit,
-    onMessageBodyLinkClicked: (url: String) -> Unit,
-    modifier: Modifier = Modifier,
     listState: LazyListState,
-    requestScrollTo: (MessageId) -> Unit
+    actions: ConversationDetailItem.Actions,
+    modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
         modifier = modifier.fillMaxWidth(),
@@ -67,7 +64,7 @@ fun ConversationDetailItem(
                 ConversationDetailCollapsedMessageHeader(
                     uiModel = uiModel,
                     modifier = Modifier.clickable {
-                        onExpand(uiModel.messageId)
+                        actions.onExpand(uiModel.messageId)
                     }
                 )
             }
@@ -76,10 +73,8 @@ fun ConversationDetailItem(
                 ConversationDetailExpandedItem(
                     uiModel = uiModel,
                     messageId = uiModel.messageId,
-                    onCollapse = { onCollapse(it) },
-                    onMessageBodyLinkClicked = onMessageBodyLinkClicked,
                     listState = listState,
-                    requestScrollTo = requestScrollTo
+                    actions = actions
                 )
             }
         }
@@ -90,11 +85,9 @@ fun ConversationDetailItem(
 private fun ConversationDetailExpandedItem(
     messageId: MessageId,
     uiModel: Expanded,
-    modifier: Modifier = Modifier,
-    onCollapse: (MessageId) -> Unit,
-    onMessageBodyLinkClicked: (url: String) -> Unit,
     listState: LazyListState,
-    requestScrollTo: (MessageId) -> Unit
+    actions: ConversationDetailItem.Actions,
+    modifier: Modifier = Modifier,
 ) {
     var bodyBounds by remember { mutableStateOf(Rect(0f, 0f, 0f, 0f)) }
     LaunchedEffect(key1 = bodyBounds) {
@@ -104,7 +97,7 @@ private fun ConversationDetailExpandedItem(
                     val viewportHeight = it.layoutInfo.viewportEndOffset + it.layoutInfo.viewportStartOffset
                     val isFullyVisible = bodyBounds.bottom <= viewportHeight
                     if (!isFullyVisible) {
-                        requestScrollTo(messageId)
+                        actions.onRequestScrollTo(messageId)
                     }
                 }
             }
@@ -112,7 +105,7 @@ private fun ConversationDetailExpandedItem(
     Column(modifier = modifier) {
         Box(
             modifier = Modifier
-                .clickable { onCollapse(messageId) }
+                .clickable { actions.onCollapse(messageId) }
                 .fillMaxWidth()
                 .height(16.dp)
         )
@@ -122,7 +115,17 @@ private fun ConversationDetailExpandedItem(
                 bodyBounds = coordinates.boundsInParent()
             },
             messageBodyUiModel = uiModel.messageBodyUiModel,
-            onMessageBodyLinkClicked = { onMessageBodyLinkClicked(it.toString()) }
+            onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) }
         )
     }
+}
+
+object ConversationDetailItem {
+    data class Actions(
+        val onCollapse: (MessageId) -> Unit,
+        val onExpand: (MessageId) -> Unit,
+        val onMessageBodyLinkClicked: (url: String) -> Unit,
+        val onOpenMessageBodyLink: (url: String) -> Unit,
+        val onRequestScrollTo: (MessageId) -> Unit
+    )
 }
