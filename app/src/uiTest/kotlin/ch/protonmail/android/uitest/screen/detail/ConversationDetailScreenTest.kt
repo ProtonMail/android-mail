@@ -331,6 +331,68 @@ class ConversationDetailScreenTest {
         robot.verify { errorMessageIsDisplayed(message) }
     }
 
+    @Test
+    fun whenConversationWithExpandedMessagesIsLoadedThenMessageHeaderIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                messages = listOf(
+                    ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+                )
+            )
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify {
+            messageHeaderIsDisplayed()
+        }
+    }
+
+    @Test
+    fun whenConversationWithExpandedMessagesIsLoadedThenMessageBodyIsDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                messages = listOf(
+                    ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+                )
+            )
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify {
+            messageBodyIsDisplayedInWebView(
+                ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded.messageBodyUiModel.messageBody
+            )
+        }
+    }
+
+    @Test
+    fun whenConversationWithExpandedMessagesIsLoadedThenTheCollapsedHeaderIsNotDisplayed() {
+        // given
+        val state = ConversationDetailsPreviewData.Success.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                messages = listOf(
+                    ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+                )
+            )
+        )
+
+        // when
+        val robot = setupScreen(state = state)
+
+        // then
+        robot.verify {
+            collapsedHeaderDoesNotExist()
+        }
+    }
+
     private fun setupScreen(
         state: ConversationDetailState,
         actions: ConversationDetailScreen.Actions = ConversationDetailScreen.Actions.Empty

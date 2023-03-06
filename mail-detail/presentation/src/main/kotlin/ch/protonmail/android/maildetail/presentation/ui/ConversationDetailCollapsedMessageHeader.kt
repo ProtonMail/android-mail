@@ -50,6 +50,7 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailCollapsedMessageHeaderPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.AttachmentIconTestTag
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.CollapsedHeaderTestTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.ForwardedIconTestTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.RepliedAllIconTestTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader.RepliedIconTestTag
@@ -77,6 +78,7 @@ internal fun ConversationDetailCollapsedMessageHeader(
             .padding(ProtonDimens.SmallSpacing)
             .padding(ProtonDimens.ExtraSmallSpacing)
             .fillMaxWidth()
+            .testTag(CollapsedHeaderTestTag)
     ) {
         val (
             avatarRef,
@@ -338,6 +340,7 @@ private fun visibleWhen(isVisible: Boolean) = if (isVisible) Visibility.Visible 
 
 object ConversationDetailCollapsedMessageHeader {
 
+    const val CollapsedHeaderTestTag = "collapsed_header"
     const val AttachmentIconTestTag = "attachment_icon"
     const val ForwardedIconTestTag = "forwarded_icon"
     const val RepliedAllIconTestTag = "replied_all_icon"

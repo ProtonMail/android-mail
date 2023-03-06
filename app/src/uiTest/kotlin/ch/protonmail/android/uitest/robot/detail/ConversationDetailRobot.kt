@@ -27,14 +27,22 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.web.assertion.WebViewAssertions
+import androidx.test.espresso.web.sugar.Web
+import androidx.test.espresso.web.webdriver.DriverAtoms
+import androidx.test.espresso.web.webdriver.Locator
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader
+import ch.protonmail.android.maildetail.presentation.ui.TEST_TAG_MESSAGE_HEADER
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
+import org.hamcrest.CoreMatchers
+import org.hamcrest.Matchers
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
@@ -142,6 +150,23 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
             composeTestRule.onAllNodesWithText(time)
                 .onFirst()
                 .assertIsDisplayed()
+        }
+
+        fun messageBodyIsDisplayedInWebView(messageBody: String, tagName: String = "html") {
+            Web.onWebView(ViewMatchers.withClassName(Matchers.equalTo("android.webkit.WebView")))
+                .forceJavascriptEnabled()
+                .withElement(DriverAtoms.findElement(Locator.TAG_NAME, tagName))
+                .check(WebViewAssertions.webMatches(DriverAtoms.getText(), CoreMatchers.containsString(messageBody)))
+        }
+
+        fun messageHeaderIsDisplayed() {
+            composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_HEADER)
+                .assertIsDisplayed()
+        }
+
+        fun collapsedHeaderDoesNotExist() {
+            composeTestRule.onNodeWithTag(ConversationDetailCollapsedMessageHeader.CollapsedHeaderTestTag)
+                .assertDoesNotExist()
         }
     }
 }
