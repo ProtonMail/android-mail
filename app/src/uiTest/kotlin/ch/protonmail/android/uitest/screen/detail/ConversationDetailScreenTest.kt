@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
@@ -36,6 +37,7 @@ import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
+@Suppress("TooManyFunctions")
 class ConversationDetailScreenTest {
 
     @get:Rule
@@ -44,7 +46,7 @@ class ConversationDetailScreenTest {
     @Test
     fun whenConversationIsLoadedThenSubjectIsDisplayed() {
         // given
-        val state = ConversationDetailsPreviewData.Success
+        val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds
 
         // when
         val robot = setupScreen(state = state)
@@ -59,7 +61,7 @@ class ConversationDetailScreenTest {
     @Test
     fun whenMessageIsLoadedSenderInitialIsDisplayed() {
         // given
-        val state = ConversationDetailsPreviewData.Success
+        val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds
 
         // when
         val robot = setupScreen(state = state)
@@ -67,16 +69,21 @@ class ConversationDetailScreenTest {
         // then
         robot.verify {
             val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
-            val firstMessage = messagesState.messages.first()
-            val initial = firstMessage.avatar as AvatarUiModel.ParticipantInitial
-            senderInitialIsDisplayed(initial = initial.value)
+            when (val firstMessage = messagesState.messages.first()) {
+                is ConversationDetailMessageUiModel.Collapsed -> {
+                    val initial = firstMessage.avatar as AvatarUiModel.ParticipantInitial
+                    senderInitialIsDisplayed(initial = initial.value)
+                }
+
+                is ConversationDetailMessageUiModel.Expanded -> Unit
+            }
         }
     }
 
     @Test
     fun whenMessageIsLoadedTimeIsDisplayed() {
         // given
-        val state = ConversationDetailsPreviewData.Success
+        val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds
 
         // when
         val robot = setupScreen(state = state)
@@ -84,8 +91,10 @@ class ConversationDetailScreenTest {
         // then
         robot.verify {
             val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
-            val firstMessage = messagesState.messages.first()
-            timeIsDisplayed(time = firstMessage.shortTime)
+            when (val firstMessage = messagesState.messages.first()) {
+                is ConversationDetailMessageUiModel.Collapsed -> timeIsDisplayed(time = firstMessage.shortTime)
+                is ConversationDetailMessageUiModel.Expanded -> Unit
+            }
         }
     }
 
@@ -104,7 +113,7 @@ class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { draftIconAvatarIsDisplayed() }
+        robot.verify { draftIconAvatarIsDisplayed(useUnmergedTree = true) }
     }
 
     @Test
@@ -122,7 +131,7 @@ class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { repliedIconIsDisplayed() }
+        robot.verify { repliedIconIsDisplayed(useUnmergedTree = true) }
     }
 
     @Test
@@ -140,7 +149,7 @@ class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { repliedAllIconIsDisplayed() }
+        robot.verify { repliedAllIconIsDisplayed(useUnmergedTree = true) }
     }
 
     @Test
@@ -158,13 +167,13 @@ class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { forwardedIconIsDisplayed() }
+        robot.verify { forwardedIconIsDisplayed(useUnmergedTree = true) }
     }
 
     @Test
     fun whenMessagesAreLoadedThenSenderIsDisplayed() {
         // given
-        val state = ConversationDetailsPreviewData.Success
+        val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds
 
         // when
         val robot = setupScreen(state = state)
@@ -172,8 +181,10 @@ class ConversationDetailScreenTest {
         // then
         robot.verify {
             val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
-            val firstMessage = messagesState.messages.first()
-            senderIsDisplayed(firstMessage.sender)
+            when (val firstMessage = messagesState.messages.first()) {
+                is ConversationDetailMessageUiModel.Collapsed -> senderIsDisplayed(firstMessage.sender)
+                is ConversationDetailMessageUiModel.Expanded -> TODO()
+            }
         }
     }
 
@@ -210,7 +221,7 @@ class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { starIconIsDisplayed() }
+        robot.verify { starIconIsDisplayed(useUnmergedTree = true) }
     }
 
     @Test
@@ -229,7 +240,7 @@ class ConversationDetailScreenTest {
     @Test
     fun whenTrashIsClickedThenActionIsCalled() {
         // given
-        val state = ConversationDetailsPreviewData.Success.copy(
+        val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds.copy(
             bottomBarState = BottomBarState.Data(
                 actions = listOf(ActionUiModelSample.Trash)
             )
@@ -252,7 +263,7 @@ class ConversationDetailScreenTest {
     fun whenErrorThenErrorMessageIsDisplayed() {
         // given
         val message = TextUiModel("Something terrible happened!")
-        val state = ConversationDetailsPreviewData.Success.copy(
+        val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds.copy(
             error = Effect.of(message)
         )
 
@@ -266,7 +277,7 @@ class ConversationDetailScreenTest {
     @Test
     fun whenUnreadClickedThenCallbackIsInvoked() {
         // given
-        val state = ConversationDetailsPreviewData.Success.copy(
+        val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds.copy(
             bottomBarState = BottomBarState.Data(
                 actions = listOf(ActionUiModelSample.MarkUnread)
             )
@@ -288,7 +299,7 @@ class ConversationDetailScreenTest {
     @Test
     fun whenExitStateThenCallbackIsInvoked() {
         // given
-        val state = ConversationDetailsPreviewData.Success.copy(
+        val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds.copy(
             exitScreenEffect = Effect.of(Unit)
         )
         var didExit = false

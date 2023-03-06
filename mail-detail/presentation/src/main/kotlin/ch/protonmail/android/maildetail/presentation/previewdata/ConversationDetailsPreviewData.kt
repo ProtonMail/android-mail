@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.previewdata
 
+import java.util.UUID
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -32,6 +33,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailSta
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
 object ConversationDetailsPreviewData {
 
@@ -45,6 +47,45 @@ object ConversationDetailsPreviewData {
                 ConversationDetailMessageUiModelSample.InvoiceRepliedAll,
                 ConversationDetailMessageUiModelSample.InvoiceForwarded,
                 ConversationDetailMessageUiModelSample.ExpiringInvitation
+            )
+        ),
+        bottomBarState = BottomBarState.Data(
+            actions = listOf(
+                ActionUiModel(Action.Reply, Action.Reply.iconDrawable(), Action.Reply.contentDescription()),
+                ActionUiModel(Action.Archive, Action.Archive.iconDrawable(), Action.Archive.contentDescription())
+            )
+        ),
+        bottomSheetState = BottomSheetState(
+            MoveToBottomSheetState.Data(
+                moveToDestinations = emptyList(),
+                selected = null
+            )
+        ),
+        exitScreenEffect = Effect.empty(),
+        exitScreenWithMessageEffect = Effect.empty(),
+        error = Effect.empty(),
+        openMessageBodyLinkEffect = Effect.empty(),
+        scrollToMessage = Effect.empty()
+    )
+
+    val SuccessWithRandomMessageIds = ConversationDetailState(
+        ConversationDetailMetadataState.Data(
+            conversationUiModel = ConversationDetailsUiModelPreviewData.WeatherForecast
+        ),
+        messagesState = ConversationDetailsMessagesState.Data(
+            messages = listOf(
+                ConversationDetailMessageUiModelSample.AugWeatherForecast.copy(
+                    messageId = MessageId(UUID.randomUUID().toString())
+                ),
+                ConversationDetailMessageUiModelSample.InvoiceRepliedAll.copy(
+                    messageId = MessageId(UUID.randomUUID().toString())
+                ),
+                ConversationDetailMessageUiModelSample.InvoiceForwarded.copy(
+                    messageId = MessageId(UUID.randomUUID().toString())
+                ),
+                ConversationDetailMessageUiModelSample.ExpiringInvitation.copy(
+                    messageId = MessageId(UUID.randomUUID().toString())
+                ),
             )
         ),
         bottomBarState = BottomBarState.Data(

@@ -56,6 +56,7 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
         return this
     }
 
+    @Suppress("TooManyFunctions")
     class Verify(private val composeTestRule: ComposeContentTestRule) {
 
         fun attachmentIconIsDisplayed() {
@@ -64,8 +65,12 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
                 .assertIsDisplayed()
         }
 
-        fun draftIconAvatarIsDisplayed() {
-            composeTestRule.onNodeWithTag(Avatar.DraftTestTag)
+        fun draftIconAvatarIsDisplayed(useUnmergedTree: Boolean = false) {
+            composeTestRule
+                .onNodeWithTag(
+                    testTag = Avatar.DraftTestTag,
+                    useUnmergedTree = useUnmergedTree
+                )
                 .assertIsDisplayed()
         }
 
@@ -79,21 +84,30 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
                 .assertIsDisplayed()
         }
 
-        fun forwardedIconIsDisplayed() {
+        fun forwardedIconIsDisplayed(useUnmergedTree: Boolean = false) {
             composeTestRule
-                .onNodeWithTag(ConversationDetailCollapsedMessageHeader.ForwardedIconTestTag)
+                .onNodeWithTag(
+                    testTag = ConversationDetailCollapsedMessageHeader.ForwardedIconTestTag,
+                    useUnmergedTree = useUnmergedTree
+                )
                 .assertIsDisplayed()
         }
 
-        fun repliedAllIconIsDisplayed() {
+        fun repliedAllIconIsDisplayed(useUnmergedTree: Boolean = false) {
             composeTestRule
-                .onNodeWithTag(ConversationDetailCollapsedMessageHeader.RepliedAllIconTestTag)
+                .onNodeWithTag(
+                    testTag = ConversationDetailCollapsedMessageHeader.RepliedAllIconTestTag,
+                    useUnmergedTree = useUnmergedTree
+                )
                 .assertIsDisplayed()
         }
 
-        fun repliedIconIsDisplayed() {
+        fun repliedIconIsDisplayed(useUnmergedTree: Boolean = false) {
             composeTestRule
-                .onNodeWithTag(ConversationDetailCollapsedMessageHeader.RepliedIconTestTag)
+                .onNodeWithTag(
+                    testTag = ConversationDetailCollapsedMessageHeader.RepliedIconTestTag,
+                    useUnmergedTree = useUnmergedTree
+                )
                 .assertIsDisplayed()
         }
 
@@ -114,8 +128,12 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
                 .assertIsDisplayed()
         }
 
-        fun starIconIsDisplayed() {
-            composeTestRule.onAllNodesWithTag(ConversationDetailCollapsedMessageHeader.StarIconTestTag)
+        fun starIconIsDisplayed(useUnmergedTree: Boolean = false) {
+            composeTestRule
+                .onAllNodesWithTag(
+                    testTag = ConversationDetailCollapsedMessageHeader.StarIconTestTag,
+                    useUnmergedTree = useUnmergedTree
+                )
                 .onFirst()
                 .assertIsDisplayed()
         }
