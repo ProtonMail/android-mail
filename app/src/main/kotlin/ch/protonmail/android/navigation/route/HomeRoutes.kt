@@ -36,7 +36,6 @@ import ch.protonmail.android.navigation.model.Destination
 import me.proton.core.compose.navigation.get
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
-import timber.log.Timber
 
 internal fun NavGraphBuilder.addConversationDetail(
     navController: NavHostController,
@@ -55,7 +54,8 @@ internal fun NavGraphBuilder.addConversationDetail(
 internal fun NavGraphBuilder.addMailbox(
     navController: NavHostController,
     openDrawerMenu: () -> Unit,
-    showOfflineSnackbar: () -> Unit
+    showOfflineSnackbar: () -> Unit,
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.Mailbox.route) {
         MailboxScreen(
@@ -70,7 +70,8 @@ internal fun NavGraphBuilder.addMailbox(
                     )
                 },
                 openDrawerMenu = openDrawerMenu,
-                showOfflineSnackbar = showOfflineSnackbar
+                showOfflineSnackbar = showOfflineSnackbar,
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar
             )
         )
     }
@@ -79,6 +80,7 @@ internal fun NavGraphBuilder.addMailbox(
 internal fun NavGraphBuilder.addMessageDetail(
     navController: NavHostController,
     showSnackbar: (notifyUserMessage: String) -> Unit,
+    showFeatureMissingSnackbar: () -> Unit,
     openMessageBodyLink: (uri: Uri) -> Unit
 ) {
     composable(route = Destination.Screen.Message.route) {
@@ -87,7 +89,8 @@ internal fun NavGraphBuilder.addMessageDetail(
                 navController.popBackStack()
                 notifyUserMessage?.let(showSnackbar)
             },
-            openMessageBodyLink = openMessageBodyLink
+            openMessageBodyLink = openMessageBodyLink,
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
     }
 }
@@ -102,7 +105,10 @@ internal fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostContro
     }
 }
 
-internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
+internal fun NavGraphBuilder.addSettings(
+    navController: NavHostController,
+    showFeatureMissingSnackbar: () -> Unit
+) {
     composable(route = Destination.Screen.Settings.route) {
         MainSettingsScreen(
             actions = MainSettingsScreen.Actions(
@@ -113,10 +119,10 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
                     navController.navigate(Destination.Screen.ThemeSettings.route)
                 },
                 onPushNotificationsClick = {
-                    Timber.d("Push Notifications setting clicked")
+                    showFeatureMissingSnackbar()
                 },
                 onAutoLockClick = {
-                    Timber.d("Auto Lock setting clicked")
+                    showFeatureMissingSnackbar()
                 },
                 onAlternativeRoutingClick = {
                     navController.navigate(Destination.Screen.AlternativeRoutingSettings.route)

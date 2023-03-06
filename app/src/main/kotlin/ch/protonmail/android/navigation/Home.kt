@@ -82,6 +82,14 @@ fun Home(
         }
     }
 
+    val featureMissingSnackbarMessage = stringResource(id = R.string.feature_coming_soon)
+    fun showFeatureMissingSnackbar() = scope.launch {
+        snackbarHostState.showSnackbar(
+            message = featureMissingSnackbarMessage,
+            type = ProtonSnackbarType.NORM
+        )
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
         drawerShape = RectangleShape,
@@ -123,6 +131,9 @@ fun Home(
                                 type = ProtonSnackbarType.WARNING
                             )
                         }
+                    },
+                    showFeatureMissingSnackbar = {
+                        showFeatureMissingSnackbar()
                     }
                 )
                 addMessageDetail(
@@ -135,12 +146,24 @@ fun Home(
                             )
                         }
                     },
-                    openMessageBodyLink = activityActions.openInActivityInNewTask
+                    openMessageBodyLink = activityActions.openInActivityInNewTask,
+                    showFeatureMissingSnackbar = { showFeatureMissingSnackbar() }
                 )
                 addRemoveAccountDialog(navController)
-                addSettings(navController)
+                addSettings(
+                    navController,
+                    showFeatureMissingSnackbar = {
+                        showFeatureMissingSnackbar()
+                    }
+                )
                 // settings
-                addAccountSettings(navController, launcherActions)
+                addAccountSettings(
+                    navController,
+                    launcherActions,
+                    showFeatureMissingSnackbar = {
+                        showFeatureMissingSnackbar()
+                    }
+                )
                 addAlternativeRoutingSetting(navController)
                 addCombinedContactsSetting(navController)
                 addConversationModeSettings(navController)

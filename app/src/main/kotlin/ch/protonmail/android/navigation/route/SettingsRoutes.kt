@@ -35,9 +35,12 @@ import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSetti
 import ch.protonmail.android.navigation.Launcher
 import ch.protonmail.android.navigation.model.Destination.Screen
 import me.proton.core.compose.navigation.require
-import timber.log.Timber
 
-fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launcherActions: Launcher.Actions) {
+fun NavGraphBuilder.addAccountSettings(
+    navController: NavHostController,
+    launcherActions: Launcher.Actions,
+    showFeatureMissingSnackbar: () -> Unit
+) {
     composable(route = Screen.AccountSettings.route) {
         AccountSettingScreen(
             actions = AccountSettingScreen.Actions(
@@ -45,13 +48,13 @@ fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launche
                 onPasswordManagementClick = launcherActions.onPasswordManagement,
                 onRecoveryEmailClick = launcherActions.onRecoveryEmail,
                 onConversationModeClick = { navController.navigate(Screen.ConversationModeSettings.route) },
-                onDefaultEmailAddressClick = { Timber.d("Default email address setting clicked") },
-                onDisplayNameClick = { Timber.d("Display name setting clicked") },
-                onPrivacyClick = { Timber.d("Privacy setting clicked") },
-                onSearchMessageContentClick = { Timber.d("Search message content setting clicked") },
-                onLabelsFoldersClick = { Timber.d("Labels folders setting clicked") },
-                onLocalStorageClick = { Timber.d("Local storage setting clicked") },
-                onSnoozeNotificationsClick = { Timber.d("Snooze notification setting clicked") }
+                onDefaultEmailAddressClick = { showFeatureMissingSnackbar() },
+                onDisplayNameClick = { showFeatureMissingSnackbar() },
+                onPrivacyClick = { showFeatureMissingSnackbar() },
+                onSearchMessageContentClick = { showFeatureMissingSnackbar() },
+                onLabelsFoldersClick = { showFeatureMissingSnackbar() },
+                onLocalStorageClick = { showFeatureMissingSnackbar() },
+                onSnoozeNotificationsClick = { showFeatureMissingSnackbar() }
             )
         )
     }

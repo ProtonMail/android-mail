@@ -93,7 +93,10 @@ fun MailboxScreen(
         onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },
         onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
         onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewAction.OpenItemDetails(item)) },
-        onOpenSelectionMode = { viewModel.submit(MailboxViewAction.EnterSelectionMode) },
+        onOpenSelectionMode = {
+            viewModel.submit(MailboxViewAction.EnterSelectionMode)
+            actions.showFeatureMissingSnackbar()
+        },
         onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) }
     )
 
@@ -135,9 +138,13 @@ fun MailboxScreen(
                         onExitSelectionMode = actions.onExitSelectionMode,
                         onExitSearchMode = {},
                         onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
-                        onEnterSearchMode = {},
+                        onEnterSearchMode = {
+                            actions.showFeatureMissingSnackbar()
+                        },
                         onSearch = {},
-                        onOpenCompose = {}
+                        onOpenCompose = {
+                            actions.showFeatureMissingSnackbar()
+                        }
                     )
                 )
 
@@ -169,7 +176,9 @@ fun MailboxScreen(
                 )
             }
             MailboxListState.Loading -> ProtonCenteredProgress(
-                modifier = Modifier.testTag(MailboxScreen.ListProgressTestTag).padding(paddingValues)
+                modifier = Modifier
+                    .testTag(MailboxScreen.ListProgressTestTag)
+                    .padding(paddingValues)
             )
         }
     }
@@ -331,7 +340,8 @@ object MailboxScreen {
         val onOpenSelectionMode: () -> Unit,
         val onRefreshList: () -> Unit,
         val openDrawerMenu: () -> Unit,
-        val showOfflineSnackbar: () -> Unit
+        val showOfflineSnackbar: () -> Unit,
+        val showFeatureMissingSnackbar: () -> Unit
     ) {
 
         companion object {
@@ -345,7 +355,8 @@ object MailboxScreen {
                 onOpenSelectionMode = {},
                 onRefreshList = {},
                 openDrawerMenu = {},
-                showOfflineSnackbar = {}
+                showOfflineSnackbar = {},
+                showFeatureMissingSnackbar = {}
             )
         }
     }

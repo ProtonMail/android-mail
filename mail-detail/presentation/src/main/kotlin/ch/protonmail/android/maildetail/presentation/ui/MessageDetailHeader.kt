@@ -87,7 +87,8 @@ const val TEST_TAG_MESSAGE_HEADER = "messageHeader"
 fun MessageDetailHeader(
     modifier: Modifier = Modifier,
     uiModel: MessageDetailHeaderUiModel,
-    initiallyExpanded: Boolean = false
+    initiallyExpanded: Boolean = false,
+    showFeatureMissingSnackbar: () -> Unit = { },
 ) {
     val isExpanded = rememberSaveable(inputs = arrayOf()) {
         mutableStateOf(initiallyExpanded)
@@ -105,7 +106,8 @@ fun MessageDetailHeader(
             modifier = modifier,
             uiModel = uiModel,
             isExpanded = targetState,
-            onClick = { isExpanded.value = !isExpanded.value }
+            onClick = { isExpanded.value = !isExpanded.value },
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar,
         )
     }
 }
@@ -115,7 +117,8 @@ private fun MessageDetailHeaderLayout(
     modifier: Modifier = Modifier,
     uiModel: MessageDetailHeaderUiModel,
     isExpanded: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    showFeatureMissingSnackbar: () -> Unit,
 ) {
     ConstraintLayout(
         modifier = modifier
@@ -184,7 +187,8 @@ private fun MessageDetailHeaderLayout(
                 end.linkTo(moreButtonRef.start, margin = ProtonDimens.SmallSpacing)
             },
             participantUiModel = uiModel.sender,
-            isExpanded = isExpanded
+            isExpanded = isExpanded,
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
 
         Icons(
@@ -209,7 +213,8 @@ private fun MessageDetailHeaderLayout(
             modifier = modifier.constrainAs(moreButtonRef) {
                 top.linkTo(timeRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
                 end.linkTo(parent.end)
-            }
+            },
+            onClick = showFeatureMissingSnackbar
         )
 
         AllRecipients(
@@ -246,7 +251,8 @@ private fun MessageDetailHeaderLayout(
                 )
             },
             recipients = uiModel.toRecipients,
-            hasUndisclosedRecipients = uiModel.shouldShowUndisclosedRecipients
+            hasUndisclosedRecipients = uiModel.shouldShowUndisclosedRecipients,
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
 
         RecipientsTitle(
@@ -269,7 +275,8 @@ private fun MessageDetailHeaderLayout(
                     isExpanded = isExpanded
                 )
             },
-            recipients = uiModel.ccRecipients
+            recipients = uiModel.ccRecipients,
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
 
         RecipientsTitle(
@@ -292,7 +299,8 @@ private fun MessageDetailHeaderLayout(
                     isExpanded = isExpanded
                 )
             },
-            recipients = uiModel.bccRecipients
+            recipients = uiModel.bccRecipients,
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
 
         Spacer(
@@ -415,7 +423,8 @@ private fun SenderName(
 private fun SenderAddress(
     modifier: Modifier = Modifier,
     participantUiModel: ParticipantUiModel,
-    isExpanded: Boolean
+    isExpanded: Boolean,
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -427,7 +436,8 @@ private fun SenderAddress(
         ParticipantText(
             text = participantUiModel.participantAddress,
             textColor = ProtonTheme.colors.interactionNorm,
-            clickable = isExpanded
+            clickable = isExpanded,
+            onClick = showFeatureMissingSnackbar
         )
     }
 }
@@ -474,13 +484,14 @@ private fun Time(
 
 @Composable
 private fun MoreButton(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Icon(
         modifier = modifier.clickable(
             onClickLabel = stringResource(id = R.string.more_button_content_description),
             role = Role.Button,
-            onClick = {}
+            onClick = onClick
         ),
         painter = painterResource(id = R.drawable.ic_proton_three_dots_horizontal),
         tint = ProtonTheme.colors.iconWeak,
@@ -512,24 +523,37 @@ private fun AllRecipients(
 private fun Recipients(
     modifier: Modifier = Modifier,
     recipients: List<ParticipantUiModel>,
-    hasUndisclosedRecipients: Boolean = false
+    hasUndisclosedRecipients: Boolean = false,
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     Column(modifier = modifier) {
         if (hasUndisclosedRecipients) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                ParticipantText(text = stringResource(id = R.string.undisclosed_recipients), clickable = false)
+                ParticipantText(
+                    text = stringResource(id = R.string.undisclosed_recipients),
+                    clickable = false,
+                    onClick = showFeatureMissingSnackbar
+                )
             }
         }
         recipients.forEachIndexed { index, participant ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (participant.participantName.isNotEmpty()) {
-                    ParticipantText(text = participant.participantName, clickable = false)
+                    ParticipantText(
+                        text = participant.participantName,
+                        clickable = false,
+                        onClick = showFeatureMissingSnackbar
+                    )
                     Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
                 }
                 // Display the padlock once the handling is implemented https://jira.protontech.ch/browse/MAILANDR-213
                 // SmallNonClickableIcon(iconId = participant.participantPadlock)
                 // Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
-                ParticipantText(text = participant.participantAddress, textColor = ProtonTheme.colors.interactionNorm)
+                ParticipantText(
+                    text = participant.participantAddress,
+                    textColor = ProtonTheme.colors.interactionNorm,
+                    onClick = showFeatureMissingSnackbar
+                )
             }
             if (index != recipients.size - 1) {
                 Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
@@ -550,13 +574,14 @@ private fun RecipientsTitle(
 private fun ParticipantText(
     text: String,
     textColor: Color = ProtonTheme.colors.textNorm,
-    clickable: Boolean = true
+    clickable: Boolean = true,
+    onClick: () -> Unit
 ) {
     Text(
         text = text,
         modifier = if (clickable) Modifier.clickable(
             onClickLabel = text,
-            onClick = {}
+            onClick = onClick
         ) else Modifier,
         color = textColor,
         maxLines = 1,
@@ -679,7 +704,7 @@ fun MessageDetailHeaderPreview(
     ProtonTheme {
         MessageDetailHeader(
             uiModel = preview.uiModel,
-            initiallyExpanded = preview.initiallyExpanded
+            initiallyExpanded = preview.initiallyExpanded,
         )
     }
 }

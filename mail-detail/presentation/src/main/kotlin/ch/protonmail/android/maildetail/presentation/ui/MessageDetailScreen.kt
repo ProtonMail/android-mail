@@ -94,7 +94,8 @@ fun MessageDetailScreen(
     modifier: Modifier = Modifier,
     onExit: (message: String?) -> Unit,
     openMessageBodyLink: (uri: Uri) -> Unit,
-    viewModel: MessageDetailViewModel = hiltViewModel()
+    viewModel: MessageDetailViewModel = hiltViewModel(),
+    showFeatureMissingSnackbar: () -> Unit = {},
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -152,8 +153,11 @@ fun MessageDetailScreen(
                 onMoveClick = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) },
                 onLabelAsClick = { viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet) },
                 onMessageBodyLinkClicked = { viewModel.submit(MessageViewAction.MessageBodyLinkClicked(it)) },
-                onOpenMessageBodyLink = openMessageBodyLink
-            )
+                onOpenMessageBodyLink = openMessageBodyLink,
+                onReplyClick = { showFeatureMissingSnackbar() },
+                onDeleteClick = { showFeatureMissingSnackbar() }
+            ),
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
     }
 }
@@ -163,7 +167,8 @@ fun MessageDetailScreen(
 fun MessageDetailScreen(
     state: MessageDetailState,
     actions: MessageDetailScreen.Actions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showFeatureMissingSnackbar: () -> Unit = {}
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
@@ -202,7 +207,9 @@ fun MessageDetailScreen(
             BottomActionBar(
                 state = state.bottomBarState,
                 viewActionCallbacks = BottomActionBar.Actions(
-                    onReply = { Timber.d("message onReply clicked") },
+                    onReply = {
+                        actions.onReplyClick()
+                    },
                     onReplyAll = { Timber.d("message onReplyAll clicked") },
                     onForward = { Timber.d("message onForward clicked") },
                     onMarkRead = { Timber.d("message onMarkRead clicked") },
@@ -212,7 +219,9 @@ fun MessageDetailScreen(
                     onMove = actions.onMoveClick,
                     onLabel = actions.onLabelAsClick,
                     onTrash = actions.onTrashClick,
-                    onDelete = { Timber.d("message onDelete clicked") },
+                    onDelete = {
+                        actions.onDeleteClick()
+                    },
                     onArchive = { Timber.d("message onArchive clicked") },
                     onSpam = { Timber.d("message onSpam clicked") },
                     onViewInLightMode = { Timber.d("message onViewInLightMode clicked") },
@@ -235,7 +244,8 @@ fun MessageDetailScreen(
                 messageMetadataState = state.messageMetadataState,
                 messageBodyState = state.messageBodyState,
                 onReload = actions.onReload,
-                onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked
+                onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar
             )
             is MessageMetadataState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
@@ -250,13 +260,17 @@ private fun MessageDetailContent(
     messageMetadataState: MessageMetadataState.Data,
     messageBodyState: MessageBodyState,
     onReload: () -> Unit,
-    onMessageBodyLinkClicked: (uri: Uri) -> Unit
+    onMessageBodyLinkClicked: (uri: Uri) -> Unit,
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
         item {
-            MessageDetailHeader(uiModel = messageMetadataState.messageDetailHeader)
+            MessageDetailHeader(
+                uiModel = messageMetadataState.messageDetailHeader,
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar,
+            )
             Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
             when (messageBodyState) {
                 is MessageBodyState.Loading -> ProtonCenteredProgress()
@@ -380,7 +394,9 @@ object MessageDetailScreen {
         val onMoveClick: () -> Unit,
         val onLabelAsClick: () -> Unit,
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
-        val onOpenMessageBodyLink: (uri: Uri) -> Unit
+        val onOpenMessageBodyLink: (uri: Uri) -> Unit,
+        val onReplyClick: () -> Unit,
+        val onDeleteClick: () -> Unit
     ) {
 
         companion object {
@@ -395,7 +411,9 @@ object MessageDetailScreen {
                 onMoveClick = {},
                 onLabelAsClick = {},
                 onMessageBodyLinkClicked = {},
-                onOpenMessageBodyLink = {}
+                onOpenMessageBodyLink = {},
+                onReplyClick = {},
+                onDeleteClick = {}
             )
         }
     }
