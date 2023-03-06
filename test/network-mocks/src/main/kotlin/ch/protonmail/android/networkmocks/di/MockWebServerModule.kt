@@ -43,9 +43,8 @@ object MockWebServerModule {
 
     @Provides
     @Singleton
-    fun provideMockWebServer(@TestServerSSLSocketFactory socketFactory: SSLSocketFactory): MockWebServer {
-        return MockWebServer().apply { useHttps(socketFactory, false) }
-    }
+    fun provideMockWebServer(@TestServerSSLSocketFactory socketFactory: SSLSocketFactory): MockWebServer =
+        MockWebServer().apply { useHttps(socketFactory, false) }
 
     @Provides
     @Reusable
