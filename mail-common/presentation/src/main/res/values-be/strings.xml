@@ -18,12 +18,12 @@
   -->
 <resources>
   <string name="expiration_expired">Пратэрмінавана</string>
-  <string name="expiration_days_arg">%dд</string>
+  <string name="expiration_days_arg">%dдз</string>
   <string name="expiration_hours_arg">%dг</string>
   <string name="expiration_minutes_arg">%dхв</string>
   <string name="retry">Паўтарыць</string>
   <string name="toolbar_back_content_description">Вярнуцца на папярэдні экран</string>
-  <string name="x_error_not_logged_in">Уваход не выкананы</string>
+  <string name="x_error_not_logged_in">Not signed in</string>
   <string name="action_reply_content_description">Адказаць</string>
   <string name="action_reply_all_content_description">Адказаць усім</string>
   <string name="action_forward_content_description">Пераслаць</string>

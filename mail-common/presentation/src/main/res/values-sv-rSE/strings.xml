@@ -18,12 +18,12 @@
   -->
 <resources>
   <string name="expiration_expired">Löpt ut</string>
-  <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dt</string>
-  <string name="expiration_minutes_arg">%d m</string>
+  <string name="expiration_days_arg">%d d</string>
+  <string name="expiration_hours_arg">%d t</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Försök igen</string>
   <string name="toolbar_back_content_description">Tillbaka till föregående skärm</string>
-  <string name="x_error_not_logged_in">Ej inloggad</string>
+  <string name="x_error_not_logged_in">Not signed in</string>
   <string name="action_reply_content_description">Svara</string>
   <string name="action_reply_all_content_description">Svara alla</string>
   <string name="action_forward_content_description">Vidarebefordra</string>
@@ -33,7 +33,7 @@
   <string name="action_unstar_content_description">Ta bort stjärnmärkning</string>
   <string name="action_label_content_description">Märk som</string>
   <string name="action_move_content_description">Flytta till</string>
-  <string name="action_trash_content_description">Papperskorg</string>
+  <string name="action_trash_content_description">Lägg i papperskorg</string>
   <string name="action_delete_content_description">Ta bort</string>
   <string name="action_archive_content_description">Arkivera</string>
   <string name="action_spam_content_description">Skräppost</string>
@@ -45,7 +45,7 @@
   <string name="action_report_phishing_content_description">Rapportera nätfiske</string>
   <string name="action_remind_content_description">Påminn mig</string>
   <string name="action_save_pdf_content_description">Spara som PDF</string>
-  <string name="action_sender_emails_content_description">Ställ in åtgärder för framtida e-postmeddelanden från denna avsändare</string>
+  <string name="action_sender_emails_content_description">Ställ in åtgärd för framtida e-postmeddelanden från denna avsändare</string>
   <string name="action_save_attachments_content_description">Spara bilagorna</string>
   <string name="common_error_loading_actions">Misslyckades ladda åtgärder</string>
   <string name="yesterday">Igår</string>

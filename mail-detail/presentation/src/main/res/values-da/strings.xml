@@ -27,8 +27,8 @@
   </plurals>
   <string name="more_button_content_description">Mere</string>
   <string name="to">Til:</string>
-  <string name="cc">Cc:</string>
-  <string name="bcc">Bcc:</string>
+  <string name="cc">CC:</string>
+  <string name="bcc">BCC:</string>
   <string name="hide_details">Skjul detaljer</string>
   <string name="undisclosed_recipients">Ikke-oplyste modtagere</string>
   <string name="error_mark_as_unread_failed">Markering som ulæst mislykkedes. Prøv igen.</string>

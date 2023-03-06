@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">App-sprog</string>
   <string name="mail_settings_combined_contacts">Kombinerede kontakter</string>
   <string name="mail_settings_swipe_actions">Strygehandlinger</string>
-  <string name="mail_settings_combined_contacts_hint">Slå denne funktion til for at autoudfylde e-mailadresser vha. kontakter fra alle dine indloggede konti.</string>
+  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
   <string name="mail_settings_alternative_routing_hint">Hvis Proton-websteder er blokeret, giver denne indstilling appen mulighed for at prøve alternativ netværksrouting for at nå Proton, hvilket kan være nyttige til at omgå firewalls eller ved netværksproblemer. Vi anbefaler at holde denne indstilling slået til for større pålidelighed.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Systemstandard</string>
@@ -38,7 +38,7 @@
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">Ingen oplysninger tilgængelige</string>
   <string name="mail_settings_enabled">Aktiveret</string>
-  <string name="mail_settings_disabled">Deativeret</string>
+  <string name="mail_settings_disabled">Deaktiveret</string>
   <string name="mail_settings_allowed">Tilladt</string>
   <string name="mail_settings_denied">Afvist</string>
   <string name="mail_settings_auto_detect">Autoregistrér</string>
@@ -48,7 +48,7 @@
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abonnement</string>
   <string name="mail_settings_password_management">Adgangskodehåndtering</string>
-  <string name="mail_settings_recovery_email">E-mail til gendanelse</string>
+  <string name="mail_settings_recovery_email">E-mail til gendannelse</string>
   <string name="mail_settings_mailbox_size">Postkassestørrelse</string>
   <string name="mail_settings_addresses">Adresser</string>
   <string name="mail_settings_default_email_address">Standard e-mailadresse</string>

@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Tutlayt n usnas</string>
   <string name="mail_settings_combined_contacts">Inermisen uddisen</string>
   <string name="mail_settings_swipe_actions">Tigawin n uḍummu</string>
-  <string name="mail_settings_combined_contacts_hint">Rmed tawuri-a i usemmed awurman n tansiwin n yimayl s useqdec n yinermisen n imiḍanen-inek•inem akk yeqqnen.</string>
+  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
   <string name="mail_settings_alternative_routing_hint">Mayella weḥlen yismal n Proton, aɣewwaṛ-a ad yeǧǧ asnas ad yeɛreḍ asiweḍ-nniḍen n uẓeṭṭa akken ad yaweḍ ɣer Proton, d ayen ara yelhun i uɛeddi n yiɣerban n tmes neɣ uguren n uẓeṭṭa: Axir ad teǧǧeḍ aɣewwaṛ-a yermed i wugar n teflest.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Anagraw amezwar</string>

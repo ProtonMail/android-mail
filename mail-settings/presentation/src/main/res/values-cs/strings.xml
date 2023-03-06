@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Jazyk aplikace</string>
   <string name="mail_settings_combined_contacts">Sloučené kontakty</string>
   <string name="mail_settings_swipe_actions">Akce po přejetí prstem</string>
-  <string name="mail_settings_combined_contacts_hint">Zapněte tuto funkci pro automatické vyplňování e-mailových adres pomocí kontaktů ze všech vašich přihlášených účtů.</string>
+  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
   <string name="mail_settings_alternative_routing_hint">V případě, že jsou stránky Proton blokovány, toto nastavení umožňuje aplikaci vyzkoušet alternativní síťové směrování na Proton, což může být užitečné pro obejítí bran firewall nebo problémům se sítí: pro větší spolehlivost doporučujeme ponechat toto nastavení zapnuté.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Podle systému</string>

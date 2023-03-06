@@ -27,7 +27,7 @@
   </plurals>
   <string name="more_button_content_description">Más</string>
   <string name="to">Para:</string>
-  <string name="cc">Cc:</string>
+  <string name="cc">CC:</string>
   <string name="bcc">Cco:</string>
   <string name="hide_details">Ocultar detalles</string>
   <string name="undisclosed_recipients">Destinatarios ocultos</string>

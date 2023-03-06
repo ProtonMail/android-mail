@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">App-språk</string>
   <string name="mail_settings_combined_contacts">Kombinerade kontakter</string>
   <string name="mail_settings_swipe_actions">Svepåtgärder</string>
-  <string name="mail_settings_combined_contacts_hint">Slå på denna funktion för att automatiskt fylla i e-postadresser med kontakter från alla dina inloggade konton.</string>
+  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
   <string name="mail_settings_alternative_routing_hint">Om Proton-webbplatser blockeras tillåter denna inställning appen att prova alternativ nätverksrouting för att nå Proton, vilket kan vara användbart för att kringgå brandväggar eller nätverksproblem: Vi rekommenderar att du håller denna inställning på för större tillförlitlighet.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Systemstandard</string>
@@ -49,13 +49,13 @@
   <string name="mail_settings_subscription">Prenumeration</string>
   <string name="mail_settings_password_management">Lösenordshantering</string>
   <string name="mail_settings_recovery_email">E-post för återställning</string>
-  <string name="mail_settings_mailbox_size">Brevlåda storlek</string>
+  <string name="mail_settings_mailbox_size">Brevlådestorlek</string>
   <string name="mail_settings_addresses">Adresser</string>
   <string name="mail_settings_default_email_address">Standard e-postadress</string>
-  <string name="mail_settings_display_name_and_signature">Visa namn och signatur</string>
+  <string name="mail_settings_display_name_and_signature">Visningsnamn och signatur</string>
   <string name="mail_settings_mailbox">Brevlåda</string>
   <string name="mail_settings_privacy">Integritet</string>
-  <string name="mail_settings_search_message_content">Sök efter innehåll i meddelande</string>
+  <string name="mail_settings_search_message_content">Sök meddelandeinnehåll</string>
   <string name="mail_settings_labels_and_folders">Etiketter och mappar</string>
   <string name="mail_settings_local_storage">Lokalt lagringsutrymme</string>
   <string name="mail_settings_snooze">Skjut upp</string>

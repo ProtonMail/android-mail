@@ -27,7 +27,7 @@
   </plurals>
   <string name="more_button_content_description">Altro</string>
   <string name="to">A:</string>
-  <string name="cc">Cc:</string>
+  <string name="cc">CC:</string>
   <string name="bcc">Ccn:</string>
   <string name="hide_details">Nascondi dettagli</string>
   <string name="undisclosed_recipients">Destinatari nascosti</string>

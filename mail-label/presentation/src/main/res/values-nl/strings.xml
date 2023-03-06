@@ -21,7 +21,7 @@
   <string name="label_title_drafts">Concepten</string>
   <string name="label_title_sent">Verzonden</string>
   <string name="label_title_starred">Met ster</string>
-  <string name="label_title_archive">Archiveren</string>
+  <string name="label_title_archive">Archief</string>
   <string name="label_title_spam">Spam</string>
   <string name="label_title_trash">Prullenbak</string>
   <string name="label_title_outbox">Postvak uit</string>

@@ -22,9 +22,11 @@
   <string name="drawer_title_subscription">Předplatné</string>
   <string name="mailbox_toolbar_compose_button_content_description">Napsat novou zprávu</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončit režim výběru</string>
-  <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Nabídka</string>
   <string name="mailbox_toolbar_search_button_content_description">Vyhledat</string>
   <string name="mailbox_toolbar_selected_count">Vybráno: %d</string>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text"/>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d nepřečtená</item>
     <item quantity="few">%d nepřečtené</item>

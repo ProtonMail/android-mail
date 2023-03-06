@@ -20,7 +20,7 @@
   <string name="label_title_inbox">Входящие</string>
   <string name="label_title_drafts">Черновики</string>
   <string name="label_title_sent">Отправлено</string>
-  <string name="label_title_starred">Со звездочкам</string>
+  <string name="label_title_starred">Избрано</string>
   <string name="label_title_archive">Архивные</string>
   <string name="label_title_spam">Спам</string>
   <string name="label_title_trash">Корзина</string>

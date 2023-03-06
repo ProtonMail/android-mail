@@ -18,12 +18,12 @@
   -->
 <resources>
   <string name="expiration_expired">Термін дії закінчився</string>
-  <string name="expiration_days_arg">%dд</string>
-  <string name="expiration_hours_arg">%dгод</string>
-  <string name="expiration_minutes_arg">%dхв</string>
+  <string name="expiration_days_arg">%d д</string>
+  <string name="expiration_hours_arg">%d год</string>
+  <string name="expiration_minutes_arg">%d хв</string>
   <string name="retry">Повторити</string>
   <string name="toolbar_back_content_description">Повернутися на попередній екран</string>
-  <string name="x_error_not_logged_in">Ви не увійшли</string>
+  <string name="x_error_not_logged_in">Not signed in</string>
   <string name="action_reply_content_description">Відповісти</string>
   <string name="action_reply_all_content_description">Відповісти всім</string>
   <string name="action_forward_content_description">Переслати</string>

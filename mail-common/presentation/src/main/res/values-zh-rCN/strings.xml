@@ -18,12 +18,12 @@
   -->
 <resources>
   <string name="expiration_expired">已过期</string>
-  <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dh</string>
-  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_days_arg">%d 天</string>
+  <string name="expiration_hours_arg">%d 小时</string>
+  <string name="expiration_minutes_arg">%d 分钟</string>
   <string name="retry">重试</string>
   <string name="toolbar_back_content_description">返回前一界面</string>
-  <string name="x_error_not_logged_in">未登录</string>
+  <string name="x_error_not_logged_in">Not signed in</string>
   <string name="action_reply_content_description">回复</string>
   <string name="action_reply_all_content_description">回复所有人</string>
   <string name="action_forward_content_description">转发</string>

@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Tungumál forrits</string>
   <string name="mail_settings_combined_contacts">Sameinaðir tengiliðir</string>
   <string name="mail_settings_swipe_actions">Aðgerðir við stroku</string>
-  <string name="mail_settings_combined_contacts_hint">Kveiktu á þessum eiginleika til að sjálfvirkt klára netföng með því að nota tengiliði úr öllum þeim notendaaðgöngum sem þú ert skráður inn í.</string>
+  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
   <string name="mail_settings_alternative_routing_hint">Ef Proton vefsvæði eru lokuð gerir þessi stilling forritinu kleift að prófa aðra netleið til að ná til Proton, sem getur verið gagnlegt til að komast framhjá eldveggjum eða netvandamálum: Við mælum með að hafa þessa stillingu á til að fá meiri áreiðanleika.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Sjálfgefið af kerfinu</string>

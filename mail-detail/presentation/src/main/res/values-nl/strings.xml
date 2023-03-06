@@ -53,6 +53,6 @@
   <string name="bottom_sheet_label_as_title">Label als...</string>
   <string name="error_relabel_message_failed">Kon het bericht niet opnieuw labelen. Probeer opnieuw.</string>
   <string name="error_relabel_conversation_failed">Kon het gesprek niet opnieuw labelen. Probeer opnieuw.</string>
-  <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
+  <string name="please_go_back_online_to_load_messages">U bent offline. Ga terug online om berichten te laden</string>
   <string name="decryption_error">Decoderen van bericht mislukt.</string>
 </resources>

@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Idioma de la aplicación</string>
   <string name="mail_settings_combined_contacts">Contactos combinados</string>
   <string name="mail_settings_swipe_actions">Gestos de deslizamiento</string>
-  <string name="mail_settings_combined_contacts_hint">Activa esta función para completar automáticamente las direcciones de correo electrónico usando los contactos de todas tus cuentas conectadas.</string>
+  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
   <string name="mail_settings_alternative_routing_hint">En caso de que los servicios de Proton estén bloqueados, esta configuración permite a la aplicación intentar un enrutamiento alternativo para llegar a Proton, lo que puede ser útil para evitar los cortafuegos o los problemas de red. Recomendamos mantener esta configuración activada para una mayor fiabilidad.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Igual que el sistema</string>

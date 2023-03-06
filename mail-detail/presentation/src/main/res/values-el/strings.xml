@@ -41,7 +41,7 @@
   <string name="error_move_message_failed">Η μετακινηση μυνημάτων απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="conversation_moved_to_trash">Η συνομιλία μετακινήθηκε στα Διαγραμμένα</string>
   <string name="conversation_moved_to_selected_destination">Η συνομιλία μετακινήθηκε στο %1$s</string>
-  <string name="conversation_moved_to_archive">Conversation moved to archive</string>
+  <string name="conversation_moved_to_archive">Η συνομιλία μετακινήθηκε στα Αρχειοθετημένα</string>
   <string name="error_move_conversation_failed">Η μετακινηση συνομιλίας απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_loading_message">Κάτι πήγε στραβά, παρακαλούμε δοκιμάστε ξανά.</string>
   <string name="error_offline_loading_message">Βρίσκεστε εκτός σύνδεσης. Για εμφάνιση του περιεχομένου αυτού του μηνύματος, απαιτείται σύνδεση στο διαδίκτυο.</string>
@@ -52,7 +52,7 @@
   <string name="bottom_sheet_archive_action">Επίσης αρχειοθέτηση;</string>
   <string name="bottom_sheet_label_as_title">Ορίστε ετικέτα...</string>
   <string name="error_relabel_message_failed">Σφάλμα κατά την αλλαγή ετικέτας μηνύματος. Παρακαλώ προσπαθήστε ξανά</string>
-  <string name="error_relabel_conversation_failed">Failed to relabel conversation. Please retry</string>
+  <string name="error_relabel_conversation_failed">Σφάλμα κατά την αλλαγή ετικέτας συνομιλίας. Παρακαλώ προσπαθήστε ξανά</string>
   <string name="please_go_back_online_to_load_messages">Είσαστε αποσυνδεμένοι. Παρακαλούμε συνδεθήτε ξανά για να φορτώσετε μηνύματα</string>
   <string name="decryption_error">Αποτυχία αποκρυπτογράφησης μηνύματος.</string>
 </resources>

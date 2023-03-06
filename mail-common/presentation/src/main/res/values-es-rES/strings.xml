@@ -18,12 +18,12 @@
   -->
 <resources>
   <string name="expiration_expired">Expirado</string>
-  <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dh</string>
-  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_days_arg">%d d</string>
+  <string name="expiration_hours_arg">%d h</string>
+  <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Reintentar</string>
   <string name="toolbar_back_content_description">Volver a la pantalla anterior</string>
-  <string name="x_error_not_logged_in">Sin iniciar sesión</string>
+  <string name="x_error_not_logged_in">Not signed in</string>
   <string name="action_reply_content_description">Responder</string>
   <string name="action_reply_all_content_description">Responder a todos</string>
   <string name="action_forward_content_description">Reenviar</string>

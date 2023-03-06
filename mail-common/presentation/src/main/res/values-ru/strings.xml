@@ -17,20 +17,20 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Срок действия истек</string>
-  <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dh</string>
-  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_expired">Истёкший</string>
+  <string name="expiration_days_arg">%d д.</string>
+  <string name="expiration_hours_arg">%d ч.</string>
+  <string name="expiration_minutes_arg">%d мин.</string>
   <string name="retry">Повторить</string>
   <string name="toolbar_back_content_description">Обратно к предыдущему экрану</string>
-  <string name="x_error_not_logged_in">Вход не выполнен</string>
+  <string name="x_error_not_logged_in">Not signed in</string>
   <string name="action_reply_content_description">Ответить</string>
   <string name="action_reply_all_content_description">Ответить всем</string>
   <string name="action_forward_content_description">Переслать</string>
   <string name="action_mark_read_content_description">Отметить как прочитанное</string>
   <string name="action_mark_unread_content_description">Отметить как непрочитанное</string>
-  <string name="action_star_content_description">Добавить в Избранное</string>
-  <string name="action_unstar_content_description">Снять звездочку</string>
+  <string name="action_star_content_description">Отметить звёздочкой</string>
+  <string name="action_unstar_content_description">Снять звёздочку</string>
   <string name="action_label_content_description">Пометить как</string>
   <string name="action_move_content_description">Переместить в</string>
   <string name="action_trash_content_description">Корзина</string>
@@ -38,7 +38,7 @@
   <string name="action_archive_content_description">Архивировать</string>
   <string name="action_spam_content_description">Спам</string>
   <string name="action_view_in_light_mode_content_description">Посмотреть сообщение в светлом режиме</string>
-  <string name="action_view_in_dark_mode_content_description">Посмотреть сообщение в темном режиме</string>
+  <string name="action_view_in_dark_mode_content_description">Посмотреть сообщение в тёмном режиме</string>
   <string name="action_print_content_description">Распечатать</string>
   <string name="action_view_headers_content_description">Посмотреть заголовки</string>
   <string name="action_view_html_content_description">Просмотреть HTML</string>

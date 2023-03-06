@@ -20,11 +20,13 @@
   <string name="drawer_title_more">Еще</string>
   <string name="drawer_title_contacts">Контакты</string>
   <string name="drawer_title_subscription">Подписка</string>
-  <string name="mailbox_toolbar_compose_button_content_description">Написать новое сообщение</string>
-  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Выход из режима выбора</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Создать новое сообщение</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Завершение режима выбора</string>
   <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
   <string name="mailbox_toolbar_search_button_content_description">Поиск</string>
   <string name="mailbox_toolbar_selected_count">Выбрано %d</string>
+  <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
+  <string name="filter_unread_button_text"/>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d непрочитанное</item>
     <item quantity="few">%d непрочитанных</item>

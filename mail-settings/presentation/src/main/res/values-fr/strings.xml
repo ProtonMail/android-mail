@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Langue de l\'application</string>
   <string name="mail_settings_combined_contacts">Contacts combinés</string>
   <string name="mail_settings_swipe_actions">Actions de balayage</string>
-  <string name="mail_settings_combined_contacts_hint">Activez cette fonctionnalité pour compléter automatiquement les adresses électroniques en utilisant les contacts de tous vos comptes connectés.</string>
+  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
   <string name="mail_settings_alternative_routing_hint">En cas de blocage des sites Proton, ce paramètre permet à l\'application d\'essayer un routage réseau alternatif pour atteindre Proton, ce qui peut être utile pour contourner les pare-feux ou les problèmes de réseau : nous vous recommandons de conserver ce paramètre activé pour plus de fiabilité.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Identique au système</string>
@@ -48,10 +48,10 @@
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abonnement</string>
   <string name="mail_settings_password_management">Gestion des mots de passe</string>
-  <string name="mail_settings_recovery_email">Adresse électronique de récupération</string>
+  <string name="mail_settings_recovery_email">E-mail de récupération</string>
   <string name="mail_settings_mailbox_size">Taille de la messagerie</string>
   <string name="mail_settings_addresses">Adresses</string>
-  <string name="mail_settings_default_email_address">Adresse électronique par défaut</string>
+  <string name="mail_settings_default_email_address">Adresse e-mail par défaut</string>
   <string name="mail_settings_display_name_and_signature">Nom d\'affichage et signature</string>
   <string name="mail_settings_mailbox">Messagerie</string>
   <string name="mail_settings_privacy">Confidentialité</string>
@@ -62,7 +62,7 @@
   <string name="mail_settings_snooze_notifications">Mettre en pause les notifications</string>
   <string name="mail_settings_conversation_mode">Mode conversation</string>
   <string name="mail_settings_not_set">Non défini</string>
-  <string name="mail_settings_conversation_mode_hint">Regroupez les e-mails d\'une même conversation dans votre boîte de réception ou affichez-les séparément</string>
+  <string name="mail_settings_conversation_mode_hint">Regroupez les messages d\'une même conversation dans votre boîte de réception ou affichez-les séparément.</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Actions de balayage</string>
   <string name="mail_settings_swipe_actions_subtitle">Configurez des gestes de balayage pour accéder aux actions les plus utilisées.</string>
