@@ -16,83 +16,92 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
-
 package ch.protonmail.android.maildetail.presentation.sample
 
+import java.util.UUID
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
+import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
+import kotlinx.collections.immutable.persistentListOf
 
 object ConversationDetailMessageUiModelSample {
 
-    val AugWeatherForecast = build(
+    val AugWeatherForecast = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
-    ).collapse()
+    )
 
-    val EmptyDraft = build(
+    val AugWeatherForecastExpanded = buildExpanded(
+        messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
+    )
+
+    val EmptyDraft = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.EmptyDraft,
         avatar = AvatarUiModel.DraftIcon
-    ).collapse()
+    )
 
-    val ExpiringInvitation = build(
+    val ExpiringInvitation = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.ExpiringInvitation,
         expiration = TextUiModel("12h")
-    ).collapse()
+    )
 
-    val InvoiceForwarded = build(
+    val InvoiceForwarded = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.Invoice,
         forwardedIcon = ConversationDetailMessageUiModel.ForwardedIcon.Forwarded
-    ).collapse()
+    )
 
-    val InvoiceReplied = build(
+    val InvoiceReplied = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.Invoice,
         repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.Replied
-    ).collapse()
+    )
 
-    val InvoiceRepliedAll = build(
+    val InvoiceRepliedAll = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.Invoice,
         repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
-    ).collapse()
+    )
 
-    val LotteryScam = build(
+    val LotteryScam = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.LotteryScam
-    ).collapse()
+    )
 
-    val SepWeatherForecast = build(
+    val SepWeatherForecast = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.SepWeatherForecast
-    ).collapse()
+    )
 
-    val StarredInvoice = build(
+    val StarredInvoice = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.Invoice,
         message = MessageWithLabelsSample.Invoice.message,
         isStarred = true
-    ).collapse()
+    )
 
-    val UnreadInvoice = build(
+    val UnreadInvoice = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.UnreadInvoice
-    ).collapse()
+    )
 
-    val InvoiceWithTwoLabels = build(
+    val InvoiceWithTwoLabels = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.InvoiceWithTwoLabels
-    ).collapse()
+    )
 
-    val InvoiceWithLabel = build(
+    val InvoiceWithLabel = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel
-    ).collapse()
+    )
 
-    val InvoiceWithoutLabels = build(
+    val InvoiceWithLabelExpanded = buildExpanded(
+        messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel
+    )
+
+    val InvoiceWithoutLabels = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels
-    ).collapse()
+    )
 
-    val AnotherInvoiceWithoutLabels = build(
+    val AnotherInvoiceWithoutLabels = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.AnotherInvoiceWithoutLabels
-    ).collapse()
+    )
 
-    private fun build(
+    private fun buildCollapsed(
         messageWithLabels: MessageWithLabels = MessageWithLabelsSample.build(),
         message: Message = messageWithLabels.message,
         avatar: AvatarUiModel = AvatarUiModel.ParticipantInitial(message.sender.name.substring(0, 1)),
@@ -101,7 +110,7 @@ object ConversationDetailMessageUiModelSample {
             ConversationDetailMessageUiModel.ForwardedIcon.None,
         repliedIcon: ConversationDetailMessageUiModel.RepliedIcon = ConversationDetailMessageUiModel.RepliedIcon.None,
         isStarred: Boolean = false
-    ): ConversationDetailMessageUiModel = ConversationDetailMessageUiModel.Collapsed(
+    ): ConversationDetailMessageUiModel.Collapsed = ConversationDetailMessageUiModel.Collapsed(
         avatar = avatar,
         expiration = expiration,
         forwardedIcon = forwardedIcon,
@@ -112,34 +121,35 @@ object ConversationDetailMessageUiModelSample {
         repliedIcon = repliedIcon,
         sender = message.sender.name,
         shortTime = TextUiModel("10:00"),
-        labels = emptyList()
+        labels = emptyList(),
+        messageId = message.messageId
     )
 
-    fun ConversationDetailMessageUiModel.expand() = ConversationDetailMessageUiModel.Expanded(
-        avatar = avatar,
-        expiration = expiration,
-        forwardedIcon = forwardedIcon,
-        hasAttachments = hasAttachments,
-        isStarred = isStarred,
-        isUnread = isUnread,
-        locationIcon = locationIcon,
-        repliedIcon = repliedIcon,
-        sender = sender,
-        shortTime = shortTime,
-        labels = emptyList()
-    )
-
-    fun ConversationDetailMessageUiModel.collapse() = ConversationDetailMessageUiModel.Collapsed(
-        avatar = avatar,
-        expiration = expiration,
-        forwardedIcon = forwardedIcon,
-        hasAttachments = hasAttachments,
-        isStarred = isStarred,
-        isUnread = isUnread,
-        locationIcon = locationIcon,
-        repliedIcon = repliedIcon,
-        sender = sender,
-        shortTime = shortTime,
-        emptyList()
+    private fun buildExpanded(
+        messageWithLabels: MessageWithLabels = MessageWithLabelsSample.build(),
+        message: Message = messageWithLabels.message,
+        avatar: AvatarUiModel = AvatarUiModel.ParticipantInitial(message.sender.name.substring(0, 1)),
+        isStarred: Boolean = false
+    ): ConversationDetailMessageUiModel.Expanded = ConversationDetailMessageUiModel.Expanded(
+        isUnread = message.unread,
+        messageId = message.messageId,
+        messageDetailHeaderUiModel = MessageDetailHeaderUiModelSample.build(
+            avatar = avatar,
+            sender = ParticipantUiModel(
+                participantName = message.sender.name,
+                participantAddress = message.sender.address,
+                participantPadlock = 0
+            ),
+            isStarred = isStarred,
+            location = MessageLocationUiModelSample.AllMail,
+            time = TextUiModel("10:00"),
+            extendedTime = TextUiModel("10:00"),
+            allRecipients = TextUiModel("Recipients"),
+            toRecipients = emptyList(),
+            ccRecipients = emptyList(),
+            bccRecipients = emptyList(),
+            labels = persistentListOf()
+        ),
+        messageBodyUiModel = MessageDetailBodyUiModelSample.build(UUID.randomUUID().toString()),
     )
 }

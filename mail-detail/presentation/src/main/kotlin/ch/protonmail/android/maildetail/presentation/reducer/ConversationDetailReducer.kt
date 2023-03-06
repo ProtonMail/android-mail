@@ -29,6 +29,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailSta
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import javax.inject.Inject
 
 class ConversationDetailReducer @Inject constructor(
@@ -41,15 +42,19 @@ class ConversationDetailReducer @Inject constructor(
     fun newStateFrom(
         currentState: ConversationDetailState,
         operation: ConversationDetailOperation
-    ): ConversationDetailState = currentState.copy(
-        conversationState = currentState.toNewConversationState(operation),
-        messagesState = currentState.toNewMessageState(operation),
-        bottomBarState = currentState.toNewBottomBarState(operation),
-        bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
-        error = currentState.toErrorState(operation),
-        exitScreenEffect = currentState.toExitState(operation),
-        exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation)
-    )
+    ): ConversationDetailState {
+        return currentState.copy(
+            conversationState = currentState.toNewConversationState(operation),
+            messagesState = currentState.toNewMessageState(operation),
+            bottomBarState = currentState.toNewBottomBarState(operation),
+            bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
+            error = currentState.toErrorState(operation),
+            exitScreenEffect = currentState.toExitState(operation),
+            exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation),
+            openMessageBodyLinkEffect = currentState.toOpenMessageBodyLinkState(operation),
+            scrollToMessage = currentState.toScrollToMessageState(operation)
+        )
+    }
 
     private fun ConversationDetailState.toNewConversationState(operation: ConversationDetailOperation) =
         if (operation is ConversationDetailOperation.AffectingConversation) {
@@ -81,6 +86,7 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
                 is ConversationDetailViewAction.RequestLabelAsBottomSheet,
                 is ConversationDetailViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
+
                 is ConversationDetailViewAction.LabelAsConfirmed,
                 is ConversationDetailViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
@@ -89,29 +95,42 @@ class ConversationDetailReducer @Inject constructor(
             bottomSheetState
         }
 
-    private fun ConversationDetailState.toErrorState(operation: ConversationDetailOperation) =
-        if (operation is ConversationDetailOperation.AffectingErrorBar) {
+    private fun ConversationDetailState.toErrorState(operation: ConversationDetailOperation): Effect<TextUiModel> {
+        return if (operation is ConversationDetailOperation.AffectingErrorBar) {
             when (operation) {
                 is ConversationDetailEvent.ErrorAddStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
                 is ConversationDetailEvent.ErrorRemoveStar -> Effect.of(
                     TextUiModel(R.string.error_unstar_operation_failed)
                 )
+
                 is ConversationDetailEvent.ErrorMarkingAsUnread -> Effect.of(
                     TextUiModel(R.string.error_mark_as_unread_failed)
                 )
+
                 is ConversationDetailEvent.ErrorMovingToTrash -> Effect.of(
                     TextUiModel(R.string.error_move_to_trash_failed)
                 )
+
                 is ConversationDetailEvent.ErrorMovingConversation -> Effect.of(
                     TextUiModel(R.string.error_move_conversation_failed)
                 )
+
                 is ConversationDetailEvent.ErrorLabelingConversation -> Effect.of(
                     TextUiModel(R.string.error_relabel_message_failed)
+                )
+
+                is ConversationDetailEvent.ErrorDecryptingMessage -> Effect.of(
+                    TextUiModel(R.string.decryption_error)
+                )
+
+                is ConversationDetailEvent.ErrorRetrievingMessage -> Effect.of(
+                    TextUiModel(R.string.detail_error_retrieving_message_body)
                 )
             }
         } else {
             error
         }
+    }
 
     private fun ConversationDetailState.toExitState(operation: ConversationDetailOperation): Effect<Unit> =
         when (operation) {
@@ -129,10 +148,26 @@ class ConversationDetailReducer @Inject constructor(
                 operation.mailLabelText
             )
         )
+
         is ConversationDetailViewAction.LabelAsConfirmed -> when (operation.archiveSelected) {
             true -> Effect.of(TextUiModel(R.string.conversation_moved_to_archive))
             false -> exitScreenWithMessageEffect
         }
+
         else -> exitScreenWithMessageEffect
+    }
+
+    private fun ConversationDetailState.toOpenMessageBodyLinkState(
+        operation: ConversationDetailOperation
+    ): Effect<String> = when (operation) {
+        is ConversationDetailViewAction.MessageBodyLinkClicked -> Effect.of(operation.url)
+        else -> openMessageBodyLinkEffect
+    }
+
+    private fun ConversationDetailState.toScrollToMessageState(
+        operation: ConversationDetailOperation
+    ): Effect<MessageId> = when (operation) {
+        is ConversationDetailViewAction.RequestScrollTo -> Effect.of(operation.messageId)
+        else -> scrollToMessage
     }
 }

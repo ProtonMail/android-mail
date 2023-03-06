@@ -24,20 +24,26 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.core.NonEmptyList
 import arrow.core.getOrElse
-import arrow.core.getOrHandle
+import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
@@ -45,9 +51,28 @@ import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.CollapseDecryptedMessage
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ExpandDecryptedMessage
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.CollapseMessage
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.DismissBottomSheet
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ExpandMessage
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.LabelAsConfirmed
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.LabelAsToggleAction
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.MarkUnread
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.MessageBodyLinkClicked
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.MoveToDestinationConfirmed
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.MoveToDestinationSelected
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestLabelAsBottomSheet
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestMoveToBottomSheet
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.Star
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.Trash
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.UnStar
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
@@ -60,8 +85,12 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinatio
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -70,15 +99,18 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
-import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -102,12 +134,17 @@ class ConversationDetailViewModel @Inject constructor(
     private val reducer: ConversationDetailReducer,
     private val starConversation: StarConversation,
     private val unStarConversation: UnStarConversation,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val getDecryptedMessageBody: GetDecryptedMessageBody,
+    private val markMessageAsRead: MarkMessageAsRead,
+    private val observeMessageWithLabels: ObserveMessageWithLabels,
+    private val getContacts: GetContacts,
+    @IODispatcher
+    private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
     private val mutableDetailState = MutableStateFlow(initialState)
-
     private val conversationId = requireConversationId()
 
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
@@ -119,21 +156,27 @@ class ConversationDetailViewModel @Inject constructor(
         observeBottomBarActions(conversationId)
     }
 
+    @OptIn(FlowPreview::class)
     fun submit(action: ConversationDetailViewAction) {
         when (action) {
-            is ConversationDetailViewAction.Star -> starConversation()
-            is ConversationDetailViewAction.UnStar -> unStarConversation()
-            is ConversationDetailViewAction.MarkUnread -> markAsUnread()
-            is ConversationDetailViewAction.Trash -> moveConversationToTrash()
-            is ConversationDetailViewAction.DismissBottomSheet -> dismissBottomSheet(action)
-            is ConversationDetailViewAction.RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
-            is ConversationDetailViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
-            is ConversationDetailViewAction.MoveToDestinationConfirmed ->
+            is Star -> starConversation()
+            is UnStar -> unStarConversation()
+            is MarkUnread -> markAsUnread()
+            is Trash -> moveConversationToTrash()
+            is DismissBottomSheet -> dismissBottomSheet(action)
+            is RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
+            is MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
+            is MoveToDestinationConfirmed ->
                 onBottomSheetDestinationConfirmed(action.mailLabelText)
-            is ConversationDetailViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
-            is ConversationDetailViewAction.LabelAsToggleAction -> onLabelToggled(action.labelId)
-            is ConversationDetailViewAction.LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
-        }.exhaustive
+
+            is RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
+            is LabelAsToggleAction -> onLabelToggled(action.labelId)
+            is LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
+            is ExpandMessage -> onDecryptAndExpandMessage(action.messageId)
+            is CollapseMessage -> onCollapseMessage(action.messageId)
+            is MessageBodyLinkClicked -> onMessageBodyLinkClicked(action)
+            is RequestScrollTo -> onRequestScrollTo(action)
+        }
     }
 
     private fun observeConversationMetadata(conversationId: ConversationId) {
@@ -166,14 +209,38 @@ class ConversationDetailViewModel @Inject constructor(
                     Timber.i("Failed getting contacts for displaying initials. Fallback to display name")
                     emptyList()
                 }
-                val messages = messagesEither.getOrHandle {
+                val messages = messagesEither.getOrElse {
                     return@combine ConversationDetailEvent.ErrorLoadingMessages
                 }
-                val messagesUiModels = messages.map { conversationMessageMapper.toUiModel(it, contacts) }
+                val messagesUiModels = messages.map { messageWithLabels ->
+                    when (val currentMessage = findCurrentStateOfMessage(messageWithLabels.message.messageId)) {
+                        is ConversationDetailMessageUiModel.Expanded ->
+                            conversationMessageMapper.toUiModel(
+                                messageWithLabels,
+                                contacts,
+                                DecryptedMessageBody(
+                                    currentMessage.messageBodyUiModel.messageBody,
+                                    MimeType.from(currentMessage.messageBodyUiModel.mimeType.value)
+                                ),
+                            )
+
+                        else -> conversationMessageMapper.toUiModel(
+                            messageWithLabels,
+                            contacts
+                        )
+                    }
+                }
                 ConversationDetailEvent.MessagesData(messagesUiModels)
             }
         }.onEach(::emitNewStateFrom)
             .launchIn(viewModelScope)
+    }
+
+    private fun findCurrentStateOfMessage(messageId: MessageId): ConversationDetailMessageUiModel? {
+        val messagesState = (state.value as? ConversationDetailState)
+            ?.messagesState as? ConversationDetailsMessagesState.Data
+
+        return messagesState?.messages?.firstOrNull { it.messageId == messageId }
     }
 
     private fun observeBottomBarActions(conversationId: ConversationId) {
@@ -242,7 +309,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun onLabelToggled(labelId: LabelId) {
-        viewModelScope.launch { emitNewStateFrom(ConversationDetailViewAction.LabelAsToggleAction(labelId)) }
+        viewModelScope.launch { emitNewStateFrom(LabelAsToggleAction(labelId)) }
     }
 
     private fun onLabelAsConfirmed(archiveSelected: Boolean) {
@@ -279,7 +346,7 @@ class ConversationDetailViewModel @Inject constructor(
                     Timber.e("Error while relabeling conversation: $it")
                     ConversationDetailEvent.ErrorLabelingConversation
                 },
-                ifRight = { ConversationDetailViewAction.LabelAsConfirmed(archiveSelected) }
+                ifRight = { LabelAsConfirmed(archiveSelected) }
             )
             emitNewStateFrom(operation)
         }
@@ -334,14 +401,15 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private suspend fun emitNewStateFrom(event: ConversationDetailOperation) {
-        mutableDetailState.emit(reducer.newStateFrom(state.value, event))
+        val newState = reducer.newStateFrom(state.value, event)
+        mutableDetailState.emit(newState)
     }
 
     private fun markAsUnread() {
         primaryUserId.mapLatest { userId ->
             markConversationAsUnread(userId, conversationId).fold(
                 ifLeft = { ConversationDetailEvent.ErrorMarkingAsUnread },
-                ifRight = { ConversationDetailViewAction.MarkUnread }
+                ifRight = { MarkUnread }
             )
         }.onEach(::emitNewStateFrom)
             .launchIn(viewModelScope)
@@ -351,7 +419,7 @@ class ConversationDetailViewModel @Inject constructor(
         primaryUserId.mapLatest { userId ->
             moveConversation(userId, conversationId, SystemLabelId.Trash.labelId).fold(
                 ifLeft = { ConversationDetailEvent.ErrorMovingToTrash },
-                ifRight = { ConversationDetailViewAction.Trash }
+                ifRight = { Trash }
             )
         }.onEach(::emitNewStateFrom)
             .launchIn(viewModelScope)
@@ -361,7 +429,7 @@ class ConversationDetailViewModel @Inject constructor(
         primaryUserId.mapLatest { userId ->
             starConversation(userId, conversationId).fold(
                 ifLeft = { ConversationDetailEvent.ErrorAddStar },
-                ifRight = { ConversationDetailViewAction.Star }
+                ifRight = { Star }
             )
         }.onEach { event ->
             emitNewStateFrom(event)
@@ -373,7 +441,7 @@ class ConversationDetailViewModel @Inject constructor(
         primaryUserId.mapLatest { userId ->
             unStarConversation(userId, conversationId).fold(
                 ifLeft = { ConversationDetailEvent.ErrorRemoveStar },
-                ifRight = { ConversationDetailViewAction.UnStar }
+                ifRight = { UnStar }
             )
         }.onEach { event ->
             emitNewStateFrom(event)
@@ -386,7 +454,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun moveToDestinationSelected(mailLabelId: MailLabelId) {
         viewModelScope.launch {
-            emitNewStateFrom(ConversationDetailViewAction.MoveToDestinationSelected(mailLabelId))
+            emitNewStateFrom(MoveToDestinationSelected(mailLabelId))
         }
     }
 
@@ -397,7 +465,7 @@ class ConversationDetailViewModel @Inject constructor(
                 bottomSheetState.selected?.let { mailLabelUiModel ->
                     moveConversation(userId, conversationId, mailLabelUiModel.id.labelId).fold(
                         ifLeft = { ConversationDetailEvent.ErrorMovingConversation },
-                        ifRight = { ConversationDetailViewAction.MoveToDestinationConfirmed(mailLabelText) }
+                        ifRight = { MoveToDestinationConfirmed(mailLabelText) }
                     )
                 } ?: throw IllegalStateException("No destination selected")
             } else {
@@ -406,6 +474,98 @@ class ConversationDetailViewModel @Inject constructor(
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)
+    }
+
+    @FlowPreview
+    private fun onDecryptAndExpandMessage(messageId: MessageId) {
+        primaryUserId.mapLatest { userId ->
+            val contacts = getContacts(userId).getOrElse { emptyList() }
+            val decryptedBody = getDecryptedMessageBody(userId, messageId)
+                .onRight { markMessageAsReadIfRequired(userId, messageId) }
+                .onLeft {
+                    emitNewStateFrom(
+                        when (it) {
+                            is GetDecryptedMessageBodyError.Data -> ConversationDetailEvent.ErrorRetrievingMessage
+                            is GetDecryptedMessageBodyError.Decryption -> ConversationDetailEvent.ErrorDecryptingMessage
+                        }
+                    )
+                }
+                .getOrNull()
+            decryptedBody?.let { body -> Triple(userId, body, contacts) }
+        }
+            .filterNotNull()
+            .flatMapConcat { (userId, body, contacts) ->
+                observeMessageWithLabels(userId, messageId).map { messageWithLabels ->
+                    Triple(messageWithLabels.getOrNull(), body, contacts)
+                }
+            }
+            .onEach { (messageWithLabels, body, contacts) ->
+                if (messageWithLabels != null) {
+                    onExpandMessage(messageId, messageWithLabels, contacts, body)
+                }
+            }
+            .flowOn(ioDispatcher)
+            .launchIn(viewModelScope)
+    }
+
+    private suspend fun onExpandMessage(
+        messageId: MessageId,
+        messageWithLabels: MessageWithLabels,
+        contacts: List<Contact>,
+        messageBody: DecryptedMessageBody
+    ) {
+        emitNewStateFrom(
+            ExpandDecryptedMessage(
+                messageId = messageId,
+                conversationDetailMessageUiModel = conversationMessageMapper.toUiModel(
+                    messageWithLabels,
+                    contacts,
+                    messageBody
+                )
+            )
+        )
+    }
+
+    private fun onCollapseMessage(messageId: MessageId) {
+        primaryUserId.flatMapLatest { userId ->
+            combine(
+                observeContacts(userId),
+                observeMessageWithLabels(userId, messageId)
+            ) { contactsEither, messageEither ->
+                val contacts = contactsEither.getOrElse { emptyList() }
+                val message = messageEither.getOrNull()
+
+                message?.let { Pair(it, contacts) }
+            }
+        }
+            .filterNotNull()
+            .onEach { (message, contacts) ->
+                emitNewStateFrom(
+                    CollapseDecryptedMessage(
+                        messageId = messageId,
+                        conversationDetailMessageUiModel = conversationMessageMapper.toUiModel(message, contacts)
+                    )
+                )
+            }
+            .flowOn(ioDispatcher)
+            .launchIn(viewModelScope)
+    }
+
+    private suspend fun markMessageAsReadIfRequired(userId: UserId, messageId: MessageId) {
+        (state.value.messagesState as? ConversationDetailsMessagesState.Data)?.messages?.let { messages ->
+            val isUnread = messages.find { message -> message.messageId == messageId }?.isUnread ?: false
+            if (isUnread) {
+                markMessageAsRead(userId, messageId).getOrNull()
+            }
+        }
+    }
+
+    private fun onMessageBodyLinkClicked(action: MessageBodyLinkClicked) {
+        viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
+    private fun onRequestScrollTo(action: RequestScrollTo) {
+        viewModelScope.launch { emitNewStateFrom(action) }
     }
 
     companion object {

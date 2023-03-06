@@ -18,19 +18,23 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import java.util.UUID
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
+import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.MessageLocationUiModelSample
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -62,13 +66,21 @@ internal class ConversationDetailMessageUiModelMapperTest {
         every { this@mockk(contacts = any(), participant = RecipientSample.PreciWeather) } returns
             RecipientSample.PreciWeather.name
     }
+    private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper = mockk {
+        every { toUiModel(any(), any()) } returns mockk()
+    }
+    private val messageBodyUiModelMapper: MessageBodyUiModelMapper = mockk {
+        every { toUiModel(any<DecryptedMessageBody>()) } returns mockk()
+    }
     private val mapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = avatarUiModelMapper,
         expirationTimeMapper = expirationTimeMapper,
         formatShortTime = formatShortTime,
         colorMapper = colorMapper,
         messageLocationUiModelMapper = messageLocationUiModelMapper,
-        resolveParticipantName = resolveParticipantName
+        resolveParticipantName = resolveParticipantName,
+        messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
+        messageBodyUiModelMapper = messageBodyUiModelMapper,
     )
 
     @Test
@@ -85,12 +97,33 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
 
     @Test
+    fun `map to ui model returns expanded model`() {
+        // given
+        val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
+        val contactsList = listOf(ContactSample.John, ContactSample.Doe)
+        val decryptedMessageBody = DecryptedMessageBody(UUID.randomUUID().toString(), MimeType.Html)
+
+        // when
+        val result = mapper.toUiModel(
+            messageWithLabels,
+            contacts = contactsList,
+            decryptedMessageBody = decryptedMessageBody
+        )
+
+        // then
+        assertEquals(result.isUnread, messageWithLabels.message.unread)
+        assertEquals(result.messageId, messageWithLabels.message.messageId)
+        verify { messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contactsList) }
+        verify { messageBodyUiModelMapper.toUiModel(decryptedMessageBody) }
+    }
+
+    @Test
     fun `when message is forwarded, ui model contains forwarded icon`() {
         // given
         val message = MessageSample.AugWeatherForecast.copy(isForwarded = true)
         val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
         val expected = with(ConversationDetailMessageUiModelSample) {
-            AugWeatherForecast.collapse().copy(
+            AugWeatherForecast.copy(
                 forwardedIcon = ConversationDetailMessageUiModel.ForwardedIcon.Forwarded
             )
         }
@@ -108,7 +141,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val message = MessageSample.AugWeatherForecast.copy(isReplied = true)
         val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
         val expected = with(ConversationDetailMessageUiModelSample) {
-            AugWeatherForecast.collapse().copy(
+            AugWeatherForecast.copy(
                 repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.Replied
             )
         }
@@ -126,7 +159,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val message = MessageSample.AugWeatherForecast.copy(isRepliedAll = true)
         val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
         val expected = with(ConversationDetailMessageUiModelSample) {
-            AugWeatherForecast.collapse().copy(
+            AugWeatherForecast.copy(
                 repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
             )
         }
@@ -147,7 +180,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         )
         val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
         val expected = with(ConversationDetailMessageUiModelSample) {
-            AugWeatherForecast.collapse().copy(
+            AugWeatherForecast.copy(
                 repliedIcon = ConversationDetailMessageUiModel.RepliedIcon.RepliedAll
             )
         }

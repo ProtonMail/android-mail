@@ -21,47 +21,33 @@ package ch.protonmail.android.maildetail.presentation.model
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
 sealed interface ConversationDetailMessageUiModel {
 
-    val avatar: AvatarUiModel
-    val expiration: TextUiModel?
-    val forwardedIcon: ForwardedIcon
-    val hasAttachments: Boolean
-    val isStarred: Boolean
+    val messageId: MessageId
     val isUnread: Boolean
-    val locationIcon: MessageLocationUiModel
-    val repliedIcon: RepliedIcon
-    val sender: String
-    val shortTime: TextUiModel
-    val labels: List<LabelUiModel>
 
     data class Collapsed(
-        override val avatar: AvatarUiModel,
-        override val expiration: TextUiModel?,
-        override val forwardedIcon: ForwardedIcon,
-        override val hasAttachments: Boolean,
-        override val isStarred: Boolean,
+        override val messageId: MessageId,
+        val avatar: AvatarUiModel,
+        val expiration: TextUiModel?,
+        val forwardedIcon: ForwardedIcon,
+        val hasAttachments: Boolean,
+        val isStarred: Boolean,
         override val isUnread: Boolean,
-        override val locationIcon: MessageLocationUiModel,
-        override val repliedIcon: RepliedIcon,
-        override val sender: String,
-        override val shortTime: TextUiModel,
-        override val labels: List<LabelUiModel>
+        val locationIcon: MessageLocationUiModel,
+        val repliedIcon: RepliedIcon,
+        val sender: String,
+        val shortTime: TextUiModel,
+        val labels: List<LabelUiModel>
     ) : ConversationDetailMessageUiModel
 
     data class Expanded(
-        override val avatar: AvatarUiModel,
-        override val expiration: TextUiModel?,
-        override val forwardedIcon: ForwardedIcon,
-        override val hasAttachments: Boolean,
-        override val isStarred: Boolean,
+        override val messageId: MessageId,
         override val isUnread: Boolean,
-        override val locationIcon: MessageLocationUiModel,
-        override val repliedIcon: RepliedIcon,
-        override val sender: String,
-        override val shortTime: TextUiModel,
-        override val labels: List<LabelUiModel>
+        val messageDetailHeaderUiModel: MessageDetailHeaderUiModel,
+        val messageBodyUiModel: MessageBodyUiModel
     ) : ConversationDetailMessageUiModel
 
     enum class ForwardedIcon {

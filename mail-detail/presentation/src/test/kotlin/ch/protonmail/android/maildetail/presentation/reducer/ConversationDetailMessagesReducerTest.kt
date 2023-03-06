@@ -56,6 +56,11 @@ class ConversationDetailMessagesReducerTest(
             ConversationDetailMessageUiModelSample.SepWeatherForecast
         )
 
+        private val allMessagesFirstExpanded = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
+            ConversationDetailMessageUiModelSample.SepWeatherForecast
+        )
+
         private val fromLoadingState = listOf(
 
             Input(
@@ -163,6 +168,24 @@ class ConversationDetailMessagesReducerTest(
             Input(
                 currentState = ConversationDetailsMessagesState.Data(messages = allMessages),
                 operation = ConversationDetailEvent.ErrorLoadingConversation,
+                expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(messages = allMessages),
+                operation = ConversationDetailEvent.ExpandDecryptedMessage(
+                    messageId = allMessages.first().messageId,
+                    conversationDetailMessageUiModel = ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(messages = allMessagesFirstExpanded)
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(messages = allMessagesFirstExpanded),
+                operation = ConversationDetailEvent.CollapseDecryptedMessage(
+                    messageId = allMessagesFirstExpanded.first().messageId,
+                    conversationDetailMessageUiModel = ConversationDetailMessageUiModelSample.AugWeatherForecast
+                ),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             )
         )

@@ -61,7 +61,9 @@ object ConversationDetailsPreviewData {
         ),
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
-        error = Effect.empty()
+        error = Effect.empty(),
+        openMessageBodyLinkEffect = Effect.empty(),
+        scrollToMessage = Effect.empty()
     )
 
     val FailedLoadingConversation = ConversationDetailState(
@@ -71,7 +73,9 @@ object ConversationDetailsPreviewData {
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty(),
-        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading)
+        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
+        openMessageBodyLinkEffect = Effect.empty(),
+        scrollToMessage = Effect.empty()
     )
 
     val FailedLoadingMessages = ConversationDetailState(
@@ -81,7 +85,9 @@ object ConversationDetailsPreviewData {
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty(),
-        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading)
+        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
+        openMessageBodyLinkEffect = Effect.empty(),
+        scrollToMessage = Effect.empty()
     )
 
     val FailedLoadingBottomBar = ConversationDetailState(
@@ -91,7 +97,9 @@ object ConversationDetailsPreviewData {
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty(),
-        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading)
+        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
+        openMessageBodyLinkEffect = Effect.empty(),
+        scrollToMessage = Effect.empty()
     )
 
     val Loading = ConversationDetailState(
@@ -101,7 +109,9 @@ object ConversationDetailsPreviewData {
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty(),
-        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading)
+        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
+        openMessageBodyLinkEffect = Effect.empty(),
+        scrollToMessage = Effect.empty()
     )
 
     val NotLoggedIn = ConversationDetailState(
@@ -111,7 +121,9 @@ object ConversationDetailsPreviewData {
         exitScreenEffect = Effect.empty(),
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty(),
-        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading)
+        bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
+        openMessageBodyLinkEffect = Effect.empty(),
+        scrollToMessage = Effect.empty()
     )
 }
 

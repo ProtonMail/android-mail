@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.model
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
 data class ConversationDetailState(
     val conversationState: ConversationDetailMetadataState,
@@ -29,7 +30,9 @@ data class ConversationDetailState(
     val bottomSheetState: BottomSheetState?,
     val exitScreenEffect: Effect<Unit>,
     val exitScreenWithMessageEffect: Effect<TextUiModel>,
-    val error: Effect<TextUiModel>
+    val error: Effect<TextUiModel>,
+    val openMessageBodyLinkEffect: Effect<String>,
+    val scrollToMessage: Effect<MessageId>
 ) {
 
     companion object {
@@ -41,7 +44,9 @@ data class ConversationDetailState(
             bottomSheetState = null,
             exitScreenEffect = Effect.empty(),
             exitScreenWithMessageEffect = Effect.empty(),
-            error = Effect.empty()
+            error = Effect.empty(),
+            openMessageBodyLinkEffect = Effect.empty(),
+            scrollToMessage = Effect.empty()
         )
     }
 }

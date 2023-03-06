@@ -21,8 +21,10 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import javax.inject.Inject
 
 class ConversationDetailMessagesReducer @Inject constructor() {
@@ -35,14 +37,28 @@ class ConversationDetailMessagesReducer @Inject constructor() {
             ConversationDetailEvent.ErrorLoadingContacts -> ConversationDetailsMessagesState.Error(
                 message = TextUiModel(string.detail_error_loading_contacts)
             )
+
             is ConversationDetailEvent.ErrorLoadingMessages -> ConversationDetailsMessagesState.Error(
                 message = TextUiModel(string.detail_error_loading_messages)
             )
+
             is ConversationDetailEvent.MessagesData -> ConversationDetailsMessagesState.Data(
                 messages = operation.messagesUiModels
             )
+
             is ConversationDetailEvent.NoNetworkError -> currentState.toNewStateForNoNetworkError()
             is ConversationDetailEvent.ErrorLoadingConversation -> currentState.toNewStateForErrorLoadingConversation()
+            is ConversationDetailEvent.CollapseDecryptedMessage ->
+                currentState.toNewExpandCollapseState(
+                    operation.messageId,
+                    operation.conversationDetailMessageUiModel
+                )
+
+            is ConversationDetailEvent.ExpandDecryptedMessage ->
+                currentState.toNewExpandCollapseState(
+                    operation.messageId,
+                    operation.conversationDetailMessageUiModel
+                )
         }
 
     private fun ConversationDetailsMessagesState.toNewStateForNoNetworkError() =
@@ -61,5 +77,23 @@ class ConversationDetailMessagesReducer @Inject constructor() {
             is ConversationDetailsMessagesState.Error -> ConversationDetailsMessagesState.Error(
                 message = TextUiModel(string.detail_error_loading_messages)
             )
+        }
+
+    private fun ConversationDetailsMessagesState.toNewExpandCollapseState(
+        messageId: MessageId,
+        conversationDetailMessageUiModel: ConversationDetailMessageUiModel
+    ) =
+        when (this) {
+            is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
+                messages = messages.map {
+                    if (it.messageId == messageId) {
+                        conversationDetailMessageUiModel
+                    } else {
+                        it
+                    }
+                }
+            )
+
+            else -> this
         }
 }

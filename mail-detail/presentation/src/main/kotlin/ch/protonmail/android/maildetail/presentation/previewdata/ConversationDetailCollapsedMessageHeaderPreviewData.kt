@@ -23,7 +23,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 
 class ConversationDetailCollapsedMessageHeaderPreviewData :
-    PreviewParameterProvider<ConversationDetailMessageUiModel.Collapsed> {
+    PreviewParameterProvider<ConversationDetailMessageUiModel> {
 
     override val values = sequenceOf(
         ConversationDetailMessageUiModelSample.AugWeatherForecast,

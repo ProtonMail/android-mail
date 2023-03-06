@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import java.util.UUID
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -27,9 +28,11 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
+import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import io.mockk.Called
 import io.mockk.mockk
 import io.mockk.verify
@@ -101,6 +104,18 @@ class ConversationDetailReducerTest(
             if (expectedExitMessage != null) {
                 assertEquals(expectedExitMessage, result.exitScreenWithMessageEffect.consume())
             }
+
+            if (reducesLinkClick) {
+                assertNotNull(result.openMessageBodyLinkEffect.consume())
+            } else {
+                assertNull(result.openMessageBodyLinkEffect.consume())
+            }
+
+            if (reducesMessageScroll) {
+                assertNotNull(result.scrollToMessage.consume())
+            } else {
+                assertNull(result.scrollToMessage.consume())
+            }
         }
     }
 
@@ -112,7 +127,9 @@ class ConversationDetailReducerTest(
         val reducesErrorBar: Boolean,
         val reducesExit: Boolean,
         val expectedExitMessage: TextUiModel?,
-        val reducesBottomSheet: Boolean
+        val reducesBottomSheet: Boolean,
+        val reducesLinkClick: Boolean,
+        val reducesMessageScroll: Boolean
     ) {
 
         fun operationAffectingBottomBar() = operation as ConversationDetailEvent.ConversationBottomBarEvent
@@ -141,7 +158,9 @@ class ConversationDetailReducerTest(
             ConversationDetailViewAction.LabelAsConfirmed(true) affects listOf(
                 BottomSheet,
                 ExitWithMessage(TextUiModel(string.conversation_moved_to_archive))
-            )
+            ),
+            ConversationDetailViewAction.MessageBodyLinkClicked(UUID.randomUUID().toString()) affects LinkClick,
+            ConversationDetailViewAction.RequestScrollTo(MessageId(UUID.randomUUID().toString())) affects MessageScroll
         )
 
         val events = listOf(
@@ -156,7 +175,17 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorMovingConversation affects ErrorBar,
             ConversationDetailEvent.ErrorMovingToTrash affects ErrorBar,
             ConversationDetailEvent.ErrorLabelingConversation affects ErrorBar,
-            ConversationDetailEvent.MessagesData(emptyList()) affects Messages
+            ConversationDetailEvent.MessagesData(emptyList()) affects Messages,
+            ConversationDetailEvent.ExpandDecryptedMessage(
+                MessageId(UUID.randomUUID().toString()),
+                ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded
+            ) affects Messages,
+            ConversationDetailEvent.CollapseDecryptedMessage(
+                MessageId(UUID.randomUUID().toString()),
+                ConversationDetailMessageUiModelSample.AugWeatherForecast
+            ) affects Messages,
+            ConversationDetailEvent.ErrorDecryptingMessage affects ErrorBar,
+            ConversationDetailEvent.ErrorRetrievingMessage affects ErrorBar
         )
 
         @JvmStatic
@@ -169,7 +198,6 @@ class ConversationDetailReducerTest(
     }
 }
 
-
 private infix fun ConversationDetailOperation.affects(entities: List<Entity>) = ConversationDetailReducerTest.TestInput(
     operation = this,
     reducesConversation = entities.contains(Conversation),
@@ -178,7 +206,9 @@ private infix fun ConversationDetailOperation.affects(entities: List<Entity>) = 
     reducesErrorBar = entities.contains(ErrorBar),
     reducesExit = entities.contains(Exit),
     expectedExitMessage = entities.firstNotNullOfOrNull { (it as? ExitWithMessage)?.message },
-    reducesBottomSheet = entities.contains(BottomSheet)
+    reducesBottomSheet = entities.contains(BottomSheet),
+    reducesLinkClick = entities.contains(LinkClick),
+    reducesMessageScroll = entities.contains(MessageScroll)
 )
 
 private infix fun ConversationDetailOperation.affects(entity: Entity) = this.affects(listOf(entity))
@@ -191,3 +221,5 @@ private object Exit : Entity
 private data class ExitWithMessage(val message: TextUiModel) : Entity
 private object ErrorBar : Entity
 private object BottomSheet : Entity
+private object LinkClick : Entity
+private object MessageScroll : Entity

@@ -23,6 +23,7 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
+import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -41,10 +42,15 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val colorMapper: ColorMapper,
     private val formatShortTime: FormatShortTime,
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper,
-    private val resolveParticipantName: ResolveParticipantName
+    private val resolveParticipantName: ResolveParticipantName,
+    private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
+    private val messageBodyUiModelMapper: MessageBodyUiModelMapper
 ) {
 
-    fun toUiModel(messageWithLabels: MessageWithLabels, contacts: List<Contact>): ConversationDetailMessageUiModel {
+    fun toUiModel(
+        messageWithLabels: MessageWithLabels,
+        contacts: List<Contact>
+    ): ConversationDetailMessageUiModel.Collapsed {
         val (message, labels) = messageWithLabels
         val senderResolvedName = resolveParticipantName(message.sender, contacts)
         return ConversationDetailMessageUiModel.Collapsed(
@@ -61,7 +67,25 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             repliedIcon = getRepliedIcon(isReplied = message.isReplied, isRepliedAll = message.isRepliedAll),
             sender = senderResolvedName,
             shortTime = formatShortTime(message.time.seconds),
-            labels = toLabelUiModels(messageWithLabels.labels)
+            labels = toLabelUiModels(messageWithLabels.labels),
+            messageId = message.messageId
+        )
+    }
+
+    fun toUiModel(
+        messageWithLabels: MessageWithLabels,
+        contacts: List<Contact>,
+        decryptedMessageBody: DecryptedMessageBody
+    ): ConversationDetailMessageUiModel.Expanded {
+        val (message, _) = messageWithLabels
+        return ConversationDetailMessageUiModel.Expanded(
+            messageId = message.messageId,
+            isUnread = message.unread,
+            messageDetailHeaderUiModel = messageDetailHeaderUiModelMapper.toUiModel(
+                messageWithLabels,
+                contacts
+            ),
+            messageBodyUiModel = messageBodyUiModelMapper.toUiModel(decryptedMessageBody)
         )
     }
 

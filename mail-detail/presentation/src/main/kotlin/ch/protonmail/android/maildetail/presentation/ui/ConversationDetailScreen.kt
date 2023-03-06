@@ -25,20 +25,22 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -61,6 +63,7 @@ import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetSta
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
@@ -79,6 +82,7 @@ import timber.log.Timber
 fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
     onExit: (notifyUserMessage: String?) -> Unit,
+    openMessageBodyLink: (url: String) -> Unit,
     viewModel: ConversationDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
@@ -132,6 +136,13 @@ fun ConversationDetailScreen(
                 onUnreadClick = { viewModel.submit(ConversationDetailViewAction.MarkUnread) },
                 onMoveToClick = { viewModel.submit(ConversationDetailViewAction.RequestMoveToBottomSheet) },
                 onLabelAsClick = { viewModel.submit(ConversationDetailViewAction.RequestLabelAsBottomSheet) },
+                onExpandMessage = { viewModel.submit(ConversationDetailViewAction.ExpandMessage(it)) },
+                onCollapseMessage = { viewModel.submit(ConversationDetailViewAction.CollapseMessage(it)) },
+                onMessageBodyLinkClicked = {
+                    viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(it.toString()))
+                },
+                onOpenMessageBodyLink = openMessageBodyLink,
+                onRequestScrollTo = { viewModel.submit(ConversationDetailViewAction.RequestScrollTo(it)) },
             )
         )
     }
@@ -144,9 +155,9 @@ fun ConversationDetailScreen(
     actions: ConversationDetailScreen.Actions,
     modifier: Modifier = Modifier
 ) {
-
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
+    var scrollToMessage by remember { mutableStateOf<String?>(null) }
 
     ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onExit(null) }
     ConsumableTextEffect(state.exitScreenWithMessageEffect) { message ->
@@ -154,6 +165,12 @@ fun ConversationDetailScreen(
     }
     ConsumableTextEffect(state.error) { string ->
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
+    }
+    ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) {
+        actions.onOpenMessageBodyLink(it)
+    }
+    ConsumableLaunchedEffect(effect = state.scrollToMessage) {
+        scrollToMessage = it.id
     }
 
     if (state.conversationState is ConversationDetailMetadataState.Error) {
@@ -220,7 +237,13 @@ fun ConversationDetailScreen(
         when (state.messagesState) {
             is ConversationDetailsMessagesState.Data -> MessagesContent(
                 uiModels = state.messagesState.messages,
-                padding = innerPadding
+                padding = innerPadding,
+                onExpand = actions.onExpandMessage,
+                onCollapse = actions.onCollapseMessage,
+                onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
+                requestScrollTo = actions.onRequestScrollTo,
+                scrollToMessageId = scrollToMessage,
+                onScrollToMessageCompleted = { scrollToMessage = null }
             )
             is ConversationDetailsMessagesState.Error -> ProtonErrorMessage(
                 modifier = Modifier.padding(innerPadding),
@@ -242,8 +265,15 @@ fun ConversationDetailScreen(
 private fun MessagesContent(
     uiModels: List<ConversationDetailMessageUiModel>,
     padding: PaddingValues,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onExpand: (MessageId) -> Unit,
+    onCollapse: (MessageId) -> Unit,
+    onMessageBodyLinkClicked: (url: String) -> Unit,
+    requestScrollTo: (MessageId) -> Unit,
+    scrollToMessageId: String?,
+    onScrollToMessageCompleted: () -> Unit
 ) {
+    val listState = rememberLazyListState()
     val layoutDirection = LocalLayoutDirection.current
     val contentPadding = remember(padding) {
         PaddingValues(
@@ -253,19 +283,40 @@ private fun MessagesContent(
             bottom = padding.calculateBottomPadding() + ProtonDimens.SmallSpacing
         )
     }
+
+    LaunchedEffect(scrollToMessageId) {
+        if (scrollToMessageId != null && !listState.isScrollInProgress) {
+            listState.layoutInfo.visibleItemsInfo
+                .firstOrNull { it.key == scrollToMessageId }?.let {
+                    listState.animateScrollToItem(it.index)
+                }
+        }
+    }
+
+    if (listState.isScrollInProgress) {
+        DisposableEffect(Unit) {
+            onDispose {
+                onScrollToMessageCompleted()
+            }
+        }
+    }
+
     LazyColumn(
         modifier = modifier,
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(ProtonDimens.SmallSpacing)
+        verticalArrangement = Arrangement.spacedBy(ProtonDimens.SmallSpacing),
+        state = listState
     ) {
-        items(uiModels) { uiModel ->
-            when (uiModel) {
-                is ConversationDetailMessageUiModel.Collapsed -> ConversationDetailCollapsedMessageHeader(
-                    modifier = Modifier.animateItemPlacement(),
-                    uiModel = uiModel
-                )
-                is ConversationDetailMessageUiModel.Expanded -> Text(text = "Expanded")
-            }
+        items(uiModels, key = { it.messageId.id }) { uiModel ->
+            ConversationDetailItem(
+                uiModel = uiModel,
+                modifier = Modifier.animateItemPlacement(),
+                onExpand = onExpand,
+                onCollapse = onCollapse,
+                onMessageBodyLinkClicked = onMessageBodyLinkClicked,
+                listState = listState,
+                requestScrollTo = requestScrollTo
+            )
         }
     }
 }
@@ -282,6 +333,11 @@ object ConversationDetailScreen {
         val onUnreadClick: () -> Unit,
         val onMoveToClick: () -> Unit,
         val onLabelAsClick: () -> Unit,
+        val onExpandMessage: (MessageId) -> Unit,
+        val onCollapseMessage: (MessageId) -> Unit,
+        val onMessageBodyLinkClicked: (url: String) -> Unit,
+        val onOpenMessageBodyLink: (url: String) -> Unit,
+        val onRequestScrollTo: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -293,7 +349,12 @@ object ConversationDetailScreen {
                 onUnStarClick = {},
                 onUnreadClick = {},
                 onMoveToClick = {},
-                onLabelAsClick = {}
+                onLabelAsClick = {},
+                onExpandMessage = {},
+                onCollapseMessage = {},
+                onMessageBodyLinkClicked = {},
+                onOpenMessageBodyLink = {},
+                onRequestScrollTo = {}
             )
         }
     }

@@ -24,6 +24,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.label.domain.entity.LabelId
 
 sealed interface ConversationDetailOperation {
@@ -61,6 +62,20 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorMovingToTrash : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingConversation : ConversationDetailEvent, AffectingErrorBar
     object ErrorLabelingConversation : ConversationDetailEvent, AffectingErrorBar
+
+    data class ExpandDecryptedMessage(
+        val messageId: MessageId,
+        val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Expanded
+    ) :
+        ConversationDetailEvent, AffectingMessages
+
+    data class CollapseDecryptedMessage(
+        val messageId: MessageId,
+        val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed,
+    ) : ConversationDetailEvent, AffectingMessages
+
+    object ErrorDecryptingMessage : ConversationDetailEvent, AffectingErrorBar
+    object ErrorRetrievingMessage : ConversationDetailEvent, AffectingErrorBar
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {
@@ -79,4 +94,9 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     object RequestLabelAsBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsToggleAction(val labelId: LabelId) : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(val archiveSelected: Boolean) : ConversationDetailViewAction, AffectingBottomSheet
+    data class ExpandMessage(val messageId: MessageId) : ConversationDetailViewAction
+    data class CollapseMessage(val messageId: MessageId) : ConversationDetailViewAction
+
+    data class MessageBodyLinkClicked(val url: String) : ConversationDetailViewAction
+    data class RequestScrollTo(val messageId: MessageId) : ConversationDetailViewAction
 }

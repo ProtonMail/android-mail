@@ -25,8 +25,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -74,131 +72,123 @@ internal fun ConversationDetailCollapsedMessageHeader(
     val fontWeight = if (uiModel.isUnread) FontWeight.Bold else FontWeight.Normal
     val fontColor = if (uiModel.isUnread) ProtonTheme.colors.textNorm else ProtonTheme.colors.textWeak
 
-    ElevatedCard(
-        modifier = modifier,
-        shape = ProtonTheme.shapes.large,
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = ProtonTheme.colors.backgroundNorm
-        )
+    ConstraintLayout(
+        modifier = modifier
+            .padding(ProtonDimens.SmallSpacing)
+            .padding(ProtonDimens.ExtraSmallSpacing)
+            .fillMaxWidth()
     ) {
-        ConstraintLayout(
+        val (
+            avatarRef,
+            forwardedIconRef,
+            repliedIconRef,
+            senderRef,
+            expirationRef,
+            labelsRef,
+            starIconRef,
+            attachmentIconRef,
+            locationIconRef,
+            timeRef
+        ) = createRefs()
+
+        createHorizontalChain(
+            avatarRef,
+            forwardedIconRef,
+            repliedIconRef,
+            senderRef,
+            expirationRef,
+            labelsRef,
+            starIconRef,
+            attachmentIconRef,
+            locationIconRef,
+            timeRef
+        )
+
+        Avatar(
             modifier = Modifier
-                .padding(ProtonDimens.SmallSpacing)
-                .padding(ProtonDimens.ExtraSmallSpacing)
-                .fillMaxWidth()
-        ) {
-            val (
-                avatarRef,
-                forwardedIconRef,
-                repliedIconRef,
-                senderRef,
-                expirationRef,
-                labelsRef,
-                starIconRef,
-                attachmentIconRef,
-                locationIconRef,
-                timeRef
-            ) = createRefs()
-
-            createHorizontalChain(
-                avatarRef,
-                forwardedIconRef,
-                repliedIconRef,
-                senderRef,
-                expirationRef,
-                labelsRef,
-                starIconRef,
-                attachmentIconRef,
-                locationIconRef,
-                timeRef
-            )
-
-            Avatar(
-                modifier = Modifier
-                    .padding(end = ProtonDimens.SmallSpacing)
-                    .constrainAs(avatarRef) {
-                        centerVerticallyTo(parent)
-                    },
-                avatarUiModel = uiModel.avatar
-            )
-
-            ForwardedIcon(
-                modifier = Modifier.constrainAs(forwardedIconRef) {
+                .padding(end = ProtonDimens.SmallSpacing)
+                .constrainAs(avatarRef) {
                     centerVerticallyTo(parent)
                 },
-                uiModel = uiModel,
-                fontColor = fontColor
-            )
+            avatarUiModel = uiModel.avatar
+        )
 
-            RepliedIcon(
-                modifier = Modifier.constrainAs(repliedIconRef) {
-                    centerVerticallyTo(parent)
-                },
-                uiModel = uiModel,
-                fontColor = fontColor
-            )
+        ForwardedIcon(
+            modifier = Modifier.constrainAs(forwardedIconRef) {
+                centerVerticallyTo(parent)
+            },
+            uiModel = uiModel,
+            fontColor = fontColor
+        )
 
-            Sender(
-                modifier = Modifier.constrainAs(senderRef) {
-                    width = Dimension.preferredWrapContent
-                    centerVerticallyTo(parent)
-                },
-                uiModel = uiModel,
-                fontWeight = fontWeight,
-                fontColor = fontColor
-            )
+        RepliedIcon(
+            modifier = Modifier.constrainAs(repliedIconRef) {
+                centerVerticallyTo(parent)
+            },
+            uiModel = uiModel,
+            fontColor = fontColor
+        )
 
-            Expiration(
-                modifier = Modifier.constrainAs(expirationRef) {
-                    visibility = visibleWhen(uiModel.expiration != null)
-                    centerVerticallyTo(parent)
-                },
-                uiModel = uiModel
-            )
+        Sender(
+            modifier = Modifier.constrainAs(senderRef) {
+                width = Dimension.preferredWrapContent
+                centerVerticallyTo(parent)
+            },
+            uiModel = uiModel,
+            fontWeight = fontWeight,
+            fontColor = fontColor
+        )
 
-            Text(
-                modifier = Modifier.constrainAs(labelsRef) {
-                    visibility = Visibility.Invisible
-                    width = Dimension.fillToConstraints.atLeast(1.dp)
-                    centerVerticallyTo(parent)
-                },
-                text = "Labels",
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1
-            )
+        Expiration(
+            modifier = Modifier.constrainAs(expirationRef) {
+                visibility = visibleWhen(uiModel.expiration != null)
+                centerVerticallyTo(parent)
+            },
+            uiModel = uiModel
+        )
 
-            StarIcon(
-                modifier = Modifier.constrainAs(starIconRef) {
-                    visibility = visibleWhen(uiModel.isStarred)
-                    centerVerticallyTo(parent)
-                }
-            )
+        Text(
+            modifier = Modifier.constrainAs(labelsRef) {
+                visibility = Visibility.Invisible
+                width = Dimension.fillToConstraints.atLeast(1.dp)
+                centerVerticallyTo(parent)
+            },
+            text = "Labels",
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1
+        )
 
-            AttachmentIcon(
-                fontColor = fontColor,
-                modifier = Modifier.constrainAs(attachmentIconRef) {
-                    visibility = visibleWhen(uiModel.hasAttachments)
-                    centerVerticallyTo(parent)
-                }
-            )
+        StarIcon(
+            modifier = Modifier.constrainAs(starIconRef) {
+                visibility = visibleWhen(uiModel.isStarred)
+                centerVerticallyTo(parent)
+            }
+        )
 
-            LocationIcon(
-                uiModel = uiModel,
-                fontColor = fontColor,
-                modifier = Modifier.constrainAs(locationIconRef) {
-                    centerVerticallyTo(parent)
-                }
-            )
+        AttachmentIcon(
+            fontColor = fontColor,
+            modifier = Modifier.constrainAs(attachmentIconRef) {
+                visibility = visibleWhen(uiModel.hasAttachments)
+                centerVerticallyTo(parent)
+            }
+        )
 
-            Time(
-                modifier = Modifier.constrainAs(timeRef) {
-                    centerVerticallyTo(parent)
-                },
-                uiModel = uiModel,
-                fontWeight = fontWeight,
-                fontColor = fontColor
-            )
-        }
+        LocationIcon(
+            uiModel = uiModel,
+            fontColor = fontColor,
+            modifier = Modifier.constrainAs(locationIconRef) {
+                centerVerticallyTo(parent)
+            }
+        )
+
+        Time(
+            modifier = Modifier.constrainAs(timeRef) {
+                centerVerticallyTo(parent)
+            },
+            uiModel = uiModel,
+            fontWeight = fontWeight,
+            fontColor = fontColor
+        )
     }
 }
 

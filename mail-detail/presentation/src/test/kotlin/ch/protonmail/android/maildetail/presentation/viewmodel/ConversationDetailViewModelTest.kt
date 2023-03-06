@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
+import java.util.UUID
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
@@ -29,6 +30,7 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
@@ -36,15 +38,21 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
+import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
@@ -54,6 +62,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
@@ -71,6 +80,9 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
@@ -186,7 +198,18 @@ class ConversationDetailViewModelTest {
     private val unStarConversation: UnStarConversation = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns ConversationTestData.conversation.right()
     }
-
+    private val getDecryptedMessageBody: GetDecryptedMessageBody = mockk {
+        coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody("", MimeType.Html).right()
+    }
+    private val getContacts: GetContacts = mockk {
+        coEvery { this@mockk.invoke(any()) } returns emptyList<Contact>().right()
+    }
+    private val observeMessageWithLabels = mockk<ObserveMessageWithLabels> {
+        every { this@mockk.invoke(UserIdSample.Primary, any()) } returns mockk()
+    }
+    private val markMessageAsRead: MarkMessageAsRead = mockk {
+        coEvery { this@mockk.invoke(any(), any()) } returns MessageSample.Invoice.right()
+    }
     private val viewModel by lazy {
         ConversationDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
@@ -206,7 +229,12 @@ class ConversationDetailViewModelTest {
             reducer = reducer,
             savedStateHandle = savedStateHandle,
             starConversation = starConversation,
-            unStarConversation = unStarConversation
+            unStarConversation = unStarConversation,
+            getDecryptedMessageBody = getDecryptedMessageBody,
+            markMessageAsRead = markMessageAsRead,
+            observeMessageWithLabels = observeMessageWithLabels,
+            getContacts = getContacts,
+            ioDispatcher = Dispatchers.Unconfined
         )
     }
 
@@ -244,6 +272,8 @@ class ConversationDetailViewModelTest {
 
     @Test
     fun `conversation state is data when use case succeeds`() = runTest {
+        // TODO Alex, what is this test testing? There is no use case being called, just mock data being returned
+
         // given
         val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
         val expectedState = initialState.copy(
@@ -501,6 +531,8 @@ class ConversationDetailViewModelTest {
 
     @Test
     fun `verify order of emitted states when starring a conversation`() = runTest {
+        // TODO Alex, in this test, if we remove the mocks of the reducer, the view model does not emit, so we
+        // are just testing the reducer here.
         // Given
         val actionUiModels = listOf(
             ActionUiModelTestData.reply,
@@ -519,7 +551,7 @@ class ConversationDetailViewModelTest {
             val bottomBarState = ConversationDetailState.Loading.copy(
                 bottomBarState = BottomBarState.Data(actionUiModels)
             )
-            assertEquals(bottomBarState, awaitItem())
+            assertEquals(bottomBarState, awaitItem()) // TODO Alex, why is the expected state a copy of Loading???
 
             viewModel.submit(ConversationDetailViewAction.Star)
             val actual = assertIs<ConversationDetailMetadataState.Data>(awaitItem().conversationState)
@@ -1099,6 +1131,276 @@ class ConversationDetailViewModelTest {
         }
     }
 
+    @Test
+    fun `should emit expanded message when expanding it`() = runTest {
+        // given
+        val (messageIds, expectedExpanded) = setupCollapsedToExpandMessagesState()
+
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // when
+            viewModel.submit(ConversationDetailViewAction.ExpandMessage(messageIds.first()))
+
+            // then
+            val newMessagesState = (awaitItem().messagesState as ConversationDetailsMessagesState.Data).messages
+            advanceUntilIdle()
+            assertEquals(expectedExpanded, newMessagesState.first())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should emit collapsed message when collapsing it`() = runTest {
+        // given
+        val (messageIds, expectedCollapsed) = setupExpandedToCollapseState()
+
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // when
+            viewModel.submit(ConversationDetailViewAction.CollapseMessage(messageIds.first()))
+
+            // then
+            val newMessagesState = (awaitItem().messagesState as ConversationDetailsMessagesState.Data).messages
+            assertEquals(expectedCollapsed, newMessagesState.first())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should mark message as read when expanding it successfully`() = runTest {
+        // given
+        val (messageIds, expectedExpanded) = setupCollapsedToExpandMessagesState(withUnreadMessage = true)
+
+        viewModel.state.test {
+            conversationMessagesEmitted()
+
+            // when
+            viewModel.submit(ConversationDetailViewAction.ExpandMessage(messageIds.first()))
+            advanceUntilIdle()
+
+            // then
+            coVerify { markMessageAsRead(userId, expectedExpanded.messageId) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should not mark message as read if it is not unread`() = runTest {
+        // given
+        val (messageIds, _) = setupCollapsedToExpandMessagesState(withUnreadMessage = false)
+
+        viewModel.state.test {
+            conversationMessagesEmitted()
+
+            // when
+            viewModel.submit(ConversationDetailViewAction.ExpandMessage(messageIds.first()))
+            advanceUntilIdle()
+
+            // then
+            coVerify { markMessageAsRead wasNot Called }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should emit click effect when a link click is submitted`() = runTest {
+        // given
+        val link = "https://www.proton.me/${UUID.randomUUID()}"
+        setupLinkClickState(link)
+
+        viewModel.state.test {
+            initialStateEmitted()
+            // when
+            viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(link))
+
+            // then
+            assertEquals(link, awaitItem().openMessageBodyLinkEffect.consume())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should emit decryption error when the message can not be decrypted and messages stay collapsed`() = runTest {
+        // given
+        val (messageIds, _) = setupCollapsedToExpandMessagesState()
+        coEvery {
+            getDecryptedMessageBody(
+                userId,
+                messageIds.first()
+            )
+        } returns GetDecryptedMessageBodyError.Decryption("").left()
+
+        viewModel.state.test {
+            conversationMessagesEmitted()
+
+            // when
+            viewModel.submit(ConversationDetailViewAction.ExpandMessage(messageIds.first()))
+            advanceUntilIdle()
+
+            // then
+            val newState = awaitItem()
+            (newState.messagesState as ConversationDetailsMessagesState.Data).messages.forEach {
+                assertIs<ConversationDetailMessageUiModel.Collapsed>(it)
+            }
+            assertEquals(newState.error.consume(), TextUiModel(string.decryption_error))
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should emit retrieve message error when the message can not be loaded and messages stay collapsed`() =
+        runTest {
+            // given
+            val (messageIds, _) = setupCollapsedToExpandMessagesState()
+            coEvery {
+                getDecryptedMessageBody(
+                    userId,
+                    messageIds.first()
+                )
+            } returns GetDecryptedMessageBodyError.Data(DataErrorSample.Unreachable).left()
+
+            viewModel.state.test {
+                conversationMessagesEmitted()
+
+                // when
+                viewModel.submit(ConversationDetailViewAction.ExpandMessage(messageIds.first()))
+                advanceUntilIdle()
+
+                // then
+                val newState = awaitItem()
+                (newState.messagesState as ConversationDetailsMessagesState.Data).messages.forEach {
+                    assertIs<ConversationDetailMessageUiModel.Collapsed>(it)
+                }
+                assertEquals(newState.error.consume(), TextUiModel(string.detail_error_retrieving_message_body))
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `should emit scroll to message id effect when requested`() = runTest {
+        // given
+        val (messageIds, _) = setupCollapsedToExpandMessagesState()
+
+        viewModel.state.test {
+            initialStateEmitted()
+            // when
+            viewModel.submit(ConversationDetailViewAction.RequestScrollTo(messageIds.first()))
+            advanceUntilIdle()
+
+            // then
+            assertEquals(messageIds.first().id, awaitItem().scrollToMessage.consume()?.id)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    private fun setupCollapsedToExpandMessagesState(withUnreadMessage: Boolean = false):
+        Pair<List<MessageId>, ConversationDetailMessageUiModel> {
+        val (invoiceUiMessage, invoiceMessage) = if (withUnreadMessage) {
+            Pair(ConversationDetailMessageUiModelSample.UnreadInvoice, MessageWithLabelsSample.UnreadInvoice)
+        } else {
+            Pair(ConversationDetailMessageUiModelSample.InvoiceWithLabel, MessageWithLabelsSample.InvoiceWithLabel)
+        }
+        val allCollapsed = nonEmptyListOf(
+            invoiceUiMessage,
+            ConversationDetailMessageUiModelSample.AugWeatherForecast
+        )
+        val firstExpanded = nonEmptyListOf(
+            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded,
+            ConversationDetailMessageUiModelSample.AugWeatherForecast
+        )
+        every {
+            observeConversationMessagesWithLabels(
+                UserIdSample.Primary,
+                ConversationIdSample.WeatherForecast
+            )
+        } returns flowOf(nonEmptyListOf(invoiceMessage, MessageWithLabelsSample.AugWeatherForecast).right())
+
+        // This is no bueno, the order of the mocks here is important
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = any()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(allCollapsed)
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailEvent.ExpandDecryptedMessage>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(firstExpanded)
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailEvent.ErrorDecryptingMessage>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(allCollapsed),
+            error = Effect.of(TextUiModel(string.decryption_error))
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailEvent.ErrorRetrievingMessage>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(allCollapsed),
+            error = Effect.of(TextUiModel(string.detail_error_retrieving_message_body))
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailViewAction.RequestScrollTo>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            scrollToMessage = Effect.of(MessageId(allCollapsed.first().messageId.id))
+        )
+
+        coEvery { observeMessageWithLabels(userId, any()) } returns flowOf(invoiceMessage.right())
+        every { conversationMessageMapper.toUiModel(any(), any()) } returns
+            ConversationDetailMessageUiModelSample.InvoiceWithLabel
+        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns
+            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+        return Pair(allCollapsed.map { it.messageId }, ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded)
+    }
+
+    private fun setupExpandedToCollapseState(): Pair<List<MessageId>, ConversationDetailMessageUiModel> {
+        val allCollapsed = listOf(
+            ConversationDetailMessageUiModelSample.InvoiceWithLabel,
+            ConversationDetailMessageUiModelSample.AugWeatherForecast
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailEvent.CollapseDecryptedMessage>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(allCollapsed)
+        )
+        coEvery { observeMessageWithLabels(userId, any()) } returns flowOf(
+            MessageWithLabelsSample.InvoiceWithLabel.right()
+        )
+        every { conversationMessageMapper.toUiModel(any(), any()) } returns
+            ConversationDetailMessageUiModelSample.InvoiceWithLabel
+        return Pair(allCollapsed.map { it.messageId }, ConversationDetailMessageUiModelSample.InvoiceWithLabel)
+    }
+
+    private fun setupLinkClickState(link: String) {
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = any()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            openMessageBodyLinkEffect = Effect.of(link)
+        )
+    }
+
     private fun givenReducerReturnsBottomActions() {
         val actionUiModels = listOf(
             ActionUiModelTestData.reply,
@@ -1142,6 +1444,11 @@ class ConversationDetailViewModelTest {
                 )
             )
         )
+    }
+
+    private suspend fun ReceiveTurbine<ConversationDetailState>.conversationMessagesEmitted() {
+        initialStateEmitted()
+        assertIs<ConversationDetailsMessagesState.Data>(awaitItem().messagesState)
     }
 
     private suspend fun ReceiveTurbine<ConversationDetailState>.initialStateEmitted() {

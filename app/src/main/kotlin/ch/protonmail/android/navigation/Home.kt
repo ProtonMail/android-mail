@@ -119,7 +119,8 @@ fun Home(
                                 type = ProtonSnackbarType.NORM
                             )
                         }
-                    }
+                    },
+                    openMessageBodyLink = activityActions.openInActivityInNewTask
                 )
                 addMailbox(
                     navController,

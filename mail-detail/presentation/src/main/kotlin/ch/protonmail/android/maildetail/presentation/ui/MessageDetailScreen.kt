@@ -19,22 +19,13 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
-import android.os.Build
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,48 +34,37 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
-import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
-import com.google.accompanist.web.AccompanistWebViewClient
-import com.google.accompanist.web.WebView
-import com.google.accompanist.web.rememberWebViewStateWithHTMLData
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
-import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
-import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 
@@ -296,92 +276,6 @@ private fun MessageDetailContent(
                         onMessageBodyLinkClicked = onMessageBodyLinkClicked
                     )
                 }
-            }
-        }
-    }
-}
-
-@Composable
-private fun MessageBody(
-    modifier: Modifier = Modifier,
-    messageBodyUiModel: MessageBodyUiModel,
-    onMessageBodyLinkClicked: (uri: Uri) -> Unit
-) {
-    val state = rememberWebViewStateWithHTMLData(
-        data = messageBodyUiModel.messageBody,
-        mimeType = messageBodyUiModel.mimeType.value
-    )
-
-    val client = remember {
-        object : AccompanistWebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                request?.let { onMessageBodyLinkClicked(it.url) }
-                return true
-            }
-        }
-    }
-
-    WebView(
-        onCreated = {
-            it.settings.builtInZoomControls = true
-            it.settings.displayZoomControls = false
-            it.settings.javaScriptEnabled = false
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                it.settings.isAlgorithmicDarkeningAllowed = true
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                it.settings.safeBrowsingEnabled = true
-            }
-        },
-        state = state,
-        modifier = modifier.fillMaxWidth(),
-        client = client
-    )
-}
-
-@Composable
-private fun MessageBodyLoadingError(
-    modifier: Modifier = Modifier,
-    messageBodyState: MessageBodyState.Error.Data,
-    onReload: () -> Unit
-) {
-    val isNetworkError = messageBodyState.isNetworkError
-    val errorMessage = stringResource(
-        if (isNetworkError) {
-            R.string.error_offline_loading_message
-        } else {
-            R.string.error_loading_message
-        }
-    )
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(ProtonTheme.colors.backgroundNorm)
-            .padding(horizontal = ProtonDimens.MediumSpacing, vertical = MailDimens.ExtraLargeSpacing),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Icon(
-            modifier = Modifier
-                .size(MailDimens.ErrorIconBoxSize)
-                .background(ProtonTheme.colors.backgroundSecondary, ProtonTheme.shapes.large)
-                .padding(ProtonDimens.MediumSpacing),
-            painter = painterResource(id = R.drawable.ic_proton_exclamation_circle),
-            contentDescription = NO_CONTENT_DESCRIPTION,
-            tint = ProtonTheme.colors.iconHint
-        )
-        Text(
-            modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing),
-            text = errorMessage,
-            textAlign = TextAlign.Center,
-            style = ProtonTheme.typography.defaultSmallWeak
-        )
-        if (!isNetworkError) {
-            ProtonSolidButton(
-                modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing),
-                onClick = { onReload() }
-            ) {
-                Text(text = stringResource(id = R.string.reload))
             }
         }
     }
