@@ -37,15 +37,12 @@ class ConversationDetailMessagesReducer @Inject constructor() {
             ConversationDetailEvent.ErrorLoadingContacts -> ConversationDetailsMessagesState.Error(
                 message = TextUiModel(string.detail_error_loading_contacts)
             )
-
             is ConversationDetailEvent.ErrorLoadingMessages -> ConversationDetailsMessagesState.Error(
                 message = TextUiModel(string.detail_error_loading_messages)
             )
-
             is ConversationDetailEvent.MessagesData -> ConversationDetailsMessagesState.Data(
                 messages = operation.messagesUiModels
             )
-
             is ConversationDetailEvent.NoNetworkError -> currentState.toNewStateForNoNetworkError()
             is ConversationDetailEvent.ErrorLoadingConversation -> currentState.toNewStateForErrorLoadingConversation()
             is ConversationDetailEvent.CollapseDecryptedMessage ->
@@ -53,7 +50,6 @@ class ConversationDetailMessagesReducer @Inject constructor() {
                     operation.messageId,
                     operation.conversationDetailMessageUiModel
                 )
-
             is ConversationDetailEvent.ExpandDecryptedMessage ->
                 currentState.toNewExpandCollapseState(
                     operation.messageId,

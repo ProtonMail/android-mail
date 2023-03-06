@@ -272,8 +272,6 @@ class ConversationDetailViewModelTest {
 
     @Test
     fun `conversation state is data when use case succeeds`() = runTest {
-        // TODO Alex, what is this test testing? There is no use case being called, just mock data being returned
-
         // given
         val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
         val expectedState = initialState.copy(
@@ -531,8 +529,6 @@ class ConversationDetailViewModelTest {
 
     @Test
     fun `verify order of emitted states when starring a conversation`() = runTest {
-        // TODO Alex, in this test, if we remove the mocks of the reducer, the view model does not emit, so we
-        // are just testing the reducer here.
         // Given
         val actionUiModels = listOf(
             ActionUiModelTestData.reply,
@@ -551,7 +547,7 @@ class ConversationDetailViewModelTest {
             val bottomBarState = ConversationDetailState.Loading.copy(
                 bottomBarState = BottomBarState.Data(actionUiModels)
             )
-            assertEquals(bottomBarState, awaitItem()) // TODO Alex, why is the expected state a copy of Loading???
+            assertEquals(bottomBarState, awaitItem())
 
             viewModel.submit(ConversationDetailViewAction.Star)
             val actual = assertIs<ConversationDetailMetadataState.Data>(awaitItem().conversationState)

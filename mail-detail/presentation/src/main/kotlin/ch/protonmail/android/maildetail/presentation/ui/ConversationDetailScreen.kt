@@ -287,9 +287,8 @@ private fun MessagesContent(
     LaunchedEffect(scrollToMessageId) {
         if (scrollToMessageId != null && !listState.isScrollInProgress) {
             listState.layoutInfo.visibleItemsInfo
-                .firstOrNull { it.key == scrollToMessageId }?.let {
-                    listState.animateScrollToItem(it.index)
-                }
+                .firstOrNull { it.key == scrollToMessageId }
+                ?.let { listState.animateScrollToItem(it.index) }
         }
     }
 

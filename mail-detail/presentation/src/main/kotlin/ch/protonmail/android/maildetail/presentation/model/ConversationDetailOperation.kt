@@ -62,18 +62,15 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorMovingToTrash : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingConversation : ConversationDetailEvent, AffectingErrorBar
     object ErrorLabelingConversation : ConversationDetailEvent, AffectingErrorBar
-
     data class ExpandDecryptedMessage(
         val messageId: MessageId,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Expanded
     ) :
         ConversationDetailEvent, AffectingMessages
-
     data class CollapseDecryptedMessage(
         val messageId: MessageId,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed,
     ) : ConversationDetailEvent, AffectingMessages
-
     object ErrorDecryptingMessage : ConversationDetailEvent, AffectingErrorBar
     object ErrorRetrievingMessage : ConversationDetailEvent, AffectingErrorBar
 }
@@ -96,7 +93,6 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class LabelAsConfirmed(val archiveSelected: Boolean) : ConversationDetailViewAction, AffectingBottomSheet
     data class ExpandMessage(val messageId: MessageId) : ConversationDetailViewAction
     data class CollapseMessage(val messageId: MessageId) : ConversationDetailViewAction
-
     data class MessageBodyLinkClicked(val url: String) : ConversationDetailViewAction
     data class RequestScrollTo(val messageId: MessageId) : ConversationDetailViewAction
 }

@@ -115,7 +115,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "TooManyFunctions")
 class ConversationDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val actionUiModelMapper: ActionUiModelMapper,
@@ -157,6 +157,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     @OptIn(FlowPreview::class)
+    @Suppress("ComplexMethod")
     fun submit(action: ConversationDetailViewAction) {
         when (action) {
             is Star -> starConversation()

@@ -28,6 +28,7 @@ import kotlinx.collections.immutable.ImmutableList
 
 object MessageDetailHeaderUiModelSample {
 
+    @Suppress("LongParameterList")
     fun build(
         avatar: AvatarUiModel,
         sender: ParticipantUiModel,

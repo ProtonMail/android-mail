@@ -86,7 +86,6 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
                 is ConversationDetailViewAction.RequestLabelAsBottomSheet,
                 is ConversationDetailViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
-
                 is ConversationDetailViewAction.LabelAsConfirmed,
                 is ConversationDetailViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
@@ -102,27 +101,21 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailEvent.ErrorRemoveStar -> Effect.of(
                     TextUiModel(R.string.error_unstar_operation_failed)
                 )
-
                 is ConversationDetailEvent.ErrorMarkingAsUnread -> Effect.of(
                     TextUiModel(R.string.error_mark_as_unread_failed)
                 )
-
                 is ConversationDetailEvent.ErrorMovingToTrash -> Effect.of(
                     TextUiModel(R.string.error_move_to_trash_failed)
                 )
-
                 is ConversationDetailEvent.ErrorMovingConversation -> Effect.of(
                     TextUiModel(R.string.error_move_conversation_failed)
                 )
-
                 is ConversationDetailEvent.ErrorLabelingConversation -> Effect.of(
                     TextUiModel(R.string.error_relabel_message_failed)
                 )
-
                 is ConversationDetailEvent.ErrorDecryptingMessage -> Effect.of(
                     TextUiModel(R.string.decryption_error)
                 )
-
                 is ConversationDetailEvent.ErrorRetrievingMessage -> Effect.of(
                     TextUiModel(R.string.detail_error_retrieving_message_body)
                 )
@@ -148,12 +141,10 @@ class ConversationDetailReducer @Inject constructor(
                 operation.mailLabelText
             )
         )
-
         is ConversationDetailViewAction.LabelAsConfirmed -> when (operation.archiveSelected) {
             true -> Effect.of(TextUiModel(R.string.conversation_moved_to_archive))
             false -> exitScreenWithMessageEffect
         }
-
         else -> exitScreenWithMessageEffect
     }
 
