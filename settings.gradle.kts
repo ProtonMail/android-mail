@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-rootProject.name = "Proton Mail"
+rootProject.name = "ProtonMail"
 
 plugins {
     id("me.proton.core.gradle-plugins.include-core-build") version "1.1.1"
