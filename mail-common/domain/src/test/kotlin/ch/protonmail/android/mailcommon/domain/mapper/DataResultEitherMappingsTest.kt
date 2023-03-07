@@ -20,26 +20,39 @@ package ch.protonmail.android.mailcommon.domain.mapper
 
 import java.io.IOException
 import java.net.UnknownHostException
+import android.util.Log
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
+import ch.protonmail.android.mailcommon.domain.model.ProtonError
+import ch.protonmail.android.mailcommon.domain.util.TestTree
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.arch.ResponseSource
+import me.proton.core.network.data.ProtonErrorException
 import me.proton.core.network.domain.ApiException
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.util.kotlin.EMPTY_STRING
 import retrofit2.HttpException
+import timber.log.Timber
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 internal class DataResultEitherMappingsTest {
+
+    private val testTree = TestTree()
+
+    @BeforeTest
+    fun setUp() {
+        Timber.plant(testTree)
+    }
 
     @Test
     fun `emits Right on success`() = runTest {
@@ -142,18 +155,24 @@ internal class DataResultEitherMappingsTest {
     }
 
     @Test
-    fun `does throw exception for unhandled proton error`() = runTest {
+    fun `does log and return unknown proton error for unhandled proton error`() = runTest {
         // given
         val dataResult = DataResult.Error.Remote(message = null, cause = null, protonCode = 123)
         val input = flowOf(dataResult)
 
         // when
         input.mapToEither().test {
-
             // then
-            awaitError().assertIs<MappingRuntimeException>(
-                expectedMessage = "Unhandled remote error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED"
+            val expected = DataError.Remote.Proton(ProtonError.Unknown).left()
+            val loggedError = TestTree.Log(
+                priority = Log.ERROR,
+                message = "UNHANDLED PROTON ERROR caused by result: $dataResult",
+                tag = null,
+                t = null
             )
+            assertEquals(expected, awaitItem())
+            assertEquals(loggedError, testTree.logs.last())
+            awaitComplete()
         }
     }
 
@@ -231,7 +250,7 @@ internal class DataResultEitherMappingsTest {
     }
 
     @Test
-    fun `does handle nested Http Exceptions mapping them to http errors`() = runTest {
+    fun `does handle nested remote Http Exceptions mapping them to http errors`() = runTest {
         // given
         val httpException = mockk<HttpException> {
             every { message } returns "HTTP 505 HTTP Version Not Supported"
@@ -250,6 +269,35 @@ internal class DataResultEitherMappingsTest {
 
             // then
             assertEquals(DataError.Remote.Http(NetworkError.ServerError).left(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `does handle nested remote Proton Exception mapping it to Proton Error`() = runTest {
+        // given
+        val protonException = ProtonErrorException(
+            response = mockk(),
+            protonData = ApiResult.Error.ProtonData(2063, "Base64 data has bad format")
+        )
+        val input = flowOf(
+            DataResult.Error.Remote(
+                message = "Wrapping error message",
+                cause = ApiException(
+                    ApiResult.Error.Http(
+                        httpCode = 0,
+                        message = "",
+                        cause = protonException
+                    )
+                ),
+                httpCode = 0
+            )
+        )
+
+        // when
+        input.mapToEither().test {
+            // then
+            assertEquals(DataError.Remote.Proton(ProtonError.Base64Format).left(), awaitItem())
             awaitComplete()
         }
     }

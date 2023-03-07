@@ -20,5 +20,34 @@ package ch.protonmail.android.mailcommon.domain.model
 
 /**
  * Error related to Proton error codes
+ * See the `/error-codes.html` page of API docs for further details
  */
-sealed interface ProtonError
+sealed interface ProtonError {
+
+    object Base64Format : ProtonError
+
+    object PermissionDenied : ProtonError
+
+    object InsufficientScope : ProtonError
+
+    object Banned : ProtonError
+
+    object UploadFailure : ProtonError
+
+    object PayloadTooLarge : ProtonError
+
+    object MessageUpdateDraftNotDraft : ProtonError
+
+    object MessageValidateKeyNotAssociated : ProtonError
+
+    object MessageSearchQuerySyntax : ProtonError
+
+    /**
+     * This object is not meant to be actively used.
+     * Its purpose is to notify the logging tool that a case that should be handled
+     * is not and to allow dedicated handling to be put in place.
+     */
+    object Unknown : ProtonError
+
+    companion object
+}

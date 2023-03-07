@@ -25,12 +25,15 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
+import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import me.proton.core.domain.arch.DataResult
+import me.proton.core.network.data.ProtonErrorException
 import me.proton.core.network.domain.ApiException
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import retrofit2.HttpException
+import timber.log.Timber
 
 fun <T> Flow<DataResult<T>>.mapToEither(): Flow<Either<DataError, T>> = transform { dataResult ->
     when (dataResult) {
@@ -52,15 +55,16 @@ private fun toRemoteDataError(dataResult: DataResult.Error.Remote): DataError.Re
     return when {
         dataResult.protonCode != INITIAL_ERROR_CODE -> toProtonDataError(dataResult)
         dataResult.httpCode != INITIAL_ERROR_CODE -> toHttpDataError(dataResult)
-        else -> toNetworkDataError(dataResult)
+        else -> handleRemoteError(dataResult)
     }
 }
 
 private fun toProtonDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Proton {
-    when (val cause = dataResult.cause) {
-        null -> throw dataResult.asWrappedException()
-        else -> throw cause
+    val protonError = ProtonError.fromProtonCode(dataResult.protonCode)
+    if (protonError == ProtonError.Unknown) {
+        Timber.e("UNHANDLED PROTON ERROR caused by result: $dataResult")
     }
+    return DataError.Remote.Proton(protonError)
 }
 
 private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Http {
@@ -70,15 +74,16 @@ private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remo
 }
 
 @Suppress("ThrowsCount")
-private fun toNetworkDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Http {
+private fun handleRemoteError(dataResult: DataResult.Error.Remote): DataError.Remote {
     return when (val cause = dataResult.cause) {
-        null -> throw dataResult.asWrappedException()
         is ApiException -> when (val innerCause = cause.cause) {
             is UnknownHostException -> DataError.Remote.Http(NetworkError.NoNetwork)
             is HttpException -> toHttpDataError(dataResult.copy(httpCode = innerCause.code()))
+            is ProtonErrorException -> toProtonDataError(dataResult.copy(protonCode = innerCause.protonData.code))
             null -> throw cause
             else -> throw innerCause
         }
+        null -> throw dataResult.asWrappedException()
         else -> throw cause
     }
 }
