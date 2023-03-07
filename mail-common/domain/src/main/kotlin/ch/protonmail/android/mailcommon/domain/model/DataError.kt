@@ -52,6 +52,13 @@ sealed interface DataError {
          * The API returned a success, but proton code is not OK
          */
         data class Proton(val protonError: ProtonError) : Remote
+
+        /**
+         * This object is not meant to be actively used.
+         * Its purpose is to notify the logging tool that a case that should be handled
+         * is not and to allow dedicated handling to be put in place.
+         */
+        object Unknown : Remote
     }
 }
 

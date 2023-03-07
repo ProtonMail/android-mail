@@ -72,18 +72,23 @@ private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remo
 }
 
 @Suppress("ThrowsCount")
-private fun handleRemoteError(dataResult: DataResult.Error.Remote): DataError.Remote {
-    return when (val cause = dataResult.cause) {
-        is ApiException -> when (val innerCause = cause.cause) {
-            is UnknownHostException -> DataError.Remote.Http(NetworkError.NoNetwork)
-            is HttpException -> toHttpDataError(dataResult.copy(httpCode = innerCause.code()))
-            is ProtonErrorException -> toProtonDataError(dataResult.copy(protonCode = innerCause.protonData.code))
-            null -> throw cause
-            else -> throw innerCause
-        }
-        null -> throw dataResult.asWrappedException()
-        else -> throw cause
+private fun handleRemoteError(dataResult: DataResult.Error.Remote): DataError.Remote =
+    when (val cause = dataResult.cause) {
+        is ApiException -> handleApiException(cause, dataResult)
+        else -> unhandledRemoteError(dataResult)
     }
+
+private fun handleApiException(cause: ApiException, dataResult: DataResult.Error.Remote) =
+    when (val innerCause = cause.cause) {
+        is UnknownHostException -> DataError.Remote.Http(NetworkError.NoNetwork)
+        is HttpException -> toHttpDataError(dataResult.copy(httpCode = innerCause.code()))
+        is ProtonErrorException -> toProtonDataError(dataResult.copy(protonCode = innerCause.protonData.code))
+        else -> unhandledRemoteError(dataResult)
+    }
+
+private fun unhandledRemoteError(dataResult: DataResult.Error.Remote): DataError.Remote.Unknown {
+    Timber.e("UNHANDLED REMOTE ERROR caused by result: $dataResult")
+    return DataError.Remote.Unknown
 }
 
 private fun DataResult.Error.asWrappedException(): MappingRuntimeException {

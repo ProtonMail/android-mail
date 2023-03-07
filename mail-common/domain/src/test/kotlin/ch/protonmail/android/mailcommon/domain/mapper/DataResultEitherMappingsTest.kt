@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailcommon.domain.mapper
 
-import java.io.IOException
 import java.net.UnknownHostException
 import android.util.Log
 import app.cash.turbine.test
@@ -43,7 +42,6 @@ import timber.log.Timber
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
 
 internal class DataResultEitherMappingsTest {
 
@@ -97,14 +95,8 @@ internal class DataResultEitherMappingsTest {
         // when
         input.mapToEither().test {
             // then
-            val loggedError = TestTree.Log(
-                priority = Log.ERROR,
-                message = "UNHANDLED LOCAL ERROR caused by result: $dataResult",
-                tag = null,
-                t = null
-            )
             assertEquals(DataError.Local.Unknown.left(), awaitItem())
-            assertEquals(loggedError, testTree.logs.last())
+            verifyErrorLogged("UNHANDLED LOCAL ERROR caused by result: $dataResult")
             awaitComplete()
         }
     }
@@ -130,64 +122,52 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
             // then
             val expected = DataError.Remote.Proton(ProtonError.Unknown).left()
-            val loggedError = TestTree.Log(
-                priority = Log.ERROR,
-                message = "UNHANDLED PROTON ERROR caused by result: $dataResult",
-                tag = null,
-                t = null
-            )
             assertEquals(expected, awaitItem())
-            assertEquals(loggedError, testTree.logs.last())
+            verifyErrorLogged("UNHANDLED PROTON ERROR caused by result: $dataResult")
             awaitComplete()
         }
     }
 
     @Test
-    fun `does throw exception with message from data result for unhandled remote error`() =
+    fun `does log and return unknown remote error for unhandled remote error`() =
         runTest {
             // given
             val message = "an error occurred"
-            val dataResult = DataResult.Error.Remote(message = message, cause = null)
+            val dataResult = DataResult.Error.Remote(message = message, cause = Exception("Unknown exception"))
             val input = flowOf(dataResult)
             // when
             input.mapToEither().test {
                 // then
-                awaitError().assertIs<MappingRuntimeException>(
-                    expectedMessage = "Unhandled remote error $dataResult, message = $message"
-                )
+                assertEquals(DataError.Remote.Unknown.left(), awaitItem())
+                verifyErrorLogged("UNHANDLED REMOTE ERROR caused by result: $dataResult")
+                awaitComplete()
             }
         }
 
     @Test
-    fun `does throw exception from data result cause for unhandled remote error`() = runTest {
+    fun `does log and return Unknown remote error nested exception is unknown`() = runTest {
         // given
-        val message = "an error occurred"
-        val cause = IOException(message)
-        val dataResult = DataResult.Error.Remote(message = null, cause = cause)
-        val input = flowOf(dataResult)
-        // when
-        input.mapToEither().test {
-            // then
-            awaitError().assertIs<IOException>(expectedMessage = message)
-        }
-    }
-
-    @Test
-    fun `does throw exception with no message provided for unhandled remote error`() = runTest {
-        // given
-        val dataResult = DataResult.Error.Remote(message = null, cause = null)
-        val input = flowOf(dataResult)
-        // when
-        input.mapToEither().test {
-            // then
-            awaitError().assertIs<MappingRuntimeException>(
-                expectedMessage = "Unhandled remote error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED"
+        val cause = ApiException(
+            ApiResult.Error.Http(
+                cause = Exception("Unknown exception"),
+                httpCode = 0,
+                message = EMPTY_STRING
             )
+        )
+        val dataResult = DataResult.Error.Remote(message = null, cause = cause)
+        val expectedError = DataError.Remote.Unknown
+        val input = flowOf(dataResult)
+        // when
+        input.mapToEither().test {
+            // then
+            assertEquals(expectedError.left(), awaitItem())
+            verifyErrorLogged("UNHANDLED REMOTE ERROR caused by result: $dataResult")
+            awaitComplete()
         }
     }
 
     @Test
-    fun `does handle UnknownHostException`() = runTest {
+    fun `does handle nested UnknownHostException`() = runTest {
         // given
         val cause = ApiException(
             ApiResult.Error.Http(
@@ -208,7 +188,7 @@ internal class DataResultEitherMappingsTest {
     }
 
     @Test
-    fun `does handle nested remote Http Exceptions mapping them to http errors`() = runTest {
+    fun `does handle nested Http Exceptions mapping them to http errors`() = runTest {
         // given
         val httpException = mockk<HttpException> {
             every { message } returns "HTTP 505 HTTP Version Not Supported"
@@ -256,11 +236,14 @@ internal class DataResultEitherMappingsTest {
             awaitComplete()
         }
     }
-}
 
-private inline fun <reified T> Throwable.assertIs(
-    expectedMessage: String?
-) {
-    assertIs<T>(value = this)
-    assertEquals(expected = expectedMessage, actual = message)
+    private fun verifyErrorLogged(message: String) {
+        val loggedError = TestTree.Log(
+            priority = Log.ERROR,
+            message = message,
+            tag = null,
+            t = null
+        )
+        assertEquals(loggedError, testTree.logs.last())
+    }
 }
