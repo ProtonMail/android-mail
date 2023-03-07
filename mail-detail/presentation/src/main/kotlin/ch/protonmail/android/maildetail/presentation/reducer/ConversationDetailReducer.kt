@@ -110,14 +110,21 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailEvent.ErrorMovingConversation -> Effect.of(
                     TextUiModel(R.string.error_move_conversation_failed)
                 )
+
                 is ConversationDetailEvent.ErrorLabelingConversation -> Effect.of(
                     TextUiModel(R.string.error_relabel_message_failed)
                 )
+
                 is ConversationDetailEvent.ErrorDecryptingMessage -> Effect.of(
                     TextUiModel(R.string.decryption_error)
                 )
+
                 is ConversationDetailEvent.ErrorRetrievingMessage -> Effect.of(
                     TextUiModel(R.string.detail_error_retrieving_message_body)
+                )
+
+                is ConversationDetailEvent.ErrorRetrievingMessageOffline -> Effect.of(
+                    TextUiModel(R.string.error_offline_loading_message)
                 )
             }
         } else {

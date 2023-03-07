@@ -201,39 +201,41 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun observeConversationMessages(conversationId: ConversationId) {
-        primaryUserId.flatMapLatest { userId ->
-            combine(
-                observeContacts(userId),
-                observeConversationMessages(userId, conversationId).ignoreLocalErrors()
-            ) { contactsEither, messagesEither ->
-                val contacts = contactsEither.getOrElse {
-                    Timber.i("Failed getting contacts for displaying initials. Fallback to display name")
-                    emptyList()
-                }
-                val messages = messagesEither.getOrElse {
-                    return@combine ConversationDetailEvent.ErrorLoadingMessages
-                }
-                val messagesUiModels = messages.map { messageWithLabels ->
-                    when (val currentMessage = findCurrentStateOfMessage(messageWithLabels.message.messageId)) {
-                        is ConversationDetailMessageUiModel.Expanded ->
-                            conversationMessageMapper.toUiModel(
-                                messageWithLabels,
-                                contacts,
-                                DecryptedMessageBody(
-                                    currentMessage.messageBodyUiModel.messageBody,
-                                    MimeType.from(currentMessage.messageBodyUiModel.mimeType.value)
-                                ),
-                            )
-
-                        else -> conversationMessageMapper.toUiModel(
-                            messageWithLabels,
-                            contacts
-                        )
+        primaryUserId
+            .flatMapLatest { userId ->
+                combine(
+                    observeContacts(userId),
+                    observeConversationMessages(userId, conversationId).ignoreLocalErrors()
+                ) { contactsEither, messagesEither ->
+                    val contacts = contactsEither.getOrElse {
+                        Timber.i("Failed getting contacts for displaying initials. Fallback to display name")
+                        emptyList()
                     }
+                    val messages = messagesEither.getOrElse {
+                        return@combine ConversationDetailEvent.ErrorLoadingMessages
+                    }
+                    val messagesUiModels = messages.map { messageWithLabels ->
+                        when (val currentMessage = findCurrentStateOfMessage(messageWithLabels.message.messageId)) {
+                            is ConversationDetailMessageUiModel.Expanded ->
+                                conversationMessageMapper.toUiModel(
+                                    messageWithLabels,
+                                    contacts,
+                                    DecryptedMessageBody(
+                                        currentMessage.messageBodyUiModel.messageBody,
+                                        MimeType.from(currentMessage.messageBodyUiModel.mimeType.value)
+                                    ),
+                                )
+
+                            else -> conversationMessageMapper.toUiModel(
+                                messageWithLabels,
+                                contacts
+                            )
+                        }
+                    }
+                    ConversationDetailEvent.MessagesData(messagesUiModels)
                 }
-                ConversationDetailEvent.MessagesData(messagesUiModels)
             }
-        }.onEach(::emitNewStateFrom)
+            .onEach(::emitNewStateFrom)
             .launchIn(viewModelScope)
     }
 
@@ -483,14 +485,7 @@ class ConversationDetailViewModel @Inject constructor(
             val contacts = getContacts(userId).getOrElse { emptyList() }
             val decryptedBody = getDecryptedMessageBody(userId, messageId)
                 .onRight { markMessageAsReadIfRequired(userId, messageId) }
-                .onLeft {
-                    emitNewStateFrom(
-                        when (it) {
-                            is GetDecryptedMessageBodyError.Data -> ConversationDetailEvent.ErrorRetrievingMessage
-                            is GetDecryptedMessageBodyError.Decryption -> ConversationDetailEvent.ErrorDecryptingMessage
-                        }
-                    )
-                }
+                .onLeft { emitMessageBodyDecryptError(it) }
                 .getOrNull()
             decryptedBody?.let { body -> Triple(userId, body, contacts) }
         }
@@ -567,6 +562,20 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun onRequestScrollTo(action: RequestScrollTo) {
         viewModelScope.launch { emitNewStateFrom(action) }
+    }
+
+    private suspend fun emitMessageBodyDecryptError(error: GetDecryptedMessageBodyError) {
+        val errorState = when (error) {
+            is GetDecryptedMessageBodyError.Data -> if (error.dataError.isOfflineError()) {
+                ConversationDetailEvent.ErrorRetrievingMessageOffline
+            } else {
+                ConversationDetailEvent.ErrorRetrievingMessage
+            }
+
+            is GetDecryptedMessageBodyError.Decryption -> ConversationDetailEvent.ErrorDecryptingMessage
+        }
+
+        emitNewStateFrom(errorState)
     }
 
     companion object {

@@ -25,4 +25,5 @@ object DataErrorSample {
 
     val NoCache = DataError.Local.NoDataCached
     val Unreachable = DataError.Remote.Http(NetworkError.Unreachable)
+    val Offline = DataError.Remote.Http(NetworkError.NoNetwork)
 }

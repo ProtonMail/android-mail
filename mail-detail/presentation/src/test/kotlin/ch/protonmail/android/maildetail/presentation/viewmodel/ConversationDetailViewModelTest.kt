@@ -1275,6 +1275,35 @@ class ConversationDetailViewModelTest {
         }
 
     @Test
+    fun `should emit offline error when offline and the message can not be loaded and messages stay collapsed`() =
+        runTest {
+            // given
+            val (messageIds, _) = setupCollapsedToExpandMessagesState()
+            coEvery {
+                getDecryptedMessageBody(
+                    userId,
+                    messageIds.first()
+                )
+            } returns GetDecryptedMessageBodyError.Data(DataErrorSample.Offline).left()
+
+            viewModel.state.test {
+                conversationMessagesEmitted()
+
+                // when
+                viewModel.submit(ConversationDetailViewAction.ExpandMessage(messageIds.first()))
+                advanceUntilIdle()
+
+                // then
+                val newState = awaitItem()
+                (newState.messagesState as ConversationDetailsMessagesState.Data).messages.forEach {
+                    assertIs<ConversationDetailMessageUiModel.Collapsed>(it)
+                }
+                assertEquals(newState.error.consume(), TextUiModel(string.error_offline_loading_message))
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
     fun `should emit scroll to message id effect when requested`() = runTest {
         // given
         val (messageIds, _) = setupCollapsedToExpandMessagesState()
@@ -1291,6 +1320,7 @@ class ConversationDetailViewModelTest {
         }
     }
 
+    @Suppress("LongMethod")
     private fun setupCollapsedToExpandMessagesState(withUnreadMessage: Boolean = false):
         Pair<List<MessageId>, ConversationDetailMessageUiModel> {
         val (invoiceUiMessage, invoiceMessage) = if (withUnreadMessage) {
@@ -1347,6 +1377,15 @@ class ConversationDetailViewModelTest {
         } returns ConversationDetailState.Loading.copy(
             messagesState = ConversationDetailsMessagesState.Data(allCollapsed),
             error = Effect.of(TextUiModel(string.detail_error_retrieving_message_body))
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailEvent.ErrorRetrievingMessageOffline>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(allCollapsed),
+            error = Effect.of(TextUiModel(string.error_offline_loading_message))
         )
         every {
             reducer.newStateFrom(

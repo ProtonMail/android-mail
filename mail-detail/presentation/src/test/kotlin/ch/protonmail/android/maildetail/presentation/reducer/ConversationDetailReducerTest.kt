@@ -185,7 +185,8 @@ class ConversationDetailReducerTest(
                 ConversationDetailMessageUiModelSample.AugWeatherForecast
             ) affects Messages,
             ConversationDetailEvent.ErrorDecryptingMessage affects ErrorBar,
-            ConversationDetailEvent.ErrorRetrievingMessage affects ErrorBar
+            ConversationDetailEvent.ErrorRetrievingMessage affects ErrorBar,
+            ConversationDetailEvent.ErrorRetrievingMessageOffline affects ErrorBar
         )
 
         @JvmStatic

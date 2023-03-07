@@ -73,6 +73,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     ) : ConversationDetailEvent, AffectingMessages
     object ErrorDecryptingMessage : ConversationDetailEvent, AffectingErrorBar
     object ErrorRetrievingMessage : ConversationDetailEvent, AffectingErrorBar
+    object ErrorRetrievingMessageOffline : ConversationDetailEvent, AffectingErrorBar
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {
