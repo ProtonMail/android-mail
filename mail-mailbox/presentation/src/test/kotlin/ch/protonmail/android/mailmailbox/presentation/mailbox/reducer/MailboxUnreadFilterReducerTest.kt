@@ -45,6 +45,7 @@ internal class MailboxUnreadFilterReducerTest(
 
     companion object {
 
+        private const val DEFAULT_UNREAD_COUNT = 0
         private const val INITIAL_UNREAD_COUNT = 42
         private const val UPDATED_UNREAD_COUNT = 24
 
@@ -62,7 +63,7 @@ internal class MailboxUnreadFilterReducerTest(
             TestInput(
                 currentState = UnreadFilterState.Loading,
                 operation = MailboxEvent.NewLabelSelected(LabelTestData.systemLabels[0], selectedLabelCount = null),
-                expectedState = UnreadFilterState.Loading
+                expectedState = UnreadFilterState.Data(DEFAULT_UNREAD_COUNT, isFilterEnabled = false)
             ),
             TestInput(
                 currentState = UnreadFilterState.Loading,
@@ -100,12 +101,12 @@ internal class MailboxUnreadFilterReducerTest(
             TestInput(
                 currentState = UnreadFilterState.Data(INITIAL_UNREAD_COUNT, isFilterEnabled = false),
                 operation = MailboxEvent.NewLabelSelected(LabelTestData.systemLabels[0], selectedLabelCount = null),
-                expectedState = UnreadFilterState.Loading
+                expectedState = UnreadFilterState.Data(DEFAULT_UNREAD_COUNT, isFilterEnabled = false)
             ),
             TestInput(
                 currentState = UnreadFilterState.Data(INITIAL_UNREAD_COUNT, isFilterEnabled = true),
                 operation = MailboxEvent.NewLabelSelected(LabelTestData.systemLabels[0], selectedLabelCount = null),
-                expectedState = UnreadFilterState.Loading
+                expectedState = UnreadFilterState.Data(DEFAULT_UNREAD_COUNT, isFilterEnabled = true)
             ),
             TestInput(
                 currentState = UnreadFilterState.Data(INITIAL_UNREAD_COUNT, isFilterEnabled = false),
