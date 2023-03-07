@@ -75,14 +75,11 @@ internal class HttpCodeNetworkErrorMappingsTest {
     }
 
     @Test
-    fun `does return null for unknown errors`() {
-        // given
-        val expected = null
-
+    fun `does return Unknown for unknown errors`() {
         // when
-        val result = NetworkError.fromHttpCodeOrNull(0)
+        val result = NetworkError.fromHttpCode(0)
 
         // then
-        assertEquals(expected, result)
+        assertEquals(NetworkError.Unknown, result)
     }
 }

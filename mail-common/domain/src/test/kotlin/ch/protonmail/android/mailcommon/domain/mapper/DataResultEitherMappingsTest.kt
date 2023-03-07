@@ -114,6 +114,21 @@ internal class DataResultEitherMappingsTest {
     }
 
     @Test
+    fun `does log and return unknown http error for unhandled http error`() = runTest {
+        // given
+        val dataResult = DataResult.Error.Remote(message = null, cause = null, httpCode = 456)
+        val input = flowOf(dataResult)
+        // when
+        input.mapToEither().test {
+            // then
+            val expected = DataError.Remote.Http(NetworkError.Unknown).left()
+            assertEquals(expected, awaitItem())
+            verifyErrorLogged("UNHANDLED NETWORK ERROR caused by result: $dataResult")
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `does log and return unknown proton error for unhandled proton error`() = runTest {
         // given
         val dataResult = DataResult.Error.Remote(message = null, cause = null, protonCode = 123)
@@ -244,6 +259,6 @@ internal class DataResultEitherMappingsTest {
             tag = null,
             t = null
         )
-        assertEquals(loggedError, testTree.logs.last())
+        assertEquals(loggedError, testTree.logs.lastOrNull())
     }
 }

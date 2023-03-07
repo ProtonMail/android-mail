@@ -31,7 +31,6 @@ import kotlinx.coroutines.flow.transform
 import me.proton.core.domain.arch.DataResult
 import me.proton.core.network.data.ProtonErrorException
 import me.proton.core.network.domain.ApiException
-import me.proton.core.util.kotlin.takeIfNotEmpty
 import retrofit2.HttpException
 import timber.log.Timber
 
@@ -66,12 +65,13 @@ private fun toProtonDataError(dataResult: DataResult.Error.Remote): DataError.Re
 }
 
 private fun toHttpDataError(dataResult: DataResult.Error.Remote): DataError.Remote.Http {
-    val networkError = NetworkError.fromHttpCodeOrNull(dataResult.httpCode)
-        ?: throw dataResult.asWrappedException()
+    val networkError = NetworkError.fromHttpCode(dataResult.httpCode)
+    if (networkError == NetworkError.Unknown) {
+        Timber.e("UNHANDLED NETWORK ERROR caused by result: $dataResult")
+    }
     return DataError.Remote.Http(networkError)
 }
 
-@Suppress("ThrowsCount")
 private fun handleRemoteError(dataResult: DataResult.Error.Remote): DataError.Remote =
     when (val cause = dataResult.cause) {
         is ApiException -> handleApiException(cause, dataResult)
@@ -91,30 +91,4 @@ private fun unhandledRemoteError(dataResult: DataResult.Error.Remote): DataError
     return DataError.Remote.Unknown
 }
 
-private fun DataResult.Error.asWrappedException(): MappingRuntimeException {
-    val message = when (this) {
-        is DataResult.Error.Local -> "Unhandled local error $this, message = ${messageFrom(this)}"
-        is DataResult.Error.Remote -> "Unhandled remote error $this, message = ${messageFrom(this)}"
-    }
-    return MappingRuntimeException(message, cause)
-}
-
-private fun messageFrom(dataResult: DataResult.Error): String =
-    dataResult.message?.takeIfNotEmpty()
-        ?: dataResult.cause?.message?.takeIfNotEmpty()
-        ?: DATA_RESULT_NO_MESSAGE_PROVIDED
-
 private const val INITIAL_ERROR_CODE = 0
-internal const val DATA_RESULT_NO_MESSAGE_PROVIDED = "DataResult didn't provide any message"
-
-/**
- * This type overrides [message] and [cause] which prevents the coroutines stacktrace recovery
- * from copying this exception (and break referential equality).
- *
- * See StackTrace Recovery machinery:
- * https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/topics/debugging.md#stacktrace-recovery-machinery
- */
-class MappingRuntimeException(
-    override val message: String?,
-    override val cause: Throwable? = null
-) : RuntimeException(message, cause)
