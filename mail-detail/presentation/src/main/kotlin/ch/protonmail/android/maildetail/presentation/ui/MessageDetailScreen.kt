@@ -90,6 +90,7 @@ import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
+@Suppress("UseComposableActions")
 fun MessageDetailScreen(
     modifier: Modifier = Modifier,
     onExit: (message: String?) -> Unit,
@@ -255,6 +256,7 @@ fun MessageDetailScreen(
 }
 
 @Composable
+@Suppress("UseComposableActions")
 private fun MessageDetailContent(
     modifier: Modifier = Modifier,
     messageMetadataState: MessageMetadataState.Data,
