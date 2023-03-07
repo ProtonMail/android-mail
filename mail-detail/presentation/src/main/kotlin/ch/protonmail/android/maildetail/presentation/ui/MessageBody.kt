@@ -22,7 +22,6 @@ import android.net.Uri
 import android.os.Build
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +30,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,7 +48,6 @@ import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallWeak
-import timber.log.Timber
 
 @Composable
 internal fun MessageBody(
@@ -58,9 +55,6 @@ internal fun MessageBody(
     messageBodyUiModel: MessageBodyUiModel,
     onMessageBodyLinkClicked: (uri: Uri) -> Unit
 ) {
-    LaunchedEffect(key1 = messageBodyUiModel) {
-        Timber.d("MessageBody: $messageBodyUiModel")
-    }
     val state = rememberWebViewStateWithHTMLData(
         data = messageBodyUiModel.messageBody,
         mimeType = messageBodyUiModel.mimeType.value

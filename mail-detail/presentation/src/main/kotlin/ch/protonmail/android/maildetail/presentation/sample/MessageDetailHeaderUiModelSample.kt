@@ -56,7 +56,7 @@ object MessageDetailHeaderUiModelSample {
         ccRecipients = ccRecipients,
         bccRecipients = bccRecipients,
         labels = labels,
-        size = "",
+        size = "6.35 KB",
         encryptionPadlock = 0,
         encryptionInfo = ""
     )

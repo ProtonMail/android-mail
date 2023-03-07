@@ -37,7 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.unit.dp
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanded
@@ -107,7 +107,7 @@ private fun ConversationDetailExpandedItem(
             modifier = Modifier
                 .clickable { actions.onCollapse(messageId) }
                 .fillMaxWidth()
-                .height(16.dp)
+                .height(MailDimens.ConversationMessageCollapseBarHeight)
         )
         MessageDetailHeader(uiModel = uiModel.messageDetailHeaderUiModel)
         MessageBody(

@@ -40,4 +40,6 @@ object MailDimens {
     val ExtraLargeSpacing = 48.dp
 
     val ErrorIconBoxSize = 80.dp
+
+    val ConversationMessageCollapseBarHeight = 16.dp
 }
