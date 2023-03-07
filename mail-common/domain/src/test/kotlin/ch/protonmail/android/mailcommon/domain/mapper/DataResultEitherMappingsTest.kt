@@ -55,7 +55,7 @@ internal class DataResultEitherMappingsTest {
     }
 
     @Test
-    fun `emits Right on success`() = runTest {
+    fun `emits data result value on success`() = runTest {
         // given
         val string1 = "hello"
         val string2 = "world"
@@ -63,10 +63,8 @@ internal class DataResultEitherMappingsTest {
             DataResult.Success(ResponseSource.Local, string1),
             DataResult.Success(ResponseSource.Remote, string2)
         )
-
         // when
         input.mapToEither().test {
-
             // then
             assertEquals(string1.right(), awaitItem())
             assertEquals(string2.right(), awaitItem())
@@ -82,10 +80,8 @@ internal class DataResultEitherMappingsTest {
             DataResult.Processing(ResponseSource.Remote),
             DataResult.Success(ResponseSource.Remote, string)
         )
-
         // when
         input.mapToEither().test {
-
             // then
             assertEquals(string.right(), awaitItem())
             awaitComplete()
@@ -98,10 +94,8 @@ internal class DataResultEitherMappingsTest {
         val message = "an error occurred"
         val dataResult = DataResult.Error.Local(message, cause = null)
         val input = flowOf(dataResult)
-
         // when
         input.mapToEither().test {
-
             // then
             awaitError().assertIs<MappingRuntimeException>(
                 expectedMessage = "Unhandled local error $dataResult, message = $message"
@@ -116,10 +110,8 @@ internal class DataResultEitherMappingsTest {
         val cause = IOException("an error occurred")
         val dataResult = DataResult.Error.Local(message = null, cause = cause)
         val input = flowOf(dataResult)
-
         // when
         input.mapToEither().test {
-
             // then
             awaitError().assertIs<IOException>(expectedMessage = message)
         }
@@ -131,10 +123,8 @@ internal class DataResultEitherMappingsTest {
         val cause = IOException()
         val dataResult = DataResult.Error.Local(message = null, cause = cause)
         val input = flowOf(dataResult)
-
         // when
         input.mapToEither().test {
-
             // then
             awaitError().assertIs<IOException>(expectedMessage = null)
         }
@@ -144,10 +134,8 @@ internal class DataResultEitherMappingsTest {
     fun `does emit http error`() = runTest {
         // given
         val input = flowOf(DataResult.Error.Remote(message = null, cause = null, httpCode = 404))
-
         // when
         input.mapToEither().test {
-
             // then
             assertEquals(DataError.Remote.Http(NetworkError.NotFound).left(), awaitItem())
             awaitComplete()
@@ -159,7 +147,6 @@ internal class DataResultEitherMappingsTest {
         // given
         val dataResult = DataResult.Error.Remote(message = null, cause = null, protonCode = 123)
         val input = flowOf(dataResult)
-
         // when
         input.mapToEither().test {
             // then
@@ -183,10 +170,8 @@ internal class DataResultEitherMappingsTest {
             val message = "an error occurred"
             val dataResult = DataResult.Error.Remote(message = message, cause = null)
             val input = flowOf(dataResult)
-
             // when
             input.mapToEither().test {
-
                 // then
                 awaitError().assertIs<MappingRuntimeException>(
                     expectedMessage = "Unhandled remote error $dataResult, message = $message"
@@ -201,10 +186,8 @@ internal class DataResultEitherMappingsTest {
         val cause = IOException(message)
         val dataResult = DataResult.Error.Remote(message = null, cause = cause)
         val input = flowOf(dataResult)
-
         // when
         input.mapToEither().test {
-
             // then
             awaitError().assertIs<IOException>(expectedMessage = message)
         }
@@ -215,10 +198,8 @@ internal class DataResultEitherMappingsTest {
         // given
         val dataResult = DataResult.Error.Remote(message = null, cause = null)
         val input = flowOf(dataResult)
-
         // when
         input.mapToEither().test {
-
             // then
             awaitError().assertIs<MappingRuntimeException>(
                 expectedMessage = "Unhandled remote error $dataResult, message = $DATA_RESULT_NO_MESSAGE_PROVIDED"
@@ -239,10 +220,8 @@ internal class DataResultEitherMappingsTest {
         val dataResult = DataResult.Error.Remote(message = null, cause = cause)
         val expectedError = DataError.Remote.Http(NetworkError.NoNetwork)
         val input = flowOf(dataResult)
-
         // when
         input.mapToEither().test {
-
             // then
             assertEquals(expectedError.left(), awaitItem())
             awaitComplete()
@@ -263,10 +242,8 @@ internal class DataResultEitherMappingsTest {
                 httpCode = 0
             )
         )
-
         // when
         input.mapToEither().test {
-
             // then
             assertEquals(DataError.Remote.Http(NetworkError.ServerError).left(), awaitItem())
             awaitComplete()
@@ -293,7 +270,6 @@ internal class DataResultEitherMappingsTest {
                 httpCode = 0
             )
         )
-
         // when
         input.mapToEither().test {
             // then
