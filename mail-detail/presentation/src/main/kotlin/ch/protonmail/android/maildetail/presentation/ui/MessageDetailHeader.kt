@@ -334,7 +334,7 @@ private fun MessageDetailHeaderLayout(
                     isExpanded = isExpanded
                 )
             },
-            icon = R.drawable.ic_proton_calendar_today,
+            icon = R.drawable.ic_proton_calendar_grid,
             text = uiModel.extendedTime.string()
         )
 
@@ -359,7 +359,7 @@ private fun MessageDetailHeaderLayout(
                     isExpanded = isExpanded
                 )
             },
-            icon = R.drawable.ic_proton_storage,
+            icon = R.drawable.ic_proton_filing_cabinet,
             text = uiModel.size
         )
 
