@@ -45,10 +45,8 @@ fun <T> Flow<DataResult<T>>.mapToEither(): Flow<Either<DataError, T>> = transfor
 }
 
 private fun toLocalError(dataResult: DataResult.Error.Local): DataError.Local {
-    when (val cause = dataResult.cause) {
-        null -> throw dataResult.asWrappedException()
-        else -> throw cause
-    }
+    Timber.e("UNHANDLED LOCAL ERROR caused by result: $dataResult")
+    return DataError.Local.Unknown
 }
 
 private fun toRemoteDataError(dataResult: DataResult.Error.Remote): DataError.Remote {

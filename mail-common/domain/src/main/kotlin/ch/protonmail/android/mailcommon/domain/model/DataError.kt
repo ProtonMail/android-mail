@@ -29,6 +29,13 @@ sealed interface DataError {
     sealed interface Local : DataError {
 
         object NoDataCached : Local
+
+        /**
+         * This object is not meant to be actively used.
+         * Its purpose is to notify the logging tool that a case that should be handled
+         * is not and to allow dedicated handling to be put in place.
+         */
+        object Unknown : Local
     }
 
     /**

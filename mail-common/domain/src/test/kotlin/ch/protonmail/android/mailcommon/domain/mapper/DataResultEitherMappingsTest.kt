@@ -89,44 +89,23 @@ internal class DataResultEitherMappingsTest {
     }
 
     @Test
-    fun `does throw exception with message from data result for unhandled local error`() = runTest {
+    fun `does log and return unknown local error for unhandled local error`() = runTest {
         // given
         val message = "an error occurred"
-        val dataResult = DataResult.Error.Local(message, cause = null)
+        val dataResult = DataResult.Error.Local(message, cause = Exception("Unknown exception"))
         val input = flowOf(dataResult)
         // when
         input.mapToEither().test {
             // then
-            awaitError().assertIs<MappingRuntimeException>(
-                expectedMessage = "Unhandled local error $dataResult, message = $message"
+            val loggedError = TestTree.Log(
+                priority = Log.ERROR,
+                message = "UNHANDLED LOCAL ERROR caused by result: $dataResult",
+                tag = null,
+                t = null
             )
-        }
-    }
-
-    @Test
-    fun `does throw exception from data result cause for unhandled local error`() = runTest {
-        // given
-        val message = "an error occurred"
-        val cause = IOException("an error occurred")
-        val dataResult = DataResult.Error.Local(message = null, cause = cause)
-        val input = flowOf(dataResult)
-        // when
-        input.mapToEither().test {
-            // then
-            awaitError().assertIs<IOException>(expectedMessage = message)
-        }
-    }
-
-    @Test
-    fun `does throw exception with no message provided for unhandled local error`() = runTest {
-        // given
-        val cause = IOException()
-        val dataResult = DataResult.Error.Local(message = null, cause = cause)
-        val input = flowOf(dataResult)
-        // when
-        input.mapToEither().test {
-            // then
-            awaitError().assertIs<IOException>(expectedMessage = null)
+            assertEquals(DataError.Local.Unknown.left(), awaitItem())
+            assertEquals(loggedError, testTree.logs.last())
+            awaitComplete()
         }
     }
 
