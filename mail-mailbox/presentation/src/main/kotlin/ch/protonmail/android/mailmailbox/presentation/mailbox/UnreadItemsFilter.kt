@@ -65,7 +65,7 @@ fun UnreadItemsFilter(
                 trailingIcon = addCloseIconForEnabledState(state)
             ) {
                 Text(
-                    text = stringResource(id = R.string.filter_unread_button_text)
+                    text = stringResource(id = R.string.filter_unread_button_text_without_counter)
                 )
             }
         }
