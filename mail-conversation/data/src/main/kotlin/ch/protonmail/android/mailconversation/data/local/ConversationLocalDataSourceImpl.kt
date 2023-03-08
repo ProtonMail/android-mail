@@ -195,7 +195,7 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         return updatedConversation.right()
     }
 
-    override suspend fun markRead(
+    override suspend fun rollbackMarkUnread(
         userId: UserId,
         conversationId: ConversationId
     ): Either<DataError.Local, Conversation> {

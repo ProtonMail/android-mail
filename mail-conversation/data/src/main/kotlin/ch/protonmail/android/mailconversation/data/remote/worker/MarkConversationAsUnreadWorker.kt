@@ -66,7 +66,7 @@ class MarkConversationAsUnreadWorker @AssistedInject constructor(
                 if (result.isRetryable()) {
                     Result.retry()
                 } else {
-                    conversationLocalDataSource.markRead(userId, conversationId)
+                    conversationLocalDataSource.rollbackMarkUnread(userId, conversationId)
                     Result.failure()
                 }
             }

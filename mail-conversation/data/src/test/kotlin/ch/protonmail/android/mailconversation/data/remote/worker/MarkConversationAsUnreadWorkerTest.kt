@@ -72,7 +72,7 @@ internal class MarkConversationAsUnreadWorkerTest {
     }
     private val conversationApi: ConversationApi = mockk()
     private val conversationLocalDataSource: ConversationLocalDataSource = mockk {
-        coEvery { markRead(userId, conversationId) } returns ConversationSample.WeatherForecast.right()
+        coEvery { rollbackMarkUnread(userId, conversationId) } returns ConversationSample.WeatherForecast.right()
     }
     private val params: WorkerParameters = mockk {
         every { taskExecutor } returns mockk(relaxed = true)
@@ -195,6 +195,6 @@ internal class MarkConversationAsUnreadWorkerTest {
         worker.doWork()
 
         // then
-        coVerify { conversationLocalDataSource.markRead(userId, conversationId) }
+        coVerify { conversationLocalDataSource.rollbackMarkUnread(userId, conversationId) }
     }
 }
