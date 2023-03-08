@@ -269,7 +269,9 @@ private fun MessageDetailContent(
     showFeatureMissingSnackbar: () -> Unit
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .background(ProtonTheme.colors.backgroundNorm)
     ) {
         item {
             MessageDetailHeader(
