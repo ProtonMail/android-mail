@@ -264,7 +264,7 @@ internal class MockNetworkDispatcherTests {
     }
 
     private fun mockNetworkDispatcher(func: MockNetworkDispatcher.() -> Unit) =
-        MockNetworkDispatcher().apply(func)
+        MockNetworkDispatcher(assetsRootPath = "assets/mock").apply(func)
 
     private fun buildRequest(path: String) = Request.Builder().url("${url}$path").build()
 
