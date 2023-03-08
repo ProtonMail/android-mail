@@ -289,7 +289,7 @@ class MessageRepositoryImplTest {
         }
 
     @Test
-    fun `observe message with body returns an error when remote call fails`() = runTest {
+    fun `observe message with body returns an error when remote call fails with a generic exception`() = runTest {
         // Given
         val messageId = MessageIdSample.AugWeatherForecast
         coEvery { localDataSource.observeMessageWithBody(userId, messageId) } returns flowOf(null)
@@ -297,9 +297,8 @@ class MessageRepositoryImplTest {
 
         // When
         messageRepository.observeMessageWithBody(userId, messageId).test {
-
             // Then
-            awaitError()
+            assertEquals(DataError.Remote.Unknown.left(), awaitItem())
             coVerify(exactly = 1) {
                 localDataSource.observeMessageWithBody(userId, messageId)
                 remoteDataSource.getMessage(userId, messageId)
