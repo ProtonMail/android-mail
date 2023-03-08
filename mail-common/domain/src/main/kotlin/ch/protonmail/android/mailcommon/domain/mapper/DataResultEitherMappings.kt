@@ -36,17 +36,14 @@ import timber.log.Timber
 
 fun <T> Flow<DataResult<T>>.mapToEither(): Flow<Either<DataError, T>> = transform { dataResult ->
     when (dataResult) {
-        is DataResult.Error.Local -> emit(toLocalError(dataResult).left())
+        is DataResult.Error.Local -> emit(toLocalDataError(dataResult).left())
         is DataResult.Error.Remote -> emit(toRemoteDataError(dataResult).left())
         is DataResult.Processing -> Unit
         is DataResult.Success -> emit(dataResult.value.right())
     }
 }
 
-private fun toLocalError(dataResult: DataResult.Error.Local): DataError.Local {
-    Timber.e("UNHANDLED LOCAL ERROR caused by result: $dataResult")
-    return DataError.Local.Unknown
-}
+private fun toLocalDataError(dataResult: DataResult.Error.Local): DataError.Local = unhandledLocalError(dataResult)
 
 private fun toRemoteDataError(dataResult: DataResult.Error.Remote): DataError.Remote {
     return when {
@@ -89,6 +86,11 @@ private fun handleApiException(cause: ApiException, dataResult: DataResult.Error
 private fun unhandledRemoteError(dataResult: DataResult.Error.Remote): DataError.Remote.Unknown {
     Timber.e("UNHANDLED REMOTE ERROR caused by result: $dataResult")
     return DataError.Remote.Unknown
+}
+
+private fun unhandledLocalError(dataResult: DataResult.Error.Local): DataError.Local.Unknown {
+    Timber.e("UNHANDLED LOCAL ERROR caused by result: $dataResult")
+    return DataError.Local.Unknown
 }
 
 private const val INITIAL_ERROR_CODE = 0

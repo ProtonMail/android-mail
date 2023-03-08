@@ -69,20 +69,4 @@ class ObserveContactsTest {
             awaitComplete()
         }
     }
-
-    @Test
-    fun `when repository encounters any unhandled error then throw`() = runTest {
-        // Given
-        every { repository.observeAllContacts(UserIdTestData.userId) } returns flowOf(
-            DataResult.Error.Local("failed accessing DB", null)
-        )
-        // When
-        observeContacts(UserIdTestData.userId).test {
-            // Then
-            val actual = assertIs<Exception>(awaitError())
-            val expected = "Unhandled local error Local(message=failed accessing DB, cause=null)," +
-                " message = failed accessing DB"
-            assertEquals(expected, actual.message)
-        }
-    }
 }

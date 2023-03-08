@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailconversation.data
 
 import app.cash.turbine.test
-import arrow.core.getOrHandle
+import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
@@ -117,7 +117,7 @@ class ConversationRepositoryImplTest {
 
         // When
         val result = conversationRepository.getConversations(userId, pageKey)
-            .getOrHandle(::error)
+            .getOrElse(::error)
 
         // Then
         assertEquals(3, result.size)
@@ -168,7 +168,7 @@ class ConversationRepositoryImplTest {
 
         // When
         val conversations = conversationRepository.getConversations(userId, pageKey)
-            .getOrHandle(::error)
+            .getOrElse(::error)
 
         // Then
         assertEquals(2, conversations.size)
@@ -189,7 +189,7 @@ class ConversationRepositoryImplTest {
 
         // When
         val conversations = conversationRepository.getConversations(userId, pageKey)
-            .getOrHandle(::error)
+            .getOrElse(::error)
 
         // Then
         assertEquals(0, conversations.size)

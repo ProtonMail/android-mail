@@ -102,7 +102,7 @@ internal class DataResultEitherMappingsTest {
     }
 
     @Test
-    fun `does emit http error`() = runTest {
+    fun `does emit not found network error for remote http code 404`() = runTest {
         // given
         val input = flowOf(DataResult.Error.Remote(message = null, cause = null, httpCode = 404))
         // when
