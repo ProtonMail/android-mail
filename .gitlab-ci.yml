@@ -47,6 +47,7 @@ setup:
     - base64 -d - < "$TEST_USERS_CREDENTIALS_FILE" > app/src/uiTest/assets/users.json
     - base64 -d - < "$INTERNAL_API_FILE" > app/src/uiTest/assets/internal_api.json
     - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
+    - bundle exec fastlane setupUiTestsAssets
 
 analyse:
   stage: analyse

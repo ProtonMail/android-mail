@@ -49,6 +49,11 @@ platform :android do
     gradle(tasks: ["testDevDebugUnitTest", "testDebugUnitTest"])
   end
 
+  desc "Setup UI Tests mocked network assets"
+    lane :setupUiTestsAssets do
+    sh("../scripts/uitests/setup-mock-network-assets.sh setup-remote")
+  end
+
   desc "Runs Instrumented Tests on Firebase"
   lane :instrumentedTest do
     sh("../scripts/run_firebase_instrumentation_tests.sh")
