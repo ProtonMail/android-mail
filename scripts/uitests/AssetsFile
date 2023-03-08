@@ -1,0 +1,3 @@
+NETWORK_ASSETS_MAIN_REF=master
+NETWORK_ASSETS_DEFAULT_LOCAL_PATH="../mail-apps-network-mocks"
+NETWORK_ASSETS_PROJECT_PATH="./app/src/uiTest/assets/network-mocks/"

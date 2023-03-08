@@ -50,6 +50,9 @@ sentry.properties
 **/users.json
 **/internal_api.json
 
+# UI Tests Assets backup lockfile
+scripts/uitests/AssetsFile.lock.bak
+
 # # # # # # # # #
 # IDEA SETTINGS #
 # # # # # # # # #
