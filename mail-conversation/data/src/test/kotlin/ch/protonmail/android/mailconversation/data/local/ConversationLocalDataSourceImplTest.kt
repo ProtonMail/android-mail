@@ -356,7 +356,6 @@ class ConversationLocalDataSourceImplTest {
         }
     }
 
-
     @Test
     fun `mark unread increments the conversation's overall unread count`() = runTest {
         // given
@@ -460,7 +459,7 @@ class ConversationLocalDataSourceImplTest {
     }
 
     @Test
-    fun `rollback mark unread returns updated conversation`() = runTest {
+    fun `rollback mark unread decrements the conversation's overall unread count`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         val conversation = ConversationWithLabelsSample.WeatherForecast.copy(
@@ -476,10 +475,50 @@ class ConversationLocalDataSourceImplTest {
         every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
 
         // when
-        val result = conversationLocalDataSource.rollbackMarkUnread(userId, conversationId)
+        val result = conversationLocalDataSource.rollbackMarkUnread(userId, conversationId, contextLabelId)
 
         // then
         assertEquals(updatedConversation.toConversation().right(), result)
+    }
+
+    @Test
+    fun `rollback mark unread decrements the unread count for the given context label only`() = runTest {
+        // given
+        val contextLabelId = MailLabelId.System.Inbox.labelId
+        val conversationId = ConversationIdSample.AlphaAppFeedback
+        val initialLabels = listOf(
+            ConversationLabelSample.AlphaAppFeedback.AllMail,
+            ConversationLabelSample.AlphaAppFeedback.Inbox.copy(contextNumUnread = 1),
+            ConversationLabelSample.AlphaAppFeedback.Archive.copy(contextNumUnread = 1)
+        )
+        val conversation = ConversationWithLabelsSample.AlphaAppFeedback.copy(
+            conversation = ConversationEntitySample.AlphaAppFeedback.copy(
+                numMessages = 2,
+                numUnread = 2
+            ),
+            labels = initialLabels
+        )
+        val updatedLabels = listOf(
+            ConversationLabelSample.AlphaAppFeedback.AllMail,
+            ConversationLabelSample.AlphaAppFeedback.Inbox.copy(contextNumUnread = 0),
+            ConversationLabelSample.AlphaAppFeedback.Archive.copy(contextNumUnread = 1)
+        )
+        val updatedConversation = ConversationSample.AlphaAppFeedback.copy(
+            numMessages = 2,
+            numUnread = 1,
+            labels = updatedLabels
+        )
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+
+        // when
+        val result = conversationLocalDataSource.rollbackMarkUnread(
+            userId,
+            ConversationIdSample.AlphaAppFeedback,
+            contextLabelId
+        )
+
+        // then
+        assertEquals(updatedConversation.right(), result)
     }
 
     @Test
@@ -490,7 +529,7 @@ class ConversationLocalDataSourceImplTest {
         every { conversationDao.observe(userId, conversationId) } returns flowOf(null)
 
         // when
-        val result = conversationLocalDataSource.rollbackMarkUnread(userId, conversationId)
+        val result = conversationLocalDataSource.rollbackMarkUnread(userId, conversationId, contextLabelId)
 
         // then
         assertEquals(error, result)

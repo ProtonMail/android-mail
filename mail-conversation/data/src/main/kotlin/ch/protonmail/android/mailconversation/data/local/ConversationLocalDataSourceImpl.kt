@@ -178,13 +178,8 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         val conversation = observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
 
-        val updatedLabels = conversation.labels.map { label ->
-            if (label.labelId == contextLabelId) {
-                return@map label.copy(
-                    contextNumUnread = label.contextNumUnread.incrementUpTo(label.contextNumMessages)
-                )
-            }
-            label
+        val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
+            label.copy(contextNumUnread = label.contextNumUnread.incrementUpTo(label.contextNumMessages))
         }
 
         val updatedConversation = conversation.copy(
@@ -197,12 +192,19 @@ class ConversationLocalDataSourceImpl @Inject constructor(
 
     override suspend fun rollbackMarkUnread(
         userId: UserId,
-        conversationId: ConversationId
+        conversationId: ConversationId,
+        contextLabelId: LabelId
     ): Either<DataError.Local, Conversation> {
         val conversation = observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
+
+        val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
+            label.copy(contextNumUnread = label.contextNumUnread.decrementCoercingZero())
+        }
+
         val updatedConversation = conversation.copy(
-            numUnread = (conversation.numUnread - 1).coerceAtLeast(0)
+            numUnread = conversation.numUnread.decrementCoercingZero(),
+            labels = updatedLabels
         )
         upsertConversation(userId, updatedConversation)
         return updatedConversation.right()
@@ -253,6 +255,18 @@ class ConversationLocalDataSourceImpl @Inject constructor(
             conversationLabelDao.deleteAll(userId, conversations.map { it.conversationId })
         }
     }
+
+    private fun List<ConversationLabel>.mapOnly(
+        labelId: LabelId,
+        updateAction: (ConversationLabel) -> ConversationLabel
+    ): List<ConversationLabel> = this.map { label ->
+        if (label.labelId == labelId) {
+            return@map updateAction(label)
+        }
+        label
+    }
 }
 
 private fun Int.incrementUpTo(max: Int) = (this + 1).coerceAtMost(max)
+
+private fun Int.decrementCoercingZero() = (this - 1).coerceAtLeast(0)
