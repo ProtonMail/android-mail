@@ -29,11 +29,11 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 @SuppressWarnings("MagicNumber")
 fun defaultNetworkDispatcher() = MockNetworkDispatcher().apply {
     addMockRequests(
-        "/mail/v4/settings" respondWith "/mail/v4/settings.json" withStatusCode 200,
-        "/core/v4/addresses" respondWith "/core/v4/addresses.json" withStatusCode 200,
-        "/core/v4/labels?Type=1" respondWith "/core/v4/labels?Type=1.json" withStatusCode 200,
-        "/core/v4/labels?Type=3" respondWith "/core/v4/labels?Type=3.json" withStatusCode 200,
-        "/auth/v4" respondWith "/auth/v4.json" withStatusCode 200,
-        "/core/v4/settings" respondWith "/core/v4/settings.json" withStatusCode 200
+        "/auth/v4" respondWith "/auth/v4/auth-v4_base_placeholder.json" withStatusCode 200,
+        "/core/v4/addresses" respondWith "/core/v4/addresses/addresses_base_placeholder.json" withStatusCode 200,
+        "/core/v4/labels?Type=1" respondWith "/core/v4/labels/labels-type1_base_placeholder.json" withStatusCode 200,
+        "/core/v4/labels?Type=3" respondWith "/core/v4/labels/labels-type3_base_placeholder.json" withStatusCode 200,
+        "/core/v4/settings" respondWith "/core/v4/settings/core-v4-settings_base_placeholder.json" withStatusCode 200,
+        "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_base_placeholder.json" withStatusCode 200
     )
 }

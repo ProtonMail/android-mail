@@ -137,6 +137,6 @@ class MockNetworkDispatcher(
     companion object {
 
         private val logger = Logger.getLogger(this::class.java.name)
-        private const val DEFAULT_ASSETS_ROOT_PATH = "assets/mock"
+        private const val DEFAULT_ASSETS_ROOT_PATH = "assets/network-mocks"
     }
 }
