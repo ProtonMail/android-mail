@@ -156,6 +156,7 @@ fun MessageDetailScreen(
                 onMessageBodyLinkClicked = { viewModel.submit(MessageViewAction.MessageBodyLinkClicked(it)) },
                 onOpenMessageBodyLink = openMessageBodyLink,
                 onReplyClick = { showFeatureMissingSnackbar() },
+                onReplyAllClick = { showFeatureMissingSnackbar() },
                 onDeleteClick = { showFeatureMissingSnackbar() }
             ),
             showFeatureMissingSnackbar = showFeatureMissingSnackbar
@@ -211,7 +212,9 @@ fun MessageDetailScreen(
                     onReply = {
                         actions.onReplyClick()
                     },
-                    onReplyAll = { Timber.d("message onReplyAll clicked") },
+                    onReplyAll = {
+                        actions.onReplyClick()
+                    },
                     onForward = { Timber.d("message onForward clicked") },
                     onMarkRead = { Timber.d("message onMarkRead clicked") },
                     onMarkUnread = actions.onUnreadClick,
@@ -398,6 +401,7 @@ object MessageDetailScreen {
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onOpenMessageBodyLink: (uri: Uri) -> Unit,
         val onReplyClick: () -> Unit,
+        val onReplyAllClick: () -> Unit,
         val onDeleteClick: () -> Unit
     ) {
 
@@ -415,6 +419,7 @@ object MessageDetailScreen {
                 onMessageBodyLinkClicked = {},
                 onOpenMessageBodyLink = {},
                 onReplyClick = {},
+                onReplyAllClick = {},
                 onDeleteClick = {}
             )
         }
