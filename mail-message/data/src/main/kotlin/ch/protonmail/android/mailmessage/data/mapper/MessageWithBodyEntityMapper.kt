@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethodsEnt
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.domain.entity.MailTo
 import ch.protonmail.android.mailmessage.domain.entity.Message
+import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
@@ -33,50 +34,51 @@ import javax.inject.Inject
 
 class MessageWithBodyEntityMapper @Inject constructor() {
 
-    fun toMessageWithBody(messageWithBodyEntity: MessageWithBodyEntity) = with(messageWithBodyEntity) {
-        MessageWithBody(
-            message = with(message) {
-                Message(
-                    userId = userId,
-                    messageId = messageId,
-                    conversationId = conversationId,
-                    time = time,
-                    size = size,
-                    order = order,
-                    labelIds = labelIds,
-                    subject = subject,
-                    unread = unread,
-                    sender = sender,
-                    toList = toList,
-                    ccList = ccList,
-                    bccList = bccList,
-                    expirationTime = expirationTime,
-                    isReplied = isReplied,
-                    isRepliedAll = isRepliedAll,
-                    isForwarded = isForwarded,
-                    addressId = addressId,
-                    externalId = externalId,
-                    numAttachments = numAttachments,
-                    flags = flags,
-                    attachmentCount = attachmentCount.toDomainModel()
-                )
-            },
-            messageBody = with(messageBody) {
-                MessageBody(
-                    userId = userId,
-                    messageId = messageId,
-                    body = body.orEmpty(),
-                    header = header,
-                    attachments = emptyList(), // We don't save the attachments to DB yet
-                    mimeType = MimeType.valueOf(mimeType.name),
-                    spamScore = spamScore,
-                    replyTo = replyTo,
-                    replyTos = replyTos,
-                    unsubscribeMethods = unsubscribeMethodsEntity?.toDomainModel()
-                )
-            }
-        )
-    }
+    fun toMessageWithBody(messageWithBodyEntity: MessageWithBodyEntity, attachments: List<MessageAttachment>) =
+        with(messageWithBodyEntity) {
+            MessageWithBody(
+                message = with(message) {
+                    Message(
+                        userId = userId,
+                        messageId = messageId,
+                        conversationId = conversationId,
+                        time = time,
+                        size = size,
+                        order = order,
+                        labelIds = labelIds,
+                        subject = subject,
+                        unread = unread,
+                        sender = sender,
+                        toList = toList,
+                        ccList = ccList,
+                        bccList = bccList,
+                        expirationTime = expirationTime,
+                        isReplied = isReplied,
+                        isRepliedAll = isRepliedAll,
+                        isForwarded = isForwarded,
+                        addressId = addressId,
+                        externalId = externalId,
+                        numAttachments = numAttachments,
+                        flags = flags,
+                        attachmentCount = attachmentCount.toDomainModel()
+                    )
+                },
+                messageBody = with(messageBody) {
+                    MessageBody(
+                        userId = userId,
+                        messageId = messageId,
+                        body = body.orEmpty(),
+                        header = header,
+                        attachments = attachments,
+                        mimeType = MimeType.valueOf(mimeType.name),
+                        spamScore = spamScore,
+                        replyTo = replyTo,
+                        replyTos = replyTos,
+                        unsubscribeMethods = unsubscribeMethodsEntity?.toDomainModel()
+                    )
+                }
+            )
+        }
 
     fun toMessageBodyEntity(messageBody: MessageBody) = with(messageBody) {
         MessageBodyEntity(

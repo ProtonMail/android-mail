@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.mapper
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyEntityTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageEntityTestData
@@ -40,10 +41,13 @@ class MessageWithBodyEntityMapperTest {
             MessageBodyEntityTestData.messageBodyEntity,
             listOf(LabelIdSample.Inbox)
         )
-        val expected = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
+        val expected = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBodyWithAttachment)
 
         // When
-        val actual = messageWithBodyEntityMapper.toMessageWithBody(messageWithBodyEntity)
+        val actual = messageWithBodyEntityMapper.toMessageWithBody(
+            messageWithBodyEntity,
+            listOf(MessageAttachmentTestData.invoice)
+        )
 
         // Then
         assertEquals(expected, actual)

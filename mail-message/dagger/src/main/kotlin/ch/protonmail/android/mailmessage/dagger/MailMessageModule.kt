@@ -23,6 +23,7 @@ import ch.protonmail.android.mailmessage.data.local.MessageBodyFileStorage
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSourceImpl
+import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapper
 import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSourceImpl
@@ -63,6 +64,12 @@ object MailMessageModule {
     fun provideMessageLocalDataSource(
         db: MessageDatabase,
         messageBodyFileStorage: MessageBodyFileStorage,
-        messageWithBodyEntityMapper: MessageWithBodyEntityMapper
-    ): MessageLocalDataSource = MessageLocalDataSourceImpl(db, messageBodyFileStorage, messageWithBodyEntityMapper)
+        messageWithBodyEntityMapper: MessageWithBodyEntityMapper,
+        messageAttachmentEntityMapper: MessageAttachmentEntityMapper
+    ): MessageLocalDataSource = MessageLocalDataSourceImpl(
+        db,
+        messageBodyFileStorage,
+        messageWithBodyEntityMapper,
+        messageAttachmentEntityMapper: MessageAttachmentEntityMapper
+    )
 }

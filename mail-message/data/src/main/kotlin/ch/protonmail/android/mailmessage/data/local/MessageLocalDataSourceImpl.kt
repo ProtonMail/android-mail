@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
+import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapper
 import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -36,6 +37,7 @@ import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.PageItemType
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
@@ -46,39 +48,32 @@ import javax.inject.Inject
 class MessageLocalDataSourceImpl @Inject constructor(
     private val db: MessageDatabase,
     private val messageBodyFileStorage: MessageBodyFileStorage,
-    private val messageWithBodyEntityMapper: MessageWithBodyEntityMapper
+    private val messageWithBodyEntityMapper: MessageWithBodyEntityMapper,
+    private val messageAttachmentEntityMapper: MessageAttachmentEntityMapper
 ) : MessageLocalDataSource {
 
     private val messageDao = db.messageDao()
     private val messageLabelDao = db.messageLabelDao()
     private val pageIntervalDao = db.pageIntervalDao()
     private val messageBodyDao = db.messageBodyDao()
+    private val messageAttachmentDao = db.messageAttachmentDao()
 
-    override suspend fun deleteAllMessages(
-        userId: UserId
-    ) = db.inTransaction {
+    override suspend fun deleteAllMessages(userId: UserId) = db.inTransaction {
         messageBodyFileStorage.deleteAllMessageBodies(userId)
         messageDao.deleteAll(userId)
         pageIntervalDao.deleteAll(userId, PageItemType.Message)
     }
 
-    override suspend fun deleteMessages(
-        userId: UserId,
-        ids: List<MessageId>
-    ) {
+    override suspend fun deleteMessages(userId: UserId, ids: List<MessageId>) {
         messageDao.delete(userId, ids.map { it.id })
         ids.forEach { messageBodyFileStorage.deleteMessageBody(userId, it) }
     }
 
-    override suspend fun getClippedPageKey(
-        userId: UserId,
-        pageKey: PageKey
-    ): PageKey = pageIntervalDao.getClippedPageKey(userId, PageItemType.Message, pageKey)
+    override suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey =
+        pageIntervalDao.getClippedPageKey(userId, PageItemType.Message, pageKey)
 
-    override suspend fun getMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): List<Message> = observeMessages(userId, pageKey).first()
+    override suspend fun getMessages(userId: UserId, pageKey: PageKey): List<Message> =
+        observeMessages(userId, pageKey).first()
 
     override suspend fun isLocalPageValid(
         userId: UserId,
@@ -86,41 +81,28 @@ class MessageLocalDataSourceImpl @Inject constructor(
         items: List<Message>
     ): Boolean = pageIntervalDao.isLocalPageValid(userId, PageItemType.Message, pageKey, items)
 
-    override suspend fun markAsStale(
-        userId: UserId,
-        labelId: LabelId
-    ) = pageIntervalDao.deleteAll(userId, PageItemType.Message, labelId)
+    override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
+        pageIntervalDao.deleteAll(userId, PageItemType.Message, labelId)
 
-    override fun observeMessage(
-        userId: UserId,
-        messageId: MessageId
-    ): Flow<Message?> = messageDao.observe(userId, messageId).mapLatest { it?.toMessage() }
+    override fun observeMessage(userId: UserId, messageId: MessageId): Flow<Message?> =
+        messageDao.observe(userId, messageId).mapLatest { it?.toMessage() }
 
-    override fun observeMessages(
-        userId: UserId,
-        conversationId: ConversationId
-    ): Flow<List<Message>> = messageDao.observeAllOrderByTimeAsc(
-        userId = userId,
-        conversationId = conversationId
-    ).mapLatest { list -> list.map { messageWithLabelIds -> messageWithLabelIds.toMessage() } }
+    override fun observeMessages(userId: UserId, conversationId: ConversationId): Flow<List<Message>> =
+        messageDao.observeAllOrderByTimeAsc(
+            userId = userId,
+            conversationId = conversationId
+        ).mapLatest { list -> list.map { messageWithLabelIds -> messageWithLabelIds.toMessage() } }
 
-    override fun observeMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): Flow<List<Message>> = messageDao
+    override fun observeMessages(userId: UserId, pageKey: PageKey): Flow<List<Message>> = messageDao
         .observeAll(userId, pageKey)
         .mapLatest { list -> list.map { it.toMessage() } }
 
 
-    override suspend fun upsertMessage(
-        message: Message
-    ) = db.inTransaction {
+    override suspend fun upsertMessage(message: Message) = db.inTransaction {
         upsertMessages(listOf(message))
     }
 
-    override suspend fun upsertMessages(
-        items: List<Message>
-    ) = db.inTransaction {
+    override suspend fun upsertMessages(items: List<Message>) = db.inTransaction {
         messageDao.insertOrUpdate(*items.map { it.toEntity() }.toTypedArray())
         updateLabels(items)
     }
@@ -134,11 +116,31 @@ class MessageLocalDataSourceImpl @Inject constructor(
         upsertPageInterval(userId, pageKey, items)
     }
 
+    override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody) = db.inTransaction {
+        upsertMessage(messageWithBody.message)
+        messageBodyDao.insertOrUpdate(messageWithBodyEntityMapper.toMessageBodyEntity(messageWithBody.messageBody))
+        if (messageWithBody.messageBody.attachments.isNotEmpty()) {
+            messageAttachmentDao.insertOrUpdate(
+                *messageWithBody.messageBody.attachments.map {
+                    messageAttachmentEntityMapper.toMessageAttachmentEntity(
+                        userId,
+                        messageWithBody.message.messageId,
+                        it
+                    )
+                }.toTypedArray()
+            )
+        }
+    }
+
     override fun observeMessageWithBody(userId: UserId, messageId: MessageId): Flow<MessageWithBody?> {
-        return messageBodyDao.observeMessageWithBodyEntity(userId, messageId).mapLatest { messageWithBodyEntity ->
+        return combine(
+            messageBodyDao.observeMessageWithBodyEntity(userId, messageId),
+            messageAttachmentDao.observeMessageAttachmentEntities(userId, messageId)
+        ) { messageWithBodyEntity, messageAttachments ->
             if (messageWithBodyEntity != null) {
                 messageWithBodyEntityMapper.toMessageWithBody(
-                    messageWithBodyEntity.withBodyFromFileIfNeeded(userId)
+                    messageWithBodyEntity.withBodyFromFileIfNeeded(userId),
+                    messageAttachments.map { messageAttachmentEntityMapper.toMessageAttachment(it) }
                 )
             } else {
                 null
@@ -217,9 +219,7 @@ class MessageLocalDataSourceImpl @Inject constructor(
         return updatedMessage.right()
     }
 
-    private suspend fun updateLabels(
-        messages: List<Message>
-    ) = with(groupByUserId(messages)) {
+    private suspend fun updateLabels(messages: List<Message>) = with(groupByUserId(messages)) {
         deleteLabels()
         insertLabels()
     }

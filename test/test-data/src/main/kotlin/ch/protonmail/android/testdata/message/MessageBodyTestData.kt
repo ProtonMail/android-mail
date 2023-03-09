@@ -35,6 +35,12 @@ object MessageBodyTestData {
 
     val messageBody = buildMessageBody()
 
+    val messageBodyWithAttachment = buildMessageBody(
+        attachments = listOf(
+            MessageAttachmentTestData.invoice
+        )
+    )
+
     val htmlMessageBody = buildMessageBody(
         mimeType = MimeType.Html
     )

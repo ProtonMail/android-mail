@@ -27,12 +27,14 @@ import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageWithLabels
+import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
+import ch.protonmail.android.mailmessage.data.mapper.MessageAttachmentEntityMapper
 import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.data.sample.MessageEntitySample
 import ch.protonmail.android.mailmessage.data.sample.MessageWithLabelIdsSample
@@ -44,6 +46,8 @@ import ch.protonmail.android.mailpagination.data.local.upsertPageInterval
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageItemType
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData
+import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyEntityTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageEntityTestData
@@ -95,25 +99,37 @@ class MessageLocalDataSourceImplTest {
     }
     private val labelDao = mockk<MessageLabelDao>(relaxUnitFun = true)
     private val pageIntervalDao = mockk<PageIntervalDao>(relaxUnitFun = true)
+    private val attachmentDao = mockk<MessageAttachmentDao>(relaxUnitFun = true) {
+        every { observeMessageAttachmentEntities(any(), any()) } returns flowOf(
+            listOf(MessageAttachmentEntityTestData.invoice)
+        )
+    }
 
     private val db = mockk<MessageDatabase>(relaxed = true) {
         every { messageDao() } returns messageDao
         every { messageBodyDao() } returns messageBodyDao
         every { messageLabelDao() } returns labelDao
         every { pageIntervalDao() } returns pageIntervalDao
+        every { messageAttachmentDao() } returns attachmentDao
         coEvery { inTransaction(captureCoroutine<suspend () -> Any>()) } coAnswers {
             coroutine<suspend () -> Any>().coInvoke()
         }
     }
     private val messageBodyFileStorage = mockk<MessageBodyFileStorage>()
     private val messageWithBodyEntityMapper = MessageWithBodyEntityMapper()
+    private val attachmentEntityMapper = MessageAttachmentEntityMapper()
 
     private lateinit var messageLocalDataSource: MessageLocalDataSourceImpl
 
     @Before
     fun setUp() {
         mockkStatic(PageIntervalDao::upsertPageInterval)
-        messageLocalDataSource = MessageLocalDataSourceImpl(db, messageBodyFileStorage, messageWithBodyEntityMapper)
+        messageLocalDataSource = MessageLocalDataSourceImpl(
+            db,
+            messageBodyFileStorage,
+            messageWithBodyEntityMapper,
+            attachmentEntityMapper
+        )
     }
 
     @Test
@@ -266,7 +282,7 @@ class MessageLocalDataSourceImplTest {
     @Test
     fun `observe message with body locally returns a message with body`() = runTest {
         // Given
-        val expected = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
+        val expected = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBodyWithAttachment)
 
         // When
         messageLocalDataSource.observeMessageWithBody(userId1, MessageId("messageId")).test {
@@ -321,9 +337,9 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
-    fun `upsert message with body inserts the message, message body and labels locally`() = runTest {
+    fun `upsert message with body inserts the message, message body, labels and attachment locally`() = runTest {
         // Given
-        val messageWithBody = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
+        val messageWithBody = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBodyWithAttachment)
 
         // When
         messageLocalDataSource.upsertMessageWithBody(userId1, messageWithBody)
@@ -332,6 +348,7 @@ class MessageLocalDataSourceImplTest {
         coVerify { messageDao.insertOrUpdate(messageWithBody.message.toEntity()) }
         verifyLabelsUpdatedFor(messageWithBody)
         coVerify { messageBodyDao.insertOrUpdate(MessageBodyEntityTestData.messageBodyEntity) }
+        coVerify { attachmentDao.insertOrUpdate(MessageAttachmentEntityTestData.invoice) }
         coVerify { messageBodyFileStorage wasNot called }
     }
 
