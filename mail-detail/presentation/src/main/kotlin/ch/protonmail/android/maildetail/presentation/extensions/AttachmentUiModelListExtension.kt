@@ -16,16 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.sample
+package ch.protonmail.android.maildetail.presentation.extensions
 
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
-import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import android.content.Context
+import android.text.format.Formatter
+import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 
-object MessageDetailBodyUiModelSample {
-
-    fun build(messageBody: String, mimeType: MimeTypeUiModel = MimeTypeUiModel.Html) = MessageBodyUiModel(
-        messageBody = messageBody,
-        mimeType = mimeType,
-        attachments = emptyList()
-    )
-}
+fun List<AttachmentUiModel>.getTotalAttachmentByteSizeReadable(context: Context): String =
+    this.sumOf { it.size }.let { Formatter.formatShortFileSize(context, it) }

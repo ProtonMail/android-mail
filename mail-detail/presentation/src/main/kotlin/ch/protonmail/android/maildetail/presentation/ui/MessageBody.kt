@@ -85,6 +85,12 @@ internal fun MessageBody(
         modifier = modifier.fillMaxWidth(),
         client = client
     )
+    if (messageBodyUiModel.attachments.isNotEmpty()) {
+        AttachmentFooter(
+            modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
+            attachments = messageBodyUiModel.attachments
+        )
+    }
 }
 
 @Composable

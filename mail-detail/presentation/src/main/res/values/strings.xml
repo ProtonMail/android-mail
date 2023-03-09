@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2022 Proton Technologies AG
   ~ This file is part of Proton Technologies AG and Proton Mail.
   ~
@@ -46,6 +45,10 @@
     <string name="error_loading_message">Something went wrong, please try again.</string>
     <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>
     <string name="reload">Reload</string>
+    <plurals name="attachment_count_label">
+        <item quantity="one">%d file</item>
+        <item quantity="other">%d files</item>
+    </plurals>
     <!-- Bottom Sheet -->
     <string name="bottom_sheet_move_to_title">Move to...</string>
     <string name="bottom_sheet_done_action">Done</string>
