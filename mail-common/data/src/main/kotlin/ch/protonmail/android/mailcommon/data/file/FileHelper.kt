@@ -23,7 +23,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
-import ch.protonmail.android.mailcommon.domain.util.kilobytes
 import kotlinx.coroutines.withContext
 import me.proton.core.util.kotlin.DispatcherProvider
 import javax.inject.Inject
@@ -98,6 +97,7 @@ class FileHelper @Inject constructor(
  * The article compares the performance of storing large blobs in db directly vs storing them as files on disk.
  * It does not directly relate to Android, and no actual testing was done on Android from our side.
  * The assumption is that the performance findings will roughly translate to Android nevertheless and the cut-off
- * threshold is chosen based on the measurements from the article.
+ * threshold of 500kB is chosen based on the measurements from the article.
  */
-fun String.shouldBeStoredAsFile() = this.toByteArray().size > 500.kilobytes
+@Suppress("MagicNumber")
+fun String.shouldBeStoredAsFile() = this.toByteArray().size > 500 * 1024

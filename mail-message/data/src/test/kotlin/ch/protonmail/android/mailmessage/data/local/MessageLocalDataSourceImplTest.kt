@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcommon.domain.util.kilobytes
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageWithLabels
 import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
@@ -337,7 +336,7 @@ class MessageLocalDataSourceImplTest {
     @Test
     fun `upsert message with large body over the limit inserts message in db and body in a file`() = runTest {
         // Given
-        val largeMessageBody = ByteArray(501.kilobytes)
+        val largeMessageBody = ByteArray(501 * 1024)
         val messageWithBody = MessageWithBody(
             MessageTestData.message,
             MessageBodyTestData.messageBody.copy(body = String(largeMessageBody))
@@ -358,7 +357,7 @@ class MessageLocalDataSourceImplTest {
     @Test
     fun `upsert message with large body under the limit inserts message in db and not in a file`() = runTest {
         // Given
-        val largeMessageBody = ByteArray(499.kilobytes)
+        val largeMessageBody = ByteArray(499 * 1024)
         val messageWithBody = MessageWithBody(
             MessageTestData.message,
             MessageBodyTestData.messageBody.copy(body = String(largeMessageBody))
