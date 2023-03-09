@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
@@ -28,12 +29,14 @@ class MessageBodyUiModelMapper @Inject constructor() {
 
     fun toUiModel(decryptedMessageBody: DecryptedMessageBody) = MessageBodyUiModel(
         messageBody = decryptedMessageBody.value,
-        mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel()
+        mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
+        attachments = decryptedMessageBody.attachments.map { AttachmentUiModel(it.size) }
     )
 
     fun toUiModel(encryptedMessageBody: String) = MessageBodyUiModel(
         messageBody = encryptedMessageBody,
-        mimeType = MimeTypeUiModel.PlainText
+        mimeType = MimeTypeUiModel.PlainText,
+        attachments = emptyList()
     )
 
     private fun MimeType.toMimeTypeUiModel() = when (this) {

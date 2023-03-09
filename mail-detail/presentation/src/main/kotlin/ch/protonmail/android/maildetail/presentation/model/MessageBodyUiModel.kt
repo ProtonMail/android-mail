@@ -20,10 +20,15 @@ package ch.protonmail.android.maildetail.presentation.model
 
 data class MessageBodyUiModel(
     val messageBody: String,
-    val mimeType: MimeTypeUiModel
+    val mimeType: MimeTypeUiModel,
+    val attachments: List<AttachmentUiModel>
 )
 
 enum class MimeTypeUiModel(val value: String) {
     PlainText("text/plain"),
     Html("text/html")
 }
+
+data class AttachmentUiModel(
+    val size: Long
+)

@@ -46,6 +46,7 @@ class MessageBodyReducerTest(
     }
 
     companion object {
+
         private val actions = listOf(
             TestInput(
                 MessageViewAction.Reload,
@@ -68,8 +69,12 @@ class MessageBodyReducerTest(
                 MessageBodyState.Error.Data(false)
             ),
             TestInput(
-                MessageDetailEvent.ErrorDecryptingMessageBody(MessageBodyUiModelTestData.plainTextMessageBodyUiModel),
-                MessageBodyState.Error.Decryption(MessageBodyUiModelTestData.plainTextMessageBodyUiModel)
+                MessageDetailEvent.ErrorDecryptingMessageBody(
+                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel
+                ),
+                MessageBodyState.Error.Decryption(
+                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel
+                )
             )
         )
 

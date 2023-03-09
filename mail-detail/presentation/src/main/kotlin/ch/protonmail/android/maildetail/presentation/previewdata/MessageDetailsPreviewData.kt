@@ -44,7 +44,7 @@ object MessageDetailsPreviewData {
         ),
         messageBodyState = MessageBodyState.Data(
             messageBodyUiModel = MessageBodyUiModel(
-                "This is a message body.", MimeTypeUiModel.PlainText
+                "This is a message body.", MimeTypeUiModel.PlainText, emptyList()
             )
         ),
         bottomBarState = BottomBarState.Data(
