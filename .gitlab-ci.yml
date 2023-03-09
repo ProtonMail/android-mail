@@ -104,12 +104,13 @@ build_prod_debug:
   script:
     - bundle exec fastlane assembleProdDebug
 
-build_release:
+build_alpha_release:
   extends: .build_job
   script:
     - base64 -d - < "$PROTON_RELEASE_KEYSTORE_BASE64" > keystore/ProtonMail.keystore
     - base64 -d - < "$SENTRY_PROPERTIES_FILE" > "sentry.properties"
-    - bundle exec fastlane assembleRelease
+    - bundle exec fastlane bumpAppVersion
+    - bundle exec fastlane assembleAlphaRelease
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"

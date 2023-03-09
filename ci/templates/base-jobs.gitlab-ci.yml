@@ -32,7 +32,7 @@ cache: &cache
 .firebase_deploy_job:
   stage: deploy
   dependencies:
-    - build_release
+    - build_alpha_release
   tags:
     - small
   before_script:

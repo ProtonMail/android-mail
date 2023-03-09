@@ -34,9 +34,14 @@ platform :android do
     gradle(task: "assembleDevDebugAndroidTest")
   end
 
-  desc "Assemble the release apk"
-  lane :assembleRelease do
-    gradle(task: "assembleRelease")
+  desc "Assemble the release apk for alpha flavor"
+  lane :assembleAlphaRelease do
+    gradle(task: "assembleAlphaRelease")
+  end
+
+  desc "Bump the version code"
+  lane :bumpAppVersion do
+    sh("python3 ../buildSrc/bump_version.py")
   end
 
   desc "Runs Unit Tests"
