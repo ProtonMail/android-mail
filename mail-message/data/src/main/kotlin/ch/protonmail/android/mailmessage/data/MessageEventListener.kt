@@ -85,7 +85,7 @@ open class MessageEventListener @Inject constructor(
     }
 
     override suspend fun onDelete(config: EventManagerConfig, keys: List<String>) {
-        localDataSource.deleteMessage(config.userId, keys.map { MessageId(it) })
+        localDataSource.deleteMessages(config.userId, keys.map { MessageId(it) })
     }
 
     override suspend fun onResetAll(config: EventManagerConfig) {

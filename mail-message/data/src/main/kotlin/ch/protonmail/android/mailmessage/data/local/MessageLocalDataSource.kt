@@ -39,7 +39,7 @@ interface MessageLocalDataSource {
     /**
      * Delete Message(s) for [userId], by [ids].
      */
-    suspend fun deleteMessage(userId: UserId, ids: List<MessageId>)
+    suspend fun deleteMessages(userId: UserId, ids: List<MessageId>)
 
     /**
      * Return clipped [PageKey] according already persisted intervals.

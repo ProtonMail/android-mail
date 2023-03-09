@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.dagger
 
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailmessage.data.local.MessageBodyFileStorage
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSourceImpl
@@ -61,6 +62,7 @@ object MailMessageModule {
     @Singleton
     fun provideMessageLocalDataSource(
         db: MessageDatabase,
+        messageBodyDiskStorage: MessageBodyFileStorage,
         messageWithBodyEntityMapper: MessageWithBodyEntityMapper
-    ): MessageLocalDataSource = MessageLocalDataSourceImpl(db, messageWithBodyEntityMapper)
+    ): MessageLocalDataSource = MessageLocalDataSourceImpl(db, messageBodyDiskStorage, messageWithBodyEntityMapper)
 }

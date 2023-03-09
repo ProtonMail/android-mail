@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.util.kilobytes
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageWithLabels
 import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
@@ -49,6 +50,7 @@ import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageEntityTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coInvoke
 import io.mockk.coVerify
@@ -102,19 +104,15 @@ class MessageLocalDataSourceImplTest {
             coroutine<suspend () -> Any>().coInvoke()
         }
     }
-    private val messageWithBodyEntityMapper = mockk<MessageWithBodyEntityMapper> {
-        every {
-            toMessageWithBody(any())
-        } returns MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
-        every { toMessageBodyEntity(any()) } returns MessageBodyEntityTestData.messageBodyEntity
-    }
+    private val messageBodyFileStorage = mockk<MessageBodyFileStorage>()
+    private val messageWithBodyEntityMapper = MessageWithBodyEntityMapper()
 
     private lateinit var messageLocalDataSource: MessageLocalDataSourceImpl
 
     @Before
     fun setUp() {
         mockkStatic(PageIntervalDao::upsertPageInterval)
-        messageLocalDataSource = MessageLocalDataSourceImpl(db, messageWithBodyEntityMapper)
+        messageLocalDataSource = MessageLocalDataSourceImpl(db, messageBodyFileStorage, messageWithBodyEntityMapper)
     }
 
     @Test
@@ -167,7 +165,10 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
-    fun `deleteAllMessages call messageDao and pageIntervalDao deleteAll`() = runTest {
+    fun `should delete all messages and page interval from the db and message body files`() = runTest {
+        // Given
+        coEvery { messageBodyFileStorage.deleteAllMessageBodies(userId1) } returns true
+
         // When
         messageLocalDataSource.deleteAllMessages(userId1)
 
@@ -175,6 +176,30 @@ class MessageLocalDataSourceImplTest {
         coVerify(exactly = 1) { db.inTransaction(any()) }
         coVerify(exactly = 1) { messageDao.deleteAll(userId1) }
         coVerify(exactly = 1) { pageIntervalDao.deleteAll(userId1, PageItemType.Message) }
+        coVerify(exactly = 1) { messageBodyFileStorage.deleteAllMessageBodies(userId1) }
+    }
+
+    @Test
+    fun `should delete messages from the db and corresponding message body files`() = runTest {
+        // Given
+        val deletedIds = listOf(
+            MessageIdSample.Invoice,
+            MessageIdSample.EmptyDraft,
+            MessageIdSample.OctWeatherForecast
+        )
+        val deletedRawIds = deletedIds.map { it.id }
+        coEvery { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.Invoice) } returns true
+        coEvery { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.EmptyDraft) } returns true
+        coEvery { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.OctWeatherForecast) } returns true
+
+        // When
+        messageLocalDataSource.deleteMessages(userId1, deletedIds)
+
+        // Then
+        coVerify { messageDao.delete(userId1, deletedRawIds) }
+        coVerify { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.Invoice) }
+        coVerify { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.EmptyDraft) }
+        coVerify { messageBodyFileStorage.deleteMessageBody(userId1, MessageIdSample.OctWeatherForecast) }
     }
 
     @Test
@@ -268,6 +293,33 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
+    fun `observe message with body loads the body from file if the body is null in the db`() = runTest {
+        // Given
+        val observedMessageId = MessageEntityTestData.messageEntity.messageId
+        val messageBodyFromFile = "I am a message body from a file"
+        coEvery { messageBodyFileStorage.readMessageBody(userId1, observedMessageId) } returns messageBodyFromFile
+        every { messageBodyDao.observeMessageWithBodyEntity(userId1, observedMessageId) } returns flowOf(
+            MessageWithBodyEntity(
+                MessageEntityTestData.messageEntity,
+                MessageBodyEntityTestData.messageBodyEntity.copy(body = null),
+                listOf(LabelIdSample.Inbox)
+            )
+        )
+        val expected = MessageWithBody(
+            MessageTestData.message,
+            MessageBodyTestData.messageBody.copy(body = messageBodyFromFile)
+        )
+
+        // When
+        messageLocalDataSource.observeMessageWithBody(userId1, observedMessageId).test {
+
+            // Then
+            assertEquals(expected, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `upsert message with body inserts the message, message body and labels locally`() = runTest {
         // Given
         val messageWithBody = MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
@@ -277,16 +329,50 @@ class MessageLocalDataSourceImplTest {
 
         // Then
         coVerify { messageDao.insertOrUpdate(messageWithBody.message.toEntity()) }
-        coVerifyOrder {
-            labelDao.deleteAll(messageWithBody.message.userId, listOf(messageWithBody.message.messageId))
-            val spamLabelEntity = MessageLabelEntity(
-                messageWithBody.message.userId,
-                messageWithBody.message.labelIds.first(),
-                messageWithBody.message.messageId
-            )
-            labelDao.insertOrUpdate(spamLabelEntity)
-        }
+        verifyLabelsUpdatedFor(messageWithBody)
         coVerify { messageBodyDao.insertOrUpdate(MessageBodyEntityTestData.messageBodyEntity) }
+        coVerify { messageBodyFileStorage wasNot called }
+    }
+
+    @Test
+    fun `upsert message with large body over the limit inserts message in db and body in a file`() = runTest {
+        // Given
+        val largeMessageBody = ByteArray(501.kilobytes)
+        val messageWithBody = MessageWithBody(
+            MessageTestData.message,
+            MessageBodyTestData.messageBody.copy(body = String(largeMessageBody))
+        )
+        val savedMessageEntity = MessageBodyEntityTestData.messageBodyEntity.copy(body = null)
+        coEvery { messageBodyFileStorage.saveMessageBody(userId1, messageWithBody.messageBody) } returns true
+
+        // When
+        messageLocalDataSource.upsertMessageWithBody(userId1, messageWithBody)
+
+        // Then
+        coVerify { messageDao.insertOrUpdate(messageWithBody.message.toEntity()) }
+        verifyLabelsUpdatedFor(messageWithBody)
+        coVerify { messageBodyDao.insertOrUpdate(savedMessageEntity) }
+        coVerify { messageBodyFileStorage.saveMessageBody(userId1, messageWithBody.messageBody) }
+    }
+
+    @Test
+    fun `upsert message with large body under the limit inserts message in db and not in a file`() = runTest {
+        // Given
+        val largeMessageBody = ByteArray(499.kilobytes)
+        val messageWithBody = MessageWithBody(
+            MessageTestData.message,
+            MessageBodyTestData.messageBody.copy(body = String(largeMessageBody))
+        )
+        val savedMessageEntity = MessageBodyEntityTestData.messageBodyEntity.copy(body = String(largeMessageBody))
+
+        // When
+        messageLocalDataSource.upsertMessageWithBody(userId1, messageWithBody)
+
+        // Then
+        coVerify { messageDao.insertOrUpdate(messageWithBody.message.toEntity()) }
+        verifyLabelsUpdatedFor(messageWithBody)
+        coVerify { messageBodyDao.insertOrUpdate(savedMessageEntity) }
+        coVerify { messageBodyFileStorage wasNot called }
     }
 
     @Test
@@ -478,5 +564,17 @@ class MessageLocalDataSourceImplTest {
 
         // then
         assertEquals(error, result)
+    }
+
+    private fun verifyLabelsUpdatedFor(messageWithBody: MessageWithBody) {
+        coVerifyOrder {
+            labelDao.deleteAll(messageWithBody.message.userId, listOf(messageWithBody.message.messageId))
+            val spamLabelEntity = MessageLabelEntity(
+                messageWithBody.message.userId,
+                messageWithBody.message.labelIds.first(),
+                messageWithBody.message.messageId
+            )
+            labelDao.insertOrUpdate(spamLabelEntity)
+        }
     }
 }

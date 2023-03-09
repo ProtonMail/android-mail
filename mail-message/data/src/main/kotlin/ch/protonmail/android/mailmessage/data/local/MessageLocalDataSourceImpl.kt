@@ -21,9 +21,11 @@ package ch.protonmail.android.mailmessage.data.local
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.file.shouldBeStoredAsFile
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
+import ch.protonmail.android.mailmessage.data.local.relation.MessageWithBodyEntity
 import ch.protonmail.android.mailmessage.data.mapper.MessageWithBodyEntityMapper
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -42,6 +44,7 @@ import javax.inject.Inject
 
 class MessageLocalDataSourceImpl @Inject constructor(
     private val db: MessageDatabase,
+    private val messageBodyFileStorage: MessageBodyFileStorage,
     private val messageWithBodyEntityMapper: MessageWithBodyEntityMapper
 ) : MessageLocalDataSource {
 
@@ -53,14 +56,18 @@ class MessageLocalDataSourceImpl @Inject constructor(
     override suspend fun deleteAllMessages(
         userId: UserId
     ) = db.inTransaction {
+        messageBodyFileStorage.deleteAllMessageBodies(userId)
         messageDao.deleteAll(userId)
         pageIntervalDao.deleteAll(userId, PageItemType.Message)
     }
 
-    override suspend fun deleteMessage(
+    override suspend fun deleteMessages(
         userId: UserId,
         ids: List<MessageId>
-    ) = messageDao.delete(userId, ids.map { it.id })
+    ) {
+        messageDao.delete(userId, ids.map { it.id })
+        ids.forEach { messageBodyFileStorage.deleteMessageBody(userId, it) }
+    }
 
     override suspend fun getClippedPageKey(
         userId: UserId,
@@ -129,14 +136,24 @@ class MessageLocalDataSourceImpl @Inject constructor(
     override fun observeMessageWithBody(userId: UserId, messageId: MessageId): Flow<MessageWithBody?> {
         return messageBodyDao.observeMessageWithBodyEntity(userId, messageId).mapLatest { messageWithBodyEntity ->
             if (messageWithBodyEntity != null) {
-                messageWithBodyEntityMapper.toMessageWithBody(messageWithBodyEntity)
-            } else null
+                messageWithBodyEntityMapper.toMessageWithBody(
+                    messageWithBodyEntity.withBodyFromFileIfNeeded(userId)
+                )
+            } else {
+                null
+            }
         }
     }
 
     override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody) = db.inTransaction {
         upsertMessage(messageWithBody.message)
-        messageBodyDao.insertOrUpdate(messageWithBodyEntityMapper.toMessageBodyEntity(messageWithBody.messageBody))
+        val messageBodyEntity = messageWithBodyEntityMapper.toMessageBodyEntity(messageWithBody.messageBody)
+        if (messageWithBody.messageBody.body.shouldBeStoredAsFile()) {
+            messageBodyFileStorage.saveMessageBody(userId, messageWithBody.messageBody)
+            messageBodyDao.insertOrUpdate(messageBodyEntity.copy(body = null))
+        } else {
+            messageBodyDao.insertOrUpdate(messageBodyEntity)
+        }
     }
 
     override suspend fun addLabel(
@@ -235,4 +252,15 @@ class MessageLocalDataSourceImpl @Inject constructor(
             messageLabelDao.deleteAll(userId, messages.map { it.messageId })
         }
     }
+
+    private suspend fun MessageWithBodyEntity.withBodyFromFileIfNeeded(userId: UserId) =
+        if (messageBody.body == null) {
+            copy(
+                messageBody = messageBody.copy(
+                    body = messageBodyFileStorage.readMessageBody(userId, message.messageId)
+                )
+            )
+        } else {
+            this
+        }
 }
