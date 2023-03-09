@@ -105,7 +105,7 @@ internal class MessageBodyFileStorageTest {
         // Then
         assertFalse(messageSaved)
     }
-    
+
     @Test
     fun `should delete message using sanitised folder and filename and return true on success`() = runTest {
         // Given

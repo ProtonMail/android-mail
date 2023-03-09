@@ -42,6 +42,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class MessageLocalDataSourceImpl @Inject constructor(
     private val db: MessageDatabase,
     private val messageBodyFileStorage: MessageBodyFileStorage,
