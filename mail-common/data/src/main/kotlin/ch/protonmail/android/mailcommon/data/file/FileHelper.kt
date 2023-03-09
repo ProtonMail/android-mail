@@ -56,13 +56,13 @@ class FileHelper @Inject constructor(
         }.isSuccess
     }
 
-    suspend fun deleteFile(folder: Folder, filename: Filename) = withContext(dispatcherProvider.Io) {
+    suspend fun deleteFile(folder: Folder, filename: Filename): Boolean = withContext(dispatcherProvider.Io) {
         runCatching {
             fileFactory.fileFrom(folder, filename).delete()
         }.getOrDefault(false)
     }
 
-    suspend fun deleteFolder(folder: Folder) = withContext(dispatcherProvider.Io) {
+    suspend fun deleteFolder(folder: Folder): Boolean = withContext(dispatcherProvider.Io) {
         runCatching {
             fileFactory.folderFrom(folder).deleteRecursively()
         }.getOrDefault(false)

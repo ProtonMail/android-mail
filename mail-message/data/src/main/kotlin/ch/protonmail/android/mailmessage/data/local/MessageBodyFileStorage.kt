@@ -31,23 +31,25 @@ class MessageBodyFileStorage @Inject constructor(
     private val applicationContext: Context,
     private val fileHelper: FileHelper
 ) {
-    suspend fun readMessageBody(userId: UserId, messageId: MessageId) = fileHelper.readFromFile(
+
+    suspend fun readMessageBody(userId: UserId, messageId: MessageId): String? = fileHelper.readFromFile(
         folder = userId.asSanitisedFolderName(),
         filename = messageId.asSanitisedFilename()
     )
 
-    suspend fun saveMessageBody(userId: UserId, messageBody: MessageBody) = fileHelper.writeToFile(
+    suspend fun saveMessageBody(userId: UserId, messageBody: MessageBody): Boolean = fileHelper.writeToFile(
         folder = userId.asSanitisedFolderName(),
         filename = messageBody.messageId.asSanitisedFilename(),
         content = messageBody.body
     )
 
-    suspend fun deleteMessageBody(userId: UserId, messageId: MessageId) = fileHelper.deleteFile(
+    suspend fun deleteMessageBody(userId: UserId, messageId: MessageId): Boolean = fileHelper.deleteFile(
         folder = userId.asSanitisedFolderName(),
         filename = messageId.asSanitisedFilename()
     )
 
-    suspend fun deleteAllMessageBodies(userId: UserId) = fileHelper.deleteFolder(userId.asSanitisedFolderName())
+    suspend fun deleteAllMessageBodies(userId: UserId): Boolean =
+        fileHelper.deleteFolder(userId.asSanitisedFolderName())
 
     private fun UserId.asSanitisedFolderName() =
         FileHelper.Folder(applicationContext.filesDir.toString() + "/message_bodies/" + id.asSanitisedPath() + "/")
