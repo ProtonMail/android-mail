@@ -27,6 +27,7 @@ import ch.protonmail.android.mailconversation.data.local.entity.ConversationEnti
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailmessage.data.local.MessageConverters
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
+import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
@@ -130,6 +131,7 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         MessageEntity::class,
         MessageLabelEntity::class,
         MessageBodyEntity::class,
+        MessageAttachmentEntity::class,
         // mail-conversation
         ConversationEntity::class,
         ConversationLabelEntity::class,

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.local
 
 import androidx.sqlite.db.SupportSQLiteDatabase
+import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
@@ -32,11 +33,14 @@ import me.proton.core.util.kotlin.serialize
 
 @Suppress("MaxLineLength")
 interface MessageDatabase : Database, PageIntervalDatabase {
+
     fun messageDao(): MessageDao
     fun messageLabelDao(): MessageLabelDao
     fun messageBodyDao(): MessageBodyDao
+    fun messageAttachmentDao(): MessageAttachmentDao
 
     companion object {
+
         val MIGRATION_0 = object : DatabaseMigration {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Added MessageEntity.

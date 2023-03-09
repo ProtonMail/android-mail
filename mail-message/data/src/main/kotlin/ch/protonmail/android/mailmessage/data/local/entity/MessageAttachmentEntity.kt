@@ -42,7 +42,7 @@ import me.proton.core.user.data.entity.UserEntity
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = MessageEntity::class,
+            entity = MessageBodyEntity::class,
             parentColumns = ["userId", "messageId"],
             childColumns = ["userId", "messageId"],
             onDelete = ForeignKey.CASCADE
@@ -59,6 +59,5 @@ data class MessageAttachmentEntity(
     val disposition: String?,
     val keyPackets: String?,
     val signature: String?,
-    val encSignature: String?,
-    val headers: Map<String, String>
+    val encSignature: String?
 )
