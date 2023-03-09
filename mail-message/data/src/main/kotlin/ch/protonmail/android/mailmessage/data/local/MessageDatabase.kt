@@ -23,13 +23,9 @@ import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
-import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import me.proton.core.data.room.db.Database
-import me.proton.core.data.room.db.extension.addTableColumn
-import me.proton.core.data.room.db.extension.dropTable
 import me.proton.core.data.room.db.migration.DatabaseMigration
-import me.proton.core.util.kotlin.serialize
 
 @Suppress("MaxLineLength")
 interface MessageDatabase : Database, PageIntervalDatabase {
@@ -43,61 +39,12 @@ interface MessageDatabase : Database, PageIntervalDatabase {
 
         val MIGRATION_0 = object : DatabaseMigration {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // Added MessageEntity.
-                database.execSQL("CREATE TABLE IF NOT EXISTS `MessageEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `conversationId` TEXT NOT NULL, `order` INTEGER NOT NULL, `subject` TEXT NOT NULL, `unread` INTEGER NOT NULL, `toList` TEXT NOT NULL, `ccList` TEXT NOT NULL, `bccList` TEXT NOT NULL, `time` INTEGER NOT NULL, `size` INTEGER NOT NULL, `expirationTime` INTEGER NOT NULL, `isReplied` INTEGER NOT NULL, `isRepliedAll` INTEGER NOT NULL, `isForwarded` INTEGER NOT NULL, `addressId` TEXT NOT NULL, `externalId` TEXT, `numAttachments` INTEGER NOT NULL, `flags` INTEGER NOT NULL, `sender_address` TEXT NOT NULL, `sender_name` TEXT NOT NULL, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`addressId`) REFERENCES `AddressEntity`(`addressId`) ON UPDATE NO ACTION ON DELETE CASCADE )")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageEntity_userId` ON `MessageEntity` (`userId`)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageEntity_messageId` ON `MessageEntity` (`messageId`)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageEntity_addressId` ON `MessageEntity` (`addressId`)")
-
-                // Added MessageLabelEntity.
-                database.execSQL("CREATE TABLE IF NOT EXISTS `MessageLabelEntity` (`userId` TEXT NOT NULL, `labelId` TEXT NOT NULL, `messageId` TEXT NOT NULL, PRIMARY KEY(`userId`, `messageId`, `labelId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageEntity`(`userId`, `messageId`) ON UPDATE NO ACTION ON DELETE CASCADE )")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_userId` ON `MessageLabelEntity` (`userId`)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_messageId` ON `MessageLabelEntity` (`messageId`)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_labelId` ON `MessageLabelEntity` (`labelId`)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageLabelEntity_userId_messageId` ON `MessageLabelEntity` (`userId`, `messageId`)")
-            }
-        }
-
-        val MIGRATION_1 = object : DatabaseMigration {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                // Added MessageEntity.sender_group.
-                database.addTableColumn(
-                    table = "MessageEntity",
-                    column = "sender_group",
-                    type = "TEXT",
-                    defaultValue = null
-                )
-            }
-        }
-
-        val MIGRATION_2 = object : DatabaseMigration {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                // Added MessageEntity.attachmentCount.
-                database.addTableColumn(
-                    table = "MessageEntity",
-                    column = "attachmentCount",
-                    type = "TEXT NOT NULL",
-                    defaultValue = AttachmentCountEntity(0).serialize()
-                )
-            }
-        }
-
-        val MIGRATION_3 = object : DatabaseMigration {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                // Created MessageBody table
-                database.execSQL("CREATE TABLE IF NOT EXISTS `MessageBodyEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `body` TEXT, `header` TEXT NOT NULL, `mimeType` TEXT NOT NULL, `spamScore` TEXT NOT NULL, `replyTo` TEXT NOT NULL, `replyTos` TEXT NOT NULL, `unsubscribeMethods` TEXT, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_userId` ON `MessageBodyEntity` (`userId`)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_messageId` ON `MessageBodyEntity` (`messageId`)")
-            }
-        }
-
-        val MIGRATION_4 = object : DatabaseMigration {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                // Recreate message body table to rename `unsubscribeMethodsEntity` column
-                database.dropTable("MessageBodyEntity")
-                database.execSQL("CREATE TABLE IF NOT EXISTS `MessageBodyEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `body` TEXT, `header` TEXT NOT NULL, `mimeType` TEXT NOT NULL, `spamScore` TEXT NOT NULL, `replyTo` TEXT NOT NULL, `replyTos` TEXT NOT NULL, `unsubscribeMethodsEntity` TEXT, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_userId` ON `MessageBodyEntity` (`userId`)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageBodyEntity_messageId` ON `MessageBodyEntity` (`messageId`)")
+                // Added MessageAttachmentEntity.
+                database.execSQL("CREATE TABLE IF NOT EXISTS `MessageAttachmentEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `attachmentId` TEXT NOT NULL, `name` TEXT NOT NULL, `size` INTEGER NOT NULL, `mimeType` TEXT NOT NULL, `disposition` TEXT, `keyPackets` TEXT, `signature` TEXT, `encSignature` TEXT, PRIMARY KEY(`userId`,`messageId`,`attachmentId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE, FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageBodyEntity`(`userId`,`messageId`) ON UPDATE NO ACTION ON DELETE CASCADE)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_userId` ON `MessageAttachmentEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_messageId` ON `MessageAttachmentEntity` (`messageId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_attachmentId` ON `MessageAttachmentEntity` (`attachmentId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_userId_messageId` ON `MessageAttachmentEntity` (`userId`, `messageId`)")
             }
         }
     }
