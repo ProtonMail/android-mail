@@ -177,7 +177,7 @@ private fun SidebarAppVersionItem(
 ) {
     ProtonSidebarAppVersionItem(
         name = appInformation.appName,
-        version = appInformation.appVersionName
+        version = "${appInformation.appVersionName} (${appInformation.appVersionCode})"
     )
 }
 

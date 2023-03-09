@@ -123,7 +123,7 @@ android {
         }
         create("alpha") {
             applicationIdSuffix = ".alpha"
-            versionNameSuffix = "-alpha.${Config.versionCode}+$gitHash"
+            versionNameSuffix = "-alpha+$gitHash"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
             buildConfigField("String", "HOST", "\"protonmail.ch\"")
         }
