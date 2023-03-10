@@ -210,6 +210,7 @@ deploy_to_firebase_alpha:
   extends: .firebase_deploy_job
   script:
     - bundle exec fastlane deployToFirebaseAlphaGroup
+    - bundle exec fastlane tagRelease
   rules:
     - !reference [ .firebase_deploy_job, rules ]
     - if: $NIGHTLY_ALPHA_BUILD == "true"

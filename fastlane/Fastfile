@@ -110,6 +110,11 @@ platform :android do
     )
   end
 
+  desc "Tag commit with release version name and code"
+  lane :tagRelease do
+    sh("python3 ../buildSrc/tag_release.py")
+  end
+
   desc "Submit a new Closed-Testing Build in Alpha-v6 track to Play Store"
   lane :deployToPlayStoreAlpha do
     upload_to_play_store(track: 'alpha-v6', apk: 'app/build/outputs/apk/release/app-release.apk')
