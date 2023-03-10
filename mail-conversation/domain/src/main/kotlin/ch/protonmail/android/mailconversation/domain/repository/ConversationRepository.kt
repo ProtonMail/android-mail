@@ -83,7 +83,7 @@ interface ConversationRepository {
     suspend fun move(
         userId: UserId,
         conversationId: ConversationId,
-        fromLabelId: LabelId? = null,
+        fromLabelIds: List<LabelId>? = null,
         toLabelId: LabelId
     ): Either<DataError, Conversation>
 

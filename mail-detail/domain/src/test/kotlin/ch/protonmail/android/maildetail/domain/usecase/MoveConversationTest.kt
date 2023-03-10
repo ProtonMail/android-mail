@@ -43,6 +43,7 @@ class MoveConversationTest {
 
     private val userId = UserIdSample.Primary
     private val conversationId = ConversationIdSample.WeatherForecast
+    private val exclusiveMailLabels = SystemLabelId.exclusiveList.map { it.toMailLabelSystem() }
 
     private val conversationRepository: ConversationRepository = mockk {
         every { this@mockk.observeConversation(userId, conversationId) } returns flowOf(
@@ -54,7 +55,7 @@ class MoveConversationTest {
     private val observeExclusiveMailLabels: ObserveExclusiveMailLabels = mockk {
         every { this@mockk.invoke(userId) } returns flowOf(
             MailLabels(
-                systemLabels = SystemLabelId.exclusiveList.map { it.toMailLabelSystem() },
+                systemLabels = exclusiveMailLabels,
                 folders = emptyList(),
                 labels = emptyList()
             )
@@ -86,7 +87,7 @@ class MoveConversationTest {
             conversationRepository.move(
                 userId,
                 conversationId,
-                ConversationLabelSample.WeatherForecast.Inbox.labelId,
+                exclusiveMailLabels.map { it.id.labelId },
                 SystemLabelId.Trash.labelId
             )
         } returns error
@@ -103,7 +104,6 @@ class MoveConversationTest {
     fun `when moving a conversation to trash then repository is called with the given data`() = runTest {
         // Given
         val toLabel = SystemLabelId.Trash.labelId
-        val fromLabel = ConversationLabelSample.WeatherForecast.Inbox
 
         val conversation = ConversationSample.WeatherForecast.copy(
             labels = listOf(ConversationLabelSample.WeatherForecast.Trash)
@@ -112,7 +112,7 @@ class MoveConversationTest {
             conversationRepository.move(
                 userId,
                 conversationId,
-                fromLabel.labelId,
+                exclusiveMailLabels.map { it.id.labelId },
                 toLabel
             )
         } returns conversation
@@ -121,7 +121,14 @@ class MoveConversationTest {
         val result = move(userId, conversationId, toLabel)
 
         // Then
-        coVerify { conversationRepository.move(userId, conversationId, fromLabel.labelId, toLabel) }
+        coVerify {
+            conversationRepository.move(
+                userId,
+                conversationId,
+                exclusiveMailLabels.map { it.id.labelId },
+                toLabel
+            )
+        }
         assertEquals(conversation, result)
     }
 }

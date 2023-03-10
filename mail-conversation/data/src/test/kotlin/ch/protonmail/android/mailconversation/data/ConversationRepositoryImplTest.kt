@@ -641,7 +641,7 @@ class ConversationRepositoryImplTest {
         val result = conversationRepository.move(
             userId,
             conversationId,
-            SystemLabelId.Inbox.labelId,
+            listOf(SystemLabelId.Inbox.labelId),
             SystemLabelId.Trash.labelId
         )
 
@@ -692,7 +692,7 @@ class ConversationRepositoryImplTest {
         val result = conversationRepository.move(
             userId,
             conversationId,
-            SystemLabelId.Inbox.labelId,
+            listOf(SystemLabelId.Inbox.labelId),
             SystemLabelId.Spam.labelId
         )
 
@@ -758,7 +758,12 @@ class ConversationRepositoryImplTest {
         }
 
         // when
-        conversationRepository.move(userId, conversationId, SystemLabelId.Inbox.labelId, SystemLabelId.Trash.labelId)
+        conversationRepository.move(
+            userId,
+            conversationId,
+            listOf(SystemLabelId.Inbox.labelId),
+            SystemLabelId.Trash.labelId
+        )
         messageLocalDataSource.observeMessages(userId, conversationId).test {
 
             // then
@@ -768,21 +773,27 @@ class ConversationRepositoryImplTest {
 
     @Test
     fun `move removes previous exclusive label and adds new label`() = runTest {
+        // Given
         val conversation = ConversationTestData.conversation
-        val updatedMessages = MessageTestData.unStarredMessagesByConversation.map {
-            it.copy(labelIds = it.labelIds + SystemLabelId.Archive.labelId)
-        }
+        val toBeRemovedLabels = listOf(SystemLabelId.Inbox.labelId)
 
         coEvery { conversationLocalDataSource.observeConversation(userId, conversation.conversationId) } returns flowOf(
             conversation
         )
         coEvery {
-            conversationLocalDataSource.removeLabel(
+            conversationLocalDataSource.removeLabels(
                 userId,
                 conversation.conversationId,
-                SystemLabelId.Inbox.labelId
+                toBeRemovedLabels
             )
         } returns conversation.copy(labels = listOf()).right()
+        coEvery {
+            messageLocalDataSource.removeLabels(
+                userId,
+                any(),
+                toBeRemovedLabels
+            )
+        } returns MessageTestData.message.right()
         coEvery {
             conversationLocalDataSource.addLabels(
                 userId,
@@ -791,13 +802,22 @@ class ConversationRepositoryImplTest {
             )
         } returns ConversationTestData.conversationWithArchiveLabel.right()
 
+        // When
         val actual = conversationRepository.move(
             userId,
             conversation.conversationId,
-            SystemLabelId.Inbox.labelId,
+            toBeRemovedLabels,
             SystemLabelId.Archive.labelId
         )
 
+        // Then
+        coVerify {
+            messageLocalDataSource.upsertMessages(
+                MessageTestData.unStarredMessagesByConversation.map {
+                    it.copy(labelIds = it.labelIds + SystemLabelId.Archive.labelId)
+                }
+            )
+        }
         coVerify {
             conversationLocalDataSource.addLabels(
                 userId = userId,
@@ -806,20 +826,21 @@ class ConversationRepositoryImplTest {
             )
         }
 
-        coVerify { messageLocalDataSource.upsertMessages(updatedMessages) }
         assertEquals(ConversationTestData.conversationWithArchiveLabel.right(), actual)
     }
 
     @Test
     fun `move return error when conversation doesn't exist`() = runTest {
         val conversation = ConversationTestData.conversation
+        val toBeRemovedLabels = listOf(SystemLabelId.Inbox.labelId)
         coEvery { conversationLocalDataSource.observeConversation(userId, conversation.conversationId) } returns flowOf(
             null
         )
+
         val actual = conversationRepository.move(
             userId,
             conversation.conversationId,
-            SystemLabelId.Inbox.labelId,
+            toBeRemovedLabels,
             SystemLabelId.Archive.labelId
         )
         assertEquals(DataError.Local.NoDataCached.left(), actual)

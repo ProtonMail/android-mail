@@ -42,12 +42,10 @@ class MoveConversation @Inject constructor(
     ): Either<DataError, Conversation> {
         return conversationRepository.observeConversation(userId, conversationId).first().fold(
             ifLeft = { DataError.Local.NoDataCached.left() },
-            ifRight = { conversation ->
-                val exclusiveLabelIds = observeExclusiveMailLabels(userId).first().allById.mapKeys { it.key.labelId }
-                val fromLabelId = conversation.labels
-                    .map { it.labelId }
-                    .firstOrNull { labelId -> labelId in exclusiveLabelIds }
-                conversationRepository.move(userId, conversationId, fromLabelId, toLabelId = labelId)
+            ifRight = {
+                val exclusiveLabelIds =
+                    observeExclusiveMailLabels(userId).first().allById.mapNotNull { it.key.labelId }
+                conversationRepository.move(userId, conversationId, exclusiveLabelIds, toLabelId = labelId)
             }
         )
     }

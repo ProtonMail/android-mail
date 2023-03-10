@@ -172,24 +172,25 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun move(
         userId: UserId,
         conversationId: ConversationId,
-        fromLabelId: LabelId?,
+        fromLabelIds: List<LabelId>?,
         toLabelId: LabelId
     ): Either<DataError, Conversation> {
         if (toLabelId.isTrash() || toLabelId.isSpam()) {
             return moveToTrashOrSpam(userId, conversationId, toLabelId)
         }
 
-        val conversation = conversationLocalDataSource.observeConversation(userId, conversationId).first()
+        conversationLocalDataSource.observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
 
-        val updatedLabels = conversation.labels.filterNot { label -> label.labelId == fromLabelId }
-
-        if (fromLabelId != null) {
-            conversationLocalDataSource.removeLabel(userId, conversationId, fromLabelId)
+        if (fromLabelIds != null) {
+            conversationLocalDataSource.removeLabels(userId, conversationId, fromLabelIds)
         }
+
         messageLocalDataSource.observeMessages(userId, conversationId).first()
-            .map { message -> message.copy(labelIds = updatedLabels.map { it.labelId }) }
-            .let { messageLocalDataSource.upsertMessages(it) }
+            .map { message ->
+                messageLocalDataSource.removeLabels(userId, message.messageId, fromLabelIds ?: emptyList())
+                    .onLeft { Timber.d("Failed to remove label") }
+            }
 
         return addLabel(userId, conversationId, toLabelId)
     }
