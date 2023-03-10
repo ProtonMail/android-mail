@@ -26,8 +26,11 @@ import javax.inject.Inject
 
 class MessageAttachmentEntityMapper @Inject constructor() {
 
-    fun toMessageAttachmentEntity(userId: UserId, messageId: MessageId, messageAttachment: MessageAttachment) =
-        MessageAttachmentEntity(
+    fun toMessageAttachmentEntity(
+        userId: UserId,
+        messageId: MessageId,
+        messageAttachment: MessageAttachment
+    ) = MessageAttachmentEntity(
             userId = userId,
             messageId = messageId,
             attachmentId = messageAttachment.attachmentId,
