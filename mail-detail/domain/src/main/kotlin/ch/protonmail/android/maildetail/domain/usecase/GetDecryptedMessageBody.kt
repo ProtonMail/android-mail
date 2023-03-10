@@ -31,8 +31,8 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.domain.entity.UserId
-import me.proton.core.key.domain.decryptAndVerifyData
-import me.proton.core.key.domain.decryptAndVerifyMimeMessage
+import me.proton.core.key.domain.decryptMimeMessage
+import me.proton.core.key.domain.decryptText
 import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
 import me.proton.core.key.domain.useKeys
 import me.proton.core.user.domain.UserAddressManager
@@ -74,12 +74,12 @@ class GetDecryptedMessageBody @Inject constructor(
 
     private fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedMessageBody {
         return if (messageBody.mimeType == MimeType.MultipartMixed) {
-            decryptAndVerifyMimeMessage(messageBody.body).run {
+            decryptMimeMessage(messageBody.body).run {
                 DecryptedMessageBody(body.content, messageBody.mimeType)
             }
         } else {
-            decryptAndVerifyData(messageBody.body).run {
-                DecryptedMessageBody(data.decodeToString(), messageBody.mimeType)
+            decryptText(messageBody.body).run {
+                DecryptedMessageBody(this, messageBody.mimeType)
             }
         }
     }

@@ -35,13 +35,16 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.crypto.common.context.CryptoContext
-import me.proton.core.crypto.common.pgp.DecryptedData
+import me.proton.core.crypto.common.keystore.EncryptedByteArray
+import me.proton.core.crypto.common.keystore.PlainByteArray
 import me.proton.core.crypto.common.pgp.DecryptedMimeBody
 import me.proton.core.crypto.common.pgp.DecryptedMimeMessage
 import me.proton.core.crypto.common.pgp.PGPCrypto
-import me.proton.core.crypto.common.pgp.VerificationStatus
+import me.proton.core.crypto.common.pgp.decryptTextOrNull
 import me.proton.core.crypto.common.pgp.exception.CryptoException
+import me.proton.core.key.domain.entity.key.PrivateKey
 import me.proton.core.user.domain.UserAddressManager
+import me.proton.core.user.domain.entity.UserAddressKey
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
@@ -55,17 +58,40 @@ class GetDecryptedMessageBodyTest(
 
     private val messageId = MessageId("messageId")
     private val decryptedMessageBody = "Decrypted message body."
+    private val armoredPrivateKey = "armoredPrivateKey"
+    private val armoredPublicKey = "armoredPublicKey"
+    private val encryptedPassphrase = EncryptedByteArray("encryptedPassphrase".encodeToByteArray())
+    private val decryptedPassphrase = PlainByteArray("decryptedPassPhrase".encodeToByteArray())
+    private val unlockedPrivateKey = "unlockedPrivateKey".encodeToByteArray()
 
-    private val pgpCryptoMock = mockk<PGPCrypto>()
-    private val cryptoContext = mockk<CryptoContext>(relaxed = true) {
-        every { pgpCrypto } returns pgpCryptoMock
-    }
-    private val messageRepository = mockk<MessageRepository>()
-    private val userAddressManager = mockk<UserAddressManager> {
-        coEvery { getAddress(UserIdTestData.userId, MessageTestData.message.addressId) } returns mockk {
-            every { keys } returns emptyList()
+    private val pgpCryptoMock = mockk<PGPCrypto> {
+        every { getPublicKey(armoredPrivateKey) } returns armoredPublicKey
+        every { unlock(armoredPrivateKey, decryptedPassphrase.array) } returns mockk(relaxUnitFun = true) {
+            every { value } returns unlockedPrivateKey
         }
     }
+    private val cryptoContext = mockk<CryptoContext> {
+        every { pgpCrypto } returns pgpCryptoMock
+        every { keyStoreCrypto } returns mockk {
+            every { decrypt(encryptedPassphrase) } returns decryptedPassphrase
+        }
+    }
+    private val userAddressKey = mockk<UserAddressKey> {
+        every { privateKey } returns PrivateKey(
+            key = armoredPrivateKey,
+            isPrimary = true,
+            isActive = true,
+            canEncrypt = true,
+            canVerify = true,
+            passphrase = encryptedPassphrase
+        )
+    }
+    private val userAddressManager = mockk<UserAddressManager> {
+        coEvery { getAddress(UserIdTestData.userId, MessageTestData.message.addressId) } returns mockk {
+            every { keys } returns listOf(userAddressKey)
+        }
+    }
+    private val messageRepository = mockk<MessageRepository>()
 
     private val getDecryptedMessageBody = GetDecryptedMessageBody(cryptoContext, messageRepository, userAddressManager)
 
@@ -140,50 +166,38 @@ class GetDecryptedMessageBodyTest(
     private fun mockDecryptionIsSuccessful() {
         if (testInput.mimeType == MimeType.MultipartMixed) {
             every {
-                pgpCryptoMock.decryptAndVerifyMimeMessage(
+                pgpCryptoMock.decryptMimeMessage(
                     message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
-                    publicKeys = any(),
-                    unlockedKeys = any(),
-                    time = any()
+                    unlockedKeys = any()
                 )
             } returns DecryptedMimeMessage(
                 emptyList(),
                 DecryptedMimeBody(testInput.mimeType.value, decryptedMessageBody),
-                emptyList(),
-                VerificationStatus.Success
+                emptyList()
             )
         } else {
             every {
-                pgpCryptoMock.decryptAndVerifyData(
+                pgpCryptoMock.decryptTextOrNull(
                     message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
-                    publicKeys = any(),
-                    unlockedKeys = any(),
-                    time = any()
+                    unlockedKey = any()
                 )
-            } returns DecryptedData(
-                decryptedMessageBody.toByteArray(),
-                VerificationStatus.Success
-            )
+            } returns decryptedMessageBody
         }
     }
 
     private fun mockDecryptionFails() {
         if (testInput.mimeType == MimeType.MultipartMixed) {
             every {
-                pgpCryptoMock.decryptAndVerifyMimeMessage(
+                pgpCryptoMock.decryptMimeMessage(
                     message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
-                    publicKeys = any(),
-                    unlockedKeys = any(),
-                    time = any()
+                    unlockedKeys = any()
                 )
             } throws CryptoException()
         } else {
             every {
-                pgpCryptoMock.decryptAndVerifyData(
+                pgpCryptoMock.decryptTextOrNull(
                     message = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY,
-                    publicKeys = any(),
-                    unlockedKeys = any(),
-                    time = any()
+                    unlockedKey = any()
                 )
             } throws CryptoException()
         }
