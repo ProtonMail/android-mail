@@ -76,6 +76,7 @@ class ConversationDetailScreenTest {
                 }
 
                 is ConversationDetailMessageUiModel.Expanded -> Unit
+                is ConversationDetailMessageUiModel.Expanding -> Unit
             }
         }
     }
@@ -93,7 +94,10 @@ class ConversationDetailScreenTest {
             val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
             when (val firstMessage = messagesState.messages.first()) {
                 is ConversationDetailMessageUiModel.Collapsed -> timeIsDisplayed(time = firstMessage.shortTime)
-                is ConversationDetailMessageUiModel.Expanded -> Unit
+                is ConversationDetailMessageUiModel.Expanded ->
+                    timeIsDisplayed(time = firstMessage.messageDetailHeaderUiModel.time)
+
+                is ConversationDetailMessageUiModel.Expanding -> Unit
             }
         }
     }
@@ -183,7 +187,10 @@ class ConversationDetailScreenTest {
             val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
             when (val firstMessage = messagesState.messages.first()) {
                 is ConversationDetailMessageUiModel.Collapsed -> senderIsDisplayed(firstMessage.sender)
-                is ConversationDetailMessageUiModel.Expanded -> TODO()
+                is ConversationDetailMessageUiModel.Expanded ->
+                    senderIsDisplayed(firstMessage.messageDetailHeaderUiModel.sender.participantName)
+
+                is ConversationDetailMessageUiModel.Expanding -> Unit
             }
         }
     }
