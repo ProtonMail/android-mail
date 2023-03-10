@@ -30,12 +30,12 @@ class MessageAttachmentEntityMapperTest {
     private val messageAttachmentEntityMapper = MessageAttachmentEntityMapper()
 
     @Test
-    fun `attachment domain model is correctly mapped to attachment entitiy`() {
+    fun `attachment domain model is correctly mapped to attachment entity`() {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.Invoice
         val attachment = MessageAttachmentTestData.invoice
-        val expected = MessageAttachmentEntityTestData.invoice
+        val expected = MessageAttachmentEntityTestData.invoice()
 
         // When
         val actual = messageAttachmentEntityMapper.toMessageAttachmentEntity(userId, messageId, attachment)
@@ -47,7 +47,7 @@ class MessageAttachmentEntityMapperTest {
     @Test
     fun `attachment entity is correctly mapped to attachment domain model`() {
         // Given
-        val attachmentEntity = MessageAttachmentEntityTestData.invoice
+        val attachmentEntity = MessageAttachmentEntityTestData.invoice()
         val expected = MessageAttachmentTestData.invoice
 
         // When

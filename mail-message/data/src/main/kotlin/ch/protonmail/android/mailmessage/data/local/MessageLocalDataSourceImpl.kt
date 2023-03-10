@@ -116,22 +116,6 @@ class MessageLocalDataSourceImpl @Inject constructor(
         upsertPageInterval(userId, pageKey, items)
     }
 
-    override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody) = db.inTransaction {
-        upsertMessage(messageWithBody.message)
-        messageBodyDao.insertOrUpdate(messageWithBodyEntityMapper.toMessageBodyEntity(messageWithBody.messageBody))
-        if (messageWithBody.messageBody.attachments.isNotEmpty()) {
-            messageAttachmentDao.insertOrUpdate(
-                *messageWithBody.messageBody.attachments.map {
-                    messageAttachmentEntityMapper.toMessageAttachmentEntity(
-                        userId,
-                        messageWithBody.message.messageId,
-                        it
-                    )
-                }.toTypedArray()
-            )
-        }
-    }
-
     override fun observeMessageWithBody(userId: UserId, messageId: MessageId): Flow<MessageWithBody?> {
         return combine(
             messageBodyDao.observeMessageWithBodyEntity(userId, messageId),
@@ -156,6 +140,12 @@ class MessageLocalDataSourceImpl @Inject constructor(
             messageBodyDao.insertOrUpdate(messageBodyEntity.copy(body = null))
         } else {
             messageBodyDao.insertOrUpdate(messageBodyEntity)
+        }
+        if (messageWithBody.messageBody.attachments.isNotEmpty()) {
+            val attachmentEntities = messageWithBody.messageBody.attachments.map {
+                messageAttachmentEntityMapper.toMessageAttachmentEntity(userId, messageWithBody.message.messageId, it)
+            }.toTypedArray()
+            messageAttachmentDao.insertOrUpdate(*attachmentEntities)
         }
     }
 

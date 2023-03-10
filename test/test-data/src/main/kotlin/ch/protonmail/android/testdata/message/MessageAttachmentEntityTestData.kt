@@ -21,34 +21,39 @@ package ch.protonmail.android.testdata.message
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import me.proton.core.domain.entity.UserId
 
 object MessageAttachmentEntityTestData {
 
-    val invoice = MessageAttachmentEntity(
-        userId = UserIdSample.Primary,
-        messageId = MessageIdSample.Invoice,
-        attachmentId = AttachmentId("invoice"),
-        name = "invoice.pdf",
-        size = 5678,
-        mimeType = "application/pdf",
-        disposition = null,
-        keyPackets = null,
-        signature = null,
-        encSignature = null
-    )
 
-    val document = MessageAttachmentEntity(
-        userId = UserIdSample.Primary,
-        messageId = MessageIdSample.AlphaAppInfoRequest,
-        attachmentId = AttachmentId("document"),
-        name = "document.pdf",
-        size = 1234,
-        mimeType = "application/doc",
-        disposition = null,
-        keyPackets = null,
-        signature = null,
-        encSignature = null
-    )
+    fun invoice(userId: UserId = UserIdSample.Primary, messageId: MessageId = MessageIdSample.Invoice) =
+        MessageAttachmentEntity(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = AttachmentId("invoice"),
+            name = "invoice.pdf",
+            size = 5678,
+            mimeType = "application/pdf",
+            disposition = null,
+            keyPackets = null,
+            signature = null,
+            encSignature = null
+        )
+
+    fun document(userId: UserId = UserIdSample.Primary, messageId: MessageId = MessageIdSample.AlphaAppInfoRequest) =
+        MessageAttachmentEntity(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = AttachmentId("document"),
+            name = "document.pdf",
+            size = 1234,
+            mimeType = "application/doc",
+            disposition = null,
+            keyPackets = null,
+            signature = null,
+            encSignature = null
+        )
 
 }

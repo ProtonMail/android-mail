@@ -47,7 +47,6 @@ import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageItemType
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData
-import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyEntityTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageEntityTestData
@@ -101,7 +100,7 @@ class MessageLocalDataSourceImplTest {
     private val pageIntervalDao = mockk<PageIntervalDao>(relaxUnitFun = true)
     private val attachmentDao = mockk<MessageAttachmentDao>(relaxUnitFun = true) {
         every { observeMessageAttachmentEntities(any(), any()) } returns flowOf(
-            listOf(MessageAttachmentEntityTestData.invoice)
+            listOf(MessageAttachmentEntityTestData.invoice())
         )
     }
 
@@ -125,10 +124,10 @@ class MessageLocalDataSourceImplTest {
     fun setUp() {
         mockkStatic(PageIntervalDao::upsertPageInterval)
         messageLocalDataSource = MessageLocalDataSourceImpl(
-            db,
-            messageBodyFileStorage,
-            messageWithBodyEntityMapper,
-            attachmentEntityMapper
+            db = db,
+            messageBodyFileStorage = messageBodyFileStorage,
+            messageWithBodyEntityMapper = messageWithBodyEntityMapper,
+            messageAttachmentEntityMapper = attachmentEntityMapper
         )
     }
 
@@ -348,7 +347,14 @@ class MessageLocalDataSourceImplTest {
         coVerify { messageDao.insertOrUpdate(messageWithBody.message.toEntity()) }
         verifyLabelsUpdatedFor(messageWithBody)
         coVerify { messageBodyDao.insertOrUpdate(MessageBodyEntityTestData.messageBodyEntity) }
-        coVerify { attachmentDao.insertOrUpdate(MessageAttachmentEntityTestData.invoice) }
+        coVerify {
+            attachmentDao.insertOrUpdate(
+                MessageAttachmentEntityTestData.invoice(
+                    userId1,
+                    messageWithBody.message.messageId
+                )
+            )
+        }
         coVerify { messageBodyFileStorage wasNot called }
     }
 

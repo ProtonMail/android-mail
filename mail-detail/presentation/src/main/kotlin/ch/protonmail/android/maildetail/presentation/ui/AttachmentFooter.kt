@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.tooling.preview.Preview
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.extensions.getTotalAttachmentByteSizeReadable
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
@@ -46,7 +47,7 @@ import me.proton.core.presentation.R.drawable
 @Composable
 fun AttachmentFooter(modifier: Modifier = Modifier, attachments: List<AttachmentUiModel>) {
     Column(modifier = modifier.fillMaxWidth()) {
-        Divider()
+        Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
         Row(
             modifier = modifier
                 .padding(ProtonDimens.SmallSpacing)

@@ -51,13 +51,14 @@ class MessageBodyUiModelMapperTest {
     fun `plain text message body is correctly mapped to a message body ui model with attachments`() {
         // Given
         val messageBody = DecryptedMessageBody(
-            decryptedMessageBody,
-            MimeType.PlainText,
-            listOf(MessageAttachmentTestData.invoice, MessageAttachmentTestData.document)
+            value = decryptedMessageBody,
+            mimeType = MimeType.PlainText,
+            attachments = listOf(MessageAttachmentTestData.invoice, MessageAttachmentTestData.document)
         )
         val expected = MessageBodyUiModel(
-            decryptedMessageBody, MimeTypeUiModel.PlainText,
-            listOf(
+            messageBody = decryptedMessageBody,
+            mimeType = MimeTypeUiModel.PlainText,
+            attachments = listOf(
                 AttachmentUiModel(MessageAttachmentTestData.invoice.size),
                 AttachmentUiModel(MessageAttachmentTestData.document.size)
             )
