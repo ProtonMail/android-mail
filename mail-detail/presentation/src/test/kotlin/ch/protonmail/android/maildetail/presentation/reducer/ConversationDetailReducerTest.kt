@@ -184,9 +184,15 @@ class ConversationDetailReducerTest(
                 MessageId(UUID.randomUUID().toString()),
                 ConversationDetailMessageUiModelSample.AugWeatherForecast
             ) affects Messages,
-            ConversationDetailEvent.ErrorDecryptingMessage affects ErrorBar,
-            ConversationDetailEvent.ErrorRetrievingMessage affects ErrorBar,
-            ConversationDetailEvent.ErrorRetrievingMessageOffline affects ErrorBar
+            ConversationDetailEvent.ErrorExpandingDecryptMessageError(
+                MessageId(UUID.randomUUID().toString())
+            ) affects listOf(ErrorBar, Messages),
+            ConversationDetailEvent.ErrorExpandingRetrieveMessageError(
+                MessageId(UUID.randomUUID().toString())
+            ) affects listOf(ErrorBar, Messages),
+            ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline(
+                MessageId(UUID.randomUUID().toString())
+            ) affects listOf(ErrorBar, Messages)
         )
 
         @JvmStatic

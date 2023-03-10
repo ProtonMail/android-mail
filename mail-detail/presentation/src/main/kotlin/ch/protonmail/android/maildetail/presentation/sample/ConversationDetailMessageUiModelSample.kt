@@ -38,6 +38,8 @@ object ConversationDetailMessageUiModelSample {
         messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
     )
 
+    val AugWeatherForecastExpanding = buildExpanding(AugWeatherForecast)
+
     val EmptyDraft = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.EmptyDraft,
         avatar = AvatarUiModel.DraftIcon
@@ -93,6 +95,14 @@ object ConversationDetailMessageUiModelSample {
         messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel
     )
 
+    val InvoiceWithLabelExpanding = buildExpanding(
+        collapsed = InvoiceWithLabel
+    )
+
+    val InvoiceWithLabelExpandingUnread = buildExpanding(
+        collapsed = InvoiceWithLabel.copy(isUnread = true)
+    )
+
     val InvoiceWithoutLabels = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels
     )
@@ -101,6 +111,7 @@ object ConversationDetailMessageUiModelSample {
         messageWithLabels = MessageWithLabelsSample.AnotherInvoiceWithoutLabels
     )
 
+    @Suppress("LongParameterList")
     private fun buildCollapsed(
         messageWithLabels: MessageWithLabels = MessageWithLabelsSample.build(),
         message: Message = messageWithLabels.message,
@@ -151,5 +162,12 @@ object ConversationDetailMessageUiModelSample {
             labels = persistentListOf()
         ),
         messageBodyUiModel = MessageDetailBodyUiModelSample.build(UUID.randomUUID().toString()),
+    )
+
+    private fun buildExpanding(
+        collapsed: ConversationDetailMessageUiModel.Collapsed
+    ): ConversationDetailMessageUiModel.Expanding = ConversationDetailMessageUiModel.Expanding(
+        messageId = collapsed.messageId,
+        collapsed = collapsed
     )
 }

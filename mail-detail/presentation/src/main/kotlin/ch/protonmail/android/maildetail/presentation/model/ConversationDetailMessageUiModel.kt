@@ -43,6 +43,12 @@ sealed interface ConversationDetailMessageUiModel {
         val labels: List<LabelUiModel>
     ) : ConversationDetailMessageUiModel
 
+    data class Expanding(
+        override val messageId: MessageId,
+        val collapsed: Collapsed,
+        override val isUnread: Boolean = collapsed.isUnread,
+    ) : ConversationDetailMessageUiModel
+
     data class Expanded(
         override val messageId: MessageId,
         override val isUnread: Boolean,

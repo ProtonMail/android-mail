@@ -481,11 +481,14 @@ class ConversationDetailViewModel @Inject constructor(
 
     @FlowPreview
     private fun onDecryptAndExpandMessage(messageId: MessageId) {
+        findCurrentStateOfMessage(messageId)?.let {
+            if (it is ConversationDetailMessageUiModel.Collapsed) onExpandingMessage(it)
+        }
         primaryUserId.mapLatest { userId ->
             val contacts = getContacts(userId).getOrElse { emptyList() }
             val decryptedBody = getDecryptedMessageBody(userId, messageId)
                 .onRight { markMessageAsReadIfRequired(userId, messageId) }
-                .onLeft { emitMessageBodyDecryptError(it) }
+                .onLeft { emitMessageBodyDecryptError(it, messageId) }
                 .getOrNull()
             decryptedBody?.let { body -> Triple(userId, body, contacts) }
         }
@@ -564,18 +567,28 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 
-    private suspend fun emitMessageBodyDecryptError(error: GetDecryptedMessageBodyError) {
+    private suspend fun emitMessageBodyDecryptError(
+        error: GetDecryptedMessageBodyError,
+        messageId: MessageId
+    ) {
         val errorState = when (error) {
             is GetDecryptedMessageBodyError.Data -> if (error.dataError.isOfflineError()) {
-                ConversationDetailEvent.ErrorRetrievingMessageOffline
+                ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline(messageId)
             } else {
-                ConversationDetailEvent.ErrorRetrievingMessage
+                ConversationDetailEvent.ErrorExpandingRetrieveMessageError(messageId)
             }
 
-            is GetDecryptedMessageBodyError.Decryption -> ConversationDetailEvent.ErrorDecryptingMessage
+            is GetDecryptedMessageBodyError.Decryption ->
+                ConversationDetailEvent.ErrorExpandingDecryptMessageError(messageId)
         }
 
         emitNewStateFrom(errorState)
+    }
+
+    private fun onExpandingMessage(collapsed: ConversationDetailMessageUiModel.Collapsed) {
+        viewModelScope.launch {
+            emitNewStateFrom(ConversationDetailEvent.ExpandingMessage(collapsed.messageId, collapsed))
+        }
     }
 
     companion object {

@@ -67,13 +67,25 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Expanded
     ) :
         ConversationDetailEvent, AffectingMessages
+
     data class CollapseDecryptedMessage(
         val messageId: MessageId,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed,
     ) : ConversationDetailEvent, AffectingMessages
-    object ErrorDecryptingMessage : ConversationDetailEvent, AffectingErrorBar
-    object ErrorRetrievingMessage : ConversationDetailEvent, AffectingErrorBar
-    object ErrorRetrievingMessageOffline : ConversationDetailEvent, AffectingErrorBar
+
+    data class ErrorExpandingDecryptMessageError(val messageId: MessageId) :
+        ConversationDetailEvent, AffectingMessages, AffectingErrorBar
+
+    data class ErrorExpandingRetrieveMessageError(val messageId: MessageId) :
+        ConversationDetailEvent, AffectingMessages, AffectingErrorBar
+
+    data class ErrorExpandingRetrievingMessageOffline(val messageId: MessageId) :
+        ConversationDetailEvent, AffectingMessages, AffectingErrorBar
+
+    data class ExpandingMessage(
+        val messageId: MessageId,
+        val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed
+    ) : ConversationDetailEvent, AffectingMessages
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {

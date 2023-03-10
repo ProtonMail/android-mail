@@ -36,6 +36,7 @@ import me.proton.core.label.domain.entity.LabelType
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
+@Suppress("LongParameterList")
 class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val avatarUiModelMapper: DetailAvatarUiModelMapper,
     private val expirationTimeMapper: ExpirationTimeMapper,
@@ -86,6 +87,13 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
                 contacts
             ),
             messageBodyUiModel = messageBodyUiModelMapper.toUiModel(decryptedMessageBody)
+        )
+    }
+
+    fun toUiModel(collapsed: ConversationDetailMessageUiModel.Collapsed): ConversationDetailMessageUiModel.Expanding {
+        return ConversationDetailMessageUiModel.Expanding(
+            collapsed = collapsed,
+            messageId = collapsed.messageId
         )
     }
 

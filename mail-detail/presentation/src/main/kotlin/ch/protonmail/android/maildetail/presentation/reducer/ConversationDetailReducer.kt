@@ -115,15 +115,15 @@ class ConversationDetailReducer @Inject constructor(
                     TextUiModel(R.string.error_relabel_message_failed)
                 )
 
-                is ConversationDetailEvent.ErrorDecryptingMessage -> Effect.of(
+                is ConversationDetailEvent.ErrorExpandingDecryptMessageError -> Effect.of(
                     TextUiModel(R.string.decryption_error)
                 )
 
-                is ConversationDetailEvent.ErrorRetrievingMessage -> Effect.of(
+                is ConversationDetailEvent.ErrorExpandingRetrieveMessageError -> Effect.of(
                     TextUiModel(R.string.detail_error_retrieving_message_body)
                 )
 
-                is ConversationDetailEvent.ErrorRetrievingMessageOffline -> Effect.of(
+                is ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline -> Effect.of(
                     TextUiModel(R.string.error_offline_loading_message)
                 )
             }

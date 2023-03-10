@@ -61,6 +61,11 @@ class ConversationDetailMessagesReducerTest(
             ConversationDetailMessageUiModelSample.SepWeatherForecast
         )
 
+        private val allMessagesFirstExpanding = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanding,
+            ConversationDetailMessageUiModelSample.SepWeatherForecast
+        )
+
         private val fromLoadingState = listOf(
 
             Input(
@@ -185,6 +190,39 @@ class ConversationDetailMessagesReducerTest(
                 operation = ConversationDetailEvent.CollapseDecryptedMessage(
                     messageId = allMessagesFirstExpanded.first().messageId,
                     conversationDetailMessageUiModel = ConversationDetailMessageUiModelSample.AugWeatherForecast
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(messages = allMessages),
+                operation = ConversationDetailEvent.ExpandingMessage(
+                    allMessages.first().messageId,
+                    ConversationDetailMessageUiModelSample.AugWeatherForecast
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(messages = allMessagesFirstExpanding)
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(messages = allMessagesFirstExpanding),
+                operation = ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline(
+                    allMessages.first().messageId
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(messages = allMessagesFirstExpanding),
+                operation = ConversationDetailEvent.ErrorExpandingRetrieveMessageError(
+                    allMessages.first().messageId
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(messages = allMessagesFirstExpanding),
+                operation = ConversationDetailEvent.ErrorExpandingDecryptMessageError(
+                    allMessages.first().messageId
                 ),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             )

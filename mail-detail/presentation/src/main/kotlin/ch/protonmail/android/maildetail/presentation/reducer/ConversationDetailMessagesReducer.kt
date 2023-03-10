@@ -50,11 +50,27 @@ class ConversationDetailMessagesReducer @Inject constructor() {
                     operation.messageId,
                     operation.conversationDetailMessageUiModel
                 )
+
             is ConversationDetailEvent.ExpandDecryptedMessage ->
                 currentState.toNewExpandCollapseState(
                     operation.messageId,
                     operation.conversationDetailMessageUiModel
                 )
+
+            is ConversationDetailEvent.ExpandingMessage ->
+                currentState.toNewExpandingState(
+                    operation.messageId,
+                    operation.conversationDetailMessageUiModel
+                )
+
+            is ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline ->
+                currentState.toCollapsedState(operation.messageId)
+
+            is ConversationDetailEvent.ErrorExpandingRetrieveMessageError ->
+                currentState.toCollapsedState(operation.messageId)
+
+            is ConversationDetailEvent.ErrorExpandingDecryptMessageError ->
+                currentState.toCollapsedState(operation.messageId)
         }
 
     private fun ConversationDetailsMessagesState.toNewStateForNoNetworkError() =
@@ -78,12 +94,50 @@ class ConversationDetailMessagesReducer @Inject constructor() {
     private fun ConversationDetailsMessagesState.toNewExpandCollapseState(
         messageId: MessageId,
         conversationDetailMessageUiModel: ConversationDetailMessageUiModel
-    ) =
+    ): ConversationDetailsMessagesState =
         when (this) {
             is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
                 messages = messages.map {
                     if (it.messageId == messageId) {
                         conversationDetailMessageUiModel
+                    } else {
+                        it
+                    }
+                }
+            )
+
+            else -> this
+        }
+
+    private fun ConversationDetailsMessagesState.toNewExpandingState(
+        messageId: MessageId,
+        conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed
+    ): ConversationDetailsMessagesState =
+        when (this) {
+            is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
+                messages = messages.map {
+                    if (it.messageId == messageId) {
+                        ConversationDetailMessageUiModel.Expanding(
+                            messageId = messageId,
+                            collapsed = conversationDetailMessageUiModel
+                        )
+                    } else {
+                        it
+                    }
+                }
+            )
+
+            else -> this
+        }
+
+    private fun ConversationDetailsMessagesState.toCollapsedState(
+        messageId: MessageId
+    ): ConversationDetailsMessagesState =
+        when (this) {
+            is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
+                messages = messages.map {
+                    if (it.messageId == messageId && it is ConversationDetailMessageUiModel.Expanding) {
+                        it.collapsed
                     } else {
                         it
                     }

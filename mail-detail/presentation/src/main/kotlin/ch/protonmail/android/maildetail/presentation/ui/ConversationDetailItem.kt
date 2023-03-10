@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -41,8 +42,10 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanded
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanding
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.collectLatest
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
@@ -70,6 +73,15 @@ fun ConversationDetailItem(
                 )
             }
 
+            is Expanding -> {
+                ConversationDetailExpandingItem(
+                    uiModel = uiModel,
+                    modifier = Modifier.clickable {
+                        actions.onExpand(uiModel.messageId)
+                    }
+                )
+            }
+
             is Expanded -> {
                 ConversationDetailExpandedItem(
                     uiModel = uiModel,
@@ -80,6 +92,21 @@ fun ConversationDetailItem(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun ConversationDetailExpandingItem(
+    uiModel: Expanding,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        ConversationDetailCollapsedMessageHeader(
+            uiModel = uiModel.collapsed
+        )
+        ProtonCenteredProgress(modifier = Modifier.padding(MailDimens.ProgressDefaultSize))
     }
 }
 

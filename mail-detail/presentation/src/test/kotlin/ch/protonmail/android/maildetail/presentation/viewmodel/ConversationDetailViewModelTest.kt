@@ -1236,17 +1236,20 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
 
             // then
-            val newState = awaitItem()
-            (newState.messagesState as ConversationDetailsMessagesState.Data).messages.forEach {
-                assertIs<ConversationDetailMessageUiModel.Collapsed>(it)
-            }
-            assertEquals(newState.error.consume(), TextUiModel(string.decryption_error))
+            skipItems(1) // Expanding
+            val errorState = awaitItem()
+            assertEquals(errorState.error.consume(), TextUiModel(string.decryption_error))
+
+            val collapsedMessage = (errorState.messagesState as ConversationDetailsMessagesState.Data)
+                .messages
+                .first { it.messageId == messageIds.first() }
+            assertIs<ConversationDetailMessageUiModel.Collapsed>(collapsedMessage)
             cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `should emit retrieve message error when the message can not be loaded and messages stay collapsed`() =
+    fun `should emit retrieve message error when the message can not be loaded and the message stays collapsed`() =
         runTest {
             // given
             val (messageIds, _) = setupCollapsedToExpandMessagesState()
@@ -1265,11 +1268,14 @@ class ConversationDetailViewModelTest {
                 advanceUntilIdle()
 
                 // then
-                val newState = awaitItem()
-                (newState.messagesState as ConversationDetailsMessagesState.Data).messages.forEach {
-                    assertIs<ConversationDetailMessageUiModel.Collapsed>(it)
-                }
-                assertEquals(newState.error.consume(), TextUiModel(string.detail_error_retrieving_message_body))
+                skipItems(1) // Expanding
+                val errorState = awaitItem()
+                assertEquals(errorState.error.consume(), TextUiModel(string.detail_error_retrieving_message_body))
+
+                val collapsedMessage = (errorState.messagesState as ConversationDetailsMessagesState.Data)
+                    .messages
+                    .first { it.messageId == messageIds.first() }
+                assertIs<ConversationDetailMessageUiModel.Collapsed>(collapsedMessage)
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -1294,11 +1300,15 @@ class ConversationDetailViewModelTest {
                 advanceUntilIdle()
 
                 // then
-                val newState = awaitItem()
-                (newState.messagesState as ConversationDetailsMessagesState.Data).messages.forEach {
-                    assertIs<ConversationDetailMessageUiModel.Collapsed>(it)
-                }
-                assertEquals(newState.error.consume(), TextUiModel(string.error_offline_loading_message))
+                skipItems(1) // Expanding
+                val errorState = awaitItem()
+                assertEquals(errorState.error.consume(), TextUiModel(string.error_offline_loading_message))
+
+                val collapsedMessage = (errorState.messagesState as ConversationDetailsMessagesState.Data)
+                    .messages
+                    .first { it.messageId == messageIds.first() }
+                assertIs<ConversationDetailMessageUiModel.Collapsed>(collapsedMessage)
+
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -1320,6 +1330,27 @@ class ConversationDetailViewModelTest {
         }
     }
 
+    @Test
+    fun `should emit expanding state when expanding a message`() = runTest {
+        // given
+        val (messageIds, _) = setupCollapsedToExpandMessagesState()
+
+        viewModel.state.test {
+            conversationMessagesEmitted()
+            // when
+            viewModel.submit(ConversationDetailViewAction.ExpandMessage(messageIds.first()))
+            advanceUntilIdle()
+
+            // then
+            val newState = awaitItem()
+            val expandingMessage = (newState.messagesState as ConversationDetailsMessagesState.Data)
+                .messages
+                .first { it.messageId == messageIds.first() }
+            assertIs<ConversationDetailMessageUiModel.Expanding>(expandingMessage)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     @Suppress("LongMethod")
     private fun setupCollapsedToExpandMessagesState(withUnreadMessage: Boolean = false):
         Pair<List<MessageId>, ConversationDetailMessageUiModel> {
@@ -1334,6 +1365,14 @@ class ConversationDetailViewModelTest {
         )
         val firstExpanded = nonEmptyListOf(
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded,
+            ConversationDetailMessageUiModelSample.AugWeatherForecast
+        )
+        val firstExpanding = nonEmptyListOf(
+            if (withUnreadMessage) {
+                ConversationDetailMessageUiModelSample.InvoiceWithLabelExpandingUnread
+            } else {
+                ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanding
+            },
             ConversationDetailMessageUiModelSample.AugWeatherForecast
         )
         every {
@@ -1363,7 +1402,7 @@ class ConversationDetailViewModelTest {
         every {
             reducer.newStateFrom(
                 currentState = any(),
-                operation = ofType<ConversationDetailEvent.ErrorDecryptingMessage>()
+                operation = ofType<ConversationDetailEvent.ErrorExpandingDecryptMessageError>()
             )
         } returns ConversationDetailState.Loading.copy(
             messagesState = ConversationDetailsMessagesState.Data(allCollapsed),
@@ -1372,7 +1411,7 @@ class ConversationDetailViewModelTest {
         every {
             reducer.newStateFrom(
                 currentState = any(),
-                operation = ofType<ConversationDetailEvent.ErrorRetrievingMessage>()
+                operation = ofType<ConversationDetailEvent.ErrorExpandingRetrieveMessageError>()
             )
         } returns ConversationDetailState.Loading.copy(
             messagesState = ConversationDetailsMessagesState.Data(allCollapsed),
@@ -1381,7 +1420,7 @@ class ConversationDetailViewModelTest {
         every {
             reducer.newStateFrom(
                 currentState = any(),
-                operation = ofType<ConversationDetailEvent.ErrorRetrievingMessageOffline>()
+                operation = ofType<ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline>()
             )
         } returns ConversationDetailState.Loading.copy(
             messagesState = ConversationDetailsMessagesState.Data(allCollapsed),
@@ -1395,12 +1434,22 @@ class ConversationDetailViewModelTest {
         } returns ConversationDetailState.Loading.copy(
             scrollToMessage = Effect.of(MessageId(allCollapsed.first().messageId.id))
         )
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailEvent.ExpandingMessage>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(firstExpanding)
+        )
 
         coEvery { observeMessageWithLabels(userId, any()) } returns flowOf(invoiceMessage.right())
         every { conversationMessageMapper.toUiModel(any(), any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
         every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+        every { conversationMessageMapper.toUiModel(any()) } returns
+            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanding
         return Pair(allCollapsed.map { it.messageId }, ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded)
     }
 
