@@ -41,7 +41,7 @@ platform :android do
 
   desc "Bump the version code"
   lane :bumpAppVersion do
-    sh("python3 ../buildSrc/bump_version.py")
+    sh("python3 ../scripts/bump_version.py")
   end
 
   desc "Runs Unit Tests"
@@ -51,22 +51,22 @@ platform :android do
 
   desc "Runs Instrumented Tests on Firebase"
   lane :instrumentedTest do
-    sh("../buildSrc/run_firebase_instrumentation_tests.sh")
+    sh("../scripts/run_firebase_instrumentation_tests.sh")
   end
 
   desc "Runs Smoke Tests Suite on Firebase Test lab"
   lane :smokeTest do
-    sh("../buildSrc/run_firebase_ui_tests.sh")
+    sh("../scripts/run_firebase_ui_tests.sh")
   end
 
   desc "Runs extended Smoke Tests Suite on Firebase Test lab"
   lane :smokeTestExtended do
-    sh("../buildSrc/run_firebase_ui_tests.sh extended_test")
+    sh("../scripts/run_firebase_ui_tests.sh extended_test")
   end
 
   desc "Runs all UI tests on a wide set of devices on Firebase Test lab"
   lane :fullRegressionTest do
-    sh("../buildSrc/run_firebase_ui_tests.sh full_test")
+    sh("../scripts/run_firebase_ui_tests.sh full_test")
   end
 
   desc "Generate test coverage report based on the last test run"
@@ -112,7 +112,7 @@ platform :android do
 
   desc "Tag commit with release version name and code"
   lane :tagRelease do
-    sh("python3 ../buildSrc/tag_release.py")
+    sh("python3 ../scripts/tag_release.py")
   end
 
   desc "Submit a new Closed-Testing Build in Alpha-v6 track to Play Store"

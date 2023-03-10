@@ -25,7 +25,7 @@ cache: &cache
     - small
   before_script:
     - bundle install
-    - ./buildSrc/setup_firebase_gcloud.sh
+    - ./scripts/setup_firebase_gcloud.sh
   cache:
     *cache
 
@@ -38,7 +38,7 @@ cache: &cache
   before_script:
     - bundle install
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
-    - ./buildSrc/generate_fad_release_notes.sh /tmp/release_notes.txt
+    - ./scripts/generate_fad_release_notes.sh /tmp/release_notes.txt
   rules:
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
