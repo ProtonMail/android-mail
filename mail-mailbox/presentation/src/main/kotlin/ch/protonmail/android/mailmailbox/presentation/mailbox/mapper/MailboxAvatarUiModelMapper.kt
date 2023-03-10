@@ -18,20 +18,20 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
-import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import javax.inject.Inject
 
 class MailboxAvatarUiModelMapper @Inject constructor() {
 
     operator fun invoke(mailboxItem: MailboxItem, participantsResolvedNames: List<String>): AvatarUiModel {
-
         return if (mailboxItem.isDraftInMessageMode()) {
             AvatarUiModel.DraftIcon
         } else {
-            AvatarUiModel.ParticipantInitial(participantsResolvedNames[0].getInitial())
+            val firstResolvedName = participantsResolvedNames.firstOrNull() ?: UnknownParticipant
+            AvatarUiModel.ParticipantInitial(firstResolvedName.getInitial())
         }
     }
 
@@ -46,5 +46,10 @@ class MailboxAvatarUiModelMapper @Inject constructor() {
             stringBuilder.append(this[1])
         }
         return stringBuilder.toString()
+    }
+
+    companion object {
+
+        private const val UnknownParticipant = "?"
     }
 }

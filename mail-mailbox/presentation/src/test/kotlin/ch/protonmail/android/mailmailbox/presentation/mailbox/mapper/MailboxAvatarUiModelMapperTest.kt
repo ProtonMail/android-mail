@@ -92,4 +92,18 @@ class MailboxAvatarUiModelMapperTest {
         // Then
         assertEquals(expectedResult, result)
     }
+
+    @Test
+    fun `avatar should show question mark if the given list of participants is empty`() {
+        // Given
+        val mailboxItem = buildMailboxItem()
+        val participantsResolvedNames = emptyList<String>()
+        val expectedResult = AvatarUiModel.ParticipantInitial(value = "?")
+
+        // When
+        val result = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames)
+
+        // Then
+        assertEquals(expectedResult, result)
+    }
 }
