@@ -553,7 +553,7 @@ class ConversationRepositoryImplTest {
             MessageSample.AugWeatherForecast.right()
 
         // when
-        val result = conversationRepository.move(userId, conversationId, null, SystemLabelId.Trash.labelId)
+        val result = conversationRepository.move(userId, conversationId, emptyList(), SystemLabelId.Trash.labelId)
 
         // then
         assertEquals(trashedConversation.right(), result)
@@ -590,7 +590,7 @@ class ConversationRepositoryImplTest {
         }
 
         // when
-        conversationRepository.move(userId, conversationId, null, SystemLabelId.Trash.labelId)
+        conversationRepository.move(userId, conversationId, emptyList(), SystemLabelId.Trash.labelId)
         messageLocalDataSource.observeMessages(userId, conversationId).test {
 
             // then

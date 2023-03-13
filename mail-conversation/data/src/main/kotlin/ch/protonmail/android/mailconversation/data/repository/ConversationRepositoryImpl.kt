@@ -172,7 +172,7 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun move(
         userId: UserId,
         conversationId: ConversationId,
-        fromLabelIds: List<LabelId>?,
+        fromLabelIds: List<LabelId>,
         toLabelId: LabelId
     ): Either<DataError, Conversation> {
         if (toLabelId.isTrash() || toLabelId.isSpam()) {
@@ -182,13 +182,13 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationLocalDataSource.observeConversation(userId, conversationId).first()
             ?: return DataError.Local.NoDataCached.left()
 
-        if (fromLabelIds != null) {
+        if (fromLabelIds.isNotEmpty()) {
             conversationLocalDataSource.removeLabels(userId, conversationId, fromLabelIds)
         }
 
         messageLocalDataSource.observeMessages(userId, conversationId).first()
             .map { message ->
-                messageLocalDataSource.removeLabels(userId, message.messageId, fromLabelIds ?: emptyList())
+                messageLocalDataSource.removeLabels(userId, message.messageId, fromLabelIds)
                     .onLeft { Timber.d("Failed to remove label") }
             }
 
