@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Impossibile rietichettare la conversazione. Per favore riprova</string>
   <string name="please_go_back_online_to_load_messages">Sei scollegato da internet. Collegati per caricare i messaggi</string>
   <string name="decryption_error">Decriptazione del messaggio non riuscita.</string>
+  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
 </resources>

@@ -23,7 +23,7 @@
   <string name="expiration_minutes_arg">%d мин.</string>
   <string name="retry">Повторить</string>
   <string name="toolbar_back_content_description">Обратно к предыдущему экрану</string>
-  <string name="x_error_not_logged_in">Not signed in</string>
+  <string name="x_error_not_logged_in">Вход не выполнен</string>
   <string name="action_reply_content_description">Ответить</string>
   <string name="action_reply_all_content_description">Ответить всем</string>
   <string name="action_forward_content_description">Переслать</string>

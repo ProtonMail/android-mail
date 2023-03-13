@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">App-språk</string>
   <string name="mail_settings_combined_contacts">Kombinerade kontakter</string>
   <string name="mail_settings_swipe_actions">Svepåtgärder</string>
-  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
+  <string name="mail_settings_combined_contacts_hint">Aktivera denna funktion för att automatiskt slutföra e-postadresser med hjälp av kontakter från alla dina inloggade konton.</string>
   <string name="mail_settings_alternative_routing_hint">Om Proton-webbplatser blockeras tillåter denna inställning appen att prova alternativ nätverksrouting för att nå Proton, vilket kan vara användbart för att kringgå brandväggar eller nätverksproblem: Vi rekommenderar att du håller denna inställning på för större tillförlitlighet.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Systemstandard</string>

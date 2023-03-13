@@ -56,4 +56,5 @@
   <string name="error_relabel_conversation_failed">Nu s-a reușit reetichetarea mesajului. Reîncercați.</string>
   <string name="please_go_back_online_to_load_messages">Nu aveți conexiune. Reconectați-vă pentru a se încărca mesajele.</string>
   <string name="decryption_error">Decriptarea mesajului a eșuat.</string>
+  <string name="detail_error_retrieving_message_body">Nu s-a putut prelua mesajul.</string>
 </resources>

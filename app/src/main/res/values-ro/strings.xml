@@ -22,4 +22,5 @@
   <string name="description_remove_account">Vă veți deconecta și veți elimina toate informațiile asociate cu acest cont.</string>
   <string name="user_select_other_account_content_description">Selectare alt cont</string>
   <string name="you_are_offline">Sunteți deconectat</string>
+  <string name="feature_coming_soon">Funcție disponibilă în curând...</string>
 </resources>

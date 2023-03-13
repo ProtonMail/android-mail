@@ -54,4 +54,5 @@
   <string name="error_relabel_conversation_failed">Percakapan gagal dilabeli ulang. Silakan coba lagi</string>
   <string name="please_go_back_online_to_load_messages">Anda sedang offline. Silakan sambungkan diri Anda ke internet untuk memuat pesan</string>
   <string name="decryption_error">Dekripsi pesan gagal.</string>
+  <string name="detail_error_retrieving_message_body">Pesan tidak dapat diambil</string>
 </resources>

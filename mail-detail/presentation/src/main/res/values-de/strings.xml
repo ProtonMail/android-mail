@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Unterhaltung konnte nicht neu kategorisiert werden. Bitte versuche es erneut.</string>
   <string name="please_go_back_online_to_load_messages">Du bist offline. Bitte gehe wieder online, um Nachrichten zu laden.</string>
   <string name="decryption_error">Entschlüsseln der Nachricht fehlgeschlagen.</string>
+  <string name="detail_error_retrieving_message_body">Fehler beim Abrufen der Nachricht</string>
 </resources>

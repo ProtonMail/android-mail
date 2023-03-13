@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Tella-d tuccḍa deg usnas n tebzimt tamaynut i udiwenni. Ttxil ɛreḍ tikkel-nniḍen</string>
   <string name="please_go_back_online_to_load_messages">Ur teqqineḍ ara. Ttxil qqen akken ad d-tessaliḍ iznan</string>
   <string name="decryption_error">Awgelhen n yinzan yecceḍ.</string>
+  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
 </resources>

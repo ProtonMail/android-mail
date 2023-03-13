@@ -23,7 +23,7 @@
   <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Reîncercare</string>
   <string name="toolbar_back_content_description">Înapoi la ecranul anterior</string>
-  <string name="x_error_not_logged_in">Not signed in</string>
+  <string name="x_error_not_logged_in">Neconectat</string>
   <string name="action_reply_content_description">Răspuns</string>
   <string name="action_reply_all_content_description">Răspuns tuturor</string>
   <string name="action_forward_content_description">Redirecționare</string>

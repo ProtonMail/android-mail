@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Mistókst að endurmerkja samtal. Vinsamlegast reyndu aftur</string>
   <string name="please_go_back_online_to_load_messages">Þú ert ekki tengdur. Vinsamlegast farðu aftur á netið til að hlaða inn skilaboðum</string>
   <string name="decryption_error">Afkóðun skilaboða mistókst.</string>
+  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
 </resources>

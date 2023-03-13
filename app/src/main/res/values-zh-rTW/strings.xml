@@ -22,4 +22,5 @@
   <string name="description_remove_account">您將登出，與此帳號相關的所有資訊都會被移除。</string>
   <string name="user_select_other_account_content_description">選取其它帳號</string>
   <string name="you_are_offline">您現正離線</string>
+  <string name="feature_coming_soon">功能即將推出……</string>
 </resources>

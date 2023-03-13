@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Kon het gesprek niet opnieuw labelen. Probeer opnieuw.</string>
   <string name="please_go_back_online_to_load_messages">U bent offline. Ga terug online om berichten te laden</string>
   <string name="decryption_error">Decoderen van bericht mislukt.</string>
+  <string name="detail_error_retrieving_message_body">Kan bericht niet ophalen</string>
 </resources>

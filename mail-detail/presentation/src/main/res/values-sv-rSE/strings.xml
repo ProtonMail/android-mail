@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Misslyckades att märka om konversation. Försök igen</string>
   <string name="please_go_back_online_to_load_messages">Du är offline. Gå tillbaka online för att ladda meddelanden</string>
   <string name="decryption_error">Dekryptering av meddelande misslyckades.</string>
+  <string name="detail_error_retrieving_message_body">Kan inte hämta meddelande</string>
 </resources>

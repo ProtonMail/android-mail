@@ -22,4 +22,5 @@
   <string name="description_remove_account">Ви вийдете, а всі пов\'язані з цим обліковим записом дані буде вилучено.</string>
   <string name="user_select_other_account_content_description">Вибрати інший обліковий запис</string>
   <string name="you_are_offline">Ви не в мережі</string>
+  <string name="feature_coming_soon">Функція скоро з\'явиться...</string>
 </resources>

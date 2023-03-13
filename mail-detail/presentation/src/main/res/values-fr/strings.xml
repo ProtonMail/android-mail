@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Le nouveau label n\'a pas pu être appliqué à la conversation. Réessayez.</string>
   <string name="please_go_back_online_to_load_messages">Vous êtes hors ligne. Veuillez vous reconnecter pour charger les messages.</string>
   <string name="decryption_error">Le message n\'a pas pu être déchiffré.</string>
+  <string name="detail_error_retrieving_message_body">Impossible de récupérer les messages</string>
 </resources>

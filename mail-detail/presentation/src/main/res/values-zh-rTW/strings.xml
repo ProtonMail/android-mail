@@ -54,4 +54,5 @@
   <string name="error_relabel_conversation_failed">重新為交談加上標籤失敗。請重試</string>
   <string name="please_go_back_online_to_load_messages">您已離線。請重新連線以載入訊息。</string>
   <string name="decryption_error">訊息解密失敗。</string>
+  <string name="detail_error_retrieving_message_body">無法擷取訊息</string>
 </resources>

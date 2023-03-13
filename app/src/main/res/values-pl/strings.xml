@@ -22,4 +22,5 @@
   <string name="description_remove_account">Zostaniesz wylogowany i wszystkie dane powiązane z tym kontem zostaną usunięte.</string>
   <string name="user_select_other_account_content_description">Wybierz inne konto</string>
   <string name="you_are_offline">Jesteś w trybie offline</string>
+  <string name="feature_coming_soon">Funkcja dostępna wkrótce...</string>
 </resources>

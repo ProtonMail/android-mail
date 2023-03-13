@@ -54,4 +54,5 @@
   <string name="error_relabel_conversation_failed">重新标记对话失败，请重试</string>
   <string name="please_go_back_online_to_load_messages">您已离线。请连接至网络以加载邮件</string>
   <string name="decryption_error">消息解密失败。</string>
+  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
 </resources>

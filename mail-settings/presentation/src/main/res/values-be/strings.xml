@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Мова праграмы</string>
   <string name="mail_settings_combined_contacts">Камбінаваныя кантакты</string>
   <string name="mail_settings_swipe_actions">Дзеянні правядзення</string>
-  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
+  <string name="mail_settings_combined_contacts_hint">Уключыце гэту функцыю для аўтаматычнага запаўнення адрасоў электроннай пошты выкарыстоўваючы кантакты з усіх уліковых запісаў у якія вы ўвайшлі.</string>
   <string name="mail_settings_alternative_routing_hint">У выпадку блакіроўкі сайтаў Proton гэта налада дазваляе праграме скарыстацца альтэрнатыўнай сеткавай маршрутызацыяй, каб атрымаць доступ да Proton, што можа быць карысным для абыходу міжсеткавых экранаў або праблем з сеткай. Для большай надзейнасці мы рэкамендуем пакінуць гэту наладу актыўнай.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Адпаведна сістэме</string>

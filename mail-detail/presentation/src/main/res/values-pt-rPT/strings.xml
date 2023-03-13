@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Falha ao etiquetar de novo a conversa. Tente novamente.</string>
   <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
   <string name="decryption_error">Falha ao desencriptar mensagem.</string>
+  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
 </resources>

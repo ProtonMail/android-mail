@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Samtalen kunne ikke ommærkes. Prøv venligst igen</string>
   <string name="please_go_back_online_to_load_messages">Du er offline. Sørg for at være online igen for at indlæse beskeder</string>
   <string name="decryption_error">Dekryptering af besked mislykkedes.</string>
+  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
 </resources>

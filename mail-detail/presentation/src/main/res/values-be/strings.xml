@@ -57,4 +57,5 @@
   <string name="error_relabel_conversation_failed">Не ўдалося змяніць метку размовы. Паўтарыце спробу</string>
   <string name="please_go_back_online_to_load_messages">Вы па-за сеткай. Для загрузкі паведамленняў неабходна злучэнне з інтэрнэтам</string>
   <string name="decryption_error">Не ўдалося расшыфраваць паведамленне.</string>
+  <string name="detail_error_retrieving_message_body">Немагчыма атрымаць паведамленне</string>
 </resources>

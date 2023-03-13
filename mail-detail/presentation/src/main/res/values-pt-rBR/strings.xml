@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Falha ao rotular novamente a conversa. Por favor tente novamente</string>
   <string name="please_go_back_online_to_load_messages">Você está desconectado. Volte a se conectar para carregar as mensagens</string>
   <string name="decryption_error">A descriptografia da mensagem falhou.</string>
+  <string name="detail_error_retrieving_message_body">Incapaz de recuperar mensagem</string>
 </resources>

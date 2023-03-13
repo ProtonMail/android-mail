@@ -23,7 +23,7 @@
   <string name="expiration_minutes_arg">%da</string>
   <string name="retry">Yeniden dene</string>
   <string name="toolbar_back_content_description">Önceki ekrana dön</string>
-  <string name="x_error_not_logged_in">Not signed in</string>
+  <string name="x_error_not_logged_in">Oturum açılmamış</string>
   <string name="action_reply_content_description">Yanıtla</string>
   <string name="action_reply_all_content_description">Tümünü yanıtla</string>
   <string name="action_forward_content_description">İlet</string>

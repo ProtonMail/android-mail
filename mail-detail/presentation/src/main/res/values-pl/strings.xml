@@ -57,4 +57,5 @@
   <string name="error_relabel_conversation_failed">Nie udało się zmienić etykiet wątku. Spróbuj ponownie</string>
   <string name="please_go_back_online_to_load_messages">Jesteś w trybie offline. Połącz się z Internetem, aby załadować wiadomość</string>
   <string name="decryption_error">Odszyfrowanie wiadomości nie powiodło się.</string>
+  <string name="detail_error_retrieving_message_body">Nie można pobrać wiadomości</string>
 </resources>

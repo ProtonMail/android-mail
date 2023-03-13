@@ -22,4 +22,5 @@
   <string name="description_remove_account">La sesión se cerrará y toda la información asociada a esta cuenta será eliminada.</string>
   <string name="user_select_other_account_content_description">Selecciona otra cuenta</string>
   <string name="you_are_offline">No estás conectado.</string>
+  <string name="feature_coming_soon">Pronto tendrás esta función...</string>
 </resources>

@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">應用程式語言</string>
   <string name="mail_settings_combined_contacts">合併聯絡人</string>
   <string name="mail_settings_swipe_actions">滑動動作</string>
-  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
+  <string name="mail_settings_combined_contacts_hint">啟用此功能以使用您所有已登入帳號中的聯絡人來自動完成電子郵件地址。</string>
   <string name="mail_settings_alternative_routing_hint">萬一 Proton 網站遭到封鎖，此設定允許此應用程式嘗試以替代網路路由連接 Proton，這或有助繞過防火牆或網路問題。建議保持此設定開啟，有備無患。</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">系統預設</string>

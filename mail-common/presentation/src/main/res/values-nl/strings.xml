@@ -23,7 +23,7 @@
   <string name="expiration_minutes_arg">%d min</string>
   <string name="retry">Opnieuw proberen</string>
   <string name="toolbar_back_content_description">Terug naar vorig scherm</string>
-  <string name="x_error_not_logged_in">Not signed in</string>
+  <string name="x_error_not_logged_in">Niet ingelogd</string>
   <string name="action_reply_content_description">Beantwoorden</string>
   <string name="action_reply_all_content_description">Allen beantwoorden</string>
   <string name="action_forward_content_description">Doorsturen</string>

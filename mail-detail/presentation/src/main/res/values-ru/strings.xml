@@ -57,4 +57,5 @@
   <string name="error_relabel_conversation_failed">Не удалось изменить метки связанных сообщений. Пожалуйста, попробуйте еще раз</string>
   <string name="please_go_back_online_to_load_messages">Отсутствует интернет-соединение. Пожалуйста, подключитесь к сети для загрузки сообщений</string>
   <string name="decryption_error">Дешифрование сообщения не удалось.</string>
+  <string name="detail_error_retrieving_message_body">Не удалось получить сообщение</string>
 </resources>

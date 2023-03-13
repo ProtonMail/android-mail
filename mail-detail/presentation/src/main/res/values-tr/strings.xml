@@ -36,14 +36,14 @@
   <string name="error_unstar_operation_failed">Yıldız kaldırılamadı. Lütfen yeniden deneyin.</string>
   <string name="error_move_to_trash_failed">Çöp kutusuna taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="message_moved_to_trash">İleti çöpe atıldı</string>
-  <string name="message_moved_to_archive">Ileti arşive taşındı</string>
+  <string name="message_moved_to_archive">İleti arşive taşındı</string>
   <string name="message_moved_to_selected_destination">İleti %1$s içine taşındı</string>
   <string name="error_move_message_failed">İleti taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="conversation_moved_to_trash">Yazışma çöpe atıldı</string>
   <string name="conversation_moved_to_selected_destination">Yazışma %1$s klasörüne taşındı</string>
   <string name="conversation_moved_to_archive">Yazışma arşiv klasörüne taşındı</string>
   <string name="error_move_conversation_failed">Yazışma taşınamadı. Lütfen yeniden deneyin.</string>
-  <string name="error_loading_message">Bir şeyler ters gitti. Lütfen yeniden deneyin.</string>
+  <string name="error_loading_message">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
   <string name="error_offline_loading_message">Çevrimdışısınız. Bu iletinin içeriğini görüntüleyebilmek için internete bağlı olmalısınız.</string>
   <string name="reload">Yeniden yükle</string>
   <!-- Bottom Sheet -->
@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">Yazışma yeniden etiketlenemedi. Lütfen yeniden deneyin</string>
   <string name="please_go_back_online_to_load_messages">Çevrimdışısınız. İletilerin yüklenmesi için lütfen çevrimiçi olun</string>
   <string name="decryption_error">İletinin kodu çözülemedi.</string>
+  <string name="detail_error_retrieving_message_body">İletiler alınamadı</string>
 </resources>

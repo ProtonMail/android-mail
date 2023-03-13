@@ -57,4 +57,5 @@
   <string name="error_relabel_conversation_failed">Nepodařilo se přeznačit konverzaci. Zkuste to prosím znovu</string>
   <string name="please_go_back_online_to_load_messages">Jste odpojeni (offline). Pro načtení zpráv se prosím znovu připojte</string>
   <string name="decryption_error">Dešifrování zprávy se nezdařilo.</string>
+  <string name="detail_error_retrieving_message_body">Nelze načíst zprávu</string>
 </resources>

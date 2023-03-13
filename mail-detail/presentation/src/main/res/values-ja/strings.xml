@@ -54,4 +54,5 @@
   <string name="error_relabel_conversation_failed">会話のラベル付けに失敗しました。再度お試しください。</string>
   <string name="please_go_back_online_to_load_messages">現在オフラインです。メッセージを読むには、オンラインに移動してください。</string>
   <string name="decryption_error">メッセージの復号に失敗しました。</string>
+  <string name="detail_error_retrieving_message_body">メッセージの取得ができません。</string>
 </resources>

@@ -55,4 +55,5 @@
   <string name="error_relabel_conversation_failed">No s\'ha pogut tornar a etiquetar la conversa. Si us plau, torna-ho a provar</string>
   <string name="please_go_back_online_to_load_messages">Està fora de línia. Torneu a connectar-vos per carregar missatges</string>
   <string name="decryption_error">No s\'ha pogut desxifrar el missatge.</string>
+  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
 </resources>

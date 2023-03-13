@@ -23,7 +23,7 @@
   <string name="expiration_minutes_arg">%dm</string>
   <string name="retry">Wiederholen</string>
   <string name="toolbar_back_content_description">Zurück zum vorherigen Bildschirm</string>
-  <string name="x_error_not_logged_in">Not signed in</string>
+  <string name="x_error_not_logged_in">Nicht angemeldet</string>
   <string name="action_reply_content_description">Antworten</string>
   <string name="action_reply_all_content_description">Allen antworten</string>
   <string name="action_forward_content_description">Weiterleiten</string>

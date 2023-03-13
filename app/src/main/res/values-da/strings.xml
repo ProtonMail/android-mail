@@ -22,4 +22,5 @@
   <string name="description_remove_account">Du logger ud og fjerner alle oplysninger, der er knyttet til denne konto.</string>
   <string name="user_select_other_account_content_description">Vælg en anden konto</string>
   <string name="you_are_offline">Du er offline</string>
+  <string name="feature_coming_soon">Funktion kommer snart...</string>
 </resources>
