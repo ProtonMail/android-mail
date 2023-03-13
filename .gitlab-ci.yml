@@ -201,19 +201,29 @@ deploy_to_firebase_dev:
   script:
     - bundle exec fastlane deployToFirebaseDevGroup
   rules:
+    - !reference [ .firebase_deploy_job, rules ]
     - if: $NIGHTLY_ALPHA_BUILD == "true"
       when: never
-    - !reference [ .firebase_deploy_job, rules ]
+    - if: $INTERNAL_ALPHA_RELEASE == "true"
+      when: never
     - if: $CI_COMMIT_BRANCH == "master"
+
+deploy_to_firebase_nightly:
+  extends: .firebase_deploy_job
+  script:
+    - bundle exec fastlane deployToFirebaseNightlyGroup
+  rules:
+    - !reference [ .firebase_deploy_job, rules ]
+    - if: $NIGHTLY_ALPHA_BUILD == "true"
 
 deploy_to_firebase_alpha:
   extends: .firebase_deploy_job
   script:
-    - bundle exec fastlane deployToFirebaseAlphaGroup
+    - bundle exec fastlane deployToFirebaseInternalAlphaGroup
     - bundle exec fastlane tagRelease
   rules:
     - !reference [ .firebase_deploy_job, rules ]
-    - if: $NIGHTLY_ALPHA_BUILD == "true"
+    - if: $INTERNAL_ALPHA_RELEASE == "true"
 
 include:
   - project: 'translations/generator'
