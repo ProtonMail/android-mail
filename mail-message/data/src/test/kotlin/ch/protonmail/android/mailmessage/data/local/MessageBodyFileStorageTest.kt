@@ -18,13 +18,11 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
-import java.io.File
-import android.content.Context
-import ch.protonmail.android.mailcommon.data.file.FileHelper
-import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailcommon.data.file.InternalFileStorage
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
@@ -36,40 +34,45 @@ import kotlin.test.assertNull
 
 internal class MessageBodyFileStorageTest {
 
-    private val contextMock = mockk<Context> {
-        every { filesDir } returns File(InternalStoragePath)
-    }
-    private val fileHelperMock = mockk<FileHelper>()
-    private val messageBodyFileStorage = MessageBodyFileStorage(contextMock, fileHelperMock)
+    private val internalFileStorageMock = mockk<InternalFileStorage>()
+    private val messageBodyFileStorage = MessageBodyFileStorage(internalFileStorageMock)
 
     @Test
-    fun `should read message body using sanitised folder and filename`() = runTest {
+    fun `should read message body from the internal file storage`() = runTest {
         // Given
-        val filename = FileHelper.Filename(SanitisedMessageIdString)
-        val messageBodyFolder = FileHelper.Folder("$MessageBodyFolderBase$SanitisedUserIdString/")
-        coEvery { fileHelperMock.readFromFile(messageBodyFolder, filename) } returns MessageBody
+        coEvery {
+            internalFileStorageMock.readFromFile(
+                UserIdSample.Primary,
+                InternalFileStorage.Folder.MESSAGE_BODIES,
+                InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id)
+            )
+        } returns MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
 
         // When
         val actualMessageBody = messageBodyFileStorage.readMessageBody(
-            UserId(UserIdString),
-            MessageId(MessageIdString)
+            UserId(UserIdSample.Primary.id),
+            MessageIdSample.Invoice
         )
 
         // Then
-        assertEquals(MessageBody, actualMessageBody)
+        assertEquals(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY, actualMessageBody)
     }
 
     @Test
-    fun `should return null when reading body using sanitised folder and filename fails`() = runTest {
+    fun `should return null when reading body from internal storage fails`() = runTest {
         // Given
-        val filename = FileHelper.Filename(SanitisedMessageIdString)
-        val messageBodyFolder = FileHelper.Folder("$MessageBodyFolderBase$SanitisedUserIdString/")
-        coEvery { fileHelperMock.readFromFile(messageBodyFolder, filename) } returns null
+        coEvery {
+            internalFileStorageMock.readFromFile(
+                userId = UserIdSample.Primary,
+                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id)
+            )
+        } returns null
 
         // When
         val actualMessageBody = messageBodyFileStorage.readMessageBody(
-            UserId(UserIdString),
-            MessageId(MessageIdString)
+            UserIdSample.Primary,
+            MessageIdSample.Invoice
         )
 
         // Then
@@ -77,97 +80,116 @@ internal class MessageBodyFileStorageTest {
     }
 
     @Test
-    fun `should save message body using sanitised folder and filename and return true on success`() = runTest {
+    fun `should save message body in internal storage and return true on success`() = runTest {
         // Given
-        val filename = FileHelper.Filename(SanitisedMessageIdString)
-        val messageBodyFolder = FileHelper.Folder("$MessageBodyFolderBase$SanitisedUserIdString/")
-        val savedBody = MessageBodyTestData.buildMessageBody(messageId = MessageId(MessageIdString), body = MessageBody)
-        coEvery { fileHelperMock.writeToFile(messageBodyFolder, filename, MessageBody) } returns true
+        val savedBody = MessageBodyTestData.buildMessageBody(
+            messageId = MessageIdSample.Invoice,
+            body = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
+        )
+        coEvery {
+            internalFileStorageMock.writeToFile(
+                userId = UserIdSample.Primary,
+                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id),
+                content = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
+            )
+        } returns true
 
         // When
-        val messageSaved = messageBodyFileStorage.saveMessageBody(UserId(UserIdString), savedBody)
+        val messageSaved = messageBodyFileStorage.saveMessageBody(UserIdSample.Primary, savedBody)
 
         // Then
         assertTrue(messageSaved)
     }
 
     @Test
-    fun `should save message body using a sanitised folder and filename and return false on failure`() = runTest {
+    fun `should save message body in internal storage and return false on failure`() = runTest {
         // Given
-        val filename = FileHelper.Filename(SanitisedMessageIdString)
-        val messageBodyFolder = FileHelper.Folder("$MessageBodyFolderBase$SanitisedUserIdString/")
-        val savedBody = MessageBodyTestData.buildMessageBody(messageId = MessageId(MessageIdString), body = MessageBody)
-        coEvery { fileHelperMock.writeToFile(messageBodyFolder, filename, MessageBody) } returns false
+        val savedBody = MessageBodyTestData.buildMessageBody(
+            messageId = MessageIdSample.Invoice,
+            body = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
+        )
+        coEvery {
+            internalFileStorageMock.writeToFile(
+                userId = UserIdSample.Primary,
+                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id),
+                content = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
+            )
+        } returns false
 
         // When
-        val messageSaved = messageBodyFileStorage.saveMessageBody(UserId(UserIdString), savedBody)
+        val messageSaved = messageBodyFileStorage.saveMessageBody(UserIdSample.Primary, savedBody)
 
         // Then
         assertFalse(messageSaved)
     }
 
     @Test
-    fun `should delete message using sanitised folder and filename and return true on success`() = runTest {
+    fun `should delete message from internal storage and return true on success`() = runTest {
         // Given
-        val filename = FileHelper.Filename(SanitisedMessageIdString)
-        val messageBodyFolder = FileHelper.Folder("$MessageBodyFolderBase$SanitisedUserIdString/")
-        coEvery { fileHelperMock.deleteFile(messageBodyFolder, filename) } returns true
+        coEvery {
+            internalFileStorageMock.deleteFile(
+                userId = UserIdSample.Primary,
+                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id)
+            )
+        } returns true
+
 
         // When
-        val messageDeleted = messageBodyFileStorage.deleteMessageBody(UserId(UserIdString), MessageId(MessageIdString))
+        val messageDeleted = messageBodyFileStorage.deleteMessageBody(UserIdSample.Primary, MessageIdSample.Invoice)
 
         // Then
         assertTrue(messageDeleted)
     }
 
     @Test
-    fun `should delete message using sanitised folder and filename and return false on failure`() = runTest {
+    fun `should delete message from internal storage and return false on failure`() = runTest {
         // Given
-        val filename = FileHelper.Filename(SanitisedMessageIdString)
-        val messageBodyFolder = FileHelper.Folder("$MessageBodyFolderBase$SanitisedUserIdString/")
-        coEvery { fileHelperMock.deleteFile(messageBodyFolder, filename) } returns false
+        coEvery {
+            internalFileStorageMock.deleteFile(
+                userId = UserIdSample.Primary,
+                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id)
+            )
+        } returns false
+
 
         // When
-        val messageDeleted = messageBodyFileStorage.deleteMessageBody(UserId(UserIdString), MessageId(MessageIdString))
+        val messageDeleted = messageBodyFileStorage.deleteMessageBody(UserIdSample.Primary, MessageIdSample.Invoice)
 
         // Then
         assertFalse(messageDeleted)
     }
 
     @Test
-    fun `should delete all message bodies using sanitised folder and return true on success`() = runTest {
+    fun `should delete all message bodies from internal storage and return true on success`() = runTest {
         // Given
-        val messageBodyFolder = FileHelper.Folder("$MessageBodyFolderBase$SanitisedUserIdString/")
-        coEvery { fileHelperMock.deleteFolder(messageBodyFolder) } returns true
+        coEvery {
+            internalFileStorageMock.deleteFolder(UserIdSample.Primary, InternalFileStorage.Folder.MESSAGE_BODIES)
+        } returns true
+
 
         // When
-        val messagesDeleted = messageBodyFileStorage.deleteAllMessageBodies(UserId(UserIdString))
+        val messagesDeleted = messageBodyFileStorage.deleteAllMessageBodies(UserIdSample.Primary)
 
         // Then
         assertTrue(messagesDeleted)
     }
 
     @Test
-    fun `should delete all message bodies using sanitised folder and return false on failure`() = runTest {
+    fun `should delete all message bodies from internal storage and return false on success`() = runTest {
         // Given
-        val messageBodyFolder = FileHelper.Folder("$MessageBodyFolderBase$SanitisedUserIdString/")
-        coEvery { fileHelperMock.deleteFolder(messageBodyFolder) } returns false
+        coEvery {
+            internalFileStorageMock.deleteFolder(UserIdSample.Primary, InternalFileStorage.Folder.MESSAGE_BODIES)
+        } returns false
+
 
         // When
-        val messagesDeleted = messageBodyFileStorage.deleteAllMessageBodies(UserId(UserIdString))
+        val messagesDeleted = messageBodyFileStorage.deleteAllMessageBodies(UserIdSample.Primary)
 
         // Then
         assertFalse(messagesDeleted)
-    }
-
-    private companion object TestData {
-
-        const val MessageIdString = "123 32/1"
-        const val SanitisedMessageIdString = "123_32:1"
-        const val UserIdString = "456 78/9"
-        const val SanitisedUserIdString = "456_78:9"
-        const val InternalStoragePath = "/some/path/to/internal/storage"
-        const val MessageBody = "I am a message body"
-        const val MessageBodyFolderBase = "$InternalStoragePath/message_bodies/"
     }
 }

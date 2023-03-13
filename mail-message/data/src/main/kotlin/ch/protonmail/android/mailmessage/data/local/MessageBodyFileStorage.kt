@@ -18,43 +18,35 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
-import android.content.Context
-import ch.protonmail.android.mailcommon.data.file.FileHelper
+import ch.protonmail.android.mailcommon.data.file.InternalFileStorage
 import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MessageBodyFileStorage @Inject constructor(
-    @ApplicationContext
-    private val applicationContext: Context,
-    private val fileHelper: FileHelper
+    private val internalFileStorage: InternalFileStorage
 ) {
 
-    suspend fun readMessageBody(userId: UserId, messageId: MessageId): String? = fileHelper.readFromFile(
-        folder = userId.asSanitisedFolderName(),
-        filename = messageId.asSanitisedFilename()
+    suspend fun readMessageBody(userId: UserId, messageId: MessageId): String? = internalFileStorage.readFromFile(
+        userId = userId,
+        folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+        fileIdentifier = InternalFileStorage.FileIdentifier(messageId.id)
     )
 
-    suspend fun saveMessageBody(userId: UserId, messageBody: MessageBody): Boolean = fileHelper.writeToFile(
-        folder = userId.asSanitisedFolderName(),
-        filename = messageBody.messageId.asSanitisedFilename(),
+    suspend fun saveMessageBody(userId: UserId, messageBody: MessageBody): Boolean = internalFileStorage.writeToFile(
+        userId = userId,
+        folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+        fileIdentifier = InternalFileStorage.FileIdentifier(messageBody.messageId.id),
         content = messageBody.body
     )
 
-    suspend fun deleteMessageBody(userId: UserId, messageId: MessageId): Boolean = fileHelper.deleteFile(
-        folder = userId.asSanitisedFolderName(),
-        filename = messageId.asSanitisedFilename()
+    suspend fun deleteMessageBody(userId: UserId, messageId: MessageId): Boolean = internalFileStorage.deleteFile(
+        userId = userId,
+        folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+        fileIdentifier = InternalFileStorage.FileIdentifier(messageId.id)
     )
 
     suspend fun deleteAllMessageBodies(userId: UserId): Boolean =
-        fileHelper.deleteFolder(userId.asSanitisedFolderName())
-
-    private fun UserId.asSanitisedFolderName() =
-        FileHelper.Folder(applicationContext.filesDir.toString() + "/message_bodies/" + id.asSanitisedPath() + "/")
-
-    private fun MessageId.asSanitisedFilename() = FileHelper.Filename(value = id.asSanitisedPath())
-
-    private fun String.asSanitisedPath() = replace(" ", "_").replace("/", ":")
+        internalFileStorage.deleteFolder(userId, InternalFileStorage.Folder.MESSAGE_BODIES)
 }

@@ -62,7 +62,7 @@ object MailMessageModule {
     @Singleton
     fun provideMessageLocalDataSource(
         db: MessageDatabase,
-        messageBodyDiskStorage: MessageBodyFileStorage,
+        messageBodyFileStorage: MessageBodyFileStorage,
         messageWithBodyEntityMapper: MessageWithBodyEntityMapper
-    ): MessageLocalDataSource = MessageLocalDataSourceImpl(db, messageBodyDiskStorage, messageWithBodyEntityMapper)
+    ): MessageLocalDataSource = MessageLocalDataSourceImpl(db, messageBodyFileStorage, messageWithBodyEntityMapper)
 }

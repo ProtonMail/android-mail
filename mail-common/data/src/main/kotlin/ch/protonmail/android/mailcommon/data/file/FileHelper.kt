@@ -90,14 +90,3 @@ class FileHelper @Inject constructor(
         fun folderFrom(folder: Folder) = File(folder.path).apply { mkdirs() }
     }
 }
-
-/**
- * See https://www.sqlite.org/intern-v-extern-blob.html
- *
- * The article compares the performance of storing large blobs in db directly vs storing them as files on disk.
- * It does not directly relate to Android, and no actual testing was done on Android from our side.
- * The assumption is that the performance findings will roughly translate to Android nevertheless and the cut-off
- * threshold of 500kB is chosen based on the measurements from the article.
- */
-@Suppress("MagicNumber")
-fun String.shouldBeStoredAsFile() = this.toByteArray().size > 500 * 1024
