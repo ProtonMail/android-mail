@@ -16,18 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.entity
+package ch.protonmail.android.mailconversation.data.local.converters
 
-data class AttachmentId(val id: String)
+import androidx.room.TypeConverter
+import me.proton.core.util.kotlin.deserializeMap
+import me.proton.core.util.kotlin.serialize
 
-data class MessageAttachment(
-    val attachmentId: AttachmentId,
-    val name: String,
-    val size: Long,
-    val mimeType: String,
-    val disposition: String?,
-    val keyPackets: String?,
-    val signature: String?,
-    val encSignature: String?,
-    val headers: Map<String, String>
-)
+class MapConverters {
+
+    @TypeConverter
+    fun fromMapToString(value: Map<String, String>): String = value.serialize()
+
+    @TypeConverter
+    fun fromStringToMap(value: String): Map<String, String> = value.deserializeMap()
+}

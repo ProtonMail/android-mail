@@ -31,7 +31,8 @@ object MessageAttachmentTestData {
         disposition = null,
         keyPackets = null,
         signature = null,
-        encSignature = null
+        encSignature = null,
+        headers = emptyMap()
     )
 
     val document = MessageAttachment(
@@ -42,7 +43,8 @@ object MessageAttachmentTestData {
         disposition = null,
         keyPackets = null,
         signature = null,
-        encSignature = null
+        encSignature = null,
+        headers = emptyMap()
     )
 
 }

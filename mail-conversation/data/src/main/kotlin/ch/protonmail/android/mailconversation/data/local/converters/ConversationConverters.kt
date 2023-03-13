@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.data.local
+package ch.protonmail.android.mailconversation.data.local.converters
 
 import androidx.room.TypeConverter
 import ch.protonmail.android.mailcommon.domain.model.ConversationId

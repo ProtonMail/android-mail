@@ -21,8 +21,9 @@ package ch.protonmail.android.db
 import android.content.Context
 import androidx.room.Database
 import androidx.room.TypeConverters
-import ch.protonmail.android.mailconversation.data.local.ConversationConverters
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
+import ch.protonmail.android.mailconversation.data.local.converters.ConversationConverters
+import ch.protonmail.android.mailconversation.data.local.converters.MapConverters
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationEntity
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailmessage.data.local.MessageConverters
@@ -155,7 +156,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
     LabelConverters::class,
     ChallengeConverters::class,
     MessageConverters::class,
-    ConversationConverters::class
+    ConversationConverters::class,
+    MapConverters::class
 )
 @Suppress("UnnecessaryAbstractClass")
 abstract class AppDatabase :

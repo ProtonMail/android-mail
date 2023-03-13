@@ -39,7 +39,8 @@ object MessageAttachmentEntityTestData {
             disposition = null,
             keyPackets = null,
             signature = null,
-            encSignature = null
+            encSignature = null,
+            headers = emptyMap()
         )
 
     fun document(userId: UserId = UserIdSample.Primary, messageId: MessageId = MessageIdSample.AlphaAppInfoRequest) =
@@ -53,7 +54,8 @@ object MessageAttachmentEntityTestData {
             disposition = null,
             keyPackets = null,
             signature = null,
-            encSignature = null
+            encSignature = null,
+            headers = emptyMap()
         )
 
 }

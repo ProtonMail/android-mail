@@ -169,7 +169,8 @@ data class AttachmentResource(
         disposition = disposition,
         keyPackets = keyPackets,
         signature = signature,
-        encSignature = encSignature
+        encSignature = encSignature,
+        headers = headers
     )
 }
 
