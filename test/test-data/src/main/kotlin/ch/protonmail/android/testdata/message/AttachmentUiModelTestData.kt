@@ -16,23 +16,26 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.presentation.model
+package ch.protonmail.android.testdata.message
 
-data class MessageBodyUiModel(
-    val messageBody: String,
-    val mimeType: MimeTypeUiModel,
-    val attachments: List<AttachmentUiModel>
-)
+import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 
-enum class MimeTypeUiModel(val value: String) {
-    PlainText("text/plain"),
-    Html("text/html")
+object AttachmentUiModelTestData {
+
+    val invoice = AttachmentUiModel(
+        attachmentId = "invoice",
+        fileName = "invoice",
+        extension = "pdf",
+        size = 5678,
+        mimeType = "application/pdf"
+    )
+
+    val document = AttachmentUiModel(
+        attachmentId = "document",
+        fileName = "document",
+        extension = "pdf",
+        size = 1234,
+        mimeType = "application/doc"
+    )
+
 }
-
-data class AttachmentUiModel(
-    val attachmentId: String,
-    val fileName: String,
-    val extension: String,
-    val size: Long,
-    val mimeType: String
-)

@@ -30,7 +30,15 @@ class MessageBodyUiModelMapper @Inject constructor() {
     fun toUiModel(decryptedMessageBody: DecryptedMessageBody) = MessageBodyUiModel(
         messageBody = decryptedMessageBody.value,
         mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
-        attachments = decryptedMessageBody.attachments.map { AttachmentUiModel(it.size) }
+        attachments = decryptedMessageBody.attachments.map {
+            AttachmentUiModel(
+                attachmentId = it.attachmentId.id,
+                fileName = it.name.split(".").first(),
+                extension = it.name.split(".").last(),
+                size = it.size,
+                mimeType = it.mimeType
+            )
+        }
     )
 
     fun toUiModel(encryptedMessageBody: String) = MessageBodyUiModel(

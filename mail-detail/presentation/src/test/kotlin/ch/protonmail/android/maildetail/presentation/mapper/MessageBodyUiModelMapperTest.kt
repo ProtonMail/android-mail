@@ -19,10 +19,10 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
-import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.testdata.message.AttachmentUiModelTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import kotlin.test.Test
@@ -51,16 +51,15 @@ class MessageBodyUiModelMapperTest {
     fun `plain text message body is correctly mapped to a message body ui model with attachments`() {
         // Given
         val messageBody = DecryptedMessageBody(
-            value = decryptedMessageBody,
-            mimeType = MimeType.PlainText,
-            attachments = listOf(MessageAttachmentTestData.invoice, MessageAttachmentTestData.document)
+            decryptedMessageBody,
+            MimeType.PlainText,
+            listOf(MessageAttachmentTestData.invoice, MessageAttachmentTestData.document)
         )
         val expected = MessageBodyUiModel(
-            messageBody = decryptedMessageBody,
-            mimeType = MimeTypeUiModel.PlainText,
-            attachments = listOf(
-                AttachmentUiModel(MessageAttachmentTestData.invoice.size),
-                AttachmentUiModel(MessageAttachmentTestData.document.size)
+            decryptedMessageBody, MimeTypeUiModel.PlainText,
+            listOf(
+                AttachmentUiModelTestData.invoice,
+                AttachmentUiModelTestData.document
             )
         )
 

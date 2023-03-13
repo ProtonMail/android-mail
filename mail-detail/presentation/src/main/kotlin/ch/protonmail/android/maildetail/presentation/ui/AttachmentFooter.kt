@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -39,6 +40,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.extensions.getTotalAttachmentByteSizeReadable
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
+import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmall
@@ -61,13 +63,11 @@ fun AttachmentFooter(modifier: Modifier = Modifier, attachments: List<Attachment
             Icon(
                 modifier = Modifier.size(ProtonDimens.SmallIconSize),
                 painter = painterResource(id = drawable.ic_proton_paper_clip),
-                contentDescription = "paper clip"
+                contentDescription = ""
             )
             Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
             Text(
-                text = pluralStringResource(
-                    id = plurals.attachment_count_label, count = attachments.size, attachments.size
-                ),
+                text = pluralStringResource(plurals.attachment_count_label, attachments.size, attachments.size),
                 style = ProtonTheme.typography.defaultSmall
             )
             Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
@@ -76,6 +76,10 @@ fun AttachmentFooter(modifier: Modifier = Modifier, attachments: List<Attachment
                 style = ProtonTheme.typography.defaultSmall.copy(color = ProtonTheme.colors.textHint)
             )
         }
+        attachments.forEach {
+            AttachmentItem(attachmentUiModel = it)
+        }
+        Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
     }
 }
 
@@ -83,12 +87,17 @@ fun AttachmentFooter(modifier: Modifier = Modifier, attachments: List<Attachment
 @Preview(showBackground = true)
 @Suppress("MagicNumber")
 fun AttachmentFooterMultiAttachmentsPreview() {
-    AttachmentFooter(attachments = listOf(AttachmentUiModel(1000), AttachmentUiModel(2000)))
+    AttachmentFooter(
+        attachments = listOf(
+            AttachmentUiModelSample.invoice,
+            AttachmentUiModelSample.document
+        )
+    )
 }
 
 @Composable
 @Preview(showBackground = true)
 @Suppress("MagicNumber")
 fun AttachmentFooterSingleAttachmentPreview() {
-    AttachmentFooter(attachments = listOf(AttachmentUiModel(5000)))
+    AttachmentFooter(attachments = listOf(AttachmentUiModelSample.invoice))
 }
