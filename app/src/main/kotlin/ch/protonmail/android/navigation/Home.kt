@@ -120,7 +120,10 @@ fun Home(
                             )
                         }
                     },
-                    openMessageBodyLink = activityActions.openInActivityInNewTask
+                    openMessageBodyLink = activityActions.openInActivityInNewTask,
+                    showFeatureMissingSnackbar = {
+                        showFeatureMissingSnackbar()
+                    }
                 )
                 addMailbox(
                     navController,

@@ -40,7 +40,8 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 internal fun NavGraphBuilder.addConversationDetail(
     navController: NavHostController,
     showSnackbar: (message: String) -> Unit,
-    openMessageBodyLink: (uri: Uri) -> Unit
+    openMessageBodyLink: (uri: Uri) -> Unit,
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.Conversation.route) {
         ConversationDetailScreen(
@@ -48,7 +49,8 @@ internal fun NavGraphBuilder.addConversationDetail(
                 navController.popBackStack()
                 notifyUserMessage?.let(showSnackbar)
             },
-            openMessageBodyLink = { url -> openMessageBodyLink(Uri.parse(url)) }
+            openMessageBodyLink = { url -> openMessageBodyLink(Uri.parse(url)) },
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
     }
 }

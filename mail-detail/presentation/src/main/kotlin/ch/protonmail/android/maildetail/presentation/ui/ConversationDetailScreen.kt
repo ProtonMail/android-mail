@@ -79,11 +79,13 @@ import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
+@Suppress("UseComposableActions")
 fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
     onExit: (notifyUserMessage: String?) -> Unit,
     openMessageBodyLink: (url: String) -> Unit,
-    viewModel: ConversationDetailViewModel = hiltViewModel()
+    viewModel: ConversationDetailViewModel = hiltViewModel(),
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -143,7 +145,8 @@ fun ConversationDetailScreen(
                 },
                 onOpenMessageBodyLink = openMessageBodyLink,
                 onRequestScrollTo = { viewModel.submit(ConversationDetailViewAction.RequestScrollTo(it)) },
-            )
+            ),
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
     }
 }
@@ -154,7 +157,8 @@ fun ConversationDetailScreen(
 fun ConversationDetailScreen(
     state: ConversationDetailState,
     actions: ConversationDetailScreen.Actions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showFeatureMissingSnackbar: () -> Unit = {}
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
@@ -249,7 +253,8 @@ fun ConversationDetailScreen(
                     padding = innerPadding,
                     scrollToMessageId = scrollToMessage,
                     onScrollToMessageCompleted = { scrollToMessage = null },
-                    actions = conversationDetailItemActions
+                    actions = conversationDetailItemActions,
+                    showFeatureMissingSnackbar = showFeatureMissingSnackbar
                 )
             }
 
@@ -279,7 +284,8 @@ private fun MessagesContent(
     scrollToMessageId: String?,
     onScrollToMessageCompleted: () -> Unit,
     modifier: Modifier = Modifier,
-    actions: ConversationDetailItem.Actions
+    actions: ConversationDetailItem.Actions,
+    showFeatureMissingSnackbar: () -> Unit = {}
 ) {
     val listState = rememberLazyListState()
     val layoutDirection = LocalLayoutDirection.current
@@ -319,7 +325,8 @@ private fun MessagesContent(
                 uiModel = uiModel,
                 modifier = Modifier.animateItemPlacement(),
                 listState = listState,
-                actions = actions
+                actions = actions,
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar
             )
         }
     }

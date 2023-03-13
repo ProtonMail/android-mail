@@ -51,6 +51,7 @@ fun ConversationDetailItem(
     listState: LazyListState,
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     ElevatedCard(
         modifier = modifier.fillMaxWidth(),
@@ -74,7 +75,8 @@ fun ConversationDetailItem(
                     uiModel = uiModel,
                     messageId = uiModel.messageId,
                     listState = listState,
-                    actions = actions
+                    actions = actions,
+                    showFeatureMissingSnackbar = showFeatureMissingSnackbar
                 )
             }
         }
@@ -88,6 +90,7 @@ private fun ConversationDetailExpandedItem(
     listState: LazyListState,
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     var bodyBounds by remember { mutableStateOf(Rect(0f, 0f, 0f, 0f)) }
     LaunchedEffect(key1 = bodyBounds) {
@@ -109,7 +112,10 @@ private fun ConversationDetailExpandedItem(
                 .fillMaxWidth()
                 .height(MailDimens.ConversationMessageCollapseBarHeight)
         )
-        MessageDetailHeader(uiModel = uiModel.messageDetailHeaderUiModel)
+        MessageDetailHeader(
+            uiModel = uiModel.messageDetailHeaderUiModel,
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+        )
         MessageBody(
             modifier = Modifier.onGloballyPositioned { coordinates ->
                 bodyBounds = coordinates.boundsInParent()
