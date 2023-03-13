@@ -45,4 +45,5 @@ gcloud --quiet firebase test android run ../firebase-device-config.yml:"$device_
   --use-orchestrator \
   --environment-variables clearPackageData=true \
   --num-flaky-test-attempts=1 \
-  --timeout "$timeout"
+  --timeout "$timeout" \
+  --no-auto-google-login

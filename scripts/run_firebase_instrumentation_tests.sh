@@ -28,4 +28,5 @@ gcloud firebase test android run \
   --test-targets "notPackage ch.protonmail.android.uitest" \
   --use-orchestrator \
   --num-flaky-test-attempts=1 \
-  --timeout 10m
+  --timeout 10m \
+  --no-auto-google-login
