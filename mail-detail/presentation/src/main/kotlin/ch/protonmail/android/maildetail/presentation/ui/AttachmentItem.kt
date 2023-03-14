@@ -34,13 +34,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.maildetail.domain.model.getDrawableForMimeType
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionHint
 import me.proton.core.compose.theme.defaultSmall
-import me.proton.core.presentation.R.drawable
 
 @Composable
 fun AttachmentItem(attachmentUiModel: AttachmentUiModel) {
@@ -57,7 +57,7 @@ fun AttachmentItem(attachmentUiModel: AttachmentUiModel) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = drawable.ic_proton_file_pdf_24),
+            painter = painterResource(id = getDrawableForMimeType(attachmentUiModel.mimeType)),
             contentDescription = null,
         )
         Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
