@@ -43,17 +43,21 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.extensions.getTotalAttachmentByteSizeReadable
-import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmall
 import me.proton.core.compose.theme.defaultSmallStrong
 import me.proton.core.presentation.R.drawable
-import timber.log.Timber
 
 @Composable
-fun AttachmentFooter(modifier: Modifier = Modifier, attachments: List<AttachmentUiModel>) {
+fun AttachmentFooter(
+    modifier: Modifier = Modifier,
+    messageBodyAttachments: MessageBodyAttachments,
+    onShowAllAttachments: () -> Unit
+) {
+    val attachments = messageBodyAttachments.attachments
     Column(modifier = modifier.fillMaxWidth()) {
         Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
         Row(
@@ -82,21 +86,26 @@ fun AttachmentFooter(modifier: Modifier = Modifier, attachments: List<Attachment
                 style = ProtonTheme.typography.defaultSmall.copy(color = ProtonTheme.colors.textHint)
             )
         }
-        attachments.forEach {
+        attachments.take(messageBodyAttachments.limit).forEach {
             AttachmentItem(attachmentUiModel = it)
         }
-        Box(
-            modifier = Modifier
-                .padding(ProtonDimens.ExtraSmallSpacing)
-                .padding(horizontal = ProtonDimens.SmallSpacing)
-        ) {
-            Text(
+        if (attachments.size > messageBodyAttachments.limit) {
+            Box(
                 modifier = Modifier
-                    .clickable { Timber.d("clicked") }
-                    .padding(ProtonDimens.SmallSpacing),
-                text = stringResource(R.string.attachment_show_more_label, 2),
-                style = ProtonTheme.typography.defaultSmallStrong.copy(color = ProtonTheme.colors.brandNorm)
-            )
+                    .padding(ProtonDimens.ExtraSmallSpacing)
+                    .padding(horizontal = ProtonDimens.SmallSpacing)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .clickable { onShowAllAttachments() }
+                        .padding(ProtonDimens.SmallSpacing),
+                    text = stringResource(
+                        id = R.string.attachment_show_more_label,
+                        attachments.size - messageBodyAttachments.limit
+                    ),
+                    style = ProtonTheme.typography.defaultSmallStrong.copy(color = ProtonTheme.colors.brandNorm)
+                )
+            }
         }
         Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
     }
@@ -107,10 +116,14 @@ fun AttachmentFooter(modifier: Modifier = Modifier, attachments: List<Attachment
 @Suppress("MagicNumber")
 fun AttachmentFooterMultiAttachmentsPreview() {
     AttachmentFooter(
-        attachments = listOf(
-            AttachmentUiModelSample.invoice,
-            AttachmentUiModelSample.document
-        )
+        messageBodyAttachments = MessageBodyAttachments(
+            limit = 1,
+            attachments = listOf(
+                AttachmentUiModelSample.invoice,
+                AttachmentUiModelSample.document
+            )
+        ),
+        onShowAllAttachments = {}
     )
 }
 
@@ -118,5 +131,13 @@ fun AttachmentFooterMultiAttachmentsPreview() {
 @Preview(showBackground = true)
 @Suppress("MagicNumber")
 fun AttachmentFooterSingleAttachmentPreview() {
-    AttachmentFooter(attachments = listOf(AttachmentUiModelSample.invoice))
+    AttachmentFooter(
+        messageBodyAttachments = MessageBodyAttachments(
+            limit = 1,
+            attachments = listOf(
+                AttachmentUiModelSample.invoice
+            )
+        ),
+        onShowAllAttachments = {}
+    )
 }

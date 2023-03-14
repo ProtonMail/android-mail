@@ -47,4 +47,15 @@ object MessageAttachmentTestData {
         headers = emptyMap()
     )
 
+    val documentWithMultipleDots = MessageAttachment(
+        attachmentId = AttachmentId("complicated.document.name"),
+        name = "complicated.document.pdf",
+        size = 1234,
+        mimeType = "application/doc",
+        disposition = null,
+        keyPackets = null,
+        signature = null,
+        encSignature = null
+    )
+
 }

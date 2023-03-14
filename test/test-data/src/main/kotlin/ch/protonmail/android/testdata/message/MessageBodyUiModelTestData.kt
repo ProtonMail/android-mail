@@ -26,7 +26,7 @@ object MessageBodyUiModelTestData {
     val plainTextMessageBodyUiModel = MessageBodyUiModel(
         MessageBodyTestData.messageBody.body,
         mimeType = MimeTypeUiModel.PlainText,
-        attachments = emptyList()
+        attachments = null
     )
 
     val htmlMessageBodyUiModel = MessageBodyUiModel(
@@ -39,6 +39,6 @@ object MessageBodyUiModelTestData {
             </div>
         """.trimIndent(),
         mimeType = MimeTypeUiModel.Html,
-        attachments = emptyList()
+        attachments = null
     )
 }

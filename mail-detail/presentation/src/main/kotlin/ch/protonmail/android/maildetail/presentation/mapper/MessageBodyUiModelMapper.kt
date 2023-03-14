@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
@@ -30,21 +31,25 @@ class MessageBodyUiModelMapper @Inject constructor() {
     fun toUiModel(decryptedMessageBody: DecryptedMessageBody) = MessageBodyUiModel(
         messageBody = decryptedMessageBody.value,
         mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
-        attachments = decryptedMessageBody.attachments.map {
-            AttachmentUiModel(
-                attachmentId = it.attachmentId.id,
-                fileName = it.name.split(".").first(),
-                extension = it.name.split(".").last(),
-                size = it.size,
-                mimeType = it.mimeType
+        attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
+            MessageBodyAttachments(
+                attachments = decryptedMessageBody.attachments.map {
+                    AttachmentUiModel(
+                        attachmentId = it.attachmentId.id,
+                        fileName = it.name.split(".").dropLast(1).joinToString("."),
+                        extension = it.name.split(".").last(),
+                        size = it.size,
+                        mimeType = it.mimeType
+                    )
+                }
             )
-        }
+        } else null
     )
 
     fun toUiModel(encryptedMessageBody: String) = MessageBodyUiModel(
         messageBody = encryptedMessageBody,
         mimeType = MimeTypeUiModel.PlainText,
-        attachments = emptyList()
+        attachments = null
     )
 
     private fun MimeType.toMimeTypeUiModel() = when (this) {

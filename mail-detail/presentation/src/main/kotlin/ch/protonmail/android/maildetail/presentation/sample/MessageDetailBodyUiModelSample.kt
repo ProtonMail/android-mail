@@ -26,6 +26,6 @@ object MessageDetailBodyUiModelSample {
     fun build(messageBody: String, mimeType: MimeTypeUiModel = MimeTypeUiModel.Html) = MessageBodyUiModel(
         messageBody = messageBody,
         mimeType = mimeType,
-        attachments = emptyList()
+        attachments = null
     )
 }

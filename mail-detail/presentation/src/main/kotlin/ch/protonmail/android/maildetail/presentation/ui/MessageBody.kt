@@ -85,10 +85,11 @@ internal fun MessageBody(
         modifier = modifier.fillMaxWidth(),
         client = client
     )
-    if (messageBodyUiModel.attachments.isNotEmpty()) {
+    if (messageBodyUiModel.attachments != null) {
         AttachmentFooter(
             modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
-            attachments = messageBodyUiModel.attachments
+            messageBodyAttachments = messageBodyUiModel.attachments,
+            onShowAllAttachments = {}
         )
     }
 }

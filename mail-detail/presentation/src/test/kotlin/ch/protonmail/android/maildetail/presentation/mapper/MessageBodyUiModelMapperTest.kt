@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
@@ -38,7 +39,7 @@ class MessageBodyUiModelMapperTest {
     fun `plain text message body is correctly mapped to a message body ui model`() {
         // Given
         val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.PlainText)
-        val expected = MessageBodyUiModel(decryptedMessageBody, MimeTypeUiModel.PlainText, emptyList())
+        val expected = MessageBodyUiModel(decryptedMessageBody, MimeTypeUiModel.PlainText, null)
 
         // When
         val actual = messageBodyUiModelMapper.toUiModel(messageBody)
@@ -53,13 +54,20 @@ class MessageBodyUiModelMapperTest {
         val messageBody = DecryptedMessageBody(
             decryptedMessageBody,
             MimeType.PlainText,
-            listOf(MessageAttachmentTestData.invoice, MessageAttachmentTestData.document)
+            listOf(
+                MessageAttachmentTestData.invoice,
+                MessageAttachmentTestData.document,
+                MessageAttachmentTestData.documentWithMultipleDots
+            )
         )
         val expected = MessageBodyUiModel(
             decryptedMessageBody, MimeTypeUiModel.PlainText,
-            listOf(
-                AttachmentUiModelSample.invoice,
-                AttachmentUiModelSample.document
+            MessageBodyAttachments(
+                attachments = listOf(
+                    AttachmentUiModelSample.invoice,
+                    AttachmentUiModelSample.document,
+                    AttachmentUiModelSample.documentWithMultipleDots
+                )
             )
         )
 
@@ -74,7 +82,7 @@ class MessageBodyUiModelMapperTest {
     fun `multipart mixed message body is correctly mapped to a message body ui model`() {
         // Given
         val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.MultipartMixed)
-        val expected = MessageBodyUiModel(decryptedMessageBody, MimeTypeUiModel.Html, emptyList())
+        val expected = MessageBodyUiModel(decryptedMessageBody, MimeTypeUiModel.Html, null)
 
         // When
         val actual = messageBodyUiModelMapper.toUiModel(messageBody)
@@ -87,7 +95,7 @@ class MessageBodyUiModelMapperTest {
     fun `string is correctly mapped to a message body ui model`() {
         // Given
         val messageBody = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
-        val expected = MessageBodyUiModel(messageBody, MimeTypeUiModel.PlainText, emptyList())
+        val expected = MessageBodyUiModel(messageBody, MimeTypeUiModel.PlainText, null)
 
         // When
         val actual = messageBodyUiModelMapper.toUiModel(messageBody)
