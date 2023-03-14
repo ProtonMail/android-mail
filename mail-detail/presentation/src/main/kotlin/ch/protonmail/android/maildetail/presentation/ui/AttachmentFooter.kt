@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,8 +37,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.extensions.getTotalAttachmentByteSizeReadable
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
@@ -44,7 +48,9 @@ import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSam
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmall
+import me.proton.core.compose.theme.defaultSmallStrong
 import me.proton.core.presentation.R.drawable
+import timber.log.Timber
 
 @Composable
 fun AttachmentFooter(modifier: Modifier = Modifier, attachments: List<AttachmentUiModel>) {
@@ -78,6 +84,19 @@ fun AttachmentFooter(modifier: Modifier = Modifier, attachments: List<Attachment
         }
         attachments.forEach {
             AttachmentItem(attachmentUiModel = it)
+        }
+        Box(
+            modifier = Modifier
+                .padding(ProtonDimens.ExtraSmallSpacing)
+                .padding(horizontal = ProtonDimens.SmallSpacing)
+        ) {
+            Text(
+                modifier = Modifier
+                    .clickable { Timber.d("clicked") }
+                    .padding(ProtonDimens.SmallSpacing),
+                text = stringResource(R.string.attachment_show_more_label, 2),
+                style = ProtonTheme.typography.defaultSmallStrong.copy(color = ProtonTheme.colors.brandNorm)
+            )
         }
         Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
     }

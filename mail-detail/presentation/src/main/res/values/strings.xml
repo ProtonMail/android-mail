@@ -49,6 +49,7 @@
         <item quantity="one">%d file</item>
         <item quantity="other">%d files</item>
     </plurals>
+    <string name="attachment_show_more_label">+%1$d more</string>
     <!-- Bottom Sheet -->
     <string name="bottom_sheet_move_to_title">Move to...</string>
     <string name="bottom_sheet_done_action">Done</string>
