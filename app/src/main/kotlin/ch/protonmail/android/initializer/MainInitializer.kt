@@ -21,6 +21,7 @@ package ch.protonmail.android.initializer
 import android.content.Context
 import androidx.startup.AppInitializer
 import androidx.startup.Initializer
+import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.initializer.strictmode.StrictModeInitializer
 import me.proton.core.auth.presentation.MissingScopeInitializer
 import me.proton.core.crypto.validator.presentation.init.CryptoValidatorInitializer
@@ -34,7 +35,7 @@ class MainInitializer : Initializer<Unit> {
         // No-op needed
     }
 
-    override fun dependencies() = coreDependencies() + mailDependencies()
+    override fun dependencies() = coreDependencies() + mailDependencies() + releaseOnlyDependenciesIfNeeded()
 
     private fun coreDependencies() = listOf(
         CryptoValidatorInitializer::class.java,
@@ -48,10 +49,12 @@ class MainInitializer : Initializer<Unit> {
         AccountStateHandlerInitializer::class.java,
         EventManagerInitializer::class.java,
         LoggerInitializer::class.java,
-        SentryInitializer::class.java,
         StrictModeInitializer::class.java,
-        ThemeObserverInitializer::class.java,
+        ThemeObserverInitializer::class.java
     )
+
+    private fun releaseOnlyDependenciesIfNeeded() =
+        if (BuildConfig.DEBUG) emptyList() else listOf(SentryInitializer::class.java)
 
     companion object {
 
