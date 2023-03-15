@@ -20,11 +20,11 @@ package ch.protonmail.android.uitest
 
 import android.content.Context
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.protonmail.android.MainActivity
-import ch.protonmail.android.initializer.MainInitializer
 import ch.protonmail.android.test.BuildConfig
+import ch.protonmail.android.uitest.rule.HiltInjectRule
+import ch.protonmail.android.uitest.rule.MainInitializerRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import kotlinx.coroutines.runBlocking
 import me.proton.core.auth.domain.entity.SessionInfo
@@ -38,8 +38,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
-import org.junit.rules.RuleChain
-import org.junit.rules.TestName
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -53,8 +51,17 @@ open class BaseTest(
     private val logoutUsersOnTearDown: Boolean = true
 ) {
 
+    @get:Rule(order = RuleOrder_00_First)
+    val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = RuleOrder_10_Initialization)
+    val mainInitializerRule = MainInitializerRule()
+
+    @get:Rule(order = RuleOrder_20_Injection)
+    val hiltInjectRule = HiltInjectRule(hiltRule)
+
+    @get:Rule(order = RuleOrder_30_ActivityLaunch)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
-    private val hiltRule = HiltAndroidRule(this)
 
     @Inject
     lateinit var loginTestHelper: LoginTestHelper
@@ -62,23 +69,14 @@ open class BaseTest(
     @Inject
     lateinit var mailSettingsRepo: MailSettingsRepository
 
-    @Rule
-    @JvmField
-    val ruleChain: RuleChain = RuleChain
-        .outerRule(hiltRule)
-        .around(TestName())
-        .around(composeTestRule)
-
     @Before
-    fun setup() {
-        MainInitializer.init(ApplicationProvider.getApplicationContext())
-        hiltRule.inject()
+    open fun setup() {
         setupDeviceForAutomation(true)
         loginTestHelper.logoutAll()
     }
 
     @After
-    fun cleanup() {
+    open fun cleanup() {
         if (logoutUsersOnTearDown) {
             Timber.d("Finishing Testing: Revoking user sessions and logging out")
             loginTestHelper.logoutAll()
@@ -99,6 +97,15 @@ open class BaseTest(
     }
 
     companion object {
+
+        const val RuleOrder_00_First = 0
+        const val RuleOrder_10_Initialization = 10
+        const val RuleOrder_11_Initialized = 11
+        const val RuleOrder_20_Injection = 20
+        const val RuleOrder_21_Injected = 21
+        const val RuleOrder_30_ActivityLaunch = 30
+        const val RuleOrder_31_ActivityLaunched = 31
+        const val RuleOrder_99_Last = 99
 
         private val context: Context
             get() = InstrumentationRegistry.getInstrumentation().context

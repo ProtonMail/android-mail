@@ -210,6 +210,7 @@ object Proton {
         val accountManager = coreArtifact("account-manager", Versions.Proton.core)
         val accountManagerPresentationCompose = coreArtifact("account-manager-presentation-compose", Versions.Proton.core)
         val auth = coreArtifact("auth", Versions.Proton.core)
+        val authTest = coreArtifact("auth-test", Versions.Proton.core)
         val challenge = coreArtifact("challenge", Versions.Proton.core)
         val contact = coreArtifact("contact", Versions.Proton.core)
         val contactDomain = coreArtifact("contact-domain", Versions.Proton.core)

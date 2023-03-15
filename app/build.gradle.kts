@@ -196,6 +196,7 @@ dependencies {
 
     androidTestImplementation(Dependencies.androidTestLibs)
     androidTestImplementation(Proton.Core.accountManagerPresentationCompose)
+    androidTestImplementation(Proton.Core.authTest)
     androidTestImplementation(project(":test:test-data"))
     androidTestImplementation(project(":test:network-mocks"))
 

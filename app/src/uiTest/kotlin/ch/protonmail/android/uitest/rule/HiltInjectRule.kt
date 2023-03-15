@@ -18,17 +18,12 @@
 
 package ch.protonmail.android.uitest.rule
 
-import androidx.test.core.app.ApplicationProvider
-import ch.protonmail.android.initializer.MainInitializer
+import dagger.hilt.android.testing.HiltAndroidRule
 import org.junit.rules.ExternalResource
 
-/**
- * A custom rule to initialize the [MainInitializer] before each test.
- */
-class MainInitializerRule : ExternalResource() {
+class HiltInjectRule(private val rule: HiltAndroidRule) : ExternalResource() {
 
     override fun before() {
-        super.before()
-        MainInitializer.init(ApplicationProvider.getApplicationContext())
+        rule.inject()
     }
 }

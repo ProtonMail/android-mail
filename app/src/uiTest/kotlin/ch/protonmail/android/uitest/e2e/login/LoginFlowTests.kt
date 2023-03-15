@@ -25,48 +25,40 @@ import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import me.proton.core.test.android.robots.auth.AddAccountRobot
-import me.proton.core.test.android.robots.auth.login.LoginRobot
-import me.proton.core.test.android.robots.auth.login.MailboxPasswordRobot
-import org.junit.Before
-import org.junit.Test
+import me.proton.core.auth.test.MinimalSignInInternalTests
+import me.proton.core.auth.test.rule.AcceptExternalRule
+import me.proton.core.auth.test.usecase.WaitForPrimaryAccount
+import me.proton.core.network.domain.client.ExtraHeaderProvider
+import me.proton.core.test.quark.Quark
+import me.proton.core.test.quark.data.User
+import org.junit.Rule
+import javax.inject.Inject
 
 @HiltAndroidTest
 @UninstallModules(LocalhostApiModule::class)
-class LoginFlowTests : BaseTest() {
+class LoginFlowTests : BaseTest(), MinimalSignInInternalTests {
 
-    @JvmField @BindValue @LocalhostApi
+    @JvmField
+    @BindValue
+    @LocalhostApi
     val localhostApi = false
 
-    private val addAccountRobot = AddAccountRobot()
-    private val loginRobot = LoginRobot()
     private val inboxRobot = InboxRobot(composeTestRule)
 
-    @Before
-    fun signIn() {
-        addAccountRobot
-            .signIn()
-            .verify { loginElementsDisplayed() }
-    }
+    override val quark: Quark = BaseTest.quark
+    override val users: User.Users = BaseTest.users
 
-    @Test
-    fun loginUserHappyPath() {
-        val user = users.getUser { it.name == "pro" }
-        loginRobot
-            .loginUser<LoginRobot>(user)
+    @get:Rule(order = RuleOrder_21_Injected)
+    val acceptExternalRule = AcceptExternalRule { extraHeaderProvider }
 
-        inboxRobot
-            .verify { mailboxScreenDisplayed() }
-    }
+    @Inject
+    lateinit var extraHeaderProvider: ExtraHeaderProvider
 
-    @Test
-    fun loginUserWithSecondaryPasswordHappyPath() {
-        val user = users.getUser(usernameAndOnePass = false) { it.name == "twopasswords" }
-        loginRobot
-            .loginUser<MailboxPasswordRobot>(user)
-            .unlockMailbox<LoginRobot>(user)
+    @Inject
+    lateinit var waitForPrimaryAccount: WaitForPrimaryAccount
 
-        inboxRobot
-            .verify { mailboxScreenDisplayed() }
+    override fun verifyAfter() {
+        waitForPrimaryAccount()
+        inboxRobot.verify { mailboxScreenDisplayed() }
     }
 }

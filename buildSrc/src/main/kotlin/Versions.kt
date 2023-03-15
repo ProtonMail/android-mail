@@ -114,7 +114,7 @@ object Versions {
     }
 
     object Proton {
-        const val core = "9.17.0"
+        const val core = "9.18.0"
         const val corePlugin = "1.1.1"
     }
 
