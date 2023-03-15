@@ -36,7 +36,7 @@ class ResolveParticipantName @Inject constructor() {
         }
 
         return contactEmail?.name?.takeIfNotBlank()
-            ?: participant.name.takeIf { it != participant.address && it.isNotEmpty() }
+            ?: participant.name.takeIf { it != participant.address && it.isNotBlank() }
             ?: getFallbackName(participant, fallbackType)
     }
 

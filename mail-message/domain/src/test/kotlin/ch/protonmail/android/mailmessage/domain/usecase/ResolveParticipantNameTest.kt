@@ -119,4 +119,43 @@ class ResolveParticipantNameTest {
         val expected = "sender"
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `when a participant has blank name and fallback is address then address is returned`() {
+        // Given
+        val participant = Recipient("sender@proton.ch", " ")
+
+        // When
+        val actual = resolveParticipantName(participant, ContactTestData.contacts)
+
+        // Then
+        val expected = "sender@proton.ch"
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `when a participant has an empty address and fallback is address then empty string is returned`() {
+        // Given
+        val participant = Recipient("", "")
+
+        // When
+        val actual = resolveParticipantName(participant, ContactTestData.contacts)
+
+        // Then
+        val expected = ""
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `when a participant has an empty address and fallback is username then empty string is returned`() {
+        // Given
+        val participant = Recipient("", "")
+
+        // When
+        val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.USERNAME)
+
+        // Then
+        val expected = ""
+        assertEquals(expected, actual)
+    }
 }
