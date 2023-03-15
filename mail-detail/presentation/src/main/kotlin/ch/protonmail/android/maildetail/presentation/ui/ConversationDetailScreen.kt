@@ -222,7 +222,7 @@ fun ConversationDetailScreen(
                     onMove = actions.onMoveToClick,
                     onLabel = actions.onLabelAsClick,
                     onTrash = actions.onTrashClick,
-                    onDelete = { Timber.d("conversation onDelete clicked") },
+                    onDelete = showFeatureMissingSnackbar,
                     onArchive = { Timber.d("conversation onArchive clicked") },
                     onSpam = { Timber.d("conversation onSpam clicked") },
                     onViewInLightMode = { Timber.d("conversation onViewInLightMode clicked") },
