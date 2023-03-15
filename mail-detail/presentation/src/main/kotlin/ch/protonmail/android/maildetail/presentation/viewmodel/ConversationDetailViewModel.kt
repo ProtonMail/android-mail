@@ -227,13 +227,13 @@ class ConversationDetailViewModel @Inject constructor(
         contacts: List<Contact>
     ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
         return if (state.value.messagesState == ConversationDetailsMessagesState.Loading) {
-            buildInitialListWithDefaultExpandedMessage(messages, contacts)
+            buildInitialListWithExpandedMessage(messages, contacts)
         } else {
             buildListFromCurrentState(messages, contacts)
         }
     }
 
-    private suspend fun buildInitialListWithDefaultExpandedMessage(
+    private suspend fun buildInitialListWithExpandedMessage(
         messages: NonEmptyList<MessageWithLabels>,
         contacts: List<Contact>
     ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
