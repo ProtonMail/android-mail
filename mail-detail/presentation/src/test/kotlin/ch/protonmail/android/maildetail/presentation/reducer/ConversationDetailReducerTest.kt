@@ -175,7 +175,11 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorMovingConversation affects ErrorBar,
             ConversationDetailEvent.ErrorMovingToTrash affects ErrorBar,
             ConversationDetailEvent.ErrorLabelingConversation affects ErrorBar,
-            ConversationDetailEvent.MessagesData(emptyList()) affects Messages,
+            ConversationDetailEvent.MessagesData(emptyList(), null) affects Messages,
+            ConversationDetailEvent.MessagesData(
+                allMessagesFirstExpanded,
+                allMessagesFirstExpanded.first().messageId
+            ) affects listOf(Messages, MessageScroll),
             ConversationDetailEvent.ExpandDecryptedMessage(
                 MessageId(UUID.randomUUID().toString()),
                 ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded
@@ -230,3 +234,8 @@ private object ErrorBar : Entity
 private object BottomSheet : Entity
 private object LinkClick : Entity
 private object MessageScroll : Entity
+
+private val allMessagesFirstExpanded = listOf(
+    ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
+    ConversationDetailMessageUiModelSample.SepWeatherForecast
+)

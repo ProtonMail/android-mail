@@ -166,6 +166,9 @@ class ConversationDetailReducer @Inject constructor(
         operation: ConversationDetailOperation
     ): Effect<MessageId> = when (operation) {
         is ConversationDetailViewAction.RequestScrollTo -> Effect.of(operation.messageId)
+        is ConversationDetailEvent.MessagesData -> operation.requestScrollToMessageId?.let { Effect.of(it) }
+            ?: scrollToMessage
+
         else -> scrollToMessage
     }
 }

@@ -49,7 +49,8 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object NoNetworkError : ConversationDetailEvent, AffectingMessages
 
     data class MessagesData(
-        val messagesUiModels: List<ConversationDetailMessageUiModel>
+        val messagesUiModels: List<ConversationDetailMessageUiModel>,
+        val requestScrollToMessageId: MessageId?
     ) : ConversationDetailEvent, AffectingMessages
 
     data class ConversationBottomSheetEvent(

@@ -86,7 +86,7 @@ class ConversationDetailMessagesReducerTest(
 
             Input(
                 currentState = ConversationDetailsMessagesState.Loading,
-                operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages),
+                operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages, null),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             ),
 
@@ -102,7 +102,16 @@ class ConversationDetailMessagesReducerTest(
                 expectedState = ConversationDetailsMessagesState.Error(
                     message = TextUiModel(string.detail_error_loading_messages)
                 )
-            )
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Loading,
+                operation = ConversationDetailEvent.MessagesData(
+                    messagesUiModels = allMessagesFirstExpanded,
+                    allMessagesFirstExpanded.first().messageId
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(messages = allMessagesFirstExpanded)
+            ),
         )
 
         private val fromErrorState = listOf(
@@ -131,7 +140,7 @@ class ConversationDetailMessagesReducerTest(
                 currentState = ConversationDetailsMessagesState.Error(
                     message = TextUiModel(commonString.x_error_not_logged_in)
                 ),
-                operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages),
+                operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages, null),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             )
         )
@@ -160,7 +169,7 @@ class ConversationDetailMessagesReducerTest(
 
             Input(
                 currentState = ConversationDetailsMessagesState.Data(messages = emptyList()),
-                operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages),
+                operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages, null),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             ),
 

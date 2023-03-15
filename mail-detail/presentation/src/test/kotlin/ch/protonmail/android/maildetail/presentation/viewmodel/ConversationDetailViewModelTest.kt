@@ -368,6 +368,8 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.MessagesData>()
             )
         } returns expectedState
+        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns
+            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
 
         // when
         viewModel.state.test {
@@ -396,6 +398,8 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.MessagesData>()
             )
         } returns expectedState
+        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns
+            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
 
         // when
         viewModel.state.test {
@@ -1238,7 +1242,7 @@ class ConversationDetailViewModelTest {
             // then
             skipItems(1) // Expanding
             val errorState = awaitItem()
-            assertEquals(errorState.error.consume(), TextUiModel(string.decryption_error))
+            assertEquals(TextUiModel(string.decryption_error), errorState.error.consume())
 
             val collapsedMessage = (errorState.messagesState as ConversationDetailsMessagesState.Data)
                 .messages
@@ -1347,6 +1351,39 @@ class ConversationDetailViewModelTest {
                 .messages
                 .first { it.messageId == messageIds.first() }
             assertIs<ConversationDetailMessageUiModel.Expanding>(expandingMessage)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `Should expand automatically the message in the conversation`() = runTest {
+        // given
+        val messages = nonEmptyListOf(
+            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+        )
+        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns messages.first()
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = any()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messages)
+        )
+
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // when
+            advanceUntilIdle()
+            val newState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+
+            // then
+            val expandedMessage =
+                newState
+                    .messages
+                    .first { it.messageId == ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded.messageId }
+            assertIs<ConversationDetailMessageUiModel.Expanded>(expandedMessage)
             cancelAndIgnoreRemainingEvents()
         }
     }

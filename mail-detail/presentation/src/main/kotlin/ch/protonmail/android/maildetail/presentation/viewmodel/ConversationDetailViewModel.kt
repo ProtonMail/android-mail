@@ -214,30 +214,104 @@ class ConversationDetailViewModel @Inject constructor(
                     val messages = messagesEither.getOrElse {
                         return@combine ConversationDetailEvent.ErrorLoadingMessages
                     }
-                    val messagesUiModels = messages.map { messageWithLabels ->
-                        when (val currentMessage = findCurrentStateOfMessage(messageWithLabels.message.messageId)) {
-                            is ConversationDetailMessageUiModel.Expanded ->
-                                conversationMessageMapper.toUiModel(
-                                    messageWithLabels,
-                                    contacts,
-                                    DecryptedMessageBody(
-                                        currentMessage.messageBodyUiModel.messageBody,
-                                        MimeType.from(currentMessage.messageBodyUiModel.mimeType.value)
-                                    ),
-                                )
-
-                            else -> conversationMessageMapper.toUiModel(
-                                messageWithLabels,
-                                contacts
-                            )
-                        }
-                    }
-                    ConversationDetailEvent.MessagesData(messagesUiModels)
+                    val (messagesUiModels, expandedMessageId) = buildMessagesUiModels(messages, contacts)
+                    ConversationDetailEvent.MessagesData(messagesUiModels, expandedMessageId)
                 }
             }
             .onEach(::emitNewStateFrom)
             .launchIn(viewModelScope)
     }
+
+    private suspend fun buildMessagesUiModels(
+        messages: NonEmptyList<MessageWithLabels>,
+        contacts: List<Contact>
+    ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
+        return if (state.value.messagesState == ConversationDetailsMessagesState.Loading) {
+            buildInitialListWithDefaultExpandedMessage(messages, contacts)
+        } else {
+            buildListFromCurrentState(messages, contacts)
+        }
+    }
+
+    private suspend fun buildInitialListWithDefaultExpandedMessage(
+        messages: NonEmptyList<MessageWithLabels>,
+        contacts: List<Contact>
+    ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
+        val newestNonDraftMessageId = messages
+            .filterNot { it.message.labelIds.contains(MailLabelId.System.Drafts.labelId) }
+            .maxByOrNull { it.message.time }
+            ?.message
+            ?.messageId
+
+        val messagesList = if (newestNonDraftMessageId == null) {
+            // Conversation with only drafts
+            messages.map { messageWithLabels -> buildCollapsedMessage(messageWithLabels, contacts) }
+        } else {
+            messages.map { messageWithLabels ->
+                val userId = primaryUserId.first()
+                if (messageWithLabels.message.messageId == newestNonDraftMessageId) {
+                    val decryptedBody = decryptMessageBody(userId, messageWithLabels.message.messageId)
+                    if (decryptedBody == null) {
+                        buildCollapsedMessage(messageWithLabels, contacts)
+                    } else {
+                        buildExpandedMessage(
+                            messageWithLabels,
+                            contacts,
+                            decryptedBody.value,
+                            decryptedBody.mimeType.value
+                        )
+                    }
+                } else {
+                    buildCollapsedMessage(messageWithLabels, contacts)
+                }
+            }
+        }
+
+        return Pair(messagesList, newestNonDraftMessageId)
+    }
+
+    private fun buildListFromCurrentState(
+        messages: NonEmptyList<MessageWithLabels>,
+        contacts: List<Contact>
+    ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
+        val messagesList = messages.map { messageWithLabels ->
+            when (val currentMessage = findCurrentStateOfMessage(messageWithLabels.message.messageId)) {
+                is ConversationDetailMessageUiModel.Expanded ->
+                    buildExpandedMessage(
+                        messageWithLabels,
+                        contacts,
+                        currentMessage.messageBodyUiModel.messageBody,
+                        currentMessage.messageBodyUiModel.mimeType.value
+                    )
+
+                else -> buildCollapsedMessage(messageWithLabels, contacts)
+            }
+        }
+
+        return Pair(messagesList, null)
+    }
+
+    private fun buildCollapsedMessage(
+        messageWithLabels: MessageWithLabels,
+        contacts: List<Contact>
+    ): ConversationDetailMessageUiModel.Collapsed = conversationMessageMapper.toUiModel(
+        messageWithLabels,
+        contacts
+    )
+
+    private fun buildExpandedMessage(
+        messageWithLabels: MessageWithLabels,
+        contacts: List<Contact>,
+        decryptedBodyContent: String,
+        decryptedBodyMimeTypeValue: String
+    ): ConversationDetailMessageUiModel.Expanded = conversationMessageMapper.toUiModel(
+        messageWithLabels,
+        contacts,
+        DecryptedMessageBody(
+            decryptedBodyContent,
+            MimeType.from(decryptedBodyMimeTypeValue)
+        ),
+    )
 
     private fun findCurrentStateOfMessage(messageId: MessageId): ConversationDetailMessageUiModel? {
         val messagesState = (state.value as? ConversationDetailState)
@@ -404,7 +478,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private suspend fun emitNewStateFrom(event: ConversationDetailOperation) {
-        val newState = reducer.newStateFrom(state.value, event)
+        val newState: ConversationDetailState = reducer.newStateFrom(state.value, event)
         mutableDetailState.emit(newState)
     }
 
@@ -486,10 +560,7 @@ class ConversationDetailViewModel @Inject constructor(
         }
         primaryUserId.mapLatest { userId ->
             val contacts = getContacts(userId).getOrElse { emptyList() }
-            val decryptedBody = getDecryptedMessageBody(userId, messageId)
-                .onRight { markMessageAsReadIfRequired(userId, messageId) }
-                .onLeft { emitMessageBodyDecryptError(it, messageId) }
-                .getOrNull()
+            val decryptedBody = decryptMessageBody(userId, messageId)
             decryptedBody?.let { body -> Triple(userId, body, contacts) }
         }
             .filterNotNull()
@@ -507,6 +578,14 @@ class ConversationDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    private suspend fun decryptMessageBody(
+        userId: UserId,
+        messageId: MessageId
+    ): DecryptedMessageBody? = getDecryptedMessageBody(userId, messageId)
+        .onRight { markMessageAsReadIfRequired(userId, messageId) }
+        .onLeft { emitMessageBodyDecryptError(it, messageId) }
+        .getOrNull()
+
     private suspend fun onExpandMessage(
         messageId: MessageId,
         messageWithLabels: MessageWithLabels,
@@ -516,10 +595,11 @@ class ConversationDetailViewModel @Inject constructor(
         emitNewStateFrom(
             ExpandDecryptedMessage(
                 messageId = messageId,
-                conversationDetailMessageUiModel = conversationMessageMapper.toUiModel(
+                conversationDetailMessageUiModel = buildExpandedMessage(
                     messageWithLabels,
                     contacts,
-                    messageBody
+                    messageBody.value,
+                    messageBody.mimeType.value
                 )
             )
         )
@@ -542,7 +622,7 @@ class ConversationDetailViewModel @Inject constructor(
                 emitNewStateFrom(
                     CollapseDecryptedMessage(
                         messageId = messageId,
-                        conversationDetailMessageUiModel = conversationMessageMapper.toUiModel(message, contacts)
+                        conversationDetailMessageUiModel = buildCollapsedMessage(message, contacts)
                     )
                 )
             }
