@@ -18,18 +18,20 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import ch.protonmail.android.mailcommon.domain.usecase.GetInitialChar
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.testdata.message.MessageTestData
-import kotlin.test.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class DetailAvatarUiModelMapperTest {
 
     private val messageId = "messageId"
     private val senderResolvedName = "Sender"
+    private val getInitialChar = GetInitialChar()
 
-    private val detailAvatarUiModelMapper = DetailAvatarUiModelMapper()
+    private val detailAvatarUiModelMapper = DetailAvatarUiModelMapper(getInitialChar)
 
     @Test
     fun `avatar should show draft icon for all drafts`() {
@@ -64,14 +66,17 @@ class DetailAvatarUiModelMapperTest {
     }
 
     @Test
-    fun `avatar should show emoji if the first letter of the sender is an emoji`() {
+    fun `avatar should show question mark when the given sender name is empty`() {
         // Given
-        val message = MessageTestData.buildMessage(id = messageId)
-        val senderResolvedName = "\uD83D\uDC7D Test"
-        val expectedResult = AvatarUiModel.ParticipantInitial(value = "\uD83D\uDC7D")
+        val message = MessageTestData.buildMessage(
+            id = messageId,
+            labelIds = listOf(SystemLabelId.Inbox.labelId.id)
+        )
+        val emptySenderName = ""
+        val expectedResult = AvatarUiModel.ParticipantInitial(value = "?")
 
         // When
-        val result = detailAvatarUiModelMapper(message, senderResolvedName)
+        val result = detailAvatarUiModelMapper(message, emptySenderName)
 
         // Then
         assertEquals(expectedResult, result)

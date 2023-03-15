@@ -18,26 +18,26 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import ch.protonmail.android.mailcommon.domain.usecase.GetInitialChar
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import javax.inject.Inject
 
-class DetailAvatarUiModelMapper @Inject constructor() {
+class DetailAvatarUiModelMapper @Inject constructor(
+    private val getInitialChar: GetInitialChar
+) {
 
     operator fun invoke(message: Message, senderResolvedName: String): AvatarUiModel {
         return if (message.isDraft()) {
             AvatarUiModel.DraftIcon
         } else {
-            AvatarUiModel.ParticipantInitial(senderResolvedName.getInitial())
+            val initial = getInitialChar(senderResolvedName) ?: UnknownParticipant
+            AvatarUiModel.ParticipantInitial(initial)
         }
     }
 
-    private fun String.getInitial(): String {
-        val firstChar = this[0].uppercaseChar()
-        val stringBuilder = StringBuilder().append(firstChar)
-        if (firstChar.isHighSurrogate()) {
-            stringBuilder.append(this[1])
-        }
-        return stringBuilder.toString()
+    companion object {
+
+        private const val UnknownParticipant = "?"
     }
 }

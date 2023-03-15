@@ -18,20 +18,24 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
+import ch.protonmail.android.mailcommon.domain.usecase.GetInitialChar
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import javax.inject.Inject
 
-class MailboxAvatarUiModelMapper @Inject constructor() {
+class MailboxAvatarUiModelMapper @Inject constructor(
+    private val getInitialChar: GetInitialChar
+) {
 
     operator fun invoke(mailboxItem: MailboxItem, participantsResolvedNames: List<String>): AvatarUiModel {
         return if (mailboxItem.isDraftInMessageMode()) {
             AvatarUiModel.DraftIcon
         } else {
             val firstResolvedName = participantsResolvedNames.firstOrNull() ?: UnknownParticipant
-            AvatarUiModel.ParticipantInitial(firstResolvedName.getInitial())
+            val initial = getInitialChar(firstResolvedName) ?: UnknownParticipant
+            AvatarUiModel.ParticipantInitial(initial)
         }
     }
 
@@ -39,17 +43,7 @@ class MailboxAvatarUiModelMapper @Inject constructor() {
         type == MailboxItemType.Message &&
             labelIds.any { it == SystemLabelId.AllDrafts.labelId }
 
-    private fun String.getInitial(): String {
-        val firstChar = this[0].uppercaseChar()
-        val stringBuilder = StringBuilder().append(firstChar)
-        if (firstChar.isHighSurrogate()) {
-            stringBuilder.append(this[1])
-        }
-        return stringBuilder.toString()
-    }
-
     companion object {
-
         private const val UnknownParticipant = "?"
     }
 }

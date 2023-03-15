@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
+import ch.protonmail.android.mailcommon.domain.usecase.GetInitialChar
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
@@ -28,8 +29,9 @@ import kotlin.test.assertEquals
 class MailboxAvatarUiModelMapperTest {
 
     private val participantsResolvedNames = listOf("Test")
+    private val getInitialChar = GetInitialChar()
 
-    private val mailboxAvatarUiModelMapper = MailboxAvatarUiModelMapper()
+    private val mailboxAvatarUiModelMapper = MailboxAvatarUiModelMapper(getInitialChar)
 
     @Test
     fun `avatar should show draft icon for all drafts in message mode`() {
@@ -71,20 +73,6 @@ class MailboxAvatarUiModelMapperTest {
             labelIds = listOf(SystemLabelId.Inbox.labelId)
         )
         val expectedResult = AvatarUiModel.ParticipantInitial(value = "T")
-
-        // When
-        val result = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames)
-
-        // Then
-        assertEquals(expectedResult, result)
-    }
-
-    @Test
-    fun `avatar should show emoji if the first letter of the first participant is an emoji`() {
-        // Given
-        val mailboxItem = buildMailboxItem()
-        val participantsResolvedNames = listOf("\uD83D\uDC7D Test")
-        val expectedResult = AvatarUiModel.ParticipantInitial(value = "\uD83D\uDC7D")
 
         // When
         val result = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames)
