@@ -260,6 +260,7 @@ object Proton {
         val featureFlag = coreArtifact("feature-flag", Versions.Proton.core)
         val humanVerification = coreArtifact("human-verification", Versions.Proton.core)
         val key = coreArtifact("key", Versions.Proton.core)
+        val keyTransparency = coreArtifact("key-transparency", Versions.Proton.core)
         val label = coreArtifact("label", Versions.Proton.core)
         val labelData = coreArtifact("label-data", Versions.Proton.core)
         val labelDomain = coreArtifact("label-domain", Versions.Proton.core)

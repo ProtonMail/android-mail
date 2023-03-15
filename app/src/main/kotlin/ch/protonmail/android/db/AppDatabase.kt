@@ -65,6 +65,9 @@ import me.proton.core.key.data.db.PublicAddressDatabase
 import me.proton.core.key.data.entity.KeySaltEntity
 import me.proton.core.key.data.entity.PublicAddressEntity
 import me.proton.core.key.data.entity.PublicAddressKeyEntity
+import me.proton.core.keytransparency.data.local.KeyTransparencyDatabase
+import me.proton.core.keytransparency.data.local.entity.AddressChangeEntity
+import me.proton.core.keytransparency.data.local.entity.SelfAuditResultEntity
 import me.proton.core.label.data.local.LabelConverters
 import me.proton.core.label.data.local.LabelDatabase
 import me.proton.core.label.data.local.LabelEntity
@@ -139,7 +142,10 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         // in app purchase
         GooglePurchaseEntity::class,
         // observability
-        ObservabilityEventEntity::class
+        ObservabilityEventEntity::class,
+        // key transparency
+        AddressChangeEntity::class,
+        SelfAuditResultEntity::class,
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -180,16 +186,18 @@ abstract class AppDatabase :
     MessageDatabase,
     ConversationDatabase,
     PaymentDatabase,
-    ObservabilityDatabase {
+    ObservabilityDatabase,
+    KeyTransparencyDatabase {
 
     companion object {
 
         const val name = "db-mail"
-        const val version = 3
+        const val version = 4
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
             AppDatabaseMigrations.MIGRATION_2_3,
+            AppDatabaseMigrations.MIGRATION_3_4,
         )
         fun buildDatabase(context: Context): AppDatabase =
             databaseBuilder<AppDatabase>(context, name)

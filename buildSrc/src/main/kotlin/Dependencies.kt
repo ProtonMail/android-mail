@@ -79,6 +79,7 @@ object Dependencies {
         add(Proton.Core.featureFlag)
         add(Proton.Core.humanVerification)
         add(Proton.Core.key)
+        add(Proton.Core.keyTransparency)
         add(Proton.Core.label)
         add(Proton.Core.mailSettings)
         add(Proton.Core.network)
