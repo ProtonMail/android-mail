@@ -56,8 +56,10 @@ import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.runs
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -342,7 +344,7 @@ class MessageLocalDataSourceImplTest {
             MessageBodyTestData.messageBody.copy(body = String(largeMessageBody))
         )
         val savedMessageEntity = MessageBodyEntityTestData.messageBodyEntity.copy(body = null)
-        coEvery { messageBodyFileStorage.saveMessageBody(userId1, messageWithBody.messageBody) } returns true
+        coEvery { messageBodyFileStorage.saveMessageBody(userId1, messageWithBody.messageBody) } just runs
 
         // When
         messageLocalDataSource.upsertMessageWithBody(userId1, messageWithBody)
@@ -372,6 +374,27 @@ class MessageLocalDataSourceImplTest {
         verifyLabelsUpdatedFor(messageWithBody)
         coVerify { messageBodyDao.insertOrUpdate(savedMessageEntity) }
         coVerify { messageBodyFileStorage wasNot called }
+    }
+
+    @Test(expected = MessageBodyFileWriteException::class)
+    fun `should not write to the db when storing a large body in a file fails`() = runTest {
+        // Given
+        val largeMessageBody = ByteArray(501 * 1024)
+        val messageWithBody = MessageWithBody(
+            MessageTestData.message,
+            MessageBodyTestData.messageBody.copy(body = String(largeMessageBody))
+        )
+        coEvery {
+            messageBodyFileStorage.saveMessageBody(userId1, messageWithBody.messageBody)
+        } throws MessageBodyFileWriteException
+
+        // When
+        messageLocalDataSource.upsertMessageWithBody(userId1, messageWithBody)
+
+        // Then
+        coVerify { messageDao wasNot called }
+        coVerify { messageBodyDao wasNot called }
+        coVerify { labelDao wasNot called }
     }
 
     @Test

@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
@@ -30,7 +31,6 @@ import me.proton.core.domain.entity.UserId
 import org.junit.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlin.test.assertNull
 
 internal class MessageBodyFileStorageTest {
 
@@ -58,8 +58,8 @@ internal class MessageBodyFileStorageTest {
         assertEquals(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY, actualMessageBody)
     }
 
-    @Test
-    fun `should return null when reading body from internal storage fails`() = runTest {
+    @Test(expected = MessageBodyFileReadException::class)
+    fun `should throw an exception when reading body from internal storage fails`() = runTest {
         // Given
         coEvery {
             internalFileStorageMock.readFromFile(
@@ -70,17 +70,17 @@ internal class MessageBodyFileStorageTest {
         } returns null
 
         // When
-        val actualMessageBody = messageBodyFileStorage.readMessageBody(
+        messageBodyFileStorage.readMessageBody(
             UserIdSample.Primary,
             MessageIdSample.Invoice
         )
 
         // Then
-        assertNull(actualMessageBody)
+        // Exception is thrown
     }
 
     @Test
-    fun `should save message body in internal storage and return true on success`() = runTest {
+    fun `should save message body in internal storage`() = runTest {
         // Given
         val savedBody = MessageBodyTestData.buildMessageBody(
             messageId = MessageIdSample.Invoice,
@@ -96,14 +96,21 @@ internal class MessageBodyFileStorageTest {
         } returns true
 
         // When
-        val messageSaved = messageBodyFileStorage.saveMessageBody(UserIdSample.Primary, savedBody)
+        messageBodyFileStorage.saveMessageBody(UserIdSample.Primary, savedBody)
 
         // Then
-        assertTrue(messageSaved)
+        coVerify {
+            internalFileStorageMock.writeToFile(
+                userId = UserIdSample.Primary,
+                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id),
+                content = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
+            )
+        }
     }
 
-    @Test
-    fun `should save message body in internal storage and return false on failure`() = runTest {
+    @Test(expected = MessageBodyFileWriteException::class)
+    fun `should throw an exception when saving message body in internal storage fails`() = runTest {
         // Given
         val savedBody = MessageBodyTestData.buildMessageBody(
             messageId = MessageIdSample.Invoice,
@@ -119,10 +126,10 @@ internal class MessageBodyFileStorageTest {
         } returns false
 
         // When
-        val messageSaved = messageBodyFileStorage.saveMessageBody(UserIdSample.Primary, savedBody)
+        messageBodyFileStorage.saveMessageBody(UserIdSample.Primary, savedBody)
 
         // Then
-        assertFalse(messageSaved)
+        // Exception is thrown
     }
 
     @Test

@@ -23,23 +23,29 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
+import kotlin.jvm.Throws
 
 class MessageBodyFileStorage @Inject constructor(
     private val internalFileStorage: InternalFileStorage
 ) {
 
-    suspend fun readMessageBody(userId: UserId, messageId: MessageId): String? = internalFileStorage.readFromFile(
+    @Throws(MessageBodyFileReadException::class)
+    suspend fun readMessageBody(userId: UserId, messageId: MessageId): String = internalFileStorage.readFromFile(
         userId = userId,
         folder = InternalFileStorage.Folder.MESSAGE_BODIES,
         fileIdentifier = InternalFileStorage.FileIdentifier(messageId.id)
-    )
+    ) ?: throw MessageBodyFileReadException
 
-    suspend fun saveMessageBody(userId: UserId, messageBody: MessageBody): Boolean = internalFileStorage.writeToFile(
-        userId = userId,
-        folder = InternalFileStorage.Folder.MESSAGE_BODIES,
-        fileIdentifier = InternalFileStorage.FileIdentifier(messageBody.messageId.id),
-        content = messageBody.body
-    )
+    @Throws(MessageBodyFileWriteException::class)
+    suspend fun saveMessageBody(userId: UserId, messageBody: MessageBody) {
+        val messageBodySaved = internalFileStorage.writeToFile(
+            userId = userId,
+            folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+            fileIdentifier = InternalFileStorage.FileIdentifier(messageBody.messageId.id),
+            content = messageBody.body
+        )
+        if (!messageBodySaved) throw MessageBodyFileWriteException
+    }
 
     suspend fun deleteMessageBody(userId: UserId, messageId: MessageId): Boolean = internalFileStorage.deleteFile(
         userId = userId,
@@ -50,3 +56,6 @@ class MessageBodyFileStorage @Inject constructor(
     suspend fun deleteAllMessageBodies(userId: UserId): Boolean =
         internalFileStorage.deleteFolder(userId, InternalFileStorage.Folder.MESSAGE_BODIES)
 }
+
+object MessageBodyFileReadException : RuntimeException()
+object MessageBodyFileWriteException : RuntimeException()
