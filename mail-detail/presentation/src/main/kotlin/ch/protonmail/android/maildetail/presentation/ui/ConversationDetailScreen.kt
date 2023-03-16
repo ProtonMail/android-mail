@@ -145,6 +145,9 @@ fun ConversationDetailScreen(
                 },
                 onOpenMessageBodyLink = openMessageBodyLink,
                 onRequestScrollTo = { viewModel.submit(ConversationDetailViewAction.RequestScrollTo(it)) },
+                onShowAllAttachmentsForMessage = {
+                    viewModel.submit(ConversationDetailViewAction.ShowAllAttachmentsForMessage(it))
+                }
             ),
             showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
@@ -246,7 +249,8 @@ fun ConversationDetailScreen(
                     onCollapse = actions.onCollapseMessage,
                     onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                     onRequestScrollTo = actions.onRequestScrollTo,
-                    onOpenMessageBodyLink = actions.onOpenMessageBodyLink
+                    onOpenMessageBodyLink = actions.onOpenMessageBodyLink,
+                    onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
@@ -347,7 +351,8 @@ object ConversationDetailScreen {
         val onCollapseMessage: (MessageId) -> Unit,
         val onMessageBodyLinkClicked: (url: String) -> Unit,
         val onOpenMessageBodyLink: (url: String) -> Unit,
-        val onRequestScrollTo: (MessageId) -> Unit
+        val onRequestScrollTo: (MessageId) -> Unit,
+        val onShowAllAttachmentsForMessage: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -364,7 +369,8 @@ object ConversationDetailScreen {
                 onCollapseMessage = {},
                 onMessageBodyLinkClicked = {},
                 onOpenMessageBodyLink = {},
-                onRequestScrollTo = {}
+                onRequestScrollTo = {},
+                onShowAllAttachmentsForMessage = {}
             )
         }
     }

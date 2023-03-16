@@ -148,7 +148,8 @@ private fun ConversationDetailExpandedItem(
                 bodyBounds = coordinates.boundsInParent()
             },
             messageBodyUiModel = uiModel.messageBodyUiModel,
-            onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) }
+            onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) },
+            onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(messageId) },
         )
     }
 }
@@ -159,6 +160,7 @@ object ConversationDetailItem {
         val onExpand: (MessageId) -> Unit,
         val onMessageBodyLinkClicked: (url: String) -> Unit,
         val onOpenMessageBodyLink: (url: String) -> Unit,
-        val onRequestScrollTo: (MessageId) -> Unit
+        val onRequestScrollTo: (MessageId) -> Unit,
+        val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
     )
 }

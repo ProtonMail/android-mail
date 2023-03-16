@@ -264,7 +264,8 @@ private fun MessageDetailContent(
                 is MessageBodyState.Loading -> ProtonCenteredProgress()
                 is MessageBodyState.Data -> MessageBody(
                     messageBodyUiModel = messageBodyState.messageBodyUiModel,
-                    onMessageBodyLinkClicked = onMessageBodyLinkClicked
+                    onMessageBodyLinkClicked = onMessageBodyLinkClicked,
+                    onShowAllAttachments = {}
                 )
                 is MessageBodyState.Error.Data -> MessageBodyLoadingError(
                     messageBodyState = messageBodyState,
@@ -274,7 +275,8 @@ private fun MessageDetailContent(
                     ProtonErrorMessage(errorMessage = stringResource(id = R.string.decryption_error))
                     MessageBody(
                         messageBodyUiModel = messageBodyState.encryptedMessageBody,
-                        onMessageBodyLinkClicked = onMessageBodyLinkClicked
+                        onMessageBodyLinkClicked = onMessageBodyLinkClicked,
+                        onShowAllAttachments = {}
                     )
                 }
             }

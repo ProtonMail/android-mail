@@ -53,7 +53,8 @@ import me.proton.core.compose.theme.defaultSmallWeak
 internal fun MessageBody(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
-    onMessageBodyLinkClicked: (uri: Uri) -> Unit
+    onMessageBodyLinkClicked: (uri: Uri) -> Unit,
+    onShowAllAttachments: () -> Unit
 ) {
     val state = rememberWebViewStateWithHTMLData(
         data = messageBodyUiModel.messageBody,
@@ -89,7 +90,7 @@ internal fun MessageBody(
         AttachmentFooter(
             modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
             messageBodyAttachments = messageBodyUiModel.attachments,
-            onShowAllAttachments = {}
+            onShowAllAttachments = onShowAllAttachments
         )
     }
 }

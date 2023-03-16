@@ -58,7 +58,7 @@ fun AttachmentItem(attachmentUiModel: AttachmentUiModel) {
     ) {
         Image(
             painter = painterResource(id = getDrawableForMimeType(attachmentUiModel.mimeType)),
-            contentDescription = null,
+            contentDescription = null
         )
         Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
         Text(
