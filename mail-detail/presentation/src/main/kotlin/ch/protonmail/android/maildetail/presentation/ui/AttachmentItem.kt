@@ -31,11 +31,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.maildetail.domain.model.getDrawableForMimeType
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
+import ch.protonmail.android.maildetail.presentation.model.getContentDescriptionForMimeTpye
+import ch.protonmail.android.maildetail.presentation.model.getDrawableForMimeType
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -58,7 +61,10 @@ fun AttachmentItem(attachmentUiModel: AttachmentUiModel) {
     ) {
         Image(
             painter = painterResource(id = getDrawableForMimeType(attachmentUiModel.mimeType)),
-            contentDescription = null
+            contentDescription = stringResource(
+                id = R.string.attachment_type_description,
+                stringResource(id = getContentDescriptionForMimeTpye(attachmentUiModel.mimeType))
+            )
         )
         Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
         Text(

@@ -16,14 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.model
+package ch.protonmail.android.maildetail.presentation.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import ch.protonmail.android.maildetail.presentation.R
 import me.proton.core.presentation.R.drawable
 
-sealed class AttachmentMimeType(val mimeTypes: List<String>) {
+sealed class AttachmentMimeType(@StringRes val contentDescription: Int, val mimeTypes: List<String>) {
     object Audio : AttachmentMimeType(
-        listOf(
+        contentDescription = R.string.attachment_type_audio,
+        mimeTypes = listOf(
             "audio/x-m4a",
             "audio/mpeg3",
             "audio/x-mpeg-3",
@@ -35,7 +38,8 @@ sealed class AttachmentMimeType(val mimeTypes: List<String>) {
     )
 
     object Doc : AttachmentMimeType(
-        listOf(
+        contentDescription = R.string.attachment_type_document,
+        mimeTypes = listOf(
             "application/doc",
             "application/ms-doc",
             "application/msword",
@@ -44,7 +48,8 @@ sealed class AttachmentMimeType(val mimeTypes: List<String>) {
     )
 
     object Image : AttachmentMimeType(
-        listOf(
+        contentDescription = R.string.attachment_type_image,
+        mimeTypes = listOf(
             "image/jpg",
             "image/jpeg",
             "image/png"
@@ -52,13 +57,15 @@ sealed class AttachmentMimeType(val mimeTypes: List<String>) {
     )
 
     object Pdf : AttachmentMimeType(
-        listOf(
+        contentDescription = R.string.attachment_type_pdf,
+        mimeTypes = listOf(
             "application/pdf"
         )
     )
 
     object Ppt : AttachmentMimeType(
-        listOf(
+        contentDescription = R.string.attachment_type_presentation,
+        mimeTypes = listOf(
             "application/mspowerpoint",
             "application/powerpoint",
             "application/vnd.ms-powerpoint",
@@ -68,13 +75,15 @@ sealed class AttachmentMimeType(val mimeTypes: List<String>) {
     )
 
     object Txt : AttachmentMimeType(
-        listOf(
+        contentDescription = R.string.attachment_type_text,
+        mimeTypes = listOf(
             "text/plain"
         )
     )
 
     object Video : AttachmentMimeType(
-        listOf(
+        contentDescription = R.string.attachment_type_video,
+        mimeTypes = listOf(
             "video/quicktime",
             "video/x-quicktime",
             "image/mov",
@@ -88,7 +97,8 @@ sealed class AttachmentMimeType(val mimeTypes: List<String>) {
     )
 
     object Xls : AttachmentMimeType(
-        listOf(
+        contentDescription = R.string.attachment_type_excel,
+        mimeTypes = listOf(
             "application/excel",
             "application/vnd.ms-excel",
             "application/x-excel",
@@ -98,7 +108,8 @@ sealed class AttachmentMimeType(val mimeTypes: List<String>) {
     )
 
     object Zip : AttachmentMimeType(
-        listOf(
+        contentDescription = R.string.attachment_type_zip,
+        mimeTypes = listOf(
             "application/zip"
         )
     )
@@ -117,4 +128,18 @@ fun getDrawableForMimeType(mimeType: String) = when {
     AttachmentMimeType.Video.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_video_24
     AttachmentMimeType.Xls.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_excel_24
     else -> drawable.ic_proton_file_type_unknown_24
+}
+
+@StringRes
+fun getContentDescriptionForMimeTpye(mimeType: String) = when {
+    AttachmentMimeType.Doc.mimeTypes.contains(mimeType) -> AttachmentMimeType.Doc.contentDescription
+    AttachmentMimeType.Pdf.mimeTypes.contains(mimeType) -> AttachmentMimeType.Pdf.contentDescription
+    AttachmentMimeType.Zip.mimeTypes.contains(mimeType) -> AttachmentMimeType.Zip.contentDescription
+    AttachmentMimeType.Image.mimeTypes.contains(mimeType) -> AttachmentMimeType.Image.contentDescription
+    AttachmentMimeType.Txt.mimeTypes.contains(mimeType) -> AttachmentMimeType.Txt.contentDescription
+    AttachmentMimeType.Audio.mimeTypes.contains(mimeType) -> AttachmentMimeType.Audio.contentDescription
+    AttachmentMimeType.Ppt.mimeTypes.contains(mimeType) -> AttachmentMimeType.Ppt.contentDescription
+    AttachmentMimeType.Video.mimeTypes.contains(mimeType) -> AttachmentMimeType.Video.contentDescription
+    AttachmentMimeType.Xls.mimeTypes.contains(mimeType) -> AttachmentMimeType.Xls.contentDescription
+    else -> R.string.attachment_type_unknown
 }
