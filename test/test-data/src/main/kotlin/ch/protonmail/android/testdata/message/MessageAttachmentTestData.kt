@@ -55,7 +55,8 @@ object MessageAttachmentTestData {
         disposition = null,
         keyPackets = null,
         signature = null,
-        encSignature = null
+        encSignature = null,
+        headers = emptyMap()
     )
 
     val image = MessageAttachment(
@@ -66,7 +67,8 @@ object MessageAttachmentTestData {
         disposition = null,
         keyPackets = null,
         signature = null,
-        encSignature = null
+        encSignature = null,
+        headers = emptyMap()
     )
 
 }

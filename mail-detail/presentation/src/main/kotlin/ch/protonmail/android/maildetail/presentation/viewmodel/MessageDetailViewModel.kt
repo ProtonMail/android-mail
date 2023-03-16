@@ -117,6 +117,7 @@ class MessageDetailViewModel @Inject constructor(
         observeBottomBarActions(messageId)
     }
 
+    @Suppress("ComplexMethod")
     fun submit(action: MessageViewAction) {
         when (action) {
             is MessageViewAction.Reload -> reloadMessageBody(messageId)

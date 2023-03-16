@@ -177,7 +177,8 @@ class ConversationDetailViewModel @Inject constructor(
             is CollapseMessage -> onCollapseMessage(action.messageId)
             is MessageBodyLinkClicked -> onMessageBodyLinkClicked(action)
             is RequestScrollTo -> onRequestScrollTo(action)
-            is ConversationDetailViewAction.ShowAllAttachmentsForMessage -> showAllAttachmentsForMessage(action.messageId)
+            is ConversationDetailViewAction.ShowAllAttachmentsForMessage ->
+                showAllAttachmentsForMessage(action.messageId)
         }
     }
 
