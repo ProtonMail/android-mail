@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.e2e.login
 import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.di.LocalhostApi
 import ch.protonmail.android.uitest.di.LocalhostApiModule
+import ch.protonmail.android.uitest.di.ServerProofTestModule
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -32,7 +33,7 @@ import org.junit.Before
 import org.junit.Test
 
 @HiltAndroidTest
-@UninstallModules(LocalhostApiModule::class)
+@UninstallModules(LocalhostApiModule::class, ServerProofTestModule::class)
 class LoginFlowTests : BaseTest() {
 
     @JvmField @BindValue @LocalhostApi
