@@ -264,12 +264,12 @@ internal class AttachmentMimeTypeTest(
                 xls +
                 zip
             ).map {
-                val testName = """
+            val testName = """
                 Group: ${it.group}
                 MimeType: ${it.mimeType}
             """.trimIndent()
-                arrayOf(testName, it)
-            }
+            arrayOf(testName, it)
+        }
     }
 
     data class TestInput(
