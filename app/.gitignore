@@ -1,1 +1,4 @@
 /build
+
+# UI Tests Assets folder
+src/uiTest/assets/network-mocks
