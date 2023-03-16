@@ -138,7 +138,8 @@ fun MessageDetailScreen(
                 onOpenMessageBodyLink = openMessageBodyLink,
                 onReplyClick = { showFeatureMissingSnackbar() },
                 onReplyAllClick = { showFeatureMissingSnackbar() },
-                onDeleteClick = { showFeatureMissingSnackbar() }
+                onDeleteClick = { showFeatureMissingSnackbar() },
+                onShowAllAttachmentsClicked = { viewModel.submit(MessageViewAction.ShowAllAttachments) }
             ),
             showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
@@ -230,7 +231,8 @@ fun MessageDetailScreen(
                 messageBodyState = state.messageBodyState,
                 onReload = actions.onReload,
                 onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar,
+                onShowAllAttachmentsClicked = actions.onShowAllAttachmentsClicked
             )
             is MessageMetadataState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
@@ -247,6 +249,7 @@ private fun MessageDetailContent(
     messageBodyState: MessageBodyState,
     onReload: () -> Unit,
     onMessageBodyLinkClicked: (uri: Uri) -> Unit,
+    onShowAllAttachmentsClicked: () -> Unit,
     showFeatureMissingSnackbar: () -> Unit
 ) {
     LazyColumn(
@@ -265,7 +268,7 @@ private fun MessageDetailContent(
                 is MessageBodyState.Data -> MessageBody(
                     messageBodyUiModel = messageBodyState.messageBodyUiModel,
                     onMessageBodyLinkClicked = onMessageBodyLinkClicked,
-                    onShowAllAttachments = {}
+                    onShowAllAttachments = onShowAllAttachmentsClicked
                 )
                 is MessageBodyState.Error.Data -> MessageBodyLoadingError(
                     messageBodyState = messageBodyState,
@@ -276,7 +279,7 @@ private fun MessageDetailContent(
                     MessageBody(
                         messageBodyUiModel = messageBodyState.encryptedMessageBody,
                         onMessageBodyLinkClicked = onMessageBodyLinkClicked,
-                        onShowAllAttachments = {}
+                        onShowAllAttachments = onShowAllAttachmentsClicked
                     )
                 }
             }
@@ -301,7 +304,8 @@ object MessageDetailScreen {
         val onOpenMessageBodyLink: (uri: Uri) -> Unit,
         val onReplyClick: () -> Unit,
         val onReplyAllClick: () -> Unit,
-        val onDeleteClick: () -> Unit
+        val onDeleteClick: () -> Unit,
+        val onShowAllAttachmentsClicked: () -> Unit
     ) {
 
         companion object {
@@ -319,7 +323,8 @@ object MessageDetailScreen {
                 onOpenMessageBodyLink = {},
                 onReplyClick = {},
                 onReplyAllClick = {},
-                onDeleteClick = {}
+                onDeleteClick = {},
+                onShowAllAttachmentsClicked = {}
             )
         }
     }
