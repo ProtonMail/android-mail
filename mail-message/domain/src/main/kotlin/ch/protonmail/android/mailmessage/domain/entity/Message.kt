@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.domain.entity
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailpagination.domain.model.PageItem
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -57,10 +58,12 @@ data class Message(
     val flags: Long,
     val attachmentCount: AttachmentCount
 ) : PageItem {
+
     override val id: String = messageId.id
     override val read: Boolean by lazy { !unread }
     override val keywords: String by lazy { subject + sender + toList + ccList + bccList }
-}
 
-fun Message.expirationTimeOrNull(): Duration? =
-    expirationTime.takeIf { it > 0 }?.seconds
+    fun expirationTimeOrNull(): Duration? = expirationTime.takeIf { it > 0 }?.seconds
+
+    fun isDraft() = labelIds.any { it == SystemLabelId.AllDrafts.labelId }
+}

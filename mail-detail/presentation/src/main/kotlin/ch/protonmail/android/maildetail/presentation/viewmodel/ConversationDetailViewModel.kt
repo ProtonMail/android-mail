@@ -238,7 +238,7 @@ class ConversationDetailViewModel @Inject constructor(
         contacts: List<Contact>
     ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
         val newestNonDraftMessageId = messages
-            .filterNot { it.message.labelIds.contains(MailLabelId.System.Drafts.labelId) }
+            .filterNot { it.message.isDraft() }
             .maxByOrNull { it.message.time }
             ?.message
             ?.messageId

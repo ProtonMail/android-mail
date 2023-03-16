@@ -19,22 +19,18 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import javax.inject.Inject
 
 class DetailAvatarUiModelMapper @Inject constructor() {
 
     operator fun invoke(message: Message, senderResolvedName: String): AvatarUiModel {
-
         return if (message.isDraft()) {
             AvatarUiModel.DraftIcon
         } else {
             AvatarUiModel.ParticipantInitial(senderResolvedName.getInitial())
         }
     }
-
-    private fun Message.isDraft() = labelIds.any { it == SystemLabelId.AllDrafts.labelId }
 
     private fun String.getInitial(): String {
         val firstChar = this[0].uppercaseChar()
