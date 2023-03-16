@@ -243,8 +243,9 @@ class ConversationDetailViewModel @Inject constructor(
             ?.message
             ?.messageId
 
-        val messagesList = if (newestNonDraftMessageId == null) {
-            // Conversation with only drafts
+        val conversationWithOnlyDrafts = newestNonDraftMessageId == null
+
+        val messagesList = if (conversationWithOnlyDrafts) {
             messages.map { messageWithLabels -> buildCollapsedMessage(messageWithLabels, contacts) }
         } else {
             messages.map { messageWithLabels ->
