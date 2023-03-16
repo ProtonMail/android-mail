@@ -84,6 +84,7 @@ import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
+import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
@@ -848,6 +849,39 @@ class MessageDetailViewModelTest {
         }
     }
 
+    @Test
+    fun `all attachments are shown when all attachments should be shown`() = runTest {
+        // Given
+        val expectedMessageBody = DecryptedMessageBody(
+            value = "Plain message body",
+            mimeType = MimeType.PlainText,
+            attachments = listOf(
+                MessageAttachmentTestData.invoice,
+                MessageAttachmentTestData.document,
+                MessageAttachmentTestData.documentWithMultipleDots,
+                MessageAttachmentTestData.image
+            )
+        )
+        coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
+        every {
+            messageBodyUiModelMapper.toUiModel(expectedMessageBody)
+        } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
+
+
+        viewModel.state.test {
+            initialStateEmitted()
+            messageBodyWithAttachmentEmitted()
+
+            // When
+            viewModel.submit(MessageViewAction.ShowAllAttachments)
+
+            // Then
+            val actualDataState = awaitItem().messageBodyState as MessageBodyState.Data
+            assertEquals(4, actualDataState.messageBodyUiModel.attachments?.attachments?.size)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {
         assertEquals(MessageDetailState.Loading, awaitItem())
     }
@@ -857,6 +891,17 @@ class MessageDetailViewModelTest {
             MessageDetailState.Loading.copy(
                 messageBodyState = MessageBodyState.Data(
                     MessageBodyUiModelTestData.plainTextMessageBodyUiModel
+                )
+            ),
+            awaitItem()
+        )
+    }
+
+    private suspend fun ReceiveTurbine<MessageDetailState>.messageBodyWithAttachmentEmitted() {
+        assertEquals(
+            MessageDetailState.Loading.copy(
+                messageBodyState = MessageBodyState.Data(
+                    MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
                 )
             ),
             awaitItem()

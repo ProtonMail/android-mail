@@ -43,6 +43,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMa
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -131,6 +132,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.LabelAsToggleAction -> onLabelSelected(action.labelId)
             is MessageViewAction.LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
             is MessageViewAction.MessageBodyLinkClicked -> onMessageBodyLinkClicked(action.uri)
+            is MessageViewAction.ShowAllAttachments -> onShowAllAttachmentsClicked()
         }.exhaustive
     }
 
@@ -377,6 +379,22 @@ class MessageDetailViewModel @Inject constructor(
                 )
             emitNewStateFrom(operation)
         }
+    }
+
+    private fun onShowAllAttachmentsClicked() {
+        val state = state.value.messageBodyState as? MessageBodyState.Data
+        if (state == null) {
+            Timber.e("MessageBodyState is not MessageBodyState.Data")
+            return
+        }
+        val operation = MessageDetailEvent.MessageBodyEvent(
+            state.messageBodyUiModel.copy(
+                attachments = state.messageBodyUiModel.attachments?.copy(
+                    limit = state.messageBodyUiModel.attachments.attachments.size
+                )
+            )
+        )
+        viewModelScope.launch { emitNewStateFrom(operation) }
     }
 
     private fun onLabelSelected(labelId: LabelId) {

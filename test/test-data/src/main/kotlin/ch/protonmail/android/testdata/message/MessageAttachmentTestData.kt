@@ -58,4 +58,15 @@ object MessageAttachmentTestData {
         encSignature = null
     )
 
+    val image = MessageAttachment(
+        attachmentId = AttachmentId("image"),
+        name = "image.jpg",
+        size = 1234,
+        mimeType = "image/jpeg",
+        disposition = null,
+        keyPackets = null,
+        signature = null,
+        encSignature = null
+    )
+
 }

@@ -87,4 +87,5 @@ sealed interface MessageViewAction : MessageDetailOperation {
     data class LabelAsToggleAction(val labelId: LabelId) : MessageViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(val archiveSelected: Boolean) : MessageViewAction, AffectingBottomSheet
     data class MessageBodyLinkClicked(val uri: Uri) : MessageViewAction
+    object ShowAllAttachments : MessageViewAction
 }

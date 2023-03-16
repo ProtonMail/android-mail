@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.testdata.message
 
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 
@@ -27,6 +28,20 @@ object MessageBodyUiModelTestData {
         MessageBodyTestData.messageBody.body,
         mimeType = MimeTypeUiModel.PlainText,
         attachments = null
+    )
+
+    val messageBodyWithAttachmentsUiModel = MessageBodyUiModel(
+        MessageBodyTestData.messageBody.body,
+        mimeType = MimeTypeUiModel.PlainText,
+        attachments = MessageBodyAttachments(
+            limit = 3,
+            attachments = listOf(
+                AttachmentUiModelTestData.invoice,
+                AttachmentUiModelTestData.document,
+                AttachmentUiModelTestData.documentWithMultipleDots,
+                AttachmentUiModelTestData.image
+            )
+        )
     )
 
     val htmlMessageBodyUiModel = MessageBodyUiModel(
