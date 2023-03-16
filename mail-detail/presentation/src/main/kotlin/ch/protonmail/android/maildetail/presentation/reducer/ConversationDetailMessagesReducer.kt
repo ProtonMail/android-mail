@@ -71,6 +71,12 @@ class ConversationDetailMessagesReducer @Inject constructor() {
 
             is ConversationDetailEvent.ErrorExpandingDecryptMessageError ->
                 currentState.toCollapsedState(operation.messageId)
+
+            is ConversationDetailEvent.ShowAllAttachmentsForMessage ->
+                currentState.toNewExpandCollapseState(
+                    operation.messageId,
+                    operation.conversationDetailMessageUiModel
+                )
         }
 
     private fun ConversationDetailsMessagesState.toNewStateForNoNetworkError() =

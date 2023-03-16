@@ -24,6 +24,8 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import kotlinx.collections.immutable.persistentListOf
@@ -111,6 +113,22 @@ object ConversationDetailMessageUiModelSample {
         messageWithLabels = MessageWithLabelsSample.AnotherInvoiceWithoutLabels
     )
 
+    fun invoiceExpandedWithAttachments(limit: Int) = buildExpanded(
+        messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel,
+        messageBodyUiModel = MessageDetailBodyUiModelSample.build(
+            messageBody = "Invoice",
+            attachments = MessageBodyAttachments(
+                limit = limit,
+                attachments = listOf(
+                    AttachmentUiModelSample.document,
+                    AttachmentUiModelSample.documentWithReallyLongFileName,
+                    AttachmentUiModelSample.invoice,
+                    AttachmentUiModelSample.image
+                )
+            )
+        )
+    )
+
     @Suppress("LongParameterList")
     private fun buildCollapsed(
         messageWithLabels: MessageWithLabels = MessageWithLabelsSample.build(),
@@ -140,7 +158,8 @@ object ConversationDetailMessageUiModelSample {
         messageWithLabels: MessageWithLabels = MessageWithLabelsSample.build(),
         message: Message = messageWithLabels.message,
         avatar: AvatarUiModel = AvatarUiModel.ParticipantInitial(message.sender.name.substring(0, 1)),
-        isStarred: Boolean = false
+        isStarred: Boolean = false,
+        messageBodyUiModel: MessageBodyUiModel = MessageDetailBodyUiModelSample.build(UUID.randomUUID().toString())
     ): ConversationDetailMessageUiModel.Expanded = ConversationDetailMessageUiModel.Expanded(
         isUnread = message.unread,
         messageId = message.messageId,
@@ -161,7 +180,7 @@ object ConversationDetailMessageUiModelSample {
             bccRecipients = emptyList(),
             labels = persistentListOf()
         ),
-        messageBodyUiModel = MessageDetailBodyUiModelSample.build(UUID.randomUUID().toString()),
+        messageBodyUiModel = messageBodyUiModel,
     )
 
     private fun buildExpanding(

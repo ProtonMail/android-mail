@@ -234,6 +234,26 @@ class ConversationDetailMessagesReducerTest(
                     allMessages.first().messageId
                 ),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(
+                    messages = listOf(
+                        ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3),
+                        ConversationDetailMessageUiModelSample.SepWeatherForecast
+                    )
+                ),
+                operation = ConversationDetailEvent.ShowAllAttachmentsForMessage(
+                    messageId = ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3).messageId,
+                    conversationDetailMessageUiModel =
+                    ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(4)
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(
+                    messages = listOf(
+                        ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(4),
+                        ConversationDetailMessageUiModelSample.SepWeatherForecast
+                    )
+                )
             )
         )
 

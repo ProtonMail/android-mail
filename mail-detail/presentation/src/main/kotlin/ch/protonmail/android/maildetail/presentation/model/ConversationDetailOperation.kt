@@ -66,12 +66,16 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     data class ExpandDecryptedMessage(
         val messageId: MessageId,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Expanded
-    ) :
-        ConversationDetailEvent, AffectingMessages
+    ) : ConversationDetailEvent, AffectingMessages
 
     data class CollapseDecryptedMessage(
         val messageId: MessageId,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed,
+    ) : ConversationDetailEvent, AffectingMessages
+
+    data class ShowAllAttachmentsForMessage(
+        val messageId: MessageId,
+        val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Expanded
     ) : ConversationDetailEvent, AffectingMessages
 
     data class ErrorExpandingDecryptMessageError(val messageId: MessageId) :
@@ -109,4 +113,5 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class CollapseMessage(val messageId: MessageId) : ConversationDetailViewAction
     data class MessageBodyLinkClicked(val url: String) : ConversationDetailViewAction
     data class RequestScrollTo(val messageId: MessageId) : ConversationDetailViewAction
+    data class ShowAllAttachmentsForMessage(val messageId: MessageId) : ConversationDetailViewAction
 }

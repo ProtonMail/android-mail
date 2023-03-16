@@ -71,6 +71,7 @@ import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetSta
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
+import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -1169,6 +1170,29 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
+    fun `should emit show all attachment when view action is triggered`() = runTest {
+        // Given
+        val (messageIds, expectedExpanded) = setupExpandedWithAttachmentsState()
+
+        viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(ConversationDetailViewAction.ExpandMessage(expectedExpanded.messageId))
+            advanceUntilIdle()
+
+            // When
+            viewModel.submit(ConversationDetailViewAction.ShowAllAttachmentsForMessage(messageIds.first()))
+            advanceUntilIdle()
+
+            // Then
+            val newMessagesState = (lastEmittedItem().messagesState as ConversationDetailsMessagesState.Data).messages
+
+            assertEquals(expectedExpanded, newMessagesState.first())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+
+    @Test
     fun `should mark message as read when expanding it successfully`() = runTest {
         // given
         val (messageIds, expectedExpanded) = setupCollapsedToExpandMessagesState(withUnreadMessage = true)
@@ -1389,8 +1413,9 @@ class ConversationDetailViewModelTest {
     }
 
     @Suppress("LongMethod")
-    private fun setupCollapsedToExpandMessagesState(withUnreadMessage: Boolean = false):
-        Pair<List<MessageId>, ConversationDetailMessageUiModel> {
+    private fun setupCollapsedToExpandMessagesState(
+        withUnreadMessage: Boolean = false
+    ): Pair<List<MessageId>, ConversationDetailMessageUiModel> {
         val (invoiceUiMessage, invoiceMessage) = if (withUnreadMessage) {
             Pair(ConversationDetailMessageUiModelSample.UnreadInvoice, MessageWithLabelsSample.UnreadInvoice)
         } else {
@@ -1509,6 +1534,67 @@ class ConversationDetailViewModelTest {
         every { conversationMessageMapper.toUiModel(any(), any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
         return Pair(allCollapsed.map { it.messageId }, ConversationDetailMessageUiModelSample.InvoiceWithLabel)
+    }
+
+    private fun setupExpandedWithAttachmentsState(): Pair<List<MessageId>, ConversationDetailMessageUiModel> {
+        val expected = invoiceExpandedWithAttachments(4)
+
+        val allCollapsed = listOf(
+            ConversationDetailMessageUiModelSample.InvoiceWithLabel,
+            ConversationDetailMessageUiModelSample.AugWeatherForecast
+        )
+        val firstExpanded = listOf(
+            invoiceExpandedWithAttachments(3),
+            ConversationDetailMessageUiModelSample.AugWeatherForecast
+        )
+        val firstExpandedAllAttachments = listOf(
+            expected,
+            ConversationDetailMessageUiModelSample.AugWeatherForecast
+        )
+
+        // region mock initial state
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = any()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(allCollapsed)
+        )
+        // endregion
+        // region mock expanded state
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailEvent.ExpandDecryptedMessage>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(firstExpanded)
+        )
+        // endregion
+        // region mock show all attachments
+        every {
+            reducer.newStateFrom(
+                currentState = any(),
+                operation = ofType<ConversationDetailEvent.ShowAllAttachmentsForMessage>()
+            )
+        } returns ConversationDetailState.Loading.copy(
+            messagesState = ConversationDetailsMessagesState.Data(firstExpandedAllAttachments)
+        )
+        // endregion
+        // region mock observer message with labels
+        coEvery {
+            observeMessageWithLabels(
+                userId,
+                any()
+            )
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.right())
+        // endregion
+        // region mock mapper
+        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns expected
+        // endregion
+
+        return Pair(firstExpanded.map { it.messageId }, expected)
     }
 
     private fun setupLinkClickState(link: String) {

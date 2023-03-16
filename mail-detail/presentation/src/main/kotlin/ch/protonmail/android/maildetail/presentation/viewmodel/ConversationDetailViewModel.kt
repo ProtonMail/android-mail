@@ -177,6 +177,7 @@ class ConversationDetailViewModel @Inject constructor(
             is CollapseMessage -> onCollapseMessage(action.messageId)
             is MessageBodyLinkClicked -> onMessageBodyLinkClicked(action)
             is RequestScrollTo -> onRequestScrollTo(action)
+            is ConversationDetailViewAction.ShowAllAttachmentsForMessage -> showAllAttachmentsForMessage(action.messageId)
         }
     }
 
@@ -670,6 +671,30 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch {
             emitNewStateFrom(ConversationDetailEvent.ExpandingMessage(collapsed.messageId, collapsed))
         }
+    }
+
+    private fun showAllAttachmentsForMessage(messageId: MessageId) {
+        val dataState = state.value.messagesState as? ConversationDetailsMessagesState.Data
+        if (dataState == null) {
+            Timber.e("Messages state is not data to perform show all attachments operation")
+            return
+        }
+        dataState.messages.firstOrNull { it.messageId == messageId }
+            ?.takeIf { it is ConversationDetailMessageUiModel.Expanded }
+            ?.let { it as ConversationDetailMessageUiModel.Expanded }
+            ?.let {
+                val operation = ConversationDetailEvent.ShowAllAttachmentsForMessage(
+                    messageId = messageId,
+                    conversationDetailMessageUiModel = it.copy(
+                        messageBodyUiModel = it.messageBodyUiModel.copy(
+                            attachments = it.messageBodyUiModel.attachments?.copy(
+                                limit = it.messageBodyUiModel.attachments.attachments.size
+                            )
+                        )
+                    )
+                )
+                viewModelScope.launch { emitNewStateFrom(operation) }
+            }
     }
 
     companion object {

@@ -18,14 +18,19 @@
 
 package ch.protonmail.android.maildetail.presentation.sample
 
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 
 object MessageDetailBodyUiModelSample {
 
-    fun build(messageBody: String, mimeType: MimeTypeUiModel = MimeTypeUiModel.Html) = MessageBodyUiModel(
+    fun build(
+        messageBody: String,
+        mimeType: MimeTypeUiModel = MimeTypeUiModel.Html,
+        attachments: MessageBodyAttachments? = null
+    ) = MessageBodyUiModel(
         messageBody = messageBody,
         mimeType = mimeType,
-        attachments = null
+        attachments = attachments
     )
 }

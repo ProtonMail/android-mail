@@ -45,4 +45,12 @@ object AttachmentUiModelSample {
         size = 1234,
         mimeType = "application/doc"
     )
+
+    val image = AttachmentUiModel(
+        attachmentId = "image",
+        fileName = "image",
+        extension = "png",
+        size = 1234,
+        mimeType = "image/png"
+    )
 }
