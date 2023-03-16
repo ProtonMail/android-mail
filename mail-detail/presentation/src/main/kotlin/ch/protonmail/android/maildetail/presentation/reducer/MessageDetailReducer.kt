@@ -39,19 +39,17 @@ class MessageDetailReducer @Inject constructor(
     private val bottomSheetReducer: BottomSheetReducer
 ) {
 
-    fun newStateFrom(
-        currentState: MessageDetailState,
-        operation: MessageDetailOperation
-    ): MessageDetailState = currentState.copy(
-        messageMetadataState = currentState.toNewMessageStateFrom(operation),
-        messageBodyState = currentState.toNewMessageBodyStateFrom(operation),
-        bottomBarState = currentState.toNewBottomBarStateFrom(operation),
-        error = currentState.toNewErrorStateFrom(operation),
-        bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
-        exitScreenEffect = currentState.toNewExitStateFrom(operation),
-        exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation),
-        openMessageBodyLinkEffect = currentState.toNewOpenMessageBodyLinkStateFrom(operation)
-    )
+    fun newStateFrom(currentState: MessageDetailState, operation: MessageDetailOperation): MessageDetailState =
+        currentState.copy(
+            messageMetadataState = currentState.toNewMessageStateFrom(operation),
+            messageBodyState = currentState.toNewMessageBodyStateFrom(operation),
+            bottomBarState = currentState.toNewBottomBarStateFrom(operation),
+            error = currentState.toNewErrorStateFrom(operation),
+            bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
+            exitScreenEffect = currentState.toNewExitStateFrom(operation),
+            exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation),
+            openMessageBodyLinkEffect = currentState.toNewOpenMessageBodyLinkStateFrom(operation)
+        )
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
         if (operation is MessageDetailOperation.AffectingErrorBar) {
@@ -69,12 +67,11 @@ class MessageDetailReducer @Inject constructor(
             error
         }
 
-    private fun MessageDetailState.toNewExitStateFrom(
-        operation: MessageDetailOperation
-    ): Effect<Unit> = when (operation) {
-        MessageViewAction.MarkUnread -> Effect.of(Unit)
-        else -> exitScreenEffect
-    }
+    private fun MessageDetailState.toNewExitStateFrom(operation: MessageDetailOperation): Effect<Unit> =
+        when (operation) {
+            MessageViewAction.MarkUnread -> Effect.of(Unit)
+            else -> exitScreenEffect
+        }
 
     private fun MessageDetailState.toNewExitWithMessageStateFrom(
         operation: MessageDetailOperation
@@ -127,10 +124,9 @@ class MessageDetailReducer @Inject constructor(
             bottomSheetState
         }
 
-    private fun MessageDetailState.toNewOpenMessageBodyLinkStateFrom(
-        operation: MessageDetailOperation
-    ): Effect<Uri> = when (operation) {
-        is MessageViewAction.MessageBodyLinkClicked -> Effect.of(operation.uri)
-        else -> openMessageBodyLinkEffect
-    }
+    private fun MessageDetailState.toNewOpenMessageBodyLinkStateFrom(operation: MessageDetailOperation): Effect<Uri> =
+        when (operation) {
+            is MessageViewAction.MessageBodyLinkClicked -> Effect.of(operation.uri)
+            else -> openMessageBodyLinkEffect
+        }
 }
