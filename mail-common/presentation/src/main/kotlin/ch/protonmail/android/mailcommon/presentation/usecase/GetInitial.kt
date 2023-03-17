@@ -16,17 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain.usecase
+package ch.protonmail.android.mailcommon.presentation.usecase
 
 import javax.inject.Inject
 
-class GetInitialChar @Inject constructor() {
+class GetInitial @Inject constructor() {
 
     operator fun invoke(value: String): String? {
-        if (value.isBlank()) {
-            return null
-        }
-        val firstChar = value.getOrNull(0)?.uppercaseChar() ?: return null
+        val firstChar = value.trim()
+            .firstOrNull()
+            ?.uppercaseChar()
+            ?: return null
+
         val stringBuilder = StringBuilder().append(firstChar)
 
         if (firstChar.isHighSurrogate()) {

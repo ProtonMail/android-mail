@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.mailcommon.domain.usecase.GetInitialChar
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.testdata.message.MessageTestData
 import kotlin.test.Test
@@ -29,9 +29,9 @@ class DetailAvatarUiModelMapperTest {
 
     private val messageId = "messageId"
     private val senderResolvedName = "Sender"
-    private val getInitialChar = GetInitialChar()
+    private val getInitial = GetInitial()
 
-    private val detailAvatarUiModelMapper = DetailAvatarUiModelMapper(getInitialChar)
+    private val detailAvatarUiModelMapper = DetailAvatarUiModelMapper(getInitial)
 
     @Test
     fun `avatar should show draft icon for all drafts`() {

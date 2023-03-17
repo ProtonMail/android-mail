@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
-import ch.protonmail.android.mailcommon.domain.usecase.GetInitialChar
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
@@ -29,9 +29,9 @@ import kotlin.test.assertEquals
 class MailboxAvatarUiModelMapperTest {
 
     private val participantsResolvedNames = listOf("Test")
-    private val getInitialChar = GetInitialChar()
+    private val getInitial = GetInitial()
 
-    private val mailboxAvatarUiModelMapper = MailboxAvatarUiModelMapper(getInitialChar)
+    private val mailboxAvatarUiModelMapper = MailboxAvatarUiModelMapper(getInitial)
 
     @Test
     fun `avatar should show draft icon for all drafts in message mode`() {

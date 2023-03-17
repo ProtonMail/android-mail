@@ -18,15 +18,15 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 
-import ch.protonmail.android.mailcommon.domain.usecase.GetInitialChar
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import javax.inject.Inject
 
 class MailboxAvatarUiModelMapper @Inject constructor(
-    private val getInitialChar: GetInitialChar
+    private val getInitial: GetInitial
 ) {
 
     operator fun invoke(mailboxItem: MailboxItem, participantsResolvedNames: List<String>): AvatarUiModel {
@@ -34,7 +34,7 @@ class MailboxAvatarUiModelMapper @Inject constructor(
             AvatarUiModel.DraftIcon
         } else {
             val firstResolvedName = participantsResolvedNames.firstOrNull() ?: UnknownParticipant
-            val initial = getInitialChar(firstResolvedName) ?: UnknownParticipant
+            val initial = getInitial(firstResolvedName) ?: UnknownParticipant
             AvatarUiModel.ParticipantInitial(initial)
         }
     }

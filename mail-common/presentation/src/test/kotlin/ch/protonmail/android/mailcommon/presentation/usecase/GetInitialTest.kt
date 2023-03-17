@@ -16,15 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain.usecase
+package ch.protonmail.android.mailcommon.presentation.usecase
 
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-internal class GetInitialCharTest {
+internal class GetInitialTest {
 
-    private val getInitialChar = GetInitialChar()
+    private val getInitial = GetInitial()
 
     @Test
     fun `returns emoji if the first letter of the given string is an emoji`() {
@@ -32,7 +32,7 @@ internal class GetInitialCharTest {
         val input = "\uD83D\uDC7D Test"
         val expectedResult = "\uD83D\uDC7D"
         // When
-        val result = getInitialChar(input)
+        val result = getInitial(input)
         // Then
         assertEquals(expectedResult, result)
     }
@@ -43,7 +43,7 @@ internal class GetInitialCharTest {
         val input = "any normal string"
         val expectedResult = "A"
         // When
-        val result = getInitialChar(input)
+        val result = getInitial(input)
         // Then
         assertEquals(expectedResult, result)
     }
@@ -53,7 +53,7 @@ internal class GetInitialCharTest {
         // Given
         val input = ""
         // When
-        val result = getInitialChar(input)
+        val result = getInitial(input)
         // Then
         assertNull(result)
     }
@@ -63,7 +63,7 @@ internal class GetInitialCharTest {
         // Given
         val input = "  "
         // When
-        val result = getInitialChar(input)
+        val result = getInitial(input)
         // Then
         assertNull(result)
     }
@@ -74,7 +74,7 @@ internal class GetInitialCharTest {
         val input = "\uD83D"
         val expected = "\uD83D"
         // When
-        val result = getInitialChar(input)
+        val result = getInitial(input)
         // Then
         assertEquals(expected, result)
     }
