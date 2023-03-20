@@ -323,7 +323,7 @@ class MessageLocalDataSourceImplTest {
         )
         val expected = MessageWithBody(
             MessageTestData.message,
-            MessageBodyTestData.messageBody.copy(body = messageBodyFromFile)
+            MessageBodyTestData.messageBodyWithAttachment.copy(body = messageBodyFromFile)
         )
 
         // When

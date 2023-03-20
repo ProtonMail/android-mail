@@ -67,9 +67,9 @@ object MailMessageModule {
         messageWithBodyEntityMapper: MessageWithBodyEntityMapper,
         messageAttachmentEntityMapper: MessageAttachmentEntityMapper
     ): MessageLocalDataSource = MessageLocalDataSourceImpl(
-        db,
-        messageBodyFileStorage,
-        messageWithBodyEntityMapper,
-        messageAttachmentEntityMapper: MessageAttachmentEntityMapper
+        db = db,
+        messageBodyFileStorage = messageBodyFileStorage,
+        messageWithBodyEntityMapper = messageWithBodyEntityMapper,
+        messageAttachmentEntityMapper = messageAttachmentEntityMapper
     )
 }
