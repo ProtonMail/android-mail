@@ -21,8 +21,8 @@ package ch.protonmail.android.maildetail.presentation.mapper
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
-import ch.protonmail.android.testdata.message.AttachmentUiModelTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import kotlin.test.Test
@@ -58,8 +58,8 @@ class MessageBodyUiModelMapperTest {
         val expected = MessageBodyUiModel(
             decryptedMessageBody, MimeTypeUiModel.PlainText,
             listOf(
-                AttachmentUiModelTestData.invoice,
-                AttachmentUiModelTestData.document
+                AttachmentUiModelSample.invoice,
+                AttachmentUiModelSample.document
             )
         )
 
