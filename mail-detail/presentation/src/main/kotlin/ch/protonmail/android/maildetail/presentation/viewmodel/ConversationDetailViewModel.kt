@@ -115,7 +115,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-@Suppress("LongParameterList", "TooManyFunctions")
+@Suppress("LongParameterList", "TooManyFunctions", "LargeClass")
 class ConversationDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val actionUiModelMapper: ActionUiModelMapper,
