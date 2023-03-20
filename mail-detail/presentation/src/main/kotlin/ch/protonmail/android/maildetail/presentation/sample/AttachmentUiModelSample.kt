@@ -38,6 +38,14 @@ object AttachmentUiModelSample {
         mimeType = "application/doc"
     )
 
+    val documentWithMultipleDots = AttachmentUiModel(
+        attachmentId = "complicated.document.name",
+        fileName = "complicated.document",
+        extension = "pdf",
+        size = 1234,
+        mimeType = "application/doc"
+    )
+
     val documentWithReallyLongFileName = AttachmentUiModel(
         attachmentId = "document",
         fileName = "document-with-really-long-and-unnecessary-file-name-that-should-be-truncated",

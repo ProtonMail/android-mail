@@ -21,6 +21,7 @@ package ch.protonmail.android.testdata.message
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
 
 object MessageBodyUiModelTestData {
 
@@ -36,10 +37,10 @@ object MessageBodyUiModelTestData {
         attachments = MessageBodyAttachments(
             limit = 3,
             attachments = listOf(
-                AttachmentUiModelTestData.invoice,
-                AttachmentUiModelTestData.document,
-                AttachmentUiModelTestData.documentWithMultipleDots,
-                AttachmentUiModelTestData.image
+                AttachmentUiModelSample.invoice,
+                AttachmentUiModelSample.document,
+                AttachmentUiModelSample.documentWithMultipleDots,
+                AttachmentUiModelSample.image
             )
         )
     )
