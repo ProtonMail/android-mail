@@ -31,18 +31,18 @@ class MessageAttachmentEntityMapper @Inject constructor() {
         messageId: MessageId,
         messageAttachment: MessageAttachment
     ) = MessageAttachmentEntity(
-            userId = userId,
-            messageId = messageId,
-            attachmentId = messageAttachment.attachmentId,
-            name = messageAttachment.name,
-            size = messageAttachment.size,
-            mimeType = messageAttachment.mimeType,
-            disposition = messageAttachment.disposition,
-            keyPackets = messageAttachment.keyPackets,
-            signature = messageAttachment.signature,
-            encSignature = messageAttachment.encSignature,
-            headers = messageAttachment.headers
-        )
+        userId = userId,
+        messageId = messageId,
+        attachmentId = messageAttachment.attachmentId,
+        name = messageAttachment.name,
+        size = messageAttachment.size,
+        mimeType = messageAttachment.mimeType,
+        disposition = messageAttachment.disposition,
+        keyPackets = messageAttachment.keyPackets,
+        signature = messageAttachment.signature,
+        encSignature = messageAttachment.encSignature,
+        headers = messageAttachment.headers
+    )
 
     fun toMessageAttachment(messageAttachmentEntity: MessageAttachmentEntity) = MessageAttachment(
         attachmentId = messageAttachmentEntity.attachmentId,
