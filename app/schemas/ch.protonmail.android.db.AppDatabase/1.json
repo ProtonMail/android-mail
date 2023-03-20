@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d8a1a2f5d39563c1b7b1b8b5cfc9a791",
+    "identityHash": "0bd024eadf4dce202657b085b3b22b9d",
     "entities": [
       {
         "tableName": "AccountEntity",
@@ -2818,145 +2818,6 @@
         ]
       },
       {
-        "tableName": "MessageAttachmentEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `attachmentId` TEXT NOT NULL, `name` TEXT NOT NULL, `size` INTEGER NOT NULL, `mimeType` TEXT NOT NULL, `disposition` TEXT, `keyPackets` TEXT, `signature` TEXT, `encSignature` TEXT, PRIMARY KEY(`userId`, `messageId`, `attachmentId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`userId`, `messageId`) REFERENCES `MessageBodyEntity`(`userId`, `messageId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
-        "fields": [
-          {
-            "fieldPath": "userId",
-            "columnName": "userId",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "messageId",
-            "columnName": "messageId",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "attachmentId",
-            "columnName": "attachmentId",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "size",
-            "columnName": "size",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "mimeType",
-            "columnName": "mimeType",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "disposition",
-            "columnName": "disposition",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "keyPackets",
-            "columnName": "keyPackets",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "signature",
-            "columnName": "signature",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "encSignature",
-            "columnName": "encSignature",
-            "affinity": "TEXT",
-            "notNull": false
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "userId",
-            "messageId",
-            "attachmentId"
-          ],
-          "autoGenerate": false
-        },
-        "indices": [
-          {
-            "name": "index_MessageAttachmentEntity_userId",
-            "unique": false,
-            "columnNames": [
-              "userId"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_userId` ON `${TABLE_NAME}` (`userId`)"
-          },
-          {
-            "name": "index_MessageAttachmentEntity_messageId",
-            "unique": false,
-            "columnNames": [
-              "messageId"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_messageId` ON `${TABLE_NAME}` (`messageId`)"
-          },
-          {
-            "name": "index_MessageAttachmentEntity_attachmentId",
-            "unique": false,
-            "columnNames": [
-              "attachmentId"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_attachmentId` ON `${TABLE_NAME}` (`attachmentId`)"
-          },
-          {
-            "name": "index_MessageAttachmentEntity_userId_messageId",
-            "unique": false,
-            "columnNames": [
-              "userId",
-              "messageId"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_userId_messageId` ON `${TABLE_NAME}` (`userId`, `messageId`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "UserEntity",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "userId"
-            ],
-            "referencedColumns": [
-              "userId"
-            ]
-          },
-          {
-            "table": "MessageBodyEntity",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "userId",
-              "messageId"
-            ],
-            "referencedColumns": [
-              "userId",
-              "messageId"
-            ]
-          }
-        ]
-      },
-      {
         "tableName": "ConversationEntity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT NOT NULL, `conversationId` TEXT NOT NULL, `order` INTEGER NOT NULL, `subject` TEXT NOT NULL, `senders` TEXT NOT NULL, `recipients` TEXT NOT NULL, `expirationTime` INTEGER NOT NULL, `numMessages` INTEGER NOT NULL, `numUnread` INTEGER NOT NULL, `numAttachments` INTEGER NOT NULL, `attachmentCount` TEXT NOT NULL, PRIMARY KEY(`userId`, `conversationId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
@@ -3279,7 +3140,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd8a1a2f5d39563c1b7b1b8b5cfc9a791')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0bd024eadf4dce202657b085b3b22b9d')"
     ]
   }
 }
