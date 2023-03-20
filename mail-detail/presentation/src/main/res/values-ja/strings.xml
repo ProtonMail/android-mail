@@ -34,13 +34,13 @@
   <string name="error_star_operation_failed">スターの追加に失敗しました。再度お試しください。</string>
   <string name="error_unstar_operation_failed">スターの削除に失敗しました。再度お試しください。</string>
   <string name="error_move_to_trash_failed">ごみ箱への移動に失敗しました。再試行してください。</string>
-  <string name="message_moved_to_trash">メッセージがごみ箱に移動されました</string>
-  <string name="message_moved_to_archive">メッセージをアーカイブに移動しました</string>
+  <string name="message_moved_to_trash">Message moved to Trash</string>
+  <string name="message_moved_to_archive">Message moved to Archive</string>
   <string name="message_moved_to_selected_destination">メッセージが %1$s に移動されました</string>
   <string name="error_move_message_failed">メッセージの移動に失敗しました。再試行してください。</string>
-  <string name="conversation_moved_to_trash">会話がごみ箱に移動されました</string>
+  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
   <string name="conversation_moved_to_selected_destination">会話が %1$s に移動されました</string>
-  <string name="conversation_moved_to_archive">会話をアーカイブに移動しました。</string>
+  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
   <string name="error_move_conversation_failed">会話の移動に失敗しました。再度お試しください。</string>
   <string name="error_loading_message">問題が発生しました。再度お試しください。</string>
   <string name="error_offline_loading_message">現在、オフラインです。このメッセージの内容を表示するには、インターネット接続が必要です。</string>

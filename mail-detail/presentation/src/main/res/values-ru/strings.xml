@@ -37,13 +37,13 @@
   <string name="error_star_operation_failed">Не удалось отметить звездочкой. Пожалуйста, попробуйте еще раз.</string>
   <string name="error_unstar_operation_failed">Не удалось снять зведочку. Попробуйте еще раз.</string>
   <string name="error_move_to_trash_failed">Не удалось переместить в корзину. Пожалуйста, попробуйте еще раз.</string>
-  <string name="message_moved_to_trash">Сообщение перемещено в корзину</string>
-  <string name="message_moved_to_archive">Сообщение перемещено в архив</string>
+  <string name="message_moved_to_trash">Сообщение помещено в Корзину</string>
+  <string name="message_moved_to_archive">Сообщение помещено в Архив</string>
   <string name="message_moved_to_selected_destination">Сообщение перемещено в %1$s</string>
   <string name="error_move_message_failed">Не удалось переместить сообщение. Пожалуйста, повторите попытку.</string>
-  <string name="conversation_moved_to_trash">Связанные сообщения перемещены в корзину</string>
+  <string name="conversation_moved_to_trash">Цепочка писем помещена в Корзину</string>
   <string name="conversation_moved_to_selected_destination">Цепочка сообщений перемещена в %1$s</string>
-  <string name="conversation_moved_to_archive">Связанные сообщения перемещены в архив</string>
+  <string name="conversation_moved_to_archive">Цепочка писем помещена в Архив</string>
   <string name="error_move_conversation_failed">Не удалось переместить связанные сообщения. Пожалуйста, попробуйте еще раз.</string>
   <string name="error_loading_message">Что-то пошло не так, попробуйте снова.</string>
   <string name="error_offline_loading_message">Отсутствует интернет-соединение. Для отображения содержимого данного сообщения необходимо подключение к Интернету.</string>

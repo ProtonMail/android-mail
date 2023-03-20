@@ -35,13 +35,13 @@
   <string name="error_star_operation_failed">Tamhelt n tmerniwt n yitri tecceḍ. Ttxil ɛawed-as.</string>
   <string name="error_unstar_operation_failed">Tamhelt n tukksa n yitri tecceḍ. Ttxil ɛawed-as.</string>
   <string name="error_move_to_trash_failed">Asenkez ɣer yiḍumman yecceḍ. Ttxil ɛawed-as.</string>
-  <string name="message_moved_to_trash">Izen yettwasnekez ɣer yiḍumman</string>
-  <string name="message_moved_to_archive">Izen yettwasnekzen ɣer teṛcivt</string>
+  <string name="message_moved_to_trash">Message moved to Trash</string>
+  <string name="message_moved_to_archive">Message moved to Archive</string>
   <string name="message_moved_to_selected_destination">Izen yettwasenkez ɣer %1$s</string>
   <string name="error_move_message_failed">Asenkez n yiznan yecceḍ. Ttxil ɛawed-as.</string>
-  <string name="conversation_moved_to_trash">Adiwenni yettwasenkez ɣer yiḍumman</string>
+  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
   <string name="conversation_moved_to_selected_destination">Adiwenni yettwasenkez ɣer %1$s</string>
-  <string name="conversation_moved_to_archive">Adiwenni yettwasenkez ɣer teṛcivt</string>
+  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
   <string name="error_move_conversation_failed">Asenkez n udiwenni yecceḍ. Ttxil ɛawed-as.</string>
   <string name="error_loading_message">Yella kra i yeḍran, ttxil ɛreḍ tikkelt-nniḍen.</string>
   <string name="error_offline_loading_message">Ur teqqineḍ ara. Tlaq tuqqna ɣer internet akken ad twaliḍ agbur n yizen-a.</string>

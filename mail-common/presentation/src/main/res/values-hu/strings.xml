@@ -23,7 +23,7 @@
   <string name="expiration_minutes_arg">%d perc</string>
   <string name="retry">Újra</string>
   <string name="toolbar_back_content_description">Vissza az előző képernyőre</string>
-  <string name="x_error_not_logged_in">Not signed in</string>
+  <string name="x_error_not_logged_in">Nincs bejelentkezve</string>
   <string name="action_reply_content_description">Válasz</string>
   <string name="action_reply_all_content_description">Válasz mindenkinek</string>
   <string name="action_forward_content_description">Továbbítás</string>

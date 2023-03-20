@@ -35,13 +35,13 @@
   <string name="error_star_operation_failed">Ster toevoegen is mislukt. Probeer opnieuw.</string>
   <string name="error_unstar_operation_failed">Ster verwijderen is mislukt. Probeer opnieuw.</string>
   <string name="error_move_to_trash_failed">Verplaatsen naar prullenbak is mislukt. Probeer opnieuw.</string>
-  <string name="message_moved_to_trash">Bericht verplaatst naar prullenbak</string>
-  <string name="message_moved_to_archive">Bericht verplaatst naar archief</string>
+  <string name="message_moved_to_trash">Message moved to Trash</string>
+  <string name="message_moved_to_archive">Message moved to Archive</string>
   <string name="message_moved_to_selected_destination">Bericht verplaatst naar %1$s</string>
   <string name="error_move_message_failed">Bericht verplaatsen mislukt. Probeer opnieuw.</string>
-  <string name="conversation_moved_to_trash">Gesprek verplaatst naar prullenbak</string>
+  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
   <string name="conversation_moved_to_selected_destination">Gesprek verplaatst naar %1$s</string>
-  <string name="conversation_moved_to_archive">Gesprek verplaatst naar archief</string>
+  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
   <string name="error_move_conversation_failed">Gesprek verplaatsen mislukt. Probeer opnieuw.</string>
   <string name="error_loading_message">Er ging iets mis. Probeer opnieuw.</string>
   <string name="error_offline_loading_message">U bent offline. Een internetverbinding is verplicht om de inhoud van dit bericht te tonen.</string>

@@ -35,13 +35,13 @@
   <string name="error_star_operation_failed">Aðgerð að bæta við stjörnu mistókst. Vinsamlegast reyndu aftur.</string>
   <string name="error_unstar_operation_failed">Aðgerð að fjarlægja stjörnu mistókst. Vinsamlegast reyndu aftur.</string>
   <string name="error_move_to_trash_failed">Mistókst að færa í ruslið. Vinsamlegast reyndu aftur.</string>
-  <string name="message_moved_to_trash">Skilaboð voru færð í ruslið</string>
-  <string name="message_moved_to_archive">Skilaboð færð í skjalasafn</string>
+  <string name="message_moved_to_trash">Message moved to Trash</string>
+  <string name="message_moved_to_archive">Message moved to Archive</string>
   <string name="message_moved_to_selected_destination">Skilaboð færð í %1$s</string>
   <string name="error_move_message_failed">Mistókst að færa skilaboð. Vinsamlegast reyndu aftur.</string>
-  <string name="conversation_moved_to_trash">Samtal fært í ruslið</string>
+  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
   <string name="conversation_moved_to_selected_destination">Samtal fært í %1$s</string>
-  <string name="conversation_moved_to_archive">Samtal fært í skjalasafn</string>
+  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
   <string name="error_move_conversation_failed">Ekki tókst að færa samtal. Vinsamlegast reyndu aftur.</string>
   <string name="error_loading_message">Eitthvað fór úrskeiðis, vinsamlegast reyndu aftur.</string>
   <string name="error_offline_loading_message">Þú ert ótengdur. Nettenging er nauðsynleg til að birta innihald þessarar skilaboða.</string>

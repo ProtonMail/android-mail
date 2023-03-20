@@ -36,24 +36,24 @@
   <string name="error_unstar_operation_failed">Csillag visszavonása sikertelen. Próbálja újra.</string>
   <string name="error_move_to_trash_failed">A lomtárba helyezés sikertelen. Próbálja újra.</string>
   <string name="message_moved_to_trash">Üzenet áthelyezve a lomtárba</string>
-  <string name="message_moved_to_archive">Üzenet archiválva</string>
+  <string name="message_moved_to_archive">Üzenet áthelyezve az archívumba</string>
   <string name="message_moved_to_selected_destination">Üzenet áthelyezve a %1$s mappába</string>
   <string name="error_move_message_failed">Az üzenet áthelyezése sikertelen. Próbálja újra.</string>
   <string name="conversation_moved_to_trash">A beszélgetés átkerült a lomtárba</string>
   <string name="conversation_moved_to_selected_destination">A beszélgetés átkerült a %1$s</string>
-  <string name="conversation_moved_to_archive">Beszélgetés archívumba helyezve</string>
-  <string name="error_move_conversation_failed">A beszégetés áthelyezése sikertelen. Próbálja újra.</string>
+  <string name="conversation_moved_to_archive">Beszélgetés áthelyezve az archívumba</string>
+  <string name="error_move_conversation_failed">A beszélgetés áthelyezése sikertelen. Próbálja újra.</string>
   <string name="error_loading_message">Nem meghatározott hiba történt, kérjük próbálja meg újra.</string>
-  <string name="error_offline_loading_message">Ön offilne van. Internet kapcsolat szükséges az üzenet tartalmának betöltéséhez.</string>
+  <string name="error_offline_loading_message">Ön jelenleg offline. Internet kapcsolat szükséges az üzenet tartalmának betöltéséhez.</string>
   <string name="reload">Újratöltés</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Áthelyezés...</string>
   <string name="bottom_sheet_done_action">Kész</string>
   <string name="bottom_sheet_archive_action">Archiválás is?</string>
   <string name="bottom_sheet_label_as_title">Címkézés...</string>
-  <string name="error_relabel_message_failed">Az üzenet újra címkézése sikertelen. Próbálja újra</string>
-  <string name="error_relabel_conversation_failed">A beszélgetés újra címkézése sikertelen. Próbálja újra</string>
-  <string name="please_go_back_online_to_load_messages">Ön offline van. Kérjük csatlakozzon újra internethez az üzenetek betöltéséhez</string>
+  <string name="error_relabel_message_failed">Az üzenet címkéinek frissítése nem sikerült. Próbálja meg újra</string>
+  <string name="error_relabel_conversation_failed">A beszélgetés címkéinek frissítése nem sikerült. Próbálja meg újra</string>
+  <string name="please_go_back_online_to_load_messages">Ön jelenleg offline. Kérjük csatlakozzon újra internethez az üzenetek betöltéséhez</string>
   <string name="decryption_error">Az üzenet visszafejtése sikertelen.</string>
-  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
+  <string name="detail_error_retrieving_message_body">Az üzenet betöltése sikertelen</string>
 </resources>

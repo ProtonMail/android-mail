@@ -35,13 +35,13 @@
   <string name="error_star_operation_failed">Tilføjelse af stjerne mislykkedes. Prøv igen.</string>
   <string name="error_unstar_operation_failed">Fjernelse af stjerne mislykkedes. Prøv igen.</string>
   <string name="error_move_to_trash_failed">Flytning til papirkurv mislykkedes. Prøv igen.</string>
-  <string name="message_moved_to_trash">Besked flyttet til papirkurv</string>
-  <string name="message_moved_to_archive">Besked flyttet til arkiv</string>
+  <string name="message_moved_to_trash">Message moved to Trash</string>
+  <string name="message_moved_to_archive">Message moved to Archive</string>
   <string name="message_moved_to_selected_destination">Besked flyttet til %1$s</string>
   <string name="error_move_message_failed">Flytning af besked mislykkedes. Prøv igen.</string>
-  <string name="conversation_moved_to_trash">Samtale flyttet til papirkurv</string>
+  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
   <string name="conversation_moved_to_selected_destination">Samtale flyttet til %1$s</string>
-  <string name="conversation_moved_to_archive">Samtale flyttet til arkiv</string>
+  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
   <string name="error_move_conversation_failed">Flytning af samtale mislykkedes. Prøv igen.</string>
   <string name="error_loading_message">Noget gik galt, prøv venligst igen.</string>
   <string name="error_offline_loading_message">Du er offline. En internetforbindelse er nødvendig, for at vise indholdet af denne besked.</string>

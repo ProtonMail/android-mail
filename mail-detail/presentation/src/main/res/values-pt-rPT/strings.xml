@@ -35,13 +35,13 @@
   <string name="error_star_operation_failed">Falha a operação de adicionar estrelas. Tente de novo.</string>
   <string name="error_unstar_operation_failed">Falha a operação de remover estrelas. Tente de novo.</string>
   <string name="error_move_to_trash_failed">Falha o envio para o lixo. Tente novamente.</string>
-  <string name="message_moved_to_trash">Mensagem movida para o lixo</string>
-  <string name="message_moved_to_archive">Mensagem movida para Arquivo</string>
+  <string name="message_moved_to_trash">Message moved to Trash</string>
+  <string name="message_moved_to_archive">Message moved to Archive</string>
   <string name="message_moved_to_selected_destination">Mensagem movida para %1$s</string>
   <string name="error_move_message_failed">Falha ao mover a mensagem. Tente novamente.</string>
-  <string name="conversation_moved_to_trash">Conversa movidas para o lixo</string>
+  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
   <string name="conversation_moved_to_selected_destination">Conversa movida para %1$s</string>
-  <string name="conversation_moved_to_archive">Conversa movidas para arquivo</string>
+  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
   <string name="error_move_conversation_failed">Falha ao mover a conversa. Tente novamente.</string>
   <string name="error_loading_message">Ocorreu um erro. Tente mais tarde.</string>
   <string name="error_offline_loading_message">Está offline. A ligação à internet é necessária para mostraro conteúdo desta mensagem.</string>

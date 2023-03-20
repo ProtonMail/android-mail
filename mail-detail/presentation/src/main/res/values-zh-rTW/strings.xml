@@ -34,13 +34,13 @@
   <string name="error_star_operation_failed">新增星號操作失敗。請重試。</string>
   <string name="error_unstar_operation_failed">移除星號操作失敗。請重試。</string>
   <string name="error_move_to_trash_failed">郵件扔進垃圾桶失敗。請再試一次。</string>
-  <string name="message_moved_to_trash">將訊息丟進垃圾桶</string>
-  <string name="message_moved_to_archive">要移動到至「封存」的郵件</string>
+  <string name="message_moved_to_trash">Message moved to Trash</string>
+  <string name="message_moved_to_archive">Message moved to Archive</string>
   <string name="message_moved_to_selected_destination">訊息已移至 %1$s</string>
   <string name="error_move_message_failed">郵件扔進垃圾桶失敗，請再嘗試。</string>
-  <string name="conversation_moved_to_trash">將交談丟進垃圾桶</string>
+  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
   <string name="conversation_moved_to_selected_destination">會話已至 $%1$s。</string>
-  <string name="conversation_moved_to_archive">將交談移動至封存</string>
+  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
   <string name="error_move_conversation_failed">移動交談失敗，請重試。</string>
   <string name="error_loading_message">發生錯誤，請再試一次。</string>
   <string name="error_offline_loading_message">您已離線。需要網際網路連線才能顯示此訊息的內容。</string>

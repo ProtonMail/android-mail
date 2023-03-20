@@ -22,7 +22,7 @@
   <string name="label_title_sent">Απεσταλμένα</string>
   <string name="label_title_starred">Με αστέρι</string>
   <string name="label_title_archive">Αρχειοθετημένα</string>
-  <string name="label_title_spam">Ενοχλητικά</string>
+  <string name="label_title_spam">Ανεπιθύμητα</string>
   <string name="label_title_trash">Διαγραμμένα</string>
   <string name="label_title_outbox">Εξερχόμενα</string>
   <string name="label_title_all_mail">Όλα τα μηνύματα</string>

@@ -37,13 +37,13 @@
   <string name="error_star_operation_failed">Не ўдалося дадаць зорачку. Паўтарыце спробу.</string>
   <string name="error_unstar_operation_failed">Не ўдалося выдаліць зорачку. Паўтарыце спробу.</string>
   <string name="error_move_to_trash_failed">Не ўдалося перамясціць у сметніцу. Паўтарыце спробу.</string>
-  <string name="message_moved_to_trash">Паведамленне перамешчана ў сметніцу</string>
-  <string name="message_moved_to_archive">Паведамленне перамешчана ў архіў</string>
+  <string name="message_moved_to_trash">Паведамленне перамешчана ў Сметніцу</string>
+  <string name="message_moved_to_archive">Паведамленне перамешчана ў Архіў</string>
   <string name="message_moved_to_selected_destination">Паведамленне перамешчана ў %1$s</string>
   <string name="error_move_message_failed">Не ўдалося перамясціць паведамленне. Паўтарыце спробу.</string>
-  <string name="conversation_moved_to_trash">Размова перамешчана ў сметніцу</string>
+  <string name="conversation_moved_to_trash">Размова перамешчана ў Сметніцу</string>
   <string name="conversation_moved_to_selected_destination">Размова перамешчана ў %1$s</string>
-  <string name="conversation_moved_to_archive">Размова перамешчана ў архіў</string>
+  <string name="conversation_moved_to_archive">Размова перамешчана ў Архіў</string>
   <string name="error_move_conversation_failed">Не ўдалося перамясціць размову. Паўтарыце спробу.</string>
   <string name="error_loading_message">Нешта пайшло не так. Паспрабуйце яшчэ раз.</string>
   <string name="error_offline_loading_message">Вы па-за сеткай. Для адлюстравання змесціва гэтага паведамлення неабходна злучэнне з інтэрнэтам.</string>

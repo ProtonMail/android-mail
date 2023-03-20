@@ -30,7 +30,7 @@
   <string name="mail_settings_combined_contacts">Contatos combinados</string>
   <string name="mail_settings_swipe_actions">Ações de deslizar</string>
   <string name="mail_settings_combined_contacts_hint">Ative este recurso para preencher automaticamente endereços de correio eletrônico usando os contatos de todas as suas contas conectadas.</string>
-  <string name="mail_settings_alternative_routing_hint">Caso os sites da Proton estejam bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede: Recomendamos manter esta configuração para maior confiabilidade.</string>
+  <string name="mail_settings_alternative_routing_hint">Caso os sites do Proton estejam bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede: Recomendamos manter esta configuração para maior confiabilidade.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Padrão do sistema</string>
   <string name="mail_settings_theme_light">Claro</string>

@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Αποτυχημένη φόρτωση επαφών</string>
   <string name="detail_error_loading_conversation">Αποτυχημένη φόρτωση συνομιλίας</string>
   <string name="detail_error_loading_messages">Αποτυχημένη φόρτωση μηνυμάτων</string>
-  <string name="error_mark_unread_failed">Αποτυχία σήμανσης μη διαβασμένου. Παρακαλούμε δοκιμάστε ξανά.</string>
+  <string name="error_mark_unread_failed">Αποτυχία σήμανσης ως μη διαβασμένου. Παρακαλούμε δοκιμάστε ξανά.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d μήνυμα</item>
     <item quantity="other">%d μηνύματα</item>
@@ -35,13 +35,13 @@
   <string name="error_star_operation_failed">Η λειτουργία προσθήκης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_unstar_operation_failed">Η λειτουργία κατάργησης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_move_to_trash_failed">Η μετακίνηση στα Διαγραμμένα απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
-  <string name="message_moved_to_trash">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</string>
-  <string name="message_moved_to_archive">Το μήνυμα μετακινήθηκε στα Αρχειοθετημένα</string>
+  <string name="message_moved_to_trash">Message moved to Trash</string>
+  <string name="message_moved_to_archive">Message moved to Archive</string>
   <string name="message_moved_to_selected_destination">Το μήνυμα μετακινήθηκε στα %1$s</string>
   <string name="error_move_message_failed">Η μετακινηση μυνημάτων απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
-  <string name="conversation_moved_to_trash">Η συνομιλία μετακινήθηκε στα Διαγραμμένα</string>
+  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
   <string name="conversation_moved_to_selected_destination">Η συνομιλία μετακινήθηκε στο %1$s</string>
-  <string name="conversation_moved_to_archive">Η συνομιλία μετακινήθηκε στα Αρχειοθετημένα</string>
+  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
   <string name="error_move_conversation_failed">Η μετακινηση συνομιλίας απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_loading_message">Κάτι πήγε στραβά, παρακαλούμε δοκιμάστε ξανά.</string>
   <string name="error_offline_loading_message">Βρίσκεστε εκτός σύνδεσης. Για εμφάνιση του περιεχομένου αυτού του μηνύματος, απαιτείται σύνδεση στο διαδίκτυο.</string>
@@ -55,5 +55,5 @@
   <string name="error_relabel_conversation_failed">Σφάλμα κατά την αλλαγή ετικέτας συνομιλίας. Παρακαλώ προσπαθήστε ξανά</string>
   <string name="please_go_back_online_to_load_messages">Είσαστε αποσυνδεμένοι. Παρακαλούμε συνδεθήτε ξανά για να φορτώσετε μηνύματα</string>
   <string name="decryption_error">Αποτυχία αποκρυπτογράφησης μηνύματος.</string>
-  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
+  <string name="detail_error_retrieving_message_body">Δεν είναι δυνατή η ανάκτηση του μηνύματος</string>
 </resources>

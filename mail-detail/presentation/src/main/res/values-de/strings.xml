@@ -39,9 +39,9 @@
   <string name="message_moved_to_archive">Nachricht wurde in das Archiv verschoben</string>
   <string name="message_moved_to_selected_destination">Nachricht verschoben nach %1$s</string>
   <string name="error_move_message_failed">Verschieben der Nachricht fehlgeschlagen. Bitte versuche es erneut.</string>
-  <string name="conversation_moved_to_trash">Unterhaltung in den Papierkorb verschoben.</string>
+  <string name="conversation_moved_to_trash">Thema in den Papierkorb verschoben</string>
   <string name="conversation_moved_to_selected_destination">Unterhaltung nach „%1$s“ verschoben</string>
-  <string name="conversation_moved_to_archive">Unterhaltung ins Archiv verschoben</string>
+  <string name="conversation_moved_to_archive">Thema ins Archiv verschoben</string>
   <string name="error_move_conversation_failed">Verschieben der Unterhaltung fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="error_loading_message">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
   <string name="error_offline_loading_message">Du bist offline. Um den Inhalt dieser Nachricht anzuzeigen, ist eine Internetverbindung erforderlich.</string>
