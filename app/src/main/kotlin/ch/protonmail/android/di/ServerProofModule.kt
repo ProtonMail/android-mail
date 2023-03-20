@@ -16,30 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.di
+package ch.protonmail.android.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.mockk.every
-import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 
-/**
- * A test module that does not override, but rather defines a provider for the [ValidateServerProof] use case.
- *
- * The provided [ValidateServerProof] instance is just a mock that allows to skip SRP validation
- * when running UI Tests against a mocked environment (as otherwise it will always fail).
- *
- * Note that this module needs to be uninstalled for E2E test suites running against real pre-production environments.
- */
 @Module
 @InstallIn(SingletonComponent::class)
-object ServerProofTestModule {
+object ServerProofModule {
 
     @Provides
-    fun provideServerProofValidation(): ValidateServerProof = mockk {
-        every { this@mockk.invoke(any(), any(), any()) } returns Unit
-    }
+    fun provideServerProofValidation(): ValidateServerProof = ValidateServerProof()
 }
