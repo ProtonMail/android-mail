@@ -19,7 +19,7 @@
 package ch.protonmail.android.maillabel.domain.model
 
 import android.graphics.Color
-import ch.protonmail.android.maillabel.domain.extension.handleShortColorHex
+import ch.protonmail.android.maillabel.domain.extension.normalizeColorHex
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
@@ -52,7 +52,7 @@ private fun Label.toMailLabelCustom(
     return MailLabel.Custom(
         id = labelId.toMailLabelId(type),
         text = name,
-        color = Color.parseColor(color.handleShortColorHex()),
+        color = Color.parseColor(color.normalizeColorHex()),
         parent = parent,
         isExpanded = parent?.isExpanded ?: true && isExpanded ?: true,
         level = level,

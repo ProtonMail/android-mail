@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.maillabel.domain.extension
 
-internal fun String.handleShortColorHex(): String {
+internal fun String.normalizeColorHex(): String {
     val shortHexLength = 4 // eg. #fff
     return if (this.length == shortHexLength) {
         val r = this[1]

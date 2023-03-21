@@ -29,7 +29,7 @@ class ColorExtensionKtTest {
         val actual = "#f09"
 
         // When
-        val result = actual.handleShortColorHex()
+        val result = actual.normalizeColorHex()
 
         // Then
         assertEquals("#ff0099", result)
@@ -41,7 +41,7 @@ class ColorExtensionKtTest {
         val actual = "#ff0099"
 
         // When
-        val result = actual.handleShortColorHex()
+        val result = actual.normalizeColorHex()
 
         // Then
         assertEquals("#ff0099", result)
