@@ -89,7 +89,7 @@ internal fun MessageBody(
     if (messageBodyUiModel.attachments != null) {
         AttachmentFooter(
             modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
-            messageBodyAttachments = messageBodyUiModel.attachments,
+            messageBodyAttachmentsUiModel = messageBodyUiModel.attachments,
             onShowAllAttachments = onShowAllAttachments
         )
     }

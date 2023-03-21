@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
@@ -32,7 +32,7 @@ class MessageBodyUiModelMapper @Inject constructor() {
         messageBody = decryptedMessageBody.value,
         mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
         attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
-            MessageBodyAttachments(
+            MessageBodyAttachmentsUiModel(
                 attachments = decryptedMessageBody.attachments.map {
                     AttachmentUiModel(
                         attachmentId = it.attachmentId.id,

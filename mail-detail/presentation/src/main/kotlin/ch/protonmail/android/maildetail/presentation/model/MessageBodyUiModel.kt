@@ -21,7 +21,7 @@ package ch.protonmail.android.maildetail.presentation.model
 data class MessageBodyUiModel(
     val messageBody: String,
     val mimeType: MimeTypeUiModel,
-    val attachments: MessageBodyAttachments?
+    val attachments: MessageBodyAttachmentsUiModel?
 )
 
 enum class MimeTypeUiModel(val value: String) {
@@ -31,7 +31,7 @@ enum class MimeTypeUiModel(val value: String) {
 
 const val DEFAULT_ATTACHMENT_LIMIT = 3
 
-data class MessageBodyAttachments(
+data class MessageBodyAttachmentsUiModel(
     val limit: Int = DEFAULT_ATTACHMENT_LIMIT,
     val attachments: List<AttachmentUiModel>
 )

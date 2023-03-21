@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
@@ -62,7 +62,7 @@ class MessageBodyUiModelMapperTest {
         )
         val expected = MessageBodyUiModel(
             decryptedMessageBody, MimeTypeUiModel.PlainText,
-            MessageBodyAttachments(
+            MessageBodyAttachmentsUiModel(
                 attachments = listOf(
                     AttachmentUiModelSample.invoice,
                     AttachmentUiModelSample.document,

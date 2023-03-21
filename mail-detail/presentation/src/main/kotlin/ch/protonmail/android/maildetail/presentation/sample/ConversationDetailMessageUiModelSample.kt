@@ -24,7 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
@@ -117,7 +117,7 @@ object ConversationDetailMessageUiModelSample {
         messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel,
         messageBodyUiModel = MessageDetailBodyUiModelSample.build(
             messageBody = "Invoice",
-            attachments = MessageBodyAttachments(
+            attachments = MessageBodyAttachmentsUiModel(
                 limit = limit,
                 attachments = listOf(
                     AttachmentUiModelSample.document,

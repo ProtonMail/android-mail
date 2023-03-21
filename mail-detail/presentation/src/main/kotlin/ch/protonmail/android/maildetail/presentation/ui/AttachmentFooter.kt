@@ -43,7 +43,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.extensions.getTotalAttachmentByteSizeReadable
-import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachments
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -54,10 +54,10 @@ import me.proton.core.presentation.R.drawable
 @Composable
 fun AttachmentFooter(
     modifier: Modifier = Modifier,
-    messageBodyAttachments: MessageBodyAttachments,
+    messageBodyAttachmentsUiModel: MessageBodyAttachmentsUiModel,
     onShowAllAttachments: () -> Unit
 ) {
-    val attachments = messageBodyAttachments.attachments
+    val attachments = messageBodyAttachmentsUiModel.attachments
     Column(modifier = modifier.fillMaxWidth()) {
         Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
         Row(
@@ -86,10 +86,10 @@ fun AttachmentFooter(
                 style = ProtonTheme.typography.defaultSmall.copy(color = ProtonTheme.colors.textHint)
             )
         }
-        attachments.take(messageBodyAttachments.limit).forEach {
+        attachments.take(messageBodyAttachmentsUiModel.limit).forEach {
             AttachmentItem(attachmentUiModel = it)
         }
-        if (attachments.size > messageBodyAttachments.limit) {
+        if (attachments.size > messageBodyAttachmentsUiModel.limit) {
             Box(
                 modifier = Modifier
                     .padding(ProtonDimens.ExtraSmallSpacing)
@@ -101,7 +101,7 @@ fun AttachmentFooter(
                         .padding(ProtonDimens.SmallSpacing),
                     text = stringResource(
                         id = R.string.attachment_show_more_label,
-                        attachments.size - messageBodyAttachments.limit
+                        attachments.size - messageBodyAttachmentsUiModel.limit
                     ),
                     style = ProtonTheme.typography.defaultSmallStrong.copy(color = ProtonTheme.colors.brandNorm)
                 )
@@ -116,7 +116,7 @@ fun AttachmentFooter(
 @Suppress("MagicNumber")
 fun AttachmentFooterMultiAttachmentsPreview() {
     AttachmentFooter(
-        messageBodyAttachments = MessageBodyAttachments(
+        messageBodyAttachmentsUiModel = MessageBodyAttachmentsUiModel(
             limit = 1,
             attachments = listOf(
                 AttachmentUiModelSample.invoice,
@@ -132,7 +132,7 @@ fun AttachmentFooterMultiAttachmentsPreview() {
 @Suppress("MagicNumber")
 fun AttachmentFooterSingleAttachmentPreview() {
     AttachmentFooter(
-        messageBodyAttachments = MessageBodyAttachments(
+        messageBodyAttachmentsUiModel = MessageBodyAttachmentsUiModel(
             limit = 1,
             attachments = listOf(
                 AttachmentUiModelSample.invoice
