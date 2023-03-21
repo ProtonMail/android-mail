@@ -24,6 +24,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 
+/**
+ * This module is an explicit provider for [ValidateServerProof] that is needed to perform the required
+ * overrides when running UI Tests.
+ *
+ * There's no need to have this definition in the production code, as the dependency is still automatically provided.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object ServerProofModule {
