@@ -22,6 +22,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maillabel.R
@@ -30,6 +31,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.MoveToFolderRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.SelectionStateRobotInterface
+import ch.protonmail.android.uitest.robot.mailbox.messagedetail.MessageRobot
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 import me.proton.core.test.android.robots.CoreRobot
 import me.proton.core.test.android.robots.CoreVerify
@@ -38,6 +41,16 @@ import me.proton.core.test.android.robots.CoreVerify
 class InboxRobot(
     override val composeTestRule: ComposeContentTestRule
 ) : CoreRobot(), MailboxRobotInterface {
+
+    override fun clickMessageByPosition(position: Int): MessageRobot {
+        composeTestRule.onNodeWithTag(MAILBOX_TAG)
+            .awaitDisplayed(composeTestRule)
+            .onChildAt(position)
+            .awaitDisplayed(composeTestRule)
+            .performClick()
+
+        return super.clickMessageByPosition(position)
+    }
 
     override fun swipeLeftMessageAtPosition(position: Int): InboxRobot {
         super.swipeLeftMessageAtPosition(position)
@@ -66,7 +79,6 @@ class InboxRobot(
 
         return this
     }
-
 
     class SelectionStateRobot(
         private val composeRule: ComposeContentTestRule
@@ -138,4 +150,9 @@ class InboxRobot(
     }
 
     inline fun verify(block: Verify.() -> Unit) = Verify(composeTestRule).apply(block)
+
+    companion object {
+
+        private const val MAILBOX_TAG = "MailboxList"
+    }
 }

@@ -34,12 +34,15 @@ import androidx.test.espresso.web.sugar.Web.onWebView
 import androidx.test.espresso.web.webdriver.DriverAtoms.findElement
 import androidx.test.espresso.web.webdriver.DriverAtoms.getText
 import androidx.test.espresso.web.webdriver.Locator
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.Until
 import ch.protonmail.android.mailcommon.presentation.compose.TEST_TAG_AVATAR
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.ui.TEST_TAG_MESSAGE_HEADER
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
+import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
 import org.hamcrest.CoreMatchers.containsString
@@ -64,6 +67,16 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
             .performClick()
 
         return MailboxRobot(composeTestRule)
+    }
+
+    fun waitUntilMessageIsShown(timeout: Long = 10000L): MessageDetailRobot {
+        // To be improved with the introduction of Fusion, we need to wait for compose to be idle.
+        composeTestRule.waitForIdle()
+
+        // Wait for the WebView to appear as well.
+        uiDevice.wait(Until.hasObject(By.clazz("android.webkit.WebView")), timeout)
+
+        return this
     }
 
     fun verify(block: Verify.() -> Unit): MessageDetailRobot {
