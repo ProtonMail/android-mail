@@ -107,14 +107,14 @@ sealed class AttachmentMimeType(val mimeTypes: List<String>) {
 
 @DrawableRes
 fun getDrawableForMimeType(mimeType: String) = when {
-    AttachmentMimeType.Doc.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_word_24
-    AttachmentMimeType.Pdf.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_pdf_24
-    AttachmentMimeType.Zip.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_rar_zip_24
-    AttachmentMimeType.Image.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_image_24
-    AttachmentMimeType.Txt.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_attachment_24
-    AttachmentMimeType.Audio.mimeTypes.contains(mimeType) ||
-        AttachmentMimeType.Ppt.mimeTypes.contains(mimeType) ||
-        AttachmentMimeType.Video.mimeTypes.contains(mimeType) ||
-        AttachmentMimeType.Xls.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_attachment_24
-    else -> drawable.ic_proton_file_attachment_24
+    AttachmentMimeType.Doc.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_word_24
+    AttachmentMimeType.Pdf.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_pdf_24
+    AttachmentMimeType.Zip.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_zip_24
+    AttachmentMimeType.Image.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_image_24
+    AttachmentMimeType.Txt.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_text_24
+    AttachmentMimeType.Audio.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_audio_24
+    AttachmentMimeType.Ppt.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_powerpoint_24
+    AttachmentMimeType.Video.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_video_24
+    AttachmentMimeType.Xls.mimeTypes.contains(mimeType) -> drawable.ic_proton_file_type_excel_24
+    else -> drawable.ic_proton_file_type_unknown_24
 }

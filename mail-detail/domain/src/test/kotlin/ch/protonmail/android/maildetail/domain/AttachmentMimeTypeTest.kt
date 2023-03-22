@@ -38,47 +38,52 @@ internal class AttachmentMimeTypeTest(
 
     companion object {
 
-        private val fallbackDrawable = R.drawable.ic_proton_file_attachment_24
-        private val expectedDocDrawable = R.drawable.ic_proton_file_word_24
-        private val expectedImageDrawable = R.drawable.ic_proton_file_image_24
-        private val expectedPdfDrawable = R.drawable.ic_proton_file_pdf_24
-        private val expectedZipDrawable = R.drawable.ic_proton_file_rar_zip_24
+        private val fallbackDrawable = R.drawable.ic_proton_file_type_unknown_24
+        private val expectedDocDrawable = R.drawable.ic_proton_file_type_word_24
+        private val expectedImageDrawable = R.drawable.ic_proton_file_type_image_24
+        private val expectedPdfDrawable = R.drawable.ic_proton_file_type_pdf_24
+        private val expectedZipDrawable = R.drawable.ic_proton_file_type_zip_24
+        private val expectedVideoDrawable = R.drawable.ic_proton_file_type_video_24
+        private val expectedTextDrawable = R.drawable.ic_proton_file_type_text_24
+        private val expectedAudioDrawable = R.drawable.ic_proton_file_type_audio_24
+        private val expectedExcelDrawable = R.drawable.ic_proton_file_type_excel_24
+        private val expectedPowerPointDrawable = R.drawable.ic_proton_file_type_powerpoint_24
 
         private val audio = listOf(
             TestInput(
                 group = "Audio",
                 mimeType = "audio/x-m4a",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedAudioDrawable
             ),
             TestInput(
                 group = "Audio",
                 mimeType = "audio/mpeg3",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedAudioDrawable
             ),
             TestInput(
                 group = "Audio",
                 mimeType = "audio/x-mpeg-3",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedAudioDrawable
             ),
             TestInput(
                 group = "Audio",
-                mimeType = "audio/mpeg",
-                expectedDrawable = fallbackDrawable
+                mimeType = "video/mpeg",
+                expectedDrawable = expectedAudioDrawable
             ),
             TestInput(
                 group = "Audio",
-                mimeType = "audio/x-mpeg",
-                expectedDrawable = fallbackDrawable
+                mimeType = "video/x-mpeg",
+                expectedDrawable = expectedAudioDrawable
             ),
             TestInput(
                 group = "Audio",
                 mimeType = "audio/aac",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedAudioDrawable
             ),
             TestInput(
                 group = "Audio",
                 mimeType = "audio/x-hx-aac-adts",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedAudioDrawable
             )
         )
 
@@ -135,27 +140,27 @@ internal class AttachmentMimeTypeTest(
             TestInput(
                 group = "Ppt",
                 mimeType = "application/mspowerpoint",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedPowerPointDrawable
             ),
             TestInput(
                 group = "Ppt",
                 mimeType = "application/powerpoint",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedPowerPointDrawable
             ),
             TestInput(
                 group = "Ppt",
                 mimeType = "application/vnd.ms-powerpoint",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedPowerPointDrawable
             ),
             TestInput(
                 group = "Ppt",
                 mimeType = "application/x-mspowerpoint",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedPowerPointDrawable
             ),
             TestInput(
                 group = "Ppt",
                 mimeType = "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedPowerPointDrawable
             )
         )
 
@@ -163,7 +168,7 @@ internal class AttachmentMimeTypeTest(
             TestInput(
                 group = "Txt",
                 mimeType = "text/plain",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedTextDrawable
             )
         )
 
@@ -171,47 +176,47 @@ internal class AttachmentMimeTypeTest(
             TestInput(
                 group = "Video",
                 mimeType = "video/quicktime",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedVideoDrawable
             ),
             TestInput(
                 group = "Video",
                 mimeType = "video/x-quicktime",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedVideoDrawable
             ),
             TestInput(
                 group = "Video",
                 mimeType = "image/mov",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedVideoDrawable
             ),
             TestInput(
                 group = "Video",
                 mimeType = "audio/aiff",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedVideoDrawable
             ),
             TestInput(
                 group = "Video",
                 mimeType = "audio/x-midi",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedVideoDrawable
             ),
             TestInput(
                 group = "Video",
                 mimeType = "audio/x-wav",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedVideoDrawable
             ),
             TestInput(
                 group = "Video",
                 mimeType = "video/avi",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedVideoDrawable
             ),
             TestInput(
                 group = "Video",
                 mimeType = "video/mp4",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedVideoDrawable
             ),
             TestInput(
                 group = "Video",
                 mimeType = "video/x-matroska",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedVideoDrawable
             )
         )
 
@@ -219,27 +224,27 @@ internal class AttachmentMimeTypeTest(
             TestInput(
                 group = "Xls",
                 mimeType = "application/excel",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedExcelDrawable
             ),
             TestInput(
                 group = "Xls",
                 mimeType = "application/vnd.ms-excel",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedExcelDrawable
             ),
             TestInput(
                 group = "Xls",
                 mimeType = "application/x-excel",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedExcelDrawable
             ),
             TestInput(
                 group = "Xls",
                 mimeType = "application/x-msexcel",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedExcelDrawable
             ),
             TestInput(
                 group = "Xls",
                 mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                expectedDrawable = fallbackDrawable
+                expectedDrawable = expectedExcelDrawable
             )
         )
 
@@ -248,6 +253,14 @@ internal class AttachmentMimeTypeTest(
                 group = "Zip",
                 mimeType = "application/zip",
                 expectedDrawable = expectedZipDrawable
+            )
+        )
+
+        private val unknown = listOf(
+            TestInput(
+                group = "Unknown",
+                mimeType = "application/x-envoy",
+                expectedDrawable = fallbackDrawable
             )
         )
 
@@ -262,7 +275,8 @@ internal class AttachmentMimeTypeTest(
                 txt +
                 video +
                 xls +
-                zip
+                zip +
+                unknown
             ).map {
             val testName = """
                 Group: ${it.group}
