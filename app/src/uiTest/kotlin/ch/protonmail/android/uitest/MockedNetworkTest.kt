@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import ch.protonmail.android.MainActivity
+import ch.protonmail.android.uitest.helpers.core.TestIdWatcher
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.rule.MainInitializerRule
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -66,6 +67,8 @@ internal open class MockedNetworkTest(
         composeTestRule
     ).around(
         MainInitializerRule()
+    ).around(
+        TestIdWatcher()
     )
 
     @Before
