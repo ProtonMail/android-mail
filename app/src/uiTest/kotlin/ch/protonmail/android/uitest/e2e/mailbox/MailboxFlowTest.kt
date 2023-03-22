@@ -19,7 +19,7 @@
 package ch.protonmail.android.uitest.e2e.mailbox
 
 import ch.protonmail.android.uitest.MockedNetworkTest
-import ch.protonmail.android.uitest.helpers.network.defaultNetworkDispatcher
+import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -34,7 +34,7 @@ internal class MailboxFlowTest : MockedNetworkTest() {
 
     @Before
     fun setupDispatcher() {
-        mockWebServer.dispatcher = defaultNetworkDispatcher()
+        mockWebServer.dispatcher = mockNetworkDispatcher()
     }
 
     @Test
