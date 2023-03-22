@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.suite
 
 import ch.protonmail.android.uitest.e2e.login.LoginFlowTests
 import ch.protonmail.android.uitest.e2e.mailbox.MailboxFlowTest
+import ch.protonmail.android.uitest.e2e.mailbox.MessageLoadingTests
 import ch.protonmail.android.uitest.e2e.settings.SettingsFlowTest
 import ch.protonmail.android.uitest.screen.common.BottomActionBarTest
 import ch.protonmail.android.uitest.screen.mailbox.MailboxItemLabelsTest
@@ -50,6 +51,7 @@ import org.junit.runners.Suite
     MailboxItemLabelsTest::class,
     MailboxScreenTest::class,
     MailboxTopAppBarTest::class,
+    MessageLoadingTests::class,
     SettingsFlowTest::class,
     SettingsScreenTest::class,
     SidebarScreenTest::class,
