@@ -37,7 +37,7 @@ internal fun mockNetworkDispatcher(
     useDefaultFeatures: Boolean = true,
     useDefaultLabels: Boolean = true,
     ignoreEvents: Boolean = true,
-    func: MockNetworkDispatcher.() -> Unit = {}
+    additionalMockDefinitions: MockNetworkDispatcher.() -> Unit = {}
 ) = MockNetworkDispatcher().apply {
     if (useDefaultAuth) {
         addMockRequests(
@@ -89,5 +89,5 @@ internal fun mockNetworkDispatcher(
         )
     }
 
-    func()
+    additionalMockDefinitions()
 }
