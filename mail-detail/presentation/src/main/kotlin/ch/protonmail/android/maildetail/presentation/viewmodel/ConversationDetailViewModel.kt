@@ -86,7 +86,6 @@ import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -260,8 +259,7 @@ class ConversationDetailViewModel @Inject constructor(
                         buildExpandedMessage(
                             messageWithLabels,
                             contacts,
-                            decryptedBody.value,
-                            decryptedBody.mimeType.value
+                            decryptedBody
                         )
                     }
                 } else {
@@ -279,14 +277,7 @@ class ConversationDetailViewModel @Inject constructor(
     ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
         val messagesList = messages.map { messageWithLabels ->
             when (val currentMessage = findCurrentStateOfMessage(messageWithLabels.message.messageId)) {
-                is ConversationDetailMessageUiModel.Expanded ->
-                    buildExpandedMessage(
-                        messageWithLabels,
-                        contacts,
-                        currentMessage.messageBodyUiModel.messageBody,
-                        currentMessage.messageBodyUiModel.mimeType.value
-                    )
-
+                is ConversationDetailMessageUiModel.Expanded -> currentMessage
                 else -> buildCollapsedMessage(messageWithLabels, contacts)
             }
         }
@@ -305,15 +296,11 @@ class ConversationDetailViewModel @Inject constructor(
     private fun buildExpandedMessage(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
-        decryptedBodyContent: String,
-        decryptedBodyMimeTypeValue: String
+        decryptedBody: DecryptedMessageBody
     ): ConversationDetailMessageUiModel.Expanded = conversationMessageMapper.toUiModel(
         messageWithLabels,
         contacts,
-        DecryptedMessageBody(
-            decryptedBodyContent,
-            MimeType.from(decryptedBodyMimeTypeValue)
-        ),
+        decryptedBody,
     )
 
     private fun findCurrentStateOfMessage(messageId: MessageId): ConversationDetailMessageUiModel? {
@@ -601,8 +588,7 @@ class ConversationDetailViewModel @Inject constructor(
                 conversationDetailMessageUiModel = buildExpandedMessage(
                     messageWithLabels,
                     contacts,
-                    messageBody.value,
-                    messageBody.mimeType.value
+                    messageBody
                 )
             )
         )

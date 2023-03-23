@@ -59,11 +59,23 @@ object MessageAttachmentTestData {
         headers = emptyMap()
     )
 
+    val documentWithReallyLongFileName = MessageAttachment(
+        attachmentId = AttachmentId("document"),
+        name = "document-with-really-long-and-unnecessary-file-name-that-should-be-truncated.pdf",
+        size = 1234,
+        mimeType = "application/doc",
+        disposition = null,
+        keyPackets = null,
+        signature = null,
+        encSignature = null,
+        headers = emptyMap()
+    )
+
     val image = MessageAttachment(
         attachmentId = AttachmentId("image"),
-        name = "image.jpg",
+        name = "image.png",
         size = 1234,
-        mimeType = "image/jpeg",
+        mimeType = "image/png",
         disposition = null,
         keyPackets = null,
         signature = null,
