@@ -24,10 +24,10 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
-import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
@@ -280,7 +280,7 @@ class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify { messageBodyIsDisplayedInWebView(messageBody) }
+        robot.verify { messageBodyInWebViewContains(messageBody) }
     }
 
     @Test
@@ -300,7 +300,7 @@ class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify { messageBodyIsDisplayedInWebView(messageBody, tagName = "div") }
+        robot.verify { messageBodyInWebViewContains(messageBody, tagName = "div") }
     }
 
     @Test
@@ -350,7 +350,7 @@ class MessageDetailScreenTest {
         // then
         robot.verify {
             messageBodyDecryptionErrorMessageIsDisplayed()
-            messageBodyIsDisplayedInWebView(messageBody)
+            messageBodyInWebViewContains(messageBody)
         }
     }
 

@@ -80,7 +80,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         messageDetailRobot
             .waitUntilMessageIsShown()
-            .verify { messageBodyIsDisplayedInWebView(expectedMessageBody) }
+            .verify { messageBodyInWebViewContains(expectedMessageBody) }
 
         uiDevice.pressBack()
 
@@ -88,7 +88,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         messageDetailRobot
             .waitUntilMessageIsShown()
-            .verify { messageBodyIsDisplayedInWebView(expectedMessageBody) }
+            .verify { messageBodyInWebViewContains(expectedMessageBody) }
     }
 
     @Test
@@ -113,7 +113,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         messageDetailRobot
             .waitUntilMessageIsShown()
-            .verify { messageBodyIsDisplayedInWebView(expectedMessageBody) }
+            .verify { messageBodyInWebViewContains(expectedMessageBody) }
 
         uiDevice.pressBack()
 
@@ -121,7 +121,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         messageDetailRobot
             .waitUntilMessageIsShown()
-            .verify { messageBodyIsDisplayedInWebView(expectedMessageBody) }
+            .verify { messageBodyInWebViewContains(expectedMessageBody) }
     }
 
     @Test
@@ -145,7 +145,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         messageDetailRobot
             .waitUntilMessageIsShown()
-            .verify { messageBodyIsDisplayedInWebView(expectedMessageBody) }
+            .verify { messageBodyInWebViewContains(expectedMessageBody) }
 
         uiDevice.pressBack()
 
@@ -153,7 +153,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         messageDetailRobot
             .waitUntilMessageIsShown()
-            .verify { messageBodyIsDisplayedInWebView(expectedMessageBody) }
+            .verify { messageBodyInWebViewContains(expectedMessageBody) }
     }
 
     @Test
@@ -178,7 +178,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         messageDetailRobot
             .waitUntilMessageIsShown()
-            .verify { messageBodyIsDisplayedInWebView(expectedMessageBody) }
+            .verify { messageBodyInWebViewContains(expectedMessageBody) }
 
         uiDevice.pressBack()
 
@@ -186,6 +186,6 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         messageDetailRobot
             .waitUntilMessageIsShown()
-            .verify { messageBodyIsDisplayedInWebView(expectedMessageBody) }
+            .verify { messageBodyInWebViewContains(expectedMessageBody) }
     }
 }

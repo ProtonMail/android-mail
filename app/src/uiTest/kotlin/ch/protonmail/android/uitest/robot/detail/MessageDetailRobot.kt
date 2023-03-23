@@ -28,7 +28,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.espresso.web.assertion.WebViewAssertions.webMatches
 import androidx.test.espresso.web.sugar.Web.onWebView
 import androidx.test.espresso.web.webdriver.DriverAtoms.findElement
@@ -46,7 +46,7 @@ import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
 import org.hamcrest.CoreMatchers.containsString
-import org.hamcrest.Matchers
+import org.hamcrest.CoreMatchers.equalTo
 
 class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
@@ -146,8 +146,8 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
                 .assertIsDisplayed()
         }
 
-        fun messageBodyIsDisplayedInWebView(messageBody: String, tagName: String = "html") {
-            onWebView(ViewMatchers.withClassName(Matchers.equalTo("android.webkit.WebView")))
+        fun messageBodyInWebViewContains(messageBody: String, tagName: String = "html") {
+            onWebView(withClassName(equalTo("android.webkit.WebView")))
                 .forceJavascriptEnabled()
                 .withElement(findElement(Locator.TAG_NAME, tagName))
                 .check(webMatches(getText(), containsString(messageBody)))
