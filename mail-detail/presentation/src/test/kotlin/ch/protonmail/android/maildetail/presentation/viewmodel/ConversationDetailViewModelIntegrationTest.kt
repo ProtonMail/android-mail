@@ -113,7 +113,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val observeContacts: ObserveContacts = mockk {
         every { this@mockk(userId = UserIdSample.Primary) } returns flowOf(emptyList<Contact>().right())
     }
-    private val observeConversation: ObserveConversation = mockk {
+    private val observeConversationUseCase: ObserveConversation = mockk {
         every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
             flowOf(ConversationSample.WeatherForecast.right())
     }
@@ -146,12 +146,12 @@ class ConversationDetailViewModelIntegrationTest {
         mockk<ObserveFolderColorSettings> {
             every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(FolderColorSettings())
         }
-    private val observeCustomMailLabels = mockk<ObserveCustomMailLabels> {
+    private val observeCustomMailLabelsUseCase = mockk<ObserveCustomMailLabels> {
         every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(
             MailLabelTestData.listOfCustomLabels.right()
         )
     }
-    private val observeMessageWithLabels = mockk<ObserveMessageWithLabels> {
+    private val observeMessageWithLabelsUseCase = mockk<ObserveMessageWithLabels> {
         every { this@mockk.invoke(UserIdSample.Primary, any()) } returns mockk()
     }
     // endregion
@@ -168,11 +168,11 @@ class ConversationDetailViewModelIntegrationTest {
     private val getDecryptedMessageBody: GetDecryptedMessageBody = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody("", MimeType.Html).right()
     }
-    private val getContacts: GetContacts = mockk {
+    private val getContactsUseCase: GetContacts = mockk {
         coEvery { this@mockk.invoke(any()) } returns emptyList<Contact>().right()
     }
 
-    private val markMessageAsRead: MarkMessageAsRead = mockk {
+    private val markMessageAsReadUseCase: MarkMessageAsRead = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns MessageSample.Invoice.right()
     }
     private val getCurrentEpochTimeDuration: GetCurrentEpochTimeDuration = mockk {
@@ -189,8 +189,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val formatExtendedTime: FormatExtendedTime =
         mockk { every { this@mockk.invoke(any()) } returns TextUiModel("10:00") }
 
-    private
-    val getInitial = GetInitial()
+    private val getInitial = GetInitial()
 
     private val conversationMessageMapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = DetailAvatarUiModelMapper(getInitial),
@@ -225,34 +224,6 @@ class ConversationDetailViewModelIntegrationTest {
         )
     )
 
-    private val viewModel by lazy {
-        ConversationDetailViewModel(
-            observePrimaryUserId = observePrimaryUserId,
-            actionUiModelMapper = actionUiModelMapper,
-            conversationMessageMapper = conversationMessageMapper,
-            conversationMetadataMapper = conversationMetadataMapper,
-            markConversationAsUnread = markConversationAsUnread,
-            moveConversation = move,
-            relabelConversation = relabelConversation,
-            observeContacts = observeContacts,
-            observeConversation = observeConversation,
-            observeConversationMessages = observeConversationMessagesWithLabels,
-            observeDetailActions = observeConversationDetailActions,
-            observeDestinationMailLabels = observeMailLabels,
-            observeFolderColor = observeFolderColorSettings,
-            observeCustomMailLabels = observeCustomMailLabels,
-            reducer = reducer,
-            savedStateHandle = savedStateHandle,
-            starConversation = starConversation,
-            unStarConversation = unStarConversation,
-            getDecryptedMessageBody = getDecryptedMessageBody,
-            markMessageAsRead = markMessageAsRead,
-            observeMessageWithLabels = observeMessageWithLabels,
-            getContacts = getContacts,
-            ioDispatcher = Dispatchers.Unconfined
-        )
-    }
-
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(StandardTestDispatcher())
@@ -284,7 +255,7 @@ class ConversationDetailViewModelIntegrationTest {
             )
         ).right()
 
-        viewModel.state.test {
+        buildConversationDetailViewModel().state.test {
             // when
             advanceUntilIdle()
             val newState = lastEmittedItem().messagesState as ConversationDetailsMessagesState.Data
@@ -304,4 +275,53 @@ class ConversationDetailViewModelIntegrationTest {
         val events = cancelAndConsumeRemainingEvents()
         return (events.last() as Event.Item).value
     }
+
+    private fun buildConversationDetailViewModel(
+        observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,
+        actionMapper: ActionUiModelMapper = actionUiModelMapper,
+        messageMapper: ConversationDetailMessageUiModelMapper = conversationMessageMapper,
+        metadataMapper: ConversationDetailMetadataUiModelMapper = conversationMetadataMapper,
+        unread: MarkConversationAsUnread = markConversationAsUnread,
+        moveConversation: MoveConversation = move,
+        relabel: RelabelConversation = relabelConversation,
+        contacts: ObserveContacts = observeContacts,
+        observeConversation: ObserveConversation = observeConversationUseCase,
+        observeConversationMessages: ObserveConversationMessagesWithLabels = observeConversationMessagesWithLabels,
+        observeDetailActions: ObserveConversationDetailActions = observeConversationDetailActions,
+        observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels = observeMailLabels,
+        observeFolderColor: ObserveFolderColorSettings = observeFolderColorSettings,
+        observeCustomMailLabels: ObserveCustomMailLabels = observeCustomMailLabelsUseCase,
+        detailReducer: ConversationDetailReducer = reducer,
+        savedState: SavedStateHandle = savedStateHandle,
+        star: StarConversation = starConversation,
+        unStar: UnStarConversation = unStarConversation,
+        decryptedMessageBody: GetDecryptedMessageBody = getDecryptedMessageBody,
+        markMessageAsRead: MarkMessageAsRead = markMessageAsReadUseCase,
+        observeMessageWithLabels: ObserveMessageWithLabels = observeMessageWithLabelsUseCase,
+        getContacts: GetContacts = getContactsUseCase
+    ) = ConversationDetailViewModel(
+        observePrimaryUserId = observePrimaryUser,
+        actionUiModelMapper = actionMapper,
+        conversationMessageMapper = messageMapper,
+        conversationMetadataMapper = metadataMapper,
+        markConversationAsUnread = unread,
+        moveConversation = moveConversation,
+        relabelConversation = relabel,
+        observeContacts = contacts,
+        observeConversation = observeConversation,
+        observeConversationMessages = observeConversationMessages,
+        observeDetailActions = observeDetailActions,
+        observeDestinationMailLabels = observeDestinationMailLabels,
+        observeFolderColor = observeFolderColor,
+        observeCustomMailLabels = observeCustomMailLabels,
+        reducer = detailReducer,
+        savedStateHandle = savedState,
+        starConversation = star,
+        unStarConversation = unStar,
+        getDecryptedMessageBody = decryptedMessageBody,
+        markMessageAsRead = markMessageAsRead,
+        observeMessageWithLabels = observeMessageWithLabels,
+        getContacts = getContacts,
+        ioDispatcher = Dispatchers.Unconfined
+    )
 }
