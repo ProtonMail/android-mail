@@ -121,6 +121,7 @@ fun Home(
                         }
                     },
                     openMessageBodyLink = activityActions.openInActivityInNewTask,
+                    getAppThemeUiMode = activityActions.getAppThemeUiMode,
                     showFeatureMissingSnackbar = {
                         showFeatureMissingSnackbar()
                     }
@@ -151,6 +152,7 @@ fun Home(
                         }
                     },
                     openMessageBodyLink = activityActions.openInActivityInNewTask,
+                    getAppThemeUiMode = activityActions.getAppThemeUiMode,
                     showFeatureMissingSnackbar = { showFeatureMissingSnackbar() }
                 )
                 addRemoveAccountDialog(navController)

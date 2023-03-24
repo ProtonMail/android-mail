@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -85,8 +86,9 @@ fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
     onExit: (notifyUserMessage: String?) -> Unit,
     openMessageBodyLink: (url: String) -> Unit,
-    viewModel: ConversationDetailViewModel = hiltViewModel(),
-    showFeatureMissingSnackbar: () -> Unit
+    getAppThemeUiMode: () -> Int,
+    showFeatureMissingSnackbar: () -> Unit,
+    viewModel: ConversationDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -156,9 +158,10 @@ fun ConversationDetailScreen(
                 onRequestScrollTo = { viewModel.submit(ConversationDetailViewAction.RequestScrollTo(it)) },
                 onShowAllAttachmentsForMessage = {
                     viewModel.submit(ConversationDetailViewAction.ShowAllAttachmentsForMessage(it))
-                }
-            ),
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                },
+                getAppThemeUiMode = getAppThemeUiMode,
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            )
         )
     }
 }
@@ -169,8 +172,7 @@ fun ConversationDetailScreen(
 fun ConversationDetailScreen(
     state: ConversationDetailState,
     actions: ConversationDetailScreen.Actions,
-    modifier: Modifier = Modifier,
-    showFeatureMissingSnackbar: () -> Unit = {}
+    modifier: Modifier = Modifier
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
@@ -234,7 +236,7 @@ fun ConversationDetailScreen(
                     onMove = actions.onMoveToClick,
                     onLabel = actions.onLabelAsClick,
                     onTrash = actions.onTrashClick,
-                    onDelete = showFeatureMissingSnackbar,
+                    onDelete = actions.showFeatureMissingSnackbar,
                     onArchive = { Timber.d("conversation onArchive clicked") },
                     onSpam = { Timber.d("conversation onSpam clicked") },
                     onViewInLightMode = { Timber.d("conversation onViewInLightMode clicked") },
@@ -259,15 +261,16 @@ fun ConversationDetailScreen(
                     onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                     onRequestScrollTo = actions.onRequestScrollTo,
                     onOpenMessageBodyLink = actions.onOpenMessageBodyLink,
-                    onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage
+                    onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage,
+                    getAppThemeUiMode = actions.getAppThemeUiMode,
+                    showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
                     padding = innerPadding,
                     scrollToMessageId = scrollToMessage,
                     onScrollToMessageCompleted = { scrollToMessage = null },
-                    actions = conversationDetailItemActions,
-                    showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                    actions = conversationDetailItemActions
                 )
             }
 
@@ -297,8 +300,7 @@ private fun MessagesContent(
     scrollToMessageId: String?,
     onScrollToMessageCompleted: () -> Unit,
     modifier: Modifier = Modifier,
-    actions: ConversationDetailItem.Actions,
-    showFeatureMissingSnackbar: () -> Unit = {}
+    actions: ConversationDetailItem.Actions
 ) {
     val listState = rememberLazyListState()
     val layoutDirection = LocalLayoutDirection.current
@@ -337,8 +339,7 @@ private fun MessagesContent(
                 uiModel = uiModel,
                 modifier = Modifier.animateItemPlacement(),
                 listState = listState,
-                actions = actions,
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                actions = actions
             )
         }
     }
@@ -361,7 +362,9 @@ object ConversationDetailScreen {
         val onMessageBodyLinkClicked: (url: String) -> Unit,
         val onOpenMessageBodyLink: (url: String) -> Unit,
         val onRequestScrollTo: (MessageId) -> Unit,
-        val onShowAllAttachmentsForMessage: (MessageId) -> Unit
+        val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
+        val getAppThemeUiMode: () -> Int,
+        val showFeatureMissingSnackbar: () -> Unit
     ) {
 
         companion object {
@@ -379,7 +382,9 @@ object ConversationDetailScreen {
                 onMessageBodyLinkClicked = {},
                 onOpenMessageBodyLink = {},
                 onRequestScrollTo = {},
-                onShowAllAttachmentsForMessage = {}
+                onShowAllAttachmentsForMessage = {},
+                getAppThemeUiMode = { Configuration.UI_MODE_NIGHT_NO },
+                showFeatureMissingSnackbar = {}
             )
         }
     }

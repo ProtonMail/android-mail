@@ -54,8 +54,7 @@ fun ConversationDetailItem(
     uiModel: ConversationDetailMessageUiModel,
     listState: LazyListState,
     actions: ConversationDetailItem.Actions,
-    modifier: Modifier = Modifier,
-    showFeatureMissingSnackbar: () -> Unit
+    modifier: Modifier = Modifier
 ) {
     ElevatedCard(
         modifier = modifier.fillMaxWidth(),
@@ -88,8 +87,7 @@ fun ConversationDetailItem(
                     uiModel = uiModel,
                     messageId = uiModel.messageId,
                     listState = listState,
-                    actions = actions,
-                    showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                    actions = actions
                 )
             }
         }
@@ -117,8 +115,7 @@ private fun ConversationDetailExpandedItem(
     uiModel: Expanded,
     listState: LazyListState,
     actions: ConversationDetailItem.Actions,
-    modifier: Modifier = Modifier,
-    showFeatureMissingSnackbar: () -> Unit
+    modifier: Modifier = Modifier
 ) {
     var bodyBounds by remember { mutableStateOf(Rect(0f, 0f, 0f, 0f)) }
     LaunchedEffect(key1 = bodyBounds) {
@@ -142,7 +139,7 @@ private fun ConversationDetailExpandedItem(
         )
         MessageDetailHeader(
             uiModel = uiModel.messageDetailHeaderUiModel,
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
         )
         Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
         MessageBody(
@@ -150,8 +147,11 @@ private fun ConversationDetailExpandedItem(
                 bodyBounds = coordinates.boundsInParent()
             },
             messageBodyUiModel = uiModel.messageBodyUiModel,
-            onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) },
-            onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(messageId) },
+            actions = MessageBody.Actions(
+                onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) },
+                onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(messageId) },
+                getAppThemeUiMode = actions.getAppThemeUiMode
+            )
         )
     }
 }
@@ -164,5 +164,7 @@ object ConversationDetailItem {
         val onOpenMessageBodyLink: (url: String) -> Unit,
         val onRequestScrollTo: (MessageId) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
+        val getAppThemeUiMode: () -> Int,
+        val showFeatureMissingSnackbar: () -> Unit
     )
 }

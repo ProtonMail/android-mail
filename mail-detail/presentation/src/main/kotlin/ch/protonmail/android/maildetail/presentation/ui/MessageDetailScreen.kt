@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -75,8 +76,9 @@ fun MessageDetailScreen(
     modifier: Modifier = Modifier,
     onExit: (message: String?) -> Unit,
     openMessageBodyLink: (uri: Uri) -> Unit,
-    viewModel: MessageDetailViewModel = hiltViewModel(),
-    showFeatureMissingSnackbar: () -> Unit = {},
+    getAppThemeUiMode: () -> Int,
+    showFeatureMissingSnackbar: () -> Unit,
+    viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
@@ -143,9 +145,10 @@ fun MessageDetailScreen(
                 onReplyClick = { showFeatureMissingSnackbar() },
                 onReplyAllClick = { showFeatureMissingSnackbar() },
                 onDeleteClick = { showFeatureMissingSnackbar() },
-                onShowAllAttachmentsClicked = { viewModel.submit(MessageViewAction.ShowAllAttachments) }
-            ),
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                onShowAllAttachmentsClicked = { viewModel.submit(MessageViewAction.ShowAllAttachments) },
+                getAppThemeUiMode = getAppThemeUiMode,
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            )
         )
     }
 }
@@ -155,8 +158,7 @@ fun MessageDetailScreen(
 fun MessageDetailScreen(
     state: MessageDetailState,
     actions: MessageDetailScreen.Actions,
-    modifier: Modifier = Modifier,
-    showFeatureMissingSnackbar: () -> Unit = {}
+    modifier: Modifier = Modifier
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
@@ -229,15 +231,21 @@ fun MessageDetailScreen(
         }
     ) { innerPadding ->
         when (state.messageMetadataState) {
-            is MessageMetadataState.Data -> MessageDetailContent(
-                modifier = Modifier.padding(innerPadding),
-                messageMetadataState = state.messageMetadataState,
-                messageBodyState = state.messageBodyState,
-                onReload = actions.onReload,
-                onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar,
-                onShowAllAttachmentsClicked = actions.onShowAllAttachmentsClicked
-            )
+            is MessageMetadataState.Data -> {
+                val messageDetailContentActions = MessageDetailContent.Actions(
+                    onReload = actions.onReload,
+                    onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
+                    onShowAllAttachmentsClicked = actions.onShowAllAttachmentsClicked,
+                    getAppThemeUiMode = actions.getAppThemeUiMode,
+                    showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
+                )
+                MessageDetailContent(
+                    modifier = Modifier.padding(innerPadding),
+                    messageMetadataState = state.messageMetadataState,
+                    messageBodyState = state.messageBodyState,
+                    actions = messageDetailContentActions
+                )
+            }
             is MessageMetadataState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
             )
@@ -251,10 +259,7 @@ private fun MessageDetailContent(
     modifier: Modifier = Modifier,
     messageMetadataState: MessageMetadataState.Data,
     messageBodyState: MessageBodyState,
-    onReload: () -> Unit,
-    onMessageBodyLinkClicked: (uri: Uri) -> Unit,
-    onShowAllAttachmentsClicked: () -> Unit,
-    showFeatureMissingSnackbar: () -> Unit
+    actions: MessageDetailContent.Actions
 ) {
     LazyColumn(
         modifier = modifier
@@ -264,26 +269,32 @@ private fun MessageDetailContent(
         item {
             MessageDetailHeader(
                 uiModel = messageMetadataState.messageDetailHeader,
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar,
+                showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
             )
             Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
             when (messageBodyState) {
                 is MessageBodyState.Loading -> ProtonCenteredProgress()
                 is MessageBodyState.Data -> MessageBody(
                     messageBodyUiModel = messageBodyState.messageBodyUiModel,
-                    onMessageBodyLinkClicked = onMessageBodyLinkClicked,
-                    onShowAllAttachments = onShowAllAttachmentsClicked
+                    actions = MessageBody.Actions(
+                        onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
+                        onShowAllAttachments = actions.onShowAllAttachmentsClicked,
+                        getAppThemeUiMode = actions.getAppThemeUiMode
+                    )
                 )
                 is MessageBodyState.Error.Data -> MessageBodyLoadingError(
                     messageBodyState = messageBodyState,
-                    onReload = onReload
+                    onReload = actions.onReload
                 )
                 is MessageBodyState.Error.Decryption -> {
                     ProtonErrorMessage(errorMessage = stringResource(id = R.string.decryption_error))
                     MessageBody(
                         messageBodyUiModel = messageBodyState.encryptedMessageBody,
-                        onMessageBodyLinkClicked = onMessageBodyLinkClicked,
-                        onShowAllAttachments = onShowAllAttachmentsClicked
+                        actions = MessageBody.Actions(
+                            onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
+                            onShowAllAttachments = actions.onShowAllAttachmentsClicked,
+                            getAppThemeUiMode = actions.getAppThemeUiMode
+                        )
                     )
                 }
             }
@@ -309,7 +320,9 @@ object MessageDetailScreen {
         val onReplyClick: () -> Unit,
         val onReplyAllClick: () -> Unit,
         val onDeleteClick: () -> Unit,
-        val onShowAllAttachmentsClicked: () -> Unit
+        val onShowAllAttachmentsClicked: () -> Unit,
+        val getAppThemeUiMode: () -> Int,
+        val showFeatureMissingSnackbar: () -> Unit
     ) {
 
         companion object {
@@ -328,10 +341,23 @@ object MessageDetailScreen {
                 onReplyClick = {},
                 onReplyAllClick = {},
                 onDeleteClick = {},
-                onShowAllAttachmentsClicked = {}
+                onShowAllAttachmentsClicked = {},
+                getAppThemeUiMode = { Configuration.UI_MODE_NIGHT_NO },
+                showFeatureMissingSnackbar = {}
             )
         }
     }
+}
+
+object MessageDetailContent {
+
+    data class Actions(
+        val onReload: () -> Unit,
+        val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
+        val onShowAllAttachmentsClicked: () -> Unit,
+        val getAppThemeUiMode: () -> Int,
+        val showFeatureMissingSnackbar: () -> Unit
+    )
 }
 
 @Composable

@@ -18,9 +18,12 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.webkit.WebResourceRequest
+import android.webkit.WebSettings.FORCE_DARK_OFF
+import android.webkit.WebSettings.FORCE_DARK_ON
 import android.webkit.WebView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -53,8 +56,7 @@ import me.proton.core.compose.theme.defaultSmallWeak
 internal fun MessageBody(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
-    onMessageBodyLinkClicked: (uri: Uri) -> Unit,
-    onShowAllAttachments: () -> Unit
+    actions: MessageBody.Actions
 ) {
     val state = rememberWebViewStateWithHTMLData(
         data = messageBodyUiModel.messageBody,
@@ -64,7 +66,7 @@ internal fun MessageBody(
     val client = remember {
         object : AccompanistWebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                request?.let { onMessageBodyLinkClicked(it.url) }
+                request?.let { actions.onMessageBodyLinkClicked(it.url) }
                 return true
             }
         }
@@ -77,6 +79,11 @@ internal fun MessageBody(
             it.settings.javaScriptEnabled = false
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.settings.isAlgorithmicDarkeningAllowed = true
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                it.settings.forceDark = when (actions.getAppThemeUiMode()) {
+                    Configuration.UI_MODE_NIGHT_YES -> FORCE_DARK_ON
+                    else -> FORCE_DARK_OFF
+                }
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 it.settings.safeBrowsingEnabled = true
@@ -91,7 +98,7 @@ internal fun MessageBody(
         AttachmentFooter(
             modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
             messageBodyAttachmentsUiModel = messageBodyUiModel.attachments,
-            onShowAllAttachments = onShowAllAttachments
+            onShowAllAttachments = actions.onShowAllAttachments
         )
     }
 }
@@ -142,4 +149,13 @@ internal fun MessageBodyLoadingError(
             }
         }
     }
+}
+
+object MessageBody {
+
+    data class Actions(
+        val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
+        val onShowAllAttachments: () -> Unit,
+        val getAppThemeUiMode: () -> Int
+    )
 }

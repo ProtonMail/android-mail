@@ -41,6 +41,7 @@ internal fun NavGraphBuilder.addConversationDetail(
     navController: NavHostController,
     showSnackbar: (message: String) -> Unit,
     openMessageBodyLink: (uri: Uri) -> Unit,
+    getAppThemeUiMode: () -> Int,
     showFeatureMissingSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.Conversation.route) {
@@ -50,6 +51,7 @@ internal fun NavGraphBuilder.addConversationDetail(
                 notifyUserMessage?.let(showSnackbar)
             },
             openMessageBodyLink = { url -> openMessageBodyLink(Uri.parse(url)) },
+            getAppThemeUiMode = getAppThemeUiMode,
             showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
     }
@@ -84,8 +86,9 @@ internal fun NavGraphBuilder.addMailbox(
 internal fun NavGraphBuilder.addMessageDetail(
     navController: NavHostController,
     showSnackbar: (notifyUserMessage: String) -> Unit,
-    showFeatureMissingSnackbar: () -> Unit,
-    openMessageBodyLink: (uri: Uri) -> Unit
+    openMessageBodyLink: (uri: Uri) -> Unit,
+    getAppThemeUiMode: () -> Int,
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.Message.route) {
         MessageDetailScreen(
@@ -94,6 +97,7 @@ internal fun NavGraphBuilder.addMessageDetail(
                 notifyUserMessage?.let(showSnackbar)
             },
             openMessageBodyLink = openMessageBodyLink,
+            getAppThemeUiMode = getAppThemeUiMode,
             showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
     }

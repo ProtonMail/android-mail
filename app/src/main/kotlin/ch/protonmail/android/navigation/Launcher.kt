@@ -36,7 +36,6 @@ fun Launcher(
 ) {
     val state by viewModel.state.collectAsState(LauncherState.Processing)
 
-
     when (state) {
         LauncherState.AccountNeeded -> viewModel.submit(LauncherViewModel.Action.AddAccount)
         LauncherState.PrimaryExist -> Home(
