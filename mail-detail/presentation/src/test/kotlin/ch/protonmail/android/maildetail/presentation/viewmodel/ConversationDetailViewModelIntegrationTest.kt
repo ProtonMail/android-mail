@@ -171,7 +171,7 @@ class ConversationDetailViewModelIntegrationTest {
         coEvery { this@mockk.invoke(any()) } returns emptyList<Contact>().right()
     }
 
-    private val markMessageAndConversationReadIfAllMessagesReadUseCase: MarkMessageAndConversationReadIfAllMessagesRead =
+    private val markMessageAndConversationReadIfAllRead: MarkMessageAndConversationReadIfAllMessagesRead =
         mockk {
             coEvery { this@mockk.invoke(any(), any(), any()) } returns ConversationSample.WeatherForecast.right()
         }
@@ -276,6 +276,7 @@ class ConversationDetailViewModelIntegrationTest {
         return (events.last() as Event.Item).value
     }
 
+    @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,
         actionMapper: ActionUiModelMapper = actionUiModelMapper,
@@ -297,7 +298,7 @@ class ConversationDetailViewModelIntegrationTest {
         unStar: UnStarConversation = unStarConversation,
         decryptedMessageBody: GetDecryptedMessageBody = getDecryptedMessageBody,
         markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead =
-            markMessageAndConversationReadIfAllMessagesReadUseCase,
+            markMessageAndConversationReadIfAllRead,
         observeMessageWithLabels: ObserveMessageWithLabels = observeMessageWithLabelsUseCase,
         getContacts: GetContacts = getContactsUseCase
     ) = ConversationDetailViewModel(

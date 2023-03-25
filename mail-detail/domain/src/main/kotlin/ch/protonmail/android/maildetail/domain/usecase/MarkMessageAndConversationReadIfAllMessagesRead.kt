@@ -66,6 +66,7 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
                             MarkConversationReadError.ConversationHasUnreadMessages.left()
                         }
                     }
-            }.firstOrNull()
+            }
+            .firstOrNull()
     }
 }

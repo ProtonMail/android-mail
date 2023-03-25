@@ -572,7 +572,7 @@ class ConversationDetailViewModel @Inject constructor(
         userId: UserId,
         messageId: MessageId
     ): DecryptedMessageBody? = getDecryptedMessageBody(userId, messageId)
-        .onRight { markMessageAndConversationAsReadIfRequired(userId, messageId) }
+        .onRight { markMessageAndConversationAsRead(userId, messageId) }
         .onLeft { emitMessageBodyDecryptError(it, messageId) }
         .getOrNull()
 
@@ -619,7 +619,7 @@ class ConversationDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    private suspend fun markMessageAndConversationAsReadIfRequired(userId: UserId, messageId: MessageId) {
+    private suspend fun markMessageAndConversationAsRead(userId: UserId, messageId: MessageId) {
         viewModelScope.launch(ioDispatcher) {
             markMessageAndConversationReadIfAllMessagesRead(userId, messageId, conversationId)
         }

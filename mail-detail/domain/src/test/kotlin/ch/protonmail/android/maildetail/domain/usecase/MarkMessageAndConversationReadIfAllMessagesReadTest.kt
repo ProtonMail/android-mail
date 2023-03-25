@@ -49,10 +49,10 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
     private val messageRepository: MessageRepository = mockk()
     private val markMessageAsRead: MarkMessageAsRead = mockk()
     private val conversationRepository: ConversationRepository = mockk()
-    private val observeConversationCacheUpdates: ObserveConversationCacheUpdates = mockk() {
+    private val observeConversationCacheUpdates: ObserveConversationCacheUpdates = mockk {
         coEvery { this@mockk(any(), any()) } returns flowOf(Unit)
     }
-    private val selectedMailLabelId: SelectedMailLabelId = mockk() {
+    private val selectedMailLabelId: SelectedMailLabelId = mockk {
         coEvery { this@mockk.flow } returns MutableStateFlow(MailLabelTestData.customLabelOne.id)
     }
 

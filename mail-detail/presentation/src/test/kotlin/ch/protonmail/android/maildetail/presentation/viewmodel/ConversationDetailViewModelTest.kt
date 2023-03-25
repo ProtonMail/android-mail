@@ -210,7 +210,7 @@ class ConversationDetailViewModelTest {
     private val observeMessageWithLabels = mockk<ObserveMessageWithLabels> {
         every { this@mockk.invoke(UserIdSample.Primary, any()) } returns mockk()
     }
-    private val markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead =
+    private val markMessageAndConversationReadIfAllRead: MarkMessageAndConversationReadIfAllMessagesRead =
         mockk {
             coEvery { this@mockk.invoke(any(), any(), any()) } returns ConversationTestData.conversation.right()
         }
@@ -235,7 +235,7 @@ class ConversationDetailViewModelTest {
             starConversation = starConversation,
             unStarConversation = unStarConversation,
             getDecryptedMessageBody = getDecryptedMessageBody,
-            markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllMessagesRead,
+            markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllRead,
             observeMessageWithLabels = observeMessageWithLabels,
             getContacts = getContacts,
             ioDispatcher = Dispatchers.Unconfined
@@ -1253,7 +1253,7 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
 
             // then
-            coVerify { markMessageAndConversationReadIfAllMessagesRead(userId, expectedExpanded.messageId, any()) }
+            coVerify { markMessageAndConversationReadIfAllRead(userId, expectedExpanded.messageId, any()) }
             cancelAndIgnoreRemainingEvents()
         }
     }
