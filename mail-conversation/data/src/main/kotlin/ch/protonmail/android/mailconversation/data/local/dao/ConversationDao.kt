@@ -156,4 +156,7 @@ abstract class ConversationDao : BaseDao<ConversationEntity>() {
 
     @Query("SELECT * FROM ConversationEntity WHERE userId = :userId AND conversationId = :conversationId")
     abstract fun observe(userId: UserId, conversationId: ConversationId): Flow<ConversationWithLabels?>
+
+    @Query("SELECT * FROM ConversationEntity WHERE userId = :userId AND conversationId = :conversationId")
+    abstract fun getConversation(userId: UserId, conversationId: ConversationId): ConversationWithLabels?
 }

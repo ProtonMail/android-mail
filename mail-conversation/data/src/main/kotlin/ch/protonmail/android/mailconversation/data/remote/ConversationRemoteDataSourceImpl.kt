@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsReadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
@@ -145,6 +146,16 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
     ) {
         enqueuer.enqueue<MarkConversationAsUnreadWorker>(
             MarkConversationAsUnreadWorker.params(
+                userId,
+                conversationId,
+                contextLabelId
+            )
+        )
+    }
+
+    override suspend fun markRead(userId: UserId, conversationId: ConversationId, contextLabelId: LabelId) {
+        enqueuer.enqueue<MarkConversationAsReadWorker>(
+            MarkConversationAsReadWorker.params(
                 userId,
                 conversationId,
                 contextLabelId

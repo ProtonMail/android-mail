@@ -18,23 +18,31 @@
 
 package ch.protonmail.android.mailconversation.domain.usecase
 
-import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.mapLatest
+import me.proton.core.domain.arch.DataResult
+import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class ObserveConversation @Inject constructor(
+class ObserveConversationCacheUpdates @Inject constructor(
     private val conversationRepository: ConversationRepository
 ) {
 
     operator fun invoke(
         userId: UserId,
-        conversationId: ConversationId,
-        refreshData: Boolean
-    ): Flow<Either<DataError, Conversation>> =
-        conversationRepository.observeConversation(userId, conversationId, refreshData)
+        conversationId: ConversationId
+    ): Flow<Unit> {
+        return conversationRepository.observeConversationCacheDataResult(userId, conversationId)
+            .distinctUntilChanged()
+            .mapLatest { it.getOrNull() }
+            .filterNotNull()
+            .filter { it is DataResult.Success && it.source == ResponseSource.Remote }
+            .mapLatest {}
+    }
 }

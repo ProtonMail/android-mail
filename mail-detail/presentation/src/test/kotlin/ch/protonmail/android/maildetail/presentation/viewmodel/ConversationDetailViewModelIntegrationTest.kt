@@ -45,7 +45,7 @@ import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
-import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
@@ -78,7 +78,6 @@ import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
-import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -114,7 +113,7 @@ class ConversationDetailViewModelIntegrationTest {
         every { this@mockk(userId = UserIdSample.Primary) } returns flowOf(emptyList<Contact>().right())
     }
     private val observeConversationUseCase: ObserveConversation = mockk {
-        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
+        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns
             flowOf(ConversationSample.WeatherForecast.right())
     }
     private val observeConversationMessagesWithLabels: ObserveConversationMessagesWithLabels = mockk {
@@ -126,7 +125,7 @@ class ConversationDetailViewModelIntegrationTest {
         )
     }
     private val observeConversationDetailActions = mockk<ObserveConversationDetailActions> {
-        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns flowOf(
+        every { this@mockk(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns flowOf(
             listOf(Action.Reply, Action.Archive, Action.MarkUnread).right()
         )
     }
@@ -172,9 +171,10 @@ class ConversationDetailViewModelIntegrationTest {
         coEvery { this@mockk.invoke(any()) } returns emptyList<Contact>().right()
     }
 
-    private val markMessageAsReadUseCase: MarkMessageAsRead = mockk {
-        coEvery { this@mockk.invoke(any(), any()) } returns MessageSample.Invoice.right()
-    }
+    private val markMessageAndConversationReadIfAllMessagesReadUseCase: MarkMessageAndConversationReadIfAllMessagesRead =
+        mockk {
+            coEvery { this@mockk.invoke(any(), any(), any()) } returns ConversationSample.WeatherForecast.right()
+        }
     private val getCurrentEpochTimeDuration: GetCurrentEpochTimeDuration = mockk {
         coEvery { this@mockk.invoke() } returns Duration.parse("PT0S")
     }
@@ -296,7 +296,8 @@ class ConversationDetailViewModelIntegrationTest {
         star: StarConversation = starConversation,
         unStar: UnStarConversation = unStarConversation,
         decryptedMessageBody: GetDecryptedMessageBody = getDecryptedMessageBody,
-        markMessageAsRead: MarkMessageAsRead = markMessageAsReadUseCase,
+        markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead =
+            markMessageAndConversationReadIfAllMessagesReadUseCase,
         observeMessageWithLabels: ObserveMessageWithLabels = observeMessageWithLabelsUseCase,
         getContacts: GetContacts = getContactsUseCase
     ) = ConversationDetailViewModel(
@@ -319,9 +320,9 @@ class ConversationDetailViewModelIntegrationTest {
         starConversation = star,
         unStarConversation = unStar,
         getDecryptedMessageBody = decryptedMessageBody,
-        markMessageAsRead = markMessageAsRead,
         observeMessageWithLabels = observeMessageWithLabels,
         getContacts = getContacts,
+        markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllMessagesRead,
         ioDispatcher = Dispatchers.Unconfined
     )
 }

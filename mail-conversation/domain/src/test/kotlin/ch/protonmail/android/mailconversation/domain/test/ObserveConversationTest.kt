@@ -50,7 +50,7 @@ class ObserveConversationTest {
         every { repository.observeConversation(userId, conversationId) } returns flowOf(error.left())
 
         // When
-        observeConversation(userId, conversationId).test {
+        observeConversation(userId, conversationId, refreshData = true).test {
             // Then
             assertEquals(error.left(), awaitItem())
             awaitComplete()
@@ -65,7 +65,22 @@ class ObserveConversationTest {
         every { repository.observeConversation(userId, conversationId) } returns flowOf(conversation.right())
 
         // When
-        observeConversation(userId, conversationId).test {
+        observeConversation(userId, conversationId, refreshData = true).test {
+            // Then
+            assertEquals(conversation.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns conversation when it exists in repository and refresh is not requested`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val conversation = ConversationTestData.conversation
+        every { repository.observeConversation(userId, conversationId, false) } returns flowOf(conversation.right())
+
+        // When
+        observeConversation(userId, conversationId, refreshData = false).test {
             // Then
             assertEquals(conversation.right(), awaitItem())
             awaitComplete()

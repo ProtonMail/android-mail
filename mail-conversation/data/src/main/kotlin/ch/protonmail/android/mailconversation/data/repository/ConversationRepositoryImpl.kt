@@ -21,6 +21,7 @@ package ch.protonmail.android.mailconversation.data.repository
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.mapper.mapToDataResultEither
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -42,10 +43,11 @@ import com.dropbox.android.external.store4.StoreRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.map
 import me.proton.core.data.arch.ProtonStore
 import me.proton.core.data.arch.buildProtonStore
 import me.proton.core.data.arch.toDataResult
+import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.CoroutineScopeProvider
@@ -55,6 +57,7 @@ import javax.inject.Singleton
 import kotlin.math.min
 
 @Singleton
+@Suppress("TooManyFunctions")
 class ConversationRepositoryImpl @Inject constructor(
     private val conversationLocalDataSource: ConversationLocalDataSource,
     private val conversationRemoteDataSource: ConversationRemoteDataSource,
@@ -100,11 +103,26 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
         conversationLocalDataSource.markAsStale(userId, labelId)
 
-    override fun observeConversation(userId: UserId, id: ConversationId): Flow<Either<DataError, Conversation>> =
-        conversationStore.stream(
-            StoreRequest.cached(ConversationKey(userId, id), true)
-        ).mapLatest { it.toDataResult() }
-            .mapToEither()
+    override fun observeConversation(
+        userId: UserId,
+        id: ConversationId,
+        refreshData: Boolean
+    ): Flow<Either<DataError, Conversation>> = buildStoreStream(userId, id, refreshData)
+        .mapToEither()
+
+    override fun observeConversationCacheDataResult(
+        userId: UserId,
+        id: ConversationId
+    ): Flow<Either<DataError, DataResult<Conversation>>> = buildStoreStream(userId, id, true)
+        .mapToDataResultEither()
+
+    private fun buildStoreStream(
+        userId: UserId,
+        id: ConversationId,
+        refreshData: Boolean
+    ): Flow<DataResult<Conversation>> =
+        conversationStore.stream(StoreRequest.cached(ConversationKey(userId, id), refreshData))
+            .map { it.toDataResult() }
             .distinctUntilChanged()
 
     override suspend fun addLabel(
@@ -207,6 +225,15 @@ class ConversationRepositoryImpl @Inject constructor(
 
         conversationRemoteDataSource.markUnread(userId, conversationId, contextLabelId)
         return conversationLocalDataSource.markUnread(userId, conversationId, contextLabelId)
+    }
+
+    override suspend fun markRead(
+        userId: UserId,
+        conversationId: ConversationId,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, Conversation> {
+        conversationRemoteDataSource.markRead(userId, conversationId, contextLabelId)
+        return conversationLocalDataSource.markRead(userId, conversationId, contextLabelId)
     }
 
     override suspend fun relabel(

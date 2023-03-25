@@ -36,8 +36,12 @@ class ObserveConversationDetailActions @Inject constructor(
     private val observeConversation: ObserveConversation
 ) {
 
-    operator fun invoke(userId: UserId, conversationId: ConversationId): Flow<Either<DataError, List<Action>>> =
-        observeConversation(userId, conversationId).mapLatest { either ->
+    operator fun invoke(
+        userId: UserId,
+        conversationId: ConversationId,
+        refreshConversations: Boolean
+    ): Flow<Either<DataError, List<Action>>> =
+        observeConversation(userId, conversationId, refreshConversations).mapLatest { either ->
             either.map { conversation ->
                 val actions = BottomBarDefaults.Conversation.actions.toMutableList()
 

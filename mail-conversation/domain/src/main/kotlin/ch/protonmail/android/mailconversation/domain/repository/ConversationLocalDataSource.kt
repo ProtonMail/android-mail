@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
+@Suppress("TooManyFunctions")
 interface ConversationLocalDataSource {
 
     /**
@@ -158,4 +159,21 @@ interface ConversationLocalDataSource {
         conversationId: ConversationId,
         contextLabelId: LabelId
     ): Either<DataError.Local, Conversation>
+
+    suspend fun markRead(
+        userId: UserId,
+        conversationId: ConversationId,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, Conversation>
+
+    suspend fun rollbackMarkRead(
+        userId: UserId,
+        conversationId: ConversationId,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, Conversation>
+
+    suspend fun getConversation(
+        userId: UserId,
+        conversationId: ConversationId
+    ): Either<DataError, Conversation>
 }

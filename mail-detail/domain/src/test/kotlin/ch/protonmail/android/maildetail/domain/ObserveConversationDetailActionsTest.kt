@@ -39,7 +39,7 @@ internal class ObserveConversationDetailActionsTest {
 
     private val observeConversation = mockk<ObserveConversation> {
         every {
-            this@mockk.invoke(userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
+            this@mockk.invoke(userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), true)
         } returns flowOf(ConversationTestData.conversation.right())
     }
 
@@ -52,7 +52,7 @@ internal class ObserveConversationDetailActionsTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         // When
-        observeDetailActions.invoke(userId, conversationId).test {
+        observeDetailActions.invoke(userId, conversationId, refreshConversations = true).test {
             // Then
             val expected = listOf(
                 Action.MarkUnread,
@@ -70,9 +70,9 @@ internal class ObserveConversationDetailActionsTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val conversation = ConversationTestData.trashAndSpamConversation
-        every { observeConversation.invoke(userId, conversationId) } returns flowOf(conversation.right())
+        every { observeConversation.invoke(userId, conversationId, true) } returns flowOf(conversation.right())
         // When
-        observeDetailActions.invoke(userId, conversationId).test {
+        observeDetailActions.invoke(userId, conversationId, true).test {
             // Then
             val expected = listOf(
                 Action.MarkUnread,
@@ -91,9 +91,15 @@ internal class ObserveConversationDetailActionsTest {
             // Given
             val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
             val conversation = ConversationTestData.trashConversationWithAllSentAllDrafts
-            every { observeConversation.invoke(userId, conversationId) } returns flowOf(conversation.right())
+            every {
+                observeConversation.invoke(
+                    userId,
+                    conversationId,
+                    refreshData = true
+                )
+            } returns flowOf(conversation.right())
             // When
-            observeDetailActions.invoke(userId, conversationId).test {
+            observeDetailActions.invoke(userId, conversationId, refreshConversations = true).test {
                 // Then
                 val expected = listOf(
                     Action.MarkUnread,
@@ -110,11 +116,11 @@ internal class ObserveConversationDetailActionsTest {
     fun `returns data error when failing to get conversation`() = runTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
-        every { observeConversation.invoke(userId, conversationId) } returns flowOf(
+        every { observeConversation.invoke(userId, conversationId, refreshData = true) } returns flowOf(
             DataError.Local.NoDataCached.left()
         )
         // When
-        observeDetailActions.invoke(userId, conversationId).test {
+        observeDetailActions.invoke(userId, conversationId, refreshConversations = true).test {
             // Then
             assertEquals(DataError.Local.NoDataCached.left(), awaitItem())
             awaitComplete()

@@ -43,6 +43,15 @@ fun <T> Flow<DataResult<T>>.mapToEither(): Flow<Either<DataError, T>> = transfor
     }
 }
 
+fun <T> Flow<DataResult<T>>.mapToDataResultEither(): Flow<Either<DataError, DataResult<T>>> = transform { dataResult ->
+    when (dataResult) {
+        is DataResult.Error.Local -> emit(toLocalDataError(dataResult).left())
+        is DataResult.Error.Remote -> emit(toRemoteDataError(dataResult).left())
+        is DataResult.Processing -> Unit
+        is DataResult.Success -> emit(dataResult.right())
+    }
+}
+
 private fun toLocalDataError(dataResult: DataResult.Error.Local): DataError.Local = unhandledLocalError(dataResult)
 
 private fun toRemoteDataError(dataResult: DataResult.Error.Remote): DataError.Remote {

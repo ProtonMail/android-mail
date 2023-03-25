@@ -40,6 +40,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class ConversationLocalDataSourceImpl @Inject constructor(
     private val db: ConversationDatabase
 ) : ConversationLocalDataSource {
@@ -206,6 +207,48 @@ class ConversationLocalDataSourceImpl @Inject constructor(
             numUnread = conversation.numUnread.decrementCoercingZero(),
             labels = updatedLabels
         )
+
+        upsertConversation(userId, updatedConversation)
+        return updatedConversation.right()
+    }
+
+    override suspend fun markRead(
+        userId: UserId,
+        conversationId: ConversationId,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, Conversation> {
+        val conversation = observeConversation(userId, conversationId).first()
+            ?: return DataError.Local.NoDataCached.left()
+
+        val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
+            label.copy(contextNumUnread = label.contextNumUnread.decrementCoercingZero())
+        }
+
+        val updatedConversation = conversation.copy(
+            numUnread = conversation.numUnread.decrementCoercingZero(),
+            labels = updatedLabels
+        )
+        upsertConversation(userId, updatedConversation)
+        return updatedConversation.right()
+    }
+
+    override suspend fun rollbackMarkRead(
+        userId: UserId,
+        conversationId: ConversationId,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, Conversation> {
+        val conversation = observeConversation(userId, conversationId).first()
+            ?: return DataError.Local.NoDataCached.left()
+
+        val updatedLabels = conversation.labels.mapOnly(contextLabelId) { label ->
+            label.copy(contextNumUnread = label.contextNumUnread.incrementUpTo(conversation.numMessages))
+        }
+
+        val updatedConversation = conversation.copy(
+            numUnread = conversation.numUnread.incrementUpTo(conversation.numMessages),
+            labels = updatedLabels
+        )
+
         upsertConversation(userId, updatedConversation)
         return updatedConversation.right()
     }
@@ -228,6 +271,14 @@ class ConversationLocalDataSourceImpl @Inject constructor(
     ) { acc, conversation ->
         acc.apply { getOrPut(conversation.userId) { mutableListOf() }.add(conversation) }
     }.toMap()
+
+    override suspend fun getConversation(
+        userId: UserId,
+        conversationId: ConversationId
+    ): Either<DataError, Conversation> = conversationDao.getConversation(userId, conversationId)
+        ?.toConversation()
+        ?.right()
+        ?: DataError.Local.NoDataCached.left()
 
     private suspend fun Map<UserId, MutableList<Conversation>>.insertLabels() {
         entries.forEach { (userId, conversations) ->

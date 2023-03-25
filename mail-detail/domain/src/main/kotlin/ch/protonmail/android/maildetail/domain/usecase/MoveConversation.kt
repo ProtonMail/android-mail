@@ -40,7 +40,7 @@ class MoveConversation @Inject constructor(
         conversationId: ConversationId,
         labelId: LabelId
     ): Either<DataError, Conversation> {
-        return conversationRepository.observeConversation(userId, conversationId).first().fold(
+        return conversationRepository.observeConversation(userId, conversationId, refreshData = false).first().fold(
             ifLeft = { DataError.Local.NoDataCached.left() },
             ifRight = {
                 val exclusiveLabelIds =

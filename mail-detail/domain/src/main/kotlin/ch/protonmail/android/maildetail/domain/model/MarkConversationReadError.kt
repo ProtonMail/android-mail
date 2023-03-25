@@ -16,25 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.domain.usecase
+package ch.protonmail.android.maildetail.domain.model
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailconversation.domain.entity.Conversation
-import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import kotlinx.coroutines.flow.Flow
-import me.proton.core.domain.entity.UserId
-import javax.inject.Inject
 
-class ObserveConversation @Inject constructor(
-    private val conversationRepository: ConversationRepository
-) {
+sealed interface MarkConversationReadError {
+    object ConversationHasUnreadMessages : MarkConversationReadError
 
-    operator fun invoke(
-        userId: UserId,
-        conversationId: ConversationId,
-        refreshData: Boolean
-    ): Flow<Either<DataError, Conversation>> =
-        conversationRepository.observeConversation(userId, conversationId, refreshData)
+    data class Data(val error: DataError.Local) : MarkConversationReadError
 }

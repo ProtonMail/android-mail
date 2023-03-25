@@ -534,4 +534,177 @@ class ConversationLocalDataSourceImplTest {
         // then
         assertEquals(error, result)
     }
+
+    @Test
+    fun `mark read decrements the conversation's overall unread count`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val conversation = ConversationWithLabelsSample.WeatherForecast.copy(
+            conversation = ConversationEntitySample.WeatherForecast.copy(
+                numMessages = 3,
+                numUnread = 2
+            )
+        )
+        val updatedConversation = ConversationSample.WeatherForecast.copy(
+            numMessages = 3,
+            numUnread = 1
+        )
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+
+        // when
+        val result = conversationLocalDataSource.markRead(
+            userId,
+            ConversationIdSample.WeatherForecast,
+            contextLabelId
+        )
+
+        // then
+        assertEquals(updatedConversation.right(), result)
+    }
+
+    @Test
+    fun `mark read decrements the unread count for the given context label only`() = runTest {
+        // given
+        val contextLabelId = MailLabelId.System.Inbox.labelId
+        val conversationId = ConversationIdSample.AlphaAppFeedback
+        val conversation = ConversationWithLabelsSample.AlphaAppFeedback.copy(
+            conversation = ConversationEntitySample.AlphaAppFeedback.copy(
+                numMessages = 2,
+                numUnread = 1
+            )
+        )
+        val updatedLabels = listOf(
+            ConversationLabelSample.AlphaAppFeedback.AllMail,
+            ConversationLabelSample.AlphaAppFeedback.Inbox.copy(contextNumUnread = 0),
+            ConversationLabelSample.AlphaAppFeedback.Archive
+        )
+        val updatedConversation = ConversationSample.AlphaAppFeedback.copy(
+            numMessages = 2,
+            numUnread = 0,
+            labels = updatedLabels
+        )
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+
+        // when
+        val result = conversationLocalDataSource.markRead(
+            userId,
+            ConversationIdSample.AlphaAppFeedback,
+            contextLabelId
+        )
+
+        // then
+        assertEquals(updatedConversation.right(), result)
+    }
+
+    @Test
+    fun `mark read returns error if conversation not found`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val error = DataErrorSample.NoCache.left()
+        every { conversationLocalDataSource.observeConversation(userId, conversationId) } returns flowOf(null)
+
+        // when
+        val result = conversationLocalDataSource.markRead(userId, conversationId, contextLabelId)
+
+        // then
+        assertEquals(error, result)
+    }
+
+    @Test
+    fun `rollback mark read returns error if conversation not found`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val error = DataErrorSample.NoCache.left()
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(null)
+
+        // when
+        val result = conversationLocalDataSource.rollbackMarkRead(userId, conversationId, contextLabelId)
+
+        // then
+        assertEquals(error, result)
+    }
+
+    @Test
+    fun `rollback mark read increments the conversation's overall unread count`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val conversation = ConversationWithLabelsSample.WeatherForecast.copy(
+            conversation = ConversationEntitySample.WeatherForecast.copy(numUnread = 1, numMessages = 10),
+        )
+        val updatedConversation = conversation.copy(
+            conversation = ConversationEntitySample.WeatherForecast.copy(numUnread = 2, numMessages = 10)
+        )
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+
+        // when
+        val result = conversationLocalDataSource.rollbackMarkRead(userId, conversationId, contextLabelId)
+
+        // then
+        assertEquals(updatedConversation.toConversation().right(), result)
+    }
+
+    @Test
+    fun `rollback mark read increments the unread count for the given context label only`() = runTest {
+        // given
+        val contextLabelId = MailLabelId.System.Inbox.labelId
+        val conversationId = ConversationIdSample.AlphaAppFeedback
+        val initialLabels = listOf(
+            ConversationLabelSample.AlphaAppFeedback.AllMail,
+            ConversationLabelSample.AlphaAppFeedback.Inbox.copy(contextNumUnread = 1),
+            ConversationLabelSample.AlphaAppFeedback.Archive.copy(contextNumUnread = 1)
+        )
+        val conversation = ConversationWithLabelsSample.AlphaAppFeedback.copy(
+            conversation = ConversationEntitySample.AlphaAppFeedback.copy(numMessages = 2, numUnread = 2),
+            labels = initialLabels
+        )
+        val updatedLabels = listOf(
+            ConversationLabelSample.AlphaAppFeedback.AllMail,
+            ConversationLabelSample.AlphaAppFeedback.Inbox.copy(contextNumUnread = 2),
+            ConversationLabelSample.AlphaAppFeedback.Archive.copy(contextNumUnread = 1)
+        )
+        val updatedConversation = ConversationSample.AlphaAppFeedback.copy(
+            numMessages = 2,
+            numUnread = 2,
+            labels = updatedLabels
+        )
+        every { conversationDao.observe(userId, conversationId) } returns flowOf(conversation)
+
+        // when
+        val result = conversationLocalDataSource.rollbackMarkRead(
+            userId,
+            ConversationIdSample.AlphaAppFeedback,
+            contextLabelId
+        )
+
+        // then
+        assertEquals(updatedConversation.right(), result)
+    }
+
+    @Test
+    fun `Should get the conversation with the given user id and conversation id`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.AlphaAppFeedback
+        val conversation = ConversationWithLabelsSample.AlphaAppFeedback
+        every { conversationDao.getConversation(userId, conversationId) } returns conversation
+
+        // when
+        val result = conversationLocalDataSource.getConversation(userId, conversationId)
+
+        // then
+        assertEquals(conversation.toConversation().right(), result)
+    }
+
+    @Test
+    fun `Should return error if the conversation can not be retrieved`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.AlphaAppFeedback
+        val error = DataErrorSample.NoCache.left()
+        every { conversationDao.getConversation(userId, conversationId) } returns null
+
+        // when
+        val result = conversationLocalDataSource.getConversation(userId, conversationId)
+
+        // then
+        assertEquals(error, result)
+    }
 }

@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailconversation.data.getConversationResource
 import ch.protonmail.android.mailconversation.data.remote.response.GetConversationsResponse
 import ch.protonmail.android.mailconversation.data.remote.worker.AddLabelConversationWorker
+import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsReadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.MarkConversationAsUnreadWorker
 import ch.protonmail.android.mailconversation.data.remote.worker.RemoveLabelConversationWorker
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -375,6 +376,26 @@ class ConversationRemoteDataSourceImplTest {
         verify {
             enqueuer.enqueue<MarkConversationAsUnreadWorker>(
                 MarkConversationAsUnreadWorker.params(
+                    userId,
+                    conversationId,
+                    contextLabelId
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `enqueues worker to perform mark read API call when mark read is called for conversation`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+
+        // when
+        conversationRemoteDataSource.markRead(userId, conversationId, contextLabelId)
+
+        // then
+        verify {
+            enqueuer.enqueue<MarkConversationAsReadWorker>(
+                MarkConversationAsReadWorker.params(
                     userId,
                     conversationId,
                     contextLabelId

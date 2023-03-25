@@ -25,9 +25,11 @@ import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlinx.coroutines.flow.Flow
+import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
+@Suppress("TooManyFunctions")
 interface ConversationRepository {
 
     /**
@@ -51,7 +53,16 @@ interface ConversationRepository {
      * Returns any conversation data that is available locally right away.
      * Message metadata is fetched and returned as available
      */
-    fun observeConversation(userId: UserId, id: ConversationId): Flow<Either<DataError, Conversation>>
+    fun observeConversation(
+        userId: UserId,
+        id: ConversationId,
+        refreshData: Boolean = true
+    ): Flow<Either<DataError, Conversation>>
+
+    fun observeConversationCacheDataResult(
+        userId: UserId,
+        id: ConversationId
+    ): Flow<Either<DataError, DataResult<Conversation>>>
 
     /**
      * Adds the given [labelId] to the message with the given [conversationId]
@@ -88,6 +99,12 @@ interface ConversationRepository {
     ): Either<DataError, Conversation>
 
     suspend fun markUnread(
+        userId: UserId,
+        conversationId: ConversationId,
+        contextLabelId: LabelId
+    ): Either<DataError.Local, Conversation>
+
+    suspend fun markRead(
         userId: UserId,
         conversationId: ConversationId,
         contextLabelId: LabelId

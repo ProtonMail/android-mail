@@ -961,4 +961,48 @@ class ConversationRepositoryImplTest {
             )
         }
     }
+
+    @Test
+    fun `mark read returns error when local data source fails`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val error = DataErrorSample.NoCache.left()
+        coEvery { conversationLocalDataSource.markRead(userId, conversationId, contextLabelId) } returns error
+
+        // when
+        val result = conversationRepository.markRead(userId, conversationId, contextLabelId)
+
+        // then
+        assertEquals(error, result)
+    }
+
+    @Test
+    fun `mark read returns updated conversation when local data source succeeds`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        val updatedConversation = ConversationSample.WeatherForecast.right()
+        coEvery {
+            conversationLocalDataSource.markRead(userId, conversationId, contextLabelId)
+        } returns updatedConversation
+
+        // when
+        val result = conversationRepository.markRead(userId, conversationId, contextLabelId)
+
+        // then
+        assertEquals(updatedConversation, result)
+    }
+
+    @Test
+    fun `mark read calls conversation remote data source`() = runTest {
+        // given
+        val conversationId = ConversationIdSample.WeatherForecast
+        coEvery { conversationLocalDataSource.markRead(userId, conversationId, contextLabelId) } returns
+            ConversationSample.WeatherForecast.right()
+
+        // when
+        conversationRepository.markRead(userId, conversationId, contextLabelId)
+
+        // then
+        coVerify { conversationRemoteDataSource.markRead(userId, conversationId, contextLabelId) }
+    }
 }

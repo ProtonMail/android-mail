@@ -39,7 +39,7 @@ import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
-import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
@@ -135,9 +135,9 @@ class ConversationDetailViewModel @Inject constructor(
     private val unStarConversation: UnStarConversation,
     private val savedStateHandle: SavedStateHandle,
     private val getDecryptedMessageBody: GetDecryptedMessageBody,
-    private val markMessageAsRead: MarkMessageAsRead,
     private val observeMessageWithLabels: ObserveMessageWithLabels,
     private val getContacts: GetContacts,
+    private val markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead,
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
@@ -183,7 +183,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun observeConversationMetadata(conversationId: ConversationId) {
         primaryUserId.flatMapLatest { userId ->
-            observeConversation(userId, conversationId)
+            observeConversation(userId, conversationId, refreshData = false)
                 .mapLatest { either ->
                     either.fold(
                         ifLeft = {
@@ -312,7 +312,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun observeBottomBarActions(conversationId: ConversationId) {
         primaryUserId.flatMapLatest { userId ->
-            observeDetailActions(userId, conversationId).mapLatest { either ->
+            observeDetailActions(userId, conversationId, refreshConversations = false).mapLatest { either ->
                 either.fold(
                     ifLeft = { ConversationDetailEvent.ConversationBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
                     ifRight = { actions ->
@@ -572,7 +572,7 @@ class ConversationDetailViewModel @Inject constructor(
         userId: UserId,
         messageId: MessageId
     ): DecryptedMessageBody? = getDecryptedMessageBody(userId, messageId)
-        .onRight { markMessageAsReadIfRequired(userId, messageId) }
+        .onRight { markMessageAndConversationAsReadIfRequired(userId, messageId) }
         .onLeft { emitMessageBodyDecryptError(it, messageId) }
         .getOrNull()
 
@@ -619,12 +619,9 @@ class ConversationDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    private suspend fun markMessageAsReadIfRequired(userId: UserId, messageId: MessageId) {
-        (state.value.messagesState as? ConversationDetailsMessagesState.Data)?.messages?.let { messages ->
-            val isUnread = messages.find { message -> message.messageId == messageId }?.isUnread ?: false
-            if (isUnread) {
-                markMessageAsRead(userId, messageId).getOrNull()
-            }
+    private suspend fun markMessageAndConversationAsReadIfRequired(userId: UserId, messageId: MessageId) {
+        viewModelScope.launch(ioDispatcher) {
+            markMessageAndConversationReadIfAllMessagesRead(userId, messageId, conversationId)
         }
     }
 
