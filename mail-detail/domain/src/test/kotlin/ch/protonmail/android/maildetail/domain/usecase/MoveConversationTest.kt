@@ -46,7 +46,7 @@ class MoveConversationTest {
     private val exclusiveMailLabels = SystemLabelId.exclusiveList.map { it.toMailLabelSystem() }
 
     private val conversationRepository: ConversationRepository = mockk {
-        every { this@mockk.observeConversation(userId, conversationId) } returns flowOf(
+        every { this@mockk.observeConversation(userId, conversationId, any()) } returns flowOf(
             ConversationSample.WeatherForecast.copy(
                 labels = listOf(ConversationLabelSample.WeatherForecast.Inbox)
             ).right()
@@ -70,7 +70,7 @@ class MoveConversationTest {
     fun `when conversation repository returns error then return error`() = runTest {
         // Given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { conversationRepository.observeConversation(userId, conversationId) } returns flowOf(error)
+        coEvery { conversationRepository.observeConversation(userId, conversationId, any()) } returns flowOf(error)
 
         // When
         val actual = move(userId, conversationId, SystemLabelId.Trash.labelId)
