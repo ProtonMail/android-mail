@@ -46,6 +46,11 @@
   <string name="error_loading_message">Eitthvað fór úrskeiðis, vinsamlegast reyndu aftur.</string>
   <string name="error_offline_loading_message">Þú ert ótengdur. Nettenging er nauðsynleg til að birta innihald þessarar skilaboða.</string>
   <string name="reload">Endurhlaða</string>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d file</item>
+    <item quantity="other">%d files</item>
+  </plurals>
+  <string name="attachment_show_more_label">+%1$d more</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flytja í...</string>
   <string name="bottom_sheet_done_action">Lokið</string>
@@ -56,4 +61,16 @@
   <string name="please_go_back_online_to_load_messages">Þú ert ekki tengdur. Vinsamlegast farðu aftur á netið til að hlaða inn skilaboðum</string>
   <string name="decryption_error">Afkóðun skilaboða mistókst.</string>
   <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_video">Video</string>
+  <string name="attachment_type_audio">Audio</string>
+  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_zip">ZIP</string>
+  <string name="attachment_type_text">Text</string>
+  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_presentation">Presentation</string>
+  <string name="attachment_type_description">%1$s file</string>
 </resources>

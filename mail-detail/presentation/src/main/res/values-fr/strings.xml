@@ -46,6 +46,11 @@
   <string name="error_loading_message">Un problème est survenu, veuillez réessayer.</string>
   <string name="error_offline_loading_message">Vous n\'êtes pas connecté. Une connexion internet est nécessaire pour afficher le contenu de ce message.</string>
   <string name="reload">Recharger</string>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d fichier</item>
+    <item quantity="other">%d fichiers</item>
+  </plurals>
+  <string name="attachment_show_more_label">+ %1$d de plus</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Déplacer...</string>
   <string name="bottom_sheet_done_action">Terminé</string>
@@ -56,4 +61,16 @@
   <string name="please_go_back_online_to_load_messages">Vous êtes hors ligne. Veuillez vous reconnecter pour charger les messages.</string>
   <string name="decryption_error">Le message n\'a pas pu être déchiffré.</string>
   <string name="detail_error_retrieving_message_body">Impossible de récupérer le message</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_video">Vidéo</string>
+  <string name="attachment_type_audio">Audio</string>
+  <string name="attachment_type_unknown">Inconnu</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_zip">ZIP</string>
+  <string name="attachment_type_text">Texte</string>
+  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_presentation">Presentation</string>
+  <string name="attachment_type_description">%1$s fichier</string>
 </resources>

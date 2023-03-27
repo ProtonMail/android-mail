@@ -47,6 +47,12 @@
   <string name="error_loading_message">Nešto je pošlo po zlu. Pokušajte ponovno.</string>
   <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>
   <string name="reload">Ponovno učitaj</string>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d file</item>
+    <item quantity="few">%d files</item>
+    <item quantity="other">%d files</item>
+  </plurals>
+  <string name="attachment_show_more_label">+%1$d more</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Premjesti u...</string>
   <string name="bottom_sheet_done_action">Gotovo</string>
@@ -57,4 +63,16 @@
   <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
   <string name="decryption_error">Message decryption failed.</string>
   <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_video">Video</string>
+  <string name="attachment_type_audio">Audio</string>
+  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_zip">ZIP</string>
+  <string name="attachment_type_text">Text</string>
+  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_presentation">Presentation</string>
+  <string name="attachment_type_description">%1$s file</string>
 </resources>

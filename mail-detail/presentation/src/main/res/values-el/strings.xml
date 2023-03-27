@@ -35,17 +35,22 @@
   <string name="error_star_operation_failed">Η λειτουργία προσθήκης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_unstar_operation_failed">Η λειτουργία κατάργησης αστεριού απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_move_to_trash_failed">Η μετακίνηση στα Διαγραμμένα απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
-  <string name="message_moved_to_trash">Message moved to Trash</string>
-  <string name="message_moved_to_archive">Message moved to Archive</string>
+  <string name="message_moved_to_trash">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</string>
+  <string name="message_moved_to_archive">Το μήνυμα μετακινήθηκε στα Αρχειοθετημένα</string>
   <string name="message_moved_to_selected_destination">Το μήνυμα μετακινήθηκε στα %1$s</string>
   <string name="error_move_message_failed">Η μετακινηση μυνημάτων απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
-  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
+  <string name="conversation_moved_to_trash">Η συνομιλία μετακινήθηκε στα Διαγραμμένα</string>
   <string name="conversation_moved_to_selected_destination">Η συνομιλία μετακινήθηκε στο %1$s</string>
-  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
+  <string name="conversation_moved_to_archive">Η συνομιλία μετακινήθηκε στα Αρχειοθετημένα</string>
   <string name="error_move_conversation_failed">Η μετακινηση συνομιλίας απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_loading_message">Κάτι πήγε στραβά, παρακαλούμε δοκιμάστε ξανά.</string>
   <string name="error_offline_loading_message">Βρίσκεστε εκτός σύνδεσης. Για εμφάνιση του περιεχομένου αυτού του μηνύματος, απαιτείται σύνδεση στο διαδίκτυο.</string>
   <string name="reload">Επαναφόρτωση</string>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d file</item>
+    <item quantity="other">%d files</item>
+  </plurals>
+  <string name="attachment_show_more_label">+%1$d more</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Μετακίνηση σε...</string>
   <string name="bottom_sheet_done_action">Ολοκληρώθηκε</string>
@@ -56,4 +61,16 @@
   <string name="please_go_back_online_to_load_messages">Είσαστε αποσυνδεμένοι. Παρακαλούμε συνδεθήτε ξανά για να φορτώσετε μηνύματα</string>
   <string name="decryption_error">Αποτυχία αποκρυπτογράφησης μηνύματος.</string>
   <string name="detail_error_retrieving_message_body">Δεν είναι δυνατή η ανάκτηση του μηνύματος</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_video">Video</string>
+  <string name="attachment_type_audio">Audio</string>
+  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_zip">ZIP</string>
+  <string name="attachment_type_text">Text</string>
+  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_presentation">Presentation</string>
+  <string name="attachment_type_description">%1$s file</string>
 </resources>

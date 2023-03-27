@@ -23,7 +23,7 @@
   <string name="expiration_minutes_arg">%d mín</string>
   <string name="retry">Reyna aftur</string>
   <string name="toolbar_back_content_description">Til baka á fyrri skjá</string>
-  <string name="x_error_not_logged_in">Not signed in</string>
+  <string name="x_error_not_logged_in">Ekki innskráð/-ur</string>
   <string name="action_reply_content_description">Svara</string>
   <string name="action_reply_all_content_description">Svara öllum</string>
   <string name="action_forward_content_description">Áfram</string>

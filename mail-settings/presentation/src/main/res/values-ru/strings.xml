@@ -49,7 +49,7 @@
   <string name="mail_settings_subscription">Подписка</string>
   <string name="mail_settings_password_management">Управление паролями</string>
   <string name="mail_settings_recovery_email">Резервный адрес электронной почты</string>
-  <string name="mail_settings_mailbox_size">Объем почтового ящика</string>
+  <string name="mail_settings_mailbox_size">Объём почтового ящика</string>
   <string name="mail_settings_addresses">Адреса</string>
   <string name="mail_settings_default_email_address">Адрес электронной почты по умолчанию</string>
   <string name="mail_settings_display_name_and_signature">Отображаемое имя и подпись</string>
@@ -64,20 +64,20 @@
   <string name="mail_settings_not_set">Не задано</string>
   <string name="mail_settings_conversation_mode_hint">Группировать сообщения, относящиеся к одной теме в папке Входящие или отображать их отдельно</string>
   <!-- Swipe Actions -->
-  <string name="mail_settings_swipe_actions_title">Действия жестов</string>
-  <string name="mail_settings_swipe_actions_subtitle">Настройте действия для пролистываня для доступа к наиболее используемым действиям.</string>
+  <string name="mail_settings_swipe_actions_title">Жесты пролистывания</string>
+  <string name="mail_settings_swipe_actions_subtitle">Настройте жесты пролистывания для доступа к наиболее используемым действиям.</string>
   <string name="mail_settings_swipe_right_name">Слева направо</string>
   <string name="mail_settings_swipe_left_name">Справа налево</string>
   <string name="mail_settings_swipe_action_archive_title">Архив</string>
   <string name="mail_settings_swipe_action_read_title">Непрочитанные</string>
   <string name="mail_settings_swipe_action_spam_title">Спам</string>
-  <string name="mail_settings_swipe_action_star_title">Отметить звездочкой</string>
+  <string name="mail_settings_swipe_action_star_title">Отметить звёздочкой</string>
   <string name="mail_settings_swipe_action_trash_title">Корзина</string>
   <string name="mail_settings_swipe_action_archive_description">Отправить в архив</string>
   <string name="mail_settings_swipe_action_read_description">Пометить как непрочитанное/прочитанное</string>
   <string name="mail_settings_swipe_action_spam_description">Переместить в спам</string>
-  <string name="mail_settings_swipe_action_star_description">Отметить звездочкой / снять звездочку</string>
+  <string name="mail_settings_swipe_action_star_description">Отметить звёздочкой / снять звёздочку</string>
   <string name="mail_settings_swipe_action_trash_description">Переместить в Корзину</string>
   <!-- Error messages -->
-  <string name="mail_settings_generic_error_message">Произошла ошибка. Попробуйте еще раз.</string>
+  <string name="mail_settings_generic_error_message">Произошла ошибка. Попробуйте ещё раз.</string>
 </resources>

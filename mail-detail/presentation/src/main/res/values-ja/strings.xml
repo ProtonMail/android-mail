@@ -45,6 +45,10 @@
   <string name="error_loading_message">問題が発生しました。再度お試しください。</string>
   <string name="error_offline_loading_message">現在、オフラインです。このメッセージの内容を表示するには、インターネット接続が必要です。</string>
   <string name="reload">再読み込み</string>
+  <plurals name="attachment_count_label">
+    <item quantity="other">%d files</item>
+  </plurals>
+  <string name="attachment_show_more_label">+%1$d more</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移動先</string>
   <string name="bottom_sheet_done_action">完了</string>
@@ -55,4 +59,16 @@
   <string name="please_go_back_online_to_load_messages">現在オフラインです。メッセージを読むには、オンラインに移動してください。</string>
   <string name="decryption_error">メッセージの復号に失敗しました。</string>
   <string name="detail_error_retrieving_message_body">メッセージの取得ができません。</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_video">Video</string>
+  <string name="attachment_type_audio">Audio</string>
+  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_zip">ZIP</string>
+  <string name="attachment_type_text">Text</string>
+  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_excel">Excel</string>
+  <string name="attachment_type_presentation">Presentation</string>
+  <string name="attachment_type_description">%1$s file</string>
 </resources>
