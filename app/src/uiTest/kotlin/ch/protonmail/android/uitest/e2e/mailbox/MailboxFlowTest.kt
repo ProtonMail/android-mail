@@ -42,10 +42,12 @@ internal class MailboxFlowTest : MockedNetworkTest() {
         mailboxRobot.verify { mailboxScreenDisplayed() }
 
         menuRobot
+            .swipeOpenSidebarMenu()
             .openDrafts()
             .verify { draftsScreenDisplayed(composeTestRule) }
 
         menuRobot
+            .swipeOpenSidebarMenu()
             .openAllMail()
             .verify { allMailScreenDisplayed(composeTestRule) }
     }

@@ -20,7 +20,9 @@ package ch.protonmail.android.uitest.robot.menu
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
@@ -29,6 +31,7 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import ch.protonmail.android.mailmailbox.presentation.sidebar.TEST_TAG_SIDEBAR_MENU
+import ch.protonmail.android.uitest.models.folders.SidebarFolderEntry
 import ch.protonmail.android.uitest.robot.contacts.ContactsRobot
 import ch.protonmail.android.uitest.robot.mailbox.allmail.AllMailRobot
 import ch.protonmail.android.uitest.robot.mailbox.archive.ArchiveRobot
@@ -71,7 +74,7 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
     }
 
     fun openDrafts(): DraftsRobot {
-        openSidebarItemWithText(mailLabelStrings.label_title_drafts)
+        tapSidebarMenuItemWithText(mailLabelStrings.label_title_drafts)
         return DraftsRobot()
     }
 
@@ -81,7 +84,7 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
     }
 
     fun openAllMail(): AllMailRobot {
-        openSidebarItemWithText(mailLabelStrings.label_title_all_mail)
+        tapSidebarMenuItemWithText(mailLabelStrings.label_title_all_mail)
         return AllMailRobot(composeTestRule)
     }
 
@@ -102,7 +105,7 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
     }
 
     fun openSettings(): SettingsRobot {
-        openSidebarItemWithText(string.presentation_menu_item_title_settings)
+        tapSidebarMenuItemWithText(string.presentation_menu_item_title_settings)
         return SettingsRobot(composeTestRule)
     }
 
@@ -116,18 +119,16 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
         return this
     }
 
-    inline fun verify(block: Verify.() -> Unit): MenuRobot =
-        also { Verify().apply(block) }
+    internal inline fun verify(block: Verify.() -> Unit): MenuRobot =
+        also { Verify(composeTestRule).apply(block) }
 
     @Suppress("unused", "EmptyFunctionBlock")
-    private fun selectMenuItem(@IdRes menuItemName: String) {}
+    private fun selectMenuItem(@IdRes menuItemName: String) = Unit
 
     @Suppress("unused", "EmptyFunctionBlock")
-    private fun selectMenuLabelOrFolder(@IdRes labelOrFolderName: String) {}
+    private fun selectMenuLabelOrFolder(@IdRes labelOrFolderName: String) = Unit
 
-    private fun openSidebarItemWithText(@StringRes menuItemName: Int) {
-        swipeOpenSidebarMenu()
-
+    private fun tapSidebarMenuItemWithText(@StringRes menuItemName: Int) {
         composeTestRule
             .onNodeWithTag(TEST_TAG_SIDEBAR_MENU)
             .onChild()
@@ -141,21 +142,36 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
         composeTestRule.waitForIdle()
     }
 
-    private fun swipeOpenSidebarMenu() {
+    fun swipeOpenSidebarMenu(): MenuRobot {
         composeTestRule
             .onRoot()
             .performTouchInput { swipeRight() }
+
+        return this
     }
 
     /**
      * Contains all the validations that can be performed by [MenuRobot].
      */
-    class Verify {
+    internal class Verify(private val composeTestRule: ComposeContentTestRule) {
 
         @Suppress("unused", "EmptyFunctionBlock")
-        fun menuOpened() {}
+        fun menuOpened() = Unit
 
         @Suppress("unused", "EmptyFunctionBlock")
-        fun menuClosed() {}
+        fun menuClosed() = Unit
+
+        fun customFoldersAreDisplayed(vararg folders: SidebarFolderEntry) {
+            folders.forEach {
+                composeTestRule
+                    .onAllNodesWithTag(SIDEBAR_ITEM_CUSTOM_FOLDER_TAG)[it.index]
+                    .assertTextEquals(it.name)
+            }
+        }
+    }
+
+    private companion object {
+
+        const val SIDEBAR_ITEM_CUSTOM_FOLDER_TAG = "SidebarItemCustomFolder"
     }
 }
