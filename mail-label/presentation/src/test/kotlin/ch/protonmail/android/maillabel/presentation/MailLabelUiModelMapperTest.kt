@@ -34,7 +34,7 @@ import kotlin.test.assertEquals
 class MailLabelUiModelMapperTest {
 
     @Test
-    fun `correctly map MailLabels toUiModels`() {
+    fun `the mail labels are correctly mapped to ui models`() {
         // Given
         val settings = FolderColorSettings(
             useFolderColor = true,
@@ -43,13 +43,14 @@ class MailLabelUiModelMapperTest {
         val selected = MailLabelId.Custom.Folder(LabelId("0"))
         val counters = emptyMap<LabelId, Int?>()
 
-        val f0 = buildCustomFolder("0", level = 0, order = 0, parent = null, children = listOf("0.1", "0.2"))
-        val f01 = buildCustomFolder("0.1", level = 1, order = 0, parent = f0)
-        val f02 = buildCustomFolder("0.2", level = 1, order = 1, parent = f0, children = listOf("0.2.1", "0.2.2"))
-        val f021 = buildCustomFolder("0.2.1", level = 2, order = 0, parent = f02)
-        val f022 = buildCustomFolder("0.2.2", level = 2, order = 1, parent = f02)
+        val folder0 = buildCustomFolder("0", level = 0, order = 0, parent = null, children = listOf("0.1", "0.2"))
+        val folder01 = buildCustomFolder("0.1", level = 1, order = 0, parent = folder0)
+        val folder02 =
+            buildCustomFolder("0.2", level = 1, order = 1, parent = folder0, children = listOf("0.2.1", "0.2.2"))
+        val folder021 = buildCustomFolder("0.2.1", level = 2, order = 0, parent = folder02)
+        val folder022 = buildCustomFolder("0.2.2", level = 2, order = 1, parent = folder02)
 
-        val items = listOf(f0, f01, f02, f021, f022)
+        val items = listOf(folder0, folder01, folder02, folder021, folder022)
 
         // When
         val actual = items.map { it.toCustomUiModel(settings, counters, selected) }
@@ -76,7 +77,7 @@ class MailLabelUiModelMapperTest {
                 count = null,
                 isVisible = true,
                 isExpanded = true,
-                iconPaddingStart = ProtonDimens.DefaultSpacing * 1
+                iconPaddingStart = ProtonDimens.DefaultSpacing
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2")),
@@ -87,7 +88,7 @@ class MailLabelUiModelMapperTest {
                 count = null,
                 isVisible = true,
                 isExpanded = true,
-                iconPaddingStart = ProtonDimens.DefaultSpacing * 1
+                iconPaddingStart = ProtonDimens.DefaultSpacing
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2.1")),
@@ -116,7 +117,7 @@ class MailLabelUiModelMapperTest {
     }
 
     @Test
-    fun `correctly map MailLabels toUiModels according FolderColorSettings`() {
+    fun `the mapped folder icons should follow the color setting when the setting for using folder colors is on`() {
         // Given
         val settings = FolderColorSettings(
             useFolderColor = true,
@@ -125,7 +126,7 @@ class MailLabelUiModelMapperTest {
         val selected = MailLabelId.Custom.Folder(LabelId("0"))
         val counters = emptyMap<LabelId, Int?>()
 
-        val f0 = buildCustomFolder(
+        val folder0 = buildCustomFolder(
             "0",
             level = 0,
             color = Color.Green.toArgb(),
@@ -133,22 +134,22 @@ class MailLabelUiModelMapperTest {
             parent = null,
             children = listOf("0.1", "0.2")
         )
-        val f01 = buildCustomFolder("0.1", level = 1, order = 0, parent = f0)
-        val f02 = buildCustomFolder(
+        val folder01 = buildCustomFolder("0.1", level = 1, order = 0, parent = folder0)
+        val folder02 = buildCustomFolder(
             "0.2",
             level = 1,
             color = Color.Red.toArgb(),
             order = 1,
-            parent = f0,
+            parent = folder0,
             children = listOf("0.2.1", "0.2.2")
         )
-        val f021 = buildCustomFolder("0.2.1", level = 2, order = 0, parent = f02)
-        val f022 = buildCustomFolder("0.2.2", level = 2, order = 1, parent = f02)
+        val folder021 = buildCustomFolder("0.2.1", level = 2, order = 0, parent = folder02)
+        val folder022 = buildCustomFolder("0.2.2", level = 2, order = 1, parent = folder02)
 
-        val items = listOf(f0, f01, f02, f021, f022)
+        val items = listOf(folder0, folder01, folder02, folder021, folder022)
 
         // When
-        val actual = items.map { it.toCustomUiModel(settings, counters, selected) }
+        val actual = items.map { it.toCustomUiModel(settings = settings, counters = counters, selected = selected) }
 
         // Then
         val expected = listOf(
@@ -172,7 +173,7 @@ class MailLabelUiModelMapperTest {
                 count = null,
                 isVisible = true,
                 isExpanded = true,
-                iconPaddingStart = ProtonDimens.DefaultSpacing * 1
+                iconPaddingStart = ProtonDimens.DefaultSpacing
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2")),
@@ -183,7 +184,7 @@ class MailLabelUiModelMapperTest {
                 count = null,
                 isVisible = true,
                 isExpanded = true,
-                iconPaddingStart = ProtonDimens.DefaultSpacing * 1
+                iconPaddingStart = ProtonDimens.DefaultSpacing
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2.1")),
@@ -212,14 +213,14 @@ class MailLabelUiModelMapperTest {
     }
 
     @Test
-    fun `correctly map MailLabels toUiModels according FolderColorSettings when use colors is off`() {
+    fun `the mapped folder icons should have no tint when the setting for using folder colors is off`() {
         // Given
         val settings = FolderColorSettings(
             useFolderColor = false,
             inheritParentFolderColor = true
         )
 
-        val f0 = buildCustomFolder(
+        val folder0 = buildCustomFolder(
             "0",
             level = 0,
             color = Color.Green.toArgb(),
@@ -227,18 +228,24 @@ class MailLabelUiModelMapperTest {
             parent = null,
             children = listOf("0.1", "0.2")
         )
-        val f01 = buildCustomFolder("0.1", level = 1, order = 0, parent = f0)
-        val f02 = buildCustomFolder(
+        val folder01 = buildCustomFolder("0.1", level = 1, order = 0, parent = folder0)
+        val folder02 = buildCustomFolder(
             "0.2",
             level = 1,
             color = Color.Red.toArgb(),
             order = 1,
-            parent = f0,
+            parent = folder0,
             children = listOf("0.2.1", "0.2.2")
         )
 
         // When
-        val actual = listOf(f0, f01, f02).map { it.toCustomUiModel(settings, emptyMap(), null) }
+        val actual = listOf(folder0, folder01, folder02).map {
+            it.toCustomUiModel(
+                settings = settings,
+                counters = emptyMap(),
+                selected = null
+            )
+        }
 
         // Then
         val expected = listOf(
@@ -262,7 +269,7 @@ class MailLabelUiModelMapperTest {
                 count = null,
                 isVisible = true,
                 isExpanded = true,
-                iconPaddingStart = ProtonDimens.DefaultSpacing * 1
+                iconPaddingStart = ProtonDimens.DefaultSpacing
             ),
             MailLabelUiModel.Custom(
                 id = MailLabelId.Custom.Folder(LabelId("0.2")),
@@ -273,7 +280,7 @@ class MailLabelUiModelMapperTest {
                 count = null,
                 isVisible = true,
                 isExpanded = true,
-                iconPaddingStart = ProtonDimens.DefaultSpacing * 1
+                iconPaddingStart = ProtonDimens.DefaultSpacing
             )
         )
         assertEquals(expected, actual)
