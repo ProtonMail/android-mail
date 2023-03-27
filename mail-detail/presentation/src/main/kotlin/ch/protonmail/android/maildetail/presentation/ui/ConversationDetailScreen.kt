@@ -118,12 +118,18 @@ fun ConversationDetailScreen(
                     onFolderSelected = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(it)) },
                     onDoneClick = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed(it)) }
                 )
+
                 is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
                     state = bottomSheetContentState,
                     onLabelAsSelected = { viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(it)) },
                     onDoneClick = { viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(it)) }
                 )
-                null -> ProtonCenteredProgress()
+
+                null -> {
+                    if (bottomSheetState.isVisible) {
+                        ProtonCenteredProgress()
+                    }
+                }
             }
         }
     ) {

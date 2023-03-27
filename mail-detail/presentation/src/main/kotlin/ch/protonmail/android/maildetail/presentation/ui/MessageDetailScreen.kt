@@ -113,13 +113,19 @@ fun MessageDetailScreen(
                     onFolderSelected = { viewModel.submit(MessageViewAction.MoveToDestinationSelected(it)) },
                     onDoneClick = { viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(it)) }
                 )
+
                 is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
                     state = bottomSheetContentState,
                     onLabelAsSelected = { viewModel.submit(MessageViewAction.LabelAsToggleAction(it)) },
                     onDoneClick = { viewModel.submit(MessageViewAction.LabelAsConfirmed(it)) }
                 )
-                null -> ProtonCenteredProgress()
-            }.exhaustive
+
+                null -> {
+                    if (bottomSheetState.isVisible) {
+                        ProtonCenteredProgress()
+                    }
+                }
+            }
         }
     ) {
         MessageDetailScreen(
