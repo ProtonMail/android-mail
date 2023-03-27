@@ -33,6 +33,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -84,13 +85,26 @@ private fun LazyListScope.sidebarCustomLabelItems(
     }
 }
 
+private val MailLabelUiModel.Custom.testTag: String
+    get() {
+        val baseTag = "SidebarItem"
+        val suffix = when (this.id) {
+            is MailLabelId.Custom.Folder -> "CustomFolder"
+            is MailLabelId.Custom.Label -> "CustomLabel"
+        }
+
+        return baseTag + suffix
+    }
+
 @Composable
 private fun LazyItemScope.SidebarCustomLabel(
     item: MailLabelUiModel.Custom,
     onLabelAction: (SidebarLabelAction) -> Unit
 ) {
     ProtonSidebarItem(
-        modifier = Modifier.animateItemPlacement(),
+        modifier = Modifier
+            .testTag(item.testTag)
+            .animateItemPlacement(),
         iconModifier = Modifier.padding(start = item.iconPaddingStart),
         icon = painterResource(item.icon),
         text = item.text.value,
