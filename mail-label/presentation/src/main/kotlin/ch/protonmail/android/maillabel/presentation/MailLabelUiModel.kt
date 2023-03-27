@@ -26,7 +26,6 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
-import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 
 @Immutable
 sealed interface MailLabelUiModel {
@@ -61,6 +60,12 @@ sealed interface MailLabelUiModel {
         val iconPaddingStart: Dp
     ) : MailLabelUiModel
 }
+
+val MailLabelUiModel.Custom.testTag: String
+    get() = when (this.id) {
+        is MailLabelId.Custom.Folder -> "CustomFolder"
+        is MailLabelId.Custom.Label -> "CustomLabel"
+    }
 
 @Immutable
 data class MailLabelsUiModel(

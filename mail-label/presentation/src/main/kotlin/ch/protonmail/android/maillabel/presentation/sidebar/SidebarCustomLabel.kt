@@ -46,6 +46,7 @@ import ch.protonmail.android.maillabel.presentation.labelAddTitleRes
 import ch.protonmail.android.maillabel.presentation.labelTitleRes
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Add
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Select
+import ch.protonmail.android.maillabel.presentation.testTag
 import me.proton.core.compose.component.ProtonSidebarItem
 import me.proton.core.compose.component.ProtonSidebarLazy
 import me.proton.core.compose.theme.ProtonDimens
@@ -54,6 +55,8 @@ import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.LabelType.MessageFolder
 import me.proton.core.label.domain.entity.LabelType.MessageLabel
+
+private const val SIDEBAR_ITEM_TEST_TAG = "SidebarItem"
 
 fun LazyListScope.sidebarLabelItems(
     items: List<MailLabelUiModel.Custom>,
@@ -85,17 +88,6 @@ private fun LazyListScope.sidebarCustomLabelItems(
     }
 }
 
-private val MailLabelUiModel.Custom.testTag: String
-    get() {
-        val baseTag = "SidebarItem"
-        val suffix = when (this.id) {
-            is MailLabelId.Custom.Folder -> "CustomFolder"
-            is MailLabelId.Custom.Label -> "CustomLabel"
-        }
-
-        return baseTag + suffix
-    }
-
 @Composable
 private fun LazyItemScope.SidebarCustomLabel(
     item: MailLabelUiModel.Custom,
@@ -103,7 +95,7 @@ private fun LazyItemScope.SidebarCustomLabel(
 ) {
     ProtonSidebarItem(
         modifier = Modifier
-            .testTag(item.testTag)
+            .testTag("${SIDEBAR_ITEM_TEST_TAG}${item.testTag}")
             .animateItemPlacement(),
         iconModifier = Modifier.padding(start = item.iconPaddingStart),
         icon = painterResource(item.icon),
