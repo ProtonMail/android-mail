@@ -31,7 +31,7 @@ object Versions {
 
         const val activity = "1.7.0-beta01"
         const val annotation = "1.2.0"
-        const val appCompat = "1.6.0-alpha05"
+        const val appCompat = "1.6.1"
         const val compose = "1.4.0-beta01"
         const val composeCompiler = "1.4.2"
         const val composeFoundation = "1.4.0-beta01"
