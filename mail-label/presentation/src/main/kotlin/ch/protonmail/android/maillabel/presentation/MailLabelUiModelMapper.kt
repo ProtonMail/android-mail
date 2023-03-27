@@ -109,14 +109,10 @@ fun MailLabel.iconTintColor(settings: FolderColorSettings): Color? = when (this)
     is MailLabel.System -> null
     is MailLabel.Custom -> when (id) {
         is MailLabelId.Custom.Label -> color
-        is MailLabelId.Custom.Folder -> {
-            if (settings.useFolderColor.not()) {
-                null
-            } else if (settings.inheritParentFolderColor) {
-                parent?.color ?: color
-            } else {
-                color
-            }
+        is MailLabelId.Custom.Folder -> when {
+            settings.useFolderColor.not() -> null
+            settings.inheritParentFolderColor -> parent?.color ?: color
+            else -> color
         }
     }
 }?.let { Color(it) }
