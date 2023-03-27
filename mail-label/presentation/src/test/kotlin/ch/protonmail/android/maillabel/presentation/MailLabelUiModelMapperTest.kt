@@ -210,4 +210,72 @@ class MailLabelUiModelMapperTest {
         )
         assertEquals(expected = expected, actual = actual)
     }
+
+    @Test
+    fun `correctly map MailLabels toUiModels according FolderColorSettings when use colors is off`() {
+        // Given
+        val settings = FolderColorSettings(
+            useFolderColor = false,
+            inheritParentFolderColor = true
+        )
+
+        val f0 = buildCustomFolder(
+            "0",
+            level = 0,
+            color = Color.Green.toArgb(),
+            order = 0,
+            parent = null,
+            children = listOf("0.1", "0.2")
+        )
+        val f01 = buildCustomFolder("0.1", level = 1, order = 0, parent = f0)
+        val f02 = buildCustomFolder(
+            "0.2",
+            level = 1,
+            color = Color.Red.toArgb(),
+            order = 1,
+            parent = f0,
+            children = listOf("0.2.1", "0.2.2")
+        )
+
+        // When
+        val actual = listOf(f0, f01, f02).map { it.toCustomUiModel(settings, emptyMap(), null) }
+
+        // Then
+        val expected = listOf(
+            MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Folder(LabelId("0")),
+                text = TextUiModel.Text("0"),
+                icon = R.drawable.ic_proton_folders,
+                iconTint = null,
+                isSelected = false,
+                count = null,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.0.dp
+            ),
+            MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Folder(LabelId("0.1")),
+                text = TextUiModel.Text("0.1"),
+                icon = R.drawable.ic_proton_folder,
+                iconTint = null,
+                isSelected = false,
+                count = null,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = ProtonDimens.DefaultSpacing * 1
+            ),
+            MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Folder(LabelId("0.2")),
+                text = TextUiModel.Text("0.2"),
+                icon = R.drawable.ic_proton_folders,
+                iconTint = null,
+                isSelected = false,
+                count = null,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = ProtonDimens.DefaultSpacing * 1
+            )
+        )
+        assertEquals(expected, actual)
+    }
 }

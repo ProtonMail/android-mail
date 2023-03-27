@@ -47,9 +47,7 @@ fun MailLabel.toUiModel(
     is MailLabel.Custom -> toCustomUiModel(settings, counters, selected)
 }
 
-fun MailLabels.toUiModels(
-    settings: FolderColorSettings
-): MailLabelsUiModel = MailLabelsUiModel(
+fun MailLabels.toUiModels(settings: FolderColorSettings): MailLabelsUiModel = MailLabelsUiModel(
     systems = systemLabels.map { it.toSystemUiModel(settings, emptyMap(), null) },
     folders = folders.map { it.toCustomUiModel(settings, emptyMap(), null) },
     labels = labels.map { it.toCustomUiModel(settings, emptyMap(), null) }
@@ -90,33 +88,35 @@ fun MailLabel.text(): TextUiModel = when (this) {
 }
 
 @DrawableRes
-fun MailLabel.iconRes(settings: FolderColorSettings): Int =
-    when (this) {
-        is MailLabel.System -> id.systemLabelId.iconRes()
-        is MailLabel.Custom -> when (id) {
-            is MailLabelId.Custom.Label -> R.drawable.ic_proton_circle_filled
-            is MailLabelId.Custom.Folder -> when {
-                settings.useFolderColor -> when {
-                    children.isEmpty() -> R.drawable.ic_proton_folder_filled
-                    else -> R.drawable.ic_proton_folders_filled
-                }
-                else -> when {
-                    children.isEmpty() -> R.drawable.ic_proton_folder
-                    else -> R.drawable.ic_proton_folders
-                }
+fun MailLabel.iconRes(settings: FolderColorSettings): Int = when (this) {
+    is MailLabel.System -> id.systemLabelId.iconRes()
+    is MailLabel.Custom -> when (id) {
+        is MailLabelId.Custom.Label -> R.drawable.ic_proton_circle_filled
+        is MailLabelId.Custom.Folder -> when {
+            settings.useFolderColor -> when {
+                children.isEmpty() -> R.drawable.ic_proton_folder_filled
+                else -> R.drawable.ic_proton_folders_filled
+            }
+            else -> when {
+                children.isEmpty() -> R.drawable.ic_proton_folder
+                else -> R.drawable.ic_proton_folders
             }
         }
     }
+}
 
-fun MailLabel.iconTintColor(settings: FolderColorSettings): Color? =
-    when (this) {
-        is MailLabel.System -> null
-        is MailLabel.Custom -> when (id) {
-            is MailLabelId.Custom.Label -> color
-            is MailLabelId.Custom.Folder -> when {
-                settings.inheritParentFolderColor -> parent?.color ?: color
-                settings.useFolderColor -> color
-                else -> null
+fun MailLabel.iconTintColor(settings: FolderColorSettings): Color? = when (this) {
+    is MailLabel.System -> null
+    is MailLabel.Custom -> when (id) {
+        is MailLabelId.Custom.Label -> color
+        is MailLabelId.Custom.Folder -> {
+            if (settings.useFolderColor.not()) {
+                null
+            } else if (settings.inheritParentFolderColor) {
+                parent?.color ?: color
+            } else {
+                color
             }
         }
-    }?.let { Color(it) }
+    }
+}?.let { Color(it) }
