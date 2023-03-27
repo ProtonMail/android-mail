@@ -184,7 +184,7 @@ class MessageDetailViewModelTest {
         coEvery { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns MessageTestData.message.right()
     }
     private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper> {
-        every { toUiModel(any(), ContactTestData.contacts) } returns messageDetailHeaderUiModel
+        every { toUiModel(any(), ContactTestData.contacts, any()) } returns messageDetailHeaderUiModel
     }
     private val messageBodyUiModelMapper = mockk<MessageBodyUiModelMapper> {
         every {

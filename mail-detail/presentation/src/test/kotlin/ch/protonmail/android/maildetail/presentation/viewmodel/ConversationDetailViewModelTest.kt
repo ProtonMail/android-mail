@@ -129,16 +129,35 @@ class ConversationDetailViewModelTest {
             ConversationDetailMetadataUiModelSample.WeatherForecast
     }
     private val conversationMessageMapper: ConversationDetailMessageUiModelMapper = mockk {
-        every { toUiModel(messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel, contacts = any()) } returns
+        every {
+            toUiModel(
+                messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel,
+                contacts = any(),
+                folderColorSettings = any()
+            )
+        } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
-        every { toUiModel(messageWithLabels = MessageWithLabelsSample.InvoiceWithTwoLabels, contacts = any()) } returns
+        every {
+            toUiModel(
+                messageWithLabels = MessageWithLabelsSample.InvoiceWithTwoLabels,
+                contacts = any(),
+                folderColorSettings = any()
+            )
+        } returns
             ConversationDetailMessageUiModelSample.InvoiceWithTwoLabels
-        every { toUiModel(messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels, contacts = any()) } returns
+        every {
+            toUiModel(
+                messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels,
+                contacts = any(),
+                folderColorSettings = any()
+            )
+        } returns
             ConversationDetailMessageUiModelSample.InvoiceWithoutLabels
         every {
             toUiModel(
                 messageWithLabels = MessageWithLabelsSample.AnotherInvoiceWithoutLabels,
-                contacts = any()
+                contacts = any(),
+                folderColorSettings = any()
             )
         } returns
             ConversationDetailMessageUiModelSample.AnotherInvoiceWithoutLabels
@@ -383,7 +402,7 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.MessagesData>()
             )
         } returns expectedState
-        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns
+        every { conversationMessageMapper.toUiModel(any(), any(), any(), any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
 
         // when
@@ -413,7 +432,7 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.MessagesData>()
             )
         } returns expectedState
-        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns
+        every { conversationMessageMapper.toUiModel(any(), any(), any(), any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
 
         // when
@@ -1417,7 +1436,7 @@ class ConversationDetailViewModelTest {
         val messages = nonEmptyListOf(
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
         )
-        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns messages.first()
+        every { conversationMessageMapper.toUiModel(any(), any(), any(), any()) } returns messages.first()
         every {
             reducer.newStateFrom(
                 currentState = any(),
@@ -1570,9 +1589,9 @@ class ConversationDetailViewModelTest {
         )
 
         coEvery { observeMessageWithLabels(userId, any()) } returns flowOf(invoiceMessage.right())
-        every { conversationMessageMapper.toUiModel(any(), any()) } returns
-            ConversationDetailMessageUiModelSample.InvoiceWithLabel
         every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns
+            ConversationDetailMessageUiModelSample.InvoiceWithLabel
+        every { conversationMessageMapper.toUiModel(any(), any(), any(), any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
         every { conversationMessageMapper.toUiModel(any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanding
@@ -1595,7 +1614,7 @@ class ConversationDetailViewModelTest {
         coEvery { observeMessageWithLabels(userId, any()) } returns flowOf(
             MessageWithLabelsSample.InvoiceWithLabel.right()
         )
-        every { conversationMessageMapper.toUiModel(any(), any()) } returns
+        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
         return Pair(allCollapsed.map { it.messageId }, ConversationDetailMessageUiModelSample.InvoiceWithLabel)
     }
@@ -1655,7 +1674,7 @@ class ConversationDetailViewModelTest {
         } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.right())
         // endregion
         // region mock mapper
-        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns expected
+        every { conversationMessageMapper.toUiModel(any(), any(), any(), any()) } returns expected
         // endregion
 
         return Pair(firstExpanded.map { it.messageId }, expected)

@@ -31,6 +31,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.every
 import io.mockk.mockk
@@ -42,6 +43,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
 
 
     private val colorMapper: ColorMapper = mockk()
+    private val folderColorSettings: FolderColorSettings = FolderColorSettings(useFolderColor = false)
 
     private val avatarUiModelMapper: DetailAvatarUiModelMapper = mockk {
         every { this@mockk(message = any(), senderResolvedName = any()) } returns
@@ -58,7 +60,9 @@ internal class ConversationDetailMessageUiModelMapperTest {
             requireNotNull(ConversationDetailMessageUiModelSample.AugWeatherForecast.shortTime)
     }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
-        every { this@mockk(labelIds = any(), labels = any()) } returns MessageLocationUiModelSample.AllMail
+        every {
+            this@mockk(labelIds = any(), labels = any(), colorSettings = any())
+        } returns MessageLocationUiModelSample.AllMail
     }
     private val resolveParticipantName: ResolveParticipantName = mockk {
         every { this@mockk(contacts = any(), participant = RecipientSample.Doe) } returns ContactSample.Doe.name
@@ -67,7 +71,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
             RecipientSample.PreciWeather.name
     }
     private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper = mockk {
-        every { toUiModel(any(), any()) } returns mockk()
+        every { toUiModel(any(), any(), any()) } returns mockk()
     }
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper = mockk {
         every { toUiModel(any<DecryptedMessageBody>()) } returns mockk()
@@ -90,7 +94,11 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val expected = ConversationDetailMessageUiModelSample.AugWeatherForecast
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
+        val result = mapper.toUiModel(
+            messageWithLabels = messageWithLabels,
+            contacts = emptyList(),
+            folderColorSettings = folderColorSettings
+        )
 
         // then
         assertEquals(expected, result)
@@ -107,13 +115,14 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val result = mapper.toUiModel(
             messageWithLabels,
             contacts = contactsList,
-            decryptedMessageBody = decryptedMessageBody
+            decryptedMessageBody = decryptedMessageBody,
+            folderColorSettings = folderColorSettings
         )
 
         // then
         assertEquals(result.isUnread, messageWithLabels.message.unread)
         assertEquals(result.messageId, messageWithLabels.message.messageId)
-        verify { messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contactsList) }
+        verify { messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contactsList, folderColorSettings) }
         verify { messageBodyUiModelMapper.toUiModel(decryptedMessageBody) }
     }
 
@@ -129,7 +138,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
 
         // then
         assertEquals(expected, result)
@@ -147,7 +156,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
 
         // then
         assertEquals(expected, result)
@@ -165,7 +174,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
 
         // then
         assertEquals(expected, result)
@@ -186,7 +195,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
 
         // then
         assertEquals(expected, result)
@@ -200,7 +209,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val expected = ConversationDetailMessageUiModelSample.ExpiringInvitation
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
 
         // then
         assertEquals(expected, result)
@@ -214,7 +223,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val expected = ConversationDetailMessageUiModelSample.ExpiringInvitation
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList())
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
 
         // then
         assertEquals(expected, result)

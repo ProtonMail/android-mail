@@ -218,13 +218,16 @@ class MessageDetailViewModel @Inject constructor(
     private fun observeMessageWithLabels(messageId: MessageId) {
         primaryUserId.flatMapLatest { userId ->
             val contacts = getContacts(userId).getOrElse { emptyList() }
-            return@flatMapLatest observeMessageWithLabels(userId, messageId).mapLatest { either ->
-                either.fold(
+            return@flatMapLatest combine(
+                observeMessageWithLabels(userId, messageId),
+                observeFolderColor(userId)
+            ) { messageWithLabelsEither, folderColor ->
+                messageWithLabelsEither.fold(
                     ifLeft = { MessageDetailEvent.NoCachedMetadata },
                     ifRight = { messageWithLabels ->
                         MessageDetailEvent.MessageWithLabelsEvent(
                             messageDetailActionBarUiModelMapper.toUiModel(messageWithLabels.message),
-                            messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contacts)
+                            messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contacts, folderColor)
                         )
                     }
                 )

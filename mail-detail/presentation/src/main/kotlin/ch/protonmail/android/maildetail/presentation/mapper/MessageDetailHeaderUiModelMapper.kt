@@ -33,6 +33,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -53,7 +54,11 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
     private val resolveParticipantName: ResolveParticipantName
 ) {
 
-    fun toUiModel(messageWithLabels: MessageWithLabels, contacts: List<Contact>): MessageDetailHeaderUiModel {
+    fun toUiModel(
+        messageWithLabels: MessageWithLabels,
+        contacts: List<Contact>,
+        folderColorSettings: FolderColorSettings
+    ): MessageDetailHeaderUiModel {
         val senderResolvedName = resolveParticipantName(messageWithLabels.message.sender, contacts)
 
         return MessageDetailHeaderUiModel(
@@ -62,7 +67,11 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             shouldShowTrackerProtectionIcon = true,
             shouldShowAttachmentIcon = messageWithLabels.message.hasNonCalendarAttachments(),
             shouldShowStar = messageWithLabels.message.isStarred(),
-            location = messageLocationUiModelMapper(messageWithLabels.message.labelIds, messageWithLabels.labels),
+            location = messageLocationUiModelMapper(
+                messageWithLabels.message.labelIds,
+                messageWithLabels.labels,
+                folderColorSettings
+            ),
             time = formatShortTime(messageWithLabels.message.time.seconds),
             extendedTime = formatExtendedTime(messageWithLabels.message.time.seconds),
             shouldShowUndisclosedRecipients = messageWithLabels.message.hasUndisclosedRecipients(),

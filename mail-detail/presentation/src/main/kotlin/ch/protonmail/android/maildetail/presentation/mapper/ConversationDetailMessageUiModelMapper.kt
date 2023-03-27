@@ -29,6 +29,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelType
@@ -49,7 +50,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
 
     fun toUiModel(
         messageWithLabels: MessageWithLabels,
-        contacts: List<Contact>
+        contacts: List<Contact>,
+        folderColorSettings: FolderColorSettings
     ): ConversationDetailMessageUiModel.Collapsed {
         val (message, labels) = messageWithLabels
         val senderResolvedName = resolveParticipantName(message.sender, contacts)
@@ -63,7 +65,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             hasAttachments = message.numAttachments > message.attachmentCount.calendar,
             isStarred = SystemLabelId.Starred.labelId in message.labelIds,
             isUnread = message.unread,
-            locationIcon = messageLocationUiModelMapper(message.labelIds, labels),
+            locationIcon = messageLocationUiModelMapper(message.labelIds, labels, folderColorSettings),
             repliedIcon = getRepliedIcon(isReplied = message.isReplied, isRepliedAll = message.isRepliedAll),
             sender = senderResolvedName,
             shortTime = formatShortTime(message.time.seconds),
@@ -75,7 +77,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     fun toUiModel(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
-        decryptedMessageBody: DecryptedMessageBody
+        decryptedMessageBody: DecryptedMessageBody,
+        folderColorSettings: FolderColorSettings
     ): ConversationDetailMessageUiModel.Expanded {
         val (message, _) = messageWithLabels
         return ConversationDetailMessageUiModel.Expanded(
@@ -83,7 +86,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             isUnread = message.unread,
             messageDetailHeaderUiModel = messageDetailHeaderUiModelMapper.toUiModel(
                 messageWithLabels,
-                contacts
+                contacts,
+                folderColorSettings
             ),
             messageBodyUiModel = messageBodyUiModelMapper.toUiModel(decryptedMessageBody)
         )

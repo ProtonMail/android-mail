@@ -25,6 +25,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.iconRes
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
@@ -34,7 +35,11 @@ class MessageLocationUiModelMapper @Inject constructor(
     private val colorMapper: ColorMapper
 ) {
 
-    operator fun invoke(labelIds: List<LabelId>, labels: List<Label>): MessageLocationUiModel {
+    operator fun invoke(
+        labelIds: List<LabelId>,
+        labels: List<Label>,
+        colorSettings: FolderColorSettings
+    ): MessageLocationUiModel {
         exclusiveLocations().forEach { systemLabelId ->
             if (systemLabelId.labelId in labelIds) {
                 return MessageLocationUiModel(
@@ -48,9 +53,15 @@ class MessageLocationUiModelMapper @Inject constructor(
         labels.forEach { label ->
             if (label.labelId in labelIds && label.type == LabelType.MessageFolder) {
                 return MessageLocationUiModel(
-                    label.name,
-                    R.drawable.ic_proton_folder_filled,
-                    colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
+                    name = label.name,
+                    icon = when {
+                        colorSettings.useFolderColor -> R.drawable.ic_proton_folder_filled
+                        else -> R.drawable.ic_proton_folder
+                    },
+                    color = when {
+                        colorSettings.useFolderColor -> colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
+                        else -> null
+                    }
                 )
             }
         }

@@ -86,6 +86,7 @@ import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -206,8 +207,9 @@ class ConversationDetailViewModel @Inject constructor(
             .flatMapLatest { userId ->
                 combine(
                     observeContacts(userId),
-                    observeConversationMessages(userId, conversationId).ignoreLocalErrors()
-                ) { contactsEither, messagesEither ->
+                    observeConversationMessages(userId, conversationId).ignoreLocalErrors(),
+                    observeFolderColor(userId)
+                ) { contactsEither, messagesEither, folderColorSettings ->
                     val contacts = contactsEither.getOrElse {
                         Timber.i("Failed getting contacts for displaying initials. Fallback to display name")
                         emptyList()
@@ -215,7 +217,11 @@ class ConversationDetailViewModel @Inject constructor(
                     val messages = messagesEither.getOrElse {
                         return@combine ConversationDetailEvent.ErrorLoadingMessages
                     }
-                    val (messagesUiModels, expandedMessageId) = buildMessagesUiModels(messages, contacts)
+                    val (messagesUiModels, expandedMessageId) = buildMessagesUiModels(
+                        messages = messages,
+                        contacts = contacts,
+                        folderColorSettings = folderColorSettings
+                    )
                     ConversationDetailEvent.MessagesData(messagesUiModels, expandedMessageId)
                 }
             }
@@ -225,18 +231,20 @@ class ConversationDetailViewModel @Inject constructor(
 
     private suspend fun buildMessagesUiModels(
         messages: NonEmptyList<MessageWithLabels>,
-        contacts: List<Contact>
+        contacts: List<Contact>,
+        folderColorSettings: FolderColorSettings
     ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
         return if (state.value.messagesState == ConversationDetailsMessagesState.Loading) {
-            buildInitialListWithExpandedMessage(messages, contacts)
+            buildInitialListWithExpandedMessage(messages, contacts, folderColorSettings)
         } else {
-            buildListFromCurrentState(messages, contacts)
+            buildListFromCurrentState(messages, contacts, folderColorSettings)
         }
     }
 
     private suspend fun buildInitialListWithExpandedMessage(
         messages: NonEmptyList<MessageWithLabels>,
-        contacts: List<Contact>
+        contacts: List<Contact>,
+        folderColorSettings: FolderColorSettings
     ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
         val newestNonDraftMessageId = messages
             .filterNot { it.message.isDraft() }
@@ -247,23 +255,30 @@ class ConversationDetailViewModel @Inject constructor(
         val conversationWithOnlyDrafts = newestNonDraftMessageId == null
 
         val messagesList = if (conversationWithOnlyDrafts) {
-            messages.map { messageWithLabels -> buildCollapsedMessage(messageWithLabels, contacts) }
+            messages.map { messageWithLabels ->
+                buildCollapsedMessage(
+                    messageWithLabels = messageWithLabels,
+                    contacts = contacts,
+                    folderColorSettings = folderColorSettings
+                )
+            }
         } else {
             messages.map { messageWithLabels ->
                 val userId = primaryUserId.first()
                 if (messageWithLabels.message.messageId == newestNonDraftMessageId) {
                     val decryptedBody = decryptMessageBody(userId, messageWithLabels.message.messageId)
                     if (decryptedBody == null) {
-                        buildCollapsedMessage(messageWithLabels, contacts)
+                        buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
                     } else {
                         buildExpandedMessage(
                             messageWithLabels,
                             contacts,
-                            decryptedBody
+                            decryptedBody,
+                            folderColorSettings
                         )
                     }
                 } else {
-                    buildCollapsedMessage(messageWithLabels, contacts)
+                    buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
                 }
             }
         }
@@ -273,12 +288,13 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun buildListFromCurrentState(
         messages: NonEmptyList<MessageWithLabels>,
-        contacts: List<Contact>
+        contacts: List<Contact>,
+        folderColorSettings: FolderColorSettings
     ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
         val messagesList = messages.map { messageWithLabels ->
             when (val currentMessage = findCurrentStateOfMessage(messageWithLabels.message.messageId)) {
                 is ConversationDetailMessageUiModel.Expanded -> currentMessage
-                else -> buildCollapsedMessage(messageWithLabels, contacts)
+                else -> buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
             }
         }
 
@@ -287,20 +303,24 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun buildCollapsedMessage(
         messageWithLabels: MessageWithLabels,
-        contacts: List<Contact>
+        contacts: List<Contact>,
+        folderColorSettings: FolderColorSettings
     ): ConversationDetailMessageUiModel.Collapsed = conversationMessageMapper.toUiModel(
         messageWithLabels,
-        contacts
+        contacts,
+        folderColorSettings
     )
 
     private fun buildExpandedMessage(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
-        decryptedBody: DecryptedMessageBody
+        decryptedBody: DecryptedMessageBody,
+        folderColorSettings: FolderColorSettings
     ): ConversationDetailMessageUiModel.Expanded = conversationMessageMapper.toUiModel(
         messageWithLabels,
         contacts,
         decryptedBody,
+        folderColorSettings
     )
 
     private fun findCurrentStateOfMessage(messageId: MessageId): ConversationDetailMessageUiModel? {
@@ -561,7 +581,8 @@ class ConversationDetailViewModel @Inject constructor(
             }
             .onEach { (messageWithLabels, body, contacts) ->
                 if (messageWithLabels != null) {
-                    onExpandMessage(messageId, messageWithLabels, contacts, body)
+                    val folderColorSettings = observeFolderColor(messageWithLabels.message.userId).first()
+                    onExpandMessage(messageId, messageWithLabels, contacts, body, folderColorSettings)
                 }
             }
             .flowOn(ioDispatcher)
@@ -580,7 +601,8 @@ class ConversationDetailViewModel @Inject constructor(
         messageId: MessageId,
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
-        messageBody: DecryptedMessageBody
+        messageBody: DecryptedMessageBody,
+        folderColorSettings: FolderColorSettings
     ) {
         emitNewStateFrom(
             ExpandDecryptedMessage(
@@ -588,7 +610,8 @@ class ConversationDetailViewModel @Inject constructor(
                 conversationDetailMessageUiModel = buildExpandedMessage(
                     messageWithLabels,
                     contacts,
-                    messageBody
+                    messageBody,
+                    folderColorSettings
                 )
             )
         )
@@ -598,20 +621,21 @@ class ConversationDetailViewModel @Inject constructor(
         primaryUserId.flatMapLatest { userId ->
             combine(
                 observeContacts(userId),
-                observeMessageWithLabels(userId, messageId)
-            ) { contactsEither, messageEither ->
+                observeMessageWithLabels(userId, messageId),
+                observeFolderColor(userId)
+            ) { contactsEither, messageEither, folderColorSettings ->
                 val contacts = contactsEither.getOrElse { emptyList() }
                 val message = messageEither.getOrNull()
 
-                message?.let { Pair(it, contacts) }
+                message?.let { Triple(it, contacts, folderColorSettings) }
             }
         }
             .filterNotNull()
-            .onEach { (message, contacts) ->
+            .onEach { (message, contacts, folderColorSettings) ->
                 emitNewStateFrom(
                     CollapseDecryptedMessage(
                         messageId = messageId,
-                        conversationDetailMessageUiModel = buildCollapsedMessage(message, contacts)
+                        conversationDetailMessageUiModel = buildCollapsedMessage(message, contacts, folderColorSettings)
                     )
                 )
             }
