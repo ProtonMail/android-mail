@@ -36,6 +36,7 @@ internal fun mockNetworkDispatcher(
     useDefaultContacts: Boolean = true,
     useDefaultFeatures: Boolean = true,
     useDefaultLabels: Boolean = true,
+    useDefaultCustomFolders: Boolean = true,
     ignoreEvents: Boolean = true,
     additionalMockDefinitions: MockNetworkDispatcher.() -> Unit = {}
 ) = MockNetworkDispatcher().apply {
@@ -79,6 +80,11 @@ internal fun mockNetworkDispatcher(
     if (useDefaultLabels) {
         addMockRequests(
             "/core/v4/labels?Type=1" respondWith "/core/v4/labels/labels-type1_base_placeholder.json" withStatusCode 200,
+        )
+    }
+
+    if (useDefaultCustomFolders) {
+        addMockRequests(
             "/core/v4/labels?Type=3" respondWith "/core/v4/labels/labels-type3_base_placeholder.json" withStatusCode 200
         )
     }
