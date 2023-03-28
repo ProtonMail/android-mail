@@ -23,17 +23,21 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
 import me.proton.core.util.kotlin.DispatcherProvider
+import timber.log.Timber
 import javax.inject.Inject
 
 class FileHelper @Inject constructor(
     private val fileStreamFactory: FileStreamFactory,
     private val fileFactory: FileFactory,
-    private val dispatcherProvider: DispatcherProvider
+    private val dispatcherProvider: DispatcherProvider,
+    @ApplicationContext private val applicationContext: Context
 ) {
 
-    suspend fun readFromFile(folder: Folder, filename: Filename): String? = withContext(dispatcherProvider.Io) {
+    suspend fun readFromFile(folder: Folder, filename: Filename): String? = fileOperationIn(folder) {
         val fileToRead = fileFactory.fileFrom(folder, filename)
         runCatching {
             fileStreamFactory.inputStreamFrom(fileToRead)
@@ -46,25 +50,45 @@ class FileHelper @Inject constructor(
         folder: Folder,
         filename: Filename,
         content: String
-    ): Boolean = withContext(dispatcherProvider.Io) {
+    ): Boolean = fileOperationIn(folder) {
         val fileToSave = fileFactory.fileFrom(folder, filename)
         runCatching {
             fileStreamFactory.outputStreamFrom(fileToSave).use {
                 it.write(content.toByteArray())
             }
         }.isSuccess
-    }
+    } ?: false
 
-    suspend fun deleteFile(folder: Folder, filename: Filename): Boolean = withContext(dispatcherProvider.Io) {
+    suspend fun deleteFile(folder: Folder, filename: Filename): Boolean = fileOperationIn(folder) {
         runCatching {
             fileFactory.fileFrom(folder, filename).delete()
-        }.getOrDefault(false)
-    }
+        }.getOrNull()
+    } ?: false
 
-    suspend fun deleteFolder(folder: Folder): Boolean = withContext(dispatcherProvider.Io) {
+    suspend fun deleteFolder(folder: Folder): Boolean = fileOperationIn(folder) {
         runCatching {
             fileFactory.folderFrom(folder).deleteRecursively()
-        }.getOrDefault(false)
+        }.getOrNull()
+    } ?: false
+
+    private suspend fun <T> fileOperationIn(folder: Folder, operation: () -> T): T? =
+        withContext(dispatcherProvider.Io) {
+            if (folder.isBlacklisted()) {
+                Timber.w("Trying to access a blacklisted file directory: ${folder.path}")
+                null
+            } else {
+                operation()
+            }
+        }
+
+    private fun Folder.isBlacklisted(): Boolean {
+        val internalAppFiles = applicationContext.filesDir
+        val blacklistedFolders = listOf(
+            "${internalAppFiles.parent}/databases",
+            "${internalAppFiles.parent}/shared_prefs",
+            "${internalAppFiles.path}/datastore"
+        )
+        return blacklistedFolders.any { blacklistedFolder -> path.contains(blacklistedFolder) }
     }
 
     @JvmInline

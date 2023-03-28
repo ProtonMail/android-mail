@@ -23,24 +23,42 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
+import android.content.Context
+import ch.protonmail.android.mailcommon.data.file.TestData.FileContent
+import ch.protonmail.android.mailcommon.data.file.TestData.InternalStoragePath
+import ch.protonmail.android.mailcommon.data.file.TestData.failingInputStream
+import ch.protonmail.android.mailcommon.data.file.TestData.failingOutputStream
+import ch.protonmail.android.mailcommon.data.file.TestData.filename
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
+import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import junit.framework.TestCase.assertFalse
 import kotlinx.coroutines.test.runTest
 import me.proton.core.test.kotlin.TestDispatcherProvider
+import me.proton.core.util.kotlin.EMPTY_STRING
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import kotlin.test.assertNull
 
-internal class FileHelperTest {
+internal open class FileHelperTest(folderPath: String) {
 
-    private val fileStreamFactoryMock = mockk<FileHelper.FileStreamFactory>()
-    private val fileFactoryMock = mockk<FileHelper.FileFactory>()
-    private val testDispatcherProvider = TestDispatcherProvider()
-    private val fileHelper = FileHelper(fileStreamFactoryMock, fileFactoryMock, testDispatcherProvider)
+    private val contextMock = mockk<Context> {
+        every { filesDir } returns File(InternalStoragePath)
+    }
+    protected val folder: FileHelper.Folder = FileHelper.Folder(folderPath)
+    protected val fileStreamFactoryMock = mockk<FileHelper.FileStreamFactory>()
+    protected val fileFactoryMock = mockk<FileHelper.FileFactory>()
+    protected val testDispatcherProvider = TestDispatcherProvider()
+    protected val fileHelper = FileHelper(fileStreamFactoryMock, fileFactoryMock, testDispatcherProvider, contextMock)
+}
+
+@RunWith(Parameterized::class)
+internal class AllowedFoldersFileHelperTest(folderPath: String) : FileHelperTest(folderPath) {
 
     @Test
     fun `should read contents of a file`() = runTest(testDispatcherProvider.Main) {
@@ -158,16 +176,118 @@ internal class FileHelperTest {
         unmockkStatic(File::deleteRecursively)
     }
 
-    private companion object TestData {
-        const val FileContent = "I am a file content"
+    companion object {
 
-        val folder = FileHelper.Folder("folder_path")
-        val filename = FileHelper.Filename("file_name")
-        val failingInputStream = object : InputStream() {
-            override fun read(): Int = throw IllegalStateException()
+        private val allowedFolders = listOf(
+            "/data/user/0/ch.protonmail.android.alpha/files/",
+            "/data/user/0/ch.protonmail.android.alpha/files/userid1234/",
+            "/data/user/0/ch.protonmail.android.alpha/files/userid1234/message_bodies/",
+            "/data/user/0/ch.protonmail.android.alpha/files/userid1234/attachments/",
+            "/data/user/0/ch.protonmail.android.alpha/files/userid1234/images/",
+            "/storage/emulated/0",
+            "/storage/emulated/1",
+            "/storage/emulated/0/Download/",
+            "/storage/emulated/0/Pictures/",
+            "/storage/emulated/1/Movies/",
+            "/storage/emulated/1/DCIM/"
+        )
+
+        @JvmStatic
+        @Parameterized.Parameters(name = "{0}")
+        fun data() = allowedFolders.map { arrayOf(it) }
+    }
+}
+
+@RunWith(Parameterized::class)
+internal class BlacklistedFoldersFileHelperTest(folderPath: String) : FileHelperTest(folderPath) {
+
+    @Test
+    fun `should return null when trying to read from a blacklisted folder`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        val file = File(folder.path, filename.value)
+        val inputStream = ByteArrayInputStream(FileContent.toByteArray())
+        every { fileFactoryMock.fileFrom(folder, filename) } returns file
+        every { fileStreamFactoryMock.inputStreamFrom(file) } returns inputStream
+
+        // When
+        val fileContent = fileHelper.readFromFile(folder, filename)
+
+        // Then
+        assertNull(fileContent)
+    }
+
+    @Test
+    fun `should return false and not write contents when trying to write to a blacklisted folder`() =
+        runTest(testDispatcherProvider.Main) {
+            // Given
+            val file = File(folder.path, filename.value)
+            val outputStream = ByteArrayOutputStream()
+            every { fileFactoryMock.fileFrom(folder, filename) } returns file
+            every { fileStreamFactoryMock.outputStreamFrom(file) } returns outputStream
+
+            // When
+            val fileSaved = fileHelper.writeToFile(folder, filename, FileContent)
+
+            // Then
+            val actualContent = String(outputStream.toByteArray())
+            assertEquals(EMPTY_STRING, actualContent)
+            assertFalse(fileSaved)
         }
-        val failingOutputStream = object : OutputStream() {
-            override fun write(b: Int) = throw IllegalStateException()
-        }
+
+    @Test
+    fun `should return false when trying to delete from a blacklisted folder`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        val fileMock = mockk<File>()
+        every { fileFactoryMock.fileFrom(folder, filename) } returns fileMock
+
+        // When
+        val fileDeleted = fileHelper.deleteFile(folder, filename)
+
+        // Then
+        verify(exactly = 0) { fileMock.delete() }
+        assertFalse(fileDeleted)
+    }
+
+    @Test
+    fun `should return false when trying to delete a blacklisted folder`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        mockkStatic(File::deleteRecursively)
+        val fileMock = mockk<File>()
+        every { fileFactoryMock.folderFrom(folder) } returns fileMock
+
+        // When
+        val folderDeleted = fileHelper.deleteFolder(folder)
+
+        // Then
+        assertFalse(folderDeleted)
+        verify(exactly = 0) { fileMock.deleteRecursively() }
+        unmockkStatic(File::deleteRecursively)
+    }
+
+    companion object {
+
+        private val blacklistedFolders = listOf(
+            "/data/user/0/ch.protonmail.android.alpha/databases/",
+            "/data/user/0/ch.protonmail.android.alpha/shared_prefs/",
+            "/data/user/0/ch.protonmail.android.alpha/files/datastore/"
+        )
+
+        @JvmStatic
+        @Parameterized.Parameters(name = "{0}")
+        fun data() = blacklistedFolders.map { arrayOf(it) }
+    }
+}
+
+private object TestData {
+
+    const val FileContent = "I am a file content"
+    const val InternalStoragePath = "/data/user/0/ch.protonmail.android.alpha/files"
+
+    val filename = FileHelper.Filename("file_name")
+    val failingInputStream = object : InputStream() {
+        override fun read(): Int = throw IllegalStateException()
+    }
+    val failingOutputStream = object : OutputStream() {
+        override fun write(b: Int) = throw IllegalStateException()
     }
 }
