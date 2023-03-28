@@ -24,7 +24,7 @@ gcloud firebase test android run \
   --app ../app/build/outputs/apk/dev/debug/app-dev-debug.apk \
   --test ../app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk \
   --type=instrumentation \
-  --device model=Pixel2,version=28 \
+  --device model=Pixel2.arm,version=28 \
   --test-targets "notPackage ch.protonmail.android.uitest" \
   --use-orchestrator \
   --num-flaky-test-attempts=1 \

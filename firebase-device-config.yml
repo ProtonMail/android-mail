@@ -6,7 +6,7 @@ fullTest:
       version: 31
     - model: crownqlteue
       version: 29
-    - model: Pixel2
+    - model: Pixel2.arm
       version: 28
     - model: walleye
       version: 27
