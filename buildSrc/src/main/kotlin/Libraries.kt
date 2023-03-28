@@ -199,6 +199,10 @@ object JavaX {
     const val inject = "javax.inject:javax.inject:${Versions.JavaX.inject}"
 }
 
+object Jsoup {
+    const val jsoup = "org.jsoup:jsoup:${Versions.Jsoup.jsoup}"
+}
+
 object Junit {
 
     const val junit = "junit:junit:${Versions.Junit.junit}"

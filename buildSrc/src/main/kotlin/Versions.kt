@@ -104,6 +104,10 @@ object Versions {
         const val junit = "4.13.2"
     }
 
+    object Jsoup {
+        const val jsoup = "1.15.4"
+    }
+
     object Kotlin {
 
         const val kotlin = "1.8.10"

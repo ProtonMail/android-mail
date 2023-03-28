@@ -129,6 +129,7 @@ object Dependencies {
         add(Arrow.core)
         add(JakeWharton.timber)
         add(JavaX.inject)
+        add(Jsoup.jsoup)
         add(KotlinX.immutableCollections)
         add(Material.material)
         add(Proton.Core.accountManager)
