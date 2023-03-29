@@ -21,13 +21,19 @@ package ch.protonmail.android.uitest.robot.mailbox.inbox
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasParent
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.maillabel.R
 import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_UNREAD_FILTER
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
+import ch.protonmail.android.uitest.models.mailbox.InboxListItemEntry
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.MoveToFolderRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.SelectionStateRobotInterface
@@ -146,6 +152,48 @@ class InboxRobot(
                 .onNodeWithTag(TEST_TAG_UNREAD_FILTER)
                 .assertIsDisplayed()
                 .assertIsSelected()
+        }
+
+        fun listItemsAreShown(vararg inboxEntries: InboxListItemEntry) {
+            val mailboxItemMatcher = hasTestTag(MailboxItemTestTags.ITEM_ROW)
+            val avatarItemMatcher = hasParent(hasTestTag(AvatarTestTags.AVATAR) and hasParent(mailboxItemMatcher))
+            val participantsItemMatcher = hasTestTag(MailboxItemTestTags.PARTICIPANTS) and hasParent(mailboxItemMatcher)
+            val subjectItemMatcher = hasTestTag(MailboxItemTestTags.SUBJECT) and hasParent(mailboxItemMatcher)
+            val dateItemMatcher = hasTestTag(MailboxItemTestTags.DATE) and hasParent(mailboxItemMatcher)
+
+            for (entry in inboxEntries) {
+                composeRule.waitUntil(timeoutMillis = 30_000) {
+                    composeRule.onAllNodes(mailboxItemMatcher).fetchSemanticsNodes().size > 1
+                }
+
+                composeRule
+                    .onAllNodes(
+                        matcher = avatarItemMatcher,
+                        useUnmergedTree = true
+                    )[entry.index]
+                    .assertTextEquals(entry.avatarText)
+
+                composeRule
+                    .onAllNodes(
+                        matcher = participantsItemMatcher,
+                        useUnmergedTree = true
+                    )[entry.index]
+                    .assertTextEquals(entry.participants)
+
+                composeRule
+                    .onAllNodes(
+                        matcher = subjectItemMatcher,
+                        useUnmergedTree = true
+                    )[entry.index]
+                    .assertTextEquals(entry.subject)
+
+                composeRule
+                    .onAllNodes(
+                        matcher = dateItemMatcher,
+                        useUnmergedTree = true
+                    )[entry.index]
+                    .assertTextEquals(entry.date)
+            }
         }
     }
 
