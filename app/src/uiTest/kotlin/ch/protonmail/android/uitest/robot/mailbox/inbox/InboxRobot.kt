@@ -162,7 +162,7 @@ class InboxRobot(
             val dateItemMatcher = hasTestTag(MailboxItemTestTags.DATE) and hasParent(mailboxItemMatcher)
 
             composeRule.waitUntil(timeoutMillis = 30_000) {
-                composeRule.onAllNodes(mailboxItemMatcher).fetchSemanticsNodes().size > 1
+                composeRule.onAllNodes(mailboxItemMatcher).fetchSemanticsNodes().isNotEmpty()
             }
 
             for (entry in inboxEntries) {
