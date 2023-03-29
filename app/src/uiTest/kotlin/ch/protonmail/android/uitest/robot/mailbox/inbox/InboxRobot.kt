@@ -30,9 +30,9 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.maillabel.R
-import ch.protonmail.android.mailmailbox.presentation.TEST_TAG_UNREAD_FILTER
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
+import ch.protonmail.android.mailmailbox.presentation.mailbox.UnreadItemsFilterTestTags
 import ch.protonmail.android.uitest.models.mailbox.InboxListItemEntry
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.MoveToFolderRobotInterface
@@ -80,7 +80,7 @@ class InboxRobot(
 
     fun filterUnreadMessages(): InboxRobot {
         composeTestRule
-            .onNodeWithTag(TEST_TAG_UNREAD_FILTER)
+            .onNodeWithTag(UnreadItemsFilterTestTags.UNREAD_FILTER_CHIP)
             .performClick()
 
         return this
@@ -137,19 +137,19 @@ class InboxRobot(
                     .isNotEmpty()
             }
 
-            composeRule.onNodeWithTag(MailboxScreen.TestTag).assertIsDisplayed()
+            composeRule.onNodeWithTag(MailboxScreenTestTags.ROOT).assertIsDisplayed()
         }
 
         fun unreadFilterIsDisplayed() {
             composeRule
-                .onNodeWithTag(TEST_TAG_UNREAD_FILTER)
+                .onNodeWithTag(UnreadItemsFilterTestTags.UNREAD_FILTER_CHIP)
                 .assertIsDisplayed()
                 .assertIsNotSelected()
         }
 
         fun unreadFilterIsSelected() {
             composeRule
-                .onNodeWithTag(TEST_TAG_UNREAD_FILTER)
+                .onNodeWithTag(UnreadItemsFilterTestTags.UNREAD_FILTER_CHIP)
                 .assertIsDisplayed()
                 .assertIsSelected()
         }
@@ -161,11 +161,11 @@ class InboxRobot(
             val subjectItemMatcher = hasTestTag(MailboxItemTestTags.SUBJECT) and hasParent(mailboxItemMatcher)
             val dateItemMatcher = hasTestTag(MailboxItemTestTags.DATE) and hasParent(mailboxItemMatcher)
 
-            for (entry in inboxEntries) {
-                composeRule.waitUntil(timeoutMillis = 30_000) {
-                    composeRule.onAllNodes(mailboxItemMatcher).fetchSemanticsNodes().size > 1
-                }
+            composeRule.waitUntil(timeoutMillis = 30_000) {
+                composeRule.onAllNodes(mailboxItemMatcher).fetchSemanticsNodes().size > 1
+            }
 
+            for (entry in inboxEntries) {
                 composeRule
                     .onAllNodes(
                         matcher = avatarItemMatcher,

@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ChipDefaults
@@ -32,11 +32,15 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
 
-const val TEST_TAG_UNREAD_FILTER = "UnreadFilterScreenTestTag"
+object UnreadItemsFilterTestTags {
+
+    const val UNREAD_FILTER_CHIP = "UnreadFilterChip"
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -52,7 +56,7 @@ fun UnreadItemsFilter(
         }
         is UnreadFilterState.Data -> {
             FilterChip(
-                modifier = modifier.testTag(TEST_TAG_UNREAD_FILTER),
+                modifier = modifier.testTag(UnreadItemsFilterTestTags.UNREAD_FILTER_CHIP),
                 colors = chipColors(),
                 selected = state.isFilterEnabled,
                 onClick = {

@@ -32,7 +32,7 @@ import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.espresso.action.ViewActions.swipeDown
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
 class MailboxRobot internal constructor(
@@ -89,7 +89,7 @@ class MailboxRobot internal constructor(
 
         fun listProgressIsDisplayed() {
             composeTestRule
-                .onNodeWithTag(MailboxScreen.ListProgressTestTag)
+                .onNodeWithTag(MailboxScreenTestTags.LIST_PROGRESS)
                 .assertIsDisplayed()
         }
 
@@ -107,7 +107,7 @@ private fun ComposeContentTestRule.onEmptyMailbox(): SemanticsNodeInteraction =
     onNode(emptyMailboxMatcher())
 
 private fun emptyMailboxMatcher(): SemanticsMatcher =
-    hasTestTag(MailboxScreen.MailboxEmptyTestTag)
+    hasTestTag(MailboxScreenTestTags.MAILBOX_EMPTY)
 
 fun ComposeContentTestRule.MailboxRobot(content: @Composable () -> Unit) =
     MailboxRobot(this).also { setContent(content) }

@@ -57,7 +57,6 @@ import androidx.viewbinding.BuildConfig
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
-import ch.protonmail.android.mailmailbox.presentation.UnreadItemsFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
@@ -77,6 +76,15 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
+
+object MailboxScreenTestTags {
+
+    const val LIST = "MailboxList"
+    const val LIST_PROGRESS = "MailboxListProgress"
+    const val MAILBOX_EMPTY = "MailboxEmpty"
+    const val MAILBOX_ERROR = "MailboxError"
+    const val ROOT = "MailboxScreen"
+}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -127,7 +135,7 @@ fun MailboxScreen(
     }
 
     Scaffold(
-        modifier = modifier.testTag(MailboxScreen.TestTag),
+        modifier = modifier.testTag(MailboxScreenTestTags.ROOT),
         scaffoldState = scaffoldState,
         topBar = {
             Column {
@@ -175,9 +183,10 @@ fun MailboxScreen(
                     actions = actions
                 )
             }
+
             MailboxListState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier
-                    .testTag(MailboxScreen.ListProgressTestTag)
+                    .testTag(MailboxScreenTestTags.LIST_PROGRESS)
                     .padding(paddingValues)
             )
         }
@@ -266,7 +275,7 @@ private fun MailboxItemsList(
 ) {
     LazyColumn(
         state = listState,
-        modifier = Modifier.testTag(MailboxScreen.ListTestTag)
+        modifier = Modifier.testTag(MailboxScreenTestTags.LIST)
             .fillMaxSize()
             .let { if (BuildConfig.DEBUG) it.verticalScrollbar(listState) else it }
     ) {
@@ -303,7 +312,7 @@ private fun MailboxItemsList(
 private fun MailboxEmpty(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .testTag(MailboxScreen.MailboxEmptyTestTag)
+            .testTag(MailboxScreenTestTags.MAILBOX_EMPTY)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
@@ -315,7 +324,7 @@ private fun MailboxEmpty(modifier: Modifier = Modifier) {
 private fun MailboxError(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .testTag(MailboxScreen.MailboxErrorTestTag)
+            .testTag(MailboxScreenTestTags.MAILBOX_ERROR)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
@@ -324,12 +333,6 @@ private fun MailboxError(modifier: Modifier = Modifier) {
 }
 
 object MailboxScreen {
-
-    const val ListProgressTestTag = "MailboxListProgress"
-    const val MailboxEmptyTestTag = "MailboxEmpty"
-    const val MailboxErrorTestTag = "MailboxError"
-    const val TestTag = "MailboxScreen"
-    const val ListTestTag = "MailboxList"
 
     data class Actions(
         val navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
