@@ -23,13 +23,19 @@ import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import javax.inject.Inject
 
-class MessageBodyUiModelMapper @Inject constructor() {
+class MessageBodyUiModelMapper @Inject constructor(
+    private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody
+) {
 
     fun toUiModel(decryptedMessageBody: DecryptedMessageBody) = MessageBodyUiModel(
-        messageBody = decryptedMessageBody.value,
+        messageBody = injectCssIntoDecryptedMessageBody(
+            decryptedMessageBody.value,
+            decryptedMessageBody.mimeType.toMimeTypeUiModel()
+        ),
         mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
         attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
             MessageBodyAttachmentsUiModel(

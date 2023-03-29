@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
+import java.io.ByteArrayInputStream
+import android.content.Context
 import android.text.format.Formatter
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
@@ -66,6 +68,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ParticipantUiModelMa
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMessagesReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMetadataReducer
@@ -74,6 +77,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.LabelAsBottomSheetR
 import ch.protonmail.android.maildetail.presentation.reducer.MoveToBottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
@@ -195,8 +199,15 @@ class ConversationDetailViewModelIntegrationTest {
         mockk { every { this@mockk.invoke(any()) } returns TextUiModel("10:00") }
     private val formatExtendedTime: FormatExtendedTime =
         mockk { every { this@mockk.invoke(any()) } returns TextUiModel("10:00") }
-
     private val getInitial = GetInitial()
+    private val context = mockk<Context> {
+        every { resources } returns mockk {
+            every {
+                openRawResource(R.raw.css_reset_with_media_scheme_plus_custom_props)
+            } returns ByteArrayInputStream("".toByteArray())
+        }
+    }
+    private val injectCssIntoDecryptedMessageBody = InjectCssIntoDecryptedMessageBody(context)
 
     private val conversationMessageMapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = DetailAvatarUiModelMapper(getInitial),
@@ -215,7 +226,7 @@ class ConversationDetailViewModelIntegrationTest {
             participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName),
             resolveParticipantName = resolveParticipantName
         ),
-        messageBodyUiModelMapper = MessageBodyUiModelMapper()
+        messageBodyUiModelMapper = MessageBodyUiModelMapper(injectCssIntoDecryptedMessageBody)
     )
 
     private val conversationMetadataMapper = ConversationDetailMetadataUiModelMapper()

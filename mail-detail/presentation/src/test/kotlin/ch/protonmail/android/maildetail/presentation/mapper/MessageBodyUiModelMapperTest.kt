@@ -23,21 +23,29 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachment
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
+import io.mockk.every
+import io.mockk.mockk
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MessageBodyUiModelMapperTest {
 
     private val decryptedMessageBody = "Decrypted message body."
+    private val decryptedMessageBodyWithCss = "Decrypted message body with CSS."
 
-    private val messageBodyUiModelMapper = MessageBodyUiModelMapper()
+    private val injectCssIntoDecryptedMessageBody = mockk<InjectCssIntoDecryptedMessageBody>()
+    private val messageBodyUiModelMapper = MessageBodyUiModelMapper(injectCssIntoDecryptedMessageBody)
 
     @Test
     fun `plain text message body is correctly mapped to a message body ui model`() {
         // Given
+        every {
+            injectCssIntoDecryptedMessageBody(decryptedMessageBody, MimeTypeUiModel.PlainText)
+        } returns decryptedMessageBody
         val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.PlainText)
         val expected = MessageBodyUiModel(decryptedMessageBody, MimeTypeUiModel.PlainText, null)
 
@@ -51,6 +59,9 @@ class MessageBodyUiModelMapperTest {
     @Test
     fun `plain text message body is correctly mapped to a message body ui model with attachments`() {
         // Given
+        every {
+            injectCssIntoDecryptedMessageBody(decryptedMessageBody, MimeTypeUiModel.PlainText)
+        } returns decryptedMessageBody
         val messageBody = DecryptedMessageBody(
             decryptedMessageBody,
             MimeType.PlainText,
@@ -61,7 +72,8 @@ class MessageBodyUiModelMapperTest {
             )
         )
         val expected = MessageBodyUiModel(
-            decryptedMessageBody, MimeTypeUiModel.PlainText,
+            decryptedMessageBody,
+            MimeTypeUiModel.PlainText,
             MessageBodyAttachmentsUiModel(
                 attachments = listOf(
                     AttachmentUiModelSample.invoice,
@@ -79,10 +91,12 @@ class MessageBodyUiModelMapperTest {
     }
 
     @Test
-    fun `multipart mixed message body is correctly mapped to a message body ui model`() {
-        // Given
-        val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.MultipartMixed)
-        val expected = MessageBodyUiModel(decryptedMessageBody, MimeTypeUiModel.Html, null)
+    fun `HTML message body is correctly mapped to a message body ui model`() {
+        every {
+            injectCssIntoDecryptedMessageBody(decryptedMessageBody, MimeTypeUiModel.Html)
+        } returns decryptedMessageBodyWithCss
+        val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.Html)
+        val expected = MessageBodyUiModel(decryptedMessageBodyWithCss, MimeTypeUiModel.Html, null)
 
         // When
         val actual = messageBodyUiModelMapper.toUiModel(messageBody)
