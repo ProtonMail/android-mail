@@ -32,7 +32,7 @@ import androidx.test.espresso.web.assertion.WebViewAssertions
 import androidx.test.espresso.web.sugar.Web
 import androidx.test.espresso.web.webdriver.DriverAtoms
 import androidx.test.espresso.web.webdriver.Locator
-import ch.protonmail.android.mailcommon.presentation.compose.Avatar
+import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader
@@ -76,7 +76,7 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
         fun draftIconAvatarIsDisplayed(useUnmergedTree: Boolean = false) {
             composeTestRule
                 .onNodeWithTag(
-                    testTag = Avatar.DraftTestTag,
+                    testTag = AvatarTestTags.AVATAR_DRAFT,
                     useUnmergedTree = useUnmergedTree
                 )
                 .assertIsDisplayed()

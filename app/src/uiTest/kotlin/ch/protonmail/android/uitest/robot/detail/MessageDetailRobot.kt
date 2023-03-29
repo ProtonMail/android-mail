@@ -36,7 +36,7 @@ import androidx.test.espresso.web.webdriver.DriverAtoms.getText
 import androidx.test.espresso.web.webdriver.Locator
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Until
-import ch.protonmail.android.mailcommon.presentation.compose.TEST_TAG_AVATAR
+import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
@@ -97,7 +97,7 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
         }
 
         fun avatarIsDisplayed() {
-            composeTestRule.onNodeWithTag(TEST_TAG_AVATAR, useUnmergedTree = true)
+            composeTestRule.onNodeWithTag(AvatarTestTags.AVATAR, useUnmergedTree = true)
                 .assertIsDisplayed()
         }
 

@@ -36,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -59,6 +60,14 @@ import me.proton.core.compose.theme.caption
 import me.proton.core.compose.theme.default
 import me.proton.core.compose.theme.defaultSmall
 
+object MailboxItemTestTags {
+
+    const val ITEM_ROW = "MailboxItemRow"
+    const val PARTICIPANTS = "Participants"
+    const val SUBJECT = "Subject"
+    const val DATE = "Date"
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MailboxItem(
@@ -69,6 +78,7 @@ fun MailboxItem(
 ) {
     Row(
         modifier = modifier
+            .testTag(MailboxItemTestTags.ITEM_ROW)
             .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
             .padding(
                 start = ProtonDimens.DefaultSpacing,
@@ -189,7 +199,7 @@ private fun Participants(
     fontColor: Color
 ) {
     Text(
-        modifier = modifier,
+        modifier = modifier.testTag(MailboxItemTestTags.PARTICIPANTS),
         text = participants.joinToString(),
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
@@ -206,7 +216,7 @@ private fun Time(
     fontColor: Color
 ) {
     Text(
-        modifier = modifier,
+        modifier = modifier.testTag(MailboxItemTestTags.DATE),
         text = time.string(),
         maxLines = 1,
         textAlign = TextAlign.End,
@@ -240,7 +250,7 @@ private fun Subject(
     fontColor: Color
 ) {
     Text(
-        modifier = modifier,
+        modifier = modifier.testTag(MailboxItemTestTags.SUBJECT),
         text = subject,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
