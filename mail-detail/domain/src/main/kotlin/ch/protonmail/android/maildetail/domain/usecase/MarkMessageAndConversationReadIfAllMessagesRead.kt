@@ -70,7 +70,7 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
         contextLabelId: LabelId
     ) = markMessageAsRead(userId, messageId)
         .mapLeft { error -> DataSourceError(error) }
-        .flatMap { observeConversationMessages(userId, conversationId) }
+        .flatMap { getConversationMessages(userId, conversationId) }
         .flatMap { messages -> markConversationAsReadIfAllRead(messages, userId, conversationId, contextLabelId) }
 
     private suspend fun markConversationAsReadIfAllRead(
@@ -91,7 +91,7 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
         }
     }
 
-    private suspend fun observeConversationMessages(
+    private suspend fun getConversationMessages(
         userId: UserId,
         conversationId: ConversationId
     ) = messageRepository.observeCachedMessages(userId, conversationId)
