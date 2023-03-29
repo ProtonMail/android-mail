@@ -23,5 +23,5 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 sealed interface MarkConversationReadError {
     object ConversationHasUnreadMessages : MarkConversationReadError
 
-    data class Data(val error: DataError.Local) : MarkConversationReadError
+    data class DataSourceError(val error: DataError) : MarkConversationReadError
 }

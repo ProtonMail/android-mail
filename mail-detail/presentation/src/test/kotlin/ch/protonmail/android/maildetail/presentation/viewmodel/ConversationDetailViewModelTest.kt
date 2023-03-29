@@ -212,7 +212,7 @@ class ConversationDetailViewModelTest {
     }
     private val markMessageAndConversationReadIfAllRead: MarkMessageAndConversationReadIfAllMessagesRead =
         mockk {
-            coEvery { this@mockk.invoke(any(), any(), any()) } returns ConversationTestData.conversation.right()
+            coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit.right()
         }
     private val viewModel by lazy {
         ConversationDetailViewModel(

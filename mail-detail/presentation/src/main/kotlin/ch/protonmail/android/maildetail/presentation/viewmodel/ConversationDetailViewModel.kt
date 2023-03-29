@@ -620,7 +620,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private suspend fun markMessageAndConversationAsRead(userId: UserId, messageId: MessageId) {
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             markMessageAndConversationReadIfAllMessagesRead(userId, messageId, conversationId)
         }
     }

@@ -56,10 +56,10 @@ class MarkConversationAsReadWorker @AssistedInject constructor(
         val api: ApiManager<out ConversationApi> = apiProvider.get(userId)
         val requestBody = MarkConversationAsReadBody(conversationIds = listOf(conversationId.id))
 
-        return when (api { markConversationAsRead(requestBody) }) {
+        return when (val result = api { markConversationAsRead(requestBody) }) {
             is ApiResult.Success -> Result.success()
             is ApiResult.Error -> {
-                if (api { markConversationAsRead(requestBody) }.isRetryable()) {
+                if (result.isRetryable()) {
                     Result.retry()
                 } else {
                     conversationLocalDataSource.rollbackMarkRead(userId, conversationId, contextLabelId)

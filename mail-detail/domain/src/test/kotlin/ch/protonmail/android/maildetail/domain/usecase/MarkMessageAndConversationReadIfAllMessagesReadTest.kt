@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
-import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversationCacheUpdates
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
@@ -49,9 +48,6 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
     private val messageRepository: MessageRepository = mockk()
     private val markMessageAsRead: MarkMessageAsRead = mockk()
     private val conversationRepository: ConversationRepository = mockk()
-    private val observeConversationCacheUpdates: ObserveConversationCacheUpdates = mockk {
-        coEvery { this@mockk(any(), any()) } returns flowOf(Unit)
-    }
     private val selectedMailLabelId: SelectedMailLabelId = mockk {
         coEvery { this@mockk.flow } returns MutableStateFlow(MailLabelTestData.customLabelOne.id)
     }
@@ -59,6 +55,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
     @Test
     fun `Should return error when marking the message as read returns error`() = runTest {
         // given
+        theConversationCacheIsUpToDate()
         val error = DataError.Local.NoDataCached
         coEvery { markMessageAsRead.invoke(any(), any()) } returns error.left()
 
@@ -66,12 +63,13 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         val result = buildUseCase()(UserIdSample.Primary, MessageIdSample.Invoice, ConversationIdSample.Invoices)
 
         // then
-        assertEquals(MarkConversationReadError.Data(error).left(), result)
+        assertEquals(MarkConversationReadError.DataSourceError(error).left(), result)
     }
 
     @Test
     fun `Should return error when retrieving the cached conversation messages returns error`() = runTest {
         // given
+        theConversationCacheIsUpToDate()
         val error = DataError.Local.NoDataCached
         coEvery { markMessageAsRead.invoke(any(), any()) } returns MessageSample.Invoice.right()
         coEvery { messageRepository.observeCachedMessages(any(), any()) } returns flowOf(error.left())
@@ -80,12 +78,13 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         val result = buildUseCase()(UserIdSample.Primary, MessageIdSample.Invoice, ConversationIdSample.Invoices)
 
         // then
-        assertEquals(MarkConversationReadError.Data(error).left(), result)
+        assertEquals(MarkConversationReadError.DataSourceError(error).left(), result)
     }
 
     @Test
     fun `Should return error when all messages are read but mark as read returns error`() = runTest {
         // given
+        theConversationCacheIsUpToDate()
         val error = DataError.Local.NoDataCached
         coEvery { markMessageAsRead.invoke(any(), any()) } returns MessageSample.Invoice.right()
         coEvery { messageRepository.observeCachedMessages(any(), any()) } returns
@@ -96,12 +95,13 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         val result = buildUseCase()(UserIdSample.Primary, MessageIdSample.Invoice, ConversationIdSample.Invoices)
 
         // then
-        assertEquals(MarkConversationReadError.Data(error).left(), result)
+        assertEquals(MarkConversationReadError.DataSourceError(error).left(), result)
     }
 
     @Test
     fun `Should not mark the conversation as read if there are unread messages and return error`() = runTest {
         // given
+        theConversationCacheIsUpToDate()
         coEvery { markMessageAsRead.invoke(any(), any()) } returns MessageSample.Invoice.right()
         coEvery { messageRepository.observeCachedMessages(any(), any()) } returns
             flowOf(nonEmptyListOf(MessageSample.Invoice.copy(unread = true)).right())
@@ -110,23 +110,20 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         val result = buildUseCase()(UserIdSample.Primary, MessageIdSample.Invoice, ConversationIdSample.Invoices)
 
         // then
-        coVerify { conversationRepository wasNot Called }
+        coVerify { conversationRepository.markRead(any(), any(), any()) wasNot Called }
         assertEquals(MarkConversationReadError.ConversationHasUnreadMessages.left(), result)
     }
 
     @Test
     fun `Should mark the conversation as read if all messages are read`() = runTest {
         // given
+        theConversationCacheIsUpToDate()
         val conversation = ConversationTestData.conversation
         coEvery { markMessageAsRead.invoke(any(), any()) } returns MessageSample.Invoice.right()
         coEvery { messageRepository.observeCachedMessages(any(), any()) } returns
             flowOf(nonEmptyListOf(MessageSample.Invoice.copy(unread = false)).right())
         coEvery {
-            conversationRepository.markRead(
-                any(),
-                any(),
-                any()
-            )
+            conversationRepository.markRead(any(), any(), any())
         } returns conversation.right()
 
         // when
@@ -134,27 +131,31 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
 
         // then
         coVerify { conversationRepository.markRead(UserIdSample.Primary, ConversationIdSample.Invoices, any()) }
-        assertEquals(conversation.right(), result)
+        assertEquals(Unit.right(), result)
     }
 
     @Test
-    fun `Should not mark the message as read when the conversation cache does not emit`() = runTest {
+    fun `Should not mark the message as read and return error when the conversation cache does not emit`() = runTest {
         // given
-        coEvery { observeConversationCacheUpdates(any(), any()) } returns flow { }
+        coEvery { conversationRepository.observeConversationCacheUpToDate(any(), any()) } returns flow { }
 
         // when
         val result = buildUseCase()(UserIdSample.Primary, MessageIdSample.Invoice, ConversationIdSample.Invoices)
 
         // then
         coVerify { markMessageAsRead wasNot Called }
-        assertEquals(null, result)
+        coVerify { conversationRepository.markRead(any(), any(), any()) wasNot Called }
+        assertEquals(MarkConversationReadError.DataSourceError(DataError.Local.Unknown).left(), result)
+    }
+
+    private fun theConversationCacheIsUpToDate() {
+        coEvery { conversationRepository.observeConversationCacheUpToDate(any(), any()) } returns flowOf(Unit.right())
     }
 
     private fun buildUseCase() = MarkMessageAndConversationReadIfAllMessagesRead(
         messageRepository = messageRepository,
         markMessageAsRead = markMessageAsRead,
         conversationRepository = conversationRepository,
-        selectedMailLabelId = selectedMailLabelId,
-        observeConversationCacheUpdates = observeConversationCacheUpdates
+        selectedMailLabelId = selectedMailLabelId
     )
 }

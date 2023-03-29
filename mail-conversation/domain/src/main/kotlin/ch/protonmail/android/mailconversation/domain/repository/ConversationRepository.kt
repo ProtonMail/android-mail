@@ -25,7 +25,6 @@ import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import kotlinx.coroutines.flow.Flow
-import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
@@ -59,10 +58,10 @@ interface ConversationRepository {
         refreshData: Boolean = true
     ): Flow<Either<DataError, Conversation>>
 
-    fun observeConversationCacheDataResult(
+    fun observeConversationCacheUpToDate(
         userId: UserId,
         id: ConversationId
-    ): Flow<Either<DataError, DataResult<Conversation>>>
+    ): Flow<Either<DataError, Unit>>
 
     /**
      * Adds the given [labelId] to the message with the given [conversationId]
