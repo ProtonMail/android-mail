@@ -183,7 +183,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun observeConversationMetadata(conversationId: ConversationId) {
         primaryUserId.flatMapLatest { userId ->
-            observeConversation(userId, conversationId, refreshData = false)
+            observeConversation(userId, conversationId, refreshData = true)
                 .mapLatest { either ->
                     either.fold(
                         ifLeft = {

@@ -211,7 +211,7 @@ class ConversationRepositoryImplTest {
             ConversationWithMessages(conversation = conversation, messages = emptyList())
 
         // When
-        conversationRepository.observeConversation(userId, conversationId).test {
+        conversationRepository.observeConversation(userId, conversationId, refreshData = true).test {
             // Then
             conversationFlow.emit(conversation)
             assertEquals(conversation.right(), awaitItem())
@@ -232,7 +232,7 @@ class ConversationRepositoryImplTest {
             ConversationWithMessages(conversation = conversation, messages = emptyList())
 
         // When
-        conversationRepository.observeConversation(userId, conversationId).test {
+        conversationRepository.observeConversation(userId, conversationId, refreshData = true).test {
             // Then
             coVerify { conversationRemoteDataSource.getConversationWithMessages(userId, conversationId) }
         }
@@ -253,7 +253,7 @@ class ConversationRepositoryImplTest {
         } returns ConversationWithMessages(conversation = updatedConversation, messages = emptyList())
 
         // When
-        conversationRepository.observeConversation(userId, conversationId).test {
+        conversationRepository.observeConversation(userId, conversationId, refreshData = true).test {
             // Then
             coVerify { conversationLocalDataSource.upsertConversation(userId, updatedConversation) }
             cancelAndConsumeRemainingEvents()
@@ -1004,5 +1004,20 @@ class ConversationRepositoryImplTest {
 
         // then
         coVerify { conversationRemoteDataSource.markRead(userId, conversationId, contextLabelId) }
+    }
+
+    @Test
+    fun `observe cache up to date does not refresh the local cache with the conversation from remote`() = runTest {
+        // Given
+        val conversationId = ConversationId("conversationId")
+
+        // When
+        conversationRepository.observeConversationCacheUpToDate(userId, conversationId).test {
+            // Then
+            coVerify(exactly = 0) {
+                conversationRemoteDataSource.getConversationWithMessages(userId, conversationId)
+            }
+            cancelAndConsumeRemainingEvents()
+        }
     }
 }

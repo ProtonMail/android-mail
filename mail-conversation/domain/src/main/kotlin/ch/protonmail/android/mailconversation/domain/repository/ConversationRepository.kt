@@ -55,7 +55,7 @@ interface ConversationRepository {
     fun observeConversation(
         userId: UserId,
         id: ConversationId,
-        refreshData: Boolean = true
+        refreshData: Boolean
     ): Flow<Either<DataError, Conversation>>
 
     fun observeConversationCacheUpToDate(

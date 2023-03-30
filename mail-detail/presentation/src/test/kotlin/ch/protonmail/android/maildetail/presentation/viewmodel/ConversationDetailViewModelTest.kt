@@ -1461,7 +1461,7 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `Should observe conversation metadata without refreshing the remote data`() = runTest {
+    fun `Should observe conversation metadata refreshing the remote data`() = runTest {
         // Given
         val messages = nonEmptyListOf(ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded)
         every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns messages.first()
@@ -1471,7 +1471,7 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
 
             // Then
-            verify { observeConversation(any(), any(), refreshData = false) }
+            verify { observeConversation(any(), any(), refreshData = true) }
             cancelAndIgnoreRemainingEvents()
         }
     }
