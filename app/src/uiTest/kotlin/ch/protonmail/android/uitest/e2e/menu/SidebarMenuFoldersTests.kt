@@ -51,9 +51,7 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
 
     @JvmField
     @BindValue
-    val serverProofValidation: ValidateServerProof = mockk {
-        every { this@mockk.invoke(any(), any(), any()) } just runs
-    }
+    val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
     @Test
     @TestId("68718")

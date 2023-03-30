@@ -55,9 +55,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
     @JvmField
     @BindValue
-    val serverProofValidation: ValidateServerProof = mockk {
-        every { this@mockk.invoke(any(), any(), any()) } just runs
-    }
+    val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
     @Test
     @TestId("66392")
