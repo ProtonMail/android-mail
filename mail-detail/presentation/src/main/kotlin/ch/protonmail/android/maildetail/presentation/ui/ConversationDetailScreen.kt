@@ -81,13 +81,9 @@ import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-@Suppress("UseComposableActions")
 fun ConversationDetailScreen(
     modifier: Modifier = Modifier,
-    onExit: (notifyUserMessage: String?) -> Unit,
-    openMessageBodyLink: (url: String) -> Unit,
-    getAppThemeUiMode: () -> Int,
-    showFeatureMissingSnackbar: () -> Unit,
+    actions: ConversationDetail.Actions,
     viewModel: ConversationDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
@@ -142,7 +138,7 @@ fun ConversationDetailScreen(
             modifier = modifier,
             state = state,
             actions = ConversationDetailScreen.Actions(
-                onExit = onExit,
+                onExit = actions.onExit,
                 onStarClick = { viewModel.submit(ConversationDetailViewAction.Star) },
                 onTrashClick = { viewModel.submit(ConversationDetailViewAction.Trash) },
                 onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) },
@@ -154,13 +150,13 @@ fun ConversationDetailScreen(
                 onMessageBodyLinkClicked = {
                     viewModel.submit(ConversationDetailViewAction.MessageBodyLinkClicked(it))
                 },
-                onOpenMessageBodyLink = openMessageBodyLink,
+                onOpenMessageBodyLink = actions.openMessageBodyLink,
                 onRequestScrollTo = { viewModel.submit(ConversationDetailViewAction.RequestScrollTo(it)) },
                 onShowAllAttachmentsForMessage = {
                     viewModel.submit(ConversationDetailViewAction.ShowAllAttachmentsForMessage(it))
                 },
-                getAppThemeUiMode = getAppThemeUiMode,
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                getAppThemeUiMode = actions.getAppThemeUiMode,
+                showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
             )
         )
     }
@@ -343,6 +339,16 @@ private fun MessagesContent(
             )
         }
     }
+}
+
+object ConversationDetail {
+
+    data class Actions(
+        val onExit: (notifyUserMessage: String?) -> Unit,
+        val openMessageBodyLink: (url: String) -> Unit,
+        val getAppThemeUiMode: () -> Int,
+        val showFeatureMissingSnackbar: () -> Unit
+    )
 }
 
 object ConversationDetailScreen {

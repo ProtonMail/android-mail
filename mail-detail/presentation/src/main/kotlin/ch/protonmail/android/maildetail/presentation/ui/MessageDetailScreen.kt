@@ -71,13 +71,9 @@ import timber.log.Timber
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-@Suppress("UseComposableActions")
 fun MessageDetailScreen(
     modifier: Modifier = Modifier,
-    onExit: (message: String?) -> Unit,
-    openMessageBodyLink: (uri: Uri) -> Unit,
-    getAppThemeUiMode: () -> Int,
-    showFeatureMissingSnackbar: () -> Unit,
+    actions: MessageDetail.Actions,
     viewModel: MessageDetailViewModel = hiltViewModel()
 ) {
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
@@ -132,7 +128,7 @@ fun MessageDetailScreen(
             modifier = modifier,
             state = state,
             actions = MessageDetailScreen.Actions(
-                onExit = onExit,
+                onExit = actions.onExit,
                 onReload = { viewModel.submit(MessageViewAction.Reload) },
                 onStarClick = { viewModel.submit(MessageViewAction.Star) },
                 onTrashClick = { viewModel.submit(MessageViewAction.Trash) },
@@ -141,13 +137,13 @@ fun MessageDetailScreen(
                 onMoveClick = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) },
                 onLabelAsClick = { viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet) },
                 onMessageBodyLinkClicked = { viewModel.submit(MessageViewAction.MessageBodyLinkClicked(it)) },
-                onOpenMessageBodyLink = openMessageBodyLink,
-                onReplyClick = { showFeatureMissingSnackbar() },
-                onReplyAllClick = { showFeatureMissingSnackbar() },
-                onDeleteClick = { showFeatureMissingSnackbar() },
+                onOpenMessageBodyLink = actions.openMessageBodyLink,
+                onReplyClick = { actions.showFeatureMissingSnackbar() },
+                onReplyAllClick = { actions.showFeatureMissingSnackbar() },
+                onDeleteClick = { actions.showFeatureMissingSnackbar() },
                 onShowAllAttachmentsClicked = { viewModel.submit(MessageViewAction.ShowAllAttachments) },
-                getAppThemeUiMode = getAppThemeUiMode,
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+                getAppThemeUiMode = actions.getAppThemeUiMode,
+                showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
             )
         )
     }
@@ -300,6 +296,16 @@ private fun MessageDetailContent(
             }
         }
     }
+}
+
+object MessageDetail {
+
+    data class Actions(
+        val onExit: (message: String?) -> Unit,
+        val openMessageBodyLink: (uri: Uri) -> Unit,
+        val getAppThemeUiMode: () -> Int,
+        val showFeatureMissingSnackbar: () -> Unit
+    )
 }
 
 object MessageDetailScreen {

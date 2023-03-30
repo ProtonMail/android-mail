@@ -26,7 +26,9 @@ import androidx.navigation.compose.dialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
@@ -46,13 +48,15 @@ internal fun NavGraphBuilder.addConversationDetail(
 ) {
     composable(route = Destination.Screen.Conversation.route) {
         ConversationDetailScreen(
-            onExit = { notifyUserMessage ->
-                navController.popBackStack()
-                notifyUserMessage?.let(showSnackbar)
-            },
-            openMessageBodyLink = { url -> openMessageBodyLink(Uri.parse(url)) },
-            getAppThemeUiMode = getAppThemeUiMode,
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            actions = ConversationDetail.Actions(
+                onExit = { notifyUserMessage ->
+                    navController.popBackStack()
+                    notifyUserMessage?.let(showSnackbar)
+                },
+                openMessageBodyLink = { url -> openMessageBodyLink(Uri.parse(url)) },
+                getAppThemeUiMode = getAppThemeUiMode,
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            )
         )
     }
 }
@@ -92,13 +96,15 @@ internal fun NavGraphBuilder.addMessageDetail(
 ) {
     composable(route = Destination.Screen.Message.route) {
         MessageDetailScreen(
-            onExit = { notifyUserMessage ->
-                navController.popBackStack()
-                notifyUserMessage?.let(showSnackbar)
-            },
-            openMessageBodyLink = openMessageBodyLink,
-            getAppThemeUiMode = getAppThemeUiMode,
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            actions = MessageDetail.Actions(
+                onExit = { notifyUserMessage ->
+                    navController.popBackStack()
+                    notifyUserMessage?.let(showSnackbar)
+                },
+                openMessageBodyLink = openMessageBodyLink,
+                getAppThemeUiMode = getAppThemeUiMode,
+                showFeatureMissingSnackbar = showFeatureMissingSnackbar
+            )
         )
     }
 }
