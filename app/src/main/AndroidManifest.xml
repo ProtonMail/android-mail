@@ -133,28 +133,8 @@
         </activity>
         <activity
             android:name="me.proton.core.auth.presentation.ui.AddAccountActivity"
-            android:theme="@style/ProtonTheme.Mail.AddAccount" />
-        <activity
-            android:name="me.proton.core.auth.presentation.ui.AuthHelpActivity"
-            android:theme="@style/ProtonTheme.Mail" />
-        <activity
-            android:name="me.proton.core.auth.presentation.ui.ChooseAddressActivity"
-            android:theme="@style/ProtonTheme.Mail" />
-        <activity
-            android:name="me.proton.core.auth.presentation.ui.ConfirmPasswordActivity"
-            android:theme="@style/ProtonTheme.Transparent" />
-        <activity
-            android:name="me.proton.core.auth.presentation.ui.LoginActivity"
-            android:theme="@style/ProtonTheme.Mail" />
-        <activity
-            android:name="me.proton.core.auth.presentation.ui.signup.SignupActivity"
-            android:theme="@style/ProtonTheme.Mail" />
-        <activity
-            android:name="me.proton.core.auth.presentation.ui.TwoPassModeActivity"
-            android:theme="@style/ProtonTheme.Mail" />
-        <activity
-            android:name="me.proton.core.auth.presentation.ui.SecondFactorActivity"
-            android:theme="@style/ProtonTheme.Mail" />
+            android:theme="@style/ProtonTheme.Mail.AddAccount"
+            tools:replace="theme"/>
         <activity
             android:name="me.proton.core.payment.presentation.ui.BillingActivity"
             android:theme="@style/ProtonTheme.Mail" />
