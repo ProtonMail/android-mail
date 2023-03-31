@@ -33,14 +33,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.PreviewData.DummyUnreadCount
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
-
-object UnreadItemsFilterTestTags {
-
-    const val UNREAD_FILTER_CHIP = "UnreadFilterChip"
-}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -56,7 +52,7 @@ fun UnreadItemsFilter(
         }
         is UnreadFilterState.Data -> {
             FilterChip(
-                modifier = modifier.testTag(UnreadItemsFilterTestTags.UNREAD_FILTER_CHIP),
+                modifier = modifier.testTag(UnreadItemsFilterTestTags.UnreadFilterChip),
                 colors = chipColors(),
                 selected = state.isFilterEnabled,
                 onClick = {
@@ -98,7 +94,7 @@ private fun chipColors() = ChipDefaults.filterChipColors(
 @Composable
 fun InactiveUnreadFilterButtonPreview() {
     UnreadItemsFilter(
-        state = UnreadFilterState.Data(DUMMY_UNREAD_COUNT, false),
+        state = UnreadFilterState.Data(DummyUnreadCount, false),
         onFilterEnabled = {},
         onFilterDisabled = {}
     )
@@ -108,10 +104,18 @@ fun InactiveUnreadFilterButtonPreview() {
 @Composable
 fun ActiveUnreadFilterButtonPreview() {
     UnreadItemsFilter(
-        state = UnreadFilterState.Data(DUMMY_UNREAD_COUNT, true),
+        state = UnreadFilterState.Data(DummyUnreadCount, true),
         onFilterEnabled = {},
         onFilterDisabled = {}
     )
 }
 
-private const val DUMMY_UNREAD_COUNT = 4
+private object PreviewData {
+
+    const val DummyUnreadCount = 4
+}
+
+object UnreadItemsFilterTestTags {
+
+    const val UnreadFilterChip = "UnreadFilterChip"
+}

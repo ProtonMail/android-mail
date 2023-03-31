@@ -80,7 +80,7 @@ class InboxRobot(
 
     fun filterUnreadMessages(): InboxRobot {
         composeTestRule
-            .onNodeWithTag(UnreadItemsFilterTestTags.UNREAD_FILTER_CHIP)
+            .onNodeWithTag(UnreadItemsFilterTestTags.UnreadFilterChip)
             .performClick()
 
         return this
@@ -137,29 +137,29 @@ class InboxRobot(
                     .isNotEmpty()
             }
 
-            composeRule.onNodeWithTag(MailboxScreenTestTags.ROOT).assertIsDisplayed()
+            composeRule.onNodeWithTag(MailboxScreenTestTags.Root).assertIsDisplayed()
         }
 
         fun unreadFilterIsDisplayed() {
             composeRule
-                .onNodeWithTag(UnreadItemsFilterTestTags.UNREAD_FILTER_CHIP)
+                .onNodeWithTag(UnreadItemsFilterTestTags.UnreadFilterChip)
                 .assertIsDisplayed()
                 .assertIsNotSelected()
         }
 
         fun unreadFilterIsSelected() {
             composeRule
-                .onNodeWithTag(UnreadItemsFilterTestTags.UNREAD_FILTER_CHIP)
+                .onNodeWithTag(UnreadItemsFilterTestTags.UnreadFilterChip)
                 .assertIsDisplayed()
                 .assertIsSelected()
         }
 
         fun listItemsAreShown(vararg inboxEntries: InboxListItemEntry) {
-            val mailboxItemMatcher = hasTestTag(MailboxItemTestTags.ITEM_ROW)
-            val avatarItemMatcher = hasParent(hasTestTag(AvatarTestTags.AVATAR) and hasParent(mailboxItemMatcher))
-            val participantsItemMatcher = hasTestTag(MailboxItemTestTags.PARTICIPANTS) and hasParent(mailboxItemMatcher)
-            val subjectItemMatcher = hasTestTag(MailboxItemTestTags.SUBJECT) and hasParent(mailboxItemMatcher)
-            val dateItemMatcher = hasTestTag(MailboxItemTestTags.DATE) and hasParent(mailboxItemMatcher)
+            val mailboxItemMatcher = hasTestTag(MailboxItemTestTags.ItemRow)
+            val avatarItemMatcher = hasParent(hasTestTag(AvatarTestTags.Avatar) and hasParent(mailboxItemMatcher))
+            val participantsItemMatcher = hasTestTag(MailboxItemTestTags.Participants) and hasParent(mailboxItemMatcher)
+            val subjectItemMatcher = hasTestTag(MailboxItemTestTags.Subject) and hasParent(mailboxItemMatcher)
+            val dateItemMatcher = hasTestTag(MailboxItemTestTags.Date) and hasParent(mailboxItemMatcher)
 
             composeRule.waitUntil(timeoutMillis = 30_000) {
                 composeRule.onAllNodes(mailboxItemMatcher).fetchSemanticsNodes().isNotEmpty()

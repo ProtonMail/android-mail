@@ -89,7 +89,7 @@ class MailboxRobot internal constructor(
 
         fun listProgressIsDisplayed() {
             composeTestRule
-                .onNodeWithTag(MailboxScreenTestTags.LIST_PROGRESS)
+                .onNodeWithTag(MailboxScreenTestTags.ListProgress)
                 .assertIsDisplayed()
         }
 
@@ -107,7 +107,7 @@ private fun ComposeContentTestRule.onEmptyMailbox(): SemanticsNodeInteraction =
     onNode(emptyMailboxMatcher())
 
 private fun emptyMailboxMatcher(): SemanticsMatcher =
-    hasTestTag(MailboxScreenTestTags.MAILBOX_EMPTY)
+    hasTestTag(MailboxScreenTestTags.MailboxEmpty)
 
 fun ComposeContentTestRule.MailboxRobot(content: @Composable () -> Unit) =
     MailboxRobot(this).also { setContent(content) }

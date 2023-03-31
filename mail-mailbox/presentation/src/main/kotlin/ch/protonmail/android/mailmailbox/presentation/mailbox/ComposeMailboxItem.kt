@@ -60,14 +60,6 @@ import me.proton.core.compose.theme.caption
 import me.proton.core.compose.theme.default
 import me.proton.core.compose.theme.defaultSmall
 
-object MailboxItemTestTags {
-
-    const val ITEM_ROW = "MailboxItemRow"
-    const val PARTICIPANTS = "Participants"
-    const val SUBJECT = "Subject"
-    const val DATE = "Date"
-}
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MailboxItem(
@@ -78,7 +70,7 @@ fun MailboxItem(
 ) {
     Row(
         modifier = modifier
-            .testTag(MailboxItemTestTags.ITEM_ROW)
+            .testTag(MailboxItemTestTags.ItemRow)
             .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
             .padding(
                 start = ProtonDimens.DefaultSpacing,
@@ -199,7 +191,7 @@ private fun Participants(
     fontColor: Color
 ) {
     Text(
-        modifier = modifier.testTag(MailboxItemTestTags.PARTICIPANTS),
+        modifier = modifier.testTag(MailboxItemTestTags.Participants),
         text = participants.joinToString(),
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
@@ -216,7 +208,7 @@ private fun Time(
     fontColor: Color
 ) {
     Text(
-        modifier = modifier.testTag(MailboxItemTestTags.DATE),
+        modifier = modifier.testTag(MailboxItemTestTags.Date),
         text = time.string(),
         maxLines = 1,
         textAlign = TextAlign.End,
@@ -250,7 +242,7 @@ private fun Subject(
     fontColor: Color
 ) {
     Text(
-        modifier = modifier.testTag(MailboxItemTestTags.SUBJECT),
+        modifier = modifier.testTag(MailboxItemTestTags.Subject),
         text = subject,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
@@ -416,4 +408,12 @@ private fun LongSubjectWithIconItemPreview() {
             onOpenSelectionMode = {}
         )
     }
+}
+
+object MailboxItemTestTags {
+
+    const val ItemRow = "MailboxItemRow"
+    const val Participants = "Participants"
+    const val Subject = "Subject"
+    const val Date = "Date"
 }

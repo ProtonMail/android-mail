@@ -97,7 +97,7 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
         }
 
         fun avatarIsDisplayed() {
-            composeTestRule.onNodeWithTag(AvatarTestTags.AVATAR, useUnmergedTree = true)
+            composeTestRule.onNodeWithTag(AvatarTestTags.Avatar, useUnmergedTree = true)
                 .assertIsDisplayed()
         }
 

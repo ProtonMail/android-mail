@@ -76,7 +76,7 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
         fun draftIconAvatarIsDisplayed(useUnmergedTree: Boolean = false) {
             composeTestRule
                 .onNodeWithTag(
-                    testTag = AvatarTestTags.AVATAR_DRAFT,
+                    testTag = AvatarTestTags.AvatarDraft,
                     useUnmergedTree = useUnmergedTree
                 )
                 .assertIsDisplayed()

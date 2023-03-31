@@ -77,15 +77,6 @@ import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
-object MailboxScreenTestTags {
-
-    const val LIST = "MailboxList"
-    const val LIST_PROGRESS = "MailboxListProgress"
-    const val MAILBOX_EMPTY = "MailboxEmpty"
-    const val MAILBOX_ERROR = "MailboxError"
-    const val ROOT = "MailboxScreen"
-}
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MailboxScreen(
@@ -135,7 +126,7 @@ fun MailboxScreen(
     }
 
     Scaffold(
-        modifier = modifier.testTag(MailboxScreenTestTags.ROOT),
+        modifier = modifier.testTag(MailboxScreenTestTags.Root),
         scaffoldState = scaffoldState,
         topBar = {
             Column {
@@ -186,7 +177,7 @@ fun MailboxScreen(
 
             MailboxListState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier
-                    .testTag(MailboxScreenTestTags.LIST_PROGRESS)
+                    .testTag(MailboxScreenTestTags.ListProgress)
                     .padding(paddingValues)
             )
         }
@@ -275,7 +266,7 @@ private fun MailboxItemsList(
 ) {
     LazyColumn(
         state = listState,
-        modifier = Modifier.testTag(MailboxScreenTestTags.LIST)
+        modifier = Modifier.testTag(MailboxScreenTestTags.List)
             .fillMaxSize()
             .let { if (BuildConfig.DEBUG) it.verticalScrollbar(listState) else it }
     ) {
@@ -312,7 +303,7 @@ private fun MailboxItemsList(
 private fun MailboxEmpty(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .testTag(MailboxScreenTestTags.MAILBOX_EMPTY)
+            .testTag(MailboxScreenTestTags.MailboxEmpty)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
@@ -324,7 +315,7 @@ private fun MailboxEmpty(modifier: Modifier = Modifier) {
 private fun MailboxError(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .testTag(MailboxScreenTestTags.MAILBOX_ERROR)
+            .testTag(MailboxScreenTestTags.MailboxError)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
@@ -388,4 +379,13 @@ private fun MailboxScreenPreview(
             actions = MailboxScreen.Actions.Empty
         )
     }
+}
+
+object MailboxScreenTestTags {
+
+    const val List = "MailboxList"
+    const val ListProgress = "MailboxListProgress"
+    const val MailboxEmpty = "MailboxEmpty"
+    const val MailboxError = "MailboxError"
+    const val Root = "MailboxScreen"
 }
