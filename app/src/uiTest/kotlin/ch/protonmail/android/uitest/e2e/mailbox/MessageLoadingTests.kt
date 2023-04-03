@@ -25,7 +25,7 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
-import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
@@ -42,7 +42,7 @@ import me.proton.core.auth.domain.usecase.ValidateServerProof
 import me.proton.core.test.android.robots.auth.AddAccountRobot
 import org.junit.Test
 
-@RegressionTest
+@SmokeTest
 @HiltAndroidTest
 @SdkSuppress(minSdkVersion = 28)
 @UninstallModules(ServerProofModule::class)

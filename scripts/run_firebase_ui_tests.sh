@@ -27,14 +27,14 @@ timeout=15m
 if [ "$1" = extended_test ]
 then
   device_config=smokeTest
-  test_suite='annotation ch.protonmail.android.test.annotations.suite.SmokeExtendedTest, annotation ch.protonmail.android.test.annotations.suite.SmokeTest'
+  test_suite='annotation ch.protonmail.android.test.annotations.suite.SmokeExtendedTest'
   timeout=30m
 fi
 
 if [ "$1" = full_test ]
 then
   device_config=fullTest
-  test_suite='annotation ch.protonmail.android.test.annotations.suite.RegressionTest, annotation ch.protonmail.android.test.annotations.suite.SmokeExtendedTest, annotation ch.protonmail.android.test.annotations.suite.SmokeTest'
+  test_suite='annotation ch.protonmail.android.test.annotations.suite.RegressionTest'
   timeout=45m
 fi
 
