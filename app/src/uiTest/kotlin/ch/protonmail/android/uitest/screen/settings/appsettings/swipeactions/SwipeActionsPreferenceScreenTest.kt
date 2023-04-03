@@ -29,6 +29,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.Swi
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Loading
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceUiModel
+import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
@@ -38,7 +39,8 @@ import kotlin.test.Test
 import ch.protonmail.android.mailsettings.presentation.R as SettingsR
 import me.proton.core.presentation.R as CoreR
 
-class SwipeActionsPreferenceScreenTest {
+@SmokeExtendedTest
+internal class SwipeActionsPreferenceScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

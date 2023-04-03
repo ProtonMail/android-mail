@@ -31,6 +31,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMe
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import org.junit.Ignore
 import org.junit.Rule
@@ -38,7 +39,8 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 
 @Suppress("TooManyFunctions")
-class ConversationDetailScreenTest {
+@SmokeExtendedTest
+internal class ConversationDetailScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

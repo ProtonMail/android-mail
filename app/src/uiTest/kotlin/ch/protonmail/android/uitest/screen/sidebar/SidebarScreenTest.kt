@@ -37,6 +37,7 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarState
 import ch.protonmail.android.mailmailbox.presentation.sidebar.TEST_TAG_SIDEBAR_MENU
+import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.label.domain.entity.LabelId
@@ -47,7 +48,8 @@ import me.proton.core.presentation.compose.R as core
 
 private const val APP_VERSION_FOOTER = "Proton Mail 6.0.0-alpha+test"
 
-class SidebarScreenTest {
+@SmokeExtendedTest
+internal class SidebarScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

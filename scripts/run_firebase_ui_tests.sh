@@ -27,7 +27,7 @@ timeout=15m
 if [ "$1" = extended_test ]
 then
   device_config=smokeTest
-  test_suite='class ch.protonmail.android.uitest.suite.SmokeSuiteExtended'
+  test_suite='annotation ch.protonmail.android.test.annotations.suite.SmokeExtendedTest, annotation ch.protonmail.android.test.annotations.suite.SmokeTest'
   timeout=30m
 fi
 

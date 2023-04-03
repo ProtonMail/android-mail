@@ -34,6 +34,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.ManagedState
@@ -44,6 +45,7 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
+@SmokeExtendedTest
 internal class MailboxScreenTest {
 
     @get:Rule

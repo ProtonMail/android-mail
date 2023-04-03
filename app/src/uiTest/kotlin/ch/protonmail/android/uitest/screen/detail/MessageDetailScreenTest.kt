@@ -30,13 +30,15 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-class MessageDetailScreenTest {
+@SmokeExtendedTest
+internal class MessageDetailScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

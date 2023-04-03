@@ -32,11 +32,13 @@ import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState.Data
+import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
 
 @Suppress("SameParameterValue") // We want test parameters to be explicit
+@SmokeExtendedTest
 internal class MailboxTopAppBarTest {
 
     @get:Rule

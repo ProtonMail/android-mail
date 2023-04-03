@@ -31,6 +31,7 @@ import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeUiModel
+import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
@@ -38,7 +39,8 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-class ThemeSettingScreenTest {
+@SmokeExtendedTest
+internal class ThemeSettingScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

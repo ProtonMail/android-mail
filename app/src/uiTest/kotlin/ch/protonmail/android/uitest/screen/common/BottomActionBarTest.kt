@@ -22,12 +22,14 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
+import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.uitest.robot.common.BottomActionBarRobot
 import org.junit.Rule
 import org.junit.Test
 
-class BottomActionBarTest {
+@SmokeExtendedTest
+internal class BottomActionBarTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
