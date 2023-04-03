@@ -65,6 +65,10 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
         return SettingsRobot(composeTestRule)
     }
 
+    fun openReportBugs() {
+        tapSidebarMenuItemWithText(string.presentation_menu_item_title_report_a_bug)
+    }
+
     internal inline fun verify(block: Verify.() -> Unit): MenuRobot =
         also { Verify().apply(block) }
 
