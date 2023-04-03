@@ -49,6 +49,10 @@ class InboxRobot(
 ) : CoreRobot(), MailboxRobotInterface {
 
     override fun clickMessageByPosition(position: Int): MessageRobot {
+        // SwipeRefresh loader might still be visible, workaround to fix it for now while
+        // refactoring is being done (see MAILANDR-460)
+        composeTestRule.waitForIdle()
+
         composeTestRule.onNodeWithTag(MAILBOX_TAG)
             .awaitDisplayed(composeTestRule)
             .onChildAt(position)
