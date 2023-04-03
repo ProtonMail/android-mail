@@ -123,6 +123,7 @@ class MessageDetailViewModelTest {
         BottomBarReducer(),
         BottomSheetReducer(MoveToBottomSheetReducer(), LabelAsBottomSheetReducer())
     )
+    private val defaultFolderColorSettings = FolderColorSettings()
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
@@ -158,7 +159,7 @@ class MessageDetailViewModelTest {
     }
     private val observeFolderColorSettings =
         mockk<ObserveFolderColorSettings> {
-            every { this@mockk.invoke(userId) } returns flowOf(FolderColorSettings())
+            every { this@mockk.invoke(userId) } returns flowOf(defaultFolderColorSettings)
         }
     private val observeCustomMailLabels = mockk<ObserveCustomMailLabels> {
         every { this@mockk.invoke(userId) } returns flowOf(
@@ -184,7 +185,13 @@ class MessageDetailViewModelTest {
         coEvery { this@mockk.invoke(userId, MessageId(rawMessageId)) } returns MessageTestData.message.right()
     }
     private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper> {
-        every { toUiModel(any(), ContactTestData.contacts, any()) } returns messageDetailHeaderUiModel
+        every {
+            toUiModel(
+                any(),
+                ContactTestData.contacts,
+                defaultFolderColorSettings
+            )
+        } returns messageDetailHeaderUiModel
     }
     private val messageBodyUiModelMapper = mockk<MessageBodyUiModelMapper> {
         every {

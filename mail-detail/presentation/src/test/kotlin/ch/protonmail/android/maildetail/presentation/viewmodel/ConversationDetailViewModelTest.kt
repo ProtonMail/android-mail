@@ -122,6 +122,7 @@ class ConversationDetailViewModelTest {
     private val userId = UserIdSample.Primary
     private val conversationId = ConversationIdSample.WeatherForecast
     private val initialState = ConversationDetailState.Loading
+    private val defaultFolderColorSettings = FolderColorSettings()
 
     private val actionUiModelMapper = ActionUiModelMapper()
     private val conversationMetadataMapper: ConversationDetailMetadataUiModelMapper = mockk {
@@ -133,7 +134,7 @@ class ConversationDetailViewModelTest {
             toUiModel(
                 messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel,
                 contacts = any(),
-                folderColorSettings = any()
+                folderColorSettings = defaultFolderColorSettings
             )
         } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
@@ -141,7 +142,7 @@ class ConversationDetailViewModelTest {
             toUiModel(
                 messageWithLabels = MessageWithLabelsSample.InvoiceWithTwoLabels,
                 contacts = any(),
-                folderColorSettings = any()
+                folderColorSettings = defaultFolderColorSettings
             )
         } returns
             ConversationDetailMessageUiModelSample.InvoiceWithTwoLabels
@@ -149,7 +150,7 @@ class ConversationDetailViewModelTest {
             toUiModel(
                 messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels,
                 contacts = any(),
-                folderColorSettings = any()
+                folderColorSettings = defaultFolderColorSettings
             )
         } returns
             ConversationDetailMessageUiModelSample.InvoiceWithoutLabels
@@ -157,7 +158,7 @@ class ConversationDetailViewModelTest {
             toUiModel(
                 messageWithLabels = MessageWithLabelsSample.AnotherInvoiceWithoutLabels,
                 contacts = any(),
-                folderColorSettings = any()
+                folderColorSettings = defaultFolderColorSettings
             )
         } returns
             ConversationDetailMessageUiModelSample.AnotherInvoiceWithoutLabels
@@ -201,7 +202,7 @@ class ConversationDetailViewModelTest {
     }
     private val observeFolderColorSettings =
         mockk<ObserveFolderColorSettings> {
-            every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(FolderColorSettings())
+            every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(defaultFolderColorSettings)
         }
     private val observeCustomMailLabels = mockk<ObserveCustomMailLabels> {
         every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(
@@ -402,7 +403,7 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.MessagesData>()
             )
         } returns expectedState
-        every { conversationMessageMapper.toUiModel(any(), any(), any(), any()) } returns
+        every { conversationMessageMapper.toUiModel(any(), any(), any(), defaultFolderColorSettings) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
 
         // when
@@ -432,7 +433,7 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.MessagesData>()
             )
         } returns expectedState
-        every { conversationMessageMapper.toUiModel(any(), any(), any(), any()) } returns
+        every { conversationMessageMapper.toUiModel(any(), any(), any(), defaultFolderColorSettings) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
 
         // when
@@ -1436,7 +1437,14 @@ class ConversationDetailViewModelTest {
         val messages = nonEmptyListOf(
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
         )
-        every { conversationMessageMapper.toUiModel(any(), any(), any(), any()) } returns messages.first()
+        every {
+            conversationMessageMapper.toUiModel(
+                messageWithLabels = any(),
+                contacts = any(),
+                decryptedMessageBody = any(),
+                folderColorSettings = defaultFolderColorSettings
+            )
+        } returns messages.first()
         every {
             reducer.newStateFrom(
                 currentState = any(),
@@ -1589,9 +1597,9 @@ class ConversationDetailViewModelTest {
         )
 
         coEvery { observeMessageWithLabels(userId, any()) } returns flowOf(invoiceMessage.right())
-        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns
+        every { conversationMessageMapper.toUiModel(any(), any(), defaultFolderColorSettings) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
-        every { conversationMessageMapper.toUiModel(any(), any(), any(), any()) } returns
+        every { conversationMessageMapper.toUiModel(any(), any(), any(), defaultFolderColorSettings) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
         every { conversationMessageMapper.toUiModel(any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanding
@@ -1614,7 +1622,7 @@ class ConversationDetailViewModelTest {
         coEvery { observeMessageWithLabels(userId, any()) } returns flowOf(
             MessageWithLabelsSample.InvoiceWithLabel.right()
         )
-        every { conversationMessageMapper.toUiModel(any(), any(), any()) } returns
+        every { conversationMessageMapper.toUiModel(any(), any(), defaultFolderColorSettings) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
         return Pair(allCollapsed.map { it.messageId }, ConversationDetailMessageUiModelSample.InvoiceWithLabel)
     }
@@ -1674,7 +1682,7 @@ class ConversationDetailViewModelTest {
         } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.right())
         // endregion
         // region mock mapper
-        every { conversationMessageMapper.toUiModel(any(), any(), any(), any()) } returns expected
+        every { conversationMessageMapper.toUiModel(any(), any(), any(), defaultFolderColorSettings) } returns expected
         // endregion
 
         return Pair(firstExpanded.map { it.messageId }, expected)
