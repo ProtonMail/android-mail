@@ -47,10 +47,10 @@
   <string name="error_offline_loading_message">No està connectat. Es necessita una connexió a internet per a mostrar el contingut d\'aquest missatge.</string>
   <string name="reload">Recarrega</string>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d fitxer</item>
+    <item quantity="other">%d fitxers</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">%1$d més</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mou a...</string>
   <string name="bottom_sheet_done_action">Fet</string>
@@ -62,15 +62,15 @@
   <string name="decryption_error">No s\'ha pogut desxifrar el missatge.</string>
   <string name="detail_error_retrieving_message_body">No s\'han pogut recuperar el missatge.</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_image">Imatge</string>
+  <string name="attachment_type_video">Vídeo</string>
+  <string name="attachment_type_audio">Àudio</string>
+  <string name="attachment_type_unknown">Desconegut</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Text</string>
   <string name="attachment_type_document">Document</string>
   <string name="attachment_type_excel">Excel</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_presentation">Presentació</string>
+  <string name="attachment_type_description">%1$s fitxer</string>
 </resources>

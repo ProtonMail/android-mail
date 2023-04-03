@@ -47,10 +47,10 @@
   <string name="error_offline_loading_message">Ön jelenleg offline. Internet kapcsolat szükséges az üzenet tartalmának betöltéséhez.</string>
   <string name="reload">Újratöltés</string>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d fájl</item>
+    <item quantity="other">%d fájl</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">+%1$d további</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Áthelyezés...</string>
   <string name="bottom_sheet_done_action">Kész</string>
@@ -62,15 +62,15 @@
   <string name="decryption_error">Az üzenet visszafejtése sikertelen.</string>
   <string name="detail_error_retrieving_message_body">Az üzenet betöltése sikertelen</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_image">Kép</string>
+  <string name="attachment_type_video">Videó</string>
+  <string name="attachment_type_audio">Hang</string>
+  <string name="attachment_type_unknown">Ismeretlen</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_text">Szöveg</string>
+  <string name="attachment_type_document">Dokumentum</string>
   <string name="attachment_type_excel">Excel</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_presentation">Prezentáció</string>
+  <string name="attachment_type_description">%1$s fájl</string>
 </resources>

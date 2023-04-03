@@ -23,7 +23,7 @@
   <string name="expiration_minutes_arg">%d tsd</string>
   <string name="retry">Ɛref̣ tikelt-nniḍen</string>
   <string name="toolbar_back_content_description">Uɣal ɣer ugdil udfir</string>
-  <string name="x_error_not_logged_in">Not signed in</string>
+  <string name="x_error_not_logged_in">Ur iqqin ara</string>
   <string name="action_reply_content_description">Err</string>
   <string name="action_reply_all_content_description">Err-asen akk</string>
   <string name="action_forward_content_description">Welleh</string>

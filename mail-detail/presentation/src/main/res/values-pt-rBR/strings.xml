@@ -47,10 +47,10 @@
   <string name="error_offline_loading_message">Você está off-line. É necessária uma conexão com a Internet para exibir o conteúdo desta mensagem.</string>
   <string name="reload">Recarregar</string>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d arquivo</item>
+    <item quantity="other">%d arquivos</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">+%1$d mais</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover para...</string>
   <string name="bottom_sheet_done_action">Concluído</string>
@@ -62,15 +62,15 @@
   <string name="decryption_error">A descriptografia da mensagem falhou.</string>
   <string name="detail_error_retrieving_message_body">Incapaz de recuperar mensagem</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_image">Imagem</string>
+  <string name="attachment_type_video">Vídeo</string>
+  <string name="attachment_type_audio">Áudio</string>
+  <string name="attachment_type_unknown">Desconhecido</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_text">Texto</string>
+  <string name="attachment_type_document">Documento</string>
   <string name="attachment_type_excel">Excel</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_presentation">Apresentação</string>
+  <string name="attachment_type_description">Arquivo %1$s</string>
 </resources>

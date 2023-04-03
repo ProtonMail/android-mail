@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Süresi geçmiş</string>
+  <string name="expiration_expired">Geçerlilik süresi dolmuş</string>
   <string name="expiration_days_arg">%dg</string>
   <string name="expiration_hours_arg">%ds</string>
   <string name="expiration_minutes_arg">%da</string>

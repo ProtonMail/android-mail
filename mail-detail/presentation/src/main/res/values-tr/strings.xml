@@ -47,10 +47,10 @@
   <string name="error_offline_loading_message">Çevrimdışısınız. Bu iletinin içeriğini görüntüleyebilmek için internete bağlı olmalısınız.</string>
   <string name="reload">Yeniden yükle</string>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d dosya</item>
+    <item quantity="other">%d dosya</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">+%1$d diğer</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Şuraya taşı...</string>
   <string name="bottom_sheet_done_action">Tamam</string>
@@ -62,15 +62,15 @@
   <string name="decryption_error">İletinin kodu çözülemedi.</string>
   <string name="detail_error_retrieving_message_body">İletiler alınamadı</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_image">Görsel</string>
+  <string name="attachment_type_video">Görüntü</string>
+  <string name="attachment_type_audio">Ses</string>
+  <string name="attachment_type_unknown">Bilinmiyor</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_text">Metin</string>
+  <string name="attachment_type_document">Belge</string>
   <string name="attachment_type_excel">Excel</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_presentation">Sunum</string>
+  <string name="attachment_type_description">%1$s dosya</string>
 </resources>

@@ -47,10 +47,10 @@
   <string name="error_offline_loading_message">Du är offline. En Internetanslutning krävs för att visa innehållet i detta meddelande.</string>
   <string name="reload">Ladda om</string>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d fil</item>
+    <item quantity="other">%d filer</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">+%1$d till</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flytta till...</string>
   <string name="bottom_sheet_done_action">Klar</string>
@@ -62,15 +62,15 @@
   <string name="decryption_error">Dekryptering av meddelande misslyckades.</string>
   <string name="detail_error_retrieving_message_body">Kan inte hämta meddelande</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_image">Bild</string>
   <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_audio">Ljud</string>
+  <string name="attachment_type_unknown">Okänd</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
   <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_document">Dokument</string>
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_description">%1$s-filer</string>
 </resources>

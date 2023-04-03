@@ -46,9 +46,9 @@
   <string name="error_offline_loading_message">您已離線。需要網際網路連線才能顯示此訊息的內容。</string>
   <string name="reload">重新載入</string>
   <plurals name="attachment_count_label">
-    <item quantity="other">%d files</item>
+    <item quantity="other">%d 個檔案</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">+另 %1$d 人</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移至...</string>
   <string name="bottom_sheet_done_action">已完成</string>
@@ -60,15 +60,15 @@
   <string name="decryption_error">訊息解密失敗。</string>
   <string name="detail_error_retrieving_message_body">無法擷取訊息</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_image">圖片</string>
+  <string name="attachment_type_video">視訊</string>
+  <string name="attachment_type_audio">音訊</string>
+  <string name="attachment_type_unknown">未知</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_text">文字</string>
+  <string name="attachment_type_document">文件</string>
   <string name="attachment_type_excel">Excel</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_presentation">簡報</string>
+  <string name="attachment_type_description">%1$s 個檔案</string>
 </resources>

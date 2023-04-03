@@ -46,9 +46,9 @@
   <string name="error_offline_loading_message">Anda sedang offline. Koneksi internet diperlukan untuk menampilkan konten pesan ini.</string>
   <string name="reload">Muat ulang</string>
   <plurals name="attachment_count_label">
-    <item quantity="other">%d files</item>
+    <item quantity="other">%d berkas</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">+%1$d lainnya</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Pindahkan ke...</string>
   <string name="bottom_sheet_done_action">Selesai</string>
@@ -60,15 +60,15 @@
   <string name="decryption_error">Dekripsi pesan gagal.</string>
   <string name="detail_error_retrieving_message_body">Pesan tidak dapat diambil</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
+  <string name="attachment_type_image">Gambar</string>
   <string name="attachment_type_video">Video</string>
   <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_unknown">Tidak Diketahui</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_text">Teks</string>
+  <string name="attachment_type_document">Dokumen</string>
   <string name="attachment_type_excel">Excel</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_presentation">Presentasi</string>
+  <string name="attachment_type_description">%1$s berkas</string>
 </resources>

@@ -49,12 +49,12 @@
   <string name="error_offline_loading_message">Вы па-за сеткай. Для адлюстравання змесціва гэтага паведамлення неабходна злучэнне з інтэрнэтам.</string>
   <string name="reload">Перазагрузіць</string>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="few">%d files</item>
-    <item quantity="many">%d files</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d файл</item>
+    <item quantity="few">%d файлы</item>
+    <item quantity="many">%d файлаў</item>
+    <item quantity="other">%d файлы</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">+яшчэ %1$d</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Перамясціць у...</string>
   <string name="bottom_sheet_done_action">Гатова</string>
@@ -66,15 +66,15 @@
   <string name="decryption_error">Не ўдалося расшыфраваць паведамленне.</string>
   <string name="detail_error_retrieving_message_body">Немагчыма атрымаць паведамленне</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_image">Відарыс</string>
+  <string name="attachment_type_video">Відэа</string>
+  <string name="attachment_type_audio">Аўдыя</string>
+  <string name="attachment_type_unknown">Невядомы</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_text">Тэкст</string>
+  <string name="attachment_type_document">Дакумент</string>
   <string name="attachment_type_excel">Excel</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_presentation">Прэзентацыя</string>
+  <string name="attachment_type_description">Файл %1$s</string>
 </resources>
