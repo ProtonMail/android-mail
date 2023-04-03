@@ -64,7 +64,8 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             addMockRequests(
                 "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_66392.json" withStatusCode 200,
                 "/mail/v4/messages" respondWith "/mail/v4/messages/messages_66392.json" withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_66392.json" withStatusCode 200 matchWildcards true serveOnce true
+                "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_66392.json" withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read" respondWith "/mail/v4/messages/read/read_base_placeholder.json" withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
@@ -98,6 +99,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
                 "/mail/v4/conversations" respondWith "/mail/v4/conversations/conversations_66393.json" withStatusCode 200 ignoreQueryParams true,
                 "/mail/v4/conversations/*" respondWith "/mail/v4/conversations/conversation-id/conversation-id_66393.json" withStatusCode 200 matchWildcards true,
                 "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_66393.json" withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read" respondWith "/mail/v4/messages/read/read_base_placeholder.json" withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
@@ -129,7 +131,8 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             addMockRequests(
                 "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_66394.json" withStatusCode 200,
                 "/mail/v4/messages" respondWith "/mail/v4/messages/messages_66394.json" withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_66394.json" withStatusCode 200 matchWildcards true serveOnce true
+                "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_66394.json" withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read" respondWith "/mail/v4/messages/read/read_base_placeholder.json" withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
@@ -163,6 +166,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
                 "/mail/v4/conversations" respondWith "/mail/v4/conversations/conversations_66395.json" withStatusCode 200 ignoreQueryParams true,
                 "/mail/v4/conversations/*" respondWith "/mail/v4/conversations/conversation-id/conversation-id_66395.json" withStatusCode 200 matchWildcards true,
                 "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_66395.json" withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read" respondWith "/mail/v4/messages/read/read_base_placeholder.json" withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
