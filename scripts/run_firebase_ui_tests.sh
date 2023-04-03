@@ -21,27 +21,27 @@
 set -e
 
 device_config=smokeTest
-test_suite='annotation ch.protonmail.android.test.annotations.suite.SmokeTest'
+test_targets='filter ch.protonmail.android.uitest.filters.SmokeTestFilter'
 timeout=15m
 
 if [ "$1" = extended_test ]
 then
   device_config=smokeTest
-  test_suite='annotation ch.protonmail.android.test.annotations.suite.SmokeExtendedTest'
+  test_targets='filter ch.protonmail.android.uitest.filters.SmokeTestExtendedFilter'
   timeout=30m
 fi
 
 if [ "$1" = full_test ]
 then
   device_config=fullTest
-  test_suite='annotation ch.protonmail.android.test.annotations.suite.RegressionTest'
+  test_targets='filter ch.protonmail.android.uitest.filters.FullRegressionTestFilter'
   timeout=45m
 fi
 
 gcloud --quiet firebase test android run ../firebase-device-config.yml:"$device_config" \
   --app ../app/build/outputs/apk/dev/debug/app-dev-debug.apk \
   --test ../app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk \
-  --test-targets "$test_suite" \
+  --test-targets "$test_targets" \
   --use-orchestrator \
   --environment-variables clearPackageData=true \
   --num-flaky-test-attempts=1 \
