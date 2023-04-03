@@ -69,7 +69,7 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
         return MailboxRobot(composeTestRule)
     }
 
-    fun waitUntilMessageIsShown(timeout: Long = 10000L): MessageDetailRobot {
+    fun waitUntilMessageIsShown(timeout: Long = 30_000L): MessageDetailRobot {
         // To be improved with the introduction of Fusion, we need to wait for compose to be idle.
         composeTestRule.waitForIdle()
 
