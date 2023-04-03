@@ -24,11 +24,13 @@ import androidx.compose.ui.test.onNodeWithText
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.MailboxItemLabelsPreviewData
 import ch.protonmail.android.maillabel.presentation.ui.LabelsList
+import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import kotlin.test.Test
 
-class MailboxItemLabelsTest {
+@SmokeExtendedTest
+internal class MailboxItemLabelsTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

@@ -34,7 +34,7 @@ fi
 if [ "$1" = full_test ]
 then
   device_config=fullTest
-  test_suite='class ch.protonmail.android.uitest.suite.FullRegressionSuite'
+  test_suite='annotation ch.protonmail.android.test.annotations.suite.RegressionTest, annotation ch.protonmail.android.test.annotations.suite.SmokeExtendedTest, annotation ch.protonmail.android.test.annotations.suite.SmokeTest'
   timeout=45m
 fi
 

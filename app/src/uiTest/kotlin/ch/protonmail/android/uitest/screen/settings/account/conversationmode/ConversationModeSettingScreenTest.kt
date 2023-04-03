@@ -27,11 +27,13 @@ import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.createComposeRule
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
 
-class ConversationModeSettingScreenTest {
+@RegressionTest
+internal class ConversationModeSettingScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

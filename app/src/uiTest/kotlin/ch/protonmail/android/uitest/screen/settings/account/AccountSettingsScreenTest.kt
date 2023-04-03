@@ -28,6 +28,7 @@ import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_LIST
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.assertTextContains
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
@@ -36,7 +37,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class AccountSettingsScreenTest {
+@RegressionTest
+internal class AccountSettingsScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
