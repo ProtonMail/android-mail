@@ -21,7 +21,7 @@
 set -e
 
 device_config=smokeTest
-test_suite='class ch.protonmail.android.uitest.suite.SmokeSuite'
+test_suite='annotation ch.protonmail.android.test.annotations.suite.SmokeTest'
 timeout=15m
 
 if [ "$1" = extended_test ]

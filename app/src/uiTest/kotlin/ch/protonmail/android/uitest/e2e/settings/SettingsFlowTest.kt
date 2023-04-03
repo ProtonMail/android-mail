@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.e2e.settings
 
+import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
@@ -25,6 +26,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Test
 
+@SmokeTest
 @HiltAndroidTest
 internal class SettingsFlowTest : MockedNetworkTest() {
 
