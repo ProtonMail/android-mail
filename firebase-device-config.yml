@@ -16,7 +16,7 @@ smokeTest:
   device:
     - model: oriole
       version: 31
-    - model: Pixel2
+    - model: Pixel2.arm
       version: 28
     - model: G8142
       version: 25
