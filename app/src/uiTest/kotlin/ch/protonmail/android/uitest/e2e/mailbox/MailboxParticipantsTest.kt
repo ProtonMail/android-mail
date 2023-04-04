@@ -63,7 +63,7 @@ internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = Login
         MailboxListItemEntry(
             index = 1,
             avatarText = "?",
-            participants = "",
+            participants = "(No Recipient)",
             subject = "Test no contact, empty",
             date = "Mar 20, 2023"
         ),
