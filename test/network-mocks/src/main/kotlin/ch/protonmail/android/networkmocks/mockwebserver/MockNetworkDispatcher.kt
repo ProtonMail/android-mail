@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.networkmocks.mockwebserver
 
+import java.util.logging.Logger
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequest
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateAssetNotFoundResponse
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateResponse
@@ -26,7 +27,6 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import java.util.logging.Logger
 
 /**
  * A custom [Dispatcher] for [MockWebServer] that checks for matches between the incoming [RecordedRequest.path]
@@ -75,18 +75,21 @@ class MockNetworkDispatcher(
         val remotePath = request.path
             ?: throw UnsupportedMockNetworkDispatcherException("❌ Handling requests with `null` path is unsupported.")
 
-        val validRequest = knownRequests.find { mockRequest ->
-            when {
-                mockRequest.ignoreQueryParams && mockRequest.wildcardMatch -> remotePath.stripQueryParams()
-                    .wildcardMatches(mockRequest.remotePath)
+        val validRequest = knownRequests
+            .asSequence()
+            .sortedByDescending { it.priority.value }
+            .find { mockRequest ->
+                when {
+                    mockRequest.ignoreQueryParams && mockRequest.wildcardMatch -> remotePath.stripQueryParams()
+                        .wildcardMatches(mockRequest.remotePath)
 
-                mockRequest.ignoreQueryParams -> remotePath.stripQueryParams() == mockRequest.remotePath
+                    mockRequest.ignoreQueryParams -> remotePath.stripQueryParams() == mockRequest.remotePath
 
-                mockRequest.wildcardMatch -> remotePath.wildcardMatches(mockRequest.remotePath)
+                    mockRequest.wildcardMatch -> remotePath.wildcardMatches(mockRequest.remotePath)
 
-                else -> remotePath == mockRequest.remotePath
-            }
-        } ?: run {
+                    else -> remotePath == mockRequest.remotePath
+                }
+            } ?: run {
             logger.severe("⚠️ Unknown path '$remotePath', check the mocked network definitions.")
             return generateUnhandledPathResponse(remotePath)
         }

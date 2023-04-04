@@ -18,12 +18,14 @@
 
 package ch.protonmail.android.networkmocks
 
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequest
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withNetworkDelay
+import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -104,6 +106,29 @@ internal class MockRequestTests {
     }
 
     @Test
+    fun `when a priority is set on a MockRequest, then the request is updated properly`() {
+        // Given
+        val expected = MockRequest(
+            remotePath = "dummy-path",
+            localFilePath = "dummy-path-local",
+            statusCode = 200,
+            priority = MockPriority.High
+        )
+
+        val request = MockRequest(
+            remotePath = "dummy-path",
+            localFilePath = "dummy-path-local",
+            statusCode = 200
+        )
+
+        // When
+        val actual = request withPriority MockPriority.High
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `when serveOnce is set on a MockRequest, then the request is updated properly`() {
         // Given
         val expected = MockRequest(
@@ -137,12 +162,13 @@ internal class MockRequestTests {
             ignoreQueryParams = true,
             wildcardMatch = false,
             serveOnce = true,
-            networkDelay = 1500L
+            networkDelay = 1500L,
+            priority = MockPriority.High
         )
 
         // When
         val actual =
-            "dummy-path" respondWith "dummy-path-local" withStatusCode 201 ignoreQueryParams true matchWildcards false serveOnce true withNetworkDelay 1500
+            "dummy-path" respondWith "dummy-path-local" withStatusCode 201 ignoreQueryParams true matchWildcards false serveOnce true withNetworkDelay 1500 withPriority MockPriority.High
 
         // Then
         assertEquals(expected, actual)

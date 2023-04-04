@@ -28,6 +28,7 @@ package ch.protonmail.android.networkmocks.mockwebserver.requests
  * @param wildcardMatch Whether wildcards can be used as match for this request.
  * @param serveOnce Whether this response shall be used only once.
  * @param networkDelay The amount of delay to introduce when serving the response (in milliseconds).
+ * @param priority A priority value that defines whether the request shall override existing requests with the same path.
  */
 data class MockRequest(
     val remotePath: String,
@@ -36,7 +37,8 @@ data class MockRequest(
     val ignoreQueryParams: Boolean = false,
     val wildcardMatch: Boolean = false,
     val serveOnce: Boolean = false,
-    val networkDelay: Long = 0L
+    val networkDelay: Long = 0L,
+    val priority: MockPriority = MockPriority.Base
 )
 
 /**
@@ -58,3 +60,8 @@ infix fun MockRequest.serveOnce(value: Boolean): MockRequest = this.copy(serveOn
  * Returns a new [MockRequest] with an updated `networkDelay` value.
  */
 infix fun MockRequest.withNetworkDelay(value: Long) = this.copy(networkDelay = value)
+
+/**
+ * Returns a new [MockRequest] with an updated `priority` value.
+ */
+infix fun MockRequest.withPriority(value: MockPriority) = this.copy(priority = value)

@@ -19,10 +19,12 @@
 package ch.protonmail.android.networkmocks
 
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
+import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -261,6 +263,30 @@ internal class MockNetworkDispatcherTests {
 
         // Then
         assertEquals(expectedStatusCode, response.code)
+    }
+
+    @Test
+    fun `when a request with the same path but higher priority is defined, it overrides any other defined before`() {
+        // Given
+        val expectedStatusCode = 500
+        val expectedBody = """{ "c": 3 }"""
+
+        val request = buildRequest("api/v1/test")
+
+        mockWebServer.dispatcher = mockNetworkDispatcher {
+            addMockRequests(
+                "/api/v1/*" respondWith "/api/v1/test_1.json" withStatusCode 200 matchWildcards true,
+                "/api/v1/test" respondWith "/api/v1/test_2.json" withStatusCode 200,
+                "/api/v1/test" respondWith "/api/v1/test_3.json" withStatusCode 500 withPriority MockPriority.High
+            )
+        }
+
+        // When
+        val response = runBlocking { performRequest(request) }
+
+        // Then
+        assertEquals(expectedStatusCode, response.code)
+        assertEquals(expectedBody, response.body?.string())
     }
 
     private fun mockNetworkDispatcher(func: MockNetworkDispatcher.() -> Unit) =
