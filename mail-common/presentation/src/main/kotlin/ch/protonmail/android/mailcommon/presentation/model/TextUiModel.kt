@@ -36,21 +36,17 @@ sealed interface TextUiModel {
         val formatArgs: List<Any>
     ) : TextUiModel {
 
-        override fun equals(other: Any?): Boolean =
-            other is TextResWithArgs &&
-                other.value == value &&
-                other.formatArgs.joinToString() == formatArgs.joinToString()
+        override fun equals(other: Any?): Boolean = other is TextResWithArgs &&
+            other.value == value &&
+            other.formatArgs.joinToString() == formatArgs.joinToString()
 
-        override fun hashCode(): Int =
-            value + formatArgs.joinToString().hashCode()
+        override fun hashCode(): Int = value + formatArgs.joinToString().hashCode()
     }
 }
 
-fun TextUiModel(value: String): TextUiModel =
-    TextUiModel.Text(value)
+fun TextUiModel(value: String): TextUiModel = TextUiModel.Text(value)
 
-fun TextUiModel(@StringRes value: Int): TextUiModel =
-    TextUiModel.TextRes(value)
+fun TextUiModel(@StringRes value: Int): TextUiModel = TextUiModel.TextRes(value)
 
 fun TextUiModel(@StringRes value: Int, vararg formatArgs: Any): TextUiModel =
     TextUiModel.TextResWithArgs(value, formatArgs.toList())

@@ -304,10 +304,7 @@ private fun Icons(
 }
 
 @Composable
-private fun ExpirationLabel(
-    modifier: Modifier = Modifier,
-    hasExpirationTime: Boolean
-) {
+private fun ExpirationLabel(modifier: Modifier = Modifier, hasExpirationTime: Boolean) {
     if (hasExpirationTime) {
         Box(
             modifier = modifier
@@ -326,10 +323,7 @@ private fun ExpirationLabel(
 }
 
 @Composable
-private fun Labels(
-    modifier: Modifier = Modifier,
-    labels: ImmutableList<LabelUiModel>
-) {
+private fun Labels(modifier: Modifier = Modifier, labels: ImmutableList<LabelUiModel>) {
     LabelsList(modifier = modifier, labels = labels)
 }
 
