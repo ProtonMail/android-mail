@@ -403,7 +403,14 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.MessagesData>()
             )
         } returns expectedState
-        every { conversationMessageMapper.toUiModel(any(), any(), any(), defaultFolderColorSettings) } returns
+        every {
+            conversationMessageMapper.toUiModel(
+                messageWithLabels = any(),
+                contacts = any(),
+                decryptedMessageBody = any(),
+                folderColorSettings = defaultFolderColorSettings
+            )
+        } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
 
         // when
@@ -433,7 +440,14 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailEvent.MessagesData>()
             )
         } returns expectedState
-        every { conversationMessageMapper.toUiModel(any(), any(), any(), defaultFolderColorSettings) } returns
+        every {
+            conversationMessageMapper.toUiModel(
+                messageWithLabels = any(),
+                contacts = any(),
+                decryptedMessageBody = any(),
+                folderColorSettings = defaultFolderColorSettings
+            )
+        } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
 
         // when
@@ -1599,7 +1613,14 @@ class ConversationDetailViewModelTest {
         coEvery { observeMessageWithLabels(userId, any()) } returns flowOf(invoiceMessage.right())
         every { conversationMessageMapper.toUiModel(any(), any(), defaultFolderColorSettings) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
-        every { conversationMessageMapper.toUiModel(any(), any(), any(), defaultFolderColorSettings) } returns
+        every {
+            conversationMessageMapper.toUiModel(
+                messageWithLabels = any(),
+                contacts = any(),
+                decryptedMessageBody = any(),
+                folderColorSettings = defaultFolderColorSettings
+            )
+        } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
         every { conversationMessageMapper.toUiModel(any()) } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanding
@@ -1682,7 +1703,14 @@ class ConversationDetailViewModelTest {
         } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.right())
         // endregion
         // region mock mapper
-        every { conversationMessageMapper.toUiModel(any(), any(), any(), defaultFolderColorSettings) } returns expected
+        every {
+            conversationMessageMapper.toUiModel(
+                messageWithLabels = any(),
+                contacts = any(),
+                decryptedMessageBody = any(),
+                folderColorSettings = defaultFolderColorSettings
+            )
+        } returns expected
         // endregion
 
         return Pair(firstExpanded.map { it.messageId }, expected)

@@ -93,6 +93,24 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         )
     }
 
+    fun toUiModel(
+        message: ConversationDetailMessageUiModel.Expanded,
+        messageWithLabels: MessageWithLabels,
+        contacts: List<Contact>,
+        folderColorSettings: FolderColorSettings
+    ): ConversationDetailMessageUiModel.Expanded {
+        return ConversationDetailMessageUiModel.Expanded(
+            messageId = message.messageId,
+            isUnread = messageWithLabels.message.unread,
+            messageDetailHeaderUiModel = messageDetailHeaderUiModelMapper.toUiModel(
+                messageWithLabels,
+                contacts,
+                folderColorSettings
+            ),
+            messageBodyUiModel = message.messageBodyUiModel
+        )
+    }
+
     fun toUiModel(collapsed: ConversationDetailMessageUiModel.Collapsed): ConversationDetailMessageUiModel.Expanding {
         return ConversationDetailMessageUiModel.Expanding(
             collapsed = collapsed,
@@ -100,9 +118,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         )
     }
 
-    private fun getForwardedIcon(
-        isForwarded: Boolean
-    ): ConversationDetailMessageUiModel.ForwardedIcon = when {
+    private fun getForwardedIcon(isForwarded: Boolean): ConversationDetailMessageUiModel.ForwardedIcon = when {
         isForwarded -> ConversationDetailMessageUiModel.ForwardedIcon.Forwarded
         else -> ConversationDetailMessageUiModel.ForwardedIcon.None
     }

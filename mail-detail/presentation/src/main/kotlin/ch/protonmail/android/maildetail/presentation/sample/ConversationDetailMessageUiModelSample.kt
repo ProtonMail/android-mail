@@ -26,6 +26,7 @@ import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import kotlinx.collections.immutable.persistentListOf
@@ -109,6 +110,11 @@ object ConversationDetailMessageUiModelSample {
         messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels
     )
 
+    val InvoiceWithoutLabelsCustomFolderExpanded = buildExpanded(
+        messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels,
+        locationUiModel = MessageLocationUiModelSample.CustomFolder
+    )
+
     val AnotherInvoiceWithoutLabels = buildCollapsed(
         messageWithLabels = MessageWithLabelsSample.AnotherInvoiceWithoutLabels
     )
@@ -159,7 +165,8 @@ object ConversationDetailMessageUiModelSample {
         message: Message = messageWithLabels.message,
         avatar: AvatarUiModel = AvatarUiModel.ParticipantInitial(message.sender.name.substring(0, 1)),
         isStarred: Boolean = false,
-        messageBodyUiModel: MessageBodyUiModel = MessageDetailBodyUiModelSample.build(UUID.randomUUID().toString())
+        messageBodyUiModel: MessageBodyUiModel = MessageDetailBodyUiModelSample.build(UUID.randomUUID().toString()),
+        locationUiModel: MessageLocationUiModel = MessageLocationUiModelSample.AllMail
     ): ConversationDetailMessageUiModel.Expanded = ConversationDetailMessageUiModel.Expanded(
         isUnread = message.unread,
         messageId = message.messageId,
@@ -171,7 +178,7 @@ object ConversationDetailMessageUiModelSample {
                 participantPadlock = 0
             ),
             isStarred = isStarred,
-            location = MessageLocationUiModelSample.AllMail,
+            location = locationUiModel,
             time = TextUiModel("10:00"),
             extendedTime = TextUiModel("10:00"),
             allRecipients = TextUiModel("Recipients"),

@@ -293,7 +293,12 @@ class ConversationDetailViewModel @Inject constructor(
     ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
         val messagesList = messages.map { messageWithLabels ->
             when (val currentMessage = findCurrentStateOfMessage(messageWithLabels.message.messageId)) {
-                is ConversationDetailMessageUiModel.Expanded -> currentMessage
+                is ConversationDetailMessageUiModel.Expanded -> conversationMessageMapper.toUiModel(
+                    message = currentMessage,
+                    messageWithLabels = messageWithLabels,
+                    contacts = contacts,
+                    folderColorSettings = folderColorSettings
+                )
                 else -> buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
             }
         }

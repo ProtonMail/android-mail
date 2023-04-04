@@ -19,8 +19,11 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import java.util.UUID
+import android.text.format.Formatter
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
@@ -35,9 +38,15 @@ import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.spyk
+import io.mockk.unmockkStatic
 import io.mockk.verify
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 internal class ConversationDetailMessageUiModelMapperTest {
 
@@ -59,6 +68,9 @@ internal class ConversationDetailMessageUiModelMapperTest {
         every { this@mockk(itemTime = any()) } returns
             requireNotNull(ConversationDetailMessageUiModelSample.AugWeatherForecast.shortTime)
     }
+    private val formatExtendedTime: FormatExtendedTime = mockk {
+        every { this@mockk(duration = any()) } returns TextUiModel("Aug 1, 2021")
+    }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
         every {
             this@mockk(labelIds = any(), labels = any(), colorSettings = any())
@@ -70,9 +82,18 @@ internal class ConversationDetailMessageUiModelMapperTest {
         every { this@mockk(contacts = any(), participant = RecipientSample.PreciWeather) } returns
             RecipientSample.PreciWeather.name
     }
-    private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper = mockk {
-        every { toUiModel(any(), any(), any()) } returns mockk()
-    }
+    private val messageDetailHeaderUiModelMapper = spyk(
+        MessageDetailHeaderUiModelMapper(
+            colorMapper = colorMapper,
+            context = mockk(),
+            detailAvatarUiModelMapper = avatarUiModelMapper,
+            formatExtendedTime = formatExtendedTime,
+            formatShortTime = formatShortTime,
+            messageLocationUiModelMapper = messageLocationUiModelMapper,
+            participantUiModelMapper = ParticipantUiModelMapper(ResolveParticipantName()),
+            resolveParticipantName = resolveParticipantName
+        )
+    )
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper = mockk {
         every { toUiModel(any<DecryptedMessageBody>()) } returns mockk()
     }
@@ -84,8 +105,19 @@ internal class ConversationDetailMessageUiModelMapperTest {
         messageLocationUiModelMapper = messageLocationUiModelMapper,
         resolveParticipantName = resolveParticipantName,
         messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
-        messageBodyUiModelMapper = messageBodyUiModelMapper,
+        messageBodyUiModelMapper = messageBodyUiModelMapper
     )
+
+    @BeforeTest
+    fun setUp() {
+        mockkStatic(Formatter::class)
+        every { Formatter.formatShortFileSize(any(), any()) } returns "12 MB"
+    }
+
+    @AfterTest
+    fun tearDown() {
+        unmockkStatic(Formatter::class)
+    }
 
     @Test
     fun `map to ui model returns collapsed model`() {
@@ -227,5 +259,30 @@ internal class ConversationDetailMessageUiModelMapperTest {
 
         // then
         assertEquals(expected, result)
+    }
+
+    @Test
+    fun `when message is updated then unread and header is updated`() {
+        // Given
+        val previousMessage = ConversationDetailMessageUiModelSample.InvoiceWithoutLabelsCustomFolderExpanded
+
+        val messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels.copy(
+            message = MessageWithLabelsSample.InvoiceWithoutLabels.message.copy(
+                unread = true
+            )
+        )
+        val folderColorSettings = FolderColorSettings(useFolderColor = false)
+
+        // When
+        val result = mapper.toUiModel(
+            message = previousMessage,
+            messageWithLabels = messageWithLabels,
+            contacts = listOf(ContactSample.John),
+            folderColorSettings = folderColorSettings
+        )
+
+        // Then
+        assertEquals(true, result.isUnread)
+        assertNull(result.messageDetailHeaderUiModel.location.color)
     }
 }

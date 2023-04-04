@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.sample
 
+import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.iconRes
@@ -25,4 +27,5 @@ import ch.protonmail.android.maillabel.presentation.iconRes
 object MessageLocationUiModelSample {
 
     val AllMail = MessageLocationUiModel(SystemLabelId.AllMail.name, SystemLabelId.AllMail.iconRes())
+    val CustomFolder = MessageLocationUiModel("Custom Folder", R.drawable.ic_proton_folder_filled, Color.Blue)
 }
