@@ -134,11 +134,25 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = buildMailboxItem()
         val resolvedNames = listOf("contact name", "display name")
+        val expected = TextUiModel(resolvedNames.joinToString())
         every { getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts) } returns resolvedNames
         // When
         val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
         // Then
-        assertEquals(resolvedNames, actual.participants)
+        assertEquals(expected, actual.participants)
+    }
+
+    @Test
+    fun `empty participant is correctly resolved in the ui model`() {
+        // Given
+        val mailboxItem = buildMailboxItem()
+        val resolvedNames = listOf("")
+        val expected = TextUiModel(ch.protonmail.android.mailmailbox.presentation.R.string.mailbox_default_recipient)
+        every { getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts) } returns resolvedNames
+        // When
+        val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts)
+        // Then
+        assertEquals(expected, actual.participants)
     }
 
     @Test

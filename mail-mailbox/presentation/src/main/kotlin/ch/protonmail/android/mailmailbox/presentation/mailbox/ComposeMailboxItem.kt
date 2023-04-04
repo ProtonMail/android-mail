@@ -186,13 +186,13 @@ private fun ActionIcons(
 @Composable
 private fun Participants(
     modifier: Modifier = Modifier,
-    participants: ImmutableList<String>,
+    participants: TextUiModel,
     fontWeight: FontWeight,
     fontColor: Color
 ) {
     Text(
         modifier = modifier.testTag(MailboxItemTestTags.Participants),
-        text = participants.joinToString(),
+        text = participants.string(),
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
         style = ProtonTheme.typography.default.copy(fontWeight = fontWeight, color = fontColor)
@@ -400,6 +400,19 @@ private fun LongSubjectWithIconItemPreview() {
         MailboxItem(
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.LongSubjectWithoutIcons,
+            onItemClicked = {},
+            onOpenSelectionMode = {}
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun NoRecipientIconItemPreview() {
+    ProtonTheme {
+        MailboxItem(
+            modifier = Modifier,
+            item = MailboxItemUiModelPreviewData.Conversation.NoParticipant,
             onItemClicked = {},
             onOpenSelectionMode = {}
         )

@@ -31,4 +31,5 @@
     <item quantity="one">%d unread</item>
         <item quantity="other">%d unread</item>
     </plurals>
+    <string name="mailbox_default_recipient">(No Recipient)</string>
 </resources>

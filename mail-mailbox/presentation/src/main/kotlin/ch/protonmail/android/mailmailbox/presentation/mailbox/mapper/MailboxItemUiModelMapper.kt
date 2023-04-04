@@ -21,12 +21,14 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.mapper
 import androidx.compose.ui.graphics.Color
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
+import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import kotlinx.collections.immutable.ImmutableList
@@ -47,7 +49,7 @@ class MailboxItemUiModelMapper @Inject constructor(
 ) : Mapper<MailboxItem, MailboxItemUiModel> {
 
     fun toUiModel(mailboxItem: MailboxItem, contacts: List<Contact>): MailboxItemUiModel {
-        val participantsResolvedNames = getParticipantsResolvedNames(mailboxItem, contacts).toImmutableList()
+        val participantsResolvedNames = getParticipantsResolvedNames(mailboxItem, contacts).filter { it.isNotBlank() }
 
         return MailboxItemUiModel(
             avatar = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames),
@@ -59,7 +61,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             isRead = mailboxItem.read,
             labels = toLabelUiModels(mailboxItem.labels),
             subject = mailboxItem.subject,
-            participants = participantsResolvedNames,
+            participants = participantsResolvedNames.formatParticipants(),
             shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
             shouldShowRepliedAllIcon = shouldShowRepliedAllIcon(mailboxItem),
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
@@ -115,4 +117,9 @@ class MailboxItemUiModelMapper @Inject constructor(
                 color = colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
             )
         }.toImmutableList()
+
+    private fun List<String>.formatParticipants() = when (this.isNotEmpty()) {
+        true -> TextUiModel(joinToString())
+        false -> TextUiModel(R.string.mailbox_default_recipient)
+    }
 }

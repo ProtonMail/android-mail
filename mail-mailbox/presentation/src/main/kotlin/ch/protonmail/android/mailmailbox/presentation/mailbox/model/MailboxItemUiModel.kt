@@ -38,7 +38,7 @@ data class MailboxItemUiModel(
     val isRead: Boolean,
     val labels: ImmutableList<LabelUiModel>,
     val subject: String,
-    val participants: ImmutableList<String>,
+    val participants: TextUiModel,
     val shouldShowRepliedIcon: Boolean,
     val shouldShowRepliedAllIcon: Boolean,
     val shouldShowForwardedIcon: Boolean,

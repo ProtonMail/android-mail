@@ -171,7 +171,7 @@ object MailboxItemUiModelTestData {
         isRead = isRead,
         labels = labels,
         subject = subject,
-        participants = persistentListOf(),
+        participants = TextUiModel(persistentListOf<String>().joinToString()),
         shouldShowRepliedIcon = false,
         shouldShowRepliedAllIcon = false,
         shouldShowForwardedIcon = false,
