@@ -22,6 +22,7 @@ package ch.protonmail.android.uitest.helpers.network
 
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
+import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 
@@ -91,7 +92,8 @@ internal fun mockNetworkDispatcher(
 
     if (ignoreEvents) {
         addMockRequests(
-            "/core/v4/events/latest/" respondWith "/core/v4/events/latest/events-latest_base_placeholder.json" withStatusCode 200
+            "/core/v4/events/*" respondWith "/core/v4/events/event-id/event_base_placeholder.json" withStatusCode 200 matchWildcards true,
+            "/core/v4/events/latest" respondWith "/core/v4/events/latest/events-latest_base_placeholder.json" withStatusCode 200
         )
     }
 

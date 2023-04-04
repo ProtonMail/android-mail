@@ -21,43 +21,31 @@ package ch.protonmail.android.uitest.robot.mailbox.inbox
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
-import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.hasParent
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.maillabel.R
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.UnreadItemsFilterTestTags
-import ch.protonmail.android.uitest.models.mailbox.InboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.MoveToFolderRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.SelectionStateRobotInterface
 import ch.protonmail.android.uitest.robot.mailbox.messagedetail.MessageRobot
-import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 import me.proton.core.test.android.robots.CoreRobot
 import me.proton.core.test.android.robots.CoreVerify
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "ExpressionBodySyntax")
-class InboxRobot(
+internal class InboxRobot(
     override val composeTestRule: ComposeContentTestRule
 ) : CoreRobot(), MailboxRobotInterface {
 
     override fun clickMessageByPosition(position: Int): MessageRobot {
-        // SwipeRefresh loader might still be visible, workaround to fix it for now while
-        // refactoring is being done (see MAILANDR-460)
-        composeTestRule.waitForIdle()
+        val model = MailboxListItemEntryModel(position)
 
-        composeTestRule.onNodeWithTag(MAILBOX_TAG)
-            .awaitDisplayed(composeTestRule)
-            .onChildAt(position)
-            .awaitDisplayed(composeTestRule)
-            .performClick()
+        model.click()
 
         return super.clickMessageByPosition(position)
     }
@@ -158,53 +146,31 @@ class InboxRobot(
                 .assertIsSelected()
         }
 
-        fun listItemsAreShown(vararg inboxEntries: InboxListItemEntry) {
-            val mailboxItemMatcher = hasTestTag(MailboxItemTestTags.ItemRow)
-            val avatarItemMatcher = hasParent(hasTestTag(AvatarTestTags.Avatar) and hasParent(mailboxItemMatcher))
-            val participantsItemMatcher = hasTestTag(MailboxItemTestTags.Participants) and hasParent(mailboxItemMatcher)
-            val subjectItemMatcher = hasTestTag(MailboxItemTestTags.Subject) and hasParent(mailboxItemMatcher)
-            val dateItemMatcher = hasTestTag(MailboxItemTestTags.Date) and hasParent(mailboxItemMatcher)
-
-            composeRule.waitUntil(timeoutMillis = 30_000) {
-                composeRule.onAllNodes(mailboxItemMatcher).fetchSemanticsNodes().isNotEmpty()
-            }
-
+        fun listItemsAreShown(vararg inboxEntries: MailboxListItemEntry) {
             for (entry in inboxEntries) {
-                composeRule
-                    .onAllNodes(
-                        matcher = avatarItemMatcher,
-                        useUnmergedTree = true
-                    )[entry.index]
-                    .assertTextEquals(entry.avatarText)
+                val model = MailboxListItemEntryModel(entry.index)
 
-                composeRule
-                    .onAllNodes(
-                        matcher = participantsItemMatcher,
-                        useUnmergedTree = true
-                    )[entry.index]
-                    .assertTextEquals(entry.participants)
+                model.hasAvatarText(entry.avatarText)
+                    .hasParticipants(entry.participants)
+                    .hasSubject(entry.subject)
+                    .hasDate(entry.date)
 
-                composeRule
-                    .onAllNodes(
-                        matcher = subjectItemMatcher,
-                        useUnmergedTree = true
-                    )[entry.index]
-                    .assertTextEquals(entry.subject)
-
-                composeRule
-                    .onAllNodes(
-                        matcher = dateItemMatcher,
-                        useUnmergedTree = true
-                    )[entry.index]
-                    .assertTextEquals(entry.date)
+                entry.count?.let { model.hasCount(it) } ?: model.hasNoCount()
             }
+        }
+
+        fun unreadItemAtPosition(position: Int) {
+            val model = MailboxListItemEntryModel(position)
+
+            model.assertUnread()
+        }
+
+        fun readItemAtPosition(position: Int) {
+            val model = MailboxListItemEntryModel(position)
+
+            model.assertRead()
         }
     }
 
     inline fun verify(block: Verify.() -> Unit) = Verify(composeTestRule).apply(block)
-
-    companion object {
-
-        private const val MAILBOX_TAG = "MailboxList"
-    }
 }

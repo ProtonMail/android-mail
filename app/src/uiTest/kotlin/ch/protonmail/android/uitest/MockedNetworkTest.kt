@@ -18,11 +18,10 @@
 
 package ch.protonmail.android.uitest
 
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import ch.protonmail.android.MainActivity
 import ch.protonmail.android.uitest.helpers.core.TestIdWatcher
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.rule.MainInitializerRule
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +48,7 @@ internal open class MockedNetworkTest(
     private val hiltAndroidRule = HiltAndroidRule(this)
 
     // To be defined here as long as Robots need the rule to be injected.
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+    val composeTestRule = ComposeTestRuleHolder.rule
 
     @Inject
     lateinit var accountManager: AccountManager
