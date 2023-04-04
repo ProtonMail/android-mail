@@ -34,8 +34,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.R
-import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags.Avatar
-import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags.AvatarDraft
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -46,16 +44,14 @@ fun Avatar(
     avatarUiModel: AvatarUiModel
 ) {
     Box(
-        modifier = modifier
-            .size(MailDimens.DefaultTouchTargetSize)
-            .testTag(Avatar),
+        modifier = modifier.size(MailDimens.DefaultTouchTargetSize),
         contentAlignment = Alignment.Center
     ) {
         when (avatarUiModel) {
             is AvatarUiModel.DraftIcon ->
                 Box(
                     modifier = Modifier
-                        .testTag(AvatarDraft)
+                        .testTag(AvatarTestTags.AvatarDraft)
                         .sizeIn(
                             minWidth = MailDimens.AvatarMinSize,
                             minHeight = MailDimens.AvatarMinSize
@@ -87,7 +83,9 @@ fun Avatar(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
+                        modifier = Modifier
+                            .testTag(AvatarTestTags.Avatar)
+                            .padding(horizontal = ProtonDimens.SmallSpacing),
                         textAlign = TextAlign.Center,
                         text = avatarUiModel.value
                     )

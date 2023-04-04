@@ -268,7 +268,9 @@ private fun Count(
             .border(stroke, ProtonTheme.shapes.small)
     ) {
         Text(
-            modifier = Modifier.padding(horizontal = ProtonDimens.ExtraSmallSpacing),
+            modifier = Modifier
+                .testTag(MailboxItemTestTags.Count)
+                .padding(horizontal = ProtonDimens.ExtraSmallSpacing),
             text = count.toString(),
             overflow = TextOverflow.Ellipsis,
             style = ProtonTheme.typography.caption.copy(fontWeight = fontWeight, color = fontColor)
@@ -416,4 +418,5 @@ object MailboxItemTestTags {
     const val Participants = "Participants"
     const val Subject = "Subject"
     const val Date = "Date"
+    const val Count = "Count"
 }
