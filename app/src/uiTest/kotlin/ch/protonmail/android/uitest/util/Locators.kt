@@ -18,29 +18,15 @@
 
 package ch.protonmail.android.uitest.util
 
-import androidx.annotation.StringRes
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.assert
-import androidx.compose.ui.test.assertTextContains
-
-fun SemanticsNodeInteraction.assertTextColor(
-    color: Long
-): SemanticsNodeInteraction = assertTextColor(Color(color))
-
-fun SemanticsNodeInteraction.assertTextColor(
-    color: Color
-): SemanticsNodeInteraction = assert(hasTextColor(color))
-
-fun SemanticsNodeInteraction.assertTextContains(
-    @StringRes valueRes: Int,
-    substring: Boolean = false,
-    ignoreCase: Boolean = false
-): SemanticsNodeInteraction = assertTextContains(getString(valueRes), substring, ignoreCase)
+import androidx.compose.ui.test.filterToOne
+import androidx.compose.ui.test.onChildren
 
 /**
- * Returns a [Boolean] indicating whether the item exists or not, without throwing an exception.
+ * Returns a child [SemanticsNodeInteraction] from another [SemanticsNodeInteraction]
+ * by filtering out the parent's children with the given [SemanticsMatcher].
  */
-fun SemanticsNodeInteraction.peek(): Boolean {
-    return runCatching { assertExists() }.isSuccess
+fun SemanticsNodeInteraction.child(matcher: () -> SemanticsMatcher): SemanticsNodeInteraction {
+    return onChildren().filterToOne(matcher.invoke())
 }

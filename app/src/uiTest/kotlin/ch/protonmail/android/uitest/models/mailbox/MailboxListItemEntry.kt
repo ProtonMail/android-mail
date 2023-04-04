@@ -18,10 +18,11 @@
 
 package ch.protonmail.android.uitest.models.mailbox
 
-data class InboxListItemEntry(
+internal data class MailboxListItemEntry(
     val index: Int,
     val avatarText: String,
     val participants: String,
     val subject: String,
-    val date: String
+    val date: String,
+    val count: String? = null
 )

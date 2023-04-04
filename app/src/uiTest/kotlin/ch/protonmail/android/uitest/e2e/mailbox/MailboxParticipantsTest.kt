@@ -29,7 +29,7 @@ import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.models.mailbox.InboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -53,21 +53,21 @@ internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = Login
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
     private val expectedInboxListEntries = arrayOf(
-        InboxListItemEntry(
+        MailboxListItemEntry(
             index = 0,
             avatarText = "M",
             participants = "mobileappsuitesting3@proton.black",
             subject = "Test no contact, empty sender name",
             date = "Mar 20, 2023"
         ),
-        InboxListItemEntry(
+        MailboxListItemEntry(
             index = 1,
             avatarText = "?",
             participants = "",
             subject = "Test no contact, empty",
             date = "Mar 20, 2023"
         ),
-        InboxListItemEntry(
+        MailboxListItemEntry(
             index = 2,
             avatarText = "U",
             participants = "UI Tests Contact 1",

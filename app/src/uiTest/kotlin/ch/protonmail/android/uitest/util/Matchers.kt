@@ -19,10 +19,12 @@
 package ch.protonmail.android.uitest.util
 
 import androidx.annotation.StringRes
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.text.TextLayoutResult
 
 fun hasText(
     @StringRes textRes: Int,
@@ -30,8 +32,22 @@ fun hasText(
     ignoreCase: Boolean = false
 ): SemanticsMatcher = hasText(getString(textRes), substring, ignoreCase)
 
-fun SemanticsNodeInteraction.assertTextContains(
-    @StringRes valueRes: Int,
-    substring: Boolean = false,
-    ignoreCase: Boolean = false
-): SemanticsNodeInteraction = assertTextContains(getString(valueRes), substring, ignoreCase)
+// Not as straightforward, some bits are taken from the compose-ui source code which can be found here:
+// https://github.com/androidx/androidx/blob/3606267939d1cb78310a1e40e76f673920f277b8/compose/ui/ui/src/androidMain/kotlin/androidx/compose/ui/platform/AndroidComposeViewAccessibilityDelegateCompat.android.kt#L1840-L1849
+fun hasTextColor(color: Color): SemanticsMatcher {
+    val semanticsAction = SemanticsActions.GetTextLayoutResult
+
+    return SemanticsMatcher(
+        description = "${SemanticsProperties.Text.name} color matches '$color'"
+    ) {
+        val textLayoutElements = mutableListOf<TextLayoutResult>().apply {
+            it.config[semanticsAction].action?.invoke(this)
+        } as List<TextLayoutResult>
+
+        if (textLayoutElements.isNotEmpty()) {
+            textLayoutElements[0].layoutInput.style.color == color
+        } else {
+            false
+        }
+    }
+}
