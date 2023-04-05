@@ -99,15 +99,13 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         contacts: List<Contact>,
         folderColorSettings: FolderColorSettings
     ): ConversationDetailMessageUiModel.Expanded {
-        return ConversationDetailMessageUiModel.Expanded(
-            messageId = message.messageId,
+        return message.copy(
             isUnread = messageWithLabels.message.unread,
             messageDetailHeaderUiModel = messageDetailHeaderUiModelMapper.toUiModel(
                 messageWithLabels,
                 contacts,
                 folderColorSettings
-            ),
-            messageBodyUiModel = message.messageBodyUiModel
+            )
         )
     }
 
