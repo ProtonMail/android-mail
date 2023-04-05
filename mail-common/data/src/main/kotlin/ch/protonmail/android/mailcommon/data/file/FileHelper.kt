@@ -88,8 +88,10 @@ class FileHelper @Inject constructor(
             "${internalAppFiles.parent}/shared_prefs",
             "${internalAppFiles.path}/datastore"
         )
-        return blacklistedFolders.any { blacklistedFolder -> path.contains(blacklistedFolder) }
+        return blacklistedFolders.any { blacklistedFolder -> path.normalised() == blacklistedFolder.normalised() }
     }
+
+    private fun String.normalised() = File(this).normalize().path
 
     @JvmInline
     value class Folder(val path: String)

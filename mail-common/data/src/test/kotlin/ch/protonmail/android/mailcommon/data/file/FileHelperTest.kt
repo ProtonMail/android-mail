@@ -189,7 +189,10 @@ internal class AllowedFoldersFileHelperTest(folderPath: String) : FileHelperTest
             "/storage/emulated/0/Download/",
             "/storage/emulated/0/Pictures/",
             "/storage/emulated/1/Movies/",
-            "/storage/emulated/1/DCIM/"
+            "/storage/emulated/1/DCIM/",
+            "/storage/emulated/1/../0/DCIM",
+            "/data/user/0/ch.protonmail.android.alpha/databases/../../../../../storage/emulated/0",
+            "/data/user/0/ch.protonmail.android.alpha/databases/../files/user1234/attachments"
         )
 
         @JvmStatic
@@ -269,7 +272,11 @@ internal class BlacklistedFoldersFileHelperTest(folderPath: String) : FileHelper
         private val blacklistedFolders = listOf(
             "/data/user/0/ch.protonmail.android.alpha/databases/",
             "/data/user/0/ch.protonmail.android.alpha/shared_prefs/",
-            "/data/user/0/ch.protonmail.android.alpha/files/datastore/"
+            "/data/user/0/ch.protonmail.android.alpha/files/datastore/",
+            "/data/user/0/ch.protonmail.android.alpha/files/../shared_prefs",
+            "/data/user/0/ch.protonmail.android.alpha/files/userid1234/images/../../../databases/",
+            "/data/user/0/ch.protonmail.android.alpha/files/userid1234/message_bodies/../../../shared_prefs/",
+            "/storage/emulated/0/../../../data/user/0/ch.protonmail.android.alpha/databases/"
         )
 
         @JvmStatic
