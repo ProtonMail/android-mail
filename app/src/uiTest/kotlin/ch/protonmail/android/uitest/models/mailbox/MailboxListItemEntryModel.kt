@@ -32,7 +32,7 @@ import ch.protonmail.android.uitest.util.assertTextColor
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.peek
 
-internal class MailboxListItemEntryModel(
+class MailboxListItemEntryModel(
     position: Int,
     private val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.rule
 ) {

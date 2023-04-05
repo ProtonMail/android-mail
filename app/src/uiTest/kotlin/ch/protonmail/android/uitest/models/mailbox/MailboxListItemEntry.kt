@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.uitest.models.mailbox
 
-internal data class MailboxListItemEntry(
+data class MailboxListItemEntry(
     val index: Int,
     val avatarText: String,
     val participants: String,

@@ -38,7 +38,7 @@ import me.proton.core.test.android.robots.CoreRobot
 import me.proton.core.test.android.robots.CoreVerify
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "ExpressionBodySyntax")
-internal class InboxRobot(
+class InboxRobot(
     override val composeTestRule: ComposeContentTestRule
 ) : CoreRobot(), MailboxRobotInterface {
 

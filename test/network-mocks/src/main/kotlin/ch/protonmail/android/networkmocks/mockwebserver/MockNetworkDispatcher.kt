@@ -89,10 +89,11 @@ class MockNetworkDispatcher(
 
                     else -> remotePath == mockRequest.remotePath
                 }
-            } ?: run {
-            logger.severe("⚠️ Unknown path '$remotePath', check the mocked network definitions.")
-            return generateUnhandledPathResponse(remotePath)
-        }
+            }
+            ?: run {
+                logger.severe("⚠️ Unknown path '$remotePath', check the mocked network definitions.")
+                return generateUnhandledPathResponse(remotePath)
+            }
 
         if (validRequest.serveOnce) knownRequests.remove(validRequest)
         logger.info("✅ Match found for '$remotePath'.")
