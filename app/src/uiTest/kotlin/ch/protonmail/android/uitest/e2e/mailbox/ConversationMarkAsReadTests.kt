@@ -27,6 +27,7 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
+import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
@@ -43,6 +44,7 @@ import me.proton.core.auth.domain.usecase.ValidateServerProof
 import me.proton.core.test.android.robots.auth.AddAccountRobot
 import org.junit.Test
 
+@SmokeExtendedTest
 @HiltAndroidTest
 @SdkSuppress(minSdkVersion = 28)
 @UninstallModules(ServerProofModule::class)
@@ -55,7 +57,6 @@ internal class ConversationMarkAsReadTests : MockedNetworkTest(loginStrategy = L
     private val addAccountRobot = AddAccountRobot()
     private val inboxRobot = InboxRobot(composeTestRule)
     private val messageDetailRobot = MessageDetailRobot(composeTestRule)
-
 
     @Test
     @TestId("78994")
