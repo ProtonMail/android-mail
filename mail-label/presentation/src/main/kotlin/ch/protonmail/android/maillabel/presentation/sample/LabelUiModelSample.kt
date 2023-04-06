@@ -27,6 +27,7 @@ object LabelUiModelSample {
 
     val Document = build(LabelSample.Document)
     val News = build(LabelSample.News)
+    val Starred = build(LabelSample.Starred)
 
     fun build(label: Label) = LabelUiModel(
         name = label.name,

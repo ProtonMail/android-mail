@@ -27,6 +27,7 @@ import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetCurrentEpochTimeDuration
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
@@ -42,6 +43,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
@@ -77,6 +79,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -89,6 +92,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -101,12 +105,15 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.time.Duration
 
 class ConversationDetailViewModelIntegrationTest {
 
     private val userId = UserIdSample.Primary
     private val conversationId = ConversationIdSample.WeatherForecast
+    private val defaultFolderColorSettings = FolderColorSettings()
 
     // region mock observe use cases
     private val observeContacts: ObserveContacts = mockk {
@@ -143,7 +150,7 @@ class ConversationDetailViewModelIntegrationTest {
     }
     private val observeFolderColorSettings =
         mockk<ObserveFolderColorSettings> {
-            every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(FolderColorSettings())
+            every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(defaultFolderColorSettings)
         }
     private val observeCustomMailLabelsUseCase = mockk<ObserveCustomMailLabels> {
         every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(
@@ -267,6 +274,109 @@ class ConversationDetailViewModelIntegrationTest {
                 messages.first().messageBodyUiModel.attachments,
                 expandedMessage.messageBodyUiModel.attachments
             )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should emit mapped messages as they're emitted`() = runTest {
+        // Given
+        val initialMessage = MessageWithLabelsSample.AugWeatherForecast
+        val updatedMessage = initialMessage.copy(
+            message = initialMessage.message.copy(unread = true),
+            labels = listOf(LabelSample.Starred)
+        )
+        val conversationWithLabelsFlow = MutableStateFlow(nonEmptyListOf(initialMessage).right())
+        val observeConversationMessagesMock = mockk<ObserveConversationMessagesWithLabels> {
+            every { this@mockk(userId, initialMessage.message.conversationId) } returns conversationWithLabelsFlow
+        }
+
+        fun assertCorrectMessagesEmitted(actual: ConversationDetailsMessagesState.Data, expected: MessageWithLabels) {
+            assertEquals(1, actual.messages.size)
+            with(actual.messages.first() as ConversationDetailMessageUiModel.Expanded) {
+                assertEquals(expected.message.messageId, messageId)
+                assertEquals(expected.message.unread, isUnread)
+                assertEquals(expected.labels.size, messageDetailHeaderUiModel.labels.size)
+            }
+        }
+
+        // When
+        buildConversationDetailViewModel(
+            observeConversationMessages = observeConversationMessagesMock,
+            observeFolderColor = observeFolderColorSettings
+        ).state.test {
+            // The initial states
+            skipItems(3)
+
+            // Then
+            // The expanded message
+            val actualFirstMessagesState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+            assertEquals(1, actualFirstMessagesState.messages.size)
+            assertCorrectMessagesEmitted(actualFirstMessagesState, expected = initialMessage)
+
+            // When
+            // Emit updated message
+            conversationWithLabelsFlow.emit(nonEmptyListOf(updatedMessage).right())
+
+            // Then
+            val actualUpdatedMessagesState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+            val actualLabels = (
+                actualUpdatedMessagesState.messages.first()
+                    as ConversationDetailMessageUiModel.Expanded
+                ).messageDetailHeaderUiModel.labels
+            assertCorrectMessagesEmitted(actualUpdatedMessagesState, expected = updatedMessage)
+            assertEquals(LabelUiModelSample.Starred.name, actualLabels.first().name)
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should emit mapped header as folder color is emitted`() = runTest {
+        // Given
+        val message = MessageWithLabelsSample.AugWeatherForecastWithFolder
+
+        val conversationWithLabelsFlow = MutableStateFlow(nonEmptyListOf(message).right())
+        val observeConversationMessagesMock = mockk<ObserveConversationMessagesWithLabels> {
+            every { this@mockk(userId, message.message.conversationId) } returns conversationWithLabelsFlow
+        }
+        val folderColorSettingsFlow = MutableStateFlow(defaultFolderColorSettings)
+        val observeFolderColorSettingsMock = mockk<ObserveFolderColorSettings> {
+            every { this@mockk(userId) } returns folderColorSettingsFlow
+        }
+
+        fun assertCorrectFolderColor(actual: ConversationDetailsMessagesState.Data, expected: FolderColorSettings) {
+            assertEquals(1, actual.messages.size)
+            with(actual.messages.first() as ConversationDetailMessageUiModel.Expanded) {
+                when {
+                    expected.useFolderColor -> assertNotNull(this.messageDetailHeaderUiModel.location.color)
+                    else -> assertNull(this.messageDetailHeaderUiModel.location.color)
+                }
+            }
+        }
+
+        // When
+        buildConversationDetailViewModel(
+            observeConversationMessages = observeConversationMessagesMock,
+            observeFolderColor = observeFolderColorSettingsMock
+        ).state.test {
+            // The initial states
+            skipItems(3)
+
+            // Then
+            // The initial expanded message
+            val actualFirstMessagesState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+            assertCorrectFolderColor(actualFirstMessagesState, expected = defaultFolderColorSettings)
+
+            // When
+            // Emit updated message
+            val updatedFolderColorSettings = FolderColorSettings(useFolderColor = false)
+            folderColorSettingsFlow.emit(updatedFolderColorSettings)
+
+            // Then
+            val actualUpdatedMessagesState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+            assertCorrectFolderColor(actualUpdatedMessagesState, expected = updatedFolderColorSettings)
+
             cancelAndIgnoreRemainingEvents()
         }
     }

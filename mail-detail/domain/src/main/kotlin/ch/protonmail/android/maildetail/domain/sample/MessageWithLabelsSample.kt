@@ -30,6 +30,11 @@ object MessageWithLabelsSample {
         message = MessageSample.AugWeatherForecast
     )
 
+    val AugWeatherForecastWithFolder = build(
+        message = MessageSample.AugWeatherForecastFolder2021,
+        labels = listOf(LabelSample.Folder2021)
+    )
+
     val EmptyDraft = build(
         message = MessageSample.EmptyDraft
     )

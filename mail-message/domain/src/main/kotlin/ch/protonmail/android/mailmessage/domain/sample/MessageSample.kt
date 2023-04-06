@@ -42,6 +42,15 @@ object MessageSample {
         time = Aug2022
     )
 
+    val AugWeatherForecastFolder2021 = build(
+        conversationId = ConversationIdSample.WeatherForecast,
+        messageId = MessageIdSample.AugWeatherForecast,
+        labelIds = listOf(LabelIdSample.Folder2021),
+        sender = RecipientSample.PreciWeather,
+        subject = "August weather forecast",
+        time = Aug2022
+    )
+
     val EmptyDraft = build(
         subject = "",
         labelIds = listOf(LabelIdSample.AllDraft)
