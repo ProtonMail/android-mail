@@ -17,6 +17,7 @@
  */
 
 object Accompanist {
+
     private const val version = Versions.Accompanist.accompanist
 
     const val swipeRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
@@ -24,6 +25,7 @@ object Accompanist {
 }
 
 object AndroidTools {
+
     private const val version = Versions.AndroidTools.desugarJdkLibs
 
     const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:$version"
@@ -32,6 +34,7 @@ object AndroidTools {
 object AndroidX {
 
     object Activity {
+
         private const val version = Versions.AndroidX.activity
 
         const val ktx = "androidx.activity:activity-ktx:$version"
@@ -73,12 +76,14 @@ object AndroidX {
     }
 
     object Core {
+
         const val annotation = "androidx.annotation:annotation:${Versions.AndroidX.annotation}"
         const val splashscreen = "androidx.core:core-splashscreen:${Versions.AndroidX.splashscreen}"
     }
 
     // https://issuetracker.google.com/issues/227767363
     object CustomView {
+
         private const val poolingContainerVersion = Versions.AndroidX.customViewPoolingContainer
 
         const val customView = "androidx.customview:customview:${Versions.AndroidX.customView}"
@@ -86,12 +91,14 @@ object AndroidX {
     }
 
     object DataStore {
+
         private const val version = Versions.AndroidX.datastore
 
         const val preferences = "androidx.datastore:datastore-preferences:$version"
     }
 
     object Hilt {
+
         private const val version = Versions.AndroidX.hilt
 
         const val compiler = "androidx.hilt:hilt-compiler:$version"
@@ -100,12 +107,14 @@ object AndroidX {
     }
 
     object Navigation {
+
         private const val version = Versions.AndroidX.navigation
 
         const val compose = "androidx.navigation:navigation-compose:$version"
     }
 
     object Paging {
+
         private const val version = Versions.AndroidX.paging
 
         const val runtime = "androidx.paging:paging-runtime:$version"
@@ -114,12 +123,14 @@ object AndroidX {
     }
 
     object ProfileInstaller {
+
         private const val version = Versions.ProfileInstaller.profileInstaller
 
         const val profileInstaller = "androidx.profileinstaller:profileinstaller:$version"
     }
 
     object Room {
+
         private const val version = Versions.AndroidX.room
 
         const val ktx = "androidx.room:room-ktx:$version"
@@ -141,6 +152,7 @@ object AndroidX {
     }
 
     object Work {
+
         private const val version = Versions.AndroidX.work
 
         const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
@@ -148,18 +160,21 @@ object AndroidX {
 }
 
 object Arrow {
+
     private const val version = Versions.Arrow.core
 
     const val core = "io.arrow-kt:arrow-core:$version"
 }
 
 object Cash {
+
     private const val version = Versions.Cash.turbine
 
     const val turbine = "app.cash.turbine:turbine:$version"
 }
 
 object Dagger {
+
     private const val version = Versions.Dagger.dagger
 
     const val hiltAndroid = "com.google.dagger:hilt-android:$version"
@@ -169,41 +184,50 @@ object Dagger {
 }
 
 object Detekt {
+
     const val api = "io.gitlab.arturbosch.detekt:detekt-api:${Versions.Detekt.detekt}"
     const val test = "io.gitlab.arturbosch.detekt:detekt-test:${Versions.Detekt.detekt}"
 }
 
 object JakeWharton {
+
     const val timber = "com.jakewharton.timber:timber:${Versions.JakeWharton.timber}"
 }
 
 object JavaX {
+
     const val inject = "javax.inject:javax.inject:${Versions.JavaX.inject}"
 }
 
 object Junit {
+
     const val junit = "junit:junit:${Versions.Junit.junit}"
 }
 
 object Kotlin {
+
     private const val version = Versions.Kotlin.kotlin
     const val test = "org.jetbrains.kotlin:kotlin-test:$version"
     const val testJunit = "org.jetbrains.kotlin:kotlin-test-junit:$version"
 }
 
 object KotlinX {
+
     const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.KotlinX.coroutines}"
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.KotlinX.coroutines}"
     const val immutableCollections = "org.jetbrains.kotlinx:kotlinx-collections-immutable:" +
         "${Versions.KotlinX.immutableCollections}"
-    const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.KotlinX.serializationJson}"
+    const val serializationJson =
+        "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.KotlinX.serializationJson}"
 }
 
 object Material {
+
     const val material = "com.google.android.material:material:${Versions.Material.material}"
 }
 
 object Mockk {
+
     const val mockk = "io.mockk:mockk:${Versions.Mockk.mockk}"
     const val mockkAndroid = "io.mockk:mockk-android:${Versions.Mockk.mockk}"
 }
@@ -211,10 +235,12 @@ object Mockk {
 object Proton {
 
     object Core {
+
         val account = coreArtifact("account", Versions.Proton.core)
         val accountData = coreArtifact("account-data", Versions.Proton.core)
         val accountManager = coreArtifact("account-manager", Versions.Proton.core)
-        val accountManagerPresentationCompose = coreArtifact("account-manager-presentation-compose", Versions.Proton.core)
+        val accountManagerPresentationCompose =
+            coreArtifact("account-manager-presentation-compose", Versions.Proton.core)
         val auth = coreArtifact("auth", Versions.Proton.core)
         val authTest = coreArtifact("auth-test", Versions.Proton.core)
         val challenge = coreArtifact("challenge", Versions.Proton.core)
@@ -259,6 +285,7 @@ object Proton {
 }
 
 object Squareup {
+
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.Squareup.leakCanary}"
     const val mockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.Squareup.okhttp}"
     const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.Squareup.okhttp}"
@@ -268,6 +295,7 @@ object Squareup {
 }
 
 object Sentry {
+
     const val sentry = "io.sentry:sentry-android:${Versions.Sentry.sentry}"
     const val compose = "io.sentry:sentry-compose-android:${Versions.Sentry.sentry}"
 }

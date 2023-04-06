@@ -19,10 +19,12 @@
 object Versions {
 
     object Accompanist {
+
         const val accompanist = "0.29.1-alpha"
     }
 
     object AndroidTools {
+
         const val desugarJdkLibs = "2.0.3"
     }
 
@@ -63,6 +65,7 @@ object Versions {
     }
 
     object Cash {
+
         const val turbine = "0.12.1"
     }
 
@@ -87,45 +90,55 @@ object Versions {
     }
 
     object JakeWharton {
+
         const val timber = "5.0.1"
     }
 
     object JavaX {
+
         const val inject = "1"
     }
 
     object Junit {
+
         const val junit = "4.13.2"
     }
 
     object Kotlin {
+
         const val kotlin = "1.8.10"
     }
 
     object KotlinX {
+
         const val coroutines = "1.6.4"
         const val immutableCollections = "0.3.5"
         const val serializationJson = "1.4.1"
     }
 
     object Material {
+
         const val material = "1.8.0"
     }
 
     object Mockk {
+
         const val mockk = "1.13.2"
     }
 
     object Proton {
+
         const val core = "10.1.0"
         const val corePlugin = "1.1.1"
     }
 
     object ProfileInstaller {
+
         const val profileInstaller = "1.3.0-alpha02"
     }
 
     object Squareup {
+
         const val leakCanary = "2.10"
         const val okhttp = "4.10.0"
         const val retrofit = "2.9.0"
