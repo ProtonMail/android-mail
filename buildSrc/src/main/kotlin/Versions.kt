@@ -22,9 +22,8 @@ object Versions {
         const val accompanist = "0.29.1-alpha"
     }
 
-    object Android {
-
-        const val material = "1.8.0"
+    object AndroidTools {
+        const val desugarJdkLibs = "2.0.3"
     }
 
     object AndroidX {
@@ -107,6 +106,10 @@ object Versions {
         const val coroutines = "1.6.4"
         const val immutableCollections = "0.3.5"
         const val serializationJson = "1.4.1"
+    }
+
+    object Material {
+        const val material = "1.8.0"
     }
 
     object Mockk {

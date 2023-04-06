@@ -23,6 +23,12 @@ object Accompanist {
     const val webview = "com.google.accompanist:accompanist-webview:$version"
 }
 
+object AndroidTools {
+    private const val version = Versions.AndroidTools.desugarJdkLibs
+
+    const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:$version"
+}
+
 object AndroidX {
 
     object Activity {
@@ -194,7 +200,7 @@ object KotlinX {
 }
 
 object Material {
-    const val material = "com.google.android.material:material:${Versions.Android.material}"
+    const val material = "com.google.android.material:material:${Versions.Material.material}"
 }
 
 object Mockk {

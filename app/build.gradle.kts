@@ -134,6 +134,8 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -190,6 +192,8 @@ dependencies {
 
     debugImplementation(Dependencies.appDebug)
     kapt(Dependencies.appAnnotationProcessors)
+
+    coreLibraryDesugaring(AndroidTools.desugarJdkLibs)
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
