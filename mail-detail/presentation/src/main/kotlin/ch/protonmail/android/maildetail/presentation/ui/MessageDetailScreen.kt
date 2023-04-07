@@ -23,9 +23,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Divider
@@ -59,11 +57,11 @@ import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailView
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
+import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
-import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.util.kotlin.exhaustive
@@ -99,13 +97,8 @@ fun MessageDetailScreen(
         DisposableEffect(Unit) { onDispose { viewModel.submit(MessageViewAction.DismissBottomSheet) } }
     }
 
-    ModalBottomSheetLayout(
+    ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
-        sheetShape = RoundedCornerShape(
-            topStart = ProtonDimens.LargeCornerRadius,
-            topEnd = ProtonDimens.LargeCornerRadius
-        ),
-        sheetBackgroundColor = ProtonTheme.colors.backgroundNorm,
         sheetContent = {
             when (val bottomSheetContentState = state.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState -> MoveToBottomSheetContent(

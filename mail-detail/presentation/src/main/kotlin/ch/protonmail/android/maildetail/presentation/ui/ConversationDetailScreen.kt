@@ -27,7 +27,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -67,6 +66,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
+import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
@@ -107,10 +107,8 @@ fun ConversationDetailScreen(
         DisposableEffect(Unit) { onDispose { viewModel.submit(ConversationDetailViewAction.DismissBottomSheet) } }
     }
 
-    ModalBottomSheetLayout(
+    ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
-        sheetShape = ProtonTheme.shapes.bottomSheet,
-        sheetBackgroundColor = ProtonTheme.colors.backgroundNorm,
         sheetContent = {
             when (val bottomSheetContentState = state.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState -> MoveToBottomSheetContent(
