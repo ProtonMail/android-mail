@@ -59,6 +59,20 @@ object LabelSample {
         labelId = LabelIdSample.Starred
     )
 
+    val Parent = build(
+        labelId = LabelIdSample.Folder2021
+    )
+
+    val FirstChild = build(
+        labelId = LabelIdSample.Folder2022,
+        parentId = LabelIdSample.Folder2021
+    )
+
+    val SecondChild = build(
+        labelId = LabelIdSample.Label2022,
+        parentId = LabelIdSample.Folder2022
+    )
+
     fun build(
         color: String = "#338AF3",
         isExpanded: Boolean? = null,
