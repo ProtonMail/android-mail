@@ -19,7 +19,6 @@
 package ch.protonmail.android
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -49,10 +48,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             ProtonTheme {
                 Launcher(
-                    Actions(
-                        { openInActivityInNewTask(it) },
-                        { getAppThemeUiMode() }
-                    ),
+                    Actions { openInActivityInNewTask(it) },
                     launcherViewModel
                 )
             }
@@ -65,10 +61,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun getAppThemeUiMode() = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-
     data class Actions(
-        val openInActivityInNewTask: (uri: Uri) -> Unit,
-        val getAppThemeUiMode: () -> Int
+        val openInActivityInNewTask: (uri: Uri) -> Unit
     )
 }

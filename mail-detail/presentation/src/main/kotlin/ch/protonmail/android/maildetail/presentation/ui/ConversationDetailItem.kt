@@ -149,8 +149,7 @@ private fun ConversationDetailExpandedItem(
             messageBodyUiModel = uiModel.messageBodyUiModel,
             actions = MessageBody.Actions(
                 onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) },
-                onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(messageId) },
-                getAppThemeUiMode = actions.getAppThemeUiMode
+                onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(messageId) }
             )
         )
     }
@@ -164,7 +163,6 @@ object ConversationDetailItem {
         val onOpenMessageBodyLink: (url: String) -> Unit,
         val onRequestScrollTo: (MessageId) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
-        val getAppThemeUiMode: () -> Int,
         val showFeatureMissingSnackbar: () -> Unit
     )
 }

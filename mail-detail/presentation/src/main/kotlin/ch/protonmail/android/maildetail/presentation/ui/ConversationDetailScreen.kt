@@ -17,7 +17,6 @@
  */
 package ch.protonmail.android.maildetail.presentation.ui
 
-import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -155,7 +154,6 @@ fun ConversationDetailScreen(
                 onShowAllAttachmentsForMessage = {
                     viewModel.submit(ConversationDetailViewAction.ShowAllAttachmentsForMessage(it))
                 },
-                getAppThemeUiMode = actions.getAppThemeUiMode,
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
             )
         )
@@ -258,7 +256,6 @@ fun ConversationDetailScreen(
                     onRequestScrollTo = actions.onRequestScrollTo,
                     onOpenMessageBodyLink = actions.onOpenMessageBodyLink,
                     onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage,
-                    getAppThemeUiMode = actions.getAppThemeUiMode,
                     showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
                 )
                 MessagesContent(
@@ -346,7 +343,6 @@ object ConversationDetail {
     data class Actions(
         val onExit: (notifyUserMessage: String?) -> Unit,
         val openMessageBodyLink: (url: String) -> Unit,
-        val getAppThemeUiMode: () -> Int,
         val showFeatureMissingSnackbar: () -> Unit
     )
 }
@@ -369,7 +365,6 @@ object ConversationDetailScreen {
         val onOpenMessageBodyLink: (url: String) -> Unit,
         val onRequestScrollTo: (MessageId) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
-        val getAppThemeUiMode: () -> Int,
         val showFeatureMissingSnackbar: () -> Unit
     ) {
 
@@ -389,7 +384,6 @@ object ConversationDetailScreen {
                 onOpenMessageBodyLink = {},
                 onRequestScrollTo = {},
                 onShowAllAttachmentsForMessage = {},
-                getAppThemeUiMode = { Configuration.UI_MODE_NIGHT_NO },
                 showFeatureMissingSnackbar = {}
             )
         }

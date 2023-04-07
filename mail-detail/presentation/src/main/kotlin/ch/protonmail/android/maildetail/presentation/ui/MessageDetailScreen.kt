@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
-import android.content.res.Configuration
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -142,7 +141,6 @@ fun MessageDetailScreen(
                 onReplyAllClick = { actions.showFeatureMissingSnackbar() },
                 onDeleteClick = { actions.showFeatureMissingSnackbar() },
                 onShowAllAttachmentsClicked = { viewModel.submit(MessageViewAction.ShowAllAttachments) },
-                getAppThemeUiMode = actions.getAppThemeUiMode,
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
             )
         )
@@ -232,7 +230,6 @@ fun MessageDetailScreen(
                     onReload = actions.onReload,
                     onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                     onShowAllAttachmentsClicked = actions.onShowAllAttachmentsClicked,
-                    getAppThemeUiMode = actions.getAppThemeUiMode,
                     showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
                 )
                 MessageDetailContent(
@@ -274,8 +271,7 @@ private fun MessageDetailContent(
                     messageBodyUiModel = messageBodyState.messageBodyUiModel,
                     actions = MessageBody.Actions(
                         onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
-                        onShowAllAttachments = actions.onShowAllAttachmentsClicked,
-                        getAppThemeUiMode = actions.getAppThemeUiMode
+                        onShowAllAttachments = actions.onShowAllAttachmentsClicked
                     )
                 )
                 is MessageBodyState.Error.Data -> MessageBodyLoadingError(
@@ -288,8 +284,7 @@ private fun MessageDetailContent(
                         messageBodyUiModel = messageBodyState.encryptedMessageBody,
                         actions = MessageBody.Actions(
                             onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
-                            onShowAllAttachments = actions.onShowAllAttachmentsClicked,
-                            getAppThemeUiMode = actions.getAppThemeUiMode
+                            onShowAllAttachments = actions.onShowAllAttachmentsClicked
                         )
                     )
                 }
@@ -303,7 +298,6 @@ object MessageDetail {
     data class Actions(
         val onExit: (message: String?) -> Unit,
         val openMessageBodyLink: (uri: Uri) -> Unit,
-        val getAppThemeUiMode: () -> Int,
         val showFeatureMissingSnackbar: () -> Unit
     )
 }
@@ -327,7 +321,6 @@ object MessageDetailScreen {
         val onReplyAllClick: () -> Unit,
         val onDeleteClick: () -> Unit,
         val onShowAllAttachmentsClicked: () -> Unit,
-        val getAppThemeUiMode: () -> Int,
         val showFeatureMissingSnackbar: () -> Unit
     ) {
 
@@ -348,7 +341,6 @@ object MessageDetailScreen {
                 onReplyAllClick = {},
                 onDeleteClick = {},
                 onShowAllAttachmentsClicked = {},
-                getAppThemeUiMode = { Configuration.UI_MODE_NIGHT_NO },
                 showFeatureMissingSnackbar = {}
             )
         }
@@ -361,7 +353,6 @@ object MessageDetailContent {
         val onReload: () -> Unit,
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onShowAllAttachmentsClicked: () -> Unit,
-        val getAppThemeUiMode: () -> Int,
         val showFeatureMissingSnackbar: () -> Unit
     )
 }

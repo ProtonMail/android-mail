@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.webkit.WebResourceRequest
@@ -26,6 +25,7 @@ import android.webkit.WebSettings.FORCE_DARK_OFF
 import android.webkit.WebSettings.FORCE_DARK_ON
 import android.webkit.WebView
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -72,6 +72,8 @@ internal fun MessageBody(
         }
     }
 
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+
     WebView(
         onCreated = {
             it.settings.builtInZoomControls = true
@@ -80,10 +82,7 @@ internal fun MessageBody(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.settings.isAlgorithmicDarkeningAllowed = true
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                it.settings.forceDark = when (actions.getAppThemeUiMode()) {
-                    Configuration.UI_MODE_NIGHT_YES -> FORCE_DARK_ON
-                    else -> FORCE_DARK_OFF
-                }
+                it.settings.forceDark = if (isSystemInDarkTheme) FORCE_DARK_ON else FORCE_DARK_OFF
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 it.settings.safeBrowsingEnabled = true
@@ -155,7 +154,6 @@ object MessageBody {
 
     data class Actions(
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
-        val onShowAllAttachments: () -> Unit,
-        val getAppThemeUiMode: () -> Int
+        val onShowAllAttachments: () -> Unit
     )
 }
