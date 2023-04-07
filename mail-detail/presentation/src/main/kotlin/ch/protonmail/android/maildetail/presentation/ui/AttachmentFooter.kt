@@ -73,6 +73,7 @@ fun AttachmentFooter(
             Icon(
                 modifier = Modifier.size(ProtonDimens.SmallIconSize),
                 painter = painterResource(id = drawable.ic_proton_paper_clip),
+                tint = ProtonTheme.colors.iconWeak,
                 contentDescription = ""
             )
             Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
