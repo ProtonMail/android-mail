@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.maildetail.presentation.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -105,6 +106,10 @@ fun ConversationDetailScreen(
 
     if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
         DisposableEffect(Unit) { onDispose { viewModel.submit(ConversationDetailViewAction.DismissBottomSheet) } }
+    }
+
+    BackHandler(bottomSheetState.isVisible) {
+        viewModel.submit(ConversationDetailViewAction.DismissBottomSheet)
     }
 
     ProtonModalBottomSheetLayout(
