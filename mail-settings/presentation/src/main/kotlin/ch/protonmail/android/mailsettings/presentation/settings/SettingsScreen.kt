@@ -145,7 +145,7 @@ fun MainSettingsScreen(
             item {
                 ProtonSettingsItem(
                     name = stringResource(id = string.mail_settings_app_version),
-                    hint = state.appInformation.appVersionName,
+                    hint = "${state.appInformation.appVersionName} (${state.appInformation.appVersionCode})",
                     isClickable = false
                 )
             }
