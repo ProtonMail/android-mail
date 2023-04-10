@@ -35,22 +35,22 @@
   <string name="error_star_operation_failed">Aðgerð að bæta við stjörnu mistókst. Vinsamlegast reyndu aftur.</string>
   <string name="error_unstar_operation_failed">Aðgerð að fjarlægja stjörnu mistókst. Vinsamlegast reyndu aftur.</string>
   <string name="error_move_to_trash_failed">Mistókst að færa í ruslið. Vinsamlegast reyndu aftur.</string>
-  <string name="message_moved_to_trash">Message moved to Trash</string>
-  <string name="message_moved_to_archive">Message moved to Archive</string>
+  <string name="message_moved_to_trash">Skilaboð voru færð í ruslið</string>
+  <string name="message_moved_to_archive">Skilaboð færð í Skjalasafn</string>
   <string name="message_moved_to_selected_destination">Skilaboð færð í %1$s</string>
   <string name="error_move_message_failed">Mistókst að færa skilaboð. Vinsamlegast reyndu aftur.</string>
-  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
+  <string name="conversation_moved_to_trash">Samtal fært í Ruslið</string>
   <string name="conversation_moved_to_selected_destination">Samtal fært í %1$s</string>
-  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
+  <string name="conversation_moved_to_archive">Samtal fært í Skjalasafn</string>
   <string name="error_move_conversation_failed">Ekki tókst að færa samtal. Vinsamlegast reyndu aftur.</string>
   <string name="error_loading_message">Eitthvað fór úrskeiðis, vinsamlegast reyndu aftur.</string>
   <string name="error_offline_loading_message">Þú ert ótengdur. Nettenging er nauðsynleg til að birta innihald þessarar skilaboða.</string>
   <string name="reload">Endurhlaða</string>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d skrá</item>
+    <item quantity="other">%d skrár</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">+ %1$d í viðbót</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Flytja í...</string>
   <string name="bottom_sheet_done_action">Lokið</string>
@@ -60,17 +60,17 @@
   <string name="error_relabel_conversation_failed">Mistókst að endurmerkja samtal. Vinsamlegast reyndu aftur</string>
   <string name="please_go_back_online_to_load_messages">Þú ert ekki tengdur. Vinsamlegast farðu aftur á netið til að hlaða inn skilaboðum</string>
   <string name="decryption_error">Afkóðun skilaboða mistókst.</string>
-  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
+  <string name="detail_error_retrieving_message_body">Tókst ekki að sækja skilaboð</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_image">Mynd</string>
+  <string name="attachment_type_video">Myndband</string>
+  <string name="attachment_type_audio">Hljóð</string>
+  <string name="attachment_type_unknown">Óþekkt</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_text">Texti</string>
+  <string name="attachment_type_document">Skjal</string>
   <string name="attachment_type_excel">Excel</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_presentation">Kynning</string>
+  <string name="attachment_type_description">%1$s skrá</string>
 </resources>

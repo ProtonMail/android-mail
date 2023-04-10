@@ -19,7 +19,7 @@
 <resources>
   <string name="drawer_title_more">更多</string>
   <string name="drawer_title_contacts">聯絡人</string>
-  <string name="drawer_title_subscription">訂閲</string>
+  <string name="drawer_title_subscription">訂購授權</string>
   <string name="mailbox_toolbar_compose_button_content_description">撰寫新郵件</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">退出選取模式</string>
   <string name="mailbox_toolbar_menu_button_content_description">選單</string>

@@ -35,22 +35,22 @@
   <string name="error_star_operation_failed">Falha a operação de adicionar estrelas. Tente de novo.</string>
   <string name="error_unstar_operation_failed">Falha a operação de remover estrelas. Tente de novo.</string>
   <string name="error_move_to_trash_failed">Falha o envio para o lixo. Tente novamente.</string>
-  <string name="message_moved_to_trash">Message moved to Trash</string>
-  <string name="message_moved_to_archive">Message moved to Archive</string>
+  <string name="message_moved_to_trash">Mensagem movida para a pasta Lixo</string>
+  <string name="message_moved_to_archive">Mensagem movida para a pasta Arquivo</string>
   <string name="message_moved_to_selected_destination">Mensagem movida para %1$s</string>
   <string name="error_move_message_failed">Falha ao mover a mensagem. Tente novamente.</string>
-  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
+  <string name="conversation_moved_to_trash">Conversa movidas para a pasta Lixo</string>
   <string name="conversation_moved_to_selected_destination">Conversa movida para %1$s</string>
-  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
+  <string name="conversation_moved_to_archive">Conversa movidas para a pasta Arquivo</string>
   <string name="error_move_conversation_failed">Falha ao mover a conversa. Tente novamente.</string>
   <string name="error_loading_message">Ocorreu um erro. Tente mais tarde.</string>
   <string name="error_offline_loading_message">Está offline. A ligação à internet é necessária para mostraro conteúdo desta mensagem.</string>
   <string name="reload">Recarregar</string>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d ficheiro</item>
+    <item quantity="other">%d ficheiros</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">%1$d mais</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover para...</string>
   <string name="bottom_sheet_done_action">Concluído</string>
@@ -58,19 +58,19 @@
   <string name="bottom_sheet_label_as_title">Etiquetar como...</string>
   <string name="error_relabel_message_failed">Falha ao etiquetar de novo a mensagem. Tente novamente.</string>
   <string name="error_relabel_conversation_failed">Falha ao etiquetar de novo a conversa. Tente novamente.</string>
-  <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
+  <string name="please_go_back_online_to_load_messages">Está offline. Volte online para carregar mensagens.</string>
   <string name="decryption_error">Falha ao desencriptar mensagem.</string>
-  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
+  <string name="detail_error_retrieving_message_body">Impossível recuperar mensagem</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_image">Imagem</string>
+  <string name="attachment_type_video">Vídeo</string>
+  <string name="attachment_type_audio">Áudio</string>
+  <string name="attachment_type_unknown">Desconhecido</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_text">Texto</string>
+  <string name="attachment_type_document">Documento</string>
   <string name="attachment_type_excel">Excel</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_presentation">Apresentação</string>
+  <string name="attachment_type_description">%1$s ficheiro</string>
 </resources>

@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Tutlayt n usnas</string>
   <string name="mail_settings_combined_contacts">Inermisen uddisen</string>
   <string name="mail_settings_swipe_actions">Tigawin n uḍummu</string>
-  <string name="mail_settings_combined_contacts_hint">Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.</string>
+  <string name="mail_settings_combined_contacts_hint">Sermed tawuri-agi i usemmed awurman n tansiwin imayl s useqdec n yinermisen n yal imiḍanen-inek•inem yeqqnen.</string>
   <string name="mail_settings_alternative_routing_hint">Mayella weḥlen yismal n Proton, aɣewwaṛ-a ad yeǧǧ asnas ad yeɛreḍ asiweḍ-nniḍen n uẓeṭṭa akken ad yaweḍ ɣer Proton, d ayen ara yelhun i uɛeddi n yiɣerban n tmes neɣ uguren n uẓeṭṭa: Axir ad teǧǧeḍ aɣewwaṛ-a yermed i wugar n teflest.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Anagraw amezwar</string>
@@ -49,7 +49,7 @@
   <string name="mail_settings_subscription">Amultaɣ</string>
   <string name="mail_settings_password_management">Asefrek n wawal uffir</string>
   <string name="mail_settings_recovery_email">Imayl n tririt</string>
-  <string name="mail_settings_mailbox_size">Mailbox size</string>
+  <string name="mail_settings_mailbox_size">Tiddi n tnaka n urmas</string>
   <string name="mail_settings_addresses">Tansiwin</string>
   <string name="mail_settings_default_email_address">Tansa yimayl n lexṣas</string>
   <string name="mail_settings_display_name_and_signature">Isem n uskan d uzmul</string>

@@ -35,22 +35,22 @@
   <string name="error_star_operation_failed">Tamhelt n tmerniwt n yitri tecceḍ. Ttxil ɛawed-as.</string>
   <string name="error_unstar_operation_failed">Tamhelt n tukksa n yitri tecceḍ. Ttxil ɛawed-as.</string>
   <string name="error_move_to_trash_failed">Asenkez ɣer yiḍumman yecceḍ. Ttxil ɛawed-as.</string>
-  <string name="message_moved_to_trash">Message moved to Trash</string>
-  <string name="message_moved_to_archive">Message moved to Archive</string>
+  <string name="message_moved_to_trash">Izen ittwasenkez ɣer iḍumman</string>
+  <string name="message_moved_to_archive">Izen yettwasnekzen ɣer teṛcivt</string>
   <string name="message_moved_to_selected_destination">Izen yettwasenkez ɣer %1$s</string>
   <string name="error_move_message_failed">Asenkez n yiznan yecceḍ. Ttxil ɛawed-as.</string>
-  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
+  <string name="conversation_moved_to_trash">Adiwenni yettwasenkez ɣer tqecwalt</string>
   <string name="conversation_moved_to_selected_destination">Adiwenni yettwasenkez ɣer %1$s</string>
-  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
+  <string name="conversation_moved_to_archive">Adiwenni yettwasenkez ɣer teṛcivt</string>
   <string name="error_move_conversation_failed">Asenkez n udiwenni yecceḍ. Ttxil ɛawed-as.</string>
   <string name="error_loading_message">Yella kra i yeḍran, ttxil ɛreḍ tikkelt-nniḍen.</string>
   <string name="error_offline_loading_message">Ur teqqineḍ ara. Tlaq tuqqna ɣer internet akken ad twaliḍ agbur n yizen-a.</string>
   <string name="reload">Smiren</string>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d files</item>
+    <item quantity="one">%d afaylu</item>
+    <item quantity="other">%d n ifuyla</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">+%1$d d wugar</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Senkez ɣer...</string>
   <string name="bottom_sheet_done_action">Immed</string>
@@ -60,17 +60,17 @@
   <string name="error_relabel_conversation_failed">Tella-d tuccḍa deg usnas n tebzimt tamaynut i udiwenni. Ttxil ɛreḍ tikkel-nniḍen</string>
   <string name="please_go_back_online_to_load_messages">Ur teqqineḍ ara. Ttxil qqen akken ad d-tessaliḍ iznan</string>
   <string name="decryption_error">Awgelhen n yinzan yecceḍ.</string>
-  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
+  <string name="detail_error_retrieving_message_body">Ur izmir ara ad d-yawi izen</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_image">Tugna</string>
+  <string name="attachment_type_video">Tavidyut</string>
+  <string name="attachment_type_audio">Ameslaw</string>
+  <string name="attachment_type_unknown">Arussin</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_text">Aḍris</string>
+  <string name="attachment_type_document">Isemli</string>
   <string name="attachment_type_excel">Excel</string>
-  <string name="attachment_type_presentation">Presentation</string>
-  <string name="attachment_type_description">%1$s file</string>
+  <string name="attachment_type_presentation">Asenked</string>
+  <string name="attachment_type_description">%1$s afaylu</string>
 </resources>

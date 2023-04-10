@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Alkalmazás nyelve</string>
   <string name="mail_settings_combined_contacts">Kombinált névjegyek</string>
   <string name="mail_settings_swipe_actions">Csúsztatási műveletek</string>
-  <string name="mail_settings_combined_contacts_hint">Kapcsolja be ezt a funkciót az e-mail címek automatikus kitöltéséhez az összes bejelentkezett fiók névjegyei alapján.</string>
+  <string name="mail_settings_combined_contacts_hint">Kapcsolja be ezt a funkciót, az e-mail címek automatikus kitöltéséhez az összes bejelentkezett fiók névjegyei alapján.</string>
   <string name="mail_settings_alternative_routing_hint">Ha a Proton szolgáltatásai le vannak tiltva, ezzel a beállítással az alkalmazás alternatív hálózati útvonalakat próbál meg használni, ami hasznos lehet tűzfalak megkerüléséhez vagy hálózati problémák megoldásához. Javasolt ezt a beállítást bekapcsolva a tartani nagyobb megbízhatóság érdekében.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">A rendszer alapértelmezései</string>
@@ -51,7 +51,7 @@
   <string name="mail_settings_recovery_email">Helyreállító e-mail</string>
   <string name="mail_settings_mailbox_size">Postafiók mérete</string>
   <string name="mail_settings_addresses">Címek</string>
-  <string name="mail_settings_default_email_address">Alapértelmezett email cím</string>
+  <string name="mail_settings_default_email_address">Alapértelmezett e-mail cím</string>
   <string name="mail_settings_display_name_and_signature">Megjelenített név és aláírás</string>
   <string name="mail_settings_mailbox">Postafiók</string>
   <string name="mail_settings_privacy">Adatvédelem</string>

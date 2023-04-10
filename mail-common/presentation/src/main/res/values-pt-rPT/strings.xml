@@ -23,7 +23,7 @@
   <string name="expiration_minutes_arg">%dmin</string>
   <string name="retry">Repetir</string>
   <string name="toolbar_back_content_description">Voltar ao écran anterior</string>
-  <string name="x_error_not_logged_in">Not signed in</string>
+  <string name="x_error_not_logged_in">Sem sessão iniciada</string>
   <string name="action_reply_content_description">Responder</string>
   <string name="action_reply_all_content_description">Responder a todos</string>
   <string name="action_forward_content_description">Reencaminhar</string>
@@ -45,7 +45,7 @@
   <string name="action_report_phishing_content_description">Reportar como phishing</string>
   <string name="action_remind_content_description">Lembre-me</string>
   <string name="action_save_pdf_content_description">Gravar como PDF</string>
-  <string name="action_sender_emails_content_description">Definir ação para futuros e-mails deste remetente</string>
+  <string name="action_sender_emails_content_description">Definir a ação para os futuros correios electrónicos deste remetente</string>
   <string name="action_save_attachments_content_description">Gravar anexos</string>
   <string name="common_error_loading_actions">Falha ao carregar as ações</string>
   <string name="yesterday">Ontem</string>

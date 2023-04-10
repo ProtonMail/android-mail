@@ -26,7 +26,7 @@
   <string name="mailbox_toolbar_search_button_content_description">Nadi</string>
   <string name="mailbox_toolbar_selected_count">%d Yettwafren</string>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
-  <string name="filter_unread_button_text_without_counter">Unread</string>
+  <string name="filter_unread_button_text_without_counter">Ur yettwaɣri ara</string>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%d ur yettwaɣer ara</item>
     <item quantity="other">%d ur ttwaɣren ara</item>
