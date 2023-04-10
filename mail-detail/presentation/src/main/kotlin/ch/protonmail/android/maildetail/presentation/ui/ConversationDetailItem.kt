@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -143,6 +144,7 @@ private fun ConversationDetailExpandedItem(
             uiModel = uiModel.messageDetailHeaderUiModel,
             showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
+        Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
         MessageBody(
             modifier = Modifier.onGloballyPositioned { coordinates ->
                 bodyBounds = coordinates.boundsInParent()
