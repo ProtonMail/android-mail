@@ -82,6 +82,7 @@ internal fun MessageBody(
                 it.settings.safeBrowsingEnabled = true
             }
         },
+        captureBackPresses = false,
         state = state,
         modifier = modifier.fillMaxWidth(),
         client = client
