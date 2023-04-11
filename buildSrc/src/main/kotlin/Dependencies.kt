@@ -170,6 +170,7 @@ object Dependencies {
     val androidTestLibs = mutableListOf<String>().apply {
         add(AndroidX.Compose.uiTest)
         add(AndroidX.Compose.uiTestJUnit)
+        add(AndroidX.DataStore.preferences)
         add(AndroidX.Test.core)
         add(AndroidX.Test.coreKtx)
         add(AndroidX.Test.espresso)

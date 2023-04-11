@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox
 
 import androidx.test.filters.SdkSuppress
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
@@ -29,6 +30,7 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.MockedNetworkTest
+import ch.protonmail.android.uitest.helpers.core.AppThemeHelper
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers.defaultLoginUser
@@ -42,7 +44,9 @@ import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 import me.proton.core.test.android.robots.auth.AddAccountRobot
+import org.junit.Before
 import org.junit.Test
+import javax.inject.Inject
 
 @SmokeExtendedTest
 @HiltAndroidTest
@@ -54,9 +58,17 @@ internal class ConversationMarkAsReadTests : MockedNetworkTest(loginStrategy = L
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
+    @Inject
+    lateinit var themeHelper: AppThemeHelper
+
     private val addAccountRobot = AddAccountRobot()
     private val inboxRobot = InboxRobot(composeTestRule)
     private val messageDetailRobot = MessageDetailRobot(composeTestRule)
+
+    @Before
+    fun forceLightTheme() {
+        themeHelper.applyTheme(Theme.LIGHT) // Night mode is currently not supported for this suite
+    }
 
     @Test
     @TestId("78994")
