@@ -56,7 +56,7 @@ internal class SettingsScreenTest {
             customAppLanguage = null,
             hasCombinedContacts = true
         ),
-        AppInformation(appVersionName = "6.0.0-alpha-adf8373a")
+        AppInformation(appVersionName = "6.0.0-alpha-adf8373a", appVersionCode = 9026)
     )
 
     @Before
@@ -139,9 +139,8 @@ internal class SettingsScreenTest {
             .performScrollToNode(hasText(string.mail_settings_app_version))
 
         composeTestRule
-            .onNodeWithText("6.0.0-alpha-adf8373a")
+            .onNodeWithText("6.0.0-alpha-adf8373a (9026)")
             .assertHasNoClickAction()
             .assertIsDisplayed()
     }
-
 }
