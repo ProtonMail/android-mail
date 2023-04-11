@@ -102,6 +102,12 @@ class ConversationRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun loadConversations(
+        userId: UserId,
+        pageKey: PageKey
+    ): Either<DataError, List<ConversationWithContext>> =
+        conversationLocalDataSource.getConversations(userId, pageKey).right()
+
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
         conversationLocalDataSource.markAsStale(userId, labelId)
 

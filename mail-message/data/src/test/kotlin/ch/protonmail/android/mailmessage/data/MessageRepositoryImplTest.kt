@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data
 
 import java.util.UUID
 import app.cash.turbine.test
+import arrow.core.getOrElse
 import arrow.core.getOrHandle
 import arrow.core.left
 import arrow.core.nonEmptyListOf
@@ -49,6 +50,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -60,6 +62,7 @@ import me.proton.core.test.kotlin.TestDispatcherProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class MessageRepositoryImplTest {
 
     private val userId = UserId("1")
@@ -170,6 +173,26 @@ class MessageRepositoryImplTest {
         assertEquals(2, messages.size)
         coVerify(exactly = 1) { localDataSource.isLocalPageValid(userId, pageKey, localMessages) }
         coVerify(exactly = 0) { remoteDataSource.getMessages(any(), any()) }
+    }
+
+    @Test
+    fun `load messages returns local data`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val localMessages = listOf(
+            getMessage(id = "1", time = 1000),
+            getMessage(id = "2", time = 2000)
+        )
+
+        coEvery { localDataSource.getMessages(userId, pageKey) } returns localMessages
+        coEvery { localDataSource.isLocalPageValid(userId, pageKey, localMessages) } returns true
+
+        // When
+        val messages = messageRepository.loadMessages(userId, pageKey).getOrElse(::error)
+
+        // Then
+        assertEquals(2, messages.size)
+        coVerify(exactly = 1) { localDataSource.getMessages(userId, pageKey) }
     }
 
     @Test

@@ -39,6 +39,11 @@ interface MessageRepository {
     suspend fun getMessages(userId: UserId, pageKey: PageKey = PageKey()): Either<DataError, List<Message>>
 
     /**
+     * Load all [Message] for [userId].
+     */
+    suspend fun loadMessages(userId: UserId, pageKey: PageKey = PageKey()): Either<DataError, List<Message>>
+
+    /**
      * Mark local data as stale for [userId], by [labelId].
      */
     suspend fun markAsStale(userId: UserId, labelId: LabelId)

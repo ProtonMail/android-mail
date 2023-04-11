@@ -40,6 +40,14 @@ interface ConversationRepository {
     ): Either<DataError.Remote, List<ConversationWithContext>>
 
     /**
+     * Load all [Conversation] for [userId].
+     */
+    suspend fun loadConversations(
+        userId: UserId,
+        pageKey: PageKey = PageKey()
+    ): Either<DataError, List<ConversationWithContext>>
+
+    /**
      * Mark local data as stale for [userId], by [labelId].
      */
     suspend fun markAsStale(

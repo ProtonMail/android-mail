@@ -54,6 +54,7 @@ import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
@@ -65,6 +66,7 @@ import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Test
 import kotlin.test.assertEquals
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ConversationRepositoryImplTest {
 
     private val userId = UserIdSample.Primary
@@ -125,6 +127,25 @@ class ConversationRepositoryImplTest {
         coVerify(exactly = 1) { conversationLocalDataSource.isLocalPageValid(userId, pageKey, local) }
         coVerify(exactly = 1) { conversationRemoteDataSource.getConversations(userId, pageKey) }
         coVerify(exactly = 1) { conversationLocalDataSource.upsertConversations(userId, pageKey, remote) }
+    }
+
+    @Test
+    fun `load conversations returns local data`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val local = listOf(
+            ConversationWithContextTestData.conversation1,
+            ConversationWithContextTestData.conversation2
+        )
+        coEvery { conversationLocalDataSource.getConversations(userId, pageKey) } returns local
+
+        // When
+        val conversations = conversationRepository.loadConversations(userId, pageKey)
+            .getOrElse(::error)
+
+        // Then
+        assertEquals(2, conversations.size)
+        coVerify(exactly = 1) { conversationLocalDataSource.getConversations(userId, pageKey) }
     }
 
     @Test

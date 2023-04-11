@@ -95,6 +95,9 @@ class MessageRepositoryImpl @Inject constructor(
             )
         }
 
+    override suspend fun loadMessages(userId: UserId, pageKey: PageKey) =
+        localDataSource.getMessages(userId, pageKey).right()
+
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) = localDataSource.markAsStale(userId, labelId)
 
     override fun observeCachedMessage(userId: UserId, messageId: MessageId): Flow<Either<DataError.Local, Message>> =
