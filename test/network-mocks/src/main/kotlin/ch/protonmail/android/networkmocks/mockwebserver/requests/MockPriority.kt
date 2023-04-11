@@ -21,14 +21,15 @@ package ch.protonmail.android.networkmocks.mockwebserver.requests
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
 
 /**
- * An enum defining base priorities that are used by a [MockNetworkDispatcher] to define the order that needs to be
+ * A sealed class defining priorities used by a [MockNetworkDispatcher] to define the order that needs to be
  * respected when serving network requests.
  *
  * This is useful, for instance, when some API calls need to be consistently matched N times with wildcards,
  * but at some point one specific path needs to be matched differently while keeping the existing definitions in place.
  */
-enum class MockPriority(val value: Int) {
+sealed class MockPriority(val value: Int) {
 
-    Base(1),
-    High(10)
+    object Lowest : MockPriority(value = Int.MIN_VALUE)
+    object Highest : MockPriority(value = Int.MAX_VALUE)
+    class Custom(value: Int) : MockPriority(value)
 }

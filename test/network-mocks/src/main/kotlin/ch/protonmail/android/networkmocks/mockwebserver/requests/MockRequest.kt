@@ -38,7 +38,7 @@ data class MockRequest(
     val wildcardMatch: Boolean = false,
     val serveOnce: Boolean = false,
     val networkDelay: Long = 0L,
-    val priority: MockPriority = MockPriority.Base
+    val priority: MockPriority = MockPriority.Lowest
 )
 
 /**

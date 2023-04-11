@@ -277,7 +277,7 @@ internal class MockNetworkDispatcherTests {
             addMockRequests(
                 "/api/v1/*" respondWith "/api/v1/test_1.json" withStatusCode 200 matchWildcards true,
                 "/api/v1/test" respondWith "/api/v1/test_2.json" withStatusCode 200,
-                "/api/v1/test" respondWith "/api/v1/test_3.json" withStatusCode 500 withPriority MockPriority.High
+                "/api/v1/test" respondWith "/api/v1/test_3.json" withStatusCode 500 withPriority MockPriority.Highest
             )
         }
 

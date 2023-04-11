@@ -31,7 +31,7 @@ import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
-import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
+import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers.defaultLoginUser
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
@@ -68,7 +68,7 @@ internal class ConversationMarkAsReadTests : MockedNetworkTest(loginStrategy = L
                 "/mail/v4/conversations/*" respondWith "/mail/v4/conversations/conversation-id/conversation-id_78994.json" withStatusCode 200 matchWildcards true,
                 "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_78994.json" withStatusCode 200 matchWildcards true serveOnce true,
                 "/mail/v4/messages/read" respondWith "/mail/v4/messages/read/read_base_placeholder.json" withStatusCode 200,
-                "/mail/v4/conversations/read" respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json" withStatusCode 200 withPriority MockPriority.High
+                "/mail/v4/conversations/read" respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json" withStatusCode 200 withPriority MockPriority.Highest
             )
         }
 
@@ -76,7 +76,7 @@ internal class ConversationMarkAsReadTests : MockedNetworkTest(loginStrategy = L
 
         addAccountRobot
             .signIn()
-            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+            .loginUser<Any>(defaultLoginUser)
 
         inboxRobot.clickMessageByPosition(0)
 

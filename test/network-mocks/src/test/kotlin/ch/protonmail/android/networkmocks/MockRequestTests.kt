@@ -112,7 +112,7 @@ internal class MockRequestTests {
             remotePath = "dummy-path",
             localFilePath = "dummy-path-local",
             statusCode = 200,
-            priority = MockPriority.High
+            priority = MockPriority.Highest
         )
 
         val request = MockRequest(
@@ -122,7 +122,7 @@ internal class MockRequestTests {
         )
 
         // When
-        val actual = request withPriority MockPriority.High
+        val actual = request withPriority MockPriority.Highest
 
         // Then
         assertEquals(expected, actual)
@@ -163,12 +163,12 @@ internal class MockRequestTests {
             wildcardMatch = false,
             serveOnce = true,
             networkDelay = 1500L,
-            priority = MockPriority.High
+            priority = MockPriority.Highest
         )
 
         // When
         val actual =
-            "dummy-path" respondWith "dummy-path-local" withStatusCode 201 ignoreQueryParams true matchWildcards false serveOnce true withNetworkDelay 1500 withPriority MockPriority.High
+            "dummy-path" respondWith "dummy-path-local" withStatusCode 201 ignoreQueryParams true matchWildcards false serveOnce true withNetworkDelay 1500 withPriority MockPriority.Highest
 
         // Then
         assertEquals(expected, actual)
