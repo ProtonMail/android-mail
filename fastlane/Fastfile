@@ -19,22 +19,22 @@ platform :android do
     gradle(task: "detekt")
   end
 
-  desc "Assemble the devDebug apk"
+  desc "Assemble the devDebug APK"
   lane :assembleDevDebug do
     gradle(task: "assembleDevDebug")
   end
 
-  desc "Assemble the prodDebug apk"
+  desc "Assemble the prodDebug APK"
   lane :assembleProdDebug do
     gradle(task: "assembleProdDebug")
   end
 
-  desc "Assemble the test apk"
-  lane :assembleTest do
+  desc "Assemble the androidTest APK"
+  lane :assembleDevDebugAndroidTest do
     gradle(task: "assembleDevDebugAndroidTest")
   end
 
-  desc "Assemble the release apk for alpha flavor"
+  desc "Assemble the release APK for alpha flavor"
   lane :assembleAlphaRelease do
     gradle(task: "assembleAlphaRelease")
   end

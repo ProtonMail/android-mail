@@ -47,7 +47,6 @@ setup:
     - base64 -d - < "$TEST_USERS_CREDENTIALS_FILE" > app/src/uiTest/assets/users.json
     - base64 -d - < "$INTERNAL_API_FILE" > app/src/uiTest/assets/internal_api.json
     - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
-    - bundle exec fastlane setupUiTestsAssets
 
 analyse:
   stage: analyse
@@ -97,8 +96,9 @@ build_dev_debug:
   extends: .build_job
   script:
     - echo PROXY_TOKEN="$(curl -o - https://proxy.proton.black/token/get)" >> private.properties
+    - bundle exec fastlane setupUiTestsAssets
     - bundle exec fastlane assembleDevDebug
-    - bundle exec fastlane assembleTest
+    - bundle exec fastlane assembleDevDebugAndroidTest
 
 build_prod_debug:
   extends: .build_job
