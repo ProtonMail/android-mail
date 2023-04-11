@@ -50,13 +50,18 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.readMailboxItemUiModel
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.unreadMailboxItemUiModel
+import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.unreadMailboxItemUiModelWithLabel
+import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.unreadMailboxItemUiModelWithLabelColored
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.readMailboxItem
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.unreadMailboxItem
+import ch.protonmail.android.testdata.mailbox.MailboxTestData.unreadMailboxItemWithLabel
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData.update
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
@@ -70,6 +75,7 @@ import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
@@ -86,8 +92,10 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class MailboxViewModelTest {
 
+    private val defaultFolderColorSettings = FolderColorSettings()
     private val initialLocationMailLabelId = Archive
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
@@ -119,6 +127,9 @@ class MailboxViewModelTest {
     private val observeUnreadCounters = mockk<ObserveUnreadCounters> {
         coEvery { this@mockk(userId = any()) } returns flowOf(UnreadCountersTestData.systemUnreadCounters)
     }
+    private val observeFolderColorSettings = mockk<ObserveFolderColorSettings> {
+        every { this@mockk.invoke(userId) } returns flowOf(defaultFolderColorSettings)
+    }
 
     private val getContacts = mockk<GetContacts> {
         coEvery { this@mockk.invoke(userId) } returns Either.Right(ContactTestData.contacts)
@@ -145,6 +156,7 @@ class MailboxViewModelTest {
             observeMailLabels = observeMailLabels,
             selectedMailLabelId = selectedMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
+            observeFolderColorSettings = observeFolderColorSettings,
             mailboxItemMapper = mailboxItemMapper,
             getContacts = getContacts,
             mailboxReducer = mailboxReducer,
@@ -173,7 +185,6 @@ class MailboxViewModelTest {
 
         // When
         mailboxViewModel.state.test {
-
             // Then
             val actual = awaitItem()
             val expected = MailboxState(
@@ -338,7 +349,6 @@ class MailboxViewModelTest {
         } returns expectedState
 
         mailboxViewModel.state.test {
-
             // Given
             awaitItem() // First emission for selected user
 
@@ -361,7 +371,6 @@ class MailboxViewModelTest {
         } returns expectedState
 
         mailboxViewModel.state.test {
-
             // Given
             awaitItem() // First emission for selected user
 
@@ -415,10 +424,12 @@ class MailboxViewModelTest {
     @Test
     fun `mailbox items are mapped to mailbox item ui models`() = runTest {
         // Given
-        every {
-            mailboxItemMapper.toUiModel(unreadMailboxItem, ContactTestData.contacts)
+        coEvery {
+            mailboxItemMapper.toUiModel(unreadMailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
         } returns unreadMailboxItemUiModel
-        every { mailboxItemMapper.toUiModel(readMailboxItem, ContactTestData.contacts) } returns readMailboxItemUiModel
+        coEvery {
+            mailboxItemMapper.toUiModel(readMailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
+        } returns readMailboxItemUiModel
         every { pagerFactory.create(any(), any(), any(), any()) } returns mockk {
             val pagingData = PagingData.from(listOf(unreadMailboxItem, readMailboxItem))
             every { this@mockk.flow } returns flowOf(pagingData)
@@ -437,8 +448,58 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `mailbox items are mapped according to folder color setting`() = runTest {
+        // Given
+        val updatedFolderColorSetting = FolderColorSettings(useFolderColor = false)
+        val folderColorFlow = MutableStateFlow(defaultFolderColorSettings)
+        coEvery { observeFolderColorSettings(userId) } returns folderColorFlow
+        coEvery {
+            mailboxItemMapper.toUiModel(
+                mailboxItem = unreadMailboxItemWithLabel,
+                contacts = ContactTestData.contacts,
+                folderColorSettings = defaultFolderColorSettings
+            )
+        } returns unreadMailboxItemUiModelWithLabelColored
+        coEvery {
+            mailboxItemMapper.toUiModel(unreadMailboxItemWithLabel, ContactTestData.contacts, updatedFolderColorSetting)
+        } returns unreadMailboxItemUiModelWithLabel
+
+        every { pagerFactory.create(listOf(userId), MailLabelId.System.Inbox, false, any()) } returns mockk {
+            val pagingData = PagingData.from(listOf(unreadMailboxItemWithLabel))
+            every { this@mockk.flow } returns flowOf(pagingData)
+        }
+        val differ = MailboxAsyncPagingDataDiffer.differ
+
+        // When
+        mailboxViewModel.items.test {
+            // Then
+            val pagingData = awaitItem()
+            differ.submitData(pagingData)
+
+            val expected = listOf(unreadMailboxItemUiModelWithLabelColored)
+            assertEquals(expected, differ.snapshot().items)
+
+            // When
+            folderColorFlow.emit(updatedFolderColorSetting)
+
+            // Then
+            val updatedPagingData = awaitItem()
+            differ.submitData(updatedPagingData)
+
+            val updatedExpected = listOf(unreadMailboxItemUiModelWithLabel)
+            assertEquals(updatedExpected, differ.snapshot().items)
+        }
+    }
+
+    @Test
     fun `user contacts are used to map mailbox items to ui models`() = runTest {
         // Given
+        coEvery {
+            mailboxItemMapper.toUiModel(unreadMailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
+        } returns unreadMailboxItemUiModel
+        coEvery {
+            mailboxItemMapper.toUiModel(readMailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
+        } returns readMailboxItemUiModel
         every { pagerFactory.create(any(), any(), any(), any()) } returns mockk {
             val pagingData = PagingData.from(listOf(unreadMailboxItem, readMailboxItem))
             every { this@mockk.flow } returns flowOf(pagingData)
@@ -450,13 +511,12 @@ class MailboxViewModelTest {
             val pagingData = awaitItem()
             differ.submitData(pagingData)
 
-            verify { mailboxItemMapper.toUiModel(any(), ContactTestData.contacts) }
+            coVerify { mailboxItemMapper.toUiModel(any(), ContactTestData.contacts, defaultFolderColorSettings) }
         }
     }
 
     @Test
     fun `on refresh call mark as stale mailbox items`() = runTest {
-
         // When
         mailboxViewModel.submit(MailboxViewAction.Refresh)
 
@@ -478,7 +538,6 @@ class MailboxViewModelTest {
         // When
         mailboxViewModel.submit(MailboxViewAction.Refresh)
         mailboxViewModel.state.test {
-
             // Then
             assertEquals(expectedState, awaitItem())
         }
@@ -506,7 +565,6 @@ class MailboxViewModelTest {
         // When
         mailboxViewModel.submit(MailboxViewAction.OpenItemDetails(item))
         mailboxViewModel.state.test {
-
             // Then
             assertEquals(expectedState, awaitItem())
         }
@@ -534,7 +592,6 @@ class MailboxViewModelTest {
         // When
         mailboxViewModel.submit(MailboxViewAction.OpenItemDetails(item))
         mailboxViewModel.state.test {
-
             // Then
             assertEquals(expectedState, awaitItem())
         }
@@ -551,7 +608,6 @@ class MailboxViewModelTest {
         // When
         mailboxViewModel.submit(MailboxViewAction.EnableUnreadFilter)
         mailboxViewModel.state.test {
-
             // Then
             assertEquals(expectedState, awaitItem())
         }
@@ -570,7 +626,6 @@ class MailboxViewModelTest {
         // When
         mailboxViewModel.submit(MailboxViewAction.DisableUnreadFilter)
         mailboxViewModel.state.test {
-
             // Then
             assertEquals(expectedState, awaitItem())
         }

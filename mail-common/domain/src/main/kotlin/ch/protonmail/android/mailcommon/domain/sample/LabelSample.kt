@@ -34,7 +34,8 @@ object LabelSample {
     )
     val Folder2021 = build(
         labelId = LabelIdSample.Folder2021,
-        type = LabelType.MessageFolder
+        type = LabelType.MessageFolder,
+        color = "#FF0000"
     )
     val Folder2022 = build(
         labelId = LabelIdSample.Folder2022,

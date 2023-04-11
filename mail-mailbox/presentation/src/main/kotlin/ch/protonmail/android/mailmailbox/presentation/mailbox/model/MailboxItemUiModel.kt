@@ -44,12 +44,11 @@ data class MailboxItemUiModel(
     val shouldShowForwardedIcon: Boolean,
     val numMessages: Int?,
     val showStar: Boolean,
-    val locationIconResIds: ImmutableList<Int>,
+    val locations: ImmutableList<MailboxItemLocationUiModel>,
     val shouldShowAttachmentIcon: Boolean,
     val shouldShowExpirationLabel: Boolean,
     val shouldShowCalendarIcon: Boolean
 ) {
 
     fun hasIconsToShow() = shouldShowCalendarIcon || shouldShowAttachmentIcon || showStar
-
 }

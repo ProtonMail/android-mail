@@ -18,15 +18,20 @@
 
 package ch.protonmail.android.testdata.mailbox
 
+import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.testdata.R
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -40,6 +45,8 @@ object MailboxTestData {
 
     val unreadMailboxItem = buildMessageMailboxItem("1", isRead = false)
     val readMailboxItem = buildMessageMailboxItem("2", isRead = true)
+    val unreadMailboxItemWithLabel =
+        unreadMailboxItem.copy(labelIds = listOf(LabelIdSample.Folder2021), labels = listOf(LabelSample.Folder2021))
 
     val repliedMailboxItem = buildMessageMailboxItem("3", isReplied = true)
     val repliedAllMailboxItem = buildMessageMailboxItem("4", isReplied = true, isRepliedAll = true)
@@ -90,7 +97,9 @@ object MailboxTestData {
         isRead: Boolean = true,
         isReplied: Boolean = false,
         isRepliedAll: Boolean = false,
-        isForwarded: Boolean = false
+        isForwarded: Boolean = false,
+        labelIds: List<LabelId> = emptyList(),
+        labels: List<Label> = emptyList()
     ) = MailboxItem(
         type = MailboxItemType.Message,
         id = id,
@@ -99,9 +108,9 @@ object MailboxTestData {
         size = 0,
         order = 0,
         read = isRead,
-        labelIds = emptyList(),
+        labelIds = labelIds,
         conversationId = ConversationId("2"),
-        labels = emptyList(),
+        labels = labels,
         subject = "First message",
         senders = listOf(Recipient("address", "name")),
         recipients = emptyList(),
@@ -148,6 +157,14 @@ object MailboxItemUiModelTestData {
         isRead = false
     )
 
+    val unreadMailboxItemUiModelWithLabelColored = unreadMailboxItemUiModel.copy(
+        locations = persistentListOf(MailboxItemLocationUiModel(R.drawable.ic_proton_folder_filled, Color.Red))
+    )
+
+    val unreadMailboxItemUiModelWithLabel = unreadMailboxItemUiModel.copy(
+        locations = persistentListOf(MailboxItemLocationUiModel(R.drawable.ic_proton_folder))
+    )
+
     val readMailboxItemUiModel = buildMailboxUiModelItem(
         id = "2",
         type = MailboxItemType.Message,
@@ -160,7 +177,8 @@ object MailboxItemUiModelTestData {
         type: MailboxItemType = MailboxItemType.Message,
         subject: String = id,
         isRead: Boolean = true,
-        labels: ImmutableList<LabelUiModel> = persistentListOf()
+        labels: ImmutableList<LabelUiModel> = persistentListOf(),
+        locations: ImmutableList<MailboxItemLocationUiModel> = persistentListOf()
     ) = MailboxItemUiModel(
         avatar = AvatarUiModel.ParticipantInitial("T"),
         type = type,
@@ -177,7 +195,7 @@ object MailboxItemUiModelTestData {
         shouldShowForwardedIcon = false,
         numMessages = null,
         showStar = false,
-        locationIconResIds = persistentListOf(),
+        locations = locations,
         shouldShowAttachmentIcon = false,
         shouldShowExpirationLabel = false,
         shouldShowCalendarIcon = false

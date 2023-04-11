@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import kotlinx.collections.immutable.persistentListOf
 import me.proton.core.domain.entity.UserId
@@ -44,7 +45,7 @@ object MailboxItemUiModelPreviewData {
             id = "DroidConLondon",
             isRead = true,
             labels = persistentListOf(),
-            locationIconResIds = persistentListOf(R.drawable.ic_proton_archive_box),
+            locations = persistentListOf(MailboxItemLocationUiModel(R.drawable.ic_proton_archive_box)),
             numMessages = 2,
             participants = TextUiModel(persistentListOf("DroidCon").joinToString()),
             shouldShowAttachmentIcon = true,
@@ -66,7 +67,7 @@ object MailboxItemUiModelPreviewData {
             id = "DroidConLondon",
             isRead = true,
             labels = persistentListOf(),
-            locationIconResIds = persistentListOf(),
+            locations = persistentListOf(),
             numMessages = null,
             participants = TextUiModel(persistentListOf("DroidCon").joinToString()),
             shouldShowAttachmentIcon = false,
@@ -88,7 +89,10 @@ object MailboxItemUiModelPreviewData {
             id = "WeatherForecast",
             isRead = false,
             labels = persistentListOf(),
-            locationIconResIds = persistentListOf(R.drawable.ic_proton_inbox, R.drawable.ic_proton_trash),
+            locations = persistentListOf(
+                MailboxItemLocationUiModel(R.drawable.ic_proton_inbox),
+                MailboxItemLocationUiModel(R.drawable.ic_proton_trash)
+            ),
             numMessages = 2,
             participants = TextUiModel(persistentListOf(AccuWeatherName).joinToString()),
             shouldShowAttachmentIcon = true,
@@ -117,7 +121,7 @@ object MailboxItemUiModelPreviewData {
                 LabelUiModel("1234567890123", Color.Blue),
                 LabelUiModel("Very important mail label", Color.Green)
             ),
-            locationIconResIds = persistentListOf(),
+            locations = persistentListOf(),
             numMessages = 2,
             participants = TextUiModel(
                 persistentListOf(
@@ -145,7 +149,10 @@ object MailboxItemUiModelPreviewData {
             id = "WeatherForecast",
             isRead = false,
             labels = persistentListOf(),
-            locationIconResIds = persistentListOf(R.drawable.ic_proton_inbox, R.drawable.ic_proton_trash),
+            locations = persistentListOf(
+                MailboxItemLocationUiModel(R.drawable.ic_proton_inbox),
+                MailboxItemLocationUiModel(R.drawable.ic_proton_trash)
+            ),
             numMessages = 2,
             participants = TextUiModel(persistentListOf(AccuWeatherName).joinToString()),
             shouldShowAttachmentIcon = false,
@@ -167,7 +174,7 @@ object MailboxItemUiModelPreviewData {
             id = "WeatherForecast",
             isRead = false,
             labels = persistentListOf(),
-            locationIconResIds = persistentListOf(),
+            locations = persistentListOf(),
             numMessages = 2,
             participants = TextUiModel(persistentListOf(AccuWeatherName).joinToString()),
             shouldShowAttachmentIcon = false,
@@ -189,7 +196,7 @@ object MailboxItemUiModelPreviewData {
             id = "WeatherForecast",
             isRead = false,
             labels = persistentListOf(),
-            locationIconResIds = persistentListOf(),
+            locations = persistentListOf(),
             numMessages = 2,
             participants = TextUiModel(persistentListOf<String>().joinToString()),
             shouldShowAttachmentIcon = false,
@@ -214,7 +221,7 @@ object MailboxItemUiModelPreviewData {
             id = "WeatherForecastAugust2022",
             isRead = true,
             labels = persistentListOf(),
-            locationIconResIds = persistentListOf(),
+            locations = persistentListOf(),
             numMessages = 1,
             participants = TextUiModel(persistentListOf(AccuWeatherName).joinToString()),
             shouldShowAttachmentIcon = true,
@@ -236,7 +243,7 @@ object MailboxItemUiModelPreviewData {
             id = "WeatherForecastSeptember2022",
             isRead = false,
             labels = persistentListOf(),
-            locationIconResIds = persistentListOf(),
+            locations = persistentListOf(),
             numMessages = 1,
             participants = TextUiModel(persistentListOf(AccuWeatherName).joinToString()),
             shouldShowAttachmentIcon = true,

@@ -32,6 +32,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ParticipantsResolvedName
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.contact.domain.entity.Contact
@@ -49,7 +50,11 @@ class MailboxItemUiModelMapper @Inject constructor(
     private val getParticipantsResolvedNames: GetParticipantsResolvedNames
 ) : Mapper<MailboxItem, MailboxItemUiModel> {
 
-    fun toUiModel(mailboxItem: MailboxItem, contacts: List<Contact>): MailboxItemUiModel {
+    suspend fun toUiModel(
+        mailboxItem: MailboxItem,
+        contacts: List<Contact>,
+        folderColorSettings: FolderColorSettings
+    ): MailboxItemUiModel {
         val result = getParticipantsResolvedNames(mailboxItem, contacts)
 
         return MailboxItemUiModel(
@@ -68,15 +73,15 @@ class MailboxItemUiModelMapper @Inject constructor(
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
             numMessages = mailboxItem.numMessages.takeIf { it >= 2 },
             showStar = mailboxItem.labelIds.contains(SystemLabelId.Starred.labelId),
-            locationIconResIds = getLocationIconsToDisplay(mailboxItem),
+            locations = getLocationIconsToDisplay(mailboxItem, folderColorSettings),
             shouldShowAttachmentIcon = mailboxItem.hasNonCalendarAttachments,
             shouldShowExpirationLabel = hasExpirationTime(mailboxItem),
             shouldShowCalendarIcon = hasCalendarAttachment(mailboxItem)
         )
     }
 
-    private fun getLocationIconsToDisplay(mailboxItem: MailboxItem) =
-        when (val icons = getMailboxItemLocationIcons(mailboxItem)) {
+    private suspend fun getLocationIconsToDisplay(mailboxItem: MailboxItem, folderColorSettings: FolderColorSettings) =
+        when (val icons = getMailboxItemLocationIcons(mailboxItem, folderColorSettings)) {
             is GetMailboxItemLocationIcons.Result.None -> emptyList()
             is GetMailboxItemLocationIcons.Result.Icons -> listOfNotNull(icons.first, icons.second, icons.third)
         }.toImmutableList()

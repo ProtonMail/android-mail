@@ -51,6 +51,7 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.ui.LabelsList
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
 import kotlinx.collections.immutable.ImmutableList
@@ -110,7 +111,7 @@ fun MailboxItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 LocationIcons(
-                    iconResIds = item.locationIconResIds,
+                    iconResIds = item.locations,
                     iconColor = fontColor,
                     modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing)
                 )
@@ -219,7 +220,7 @@ private fun Time(
 @Composable
 private fun LocationIcons(
     modifier: Modifier = Modifier,
-    iconResIds: ImmutableList<Int>,
+    iconResIds: ImmutableList<MailboxItemLocationUiModel>,
     iconColor: Color
 ) {
     if (iconResIds.isEmpty()) {
@@ -230,7 +231,7 @@ private fun LocationIcons(
         modifier = modifier,
         horizontalArrangement = Arrangement.Start
     ) {
-        iconResIds.forEach { SmallNonClickableIcon(iconId = it, iconColor) }
+        iconResIds.forEach { SmallNonClickableIcon(iconId = it.icon, it.color ?: iconColor) }
     }
 }
 

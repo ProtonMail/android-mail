@@ -18,13 +18,20 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 
-import androidx.annotation.DrawableRes
+import androidx.compose.ui.graphics.Color
+import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.GetParentLabel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
+import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelType
 import javax.inject.Inject
 
@@ -33,15 +40,17 @@ import javax.inject.Inject
  * location icon, based on the currently selected location (mailbox user is looking at)
  */
 class GetMailboxItemLocationIcons @Inject constructor(
-    private val selectedMailLabelId: SelectedMailLabelId
+    private val selectedMailLabelId: SelectedMailLabelId,
+    private val colorMapper: ColorMapper,
+    private val getParentLabel: GetParentLabel
 ) {
 
-    operator fun invoke(mailboxItem: MailboxItem): Result {
+    suspend operator fun invoke(mailboxItem: MailboxItem, folderColorSettings: FolderColorSettings): Result {
         if (!currentLocationShouldShowIcons()) {
             return Result.None
         }
 
-        val icons = getLocationIcons(mailboxItem)
+        val icons = getLocationIcons(mailboxItem, folderColorSettings)
         if (icons.isEmpty()) {
             // Having no icons can happen when an item was in a custom folder which got
             // deleted. Such item is now only in all mail and no other location.
@@ -51,32 +60,46 @@ class GetMailboxItemLocationIcons @Inject constructor(
         return Result.Icons(icons.first(), icons.getOrNull(1), icons.getOrNull(2))
     }
 
-    private fun getLocationIcons(mailboxItem: MailboxItem): MutableList<Int> {
-        val icons = mutableListOf<Int>()
-        locationsForWhichToShowIcons().forEach { systemLabelId ->
+    private suspend fun getLocationIcons(
+        mailboxItem: MailboxItem,
+        folderColorSettings: FolderColorSettings
+    ): MutableList<MailboxItemLocationUiModel> {
+        val icons = mutableListOf<MailboxItemLocationUiModel>()
+        SystemLabelId.exclusiveList.forEach { systemLabelId ->
             if (mailboxItem.labelIds.contains(systemLabelId.labelId)) {
                 val iconDrawable = SystemLabelId.enumOf(systemLabelId.labelId.id).iconRes()
-                icons.add(iconDrawable)
+                icons.add(MailboxItemLocationUiModel(iconDrawable))
             }
 
             if (systemLabelId == SystemLabelId.Spam) {
-                val isInCustomFolder = mailboxItem.labels.any { it.type == LabelType.MessageFolder }
-                if (isInCustomFolder) {
-                    icons.add(R.drawable.ic_proton_folder)
+                mailboxItem.labels.firstOrNull { it.type == LabelType.MessageFolder }?.let {
+                    when (folderColorSettings.useFolderColor) {
+                        true -> icons.add(
+                            MailboxItemLocationUiModel(
+                                icon = R.drawable.ic_proton_folder_filled,
+                                color = getLocationIconColor(it.userId, it, folderColorSettings)
+                            )
+                        )
+                        false -> icons.add(MailboxItemLocationUiModel(R.drawable.ic_proton_folder))
+                    }
                 }
             }
         }
+
         return icons
     }
 
-    private fun locationsForWhichToShowIcons() = listOf(
-        SystemLabelId.Inbox,
-        SystemLabelId.Drafts,
-        SystemLabelId.Spam,
-        SystemLabelId.Trash,
-        SystemLabelId.Archive,
-        SystemLabelId.Sent
-    )
+    private suspend fun getLocationIconColor(
+        userId: UserId,
+        label: Label,
+        folderColorSettings: FolderColorSettings
+    ): Color {
+        val colorToMap = when {
+            folderColorSettings.inheritParentFolderColor -> getParentLabel(userId, label)?.color
+            else -> label.color
+        }
+        return colorToMap?.let { colorMapper.toColor(it).getOrElse { Color.Unspecified } } ?: Color.Unspecified
+    }
 
     private fun currentLocationShouldShowIcons(): Boolean {
         val currentLocation = selectedMailLabelId.flow.value
@@ -89,9 +112,9 @@ class GetMailboxItemLocationIcons @Inject constructor(
     sealed interface Result {
         object None : Result
         data class Icons(
-            @DrawableRes val first: Int,
-            @DrawableRes val second: Int? = null,
-            @DrawableRes val third: Int? = null
+            val first: MailboxItemLocationUiModel,
+            val second: MailboxItemLocationUiModel? = null,
+            val third: MailboxItemLocationUiModel? = null,
         ) : Result
     }
 }
