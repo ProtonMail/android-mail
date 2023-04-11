@@ -48,6 +48,14 @@ interface ConversationRepository {
     ): Either<DataError, List<ConversationWithContext>>
 
     /**
+     * Fetch all [Conversation] for [userId] filtered by [PageKey].
+     */
+    suspend fun fetchConversations(
+        userId: UserId,
+        pageKey: PageKey
+    ): Either<DataError.Remote, List<ConversationWithContext>>
+
+    /**
      * Mark local data as stale for [userId], by [labelId].
      */
     suspend fun markAsStale(

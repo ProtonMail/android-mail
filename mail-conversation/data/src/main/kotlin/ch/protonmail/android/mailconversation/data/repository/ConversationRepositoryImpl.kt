@@ -108,6 +108,17 @@ class ConversationRepositoryImpl @Inject constructor(
     ): Either<DataError, List<ConversationWithContext>> =
         conversationLocalDataSource.getConversations(userId, pageKey).right()
 
+    override suspend fun fetchConversations(
+        userId: UserId,
+        pageKey: PageKey
+    ): Either<DataError.Remote, List<ConversationWithContext>> = conversationLocalDataSource.getClippedPageKey(
+        userId = userId,
+        pageKey = pageKey.copy(size = min(ConversationApi.maxPageSize, pageKey.size))
+    ).let { adaptedPageKey ->
+        conversationRemoteDataSource.getConversations(userId = userId, pageKey = adaptedPageKey)
+            .onRight { conversations -> insertConversations(userId, adaptedPageKey, conversations) }
+    }
+
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
         conversationLocalDataSource.markAsStale(userId, labelId)
 
@@ -308,19 +319,6 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationLocalDataSource.upsertConversation(userId, updatedConversation)
         messageLocalDataSource.upsertMessages(updatedMessages)
         return addLabel(userId, conversationId, labelId)
-    }
-
-    private suspend fun fetchConversations(
-        userId: UserId,
-        pageKey: PageKey
-    ): Either<DataError.Remote, List<ConversationWithContext>> = conversationLocalDataSource.getClippedPageKey(
-        userId = userId,
-        pageKey = pageKey.copy(size = min(ConversationApi.maxPageSize, pageKey.size))
-    ).let { adaptedPageKey ->
-        conversationRemoteDataSource.getConversations(
-            userId = userId,
-            pageKey = adaptedPageKey
-        ).tap { conversations -> insertConversations(userId, adaptedPageKey, conversations) }
     }
 
     private suspend fun insertConversations(

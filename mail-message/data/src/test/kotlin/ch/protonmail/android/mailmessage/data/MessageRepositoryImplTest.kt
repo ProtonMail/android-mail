@@ -200,21 +200,39 @@ class MessageRepositoryImplTest {
         // Given
         val pageKey = PageKey()
         val clippedPageKey = PageKey(filter = PageFilter(minTime = 0))
-        coEvery { localDataSource.getMessages(any(), any()) } returns emptyList()
-        coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
-        coEvery { localDataSource.getClippedPageKey(any(), any()) } returns clippedPageKey
-        coEvery { remoteDataSource.getMessages(any(), any()) } returns emptyList<Message>().right()
+        coEvery { localDataSource.getClippedPageKey(userId, pageKey) } returns clippedPageKey
+        coEvery { remoteDataSource.getMessages(userId, clippedPageKey) } returns emptyList<Message>().right()
+
         // When
-        val messages = messageRepository.getMessages(userId, pageKey)
-            .getOrHandle(::error)
+        val messages = messageRepository.fetchMessages(userId, pageKey).getOrElse(::error)
 
         // Then
         assertEquals(0, messages.size)
-        coVerify(exactly = 1) { localDataSource.isLocalPageValid(any(), any(), any()) }
         coVerify(ordering = Ordering.ORDERED) {
             localDataSource.getClippedPageKey(userId, pageKey)
             remoteDataSource.getMessages(userId, clippedPageKey)
         }
+    }
+
+    @Test
+    fun `verify messages are inserted when remote call was successful`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val remoteMessages = listOf(
+            getMessage(id = "1", time = 1000),
+            getMessage(id = "2", time = 2000),
+            getMessage(id = "3", time = 3000)
+        )
+        coEvery { localDataSource.getClippedPageKey(userId, pageKey) } returns pageKey
+        coEvery { remoteDataSource.getMessages(any(), any()) } returns remoteMessages.right()
+
+        // When
+        val messages = messageRepository.fetchMessages(userId, pageKey).getOrElse(::error)
+
+        // Then
+        assertEquals(3, messages.size)
+        coVerify(exactly = 1) { remoteDataSource.getMessages(userId, pageKey) }
+        coVerify(exactly = 1) { localDataSource.upsertMessages(userId, pageKey, remoteMessages) }
     }
 
     @Test

@@ -102,29 +102,22 @@ class ConversationRepositoryImplTest {
     )
 
     @Test
-    fun `return remote if local page is invalid`() = runTest {
+    fun `verify conversations are inserted when remote call was successful`() = runTest {
         // Given
         val pageKey = PageKey()
-        val local = listOf(
-            ConversationWithContextTestData.conversation1
-        )
         val remote = listOf(
             ConversationWithContextTestData.conversation1,
             ConversationWithContextTestData.conversation2,
             ConversationWithContextTestData.conversation3
         )
-        coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns local
-        coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns false
-        coEvery { conversationLocalDataSource.getClippedPageKey(any(), any()) } returns pageKey
-        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns remote.right()
+        coEvery { conversationLocalDataSource.getClippedPageKey(userId, pageKey) } returns pageKey
+        coEvery { conversationRemoteDataSource.getConversations(userId, pageKey) } returns remote.right()
 
         // When
-        val result = conversationRepository.getConversations(userId, pageKey)
-            .getOrElse(::error)
+        val result = conversationRepository.getConversations(userId, pageKey).getOrElse(::error)
 
         // Then
         assertEquals(3, result.size)
-        coVerify(exactly = 1) { conversationLocalDataSource.isLocalPageValid(userId, pageKey, local) }
         coVerify(exactly = 1) { conversationRemoteDataSource.getConversations(userId, pageKey) }
         coVerify(exactly = 1) { conversationLocalDataSource.upsertConversations(userId, pageKey, remote) }
     }
@@ -172,50 +165,19 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `return local if valid`() = runTest {
-        // Given
-        val pageKey = PageKey()
-        val local = listOf(
-            ConversationWithContextTestData.conversation1,
-            ConversationWithContextTestData.conversation2
-        )
-        val remote = listOf(
-            ConversationWithContextTestData.conversation1,
-            ConversationWithContextTestData.conversation2,
-            ConversationWithContextTestData.conversation3
-        )
-        coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns local
-        coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns true
-        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns remote.right()
-
-        // When
-        val conversations = conversationRepository.getConversations(userId, pageKey)
-            .getOrElse(::error)
-
-        // Then
-        assertEquals(2, conversations.size)
-        coVerify(exactly = 1) { conversationLocalDataSource.isLocalPageValid(userId, pageKey, local) }
-        coVerify(exactly = 0) { conversationRemoteDataSource.getConversations(any(), any()) }
-    }
-
-    @Test
     fun `clip pageKey before calling remote`() = runTest {
         // Given
         val pageKey = PageKey()
         val clippedPageKey = PageKey(filter = PageFilter(minTime = 0))
-        coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns emptyList()
-        coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns false
-        coEvery { conversationLocalDataSource.getClippedPageKey(any(), any()) } returns clippedPageKey
-        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns
+        coEvery { conversationLocalDataSource.getClippedPageKey(userId, pageKey) } returns clippedPageKey
+        coEvery { conversationRemoteDataSource.getConversations(userId, clippedPageKey) } returns
             emptyList<ConversationWithContext>().right()
 
         // When
-        val conversations = conversationRepository.getConversations(userId, pageKey)
-            .getOrElse(::error)
+        val conversations = conversationRepository.fetchConversations(userId, pageKey).getOrElse(::error)
 
         // Then
         assertEquals(0, conversations.size)
-        coVerify(exactly = 1) { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) }
         coVerify(ordering = Ordering.ORDERED) {
             conversationLocalDataSource.getClippedPageKey(userId, pageKey)
             conversationRemoteDataSource.getConversations(userId, clippedPageKey)

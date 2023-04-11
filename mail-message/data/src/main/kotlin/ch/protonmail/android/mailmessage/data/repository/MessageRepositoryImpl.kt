@@ -98,6 +98,17 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun loadMessages(userId: UserId, pageKey: PageKey) =
         localDataSource.getMessages(userId, pageKey).right()
 
+    override suspend fun fetchMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> =
+        localDataSource.getClippedPageKey(
+            userId = userId,
+            pageKey = pageKey.copy(size = min(MessageApi.maxPageSize, pageKey.size))
+        ).let { adaptedPageKey ->
+            remoteDataSource.getMessages(
+                userId = userId,
+                pageKey = adaptedPageKey
+            ).onRight { messages -> insertMessages(userId, adaptedPageKey, messages) }
+        }
+
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) = localDataSource.markAsStale(userId, labelId)
 
     override fun observeCachedMessage(userId: UserId, messageId: MessageId): Flow<Either<DataError.Local, Message>> =
@@ -222,17 +233,6 @@ class MessageRepositoryImpl @Inject constructor(
         localDataSource.upsertMessage(updatedMessage)
         return addLabel(userId = userId, messageId = messageId, labelId = labelId)
     }
-
-    private suspend fun fetchMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> =
-        localDataSource.getClippedPageKey(
-            userId = userId,
-            pageKey = pageKey.copy(size = min(MessageApi.maxPageSize, pageKey.size))
-        ).let { adaptedPageKey ->
-            remoteDataSource.getMessages(
-                userId = userId,
-                pageKey = adaptedPageKey
-            ).onRight { messages -> insertMessages(userId, adaptedPageKey, messages) }
-        }
 
     private suspend fun insertMessages(
         userId: UserId,
