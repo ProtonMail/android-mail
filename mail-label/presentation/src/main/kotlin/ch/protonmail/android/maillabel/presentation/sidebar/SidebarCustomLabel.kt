@@ -36,12 +36,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.R
+import ch.protonmail.android.maillabel.presentation.extension.tintColor
 import ch.protonmail.android.maillabel.presentation.labelAddTitleRes
 import ch.protonmail.android.maillabel.presentation.labelTitleRes
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Add
@@ -55,8 +57,6 @@ import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.LabelType.MessageFolder
 import me.proton.core.label.domain.entity.LabelType.MessageLabel
-
-private const val SIDEBAR_ITEM_TEST_TAG = "SidebarItem"
 
 fun LazyListScope.sidebarLabelItems(
     items: List<MailLabelUiModel.Custom>,
@@ -95,9 +95,14 @@ private fun LazyItemScope.SidebarCustomLabel(
 ) {
     ProtonSidebarItem(
         modifier = Modifier
-            .testTag("${SIDEBAR_ITEM_TEST_TAG}${item.testTag}")
+            .testTag("${SidebarCustomLabelTestTags.RootItem}${item.testTag}")
             .animateItemPlacement(),
-        iconModifier = Modifier.padding(start = item.iconPaddingStart),
+        iconModifier = Modifier
+            .testTag(SidebarCustomLabelTestTags.Icon)
+            .semantics { tintColor = item.iconTint }
+            .padding(start = item.iconPaddingStart),
+        textModifier = Modifier
+            .testTag(SidebarCustomLabelTestTags.Text),
         icon = painterResource(item.icon),
         text = item.text.value,
         iconTint = item.iconTint ?: ProtonTheme.colors.iconWeak,
@@ -238,4 +243,11 @@ private fun PreviewSidebarLabelFolderItems() {
             )
         }
     }
+}
+
+object SidebarCustomLabelTestTags {
+
+    const val RootItem = "SidebarItem"
+    const val Icon = "SidebarIcon"
+    const val Text = "SidebarText"
 }
