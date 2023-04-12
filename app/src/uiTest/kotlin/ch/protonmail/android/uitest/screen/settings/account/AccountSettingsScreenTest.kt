@@ -29,7 +29,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSe
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_LIST
 import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.uitest.util.assertTextContains
+import ch.protonmail.android.uitest.util.assertions.assertTextContains
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.theme.ProtonTheme
@@ -157,5 +157,4 @@ internal class AccountSettingsScreenTest {
             .performScrollToNode(hasText(string.mail_settings_snooze_notifications))
             .assertIsDisplayed()
     }
-
 }

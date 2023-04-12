@@ -16,27 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.util
+package ch.protonmail.android.uitest.util.extensions
 
-import androidx.annotation.StringRes
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.assert
-import androidx.compose.ui.test.assertTextContains
 
-fun SemanticsNodeInteraction.assertTextColor(
-    color: Long
-): SemanticsNodeInteraction = assertTextColor(Color(color))
-
-fun SemanticsNodeInteraction.assertTextColor(
-    color: Color
-): SemanticsNodeInteraction = assert(hasTextColor(color))
-
-fun SemanticsNodeInteraction.assertTextContains(
-    @StringRes valueRes: Int,
-    substring: Boolean = false,
-    ignoreCase: Boolean = false
-): SemanticsNodeInteraction = assertTextContains(getString(valueRes), substring, ignoreCase)
+/**
+ * Returns a [Map.Entry] instance for the provided key, null if no entry exists.
+ */
+fun SemanticsNodeInteraction.getKeyValueByName(key: String): Map.Entry<*, *>? {
+    return fetchSemanticsNode().config.firstOrNull {
+        it.key.name == key
+    }
+}
 
 /**
  * Returns a [Boolean] indicating whether the item exists or not, without throwing an exception.

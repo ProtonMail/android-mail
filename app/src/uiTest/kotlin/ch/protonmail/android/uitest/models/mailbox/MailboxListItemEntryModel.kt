@@ -28,9 +28,9 @@ import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
-import ch.protonmail.android.uitest.util.assertTextColor
+import ch.protonmail.android.uitest.util.assertions.assertTextColor
 import ch.protonmail.android.uitest.util.child
-import ch.protonmail.android.uitest.util.peek
+import ch.protonmail.android.uitest.util.extensions.peek
 
 class MailboxListItemEntryModel(
     position: Int,
@@ -124,7 +124,7 @@ class MailboxListItemEntryModel(
 
     private companion object {
 
-        const val MessageReadTextColorHex = 0xFF706D6B  // Equivalent to ProtonPalette.Cinder
+        const val MessageReadTextColorHex = 0xFF706D6B // Equivalent to ProtonPalette.Cinder
         const val MessageUnreadTextColorHex = 0xFF0C0C14 // Equivalent to ProtonPalette.DoveGray
     }
 }
