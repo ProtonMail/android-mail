@@ -30,45 +30,13 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.UnreadItemsFilterT
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
-import ch.protonmail.android.uitest.robot.mailbox.MoveToFolderRobotInterface
-import ch.protonmail.android.uitest.robot.mailbox.SelectionStateRobotInterface
-import ch.protonmail.android.uitest.robot.mailbox.messagedetail.MessageRobot
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 import me.proton.core.test.android.robots.CoreRobot
 import me.proton.core.test.android.robots.CoreVerify
 
-@Suppress("unused", "MemberVisibilityCanBePrivate", "ExpressionBodySyntax")
 class InboxRobot(
     override val composeTestRule: ComposeContentTestRule
 ) : CoreRobot(), MailboxRobotInterface {
-
-    override fun clickMessageByPosition(position: Int): MessageRobot {
-        val model = MailboxListItemEntryModel(position)
-
-        model.click()
-
-        return super.clickMessageByPosition(position)
-    }
-
-    override fun swipeLeftMessageAtPosition(position: Int): InboxRobot {
-        super.swipeLeftMessageAtPosition(position)
-        return this
-    }
-
-    override fun longClickMessageOnPosition(position: Int): SelectionStateRobot {
-        super.longClickMessageOnPosition(position)
-        return SelectionStateRobot(composeTestRule)
-    }
-
-    override fun deleteMessageWithSwipe(position: Int): InboxRobot {
-        super.deleteMessageWithSwipe(position)
-        return this
-    }
-
-    override fun refreshMessageList(): InboxRobot {
-        super.refreshMessageList()
-        return this
-    }
 
     fun filterUnreadMessages(): InboxRobot {
         composeTestRule
@@ -76,45 +44,6 @@ class InboxRobot(
             .performClick()
 
         return this
-    }
-
-    class SelectionStateRobot(
-        private val composeRule: ComposeContentTestRule
-    ) : SelectionStateRobotInterface {
-
-        override fun exitMessageSelectionState(): InboxRobot {
-            super.exitMessageSelectionState()
-            return InboxRobot(composeRule)
-        }
-
-        override fun selectMessage(position: Int): SelectionStateRobot {
-            super.selectMessage(position)
-            return this
-        }
-
-        override fun addLabel(): InboxRobot {
-            super.addLabel()
-            return InboxRobot(composeRule)
-        }
-
-        override fun addFolder(): MoveToFolderRobot {
-            super.addFolder()
-            return MoveToFolderRobot(composeRule)
-        }
-
-        fun moveToTrash(): InboxRobot {
-            return InboxRobot(composeRule)
-        }
-    }
-
-    class MoveToFolderRobot(
-        private val composeRule: ComposeContentTestRule
-    ) : MoveToFolderRobotInterface {
-
-        override fun moveToExistingFolder(name: String): InboxRobot {
-            super.moveToExistingFolder(name)
-            return InboxRobot(composeRule)
-        }
     }
 
     /**

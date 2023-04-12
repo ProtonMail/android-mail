@@ -28,10 +28,6 @@ import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_LIST
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_SCREEN
-import ch.protonmail.android.uitest.robot.settings.SettingsRobot
-import ch.protonmail.android.uitest.robot.settings.account.labelsandfolders.LabelsAndFoldersRobot
-import ch.protonmail.android.uitest.robot.settings.account.privacy.PrivacySettingsRobot
-import ch.protonmail.android.uitest.robot.settings.account.swipinggestures.SwipingGesturesSettingsRobot
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.test.android.robots.settings.PasswordManagementRobot
@@ -40,41 +36,16 @@ import me.proton.core.test.android.robots.settings.PasswordManagementRobot
  * [AccountSettingsRobot] class contains actions and verifications for
  * Account settings functionality.
  */
-@Suppress("unused", "ExpressionBodySyntax")
 class AccountSettingsRobot(val composeTestRule: ComposeContentTestRule) {
-
-    fun navigateUpToSettings(): SettingsRobot {
-        return SettingsRobot(composeTestRule)
-    }
 
     fun openConversationMode(): ConversationModeRobot {
         clickOnAccountListItemWithText(string.mail_settings_conversation_mode)
         return ConversationModeRobot(composeTestRule)
     }
 
-    fun openDefaultEmailAddress(): DefaultEmailAddressRobot {
-        return DefaultEmailAddressRobot()
-    }
-
-    fun openDisplayNameAndSignature(): DisplayNameAndSignatureRobot {
-        return DisplayNameAndSignatureRobot()
-    }
-
-    fun openFoldersAndLabels(): LabelsAndFoldersRobot {
-        return LabelsAndFoldersRobot()
-    }
-
     fun openPasswordManagement(): PasswordManagementRobot {
         clickOnAccountListItemWithText(string.mail_settings_password_management)
         return PasswordManagementRobot()
-    }
-
-    fun openPrivacy(): PrivacySettingsRobot {
-        return PrivacySettingsRobot()
-    }
-
-    fun openSwipeActions(): SwipingGesturesSettingsRobot {
-        return SwipingGesturesSettingsRobot()
     }
 
     inline fun verify(block: Verify.() -> Unit): AccountSettingsRobot =

@@ -15,119 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
-@file:Suppress("UNCHECKED_CAST")
-
 package ch.protonmail.android.uitest.robot.mailbox
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import ch.protonmail.android.uitest.robot.mailbox.composer.ComposerRobot
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.messagedetail.MessageRobot
-import ch.protonmail.android.uitest.robot.mailbox.search.SearchRobot
-import ch.protonmail.android.uitest.robot.menu.MenuRobot
+import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 
-@Suppress("unused", "TooManyFunctions", "ExpressionBodySyntax")
 interface MailboxRobotInterface {
 
     val composeTestRule: ComposeContentTestRule get() = TODO("Override in subclass")
 
-    fun swipeLeftMessageAtPosition(position: Int): Any {
-        return Any()
-    }
+    fun clickMessageByPosition(position: Int) = apply {
+        val model = MailboxListItemEntryModel(position)
 
-    fun longClickMessageOnPosition(position: Int): Any {
-        return Any()
-    }
-
-    fun deleteMessageWithSwipe(position: Int): Any {
-        return Any()
-    }
-
-    fun searchBar(): SearchRobot {
-        return SearchRobot(composeTestRule)
-    }
-
-    fun compose(): ComposerRobot {
-        return ComposerRobot(composeTestRule)
-    }
-
-    fun menuDrawer(): MenuRobot {
-        return MenuRobot(composeTestRule)
-    }
-
-    fun clickMessageByPosition(position: Int): MessageRobot {
-        return MessageRobot(composeTestRule)
-    }
-
-    fun clickMessageBySubject(subject: String): MessageRobot {
-        return MessageRobot(composeTestRule)
-    }
-
-    fun clickFirstMatchedMessageBySubject(subject: String): MessageRobot {
-        return MessageRobot(composeTestRule)
-    }
-
-    fun refreshMessageList(): Any {
-        return Any()
-    }
-
-    fun mailboxLayoutShown() {}
-
-    /**
-     * Contains all the validations that can be performed by [InboxRobot].
-     */
-    @Suppress("ClassName")
-    open class verify {
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        fun messageExists(messageSubject: String) {}
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        fun draftWithAttachmentSaved(draftSubject: String) {}
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        fun messageDeleted(subject: String, date: String) {}
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        fun multipleMessagesDeleted(subjectMessageOne: String, subjectMessageTwo: String) {}
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        fun messageWithSubjectExists(subject: String) {}
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        fun messageWithSubjectHasRepliedFlag(subject: String) {}
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        fun messageWithSubjectHasRepliedAllFlag(subject: String) {}
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        fun messageWithSubjectHasForwardedFlag(subject: String) {}
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        fun messageWithSubjectAndRecipientExists(subject: String, to: String) {}
-    }
-
-    private class SetLongClickMessage : (String, String) -> Unit {
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        override fun invoke(subject: String, date: String) {}
-    }
-
-    private class SetSwipeLeftMessage : (String, String) -> Unit {
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        override fun invoke(subject: String, date: String) {}
-    }
-
-    private class SetDeleteWithSwipeMessage : (String, String) -> Unit {
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        override fun invoke(subject: String, date: String) {}
-    }
-
-    class SetSelectMessage : (String, String) -> Unit {
-
-        @SuppressWarnings("EmptyFunctionBlock")
-        override fun invoke(subject: String, date: String) {}
+        model.click()
     }
 }

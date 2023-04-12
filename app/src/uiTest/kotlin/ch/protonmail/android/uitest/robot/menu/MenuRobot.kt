@@ -17,7 +17,6 @@
  */
 package ch.protonmail.android.uitest.robot.menu
 
-import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
@@ -32,16 +31,9 @@ import ch.protonmail.android.mailmailbox.presentation.sidebar.TEST_TAG_SIDEBAR_M
 import ch.protonmail.android.uitest.models.folders.IconTint
 import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry
 import ch.protonmail.android.uitest.models.folders.SidebarItemCustomFolderEntryModel
-import ch.protonmail.android.uitest.robot.contacts.ContactsRobot
 import ch.protonmail.android.uitest.robot.mailbox.allmail.AllMailRobot
-import ch.protonmail.android.uitest.robot.mailbox.archive.ArchiveRobot
 import ch.protonmail.android.uitest.robot.mailbox.drafts.DraftsRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.labelfolder.LabelFolderRobot
-import ch.protonmail.android.uitest.robot.mailbox.sent.SentRobot
-import ch.protonmail.android.uitest.robot.mailbox.trash.TrashRobot
-import ch.protonmail.android.uitest.robot.manageaccounts.AccountPanelRobot
-import ch.protonmail.android.uitest.robot.reportbugs.ReportBugsRobot
 import ch.protonmail.android.uitest.robot.settings.SettingsRobot
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
@@ -52,26 +44,6 @@ import ch.protonmail.android.maillabel.presentation.R.string as mailLabelStrings
  * [MenuRobot] class contains actions and verifications for menu functionality.
  */
 class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
-
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun closeMenuWithSwipe(): MenuRobot {
-        return this
-    }
-
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun openAccountsList(): AccountPanelRobot {
-        return AccountPanelRobot(composeTestRule)
-    }
-
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun openArchive(): ArchiveRobot {
-        return ArchiveRobot()
-    }
-
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun openContacts(): ContactsRobot {
-        return ContactsRobot(composeTestRule)
-    }
 
     fun openDrafts(): DraftsRobot {
         tapSidebarMenuItemWithText(mailLabelStrings.label_title_drafts)
@@ -88,45 +60,13 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
         return AllMailRobot(composeTestRule)
     }
 
-    @Suppress("unused")
-    fun openLabelOrFolder(withName: String): LabelFolderRobot {
-        selectMenuLabelOrFolder(withName)
-        return LabelFolderRobot()
-    }
-
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun openReportBugs(): ReportBugsRobot {
-        return ReportBugsRobot()
-    }
-
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun openSent(): SentRobot {
-        return SentRobot()
-    }
-
     fun openSettings(): SettingsRobot {
         tapSidebarMenuItemWithText(string.presentation_menu_item_title_settings)
         return SettingsRobot(composeTestRule)
     }
 
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun openTrash(): TrashRobot {
-        return TrashRobot()
-    }
-
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun selectLogout(): MenuRobot {
-        return this
-    }
-
     internal inline fun verify(block: Verify.() -> Unit): MenuRobot =
         also { Verify().apply(block) }
-
-    @Suppress("unused", "EmptyFunctionBlock")
-    private fun selectMenuItem(@IdRes menuItemName: String) = Unit
-
-    @Suppress("unused", "EmptyFunctionBlock")
-    private fun selectMenuLabelOrFolder(@IdRes labelOrFolderName: String) = Unit
 
     private fun tapSidebarMenuItemWithText(@StringRes menuItemName: Int) {
         composeTestRule

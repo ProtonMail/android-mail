@@ -26,34 +26,16 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.robot.settings.account.AccountSettingsRobot
-import ch.protonmail.android.uitest.robot.settings.autolock.AutoLockRobot
 import ch.protonmail.android.uitest.robot.settings.swipeactions.SwipeActionsRobot
 import ch.protonmail.android.uitest.util.awaitProgressIsHidden
 import ch.protonmail.android.uitest.util.hasText
-import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
-import me.proton.core.presentation.R.string as coreString
 
 /**
  * [SettingsRobot] class contains actions and verifications for Settings view.
  */
 class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
-
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun navigateUpToInbox(): InboxRobot {
-        composeTestRule
-            .onNodeWithContentDescription(coreString.presentation_back)
-            .performClick()
-
-        return InboxRobot(composeTestRule)
-    }
-
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun openAutoLock(): AutoLockRobot {
-        return AutoLockRobot(composeTestRule)
-    }
 
     fun openLanguageSettings(): LanguageRobot {
         composeTestRule
@@ -96,12 +78,7 @@ class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
 
         return ThemeRobot(composeTestRule)
     }
-
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun selectEmptyCache(): SettingsRobot {
-        return this
-    }
-
+    
     fun openCombinedContactsSettings(): CombinedContactsRobot {
         composeTestRule
             .onNodeWithText(string.mail_settings_combined_contacts)
@@ -120,26 +97,6 @@ class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
         return AlternativeRoutingRobot(composeTestRule)
     }
 
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun selectSettingsItemByValue(value: String): AccountSettingsRobot {
-        return AccountSettingsRobot(composeTestRule)
-    }
-
-    inline fun verify(block: Verify.() -> Unit): SettingsRobot =
-        also { Verify().apply(block) }
-
     private fun ComposeContentTestRule.onList(): SemanticsNodeInteraction =
         onAllNodes(hasScrollAction()).onFirst() // second is drawer
-
-    @Suppress("unused", "EmptyFunctionBlock")
-    private fun selectItemByHeader(header: String) {}
-
-    /**
-     * Contains all the validations that can be performed by [SettingsRobot].
-     */
-    class Verify {
-
-        @Suppress("unused", "EmptyFunctionBlock")
-        fun settingsOpened() {}
-    }
 }
