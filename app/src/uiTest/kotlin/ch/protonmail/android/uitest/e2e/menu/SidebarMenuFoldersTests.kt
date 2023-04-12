@@ -29,7 +29,8 @@ import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers.defaultLoginUser
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.models.folders.SidebarFolderEntry
+import ch.protonmail.android.uitest.models.folders.IconTint
+import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -55,16 +56,94 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
     @Test
     @TestId("68718")
     fun checkShortHexAndStandardColorFolderAreDisplayedInSidebarMenu() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultCustomFolders = false) {
+        mockWebServer.dispatcher = mockNetworkDispatcher(
+            useDefaultCustomFolders = false,
+            useDefaultMailSettings = false
+        ) {
             addMockRequests(
-                "/core/v4/labels?Type=3" respondWith "/core/v4/labels/labels-type3_68718.json" withStatusCode 200,
-                "/mail/v4/messages" respondWith "/mail/v4/messages/messages_empty.json" withStatusCode 200 ignoreQueryParams true
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_68718.json"
+                    withStatusCode 200,
+                "/core/v4/labels?Type=3"
+                    respondWith "/core/v4/labels/labels-type3_68718.json"
+                    withStatusCode 200,
+                "/mail/v4/messages"
+                    respondWith "/mail/v4/messages/messages_empty.json"
+                    withStatusCode 200 ignoreQueryParams true
             )
         }
 
         val expectedFolders = arrayOf(
-            SidebarFolderEntry(index = 0, name = "Shorthand Hex Folder"),
-            SidebarFolderEntry(index = 1, name = "Standard Folder")
+            SidebarCustomItemEntry(index = 0, name = "Shorthand Hex Folder", iconTint = IconTint.WithColor.Bridge),
+            SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = IconTint.WithColor.PurpleBase)
+        )
+
+        addAccountRobot
+            .signIn()
+            .loginUser<Any>(defaultLoginUser)
+
+        menuRobot
+            .swipeOpenSidebarMenu()
+            .verify { customFoldersAreDisplayed(*expectedFolders) }
+    }
+
+    @Test
+    @TestId("79096")
+    fun checkFoldersColorWhenSettingIsOffWithNoParentInheritingInSidebarMenu() {
+        mockWebServer.dispatcher = mockNetworkDispatcher(
+            useDefaultCustomFolders = false,
+            useDefaultMailSettings = false
+        ) {
+            addMockRequests(
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_79096.json"
+                    withStatusCode 200,
+                "/core/v4/labels?Type=3"
+                    respondWith "/core/v4/labels/labels-type3_79096.json"
+                    withStatusCode 200,
+                "/mail/v4/messages"
+                    respondWith "/mail/v4/messages/messages_empty.json"
+                    withStatusCode 200 ignoreQueryParams true
+            )
+        }
+
+        val expectedFolders = arrayOf(
+            SidebarCustomItemEntry(index = 0, name = "Shorthand Hex Folder", iconTint = IconTint.NoColor),
+            SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = IconTint.NoColor)
+        )
+
+        addAccountRobot
+            .signIn()
+            .loginUser<Any>(defaultLoginUser)
+
+        menuRobot
+            .swipeOpenSidebarMenu()
+            .verify { customFoldersAreDisplayed(*expectedFolders) }
+    }
+
+    @Test
+    @TestId("79097")
+    fun checkFoldersColorWhenSettingIsOffWithParentInheritingInSidebarMenu() {
+        mockWebServer.dispatcher = mockNetworkDispatcher(
+            useDefaultCustomFolders = false,
+            useDefaultMailSettings = false
+        ) {
+            addMockRequests(
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_79097.json"
+                    withStatusCode 200,
+                "/core/v4/labels?Type=3"
+                    respondWith "/core/v4/labels/labels-type3_79097.json"
+                    withStatusCode 200,
+                "/mail/v4/messages"
+                    respondWith "/mail/v4/messages/messages_empty.json"
+                    withStatusCode 200 ignoreQueryParams true
+            )
+        }
+
+        val expectedFolders = arrayOf(
+            SidebarCustomItemEntry(index = 0, name = "Shorthand Hex Folder", iconTint = IconTint.NoColor),
+            SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = IconTint.NoColor)
         )
 
         addAccountRobot

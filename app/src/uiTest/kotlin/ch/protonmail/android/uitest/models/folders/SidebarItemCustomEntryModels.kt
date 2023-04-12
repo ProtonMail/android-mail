@@ -18,4 +18,18 @@
 
 package ch.protonmail.android.uitest.models.folders
 
-data class SidebarFolderEntry(val index: Int, val name: String)
+import androidx.compose.ui.test.hasTestTag
+
+internal class SidebarItemCustomLabelEntryModel(
+    position: Int
+) : SidebarItemEntryModel(position, hasTestTag(TestTags.SidebarItemCustomLabel))
+
+internal class SidebarItemCustomFolderEntryModel(
+    position: Int
+) : SidebarItemEntryModel(position, hasTestTag(TestTags.SidebarItemCustomFolder))
+
+private object TestTags {
+
+    const val SidebarItemCustomFolder = "SidebarItemCustomFolder"
+    const val SidebarItemCustomLabel = "SidebarItemCustomLabel"
+}

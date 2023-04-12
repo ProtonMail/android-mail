@@ -20,9 +20,7 @@ package ch.protonmail.android.uitest.robot.menu
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
@@ -31,7 +29,9 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import ch.protonmail.android.mailmailbox.presentation.sidebar.TEST_TAG_SIDEBAR_MENU
-import ch.protonmail.android.uitest.models.folders.SidebarFolderEntry
+import ch.protonmail.android.uitest.models.folders.IconTint
+import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry
+import ch.protonmail.android.uitest.models.folders.SidebarItemCustomFolderEntryModel
 import ch.protonmail.android.uitest.robot.contacts.ContactsRobot
 import ch.protonmail.android.uitest.robot.mailbox.allmail.AllMailRobot
 import ch.protonmail.android.uitest.robot.mailbox.archive.ArchiveRobot
@@ -120,7 +120,7 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
     }
 
     internal inline fun verify(block: Verify.() -> Unit): MenuRobot =
-        also { Verify(composeTestRule).apply(block) }
+        also { Verify().apply(block) }
 
     @Suppress("unused", "EmptyFunctionBlock")
     private fun selectMenuItem(@IdRes menuItemName: String) = Unit
@@ -153,25 +153,19 @@ class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
     /**
      * Contains all the validations that can be performed by [MenuRobot].
      */
-    internal class Verify(private val composeTestRule: ComposeContentTestRule) {
+    internal class Verify {
 
-        @Suppress("unused", "EmptyFunctionBlock")
-        fun menuOpened() = Unit
-
-        @Suppress("unused", "EmptyFunctionBlock")
-        fun menuClosed() = Unit
-
-        fun customFoldersAreDisplayed(vararg folders: SidebarFolderEntry) {
+        fun customFoldersAreDisplayed(vararg folders: SidebarCustomItemEntry) {
             folders.forEach {
-                composeTestRule
-                    .onAllNodesWithTag(SIDEBAR_ITEM_CUSTOM_FOLDER_TAG)[it.index]
-                    .assertTextEquals(it.name)
+                val item = SidebarItemCustomFolderEntryModel(it.index)
+
+                item.hasText(it.name)
+
+                when (it.iconTint) {
+                    is IconTint.WithColor -> item.hasIconTint(it.iconTint.value)
+                    is IconTint.NoColor -> item.hasNoTintColor()
+                }
             }
         }
-    }
-
-    private companion object {
-
-        const val SIDEBAR_ITEM_CUSTOM_FOLDER_TAG = "SidebarItemCustomFolder"
     }
 }
