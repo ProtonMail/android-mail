@@ -48,7 +48,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper
 ) {
 
-    fun toUiModel(
+    suspend fun toUiModel(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
         folderColorSettings: FolderColorSettings
@@ -74,7 +74,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         )
     }
 
-    fun toUiModel(
+    suspend fun toUiModel(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
         decryptedMessageBody: DecryptedMessageBody,
@@ -93,7 +93,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         )
     }
 
-    fun toUiModel(
+    suspend fun toUiModel(
         message: ConversationDetailMessageUiModel.Expanded,
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,

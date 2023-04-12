@@ -36,18 +36,23 @@ import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactSample
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.spyk
 import io.mockk.unmockkStatic
 import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class ConversationDetailMessageUiModelMapperTest {
 
 
@@ -72,7 +77,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         every { this@mockk(duration = any()) } returns TextUiModel("Aug 1, 2021")
     }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
-        every {
+        coEvery {
             this@mockk(labelIds = any(), labels = any(), colorSettings = any())
         } returns MessageLocationUiModelSample.AllMail
     }
@@ -120,7 +125,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
 
     @Test
-    fun `map to ui model returns collapsed model`() {
+    fun `map to ui model returns collapsed model`() = runTest {
         // given
         val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
         val expected = ConversationDetailMessageUiModelSample.AugWeatherForecast
@@ -137,7 +142,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
 
     @Test
-    fun `map to ui model returns expanded model`() {
+    fun `map to ui model returns expanded model`() = runTest {
         // given
         val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
         val contactsList = listOf(ContactSample.John, ContactSample.Doe)
@@ -154,12 +159,12 @@ internal class ConversationDetailMessageUiModelMapperTest {
         // then
         assertEquals(result.isUnread, messageWithLabels.message.unread)
         assertEquals(result.messageId, messageWithLabels.message.messageId)
-        verify { messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contactsList, folderColorSettings) }
+        coVerify { messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contactsList, folderColorSettings) }
         verify { messageBodyUiModelMapper.toUiModel(decryptedMessageBody) }
     }
 
     @Test
-    fun `when message is forwarded, ui model contains forwarded icon`() {
+    fun `when message is forwarded, ui model contains forwarded icon`() = runTest {
         // given
         val message = MessageSample.AugWeatherForecast.copy(isForwarded = true)
         val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
@@ -177,7 +182,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
 
     @Test
-    fun `when message is replied, ui model contains replied icon`() {
+    fun `when message is replied, ui model contains replied icon`() = runTest {
         // given
         val message = MessageSample.AugWeatherForecast.copy(isReplied = true)
         val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
@@ -195,7 +200,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
 
     @Test
-    fun `when message is replied all, ui model contains replied all icon`() {
+    fun `when message is replied all, ui model contains replied all icon`() = runTest {
         // given
         val message = MessageSample.AugWeatherForecast.copy(isRepliedAll = true)
         val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast.copy(message = message)
@@ -213,7 +218,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
 
     @Test
-    fun `when message is replied and replied all, ui model contains replied all icon`() {
+    fun `when message is replied and replied all, ui model contains replied all icon`() = runTest {
         // given
         val message = MessageSample.AugWeatherForecast.copy(
             isReplied = true,
@@ -234,7 +239,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
 
     @Test
-    fun `when message has expiration, ui model contains formatted time`() {
+    fun `when message has expiration, ui model contains formatted time`() = runTest {
         // given
         val message = MessageSample.ExpiringInvitation
         val messageWithLabels = MessageWithLabelsSample.ExpiringInvitation.copy(message = message)
@@ -248,7 +253,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
 
     @Test
-    fun `when message has only calendar attachments, ui model has not attachments`() {
+    fun `when message has only calendar attachments, ui model has not attachments`() = runTest {
         // given
         val message = MessageSample.ExpiringInvitation
         val messageWithLabels = MessageWithLabelsSample.ExpiringInvitation.copy(message = message)
@@ -262,7 +267,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
 
     @Test
-    fun `when message is updated then unread and header is updated`() {
+    fun `when message is updated then unread and header is updated`() = runTest {
         // Given
         val previousMessage = ConversationDetailMessageUiModelSample.InvoiceWithoutLabelsCustomFolderExpanded
 

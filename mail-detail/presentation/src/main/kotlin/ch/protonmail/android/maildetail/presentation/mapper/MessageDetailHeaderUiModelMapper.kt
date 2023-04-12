@@ -54,7 +54,7 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
     private val resolveParticipantName: ResolveParticipantName
 ) {
 
-    fun toUiModel(
+    suspend fun toUiModel(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
         folderColorSettings: FolderColorSettings

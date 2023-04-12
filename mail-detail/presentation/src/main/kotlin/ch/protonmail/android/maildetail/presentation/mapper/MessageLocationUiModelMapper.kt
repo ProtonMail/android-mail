@@ -24,23 +24,26 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.GetParentLabel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import javax.inject.Inject
 
 class MessageLocationUiModelMapper @Inject constructor(
-    private val colorMapper: ColorMapper
+    private val colorMapper: ColorMapper,
+    private val getParentLabel: GetParentLabel
 ) {
 
-    operator fun invoke(
+    suspend operator fun invoke(
         labelIds: List<LabelId>,
         labels: List<Label>,
         colorSettings: FolderColorSettings
     ): MessageLocationUiModel {
-        exclusiveLocations().forEach { systemLabelId ->
+        SystemLabelId.exclusiveList.forEach { systemLabelId ->
             if (systemLabelId.labelId in labelIds) {
                 return MessageLocationUiModel(
                     systemLabelId.name,
@@ -59,7 +62,7 @@ class MessageLocationUiModelMapper @Inject constructor(
                         else -> R.drawable.ic_proton_folder
                     },
                     color = when {
-                        colorSettings.useFolderColor -> colorMapper.toColor(label.color).getOrElse { Color.Unspecified }
+                        colorSettings.useFolderColor -> getLocationIconColor(label.userId, label, colorSettings)
                         else -> null
                     }
                 )
@@ -73,12 +76,15 @@ class MessageLocationUiModelMapper @Inject constructor(
         )
     }
 
-    private fun exclusiveLocations() = listOf(
-        SystemLabelId.Inbox,
-        SystemLabelId.Trash,
-        SystemLabelId.Spam,
-        SystemLabelId.Archive,
-        SystemLabelId.Sent,
-        SystemLabelId.Drafts
-    )
+    private suspend fun getLocationIconColor(
+        userId: UserId,
+        label: Label,
+        folderColorSettings: FolderColorSettings
+    ): Color {
+        val colorToMap = when {
+            folderColorSettings.inheritParentFolderColor -> getParentLabel(userId, label).color
+            else -> label.color
+        }
+        return colorToMap.let { colorMapper.toColor(it).getOrElse { Color.Unspecified } }
+    }
 }

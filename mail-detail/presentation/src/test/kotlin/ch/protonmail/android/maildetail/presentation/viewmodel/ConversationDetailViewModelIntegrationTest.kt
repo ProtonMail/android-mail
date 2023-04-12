@@ -81,6 +81,7 @@ import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryp
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
+import ch.protonmail.android.maillabel.domain.usecase.GetParentLabel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
@@ -189,12 +190,14 @@ class ConversationDetailViewModelIntegrationTest {
     private val getCurrentEpochTimeDuration: GetCurrentEpochTimeDuration = mockk {
         coEvery { this@mockk.invoke() } returns Duration.parse("PT0S")
     }
+    private val getParentLabel: GetParentLabel = mockk()
     // endregion
 
     // region mappers
     private val actionUiModelMapper = ActionUiModelMapper()
     private val colorMapper = ColorMapper()
     private val resolveParticipantName = ResolveParticipantName()
+    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper, getParentLabel)
     private val formatShortTime: FormatShortTime =
         mockk { every { this@mockk.invoke(any()) } returns TextUiModel("10:00") }
     private val formatExtendedTime: FormatExtendedTime =
@@ -214,7 +217,7 @@ class ConversationDetailViewModelIntegrationTest {
         expirationTimeMapper = ExpirationTimeMapper(getCurrentEpochTimeDuration),
         colorMapper = colorMapper,
         formatShortTime = formatShortTime,
-        messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper),
+        messageLocationUiModelMapper = messageLocationUiModelMapper,
         resolveParticipantName = resolveParticipantName,
         messageDetailHeaderUiModelMapper = MessageDetailHeaderUiModelMapper(
             colorMapper = colorMapper,
@@ -222,7 +225,7 @@ class ConversationDetailViewModelIntegrationTest {
             detailAvatarUiModelMapper = DetailAvatarUiModelMapper(getInitial),
             formatExtendedTime = formatExtendedTime,
             formatShortTime = formatShortTime,
-            messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper),
+            messageLocationUiModelMapper = messageLocationUiModelMapper,
             participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName),
             resolveParticipantName = resolveParticipantName
         ),

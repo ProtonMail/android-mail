@@ -24,25 +24,30 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.usecase.GetParentLabel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.label.LabelTestData
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class MessageLocationUiModelMapperTest {
 
     private val colorMapper: ColorMapper = mockk()
     private val folderColorSettings = FolderColorSettings(useFolderColor = false)
+    private val getParentLabel = mockk<GetParentLabel>()
 
-    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper)
+    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper, getParentLabel)
 
     @Test
-    fun `when an exclusive system label is found in the list of label ids, its name and icon are returned`() {
+    fun `when an exclusive system label is found in the list of label ids, its name and icon are returned`() = runTest {
         // Given
         val labelIds = listOf(SystemLabelId.AllMail.labelId, SystemLabelId.Archive.labelId)
         val expectedResult = MessageLocationUiModel(
@@ -56,37 +61,39 @@ class MessageLocationUiModelMapperTest {
     }
 
     @Test
-    fun `when a custom folder is found, it's name, icon and icon color are returned when folder color setting is on`() {
-        // Given
-        val customLabelId = "customLabelId"
-        val customFolderId = "customFolderId"
-        val customFolderName = "customFolder"
-        val customFolderColor = Color.Red
-        val labelIds = listOf(SystemLabelId.AllMail.labelId, LabelId(id = customLabelId), LabelId(id = customFolderId))
-        val labels = listOf(
-            LabelTestData.buildLabel(id = customLabelId, type = LabelType.MessageLabel),
-            LabelTestData.buildLabel(
-                id = customFolderId,
-                type = LabelType.MessageFolder,
-                name = customFolderName
+    fun `when a custom folder is found, it's name, icon and icon color are returned when folder color setting is on`() =
+        runTest {
+            // Given
+            val customLabelId = "customLabelId"
+            val customFolderId = "customFolderId"
+            val customFolderName = "customFolder"
+            val customFolderColor = Color.Red
+            val labelIds =
+                listOf(SystemLabelId.AllMail.labelId, LabelId(id = customLabelId), LabelId(id = customFolderId))
+            val labels = listOf(
+                LabelTestData.buildLabel(id = customLabelId, type = LabelType.MessageLabel),
+                LabelTestData.buildLabel(
+                    id = customFolderId,
+                    type = LabelType.MessageFolder,
+                    name = customFolderName
+                )
             )
-        )
-        val expectedResult = MessageLocationUiModel(
-            customFolderName,
-            R.drawable.ic_proton_folder_filled,
-            customFolderColor
-        )
-        every { colorMapper.toColor(any()) } returns customFolderColor.right()
+            val expectedResult = MessageLocationUiModel(
+                customFolderName,
+                R.drawable.ic_proton_folder_filled,
+                customFolderColor
+            )
+            every { colorMapper.toColor(any()) } returns customFolderColor.right()
 
-        // When
-        val result = messageLocationUiModelMapper(labelIds, labels, FolderColorSettings())
+            // When
+            val result = messageLocationUiModelMapper(labelIds, labels, FolderColorSettings())
 
-        // Then
-        assertEquals(expectedResult, result)
-    }
+            // Then
+            assertEquals(expectedResult, result)
+        }
 
     @Test
-    fun `when a custom folder is found, icon color is ignored when folder color setting is off`() {
+    fun `when a custom folder is found, icon color is ignored when folder color setting is off`() = runTest {
         // Given
         val customLabelId = "customLabelId"
         val customFolderId = "customFolderId"
@@ -115,16 +122,17 @@ class MessageLocationUiModelMapperTest {
     }
 
     @Test
-    fun `when no exclusive label has been found, then the name and icon of the all mail location are returned`() {
-        // Given
-        val labelIds = listOf(SystemLabelId.AllMail.labelId)
-        val expectedResult = MessageLocationUiModel(
-            SystemLabelId.AllMail.name,
-            SystemLabelId.enumOf(SystemLabelId.AllMail.labelId.id).iconRes()
-        )
-        // When
-        val result = messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings)
-        // Then
-        assertEquals(expectedResult, result)
-    }
+    fun `when no exclusive label has been found, then the name and icon of the all mail location are returned`() =
+        runTest {
+            // Given
+            val labelIds = listOf(SystemLabelId.AllMail.labelId)
+            val expectedResult = MessageLocationUiModel(
+                SystemLabelId.AllMail.name,
+                SystemLabelId.enumOf(SystemLabelId.AllMail.labelId.id).iconRes()
+            )
+            // When
+            val result = messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings)
+            // Then
+            assertEquals(expectedResult, result)
+        }
 }

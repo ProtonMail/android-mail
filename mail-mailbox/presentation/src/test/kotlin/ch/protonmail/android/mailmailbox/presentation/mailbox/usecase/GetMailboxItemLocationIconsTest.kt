@@ -156,6 +156,27 @@ class GetMailboxItemLocationIconsTest {
         }
 
     @Test
+    fun `when location is all mail and item just contains message in custom folder show folder icon`() =
+        runTest {
+            val colorString = "#FF0000"
+            every { colorMapper.toColor(colorString) } returns Color.Red.right()
+            givenCurrentLocationIs(MailLabelId.System.AllMail)
+            val folderId = "customFolder"
+            val itemLabelIds = listOf(LabelId(folderId))
+            val labels = listOf(
+                buildLabel(userId = userId, type = LabelType.MessageFolder, id = folderId, color = "#FF0000")
+            )
+            val mailboxItem = buildMailboxItem(labelIds = itemLabelIds, labels = labels)
+
+            val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings)
+
+            val expected = Result.Icons(
+                MailboxItemLocationUiModel(R.drawable.ic_proton_folder_filled, Color.Red)
+            )
+            assertEquals(expected, actual)
+        }
+
+    @Test
     fun `when location is all mail and mailbox item contains no message for which to show icons return no icons`() =
         runTest {
             givenCurrentLocationIs(MailLabelId.System.AllMail)

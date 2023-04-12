@@ -286,7 +286,7 @@ class ConversationDetailViewModel @Inject constructor(
         return Pair(messagesList, newestNonDraftMessageId)
     }
 
-    private fun buildListFromCurrentState(
+    private suspend fun buildListFromCurrentState(
         messages: NonEmptyList<MessageWithLabels>,
         contacts: List<Contact>,
         folderColorSettings: FolderColorSettings
@@ -306,7 +306,7 @@ class ConversationDetailViewModel @Inject constructor(
         return Pair(messagesList, null)
     }
 
-    private fun buildCollapsedMessage(
+    private suspend fun buildCollapsedMessage(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
         folderColorSettings: FolderColorSettings
@@ -316,7 +316,7 @@ class ConversationDetailViewModel @Inject constructor(
         folderColorSettings
     )
 
-    private fun buildExpandedMessage(
+    private suspend fun buildExpandedMessage(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
         decryptedBody: DecryptedMessageBody,

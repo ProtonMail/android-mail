@@ -43,17 +43,21 @@ import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.seconds
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class MessageDetailHeaderUiModelMapperTest {
 
     private val folderColorSettings = FolderColorSettings(useFolderColor = false)
@@ -114,7 +118,7 @@ class MessageDetailHeaderUiModelMapperTest {
         every { this@mockk(message.time.seconds) } returns shortTimeTextUiModel
     }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
-        every { this@mockk(any(), any(), any()) } returns messageLocationUiModel
+        coEvery { this@mockk(any(), any(), any()) } returns messageLocationUiModel
     }
     private val participantUiModelMapper: ParticipantUiModelMapper = mockk {
         every { senderToUiModel(MessageTestData.sender, ContactTestData.contacts) } returns senderUiModel
@@ -172,7 +176,7 @@ class MessageDetailHeaderUiModelMapperTest {
     }
 
     @Test
-    fun `map to ui model returns a correct model`() {
+    fun `map to ui model returns a correct model`() = runTest {
         // When
         val result = messageDetailHeaderUiModelMapper.toUiModel(
             messageWithLabels = messageWithLabels,
@@ -184,7 +188,7 @@ class MessageDetailHeaderUiModelMapperTest {
     }
 
     @Test
-    fun `when there are no attachments that are not calendar attachments, don't show attachment icon`() {
+    fun `when there are no attachments that are not calendar attachments, don't show attachment icon`() = runTest {
         // Given
         val messageWithLabels =
             messageWithLabels.copy(
@@ -205,7 +209,7 @@ class MessageDetailHeaderUiModelMapperTest {
     }
 
     @Test
-    fun `when the message is not starred, don't show star icon`() {
+    fun `when the message is not starred, don't show star icon`() = runTest {
         // Given
         val messageWithLabels = messageWithLabels.copy(
             message = message.copy(
@@ -227,7 +231,7 @@ class MessageDetailHeaderUiModelMapperTest {
     }
 
     @Test
-    fun `when TO, CC and BCC lists are empty, show undisclosed recipients`() {
+    fun `when TO, CC and BCC lists are empty, show undisclosed recipients`() = runTest {
         // Given
         val messageWithLabels = messageWithLabels.copy(
             message = message.copy(
@@ -252,7 +256,7 @@ class MessageDetailHeaderUiModelMapperTest {
     }
 
     @Test
-    fun `ui models contains the correct labels, without folders`() {
+    fun `ui models contains the correct labels, without folders`() = runTest {
         // Given
         val input = messageWithLabels.copy(
             labels = listOf(
