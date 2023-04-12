@@ -29,7 +29,7 @@ class GetParticipantsResolvedNames @Inject constructor(
     private val resolveParticipantName: ResolveParticipantName
 ) {
 
-    operator fun invoke(mailboxItem: MailboxItem, contacts: List<Contact>): List<String> {
+    operator fun invoke(mailboxItem: MailboxItem, contacts: List<Contact>): ParticipantsResolvedNamesResult {
         val displayRecipientLocations = setOf(
             SystemLabelId.AllSent.labelId,
             SystemLabelId.AllDrafts.labelId
@@ -37,9 +37,16 @@ class GetParticipantsResolvedNames @Inject constructor(
         val shouldDisplayRecipients = mailboxItem.labelIds.any { it in displayRecipientLocations }
 
         return if (shouldDisplayRecipients && mailboxItem.type == MailboxItemType.Message) {
-            mailboxItem.recipients.map { resolveParticipantName(it, contacts) }
+            ParticipantsResolvedNamesResult.Recipients(
+                mailboxItem.recipients.map { resolveParticipantName(it, contacts) }
+            )
         } else {
-            mailboxItem.senders.map { resolveParticipantName(it, contacts) }
+            ParticipantsResolvedNamesResult.Senders(mailboxItem.senders.map { resolveParticipantName(it, contacts) })
         }
     }
+}
+
+sealed class ParticipantsResolvedNamesResult(open val list: List<String>) {
+    data class Recipients(override val list: List<String>) : ParticipantsResolvedNamesResult(list)
+    data class Senders(override val list: List<String>) : ParticipantsResolvedNamesResult(list)
 }

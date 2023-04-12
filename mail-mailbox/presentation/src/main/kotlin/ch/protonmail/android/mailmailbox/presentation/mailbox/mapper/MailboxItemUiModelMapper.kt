@@ -28,6 +28,7 @@ import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
+import ch.protonmail.android.mailmailbox.domain.usecase.ParticipantsResolvedNamesResult
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
@@ -49,10 +50,10 @@ class MailboxItemUiModelMapper @Inject constructor(
 ) : Mapper<MailboxItem, MailboxItemUiModel> {
 
     fun toUiModel(mailboxItem: MailboxItem, contacts: List<Contact>): MailboxItemUiModel {
-        val participantsResolvedNames = getParticipantsResolvedNames(mailboxItem, contacts).filter { it.isNotBlank() }
+        val result = getParticipantsResolvedNames(mailboxItem, contacts)
 
         return MailboxItemUiModel(
-            avatar = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNames),
+            avatar = mailboxAvatarUiModelMapper(mailboxItem, result.list),
             type = mailboxItem.type,
             id = mailboxItem.id,
             userId = mailboxItem.userId,
@@ -61,7 +62,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             isRead = mailboxItem.read,
             labels = toLabelUiModels(mailboxItem.labels),
             subject = mailboxItem.subject,
-            participants = participantsResolvedNames.formatParticipants(),
+            participants = result.formatParticipants(),
             shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
             shouldShowRepliedAllIcon = shouldShowRepliedAllIcon(mailboxItem),
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
@@ -118,8 +119,14 @@ class MailboxItemUiModelMapper @Inject constructor(
             )
         }.toImmutableList()
 
-    private fun List<String>.formatParticipants() = when (this.isNotEmpty()) {
-        true -> TextUiModel(joinToString())
-        false -> TextUiModel(R.string.mailbox_default_recipient)
+    private fun ParticipantsResolvedNamesResult.formatParticipants(): TextUiModel {
+        return if (this.list.any { it.isNotBlank() }) {
+            TextUiModel(this.list.joinToString())
+        } else {
+            when (this) {
+                is ParticipantsResolvedNamesResult.Recipients -> TextUiModel(R.string.mailbox_default_recipient)
+                is ParticipantsResolvedNamesResult.Senders -> TextUiModel(R.string.mailbox_default_sender)
+            }
+        }
     }
 }

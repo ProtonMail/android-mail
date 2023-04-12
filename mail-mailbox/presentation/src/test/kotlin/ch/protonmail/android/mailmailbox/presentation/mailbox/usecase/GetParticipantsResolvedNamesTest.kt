@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.usecase
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
+import ch.protonmail.android.mailmailbox.domain.usecase.ParticipantsResolvedNamesResult
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.testdata.contact.ContactTestData
@@ -52,7 +53,7 @@ class GetParticipantsResolvedNamesTest {
         // When
         val actual = useCase(mailboxItem, ContactTestData.contacts)
         // Then
-        val expected = listOf(senderName, sender1Name)
+        val expected = ParticipantsResolvedNamesResult.Senders(listOf(senderName, sender1Name))
         assertEquals(expected, actual)
     }
 
@@ -74,7 +75,7 @@ class GetParticipantsResolvedNamesTest {
         // When
         val actual = useCase(mailboxItem, ContactTestData.contacts)
         // Then
-        val expected = listOf(recipientName, recipient1Name)
+        val expected = ParticipantsResolvedNamesResult.Recipients(listOf(recipientName, recipient1Name))
         assertEquals(expected, actual)
     }
 }
