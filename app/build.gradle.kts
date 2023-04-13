@@ -125,11 +125,11 @@ android {
             applicationIdSuffix = ".alpha"
             versionNameSuffix = "-alpha+$gitHash"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
-            buildConfigField("String", "HOST", "\"protonmail.ch\"")
+            buildConfigField("String", "HOST", "\"proton.me\"")
         }
         create("prod") {
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "true")
-            buildConfigField("String", "HOST", "\"protonmail.ch\"")
+            buildConfigField("String", "HOST", "\"proton.me\"")
         }
     }
 

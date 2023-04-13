@@ -50,7 +50,7 @@ import javax.inject.Singleton
 object NetworkModule {
 
     const val HOST = BuildConfig.HOST
-    const val API_HOST = "api.$HOST"
+    const val API_HOST = "mail-api.$HOST"
     const val BASE_URL = "https://$API_HOST"
 
     @Provides
