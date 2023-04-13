@@ -57,6 +57,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
@@ -68,7 +69,6 @@ import ch.protonmail.android.maildetail.presentation.mapper.ParticipantUiModelMa
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
-import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMessagesReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMetadataReducer
@@ -81,7 +81,7 @@ import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryp
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
-import ch.protonmail.android.maillabel.domain.usecase.GetParentLabel
+import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
@@ -190,14 +190,14 @@ class ConversationDetailViewModelIntegrationTest {
     private val getCurrentEpochTimeDuration: GetCurrentEpochTimeDuration = mockk {
         coEvery { this@mockk.invoke() } returns Duration.parse("PT0S")
     }
-    private val getParentLabel: GetParentLabel = mockk()
+    private val getRootLabel: GetRootLabel = mockk()
     // endregion
 
     // region mappers
     private val actionUiModelMapper = ActionUiModelMapper()
     private val colorMapper = ColorMapper()
     private val resolveParticipantName = ResolveParticipantName()
-    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper, getParentLabel)
+    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper, getRootLabel)
     private val formatShortTime: FormatShortTime =
         mockk { every { this@mockk.invoke(any()) } returns TextUiModel("10:00") }
     private val formatExtendedTime: FormatExtendedTime =

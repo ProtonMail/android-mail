@@ -21,19 +21,18 @@ package ch.protonmail.android.maillabel.domain.usecase
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class GetParentLabelTest {
+class GetRootLabelTest {
 
     private val labelRepository = mockk<LabelRepository>()
-    private val getParentLabel = GetParentLabel(labelRepository)
+    private val getRootLabel = GetRootLabel(labelRepository)
 
     @Test
     fun `verify repository is not called when parent id is null`() = runTest {
@@ -41,10 +40,10 @@ class GetParentLabelTest {
         val parentLabel = LabelSample.Parent
 
         // When
-        getParentLabel.invoke(parentLabel.userId, parentLabel)
+        getRootLabel.invoke(parentLabel.userId, parentLabel)
 
         // Then
-        coVerify(exactly = 0) { labelRepository.getLabel(any(), any(), any()) }
+        coVerify(exactly = 0) { labelRepository.getLabel(parentLabel.userId, LabelType.MessageFolder, any()) }
     }
 
     @Test
@@ -60,15 +59,18 @@ class GetParentLabelTest {
         } returns null
 
         // When
-        val actual = getParentLabel.invoke(childLabel.userId, childLabel)
+        val actual = getRootLabel.invoke(childLabel.userId, childLabel)
 
         // Then
-        coVerify(exactly = 1) { labelRepository.getLabel(any(), any(), any()) }
+        coVerify(exactly = 1) {
+            labelRepository.getLabel(childLabel.userId, LabelType.MessageFolder, childLabel.parentId!!)
+        }
+        confirmVerified(labelRepository)
         assertEquals(childLabel, actual)
     }
 
     @Test
-    fun `verify repository is called once when first child level label is passed`() = runTest {
+    fun `verify root label is returned when label with one parent is passed`() = runTest {
         // Given
         val childLabel = LabelSample.FirstChild
         val expected = LabelSample.Parent
@@ -81,15 +83,18 @@ class GetParentLabelTest {
         } returns LabelSample.Parent
 
         // When
-        val actual = getParentLabel.invoke(childLabel.userId, childLabel)
+        val actual = getRootLabel.invoke(childLabel.userId, childLabel)
 
         // Then
-        coVerify(exactly = 1) { labelRepository.getLabel(any(), any(), any()) }
+        coVerify(exactly = 1) {
+            labelRepository.getLabel(childLabel.userId, LabelType.MessageFolder, childLabel.parentId!!)
+        }
+        confirmVerified(labelRepository)
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `verify repository is called twice when second level label is passed`() = runTest {
+    fun `verify root label is returned when label with two ancestors is passed`() = runTest {
         // Given
         val user = LabelSample.Parent.userId
         val secondLevelChild = LabelSample.SecondChild
@@ -111,10 +116,10 @@ class GetParentLabelTest {
         } returns parent
 
         // When
-        val actual = getParentLabel.invoke(user, secondLevelChild)
+        val actual = getRootLabel.invoke(user, secondLevelChild)
 
         // Then
-        coVerify(exactly = 2) { labelRepository.getLabel(any(), any(), any()) }
+        coVerify(exactly = 2) { labelRepository.getLabel(user, LabelType.MessageFolder, any()) }
         assertEquals(parent, actual)
     }
 
@@ -140,10 +145,10 @@ class GetParentLabelTest {
         } returns null
 
         // When
-        val actual = getParentLabel.invoke(user, secondLevelChild)
+        val actual = getRootLabel.invoke(user, secondLevelChild)
 
         // Then
-        coVerify(exactly = 2) { labelRepository.getLabel(any(), any(), any()) }
+        coVerify(exactly = 2) { labelRepository.getLabel(user, LabelType.MessageFolder, any()) }
         assertEquals(firstLevelChild, actual)
     }
 }

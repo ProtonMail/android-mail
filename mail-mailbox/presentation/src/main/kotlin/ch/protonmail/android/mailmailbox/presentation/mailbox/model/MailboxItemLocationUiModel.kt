@@ -20,9 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
-import javax.annotation.concurrent.Immutable
 
-@Immutable
 data class MailboxItemLocationUiModel(
     @DrawableRes val icon: Int,
     val color: Color? = null

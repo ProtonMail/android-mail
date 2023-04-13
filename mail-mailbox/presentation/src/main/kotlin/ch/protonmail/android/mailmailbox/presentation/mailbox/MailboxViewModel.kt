@@ -50,7 +50,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -147,7 +146,6 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(MailboxEvent.NetworkStatusRefreshed(networkManager.networkStatus))
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private fun observePagingData(): Flow<PagingData<MailboxItemUiModel>> =
         primaryUserId.filterNotNull().flatMapLatest { userId ->
             combine(

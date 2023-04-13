@@ -24,7 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.usecase.GetParentLabel
+import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.presentation.R
@@ -42,7 +42,7 @@ import javax.inject.Inject
 class GetMailboxItemLocationIcons @Inject constructor(
     private val selectedMailLabelId: SelectedMailLabelId,
     private val colorMapper: ColorMapper,
-    private val getParentLabel: GetParentLabel
+    private val getRootLabel: GetRootLabel
 ) {
 
     suspend operator fun invoke(mailboxItem: MailboxItem, folderColorSettings: FolderColorSettings): Result {
@@ -95,10 +95,10 @@ class GetMailboxItemLocationIcons @Inject constructor(
         folderColorSettings: FolderColorSettings
     ): Color {
         val colorToMap = when {
-            folderColorSettings.inheritParentFolderColor -> getParentLabel(userId, label)?.color
+            folderColorSettings.inheritParentFolderColor -> getRootLabel(userId, label).color
             else -> label.color
         }
-        return colorToMap?.let { colorMapper.toColor(it).getOrElse { Color.Unspecified } } ?: Color.Unspecified
+        return colorMapper.toColor(colorToMap).getOrElse { Color.Unspecified }
     }
 
     private fun currentLocationShouldShowIcons(): Boolean {
@@ -114,7 +114,7 @@ class GetMailboxItemLocationIcons @Inject constructor(
         data class Icons(
             val first: MailboxItemLocationUiModel,
             val second: MailboxItemLocationUiModel? = null,
-            val third: MailboxItemLocationUiModel? = null,
+            val third: MailboxItemLocationUiModel? = null
         ) : Result
     }
 }

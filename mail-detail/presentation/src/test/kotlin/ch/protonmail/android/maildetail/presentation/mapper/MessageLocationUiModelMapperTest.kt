@@ -24,27 +24,25 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.usecase.GetParentLabel
+import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.label.LabelTestData
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class MessageLocationUiModelMapperTest {
 
     private val colorMapper: ColorMapper = mockk()
     private val folderColorSettings = FolderColorSettings(useFolderColor = false)
-    private val getParentLabel = mockk<GetParentLabel>()
+    private val getRootLabel = mockk<GetRootLabel>()
 
-    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper, getParentLabel)
+    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper, getRootLabel)
 
     @Test
     fun `when an exclusive system label is found in the list of label ids, its name and icon are returned`() = runTest {

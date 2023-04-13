@@ -24,7 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.usecase.GetParentLabel
+import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import me.proton.core.domain.entity.UserId
@@ -35,7 +35,7 @@ import javax.inject.Inject
 
 class MessageLocationUiModelMapper @Inject constructor(
     private val colorMapper: ColorMapper,
-    private val getParentLabel: GetParentLabel
+    private val getRootLabel: GetRootLabel
 ) {
 
     suspend operator fun invoke(
@@ -82,9 +82,9 @@ class MessageLocationUiModelMapper @Inject constructor(
         folderColorSettings: FolderColorSettings
     ): Color {
         val colorToMap = when {
-            folderColorSettings.inheritParentFolderColor -> getParentLabel(userId, label).color
+            folderColorSettings.inheritParentFolderColor -> getRootLabel(userId, label).color
             else -> label.color
         }
-        return colorToMap.let { colorMapper.toColor(it).getOrElse { Color.Unspecified } }
+        return colorMapper.toColor(colorToMap).getOrElse { Color.Unspecified }
     }
 }

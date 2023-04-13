@@ -24,7 +24,7 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
-class GetParentLabel @Inject constructor(
+class GetRootLabel @Inject constructor(
     private val labelRepository: LabelRepository
 ) {
 

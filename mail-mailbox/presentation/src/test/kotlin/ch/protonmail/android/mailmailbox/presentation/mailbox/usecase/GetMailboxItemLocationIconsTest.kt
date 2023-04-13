@@ -24,7 +24,7 @@ import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.maillabel.domain.usecase.GetParentLabel
+import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons.Result
@@ -35,7 +35,6 @@ import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
@@ -43,7 +42,6 @@ import me.proton.core.label.domain.entity.LabelType
 import org.junit.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class GetMailboxItemLocationIconsTest {
 
     private val defaultFolderColorSettings = FolderColorSettings()
@@ -54,12 +52,12 @@ class GetMailboxItemLocationIconsTest {
     private val selectedMailLabelId = mockk<SelectedMailLabelId> {
         every { this@mockk.flow } returns MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
     }
-    private val getParentLabel = mockk<GetParentLabel> {
+    private val getRootLabel = mockk<GetRootLabel> {
         coEvery { this@mockk.invoke(any(), any()) } returns LabelSample.Parent
     }
 
     private val getMailboxItemLocationIcons =
-        GetMailboxItemLocationIcons(selectedMailLabelId, colorMapper, getParentLabel)
+        GetMailboxItemLocationIcons(selectedMailLabelId, colorMapper, getRootLabel)
 
     @Test
     fun `location icons are only displayed when current location is 'starred' 'all mail' or 'custom label'`() =
