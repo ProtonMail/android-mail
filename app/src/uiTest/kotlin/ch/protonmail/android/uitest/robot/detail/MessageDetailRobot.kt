@@ -40,9 +40,14 @@ import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
-import ch.protonmail.android.maildetail.presentation.ui.TEST_TAG_MESSAGE_HEADER
+import ch.protonmail.android.maildetail.presentation.ui.LabelAsBottomSheetTestTags
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreenTestTags
+import ch.protonmail.android.maildetail.presentation.ui.MoveToBottomSheetTestTags
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
+import ch.protonmail.android.uitest.util.awaitDisplayed
+import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
 import org.hamcrest.CoreMatchers.containsString
@@ -51,8 +56,20 @@ import org.hamcrest.CoreMatchers.equalTo
 class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
     fun expandHeader(): MessageDetailRobot {
-        composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_HEADER)
+        composeTestRule.onNodeWithTag(MessageDetailScreenTestTags.RootItem)
             .performTouchInput { click(Offset.Zero) }
+        return this
+    }
+
+    fun openMoveToBottomSheet(): MessageDetailRobot {
+        composeTestRule.onNodeWithContentDescription(R.string.action_move_content_description)
+            .performClick()
+        return this
+    }
+
+    fun openLabelAsBottomSheet(): MessageDetailRobot {
+        composeTestRule.onNodeWithContentDescription(R.string.action_label_content_description)
+            .performClick()
         return this
     }
 
@@ -70,10 +87,9 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
     }
 
     fun waitUntilMessageIsShown(timeout: Long = 30_000L): MessageDetailRobot {
-        // To be improved with the introduction of Fusion, we need to wait for compose to be idle.
         composeTestRule.waitForIdle()
 
-        // Wait for the WebView to appear as well.
+        // Wait for the WebView to appear.
         uiDevice.wait(Until.hasObject(By.clazz("android.webkit.WebView")), timeout)
 
         return this
@@ -86,13 +102,19 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
     class Verify(private val composeTestRule: ComposeContentTestRule) {
 
+        fun messageDetailScreenIsShown() {
+            composeTestRule.onNodeWithTag(MessageDetailScreenTestTags.RootItem)
+                .awaitDisplayed(composeTestRule)
+                .assertExists()
+        }
+
         fun subjectIsDisplayed(subject: String) {
             composeTestRule.onNodeWithText(subject)
                 .assertIsDisplayed()
         }
 
         fun messageHeaderIsDisplayed() {
-            composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_HEADER)
+            composeTestRule.onNodeWithTag(MessageDetailHeaderTestTags.RootItem)
                 .assertIsDisplayed()
         }
 
@@ -166,6 +188,28 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
         fun messageBodyDecryptionErrorMessageIsDisplayed() {
             composeTestRule.onNodeWithText(R.string.decryption_error)
                 .assertIsDisplayed()
+        }
+
+        fun moveToBottomSheetExists() {
+            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem)
+                .assertExists()
+        }
+
+        fun labelAsBottomSheetExists() {
+            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem)
+                .assertExists()
+        }
+
+        fun moveToBottomSheetIsDismissed() {
+            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem)
+                .awaitHidden(composeTestRule)
+                .assertDoesNotExist()
+        }
+
+        fun labelAsBottomSheetIsDismissed() {
+            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem)
+                .awaitHidden(composeTestRule)
+                .assertDoesNotExist()
         }
     }
 }

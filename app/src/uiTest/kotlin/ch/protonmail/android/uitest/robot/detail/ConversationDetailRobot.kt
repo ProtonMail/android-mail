@@ -19,7 +19,9 @@
 package ch.protonmail.android.uitest.robot.detail
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
@@ -27,17 +29,27 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.web.assertion.WebViewAssertions
 import androidx.test.espresso.web.sugar.Web
 import androidx.test.espresso.web.webdriver.DriverAtoms
 import androidx.test.espresso.web.webdriver.Locator
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.Until
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.maildetail.presentation.R.string
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader
-import ch.protonmail.android.maildetail.presentation.ui.TEST_TAG_MESSAGE_HEADER
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreenTestTags
+import ch.protonmail.android.maildetail.presentation.ui.LabelAsBottomSheetTestTags
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreenTestTags
+import ch.protonmail.android.maildetail.presentation.ui.MoveToBottomSheetTestTags
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
+import ch.protonmail.android.uitest.util.UiDeviceHolder
+import ch.protonmail.android.uitest.util.awaitDisplayed
+import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
@@ -46,17 +58,44 @@ import org.hamcrest.Matchers
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
+    fun expandHeader(): ConversationDetailRobot {
+        composeTestRule.onNodeWithTag(MessageDetailHeaderTestTags.RootItem)
+            .performTouchInput { click(Offset.Zero) }
+        return this
+    }
+
     fun markAsUnread(): ConversationDetailRobot {
-        composeTestRule.onNodeWithContentDescription(string.action_mark_unread_content_description)
+        composeTestRule.onNodeWithContentDescription(R.string.action_mark_unread_content_description)
             .performClick()
         return this
     }
 
     fun moveToTrash(): MailboxRobot {
-        composeTestRule.onNodeWithContentDescription(string.action_trash_content_description)
+        composeTestRule.onNodeWithContentDescription(R.string.action_trash_content_description)
             .performClick()
 
         return MailboxRobot(composeTestRule)
+    }
+
+    fun openMoveToBottomSheet(): ConversationDetailRobot {
+        composeTestRule.onNodeWithContentDescription(R.string.action_move_content_description)
+            .performClick()
+        return this
+    }
+
+    fun openLabelAsBottomSheet(): ConversationDetailRobot {
+        composeTestRule.onNodeWithContentDescription(R.string.action_label_content_description)
+            .performClick()
+        return this
+    }
+
+    fun waitUntilMessageIsShown(timeout: Long = 30_000L): ConversationDetailRobot {
+        composeTestRule.waitForIdle()
+
+        // Wait for the WebView to appear.
+        UiDeviceHolder.uiDevice.wait(Until.hasObject(By.clazz("android.webkit.WebView")), timeout)
+
+        return this
     }
 
     fun verify(block: Verify.() -> Unit): ConversationDetailRobot {
@@ -66,6 +105,12 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
 
     @Suppress("TooManyFunctions")
     class Verify(private val composeTestRule: ComposeContentTestRule) {
+
+        fun conversationDetailScreenIsShown() {
+            composeTestRule.onNodeWithTag(ConversationDetailScreenTestTags.RootItem)
+                .awaitDisplayed(composeTestRule)
+                .assertExists()
+        }
 
         fun attachmentIconIsDisplayed() {
             composeTestRule.onAllNodesWithTag(ConversationDetailCollapsedMessageHeader.AttachmentIconTestTag)
@@ -160,12 +205,34 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
         }
 
         fun messageHeaderIsDisplayed() {
-            composeTestRule.onNodeWithTag(TEST_TAG_MESSAGE_HEADER)
+            composeTestRule.onNodeWithTag(MessageDetailScreenTestTags.RootItem)
                 .assertIsDisplayed()
         }
 
         fun collapsedHeaderDoesNotExist() {
             composeTestRule.onNodeWithTag(ConversationDetailCollapsedMessageHeader.CollapsedHeaderTestTag)
+                .assertDoesNotExist()
+        }
+
+        fun moveToBottomSheetExists() {
+            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem)
+                .assertExists()
+        }
+
+        fun labelAsBottomSheetExists() {
+            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem)
+                .assertExists()
+        }
+
+        fun moveToBottomSheetIsDismissed() {
+            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem)
+                .awaitHidden(composeTestRule)
+                .assertDoesNotExist()
+        }
+
+        fun labelAsBottomSheetIsDismissed() {
+            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem)
+                .awaitHidden(composeTestRule)
                 .assertDoesNotExist()
         }
     }
