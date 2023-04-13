@@ -35,8 +35,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,6 +49,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
+import ch.protonmail.android.maillabel.presentation.extension.tintColor
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.maillabel.presentation.textRes
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -79,48 +82,62 @@ fun MoveToBottomSheetContent(
     Column {
         Row(
             modifier = Modifier
+                .testTag(MoveToBottomSheetTestTags.RootItem)
                 .padding(ProtonDimens.DefaultSpacing)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
+                modifier = Modifier.testTag(MoveToBottomSheetTestTags.MoveToText),
                 text = stringResource(id = R.string.bottom_sheet_move_to_title),
                 style = ProtonTheme.typography.default
             )
             Text(
-                modifier = Modifier.clickable { selectedMailLabel?.let(onDoneClick) },
+                modifier = Modifier
+                    .testTag(MoveToBottomSheetTestTags.DoneButton)
+                    .clickable { selectedMailLabel?.let(onDoneClick) },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
                 style = ProtonTheme.typography.default,
                 color = ProtonTheme.colors.interactionNorm(dataState.selected != null)
             )
         }
-        Divider()
+        Divider(modifier = Modifier.testTag(MoveToBottomSheetTestTags.Divider))
         LazyColumn {
             items(dataState.moveToDestinations) {
                 ProtonRawListItem(
                     modifier = Modifier
+                        .testTag(MoveToBottomSheetTestTags.FolderItem)
                         .clickable { onFolderSelected(it.id) }
                         .height(ProtonDimens.ListItemHeight)
                         .padding(end = ProtonDimens.DefaultSpacing)
                 ) {
                     Icon(
-                        painter = painterResource(id = it.icon),
-                        contentDescription = NO_CONTENT_DESCRIPTION,
                         modifier = Modifier
+                            .testTag(MoveToBottomSheetTestTags.FolderIcon)
+                            .semantics { tintColor = it.iconTint }
                             .padding(start = if (it is MailLabelUiModel.Custom) it.iconPaddingStart else 0.dp)
                             .padding(horizontal = ProtonDimens.DefaultSpacing),
+                        painter = painterResource(id = it.icon),
+                        contentDescription = NO_CONTENT_DESCRIPTION,
                         tint = it.iconTint ?: ProtonTheme.colors.iconWeak
                     )
                     Text(
+                        modifier = Modifier
+                            .testTag(MoveToBottomSheetTestTags.FolderNameText)
+                            .weight(1f),
                         text = it.text.string(),
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f)
+                        overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
+                    Spacer(
+                        modifier = Modifier
+                            .testTag(MoveToBottomSheetTestTags.FolderSpacer)
+                            .size(ProtonDimens.SmallSpacing)
+                    )
                     if (it.isSelected) {
                         Icon(
                             modifier = Modifier
+                                .testTag(MoveToBottomSheetTestTags.FolderSelectionIcon)
                                 .padding(end = ProtonDimens.SmallSpacing)
                                 .size(ProtonDimens.SmallIconSize),
                             painter = painterResource(id = R.drawable.ic_proton_checkmark),
@@ -198,4 +215,17 @@ fun MoveToBottomSheetContentPreview() {
         onFolderSelected = {},
         onDoneClick = {}
     )
+}
+
+object MoveToBottomSheetTestTags {
+
+    const val RootItem = "MoveToBottomSheetRootItem"
+    const val MoveToText = "MoveToText"
+    const val DoneButton = "DoneButton"
+    const val Divider = "MoveToBottomSheetDivider"
+    const val FolderItem = "FolderItem"
+    const val FolderIcon = "FolderIcon"
+    const val FolderNameText = "FolderNameText"
+    const val FolderSpacer = "FolderSpacer"
+    const val FolderSelectionIcon = "FolderSelectionIcon"
 }

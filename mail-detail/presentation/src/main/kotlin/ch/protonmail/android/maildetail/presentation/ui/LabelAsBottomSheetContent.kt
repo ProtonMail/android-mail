@@ -39,14 +39,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
+import ch.protonmail.android.maillabel.presentation.extension.tintColor
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -64,13 +67,13 @@ fun LabelAsBottomSheetContent(
     onLabelAsSelected: (LabelId) -> Unit,
     onDoneClick: (archiveSelected: Boolean) -> Unit
 ) {
-
     when (state) {
         is LabelAsBottomSheetState.Data -> LabelAsBottomSheetContent(
             labelAsDataState = state,
             onLabelAsSelected = onLabelAsSelected,
             onDoneClick = onDoneClick
         )
+
         else -> ProtonCenteredProgress()
     }
 }
@@ -87,23 +90,28 @@ fun LabelAsBottomSheetContent(
     Column {
         Row(
             modifier = Modifier
+                .testTag(LabelAsBottomSheetTestTags.RootItem)
                 .padding(ProtonDimens.DefaultSpacing)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
+                modifier = Modifier.testTag(LabelAsBottomSheetTestTags.LabelAsText),
                 text = stringResource(id = R.string.bottom_sheet_label_as_title),
                 style = ProtonTheme.typography.default
             )
             Text(
-                modifier = Modifier.clickable { onDoneClick(archiveSelectedState) },
+                modifier = Modifier
+                    .testTag(LabelAsBottomSheetTestTags.DoneButton)
+                    .clickable { onDoneClick(archiveSelectedState) },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
                 style = ProtonTheme.typography.default,
                 color = ProtonTheme.colors.interactionNorm()
             )
         }
-        Divider()
+        Divider(modifier = Modifier.testTag(LabelAsBottomSheetTestTags.Divider))
         ProtonSettingsToggleItem(
+            modifier = Modifier.testTag(LabelAsBottomSheetTestTags.AlsoArchiveToggle),
             name = stringResource(id = R.string.bottom_sheet_archive_action),
             value = archiveSelectedState,
             onToggle = { archiveSelectedState = !archiveSelectedState }
@@ -112,24 +120,36 @@ fun LabelAsBottomSheetContent(
             items(labelAsDataState.labelUiModelsWithSelectedState) { itemLabel ->
                 ProtonRawListItem(
                     modifier = Modifier
+                        .testTag(LabelAsBottomSheetTestTags.LabelItem)
                         .clickable { onLabelAsSelected(itemLabel.labelUiModel.id.labelId) }
                         .height(ProtonDimens.ListItemHeight)
                 ) {
                     Icon(
-                        modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
+                        modifier = Modifier
+                            .testTag(LabelAsBottomSheetTestTags.LabelIcon)
+                            .semantics { tintColor = itemLabel.labelUiModel.iconTint }
+                            .padding(horizontal = ProtonDimens.DefaultSpacing),
                         painter = painterResource(id = itemLabel.labelUiModel.icon),
                         contentDescription = NO_CONTENT_DESCRIPTION,
                         tint = itemLabel.labelUiModel.iconTint ?: ProtonTheme.colors.iconWeak
                     )
                     Text(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .testTag(LabelAsBottomSheetTestTags.LabelNameText)
+                            .weight(1f),
                         text = itemLabel.labelUiModel.text.value,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
+                    Spacer(
+                        modifier = Modifier
+                            .testTag(LabelAsBottomSheetTestTags.LabelSpacer)
+                            .size(ProtonDimens.SmallSpacing)
+                    )
                     TriStateCheckbox(
-                        modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing),
+                        modifier = Modifier
+                            .testTag(LabelAsBottomSheetTestTags.LabelSelectionCheckbox)
+                            .padding(end = ProtonDimens.ExtraSmallSpacing),
                         state = when (itemLabel.selectedState) {
                             LabelSelectedState.Selected -> ToggleableState.On
                             LabelSelectedState.NotSelected -> ToggleableState.Off
@@ -157,4 +177,16 @@ fun LabelAsBottomSheetContentPreview() {
     }
 }
 
+object LabelAsBottomSheetTestTags {
 
+    const val RootItem = "LabelAsBottomSheetRootItem"
+    const val LabelAsText = "LabelAsText"
+    const val DoneButton = "DoneButton"
+    const val Divider = "LabelAsBottomSheetDivider"
+    const val AlsoArchiveToggle = "AlsoArchiveToggle"
+    const val LabelItem = "LabelItem"
+    const val LabelIcon = "LabelIcon"
+    const val LabelNameText = "LabelNameText"
+    const val LabelSpacer = "LabelSpacer"
+    const val LabelSelectionCheckbox = "LabelSelectionCheckbox"
+}
