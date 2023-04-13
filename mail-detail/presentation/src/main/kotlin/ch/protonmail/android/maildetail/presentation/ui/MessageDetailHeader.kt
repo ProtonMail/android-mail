@@ -82,8 +82,6 @@ import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultSmall
 import me.proton.core.compose.theme.defaultSmallStrong
 
-const val TEST_TAG_MESSAGE_HEADER = "messageHeader"
-
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MessageDetailHeader(
@@ -137,7 +135,7 @@ private fun MessageDetailHeaderLayout(
                 top = ProtonDimens.SmallSpacing,
                 bottom = ProtonDimens.DefaultSpacing
             )
-            .testTag(TEST_TAG_MESSAGE_HEADER)
+            .testTag(MessageDetailHeaderTestTags.RootItem)
     ) {
 
         val (
@@ -711,4 +709,9 @@ fun MessageDetailHeaderPreview(
             initiallyExpanded = preview.initiallyExpanded,
         )
     }
+}
+
+object MessageDetailHeaderTestTags {
+
+    const val RootItem = "MessageDetailHeaderRootItem"
 }

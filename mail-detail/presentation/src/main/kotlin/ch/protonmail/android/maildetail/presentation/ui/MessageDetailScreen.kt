@@ -37,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -169,7 +170,9 @@ fun MessageDetailScreen(
     }
 
     Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier
+            .testTag(MessageDetailScreenTestTags.RootItem)
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
         snackbarHost = {
             ProtonSnackbarHost(hostState = snackbarHostState)
         },
@@ -239,6 +242,7 @@ fun MessageDetailScreen(
                     actions = messageDetailContentActions
                 )
             }
+
             is MessageMetadataState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.padding(innerPadding)
             )
@@ -274,10 +278,12 @@ private fun MessageDetailContent(
                         onShowAllAttachments = actions.onShowAllAttachmentsClicked
                     )
                 )
+
                 is MessageBodyState.Error.Data -> MessageBodyLoadingError(
                     messageBodyState = messageBodyState,
                     onReload = actions.onReload
                 )
+
                 is MessageBodyState.Error.Decryption -> {
                     ProtonErrorMessage(errorMessage = stringResource(id = R.string.decryption_error))
                     MessageBody(
@@ -365,4 +371,9 @@ private fun MessageDetailScreenPreview(
     ProtonTheme3 {
         MessageDetailScreen(state = state, actions = MessageDetailScreen.Actions.Empty)
     }
+}
+
+object MessageDetailScreenTestTags {
+
+    const val RootItem = "MessageDetailScreenRootItem"
 }

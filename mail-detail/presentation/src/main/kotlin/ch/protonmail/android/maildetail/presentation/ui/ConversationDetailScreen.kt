@@ -44,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -197,7 +198,9 @@ fun ConversationDetailScreen(
     }
 
     Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier
+            .testTag(ConversationDetailScreenTestTags.RootItem)
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = ProtonTheme.colors.backgroundDeep,
         snackbarHost = {
             ProtonSnackbarHost(hostState = snackbarHostState)
@@ -400,4 +403,9 @@ private fun ConversationDetailScreenPreview(
             ConversationDetailScreen(state = state, actions = ConversationDetailScreen.Actions.Empty)
         }
     }
+}
+
+object ConversationDetailScreenTestTags {
+
+    const val RootItem = "ConversationDetailScreenRootItem"
 }
