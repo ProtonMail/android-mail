@@ -36,6 +36,11 @@ include(":mail-common:data")
 include(":mail-common:domain")
 include(":mail-common:presentation")
 
+include(":mail-composer:dagger")
+include(":mail-composer:data")
+include(":mail-composer:domain")
+include(":mail-composer:presentation")
+
 include(":mail-contact:dagger")
 include(":mail-contact:data")
 include(":mail-contact:domain")

@@ -181,6 +181,7 @@ dependencies {
     implementation(Proton.Core.proguardRules)
 
     implementation(project(":mail-common"))
+    implementation(project(":mail-composer"))
     implementation(project(":mail-contact"))
     implementation(project(":mail-conversation"))
     implementation(project(":mail-detail"))
