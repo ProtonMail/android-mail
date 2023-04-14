@@ -96,7 +96,7 @@ class MessageRepositoryImpl @Inject constructor(
         }
 
     override suspend fun loadMessages(userId: UserId, pageKey: PageKey) =
-        localDataSource.getMessages(userId, pageKey).right()
+        localDataSource.getMessages(userId, pageKey)
 
     override suspend fun isLocalPageValid(userId: UserId, pageKey: PageKey, items: List<Message>): Boolean =
         localDataSource.isLocalPageValid(userId, pageKey, items)

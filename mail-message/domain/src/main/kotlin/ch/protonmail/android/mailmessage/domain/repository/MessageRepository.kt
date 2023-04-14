@@ -41,7 +41,7 @@ interface MessageRepository {
     /**
      * Load all [Message] for [userId] filtered by [PageKey].
      */
-    suspend fun loadMessages(userId: UserId, pageKey: PageKey = PageKey()): Either<DataError, List<Message>>
+    suspend fun loadMessages(userId: UserId, pageKey: PageKey = PageKey()): List<Message>
 
     /**
      * Return true if all [Message] are considered locally valid according the given [pageKey].

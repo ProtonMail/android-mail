@@ -37,16 +37,10 @@ class IsLocalPageValid @Inject constructor(
     ): Boolean {
         return when (type) {
             MailboxItemType.Message -> with(messageRepository) {
-                loadMessages(userId, pageKey).let {
-                    val items = requireNotNull(it.getOrNull())
-                    isLocalPageValid(userId, pageKey, items)
-                }
+                isLocalPageValid(userId, pageKey, loadMessages(userId, pageKey))
             }
             MailboxItemType.Conversation -> with(conversationRepository) {
-                loadConversations(userId, pageKey).let {
-                    val items = requireNotNull(it.getOrNull())
-                    isLocalPageValid(userId, pageKey, items)
-                }
+                isLocalPageValid(userId, pageKey, loadConversations(userId, pageKey))
             }
         }
     }

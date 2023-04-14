@@ -134,7 +134,6 @@ class ConversationRepositoryImplTest {
 
         // When
         val conversations = conversationRepository.loadConversations(userId, pageKey)
-            .getOrElse(::error)
 
         // Then
         assertEquals(2, conversations.size)

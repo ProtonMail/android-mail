@@ -45,7 +45,7 @@ interface ConversationRepository {
     suspend fun loadConversations(
         userId: UserId,
         pageKey: PageKey = PageKey()
-    ): Either<DataError, List<ConversationWithContext>>
+    ): List<ConversationWithContext>
 
     /**
      * Return true if all [Conversation] are considered locally valid according the given [pageKey].

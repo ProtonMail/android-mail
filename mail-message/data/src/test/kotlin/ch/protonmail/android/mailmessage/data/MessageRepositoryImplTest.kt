@@ -188,7 +188,7 @@ class MessageRepositoryImplTest {
         coEvery { localDataSource.isLocalPageValid(userId, pageKey, localMessages) } returns true
 
         // When
-        val messages = messageRepository.loadMessages(userId, pageKey).getOrElse(::error)
+        val messages = messageRepository.loadMessages(userId, pageKey)
 
         // Then
         assertEquals(2, messages.size)

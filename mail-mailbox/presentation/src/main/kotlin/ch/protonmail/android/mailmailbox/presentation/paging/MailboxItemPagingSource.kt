@@ -81,10 +81,15 @@ class MailboxItemPagingSource @AssistedInject constructor(
         )
     }
 
-    override fun getRefreshKey(state: PagingState<MailboxPageKey, MailboxItem>): MailboxPageKey? {
-        return getAllPagesRefreshKey(state)
-    }
+    override fun getRefreshKey(state: PagingState<MailboxPageKey, MailboxItem>): MailboxPageKey? =
+        getAllPagesRefreshKey(state)
 
+    /**
+     * When refreshing we get a key that represent all pages loaded so far.
+     * This is needed due to the complexity of our key not allowing to precisely determine the key
+     * to the currently displayed page. (All other solutions tried to achieve that caused some "jumping"
+     * in the list)
+     */
     private fun getAllPagesRefreshKey(state: PagingState<MailboxPageKey, MailboxItem>): MailboxPageKey? {
         Timber.d("Paging: getRefreshKey: ${state.pages.size} pages")
         val items = state.pages.flatMap { it.data }.takeIfNotEmpty() ?: return null
