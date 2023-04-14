@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.models.mailbox
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
@@ -27,6 +28,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
+import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertTextColor
 import ch.protonmail.android.uitest.util.child
@@ -46,6 +48,10 @@ class MailboxListItemEntryModel(
 
     private val avatar = rootItem.child {
         hasTestTag(AvatarTestTags.Avatar)
+    }
+
+    private val avatarDraft = rootItem.child {
+        hasTestTag(AvatarTestTags.AvatarDraft)
     }
 
     private val participants = rootItem.child {
@@ -71,8 +77,11 @@ class MailboxListItemEntryModel(
     // endregion
 
     // region verification
-    fun hasAvatarText(text: String) = apply {
-        avatar.assertTextEquals(text)
+    fun hasAvatar(initial: AvatarInitial) = apply {
+        when (initial) {
+            is AvatarInitial.WithText -> avatar.assertTextEquals(initial.text)
+            is AvatarInitial.Draft -> avatarDraft.assertIsDisplayed()
+        }
     }
 
     fun hasParticipants(text: String) = apply {

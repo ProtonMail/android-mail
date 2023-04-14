@@ -16,15 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.models.mailbox
+package ch.protonmail.android.uitest.models.avatar
 
-import ch.protonmail.android.uitest.models.avatar.AvatarInitial
+sealed class AvatarInitial {
 
-data class MailboxListItemEntry(
-    val index: Int,
-    val avatarInitial: AvatarInitial,
-    val participants: String,
-    val subject: String,
-    val date: String,
-    val count: String? = null
-)
+    object Draft : AvatarInitial()
+    class WithText(val text: String) : AvatarInitial()
+}
