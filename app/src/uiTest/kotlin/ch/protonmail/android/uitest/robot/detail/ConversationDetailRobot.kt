@@ -44,7 +44,6 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollap
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreenTestTags
 import ch.protonmail.android.maildetail.presentation.ui.LabelAsBottomSheetTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
-import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreenTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MoveToBottomSheetTestTags
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.UiDeviceHolder
@@ -205,7 +204,7 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
         }
 
         fun messageHeaderIsDisplayed() {
-            composeTestRule.onNodeWithTag(MessageDetailScreenTestTags.RootItem)
+            composeTestRule.onNodeWithTag(MessageDetailHeaderTestTags.RootItem)
                 .assertIsDisplayed()
         }
 

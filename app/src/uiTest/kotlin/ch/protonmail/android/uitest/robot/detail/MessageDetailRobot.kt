@@ -56,7 +56,7 @@ import org.hamcrest.CoreMatchers.equalTo
 class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
     fun expandHeader(): MessageDetailRobot {
-        composeTestRule.onNodeWithTag(MessageDetailScreenTestTags.RootItem)
+        composeTestRule.onNodeWithTag(MessageDetailHeaderTestTags.RootItem)
             .performTouchInput { click(Offset.Zero) }
         return this
     }
