@@ -28,7 +28,7 @@ import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class RefreshPageKeyTest {
+class RefreshPageKeyKtTest {
 
     data class FakeItem(
         override val userId: UserId = UserId("userId"),

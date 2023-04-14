@@ -27,13 +27,14 @@ import androidx.room.RoomDatabase
 import androidx.room.getQueryDispatcher
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Inbox
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
+import ch.protonmail.android.mailmailbox.domain.usecase.IsMultiUserLocalPageValid
 import ch.protonmail.android.mailpagination.domain.AdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
@@ -61,13 +62,24 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
-import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class MailboxItemPagingSourceTest {
 
     private val userId = UserId("1")
+    private val pageKey = buildPageKey()
+    private val prevKey = buildPageKey(filter = pageKey.filter.copy(minTime = 1234, maxTime = Long.MAX_VALUE))
+    private val nextKey = buildPageKey(filter = pageKey.filter.copy(maxTime = 1234, minTime = Long.MIN_VALUE))
+    private val mailboxPageKey = MailboxPageKey(listOf(userId), pageKey)
+    private val type = MailboxItemType.Message
+    private val mailboxItems = listOf(
+        buildMailboxItem(userId, "5", time = 5000),
+        buildMailboxItem(userId, "4", time = 4000),
+        buildMailboxItem(userId, "3", time = 3000),
+        buildMailboxItem(userId, "2", time = 2000),
+        buildMailboxItem(userId, "1", time = 1000)
+    )
 
     private val mockInvalidationTracker = mockk<InvalidationTracker> {
         every { this@mockk.addObserver(any()) } just Runs
@@ -82,25 +94,15 @@ class MailboxItemPagingSourceTest {
     }
 
     private val getMailboxItems = mockk<GetMultiUserMailboxItems> {
-        coEvery { this@mockk.invoke(type = any(), pageKey = any()) } returns emptyList<MailboxItem>().right()
+        coEvery { this@mockk.invoke(type = any(), pageKey = mailboxPageKey) } returns emptyList<MailboxItem>().right()
     }
 
     private val getAdjacentPageKeys = mockk<GetAdjacentPageKeys> {
-        every { this@mockk.invoke(any(), any(), any()) } returns AdjacentPageKeys(PageKey(), PageKey(), PageKey())
+        every { this@mockk.invoke(any(), any(), any()) } returns AdjacentPageKeys(prevKey, pageKey, nextKey)
     }
-
-    private fun pagingSource(
-        isFilterUnreadEnabled: Boolean = false,
-        selectedLabelId: MailLabelId = Inbox
-    ) = MailboxItemPagingSource(
-        roomDatabase = roomDatabase,
-        getMailboxItems = getMailboxItems,
-        getAdjacentPageKeys = getAdjacentPageKeys,
-        userIds = listOf(userId),
-        selectedMailLabelId = selectedLabelId,
-        filterUnread = isFilterUnreadEnabled,
-        type = MailboxItemType.Message
-    )
+    private val isMultiUserLocalPageValid = mockk<IsMultiUserLocalPageValid> {
+        coEvery { this@mockk.invoke(type, any()) } returns true
+    }
 
     @BeforeTest
     fun setUp() {
@@ -113,45 +115,164 @@ class MailboxItemPagingSourceTest {
         unmockkStatic(Log::class)
     }
 
-
     @Test
-    fun `paging source load empty list`() = runTest {
+    fun `when local data is empty but valid then result page with next and prev key is returned`() = runTest {
         // Given
-        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns emptyList<MailboxItem>().right()
+        coEvery {
+            getMailboxItems.invoke(type = type, pageKey = mailboxPageKey)
+        } returns emptyList<MailboxItem>().right()
 
         assertEquals(
             // When
-            actual = pagingSource().load(
-                PagingSource.LoadParams.Refresh(key = null, loadSize = 25, false)
+            actual = buildPagingSource().load(
+                PagingSource.LoadParams.Refresh(key = mailboxPageKey, loadSize = 25, false)
             ),
             // Then
             expected = PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>(
                 data = emptyList(),
-                prevKey = null,
-                nextKey = null
+                prevKey = buildMailboxPageKey(prevKey),
+                nextKey = buildMailboxPageKey(nextKey)
             )
         )
         coVerify { mockInvalidationTracker.addWeakObserver(any()) }
     }
 
     @Test
-    fun `paging source load error`() = runTest {
+    fun `when local data is empty and not valid then result page without next and prev key is returned`() = runTest {
         // Given
-        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns DataErrorSample.Unreachable.left()
+        coEvery {
+            getMailboxItems.invoke(type = type, pageKey = mailboxPageKey)
+        } returns emptyList<MailboxItem>().right()
+        coEvery {
+            isMultiUserLocalPageValid.invoke(type = type, pageKey = buildMailboxPageKey(prevKey))
+        } returns false
+        coEvery {
+            isMultiUserLocalPageValid.invoke(type = type, pageKey = buildMailboxPageKey(nextKey))
+        } returns false
+
+        val expected = PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>(
+            data = emptyList(),
+            prevKey = null,
+            nextKey = null
+        )
+
+        // When
+        val actual =
+            buildPagingSource().load(PagingSource.LoadParams.Refresh(key = mailboxPageKey, loadSize = 25, false))
+
+        // Then
+        assertEquals(actual, expected)
+        coVerify { mockInvalidationTracker.addWeakObserver(any()) }
+    }
+
+    @Test
+    fun `when appending and local data is empty, then load result page without next key is returned`() =
+        runTest {
+            // Given
+            coEvery {
+                getMailboxItems.invoke(type = type, pageKey = mailboxPageKey)
+            } returns emptyList<MailboxItem>().right()
+
+            val expected = PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>(
+                data = emptyList(),
+                prevKey = buildMailboxPageKey(prevKey),
+                nextKey = null
+            )
+
+            // When
+            val actual =
+                buildPagingSource().load(PagingSource.LoadParams.Append(key = mailboxPageKey, loadSize = 25, false))
+
+            // Then
+            assertEquals(actual, expected)
+        }
+
+    @Test
+    fun `when appending, and local data is not empty, then load result page with next and prev key is returned`() =
+        runTest {
+            // Given
+            coEvery {
+                getMailboxItems.invoke(type = type, pageKey = mailboxPageKey)
+            } returns mailboxItems.right()
+
+            val expected = PagingSource.LoadResult.Page(
+                data = mailboxItems,
+                prevKey = buildMailboxPageKey(prevKey),
+                nextKey = buildMailboxPageKey(nextKey)
+            )
+
+            // When
+            val actual =
+                buildPagingSource().load(PagingSource.LoadParams.Append(key = mailboxPageKey, loadSize = 25, false))
+
+            // Then
+            assertEquals(actual, expected)
+        }
+
+    @Test
+    fun `when prepending, and local data is empty, then load result page without prev key is returned`() =
+        runTest {
+            // Given
+            coEvery {
+                getMailboxItems.invoke(type = type, pageKey = mailboxPageKey)
+            } returns emptyList<MailboxItem>().right()
+
+            val expected = PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>(
+                data = emptyList(),
+                prevKey = null,
+                nextKey = buildMailboxPageKey(nextKey)
+            )
+
+            // When
+            val actual =
+                buildPagingSource().load(PagingSource.LoadParams.Prepend(key = mailboxPageKey, loadSize = 25, false))
+
+            // Then
+            assertEquals(actual, expected)
+        }
+
+    @Test
+    fun `when prepending, and local data is not empty, then load result page with prev and next key is returned`() =
+        runTest {
+            // Given
+            coEvery {
+                getMailboxItems.invoke(type = type, pageKey = mailboxPageKey)
+            } returns mailboxItems.right()
+
+            val expected = PagingSource.LoadResult.Page(
+                data = mailboxItems,
+                prevKey = buildMailboxPageKey(prevKey),
+                nextKey = buildMailboxPageKey(nextKey)
+            )
+
+            // When
+            val actual =
+                buildPagingSource().load(PagingSource.LoadParams.Prepend(key = mailboxPageKey, loadSize = 25, false))
+
+            // Then
+            assertEquals(actual, expected)
+        }
+
+    @Test
+    fun `when loading items fails, result page without items and null for next and prev key is returned`() = runTest {
+        // Given
+        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns DataError.Local.Unknown.left()
 
         // when
-        val result = pagingSource()
+        val result = buildPagingSource()
             .load(PagingSource.LoadParams.Refresh(key = null, loadSize = 25, false))
 
         // then
-        assertIs<PagingSource.LoadResult.Error<MailboxPageKey, MailboxItem>>(result)
-        assertEquals(DataErrorSample.Unreachable.toString(), result.throwable.message)
+        assertIs<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>(result)
+        assertEquals(emptyList(), result.data)
+        assertNull(result.nextKey)
+        assertNull(result.prevKey)
     }
 
     @Test
     fun `paging source invalidate returns invalid load result`() = runTest {
         // Given
-        val pagingSource = pagingSource()
+        val pagingSource = buildPagingSource()
         assertFalse(pagingSource.invalid)
         pagingSource.invalidate()
         assertTrue(pagingSource.invalid)
@@ -166,34 +287,9 @@ class MailboxItemPagingSourceTest {
     }
 
     @Test
-    fun `paging source load return page load result with items and adjacent keys`() = runTest {
+    fun `given the paging state contains no pages, then getRefreshKey returns null`() = runTest {
         // Given
-        val pagingSource = pagingSource()
-        assertFalse(pagingSource.keyReuseSupported)
-        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns listOf(
-            buildMailboxItem(userId, "5", time = 5000),
-            buildMailboxItem(userId, "4", time = 4000),
-            buildMailboxItem(userId, "3", time = 3000),
-            buildMailboxItem(userId, "2", time = 2000),
-            buildMailboxItem(userId, "1", time = 1000)
-        ).right()
-
-        // When
-        val loadResult = pagingSource.load(
-            PagingSource.LoadParams.Refresh(key = null, loadSize = 5, false)
-        )
-
-        // Then
-        assertIs<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>(loadResult)
-        assertEquals(5, loadResult.data.size)
-        assertNotNull(loadResult.prevKey)
-        assertNotNull(loadResult.nextKey)
-    }
-
-    @Test
-    fun `paging source get refresh key return null key`() = runTest {
-        // Given
-        val pagingSource = pagingSource()
+        val pagingSource = buildPagingSource()
 
         // When
         val refreshKey = pagingSource.getRefreshKey(
@@ -210,12 +306,9 @@ class MailboxItemPagingSourceTest {
     }
 
     @Test
-    fun `paging source get refresh key return non null key`() = runTest {
-        // Given
-        val pagingSource = pagingSource()
-
+    fun `given the paging state contains pages with data, then getRefreshKey returns non null key`() = runTest {
         // When
-        val refreshKey = pagingSource.getRefreshKey(
+        val refreshKey = buildPagingSource().getRefreshKey(
             PagingState(
                 pages = buildMockPages(),
                 anchorPosition = null,
@@ -252,13 +345,10 @@ class MailboxItemPagingSourceTest {
     @Test
     fun `paging source get refresh key returns key which maintains existing page filter`() = runTest {
         // Given
-        val pagingSource = pagingSource(
-            isFilterUnreadEnabled = true,
-            selectedLabelId = MailLabelId.System.Archive
-        )
+        val archiveUnreadPageKey = buildPageKey(ReadStatus.Unread, MailLabelId.System.Archive)
 
         // When
-        val refreshKey = pagingSource.getRefreshKey(
+        val refreshKey = buildPagingSource(archiveUnreadPageKey).getRefreshKey(
             PagingState(
                 pages = buildMockPages(),
                 anchorPosition = null,
@@ -299,35 +389,49 @@ class MailboxItemPagingSourceTest {
         // For adjacent pages, we just want to normal pageSize.
 
         // Given
-        val pagingSource = pagingSource()
         val items = listOf(
             buildMailboxItem(userId, "2", time = 2000),
             buildMailboxItem(userId, "1", time = 1000)
         )
-        coEvery { getMailboxItems.invoke(type = any(), pageKey = any()) } returns items.right()
+        coEvery {
+            getMailboxItems.invoke(type = type, pageKey = buildMailboxPageKey(pageKey.copy(size = 100)))
+        } returns items.right()
 
         // When
-        pagingSource.loadPage(
-            PagingSource.LoadParams.Refresh(key = null, loadSize = 100, false)
+        buildPagingSource().loadPage(
+            PagingSource.LoadParams.Refresh(key = mailboxPageKey, loadSize = 100, false)
         )
 
         // Then
         val initialPageKeySize = 25 // PageKey.defaultPageSize
-        verify { getAdjacentPageKeys(items, any(), initialPageKeySize) }
+        verify { getAdjacentPageKeys(items, mailboxPageKey.pageKey.copy(size = 100), initialPageKeySize) }
     }
+
+    private fun buildPagingSource(pageKey: PageKey = buildPageKey()) =
+        MailboxItemPagingSource(
+            roomDatabase = roomDatabase,
+            getMailboxItems = getMailboxItems,
+            getAdjacentPageKeys = getAdjacentPageKeys,
+            isMultiUserLocalPageValid = isMultiUserLocalPageValid,
+            mailboxPageKey = mailboxPageKey.copy(pageKey = pageKey),
+            type = type
+        )
 
     private fun buildMockPages(): List<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>> =
         listOf(
             PagingSource.LoadResult.Page(
-                data = listOf(
-                    buildMailboxItem(userId, "5", time = 5000),
-                    buildMailboxItem(userId, "4", time = 4000),
-                    buildMailboxItem(userId, "3", time = 3000),
-                    buildMailboxItem(userId, "2", time = 2000),
-                    buildMailboxItem(userId, "1", time = 1000)
-                ),
+                data = mailboxItems,
                 prevKey = null,
                 nextKey = null
             )
         )
+
+    private fun buildPageKey(
+        readState: ReadStatus = ReadStatus.All,
+        selectedLabelId: MailLabelId = Inbox,
+        filter: PageFilter = PageFilter(labelId = selectedLabelId.labelId, read = readState)
+    ) = PageKey(filter = filter)
+
+    private fun buildMailboxPageKey(pageKey: PageKey) =
+        mailboxPageKey.copy(pageKey = pageKey)
 }

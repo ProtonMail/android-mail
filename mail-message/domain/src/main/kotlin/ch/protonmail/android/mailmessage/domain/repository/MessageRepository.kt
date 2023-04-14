@@ -44,6 +44,15 @@ interface MessageRepository {
     suspend fun loadMessages(userId: UserId, pageKey: PageKey = PageKey()): Either<DataError, List<Message>>
 
     /**
+     * Return true if all [Message] are considered locally valid according the given [pageKey].
+     */
+    suspend fun isLocalPageValid(
+        userId: UserId,
+        pageKey: PageKey,
+        items: List<Message>,
+    ): Boolean
+
+    /**
      * Fetch all [Message] for [userId] filtered by [PageKey].
      */
     suspend fun fetchMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>>

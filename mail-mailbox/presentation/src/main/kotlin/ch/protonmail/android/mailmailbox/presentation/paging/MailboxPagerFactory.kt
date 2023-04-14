@@ -16,22 +16,25 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox
+package ch.protonmail.android.mailmailbox.presentation.paging
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
-import ch.protonmail.android.mailmailbox.presentation.paging.MailboxItemPagingSourceFactory
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
+@OptIn(ExperimentalPagingApi::class)
 class MailboxPagerFactory @Inject constructor(
-    private val pagingSourceFactory: MailboxItemPagingSourceFactory
+    private val pagingSourceFactory: MailboxItemPagingSourceFactory,
+    private val remoteMediatorFactory: MailboxItemRemoteMediatorFactory
 ) {
 
     fun create(
@@ -39,15 +42,12 @@ class MailboxPagerFactory @Inject constructor(
         selectedMailLabelId: MailLabelId,
         filterUnread: Boolean,
         type: MailboxItemType
-    ) = Pager(
-        config = PagingConfig(PageKey.defaultPageSize),
-        initialKey = buildPageKey(filterUnread, selectedMailLabelId, userIds)
-    ) {
-        pagingSourceFactory.create(
-            userIds = userIds,
-            selectedMailLabelId = selectedMailLabelId,
-            filterUnread = filterUnread,
-            type = type
+    ): Pager<MailboxPageKey, MailboxItem> {
+        val mailboxPageKey = buildPageKey(filterUnread, selectedMailLabelId, userIds)
+        return Pager(
+            config = PagingConfig(PageKey.defaultPageSize),
+            remoteMediator = remoteMediatorFactory.create(mailboxPageKey, type),
+            pagingSourceFactory = { pagingSourceFactory.create(mailboxPageKey, type) }
         )
     }
 

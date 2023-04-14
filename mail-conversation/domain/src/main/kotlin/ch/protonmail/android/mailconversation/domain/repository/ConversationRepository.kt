@@ -48,6 +48,15 @@ interface ConversationRepository {
     ): Either<DataError, List<ConversationWithContext>>
 
     /**
+     * Return true if all [Conversation] are considered locally valid according the given [pageKey].
+     */
+    suspend fun isLocalPageValid(
+        userId: UserId,
+        pageKey: PageKey,
+        items: List<ConversationWithContext>
+    ): Boolean
+
+    /**
      * Fetch all [Conversation] for [userId] filtered by [PageKey].
      */
     suspend fun fetchConversations(

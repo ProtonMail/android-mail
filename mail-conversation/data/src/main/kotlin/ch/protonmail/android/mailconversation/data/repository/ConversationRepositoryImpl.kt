@@ -108,6 +108,12 @@ class ConversationRepositoryImpl @Inject constructor(
     ): Either<DataError, List<ConversationWithContext>> =
         conversationLocalDataSource.getConversations(userId, pageKey).right()
 
+    override suspend fun isLocalPageValid(
+        userId: UserId,
+        pageKey: PageKey,
+        items: List<ConversationWithContext>
+    ): Boolean = conversationLocalDataSource.isLocalPageValid(userId, pageKey, items)
+
     override suspend fun fetchConversations(
         userId: UserId,
         pageKey: PageKey

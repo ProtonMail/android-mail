@@ -20,22 +20,18 @@ package ch.protonmail.android.mailmailbox.presentation.paging
 
 import androidx.paging.PagingState
 import androidx.room.RoomDatabase
-import arrow.core.getOrHandle
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import arrow.core.getOrElse
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMultiUserMailboxItems
+import ch.protonmail.android.mailmailbox.domain.usecase.IsMultiUserLocalPageValid
 import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.getRefreshPageKey
-import ch.protonmail.android.mailpagination.domain.model.PageFilter
-import ch.protonmail.android.mailpagination.domain.model.PageKey
-import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import ch.protonmail.android.mailpagination.presentation.paging.InvalidationTrackerPagingSource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import kotlin.math.max
@@ -43,64 +39,57 @@ import kotlin.math.max
 @AssistedFactory
 interface MailboxItemPagingSourceFactory {
 
-    fun create(
-        userIds: List<UserId>,
-        selectedMailLabelId: MailLabelId,
-        filterUnread: Boolean,
-        type: MailboxItemType
-    ): MailboxItemPagingSource
+    fun create(mailboxPageKey: MailboxPageKey, type: MailboxItemType): MailboxItemPagingSource
 }
 
 class MailboxItemPagingSource @AssistedInject constructor(
     roomDatabase: RoomDatabase,
     private val getMailboxItems: GetMultiUserMailboxItems,
     private val getAdjacentPageKeys: GetAdjacentPageKeys,
-    @Assisted private val userIds: List<UserId>,
-    @Assisted private val selectedMailLabelId: MailLabelId,
-    @Assisted private val filterUnread: Boolean,
+    private val isMultiUserLocalPageValid: IsMultiUserLocalPageValid,
+    @Assisted private val mailboxPageKey: MailboxPageKey,
     @Assisted private val type: MailboxItemType
 ) : InvalidationTrackerPagingSource<MailboxPageKey, MailboxItem>(
     db = roomDatabase,
     tables = GetMultiUserMailboxItems.getInvolvedTables(type)
 ) {
 
-    private val initialPageKey = MailboxPageKey(
-        userIds = userIds,
-        pageKey = PageKey(
-            filter = PageFilter(
-                labelId = selectedMailLabelId.labelId,
-                read = if (filterUnread) ReadStatus.Unread else ReadStatus.All
-            )
-        )
-    )
+    override val jumpingSupported: Boolean = false
 
-    override suspend fun loadPage(
-        params: LoadParams<MailboxPageKey>
-    ): LoadResult<MailboxPageKey, MailboxItem> {
-        val key = params.key ?: initialPageKey
+    override suspend fun loadPage(params: LoadParams<MailboxPageKey>): LoadResult<MailboxPageKey, MailboxItem> {
+        val key = params.key ?: mailboxPageKey
         val size = max(key.pageKey.size, params.loadSize)
+        val pageKey = key.pageKey.copy(size = size)
 
-        val items = getMailboxItems(type, key.copy(pageKey = key.pageKey.copy(size = size)))
-            .getOrHandle { return LoadResult.Error(RuntimeException(it.toString())) }
-        Timber.d("loadItems: ${items.size}/$size -> ${key.pageKey}")
+        val items = getMailboxItems(type, key.copy(pageKey = pageKey)).getOrElse {
+            Timber.e("Paging: loadItems: Error")
+            return LoadResult.Page(emptyList(), null, null)
+        }
+        Timber.d("Paging: loadItems: ${items.size}/$size (${params.javaClass.simpleName})-> $pageKey")
 
-        val adjacentKeys = getAdjacentPageKeys(items, key.pageKey, initialPageKey.pageKey.size)
+        val adjacentKeys = getAdjacentPageKeys(items, pageKey, mailboxPageKey.pageKey.size)
         val prev = key.copy(pageKey = adjacentKeys.prev)
         val next = key.copy(pageKey = adjacentKeys.next)
         return LoadResult.Page(
             data = items,
-            prevKey = prev.takeIf { items.isNotEmpty() },
-            nextKey = next.takeIf { items.isNotEmpty() }
+            prevKey = prev
+                .takeIf { isMultiUserLocalPageValid(type, it) }
+                .takeUnless { params is LoadParams.Prepend && items.isEmpty() },
+            nextKey = next
+                .takeIf { isMultiUserLocalPageValid(type, it) }
+                .takeUnless { params is LoadParams.Append && items.isEmpty() },
         )
     }
 
-    override fun getRefreshKey(
-        state: PagingState<MailboxPageKey, MailboxItem>
-    ): MailboxPageKey? {
+    override fun getRefreshKey(state: PagingState<MailboxPageKey, MailboxItem>): MailboxPageKey? {
+        return getAllPagesRefreshKey(state)
+    }
+
+    private fun getAllPagesRefreshKey(state: PagingState<MailboxPageKey, MailboxItem>): MailboxPageKey? {
+        Timber.d("Paging: getRefreshKey: ${state.pages.size} pages")
         val items = state.pages.flatMap { it.data }.takeIfNotEmpty() ?: return null
-        val key = items.getRefreshPageKey(initialPageKey.pageKey)
-        return initialPageKey.copy(
-            pageKey = key.copy(size = max(key.size, state.config.initialLoadSize))
-        )
+        Timber.d("Paging: getRefreshKey: ${items.size} items")
+        val key = items.getRefreshPageKey(mailboxPageKey.pageKey)
+        return mailboxPageKey.copy(pageKey = key)
     }
 }
