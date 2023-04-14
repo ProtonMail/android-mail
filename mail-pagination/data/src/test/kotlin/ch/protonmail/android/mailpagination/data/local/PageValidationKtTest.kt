@@ -29,8 +29,7 @@ import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.spyk
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -39,7 +38,7 @@ import org.junit.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class PageValidationTest {
+class PageValidationKtTest {
 
     private val userId = UserId("1")
     private val type = PageItemType.Message
@@ -50,61 +49,10 @@ class PageValidationTest {
 
     private val localIntervals = mutableSetOf<PageIntervalEntity>()
 
-    @RelaxedMockK
-    private val dao: PageIntervalDao = spyk {
-        coEvery {
-            getAll(any(), any(), any(), any(), any(), any())
-        } answers {
-            localIntervals.toList()
-        }
+    private val dao: PageIntervalDao = mockk {
+        // Using "answers" to allow tests to modify localIntervals list
+        coEvery { getAll(userId, type, orderBy, labelId, keyword, read) } answers { localIntervals.toList() }
     }
-
-    private fun getInterval(
-        minValue: Long,
-        maxValue: Long,
-        minOrder: Long = minValue,
-        maxOrder: Long = maxValue,
-        minId: String? = null,
-        maxId: String? = null
-    ) = PageIntervalEntity(
-        userId = userId,
-        type = type,
-        orderBy = orderBy,
-        labelId = labelId,
-        keyword = keyword,
-        read = read,
-        minValue = minValue,
-        maxValue = maxValue,
-        minOrder = minOrder,
-        maxOrder = maxOrder,
-        minId = minId,
-        maxId = maxId
-    )
-
-    private fun getPageKey(
-        orderDirection: OrderDirection = OrderDirection.Ascending,
-        minTime: Long = Long.MIN_VALUE,
-        maxTime: Long = Long.MAX_VALUE
-    ) = PageKey(
-        orderDirection = orderDirection,
-        filter = PageFilter(
-            minTime = minTime,
-            minOrder = minTime,
-            maxTime = maxTime,
-            maxOrder = maxTime
-        )
-    )
-
-    data class FakeItem(
-        override val userId: UserId = UserId("1"),
-        override val id: String,
-        override val time: Long,
-        override val size: Long = 1000,
-        override val order: Long = time,
-        override val read: Boolean = false,
-        override val labelIds: List<LabelId> = emptyList(),
-        override val keywords: String = ""
-    ) : PageItem
 
     @Before
     fun setup() {
@@ -279,6 +227,37 @@ class PageValidationTest {
     }
 
     @Test
+    fun `when two intervals without gaps are needed to cover all items, return false`() = runTest {
+        // This scenario is here to document the actual behavior of `isLocalPageValid` extension function in isolation.
+        // The same case is not expected to happen in production as the collaboration with `PageIntervalMerger`
+        // should merge two consecutive intervals into one
+        // Given
+        localIntervals.addAll(
+            listOf(
+                getInterval(minValue = 1000, maxValue = 4000),
+                getInterval(minValue = 4000, maxValue = 5000)
+            )
+        )
+
+        // When
+        val actual = dao.isLocalPageValid(
+            userId = userId,
+            type = type,
+            pageKey = getPageKey(minTime = 0, maxTime = 20_000),
+            items = listOf(
+                FakeItem(id = "1", time = 1000),
+                FakeItem(id = "2", time = 2000),
+                FakeItem(id = "3", time = 3000),
+                FakeItem(id = "4", time = 4000),
+                FakeItem(id = "5", time = 5000)
+            )
+        )
+
+        // Then
+        assertFalse(actual)
+    }
+
+    @Test
     fun `when two intervals each cover all items, return true`() = runTest {
         // Given
         localIntervals.addAll(
@@ -356,4 +335,52 @@ class PageValidationTest {
         // Then
         assertFalse(actual)
     }
+
+    private fun getInterval(
+        minValue: Long,
+        maxValue: Long,
+        minOrder: Long = minValue,
+        maxOrder: Long = maxValue,
+        minId: String? = null,
+        maxId: String? = null
+    ) = PageIntervalEntity(
+        userId = userId,
+        type = type,
+        orderBy = orderBy,
+        labelId = labelId,
+        keyword = keyword,
+        read = read,
+        minValue = minValue,
+        maxValue = maxValue,
+        minOrder = minOrder,
+        maxOrder = maxOrder,
+        minId = minId,
+        maxId = maxId
+    )
+
+    private fun getPageKey(
+        orderDirection: OrderDirection = OrderDirection.Ascending,
+        minTime: Long = Long.MIN_VALUE,
+        maxTime: Long = Long.MAX_VALUE
+    ) = PageKey(
+        orderDirection = orderDirection,
+        filter = PageFilter(
+            minTime = minTime,
+            minOrder = minTime,
+            maxTime = maxTime,
+            maxOrder = maxTime
+        )
+    )
+
+    data class FakeItem(
+        override val userId: UserId = UserId("1"),
+        override val id: String,
+        override val time: Long,
+        override val size: Long = 1000,
+        override val order: Long = time,
+        override val read: Boolean = false,
+        override val labelIds: List<LabelId> = emptyList(),
+        override val keywords: String = ""
+    ) : PageItem
+
 }
