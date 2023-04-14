@@ -25,7 +25,7 @@ import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 
-class AllMailRobot(
+internal class AllMailRobot(
     override val composeTestRule: ComposeContentTestRule
 ) : MailboxRobotInterface {
 

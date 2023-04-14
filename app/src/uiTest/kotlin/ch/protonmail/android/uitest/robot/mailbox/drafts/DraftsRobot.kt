@@ -20,15 +20,16 @@ package ch.protonmail.android.uitest.robot.mailbox.drafts
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onFirst
 import ch.protonmail.android.maillabel.presentation.R
+import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 
-class DraftsRobot {
+internal class DraftsRobot : MailboxRobotInterface {
 
     /**
      * Contains all the validations that can be performed by [DraftsRobot].
      */
-    class Verify {
+    class Verify : MailboxRobotInterface.Verify {
 
         fun draftsScreenDisplayed(composeRule: ComposeContentTestRule) {
             composeRule

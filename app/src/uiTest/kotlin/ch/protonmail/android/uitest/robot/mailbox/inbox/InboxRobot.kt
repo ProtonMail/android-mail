@@ -27,12 +27,10 @@ import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maillabel.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.UnreadItemsFilterTestTags
-import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 import me.proton.core.test.android.robots.CoreRobot
-import me.proton.core.test.android.robots.CoreVerify
 
 class InboxRobot(
     override val composeTestRule: ComposeContentTestRule
@@ -49,7 +47,7 @@ class InboxRobot(
     /**
      * Contains all the validations that can be performed by [InboxRobot].
      */
-    inner class Verify(private val composeRule: ComposeContentTestRule) : CoreVerify() {
+    inner class Verify(private val composeRule: ComposeContentTestRule) : MailboxRobotInterface.Verify {
 
         fun mailboxScreenDisplayed() {
             composeRule.waitUntil(timeoutMillis = 60_000) {
@@ -73,19 +71,6 @@ class InboxRobot(
                 .onNodeWithTag(UnreadItemsFilterTestTags.UnreadFilterChip)
                 .assertIsDisplayed()
                 .assertIsSelected()
-        }
-
-        fun listItemsAreShown(vararg inboxEntries: MailboxListItemEntry) {
-            for (entry in inboxEntries) {
-                val model = MailboxListItemEntryModel(entry.index)
-
-                model.hasAvatarText(entry.avatarText)
-                    .hasParticipants(entry.participants)
-                    .hasSubject(entry.subject)
-                    .hasDate(entry.date)
-
-                entry.count?.let { model.hasCount(it) } ?: model.hasNoCount()
-            }
         }
 
         fun unreadItemAtPosition(position: Int) {

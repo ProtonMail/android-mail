@@ -43,7 +43,7 @@ import ch.protonmail.android.maillabel.presentation.R.string as mailLabelStrings
 /**
  * [MenuRobot] class contains actions and verifications for menu functionality.
  */
-class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
+internal class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
 
     fun openDrafts(): DraftsRobot {
         tapSidebarMenuItemWithText(mailLabelStrings.label_title_drafts)

@@ -18,6 +18,7 @@
 package ch.protonmail.android.uitest.robot.mailbox
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 
 interface MailboxRobotInterface {
@@ -28,5 +29,21 @@ interface MailboxRobotInterface {
         val model = MailboxListItemEntryModel(position)
 
         model.click()
+    }
+
+    interface Verify {
+
+        fun listItemsAreShown(vararg inboxEntries: MailboxListItemEntry) {
+            for (entry in inboxEntries) {
+                val model = MailboxListItemEntryModel(entry.index)
+
+                model.hasAvatar(entry.avatarInitial)
+                    .hasParticipants(entry.participants)
+                    .hasSubject(entry.subject)
+                    .hasDate(entry.date)
+
+                entry.count?.let { model.hasCount(it) } ?: model.hasNoCount()
+            }
+        }
     }
 }

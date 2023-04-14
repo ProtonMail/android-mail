@@ -35,7 +35,7 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 /**
  * [SettingsRobot] class contains actions and verifications for Settings view.
  */
-class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
+internal class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
 
     fun openLanguageSettings(): LanguageRobot {
         composeTestRule
@@ -78,7 +78,7 @@ class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
 
         return ThemeRobot(composeTestRule)
     }
-    
+
     fun openCombinedContactsSettings(): CombinedContactsRobot {
         composeTestRule
             .onNodeWithText(string.mail_settings_combined_contacts)
