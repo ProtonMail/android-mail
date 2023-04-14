@@ -90,7 +90,7 @@ fun MailboxTopAppBar(
                         )
                     )
                 }
-                IconButton(onClick = actions.onOpenCompose) {
+                IconButton(onClick = actions.onOpenComposer) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_pen_square),
                         contentDescription = stringResource(
@@ -112,7 +112,7 @@ object MailboxTopAppBar {
         val onTitleClick: () -> Unit,
         val onEnterSearchMode: () -> Unit,
         val onSearch: (query: String) -> Unit,
-        val onOpenCompose: () -> Unit
+        val onOpenComposer: () -> Unit
     )
 }
 
@@ -148,7 +148,7 @@ fun LoadingMailboxTopAppBarPreview() {
             onTitleClick = {},
             onEnterSearchMode = {},
             onSearch = {},
-            onOpenCompose = {}
+            onOpenComposer = {}
         )
     )
 }

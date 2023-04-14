@@ -41,6 +41,7 @@ import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.route.addAccountSettings
 import ch.protonmail.android.navigation.route.addAlternativeRoutingSetting
 import ch.protonmail.android.navigation.route.addCombinedContactsSetting
+import ch.protonmail.android.navigation.route.addComposer
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
 import ch.protonmail.android.navigation.route.addEditSwipeActionsSettings
@@ -153,6 +154,7 @@ fun Home(
                     openMessageBodyLink = activityActions.openInActivityInNewTask,
                     showFeatureMissingSnackbar = { showFeatureMissingSnackbar() }
                 )
+                addComposer()
                 addRemoveAccountDialog(navController)
                 addSettings(
                     navController,

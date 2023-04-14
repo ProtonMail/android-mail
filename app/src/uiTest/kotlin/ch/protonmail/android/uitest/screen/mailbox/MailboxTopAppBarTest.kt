@@ -123,7 +123,7 @@ internal class MailboxTopAppBarTest {
                         onTitleClick = {},
                         onEnterSearchMode = {},
                         onSearch = {},
-                        onOpenCompose = {}
+                        onOpenComposer = {}
                     )
                 )
             }

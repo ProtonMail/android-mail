@@ -105,7 +105,6 @@ fun MailboxScreen(
         actions = completeActions,
         modifier = modifier.semantics { testTagsAsResourceId = true }
     )
-
 }
 
 @Composable
@@ -141,9 +140,7 @@ fun MailboxScreen(
                             actions.showFeatureMissingSnackbar()
                         },
                         onSearch = {},
-                        onOpenCompose = {
-                            actions.showFeatureMissingSnackbar()
-                        }
+                        onOpenComposer = { actions.navigateToComposer() }
                     )
                 )
 
@@ -327,6 +324,7 @@ object MailboxScreen {
 
     data class Actions(
         val navigateToMailboxItem: (OpenMailboxItemRequest) -> Unit,
+        val navigateToComposer: () -> Unit,
         val onDisableUnreadFilter: () -> Unit,
         val onEnableUnreadFilter: () -> Unit,
         val onExitSelectionMode: () -> Unit,
@@ -342,6 +340,7 @@ object MailboxScreen {
 
             val Empty = Actions(
                 navigateToMailboxItem = {},
+                navigateToComposer = {},
                 onDisableUnreadFilter = {},
                 onEnableUnreadFilter = {},
                 onExitSelectionMode = {},

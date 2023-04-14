@@ -42,6 +42,8 @@ sealed class Destination(val route: String) {
                 route.replace(MESSAGE_ID_KEY.wrap(), messageId.id)
         }
 
+        object Composer : Destination("composer")
+
         object Settings : Destination("settings")
         object AccountSettings : Destination("settings/account")
         object AlternativeRoutingSettings : Destination("settings/alternativeRouting")

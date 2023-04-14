@@ -26,6 +26,7 @@ import androidx.navigation.compose.dialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
@@ -77,6 +78,7 @@ internal fun NavGraphBuilder.addMailbox(
                         }
                     )
                 },
+                navigateToComposer = { navController.navigate(Destination.Screen.Composer.route) },
                 openDrawerMenu = openDrawerMenu,
                 showOfflineSnackbar = showOfflineSnackbar,
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar
@@ -102,6 +104,12 @@ internal fun NavGraphBuilder.addMessageDetail(
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar
             )
         )
+    }
+}
+
+internal fun NavGraphBuilder.addComposer() {
+    composable(route = Destination.Screen.Composer.route) {
+        ComposerScreen()
     }
 }
 

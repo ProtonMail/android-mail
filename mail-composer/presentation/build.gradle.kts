@@ -57,6 +57,7 @@ android {
 dependencies {
     implementation(Dependencies.modulePresentationLibs)
 
+    implementation(project(":mail-common:presentation"))
     implementation(project(":mail-composer:domain"))
 
     testImplementation(Dependencies.testLibs)
