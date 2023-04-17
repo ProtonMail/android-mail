@@ -37,11 +37,14 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -58,21 +61,32 @@ import me.proton.core.compose.theme.default
 @Composable
 fun ComposerScreen() {
     val maxWidthModifier = Modifier.fillMaxWidth()
+    val focusRequester = remember { FocusRequester() }
+
     Column {
         ComposerTopBar()
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = maxWidthModifier
                 .verticalScroll(rememberScrollState(), reverseScrolling = true)
         ) {
-            PrefixedTextField(prefixStringResource = R.string.from_prefix, maxWidthModifier)
+            PrefixedTextField(
+                prefixStringResource = R.string.from_prefix,
+                modifier = maxWidthModifier
+            )
             MailDivider()
-            PrefixedTextField(prefixStringResource = R.string.to_prefix, maxWidthModifier)
+            PrefixedTextField(
+                prefixStringResource = R.string.to_prefix,
+                modifier = maxWidthModifier.focusRequester(focusRequester)
+            )
             MailDivider()
             SubjectTextField(maxWidthModifier)
             MailDivider()
             BodyTextField()
         }
+    }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
     }
 }
 
