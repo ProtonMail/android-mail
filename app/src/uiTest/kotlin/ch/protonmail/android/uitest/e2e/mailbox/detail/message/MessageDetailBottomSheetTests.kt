@@ -60,7 +60,7 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
 
     @Test
     @TestId("79354")
-    fun checkMessageBottomSheetsDismissalWithBackButton() {
+    fun checkMessageMoveToBottomSheetDismissalWithBackButton() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
@@ -95,8 +95,36 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
         messageDetailRobot
             .verify { moveToBottomSheetIsDismissed() }
             .verify { messageDetailScreenIsShown() }
+    }
+
+    @Test
+    @TestId("79354/2")
+    fun checkMessageLabelAsBottomSheetDismissalWithBackButton() {
+        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_79354.json"
+                    withStatusCode 200,
+                "/mail/v4/messages"
+                    respondWith "/mail/v4/messages/messages_79354.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_79354.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read"
+                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
+                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
+            )
+        }
+
+        addAccountRobot
+            .signIn()
+            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+
+        inboxRobot.clickMessageByPosition(0)
 
         messageDetailRobot
+            .waitUntilMessageIsShown()
             .openLabelAsBottomSheet()
             .verify { labelAsBottomSheetExists() }
 
@@ -109,7 +137,7 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
 
     @Test
     @TestId("79356")
-    fun checkMessageBottomSheetsDismissalWithExternalTap() {
+    fun checkMessageMoveToBottomSheetDismissalWithExternalTap() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
@@ -144,8 +172,36 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
         messageDetailRobot
             .verify { moveToBottomSheetIsDismissed() }
             .verify { messageDetailScreenIsShown() }
+    }
+
+    @Test
+    @TestId("79356/2")
+    fun checkMessageLabelAsBottomSheetDismissalWithExternalTap() {
+        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_79356.json"
+                    withStatusCode 200,
+                "/mail/v4/messages"
+                    respondWith "/mail/v4/messages/messages_79356.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_79356.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read"
+                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
+                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
+            )
+        }
+
+        addAccountRobot
+            .signIn()
+            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+
+        inboxRobot.clickMessageByPosition(0)
 
         messageDetailRobot
+            .waitUntilMessageIsShown()
             .openLabelAsBottomSheet()
             .verify { labelAsBottomSheetExists() }
 
