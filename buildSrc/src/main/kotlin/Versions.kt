@@ -42,7 +42,7 @@ object Versions {
         const val customViewPoolingContainer = "1.0.0"
         const val datastore = "1.0.0"
         const val hilt = "1.0.0"
-        const val material3 = "1.0.1"
+        const val material3 = "1.1.0-beta02"
         const val navigation = "2.5.3"
         const val paging = "3.1.1"
         const val pagingCompose = "1.0.0-alpha17"

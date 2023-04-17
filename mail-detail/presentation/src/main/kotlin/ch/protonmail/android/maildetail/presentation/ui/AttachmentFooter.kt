@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.extensions.getTotalAttachmentByteSizeReadable
@@ -59,7 +58,7 @@ fun AttachmentFooter(
 ) {
     val attachments = messageBodyAttachmentsUiModel.attachments
     Column(modifier = modifier.fillMaxWidth()) {
-        Divider(thickness = MailDimens.SeparatorHeight, color = ProtonTheme.colors.separatorNorm)
+        MailDivider()
         Row(
             modifier = modifier
                 .padding(ProtonDimens.SmallSpacing)

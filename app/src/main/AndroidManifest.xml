@@ -124,7 +124,8 @@
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="standard"
-            android:theme="@style/ProtonTheme.Splash.Mail">
+            android:theme="@style/ProtonTheme.Splash.Mail"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
