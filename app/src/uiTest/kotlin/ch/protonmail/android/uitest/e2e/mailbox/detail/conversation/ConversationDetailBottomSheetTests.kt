@@ -60,7 +60,7 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
 
     @Test
     @TestId("79353")
-    fun checkConversationBottomSheetsDismissalWithBackButton() {
+    fun checkConversationMoveToBottomSheetDismissalWithBackButton() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
@@ -98,8 +98,39 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
         conversationDetailRobot
             .verify { moveToBottomSheetIsDismissed() }
             .verify { conversationDetailScreenIsShown() }
+    }
+
+    @Test
+    @TestId("79353/2")
+    fun checkConversationLabelAsBottomSheetDismissalWithBackButton() {
+        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_79353.json"
+                    withStatusCode 200,
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_79353.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/conversations/*"
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_79353.json"
+                    withStatusCode 200 matchWildcards true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_79353.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read"
+                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
+                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
+            )
+        }
+
+        addAccountRobot
+            .signIn()
+            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+
+        inboxRobot.clickMessageByPosition(0)
 
         conversationDetailRobot
+            .waitUntilMessageIsShown()
             .openLabelAsBottomSheet()
             .verify { labelAsBottomSheetExists() }
 
@@ -112,7 +143,7 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
 
     @Test
     @TestId("79355")
-    fun checkConversationBottomSheetsDismissalWithExternalTap() {
+    fun checkConversationMoveToBottomSheetDismissalWithExternalTap() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
@@ -150,8 +181,39 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
         conversationDetailRobot
             .verify { moveToBottomSheetIsDismissed() }
             .verify { conversationDetailScreenIsShown() }
+    }
+
+    @Test
+    @TestId("79355/2")
+    fun checkConversationLabelAsBottomSheetDismissalWithExternalTap() {
+        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_79355.json"
+                    withStatusCode 200,
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_79355.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/conversations/*"
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_79355.json"
+                    withStatusCode 200 matchWildcards true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_79355.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read"
+                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
+                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
+            )
+        }
+
+        addAccountRobot
+            .signIn()
+            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+
+        inboxRobot.clickMessageByPosition(0)
 
         conversationDetailRobot
+            .waitUntilMessageIsShown()
             .openLabelAsBottomSheet()
             .verify { labelAsBottomSheetExists() }
 
