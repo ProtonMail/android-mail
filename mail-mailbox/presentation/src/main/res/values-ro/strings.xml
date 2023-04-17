@@ -32,4 +32,6 @@
     <item quantity="few">%d necitite</item>
     <item quantity="other">%d necitite</item>
   </plurals>
+  <string name="mailbox_default_recipient">(No Recipient)</string>
+  <string name="mailbox_default_sender">(No Sender)</string>
 </resources>

@@ -31,4 +31,6 @@
     <item quantity="one">%d ongelezen</item>
     <item quantity="other">%d ongelezen</item>
   </plurals>
+  <string name="mailbox_default_recipient">(No Recipient)</string>
+  <string name="mailbox_default_sender">(No Sender)</string>
 </resources>

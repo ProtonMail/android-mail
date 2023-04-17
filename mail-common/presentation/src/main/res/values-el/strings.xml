@@ -36,7 +36,7 @@
   <string name="action_trash_content_description">Διαγραφή</string>
   <string name="action_delete_content_description">Διαγραφή</string>
   <string name="action_archive_content_description">Αρχειοθέτηση</string>
-  <string name="action_spam_content_description">Ανεπιθύμητα</string>
+  <string name="action_spam_content_description">Ενοχλητικά</string>
   <string name="action_view_in_light_mode_content_description">Προβολή μηνύματος σε φωτεινή διαμόρφωση</string>
   <string name="action_view_in_dark_mode_content_description">Προβολή μηνύματος σε σκούρα διαμόρφωση</string>
   <string name="action_print_content_description">Εκτύπωση</string>

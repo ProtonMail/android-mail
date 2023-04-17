@@ -70,12 +70,12 @@
   <string name="mail_settings_swipe_left_name">Δεξιά προς αριστερά</string>
   <string name="mail_settings_swipe_action_archive_title">Αρχειοθετημένα</string>
   <string name="mail_settings_swipe_action_read_title">Μη διαβασμένα</string>
-  <string name="mail_settings_swipe_action_spam_title">Ανεπιθύμητα</string>
+  <string name="mail_settings_swipe_action_spam_title">Ενοχλητικά</string>
   <string name="mail_settings_swipe_action_star_title">Προσθήκη αστεριού</string>
   <string name="mail_settings_swipe_action_trash_title">Διαγραμμένα</string>
   <string name="mail_settings_swipe_action_archive_description">Αρχειοθέτηση</string>
   <string name="mail_settings_swipe_action_read_description">Σήμανση ως διαβασμένο ή μη</string>
-  <string name="mail_settings_swipe_action_spam_description">Μετακίνηση στα ανεπιθύμητα</string>
+  <string name="mail_settings_swipe_action_spam_description">Μετακίνηση στα Ενοχλητικά</string>
   <string name="mail_settings_swipe_action_star_description">Με/χωρίς αστέρι</string>
   <string name="mail_settings_swipe_action_trash_description">Μετακίνηση στα Διαγραμμένα</string>
   <!-- Error messages -->

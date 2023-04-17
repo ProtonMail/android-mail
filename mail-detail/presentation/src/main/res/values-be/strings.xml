@@ -46,7 +46,7 @@
   <string name="conversation_moved_to_archive">Размова перамешчана ў Архіў</string>
   <string name="error_move_conversation_failed">Не ўдалося перамясціць размову. Паўтарыце спробу.</string>
   <string name="error_loading_message">Нешта пайшло не так. Паспрабуйце яшчэ раз.</string>
-  <string name="error_offline_loading_message">Вы па-за сеткай. Для адлюстравання змесціва гэтага паведамлення неабходна злучэнне з інтэрнэтам.</string>
+  <string name="error_offline_loading_message">Вы па-за сеткай. Для адлюстравання змесціва гэтага паведамлення неабходна падключэнне да інтэрнэту.</string>
   <string name="reload">Перазагрузіць</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d файл</item>
@@ -62,7 +62,7 @@
   <string name="bottom_sheet_label_as_title">Пазначыць як...</string>
   <string name="error_relabel_message_failed">Не ўдалося паўторна пазначыць паведамленне. Паўтарыце спробу</string>
   <string name="error_relabel_conversation_failed">Не ўдалося змяніць метку размовы. Паўтарыце спробу</string>
-  <string name="please_go_back_online_to_load_messages">Вы па-за сеткай. Для загрузкі паведамленняў неабходна злучэнне з інтэрнэтам</string>
+  <string name="please_go_back_online_to_load_messages">Вы па-за сеткай. Для загрузкі паведамленняў неабходна падключэнне да інтэрнэту</string>
   <string name="decryption_error">Не ўдалося расшыфраваць паведамленне.</string>
   <string name="detail_error_retrieving_message_body">Немагчыма атрымаць паведамленне</string>
   <!-- Attachment Types -->
