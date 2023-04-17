@@ -30,8 +30,9 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
+import ch.protonmail.android.uitest.helpers.core.navigation.Destination
+import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
-import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
@@ -41,7 +42,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import me.proton.core.test.android.robots.auth.AddAccountRobot
 import org.junit.Test
 
 @RegressionTest
@@ -50,7 +50,6 @@ import org.junit.Test
 @UninstallModules(ServerProofModule::class)
 internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
 
-    private val addAccountRobot = AddAccountRobot()
     private val inboxRobot = InboxRobot(composeTestRule)
     private val messageDetailRobot = MessageDetailRobot(composeTestRule)
 
@@ -78,9 +77,9 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
             )
         }
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.clickMessageByPosition(0)
 
@@ -117,9 +116,9 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
             )
         }
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.clickMessageByPosition(0)
 
@@ -155,9 +154,9 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
             )
         }
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.clickMessageByPosition(0)
 
@@ -194,9 +193,9 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
             )
         }
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.clickMessageByPosition(0)
 

@@ -30,8 +30,9 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
+import ch.protonmail.android.uitest.helpers.core.navigation.Destination
+import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
-import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers.defaultLoginUser
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
@@ -41,7 +42,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import me.proton.core.test.android.robots.auth.AddAccountRobot
 import org.junit.Test
 
 @SmokeTest
@@ -50,7 +50,6 @@ import org.junit.Test
 @UninstallModules(ServerProofModule::class)
 internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
 
-    private val addAccountRobot = AddAccountRobot()
     private val inboxRobot = InboxRobot(composeTestRule)
     private val messageDetailRobot = MessageDetailRobot(composeTestRule)
 
@@ -63,18 +62,26 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
     fun checkMessageLoadedInMessageMode() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_66392.json" withStatusCode 200,
-                "/mail/v4/messages" respondWith "/mail/v4/messages/messages_66392.json" withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_66392.json" withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read" respondWith "/mail/v4/messages/read/read_base_placeholder.json" withStatusCode 200 serveOnce true
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_66392.json"
+                    withStatusCode 200,
+                "/mail/v4/messages"
+                    respondWith "/mail/v4/messages/messages_66392.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_66392.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read"
+                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
+                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
             )
         }
 
         val expectedMessageBody = "Bye and hello"
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.clickMessageByPosition(0)
 
@@ -96,19 +103,29 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
     fun checkMessageLoadedInConversationMode() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_66393.json" withStatusCode 200,
-                "/mail/v4/conversations" respondWith "/mail/v4/conversations/conversations_66393.json" withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*" respondWith "/mail/v4/conversations/conversation-id/conversation-id_66393.json" withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_66393.json" withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read" respondWith "/mail/v4/messages/read/read_base_placeholder.json" withStatusCode 200 serveOnce true
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_66393.json"
+                    withStatusCode 200,
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_66393.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/conversations/*"
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_66393.json"
+                    withStatusCode 200 matchWildcards true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_66393.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read"
+                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
+                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
             )
         }
 
         val expectedMessageBody = "Hello once again"
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.clickMessageByPosition(0)
 
@@ -130,18 +147,26 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
     fun checkLongMessageLoadedInMessageMode() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_66394.json" withStatusCode 200,
-                "/mail/v4/messages" respondWith "/mail/v4/messages/messages_66394.json" withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_66394.json" withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read" respondWith "/mail/v4/messages/read/read_base_placeholder.json" withStatusCode 200 serveOnce true
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_66394.json"
+                    withStatusCode 200,
+                "/mail/v4/messages"
+                    respondWith "/mail/v4/messages/messages_66394.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_66394.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read"
+                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
+                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
             )
         }
 
         val expectedMessageBody = "Lorem ipsum"
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.clickMessageByPosition(0)
 
@@ -163,19 +188,29 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
     fun checkLongMessageLoadedInConversationMode() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_66395.json" withStatusCode 200,
-                "/mail/v4/conversations" respondWith "/mail/v4/conversations/conversations_66395.json" withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*" respondWith "/mail/v4/conversations/conversation-id/conversation-id_66395.json" withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_66395.json" withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read" respondWith "/mail/v4/messages/read/read_base_placeholder.json" withStatusCode 200 serveOnce true
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_66395.json"
+                    withStatusCode 200,
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_66395.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/conversations/*"
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_66395.json"
+                    withStatusCode 200 matchWildcards true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_66395.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read"
+                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
+                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
             )
         }
 
         val expectedMessageBody = "Lorem ipsum"
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.clickMessageByPosition(0)
 
@@ -197,20 +232,32 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
     fun checkMostRecentUnreadMessageIsOpenedInConversation() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
-                "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_78993.json" withStatusCode 200,
-                "/mail/v4/conversations" respondWith "/mail/v4/conversations/conversations_78993.json" withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*" respondWith "/mail/v4/conversations/conversation-id/conversation-id_78993.json" withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*" respondWith "/mail/v4/messages/message-id/message-id_78993.json" withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read" respondWith "/mail/v4/messages/read/read_base_placeholder.json" withStatusCode 200,
-                "/mail/v4/conversations/read" respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json" withStatusCode 200 withPriority MockPriority.Highest
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_78993.json"
+                    withStatusCode 200,
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_78993.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/conversations/*"
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_78993.json"
+                    withStatusCode 200 matchWildcards true,
+                "/mail/v4/messages/*"
+                    respondWith "/mail/v4/messages/message-id/message-id_78993.json"
+                    withStatusCode 200 matchWildcards true serveOnce true,
+                "/mail/v4/messages/read"
+                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
+                    withStatusCode 200,
+                "/mail/v4/conversations/read"
+                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
+                    withStatusCode 200 withPriority MockPriority.Highest
             )
         }
 
         val expectedMessageBody = "Third message"
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.clickMessageByPosition(0)
 

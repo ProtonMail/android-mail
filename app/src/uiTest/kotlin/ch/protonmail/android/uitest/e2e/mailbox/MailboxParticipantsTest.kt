@@ -26,8 +26,9 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
+import ch.protonmail.android.uitest.helpers.core.navigation.Destination
+import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
-import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
@@ -36,7 +37,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import me.proton.core.test.android.robots.auth.AddAccountRobot
 import org.junit.Test
 
 @RegressionTest
@@ -45,7 +45,6 @@ import org.junit.Test
 @UninstallModules(ServerProofModule::class)
 internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
 
-    private val addAccountRobot = AddAccountRobot()
     private val inboxRobot = InboxRobot(composeTestRule)
 
     @JvmField
@@ -81,16 +80,24 @@ internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = Login
     fun checkAvatarInitialsWithMissingParticipantDetailsInMessageMode() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false, useDefaultContacts = false) {
             addMockRequests(
-                "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_77426.json" withStatusCode 200,
-                "/contacts/v4/contacts" respondWith "/contacts/v4/contacts/contacts_77426.json" withStatusCode 200 ignoreQueryParams true,
-                "/contacts/v4/contacts/emails" respondWith "/contacts/v4/contacts/emails/contacts-emails_77426.json" withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages" respondWith "/mail/v4/messages/messages_77426.json" withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_77426.json"
+                    withStatusCode 200,
+                "/contacts/v4/contacts"
+                    respondWith "/contacts/v4/contacts/contacts_77426.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/contacts/v4/contacts/emails"
+                    respondWith "/contacts/v4/contacts/emails/contacts-emails_77426.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/messages"
+                    respondWith "/mail/v4/messages/messages_77426.json"
+                    withStatusCode 200 ignoreQueryParams true,
             )
         }
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.verify { listItemsAreShown(*expectedInboxListEntries) }
     }
@@ -100,16 +107,24 @@ internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = Login
     fun checkAvatarInitialsWithMissingParticipantDetailsInConversationMode() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false, useDefaultContacts = false) {
             addMockRequests(
-                "/mail/v4/settings" respondWith "/mail/v4/settings/mail-v4-settings_77427.json" withStatusCode 200,
-                "/contacts/v4/contacts" respondWith "/contacts/v4/contacts/contacts_77427.json" withStatusCode 200 ignoreQueryParams true,
-                "/contacts/v4/contacts/emails" respondWith "/contacts/v4/contacts/emails/contacts-emails_77427.json" withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations" respondWith "/mail/v4/conversations/conversations_77427.json" withStatusCode 200 ignoreQueryParams true
+                "/mail/v4/settings"
+                    respondWith "/mail/v4/settings/mail-v4-settings_77427.json"
+                    withStatusCode 200,
+                "/contacts/v4/contacts"
+                    respondWith "/contacts/v4/contacts/contacts_77427.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/contacts/v4/contacts/emails"
+                    respondWith "/contacts/v4/contacts/emails/contacts-emails_77427.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_77427.json"
+                    withStatusCode 200 ignoreQueryParams true
             )
         }
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(MockedLoginTestUsers.defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         inboxRobot.verify { listItemsAreShown(*expectedInboxListEntries) }
     }

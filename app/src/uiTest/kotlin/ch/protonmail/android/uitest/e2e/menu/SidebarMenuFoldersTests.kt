@@ -26,8 +26,9 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
+import ch.protonmail.android.uitest.helpers.core.navigation.Destination
+import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
-import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers.defaultLoginUser
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.folders.IconTint
 import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry
@@ -37,7 +38,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import me.proton.core.test.android.robots.auth.AddAccountRobot
 import org.junit.Test
 
 @RegressionTest
@@ -46,7 +46,6 @@ import org.junit.Test
 @UninstallModules(ServerProofModule::class)
 internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
 
-    private val addAccountRobot = AddAccountRobot()
     private val menuRobot = MenuRobot(composeTestRule)
 
     @JvmField
@@ -78,9 +77,9 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
             SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = IconTint.WithColor.PurpleBase)
         )
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         menuRobot
             .swipeOpenSidebarMenu()
@@ -112,9 +111,9 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
             SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = IconTint.NoColor)
         )
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         menuRobot
             .swipeOpenSidebarMenu()
@@ -146,9 +145,9 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
             SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = IconTint.NoColor)
         )
 
-        addAccountRobot
-            .signIn()
-            .loginUser<Any>(defaultLoginUser)
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
 
         menuRobot
             .swipeOpenSidebarMenu()
