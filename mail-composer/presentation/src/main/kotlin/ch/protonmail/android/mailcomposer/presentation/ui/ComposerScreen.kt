@@ -59,12 +59,14 @@ import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.default
 
 @Composable
-fun ComposerScreen() {
+fun ComposerScreen(
+    onCloseComposerClick: () -> Unit
+) {
     val maxWidthModifier = Modifier.fillMaxWidth()
     val focusRequester = remember { FocusRequester() }
 
     Column {
-        ComposerTopBar()
+        ComposerTopBar(onCloseComposerClick = onCloseComposerClick)
         Column(
             modifier = maxWidthModifier
                 .verticalScroll(rememberScrollState(), reverseScrolling = true)
@@ -91,11 +93,11 @@ fun ComposerScreen() {
 }
 
 @Composable
-private fun ComposerTopBar() {
+private fun ComposerTopBar(onCloseComposerClick: () -> Unit) {
     ProtonTopAppBar(
         title = {},
         navigationIcon = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = onCloseComposerClick) {
                 Icon(
                     imageVector = Icons.Filled.Close,
                     tint = ProtonTheme.colors.iconNorm,
@@ -197,6 +199,6 @@ private fun TextFieldDefaults.composerTextFieldColors(): TextFieldColors =
 @AdaptivePreviews
 private fun MessageDetailScreenPreview() {
     ProtonTheme3 {
-        ComposerScreen()
+        ComposerScreen(onCloseComposerClick = {})
     }
 }

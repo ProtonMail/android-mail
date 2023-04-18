@@ -107,9 +107,9 @@ internal fun NavGraphBuilder.addMessageDetail(
     }
 }
 
-internal fun NavGraphBuilder.addComposer() {
+internal fun NavGraphBuilder.addComposer(navController: NavHostController) {
     composable(route = Destination.Screen.Composer.route) {
-        ComposerScreen()
+        ComposerScreen(onCloseComposerClick = navController::popBackStack)
     }
 }
 

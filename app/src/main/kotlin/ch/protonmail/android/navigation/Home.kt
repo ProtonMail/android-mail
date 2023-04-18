@@ -154,7 +154,7 @@ fun Home(
                     openMessageBodyLink = activityActions.openInActivityInNewTask,
                     showFeatureMissingSnackbar = { showFeatureMissingSnackbar() }
                 )
-                addComposer()
+                addComposer(navController)
                 addRemoveAccountDialog(navController)
                 addSettings(
                     navController,
