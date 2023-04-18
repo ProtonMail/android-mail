@@ -2,22 +2,23 @@ fullTest:
   device:
     - model: Pixel2.arm
       version: 33
-    - model: b2q
-      version: 31
-    - model: crownqlteue
+    - model: Pixel2.arm
+      version: 32
+    - model: Pixel2.arm
       version: 29
     - model: Pixel2.arm
       version: 28
-    - model: walleye
+    - model: Pixel2.arm
       version: 27
     - model: NexusLowRes
       version: 24
 smokeTest:
   device:
-    - model: oriole
-      version: 31
+    - model: Pixel2.arm
+      version: 33
+    - model: Pixel2.arm
+      version: 30
     - model: Pixel2.arm
       version: 28
-    - model: G8142
+    - model: Nexus5X
       version: 25
-
