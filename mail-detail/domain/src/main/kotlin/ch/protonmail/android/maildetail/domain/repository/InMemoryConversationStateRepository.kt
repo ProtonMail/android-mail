@@ -16,26 +16,25 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.dagger
+package ch.protonmail.android.maildetail.domain.repository
 
-import ch.protonmail.android.maildetail.data.repository.InMemoryConversationStateRepositoryImpl
-import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.components.SingletonComponent
+import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import kotlinx.coroutines.flow.Flow
 
-@Module
-@InstallIn(SingletonComponent::class)
-object MailDetailModule
+interface InMemoryConversationStateRepository {
 
-@Module
-@InstallIn(ViewModelComponent::class)
-internal interface ViewModelBindings {
+    val conversationState: Flow<Map<String, MessageState>>
 
-    @Binds
-    fun bindInMemoryConversationStateRepository(
-        implementation: InMemoryConversationStateRepositoryImpl
-    ): InMemoryConversationStateRepository
+    suspend fun expandMessage(messageId: MessageId, decryptedBody: DecryptedMessageBody)
+
+    suspend fun expandingMessage(messageId: MessageId)
+
+    suspend fun collapseMessage(messageId: MessageId)
+
+    sealed class MessageState {
+        object Collapsed : MessageState()
+        object Expanding : MessageState()
+        data class Expanded(val decryptedBody: DecryptedMessageBody) : MessageState()
+    }
 }

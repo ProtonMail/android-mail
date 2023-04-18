@@ -16,26 +16,26 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.dagger
+package ch.protonmail.android.mailconversation.presentation.usecase
 
-import ch.protonmail.android.maildetail.data.repository.InMemoryConversationStateRepositoryImpl
+import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.components.SingletonComponent
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import javax.inject.Inject
 
-@Module
-@InstallIn(SingletonComponent::class)
-object MailDetailModule
+class SetMessageViewState @Inject constructor(
+    private val inMemoryConversationStateRepository: InMemoryConversationStateRepository
+) {
 
-@Module
-@InstallIn(ViewModelComponent::class)
-internal interface ViewModelBindings {
+    suspend fun expand(messageId: MessageId, decryptedBody: DecryptedMessageBody) {
+        inMemoryConversationStateRepository.expandMessage(messageId, decryptedBody)
+    }
 
-    @Binds
-    fun bindInMemoryConversationStateRepository(
-        implementation: InMemoryConversationStateRepositoryImpl
-    ): InMemoryConversationStateRepository
+    suspend fun expanding(messageId: MessageId) {
+        inMemoryConversationStateRepository.expandingMessage(messageId)
+    }
+
+    suspend fun collapse(messageId: MessageId) {
+        inMemoryConversationStateRepository.collapseMessage(messageId)
+    }
 }

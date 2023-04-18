@@ -16,26 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.dagger
+package ch.protonmail.android.mailconversation.presentation.usecase
 
-import ch.protonmail.android.maildetail.data.repository.InMemoryConversationStateRepositoryImpl
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-@Module
-@InstallIn(SingletonComponent::class)
-object MailDetailModule
+class ObserveConversationViewState @Inject constructor(
+    private val inMemoryConversationStateRepository: InMemoryConversationStateRepository
+) {
 
-@Module
-@InstallIn(ViewModelComponent::class)
-internal interface ViewModelBindings {
-
-    @Binds
-    fun bindInMemoryConversationStateRepository(
-        implementation: InMemoryConversationStateRepositoryImpl
-    ): InMemoryConversationStateRepository
+    operator fun invoke(): Flow<Map<String, InMemoryConversationStateRepository.MessageState>> =
+        inMemoryConversationStateRepository.conversationState
 }
