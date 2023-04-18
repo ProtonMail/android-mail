@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -71,12 +72,12 @@ fun ComposerScreen(
             modifier = maxWidthModifier
                 .verticalScroll(rememberScrollState(), reverseScrolling = true)
         ) {
-            PrefixedTextField(
+            PrefixedEmailTextField(
                 prefixStringResource = R.string.from_prefix,
                 modifier = maxWidthModifier
             )
             MailDivider()
-            PrefixedTextField(
+            PrefixedEmailTextField(
                 prefixStringResource = R.string.to_prefix,
                 modifier = maxWidthModifier.focusRequester(focusRequester)
             )
@@ -118,7 +119,7 @@ private fun ComposerTopBar(onCloseComposerClick: () -> Unit) {
 }
 
 @Composable
-private fun PrefixedTextField(@StringRes prefixStringResource: Int, modifier: Modifier = Modifier) {
+private fun PrefixedEmailTextField(@StringRes prefixStringResource: Int, modifier: Modifier = Modifier) {
     var text by remember { mutableStateOf("") }
     TextField(
         value = text,
@@ -136,7 +137,10 @@ private fun PrefixedTextField(@StringRes prefixStringResource: Int, modifier: Mo
             }
         },
         colors = TextFieldDefaults.composerTextFieldColors(),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Next,
+            keyboardType = KeyboardType.Email
+        )
     )
 }
 
