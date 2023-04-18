@@ -37,5 +37,9 @@ fun SemanticsNodeInteraction.awaitDisplayed(
     composeTestRule.waitUntil(timeout.inWholeMilliseconds) { nodeIsDisplayed(this) }
 }
 
-fun SemanticsNodeInteraction.awaitHidden(composeTestRule: ComposeContentTestRule): SemanticsNodeInteraction =
-    also { composeTestRule.waitUntil { nodeIsNotDisplayed(this) } }
+fun SemanticsNodeInteraction.awaitHidden(
+    composeTestRule: ComposeContentTestRule,
+    timeout: Duration = 1.seconds
+): SemanticsNodeInteraction = also {
+    composeTestRule.waitUntil(timeout.inWholeMilliseconds) { nodeIsNotDisplayed(this) }
+}

@@ -54,6 +54,7 @@ import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers
+import kotlin.time.Duration.Companion.seconds
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
 
@@ -214,24 +215,26 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
         }
 
         fun moveToBottomSheetExists() {
-            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem)
+            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem, useUnmergedTree = true)
+                .awaitDisplayed(composeTestRule, timeout = 5.seconds)
                 .assertExists()
         }
 
         fun labelAsBottomSheetExists() {
-            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem)
+            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
+                .awaitDisplayed(composeTestRule, timeout = 5.seconds)
                 .assertExists()
         }
 
         fun moveToBottomSheetIsDismissed() {
-            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem)
-                .awaitHidden(composeTestRule)
+            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem, useUnmergedTree = true)
+                .awaitHidden(composeTestRule, timeout = 5.seconds)
                 .assertDoesNotExist()
         }
 
         fun labelAsBottomSheetIsDismissed() {
-            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem)
-                .awaitHidden(composeTestRule)
+            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
+                .awaitHidden(composeTestRule, timeout = 5.seconds)
                 .assertDoesNotExist()
         }
     }
