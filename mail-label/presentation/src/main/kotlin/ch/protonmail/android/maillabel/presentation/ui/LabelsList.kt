@@ -30,6 +30,7 @@ import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.SubcomposeMeasureScope
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -156,7 +157,6 @@ private fun SubcomposeMeasureScope.calculateCoordinates(
         }
 
         PlaceableCoordinates(x, y).also {
-
             x += placeable.width
             availableRowWidth -= placeable.width
         }
@@ -194,6 +194,7 @@ private fun SubcomposeMeasureScope.measureMinExpandedLabelWidth(constraints: Con
 private fun Label(label: LabelUiModel) {
     Text(
         modifier = Modifier
+            .testTag(LabelsListTestTags.Label)
             .padding(
                 end = ProtonDimens.ExtraSmallSpacing,
                 top = MailDimens.TinySpacing,
@@ -250,4 +251,9 @@ private fun MailboxItemLabelsPreview(
     ProtonTheme {
         LabelsList(labels = labels)
     }
+}
+
+object LabelsListTestTags {
+
+    const val Label = "Label"
 }

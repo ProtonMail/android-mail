@@ -32,8 +32,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
@@ -54,7 +54,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.overline
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreenTopBar(
     modifier: Modifier = Modifier,
@@ -66,12 +66,14 @@ fun DetailScreenTopBar(
 ) {
     ProtonTheme3 {
         LargeTopAppBar(
-            modifier = modifier,
+            modifier = modifier.testTag(DetailScreenTopBarTestTags.RootItem),
             title = {
                 Column {
                     messageCount?.let { count ->
                         Text(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .testTag(DetailScreenTopBarTestTags.MessageCount)
+                                .fillMaxWidth(),
                             text = pluralStringResource(plurals.message_count_label_text, count, count),
                             fontSize = ProtonTheme.typography.overline.fontSize,
                             textAlign = TextAlign.Center
@@ -79,13 +81,14 @@ fun DetailScreenTopBar(
                     }
                     val isFullyExpanded = scrollBehavior.state.collapsedFraction == 0F
                     Text(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .testTag(DetailScreenTopBarTestTags.Subject)
+                            .fillMaxWidth(),
                         maxLines = if (isFullyExpanded) 2 else 1,
                         text = title,
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Center
                     )
-
                 }
             },
             navigationIcon = {
@@ -179,4 +182,11 @@ private fun DetailScreenTopBarPreview(
             scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(state = state)
         )
     }
+}
+
+object DetailScreenTopBarTestTags {
+
+    const val RootItem = "DetailScreenTopBarRootItem"
+    const val MessageCount = "MessageCount"
+    const val Subject = "Subject"
 }
