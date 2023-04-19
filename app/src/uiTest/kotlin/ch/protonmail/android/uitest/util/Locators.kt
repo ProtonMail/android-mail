@@ -20,13 +20,23 @@ package ch.protonmail.android.uitest.util
 
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.SemanticsNodeInteractionCollection
+import androidx.compose.ui.test.filter
 import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.onChildren
 
 /**
  * Returns a child [SemanticsNodeInteraction] from another [SemanticsNodeInteraction]
- * by filtering out the parent's children with the given [SemanticsMatcher].
+ * by filtering the parent's children with the given [SemanticsMatcher].
  */
 fun SemanticsNodeInteraction.child(matcher: () -> SemanticsMatcher): SemanticsNodeInteraction {
     return onChildren().filterToOne(matcher.invoke())
+}
+
+/**
+ * Returns a [SemanticsNodeInteractionCollection] from a [SemanticsNodeInteraction]
+ * by filtering the parent's children with the given [SemanticsMatcher].
+ */
+fun SemanticsNodeInteraction.children(matcher: () -> SemanticsMatcher): SemanticsNodeInteractionCollection {
+    return onChildren().filter(matcher.invoke())
 }
