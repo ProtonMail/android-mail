@@ -34,11 +34,6 @@ import me.proton.core.label.domain.entity.LabelId
 interface MessageRepository {
 
     /**
-     * Get all [Message] for [userId].
-     */
-    suspend fun getMessages(userId: UserId, pageKey: PageKey = PageKey()): Either<DataError, List<Message>>
-
-    /**
      * Load all [Message] for [userId] filtered by [PageKey].
      */
     suspend fun loadMessages(userId: UserId, pageKey: PageKey = PageKey()): List<Message>

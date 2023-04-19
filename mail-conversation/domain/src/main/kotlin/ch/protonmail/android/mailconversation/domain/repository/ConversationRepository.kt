@@ -32,14 +32,6 @@ import me.proton.core.label.domain.entity.LabelId
 interface ConversationRepository {
 
     /**
-     * Get all [Conversation] for [userId].
-     */
-    suspend fun getConversations(
-        userId: UserId,
-        pageKey: PageKey = PageKey()
-    ): Either<DataError.Remote, List<ConversationWithContext>>
-
-    /**
      * Load all [Conversation] for [userId].
      */
     suspend fun loadConversations(

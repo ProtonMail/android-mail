@@ -21,7 +21,6 @@ package ch.protonmail.android.mailmessage.data
 import java.util.UUID
 import app.cash.turbine.test
 import arrow.core.getOrElse
-import arrow.core.getOrHandle
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
@@ -96,84 +95,6 @@ class MessageRepositoryImplTest {
         localDataSource = localDataSource,
         coroutineScopeProvider = TestCoroutineScopeProvider(TestDispatcherProvider(UnconfinedTestDispatcher()))
     )
-
-    @Test
-    fun `return remote if local page is invalid`() = runTest {
-        // Given
-        val pageKey = PageKey()
-        val localMessages = listOf(
-            getMessage(id = "1", time = 1000)
-        )
-        val remoteMessages = listOf(
-            getMessage(id = "1", time = 1000),
-            getMessage(id = "2", time = 2000),
-            getMessage(id = "3", time = 3000)
-        )
-        coEvery { localDataSource.getMessages(any(), any()) } returns localMessages
-        coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
-        coEvery { localDataSource.getClippedPageKey(any(), any()) } returns pageKey
-        coEvery { remoteDataSource.getMessages(any(), any()) } returns remoteMessages.right()
-
-        // When
-        val result = messageRepository.getMessages(userId, pageKey)
-            .getOrHandle(::error)
-
-        // Then
-        assertEquals(3, result.size)
-        coVerify(exactly = 1) { localDataSource.isLocalPageValid(userId, pageKey, localMessages) }
-        coVerify(exactly = 1) { remoteDataSource.getMessages(userId, pageKey) }
-        coVerify(exactly = 1) { localDataSource.upsertMessages(userId, pageKey, remoteMessages) }
-    }
-
-    @Test
-    fun `return cached data if remote fails`() = runTest {
-        // Given
-        val pageKey = PageKey()
-        val localMessages = listOf(
-            getMessage(id = "1", time = 1000),
-            getMessage(id = "2", time = 2000)
-        )
-        val error = DataErrorSample.Unreachable.left()
-        coEvery { localDataSource.getMessages(any(), any()) } returns localMessages
-        coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns false
-        coEvery { localDataSource.getClippedPageKey(any(), any()) } returns pageKey
-        coEvery { remoteDataSource.getMessages(any(), any()) } returns error
-
-        // When
-        val result = messageRepository.getMessages(userId, pageKey)
-
-        // Then
-        assertEquals(localMessages.right(), result)
-        coVerify(exactly = 1) { localDataSource.isLocalPageValid(userId, pageKey, localMessages) }
-        coVerify(exactly = 1) { remoteDataSource.getMessages(userId, pageKey) }
-    }
-
-    @Test
-    fun `return local if valid`() = runTest {
-        // Given
-        val pageKey = PageKey()
-        val localMessages = listOf(
-            getMessage(id = "1", time = 1000),
-            getMessage(id = "2", time = 2000)
-        )
-        val remoteMessages = listOf(
-            getMessage(id = "1", time = 1000),
-            getMessage(id = "2", time = 2000),
-            getMessage(id = "3", time = 3000)
-        )
-        coEvery { localDataSource.getMessages(any(), any()) } returns localMessages
-        coEvery { localDataSource.isLocalPageValid(any(), any(), any()) } returns true
-        coEvery { remoteDataSource.getMessages(any(), any()) } returns remoteMessages.right()
-
-        // When
-        val messages = messageRepository.getMessages(userId, pageKey)
-            .getOrHandle(::error)
-
-        // Then
-        assertEquals(2, messages.size)
-        coVerify(exactly = 1) { localDataSource.isLocalPageValid(userId, pageKey, localMessages) }
-        coVerify(exactly = 0) { remoteDataSource.getMessages(any(), any()) }
-    }
 
     @Test
     fun `load messages returns local data`() = runTest {
@@ -275,7 +196,6 @@ class MessageRepositoryImplTest {
 
         // when
         messageRepository.observeCachedMessages(userId, conversationId).test {
-
             // then
             assertEquals(messages.right(), awaitItem())
             verify { localDataSource.observeMessages(userId, conversationId) }
@@ -305,7 +225,6 @@ class MessageRepositoryImplTest {
 
         // When
         messageRepository.observeMessageWithBody(userId, messageId).test {
-
             // Then
             assertEquals(expected, awaitItem())
         }
@@ -321,7 +240,6 @@ class MessageRepositoryImplTest {
 
             // When
             messageRepository.observeMessageWithBody(userId, messageId).test {
-
                 // Then
                 coVerify {
                     remoteDataSource.getMessage(userId, messageId)

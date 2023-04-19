@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import arrow.core.Either
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmailbox.domain.mapper.ConversationMailboxItemMapper
@@ -53,15 +54,11 @@ class GetMailboxItems @Inject constructor(
         val labels = labelRepository.getLabels(userId, LabelType.MessageLabel)
         val labelsMaps = (labels + folders).associateBy { it.labelId }
         return when (type) {
-            MailboxItemType.Message -> messageRepository.getMessages(userId, pageKey).map { list ->
-                list.map {
-                    messageMailboxItemMapper.toMailboxItem(it, labelsMaps)
-                }
+            MailboxItemType.Message -> messageRepository.loadMessages(userId, pageKey).let { list ->
+                list.map { messageMailboxItemMapper.toMailboxItem(it, labelsMaps) }.right()
             }
-            MailboxItemType.Conversation -> conversationRepository.getConversations(userId, pageKey).map { list ->
-                list.map {
-                    conversationMailboxItemMapper.toMailboxItem(it, labelsMaps)
-                }
+            MailboxItemType.Conversation -> conversationRepository.loadConversations(userId, pageKey).let { list ->
+                list.map { conversationMailboxItemMapper.toMailboxItem(it, labelsMaps) }.right()
             }
         }
     }

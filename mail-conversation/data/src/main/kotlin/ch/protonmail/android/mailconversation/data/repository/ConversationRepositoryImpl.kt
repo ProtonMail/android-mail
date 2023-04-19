@@ -84,24 +84,6 @@ class ConversationRepositoryImpl @Inject constructor(
         )
     ).buildProtonStore(coroutineScopeProvider)
 
-    override suspend fun getConversations(
-        userId: UserId,
-        pageKey: PageKey
-    ): Either<DataError.Remote, List<ConversationWithContext>> = conversationLocalDataSource.getConversations(
-        userId = userId,
-        pageKey = pageKey
-    ).let { cachedConversations ->
-        val isLocalPageValid = conversationLocalDataSource.isLocalPageValid(userId, pageKey, cachedConversations)
-        if (isLocalPageValid) cachedConversations.right()
-        else fetchConversations(userId, pageKey).fold(
-            ifLeft = { dataError ->
-                Timber.w("Failed to fetch conversations from remote, returning cached conversations. $dataError")
-                cachedConversations.right()
-            },
-            ifRight = { it.right() }
-        )
-    }
-
     override suspend fun loadConversations(userId: UserId, pageKey: PageKey) =
         conversationLocalDataSource.getConversations(userId, pageKey)
 

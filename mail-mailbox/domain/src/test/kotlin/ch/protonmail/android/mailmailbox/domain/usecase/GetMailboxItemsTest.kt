@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import arrow.core.getOrHandle
-import arrow.core.right
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailmailbox.domain.mapper.ConversationMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
@@ -44,20 +43,20 @@ import kotlin.test.assertEquals
 class GetMailboxItemsTest {
 
     private val messageRepository = mockk<MessageRepository> {
-        coEvery { getMessages(any(), any()) } returns listOf(
+        coEvery { loadMessages(any(), any()) } returns listOf(
             // userId1
             buildMessage(userId, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId, "2", time = 2000, labelIds = listOf("4")),
             buildMessage(userId, "3", time = 3000, labelIds = listOf("0", "1"))
-        ).right()
+        )
     }
     private val conversationRepository = mockk<ConversationRepository> {
-        coEvery { getConversations(any(), any()) } returns listOf(
+        coEvery { loadConversations(any(), any()) } returns listOf(
             // userId1
             ConversationWithContextTestData.conversation1Labeled,
             ConversationWithContextTestData.conversation2Labeled,
             ConversationWithContextTestData.conversation3Labeled
-        ).right()
+        )
     }
     private val labelRepository = mockk<LabelRepository> {
         coEvery { getLabels(any(), any()) } returns listOf(
@@ -86,7 +85,7 @@ class GetMailboxItemsTest {
     }
 
     @Test
-    fun `invoke for Message, getLabels and getMessages`() = runTest {
+    fun `invoke for Message, getLabels and loadMessages`() = runTest {
         // Given
         val pageKey = PageKey(orderDirection = OrderDirection.Ascending, size = 3)
 
@@ -97,7 +96,7 @@ class GetMailboxItemsTest {
         // Then
         coVerify { labelRepository.getLabels(userId, LabelType.MessageLabel) }
         coVerify { labelRepository.getLabels(userId, LabelType.MessageFolder) }
-        coVerify { messageRepository.getMessages(userId, pageKey) }
+        coVerify { messageRepository.loadMessages(userId, pageKey) }
         assertEquals(3, mailboxItems.size)
         assertEquals(0, mailboxItems[0].labels.size)
         assertEquals(1, mailboxItems[1].labels.size)
@@ -121,7 +120,7 @@ class GetMailboxItemsTest {
         // Then
         coVerify { labelRepository.getLabels(userId, LabelType.MessageLabel) }
         coVerify { labelRepository.getLabels(userId, LabelType.MessageFolder) }
-        coVerify { conversationRepository.getConversations(userId, pageKey) }
+        coVerify { conversationRepository.loadConversations(userId, pageKey) }
         assertEquals(3, mailboxItems.size)
         assertEquals(1, mailboxItems[0].labels.size)
         assertEquals(1, mailboxItems[1].labels.size)

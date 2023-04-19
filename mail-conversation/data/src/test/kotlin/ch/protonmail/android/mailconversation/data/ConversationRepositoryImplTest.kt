@@ -67,6 +67,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@SuppressWarnings("LargeClass")
 class ConversationRepositoryImplTest {
 
     private val userId = UserIdSample.Primary
@@ -114,7 +115,7 @@ class ConversationRepositoryImplTest {
         coEvery { conversationRemoteDataSource.getConversations(userId, pageKey) } returns remote.right()
 
         // When
-        val result = conversationRepository.getConversations(userId, pageKey).getOrElse(::error)
+        val result = conversationRepository.fetchConversations(userId, pageKey).getOrElse(::error)
 
         // Then
         assertEquals(3, result.size)
@@ -138,29 +139,6 @@ class ConversationRepositoryImplTest {
         // Then
         assertEquals(2, conversations.size)
         coVerify(exactly = 1) { conversationLocalDataSource.getConversations(userId, pageKey) }
-    }
-
-    @Test
-    fun `return cached data if remote fails`() = runTest {
-        // Given
-        val pageKey = PageKey()
-        val local = listOf(
-            ConversationWithContextTestData.conversation1,
-            ConversationWithContextTestData.conversation2
-        )
-        val error = DataErrorSample.Unreachable.left()
-        coEvery { conversationLocalDataSource.getConversations(any(), any()) } returns local
-        coEvery { conversationLocalDataSource.isLocalPageValid(any(), any(), any()) } returns false
-        coEvery { conversationLocalDataSource.getClippedPageKey(any(), any()) } returns pageKey
-        coEvery { conversationRemoteDataSource.getConversations(any(), any()) } returns error
-
-        // When
-        val result = conversationRepository.getConversations(userId, pageKey)
-
-        // Then
-        assertEquals(local.right(), result)
-        coVerify(exactly = 1) { conversationLocalDataSource.isLocalPageValid(userId, pageKey, local) }
-        coVerify(exactly = 1) { conversationRemoteDataSource.getConversations(userId, pageKey) }
     }
 
     @Test
@@ -322,7 +300,9 @@ class ConversationRepositoryImplTest {
 
         // When
         val actual = conversationRepository.addLabel(
-            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
+            userId = userId,
+            conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID),
+            labelId = LabelId("10")
         )
 
         // Then
@@ -388,7 +368,6 @@ class ConversationRepositoryImplTest {
         coVerify(exactly = 0) { messageLocalDataSource.upsertMessages(any()) }
     }
 
-
     @Test
     fun `remove label returns updated conversation without label when upsert was successful`() = runTest {
         // Given
@@ -397,7 +376,9 @@ class ConversationRepositoryImplTest {
 
         // When
         val actual = conversationRepository.removeLabel(
-            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
+            userId,
+            ConversationId(ConversationTestData.RAW_CONVERSATION_ID),
+            LabelId("10")
         )
         // Then
         val unStaredConversation = ConversationTestData.conversation
@@ -414,7 +395,9 @@ class ConversationRepositoryImplTest {
         )
         // When
         conversationRepository.removeLabel(
-            userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), LabelId("10")
+            userId,
+            ConversationId(ConversationTestData.RAW_CONVERSATION_ID),
+            LabelId("10")
         )
         // Then
         val expectedMessages = MessageTestData.unStarredMessagesByConversation
@@ -575,7 +558,6 @@ class ConversationRepositoryImplTest {
         // when
         conversationRepository.move(userId, conversationId, emptyList(), SystemLabelId.Trash.labelId)
         messageLocalDataSource.observeMessages(userId, conversationId).test {
-
             // then
             assertEquals(trashedMessages, awaitItem())
         }
@@ -684,7 +666,7 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `move to trash removes all the labels from messages, except AllMail, AllDraft and AllSent`() = runTest {
+    fun `move to trash removes all labels from messages, except AllMail, AllDraft, AllSent`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         val conversation = ConversationSample.WeatherForecast
@@ -748,7 +730,6 @@ class ConversationRepositoryImplTest {
             SystemLabelId.Trash.labelId
         )
         messageLocalDataSource.observeMessages(userId, conversationId).test {
-
             // then
             assertEquals(trashedMessages, awaitItem())
         }
