@@ -20,8 +20,6 @@ package ch.protonmail.android.mailmailbox.presentation
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.AppInformation
-import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
@@ -72,10 +70,6 @@ class SidebarViewModelTest {
         every { this@mockk.set(any()) } returns Unit
     }
 
-    private val mailFeatureDefault = mockk<MailFeatureDefault> {
-        every { this@mockk[MailFeatureId.ShowSettings] } returns false
-    }
-
     private val showSettings = MutableStateFlow(FeatureFlag.default(FeatureFlagTestData.showSettingsId.id.id, false))
     private val observeMailFeature = mockk<ObserveMailFeature> {
         every { this@mockk(any(), FeatureFlagTestData.showSettingsId) } returns showSettings
@@ -108,7 +102,6 @@ class SidebarViewModelTest {
         sidebarViewModel = SidebarViewModel(
             appInformation = appInformation,
             selectedMailLabelId = selectedMailLabelId,
-            mailFeatureDefault = mailFeatureDefault,
             updateLabelExpandedState = updateLabelExpandedState,
             paymentManager = paymentManager,
             observeMailFeature = observeMailFeature,

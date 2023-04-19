@@ -21,7 +21,6 @@ package ch.protonmail.android.mailmailbox.presentation.sidebar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.AppInformation
-import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
 import ch.protonmail.android.mailcommon.domain.MailFeatureId.ShowSettings
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
@@ -50,7 +49,6 @@ import javax.inject.Inject
 class SidebarViewModel @Inject constructor(
     val appInformation: AppInformation,
     private val selectedMailLabelId: SelectedMailLabelId,
-    private val mailFeatureDefault: MailFeatureDefault,
     private val updateLabelExpandedState: UpdateLabelExpandedState,
     private val paymentManager: PaymentManager,
     observeMailFeature: ObserveMailFeature,
@@ -80,7 +78,7 @@ class SidebarViewModel @Inject constructor(
         ) { selectedMailLabelId, settingsFeature, folderColors, mailLabels ->
             State.Enabled(
                 selectedMailLabelId = selectedMailLabelId,
-                isSettingsEnabled = settingsFeature?.value ?: mailFeatureDefault[ShowSettings],
+                isSettingsEnabled = settingsFeature.value,
                 canChangeSubscription = paymentManager.isSubscriptionAvailable(user.userId),
                 mailLabels = mailLabels.toUiModels(folderColors, emptyMap(), selectedMailLabelId)
             )
