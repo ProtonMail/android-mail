@@ -37,7 +37,7 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class PageKeyClippingTest {
+class PageKeyClippingKtTest {
 
     private val userId = UserId("1")
     private val type = PageItemType.Message
@@ -209,8 +209,8 @@ class PageKeyClippingTest {
         assertEquals(expected, actual)
     }
 
-    @Test(expected = IllegalStateException::class)
-    fun `when min & max in same interval, throw IllegalStateException`() = runTest {
+    @Test
+    fun `when min & max in same interval return null`() = runTest {
         // Given
         localIntervals.addAll(
             listOf(
@@ -226,7 +226,7 @@ class PageKeyClippingTest {
             pageKey = getPageKey(minTime = 0, maxTime = 1000)
         )
 
-        val expected = getPageKey(minTime = 0, maxTime = 1000)
+        val expected = null
 
         // Then
         assertEquals(expected, actual)

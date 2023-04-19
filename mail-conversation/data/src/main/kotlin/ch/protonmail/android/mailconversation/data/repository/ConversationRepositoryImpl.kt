@@ -114,10 +114,10 @@ class ConversationRepositoryImpl @Inject constructor(
     ): Either<DataError.Remote, List<ConversationWithContext>> = conversationLocalDataSource.getClippedPageKey(
         userId = userId,
         pageKey = pageKey.copy(size = min(ConversationApi.maxPageSize, pageKey.size))
-    ).let { adaptedPageKey ->
+    )?.let { adaptedPageKey ->
         conversationRemoteDataSource.getConversations(userId = userId, pageKey = adaptedPageKey)
             .onRight { conversations -> insertConversations(userId, adaptedPageKey, conversations) }
-    }
+    } ?: emptyList<ConversationWithContext>().right()
 
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
         conversationLocalDataSource.markAsStale(userId, labelId)

@@ -47,7 +47,7 @@ interface MessageLocalDataSource {
      *
      * Note: Usually used to trim unnecessary interval from the [PageKey] before fetching.
      */
-    suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey
+    suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey?
 
     /**
      * Get all [Message] by [userId] for this [pageKey].

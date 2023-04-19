@@ -69,7 +69,7 @@ class MessageLocalDataSourceImpl @Inject constructor(
         ids.forEach { messageBodyFileStorage.deleteMessageBody(userId, it) }
     }
 
-    override suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey =
+    override suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey? =
         pageIntervalDao.getClippedPageKey(userId, PageItemType.Message, pageKey)
 
     override suspend fun getMessages(userId: UserId, pageKey: PageKey): List<Message> =

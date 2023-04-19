@@ -103,7 +103,7 @@ interface ConversationLocalDataSource {
     suspend fun getClippedPageKey(
         userId: UserId,
         pageKey: PageKey
-    ): PageKey
+    ): PageKey?
 
     fun observeConversation(
         userId: UserId,

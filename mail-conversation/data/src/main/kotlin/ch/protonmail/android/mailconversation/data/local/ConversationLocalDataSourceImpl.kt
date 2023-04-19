@@ -103,7 +103,7 @@ class ConversationLocalDataSourceImpl @Inject constructor(
     override suspend fun getClippedPageKey(
         userId: UserId,
         pageKey: PageKey
-    ): PageKey = pageIntervalDao.getClippedPageKey(userId, PageItemType.Conversation, pageKey)
+    ): PageKey? = pageIntervalDao.getClippedPageKey(userId, PageItemType.Conversation, pageKey)
 
     override fun observeConversation(userId: UserId, conversationId: ConversationId): Flow<Conversation?> =
         conversationDao

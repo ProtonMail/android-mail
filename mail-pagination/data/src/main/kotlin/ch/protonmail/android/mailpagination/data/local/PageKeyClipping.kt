@@ -28,12 +28,13 @@ import me.proton.core.domain.entity.UserId
  * Return clipped [PageKey] according already persisted intervals.
  *
  * Note: Usually used to trim unnecessary interval from the [PageKey] before fetching.
+ * @return clipped key or null if persisted intervals already include [pageKey].
  */
 suspend fun PageIntervalDao.getClippedPageKey(
     userId: UserId,
     type: PageItemType,
     pageKey: PageKey
-): PageKey {
+): PageKey? {
     val intervals = getAll(
         userId = userId,
         type = type,
@@ -60,7 +61,5 @@ suspend fun PageIntervalDao.getClippedPageKey(
             maxOrder = maxInterval?.minOrder ?: pageKey.filter.maxOrder,
             maxId = maxInterval?.minId ?: pageKey.filter.maxId
         )
-    ).also {
-        check(it.filter.minTime <= it.filter.maxTime)
-    }
+    ).takeIf { it.filter.minTime <= it.filter.maxTime }
 }

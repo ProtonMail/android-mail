@@ -102,12 +102,12 @@ class MessageRepositoryImpl @Inject constructor(
         localDataSource.getClippedPageKey(
             userId = userId,
             pageKey = pageKey.copy(size = min(MessageApi.maxPageSize, pageKey.size))
-        ).let { adaptedPageKey ->
+        )?.let { adaptedPageKey ->
             remoteDataSource.getMessages(
                 userId = userId,
                 pageKey = adaptedPageKey
             ).onRight { messages -> insertMessages(userId, adaptedPageKey, messages) }
-        }
+        } ?: emptyList<Message>().right()
 
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) = localDataSource.markAsStale(userId, labelId)
 
