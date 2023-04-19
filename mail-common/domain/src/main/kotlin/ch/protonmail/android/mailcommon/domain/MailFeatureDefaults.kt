@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.mailcommon.domain
 
-class MailFeatureDefault(
-    val default: Map<MailFeatureId, Boolean>
+data class MailFeatureDefaults(
+    private val defaults: Map<MailFeatureId, Boolean>
 ) {
-    operator fun get(featureId: MailFeatureId) = default[featureId] ?: false
+    operator fun get(featureId: MailFeatureId) = defaults[featureId] ?: false
 }

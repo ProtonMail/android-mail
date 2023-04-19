@@ -19,26 +19,29 @@
 package ch.protonmail.android.di
 
 import ch.protonmail.android.BuildConfig
-import ch.protonmail.android.mailcommon.domain.MailFeatureDefault
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import javax.inject.Qualifier
 
 @Module
 @InstallIn(SingletonComponent::class)
-object FeatureModule {
-
-    private const val isAlphaOrDev = BuildConfig.FLAVOR == "dev" || BuildConfig.FLAVOR == "alpha"
+object BuildConfigModule {
 
     @Provides
-    @Singleton
-    fun provideMailFeatureFlag(): MailFeatureDefault = MailFeatureDefault(
-        mapOf(
-            MailFeatureId.ConversationMode to isAlphaOrDev,
-            MailFeatureId.ShowSettings to isAlphaOrDev
-        )
-    )
+    @BuildFlavor
+    fun provideBuildFlavor() = BuildConfig.FLAVOR
+
+    @Provides
+    @BuildDebug
+    fun provideBuildDebug() = BuildConfig.DEBUG
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class BuildFlavor
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class BuildDebug
