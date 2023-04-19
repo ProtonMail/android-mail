@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -34,6 +35,8 @@ import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
+import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
+import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmailbox.domain.model.UnreadCounter
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
@@ -48,24 +51,29 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
-import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.util.kotlin.exhaustive
@@ -73,6 +81,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
+@SuppressWarnings("LongParameterList")
 class MailboxViewModel @Inject constructor(
     private val mailboxPagerFactory: MailboxPagerFactory,
     private val observeCurrentViewMode: ObserveCurrentViewMode,
@@ -92,7 +101,7 @@ class MailboxViewModel @Inject constructor(
     private val mutableState = MutableStateFlow(initialState)
 
     val state: StateFlow<MailboxState> = mutableState.asStateFlow()
-    val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData()
+    val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)
 
     init {
         observeCurrentMailLabel()
@@ -140,10 +149,7 @@ class MailboxViewModel @Inject constructor(
     }
 
     private suspend fun onOpenItemDetails(item: MailboxItemUiModel) {
-        mutableState.value = mailboxReducer.newStateFrom(
-            currentState = state.value,
-            operation = MailboxEvent.ItemDetailsOpenedInViewMode(item, getPreferredViewMode())
-        )
+        emitNewStateFrom(MailboxEvent.ItemDetailsOpenedInViewMode(item, getPreferredViewMode()))
     }
 
     private fun onRefresh() {
@@ -153,34 +159,31 @@ class MailboxViewModel @Inject constructor(
     private fun observePagingData(): Flow<PagingData<MailboxItemUiModel>> =
         primaryUserId.filterNotNull().flatMapLatest { userId ->
             combine(
-                state,
+                state.observeMailLabelChanges(),
+                state.observeUnreadFilterState(),
                 observeViewModeByLocation()
-            ) { mailboxState, viewMode ->
-                val unreadFilterEnabled = when (val filterState = mailboxState.unreadFilterState) {
-                    is UnreadFilterState.Data -> filterState.isFilterEnabled
-                    is UnreadFilterState.Loading -> false
-                }
-                val selectedMailLabelId = when (val listState = mailboxState.mailboxListState) {
-                    is MailboxListState.Data -> listState.currentMailLabel.id
-                    is MailboxListState.Loading -> MailLabelId.System.Inbox
-                }
-
+            ) { selectedMailLabel, unreadFilterEnabled, viewMode ->
                 mailboxPagerFactory.create(
                     userIds = listOf(userId),
-                    selectedMailLabelId = selectedMailLabelId,
+                    selectedMailLabelId = selectedMailLabel.id,
                     filterUnread = unreadFilterEnabled,
                     type = viewMode.toMailboxItemType()
                 )
-            }.flatMapLatest { pager ->
-                val contacts = getContacts()
-                pager.flow.cachedIn(viewModelScope)
-                    .combine(observeFolderColorSettings(userId)) { pagingData, folderColorSettings ->
-                        pagingData.map { mailboxItem ->
-                            mailboxItemMapper.toUiModel(mailboxItem, contacts, folderColorSettings)
-                        }
-                    }
-            }
+            }.flatMapLatest { mapPagingData(userId, it) }
         }
+
+    private suspend fun mapPagingData(
+        userId: UserId,
+        pager: Pager<MailboxPageKey, MailboxItem>
+    ): Flow<PagingData<MailboxItemUiModel>> {
+        val contacts = getContacts()
+        return combine(
+            pager.flow.cachedIn(viewModelScope),
+            observeFolderColorSettings(userId)
+        ) { pagingData, folderColorSettings ->
+            pagingData.map { mailboxItem -> mailboxItemMapper.toUiModel(mailboxItem, contacts, folderColorSettings) }
+        }.flowOn(Dispatchers.IO)
+    }
 
     private fun observeCurrentMailLabel() = observeMailLabels()
         .map { mailLabels ->
@@ -207,7 +210,7 @@ class MailboxViewModel @Inject constructor(
         if (userId == null) {
             flowOf(ObserveCurrentViewMode.DefaultViewMode)
         } else {
-            selectedMailLabelId.flow.flatMapLatest { observeCurrentViewMode(userId, it) }
+            selectedMailLabelId.flow.flatMapLatest { observeCurrentViewMode(userId, it) }.distinctUntilChanged()
         }
     }
 
@@ -253,6 +256,16 @@ class MailboxViewModel @Inject constructor(
     private fun emitNewStateFrom(operation: MailboxOperation) {
         mutableState.value = mailboxReducer.newStateFrom(state.value, operation)
     }
+
+    private fun Flow<MailboxState>.observeUnreadFilterState() =
+        this.map { it.unreadFilterState as? UnreadFilterState.Data }
+            .mapNotNull { it?.isFilterEnabled }
+            .distinctUntilChanged()
+
+    private fun Flow<MailboxState>.observeMailLabelChanges() =
+        this.map { it.mailboxListState as? MailboxListState.Data }
+            .mapNotNull { it?.currentMailLabel }
+            .distinctUntilChanged()
 
     companion object {
 

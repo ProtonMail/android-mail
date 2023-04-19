@@ -71,6 +71,7 @@ import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -391,31 +392,26 @@ class MailboxViewModelTest {
     @Test
     fun `mailbox items for the current location are requested when location changes`() = runTest {
         // Given
-        val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
         every { selectedMailLabelId.flow } returns currentLocationFlow
         every { pagerFactory.create(any(), any(), any(), any()) } returns mockk mockPager@{
             every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
         }
+        every { mailboxReducer.newStateFrom(any(), any()) } returns createMailboxState()
         every {
             mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
+                any(),
                 MailboxEvent.NewLabelSelected(
                     MailLabelId.System.Spam.toMailLabel(),
                     UnreadCountersTestData.labelToCounterMap[MailLabelId.System.Spam.labelId]!!
                 )
             )
-        } returns MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data(
-                currentMailLabel = MailLabel.System(MailLabelId.System.Spam),
-                openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.of(MailLabelId.System.Spam.toMailLabel().id)
-            )
-        )
+        } returns createMailboxState(selectedMailLabelId = MailLabelId.System.Spam)
 
         mailboxViewModel.items.test {
             // Then
             awaitItem()
-            verify { pagerFactory.create(listOf(userId), MailLabelId.System.Inbox, false, Message) }
+            verify { pagerFactory.create(listOf(userId), MailLabelId.System.Archive, false, Message) }
 
             // When
             currentLocationFlow.emit(MailLabelId.System.Spam)
@@ -440,6 +436,7 @@ class MailboxViewModelTest {
             val pagingData = PagingData.from(listOf(unreadMailboxItem, readMailboxItem))
             every { this@mockk.flow } returns flowOf(pagingData)
         }
+        every { mailboxReducer.newStateFrom(any(), any()) } returns createMailboxState()
         val differ = MailboxAsyncPagingDataDiffer.differ
 
         // When
@@ -470,10 +467,11 @@ class MailboxViewModelTest {
             mailboxItemMapper.toUiModel(unreadMailboxItemWithLabel, ContactTestData.contacts, updatedFolderColorSetting)
         } returns unreadMailboxItemUiModelWithLabel
 
-        every { pagerFactory.create(listOf(userId), MailLabelId.System.Inbox, false, any()) } returns mockk {
+        every { pagerFactory.create(listOf(userId), MailLabelId.System.Archive, false, any()) } returns mockk {
             val pagingData = PagingData.from(listOf(unreadMailboxItemWithLabel))
             every { this@mockk.flow } returns flowOf(pagingData)
         }
+        every { mailboxReducer.newStateFrom(any(), any()) } returns createMailboxState()
         val differ = MailboxAsyncPagingDataDiffer.differ
 
         // When
@@ -510,6 +508,7 @@ class MailboxViewModelTest {
             val pagingData = PagingData.from(listOf(unreadMailboxItem, readMailboxItem))
             every { this@mockk.flow } returns flowOf(pagingData)
         }
+        every { mailboxReducer.newStateFrom(any(), any()) } returns createMailboxState()
         val differ = MailboxAsyncPagingDataDiffer.differ
         // When
         mailboxViewModel.items.test {
@@ -661,6 +660,34 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `mailbox pager is recreated when unread filter state changes`() = runTest {
+        // Given
+        val expectedMailBoxState = createMailboxState(unreadFilterState = false)
+        every { mailboxReducer.newStateFrom(any(), any()) } returns expectedMailBoxState
+        every { pagerFactory.create(any(), any(), any(), any()) } returns mockk mockPager@{
+            every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
+        }
+        every { mailboxReducer.newStateFrom(expectedMailBoxState, MailboxViewAction.EnableUnreadFilter) } returns
+            createMailboxState(unreadFilterState = true)
+
+        mailboxViewModel.items.test {
+            // When
+
+            // Then
+            awaitItem()
+            verify(exactly = 1) { pagerFactory.create(listOf(userId), Archive, false, Message) }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.EnableUnreadFilter)
+
+            // Then
+            awaitItem()
+            verify(exactly = 1) { pagerFactory.create(listOf(userId), Archive, true, Message) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `when composer enabled with a feature flag, produces and emits a new state`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(
@@ -688,5 +715,116 @@ class MailboxViewModelTest {
             // Then
             assertEquals(expectedState, awaitItem())
         }
+    }
+
+    @Test
+    fun `mailbox pager is recreated when selected mail label state changes`() = runTest {
+        // Given
+        val expectedMailBoxState = createMailboxState(selectedMailLabelId = initialLocationMailLabelId)
+        val inboxLabel = MailLabelId.System.Inbox
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+        every { mailboxReducer.newStateFrom(any(), any()) } returns expectedMailBoxState
+        every { pagerFactory.create(any(), any(), any(), any()) } returns mockk mockPager@{
+            every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
+        }
+        every {
+            mailboxReducer.newStateFrom(
+                expectedMailBoxState,
+                MailboxEvent.NewLabelSelected(
+                    inboxLabel.toMailLabel(),
+                    UnreadCountersTestData.labelToCounterMap[inboxLabel.labelId]!!
+                )
+            )
+        } returns createMailboxState(selectedMailLabelId = inboxLabel)
+
+        mailboxViewModel.items.test {
+            // When
+
+            // Then
+            awaitItem()
+            verify(exactly = 1) { pagerFactory.create(listOf(userId), Archive, false, Message) }
+
+            // When
+            currentLocationFlow.emit(inboxLabel)
+
+            // Then
+            awaitItem()
+            // mailbox pager is recreated only once when view mode for the newly selected location does not change
+            verify(exactly = 1) { pagerFactory.create(listOf(userId), inboxLabel, false, Message) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `mailbox pager is not recreated when any state beside selected label, unread filter, view mode or primary user changes`() =
+        runTest {
+            // Given
+            val expectedMailBoxState = createMailboxState(Effect.empty())
+            every { mailboxReducer.newStateFrom(any(), any()) } returns expectedMailBoxState
+            every { pagerFactory.create(any(), any(), any(), any()) } returns mockk mockPager@{
+                every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
+            }
+            every {
+                mailboxReducer.newStateFrom(
+                    expectedMailBoxState,
+                    MailboxEvent.ItemDetailsOpenedInViewMode(unreadMailboxItemUiModel, NoConversationGrouping)
+                )
+            } returns createMailboxState(
+                Effect.of(OpenMailboxItemRequest(MailboxItemId(unreadMailboxItem.id), unreadMailboxItem.type))
+            )
+
+            mailboxViewModel.items.test {
+                // When
+                awaitItem()
+                verify(exactly = 1) { pagerFactory.create(listOf(userId), Archive, false, Message) }
+
+                mailboxViewModel.submit(MailboxViewAction.OpenItemDetails(unreadMailboxItemUiModel))
+
+                // Then
+                expectNoEvents()
+                confirmVerified(pagerFactory)
+            }
+        }
+
+    @Test
+    fun `verify mapped paging data is cached`() = runTest {
+        // Given
+        every { mailboxReducer.newStateFrom(any(), any()) } returns createMailboxState()
+        every { pagerFactory.create(any(), any(), any(), any()) } returns mockk mockPager@{
+            every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
+        }
+
+        mailboxViewModel.items.test {
+            // When
+            awaitItem()
+            // Then
+            verify(exactly = 1) { pagerFactory.create(listOf(userId), Archive, false, Message) }
+        }
+
+        mailboxViewModel.items.test {
+            // When
+            awaitItem()
+            // Then
+            confirmVerified(pagerFactory)
+        }
+    }
+
+    private fun createMailboxState(
+        openEffect: Effect<OpenMailboxItemRequest> = Effect.empty(),
+        unreadFilterState: Boolean = false,
+        selectedMailLabelId: MailLabelId.System = initialLocationMailLabelId
+    ): MailboxState {
+        return MailboxStateSampleData.Loading.copy(
+            mailboxListState = MailboxListState.Data(
+                currentMailLabel = MailLabel.System(selectedMailLabelId),
+                openItemEffect = openEffect,
+                scrollToMailboxTop = Effect.empty()
+            ),
+            unreadFilterState = UnreadFilterState.Data(
+                numUnread = UnreadCountersTestData.labelToCounterMap[initialLocationMailLabelId.labelId]!!,
+                isFilterEnabled = unreadFilterState
+            )
+        )
     }
 }
