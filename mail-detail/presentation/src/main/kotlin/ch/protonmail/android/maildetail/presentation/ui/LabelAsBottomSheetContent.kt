@@ -84,7 +84,6 @@ fun LabelAsBottomSheetContent(
     onLabelAsSelected: (LabelId) -> Unit,
     onDoneClick: (archiveSelected: Boolean) -> Unit
 ) {
-
     var archiveSelectedState by remember { mutableStateOf(false) }
 
     Column {
