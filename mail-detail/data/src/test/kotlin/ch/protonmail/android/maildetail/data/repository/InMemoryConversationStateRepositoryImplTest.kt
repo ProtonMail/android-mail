@@ -58,7 +58,7 @@ class InMemoryConversationStateRepositoryImplTest {
             val conversationState = awaitItem()
 
             // Then
-            assertEquals(conversationState[messageId.id], Collapsed)
+            assertEquals(conversationState[messageId], Collapsed)
             assertEquals(1, conversationState.size)
         }
     }
@@ -76,7 +76,7 @@ class InMemoryConversationStateRepositoryImplTest {
             val conversationState = awaitItem()
 
             // Then
-            assertEquals(conversationState[messageId.id], Expanding)
+            assertEquals(conversationState[messageId], Expanding)
             assertEquals(1, conversationState.size)
         }
     }
@@ -98,7 +98,7 @@ class InMemoryConversationStateRepositoryImplTest {
             val conversationState = awaitItem()
 
             // Then
-            assertEquals(conversationState[messageId.id], Expanded(decryptedBody))
+            assertEquals(conversationState[messageId], Expanded(decryptedBody))
             assertEquals(1, conversationState.size)
         }
     }
@@ -119,12 +119,12 @@ class InMemoryConversationStateRepositoryImplTest {
             val conversationState = awaitItem()
 
             // Then
-            assertEquals(conversationState[messageId.id], Expanded(decryptedBody))
+            assertEquals(conversationState[messageId], Expanded(decryptedBody))
             assertEquals(1, conversationState.size)
 
             repo.collapseMessage(messageId)
             val conversationState2 = awaitItem()
-            assertEquals(conversationState2[messageId.id], Collapsed)
+            assertEquals(conversationState2[messageId], Collapsed)
             assertEquals(1, conversationState2.size)
         }
     }

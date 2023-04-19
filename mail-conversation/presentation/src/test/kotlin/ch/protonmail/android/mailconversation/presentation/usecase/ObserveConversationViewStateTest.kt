@@ -22,6 +22,7 @@ import java.util.Random
 import app.cash.turbine.test
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState.Collapsed
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -42,7 +43,9 @@ class ObserveConversationViewStateTest {
     fun `Should emit the current conversation state`() = runTest {
         // Given
         val useCase = buildUseCase()
-        val conversationState = (0 until Random().nextInt(100)).associate { Pair(it.toString(), Collapsed) }
+        val conversationState = (0 until Random().nextInt(100)).associate {
+            Pair(MessageId(it.toString()), Collapsed)
+        }
         every { repo.conversationState } returns flowOf(conversationState)
 
         // When

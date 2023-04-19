@@ -48,7 +48,7 @@ class SetMessageViewStateTest {
         )
 
         // When
-        useCase.expand(messageId, decryptedMessageBody)
+        useCase.expanded(messageId, decryptedMessageBody)
 
         // Then
         coVerify { repo.expandMessage(messageId, decryptedMessageBody) }
@@ -61,7 +61,7 @@ class SetMessageViewStateTest {
         val messageId = MessageId(UUID.randomUUID().toString())
 
         // When
-        useCase.collapse(messageId)
+        useCase.collapsed(messageId)
 
         // Then
         coVerify { repo.collapseMessage(messageId) }

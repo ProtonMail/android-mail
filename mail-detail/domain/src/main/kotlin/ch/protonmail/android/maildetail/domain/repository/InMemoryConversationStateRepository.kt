@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface InMemoryConversationStateRepository {
 
-    val conversationState: Flow<Map<String, MessageState>>
+    val conversationState: Flow<Map<MessageId, MessageState>>
 
     suspend fun expandMessage(messageId: MessageId, decryptedBody: DecryptedMessageBody)
 

@@ -31,31 +31,31 @@ import javax.inject.Inject
 class InMemoryConversationStateRepositoryImpl @Inject constructor() :
     InMemoryConversationStateRepository {
 
-    private val conversationCache = mutableMapOf<String, MessageState>()
-    private val conversationStateFlow = MutableSharedFlow<Map<String, MessageState>>(1)
+    private val conversationCache = mutableMapOf<MessageId, MessageState>()
+    private val conversationStateFlow = MutableSharedFlow<Map<MessageId, MessageState>>(1)
 
     init {
         conversationStateFlow.tryEmit(conversationCache)
     }
 
-    override val conversationState: Flow<Map<String, MessageState>> =
+    override val conversationState: Flow<Map<MessageId, MessageState>> =
         conversationStateFlow
 
     override suspend fun expandMessage(
         messageId: MessageId,
         decryptedBody: DecryptedMessageBody
     ) {
-        conversationCache[messageId.id] = MessageState.Expanded(decryptedBody)
+        conversationCache[messageId] = MessageState.Expanded(decryptedBody)
         conversationStateFlow.emit(conversationCache)
     }
 
     override suspend fun expandingMessage(messageId: MessageId) {
-        conversationCache[messageId.id] = MessageState.Expanding
+        conversationCache[messageId] = MessageState.Expanding
         conversationStateFlow.emit(conversationCache)
     }
 
     override suspend fun collapseMessage(messageId: MessageId) {
-        conversationCache[messageId.id] = MessageState.Collapsed
+        conversationCache[messageId] = MessageState.Collapsed
         conversationStateFlow.emit(conversationCache)
     }
 }
