@@ -18,17 +18,16 @@
 
 package ch.protonmail.android.uitest.util.extensions
 
-import androidx.test.uiautomator.By
-import androidx.test.uiautomator.Until
-import ch.protonmail.android.R
-import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
-import me.proton.core.test.android.robots.auth.login.LoginRobot
+import androidx.annotation.IdRes
+import ch.protonmail.android.uitest.util.InstrumentationHolder.instrumentation
 
-// This is needed as from the Login screen to the Mailbox, we switch from XML views to Compose layouts.
-// If the Compose layout is not ready yet, checks performed on the Compose test rule
-// might throw an IllegalStateException, making the test fail.
-@Suppress("UnusedReceiverParameter")
-fun LoginRobot.waitUntilSignInScreenIsGone(timeout: Long = 15_000L) {
-    // R.id.scrollContent is the root item in the Sign In XML screen (located in the Core library)
-    uiDevice.wait(Until.gone(By.res(R.id.scrollContent.asStringResourceId)), timeout)
-}
+/**
+ * The resource ID value as full [String] in the format `<package_id>:id/<resId>`.
+ *
+ * Example:
+ * ```
+ *  R.id.scrollContent.asStringResourceId -> "ch.protonmail.android.dev:id/scrollContent"
+ * ```
+ */
+internal val @receiver:IdRes Int.asStringResourceId: String
+    get() = instrumentation.targetContext.resources.getResourceName(this)

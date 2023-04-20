@@ -19,7 +19,7 @@
 package ch.protonmail.android.uitest.helpers.core.navigation
 
 import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
-import ch.protonmail.android.uitest.util.extensions.waitForMailboxScreen
+import ch.protonmail.android.uitest.util.extensions.waitUntilSignInScreenIsGone
 import me.proton.core.test.android.robots.auth.AddAccountRobot
 import me.proton.core.test.android.robots.auth.login.LoginRobot
 
@@ -51,7 +51,7 @@ internal class Navigator {
         addAccountRobot
             .signIn()
             .loginUser<LoginRobot>(MockedLoginTestUsers.defaultLoginUser)
-            .waitForMailboxScreen() // Explicit wait is still needed with the current state of Robots.
+            .waitUntilSignInScreenIsGone()
     }
 }
 
