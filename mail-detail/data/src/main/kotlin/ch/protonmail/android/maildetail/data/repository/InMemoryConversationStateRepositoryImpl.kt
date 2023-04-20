@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.data.repository
 
+import java.util.concurrent.ConcurrentHashMap
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState
@@ -31,7 +32,7 @@ import javax.inject.Inject
 class InMemoryConversationStateRepositoryImpl @Inject constructor() :
     InMemoryConversationStateRepository {
 
-    private val conversationCache = mutableMapOf<MessageId, MessageState>()
+    private val conversationCache = ConcurrentHashMap<MessageId, MessageState>()
     private val conversationStateFlow = MutableSharedFlow<Map<MessageId, MessageState>>(1)
 
     init {

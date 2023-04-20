@@ -23,7 +23,6 @@ import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
-import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -31,11 +30,7 @@ import org.junit.Test
 
 class SetMessageViewStateTest {
 
-    private val repo = mockk<InMemoryConversationStateRepository> {
-        coEvery { expandMessage(any(), any()) } returns Unit
-        coEvery { expandingMessage(any()) } returns Unit
-        coEvery { collapseMessage(any()) } returns Unit
-    }
+    private val repo = mockk<InMemoryConversationStateRepository>(relaxUnitFun = true)
 
     @Test
     fun `Should expand message on expand`() = runTest {
@@ -68,7 +63,7 @@ class SetMessageViewStateTest {
     }
 
     @Test
-    fun `Should cal expanding on expanding message`() = runTest {
+    fun `Should call expanding on expanding message`() = runTest {
         // Given
         val useCase = buildUseCase()
         val messageId = MessageId(UUID.randomUUID().toString())

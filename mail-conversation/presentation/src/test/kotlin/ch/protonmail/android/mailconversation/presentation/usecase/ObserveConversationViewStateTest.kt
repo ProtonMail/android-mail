@@ -23,7 +23,6 @@ import app.cash.turbine.test
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState.Collapsed
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -33,11 +32,7 @@ import kotlin.test.assertEquals
 
 class ObserveConversationViewStateTest {
 
-    private val repo = mockk<InMemoryConversationStateRepository> {
-        coEvery { expandMessage(any(), any()) } returns Unit
-        coEvery { expandingMessage(any()) } returns Unit
-        coEvery { collapseMessage(any()) } returns Unit
-    }
+    private val repo = mockk<InMemoryConversationStateRepository>(relaxUnitFun = true)
 
     @Test
     fun `Should emit the current conversation state`() = runTest {
