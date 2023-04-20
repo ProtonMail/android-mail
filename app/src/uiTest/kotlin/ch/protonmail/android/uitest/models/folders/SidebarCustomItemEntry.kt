@@ -21,5 +21,5 @@ package ch.protonmail.android.uitest.models.folders
 internal data class SidebarCustomItemEntry(
     val index: Int,
     val name: String,
-    val iconTint: IconTint
+    val iconTint: Tint
 )

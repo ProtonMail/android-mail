@@ -28,7 +28,6 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import ch.protonmail.android.mailmailbox.presentation.sidebar.TEST_TAG_SIDEBAR_MENU
-import ch.protonmail.android.uitest.models.folders.IconTint
 import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry
 import ch.protonmail.android.uitest.models.folders.SidebarItemCustomFolderEntryModel
 import ch.protonmail.android.uitest.robot.mailbox.allmail.AllMailRobot
@@ -69,8 +68,7 @@ internal class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
         tapSidebarMenuItemWithText(string.presentation_menu_item_title_report_a_bug)
     }
 
-    internal inline fun verify(block: Verify.() -> Unit): MenuRobot =
-        also { Verify().apply(block) }
+    internal inline fun verify(block: Verify.() -> Unit): MenuRobot = also { Verify().apply(block) }
 
     private fun tapSidebarMenuItemWithText(@StringRes menuItemName: Int) {
         composeTestRule
@@ -104,11 +102,7 @@ internal class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
                 val item = SidebarItemCustomFolderEntryModel(it.index)
 
                 item.hasText(it.name)
-
-                when (it.iconTint) {
-                    is IconTint.WithColor -> item.hasIconTint(it.iconTint.value)
-                    is IconTint.NoColor -> item.hasNoTintColor()
-                }
+                    .withIconTint(it.iconTint)
             }
         }
     }

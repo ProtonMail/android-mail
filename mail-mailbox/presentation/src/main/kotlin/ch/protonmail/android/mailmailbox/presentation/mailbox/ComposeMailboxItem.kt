@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -46,6 +47,7 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
+import ch.protonmail.android.mailcommon.presentation.extension.tintColor
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
@@ -198,7 +200,6 @@ private fun Participants(
         maxLines = 1,
         style = ProtonTheme.typography.default.copy(fontWeight = fontWeight, color = fontColor)
     )
-
 }
 
 @Composable
@@ -228,10 +229,16 @@ private fun LocationIcons(
     }
 
     Row(
-        modifier = modifier,
+        modifier = modifier.testTag(MailboxItemTestTags.LocationIcons),
         horizontalArrangement = Arrangement.Start
     ) {
-        iconResIds.forEach { SmallNonClickableIcon(iconId = it.icon, it.color ?: iconColor) }
+        iconResIds.forEach {
+            SmallNonClickableIcon(
+                modifier = Modifier.semantics { tintColor = it.color },
+                iconId = it.icon,
+                iconColor = it.color ?: iconColor
+            )
+        }
     }
 }
 
@@ -285,7 +292,6 @@ private fun Icons(
     item: MailboxItemUiModel,
     iconColor: Color
 ) {
-
     if (item.hasIconsToShow().not()) return
 
     Row(
@@ -327,7 +333,6 @@ private fun ExpirationLabel(modifier: Modifier = Modifier, hasExpirationTime: Bo
 private fun Labels(modifier: Modifier = Modifier, labels: ImmutableList<LabelUiModel>) {
     LabelsList(modifier = modifier, labels = labels)
 }
-
 
 @Composable
 @Preview(showBackground = true)
@@ -424,6 +429,7 @@ object MailboxItemTestTags {
 
     const val ItemRow = "MailboxItemRow"
     const val Participants = "Participants"
+    const val LocationIcons = "LocationIcons"
     const val Subject = "Subject"
     const val Date = "Date"
     const val Count = "Count"

@@ -30,8 +30,8 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.models.folders.IconTint
 import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry
+import ch.protonmail.android.uitest.models.folders.Tint
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -73,8 +73,8 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
         }
 
         val expectedFolders = arrayOf(
-            SidebarCustomItemEntry(index = 0, name = "Shorthand Hex Folder", iconTint = IconTint.WithColor.Bridge),
-            SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = IconTint.WithColor.PurpleBase)
+            SidebarCustomItemEntry(index = 0, name = "Shorthand Hex Folder", iconTint = Tint.WithColor.Bridge),
+            SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = Tint.WithColor.PurpleBase)
         )
 
         navigator {
@@ -107,8 +107,8 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
         }
 
         val expectedFolders = arrayOf(
-            SidebarCustomItemEntry(index = 0, name = "Shorthand Hex Folder", iconTint = IconTint.NoColor),
-            SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = IconTint.NoColor)
+            SidebarCustomItemEntry(index = 0, name = "Shorthand Hex Folder", iconTint = Tint.NoColor),
+            SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = Tint.NoColor)
         )
 
         navigator {
@@ -141,8 +141,8 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
         }
 
         val expectedFolders = arrayOf(
-            SidebarCustomItemEntry(index = 0, name = "Shorthand Hex Folder", iconTint = IconTint.NoColor),
-            SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = IconTint.NoColor)
+            SidebarCustomItemEntry(index = 0, name = "Shorthand Hex Folder", iconTint = Tint.NoColor),
+            SidebarCustomItemEntry(index = 1, name = "Standard Folder", iconTint = Tint.NoColor)
         )
 
         navigator {

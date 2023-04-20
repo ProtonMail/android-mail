@@ -16,12 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maillabel.presentation.extension
+package ch.protonmail.android.mailcommon.presentation.extension
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.SemanticsPropertyKey
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
-import ch.protonmail.android.maillabel.presentation.extension.CustomSemanticsPropertyKeys.tintColorKey
+import ch.protonmail.android.mailcommon.presentation.extension.CustomSemanticsPropertyKeys.tintColorKey
 
 /**
  * Extension used to specify the tint [Color]? as a custom [SemanticsPropertyKey].

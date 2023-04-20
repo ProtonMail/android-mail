@@ -18,14 +18,12 @@
 
 package ch.protonmail.android.uitest.models.folders
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarCustomLabelTestTags
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
-import ch.protonmail.android.uitest.util.assertions.assertNoTintColor
 import ch.protonmail.android.uitest.util.assertions.assertTintColor
 import ch.protonmail.android.uitest.util.child
 
@@ -52,11 +50,7 @@ internal sealed class SidebarItemEntryModel(
         text.assertTextEquals(value)
     }
 
-    fun hasIconTint(color: Color) = apply {
-        icon.assertTintColor(color)
-    }
-
-    fun hasNoTintColor() = apply {
-        icon.assertNoTintColor()
+    fun withIconTint(tint: Tint) = apply {
+        icon.assertTintColor(tint)
     }
 }

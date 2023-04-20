@@ -18,22 +18,18 @@
 
 package ch.protonmail.android.uitest.util.assertions
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import ch.protonmail.android.uitest.models.folders.Tint
 import ch.protonmail.android.uitest.util.extensions.getKeyValueByName
 import org.junit.Assert.assertEquals
 import kotlin.test.assertNull
 
-fun SemanticsNodeInteraction.assertTintColor(tintColor: Color) = apply {
+internal fun SemanticsNodeInteraction.assertTintColor(tint: Tint) = apply {
     val tintColorProperty = getKeyValueByName(CustomSemanticsPropertyKeyNames.TintColorKey)
         ?: throw AssertionError("Expected TintColorKey property was not found on this node.")
 
-    assertEquals(tintColor, tintColorProperty.value)
-}
-
-fun SemanticsNodeInteraction.assertNoTintColor() = apply {
-    val tintColorProperty = getKeyValueByName(CustomSemanticsPropertyKeyNames.TintColorKey)
-        ?: throw AssertionError("Expected TintColorKey property was not found on this node.")
-
-    assertNull(tintColorProperty.value)
+    when (tint) {
+        is Tint.WithColor -> assertEquals(tint.value, tintColorProperty.value)
+        is Tint.NoColor -> assertNull(tintColorProperty.value)
+    }
 }

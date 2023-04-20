@@ -20,10 +20,12 @@ package ch.protonmail.android.uitest.models.folders
 
 import androidx.compose.ui.graphics.Color
 
-internal sealed class IconTint {
-    object NoColor : IconTint()
+internal sealed class Tint {
+    object NoColor : Tint()
 
-    sealed class WithColor(val value: Color) : IconTint() {
+    sealed class WithColor(val value: Color) : Tint() {
+        object Carrot : WithColor(Color(0xFFF78400))
+        object Fern : WithColor(Color(0xFF3CBB3A))
         object PurpleBase : WithColor(Color(0xFF8080FF))
         object Bridge : WithColor(Color(0xFFFF6666))
         class Custom(hex: Long) : WithColor(Color(hex))
