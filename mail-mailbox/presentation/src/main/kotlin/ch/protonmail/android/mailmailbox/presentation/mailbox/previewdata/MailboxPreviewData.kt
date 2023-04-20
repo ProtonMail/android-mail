@@ -27,22 +27,22 @@ import kotlinx.coroutines.flow.flowOf
 object MailboxPreviewData {
 
     val Loading = MailboxPreview(
-        mailboxState = MailboxStatePreviewData.Loading,
+        mailboxState = MailboxStateSampleData.Loading,
         mailboxItems = MailboxItemsPreviewData.Empty
     )
 
     val EmptyInbox = MailboxPreview(
-        mailboxState = MailboxStatePreviewData.Inbox,
+        mailboxState = MailboxStateSampleData.Inbox,
         mailboxItems = MailboxItemsPreviewData.Empty
     )
 
     val InboxConversations = MailboxPreview(
-        mailboxState = MailboxStatePreviewData.Inbox,
+        mailboxState = MailboxStateSampleData.Inbox,
         mailboxItems = MailboxItemsPreviewData.Conversations
     )
 
     val AllMailMessages = MailboxPreview(
-        mailboxState = MailboxStatePreviewData.AllMail,
+        mailboxState = MailboxStateSampleData.AllMail,
         mailboxItems = MailboxItemsPreviewData.Messages
     )
 }

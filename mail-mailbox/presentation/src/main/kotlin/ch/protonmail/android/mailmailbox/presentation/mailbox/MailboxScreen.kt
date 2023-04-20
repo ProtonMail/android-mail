@@ -140,7 +140,13 @@ fun MailboxScreen(
                             actions.showFeatureMissingSnackbar()
                         },
                         onSearch = {},
-                        onOpenComposer = { actions.navigateToComposer() }
+                        onOpenComposer = {
+                            if (mailboxState.topAppBarState.composerDisabled) {
+                                actions.showFeatureMissingSnackbar()
+                            } else {
+                                actions.navigateToComposer()
+                            }
+                        }
                     )
                 )
 

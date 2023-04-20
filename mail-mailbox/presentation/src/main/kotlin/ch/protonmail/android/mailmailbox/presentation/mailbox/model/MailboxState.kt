@@ -28,15 +28,4 @@ data class MailboxState(
     val topAppBarState: MailboxTopAppBarState,
     val unreadFilterState: UnreadFilterState,
     val networkStatusEffect: Effect<NetworkStatus>
-) {
-
-    companion object {
-
-        val Loading = MailboxState(
-            mailboxListState = MailboxListState.Loading,
-            topAppBarState = MailboxTopAppBarState.Loading,
-            unreadFilterState = UnreadFilterState.Loading,
-            networkStatusEffect = Effect.empty()
-        )
-    }
-}
+)

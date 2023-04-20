@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2022 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
@@ -34,41 +33,72 @@ class MailboxTopAppBarReducer @Inject constructor() {
         operation: MailboxOperation.AffectingTopAppBar
     ): MailboxTopAppBarState {
         return when (operation) {
-            is MailboxEvent.SelectedLabelChanged -> {
-                val currentMailLabel = operation.selectedLabel
-                when (currentState) {
-                    MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
-                    is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel.text())
-                }
-            }
-            is MailboxEvent.NewLabelSelected -> {
-                val currentMailLabel = operation.selectedLabel
-                when (currentState) {
-                    MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
-                    is MailboxTopAppBarState.Data -> currentState.with(currentMailLabel.text())
-                }
-            }
-            MailboxViewAction.EnterSelectionMode -> {
-                when (currentState) {
-                    is MailboxTopAppBarState.Loading -> currentState
-                    is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(
-                        currentState.currentLabelName,
-                        selectedCount = 0
-                    )
-                }
-            }
-            MailboxViewAction.ExitSelectionMode -> {
-                when (currentState) {
-                    is MailboxTopAppBarState.Loading -> currentState
-                    is MailboxTopAppBarState.Data ->
-                        MailboxTopAppBarState.Data.DefaultMode(currentState.currentLabelName)
-                }
-            }
+            is MailboxEvent.SelectedLabelChanged -> currentState.toNewStateForSelectedLabelChanged(operation)
+            is MailboxEvent.NewLabelSelected -> currentState.toNewStateForNewLabelSelected(operation)
+            MailboxViewAction.EnterSelectionMode -> currentState.toNewStateForEnterSelectionMode()
+            MailboxViewAction.ExitSelectionMode -> currentState.toNewStateForExitSelectionMode()
+            is MailboxEvent.ComposerDisabledChanged -> currentState.toNewStateForComposerDisabledChanged(operation)
         }
     }
 
-    fun MailboxTopAppBarState.with(currentLabelName: TextUiModel) = when (this) {
-        MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentLabelName = currentLabelName)
+    private fun MailboxTopAppBarState.toNewStateForSelectedLabelChanged(
+        operation: MailboxEvent.SelectedLabelChanged
+    ): MailboxTopAppBarState.Data {
+        val currentMailLabel = operation.selectedLabel
+        return when (this) {
+            is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(
+                currentMailLabel.text(),
+                composerDisabled
+            )
+
+            is MailboxTopAppBarState.Data -> this.with(currentMailLabel.text())
+        }
+    }
+
+    private fun MailboxTopAppBarState.toNewStateForNewLabelSelected(
+        operation: MailboxEvent.NewLabelSelected
+    ): MailboxTopAppBarState.Data {
+        val currentMailLabel = operation.selectedLabel
+        return when (this) {
+            is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(
+                currentMailLabel.text(),
+                composerDisabled
+            )
+
+            is MailboxTopAppBarState.Data -> this.with(currentMailLabel.text())
+        }
+    }
+
+    private fun MailboxTopAppBarState.toNewStateForEnterSelectionMode() =
+        when (this) {
+            is MailboxTopAppBarState.Loading -> this
+            is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(
+                currentLabelName,
+                composerDisabled,
+                selectedCount = 0
+            )
+        }
+
+    private fun MailboxTopAppBarState.toNewStateForExitSelectionMode() =
+        when (this) {
+            is MailboxTopAppBarState.Loading -> this
+            is MailboxTopAppBarState.Data ->
+                MailboxTopAppBarState.Data.DefaultMode(
+                    currentLabelName,
+                    composerDisabled
+                )
+        }
+
+    private fun MailboxTopAppBarState.toNewStateForComposerDisabledChanged(
+        operation: MailboxEvent.ComposerDisabledChanged
+    ) = when (this) {
+        is MailboxTopAppBarState.Data.DefaultMode -> copy(composerDisabled = operation.composerDisabled)
+        is MailboxTopAppBarState.Data.SearchMode -> copy(composerDisabled = operation.composerDisabled)
+        is MailboxTopAppBarState.Data.SelectionMode -> copy(composerDisabled = operation.composerDisabled)
+        is MailboxTopAppBarState.Loading -> copy(composerDisabled = operation.composerDisabled)
+    }
+
+    fun MailboxTopAppBarState.Data.with(currentLabelName: TextUiModel) = when (this) {
         is MailboxTopAppBarState.Data.DefaultMode -> copy(currentLabelName = currentLabelName)
         is MailboxTopAppBarState.Data.SearchMode -> copy(currentLabelName = currentLabelName)
         is MailboxTopAppBarState.Data.SelectionMode -> copy(currentLabelName = currentLabelName)

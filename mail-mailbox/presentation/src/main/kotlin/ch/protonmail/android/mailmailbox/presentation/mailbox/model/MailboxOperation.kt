@@ -68,6 +68,10 @@ internal sealed interface MailboxEvent : MailboxOperation {
         val networkStatus: NetworkStatus
     ) : MailboxEvent,
         MailboxOperation.AffectingNetworkStatus
+
+    data class ComposerDisabledChanged(
+        val composerDisabled: Boolean
+    ) : MailboxEvent, MailboxOperation.AffectingTopAppBar
 }
 
 

@@ -27,9 +27,14 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 
-object MailboxStatePreviewData {
+object MailboxStateSampleData {
 
-    val Loading = MailboxState.Loading
+    val Loading = MailboxState(
+        mailboxListState = MailboxListState.Loading,
+        topAppBarState = MailboxTopAppBarState.Loading(composerDisabled = false),
+        unreadFilterState = UnreadFilterState.Loading,
+        networkStatusEffect = Effect.empty()
+    )
 
     val Inbox = MailboxState(
         mailboxListState = MailboxListState.Data(
@@ -38,7 +43,8 @@ object MailboxStatePreviewData {
             scrollToMailboxTop = Effect.empty()
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-            currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text()
+            currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),
+            composerDisabled = false
         ),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
@@ -54,7 +60,8 @@ object MailboxStatePreviewData {
             scrollToMailboxTop = Effect.empty()
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-            currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text()
+            currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text(),
+            composerDisabled = false
         ),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,

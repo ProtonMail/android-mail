@@ -34,7 +34,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
-import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
@@ -54,7 +54,7 @@ internal class MailboxScreenTest {
 
     @Test
     fun whenLoadingThenProgressIsDisplayed() {
-        val mailboxState = MailboxState.Loading
+        val mailboxState = MailboxStateSampleData.Loading
         val robot = setupScreen(state = mailboxState)
 
         robot.verify { listProgressIsDisplayed() }
@@ -67,7 +67,7 @@ internal class MailboxScreenTest {
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty()
         )
-        val mailboxState = MailboxState.Loading.copy(mailboxListState = mailboxListState)
+        val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val items = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
         val robot = setupScreen(state = mailboxState, items = items)
 
@@ -81,7 +81,7 @@ internal class MailboxScreenTest {
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty()
         )
-        val mailboxState = MailboxState.Loading.copy(mailboxListState = mailboxListState)
+        val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val label = LabelUiModelSample.News
         val item = MailboxItemUiModelTestData.buildMailboxUiModelItem(
             labels = persistentListOf(label)
@@ -104,7 +104,7 @@ internal class MailboxScreenTest {
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty()
         )
-        val mailboxState = MailboxState.Loading.copy(mailboxListState = mailboxListState)
+        val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
 
         robot.verify { emptyMailboxIsDisplayed() }
@@ -118,7 +118,7 @@ internal class MailboxScreenTest {
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty()
         )
-        val mailboxState = MailboxState.Loading.copy(mailboxListState = mailboxListState)
+        val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
 
         robot
@@ -150,7 +150,8 @@ internal class MailboxScreenTest {
                     scrollToMailboxTop = scrollToTopEffect
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-                    currentLabelName = MailLabel.System(systemLabel).text()
+                    currentLabelName = MailLabel.System(systemLabel).text(),
+                    composerDisabled = false
                 ),
                 unreadFilterState = UnreadFilterState.Loading,
                 networkStatusEffect = Effect.empty()
@@ -185,7 +186,7 @@ internal class MailboxScreenTest {
     }
 
     private fun setupScreen(
-        state: MailboxState = MailboxState.Loading,
+        state: MailboxState = MailboxStateSampleData.Loading,
         items: List<MailboxItemUiModel> = emptyList()
     ): MailboxRobot =
         composeTestRule.MailboxRobot {

@@ -29,6 +29,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
@@ -112,7 +113,7 @@ internal class MailboxReducerTest(
     companion object {
 
         private val spamLabel = MailLabel.System(MailLabelId.System.Spam)
-        private val currentState = MailboxState.Loading
+        private val currentState = MailboxStateSampleData.Loading
         private val reducedState = MailboxState(
             mailboxListState = MailboxListState.Data(
                 currentMailLabel = spamLabel,
@@ -120,7 +121,8 @@ internal class MailboxReducerTest(
                 scrollToMailboxTop = Effect.empty()
             ),
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-                currentLabelName = spamLabel.text()
+                currentLabelName = spamLabel.text(),
+                composerDisabled = false
             ),
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = 42,
@@ -215,6 +217,13 @@ internal class MailboxReducerTest(
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
                 shouldReduceNetworkStatusEffect = true
+            ),
+            TestInput(
+                MailboxEvent.ComposerDisabledChanged(composerDisabled = false),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = true,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceNetworkStatusEffect = false
             )
         )
 

@@ -41,7 +41,7 @@ fun MailboxTopAppBar(
     actions: MailboxTopAppBar.Actions
 ) {
     val uiModel = when (state) {
-        MailboxTopAppBarState.Loading -> UiModel.Empty
+        is MailboxTopAppBarState.Loading -> UiModel.Empty
         is MailboxTopAppBarState.Data.DefaultMode -> UiModel(
             title = state.currentLabelName.string(),
             navigationIconRes = R.drawable.ic_proton_hamburger,
@@ -63,7 +63,7 @@ fun MailboxTopAppBar(
     }
 
     val onNavigationIconClick = when (state) {
-        MailboxTopAppBarState.Loading, is MailboxTopAppBarState.Data.DefaultMode -> actions.onOpenMenu
+        is MailboxTopAppBarState.Loading, is MailboxTopAppBarState.Data.DefaultMode -> actions.onOpenMenu
         is MailboxTopAppBarState.Data.SelectionMode -> actions.onExitSelectionMode
         is MailboxTopAppBarState.Data.SearchMode -> actions.onExitSearchMode
     }
@@ -137,7 +137,7 @@ private data class UiModel(
 @Composable
 @Preview
 fun LoadingMailboxTopAppBarPreview() {
-    val state = MailboxTopAppBarState.Loading
+    val state = MailboxTopAppBarState.Loading(composerDisabled = false)
 
     MailboxTopAppBar(
         state = state,

@@ -24,6 +24,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.MailFeatureId
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
@@ -84,7 +86,8 @@ class MailboxViewModel @Inject constructor(
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val getContacts: GetContacts,
     private val mailboxReducer: MailboxReducer,
-    private val networkManager: NetworkManager
+    private val networkManager: NetworkManager,
+    private val observeMailFeature: ObserveMailFeature
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -113,6 +116,14 @@ class MailboxViewModel @Inject constructor(
             .filterNotNull()
             .onEach { currentLabelCount ->
                 emitNewStateFrom(MailboxEvent.SelectedLabelCountChanged(currentLabelCount))
+            }
+            .launchIn(viewModelScope)
+
+        primaryUserId
+            .filterNotNull()
+            .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.HideComposer) }
+            .onEach { hideComposerFlag ->
+                emitNewStateFrom(MailboxEvent.ComposerDisabledChanged(composerDisabled = hideComposerFlag.value))
             }
             .launchIn(viewModelScope)
     }
@@ -254,7 +265,7 @@ class MailboxViewModel @Inject constructor(
 
         val initialState = MailboxState(
             mailboxListState = MailboxListState.Loading,
-            topAppBarState = MailboxTopAppBarState.Loading,
+            topAppBarState = MailboxTopAppBarState.Loading(composerDisabled = false),
             unreadFilterState = UnreadFilterState.Loading,
             networkStatusEffect = Effect.empty()
         )
