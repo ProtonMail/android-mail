@@ -191,23 +191,25 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
         }
 
         fun moveToBottomSheetExists() {
-            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem)
+            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem, useUnmergedTree = true)
+                .awaitDisplayed(composeTestRule, timeout = 5.seconds)
                 .assertExists()
         }
 
         fun labelAsBottomSheetExists() {
-            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem)
+            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
+                .awaitDisplayed(composeTestRule, timeout = 5.seconds)
                 .assertExists()
         }
 
         fun moveToBottomSheetIsDismissed() {
-            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem)
+            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem, useUnmergedTree = true)
                 .awaitHidden(composeTestRule)
                 .assertDoesNotExist()
         }
 
         fun labelAsBottomSheetIsDismissed() {
-            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem)
+            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
                 .awaitHidden(composeTestRule)
                 .assertDoesNotExist()
         }
