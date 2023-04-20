@@ -29,7 +29,7 @@ internal class AllMailRobot(
     override val composeTestRule: ComposeContentTestRule
 ) : MailboxRobotInterface {
 
-    inner class Verify {
+    internal inner class Verify : MailboxRobotInterface.Verify {
 
         fun allMailScreenDisplayed(composeRule: ComposeContentTestRule) {
             composeRule

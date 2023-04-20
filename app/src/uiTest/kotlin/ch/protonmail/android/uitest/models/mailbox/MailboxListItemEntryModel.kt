@@ -25,16 +25,19 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
+import ch.protonmail.android.uitest.models.folders.MailFolderEntry
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertTextColor
+import ch.protonmail.android.uitest.util.assertions.assertTintColor
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.extensions.peek
 
-class MailboxListItemEntryModel(
+internal class MailboxListItemEntryModel(
     position: Int,
     private val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.rule
 ) {
@@ -56,6 +59,10 @@ class MailboxListItemEntryModel(
 
     private val participants = rootItem.child {
         hasTestTag(MailboxItemTestTags.Participants)
+    }
+
+    private val locations = rootItem.child {
+        hasTestTag(MailboxItemTestTags.LocationIcons)
     }
 
     private val subject = rootItem.child {
@@ -86,6 +93,17 @@ class MailboxListItemEntryModel(
 
     fun hasParticipants(text: String) = apply {
         participants.assertTextEquals(text)
+    }
+
+    fun hasLocationIcons(entries: List<MailFolderEntry>) = apply {
+        for (entry in entries) {
+            val folderIcon = locations.onChildAt(entry.index)
+            folderIcon.assertTintColor(entry.iconTint)
+        }
+    }
+
+    fun hasNoLocationIcons() = apply {
+        locations.assertDoesNotExist()
     }
 
     fun hasSubject(text: String) = apply {

@@ -16,17 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.models.mailbox
+package ch.protonmail.android.uitest.models.folders
 
-import ch.protonmail.android.uitest.models.avatar.AvatarInitial
-import ch.protonmail.android.uitest.models.folders.MailFolderEntry
-
-internal data class MailboxListItemEntry(
+internal data class MailFolderEntry(
     val index: Int,
-    val avatarInitial: AvatarInitial,
-    val participants: String,
-    val locationIcons: List<MailFolderEntry>? = null,
-    val subject: String,
-    val date: String,
-    val count: String? = null
+    val iconTint: Tint
 )

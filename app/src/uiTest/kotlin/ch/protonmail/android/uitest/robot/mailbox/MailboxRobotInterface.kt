@@ -21,7 +21,7 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 
-interface MailboxRobotInterface {
+internal interface MailboxRobotInterface {
 
     val composeTestRule: ComposeContentTestRule get() = TODO("Override in subclass")
 
@@ -33,8 +33,8 @@ interface MailboxRobotInterface {
 
     interface Verify {
 
-        fun listItemsAreShown(vararg inboxEntries: MailboxListItemEntry) {
-            for (entry in inboxEntries) {
+        fun listItemsAreShown(vararg mailboxItemEntries: MailboxListItemEntry) {
+            for (entry in mailboxItemEntries) {
                 val model = MailboxListItemEntryModel(entry.index)
 
                 model.hasAvatar(entry.avatarInitial)
@@ -42,6 +42,7 @@ interface MailboxRobotInterface {
                     .hasSubject(entry.subject)
                     .hasDate(entry.date)
 
+                entry.locationIcons?.let { model.hasLocationIcons(it) } ?: model.hasNoLocationIcons()
                 entry.count?.let { model.hasCount(it) } ?: model.hasNoCount()
             }
         }
