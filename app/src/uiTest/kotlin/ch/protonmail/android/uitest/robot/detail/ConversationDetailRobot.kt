@@ -35,18 +35,16 @@ import androidx.test.espresso.web.assertion.WebViewAssertions
 import androidx.test.espresso.web.sugar.Web
 import androidx.test.espresso.web.webdriver.DriverAtoms
 import androidx.test.espresso.web.webdriver.Locator
-import androidx.test.uiautomator.By
-import androidx.test.uiautomator.Until
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeader
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreenTestTags
 import ch.protonmail.android.maildetail.presentation.ui.LabelAsBottomSheetTestTags
+import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MoveToBottomSheetTestTags
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
-import ch.protonmail.android.uitest.util.UiDeviceHolder
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.onAllNodesWithText
@@ -54,6 +52,7 @@ import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRule) {
@@ -89,11 +88,11 @@ class ConversationDetailRobot(private val composeTestRule: ComposeContentTestRul
         return this
     }
 
-    fun waitUntilMessageIsShown(timeout: Long = 30_000L): ConversationDetailRobot {
+    fun waitUntilMessageIsShown(timeout: Duration = 30.seconds): ConversationDetailRobot {
         composeTestRule.waitForIdle()
 
         // Wait for the WebView to appear.
-        UiDeviceHolder.uiDevice.wait(Until.hasObject(By.clazz("android.webkit.WebView")), timeout)
+        composeTestRule.onNodeWithTag(MessageBodyTestTags.WebView).awaitDisplayed(composeTestRule, timeout)
 
         return this
     }

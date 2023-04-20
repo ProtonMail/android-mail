@@ -36,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -75,6 +76,9 @@ internal fun MessageBody(
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
     WebView(
+        modifier = Modifier
+            .testTag(MessageBodyTestTags.WebView)
+            .fillMaxWidth(),
         onCreated = {
             it.settings.builtInZoomControls = true
             it.settings.displayZoomControls = false
@@ -90,7 +94,6 @@ internal fun MessageBody(
         },
         captureBackPresses = false,
         state = state,
-        modifier = modifier.fillMaxWidth(),
         client = client
     )
     if (messageBodyUiModel.attachments != null) {
@@ -156,4 +159,9 @@ object MessageBody {
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onShowAllAttachments: () -> Unit
     )
+}
+
+object MessageBodyTestTags {
+
+    const val WebView = "MessageBodyWebView"
 }
