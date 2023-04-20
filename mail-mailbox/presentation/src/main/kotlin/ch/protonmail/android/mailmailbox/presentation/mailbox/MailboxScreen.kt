@@ -57,6 +57,7 @@ import androidx.viewbinding.BuildConfig
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
+import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
@@ -64,6 +65,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewA
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
+import ch.protonmail.android.mailmailbox.presentation.paging.mapToUiStates
 import ch.protonmail.android.mailpagination.presentation.paging.rememberLazyListState
 import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollbar
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -74,7 +76,6 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.network.domain.NetworkStatus
-import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -217,45 +218,36 @@ private fun MailboxSwipeRefresh(
     modifier: Modifier = Modifier
 ) {
 
-    val isError = when (items.loadState.refresh) {
-        is LoadState.Error -> true
-        else -> false
-    }
-
-    val isLoading = when {
-        items.loadState.refresh is LoadState.Loading -> true
-        items.loadState.append is LoadState.Loading -> true
-        items.loadState.prepend is LoadState.Loading -> true
-        else -> false
-    }
-
-    Timber.v("Is loading: $isLoading, items count: ${items.itemCount}")
+    val currentViewState = items.mapToUiStates()
 
     SwipeRefresh(
         modifier = modifier,
-        state = rememberSwipeRefreshState(isLoading),
+        state = rememberSwipeRefreshState(currentViewState is MailboxScreenState.LoadingWithData),
         onRefresh = {
             actions.onRefreshList()
             items.refresh()
         }
     ) {
 
-        if (isError && items.itemCount == 0) {
-            MailboxError(
+        when (currentViewState) {
+            is MailboxScreenState.Loading -> ProtonCenteredProgress(
+                modifier = Modifier.testTag(MailboxScreenTestTags.ListProgress)
+            )
+            is MailboxScreenState.Error -> MailboxError(
                 modifier = Modifier.scrollable(
                     rememberScrollableState(consumeScrollDelta = { 0f }),
                     orientation = Orientation.Vertical
                 )
             )
-        } else if (isLoading.not() && items.itemCount == 0) {
-            MailboxEmpty(
+            is MailboxScreenState.Empty -> MailboxEmpty(
                 modifier = Modifier.scrollable(
                     rememberScrollableState(consumeScrollDelta = { 0f }),
                     orientation = Orientation.Vertical
                 )
             )
-        } else {
-            MailboxItemsList(listState, items, actions)
+            is MailboxScreenState.LoadingWithData,
+            is MailboxScreenState.ErrorWithData,
+            is MailboxScreenState.Data -> MailboxItemsList(listState, items, actions)
         }
     }
 }
@@ -322,7 +314,7 @@ private fun MailboxError(modifier: Modifier = Modifier) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text("You are offline, unable to retrieve items")
+        Text(stringResource(id = R.string.mailbox_error_message_offline))
     }
 }
 

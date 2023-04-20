@@ -757,7 +757,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `mailbox pager is not recreated when any state beside selected label, unread filter, view mode or primary user changes`() =
+    fun `pager is not recreated when any state beside selectedLabel, unreadFilter, viewMode or primaryUser changes`() =
         runTest {
             // Given
             val expectedMailBoxState = createMailboxState(Effect.empty())
