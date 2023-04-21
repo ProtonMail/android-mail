@@ -151,9 +151,16 @@ run_unit_test:
 
 run_firebase_instrumentation_tests:
   extends: .firebase_test_job
-  stage: test
   script:
     - bundle exec fastlane instrumentedTest
+
+run_firebase_proton_core_libs_tests:
+  extends: .firebase_test_job
+  allow_failure: true # Temporary, as long as we don't have a more specific test environment.
+  script:
+    - bundle exec fastlane coreLibsTest
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
 
 run_firebase_smoke_tests:
   extends: .firebase_test_job
