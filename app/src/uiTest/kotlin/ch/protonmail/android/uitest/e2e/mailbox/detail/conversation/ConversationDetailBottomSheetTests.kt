@@ -34,7 +34,9 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.conversation.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.conversation.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.conversation.messageHeaderSection
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
@@ -89,17 +91,25 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
 
         inboxRobot.clickMessageByPosition(0)
 
-        conversationDetailRobot
-            .waitUntilMessageIsShown()
-            .openMoveToBottomSheet()
-            .verify { moveToBottomSheetExists() }
+        conversationDetailRobot.run {
+            waitUntilMessageIsShown()
+
+            bottomSheetSection {
+                openMoveToBottomSheet()
+                verify { moveToBottomSheetExists() }
+            }
+        }
 
         // Physical/soft key press is required by this test case.
         uiDevice.pressBack()
 
-        conversationDetailRobot
-            .verify { moveToBottomSheetIsDismissed() }
-            .verify { conversationDetailScreenIsShown() }
+        conversationDetailRobot.run {
+            verify { conversationDetailScreenIsShown() }
+
+            bottomSheetSection {
+                verify { moveToBottomSheetIsDismissed() }
+            }
+        }
     }
 
     @Test
@@ -134,16 +144,25 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
 
         inboxRobot.clickMessageByPosition(0)
 
-        conversationDetailRobot
-            .waitUntilMessageIsShown()
-            .openLabelAsBottomSheet()
-            .verify { labelAsBottomSheetExists() }
+        conversationDetailRobot.run {
+            waitUntilMessageIsShown()
 
+            bottomSheetSection {
+                openLabelAsBottomSheet()
+                verify { labelAsBottomSheetExists() }
+            }
+        }
+
+        // Physical/soft key press is required by this test case.
         uiDevice.pressBack()
 
-        conversationDetailRobot
-            .verify { labelAsBottomSheetIsDismissed() }
-            .verify { conversationDetailScreenIsShown() }
+        conversationDetailRobot.run {
+            verify { conversationDetailScreenIsShown() }
+
+            bottomSheetSection {
+                verify { labelAsBottomSheetIsDismissed() }
+            }
+        }
     }
 
     @Test
@@ -178,17 +197,26 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
 
         inboxRobot.clickMessageByPosition(0)
 
-        conversationDetailRobot
-            .waitUntilMessageIsShown()
-            .openMoveToBottomSheet()
-            .verify { moveToBottomSheetExists() }
+        conversationDetailRobot.run {
+            waitUntilMessageIsShown()
 
-        // Tap outside the view.
-        conversationDetailRobot.expandHeader()
+            bottomSheetSection {
+                openMoveToBottomSheet()
 
-        conversationDetailRobot
-            .verify { moveToBottomSheetIsDismissed() }
-            .verify { conversationDetailScreenIsShown() }
+                verify { moveToBottomSheetExists() }
+            }
+
+            // Tap outside the view.
+            messageHeaderSection {
+                expandHeader()
+            }
+
+            verify { conversationDetailScreenIsShown() }
+
+            bottomSheetSection {
+                verify { moveToBottomSheetIsDismissed() }
+            }
+        }
     }
 
     @Test
@@ -223,15 +251,25 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
 
         inboxRobot.clickMessageByPosition(0)
 
-        conversationDetailRobot
-            .waitUntilMessageIsShown()
-            .openLabelAsBottomSheet()
-            .verify { labelAsBottomSheetExists() }
+        conversationDetailRobot.run {
+            waitUntilMessageIsShown()
 
-        conversationDetailRobot.expandHeader()
+            bottomSheetSection {
+                openLabelAsBottomSheet()
 
-        conversationDetailRobot
-            .verify { labelAsBottomSheetIsDismissed() }
-            .verify { conversationDetailScreenIsShown() }
+                verify { labelAsBottomSheetExists() }
+            }
+
+            // Tap outside the view.
+            messageHeaderSection {
+                expandHeader()
+            }
+
+            verify { conversationDetailScreenIsShown() }
+
+            bottomSheetSection {
+                verify { labelAsBottomSheetIsDismissed() }
+            }
+        }
     }
 }

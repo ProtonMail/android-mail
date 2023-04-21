@@ -43,6 +43,7 @@ import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreenTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MoveToBottomSheetTestTags
+import ch.protonmail.android.uitest.robot.detail.section.DetailTopBarSection
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.awaitHidden
@@ -53,7 +54,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
+class MessageDetailRobot(val composeTestRule: ComposeContentTestRule) {
 
     fun expandHeader(): MessageDetailRobot {
         composeTestRule.onNodeWithTag(MessageDetailHeaderTestTags.RootItem)
@@ -106,11 +107,6 @@ class MessageDetailRobot(private val composeTestRule: ComposeContentTestRule) {
             composeTestRule.onNodeWithTag(MessageDetailScreenTestTags.RootItem)
                 .awaitDisplayed(composeTestRule)
                 .assertExists()
-        }
-
-        fun subjectIsDisplayed(subject: String) {
-            composeTestRule.onNodeWithText(subject)
-                .assertIsDisplayed()
         }
 
         fun messageHeaderIsDisplayed() {
@@ -220,3 +216,7 @@ fun ComposeContentTestRule.MessageDetailRobot(content: @Composable () -> Unit): 
     setContent(content)
     return MessageDetailRobot(this)
 }
+
+internal fun MessageDetailRobot.detailTopBarSection(
+    func: DetailTopBarSection.() -> Unit
+) = DetailTopBarSection(composeTestRule).apply(func)

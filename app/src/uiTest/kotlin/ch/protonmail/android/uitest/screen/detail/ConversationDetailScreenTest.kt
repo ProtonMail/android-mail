@@ -32,7 +32,13 @@ import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDet
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
-import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.conversation.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.conversation.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.conversation.detailTopBarSection
+import ch.protonmail.android.uitest.robot.detail.conversation.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.conversation.messageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.conversation.messagesCollapsedSection
+import ch.protonmail.android.uitest.util.getString
 import org.junit.Ignore
 import org.junit.Rule
 import kotlin.test.Test
@@ -49,14 +55,14 @@ internal class ConversationDetailScreenTest {
     fun whenConversationIsLoadedThenSubjectIsDisplayed() {
         // given
         val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds
+        val conversationState = state.conversationState as ConversationDetailMetadataState.Data
 
         // when
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
-            val conversationState = state.conversationState as ConversationDetailMetadataState.Data
-            subjectIsDisplayed(conversationState.conversationUiModel.subject)
+        robot.detailTopBarSection {
+            verify { hasSubject(conversationState.conversationUiModel.subject) }
         }
     }
 
@@ -69,17 +75,17 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
-            val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
-            when (val firstMessage = messagesState.messages.first()) {
-                is ConversationDetailMessageUiModel.Collapsed -> {
-                    val initial = firstMessage.avatar as AvatarUiModel.ParticipantInitial
-                    senderInitialIsDisplayed(initial = initial.value)
+        val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
+        when (val firstMessage = messagesState.messages.first()) {
+            is ConversationDetailMessageUiModel.Collapsed -> {
+                val initial = firstMessage.avatar as AvatarUiModel.ParticipantInitial
+                robot.messagesCollapsedSection {
+                    verify { avatarInitialIsDisplayed(index = 0, text = initial.value) }
                 }
-
-                is ConversationDetailMessageUiModel.Expanded -> Unit
-                is ConversationDetailMessageUiModel.Expanding -> Unit
             }
+
+            is ConversationDetailMessageUiModel.Expanded -> Unit
+            is ConversationDetailMessageUiModel.Expanding -> Unit
         }
     }
 
@@ -92,12 +98,24 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
+        robot.run {
             val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
             when (val firstMessage = messagesState.messages.first()) {
-                is ConversationDetailMessageUiModel.Collapsed -> timeIsDisplayed(time = firstMessage.shortTime)
-                is ConversationDetailMessageUiModel.Expanded ->
-                    timeIsDisplayed(time = firstMessage.messageDetailHeaderUiModel.time)
+                is ConversationDetailMessageUiModel.Collapsed -> {
+                    messagesCollapsedSection {
+                        verify { timeIsDisplayed(index = 0, value = getString(firstMessage.shortTime)) }
+                    }
+                }
+
+                is ConversationDetailMessageUiModel.Expanded -> {
+                    messageHeaderSection {
+                        verify {
+                            hasTime(
+                                value = getString(firstMessage.messageDetailHeaderUiModel.time)
+                            )
+                        }
+                    }
+                }
 
                 is ConversationDetailMessageUiModel.Expanding -> Unit
             }
@@ -119,7 +137,9 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { draftIconAvatarIsDisplayed(useUnmergedTree = true) }
+        robot.messagesCollapsedSection {
+            verify { avatarDraftIsDisplayed(index = 0) }
+        }
     }
 
     @Test
@@ -137,7 +157,9 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { repliedIconIsDisplayed(useUnmergedTree = true) }
+        robot.messagesCollapsedSection {
+            verify { repliedIconIsDisplayed(index = 0) }
+        }
     }
 
     @Test
@@ -155,7 +177,9 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { repliedAllIconIsDisplayed(useUnmergedTree = true) }
+        robot.messagesCollapsedSection {
+            verify { repliedAllIconIsDisplayed(index = 0) }
+        }
     }
 
     @Test
@@ -173,7 +197,9 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { forwardedIconIsDisplayed(useUnmergedTree = true) }
+        robot.messagesCollapsedSection {
+            verify { forwardedIconIsDisplayed(index = 0) }
+        }
     }
 
     @Test
@@ -185,12 +211,21 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
+        robot.run {
             val messagesState = state.messagesState as ConversationDetailsMessagesState.Data
             when (val firstMessage = messagesState.messages.first()) {
-                is ConversationDetailMessageUiModel.Collapsed -> senderIsDisplayed(firstMessage.sender)
-                is ConversationDetailMessageUiModel.Expanded ->
-                    senderIsDisplayed(firstMessage.messageDetailHeaderUiModel.sender.participantName)
+                is ConversationDetailMessageUiModel.Collapsed ->
+                    messagesCollapsedSection {
+                        verify { senderNameIsDisplayed(index = 0, value = firstMessage.sender) }
+                    }
+
+                is ConversationDetailMessageUiModel.Expanded -> verify {
+                    messageHeaderSection {
+                        verify {
+                            senderIsDisplayed(firstMessage.messageDetailHeaderUiModel.sender.participantName)
+                        }
+                    }
+                }
 
                 is ConversationDetailMessageUiModel.Expanding -> Unit
             }
@@ -212,7 +247,9 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { expirationIsDisplayed("12h") }
+        robot.messagesCollapsedSection {
+            verify { expirationIsDisplayed(index = 0, value = "12h") }
+        }
     }
 
     @Test
@@ -230,7 +267,11 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { starIconIsDisplayed(useUnmergedTree = true) }
+        robot.messagesCollapsedSection {
+            verify {
+                starIconIsDisplayed(index = 0)
+            }
+        }
     }
 
     @Test
@@ -243,7 +284,11 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { attachmentIconIsDisplayed() }
+        robot.messagesCollapsedSection {
+            verify {
+                attachmentIconIsDisplayed(index = 0)
+            }
+        }
     }
 
     @Test
@@ -257,12 +302,14 @@ internal class ConversationDetailScreenTest {
 
         // when
         var trashClicked = false
-        setupScreen(
+        val robot = setupScreen(
             state = state,
             actions = ConversationDetailScreen.Actions.Empty.copy(
                 onTrashClick = { trashClicked = true }
             )
-        ).moveToTrash()
+        )
+
+        robot.bottomSheetSection { moveToTrash() }
 
         // then
         assertTrue(trashClicked)
@@ -294,12 +341,14 @@ internal class ConversationDetailScreenTest {
         var unreadClicked = false
 
         // when
-        setupScreen(
+        val robot = setupScreen(
             state = state,
             actions = ConversationDetailScreen.Actions.Empty.copy(
                 onUnreadClick = { unreadClicked = true }
             )
-        ).markAsUnread()
+        )
+
+        robot.bottomSheetSection { markAsUnread() }
 
         // then
         assertTrue(unreadClicked)
@@ -355,8 +404,8 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
-            messageHeaderIsDisplayed()
+        robot.messageHeaderSection {
+            verify { headerIsDisplayed() }
         }
     }
 
@@ -375,10 +424,12 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
-            messageBodyIsDisplayedInWebView(
-                ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded.messageBodyUiModel.messageBody
-            )
+        robot.messageBodySection {
+            verify {
+                messageBodyIsDisplayedInWebView(
+                    ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded.messageBodyUiModel.messageBody
+                )
+            }
         }
     }
 
@@ -397,8 +448,8 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
-            collapsedHeaderDoesNotExist()
+        robot.messagesCollapsedSection {
+            verify { collapsedHeaderIsNotDisplayed() }
         }
     }
 

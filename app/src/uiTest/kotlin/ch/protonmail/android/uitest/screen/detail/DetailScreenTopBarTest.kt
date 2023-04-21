@@ -21,15 +21,17 @@ package ch.protonmail.android.uitest.screen.detail
 import androidx.compose.ui.test.junit4.createComposeRule
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
-import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.DetailScreenTopBar
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
-import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.conversation.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.conversation.detailTopBarSection
+import ch.protonmail.android.uitest.robot.detail.detailTopBarSection
 import org.junit.Rule
 import org.junit.Test
 
@@ -47,8 +49,8 @@ class DetailScreenTopBarTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
-            subjectIsDisplayed(DetailScreenTopBar.NoTitle)
+        robot.detailTopBarSection {
+            verify { hasSubject(DetailScreenTopBar.NoTitle) }
         }
     }
 
@@ -61,8 +63,8 @@ class DetailScreenTopBarTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
-            subjectIsDisplayed(DetailScreenTopBar.NoTitle)
+        robot.detailTopBarSection {
+            verify { hasSubject(DetailScreenTopBar.NoTitle) }
         }
     }
 
@@ -70,14 +72,14 @@ class DetailScreenTopBarTest {
     fun whenConversationIsLoadedThenSubjectIsDisplayed() {
         // given
         val state = ConversationDetailsPreviewData.Success
+        val conversationState = state.conversationState as ConversationDetailMetadataState.Data
 
         // when
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
-            val conversationState = state.conversationState as ConversationDetailMetadataState.Data
-            subjectIsDisplayed(conversationState.conversationUiModel.subject)
+        robot.detailTopBarSection {
+            verify { hasSubject(conversationState.conversationUiModel.subject) }
         }
     }
 
@@ -85,14 +87,14 @@ class DetailScreenTopBarTest {
     fun whenMessageIsLoadedThenSubjectIsDisplayed() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageState = state.messageMetadataState as MessageMetadataState.Data
 
         // when
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify {
-            val messageState = state.messageMetadataState as MessageMetadataState.Data
-            subjectIsDisplayed(messageState.messageDetailActionBar.subject)
+        robot.detailTopBarSection {
+            verify { hasSubject(messageState.messageDetailActionBar.subject) }
         }
     }
 
