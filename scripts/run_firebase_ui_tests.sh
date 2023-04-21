@@ -20,23 +20,35 @@
 
 set -e
 
-device_config=smokeTest
-test_targets='filter ch.protonmail.android.uitest.filters.SmokeTestFilter'
-timeout=15m
+case $1 in
 
-if [ "$1" = extended_test ]
-then
+'smoke-test')
+  device_config=smokeTest
+  test_targets='filter ch.protonmail.android.uitest.filters.SmokeTestFilter'
+  timeout=15m
+  ;;
+
+'smoke-extended-test')
   device_config=smokeTest
   test_targets='filter ch.protonmail.android.uitest.filters.SmokeTestExtendedFilter'
   timeout=30m
-fi
+  ;;
 
-if [ "$1" = full_test ]
-then
+'full-regression-test')
   device_config=fullTest
   test_targets='filter ch.protonmail.android.uitest.filters.FullRegressionTestFilter'
   timeout=45m
-fi
+  ;;
+
+'core-libs-test')
+  device_config=smokeTest
+  test_targets='filter ch.protonmail.android.uitest.filters.CoreLibraryTestFilter'
+  timeout=20m
+  ;;
+*)
+  printf 'Invalid argument, specify a valid test suite.'
+  exit 1
+esac
 
 gcloud --quiet firebase test android run ../firebase-device-config.yml:"$device_config" \
   --app ../app/build/outputs/apk/dev/debug/app-dev-debug.apk \
