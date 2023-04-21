@@ -1,6 +1,6 @@
 package ch.protonmail.android.uitest.e2e.menu
 
-import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
+import ch.protonmail.android.test.annotations.suite.CoreLibraryTest
 import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.di.LocalhostApi
 import ch.protonmail.android.uitest.di.LocalhostApiModule
@@ -13,7 +13,7 @@ import me.proton.core.report.test.MinimalReportInternalTests
 import me.proton.core.test.quark.Quark
 import me.proton.core.test.quark.data.User
 
-@SmokeExtendedTest
+@CoreLibraryTest
 @HiltAndroidTest
 @UninstallModules(LocalhostApiModule::class)
 class SidebarCoreFlowTests : BaseTest(), MinimalReportInternalTests {

@@ -18,8 +18,7 @@
 
 package ch.protonmail.android.uitest.e2e.login
 
-import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
+import ch.protonmail.android.test.annotations.suite.CoreLibraryTest
 import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.di.LocalhostApi
 import ch.protonmail.android.uitest.di.LocalhostApiModule
@@ -36,8 +35,7 @@ import me.proton.core.test.quark.data.User
 import org.junit.Rule
 import javax.inject.Inject
 
-@SmokeExtendedTest
-@RegressionTest
+@CoreLibraryTest
 @HiltAndroidTest
 @UninstallModules(LocalhostApiModule::class)
 class LoginFlowTests : BaseTest(), MinimalSignInInternalTests {
