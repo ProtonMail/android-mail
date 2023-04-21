@@ -18,10 +18,12 @@
 
 package ch.protonmail.android.mailconversation.data.local
 
+import java.util.UUID
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailconversation.data.TestConversationLabel
@@ -706,5 +708,48 @@ class ConversationLocalDataSourceImplTest {
 
         // then
         assertEquals(error, result)
+    }
+
+    @Test
+    fun `Should return true if the conversation is read`() = runTest {
+        // Given
+        val sample = ConversationWithLabelsSample.AlphaAppFeedback
+        val conversationId = sample.conversation.conversationId
+        every { conversationDao.getConversation(userId, conversationId) } returns
+            sample.copy(conversation = sample.conversation.copy(numUnread = 0))
+
+        // When
+        val result = conversationLocalDataSource.isConversationRead(userId, conversationId).getOrNull()
+
+        // Then
+        assertEquals(true, result)
+    }
+
+    @Test
+    fun `Should return false if the conversation is not read`() = runTest {
+        // Given
+        val sample = ConversationWithLabelsSample.AlphaAppFeedback
+        val conversationId = sample.conversation.conversationId
+        every { conversationDao.getConversation(userId, conversationId) } returns
+            sample.copy(conversation = sample.conversation.copy(numUnread = 1))
+
+        // When
+        val result = conversationLocalDataSource.isConversationRead(userId, conversationId).getOrNull()
+
+        // Then
+        assertEquals(false, result)
+    }
+
+    @Test
+    fun `Should return error if the conversation is not cached`() = runTest {
+        // Given
+        val conversationId = ConversationId(UUID.randomUUID().toString())
+        every { conversationDao.getConversation(userId, conversationId) } returns null
+
+        // When
+        val result = conversationLocalDataSource.isConversationRead(userId, conversationId)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
     }
 }

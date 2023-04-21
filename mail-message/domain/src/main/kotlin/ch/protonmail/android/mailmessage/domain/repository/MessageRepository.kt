@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
+@Suppress("TooManyFunctions")
 interface MessageRepository {
 
     /**
@@ -103,6 +104,8 @@ interface MessageRepository {
      * Set the message with the given [messageId] as read
      */
     suspend fun markRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
+
+    suspend fun isMessageRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Boolean>
 
     /**
      * Removes [labelsToBeRemoved] and adds [labelsToBeAdded] from the message with the given [messageId]

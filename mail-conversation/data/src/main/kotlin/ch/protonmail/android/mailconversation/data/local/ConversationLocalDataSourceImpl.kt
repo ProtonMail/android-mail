@@ -232,6 +232,16 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         return updatedConversation.right()
     }
 
+    override suspend fun isConversationRead(
+        userId: UserId,
+        conversationId: ConversationId
+    ): Either<DataError.Local, Boolean> {
+        val conversation = conversationDao.getConversation(userId, conversationId)
+            ?.toConversation()
+            ?: return DataError.Local.NoDataCached.left()
+        return (conversation.numUnread == 0).right()
+    }
+
     override suspend fun rollbackMarkRead(
         userId: UserId,
         conversationId: ConversationId,

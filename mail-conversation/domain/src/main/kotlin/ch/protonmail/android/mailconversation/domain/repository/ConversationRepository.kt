@@ -109,6 +109,11 @@ interface ConversationRepository {
         contextLabelId: LabelId
     ): Either<DataError.Local, Conversation>
 
+    suspend fun isCachedConversationRead(
+        userId: UserId,
+        conversationId: ConversationId
+    ): Either<DataError, Boolean>
+
     suspend fun relabel(
         userId: UserId,
         conversationId: ConversationId,

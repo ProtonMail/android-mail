@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailconversation.data
 
+import java.util.UUID
 import app.cash.turbine.test
 import arrow.core.getOrElse
 import arrow.core.left
@@ -1019,5 +1020,45 @@ class ConversationRepositoryImplTest {
             }
             cancelAndConsumeRemainingEvents()
         }
+    }
+
+    @Test
+    fun `Should return true if the local cached conversation is read`() = runTest {
+        // Given
+        val conversationId = ConversationId(UUID.randomUUID().toString())
+        coEvery { conversationLocalDataSource.isConversationRead(userId, conversationId) } returns true.right()
+
+        // When
+        val isConversationRead = conversationRepository.isCachedConversationRead(userId, conversationId).getOrNull()
+
+        // Then
+        assertEquals(true, isConversationRead)
+    }
+
+    @Test
+    fun `Should return false if the local cached conversation is read`() = runTest {
+        // Given
+        val conversationId = ConversationId(UUID.randomUUID().toString())
+        coEvery { conversationLocalDataSource.isConversationRead(userId, conversationId) } returns false.right()
+
+        // When
+        val isConversationRead = conversationRepository.isCachedConversationRead(userId, conversationId).getOrNull()
+
+        // Then
+        assertEquals(false, isConversationRead)
+    }
+
+    @Test
+    fun `Should return error if the conversation is not cached`() = runTest {
+        // Given
+        val conversationId = ConversationId(UUID.randomUUID().toString())
+        coEvery { conversationLocalDataSource.isConversationRead(userId, conversationId) } returns
+            DataError.Local.NoDataCached.left()
+
+        // When
+        val isConversationRead = conversationRepository.isCachedConversationRead(userId, conversationId)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), isConversationRead)
     }
 }

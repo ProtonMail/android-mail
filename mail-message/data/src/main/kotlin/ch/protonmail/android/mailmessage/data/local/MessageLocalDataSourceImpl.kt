@@ -97,7 +97,6 @@ class MessageLocalDataSourceImpl @Inject constructor(
         .observeAll(userId, pageKey)
         .mapLatest { list -> list.map { it.toMessage() } }
 
-
     override suspend fun upsertMessage(message: Message) = db.inTransaction {
         upsertMessages(listOf(message))
     }
@@ -207,6 +206,12 @@ class MessageLocalDataSourceImpl @Inject constructor(
         )
         upsertMessage(updatedMessage)
         return updatedMessage.right()
+    }
+
+    override suspend fun isMessageRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Boolean> {
+        val message = observeMessage(userId, messageId).first()
+            ?: return DataError.Local.NoDataCached.left()
+        return message.unread.not().right()
     }
 
     private suspend fun updateLabels(messages: List<Message>) = with(groupByUserId(messages)) {

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import java.util.UUID
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -609,6 +610,57 @@ class MessageLocalDataSourceImplTest {
 
         // then
         assertEquals(error, result)
+    }
+
+    @Test
+    fun `Should return true if the message is read`() = runTest {
+        // Given
+        val sample = MessageEntitySample.Invoice
+        val messageId = sample.messageId
+        every { messageDao.observe(userId1, messageId) } returns flowOf(
+            MessageWithLabelIds(
+                sample.copy(unread = false),
+                listOf(LabelIdSample.Inbox)
+            )
+        )
+
+        // When
+        val result = messageLocalDataSource.isMessageRead(userId1, messageId).getOrNull()
+
+        // Then
+        assertEquals(true, result)
+    }
+
+    @Test
+    fun `Should return false if the message is not read`() = runTest {
+        // Given
+        val sample = MessageEntitySample.Invoice
+        val messageId = sample.messageId
+        every { messageDao.observe(userId1, messageId) } returns flowOf(
+            MessageWithLabelIds(
+                sample.copy(unread = true),
+                listOf(LabelIdSample.Inbox)
+            )
+        )
+
+        // When
+        val result = messageLocalDataSource.isMessageRead(userId1, messageId).getOrNull()
+
+        // Then
+        assertEquals(false, result)
+    }
+
+    @Test
+    fun `Should return error if the message is not cached`() = runTest {
+        // Given
+        val messageId = MessageId(UUID.randomUUID().toString())
+        every { messageDao.observe(userId1, messageId) } returns flowOf(null)
+
+        // When
+        val result = messageLocalDataSource.isMessageRead(userId1, messageId)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
     }
 
     private fun verifyLabelsUpdatedFor(messageWithBody: MessageWithBody) {

@@ -251,6 +251,12 @@ class ConversationRepositoryImpl @Inject constructor(
         return conversationLocalDataSource.markRead(userId, conversationId, contextLabelId)
     }
 
+    override suspend fun isCachedConversationRead(
+        userId: UserId,
+        conversationId: ConversationId
+    ): Either<DataError, Boolean> =
+        conversationLocalDataSource.isConversationRead(userId, conversationId)
+
     override suspend fun relabel(
         userId: UserId,
         conversationId: ConversationId,

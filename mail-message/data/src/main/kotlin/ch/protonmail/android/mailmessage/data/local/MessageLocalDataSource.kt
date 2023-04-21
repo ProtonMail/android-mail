@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 
+@Suppress("TooManyFunctions", "ComplexInterface")
 interface MessageLocalDataSource {
 
     /**
@@ -156,4 +157,6 @@ interface MessageLocalDataSource {
      * Marks as read the message for the given [messageId] related to the same [userId]
      */
     suspend fun markRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>
+
+    suspend fun isMessageRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Boolean>
 }

@@ -170,7 +170,6 @@ class MessageRepositoryImpl @Inject constructor(
         return updatedMessage.right()
     }
 
-
     override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
         localDataSource.markUnread(userId, messageId).onRight {
             remoteDataSource.markUnread(userId, messageId)
@@ -180,6 +179,9 @@ class MessageRepositoryImpl @Inject constructor(
         localDataSource.markRead(userId, messageId).onRight {
             remoteDataSource.markRead(userId, messageId)
         }
+
+    override suspend fun isMessageRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Boolean> =
+        localDataSource.isMessageRead(userId, messageId)
 
     override suspend fun relabel(
         userId: UserId,

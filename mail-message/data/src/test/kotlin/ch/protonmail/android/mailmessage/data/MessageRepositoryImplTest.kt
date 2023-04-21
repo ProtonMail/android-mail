@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data
 
+import java.util.UUID
 import app.cash.turbine.test
 import arrow.core.getOrHandle
 import arrow.core.left
@@ -771,5 +772,44 @@ class MessageRepositoryImplTest {
         // Then
         coVerify { remoteDataSource.addLabels(userId, message.messageId, listOf(labelToBeAdded)) }
         coVerify { remoteDataSource.removeLabels(userId, message.messageId, listOf(labelToBeRemoved)) }
+    }
+
+    @Test
+    fun `Should return true if the message is read`() = runTest {
+        // Given
+        val messageId = MessageId(UUID.randomUUID().toString())
+        coEvery { localDataSource.isMessageRead(userId, messageId) } returns true.right()
+
+        // When
+        val result = messageRepository.isMessageRead(userId, messageId).getOrNull()
+
+        // Then
+        assertEquals(true, result)
+    }
+
+    @Test
+    fun `Should return false if the message is unread`() = runTest {
+        // Given
+        val messageId = MessageId(UUID.randomUUID().toString())
+        coEvery { localDataSource.isMessageRead(userId, messageId) } returns false.right()
+
+        // When
+        val result = messageRepository.isMessageRead(userId, messageId).getOrNull()
+
+        // Then
+        assertEquals(false, result)
+    }
+
+    @Test
+    fun `Should return error if the data source returns error`() = runTest {
+        // Given
+        val messageId = MessageId(UUID.randomUUID().toString())
+        coEvery { localDataSource.isMessageRead(userId, messageId) } returns DataError.Local.NoDataCached.left()
+
+        // When
+        val result = messageRepository.isMessageRead(userId, messageId)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
     }
 }
