@@ -30,20 +30,21 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
-import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.mailconversation.presentation.usecase.ObserveConversationViewState
+import ch.protonmail.android.mailconversation.presentation.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
+import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
-import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
@@ -51,8 +52,6 @@ import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.CollapseDecryptedMessage
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ExpandDecryptedMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
@@ -69,6 +68,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestMoveToBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ShowAllAttachmentsForMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.Star
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.Trash
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.UnStar
@@ -96,14 +96,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -136,9 +135,9 @@ class ConversationDetailViewModel @Inject constructor(
     private val unStarConversation: UnStarConversation,
     private val savedStateHandle: SavedStateHandle,
     private val getDecryptedMessageBody: GetDecryptedMessageBody,
-    private val observeMessageWithLabels: ObserveMessageWithLabels,
-    private val getContacts: GetContacts,
     private val markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead,
+    private val setMessageViewState: SetMessageViewState,
+    private val observeConversationViewState: ObserveConversationViewState,
     @IODispatcher
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
@@ -167,18 +166,15 @@ class ConversationDetailViewModel @Inject constructor(
             is DismissBottomSheet -> dismissBottomSheet(action)
             is RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
-            is MoveToDestinationConfirmed ->
-                onBottomSheetDestinationConfirmed(action.mailLabelText)
-
+            is MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
             is RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
             is LabelAsToggleAction -> onLabelToggled(action.labelId)
             is LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
-            is ExpandMessage -> onDecryptAndExpandMessage(action.messageId)
+            is ExpandMessage -> onExpandMessage(action.messageId)
             is CollapseMessage -> onCollapseMessage(action.messageId)
             is MessageBodyLinkClicked -> onMessageBodyLinkClicked(action)
             is RequestScrollTo -> onRequestScrollTo(action)
-            is ConversationDetailViewAction.ShowAllAttachmentsForMessage ->
-                showAllAttachmentsForMessage(action.messageId)
+            is ShowAllAttachmentsForMessage -> showAllAttachmentsForMessage(action.messageId)
         }
     }
 
@@ -208,8 +204,9 @@ class ConversationDetailViewModel @Inject constructor(
                 combine(
                     observeContacts(userId),
                     observeConversationMessages(userId, conversationId).ignoreLocalErrors(),
-                    observeFolderColor(userId)
-                ) { contactsEither, messagesEither, folderColorSettings ->
+                    observeFolderColor(userId),
+                    observeConversationViewState()
+                ) { contactsEither, messagesEither, folderColorSettings, conversationViewState ->
                     val contacts = contactsEither.getOrElse {
                         Timber.i("Failed getting contacts for displaying initials. Fallback to display name")
                         emptyList()
@@ -217,93 +214,80 @@ class ConversationDetailViewModel @Inject constructor(
                     val messages = messagesEither.getOrElse {
                         return@combine ConversationDetailEvent.ErrorLoadingMessages
                     }
-                    val (messagesUiModels, expandedMessageId) = buildMessagesUiModels(
-                        messages = messages,
-                        contacts = contacts,
-                        folderColorSettings = folderColorSettings
-                    )
-                    ConversationDetailEvent.MessagesData(messagesUiModels, expandedMessageId)
+                    val firstNonDraftMessageId = getFirstNonDraftMessageId(messages)
+                    if (stateIsLoading() && firstNonDraftMessageId != null && allCollapsed(conversationViewState)) {
+                        onExpandMessage(firstNonDraftMessageId)
+                        null
+                    } else {
+                        val messagesUiModels = buildMessagesUiModels(
+                            messages = messages,
+                            contacts = contacts,
+                            folderColorSettings = folderColorSettings,
+                            currentViewState = conversationViewState
+                        )
+                        val requestScrollTo = requestScrollToMessageId(conversationViewState)
+                        ConversationDetailEvent.MessagesData(messagesUiModels, requestScrollTo)
+                    }
                 }
             }
-            .onEach(::emitNewStateFrom)
+            .filterNotNull()
+            .distinctUntilChanged()
+            .onEach { event ->
+                emitNewStateFrom(event)
+            }
+            .flowOn(ioDispatcher)
             .launchIn(viewModelScope)
     }
 
-    private suspend fun buildMessagesUiModels(
-        messages: NonEmptyList<MessageWithLabels>,
-        contacts: List<Contact>,
-        folderColorSettings: FolderColorSettings
-    ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
-        return if (state.value.messagesState == ConversationDetailsMessagesState.Loading) {
-            buildInitialListWithExpandedMessage(messages, contacts, folderColorSettings)
-        } else {
-            buildListFromCurrentState(messages, contacts, folderColorSettings)
-        }
-    }
+    private fun stateIsLoading(): Boolean = state.value.messagesState == ConversationDetailsMessagesState.Loading
 
-    private suspend fun buildInitialListWithExpandedMessage(
-        messages: NonEmptyList<MessageWithLabels>,
-        contacts: List<Contact>,
-        folderColorSettings: FolderColorSettings
-    ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
-        val newestNonDraftMessageId = messages
+    private fun allCollapsed(viewState: Map<MessageId, InMemoryConversationStateRepository.MessageState>): Boolean =
+        viewState.values.all { it == InMemoryConversationStateRepository.MessageState.Collapsed }
+
+    private fun getFirstNonDraftMessageId(messages: List<MessageWithLabels>): MessageId? =
+        messages
             .filterNot { it.message.isDraft() }
             .maxByOrNull { it.message.time }
             ?.message
             ?.messageId
 
-        val conversationWithOnlyDrafts = newestNonDraftMessageId == null
-
-        val messagesList = if (conversationWithOnlyDrafts) {
-            messages.map { messageWithLabels ->
-                buildCollapsedMessage(
-                    messageWithLabels = messageWithLabels,
-                    contacts = contacts,
-                    folderColorSettings = folderColorSettings
-                )
-            }
-        } else {
-            messages.map { messageWithLabels ->
-                val userId = primaryUserId.first()
-                if (messageWithLabels.message.messageId == newestNonDraftMessageId) {
-                    val decryptedBody = decryptMessageBody(userId, messageWithLabels.message.messageId)
-                    if (decryptedBody == null) {
-                        buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
-                    } else {
-                        buildExpandedMessage(
-                            messageWithLabels,
-                            contacts,
-                            decryptedBody,
-                            folderColorSettings
-                        )
-                    }
-                } else {
-                    buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
-                }
-            }
-        }
-
-        return Pair(messagesList, newestNonDraftMessageId)
-    }
-
-    private suspend fun buildListFromCurrentState(
+    private suspend fun buildMessagesUiModels(
         messages: NonEmptyList<MessageWithLabels>,
         contacts: List<Contact>,
-        folderColorSettings: FolderColorSettings
-    ): Pair<NonEmptyList<ConversationDetailMessageUiModel>, MessageId?> {
+        folderColorSettings: FolderColorSettings,
+        currentViewState: Map<MessageId, InMemoryConversationStateRepository.MessageState>
+    ): NonEmptyList<ConversationDetailMessageUiModel> {
         val messagesList = messages.map { messageWithLabels ->
-            when (val currentMessage = findCurrentStateOfMessage(messageWithLabels.message.messageId)) {
-                is ConversationDetailMessageUiModel.Expanded -> conversationMessageMapper.toUiModel(
-                    message = currentMessage,
-                    messageWithLabels = messageWithLabels,
-                    contacts = contacts,
-                    folderColorSettings = folderColorSettings
+            when (val viewState = currentViewState[messageWithLabels.message.messageId]) {
+                is InMemoryConversationStateRepository.MessageState.Expanding ->
+                    buildExpandingMessage(buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings))
+
+                is InMemoryConversationStateRepository.MessageState.Expanded -> buildExpandedMessage(
+                    messageWithLabels,
+                    contacts,
+                    viewState.decryptedBody,
+                    folderColorSettings
                 )
+
                 else -> buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
             }
         }
+        return messagesList
+    }
 
-        return Pair(messagesList, null)
+    private fun requestScrollToMessageId(
+        conversationViewState: Map<MessageId, InMemoryConversationStateRepository.MessageState>
+    ): MessageId? {
+        val expandedMessageIds = conversationViewState
+            .filterValues { it is InMemoryConversationStateRepository.MessageState.Expanded }
+            .keys
+
+        val requestScrollTo = if (expandedMessageIds.size == 1) {
+            expandedMessageIds.first()
+        } else {
+            null
+        }
+        return requestScrollTo
     }
 
     private suspend fun buildCollapsedMessage(
@@ -314,6 +298,12 @@ class ConversationDetailViewModel @Inject constructor(
         messageWithLabels,
         contacts,
         folderColorSettings
+    )
+
+    private fun buildExpandingMessage(
+        collapsedMessage: ConversationDetailMessageUiModel.Collapsed,
+    ): ConversationDetailMessageUiModel.Expanding = conversationMessageMapper.toUiModel(
+        collapsedMessage
     )
 
     private suspend fun buildExpandedMessage(
@@ -327,13 +317,6 @@ class ConversationDetailViewModel @Inject constructor(
         decryptedBody,
         folderColorSettings
     )
-
-    private fun findCurrentStateOfMessage(messageId: MessageId): ConversationDetailMessageUiModel? {
-        val messagesState = (state.value as? ConversationDetailState)
-            ?.messagesState as? ConversationDetailsMessagesState.Data
-
-        return messagesState?.messages?.firstOrNull { it.messageId == messageId }
-    }
 
     private fun observeBottomBarActions(conversationId: ConversationId) {
         primaryUserId.flatMapLatest { userId ->
@@ -493,7 +476,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private suspend fun emitNewStateFrom(event: ConversationDetailOperation) {
-        val newState: ConversationDetailState = reducer.newStateFrom(state.value, event)
+        val newState: ConversationDetailState = reducer.newStateFrom(state.value.copy(), event)
         mutableDetailState.emit(newState)
     }
 
@@ -568,90 +551,28 @@ class ConversationDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    @FlowPreview
-    private fun onDecryptAndExpandMessage(messageId: MessageId) {
-        findCurrentStateOfMessage(messageId)?.let {
-            if (it is ConversationDetailMessageUiModel.Collapsed) onExpandingMessage(it)
-        }
-        primaryUserId.mapLatest { userId ->
-            val contacts = getContacts(userId).getOrElse { emptyList() }
-            val decryptedBody = decryptMessageBody(userId, messageId)
-            decryptedBody?.let { body -> Triple(userId, body, contacts) }
-        }
-            .filterNotNull()
-            .flatMapConcat { (userId, body, contacts) ->
-                observeMessageWithLabels(userId, messageId).map { messageWithLabels ->
-                    Triple(messageWithLabels.getOrNull(), body, contacts)
+    private fun onExpandMessage(messageId: MessageId) {
+        viewModelScope.launch(ioDispatcher) {
+            setMessageViewState.expanding(messageId)
+            decryptMessageBody(primaryUserId.first(), messageId)
+                ?.let { decryptedBody ->
+                    setMessageViewState.expanded(messageId, decryptedBody)
                 }
-            }
-            .onEach { (messageWithLabels, body, contacts) ->
-                if (messageWithLabels != null) {
-                    val folderColorSettings = observeFolderColor(messageWithLabels.message.userId).first()
-                    onExpandMessage(messageId, messageWithLabels, contacts, body, folderColorSettings)
-                }
-            }
-            .flowOn(ioDispatcher)
-            .launchIn(viewModelScope)
+        }
     }
 
     private suspend fun decryptMessageBody(
         userId: UserId,
         messageId: MessageId
     ): DecryptedMessageBody? = getDecryptedMessageBody(userId, messageId)
-        .onRight { markMessageAndConversationAsRead(userId, messageId) }
+        .onRight {
+            markMessageAndConversationReadIfAllMessagesRead(userId, messageId, conversationId)
+        }
         .onLeft { emitMessageBodyDecryptError(it, messageId) }
         .getOrNull()
 
-    private suspend fun onExpandMessage(
-        messageId: MessageId,
-        messageWithLabels: MessageWithLabels,
-        contacts: List<Contact>,
-        messageBody: DecryptedMessageBody,
-        folderColorSettings: FolderColorSettings
-    ) {
-        emitNewStateFrom(
-            ExpandDecryptedMessage(
-                messageId = messageId,
-                conversationDetailMessageUiModel = buildExpandedMessage(
-                    messageWithLabels,
-                    contacts,
-                    messageBody,
-                    folderColorSettings
-                )
-            )
-        )
-    }
-
     private fun onCollapseMessage(messageId: MessageId) {
-        primaryUserId.flatMapLatest { userId ->
-            combine(
-                observeContacts(userId),
-                observeMessageWithLabels(userId, messageId),
-                observeFolderColor(userId)
-            ) { contactsEither, messageEither, folderColorSettings ->
-                val contacts = contactsEither.getOrElse { emptyList() }
-                val message = messageEither.getOrNull()
-
-                message?.let { Triple(it, contacts, folderColorSettings) }
-            }
-        }
-            .filterNotNull()
-            .onEach { (message, contacts, folderColorSettings) ->
-                emitNewStateFrom(
-                    CollapseDecryptedMessage(
-                        messageId = messageId,
-                        conversationDetailMessageUiModel = buildCollapsedMessage(message, contacts, folderColorSettings)
-                    )
-                )
-            }
-            .flowOn(ioDispatcher)
-            .launchIn(viewModelScope)
-    }
-
-    private suspend fun markMessageAndConversationAsRead(userId: UserId, messageId: MessageId) {
-        viewModelScope.launch {
-            markMessageAndConversationReadIfAllMessagesRead(userId, messageId, conversationId)
-        }
+        viewModelScope.launch { setMessageViewState.collapsed(messageId) }
     }
 
     private fun onMessageBodyLinkClicked(action: MessageBodyLinkClicked) {
@@ -678,12 +599,6 @@ class ConversationDetailViewModel @Inject constructor(
         }
 
         emitNewStateFrom(errorState)
-    }
-
-    private fun onExpandingMessage(collapsed: ConversationDetailMessageUiModel.Collapsed) {
-        viewModelScope.launch {
-            emitNewStateFrom(ConversationDetailEvent.ExpandingMessage(collapsed.messageId, collapsed))
-        }
     }
 
     private fun showAllAttachmentsForMessage(messageId: MessageId) {

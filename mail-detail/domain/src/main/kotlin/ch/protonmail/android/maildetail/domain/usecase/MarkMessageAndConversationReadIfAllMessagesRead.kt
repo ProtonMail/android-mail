@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.Either
-import arrow.core.Nel
+import arrow.core.NonEmptyList
 import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.right
@@ -27,6 +27,8 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError
+import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.ConversationAlreadyRead
+import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.ConversationHasUnreadMessages
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.DataSourceError
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.mailmessage.domain.entity.Message
@@ -68,33 +70,68 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
         messageId: MessageId,
         conversationId: ConversationId,
         contextLabelId: LabelId
-    ) = markMessageAsRead(userId, messageId)
-        .mapLeft { error -> DataSourceError(error) }
-        .flatMap { getConversationMessages(userId, conversationId) }
-        .flatMap { messages -> markConversationAsReadIfAllRead(messages, userId, conversationId, contextLabelId) }
+    ): Either<MarkConversationReadError, Unit> {
+        return messageRepository.isMessageRead(userId, messageId)
+            .fold(
+                ifLeft = { error -> DataSourceError(error).left() },
+                ifRight = { isRead ->
+                    markMessageReadIfUnread(isRead, userId, messageId)
+                        .flatMap {
+                            markConversationAsReadIfAllRead(
+                                userId,
+                                conversationId,
+                                contextLabelId
+                            )
+                        }
+                }
+            )
+    }
+
+    private suspend fun markMessageReadIfUnread(
+        isRead: Boolean,
+        userId: UserId,
+        messageId: MessageId
+    ): Either<DataSourceError, Any> = if (!isRead) {
+        markMessageAsRead(userId, messageId)
+            .mapLeft { error ->
+                DataSourceError(error)
+            }
+    } else {
+        Unit.right()
+    }
 
     private suspend fun markConversationAsReadIfAllRead(
-        messages: Nel<Message>,
         userId: UserId,
         conversationId: ConversationId,
         contextLabelId: LabelId
     ): Either<MarkConversationReadError, Unit> {
-        val allRead = messages.all { message -> !message.unread }
-        return if (allRead) {
-            conversationRepository.markRead(userId, conversationId, contextLabelId)
-                .fold(
-                    ifLeft = { error -> DataSourceError(error).left() },
-                    ifRight = { Unit.right() }
-                )
-        } else {
-            MarkConversationReadError.ConversationHasUnreadMessages.left()
-        }
+        return conversationRepository.isCachedConversationRead(userId, conversationId)
+            .mapLeft { error -> DataSourceError(error) }
+            .flatMap { isRead ->
+                if (isRead) {
+                    ConversationAlreadyRead.left()
+                } else {
+                    getConversationMessages(userId, conversationId)
+                        .map { messages -> messages.all { message -> !message.unread } }
+                        .flatMap { allRead ->
+                            if (allRead) {
+                                conversationRepository.markRead(userId, conversationId, contextLabelId)
+                                    .fold(
+                                        ifLeft = { error -> DataSourceError(error).left() },
+                                        ifRight = { Unit.right() }
+                                    )
+                            } else {
+                                ConversationHasUnreadMessages.left()
+                            }
+                        }
+                }
+            }
     }
 
     private suspend fun getConversationMessages(
         userId: UserId,
         conversationId: ConversationId
-    ) = messageRepository.observeCachedMessages(userId, conversationId)
+    ): Either<DataSourceError, NonEmptyList<Message>> = messageRepository.observeCachedMessages(userId, conversationId)
         .first()
         .mapLeft { error -> DataSourceError(error) }
 }

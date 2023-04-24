@@ -16,14 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maildetail.domain.model
+package ch.protonmail.android.mailcommon.presentation.compose
 
-import ch.protonmail.android.mailcommon.domain.model.DataError
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalDensity
 
-sealed interface MarkConversationReadError {
-    object ConversationHasUnreadMessages : MarkConversationReadError
-
-    object ConversationAlreadyRead : MarkConversationReadError
-
-    data class DataSourceError(val error: DataError) : MarkConversationReadError
-}
+@Composable
+fun Int.pxToDp() = with(LocalDensity.current) { this@pxToDp.toDp() }

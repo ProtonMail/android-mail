@@ -38,10 +38,11 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
-import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
+import ch.protonmail.android.mailconversation.presentation.usecase.ObserveConversationViewState
+import ch.protonmail.android.mailconversation.presentation.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
@@ -71,7 +72,8 @@ import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetSta
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
-import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments
+import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanding
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -162,6 +164,12 @@ class ConversationDetailViewModelTest {
             )
         } returns
             ConversationDetailMessageUiModelSample.AnotherInvoiceWithoutLabels
+        coEvery {
+            toUiModel(
+                ofType(ConversationDetailMessageUiModel.Collapsed::class),
+            )
+        } returns
+            InvoiceWithLabelExpanding
     }
     private val markConversationAsUnread: MarkConversationAsUnread = mockk()
     private val move: MoveConversation = mockk()
@@ -224,9 +232,6 @@ class ConversationDetailViewModelTest {
     private val getDecryptedMessageBody: GetDecryptedMessageBody = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody("", MimeType.Html).right()
     }
-    private val getContacts: GetContacts = mockk {
-        coEvery { this@mockk.invoke(any()) } returns emptyList<Contact>().right()
-    }
     private val observeMessageWithLabels = mockk<ObserveMessageWithLabels> {
         every { this@mockk.invoke(UserIdSample.Primary, any()) } returns mockk()
     }
@@ -234,6 +239,11 @@ class ConversationDetailViewModelTest {
         mockk {
             coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit.right()
         }
+
+    private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
+    private val setMessageViewState = SetMessageViewState(inMemoryConversationStateRepository)
+    private val observeConversationViewState = ObserveConversationViewState(inMemoryConversationStateRepository)
+
     private val viewModel by lazy {
         ConversationDetailViewModel(
             observePrimaryUserId = observePrimaryUserId,
@@ -256,8 +266,8 @@ class ConversationDetailViewModelTest {
             unStarConversation = unStarConversation,
             getDecryptedMessageBody = getDecryptedMessageBody,
             markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllRead,
-            observeMessageWithLabels = observeMessageWithLabels,
-            getContacts = getContacts,
+            setMessageViewState = setMessageViewState,
+            observeConversationViewState = observeConversationViewState,
             ioDispatcher = Dispatchers.Unconfined
         )
     }
@@ -439,7 +449,7 @@ class ConversationDetailViewModelTest {
                 folderColorSettings = defaultFolderColorSettings
             )
         } returns
-            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+            InvoiceWithLabelExpanded
 
         // when
         viewModel.state.test {
@@ -470,13 +480,13 @@ class ConversationDetailViewModelTest {
         } returns expectedState
         coEvery {
             conversationMessageMapper.toUiModel(
-                messageWithLabels = any(),
-                contacts = any(),
+                messageWithLabels = any(), // Model here has 3 labels, sample models only have one or two
+                contacts = emptyList(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = any()
             )
         } returns
-            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+            InvoiceWithLabelExpanded
 
         // when
         viewModel.state.test {
@@ -970,6 +980,7 @@ class ConversationDetailViewModelTest {
             // Then
             val lastItem = awaitItem()
             assertEquals(expectedResult, lastItem)
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -1362,65 +1373,6 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
-    fun `should emit expanded message when expanding it`() = runTest {
-        // given
-        val (messageIds, expectedExpanded) = setupCollapsedToExpandMessagesState()
-
-        viewModel.state.test {
-            initialStateEmitted()
-
-            // when
-            viewModel.submit(ConversationDetailViewAction.ExpandMessage(messageIds.first()))
-
-            // then
-            val newMessagesState = (awaitItem().messagesState as ConversationDetailsMessagesState.Data).messages
-            advanceUntilIdle()
-            assertEquals(expectedExpanded, newMessagesState.first())
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `should emit collapsed message when collapsing it`() = runTest {
-        // given
-        val (messageIds, expectedCollapsed) = setupExpandedToCollapseState()
-
-        viewModel.state.test {
-            initialStateEmitted()
-
-            // when
-            viewModel.submit(ConversationDetailViewAction.CollapseMessage(messageIds.first()))
-
-            // then
-            val newMessagesState = (awaitItem().messagesState as ConversationDetailsMessagesState.Data).messages
-            assertEquals(expectedCollapsed, newMessagesState.first())
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `should emit show all attachment when view action is triggered`() = runTest {
-        // Given
-        val (messageIds, expectedExpanded) = setupExpandedWithAttachmentsState()
-
-        viewModel.state.test {
-            advanceUntilIdle()
-            viewModel.submit(ConversationDetailViewAction.ExpandMessage(expectedExpanded.messageId))
-            advanceUntilIdle()
-
-            // When
-            viewModel.submit(ConversationDetailViewAction.ShowAllAttachmentsForMessage(messageIds.first()))
-            advanceUntilIdle()
-
-            // Then
-            val newMessagesState = (lastEmittedItem().messagesState as ConversationDetailsMessagesState.Data).messages
-
-            assertEquals(expectedExpanded, newMessagesState.first())
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
     fun `should mark message and conversation as read when expanding it successfully`() = runTest {
         // given
         val (messageIds, expectedExpanded) = setupCollapsedToExpandMessagesState(withUnreadMessage = true)
@@ -1483,7 +1435,6 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
 
             // then
-            skipItems(1) // Expanding
             val errorState = awaitItem()
             assertEquals(TextUiModel(string.decryption_error), errorState.error.consume())
 
@@ -1515,7 +1466,6 @@ class ConversationDetailViewModelTest {
                 advanceUntilIdle()
 
                 // then
-                skipItems(1) // Expanding
                 val errorState = awaitItem()
                 assertEquals(errorState.error.consume(), TextUiModel(string.detail_error_retrieving_message_body))
 
@@ -1547,7 +1497,6 @@ class ConversationDetailViewModelTest {
                 advanceUntilIdle()
 
                 // then
-                skipItems(1) // Expanding
                 val errorState = awaitItem()
                 assertEquals(errorState.error.consume(), TextUiModel(string.error_offline_loading_message))
 
@@ -1561,48 +1510,10 @@ class ConversationDetailViewModelTest {
         }
 
     @Test
-    fun `should emit scroll to message id effect when requested`() = runTest {
-        // given
-        val (messageIds, _) = setupCollapsedToExpandMessagesState()
-
-        viewModel.state.test {
-            initialStateEmitted()
-            // when
-            viewModel.submit(ConversationDetailViewAction.RequestScrollTo(messageIds.first()))
-            advanceUntilIdle()
-
-            // then
-            assertEquals(messageIds.first().id, awaitItem().scrollToMessage.consume()?.id)
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `should emit expanding state when expanding a message`() = runTest {
-        // given
-        val (messageIds, _) = setupCollapsedToExpandMessagesState()
-
-        viewModel.state.test {
-            conversationMessagesEmitted()
-            // when
-            viewModel.submit(ConversationDetailViewAction.ExpandMessage(messageIds.first()))
-            advanceUntilIdle()
-
-            // then
-            val newState = awaitItem()
-            val expandingMessage = (newState.messagesState as ConversationDetailsMessagesState.Data)
-                .messages
-                .first { it.messageId == messageIds.first() }
-            assertIs<ConversationDetailMessageUiModel.Expanding>(expandingMessage)
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
     fun `Should expand automatically the message in the conversation`() = runTest {
         // given
         val messages = nonEmptyListOf(
-            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+            InvoiceWithLabelExpanded
         )
         coEvery {
             conversationMessageMapper.toUiModel(
@@ -1632,7 +1543,7 @@ class ConversationDetailViewModelTest {
             val expandedMessage =
                 newState
                     .messages
-                    .first { it.messageId == ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded.messageId }
+                    .first { it.messageId == InvoiceWithLabelExpanded.messageId }
             assertIs<ConversationDetailMessageUiModel.Expanded>(expandedMessage)
             cancelAndIgnoreRemainingEvents()
         }
@@ -1698,14 +1609,14 @@ class ConversationDetailViewModelTest {
             ConversationDetailMessageUiModelSample.AugWeatherForecast
         )
         val firstExpanded = nonEmptyListOf(
-            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded,
+            InvoiceWithLabelExpanded,
             ConversationDetailMessageUiModelSample.AugWeatherForecast
         )
         val firstExpanding = nonEmptyListOf(
             if (withUnreadMessage) {
                 ConversationDetailMessageUiModelSample.InvoiceWithLabelExpandingUnread
             } else {
-                ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanding
+                InvoiceWithLabelExpanding
             },
             ConversationDetailMessageUiModelSample.AugWeatherForecast
         )
@@ -1788,99 +1699,10 @@ class ConversationDetailViewModelTest {
                 folderColorSettings = defaultFolderColorSettings
             )
         } returns
-            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
+            InvoiceWithLabelExpanded
         every { conversationMessageMapper.toUiModel(any()) } returns
-            ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanding
-        return Pair(allCollapsed.map { it.messageId }, ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded)
-    }
-
-    private fun setupExpandedToCollapseState(): Pair<List<MessageId>, ConversationDetailMessageUiModel> {
-        val allCollapsed = listOf(
-            ConversationDetailMessageUiModelSample.InvoiceWithLabel,
-            ConversationDetailMessageUiModelSample.AugWeatherForecast
-        )
-        every {
-            reducer.newStateFrom(
-                currentState = any(),
-                operation = ofType<ConversationDetailEvent.CollapseDecryptedMessage>()
-            )
-        } returns ConversationDetailState.Loading.copy(
-            messagesState = ConversationDetailsMessagesState.Data(allCollapsed)
-        )
-        coEvery { observeMessageWithLabels(userId, any()) } returns flowOf(
-            MessageWithLabelsSample.InvoiceWithLabel.right()
-        )
-        coEvery { conversationMessageMapper.toUiModel(any(), any(), defaultFolderColorSettings) } returns
-            ConversationDetailMessageUiModelSample.InvoiceWithLabel
-        return Pair(allCollapsed.map { it.messageId }, ConversationDetailMessageUiModelSample.InvoiceWithLabel)
-    }
-
-    private fun setupExpandedWithAttachmentsState(): Pair<List<MessageId>, ConversationDetailMessageUiModel> {
-        val expected = invoiceExpandedWithAttachments(4)
-
-        val allCollapsed = listOf(
-            ConversationDetailMessageUiModelSample.InvoiceWithLabel,
-            ConversationDetailMessageUiModelSample.AugWeatherForecast
-        )
-        val firstExpanded = listOf(
-            invoiceExpandedWithAttachments(3),
-            ConversationDetailMessageUiModelSample.AugWeatherForecast
-        )
-        val firstExpandedAllAttachments = listOf(
-            expected,
-            ConversationDetailMessageUiModelSample.AugWeatherForecast
-        )
-
-        // region mock initial state
-        every {
-            reducer.newStateFrom(
-                currentState = any(),
-                operation = any()
-            )
-        } returns ConversationDetailState.Loading.copy(
-            messagesState = ConversationDetailsMessagesState.Data(allCollapsed)
-        )
-        // endregion
-        // region mock expanded state
-        every {
-            reducer.newStateFrom(
-                currentState = any(),
-                operation = ofType<ConversationDetailEvent.ExpandDecryptedMessage>()
-            )
-        } returns ConversationDetailState.Loading.copy(
-            messagesState = ConversationDetailsMessagesState.Data(firstExpanded)
-        )
-        // endregion
-        // region mock show all attachments
-        every {
-            reducer.newStateFrom(
-                currentState = any(),
-                operation = ofType<ConversationDetailEvent.ShowAllAttachmentsForMessage>()
-            )
-        } returns ConversationDetailState.Loading.copy(
-            messagesState = ConversationDetailsMessagesState.Data(firstExpandedAllAttachments)
-        )
-        // endregion
-        // region mock observer message with labels
-        coEvery {
-            observeMessageWithLabels(
-                userId,
-                any()
-            )
-        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.right())
-        // endregion
-        // region mock mapper
-        coEvery {
-            conversationMessageMapper.toUiModel(
-                messageWithLabels = any(),
-                contacts = any(),
-                decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
-            )
-        } returns expected
-        // endregion
-
-        return Pair(firstExpanded.map { it.messageId }, expected)
+            InvoiceWithLabelExpanding
+        return Pair(allCollapsed.map { it.messageId }, InvoiceWithLabelExpanded)
     }
 
     private fun setupLinkClickState(link: String) {
