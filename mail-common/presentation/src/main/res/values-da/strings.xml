@@ -27,8 +27,8 @@
   <string name="action_reply_content_description">Svar</string>
   <string name="action_reply_all_content_description">Svar alle</string>
   <string name="action_forward_content_description">Videresend</string>
-  <string name="action_mark_read_content_description">Marker som læst</string>
-  <string name="action_mark_unread_content_description">Marker som ulæst</string>
+  <string name="action_mark_read_content_description">Markér som læst</string>
+  <string name="action_mark_unread_content_description">Markér som ulæst</string>
   <string name="action_star_content_description">Stjernemarkér</string>
   <string name="action_unstar_content_description">Fjern stjernemarkering</string>
   <string name="action_label_content_description">Etikettér som</string>

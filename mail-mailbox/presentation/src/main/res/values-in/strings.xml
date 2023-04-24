@@ -30,6 +30,6 @@
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d belum dibaca</item>
   </plurals>
-  <string name="mailbox_default_recipient">(No Recipient)</string>
-  <string name="mailbox_default_sender">(No Sender)</string>
+  <string name="mailbox_default_recipient">(Tanpa Penerima)</string>
+  <string name="mailbox_default_sender">(Tanpa Pengirim)</string>
 </resources>

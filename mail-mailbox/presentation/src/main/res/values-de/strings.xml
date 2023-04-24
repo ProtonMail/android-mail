@@ -31,6 +31,6 @@
     <item quantity="one">%d ungelesen</item>
     <item quantity="other">%d ungelesen</item>
   </plurals>
-  <string name="mailbox_default_recipient">(No Recipient)</string>
-  <string name="mailbox_default_sender">(No Sender)</string>
+  <string name="mailbox_default_recipient">(Kein Empfänger)</string>
+  <string name="mailbox_default_sender">(Kein Absender)</string>
 </resources>

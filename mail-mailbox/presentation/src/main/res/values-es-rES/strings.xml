@@ -31,6 +31,6 @@
     <item quantity="one">%d no leído</item>
     <item quantity="other">%d no leídos</item>
   </plurals>
-  <string name="mailbox_default_recipient">(No Recipient)</string>
-  <string name="mailbox_default_sender">(No Sender)</string>
+  <string name="mailbox_default_recipient">(Sin destinatario)</string>
+  <string name="mailbox_default_sender">(Sin remitente)</string>
 </resources>

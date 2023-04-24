@@ -30,7 +30,7 @@
   <string name="mail_settings_combined_contacts">Kombinerede kontakter</string>
   <string name="mail_settings_swipe_actions">Strygehandlinger</string>
   <string name="mail_settings_combined_contacts_hint">Slå funktionen til for at autoudfylde e-mailadresser vha. kontakter fra alle dine indloggede konti.</string>
-  <string name="mail_settings_alternative_routing_hint">Hvis Proton-websteder er blokeret, giver denne indstilling appen mulighed for at prøve alternativ netværksrouting for at nå Proton, hvilket kan være nyttige til at omgå firewalls eller ved netværksproblemer. Vi anbefaler at holde denne indstilling slået til for større pålidelighed.</string>
+  <string name="mail_settings_alternative_routing_hint">Hvis Proton-websteder er blokeret, giver denne indstilling appen mulighed for at prøve alternativ netværksrouting for at nå Proton, hvilket kan være nyttigt for at omgå firewalls eller ved netværksproblemer. Vi anbefaler at holde denne indstilling slået til for større pålidelighed.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Systemstandard</string>
   <string name="mail_settings_theme_light">Lys</string>

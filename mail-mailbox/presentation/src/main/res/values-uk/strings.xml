@@ -33,6 +33,6 @@
     <item quantity="many">%d непрочитаних</item>
     <item quantity="other">%d непрочитаних</item>
   </plurals>
-  <string name="mailbox_default_recipient">(No Recipient)</string>
-  <string name="mailbox_default_sender">(No Sender)</string>
+  <string name="mailbox_default_recipient">(Немає отримувача)</string>
+  <string name="mailbox_default_sender">(Немає відправника)</string>
 </resources>
