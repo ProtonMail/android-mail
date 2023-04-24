@@ -22,9 +22,9 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
 sealed interface MailboxTopAppBarState {
 
-    val composerDisabled: Boolean
+    val isComposerDisabled: Boolean
 
-    data class Loading(override val composerDisabled: Boolean) : MailboxTopAppBarState
+    data class Loading(override val isComposerDisabled: Boolean) : MailboxTopAppBarState
 
     sealed interface Data : MailboxTopAppBarState {
 
@@ -32,18 +32,18 @@ sealed interface MailboxTopAppBarState {
 
         data class DefaultMode(
             override val currentLabelName: TextUiModel,
-            override val composerDisabled: Boolean
+            override val isComposerDisabled: Boolean
         ) : Data
 
         data class SelectionMode(
             override val currentLabelName: TextUiModel,
-            override val composerDisabled: Boolean,
+            override val isComposerDisabled: Boolean,
             val selectedCount: Int
         ) : Data
 
         data class SearchMode(
             override val currentLabelName: TextUiModel,
-            override val composerDisabled: Boolean,
+            override val isComposerDisabled: Boolean,
             val searchQuery: String
         ) : Data
     }

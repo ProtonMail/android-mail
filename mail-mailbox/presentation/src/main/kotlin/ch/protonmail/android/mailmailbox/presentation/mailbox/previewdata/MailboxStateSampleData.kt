@@ -31,7 +31,7 @@ object MailboxStateSampleData {
 
     val Loading = MailboxState(
         mailboxListState = MailboxListState.Loading,
-        topAppBarState = MailboxTopAppBarState.Loading(composerDisabled = false),
+        topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
         unreadFilterState = UnreadFilterState.Loading,
         networkStatusEffect = Effect.empty()
     )
@@ -44,7 +44,7 @@ object MailboxStateSampleData {
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),
-            composerDisabled = false
+            isComposerDisabled = false
         ),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
@@ -61,7 +61,7 @@ object MailboxStateSampleData {
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text(),
-            composerDisabled = false
+            isComposerDisabled = false
         ),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,

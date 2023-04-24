@@ -48,7 +48,7 @@ class MailboxTopAppBarReducer @Inject constructor() {
         return when (this) {
             is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(
                 currentMailLabel.text(),
-                composerDisabled
+                isComposerDisabled
             )
 
             is MailboxTopAppBarState.Data -> this.with(currentMailLabel.text())
@@ -62,7 +62,7 @@ class MailboxTopAppBarReducer @Inject constructor() {
         return when (this) {
             is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(
                 currentMailLabel.text(),
-                composerDisabled
+                isComposerDisabled
             )
 
             is MailboxTopAppBarState.Data -> this.with(currentMailLabel.text())
@@ -74,7 +74,7 @@ class MailboxTopAppBarReducer @Inject constructor() {
             is MailboxTopAppBarState.Loading -> this
             is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(
                 currentLabelName,
-                composerDisabled,
+                isComposerDisabled,
                 selectedCount = 0
             )
         }
@@ -85,17 +85,17 @@ class MailboxTopAppBarReducer @Inject constructor() {
             is MailboxTopAppBarState.Data ->
                 MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName,
-                    composerDisabled
+                    isComposerDisabled
                 )
         }
 
     private fun MailboxTopAppBarState.toNewStateForComposerDisabledChanged(
         operation: MailboxEvent.ComposerDisabledChanged
     ) = when (this) {
-        is MailboxTopAppBarState.Data.DefaultMode -> copy(composerDisabled = operation.composerDisabled)
-        is MailboxTopAppBarState.Data.SearchMode -> copy(composerDisabled = operation.composerDisabled)
-        is MailboxTopAppBarState.Data.SelectionMode -> copy(composerDisabled = operation.composerDisabled)
-        is MailboxTopAppBarState.Loading -> copy(composerDisabled = operation.composerDisabled)
+        is MailboxTopAppBarState.Data.DefaultMode -> copy(isComposerDisabled = operation.composerDisabled)
+        is MailboxTopAppBarState.Data.SearchMode -> copy(isComposerDisabled = operation.composerDisabled)
+        is MailboxTopAppBarState.Data.SelectionMode -> copy(isComposerDisabled = operation.composerDisabled)
+        is MailboxTopAppBarState.Loading -> copy(isComposerDisabled = operation.composerDisabled)
     }
 
     fun MailboxTopAppBarState.Data.with(currentLabelName: TextUiModel) = when (this) {

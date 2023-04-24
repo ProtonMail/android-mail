@@ -151,7 +151,7 @@ internal class MailboxScreenTest {
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = MailLabel.System(systemLabel).text(),
-                    composerDisabled = false
+                    isComposerDisabled = false
                 ),
                 unreadFilterState = UnreadFilterState.Loading,
                 networkStatusEffect = Effect.empty()

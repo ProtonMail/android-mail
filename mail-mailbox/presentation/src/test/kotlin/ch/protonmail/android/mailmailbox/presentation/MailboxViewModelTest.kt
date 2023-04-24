@@ -197,7 +197,7 @@ class MailboxViewModelTest {
             val actual = awaitItem()
             val expected = MailboxState(
                 mailboxListState = MailboxListState.Loading,
-                topAppBarState = MailboxTopAppBarState.Loading(composerDisabled = false),
+                topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
                 unreadFilterState = UnreadFilterState.Loading,
                 networkStatusEffect = Effect.empty()
             )
@@ -350,7 +350,7 @@ class MailboxViewModelTest {
             topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
                 currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
                 selectedCount = 0,
-                composerDisabled = false
+                isComposerDisabled = false
             )
         )
         every {
@@ -375,7 +375,7 @@ class MailboxViewModelTest {
         val expectedState = MailboxStateSampleData.Loading.copy(
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                 currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
-                composerDisabled = false
+                isComposerDisabled = false
             )
         )
         every {
@@ -651,7 +651,7 @@ class MailboxViewModelTest {
         val expectedState = MailboxStateSampleData.Loading.copy(
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                 currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
-                composerDisabled = true
+                isComposerDisabled = true
             )
         )
         every {
@@ -681,7 +681,7 @@ class MailboxViewModelTest {
         val expectedState = MailboxStateSampleData.Loading.copy(
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                 currentLabelName = MailLabel.System(initialLocationMailLabelId).text(),
-                composerDisabled = false
+                isComposerDisabled = false
             )
         )
         every {

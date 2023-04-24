@@ -265,7 +265,7 @@ class MailboxViewModel @Inject constructor(
 
         val initialState = MailboxState(
             mailboxListState = MailboxListState.Loading,
-            topAppBarState = MailboxTopAppBarState.Loading(composerDisabled = false),
+            topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
             unreadFilterState = UnreadFilterState.Loading,
             networkStatusEffect = Effect.empty()
         )

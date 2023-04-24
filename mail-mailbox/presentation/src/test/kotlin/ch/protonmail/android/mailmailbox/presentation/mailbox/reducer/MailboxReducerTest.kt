@@ -122,7 +122,7 @@ internal class MailboxReducerTest(
             ),
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                 currentLabelName = spamLabel.text(),
-                composerDisabled = false
+                isComposerDisabled = false
             ),
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = 42,

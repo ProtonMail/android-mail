@@ -131,14 +131,14 @@ internal class MailboxTopAppBarTest {
     }
 
     private fun setupScreenWithDefaultMode(currentMailLabel: MailLabel) {
-        val state = Data.DefaultMode(currentLabelName = currentMailLabel.text(), composerDisabled = false)
+        val state = Data.DefaultMode(currentLabelName = currentMailLabel.text(), isComposerDisabled = false)
         setupScreenWithState(state)
     }
 
     private fun setupScreenWithSelectionMode(currentMailLabel: MailLabel, selectedCount: Int) {
         val state = Data.SelectionMode(
             currentLabelName = currentMailLabel.text(),
-            selectedCount = selectedCount, composerDisabled = false
+            selectedCount = selectedCount, isComposerDisabled = false
         )
         setupScreenWithState(state)
     }
@@ -147,7 +147,7 @@ internal class MailboxTopAppBarTest {
         val state = Data.SearchMode(
             currentLabelName = currentMailLabel.text(),
             searchQuery = searchQuery,
-            composerDisabled = false
+            isComposerDisabled = false
         )
         setupScreenWithState(state)
     }
