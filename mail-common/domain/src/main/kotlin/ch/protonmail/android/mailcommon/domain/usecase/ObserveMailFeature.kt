@@ -20,7 +20,7 @@ package ch.protonmail.android.mailcommon.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.MailFeatureDefaults
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
-import ch.protonmail.android.mailcommon.domain.flow.onNull
+import ch.protonmail.android.mailcommon.domain.flow.mapIfNull
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.FeatureFlagManager
@@ -35,7 +35,7 @@ class ObserveMailFeature @Inject constructor(
 
     operator fun invoke(userId: UserId, feature: MailFeatureId): Flow<FeatureFlag> =
         featureFlagManager.observe(userId, feature.id)
-            .onNull {
+            .mapIfNull {
                 val defaultValue = mailFeatureDefaults[feature]
                 FeatureFlag(
                     userId = userId,

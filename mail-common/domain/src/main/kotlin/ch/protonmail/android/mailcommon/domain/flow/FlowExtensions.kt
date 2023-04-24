@@ -21,4 +21,4 @@ package ch.protonmail.android.mailcommon.domain.flow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-inline fun <T> Flow<T?>.onNull(crossinline default: suspend () -> T): Flow<T> = map { it ?: default() }
+inline fun <T> Flow<T?>.mapIfNull(crossinline default: suspend () -> T): Flow<T> = map { it ?: default() }
