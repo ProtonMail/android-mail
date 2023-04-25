@@ -25,10 +25,8 @@ import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationSt
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import javax.inject.Inject
 
-class FakeInMemoryConversationStateRepository @Inject constructor() :
-    InMemoryConversationStateRepository {
+class FakeInMemoryConversationStateRepository : InMemoryConversationStateRepository {
 
     private val conversationCache = ConcurrentHashMap<MessageId, MessageState>()
     private val conversationStateFlow = MutableSharedFlow<Map<MessageId, MessageState>>(1)
