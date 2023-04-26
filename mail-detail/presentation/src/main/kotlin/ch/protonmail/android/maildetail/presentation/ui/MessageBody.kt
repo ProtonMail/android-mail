@@ -42,6 +42,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
@@ -54,7 +55,28 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallWeak
 
 @Composable
-internal fun MessageBody(
+fun MessageBody(
+    modifier: Modifier = Modifier,
+    messageBodyUiModel: MessageBodyUiModel,
+    actions: MessageBody.Actions
+) {
+    val hasWebView = LocalDeviceCapabilitiesProvider.current.hasWebView
+
+    if (hasWebView) {
+        MessageBodyWebView(
+            modifier = modifier,
+            messageBodyUiModel = messageBodyUiModel,
+            actions = actions
+        )
+    } else {
+        MessageBodyNoWebView(
+            modifier = modifier
+        )
+    }
+}
+
+@Composable
+internal fun MessageBodyWebView(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
     actions: MessageBody.Actions
@@ -76,7 +98,7 @@ internal fun MessageBody(
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
     WebView(
-        modifier = Modifier
+        modifier = modifier
             .testTag(MessageBodyTestTags.WebView)
             .fillMaxWidth(),
         onCreated = {
@@ -103,6 +125,18 @@ internal fun MessageBody(
             onShowAllAttachments = actions.onShowAllAttachments
         )
     }
+}
+
+@Composable
+internal fun MessageBodyNoWebView(
+    modifier: Modifier = Modifier
+) {
+    Text(
+        modifier = modifier
+            .testTag(MessageBodyTestTags.WebViewAlternative)
+            .padding(ProtonDimens.MediumSpacing),
+        text = stringResource(id = R.string.message_body_error_no_webview),
+    )
 }
 
 @Composable
@@ -164,4 +198,5 @@ object MessageBody {
 object MessageBodyTestTags {
 
     const val WebView = "MessageBodyWebView"
+    const val WebViewAlternative = "MessageBodyWithoutWebView"
 }

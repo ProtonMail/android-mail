@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcommon.dagger
 
+import ch.protonmail.android.mailcommon.data.dagger.MailCommonDataModule
 import ch.protonmail.android.mailcommon.data.repository.AppLocaleRepositoryImpl
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
@@ -33,7 +34,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [MailCommonDataModule::class])
 @InstallIn(SingletonComponent::class)
 object MailCommonModule {
 

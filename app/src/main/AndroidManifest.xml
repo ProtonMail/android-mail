@@ -23,6 +23,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <queries>
+        <package android:name="com.android.webview" />
+        <package android:name="com.google.android.webview" />
+    </queries>
+
     <application
         android:name=".App"
         android:allowBackup="false"

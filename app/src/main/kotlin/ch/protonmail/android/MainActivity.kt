@@ -24,15 +24,22 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
+import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.navigation.Launcher
 import ch.protonmail.android.navigation.LauncherViewModel
 import ch.protonmail.android.navigation.model.LauncherState
 import dagger.hilt.android.AndroidEntryPoint
 import me.proton.core.compose.theme.ProtonTheme
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var deviceCapabilities: DeviceCapabilities
 
     private val launcherViewModel: LauncherViewModel by viewModels()
 
@@ -47,10 +54,14 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             ProtonTheme {
-                Launcher(
-                    Actions { openInActivityInNewTask(it) },
-                    launcherViewModel
-                )
+                CompositionLocalProvider(
+                    LocalDeviceCapabilitiesProvider provides deviceCapabilities.getCapabilities()
+                ) {
+                    Launcher(
+                        Actions { openInActivityInNewTask(it) },
+                        launcherViewModel
+                    )
+                }
             }
         }
     }
