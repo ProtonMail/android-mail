@@ -554,22 +554,18 @@ class ConversationDetailViewModel @Inject constructor(
     private fun onExpandMessage(messageId: MessageId) {
         viewModelScope.launch(ioDispatcher) {
             setMessageViewState.expanding(messageId)
-            decryptMessageBody(primaryUserId.first(), messageId)
-                ?.let { decryptedBody ->
-                    setMessageViewState.expanded(messageId, decryptedBody)
+            getDecryptedMessageBody(primaryUserId.first(), messageId)
+                .onRight {
+                    markMessageAndConversationReadIfAllMessagesRead(primaryUserId.first(), messageId, conversationId)
+                    setMessageViewState.expanded(messageId, it)
                 }
+                .onLeft {
+                    emitMessageBodyDecryptError(it, messageId)
+                    setMessageViewState.collapsed(messageId)
+                }
+                .getOrNull()
         }
     }
-
-    private suspend fun decryptMessageBody(
-        userId: UserId,
-        messageId: MessageId
-    ): DecryptedMessageBody? = getDecryptedMessageBody(userId, messageId)
-        .onRight {
-            markMessageAndConversationReadIfAllMessagesRead(userId, messageId, conversationId)
-        }
-        .onLeft { emitMessageBodyDecryptError(it, messageId) }
-        .getOrNull()
 
     private fun onCollapseMessage(messageId: MessageId) {
         viewModelScope.launch { setMessageViewState.collapsed(messageId) }

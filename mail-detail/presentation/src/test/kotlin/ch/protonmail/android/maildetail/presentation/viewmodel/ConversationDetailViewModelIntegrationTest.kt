@@ -26,6 +26,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
+import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
@@ -47,6 +48,7 @@ import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.presentation.usecase.ObserveConversationViewState
 import ch.protonmail.android.mailconversation.presentation.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
@@ -545,7 +547,7 @@ class ConversationDetailViewModelIntegrationTest {
     }
 
     @Test
-    fun `should emit scroll to message id effect when requested`() = runTest {
+    fun `should emit scroll to message id when requested`() = runTest {
         // given
         val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
         val messages = nonEmptyListOf(
@@ -603,6 +605,41 @@ class ConversationDetailViewModelIntegrationTest {
             val messagesState = (newItem.messagesState as ConversationDetailsMessagesState.Data).messages
             val expandedInvoice = messagesState.first { it.messageId == expectedExpanded.message.messageId } as Expanded
             assertEquals(expectedAttachmentCount, expandedInvoice.messageBodyUiModel.attachments!!.attachments.size)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `Should emit expanding and then collapse state if the message is not decrypted`() = runTest {
+        // Given
+        val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
+        val messages = nonEmptyListOf(
+            defaultExpanded,
+            MessageWithLabelsSample.EmptyDraft,
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery { getDecryptedMessageBody(any(), any()) } returns
+            GetDecryptedMessageBodyError.Decryption("").left()
+
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            skipItems(4)
+
+            // When
+            val expandingState = awaitItem()
+
+            // Then
+            var message = (expandingState.messagesState as ConversationDetailsMessagesState.Data)
+                .messages
+                .first { it.messageId == defaultExpanded.message.messageId }
+            assertIs<Expanding>(message)
+
+            val collapsedState = awaitItem()
+            message = (collapsedState.messagesState as ConversationDetailsMessagesState.Data)
+                .messages
+                .first { it.messageId == defaultExpanded.message.messageId }
+            assertIs<Collapsed>(message)
+
             cancelAndIgnoreRemainingEvents()
         }
     }
