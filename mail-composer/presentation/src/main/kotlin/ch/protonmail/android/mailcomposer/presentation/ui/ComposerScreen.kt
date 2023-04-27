@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,11 +42,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -53,11 +56,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcomposer.presentation.R
+import ch.protonmail.android.mailcomposer.presentation.ui.Composer.MessageBodyPortraitMinLines
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
-import me.proton.core.compose.theme.default
+import me.proton.core.compose.theme.defaultNorm
 
 @Composable
 fun ComposerScreen(
@@ -120,18 +124,18 @@ private fun ComposerTopBar(onCloseComposerClick: () -> Unit) {
 
 @Composable
 private fun PrefixedEmailTextField(@StringRes prefixStringResource: Int, modifier: Modifier = Modifier) {
-    var text by remember { mutableStateOf("") }
+    var text by rememberSaveable(inputs = emptyArray()) { mutableStateOf("") }
     TextField(
         value = text,
         onValueChange = { text = it },
         modifier = modifier,
-        textStyle = ProtonTheme.typography.default,
+        textStyle = ProtonTheme.typography.defaultNorm,
         prefix = {
             Row {
                 Text(
                     text = stringResource(prefixStringResource),
                     color = ProtonTheme.colors.textWeak,
-                    style = ProtonTheme.typography.default
+                    style = ProtonTheme.typography.defaultNorm
                 )
                 Spacer(modifier = Modifier.size(ProtonDimens.ExtraSmallSpacing))
             }
@@ -146,19 +150,19 @@ private fun PrefixedEmailTextField(@StringRes prefixStringResource: Int, modifie
 
 @Composable
 private fun SubjectTextField(modifier: Modifier = Modifier) {
-    var text by remember { mutableStateOf("") }
+    var text by rememberSaveable(inputs = emptyArray()) { mutableStateOf("") }
     TextField(
         value = text,
         onValueChange = { text = it },
         modifier = modifier,
-        textStyle = ProtonTheme.typography.default,
+        textStyle = ProtonTheme.typography.defaultNorm,
         colors = TextFieldDefaults.composerTextFieldColors(),
         maxLines = 3,
         placeholder = {
             Text(
                 text = stringResource(R.string.subject_placeholder),
                 color = ProtonTheme.colors.textHint,
-                style = ProtonTheme.typography.default
+                style = ProtonTheme.typography.defaultNorm
             )
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
@@ -167,19 +171,22 @@ private fun SubjectTextField(modifier: Modifier = Modifier) {
 
 @Composable
 private fun BodyTextField(modifier: Modifier = Modifier) {
-    var text by remember { mutableStateOf("") }
+    var text by rememberSaveable(inputs = emptyArray()) { mutableStateOf("") }
+    val screenOrientation = LocalConfiguration.current.orientation
+    val bodyMinLines = if (screenOrientation == Configuration.ORIENTATION_PORTRAIT) MessageBodyPortraitMinLines else 1
+
     TextField(
         value = text,
         onValueChange = { text = it },
         modifier = modifier.fillMaxSize(),
-        textStyle = ProtonTheme.typography.default,
-        minLines = 6,
+        textStyle = ProtonTheme.typography.defaultNorm,
+        minLines = bodyMinLines,
         colors = TextFieldDefaults.composerTextFieldColors(),
         placeholder = {
             Text(
                 text = stringResource(R.string.compose_message_placeholder),
                 color = ProtonTheme.colors.textHint,
-                style = ProtonTheme.typography.default
+                style = ProtonTheme.typography.defaultNorm
             )
         }
     )
@@ -205,4 +212,8 @@ private fun MessageDetailScreenPreview() {
     ProtonTheme3 {
         ComposerScreen(onCloseComposerClick = {})
     }
+}
+
+private object Composer {
+    const val MessageBodyPortraitMinLines = 6
 }
