@@ -44,8 +44,10 @@ object ConversationDetailsPreviewData {
         messagesState = ConversationDetailsMessagesState.Data(
             messages = listOf(
                 ConversationDetailMessageUiModelSample.AugWeatherForecast,
-                ConversationDetailMessageUiModelSample.InvoiceRepliedAll,
-                ConversationDetailMessageUiModelSample.InvoiceForwarded,
+                ConversationDetailMessageUiModelSample.InvoiceRepliedAll
+                    .copy(messageId = MessageId(UUID.randomUUID().toString())),
+                ConversationDetailMessageUiModelSample.InvoiceForwarded
+                    .copy(messageId = MessageId(UUID.randomUUID().toString())),
                 ConversationDetailMessageUiModelSample.ExpiringInvitation
             )
         ),

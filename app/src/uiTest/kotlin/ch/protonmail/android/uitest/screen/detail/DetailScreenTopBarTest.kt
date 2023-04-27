@@ -101,7 +101,7 @@ class DetailScreenTopBarTest {
         state: ConversationDetailState,
         actions: ConversationDetailScreen.Actions = ConversationDetailScreen.Actions.Empty
     ): ConversationDetailRobot = composeTestRule.ConversationDetailRobot {
-        ConversationDetailScreen(state = state, actions = actions)
+        ConversationDetailScreen(state = state, actions = actions, scrollToMessageId = null)
     }
 
     private fun setupScreen(
