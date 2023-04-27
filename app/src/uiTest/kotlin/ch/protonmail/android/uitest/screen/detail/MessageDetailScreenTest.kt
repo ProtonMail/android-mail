@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.screen.detail
 import android.net.Uri
 import androidx.compose.ui.test.junit4.createComposeRule
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
@@ -32,7 +33,13 @@ import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsP
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
+import ch.protonmail.android.uitest.models.avatar.AvatarInitial
+import ch.protonmail.android.uitest.models.detail.ExtendedHeaderRecipientEntry
+import ch.protonmail.android.uitest.models.labels.LabelEntry
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.headerSection
+import ch.protonmail.android.uitest.robot.detail.messageBodySection
 import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -52,8 +59,8 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify {
-            messageHeaderIsDisplayed()
+        robot.headerSection {
+            verify { headerIsDisplayed() }
         }
     }
 
@@ -61,13 +68,17 @@ internal class MessageDetailScreenTest {
     fun whenMessageIsLoadedThenAvatarIsDisplayedInMessageHeader() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageState = state.messageMetadataState as MessageMetadataState.Data
+        val avatarInitial = (messageState.messageDetailHeader.avatar as AvatarUiModel.ParticipantInitial).run {
+            AvatarInitial.WithText(value)
+        }
 
         // when
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify {
-            avatarIsDisplayed()
+        robot.headerSection {
+            verify { hasAvatarInitial(avatarInitial) }
         }
     }
 
@@ -75,14 +86,14 @@ internal class MessageDetailScreenTest {
     fun whenMessageIsLoadedThenSenderNameIsDisplayedInMessageHeader() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageState = state.messageMetadataState as MessageMetadataState.Data
 
         // when
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify {
-            val messageState = state.messageMetadataState as MessageMetadataState.Data
-            senderNameIsDisplayed(messageState.messageDetailHeader.sender.participantName)
+        robot.headerSection {
+            verify { hasSenderName(messageState.messageDetailHeader.sender.participantName) }
         }
     }
 
@@ -90,14 +101,14 @@ internal class MessageDetailScreenTest {
     fun whenMessageIsLoadedThenSenderAddressIsDisplayedInMessageHeader() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageState = state.messageMetadataState as MessageMetadataState.Data
 
         // when
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify {
-            val messageState = state.messageMetadataState as MessageMetadataState.Data
-            senderAddressIsDisplayed(messageState.messageDetailHeader.sender.participantAddress)
+        robot.headerSection {
+            verify { hasSenderAddress(messageState.messageDetailHeader.sender.participantAddress) }
         }
     }
 
@@ -105,14 +116,15 @@ internal class MessageDetailScreenTest {
     fun whenMessageIsLoadedThenTimeIsDisplayedInMessageHeader() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageState = state.messageMetadataState as MessageMetadataState.Data
+        val time = messageState.messageDetailHeader.time as TextUiModel.Text
 
         // when
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify {
-            val messageState = state.messageMetadataState as MessageMetadataState.Data
-            timeIsDisplayed(messageState.messageDetailHeader.time as TextUiModel.Text)
+        robot.headerSection {
+            verify { hasTime(time.value) }
         }
     }
 
@@ -120,14 +132,15 @@ internal class MessageDetailScreenTest {
     fun whenMessageIsLoadedThenRecipientsAreDisplayedInMessageHeader() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageState = state.messageMetadataState as MessageMetadataState.Data
+        val recipients = messageState.messageDetailHeader.allRecipients as TextUiModel.Text
 
         // when
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify {
-            val messageState = state.messageMetadataState as MessageMetadataState.Data
-            allRecipientsAreDisplayed(messageState.messageDetailHeader.allRecipients as TextUiModel.Text)
+        robot.headerSection {
+            verify { hasRecipient(recipients.value) }
         }
     }
 
@@ -135,15 +148,21 @@ internal class MessageDetailScreenTest {
     fun whenMessageIsLoadedAndMessageHeaderIsClickedThenExpandedRecipientsAreDisplayed() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageState = state.messageMetadataState as MessageMetadataState.Data
+        val recipients = messageState.messageDetailHeader.toRecipients.mapIndexed { idx: Int, element ->
+            ExtendedHeaderRecipientEntry.To(index = idx, element.participantName, element.participantAddress)
+        }.toTypedArray()
+
+        val robot = setUpScreen(state = state)
 
         // when
-        val robot = setUpScreen(state = state)
-            .expandHeader()
+        robot.headerSection { expandHeader() }
 
         // then
-        robot.verify {
-            val messageState = state.messageMetadataState as MessageMetadataState.Data
-            expandedRecipientsAreDisplayed(messageState.messageDetailHeader.toRecipients)
+        robot.headerSection {
+            expanded {
+                verify { hasRecipients(*recipients) }
+            }
         }
     }
 
@@ -151,15 +170,18 @@ internal class MessageDetailScreenTest {
     fun whenMessageIsLoadedAndMessageHeaderIsClickedThenExtendedTimeIsShown() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageState = state.messageMetadataState as MessageMetadataState.Data
+        val time = messageState.messageDetailHeader.extendedTime as TextUiModel.Text
+        val robot = setUpScreen(state = state)
 
         // when
-        val robot = setUpScreen(state = state)
-            .expandHeader()
+        robot.headerSection { expandHeader() }
 
         // then
-        robot.verify {
-            val messageState = state.messageMetadataState as MessageMetadataState.Data
-            extendedTimeIsDisplayed(messageState.messageDetailHeader.extendedTime as TextUiModel.Text)
+        robot.headerSection {
+            expanded {
+                verify { hasTime(time.value) }
+            }
         }
     }
 
@@ -167,15 +189,17 @@ internal class MessageDetailScreenTest {
     fun whenMessageIsLoadedAndMessageHeaderIsClickedThenLocationNameIsShown() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageState = state.messageMetadataState as MessageMetadataState.Data
+        val robot = setUpScreen(state = state)
 
         // when
-        val robot = setUpScreen(state = state)
-            .expandHeader()
+        robot.headerSection { expandHeader() }
 
         // then
-        robot.verify {
-            val messageState = state.messageMetadataState as MessageMetadataState.Data
-            locationNameIsDisplayed(messageState.messageDetailHeader.location.name)
+        robot.headerSection {
+            expanded {
+                verify { hasLocation(messageState.messageDetailHeader.location.name) }
+            }
         }
     }
 
@@ -183,15 +207,17 @@ internal class MessageDetailScreenTest {
     fun whenMessageIsLoadedAndMessageHeaderIsClickedThenMessageSizeIsShown() {
         // given
         val state = MessageDetailsPreviewData.Message
+        val messageState = state.messageMetadataState as MessageMetadataState.Data
+        val robot = setUpScreen(state = state)
 
         // when
-        val robot = setUpScreen(state = state)
-            .expandHeader()
+        robot.headerSection { expandHeader() }
 
         // then
-        robot.verify {
-            val messageState = state.messageMetadataState as MessageMetadataState.Data
-            sizeIsDisplayed(messageState.messageDetailHeader.size)
+        robot.headerSection {
+            expanded {
+                verify { hasSize(messageState.messageDetailHeader.size) }
+            }
         }
     }
 
@@ -204,14 +230,17 @@ internal class MessageDetailScreenTest {
             )
         )
 
-        // when
         var trashClicked = false
-        setUpScreen(
+
+        val robot = setUpScreen(
             state = state,
             actions = MessageDetailScreen.Actions.Empty.copy(
                 onTrashClick = { trashClicked = true }
             )
-        ).moveToTrash()
+        )
+
+        // when
+        robot.bottomSheetSection { moveToTrash() }
 
         // then
         assertTrue(trashClicked)
@@ -222,12 +251,15 @@ internal class MessageDetailScreenTest {
         // given
         val state = MessageDetailsPreviewData.MessageWithLabels
         val label = (state.messageMetadataState as MessageMetadataState.Data).messageDetailHeader.labels.first()
+        val labelEntry = LabelEntry(index = 0, text = label.name)
 
         // when
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify { labelIsDisplayed(label.name) }
+        robot.headerSection {
+            verify { hasLabels(labelEntry) }
+        }
     }
 
     @Test
@@ -241,12 +273,14 @@ internal class MessageDetailScreenTest {
         var unreadClicked = false
 
         // when
-        setUpScreen(
+        val robot = setUpScreen(
             state = state,
             actions = MessageDetailScreen.Actions.Empty.copy(
                 onUnreadClick = { unreadClicked = true }
             )
-        ).markAsUnread()
+        )
+
+        robot.bottomSheetSection { markAsUnread() }
 
         // then
         assertTrue(unreadClicked)
@@ -282,7 +316,9 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify { messageBodyInWebViewContains(messageBody) }
+        robot.messageBodySection {
+            verify { messageInWebViewContains(messageBody) }
+        }
     }
 
     @Test
@@ -302,7 +338,9 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify { messageBodyInWebViewContains(messageBody, tagName = "div") }
+        robot.messageBodySection {
+            verify { messageInWebViewContains(messageBody, tagName = "div") }
+        }
     }
 
     @Test
@@ -317,7 +355,9 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify { messageBodyLoadingErrorMessageIsDisplayed(errorMessage) }
+        robot.messageBodySection {
+            verify { loadingErrorMessageIsDisplayed(errorMessage) }
+        }
     }
 
     @Test
@@ -332,9 +372,11 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify {
-            messageBodyLoadingErrorMessageIsDisplayed(errorMessage)
-            messageBodyReloadButtonIsDisplayed()
+        robot.messageBodySection {
+            verify {
+                loadingErrorMessageIsDisplayed(errorMessage)
+                bodyReloadButtonIsDisplayed()
+            }
         }
     }
 
@@ -350,9 +392,11 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.verify {
-            messageBodyDecryptionErrorMessageIsDisplayed()
-            messageBodyInWebViewContains(messageBody)
+        robot.messageBodySection {
+            verify {
+                bodyDecryptionErrorMessageIsDisplayed()
+                messageInWebViewContains(messageBody)
+            }
         }
     }
 

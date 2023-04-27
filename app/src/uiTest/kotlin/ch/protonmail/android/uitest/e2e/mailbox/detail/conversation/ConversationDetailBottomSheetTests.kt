@@ -34,9 +34,10 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.detail.conversation.ConversationDetailRobot
-import ch.protonmail.android.uitest.robot.detail.conversation.bottomSheetSection
-import ch.protonmail.android.uitest.robot.detail.conversation.messageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.messageHeaderSection
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
@@ -92,7 +93,7 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
         inboxRobot.clickMessageByPosition(0)
 
         conversationDetailRobot.run {
-            waitUntilMessageIsShown()
+            messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {
                 openMoveToBottomSheet()
@@ -145,7 +146,7 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
         inboxRobot.clickMessageByPosition(0)
 
         conversationDetailRobot.run {
-            waitUntilMessageIsShown()
+            messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {
                 openLabelAsBottomSheet()
@@ -198,7 +199,7 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
         inboxRobot.clickMessageByPosition(0)
 
         conversationDetailRobot.run {
-            waitUntilMessageIsShown()
+            messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {
                 openMoveToBottomSheet()
@@ -252,7 +253,7 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
         inboxRobot.clickMessageByPosition(0)
 
         conversationDetailRobot.run {
-            waitUntilMessageIsShown()
+            messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {
                 openLabelAsBottomSheet()

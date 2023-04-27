@@ -32,12 +32,12 @@ import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDet
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
-import ch.protonmail.android.uitest.robot.detail.conversation.ConversationDetailRobot
-import ch.protonmail.android.uitest.robot.detail.conversation.bottomSheetSection
-import ch.protonmail.android.uitest.robot.detail.conversation.detailTopBarSection
-import ch.protonmail.android.uitest.robot.detail.conversation.messageBodySection
-import ch.protonmail.android.uitest.robot.detail.conversation.messageHeaderSection
-import ch.protonmail.android.uitest.robot.detail.conversation.messagesCollapsedSection
+import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.detailTopBarSection
+import ch.protonmail.android.uitest.robot.detail.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.messageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.messagesCollapsedSection
 import ch.protonmail.android.uitest.util.getString
 import org.junit.Ignore
 import org.junit.Rule
@@ -222,7 +222,7 @@ internal class ConversationDetailScreenTest {
                 is ConversationDetailMessageUiModel.Expanded -> verify {
                     messageHeaderSection {
                         verify {
-                            senderIsDisplayed(firstMessage.messageDetailHeaderUiModel.sender.participantName)
+                            hasSenderName(firstMessage.messageDetailHeaderUiModel.sender.participantName)
                         }
                     }
                 }
@@ -318,16 +318,18 @@ internal class ConversationDetailScreenTest {
     @Test
     fun whenErrorThenErrorMessageIsDisplayed() {
         // given
-        val message = TextUiModel("Something terrible happened!")
+        val message = "Something terrible happened!"
         val state = ConversationDetailsPreviewData.SuccessWithRandomMessageIds.copy(
-            error = Effect.of(message)
+            error = Effect.of(TextUiModel(message))
         )
 
         // when
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { errorMessageIsDisplayed(message) }
+        robot.messageBodySection {
+            verify { loadingErrorMessageIsDisplayed(message) }
+        }
     }
 
     @Test
@@ -377,7 +379,7 @@ internal class ConversationDetailScreenTest {
     @Test
     fun whenOfflineStateThenOfflineErrorMessageIsDisplayed() {
         // given
-        val message = TextUiModel("You're offline. Please go back online to load messages")
+        val message = "You're offline. Please go back online to load messages"
         val state = ConversationDetailsPreviewData.Success.copy(
             messagesState = ConversationDetailsMessagesState.Offline
         )
@@ -386,7 +388,9 @@ internal class ConversationDetailScreenTest {
         val robot = setupScreen(state = state)
 
         // then
-        robot.verify { errorMessageIsDisplayed(message) }
+        robot.messageBodySection {
+            verify { loadingErrorMessageIsDisplayed(message) }
+        }
     }
 
     @Test
@@ -426,7 +430,7 @@ internal class ConversationDetailScreenTest {
         // then
         robot.messageBodySection {
             verify {
-                messageBodyIsDisplayedInWebView(
+                messageInWebViewContains(
                     ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded.messageBodyUiModel.messageBody
                 )
             }

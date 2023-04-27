@@ -35,6 +35,7 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.messageBodySection
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
@@ -85,17 +86,25 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .verify { messageBodyInWebViewContains(expectedMessageBody) }
+        messageDetailRobot.run {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify { messageInWebViewContains(expectedMessageBody) }
+            }
+        }
 
         uiDevice.pressBack()
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .verify { messageBodyInWebViewContains(expectedMessageBody) }
+        messageDetailRobot.run {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify { messageInWebViewContains(expectedMessageBody) }
+            }
+        }
     }
 
     @Test
@@ -132,17 +141,25 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .verify { messageBodyInWebViewContains(expectedMessageBody) }
+        messageDetailRobot.run {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify { messageInWebViewContains(expectedMessageBody) }
+            }
+        }
 
         uiDevice.pressBack()
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .verify { messageBodyInWebViewContains(expectedMessageBody) }
+        messageDetailRobot.run {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify { messageInWebViewContains(expectedMessageBody) }
+            }
+        }
     }
 
     @Test
@@ -173,17 +190,25 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .verify { messageBodyInWebViewContains(expectedMessageBody) }
+        messageDetailRobot.run {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify { messageInWebViewContains(expectedMessageBody) }
+            }
+        }
 
         uiDevice.pressBack()
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .verify { messageBodyInWebViewContains(expectedMessageBody) }
+        messageDetailRobot.run {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify { messageInWebViewContains(expectedMessageBody) }
+            }
+        }
     }
 
     @Test
@@ -220,17 +245,25 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .verify { messageBodyInWebViewContains(expectedMessageBody) }
+        messageDetailRobot.run {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify { messageInWebViewContains(expectedMessageBody) }
+            }
+        }
 
         uiDevice.pressBack()
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .verify { messageBodyInWebViewContains(expectedMessageBody) }
+        messageDetailRobot.run {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify { messageInWebViewContains(expectedMessageBody) }
+            }
+        }
     }
 
     @Test
@@ -267,8 +300,12 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .verify { messageBodyInWebViewContains(expectedMessageBody) }
+        messageDetailRobot.run {
+            messageBodySection {
+                waitUntilMessageIsShown()
+
+                verify { messageInWebViewContains(expectedMessageBody) }
+            }
+        }
     }
 }

@@ -27,14 +27,14 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
+import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.labels.LabelEntry
 import ch.protonmail.android.uitest.models.labels.LabelEntryModel
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.child
 
 @Suppress("TooManyFunctions")
 internal class MessageHeaderEntryModel(
-    composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule
+    composeTestRule: ComposeTestRule
 ) {
 
     private val rootItem = composeTestRule.onNodeWithTag(
@@ -93,12 +93,11 @@ internal class MessageHeaderEntryModel(
         rootItem.assertExists()
     }
 
-    fun hasAvatarDraft() = apply {
-        avatarDraft.assertIsDisplayed()
-    }
-
-    fun hasAvatarText(text: String) = apply {
-        avatar.assertTextEquals(text)
+    fun hasAvatar(initial: AvatarInitial) = apply {
+        when (initial) {
+            is AvatarInitial.WithText -> avatar.assertTextEquals(initial.text)
+            is AvatarInitial.Draft -> avatarDraft.assertIsDisplayed()
+        }
     }
 
     fun hasSenderName(name: String) = apply {

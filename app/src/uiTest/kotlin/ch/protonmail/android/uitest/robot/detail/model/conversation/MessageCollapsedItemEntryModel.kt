@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.detail.conversation.model
+package ch.protonmail.android.uitest.robot.detail.model.conversation
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
@@ -34,11 +34,10 @@ internal data class MessageCollapsedItemEntryModel(
     private val composeTestRule: ComposeTestRule
 ) {
 
-    private val rootItem = composeTestRule
-        .onAllNodesWithTag(
-            testTag = ConversationDetailCollapsedMessageHeaderTestTags.RootItem,
-            useUnmergedTree = true
-        )[index]
+    private val rootItem = composeTestRule.onAllNodesWithTag(
+        testTag = ConversationDetailCollapsedMessageHeaderTestTags.RootItem,
+        useUnmergedTree = true
+    )[index]
 
     private val avatar = rootItem.child {
         hasTestTag(AvatarTestTags.Avatar)

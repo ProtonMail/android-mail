@@ -35,6 +35,9 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.headerSection
+import ch.protonmail.android.uitest.robot.detail.messageBodySection
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
@@ -83,17 +86,26 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .openMoveToBottomSheet()
-            .verify { moveToBottomSheetExists() }
+        messageDetailRobot.run {
+            messageBodySection { waitUntilMessageIsShown() }
+
+            bottomSheetSection {
+                openMoveToBottomSheet()
+
+                verify { moveToBottomSheetExists() }
+            }
+        }
 
         // Physical/soft key press is required by this test case.
         uiDevice.pressBack()
 
-        messageDetailRobot
-            .verify { moveToBottomSheetIsDismissed() }
-            .verify { messageDetailScreenIsShown() }
+        messageDetailRobot.run {
+            bottomSheetSection {
+                verify { moveToBottomSheetIsDismissed() }
+            }
+
+            verify { messageDetailScreenIsShown() }
+        }
     }
 
     @Test
@@ -122,16 +134,25 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .openLabelAsBottomSheet()
-            .verify { labelAsBottomSheetExists() }
+        messageDetailRobot.run {
+            messageBodySection { waitUntilMessageIsShown() }
+
+            bottomSheetSection {
+                openLabelAsBottomSheet()
+
+                verify { labelAsBottomSheetExists() }
+            }
+        }
 
         uiDevice.pressBack()
 
-        messageDetailRobot
-            .verify { labelAsBottomSheetIsDismissed() }
-            .verify { messageDetailScreenIsShown() }
+        messageDetailRobot.run {
+            bottomSheetSection {
+                verify { labelAsBottomSheetIsDismissed() }
+            }
+
+            verify { messageDetailScreenIsShown() }
+        }
     }
 
     @Test
@@ -160,17 +181,24 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .openMoveToBottomSheet()
-            .verify { moveToBottomSheetExists() }
+        messageDetailRobot.run {
+            messageBodySection { waitUntilMessageIsShown() }
 
-        // Tap outside the view.
-        messageDetailRobot.expandHeader()
+            bottomSheetSection {
+                openMoveToBottomSheet()
 
-        messageDetailRobot
-            .verify { moveToBottomSheetIsDismissed() }
-            .verify { messageDetailScreenIsShown() }
+                verify { moveToBottomSheetExists() }
+            }
+
+            // Tap outside the view.
+            headerSection { expandHeader() }
+
+            bottomSheetSection {
+                verify { moveToBottomSheetIsDismissed() }
+            }
+
+            verify { messageDetailScreenIsShown() }
+        }
     }
 
     @Test
@@ -199,15 +227,21 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
 
         inboxRobot.clickMessageByPosition(0)
 
-        messageDetailRobot
-            .waitUntilMessageIsShown()
-            .openLabelAsBottomSheet()
-            .verify { labelAsBottomSheetExists() }
+        messageDetailRobot.run {
+            bottomSheetSection {
+                openLabelAsBottomSheet()
 
-        messageDetailRobot.expandHeader()
+                verify { labelAsBottomSheetExists() }
+            }
 
-        messageDetailRobot
-            .verify { labelAsBottomSheetIsDismissed() }
-            .verify { messageDetailScreenIsShown() }
+            // Tap outside the view.
+            headerSection { expandHeader() }
+
+            bottomSheetSection {
+                verify { labelAsBottomSheetIsDismissed() }
+            }
+
+            verify { messageDetailScreenIsShown() }
+        }
     }
 }
