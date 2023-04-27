@@ -134,7 +134,6 @@ object ConversationDetailItem {
         val onExpand: (MessageId) -> Unit,
         val onMessageBodyLinkClicked: (url: String) -> Unit,
         val onOpenMessageBodyLink: (url: String) -> Unit,
-        val onRequestScrollTo: (MessageId) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     )

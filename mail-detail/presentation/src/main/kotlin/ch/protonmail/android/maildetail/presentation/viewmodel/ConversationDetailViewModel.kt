@@ -282,7 +282,7 @@ class ConversationDetailViewModel @Inject constructor(
             .filterValues { it is InMemoryConversationStateRepository.MessageState.Expanded }
             .keys
 
-        val requestScrollTo = if (expandedMessageIds.size == 1) {
+        val requestScrollTo = if (conversationViewState.size == 1 && expandedMessageIds.size == 1) {
             expandedMessageIds.first()
         } else {
             null

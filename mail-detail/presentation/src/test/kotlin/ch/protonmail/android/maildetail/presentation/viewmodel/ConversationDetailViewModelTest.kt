@@ -1677,7 +1677,7 @@ class ConversationDetailViewModelTest {
                 operation = ofType<ConversationDetailViewAction.RequestScrollTo>()
             )
         } returns ConversationDetailState.Loading.copy(
-            scrollToMessage = Effect.of(MessageId(allCollapsed.first().messageId.id))
+            scrollToMessage = MessageId(allCollapsed.first().messageId.id)
         )
         every {
             reducer.newStateFrom(

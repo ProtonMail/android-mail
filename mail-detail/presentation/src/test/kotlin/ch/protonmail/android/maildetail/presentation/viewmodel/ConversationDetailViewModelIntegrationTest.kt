@@ -123,6 +123,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import kotlin.time.Duration
 
 class ConversationDetailViewModelIntegrationTest {
@@ -440,6 +441,45 @@ class ConversationDetailViewModelIntegrationTest {
     }
 
     @Test
+    fun `should emit scroll to message id only on start but not when expanding a second message`() = runTest {
+        // given
+        val expectedScrolledTo = MessageWithLabelsSample.AugWeatherForecast
+        val expectedExpandedNotScrolled = MessageWithLabelsSample.InvoiceWithLabel
+        val messages = nonEmptyListOf(
+            expectedScrolledTo,
+            expectedExpandedNotScrolled,
+            MessageWithLabelsSample.EmptyDraft
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            skipItems(3)
+            // then
+            var conversationState: ConversationDetailState = awaitItem()
+            val expandedMessage = (conversationState.messagesState as ConversationDetailsMessagesState.Data)
+                .messages
+                .first { it.messageId == expectedScrolledTo.message.messageId }
+            assertIs<Expanded>(expandedMessage)
+            assertTrue { conversationState.scrollToMessage == expectedScrolledTo.message.messageId }
+
+            // when
+            viewModel.submit(ExpandMessage(MessageWithLabelsSample.InvoiceWithLabel.message.messageId))
+
+            // then
+            conversationState = awaitItem()
+            val expandMessage = (conversationState.messagesState as ConversationDetailsMessagesState.Data)
+                .messages
+                .first { it.messageId == expectedExpandedNotScrolled.message.messageId }
+            assertIs<Expanded>(expandMessage)
+            assertTrue { conversationState.scrollToMessage == null }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `should emit expanding and expanded states when expanding a message`() = runTest {
         // given
         val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
@@ -522,7 +562,7 @@ class ConversationDetailViewModelIntegrationTest {
             viewModel.submit(RequestScrollTo(defaultExpanded.message.messageId))
 
             // then
-            assertEquals(defaultExpanded.message.id, awaitItem().scrollToMessage.consume()?.id)
+            assertEquals(defaultExpanded.message.id, awaitItem().scrollToMessage?.id)
             cancelAndIgnoreRemainingEvents()
         }
     }

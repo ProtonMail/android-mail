@@ -67,8 +67,8 @@ import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetStat
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
@@ -159,7 +159,8 @@ fun ConversationDetailScreen(
                     viewModel.submit(ConversationDetailViewAction.ShowAllAttachmentsForMessage(it))
                 },
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
-            )
+            ),
+            scrollToMessageId = state.scrollToMessage?.id
         )
     }
 }
@@ -170,11 +171,11 @@ fun ConversationDetailScreen(
 fun ConversationDetailScreen(
     state: ConversationDetailState,
     actions: ConversationDetailScreen.Actions,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    scrollToMessageId: String?
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = ProtonSnackbarHostState()
-    var scrollToMessageId by remember { mutableStateOf<String?>(null) }
 
     ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onExit(null) }
     ConsumableTextEffect(state.exitScreenWithMessageEffect) { message ->
@@ -185,11 +186,6 @@ fun ConversationDetailScreen(
     }
     ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) {
         actions.onOpenMessageBodyLink(it)
-    }
-    ConsumableLaunchedEffect(effect = state.scrollToMessage) {
-        if (scrollToMessageId != it.id) {
-            scrollToMessageId = it.id
-        }
     }
 
     if (state.conversationState is ConversationDetailMetadataState.Error) {
@@ -261,7 +257,6 @@ fun ConversationDetailScreen(
                     onExpand = actions.onExpandMessage,
                     onCollapse = actions.onCollapseMessage,
                     onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
-                    onRequestScrollTo = actions.onRequestScrollTo,
                     onOpenMessageBodyLink = actions.onOpenMessageBodyLink,
                     onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage,
                     showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
@@ -270,7 +265,6 @@ fun ConversationDetailScreen(
                     uiModels = state.messagesState.messages,
                     padding = innerPadding,
                     scrollToMessageId = scrollToMessageId,
-                    onScrollToMessageCompleted = { scrollToMessageId = null },
                     actions = conversationDetailItemActions
                 )
             }
@@ -299,11 +293,11 @@ private fun MessagesContent(
     uiModels: List<ConversationDetailMessageUiModel>,
     padding: PaddingValues,
     scrollToMessageId: String?,
-    onScrollToMessageCompleted: () -> Unit,
     modifier: Modifier = Modifier,
     actions: ConversationDetailItem.Actions
 ) {
     val listState = rememberLazyListState()
+    var loadedItemsChanged by remember { mutableStateOf(0) }
     val loadedItemsHeight = remember { mutableStateMapOf<String, Int>() }
     var scrollStopped by remember { mutableStateOf(true) }
     val layoutDirection = LocalLayoutDirection.current
@@ -316,12 +310,13 @@ private fun MessagesContent(
         )
     }
 
-    LaunchedEffect(scrollToMessageId) {
-        if (scrollToMessageId != null && scrollStopped) {
-            delay(SCROLL_TO_MESSAGE_DELAY)
-            val scrollToIndex = uiModels.indexOf(uiModels.first { it.messageId.id == scrollToMessageId })
-            listState.animateScrollToItem(scrollToIndex)
-        }
+    LaunchedEffect(key1 = scrollToMessageId, key2 = loadedItemsChanged) {
+        snapshotFlow { scrollToMessageId }
+            .filterNotNull()
+            .collectLatest {
+                val scrollToIndex = uiModels.indexOf(uiModels.first { uiModel -> uiModel.messageId.id == it })
+                listState.animateScrollToItem(scrollToIndex)
+            }
     }
 
     LaunchedEffect(key1 = listState) {
@@ -329,14 +324,6 @@ private fun MessagesContent(
             .collectLatest {
                 scrollStopped = !it.isScrollInProgress
             }
-    }
-
-    if (listState.isScrollInProgress) {
-        DisposableEffect(Unit) {
-            onDispose {
-                onScrollToMessageCompleted()
-            }
-        }
     }
 
     LazyColumn(
@@ -351,7 +338,9 @@ private fun MessagesContent(
                 modifier = Modifier.animateItemPlacement(),
                 actions = actions,
                 onMessageBodyLoadFinished = { messageId, height ->
+                    Timber.d("onMessageBodyLoadFinished: $messageId, $height. loadedItemsChanged: $loadedItemsChanged")
                     loadedItemsHeight[messageId.id] = height
+                    loadedItemsChanged += 1
                 },
                 webViewHeight = loadedItemsHeight[uiModel.messageId.id]
             )
@@ -418,7 +407,11 @@ private fun ConversationDetailScreenPreview(
 ) {
     ProtonTheme3 {
         ProtonTheme {
-            ConversationDetailScreen(state = state, actions = ConversationDetailScreen.Actions.Empty)
+            ConversationDetailScreen(
+                state = state,
+                actions = ConversationDetailScreen.Actions.Empty,
+                scrollToMessageId = null
+            )
         }
     }
 }
@@ -427,5 +420,3 @@ object ConversationDetailScreenTestTags {
 
     const val RootItem = "ConversationDetailScreenRootItem"
 }
-
-private const val SCROLL_TO_MESSAGE_DELAY = 250L

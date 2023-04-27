@@ -32,7 +32,7 @@ data class ConversationDetailState(
     val exitScreenWithMessageEffect: Effect<TextUiModel>,
     val error: Effect<TextUiModel>,
     val openMessageBodyLinkEffect: Effect<String>,
-    val scrollToMessage: Effect<MessageId>
+    val scrollToMessage: MessageId?
 ) {
 
     companion object {
@@ -46,7 +46,7 @@ data class ConversationDetailState(
             exitScreenWithMessageEffect = Effect.empty(),
             error = Effect.empty(),
             openMessageBodyLinkEffect = Effect.empty(),
-            scrollToMessage = Effect.empty()
+            scrollToMessage = null
         )
     }
 }

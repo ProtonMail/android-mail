@@ -112,9 +112,9 @@ class ConversationDetailReducerTest(
             }
 
             if (reducesMessageScroll) {
-                assertNotNull(result.scrollToMessage.consume())
+                assertNotNull(result.scrollToMessage)
             } else {
-                assertNull(result.scrollToMessage.consume())
+                assertNull(result.scrollToMessage)
             }
         }
     }
