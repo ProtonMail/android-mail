@@ -24,24 +24,28 @@ case $1 in
 
 'smoke-test')
   device_config=smokeTest
+  shards=1
   test_targets='filter ch.protonmail.android.uitest.filters.SmokeTestFilter'
   timeout=15m
   ;;
 
 'smoke-extended-test')
   device_config=smokeTest
+  shards=4
   test_targets='filter ch.protonmail.android.uitest.filters.SmokeTestExtendedFilter'
   timeout=30m
   ;;
 
 'full-regression-test')
   device_config=fullTest
+  shards=4
   test_targets='filter ch.protonmail.android.uitest.filters.FullRegressionTestFilter'
   timeout=45m
   ;;
 
 'core-libs-test')
   device_config=smokeTest
+  shards=1
   test_targets='filter ch.protonmail.android.uitest.filters.CoreLibraryTestFilter'
   timeout=20m
   ;;
@@ -50,12 +54,13 @@ case $1 in
   exit 1
 esac
 
-gcloud --quiet firebase test android run ../firebase-device-config.yml:"$device_config" \
+echo "Y" | gcloud beta --quiet firebase test android run ../firebase-device-config.yml:"$device_config" \
   --app ../app/build/outputs/apk/dev/debug/app-dev-debug.apk \
   --test ../app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk \
   --test-targets "$test_targets" \
   --use-orchestrator \
   --environment-variables clearPackageData=true \
   --num-flaky-test-attempts=1 \
+  --num-uniform-shards=$shards \
   --timeout "$timeout" \
   --no-auto-google-login
