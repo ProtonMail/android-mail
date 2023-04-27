@@ -567,6 +567,7 @@ private fun Recipients(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (participant.participantName.isNotEmpty()) {
                     ParticipantText(
+                        modifier = Modifier.testTag(MessageDetailHeaderTestTags.ParticipantName),
                         text = participant.participantName,
                         clickable = false,
                         onClick = showFeatureMissingSnackbar
@@ -577,7 +578,7 @@ private fun Recipients(
                 // SmallNonClickableIcon(iconId = participant.participantPadlock)
                 // Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
                 ParticipantText(
-                    modifier = Modifier.testTag(MessageDetailHeaderTestTags.ParticipantText),
+                    modifier = Modifier.testTag(MessageDetailHeaderTestTags.ParticipantValue),
                     text = participant.participantAddress,
                     textColor = ProtonTheme.colors.interactionNorm,
                     onClick = showFeatureMissingSnackbar
@@ -663,9 +664,16 @@ private fun ExtendedHeaderRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (iconColor != null) {
-            SmallNonClickableIcon(iconId = icon, iconColor = iconColor)
+            SmallNonClickableIcon(
+                modifier = Modifier.testTag(MessageDetailHeaderTestTags.ExtendedHeaderIcon),
+                iconId = icon,
+                iconColor = iconColor
+            )
         } else {
-            SmallNonClickableIcon(iconId = icon)
+            SmallNonClickableIcon(
+                modifier = Modifier.testTag(MessageDetailHeaderTestTags.ExtendedHeaderIcon),
+                iconId = icon
+            )
         }
         Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
         Text(
@@ -766,13 +774,16 @@ object MessageDetailHeaderTestTags {
     const val CcRecipientsList = "CcRecipientsList"
     const val BccRecipientsText = "BccRecipientsText"
     const val BccRecipientsList = "BccRecipientsList"
-    const val ParticipantText = "ParticipantText"
+    const val ParticipantName = "ParticipantName"
+    const val ParticipantValue = "ParticipantValue"
     const val LabelIcon = "LabelIcon"
     const val LabelsList = "LabelsList"
 
+    const val ExtendedLabelRow = "ExtendedLabelRow"
     const val ExtendedTimeRow = "ExtendedTimeRow"
     const val ExtendedFolderRow = "ExtendedFolderRow"
     const val ExtendedSizeRow = "ExtendedSizeRow"
+    const val ExtendedHeaderIcon = "ExtendedHeaderIcon"
     const val ExtendedHeaderText = "ExtendedHeaderText"
     const val ExtendedHideDetails = "ExtendedHideDetails"
 }
