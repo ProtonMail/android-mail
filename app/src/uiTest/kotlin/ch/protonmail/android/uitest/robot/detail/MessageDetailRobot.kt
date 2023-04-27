@@ -18,196 +18,22 @@
 
 package ch.protonmail.android.uitest.robot.detail
 
-import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTouchInput
-import androidx.test.espresso.matcher.ViewMatchers.withClassName
-import androidx.test.espresso.web.assertion.WebViewAssertions.webMatches
-import androidx.test.espresso.web.sugar.Web.onWebView
-import androidx.test.espresso.web.webdriver.DriverAtoms.findElement
-import androidx.test.espresso.web.webdriver.DriverAtoms.getText
-import androidx.test.espresso.web.webdriver.Locator
-import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
-import ch.protonmail.android.maildetail.presentation.ui.LabelAsBottomSheetTestTags
-import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
-import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreenTestTags
-import ch.protonmail.android.maildetail.presentation.ui.MoveToBottomSheetTestTags
-import ch.protonmail.android.uitest.robot.detail.section.DetailTopBarSection
-import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
-import ch.protonmail.android.uitest.util.awaitHidden
-import ch.protonmail.android.uitest.util.onNodeWithContentDescription
-import ch.protonmail.android.uitest.util.onNodeWithText
-import org.hamcrest.CoreMatchers.containsString
-import org.hamcrest.CoreMatchers.equalTo
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 class MessageDetailRobot(val composeTestRule: ComposeContentTestRule) {
 
-    fun expandHeader(): MessageDetailRobot {
-        composeTestRule.onNodeWithTag(MessageDetailHeaderTestTags.RootItem)
-            .performTouchInput { click(Offset.Zero) }
-        return this
-    }
+    fun verify(block: Verify.() -> Unit): MessageDetailRobot = also { Verify().apply(block) }
 
-    fun openMoveToBottomSheet(): MessageDetailRobot {
-        composeTestRule.onNodeWithContentDescription(R.string.action_move_content_description)
-            .performClick()
-        return this
-    }
-
-    fun openLabelAsBottomSheet(): MessageDetailRobot {
-        composeTestRule.onNodeWithContentDescription(R.string.action_label_content_description)
-            .performClick()
-        return this
-    }
-
-    fun markAsUnread(): MessageDetailRobot {
-        composeTestRule.onNodeWithContentDescription(R.string.action_mark_unread_content_description)
-            .performClick()
-        return this
-    }
-
-    fun moveToTrash(): MailboxRobot {
-        composeTestRule.onNodeWithContentDescription(R.string.action_trash_content_description)
-            .performClick()
-
-        return MailboxRobot(composeTestRule)
-    }
-
-    fun waitUntilMessageIsShown(timeout: Duration = 30.seconds): MessageDetailRobot {
-        composeTestRule.waitForIdle()
-
-        // Wait for the WebView to appear.
-        composeTestRule.onNodeWithTag(MessageBodyTestTags.WebView).awaitDisplayed(composeTestRule, timeout)
-
-        return this
-    }
-
-    fun verify(block: Verify.() -> Unit): MessageDetailRobot {
-        Verify(composeTestRule).apply(block)
-        return this
-    }
-
-    class Verify(private val composeTestRule: ComposeContentTestRule) {
+    inner class Verify {
 
         fun messageDetailScreenIsShown() {
             composeTestRule.onNodeWithTag(MessageDetailScreenTestTags.RootItem)
                 .awaitDisplayed(composeTestRule)
                 .assertExists()
-        }
-
-        fun messageHeaderIsDisplayed() {
-            composeTestRule.onNodeWithTag(MessageDetailHeaderTestTags.RootItem)
-                .assertIsDisplayed()
-        }
-
-        fun avatarIsDisplayed() {
-            composeTestRule.onNodeWithTag(AvatarTestTags.Avatar, useUnmergedTree = true)
-                .assertIsDisplayed()
-        }
-
-        fun senderNameIsDisplayed(senderName: String) {
-            composeTestRule.onNodeWithText(senderName)
-                .assertIsDisplayed()
-        }
-
-        fun senderAddressIsDisplayed(senderAddress: String) {
-            composeTestRule.onNodeWithText(senderAddress)
-                .assertIsDisplayed()
-        }
-
-        fun timeIsDisplayed(time: TextUiModel.Text) {
-            composeTestRule.onNodeWithText(time.value)
-                .assertIsDisplayed()
-        }
-
-        fun allRecipientsAreDisplayed(allRecipients: TextUiModel.Text) {
-            composeTestRule.onNodeWithText(allRecipients.value)
-                .assertIsDisplayed()
-        }
-
-        fun expandedRecipientsAreDisplayed(recipients: List<ParticipantUiModel>) {
-            composeTestRule.onNodeWithText(recipients.first().participantAddress)
-                .assertIsDisplayed()
-        }
-
-        fun extendedTimeIsDisplayed(extendedTime: TextUiModel.Text) {
-            composeTestRule.onNodeWithText(extendedTime.value)
-                .assertIsDisplayed()
-        }
-
-        fun locationNameIsDisplayed(locationName: String) {
-            composeTestRule.onNodeWithText(locationName)
-                .assertIsDisplayed()
-        }
-
-        fun sizeIsDisplayed(size: String) {
-            composeTestRule.onNodeWithText(size)
-                .assertIsDisplayed()
-        }
-
-        fun labelIsDisplayed(name: String) {
-            composeTestRule.onNodeWithText(name)
-                .assertIsDisplayed()
-        }
-
-        fun messageBodyInWebViewContains(messageBody: String, tagName: String = "html") {
-            onWebView(withClassName(equalTo("android.webkit.WebView")))
-                .forceJavascriptEnabled()
-                .withElement(findElement(Locator.TAG_NAME, tagName))
-                .check(webMatches(getText(), containsString(messageBody)))
-        }
-
-        fun messageBodyLoadingErrorMessageIsDisplayed(@StringRes errorMessage: Int) {
-            composeTestRule.onNodeWithText(errorMessage)
-                .assertIsDisplayed()
-        }
-
-        fun messageBodyReloadButtonIsDisplayed() {
-            composeTestRule.onNodeWithText(R.string.reload)
-                .assertIsDisplayed()
-        }
-
-        fun messageBodyDecryptionErrorMessageIsDisplayed() {
-            composeTestRule.onNodeWithText(R.string.decryption_error)
-                .assertIsDisplayed()
-        }
-
-        fun moveToBottomSheetExists() {
-            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem, useUnmergedTree = true)
-                .awaitDisplayed(composeTestRule, timeout = 5.seconds)
-                .assertExists()
-        }
-
-        fun labelAsBottomSheetExists() {
-            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
-                .awaitDisplayed(composeTestRule, timeout = 5.seconds)
-                .assertExists()
-        }
-
-        fun moveToBottomSheetIsDismissed() {
-            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem, useUnmergedTree = true)
-                .awaitHidden(composeTestRule)
-                .assertDoesNotExist()
-        }
-
-        fun labelAsBottomSheetIsDismissed() {
-            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
-                .awaitHidden(composeTestRule)
-                .assertDoesNotExist()
         }
     }
 }
@@ -216,7 +42,3 @@ fun ComposeContentTestRule.MessageDetailRobot(content: @Composable () -> Unit): 
     setContent(content)
     return MessageDetailRobot(this)
 }
-
-internal fun MessageDetailRobot.detailTopBarSection(
-    func: DetailTopBarSection.() -> Unit
-) = DetailTopBarSection(composeTestRule).apply(func)

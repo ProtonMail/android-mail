@@ -16,33 +16,41 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.detail.conversation.section
+package ch.protonmail.android.uitest.robot.detail.section
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import ch.protonmail.android.uitest.models.detail.MessageHeaderEntryModel
+import ch.protonmail.android.uitest.models.detail.ExtendedHeaderRecipientEntry
+import ch.protonmail.android.uitest.models.detail.MessageHeaderExpandedEntryModel
+import ch.protonmail.android.uitest.models.labels.LabelEntry
 
-internal class ConversationDetailMessageHeaderSection(composeTestRule: ComposeContentTestRule) {
-
-    private val headerModel = MessageHeaderEntryModel(composeTestRule)
-
-    fun expandHeader() = apply {
-        headerModel.click()
-    }
+internal class MessageExpandedHeaderSection(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 
     internal inner class Verify {
 
-        fun headerIsDisplayed() {
-            headerModel.isDisplayed()
+        private val expandedHeader = MessageHeaderExpandedEntryModel(composeTestRule)
+
+        fun hasRecipients(vararg recipients: ExtendedHeaderRecipientEntry) = apply {
+            expandedHeader.hasRecipients(*recipients)
         }
 
-        fun senderIsDisplayed(sender: String) {
-            headerModel.hasSenderName(sender)
+        fun hasLabels(vararg labels: LabelEntry) = apply {
+            expandedHeader.hasLabels(*labels)
         }
 
         fun hasTime(value: String) = apply {
-            headerModel.hasDate(value)
+            expandedHeader.hasTime(value)
+        }
+
+        fun hasLocation(value: String) = apply {
+            expandedHeader.hasLocation(value)
+        }
+
+        fun hasSize(value: String) = apply {
+            expandedHeader.hasSize(value)
         }
     }
 }

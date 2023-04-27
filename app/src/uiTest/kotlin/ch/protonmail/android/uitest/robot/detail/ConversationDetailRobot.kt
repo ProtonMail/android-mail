@@ -16,30 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.detail.conversation
+package ch.protonmail.android.uitest.robot.detail
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreenTestTags
-import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
 import ch.protonmail.android.uitest.util.awaitDisplayed
-import ch.protonmail.android.uitest.util.onNodeWithText
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 internal class ConversationDetailRobot(val composeTestRule: ComposeContentTestRule) {
-
-    fun waitUntilMessageIsShown(timeout: Duration = 30.seconds): ConversationDetailRobot {
-        composeTestRule.waitForIdle()
-
-        // Wait for the WebView to appear.
-        composeTestRule.onNodeWithTag(MessageBodyTestTags.WebView).awaitDisplayed(composeTestRule, timeout)
-
-        return this
-    }
 
     fun verify(block: Verify.() -> Unit) = Verify(composeTestRule).apply(block)
 
@@ -49,11 +34,6 @@ internal class ConversationDetailRobot(val composeTestRule: ComposeContentTestRu
             composeTestRule.onNodeWithTag(ConversationDetailScreenTestTags.RootItem)
                 .awaitDisplayed(composeTestRule)
                 .assertExists()
-        }
-
-        fun errorMessageIsDisplayed(message: TextUiModel) {
-            composeTestRule.onNodeWithText(message)
-                .assertIsDisplayed()
         }
     }
 }

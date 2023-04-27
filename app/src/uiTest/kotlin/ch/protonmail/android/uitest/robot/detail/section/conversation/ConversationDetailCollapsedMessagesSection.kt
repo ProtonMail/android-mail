@@ -16,13 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.detail.conversation.section
+package ch.protonmail.android.uitest.robot.detail.section.conversation
 
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
-import ch.protonmail.android.uitest.robot.detail.conversation.model.MessageCollapsedItemEntryModel
+import ch.protonmail.android.uitest.robot.detail.model.conversation.MessageCollapsedItemEntryModel
 
-internal class ConversationDetailsCollapsedMessagesSection(
+internal class ConversationDetailCollapsedMessagesSection(
     private val composeTestRule: ComposeTestRule
 ) {
 

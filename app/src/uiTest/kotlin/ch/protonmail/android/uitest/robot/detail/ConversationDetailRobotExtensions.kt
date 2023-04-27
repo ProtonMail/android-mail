@@ -16,30 +16,30 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.detail.conversation
+package ch.protonmail.android.uitest.robot.detail
 
-import ch.protonmail.android.uitest.robot.detail.conversation.section.ConversationDetailsBottomSheetSection
-import ch.protonmail.android.uitest.robot.detail.conversation.section.ConversationDetailsCollapsedMessagesSection
-import ch.protonmail.android.uitest.robot.detail.conversation.section.ConversationDetailsMessageBodySection
-import ch.protonmail.android.uitest.robot.detail.conversation.section.ConversationDetailsMessageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.section.DetailBottomSheetSection
 import ch.protonmail.android.uitest.robot.detail.section.DetailTopBarSection
+import ch.protonmail.android.uitest.robot.detail.section.MessageBodySection
+import ch.protonmail.android.uitest.robot.detail.section.MessageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.section.conversation.ConversationDetailCollapsedMessagesSection
 
 internal fun ConversationDetailRobot.detailTopBarSection(
     func: DetailTopBarSection.() -> Unit
 ) = DetailTopBarSection(composeTestRule).apply(func)
 
 internal fun ConversationDetailRobot.messagesCollapsedSection(
-    func: ConversationDetailsCollapsedMessagesSection.() -> Unit
-) = ConversationDetailsCollapsedMessagesSection(composeTestRule).apply(func)
+    func: ConversationDetailCollapsedMessagesSection.() -> Unit
+) = ConversationDetailCollapsedMessagesSection(composeTestRule).apply(func)
 
 internal fun ConversationDetailRobot.messageHeaderSection(
-    func: ConversationDetailsMessageHeaderSection.() -> Unit
-) = ConversationDetailsMessageHeaderSection(composeTestRule).apply(func)
+    func: MessageHeaderSection.() -> Unit
+) = MessageHeaderSection(composeTestRule).apply(func)
 
 internal fun ConversationDetailRobot.messageBodySection(
-    func: ConversationDetailsMessageBodySection.() -> Unit
-) = ConversationDetailsMessageBodySection().apply(func)
+    func: MessageBodySection.() -> Unit
+) = MessageBodySection(composeTestRule).apply(func)
 
 internal fun ConversationDetailRobot.bottomSheetSection(
-    func: ConversationDetailsBottomSheetSection.() -> Unit
-) = ConversationDetailsBottomSheetSection(composeTestRule).apply(func)
+    func: DetailBottomSheetSection.() -> Unit
+) = DetailBottomSheetSection(composeTestRule).apply(func)

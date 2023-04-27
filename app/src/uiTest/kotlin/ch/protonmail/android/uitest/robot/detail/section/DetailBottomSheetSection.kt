@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.detail.conversation.section
+package ch.protonmail.android.uitest.robot.detail.section
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -24,10 +24,14 @@ import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.ui.LabelAsBottomSheetTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MoveToBottomSheetTestTags
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
+import kotlin.time.Duration.Companion.seconds
 
-internal class ConversationDetailBottomSheetSection(private val composeTestRule: ComposeContentTestRule) {
+internal class DetailBottomSheetSection(
+    private val composeTestRule: ComposeContentTestRule
+) {
 
     fun markAsUnread() = apply {
         composeTestRule.onNodeWithContentDescription(R.string.action_mark_unread_content_description).performClick()
@@ -45,28 +49,30 @@ internal class ConversationDetailBottomSheetSection(private val composeTestRule:
         composeTestRule.onNodeWithContentDescription(R.string.action_label_content_description).performClick()
     }
 
-    internal fun verify(func: ConversationDetailBottomSheetSection.Verify.() -> Unit) = Verify().apply(func)
+    internal fun verify(func: Verify.() -> Unit) = Verify().apply(func)
 
     internal inner class Verify {
 
         fun moveToBottomSheetExists() {
-            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem)
+            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem, useUnmergedTree = true)
+                .awaitDisplayed(composeTestRule, timeout = 5.seconds)
                 .assertExists()
         }
 
         fun labelAsBottomSheetExists() {
-            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem)
+            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
+                .awaitDisplayed(composeTestRule, timeout = 5.seconds)
                 .assertExists()
         }
 
         fun moveToBottomSheetIsDismissed() {
-            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem)
+            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem, useUnmergedTree = true)
                 .awaitHidden(composeTestRule)
                 .assertDoesNotExist()
         }
 
         fun labelAsBottomSheetIsDismissed() {
-            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem)
+            composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
                 .awaitHidden(composeTestRule)
                 .assertDoesNotExist()
         }
