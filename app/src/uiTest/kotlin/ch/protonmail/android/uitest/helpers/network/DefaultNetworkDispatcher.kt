@@ -38,6 +38,7 @@ internal fun mockNetworkDispatcher(
     useDefaultFeatures: Boolean = true,
     useDefaultLabels: Boolean = true,
     useDefaultCustomFolders: Boolean = true,
+    useDefaultPaymentSettings: Boolean = true,
     ignoreEvents: Boolean = true,
     additionalMockDefinitions: MockNetworkDispatcher.() -> Unit = {}
 ) = MockNetworkDispatcher().apply {
@@ -87,6 +88,12 @@ internal fun mockNetworkDispatcher(
     if (useDefaultCustomFolders) {
         addMockRequests(
             "/core/v4/labels?Type=3" respondWith "/core/v4/labels/labels-type3_base_placeholder.json" withStatusCode 200
+        )
+    }
+
+    if (useDefaultPaymentSettings) {
+        addMockRequests(
+            "/payments/v4/status/google" respondWith "/payments/v4/status/google/payments_empty.json" withStatusCode 200
         )
     }
 

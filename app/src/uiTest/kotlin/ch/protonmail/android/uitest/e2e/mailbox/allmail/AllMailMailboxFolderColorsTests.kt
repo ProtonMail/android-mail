@@ -135,8 +135,7 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest(loginStrategy
     fun checkFolderColorInAllMailWithSettingEnabledAndParentInheritingEnabledInConversationMode() {
         mockWebServer.dispatcher = mockNetworkDispatcher(
             useDefaultMailSettings = false,
-            useDefaultCustomFolders = false,
-            useDefaultContacts = false
+            useDefaultCustomFolders = false
         ) {
             addMockRequests(
                 "/mail/v4/settings"
@@ -165,8 +164,7 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest(loginStrategy
     fun checkFolderColorInAllMailWithSettingEnabledAndParentInheritingEnabledInMessageMode() {
         mockWebServer.dispatcher = mockNetworkDispatcher(
             useDefaultMailSettings = false,
-            useDefaultCustomFolders = false,
-            useDefaultContacts = false
+            useDefaultCustomFolders = false
         ) {
             addMockRequests(
                 "/mail/v4/settings"

@@ -76,7 +76,10 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
                     withStatusCode 200 matchWildcards true serveOnce true,
                 "/mail/v4/messages/read"
                     respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
+                    withStatusCode 200 withPriority MockPriority.Highest,
+                "/mail/v4/conversations/read"
+                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
+                    withStatusCode 200 withPriority MockPriority.Highest
             )
         }
 
@@ -118,7 +121,10 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
                     withStatusCode 200 matchWildcards true serveOnce true,
                 "/mail/v4/messages/read"
                     respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
+                    withStatusCode 200 withPriority MockPriority.Highest,
+                "/mail/v4/conversations/read"
+                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
+                    withStatusCode 200 withPriority MockPriority.Highest
             )
         }
 
@@ -159,7 +165,10 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
                     withStatusCode 200 matchWildcards true serveOnce true,
                 "/mail/v4/messages/read"
                     respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
+                    withStatusCode 200 withPriority MockPriority.Highest,
+                "/mail/v4/conversations/read"
+                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
+                    withStatusCode 200 withPriority MockPriority.Highest
             )
         }
 
@@ -201,7 +210,10 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
                     withStatusCode 200 matchWildcards true serveOnce true,
                 "/mail/v4/messages/read"
                     respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 serveOnce true withPriority MockPriority.Highest
+                    withStatusCode 200 withPriority MockPriority.Highest,
+                "/mail/v4/conversations/read"
+                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
+                    withStatusCode 200 withPriority MockPriority.Highest
             )
         }
 
