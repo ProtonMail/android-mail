@@ -34,7 +34,7 @@
   <string name="error_mark_as_unread_failed">Okunmamış olarak işaretlenemedi. Lütfen yeniden deneyin.</string>
   <string name="error_star_operation_failed">Yıldız eklenemedi. Lütfen yeniden deneyin.</string>
   <string name="error_unstar_operation_failed">Yıldız kaldırılamadı. Lütfen yeniden deneyin.</string>
-  <string name="error_move_to_trash_failed">Çöp kutusuna taşınamadı. Lütfen yeniden deneyin.</string>
+  <string name="error_move_to_trash_failed">Çöpe atılamadı. Lütfen yeniden deneyin.</string>
   <string name="message_moved_to_trash">İleti çöpe atıldı</string>
   <string name="message_moved_to_archive">İleti arşiv klasörüne taşındı</string>
   <string name="message_moved_to_selected_destination">İleti %1$s içine taşındı</string>

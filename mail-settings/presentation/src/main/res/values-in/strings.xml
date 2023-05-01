@@ -79,5 +79,5 @@
   <string name="mail_settings_swipe_action_star_description">Bintangi/Hapus Bintang</string>
   <string name="mail_settings_swipe_action_trash_description">Pindahkan ke sampah</string>
   <!-- Error messages -->
-  <string name="mail_settings_generic_error_message">Terjadi kesalahan. Silakan coba lagi.</string>
+  <string name="mail_settings_generic_error_message">Terdapat suatu kesalahan. Silakan coba lagi.</string>
 </resources>

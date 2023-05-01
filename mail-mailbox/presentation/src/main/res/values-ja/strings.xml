@@ -17,10 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="drawer_title_more">その他</string>
+  <string name="drawer_title_more">さらに表示</string>
   <string name="drawer_title_contacts">連絡先</string>
   <string name="drawer_title_subscription">サブスクリプション</string>
-  <string name="mailbox_toolbar_compose_button_content_description">新しいメッセージを作成</string>
+  <string name="mailbox_toolbar_compose_button_content_description">新しいメッセージを作成する</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">選択モードを終了</string>
   <string name="mailbox_toolbar_menu_button_content_description">メニュー</string>
   <string name="mailbox_toolbar_search_button_content_description">検索</string>
@@ -30,6 +30,6 @@
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d 未読</item>
   </plurals>
-  <string name="mailbox_default_recipient">(No Recipient)</string>
-  <string name="mailbox_default_sender">(No Sender)</string>
+  <string name="mailbox_default_recipient">(宛先なし)</string>
+  <string name="mailbox_default_sender">(差出人なし)</string>
 </resources>

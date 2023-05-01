@@ -48,7 +48,7 @@
   <plurals name="attachment_count_label">
     <item quantity="other">%d 件のファイル</item>
   </plurals>
-  <string name="attachment_show_more_label">+%1$d more</string>
+  <string name="attachment_show_more_label">+%1$d</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">移動先</string>
   <string name="bottom_sheet_done_action">完了</string>
