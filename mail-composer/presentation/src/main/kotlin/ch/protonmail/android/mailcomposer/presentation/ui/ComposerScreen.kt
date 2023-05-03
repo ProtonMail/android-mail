@@ -47,12 +47,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -69,6 +71,16 @@ fun ComposerScreen(
 ) {
     val maxWidthModifier = Modifier.fillMaxWidth()
     val focusRequester = remember { FocusRequester() }
+    var focusedField by rememberSaveable(inputs = emptyArray()) { mutableStateOf(FocusedFieldType.TO) }
+
+    fun Modifier.retainFieldFocus(fieldType: FocusedFieldType): Modifier =
+        if (focusedField == fieldType) {
+            focusRequester(focusRequester)
+        } else {
+            this
+        }.onFocusChanged {
+            if (it.isFocused) focusedField = fieldType
+        }
 
     Column {
         ComposerTopBar(onCloseComposerClick = onCloseComposerClick)
@@ -83,12 +95,19 @@ fun ComposerScreen(
             MailDivider()
             PrefixedEmailTextField(
                 prefixStringResource = R.string.to_prefix,
-                modifier = maxWidthModifier.focusRequester(focusRequester)
+                modifier = maxWidthModifier
+                    .retainFieldFocus(FocusedFieldType.TO)
             )
             MailDivider()
-            SubjectTextField(maxWidthModifier)
+            SubjectTextField(
+                maxWidthModifier
+                    .retainFieldFocus(FocusedFieldType.SUBJECT)
+            )
             MailDivider()
-            BodyTextField()
+            BodyTextField(
+                maxWidthModifier
+                    .retainFieldFocus(FocusedFieldType.BODY)
+            )
         }
     }
 
@@ -124,7 +143,9 @@ private fun ComposerTopBar(onCloseComposerClick: () -> Unit) {
 
 @Composable
 private fun PrefixedEmailTextField(@StringRes prefixStringResource: Int, modifier: Modifier = Modifier) {
-    var text by rememberSaveable(inputs = emptyArray()) { mutableStateOf("") }
+    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(""))
+    }
     TextField(
         value = text,
         onValueChange = { text = it },
@@ -150,7 +171,9 @@ private fun PrefixedEmailTextField(@StringRes prefixStringResource: Int, modifie
 
 @Composable
 private fun SubjectTextField(modifier: Modifier = Modifier) {
-    var text by rememberSaveable(inputs = emptyArray()) { mutableStateOf("") }
+    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(""))
+    }
     TextField(
         value = text,
         onValueChange = { text = it },
@@ -171,7 +194,9 @@ private fun SubjectTextField(modifier: Modifier = Modifier) {
 
 @Composable
 private fun BodyTextField(modifier: Modifier = Modifier) {
-    var text by rememberSaveable(inputs = emptyArray()) { mutableStateOf("") }
+    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(""))
+    }
     val screenOrientation = LocalConfiguration.current.orientation
     val bodyMinLines = if (screenOrientation == Configuration.ORIENTATION_PORTRAIT) MessageBodyPortraitMinLines else 1
 
@@ -215,5 +240,12 @@ private fun MessageDetailScreenPreview() {
 }
 
 private object Composer {
+
     const val MessageBodyPortraitMinLines = 6
+}
+
+private enum class FocusedFieldType {
+    TO,
+    SUBJECT,
+    BODY
 }
