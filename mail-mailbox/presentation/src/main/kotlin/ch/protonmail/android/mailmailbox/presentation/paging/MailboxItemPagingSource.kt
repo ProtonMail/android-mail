@@ -54,8 +54,6 @@ class MailboxItemPagingSource @AssistedInject constructor(
     tables = GetMultiUserMailboxItems.getInvolvedTables(type)
 ) {
 
-    override val jumpingSupported: Boolean = false
-
     override suspend fun loadPage(params: LoadParams<MailboxPageKey>): LoadResult<MailboxPageKey, MailboxItem> {
         val key = params.key ?: mailboxPageKey
         val size = max(key.pageKey.size, params.loadSize)

@@ -1059,4 +1059,32 @@ class ConversationRepositoryImplTest {
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), isConversationRead)
     }
+
+    @Test
+    fun `returns true when page is valid on local data source`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val items = listOf(ConversationWithContextTestData.conversation1)
+        coEvery { conversationLocalDataSource.isLocalPageValid(userId, pageKey, items) } returns true
+
+        // When
+        val actual = conversationRepository.isLocalPageValid(userId, pageKey, items)
+
+        // Then
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `returns false when page is not valid on local data source`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val items = listOf(ConversationWithContextTestData.conversation1)
+        coEvery { conversationLocalDataSource.isLocalPageValid(userId, pageKey, items) } returns false
+
+        // When
+        val actual = conversationRepository.isLocalPageValid(userId, pageKey, items)
+
+        // Then
+        assertFalse(actual)
+    }
 }

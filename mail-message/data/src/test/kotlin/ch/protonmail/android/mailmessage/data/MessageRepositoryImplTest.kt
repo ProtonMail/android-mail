@@ -59,6 +59,8 @@ import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class MessageRepositoryImplTest {
 
@@ -102,9 +104,7 @@ class MessageRepositoryImplTest {
             getMessage(id = "1", time = 1000),
             getMessage(id = "2", time = 2000)
         )
-
         coEvery { localDataSource.getMessages(userId, pageKey) } returns expected
-        coEvery { localDataSource.isLocalPageValid(userId, pageKey, expected) } returns true
 
         // When
         val messages = messageRepository.getLocalMessages(userId, pageKey)
@@ -803,5 +803,33 @@ class MessageRepositoryImplTest {
 
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
+
+    @Test
+    fun `returns true when page is valid on local data source`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val items = listOf(getMessage(id = "1", time = 1000))
+        coEvery { localDataSource.isLocalPageValid(userId, pageKey, items) } returns true
+
+        // When
+        val actual = messageRepository.isLocalPageValid(userId, pageKey, items)
+
+        // Then
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `returns false when page is not valid on local data source`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val items = listOf(getMessage(id = "1", time = 1000))
+        coEvery { localDataSource.isLocalPageValid(userId, pageKey, items) } returns false
+
+        // When
+        val actual = messageRepository.isLocalPageValid(userId, pageKey, items)
+
+        // Then
+        assertFalse(actual)
     }
 }
