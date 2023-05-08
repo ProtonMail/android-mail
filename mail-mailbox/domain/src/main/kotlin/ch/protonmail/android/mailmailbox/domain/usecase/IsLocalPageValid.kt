@@ -37,10 +37,10 @@ class IsLocalPageValid @Inject constructor(
     ): Boolean {
         return when (type) {
             MailboxItemType.Message -> with(messageRepository) {
-                isLocalPageValid(userId, pageKey, loadMessages(userId, pageKey))
+                isLocalPageValid(userId, pageKey, getLocalMessages(userId, pageKey))
             }
             MailboxItemType.Conversation -> with(conversationRepository) {
-                isLocalPageValid(userId, pageKey, loadConversations(userId, pageKey))
+                isLocalPageValid(userId, pageKey, getLocalConversations(userId, pageKey))
             }
         }
     }

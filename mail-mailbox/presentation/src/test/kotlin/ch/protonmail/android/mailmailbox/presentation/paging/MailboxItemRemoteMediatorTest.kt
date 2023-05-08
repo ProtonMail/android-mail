@@ -80,7 +80,7 @@ class MailboxItemRemoteMediatorTest {
         runTest {
             // Given
             coEvery {
-                messageRepository.fetchMessages(userId, mailboxPageKey.pageKey)
+                messageRepository.getRemoteMessages(userId, mailboxPageKey.pageKey)
             } returns listOf(MessageTestData.message).right()
 
             // When
@@ -102,7 +102,7 @@ class MailboxItemRemoteMediatorTest {
             // Given
             mailboxItemType = MailboxItemType.Conversation
             coEvery {
-                conversationRepository.fetchConversations(userId, mailboxPageKey.pageKey)
+                conversationRepository.getRemoteConversations(userId, mailboxPageKey.pageKey)
             } returns listOf(ConversationWithContextTestData.conversation1).right()
 
             // When
@@ -133,7 +133,12 @@ class MailboxItemRemoteMediatorTest {
                 current = mailboxPageKey.pageKey,
                 next = pageKey
             )
-            coEvery { messageRepository.fetchMessages(userId, pageKey) } returns listOf(MessageTestData.message).right()
+            coEvery {
+                messageRepository.getRemoteMessages(
+                    userId,
+                    pageKey
+                )
+            } returns listOf(MessageTestData.message).right()
 
             // When
             mailboxItemRemoteMediator.load(
@@ -143,7 +148,7 @@ class MailboxItemRemoteMediatorTest {
 
             // Then
             coVerify(exactly = 0) { messageRepository.markAsStale(any(), any()) }
-            coVerify { messageRepository.fetchMessages(userId, pageKey) }
+            coVerify { messageRepository.getRemoteMessages(userId, pageKey) }
         }
 
     @Test
@@ -163,7 +168,7 @@ class MailboxItemRemoteMediatorTest {
                 next = pageKey
             )
             coEvery {
-                messageRepository.fetchMessages(userId, pageKey)
+                messageRepository.getRemoteMessages(userId, pageKey)
             } returns expectedRemoteError.left()
 
             // When
@@ -174,7 +179,7 @@ class MailboxItemRemoteMediatorTest {
 
             // Then
             coVerify(exactly = 0) { messageRepository.markAsStale(any(), any()) }
-            coVerify { messageRepository.fetchMessages(userId, pageKey) }
+            coVerify { messageRepository.getRemoteMessages(userId, pageKey) }
             assertIs<RemoteMediator.MediatorResult.Error>(result)
             assertEquals(expectedRemoteError.toString(), result.throwable.message)
         }
@@ -197,7 +202,7 @@ class MailboxItemRemoteMediatorTest {
             )
             mailboxItemType = MailboxItemType.Conversation
             coEvery {
-                conversationRepository.fetchConversations(userId, pageKey)
+                conversationRepository.getRemoteConversations(userId, pageKey)
             } returns expectedRemoteError.left()
 
             // When
@@ -208,7 +213,7 @@ class MailboxItemRemoteMediatorTest {
 
             // Then
             coVerify(exactly = 0) { conversationRepository.markAsStale(any(), any()) }
-            coVerify { conversationRepository.fetchConversations(userId, pageKey) }
+            coVerify { conversationRepository.getRemoteConversations(userId, pageKey) }
             assertIs<RemoteMediator.MediatorResult.Error>(result)
             assertEquals(expectedRemoteError.toString(), result.throwable.message)
         }
@@ -236,7 +241,7 @@ class MailboxItemRemoteMediatorTest {
             val pageSize = PageKey.defaultPageSize
             mailboxItemType = MailboxItemType.Conversation
             coEvery {
-                conversationRepository.fetchConversations(userId, nextKey)
+                conversationRepository.getRemoteConversations(userId, nextKey)
             } returns listOf(ConversationWithContextTestData.conversation1).right()
 
             // When
@@ -246,7 +251,7 @@ class MailboxItemRemoteMediatorTest {
             )
 
             // Then
-            coVerify { conversationRepository.fetchConversations(userId, nextKey) }
+            coVerify { conversationRepository.getRemoteConversations(userId, nextKey) }
             coVerify { getAdjacentPageKeys wasNot Called }
             assertIs<RemoteMediator.MediatorResult.Success>(result)
         }
@@ -274,7 +279,7 @@ class MailboxItemRemoteMediatorTest {
             val pageSize = PageKey.defaultPageSize
             mailboxItemType = MailboxItemType.Conversation
             coEvery {
-                conversationRepository.fetchConversations(userId, prevKey)
+                conversationRepository.getRemoteConversations(userId, prevKey)
             } returns listOf(ConversationWithContextTestData.conversation1).right()
 
             // When
@@ -284,7 +289,7 @@ class MailboxItemRemoteMediatorTest {
             )
 
             // Then
-            coVerify { conversationRepository.fetchConversations(userId, prevKey) }
+            coVerify { conversationRepository.getRemoteConversations(userId, prevKey) }
             coVerify { getAdjacentPageKeys wasNot Called }
             assertIs<RemoteMediator.MediatorResult.Success>(result)
         }

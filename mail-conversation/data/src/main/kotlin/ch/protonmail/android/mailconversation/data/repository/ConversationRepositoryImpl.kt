@@ -84,7 +84,7 @@ class ConversationRepositoryImpl @Inject constructor(
         )
     ).buildProtonStore(coroutineScopeProvider)
 
-    override suspend fun loadConversations(userId: UserId, pageKey: PageKey) =
+    override suspend fun getLocalConversations(userId: UserId, pageKey: PageKey) =
         conversationLocalDataSource.getConversations(userId, pageKey)
 
     override suspend fun isLocalPageValid(
@@ -93,7 +93,7 @@ class ConversationRepositoryImpl @Inject constructor(
         items: List<ConversationWithContext>
     ): Boolean = conversationLocalDataSource.isLocalPageValid(userId, pageKey, items)
 
-    override suspend fun fetchConversations(
+    override suspend fun getRemoteConversations(
         userId: UserId,
         pageKey: PageKey
     ): Either<DataError.Remote, List<ConversationWithContext>> = conversationLocalDataSource.getClippedPageKey(

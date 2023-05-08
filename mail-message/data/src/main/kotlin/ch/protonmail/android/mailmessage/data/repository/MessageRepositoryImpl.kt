@@ -78,13 +78,13 @@ class MessageRepositoryImpl @Inject constructor(
         )
     ).buildProtonStore(coroutineScopeProvider)
 
-    override suspend fun loadMessages(userId: UserId, pageKey: PageKey) =
+    override suspend fun getLocalMessages(userId: UserId, pageKey: PageKey) =
         localDataSource.getMessages(userId, pageKey)
 
     override suspend fun isLocalPageValid(userId: UserId, pageKey: PageKey, items: List<Message>): Boolean =
         localDataSource.isLocalPageValid(userId, pageKey, items)
 
-    override suspend fun fetchMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> =
+    override suspend fun getRemoteMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> =
         localDataSource.getClippedPageKey(
             userId = userId,
             pageKey = pageKey.copy(size = min(MessageApi.maxPageSize, pageKey.size))

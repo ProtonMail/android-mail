@@ -54,10 +54,10 @@ class GetMailboxItems @Inject constructor(
         val labels = labelRepository.getLabels(userId, LabelType.MessageLabel)
         val labelsMaps = (labels + folders).associateBy { it.labelId }
         return when (type) {
-            MailboxItemType.Message -> messageRepository.loadMessages(userId, pageKey).let { list ->
+            MailboxItemType.Message -> messageRepository.getLocalMessages(userId, pageKey).let { list ->
                 list.map { messageMailboxItemMapper.toMailboxItem(it, labelsMaps) }.right()
             }
-            MailboxItemType.Conversation -> conversationRepository.loadConversations(userId, pageKey).let { list ->
+            MailboxItemType.Conversation -> conversationRepository.getLocalConversations(userId, pageKey).let { list ->
                 list.map { conversationMailboxItemMapper.toMailboxItem(it, labelsMaps) }.right()
             }
         }

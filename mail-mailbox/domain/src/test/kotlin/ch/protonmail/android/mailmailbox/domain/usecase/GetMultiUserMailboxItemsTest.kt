@@ -50,13 +50,13 @@ import kotlin.test.assertEquals
 class GetMultiUserMailboxItemsTest {
 
     private val messageRepository = mockk<MessageRepository> {
-        coEvery { this@mockk.loadMessages(userId, any()) } returns listOf(
+        coEvery { this@mockk.getLocalMessages(userId, any()) } returns listOf(
             // userId
             buildMessage(userId, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId, "2", time = 2000, labelIds = listOf("4")),
             buildMessage(userId, "3", time = 3000, labelIds = listOf("0", "1"))
         )
-        coEvery { this@mockk.loadMessages(userId1, any()) } returns listOf(
+        coEvery { this@mockk.getLocalMessages(userId1, any()) } returns listOf(
             // userId
             buildMessage(userId1, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId1, "2", time = 2000, labelIds = listOf("4")),
@@ -64,13 +64,13 @@ class GetMultiUserMailboxItemsTest {
         )
     }
     private val conversationRepository = mockk<ConversationRepository> {
-        coEvery { loadConversations(userId, any()) } returns listOf(
+        coEvery { getLocalConversations(userId, any()) } returns listOf(
             // userId
             ConversationWithContextTestData.conversation1Labeled,
             ConversationWithContextTestData.conversation2Labeled,
             ConversationWithContextTestData.conversation3Labeled
         )
-        coEvery { loadConversations(userId1, any()) } returns listOf(
+        coEvery { getLocalConversations(userId1, any()) } returns listOf(
             // userId
             ConversationWithContextTestData.User2.conversation1Labeled,
             ConversationWithContextTestData.User2.conversation2Labeled,
@@ -134,8 +134,8 @@ class GetMultiUserMailboxItemsTest {
         coVerify { labelRepository.getLabels(userId1, MessageLabel) }
         coVerify { labelRepository.getLabels(userId, LabelType.MessageFolder) }
         coVerify { labelRepository.getLabels(userId1, LabelType.MessageFolder) }
-        coVerify { messageRepository.loadMessages(userId, pageKey) }
-        coVerify { messageRepository.loadMessages(userId1, pageKey) }
+        coVerify { messageRepository.getLocalMessages(userId, pageKey) }
+        coVerify { messageRepository.getLocalMessages(userId1, pageKey) }
         val senders = listOf(Recipient("address", "name"))
         val mailboxItemsOrderedByTimeAscending = listOf(
             buildMailboxItem(
@@ -205,8 +205,8 @@ class GetMultiUserMailboxItemsTest {
         coVerify { labelRepository.getLabels(userId1, MessageLabel) }
         coVerify { labelRepository.getLabels(userId, LabelType.MessageFolder) }
         coVerify { labelRepository.getLabels(userId1, LabelType.MessageFolder) }
-        coVerify { conversationRepository.loadConversations(userId, pageKey) }
-        coVerify { conversationRepository.loadConversations(userId1, pageKey) }
+        coVerify { conversationRepository.getLocalConversations(userId, pageKey) }
+        coVerify { conversationRepository.getLocalConversations(userId1, pageKey) }
         val mailboxItemsOrderedByTimeAscending = listOf(
             buildMailboxItem(
                 userId = userId,

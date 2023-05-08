@@ -90,6 +90,6 @@ open class MessageEventListener @Inject constructor(
 
     override suspend fun onResetAll(config: EventManagerConfig) {
         localDataSource.deleteAllMessages(config.userId)
-        repository.fetchMessages(config.userId, PageKey())
+        repository.getRemoteMessages(config.userId, PageKey())
     }
 }

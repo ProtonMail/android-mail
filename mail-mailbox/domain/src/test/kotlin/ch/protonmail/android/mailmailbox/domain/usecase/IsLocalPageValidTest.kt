@@ -50,7 +50,7 @@ class IsLocalPageValidTest {
             MessageSample.Invoice,
             MessageSample.AugWeatherForecast
         )
-        coEvery { messageRepository.loadMessages(userId, pageKey) } returns items
+        coEvery { messageRepository.getLocalMessages(userId, pageKey) } returns items
         coEvery { messageRepository.isLocalPageValid(userId, pageKey, items) } returns true
 
         // When
@@ -65,7 +65,7 @@ class IsLocalPageValidTest {
         // Given
         val pageKey = PageKey()
         val items = emptyList<Message>()
-        coEvery { messageRepository.loadMessages(userId, pageKey) } returns items
+        coEvery { messageRepository.getLocalMessages(userId, pageKey) } returns items
         coEvery { messageRepository.isLocalPageValid(userId, pageKey, items) } returns true
 
         // When
@@ -83,7 +83,7 @@ class IsLocalPageValidTest {
             MessageSample.Invoice,
             MessageSample.AugWeatherForecast
         )
-        coEvery { messageRepository.loadMessages(userId, pageKey) } returns items
+        coEvery { messageRepository.getLocalMessages(userId, pageKey) } returns items
         coEvery { messageRepository.isLocalPageValid(userId, pageKey, items) } returns false
 
         // When
@@ -102,7 +102,7 @@ class IsLocalPageValidTest {
             ConversationWithContextTestData.conversation1,
             ConversationWithContextTestData.conversation2
         )
-        coEvery { conversationRepository.loadConversations(userId, pageKey) } returns items
+        coEvery { conversationRepository.getLocalConversations(userId, pageKey) } returns items
         coEvery { conversationRepository.isLocalPageValid(userId, pageKey, items) } returns true
 
         // When
@@ -117,7 +117,7 @@ class IsLocalPageValidTest {
         // Given
         val pageKey = PageKey()
         val items = emptyList<ConversationWithContext>()
-        coEvery { conversationRepository.loadConversations(userId, pageKey) } returns items
+        coEvery { conversationRepository.getLocalConversations(userId, pageKey) } returns items
         coEvery { conversationRepository.isLocalPageValid(userId, pageKey, items) } returns true
 
         // When
@@ -136,7 +136,7 @@ class IsLocalPageValidTest {
             ConversationWithContextTestData.conversation1,
             ConversationWithContextTestData.conversation2
         )
-        coEvery { conversationRepository.loadConversations(userId, pageKey) } returns items
+        coEvery { conversationRepository.getLocalConversations(userId, pageKey) } returns items
         coEvery { conversationRepository.isLocalPageValid(userId, pageKey, items) } returns false
 
         // When

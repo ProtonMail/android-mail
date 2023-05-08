@@ -34,9 +34,9 @@ import me.proton.core.label.domain.entity.LabelId
 interface MessageRepository {
 
     /**
-     * Load all [Message] for [userId] filtered by [PageKey].
+     * Load all [Message] from local cache for [userId] filtered by [PageKey].
      */
-    suspend fun loadMessages(userId: UserId, pageKey: PageKey = PageKey()): List<Message>
+    suspend fun getLocalMessages(userId: UserId, pageKey: PageKey = PageKey()): List<Message>
 
     /**
      * Return true if all [Message] are considered locally valid according the given [pageKey].
@@ -48,9 +48,9 @@ interface MessageRepository {
     ): Boolean
 
     /**
-     * Fetch all [Message] for [userId] filtered by [PageKey].
+     * Fetch all [Message] from network for [userId] filtered by [PageKey].
      */
-    suspend fun fetchMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>>
+    suspend fun getRemoteMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>>
 
     /**
      * Mark local data as stale for [userId], by [labelId].

@@ -43,7 +43,7 @@ import kotlin.test.assertEquals
 class GetMailboxItemsTest {
 
     private val messageRepository = mockk<MessageRepository> {
-        coEvery { loadMessages(any(), any()) } returns listOf(
+        coEvery { getLocalMessages(any(), any()) } returns listOf(
             // userId1
             buildMessage(userId, "1", time = 1000, labelIds = emptyList()),
             buildMessage(userId, "2", time = 2000, labelIds = listOf("4")),
@@ -51,7 +51,7 @@ class GetMailboxItemsTest {
         )
     }
     private val conversationRepository = mockk<ConversationRepository> {
-        coEvery { loadConversations(any(), any()) } returns listOf(
+        coEvery { getLocalConversations(any(), any()) } returns listOf(
             // userId1
             ConversationWithContextTestData.conversation1Labeled,
             ConversationWithContextTestData.conversation2Labeled,
@@ -96,7 +96,7 @@ class GetMailboxItemsTest {
         // Then
         coVerify { labelRepository.getLabels(userId, LabelType.MessageLabel) }
         coVerify { labelRepository.getLabels(userId, LabelType.MessageFolder) }
-        coVerify { messageRepository.loadMessages(userId, pageKey) }
+        coVerify { messageRepository.getLocalMessages(userId, pageKey) }
         assertEquals(3, mailboxItems.size)
         assertEquals(0, mailboxItems[0].labels.size)
         assertEquals(1, mailboxItems[1].labels.size)
@@ -120,7 +120,7 @@ class GetMailboxItemsTest {
         // Then
         coVerify { labelRepository.getLabels(userId, LabelType.MessageLabel) }
         coVerify { labelRepository.getLabels(userId, LabelType.MessageFolder) }
-        coVerify { conversationRepository.loadConversations(userId, pageKey) }
+        coVerify { conversationRepository.getLocalConversations(userId, pageKey) }
         assertEquals(3, mailboxItems.size)
         assertEquals(1, mailboxItems[0].labels.size)
         assertEquals(1, mailboxItems[1].labels.size)

@@ -34,7 +34,7 @@ interface ConversationRepository {
     /**
      * Load all [Conversation] from local cache for [userId].
      */
-    suspend fun loadConversations(
+    suspend fun getLocalConversations(
         userId: UserId,
         pageKey: PageKey = PageKey()
     ): List<ConversationWithContext>
@@ -51,7 +51,7 @@ interface ConversationRepository {
     /**
      * Fetch all [Conversation] from network for [userId] filtered by [PageKey].
      */
-    suspend fun fetchConversations(
+    suspend fun getRemoteConversations(
         userId: UserId,
         pageKey: PageKey
     ): Either<DataError.Remote, List<ConversationWithContext>>

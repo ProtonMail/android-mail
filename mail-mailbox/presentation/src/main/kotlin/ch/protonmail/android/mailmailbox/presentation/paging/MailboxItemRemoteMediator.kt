@@ -94,7 +94,7 @@ class MailboxItemRemoteMediator @AssistedInject constructor(
     }
 
     private suspend fun fetchMessages(userId: UserId, pageKey: MailboxPageKey): MediatorResult {
-        return messageRepository.fetchMessages(
+        return messageRepository.getRemoteMessages(
             userId = userId,
             pageKey = pageKey.pageKey,
         ).fold(
@@ -110,7 +110,7 @@ class MailboxItemRemoteMediator @AssistedInject constructor(
     }
 
     private suspend fun fetchConversations(userId: UserId, pageKey: MailboxPageKey): MediatorResult {
-        return conversationRepository.fetchConversations(
+        return conversationRepository.getRemoteConversations(
             userId = userId,
             pageKey = pageKey.pageKey,
         ).fold(

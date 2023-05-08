@@ -107,7 +107,7 @@ class MessageRepositoryImplTest {
         coEvery { localDataSource.isLocalPageValid(userId, pageKey, expected) } returns true
 
         // When
-        val messages = messageRepository.loadMessages(userId, pageKey)
+        val messages = messageRepository.getLocalMessages(userId, pageKey)
 
         // Then
         assertEquals(expected, messages)
@@ -123,7 +123,7 @@ class MessageRepositoryImplTest {
         coEvery { remoteDataSource.getMessages(userId, clippedPageKey) } returns emptyList<Message>().right()
 
         // When
-        val messages = messageRepository.fetchMessages(userId, pageKey).getOrElse(::error)
+        val messages = messageRepository.getRemoteMessages(userId, pageKey).getOrElse(::error)
 
         // Then
         assertEquals(0, messages.size)
@@ -146,7 +146,7 @@ class MessageRepositoryImplTest {
         coEvery { remoteDataSource.getMessages(any(), any()) } returns expected.right()
 
         // When
-        val actual = messageRepository.fetchMessages(userId, pageKey).getOrElse(::error)
+        val actual = messageRepository.getRemoteMessages(userId, pageKey).getOrElse(::error)
 
         // Then
         assertEquals(expected, actual)

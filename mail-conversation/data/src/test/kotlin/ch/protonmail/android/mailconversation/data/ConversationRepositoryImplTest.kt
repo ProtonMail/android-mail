@@ -115,7 +115,7 @@ class ConversationRepositoryImplTest {
         coEvery { conversationRemoteDataSource.getConversations(userId, pageKey) } returns expected.right()
 
         // When
-        val actual = conversationRepository.fetchConversations(userId, pageKey).getOrElse(::error)
+        val actual = conversationRepository.getRemoteConversations(userId, pageKey).getOrElse(::error)
 
         // Then
         assertEquals(expected, actual)
@@ -134,7 +134,7 @@ class ConversationRepositoryImplTest {
         coEvery { conversationLocalDataSource.getConversations(userId, pageKey) } returns expected
 
         // When
-        val actual = conversationRepository.loadConversations(userId, pageKey)
+        val actual = conversationRepository.getLocalConversations(userId, pageKey)
 
         // Then
         assertEquals(expected, actual)
@@ -151,7 +151,7 @@ class ConversationRepositoryImplTest {
             emptyList<ConversationWithContext>().right()
 
         // When
-        val conversations = conversationRepository.fetchConversations(userId, pageKey).getOrElse(::error)
+        val conversations = conversationRepository.getRemoteConversations(userId, pageKey).getOrElse(::error)
 
         // Then
         assertEquals(0, conversations.size)

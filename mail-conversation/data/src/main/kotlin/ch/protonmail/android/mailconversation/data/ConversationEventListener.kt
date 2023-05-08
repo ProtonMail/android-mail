@@ -90,6 +90,6 @@ open class ConversationEventListener @Inject constructor(
 
     override suspend fun onResetAll(config: EventManagerConfig) {
         localDataSource.deleteAllConversations(config.userId)
-        repository.fetchConversations(config.userId, PageKey())
+        repository.getRemoteConversations(config.userId, PageKey())
     }
 }
