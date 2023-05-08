@@ -91,6 +91,7 @@ import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
+import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -163,7 +164,8 @@ class MailboxViewModelTest {
             getContacts = getContacts,
             mailboxReducer = mailboxReducer,
             networkManager = networkManager,
-            observeMailFeature = observeMailFeature
+            observeMailFeature = observeMailFeature,
+            dispatchersProvider = TestDispatcherProvider()
         )
     }
 
