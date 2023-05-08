@@ -43,7 +43,7 @@
   <string name="action_view_headers_content_description">Pregled zaglavlja</string>
   <string name="action_view_html_content_description">Pregledaj HTML</string>
   <string name="action_report_phishing_content_description">Prijavi krađu identiteta</string>
-  <string name="action_remind_content_description">Remind me</string>
+  <string name="action_remind_content_description">Podsjeti me</string>
   <string name="action_save_pdf_content_description">Spremi kao PDF</string>
   <string name="action_sender_emails_content_description">Set action for future emails from this sender</string>
   <string name="action_save_attachments_content_description">Save attachments</string>

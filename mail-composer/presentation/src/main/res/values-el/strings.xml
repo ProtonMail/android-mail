@@ -17,10 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="from_prefix">From:</string>
+  <string name="from_prefix">Από:</string>
   <string name="to_prefix">Προς:</string>
-  <string name="subject_placeholder">Subject</string>
-  <string name="compose_message_placeholder">Compose email</string>
-  <string name="close_composer_content_description">Close composer</string>
-  <string name="send_message_content_description">Send message</string>
+  <string name="subject_placeholder">Θέμα</string>
+  <string name="compose_message_placeholder">Σύνταξη μηνύματος</string>
+  <string name="close_composer_content_description">Κλείσιμο συντάκτη</string>
+  <string name="send_message_content_description">Αποστολή μηνύματος</string>
 </resources>

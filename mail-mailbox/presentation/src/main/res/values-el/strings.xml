@@ -31,6 +31,6 @@
     <item quantity="one">%d αδιάβαστο</item>
     <item quantity="other">%d αδιάβαστα</item>
   </plurals>
-  <string name="mailbox_default_recipient">(No Recipient)</string>
-  <string name="mailbox_default_sender">(No Sender)</string>
+  <string name="mailbox_default_recipient">(Κανένας παραλήπτης)</string>
+  <string name="mailbox_default_sender">(Κανένας Αποστολέας)</string>
 </resources>

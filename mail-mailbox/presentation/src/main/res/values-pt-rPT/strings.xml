@@ -28,9 +28,9 @@
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Não lido</string>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%d não lida</item>
+    <item quantity="one">%d não lido</item>
     <item quantity="other">%d não lidas</item>
   </plurals>
-  <string name="mailbox_default_recipient">(No Recipient)</string>
-  <string name="mailbox_default_sender">(No Sender)</string>
+  <string name="mailbox_default_recipient">(sem destinatário)</string>
+  <string name="mailbox_default_sender">(Sem remetente)</string>
 </resources>

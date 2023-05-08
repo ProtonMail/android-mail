@@ -64,8 +64,8 @@
   <string name="mail_settings_not_set">Не задано</string>
   <string name="mail_settings_conversation_mode_hint">Группировать сообщения, относящиеся к одной теме в папке Входящие или отображать их отдельно</string>
   <!-- Swipe Actions -->
-  <string name="mail_settings_swipe_actions_title">Жесты пролистывания</string>
-  <string name="mail_settings_swipe_actions_subtitle">Настройте жесты пролистывания для доступа к наиболее используемым действиям.</string>
+  <string name="mail_settings_swipe_actions_title">Действия свайпом</string>
+  <string name="mail_settings_swipe_actions_subtitle">Настройте свайп-жесты для доступа к наиболее используемым действиям.</string>
   <string name="mail_settings_swipe_right_name">Слева направо</string>
   <string name="mail_settings_swipe_left_name">Справа налево</string>
   <string name="mail_settings_swipe_action_archive_title">Архив</string>

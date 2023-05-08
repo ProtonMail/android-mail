@@ -22,5 +22,5 @@
   <string name="subject_placeholder">Asunto</string>
   <string name="compose_message_placeholder">Redactar un correo</string>
   <string name="close_composer_content_description">Cerrar el editor</string>
-  <string name="send_message_content_description">Enviar el mensaje</string>
+  <string name="send_message_content_description">Enviar mensaje</string>
 </resources>

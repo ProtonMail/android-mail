@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="detail_error_loading_contacts">Не удалось загрузить контакты</string>
-  <string name="detail_error_loading_conversation">Не удалось загрузить цепочку сообщений</string>
+  <string name="detail_error_loading_conversation">Не удалось загрузить обсуждение</string>
   <string name="detail_error_loading_messages">Не удалось загрузить сообщения</string>
   <string name="error_mark_unread_failed">Не удалось пометить как непрочитанное. Попробуйте еще раз.</string>
   <plurals name="message_count_label_text">
@@ -50,8 +50,8 @@
   <string name="reload">Перезагрузить</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d файл</item>
-    <item quantity="few">%d файла</item>
-    <item quantity="many">%d файлов</item>
+    <item quantity="few">%d файл(ов)</item>
+    <item quantity="many">%d файл(ов)</item>
     <item quantity="other">%d файлов</item>
   </plurals>
   <string name="attachment_show_more_label">+ ещё %1$d</string>

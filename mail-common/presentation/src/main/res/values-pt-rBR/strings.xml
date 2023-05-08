@@ -29,8 +29,8 @@
   <string name="action_forward_content_description">Encaminhar</string>
   <string name="action_mark_read_content_description">Marcar como lida</string>
   <string name="action_mark_unread_content_description">Marcar como não lida</string>
-  <string name="action_star_content_description">Estrela</string>
-  <string name="action_unstar_content_description">Remover estrela</string>
+  <string name="action_star_content_description">Adicionar aos favoritos</string>
+  <string name="action_unstar_content_description">Remover dos favoritos</string>
   <string name="action_label_content_description">Marcar como</string>
   <string name="action_move_content_description">Mover para</string>
   <string name="action_trash_content_description">Lixeira</string>

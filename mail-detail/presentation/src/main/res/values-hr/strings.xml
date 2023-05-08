@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">Failed loading contacts</string>
-  <string name="detail_error_loading_conversation">Failed loading conversation</string>
-  <string name="detail_error_loading_messages">Failed loading messages</string>
+  <string name="detail_error_loading_contacts">Neuspješno učitavanje kontakata</string>
+  <string name="detail_error_loading_conversation">Neuspješno učitavanje razgovora</string>
+  <string name="detail_error_loading_messages">Neuspješno učitavanje poruka</string>
   <string name="error_mark_unread_failed">Mark unread failed. Please try again.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d message</item>
@@ -27,7 +27,7 @@
     <item quantity="other">%d messages</item>
   </plurals>
   <string name="more_button_content_description">More</string>
-  <string name="to">To:</string>
+  <string name="to">Za:</string>
   <string name="cc">Cc:</string>
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Sakrij detalje</string>
@@ -40,9 +40,9 @@
   <string name="message_moved_to_archive">Message moved to Archive</string>
   <string name="message_moved_to_selected_destination">Poruka premještena u %1$s</string>
   <string name="error_move_message_failed">Moving message failed. Please retry.</string>
-  <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
+  <string name="conversation_moved_to_trash">Razgovor premješten u Otpad</string>
   <string name="conversation_moved_to_selected_destination">Razgovor premješten u $%1$s</string>
-  <string name="conversation_moved_to_archive">Conversation moved to Archive</string>
+  <string name="conversation_moved_to_archive">Razgovor premješten u Arhivu</string>
   <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
   <string name="error_loading_message">Nešto je pošlo po zlu. Pokušajte ponovno.</string>
   <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>
@@ -57,21 +57,21 @@
   <string name="bottom_sheet_move_to_title">Premjesti u...</string>
   <string name="bottom_sheet_done_action">Gotovo</string>
   <string name="bottom_sheet_archive_action">Also archive?</string>
-  <string name="bottom_sheet_label_as_title">Label as...</string>
+  <string name="bottom_sheet_label_as_title">Označi kao...</string>
   <string name="error_relabel_message_failed">Failed to relabel message. Please retry</string>
   <string name="error_relabel_conversation_failed">Failed to relabel conversation. Please retry</string>
-  <string name="please_go_back_online_to_load_messages">You\'re offline. Please go back online to load messages</string>
-  <string name="decryption_error">Message decryption failed.</string>
-  <string name="detail_error_retrieving_message_body">Unable to retrieve message</string>
+  <string name="please_go_back_online_to_load_messages">Izvan mreže ste. Vratite se na mrežu kako bi učitali poruke</string>
+  <string name="decryption_error">Dešifriranje poruke neuspješno.</string>
+  <string name="detail_error_retrieving_message_body">Nije moguće dohvatiti poruku</string>
   <!-- Attachment Types -->
-  <string name="attachment_type_image">Image</string>
-  <string name="attachment_type_video">Video</string>
-  <string name="attachment_type_audio">Audio</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_image">Slika</string>
+  <string name="attachment_type_video">Videozapis</string>
+  <string name="attachment_type_audio">Zvuk</string>
+  <string name="attachment_type_unknown">Nepoznato</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_zip">ZIP</string>
-  <string name="attachment_type_text">Text</string>
-  <string name="attachment_type_document">Document</string>
+  <string name="attachment_type_text">Tekst</string>
+  <string name="attachment_type_document">Dokument</string>
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Presentation</string>
   <string name="attachment_type_description">%1$s file</string>

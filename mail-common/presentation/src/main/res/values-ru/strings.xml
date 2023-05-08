@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Истёкший</string>
+  <string name="expiration_expired">Просроченный</string>
   <string name="expiration_days_arg">%d д.</string>
   <string name="expiration_hours_arg">%d ч.</string>
   <string name="expiration_minutes_arg">%d мин.</string>
@@ -29,7 +29,7 @@
   <string name="action_forward_content_description">Переслать</string>
   <string name="action_mark_read_content_description">Отметить как прочитанное</string>
   <string name="action_mark_unread_content_description">Отметить как непрочитанное</string>
-  <string name="action_star_content_description">Отметить звёздочкой</string>
+  <string name="action_star_content_description">Отметить *</string>
   <string name="action_unstar_content_description">Снять звёздочку</string>
   <string name="action_label_content_description">Пометить как</string>
   <string name="action_move_content_description">Переместить в</string>
