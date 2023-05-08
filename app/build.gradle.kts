@@ -169,6 +169,7 @@ android {
         getByName("test").java.srcDirs("src/test/kotlin")
         getByName("androidTest").java.srcDirs("src/androidTest/kotlin", "src/uiTest/kotlin")
         getByName("androidTest").assets.srcDirs("src/uiTest/assets", "schemas")
+        getByName("androidTest").res.srcDirs("src/uiTest/res")
         getByName("dev").res.srcDirs("src/dev/res")
         getByName("alpha").res.srcDirs("src/alpha/res")
     }

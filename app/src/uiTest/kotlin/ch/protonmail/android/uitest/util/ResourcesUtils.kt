@@ -22,6 +22,7 @@ import android.app.Application
 import androidx.annotation.StringRes
 import androidx.test.core.app.ApplicationProvider
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.uitest.util.InstrumentationHolder.instrumentation
 
 fun getString(text: TextUiModel): String = when (text) {
     is TextUiModel.Text -> text.value
@@ -34,3 +35,5 @@ fun getString(@StringRes resId: Int): String =
 
 fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
     ApplicationProvider.getApplicationContext<Application>().getString(resId, formatArgs)
+
+fun getTestString(@StringRes resId: Int): String = instrumentation.context.getString(resId)
