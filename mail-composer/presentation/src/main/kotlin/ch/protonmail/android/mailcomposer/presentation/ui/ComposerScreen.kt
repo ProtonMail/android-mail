@@ -20,12 +20,18 @@ package ch.protonmail.android.mailcomposer.presentation.ui
 
 import android.content.res.Configuration
 import androidx.annotation.StringRes
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -39,9 +45,11 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -65,6 +73,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.defaultNorm
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ComposerScreen(
     onCloseComposerClick: () -> Unit
@@ -72,10 +81,13 @@ fun ComposerScreen(
     val maxWidthModifier = Modifier.fillMaxWidth()
     val focusRequester = remember { FocusRequester() }
     var focusedField by rememberSaveable(inputs = emptyArray()) { mutableStateOf(FocusedFieldType.TO) }
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    val isKeyboardVisible by keyboardVisibilityAsState()
 
-    fun Modifier.retainFieldFocus(fieldType: FocusedFieldType): Modifier =
+    fun Modifier.retainFieldFocusOnConfigurationChange(fieldType: FocusedFieldType): Modifier =
         if (focusedField == fieldType) {
             focusRequester(focusRequester)
+                .bringIntoViewRequester(bringIntoViewRequester)
         } else {
             this
         }.onFocusChanged {
@@ -96,23 +108,30 @@ fun ComposerScreen(
             PrefixedEmailTextField(
                 prefixStringResource = R.string.to_prefix,
                 modifier = maxWidthModifier
-                    .retainFieldFocus(FocusedFieldType.TO)
+                    .retainFieldFocusOnConfigurationChange(FocusedFieldType.TO)
             )
             MailDivider()
             SubjectTextField(
                 maxWidthModifier
-                    .retainFieldFocus(FocusedFieldType.SUBJECT)
+                    .retainFieldFocusOnConfigurationChange(FocusedFieldType.SUBJECT)
             )
             MailDivider()
             BodyTextField(
                 maxWidthModifier
-                    .retainFieldFocus(FocusedFieldType.BODY)
+                    .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
             )
         }
     }
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+    }
+
+    // This is a workaround as the keyboard needs to be fully visible before the composable can be brought into
+    // the view, otherwise the bringIntoView() call has no effect.
+    // See https://kotlinlang.slack.com/archives/CJLTWPH7S/p1683542940483379 for more context.
+    LaunchedEffect(isKeyboardVisible) {
+        bringIntoViewRequester.bringIntoView()
     }
 }
 
@@ -215,6 +234,13 @@ private fun BodyTextField(modifier: Modifier = Modifier) {
             )
         }
     )
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun keyboardVisibilityAsState(): State<Boolean> {
+    val isImeVisible = WindowInsets.isImeVisible
+    return rememberUpdatedState(isImeVisible)
 }
 
 @Composable
