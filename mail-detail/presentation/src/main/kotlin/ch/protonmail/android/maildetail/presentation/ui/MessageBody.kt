@@ -146,11 +146,13 @@ internal fun MessageBodyWebView(
         },
         captureBackPresses = false,
         state = state,
-        modifier = if (webViewHeight == null) {
+        modifier = with(
             modifier
                 .testTag(MessageBodyTestTags.WebView)
                 .fillMaxWidth()
-                .onSizeChanged { size ->
+        ) {
+            if (webViewHeight == null) {
+                onSizeChanged { size ->
                     if (messageId != null && size.height >= 0 && contentLoaded) {
                         scope.launch {
                             delay(WEB_PAGE_CONTENT_LOAD_TIMEOUT)
@@ -158,11 +160,9 @@ internal fun MessageBodyWebView(
                         }
                     }
                 }
-        } else {
-            modifier
-                .testTag(MessageBodyTestTags.WebView)
-                .fillMaxWidth()
-                .height(webViewHeight.pxToDp())
+            } else {
+                height(webViewHeight.pxToDp())
+            }
         },
         client = client,
         chromeClient = chromeClient
