@@ -70,12 +70,8 @@ class MailboxItemPagingSource @AssistedInject constructor(
         val next = key.copy(pageKey = adjacentKeys.next)
         return LoadResult.Page(
             data = items,
-            prevKey = prev
-                .takeIf { isMultiUserLocalPageValid(type, it) }
-                .takeUnless { params is LoadParams.Prepend && items.isEmpty() },
-            nextKey = next
-                .takeIf { isMultiUserLocalPageValid(type, it) }
-                .takeUnless { params is LoadParams.Append && items.isEmpty() },
+            prevKey = prev.doNotTakeWhenMediatorShouldPrepend(params, items),
+            nextKey = next.doNotTakeWhenMediatorShouldAppend(params, items)
         )
     }
 
@@ -95,4 +91,40 @@ class MailboxItemPagingSource @AssistedInject constructor(
         val key = items.getRefreshPageKey(mailboxPageKey.pageKey)
         return mailboxPageKey.copy(pageKey = key)
     }
+
+    /*
+     * Use this MailboxPageKey when it is NOT Append OR items are NOT empty.
+     * (takeIf { params !is LoadParams.Append || items.isNotEmpty() })
+     *
+     * This is used to trigger the loading from the remote mediator, which happens when a NULL key is returned.
+     * We only want to return a null key for append operation when:
+     * - we are doing an APPEND operation AND
+     * - the list of items found locally (to be appended) is empty.
+     *
+     * In all other cases, this key will be used so that the mediator will NOT be triggered
+     * (eg. when we are doing an PREPEND op we never want to trigger a network call for appending)
+     */
+    private suspend fun MailboxPageKey.doNotTakeWhenMediatorShouldAppend(
+        params: LoadParams<MailboxPageKey>,
+        items: List<MailboxItem>
+    ) = takeIf { isMultiUserLocalPageValid(type, this) }
+        .takeUnless { params is LoadParams.Append && items.isEmpty() }
+
+    /*
+     * Use this MailboxPageKey when it is NOT Prepend OR items are NOT empty.
+     * (takeIf { params !is LoadParams.Prepend || items.isNotEmpty() })
+     *
+     * This is used to trigger the loading from the remote mediator, which happens when a NULL key is returned.
+     * We only want to return a null key for prepend operation when:
+     * - we are doing a PREPEND operation AND
+     * - the list of items found locally (to be prepended) is empty.
+     *
+     * In all other cases, this key will be used so that the mediator will NOT be triggered
+     * (eg. when we are doing an APPEND op we never want to trigger a network call for prepending)
+     */
+    private suspend fun MailboxPageKey.doNotTakeWhenMediatorShouldPrepend(
+        params: LoadParams<MailboxPageKey>,
+        items: List<MailboxItem>
+    ) = takeIf { isMultiUserLocalPageValid(type, this) }
+        .takeUnless { params is LoadParams.Prepend && items.isEmpty() }
 }
