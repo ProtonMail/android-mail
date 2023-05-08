@@ -32,7 +32,7 @@ import me.proton.core.label.domain.entity.LabelId
 interface ConversationRepository {
 
     /**
-     * Load all [Conversation] for [userId].
+     * Load all [Conversation] from local cache for [userId].
      */
     suspend fun loadConversations(
         userId: UserId,
@@ -49,7 +49,7 @@ interface ConversationRepository {
     ): Boolean
 
     /**
-     * Fetch all [Conversation] for [userId] filtered by [PageKey].
+     * Fetch all [Conversation] from network for [userId] filtered by [PageKey].
      */
     suspend fun fetchConversations(
         userId: UserId,

@@ -54,7 +54,6 @@ import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
@@ -65,8 +64,9 @@ import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @SuppressWarnings("LargeClass")
 class ConversationRepositoryImplTest {
 
@@ -106,38 +106,38 @@ class ConversationRepositoryImplTest {
     fun `verify conversations are inserted when remote call was successful`() = runTest {
         // Given
         val pageKey = PageKey()
-        val remote = listOf(
+        val expected = listOf(
             ConversationWithContextTestData.conversation1,
             ConversationWithContextTestData.conversation2,
             ConversationWithContextTestData.conversation3
         )
         coEvery { conversationLocalDataSource.getClippedPageKey(userId, pageKey) } returns pageKey
-        coEvery { conversationRemoteDataSource.getConversations(userId, pageKey) } returns remote.right()
+        coEvery { conversationRemoteDataSource.getConversations(userId, pageKey) } returns expected.right()
 
         // When
-        val result = conversationRepository.fetchConversations(userId, pageKey).getOrElse(::error)
+        val actual = conversationRepository.fetchConversations(userId, pageKey).getOrElse(::error)
 
         // Then
-        assertEquals(3, result.size)
+        assertEquals(expected, actual)
         coVerify(exactly = 1) { conversationRemoteDataSource.getConversations(userId, pageKey) }
-        coVerify(exactly = 1) { conversationLocalDataSource.upsertConversations(userId, pageKey, remote) }
+        coVerify(exactly = 1) { conversationLocalDataSource.upsertConversations(userId, pageKey, expected) }
     }
 
     @Test
     fun `load conversations returns local data`() = runTest {
         // Given
         val pageKey = PageKey()
-        val local = listOf(
+        val expected = listOf(
             ConversationWithContextTestData.conversation1,
             ConversationWithContextTestData.conversation2
         )
-        coEvery { conversationLocalDataSource.getConversations(userId, pageKey) } returns local
+        coEvery { conversationLocalDataSource.getConversations(userId, pageKey) } returns expected
 
         // When
-        val conversations = conversationRepository.loadConversations(userId, pageKey)
+        val actual = conversationRepository.loadConversations(userId, pageKey)
 
         // Then
-        assertEquals(2, conversations.size)
+        assertEquals(expected, actual)
         coVerify(exactly = 1) { conversationLocalDataSource.getConversations(userId, pageKey) }
     }
 
@@ -995,7 +995,7 @@ class ConversationRepositoryImplTest {
         val isConversationRead = conversationRepository.isCachedConversationRead(userId, conversationId).getOrNull()
 
         // Then
-        assertEquals(true, isConversationRead)
+        assertTrue(isConversationRead!!)
     }
 
     @Test
@@ -1008,7 +1008,7 @@ class ConversationRepositoryImplTest {
         val isConversationRead = conversationRepository.isCachedConversationRead(userId, conversationId).getOrNull()
 
         // Then
-        assertEquals(false, isConversationRead)
+        assertFalse(isConversationRead!!)
     }
 
     @Test

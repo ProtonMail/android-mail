@@ -49,7 +49,6 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -61,7 +60,6 @@ import me.proton.core.test.kotlin.TestDispatcherProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class MessageRepositoryImplTest {
 
     private val userId = UserId("1")
@@ -100,19 +98,19 @@ class MessageRepositoryImplTest {
     fun `load messages returns local data`() = runTest {
         // Given
         val pageKey = PageKey()
-        val localMessages = listOf(
+        val expected = listOf(
             getMessage(id = "1", time = 1000),
             getMessage(id = "2", time = 2000)
         )
 
-        coEvery { localDataSource.getMessages(userId, pageKey) } returns localMessages
-        coEvery { localDataSource.isLocalPageValid(userId, pageKey, localMessages) } returns true
+        coEvery { localDataSource.getMessages(userId, pageKey) } returns expected
+        coEvery { localDataSource.isLocalPageValid(userId, pageKey, expected) } returns true
 
         // When
         val messages = messageRepository.loadMessages(userId, pageKey)
 
         // Then
-        assertEquals(2, messages.size)
+        assertEquals(expected, messages)
         coVerify(exactly = 1) { localDataSource.getMessages(userId, pageKey) }
     }
 
@@ -139,21 +137,21 @@ class MessageRepositoryImplTest {
     fun `verify messages are inserted when remote call was successful`() = runTest {
         // Given
         val pageKey = PageKey()
-        val remoteMessages = listOf(
+        val expected = listOf(
             getMessage(id = "1", time = 1000),
             getMessage(id = "2", time = 2000),
             getMessage(id = "3", time = 3000)
         )
         coEvery { localDataSource.getClippedPageKey(userId, pageKey) } returns pageKey
-        coEvery { remoteDataSource.getMessages(any(), any()) } returns remoteMessages.right()
+        coEvery { remoteDataSource.getMessages(any(), any()) } returns expected.right()
 
         // When
-        val messages = messageRepository.fetchMessages(userId, pageKey).getOrElse(::error)
+        val actual = messageRepository.fetchMessages(userId, pageKey).getOrElse(::error)
 
         // Then
-        assertEquals(3, messages.size)
+        assertEquals(expected, actual)
         coVerify(exactly = 1) { remoteDataSource.getMessages(userId, pageKey) }
-        coVerify(exactly = 1) { localDataSource.upsertMessages(userId, pageKey, remoteMessages) }
+        coVerify(exactly = 1) { localDataSource.upsertMessages(userId, pageKey, expected) }
     }
 
     @Test

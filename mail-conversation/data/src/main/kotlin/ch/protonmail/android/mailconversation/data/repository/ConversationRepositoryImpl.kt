@@ -101,7 +101,13 @@ class ConversationRepositoryImpl @Inject constructor(
         pageKey = pageKey.copy(size = min(ConversationApi.maxPageSize, pageKey.size))
     )?.let { adaptedPageKey ->
         conversationRemoteDataSource.getConversations(userId = userId, pageKey = adaptedPageKey)
-            .onRight { conversations -> insertConversations(userId, adaptedPageKey, conversations) }
+            .onRight { conversations ->
+                conversationLocalDataSource.upsertConversations(
+                    userId = userId,
+                    pageKey = adaptedPageKey,
+                    items = conversations
+                )
+            }
     } ?: emptyList<ConversationWithContext>().right()
 
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
@@ -305,14 +311,4 @@ class ConversationRepositoryImpl @Inject constructor(
         messageLocalDataSource.upsertMessages(updatedMessages)
         return addLabel(userId, conversationId, labelId)
     }
-
-    private suspend fun insertConversations(
-        userId: UserId,
-        pageKey: PageKey,
-        conversations: List<ConversationWithContext>
-    ) = conversationLocalDataSource.upsertConversations(
-        userId = userId,
-        pageKey = pageKey,
-        items = conversations
-    )
 }
