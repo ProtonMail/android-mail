@@ -48,8 +48,9 @@ dependencies {
 
     implementation(Proton.Core.contactDomain)
     implementation(Proton.Core.labelDomain)
-    implementation(Proton.Core.user)
+    implementation(Proton.Core.mailSettings)
     implementation(Proton.Core.presentation)
+    implementation(Proton.Core.user)
 
     implementation(Dependencies.moduleDomainLibs)
     implementation(project(":mail-conversation:domain"))

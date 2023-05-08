@@ -38,6 +38,7 @@ object MailSettingsTestData {
     val mailSettings = buildMailSettings()
 
     fun buildMailSettings(
+        showImages: IntEnum<ShowImage>? = null,
         swipeLeft: SwipeAction? = null,
         swipeRight: SwipeAction? = null,
         enableFolderColor: Boolean = true,
@@ -49,7 +50,7 @@ object MailSettingsTestData {
         autoSaveContacts = true,
         composerMode = IntEnum(1, ComposerMode.Maximized),
         messageButtons = IntEnum(1, MessageButtons.UnreadFirst),
-        showImages = IntEnum(1, ShowImage.Remote),
+        showImages = showImages,
         showMoved = IntEnum(1, ShowMoved.Drafts),
         viewMode = IntEnum(1, ViewMode.NoConversationGrouping),
         viewLayout = IntEnum(1, ViewLayout.Row),
