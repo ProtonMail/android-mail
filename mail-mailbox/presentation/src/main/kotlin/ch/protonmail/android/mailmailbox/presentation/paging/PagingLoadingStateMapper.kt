@@ -24,24 +24,24 @@ import androidx.paging.compose.LazyPagingItems
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 
-@Suppress("ReturnCount")
 fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(): MailboxScreenState {
-    if (this.loadState.isLoading()) {
-        return if (this.itemCount == 0) {
-            MailboxScreenState.Loading
-        } else {
-            MailboxScreenState.LoadingWithData(this)
+    return when {
+        this.loadState.isLoading() -> {
+            if (this.itemCount == 0) {
+                MailboxScreenState.Loading
+            } else {
+                MailboxScreenState.LoadingWithData(this)
+            }
         }
-    } else if (this.loadState.refresh is LoadState.Error) {
-        return if (this.itemCount == 0) {
-            MailboxScreenState.Error
-        } else {
-            MailboxScreenState.ErrorWithData(this)
+        this.loadState.refresh is LoadState.Error -> {
+            if (this.itemCount == 0) {
+                MailboxScreenState.Error
+            } else {
+                MailboxScreenState.ErrorWithData(this)
+            }
         }
-    } else if (this.itemCount == 0) {
-        return MailboxScreenState.Empty
-    } else {
-        return MailboxScreenState.Data(this)
+        this.itemCount == 0 -> MailboxScreenState.Empty
+        else -> MailboxScreenState.Data(this)
     }
 }
 

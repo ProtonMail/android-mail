@@ -27,10 +27,10 @@ import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class PagingLoadingStateMapperTest {
+class PagingLoadingStateMapperKtTest {
 
     @Test
-    fun `mapToUiStates() should return Loading when source is loading and itemCount is 0`() {
+    fun `when source is loading and itemCount is 0 then Loading is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 0
             every { loadState.source.refresh } returns LoadState.Loading
@@ -39,7 +39,7 @@ class PagingLoadingStateMapperTest {
     }
 
     @Test
-    fun `mapToUiStates() should return Loading when mediator is loading and itemCount is 0`() {
+    fun `when mediator is loading and itemCount is 0 then Loading is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { itemCount } returns 0
@@ -50,7 +50,7 @@ class PagingLoadingStateMapperTest {
     }
 
     @Test
-    fun `mapToUiStates() should return Loading when append is loading and itemCount is 0`() {
+    fun `when append is loading and itemCount is 0 then Loading is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { loadState.mediator } returns mockk(relaxed = true)
             every { itemCount } returns 0
@@ -62,7 +62,7 @@ class PagingLoadingStateMapperTest {
     }
 
     @Test
-    fun `mapToUiStates() should return LoadingWithData when source is loading and itemCount is larger than 0`() {
+    fun `when source is loading and itemCount is larger than 0 then LoadingWithData is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.source.refresh } returns LoadState.Loading
@@ -71,7 +71,7 @@ class PagingLoadingStateMapperTest {
     }
 
     @Test
-    fun `mapToUiStates() should return LoadingWithData when mediator is loading and item count is larger than 0`() {
+    fun `when mediator is loading and item count is larger than 0 then LoadingWithData is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.source.refresh } returns LoadState.NotLoading(false)
@@ -82,7 +82,7 @@ class PagingLoadingStateMapperTest {
     }
 
     @Test
-    fun `mapToUiStates() should return Error when loadState is error and item count is 0`() {
+    fun `when loadState is error and item count is 0 then Error is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 0
             every { loadState.refresh } returns LoadState.Error(Exception())
@@ -94,7 +94,7 @@ class PagingLoadingStateMapperTest {
     }
 
     @Test
-    fun `mapToUiStates() should return ErrorWithData when loadState is error and item count larger than 0`() {
+    fun `when loadState is error and item count larger than 0 then ErrorWithData is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.refresh } returns LoadState.Error(Exception())
@@ -106,7 +106,7 @@ class PagingLoadingStateMapperTest {
     }
 
     @Test
-    fun `mapToUiStates() should return Empty when itemCount is 0`() {
+    fun `when itemCount is 0 then Empty is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 0
             every { loadState.source } returns mockk(relaxed = true)
@@ -119,7 +119,7 @@ class PagingLoadingStateMapperTest {
     }
 
     @Test
-    fun `mapToUiStates() should return Data when itemCount is larger than 0`() {
+    fun `when itemCount is larger than 0 then Data is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
             every { loadState.source } returns mockk(relaxed = true)

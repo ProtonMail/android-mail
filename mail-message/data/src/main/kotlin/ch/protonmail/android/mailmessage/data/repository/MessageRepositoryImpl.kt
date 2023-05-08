@@ -93,7 +93,7 @@ class MessageRepositoryImpl @Inject constructor(
         return remoteDataSource.getMessages(
             userId = userId,
             pageKey = adaptedPageKey
-        ).onRight { messages -> insertMessages(userId, adaptedPageKey, messages) }
+        ).onRight { messages -> upsertMessages(userId, adaptedPageKey, messages) }
     }
 
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) = localDataSource.markAsStale(userId, labelId)
@@ -221,7 +221,7 @@ class MessageRepositoryImpl @Inject constructor(
         return addLabel(userId = userId, messageId = messageId, labelId = labelId)
     }
 
-    private suspend fun insertMessages(
+    private suspend fun upsertMessages(
         userId: UserId,
         pageKey: PageKey,
         messages: List<Message>

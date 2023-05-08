@@ -103,7 +103,7 @@ class ConversationRepositoryImpl @Inject constructor(
         ) ?: return emptyList<ConversationWithContext>().right()
 
         return conversationRemoteDataSource.getConversations(userId = userId, pageKey = adaptedPageKey)
-            .onRight { conversations -> insertConversations(userId, adaptedPageKey, conversations) }
+            .onRight { conversations -> upsertConversations(userId, adaptedPageKey, conversations) }
     }
 
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
@@ -308,7 +308,7 @@ class ConversationRepositoryImpl @Inject constructor(
         return addLabel(userId, conversationId, labelId)
     }
 
-    private suspend fun insertConversations(
+    private suspend fun upsertConversations(
         userId: UserId,
         pageKey: PageKey,
         conversations: List<ConversationWithContext>

@@ -7,6 +7,11 @@
         <option value="$PROJECT_DIR$/config/detekt/config.yml" />
       </set>
     </option>
+    <option name="configurationFiles">
+      <list>
+        <option value="$PROJECT_DIR$/config/detekt/config.yml" />
+      </list>
+    </option>
     <option name="enableFormatting" value="true" />
     <option name="pluginJarPaths">
       <set>

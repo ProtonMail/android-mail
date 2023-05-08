@@ -68,7 +68,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-@SuppressWarnings("LargeClass")
 class ConversationRepositoryImplTest {
 
     private val userId = UserIdSample.Primary
@@ -701,7 +700,7 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `move to trash removes all labels from messages, except AllMail, AllDraft, AllSent`() = runTest {
+    fun `move to trash removes all labels from messages, except AllMail, AllDraft and AllSent`() = runTest {
         // given
         val conversationId = ConversationIdSample.WeatherForecast
         val conversation = ConversationSample.WeatherForecast
