@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # Copyright (c) 2022 Proton Technologies AG
 # This file is part of Proton Technologies AG and Proton Mail.
@@ -16,12 +18,23 @@
 # along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 #
 
-#!/bin/bash
-
 set -e
 
-release_notes_file_path="$1"
+source "$(dirname "${BASH_SOURCE[0]}")/prelude.sh"
 
-# Write a release notes file for Firebase App Distribution containing the branch name and the latest 5 commit messages.
-echo "BRANCH - $CI_COMMIT_BRANCH" > "$release_notes_file_path"
-git log --format="%h - %s%n%b" -n 5 >> "$release_notes_file_path"
+VERSION="$VERSION_NAME($VERSION_CODE)"
+
+printf "Removing SSH remote...\n"
+git remote remove origin || true
+
+printf "Setting up HTTPS remote...\n"
+git remote add origin https://$GITLAB_USER:$GITLAB_PAT_GIT_HTTPS@$CI_SERVER_HOST/$CI_PROJECT_PATH.git
+
+printf "Tagging version -> '%s'...\n" "$VERSION"
+
+if ! git tag $VERSION; then
+  printf "Unable to tag version '%s'. Is the format of the tag correct?.\n" "$VERSION"
+  exit 1
+fi
+
+git push origin $VERSION

@@ -41,7 +41,7 @@ platform :android do
 
   desc "Bump the version code"
   lane :bumpAppVersion do
-    sh("python3 ../scripts/bump_version.py")
+    sh("../scripts/release/bump_version.sh")
   end
 
   desc "Runs Unit Tests"
@@ -122,7 +122,7 @@ platform :android do
 
   desc "Tag commit with release version name and code"
   lane :tagRelease do
-    sh("python3 ../scripts/tag_release.py")
+    sh("../scripts/release/tag_release.sh")
   end
 
   desc "Submit a new Closed-Testing Build in Alpha-v6 track to Play Store"
