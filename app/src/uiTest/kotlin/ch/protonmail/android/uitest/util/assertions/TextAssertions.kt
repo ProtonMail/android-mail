@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.assertTextEquals
 import ch.protonmail.android.uitest.util.getString
 import ch.protonmail.android.uitest.util.hasTextColor
 
@@ -33,6 +34,8 @@ fun SemanticsNodeInteraction.assertTextColor(
 fun SemanticsNodeInteraction.assertTextColor(
     color: Color
 ): SemanticsNodeInteraction = assert(hasTextColor(color))
+
+fun SemanticsNodeInteraction.assertEmptyText() = assertTextEquals("")
 
 fun SemanticsNodeInteraction.assertTextContains(
     @StringRes valueRes: Int,

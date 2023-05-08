@@ -33,6 +33,8 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.espresso.action.ViewActions.swipeDown
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
+import ch.protonmail.android.uitest.robot.common.section.SnackbarSection
+import ch.protonmail.android.uitest.robot.mailbox.section.MailboxTopBarSection
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
 class MailboxRobot internal constructor(
@@ -111,3 +113,12 @@ private fun emptyMailboxMatcher(): SemanticsMatcher =
 
 fun ComposeContentTestRule.MailboxRobot(content: @Composable () -> Unit) =
     MailboxRobot(this).also { setContent(content) }
+
+
+internal fun MailboxRobotInterface.topAppBarSection(
+    func: MailboxTopBarSection.() -> Unit
+) = MailboxTopBarSection(composeTestRule).apply(func)
+
+internal fun MailboxRobotInterface.snackbarSection(
+    func: SnackbarSection.() -> Unit
+) = SnackbarSection(composeTestRule).apply(func)
