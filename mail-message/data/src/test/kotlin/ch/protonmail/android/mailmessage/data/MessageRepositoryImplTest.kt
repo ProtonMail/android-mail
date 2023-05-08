@@ -25,6 +25,7 @@ import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
@@ -33,7 +34,6 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
-import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -115,22 +115,40 @@ class MessageRepositoryImplTest {
     }
 
     @Test
-    fun `clip pageKey before calling remote`() = runTest {
+    fun `when clip pageKey returns a valid clipped key then remote is called with clipped key`() = runTest {
         // Given
         val pageKey = PageKey()
         val clippedPageKey = PageKey(filter = PageFilter(minTime = 0))
+        val expected = listOf(getMessage(id = "1", time = 1000))
         coEvery { localDataSource.getClippedPageKey(userId, pageKey) } returns clippedPageKey
-        coEvery { remoteDataSource.getMessages(userId, clippedPageKey) } returns emptyList<Message>().right()
+        coEvery { remoteDataSource.getMessages(userId, clippedPageKey) } returns expected.right()
 
         // When
-        val messages = messageRepository.getRemoteMessages(userId, pageKey).getOrElse(::error)
+        val actual = messageRepository.getRemoteMessages(userId, pageKey).getOrElse(::error)
 
         // Then
-        assertEquals(0, messages.size)
+        assertEquals(expected, actual)
         coVerify(ordering = Ordering.ORDERED) {
             localDataSource.getClippedPageKey(userId, pageKey)
             remoteDataSource.getMessages(userId, clippedPageKey)
         }
+    }
+
+    @Test
+    fun `when clip pageKey returns null then empty list is returned`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val messages = listOf(getMessage(id = "1", time = 1000))
+        coEvery { localDataSource.getClippedPageKey(userId, pageKey) } returns null
+        coEvery { remoteDataSource.getMessages(userId, any()) } returns messages.right()
+
+        // When
+        val actual = messageRepository.getRemoteMessages(userId, pageKey).getOrElse(::error)
+
+        // Then
+        assertEquals(emptyList(), actual)
+        coVerify { localDataSource.getClippedPageKey(userId, pageKey) }
+        coVerify { remoteDataSource wasNot Called }
     }
 
     @Test
@@ -152,6 +170,23 @@ class MessageRepositoryImplTest {
         assertEquals(expected, actual)
         coVerify(exactly = 1) { remoteDataSource.getMessages(userId, pageKey) }
         coVerify(exactly = 1) { localDataSource.upsertMessages(userId, pageKey, expected) }
+    }
+
+    @Test
+    fun `verify error is returned when remote call fails with Unreachable Error`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val expected = DataError.Remote.Http(NetworkError.Unreachable).left()
+        coEvery { localDataSource.getClippedPageKey(userId, pageKey) } returns pageKey
+        coEvery { remoteDataSource.getMessages(any(), any()) } returns expected
+
+        // When
+        val actual = messageRepository.getRemoteMessages(userId, pageKey)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify(exactly = 1) { remoteDataSource.getMessages(userId, pageKey) }
+        coVerify(exactly = 0) { localDataSource.upsertMessages(any(), any(), any()) }
     }
 
     @Test

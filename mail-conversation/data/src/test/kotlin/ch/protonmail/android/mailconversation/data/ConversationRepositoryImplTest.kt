@@ -25,13 +25,13 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.data.repository.ConversationRepositoryImpl
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
-import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRemoteDataSource
@@ -48,6 +48,7 @@ import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
 import ch.protonmail.android.testdata.message.MessageTestData
+import io.mockk.Called
 import io.mockk.Ordering
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -124,6 +125,23 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
+    fun `verify error is returned when remote call fails with Unreachable error`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val expected = DataError.Remote.Http(NetworkError.Unreachable).left()
+        coEvery { conversationLocalDataSource.getClippedPageKey(userId, pageKey) } returns pageKey
+        coEvery { conversationRemoteDataSource.getConversations(userId, pageKey) } returns expected
+
+        // When
+        val actual = conversationRepository.getRemoteConversations(userId, pageKey)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify(exactly = 1) { conversationRemoteDataSource.getConversations(userId, pageKey) }
+        coVerify(exactly = 0) { conversationLocalDataSource.upsertConversations(userId, any(), any()) }
+    }
+
+    @Test
     fun `load conversations returns local data`() = runTest {
         // Given
         val pageKey = PageKey()
@@ -142,23 +160,40 @@ class ConversationRepositoryImplTest {
     }
 
     @Test
-    fun `clip pageKey before calling remote`() = runTest {
+    fun `when clip pageKey returns valid clipped key then remote is called with clipped key`() = runTest {
         // Given
         val pageKey = PageKey()
         val clippedPageKey = PageKey(filter = PageFilter(minTime = 0))
+        val expected = listOf(ConversationWithContextTestData.conversation1)
         coEvery { conversationLocalDataSource.getClippedPageKey(userId, pageKey) } returns clippedPageKey
-        coEvery { conversationRemoteDataSource.getConversations(userId, clippedPageKey) } returns
-            emptyList<ConversationWithContext>().right()
+        coEvery { conversationRemoteDataSource.getConversations(userId, clippedPageKey) } returns expected.right()
 
         // When
-        val conversations = conversationRepository.getRemoteConversations(userId, pageKey).getOrElse(::error)
+        val actual = conversationRepository.getRemoteConversations(userId, pageKey).getOrElse(::error)
 
         // Then
-        assertEquals(0, conversations.size)
+        assertEquals(expected, actual)
         coVerify(ordering = Ordering.ORDERED) {
             conversationLocalDataSource.getClippedPageKey(userId, pageKey)
             conversationRemoteDataSource.getConversations(userId, clippedPageKey)
         }
+    }
+
+    @Test
+    fun `when clip pageKey returns null then empty list is returned`() = runTest {
+        // Given
+        val pageKey = PageKey()
+        val conversations = listOf(ConversationWithContextTestData.conversation1)
+        coEvery { conversationLocalDataSource.getClippedPageKey(userId, pageKey) } returns null
+        coEvery { conversationRemoteDataSource.getConversations(userId, any()) } returns conversations.right()
+
+        // When
+        val actual = conversationRepository.getRemoteConversations(userId, pageKey).getOrElse(::error)
+
+        // Then
+        assertEquals(emptyList(), actual)
+        coVerify { conversationLocalDataSource.getClippedPageKey(userId, pageKey) }
+        coVerify { conversationRemoteDataSource wasNot Called }
     }
 
     @Test

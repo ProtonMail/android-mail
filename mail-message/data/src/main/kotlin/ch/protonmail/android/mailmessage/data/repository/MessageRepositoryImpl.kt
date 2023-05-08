@@ -84,16 +84,17 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun isLocalPageValid(userId: UserId, pageKey: PageKey, items: List<Message>): Boolean =
         localDataSource.isLocalPageValid(userId, pageKey, items)
 
-    override suspend fun getRemoteMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> =
-        localDataSource.getClippedPageKey(
+    override suspend fun getRemoteMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> {
+        val adaptedPageKey = localDataSource.getClippedPageKey(
             userId = userId,
             pageKey = pageKey.copy(size = min(MessageApi.maxPageSize, pageKey.size))
-        )?.let { adaptedPageKey ->
-            remoteDataSource.getMessages(
-                userId = userId,
-                pageKey = adaptedPageKey
-            ).onRight { messages -> insertMessages(userId, adaptedPageKey, messages) }
-        } ?: emptyList<Message>().right()
+        ) ?: return emptyList<Message>().right()
+
+        return remoteDataSource.getMessages(
+            userId = userId,
+            pageKey = adaptedPageKey
+        ).onRight { messages -> insertMessages(userId, adaptedPageKey, messages) }
+    }
 
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) = localDataSource.markAsStale(userId, labelId)
 

@@ -96,19 +96,15 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun getRemoteConversations(
         userId: UserId,
         pageKey: PageKey
-    ): Either<DataError.Remote, List<ConversationWithContext>> = conversationLocalDataSource.getClippedPageKey(
-        userId = userId,
-        pageKey = pageKey.copy(size = min(ConversationApi.maxPageSize, pageKey.size))
-    )?.let { adaptedPageKey ->
-        conversationRemoteDataSource.getConversations(userId = userId, pageKey = adaptedPageKey)
-            .onRight { conversations ->
-                conversationLocalDataSource.upsertConversations(
-                    userId = userId,
-                    pageKey = adaptedPageKey,
-                    items = conversations
-                )
-            }
-    } ?: emptyList<ConversationWithContext>().right()
+    ): Either<DataError.Remote, List<ConversationWithContext>> {
+        val adaptedPageKey = conversationLocalDataSource.getClippedPageKey(
+            userId = userId,
+            pageKey = pageKey.copy(size = min(ConversationApi.maxPageSize, pageKey.size))
+        ) ?: return emptyList<ConversationWithContext>().right()
+
+        return conversationRemoteDataSource.getConversations(userId = userId, pageKey = adaptedPageKey)
+            .onRight { conversations -> insertConversations(userId, adaptedPageKey, conversations) }
+    }
 
     override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
         conversationLocalDataSource.markAsStale(userId, labelId)
@@ -311,4 +307,15 @@ class ConversationRepositoryImpl @Inject constructor(
         messageLocalDataSource.upsertMessages(updatedMessages)
         return addLabel(userId, conversationId, labelId)
     }
+
+    private suspend fun insertConversations(
+        userId: UserId,
+        pageKey: PageKey,
+        conversations: List<ConversationWithContext>
+    ) = conversationLocalDataSource.upsertConversations(
+        userId = userId,
+        pageKey = pageKey,
+        items = conversations
+    )
+
 }
