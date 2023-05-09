@@ -21,12 +21,12 @@ package ch.protonmail.android.uitest.robot.common.section
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
-import ch.protonmail.android.navigation.AppTestTags
+import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.uitest.util.assertions.hasAnyChildWith
 
 internal class SnackbarSection(composeTestRule: ComposeTestRule) {
 
-    private val snackbarHost = composeTestRule.onNodeWithTag(AppTestTags.SnackbarHost)
+    private val snackbarHost = composeTestRule.onNodeWithTag(CommonTestTags.SnackbarHost)
 
     fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 

@@ -35,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
@@ -104,7 +105,7 @@ fun Home(
         },
         snackbarHost = {
             ProtonSnackbarHost(
-                modifier = Modifier.testTag(AppTestTags.SnackbarHost),
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
                 hostState = snackbarHostState
             )
         }
@@ -201,8 +202,3 @@ private fun buildSidebarActions(
     onSubscription = launcherActions.onSubscription,
     onReportBug = launcherActions.onReportBug
 )
-
-object AppTestTags {
-
-    const val SnackbarHost = "SnackbarHost"
-}
