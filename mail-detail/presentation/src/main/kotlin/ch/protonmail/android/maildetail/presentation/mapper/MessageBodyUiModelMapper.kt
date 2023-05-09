@@ -19,24 +19,28 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MessageBodyUiModelMapper @Inject constructor(
-    private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody
+    private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody,
+    private val shouldShowRemoteContent: ShouldShowRemoteContent
 ) {
 
-    fun toUiModel(decryptedMessageBody: DecryptedMessageBody) = MessageBodyUiModel(
+    suspend fun toUiModel(userId: UserId, decryptedMessageBody: DecryptedMessageBody) = MessageBodyUiModel(
         messageBody = injectCssIntoDecryptedMessageBody(
             decryptedMessageBody.value,
             decryptedMessageBody.mimeType.toMimeTypeUiModel()
         ),
         mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
+        shouldShowRemoteContent = shouldShowRemoteContent(userId),
         attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
             MessageBodyAttachmentsUiModel(
                 attachments = decryptedMessageBody.attachments.map {
@@ -55,6 +59,7 @@ class MessageBodyUiModelMapper @Inject constructor(
     fun toUiModel(encryptedMessageBody: String) = MessageBodyUiModel(
         messageBody = encryptedMessageBody,
         mimeType = MimeTypeUiModel.PlainText,
+        shouldShowRemoteContent = false,
         attachments = null
     )
 

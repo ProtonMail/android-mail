@@ -261,7 +261,7 @@ class MessageDetailViewModel @Inject constructor(
                         }
                     }
                 },
-                ifRight = { MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(it)) }
+                ifRight = { MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(userId, it)) }
             )
             emitNewStateFrom(event)
         }

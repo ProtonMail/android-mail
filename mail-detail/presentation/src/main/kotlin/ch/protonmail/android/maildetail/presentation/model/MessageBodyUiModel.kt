@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.model
 data class MessageBodyUiModel(
     val messageBody: String,
     val mimeType: MimeTypeUiModel,
+    val shouldShowRemoteContent: Boolean,
     val attachments: MessageBodyAttachmentsUiModel?
 )
 

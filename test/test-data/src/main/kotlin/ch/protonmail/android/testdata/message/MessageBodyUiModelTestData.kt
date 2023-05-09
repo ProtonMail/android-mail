@@ -28,12 +28,14 @@ object MessageBodyUiModelTestData {
     val plainTextMessageBodyUiModel = MessageBodyUiModel(
         MessageBodyTestData.messageBody.body,
         mimeType = MimeTypeUiModel.PlainText,
+        shouldShowRemoteContent = false,
         attachments = null
     )
 
     val messageBodyWithAttachmentsUiModel = MessageBodyUiModel(
         MessageBodyTestData.messageBody.body,
         mimeType = MimeTypeUiModel.PlainText,
+        shouldShowRemoteContent = false,
         attachments = MessageBodyAttachmentsUiModel(
             limit = 3,
             attachments = listOf(
@@ -55,6 +57,7 @@ object MessageBodyUiModelTestData {
             </div>
         """.trimIndent(),
         mimeType = MimeTypeUiModel.Html,
+        shouldShowRemoteContent = false,
         attachments = null
     )
 }

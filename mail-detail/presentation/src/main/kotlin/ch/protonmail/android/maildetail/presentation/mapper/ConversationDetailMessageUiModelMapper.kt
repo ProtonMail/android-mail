@@ -89,7 +89,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
                 contacts,
                 folderColorSettings
             ),
-            messageBodyUiModel = messageBodyUiModelMapper.toUiModel(decryptedMessageBody)
+            messageBodyUiModel = messageBodyUiModelMapper.toUiModel(message.userId, decryptedMessageBody)
         )
     }
 

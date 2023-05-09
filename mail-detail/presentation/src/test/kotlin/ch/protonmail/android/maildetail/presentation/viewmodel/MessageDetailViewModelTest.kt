@@ -194,8 +194,8 @@ class MessageDetailViewModelTest {
         } returns messageDetailHeaderUiModel
     }
     private val messageBodyUiModelMapper = mockk<MessageBodyUiModelMapper> {
-        every {
-            toUiModel(decryptedMessageBody)
+        coEvery {
+            toUiModel(userId, decryptedMessageBody)
         } returns MessageBodyUiModelTestData.plainTextMessageBodyUiModel
         every {
             toUiModel(MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY)
@@ -870,8 +870,8 @@ class MessageDetailViewModelTest {
             )
         )
         coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
-        every {
-            messageBodyUiModelMapper.toUiModel(expectedMessageBody)
+        coEvery {
+            messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
         } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
 
 

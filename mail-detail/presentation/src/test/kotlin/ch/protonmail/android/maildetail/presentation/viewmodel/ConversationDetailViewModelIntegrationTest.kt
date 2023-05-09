@@ -58,6 +58,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetail
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
+import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.R
@@ -199,6 +200,9 @@ class ConversationDetailViewModelIntegrationTest {
         coEvery { this@mockk.invoke() } returns Duration.parse("PT0S")
     }
     private val getRootLabel: GetRootLabel = mockk()
+    private val shouldShowRemoteContent = mockk<ShouldShowRemoteContent> {
+        coEvery { this@mockk.invoke(userId) } returns true
+    }
     // endregion
 
     // region mappers
@@ -237,7 +241,7 @@ class ConversationDetailViewModelIntegrationTest {
             participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName),
             resolveParticipantName = resolveParticipantName
         ),
-        messageBodyUiModelMapper = MessageBodyUiModelMapper(injectCssIntoDecryptedMessageBody)
+        messageBodyUiModelMapper = MessageBodyUiModelMapper(injectCssIntoDecryptedMessageBody, shouldShowRemoteContent)
     )
 
     private val conversationMetadataMapper = ConversationDetailMetadataUiModelMapper()

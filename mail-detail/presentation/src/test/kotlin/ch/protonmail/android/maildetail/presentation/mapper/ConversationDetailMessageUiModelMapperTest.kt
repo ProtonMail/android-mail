@@ -42,7 +42,6 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.spyk
 import io.mockk.unmockkStatic
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import java.util.UUID
 import kotlin.test.AfterTest
@@ -97,7 +96,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         )
     )
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper = mockk {
-        every { toUiModel(any<DecryptedMessageBody>()) } returns mockk()
+        coEvery { toUiModel(any(), any<DecryptedMessageBody>()) } returns mockk()
     }
     private val mapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = avatarUiModelMapper,
@@ -157,7 +156,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         assertEquals(result.isUnread, messageWithLabels.message.unread)
         assertEquals(result.messageId, messageWithLabels.message.messageId)
         coVerify { messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contactsList, folderColorSettings) }
-        verify { messageBodyUiModelMapper.toUiModel(decryptedMessageBody) }
+        coVerify { messageBodyUiModelMapper.toUiModel(messageWithLabels.message.userId, decryptedMessageBody) }
     }
 
     @Test

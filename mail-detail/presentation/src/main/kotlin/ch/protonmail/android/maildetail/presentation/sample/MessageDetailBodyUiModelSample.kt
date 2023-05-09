@@ -27,10 +27,12 @@ object MessageDetailBodyUiModelSample {
     fun build(
         messageBody: String,
         mimeType: MimeTypeUiModel = MimeTypeUiModel.Html,
+        shouldShowRemoteContent: Boolean = false,
         attachments: MessageBodyAttachmentsUiModel? = null
     ) = MessageBodyUiModel(
         messageBody = messageBody,
         mimeType = mimeType,
+        shouldShowRemoteContent,
         attachments = attachments
     )
 }
