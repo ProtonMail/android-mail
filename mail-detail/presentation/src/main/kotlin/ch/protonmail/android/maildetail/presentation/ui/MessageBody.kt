@@ -18,9 +18,11 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import java.util.regex.Pattern
 import android.net.Uri
 import android.os.Build
 import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
 import android.webkit.WebSettings.FORCE_DARK_OFF
 import android.webkit.WebSettings.FORCE_DARK_ON
 import android.webkit.WebView
@@ -114,6 +116,16 @@ internal fun MessageBodyWebView(
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 request?.let { actions.onMessageBodyLinkClicked(it.url) }
                 return true
+            }
+            override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
+                return if (
+                    messageBodyUiModel.shouldShowRemoteContent.not() &&
+                    Pattern.compile("^https?://.*").matcher(request?.url.toString()).matches()
+                ) {
+                    WebResourceResponse("", "", null)
+                } else {
+                    super.shouldInterceptRequest(view, request)
+                }
             }
         }
     }
