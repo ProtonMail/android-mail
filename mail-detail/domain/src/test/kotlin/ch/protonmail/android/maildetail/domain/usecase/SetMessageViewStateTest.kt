@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailconversation.presentation.usecase
+package ch.protonmail.android.maildetail.domain.usecase
 
 import java.util.UUID
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
