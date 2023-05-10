@@ -50,7 +50,7 @@ class DeviceCapabilitiesImplTest {
     }
 
     @Test
-    fun `Should return web view available when only WEB_VIEW_PACKAGE is available and enabled`() {
+    fun `Should return web view available when only the standard web view package is available and enabled`() {
         // given
         applicationInfoMock.enabled = true
         every {
@@ -68,7 +68,7 @@ class DeviceCapabilitiesImplTest {
     }
 
     @Test
-    fun `Should return web view not available when only WEB_VIEW_PACKAGE is available but not enabled`() {
+    fun `Should return web view not available when only the standard web view package is available but not enabled`() {
         // given
         applicationInfoMock.enabled = false
         every {
@@ -86,7 +86,7 @@ class DeviceCapabilitiesImplTest {
     }
 
     @Test
-    fun `Should return web view available when only WEB_VIEW_GOOGLE_PACKAGE is available and enabled`() {
+    fun `Should return web view available when only the google web view package is available and enabled`() {
         // given
         applicationInfoMock.enabled = true
         every {
@@ -104,7 +104,7 @@ class DeviceCapabilitiesImplTest {
     }
 
     @Test
-    fun `Should return web view not available when only WEB_VIEW_GOOGLE_PACKAGE is available but not enabled`() {
+    fun `Should return web view not available when only the google web view package is available but not enabled`() {
         // given
         applicationInfoMock.enabled = false
         every {
