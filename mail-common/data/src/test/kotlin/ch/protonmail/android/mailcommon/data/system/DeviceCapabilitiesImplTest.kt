@@ -34,13 +34,13 @@ import kotlin.test.assertEquals
 
 class DeviceCapabilitiesImplTest {
 
-    private val applicationInfoMock = mockk<ApplicationInfo>(relaxed = true)
-    private val packageInfoMock = mockk<PackageInfo>(relaxed = true)
-    private val packageManagerMock = mockk<PackageManager>(relaxed = true) {
+    private val applicationInfoMock = mockk<ApplicationInfo>()
+    private val packageInfoMock = mockk<PackageInfo>()
+    private val packageManagerMock = mockk<PackageManager> {
         every { this@mockk.getPackageInfo(any<String>(), any<Int>()) } returns packageInfoMock
         every { this@mockk.getPackageInfo(any<String>(), any<PackageInfoFlags>()) } returns packageInfoMock
     }
-    private val context = mockk<Context>(relaxed = true) {
+    private val context = mockk<Context> {
         every { this@mockk.packageManager } returns packageManagerMock
     }
 
