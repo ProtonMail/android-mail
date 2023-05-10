@@ -105,13 +105,11 @@ internal fun MessageBodyWebView(
             it.settings.builtInZoomControls = true
             it.settings.displayZoomControls = false
             it.settings.javaScriptEnabled = false
+            it.settings.safeBrowsingEnabled = true
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.settings.isAlgorithmicDarkeningAllowed = true
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 it.settings.forceDark = if (isSystemInDarkTheme) FORCE_DARK_ON else FORCE_DARK_OFF
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                it.settings.safeBrowsingEnabled = true
             }
         },
         captureBackPresses = false,
