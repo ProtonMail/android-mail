@@ -55,7 +55,7 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
     ): Either<MarkConversationReadError, Unit> {
         val contextLabelId = selectedMailLabelId.flow.value.labelId
         return conversationRepository.observeConversationCacheUpToDate(userId, conversationId)
-            .onEmpty { emit(DataError.Local.Unknown.left()) }
+            .onEmpty { emit(DataError.Local.NoDataCached.left()) }
             .map {
                 it.fold(
                     ifLeft = { error -> DataSourceError(error).left() },

@@ -67,7 +67,7 @@ import me.proton.core.compose.theme.defaultSmallWeak
 
 @Composable
 @Suppress("LongParameterList", "LongMethod")
-internal fun MessageBody(
+fun MessageBody(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
     actions: MessageBody.Actions,
