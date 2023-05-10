@@ -8,10 +8,6 @@ fullTest:
       version: 29
     - model: Pixel2.arm
       version: 28
-    - model: Pixel2.arm
-      version: 27
-    - model: NexusLowRes
-      version: 24
 smokeTest:
   device:
     - model: Pixel2.arm
@@ -20,5 +16,3 @@ smokeTest:
       version: 30
     - model: Pixel2.arm
       version: 28
-    - model: Nexus5X
-      version: 25

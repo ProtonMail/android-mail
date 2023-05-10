@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.uitest.e2e.composer
 
-import androidx.test.filters.SdkSuppress
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
@@ -53,7 +52,6 @@ import org.junit.Test
 
 @SmokeExtendedTest
 @HiltAndroidTest
-@SdkSuppress(minSdkVersion = 28)
 @UninstallModules(ServerProofModule::class)
 internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
 

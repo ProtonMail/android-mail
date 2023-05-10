@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.uitest.e2e.mailbox
 
-import androidx.test.filters.SdkSuppress
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
@@ -51,7 +50,6 @@ import javax.inject.Inject
 
 @SmokeExtendedTest
 @HiltAndroidTest
-@SdkSuppress(minSdkVersion = 28)
 @UninstallModules(ServerProofModule::class)
 internal class ConversationMarkAsReadTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
 

@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.uitest.e2e.menu
 
-import androidx.test.filters.SdkSuppress
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -42,7 +41,6 @@ import org.junit.Test
 
 @RegressionTest
 @HiltAndroidTest
-@SdkSuppress(minSdkVersion = 28)
 @UninstallModules(ServerProofModule::class)
 internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
 
