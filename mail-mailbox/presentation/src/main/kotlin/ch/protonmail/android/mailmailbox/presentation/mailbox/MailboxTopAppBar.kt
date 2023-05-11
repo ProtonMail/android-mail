@@ -25,6 +25,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +51,7 @@ fun MailboxTopAppBar(
             ),
             shouldShowActions = true
         )
+
         is MailboxTopAppBarState.Data.SelectionMode -> UiModel(
             title = stringResource(id = R.string.mailbox_toolbar_selected_count, state.selectedCount),
             navigationIconRes = R.drawable.ic_proton_arrow_left,
@@ -57,6 +59,7 @@ fun MailboxTopAppBar(
             stringResource(id = R.string.mailbox_toolbar_exit_selection_mode_button_content_description),
             shouldShowActions = false
         )
+
         is MailboxTopAppBarState.Data.SearchMode -> UiModel.Empty.copy(
             navigationIconRes = R.drawable.ic_proton_arrow_left
         )
@@ -69,7 +72,7 @@ fun MailboxTopAppBar(
     }
 
     ProtonTopAppBar(
-        modifier = modifier,
+        modifier = modifier.testTag(MailboxTopAppBarTestTags.RootItem),
         title = { Text(modifier = Modifier.clickable(onClick = actions.onTitleClick), text = uiModel.title) },
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
@@ -82,7 +85,10 @@ fun MailboxTopAppBar(
         actions = {
 
             if (uiModel.shouldShowActions) {
-                IconButton(onClick = actions.onEnterSearchMode) {
+                IconButton(
+                    modifier = Modifier.testTag(MailboxTopAppBarTestTags.SearchButton),
+                    onClick = actions.onEnterSearchMode
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_magnifier),
                         contentDescription = stringResource(
@@ -90,7 +96,10 @@ fun MailboxTopAppBar(
                         )
                     )
                 }
-                IconButton(onClick = actions.onOpenComposer) {
+                IconButton(
+                    modifier = Modifier.testTag(MailboxTopAppBarTestTags.ComposerButton),
+                    onClick = actions.onOpenComposer
+                ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_pen_square),
                         contentDescription = stringResource(
@@ -151,4 +160,11 @@ fun LoadingMailboxTopAppBarPreview() {
             onOpenComposer = {}
         )
     )
+}
+
+object MailboxTopAppBarTestTags {
+
+    const val RootItem = "TopAppBarRootItem"
+    const val SearchButton = "SearchButton"
+    const val ComposerButton = "ComposerButton"
 }

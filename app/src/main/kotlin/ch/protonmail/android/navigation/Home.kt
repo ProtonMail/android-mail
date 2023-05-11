@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -101,7 +102,12 @@ fun Home(
                 navigationActions = buildSidebarActions(navController, launcherActions)
             )
         },
-        snackbarHost = { ProtonSnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = {
+            ProtonSnackbarHost(
+                modifier = Modifier.testTag(AppTestTags.SnackbarHost),
+                hostState = snackbarHostState
+            )
+        }
     ) { contentPadding ->
         Box(
             Modifier.padding(contentPadding)
@@ -195,3 +201,8 @@ private fun buildSidebarActions(
     onSubscription = launcherActions.onSubscription,
     onReportBug = launcherActions.onReportBug
 )
+
+object AppTestTags {
+
+    const val SnackbarHost = "SnackbarHost"
+}

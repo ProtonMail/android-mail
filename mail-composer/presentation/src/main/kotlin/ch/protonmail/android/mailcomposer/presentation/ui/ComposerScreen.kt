@@ -49,6 +49,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -86,26 +87,31 @@ fun ComposerScreen(
         FocusableForm(initialFocus = FocusedFieldType.TO) {
             Column(
                 modifier = maxWidthModifier
+                    .testTag(ComposerTestTags.RootItem)
                     .verticalScroll(rememberScrollState(), reverseScrolling = true)
             ) {
                 PrefixedEmailTextField(
                     prefixStringResource = R.string.from_prefix,
                     modifier = maxWidthModifier
+                        .testTag(ComposerTestTags.FromSender)
                 )
                 MailDivider()
                 PrefixedEmailTextField(
                     prefixStringResource = R.string.to_prefix,
                     modifier = maxWidthModifier
+                        .testTag(ComposerTestTags.ToRecipient)
                         .retainFieldFocusOnConfigurationChange(FocusedFieldType.TO)
                 )
                 MailDivider()
                 SubjectTextField(
                     maxWidthModifier
+                        .testTag(ComposerTestTags.Subject)
                         .retainFieldFocusOnConfigurationChange(FocusedFieldType.SUBJECT)
                 )
                 MailDivider()
                 BodyTextField(
                     maxWidthModifier
+                        .testTag(ComposerTestTags.MessageBody)
                         .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
                 )
             }
@@ -116,9 +122,13 @@ fun ComposerScreen(
 @Composable
 private fun ComposerTopBar(onCloseComposerClick: () -> Unit) {
     ProtonTopAppBar(
+        modifier = Modifier.testTag(ComposerTestTags.TopAppBar),
         title = {},
         navigationIcon = {
-            IconButton(onClick = onCloseComposerClick) {
+            IconButton(
+                modifier = Modifier.testTag(ComposerTestTags.CloseButton),
+                onClick = onCloseComposerClick
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Close,
                     tint = ProtonTheme.colors.iconNorm,
@@ -127,7 +137,11 @@ private fun ComposerTopBar(onCloseComposerClick: () -> Unit) {
             }
         },
         actions = {
-            IconButton(onClick = {}, enabled = false) {
+            IconButton(
+                modifier = Modifier.testTag(ComposerTestTags.SendButton),
+                onClick = {},
+                enabled = false
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_proton_paper_plane),
                     tint = ProtonTheme.colors.iconDisabled,
@@ -151,6 +165,7 @@ private fun PrefixedEmailTextField(@StringRes prefixStringResource: Int, modifie
         prefix = {
             Row {
                 Text(
+                    modifier = Modifier.testTag(ComposerTestTags.FieldPrefix),
                     text = stringResource(prefixStringResource),
                     color = ProtonTheme.colors.textWeak,
                     style = ProtonTheme.typography.defaultNorm
@@ -180,6 +195,7 @@ private fun SubjectTextField(modifier: Modifier = Modifier) {
         maxLines = 3,
         placeholder = {
             Text(
+                modifier = Modifier.testTag(ComposerTestTags.SubjectPlaceholder),
                 text = stringResource(R.string.subject_placeholder),
                 color = ProtonTheme.colors.textHint,
                 style = ProtonTheme.typography.defaultNorm
@@ -206,6 +222,7 @@ private fun BodyTextField(modifier: Modifier = Modifier) {
         colors = TextFieldDefaults.composerTextFieldColors(),
         placeholder = {
             Text(
+                modifier = Modifier.testTag(ComposerTestTags.MessageBodyPlaceholder),
                 text = stringResource(R.string.compose_message_placeholder),
                 color = ProtonTheme.colors.textHint,
                 style = ProtonTheme.typography.defaultNorm
@@ -245,4 +262,19 @@ private enum class FocusedFieldType {
     TO,
     SUBJECT,
     BODY
+}
+
+object ComposerTestTags {
+
+    const val RootItem = "ComposerScreenRootItem"
+    const val TopAppBar = "ComposerTopAppBar"
+    const val FieldPrefix = "FieldPrefix"
+    const val FromSender = "FromTextField"
+    const val ToRecipient = "ToTextField"
+    const val Subject = "Subject"
+    const val SubjectPlaceholder = "SubjectPlaceholder"
+    const val MessageBody = "MessageBody"
+    const val MessageBodyPlaceholder = "MessageBodyPlaceholder"
+    const val CloseButton = "CloseButton"
+    const val SendButton = "SendButton"
 }
