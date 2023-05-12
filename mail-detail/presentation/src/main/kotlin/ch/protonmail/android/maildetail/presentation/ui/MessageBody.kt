@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
-import java.util.regex.Pattern
 import android.net.Uri
 import android.os.Build
 import android.webkit.WebResourceRequest
@@ -53,6 +52,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.extensions.isRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -118,10 +118,7 @@ internal fun MessageBodyWebView(
                 return true
             }
             override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
-                return if (
-                    messageBodyUiModel.shouldShowRemoteContent.not() &&
-                    Pattern.compile("^https?://.*").matcher(request?.url.toString()).matches()
-                ) {
+                return if (!messageBodyUiModel.shouldShowRemoteContent && request?.isRemoteContent() == true) {
                     WebResourceResponse("", "", null)
                 } else {
                     super.shouldInterceptRequest(view, request)
