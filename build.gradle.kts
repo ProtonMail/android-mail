@@ -77,7 +77,7 @@ tasks.register("clean", Delete::class) {
 }
 
 setupDependenciesPlugin()
-setupTestLogging()
+setupTests()
 
 kotlinCompilerArgs(
     "-Xopt-in=kotlin.RequiresOptIn",
@@ -111,12 +111,18 @@ fun isNonStable(version: String): Boolean {
     return isStable.not()
 }
 
-fun Project.setupTestLogging() {
+fun Project.setupTests() {
     for (sub in subprojects) {
         sub.tasks.withType<Test> {
+            // Test logging
             testLogging {
                 exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
             }
+
+            // Additional JVM args to bypass strong encapsulation (needed for mocking)
+            jvmArgs(
+                "--add-opens", "java.base/java.util=ALL-UNNAMED"
+            )
         }
     }
 }
