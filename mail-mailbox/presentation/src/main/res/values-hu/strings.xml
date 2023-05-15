@@ -31,6 +31,7 @@
     <item quantity="one">%d olvasatlan</item>
     <item quantity="other">%d olvasatlan</item>
   </plurals>
-  <string name="mailbox_default_recipient">(No Recipient)</string>
-  <string name="mailbox_default_sender">(No Sender)</string>
+  <string name="mailbox_default_recipient">(Nincs címzett)</string>
+  <string name="mailbox_default_sender">(Nincs feladó)</string>
+  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
 </resources>

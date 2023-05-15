@@ -77,4 +77,5 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Презентация</string>
   <string name="attachment_type_description">файл %1$s</string>
+  <string name="message_body_error_no_webview">Вам необходимо установить Android System WebView, чтобы увидеть содержимое этого сообщения.</string>
 </resources>

@@ -71,4 +71,5 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Presentasi</string>
   <string name="attachment_type_description">%1$s berkas</string>
+  <string name="message_body_error_no_webview">Anda perlu memiliki Android System WebView terpasang untuk melihat konten pesan ini.</string>
 </resources>

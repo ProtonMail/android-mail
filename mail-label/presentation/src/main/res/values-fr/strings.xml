@@ -17,14 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="label_title_inbox">Boîte de réception</string>
+  <string name="label_title_inbox">Boite de réception</string>
   <string name="label_title_drafts">Brouillons</string>
   <string name="label_title_sent">Envoyés</string>
   <string name="label_title_starred">Favoris</string>
   <string name="label_title_archive">Archives</string>
   <string name="label_title_spam">Indésirables/spam</string>
   <string name="label_title_trash">Corbeille</string>
-  <string name="label_title_outbox">Boîte d\'envoi</string>
+  <string name="label_title_outbox">Boite d\'envoi</string>
   <string name="label_title_all_mail">Tous les messages</string>
   <string name="label_title_all_drafts">Tous les brouillons</string>
   <string name="label_title_all_sent">Tous les messages envoyés</string>

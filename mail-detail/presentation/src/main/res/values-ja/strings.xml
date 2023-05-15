@@ -71,4 +71,5 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">プレゼンテーション</string>
   <string name="attachment_type_description">%1$s 件のファイル</string>
+  <string name="message_body_error_no_webview">このメッセージの内容を見るには、Android システムの WebView がインストールされている必要があります。</string>
 </resources>

@@ -35,4 +35,5 @@
   </plurals>
   <string name="mailbox_default_recipient">(Немає отримувача)</string>
   <string name="mailbox_default_sender">(Немає відправника)</string>
+  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
 </resources>

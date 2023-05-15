@@ -77,4 +77,5 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Prezentace</string>
   <string name="attachment_type_description">Soubor %1$s</string>
+  <string name="message_body_error_no_webview">Pro zobrazení obsahu této zprávy musíte mít nainstalovanu součást WebView systému Android.</string>
 </resources>

@@ -52,10 +52,10 @@
   </plurals>
   <string name="attachment_show_more_label">+ %1$d de plus</string>
   <!-- Bottom Sheet -->
-  <string name="bottom_sheet_move_to_title">Déplacer...</string>
+  <string name="bottom_sheet_move_to_title">Déplacer…</string>
   <string name="bottom_sheet_done_action">Terminé</string>
   <string name="bottom_sheet_archive_action">Archiver également ?</string>
-  <string name="bottom_sheet_label_as_title">Labelliser...</string>
+  <string name="bottom_sheet_label_as_title">Labelliser…</string>
   <string name="error_relabel_message_failed">Le nouveau label n\'a pas pu être appliqué au message. Réessayez.</string>
   <string name="error_relabel_conversation_failed">Le nouveau label n\'a pas pu être appliqué à la conversation. Réessayez.</string>
   <string name="please_go_back_online_to_load_messages">Vous êtes hors ligne. Veuillez vous reconnecter pour charger les messages.</string>
@@ -73,4 +73,5 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Presentation</string>
   <string name="attachment_type_description">Fichier %1$s</string>
+  <string name="message_body_error_no_webview">Vous devez installer Android System WebView pour voir le contenu de ce message.</string>
 </resources>
