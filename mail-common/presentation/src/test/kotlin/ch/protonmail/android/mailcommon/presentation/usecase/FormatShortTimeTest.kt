@@ -150,12 +150,12 @@ class FormatShortTimeTest {
     fun `when the message is from before the current year show the day month and year`() {
         // Given
         givenCurrentTimeAndLocale(1_658_994_137.seconds, Locale.UK) // Thu Jul 28 09:42:17 CEST 2022
-        val itemTime = 1_631_518_804 // Mon Sep 13 09:40:04 CEST 2021
+        val itemTime = 1_634_119_200 // Wed Oct 13 12:00:00 CEST 2021
         // When
         val actual = formatter.invoke(itemTime.seconds)
         // Then
         assertIs<TextUiModel.Text>(actual, actual.toString())
-        assertEquals(TextUiModel.Text("13 Sep 2021"), actual)
+        assertEquals(TextUiModel.Text("13 Oct 2021"), actual)
     }
 
     @Test
