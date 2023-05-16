@@ -28,7 +28,9 @@ import ch.protonmail.android.mailconversation.data.local.entity.ConversationEnti
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailmessage.data.local.MessageConverters
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
+import ch.protonmail.android.mailmessage.data.local.converters.AttachmentWorkerStatusConverters
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
+import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
@@ -136,6 +138,7 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         MessageLabelEntity::class,
         MessageBodyEntity::class,
         MessageAttachmentEntity::class,
+        MessageAttachmentMetadataEntity::class,
         // mail-conversation
         ConversationEntity::class,
         ConversationLabelEntity::class,
@@ -163,7 +166,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
     ChallengeConverters::class,
     MessageConverters::class,
     ConversationConverters::class,
-    MapConverters::class
+    MapConverters::class,
+    AttachmentWorkerStatusConverters::class
 )
 @Suppress("UnnecessaryAbstractClass")
 abstract class AppDatabase :
@@ -192,12 +196,13 @@ abstract class AppDatabase :
     companion object {
 
         const val name = "db-mail"
-        const val version = 4
+        const val version = 5
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
             AppDatabaseMigrations.MIGRATION_2_3,
             AppDatabaseMigrations.MIGRATION_3_4,
+            AppDatabaseMigrations.MIGRATION_4_5
         )
         fun buildDatabase(context: Context): AppDatabase =
             databaseBuilder<AppDatabase>(context, name)

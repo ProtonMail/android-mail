@@ -21,10 +21,10 @@ package ch.protonmail.android.db
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
-import me.proton.core.usersettings.data.db.OrganizationDatabase
 import me.proton.core.key.data.db.PublicAddressDatabase
 import me.proton.core.keytransparency.data.local.KeyTransparencyDatabase
 import me.proton.core.user.data.db.AddressDatabase
+import me.proton.core.usersettings.data.db.OrganizationDatabase
 
 object AppDatabaseMigrations {
 
@@ -45,6 +45,13 @@ object AppDatabaseMigrations {
             PublicAddressDatabase.MIGRATION_2.migrate(database)
             KeyTransparencyDatabase.MIGRATION_0.migrate(database)
         }
+    }
+
+    val MIGRATION_4_5 = object : Migration(4, 5) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            MessageDatabase.MIGRATION_1.migrate(database)
+        }
+
     }
 
 }

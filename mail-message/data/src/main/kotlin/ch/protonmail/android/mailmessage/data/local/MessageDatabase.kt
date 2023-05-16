@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local
 
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentDao
+import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentMetaDataDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
@@ -34,6 +35,7 @@ interface MessageDatabase : Database, PageIntervalDatabase {
     fun messageLabelDao(): MessageLabelDao
     fun messageBodyDao(): MessageBodyDao
     fun messageAttachmentDao(): MessageAttachmentDao
+    fun storedMessageAttachmentMetaDataDao(): MessageAttachmentMetaDataDao
 
     companion object {
 
@@ -45,6 +47,16 @@ interface MessageDatabase : Database, PageIntervalDatabase {
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_messageId` ON `MessageAttachmentEntity` (`messageId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_attachmentId` ON `MessageAttachmentEntity` (`attachmentId`)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentEntity_userId_messageId` ON `MessageAttachmentEntity` (`userId`, `messageId`)")
+            }
+        }
+
+        val MIGRATION_1 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Added StoredMessageAttachmentMetadataEntity.
+                database.execSQL("CREATE TABLE IF NOT EXISTS `MessageAttachmentMetadataEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `attachmentId` TEXT NOT NULL, `hash` TEXT, `path` TEXT, `status` TEXT NOT NULL, PRIMARY KEY(`userId`,`messageId`,`attachmentId`), FOREIGN KEY(`userId`, `messageId`, `attachmentId`) REFERENCES `MessageAttachmentEntity`(`userId`,`messageId`,`attachmentId`) ON UPDATE NO ACTION ON DELETE CASCADE)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentMetadataEntity_userId` ON `MessageAttachmentMetadataEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentMetadataEntity_messageId` ON `MessageAttachmentMetadataEntity` (`messageId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentMetadataEntity_attachmentId` ON `MessageAttachmentMetadataEntity` (`attachmentId`)")
             }
         }
     }
