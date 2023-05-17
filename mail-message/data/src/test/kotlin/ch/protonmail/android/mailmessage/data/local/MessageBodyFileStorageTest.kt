@@ -43,7 +43,7 @@ internal class MessageBodyFileStorageTest {
         coEvery {
             internalFileStorageMock.readFromFile(
                 UserIdSample.Primary,
-                InternalFileStorage.Folder.MESSAGE_BODIES,
+                InternalFileStorage.Folder.MessageBodies,
                 InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id)
             )
         } returns MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
@@ -64,7 +64,7 @@ internal class MessageBodyFileStorageTest {
         coEvery {
             internalFileStorageMock.readFromFile(
                 userId = UserIdSample.Primary,
-                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                folder = InternalFileStorage.Folder.MessageBodies,
                 fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id)
             )
         } returns null
@@ -89,7 +89,7 @@ internal class MessageBodyFileStorageTest {
         coEvery {
             internalFileStorageMock.writeToFile(
                 userId = UserIdSample.Primary,
-                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                folder = InternalFileStorage.Folder.MessageBodies,
                 fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id),
                 content = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
             )
@@ -102,7 +102,7 @@ internal class MessageBodyFileStorageTest {
         coVerify {
             internalFileStorageMock.writeToFile(
                 userId = UserIdSample.Primary,
-                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                folder = InternalFileStorage.Folder.MessageBodies,
                 fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id),
                 content = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
             )
@@ -119,7 +119,7 @@ internal class MessageBodyFileStorageTest {
         coEvery {
             internalFileStorageMock.writeToFile(
                 userId = UserIdSample.Primary,
-                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                folder = InternalFileStorage.Folder.MessageBodies,
                 fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id),
                 content = MessageBodyTestData.RAW_ENCRYPTED_MESSAGE_BODY
             )
@@ -138,7 +138,7 @@ internal class MessageBodyFileStorageTest {
         coEvery {
             internalFileStorageMock.deleteFile(
                 userId = UserIdSample.Primary,
-                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                folder = InternalFileStorage.Folder.MessageBodies,
                 fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id)
             )
         } returns true
@@ -157,7 +157,7 @@ internal class MessageBodyFileStorageTest {
         coEvery {
             internalFileStorageMock.deleteFile(
                 userId = UserIdSample.Primary,
-                folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+                folder = InternalFileStorage.Folder.MessageBodies,
                 fileIdentifier = InternalFileStorage.FileIdentifier(MessageIdSample.Invoice.id)
             )
         } returns false
@@ -174,7 +174,7 @@ internal class MessageBodyFileStorageTest {
     fun `should delete all message bodies from internal storage and return true on success`() = runTest {
         // Given
         coEvery {
-            internalFileStorageMock.deleteFolder(UserIdSample.Primary, InternalFileStorage.Folder.MESSAGE_BODIES)
+            internalFileStorageMock.deleteFolder(UserIdSample.Primary, InternalFileStorage.Folder.MessageBodies)
         } returns true
 
 
@@ -189,7 +189,7 @@ internal class MessageBodyFileStorageTest {
     fun `should delete all message bodies from internal storage and return false on success`() = runTest {
         // Given
         coEvery {
-            internalFileStorageMock.deleteFolder(UserIdSample.Primary, InternalFileStorage.Folder.MESSAGE_BODIES)
+            internalFileStorageMock.deleteFolder(UserIdSample.Primary, InternalFileStorage.Folder.MessageBodies)
         } returns false
 
 

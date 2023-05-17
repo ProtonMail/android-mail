@@ -46,18 +46,30 @@ class FileHelper @Inject constructor(
         }.getOrNull()
     }
 
+    suspend fun getFile(folder: Folder, filename: Filename): File? = fileOperationIn(folder) {
+        runCatching { fileFactory.fileFrom(folder, filename).takeIf { it.exists() } }.getOrNull()
+    }
+
     suspend fun writeToFile(
         folder: Folder,
         filename: Filename,
         content: String
-    ): Boolean = fileOperationIn(folder) {
-        val fileToSave = fileFactory.fileFrom(folder, filename)
-        runCatching {
-            fileStreamFactory.outputStreamFrom(fileToSave).use {
-                it.write(content.toByteArray())
+    ): Boolean = writeToFile(folder, filename, content.toByteArray()) != null
+
+    suspend fun writeToFile(
+        folder: Folder,
+        filename: Filename,
+        content: ByteArray
+    ): File? {
+        return fileOperationIn(folder) {
+            val fileToSave = fileFactory.fileFrom(folder, filename)
+            val result = runCatching { fileStreamFactory.outputStreamFrom(fileToSave).use { it.write(content) } }
+            when (result.isSuccess) {
+                true -> fileToSave
+                false -> null
             }
-        }.isSuccess
-    } ?: false
+        }
+    }
 
     suspend fun deleteFile(folder: Folder, filename: Filename): Boolean = fileOperationIn(folder) {
         runCatching {

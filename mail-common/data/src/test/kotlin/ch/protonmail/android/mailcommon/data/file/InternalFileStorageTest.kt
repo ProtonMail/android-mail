@@ -31,6 +31,7 @@ import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.After
@@ -43,7 +44,7 @@ class InternalFileStorageTest {
         every { filesDir } returns File(InternalStoragePath)
     }
     private val fileHelperMock = mockk<FileHelper>()
-    private val internalFileStorage = InternalFileStorage(contextMock, fileHelperMock)
+    private val internalFileStorage = InternalFileStorage(contextMock, fileHelperMock, Dispatchers.Unconfined)
 
     @Before
     fun setUp() {
@@ -55,8 +56,12 @@ class InternalFileStorageTest {
             every { digest(UserId.Raw.toByteArray()) } returns UserId.Digest.toByteArray()
         }
         every { MessageDigest.getInstance("SHA256") } returns messageDigestMock
-        every { Base64.encodeToString(MessageId.Digest.toByteArray(), Base64.URL_SAFE) } returns MessageId.EncodedDigest
-        every { Base64.encodeToString(UserId.Digest.toByteArray(), Base64.URL_SAFE) } returns UserId.EncodedDigest
+        every {
+            Base64.encodeToString(MessageId.Digest.toByteArray(), Base64.URL_SAFE or Base64.NO_WRAP)
+        } returns MessageId.EncodedDigest
+        every {
+            Base64.encodeToString(UserId.Digest.toByteArray(), Base64.URL_SAFE or Base64.NO_WRAP)
+        } returns UserId.EncodedDigest
     }
 
     @After
@@ -78,7 +83,7 @@ class InternalFileStorageTest {
         // When
         val actualFileContent = internalFileStorage.readFromFile(
             userId = UserId.Object,
-            folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+            folder = InternalFileStorage.Folder.MessageBodies,
             fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
         )
 
@@ -99,12 +104,55 @@ class InternalFileStorageTest {
         // When
         val actualFileContent = internalFileStorage.readFromFile(
             userId = UserId.Object,
-            folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+            folder = InternalFileStorage.Folder.MessageBodies,
             fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
         )
 
         // Then
         assertNull(actualFileContent)
+    }
+
+    @Test
+    fun `should read file using a correct sanitised folder and filename and return file on success`() = runTest {
+        // Given
+        val fileMock = mockk<File>()
+        coEvery {
+            fileHelperMock.getFile(
+                folder = FileHelper.Folder(CompleteFolderPath),
+                filename = FileHelper.Filename(MessageId.EncodedDigest)
+            )
+        } returns fileMock
+
+        // When
+        val actualFile = internalFileStorage.getFile(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageBodies,
+            fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
+        )
+
+        // Then
+        assertEquals(fileMock, actualFile)
+    }
+
+    @Test
+    fun `should read file using a correct sanitised folder and filename and return null on failure`() = runTest {
+        // Given
+        coEvery {
+            fileHelperMock.getFile(
+                folder = FileHelper.Folder(CompleteFolderPath),
+                filename = FileHelper.Filename(MessageId.EncodedDigest)
+            )
+        } returns null
+
+        // When
+        val actualFile = internalFileStorage.getFile(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageBodies,
+            fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
+        )
+
+        // Then
+        assertNull(actualFile)
     }
 
     @Test
@@ -121,7 +169,7 @@ class InternalFileStorageTest {
         // When
         val fileWritten = internalFileStorage.writeToFile(
             userId = UserId.Object,
-            folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+            folder = InternalFileStorage.Folder.MessageBodies,
             fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw),
             content = MessageBody
         )
@@ -144,13 +192,62 @@ class InternalFileStorageTest {
         // When
         val fileWritten = internalFileStorage.writeToFile(
             userId = UserId.Object,
-            folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+            folder = InternalFileStorage.Folder.MessageBodies,
             fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw),
             content = MessageBody
         )
 
         // Then
         assertFalse(fileWritten)
+    }
+
+    @Test
+    fun `should write file using a correct sanitised folder and filename and return file on success`() = runTest {
+        // Given
+        val fileMock = mockk<File>()
+        val fileByteArray = MessageBody.toByteArray()
+        coEvery {
+            fileHelperMock.writeToFile(
+                folder = FileHelper.Folder(CompleteFolderPath),
+                filename = FileHelper.Filename(MessageId.EncodedDigest),
+                content = fileByteArray
+            )
+        } returns fileMock
+
+        // When
+        val actualFile = internalFileStorage.writeFile(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageBodies,
+            fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw),
+            content = fileByteArray
+        )
+
+        // Then
+        assertEquals(fileMock, actualFile)
+    }
+
+    @Test
+    fun `should write file using a correct sanitised folder and filename and return null on failure`() = runTest {
+        // Given
+        val fileByteArray = MessageBody.toByteArray()
+        coEvery {
+            fileHelperMock.writeToFile(
+                folder = FileHelper.Folder(CompleteFolderPath),
+                filename = FileHelper.Filename(MessageId.EncodedDigest),
+                content = fileByteArray
+            )
+        } returns null
+
+        // When
+        val actualFile = internalFileStorage.writeFile(
+            userId = UserId.Object,
+            folder = InternalFileStorage.Folder.MessageBodies,
+            fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw),
+            content = fileByteArray
+        )
+
+        // Then
+        assertNull(actualFile)
     }
 
     @Test
@@ -166,7 +263,7 @@ class InternalFileStorageTest {
         // When
         val fileDeleted = internalFileStorage.deleteFile(
             userId = UserId.Object,
-            folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+            folder = InternalFileStorage.Folder.MessageBodies,
             fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
         )
 
@@ -187,7 +284,7 @@ class InternalFileStorageTest {
         // When
         val fileDeleted = internalFileStorage.deleteFile(
             userId = UserId.Object,
-            folder = InternalFileStorage.Folder.MESSAGE_BODIES,
+            folder = InternalFileStorage.Folder.MessageBodies,
             fileIdentifier = InternalFileStorage.FileIdentifier(MessageId.Raw)
         )
 
@@ -203,7 +300,7 @@ class InternalFileStorageTest {
         // When
         val fileDeleted = internalFileStorage.deleteFolder(
             userId = UserId.Object,
-            folder = InternalFileStorage.Folder.MESSAGE_BODIES
+            folder = InternalFileStorage.Folder.MessageBodies
         )
 
         // Then
@@ -218,7 +315,7 @@ class InternalFileStorageTest {
         // When
         val fileDeleted = internalFileStorage.deleteFolder(
             userId = UserId.Object,
-            folder = InternalFileStorage.Folder.MESSAGE_BODIES
+            folder = InternalFileStorage.Folder.MessageBodies
         )
 
         // Then
@@ -228,12 +325,14 @@ class InternalFileStorageTest {
     private companion object TestData {
 
         object MessageId {
+
             const val Raw = "message_id"
             const val Digest = "message_id_digest"
             const val EncodedDigest = "message_id_encoded"
         }
 
         object UserId {
+
             const val Raw = "user_id"
             val Object = UserId(Raw)
             const val Digest = "user_id_digest"

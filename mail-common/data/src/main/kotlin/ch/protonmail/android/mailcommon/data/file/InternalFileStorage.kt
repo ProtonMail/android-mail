@@ -18,52 +18,83 @@
 
 package ch.protonmail.android.mailcommon.data.file
 
+import java.io.File
 import java.security.MessageDigest
 import android.content.Context
 import android.util.Base64
+import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class InternalFileStorage @Inject constructor(
-    @ApplicationContext
-    private val applicationContext: Context,
-    private val fileHelper: FileHelper
+    @ApplicationContext private val applicationContext: Context,
+    private val fileHelper: FileHelper,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
     suspend fun readFromFile(
         userId: UserId,
         folder: Folder,
         fileIdentifier: FileIdentifier
-    ): String? = fileHelper.readFromFile(
-        folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
-        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
-    )
+    ): String? = withContext(ioDispatcher) {
+        fileHelper.readFromFile(
+            folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+            filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
+        )
+    }
+
+    suspend fun getFile(
+        userId: UserId,
+        folder: Folder,
+        fileIdentifier: FileIdentifier
+    ): File? = withContext(ioDispatcher) {
+        fileHelper.getFile(
+            folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+            filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
+        )
+    }
 
     suspend fun writeToFile(
         userId: UserId,
         folder: Folder,
         fileIdentifier: FileIdentifier,
         content: String
-    ): Boolean = fileHelper.writeToFile(
-        folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
-        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
-        content = content
-    )
+    ): Boolean = withContext(ioDispatcher) {
+        fileHelper.writeToFile(
+            folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+            filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
+            content = content
+        )
+    }
+
+    suspend fun writeFile(
+        userId: UserId,
+        folder: Folder,
+        fileIdentifier: FileIdentifier,
+        content: ByteArray
+    ): File? = withContext(ioDispatcher) {
+        fileHelper.writeToFile(
+            folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+            filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
+            content = content
+        )
+    }
 
     suspend fun deleteFile(
         userId: UserId,
         folder: Folder,
         fileIdentifier: FileIdentifier
-    ): Boolean = fileHelper.deleteFile(
-        folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
-        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
-    )
+    ): Boolean = withContext(ioDispatcher) {
+        fileHelper.deleteFile(
+            folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+            filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
+        )
+    }
 
-    suspend fun deleteFolder(
-        userId: UserId,
-        folder: Folder
-    ): Boolean = fileHelper.deleteFolder(
+    suspend fun deleteFolder(userId: UserId, folder: Folder): Boolean = fileHelper.deleteFolder(
         folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}")
     )
 
@@ -71,14 +102,15 @@ class InternalFileStorage @Inject constructor(
 
     private fun String.asSanitisedPath(): String {
         val digest = MessageDigest.getInstance("SHA256").digest(this.toByteArray())
-        return Base64.encodeToString(digest, Base64.URL_SAFE)
+        return Base64.encodeToString(digest, Base64.URL_SAFE or Base64.NO_WRAP)
     }
 
     @JvmInline
     value class FileIdentifier(val value: String)
 
-    enum class Folder(val path: String) {
-        MESSAGE_BODIES("message_bodies/")
+    sealed class Folder(open val path: String) {
+        object MessageBodies : Folder("message_bodies/")
+        data class MessageAttachments(val messageId: String) : Folder("attachments/$messageId/")
     }
 }
 

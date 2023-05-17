@@ -35,8 +35,8 @@ import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
 import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import me.proton.core.util.kotlin.EMPTY_STRING
@@ -73,6 +73,46 @@ internal class AllowedFoldersFileHelperTest(folderPath: String) : FileHelperTest
 
         // Then
         assertEquals(FileContent, fileContent)
+    }
+
+    @Test
+    fun `should read a file`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        val expectedFile = run { File.createTempFile("test", "test") }
+        every { fileFactoryMock.fileFrom(folder, filename) } returns expectedFile
+
+        // When
+        val expected = fileHelper.getFile(folder, filename)
+
+        // Then
+        assertEquals(expectedFile, expected)
+    }
+
+    @Test
+    fun `should return null when file doesn't exist`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        val file = File(folder.path, filename.value)
+        every { fileFactoryMock.fileFrom(folder, filename) } returns file
+
+        // When
+        val result = fileHelper.getFile(folder, filename)
+
+        // Then
+        assertNull(result)
+    }
+
+    @Test
+    fun `should return null when reading a file failed`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        val file = File(folder.path, filename.value)
+        every { fileFactoryMock.fileFrom(folder, filename) } returns file
+        every { fileStreamFactoryMock.inputStreamFrom(file) } returns failingInputStream
+
+        // When
+        val result = fileHelper.readFromFile(folder, filename)
+
+        // Then
+        assertNull(result)
     }
 
     @Test
@@ -214,6 +254,19 @@ internal class BlacklistedFoldersFileHelperTest(folderPath: String) : FileHelper
 
         // When
         val fileContent = fileHelper.readFromFile(folder, filename)
+
+        // Then
+        assertNull(fileContent)
+    }
+
+    @Test
+    fun `should return null when trying to get File from blacklisted folder`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        val file = File(folder.path, filename.value)
+        every { fileFactoryMock.fileFrom(folder, filename) } returns file
+
+        // When
+        val fileContent = fileHelper.getFile(folder, filename)
 
         // Then
         assertNull(fileContent)
