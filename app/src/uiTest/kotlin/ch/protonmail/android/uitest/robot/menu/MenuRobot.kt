@@ -44,14 +44,16 @@ import ch.protonmail.android.maillabel.presentation.R.string as mailLabelStrings
  */
 internal class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
 
+    fun openInbox(): InboxRobot = InboxRobot(composeTestRule)
+
     fun openDrafts(): DraftsRobot {
         tapSidebarMenuItemWithText(mailLabelStrings.label_title_drafts)
         return DraftsRobot()
     }
 
-    @Suppress("unused", "ExpressionBodySyntax")
-    fun openInbox(): InboxRobot {
-        return InboxRobot(composeTestRule)
+    fun openSent(): DraftsRobot {
+        tapSidebarMenuItemWithText(mailLabelStrings.label_title_sent)
+        return DraftsRobot()
     }
 
     fun openAllMail(): AllMailRobot {

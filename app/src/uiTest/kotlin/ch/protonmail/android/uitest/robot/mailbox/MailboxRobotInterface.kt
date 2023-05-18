@@ -18,8 +18,13 @@
 package ch.protonmail.android.uitest.robot.mailbox
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
+import ch.protonmail.android.uitest.util.awaitDisplayed
 
 internal interface MailboxRobotInterface {
 
@@ -29,6 +34,12 @@ internal interface MailboxRobotInterface {
         val model = MailboxListItemEntryModel(position)
 
         model.click()
+    }
+
+    fun scrollToBottom() = apply {
+        composeTestRule.onNodeWithTag(MailboxScreenTestTags.List)
+            .awaitDisplayed(composeTestRule)
+            .performTouchInput { swipeUp() }
     }
 
     interface Verify {

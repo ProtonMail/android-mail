@@ -19,26 +19,26 @@
 package ch.protonmail.android.uitest.util
 
 import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-fun ComposeContentTestRule.awaitProgressIsHidden() {
+fun ComposeTestRule.awaitProgressIsHidden() {
     onNodeWithTag(PROTON_PROGRESS_TEST_TAG)
         .awaitHidden(this)
 }
 
 fun SemanticsNodeInteraction.awaitDisplayed(
-    composeTestRule: ComposeContentTestRule,
+    composeTestRule: ComposeTestRule,
     timeout: Duration = 1.seconds
 ): SemanticsNodeInteraction = also {
     composeTestRule.waitUntil(timeout.inWholeMilliseconds) { nodeIsDisplayed(this) }
 }
 
 fun SemanticsNodeInteraction.awaitHidden(
-    composeTestRule: ComposeContentTestRule,
+    composeTestRule: ComposeTestRule,
     timeout: Duration = 1.seconds
 ): SemanticsNodeInteraction = also {
     composeTestRule.waitUntil(timeout.inWholeMilliseconds) { nodeIsNotDisplayed(this) }
