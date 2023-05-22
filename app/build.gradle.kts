@@ -22,6 +22,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("io.sentry.android.gradle")
 }
@@ -205,10 +206,13 @@ dependencies {
     androidTestImplementation(Proton.Core.authTest)
     androidTestImplementation(Proton.Core.reportTest)
     androidTestImplementation(project(":test:annotations"))
+    androidTestImplementation(project(":test:robot:core"))
+    androidTestImplementation(project(":test:robot:ksp:annotations"))
     androidTestImplementation(project(":test:test-data"))
     androidTestImplementation(project(":test:network-mocks"))
 
     androidTestUtil(AndroidX.Test.orchestrator)
+    kspAndroidTest(project(":test:robot:ksp:processor"))
 }
 
 fun String?.toBuildConfigValue() = if (this != null) "\"$this\"" else "null"

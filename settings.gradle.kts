@@ -81,6 +81,9 @@ include(":mail-settings:presentation")
 
 include(":test:annotations")
 include(":test:network-mocks")
+include(":test:robot:core")
+include(":test:robot:ksp:annotations")
+include(":test:robot:ksp:processor")
 include(":test:test-data")
 
 buildCache {

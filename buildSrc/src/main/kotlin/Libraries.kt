@@ -200,6 +200,7 @@ object JavaX {
 }
 
 object Jsoup {
+
     const val jsoup = "org.jsoup:jsoup:${Versions.Jsoup.jsoup}"
 }
 
@@ -208,11 +209,22 @@ object Junit {
     const val junit = "junit:junit:${Versions.Junit.junit}"
 }
 
+object Ksp {
+
+    const val symbolProcessingApi = "com.google.devtools.ksp:symbol-processing-api:${Versions.Ksp.symbolProcessingApi}"
+}
+
 object Kotlin {
 
     private const val version = Versions.Kotlin.kotlin
     const val test = "org.jetbrains.kotlin:kotlin-test:$version"
     const val testJunit = "org.jetbrains.kotlin:kotlin-test-junit:$version"
+}
+
+object KotlinCompileTesting {
+
+    const val kotlinCompileTesting =
+        "com.github.tschuchortdev:kotlin-compile-testing-ksp:${Versions.KotlinCompileTesting.kotlinCompileTesting}"
 }
 
 object KotlinX {
@@ -292,6 +304,7 @@ object Proton {
 
 object Squareup {
 
+    const val kotlinPoetKsp = "com.squareup:kotlinpoet-ksp:${Versions.Squareup.kotlinPoetKsp}"
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.Squareup.leakCanary}"
     const val mockWebServer = "com.squareup.okhttp3:mockwebserver:${Versions.Squareup.okhttp}"
     const val okhttp = "com.squareup.okhttp3:okhttp:${Versions.Squareup.okhttp}"

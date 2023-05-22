@@ -105,12 +105,23 @@ object Versions {
     }
 
     object Jsoup {
+
         const val jsoup = "1.15.4"
+    }
+
+    object Ksp {
+
+        const val symbolProcessingApi = "1.8.10-1.0.9"
     }
 
     object Kotlin {
 
         const val kotlin = "1.8.10"
+    }
+
+    object KotlinCompileTesting {
+
+        const val kotlinCompileTesting = "1.5.0"
     }
 
     object KotlinX {
@@ -143,6 +154,7 @@ object Versions {
 
     object Squareup {
 
+        const val kotlinPoetKsp = "1.13.2"
         const val leakCanary = "2.10"
         const val okhttp = "4.10.0"
         const val retrofit = "2.9.0"
