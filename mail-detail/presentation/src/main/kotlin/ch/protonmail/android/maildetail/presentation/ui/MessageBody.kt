@@ -19,7 +19,8 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
-import android.os.Build
+import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION_CODES
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebSettings.FORCE_DARK_OFF
@@ -42,15 +43,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
+import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.extensions.isRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
@@ -117,6 +118,7 @@ internal fun MessageBodyWebView(
                 request?.let { actions.onMessageBodyLinkClicked(it.url) }
                 return true
             }
+
             override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
                 return if (!messageBodyUiModel.shouldShowRemoteContent && request?.isRemoteContent() == true) {
                     WebResourceResponse("", "", null)
@@ -140,47 +142,53 @@ internal fun MessageBodyWebView(
 
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
-    WebView(
-        onCreated = {
-            it.settings.builtInZoomControls = true
-            it.settings.displayZoomControls = false
-            it.settings.javaScriptEnabled = false
-            it.settings.safeBrowsingEnabled = true
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                it.settings.isAlgorithmicDarkeningAllowed = true
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                it.settings.forceDark = if (isSystemInDarkTheme) FORCE_DARK_ON else FORCE_DARK_OFF
-            }
-        },
-        captureBackPresses = false,
-        state = state,
-        modifier = with(
-            modifier
-                .testTag(MessageBodyTestTags.WebView)
-                .fillMaxWidth()
-        ) {
-            if (webViewHeight == null) {
-                onSizeChanged { size ->
-                    if (messageId != null && size.height >= 0 && contentLoaded) {
-                        scope.launch {
-                            delay(WEB_PAGE_CONTENT_LOAD_TIMEOUT)
-                            onMessageBodyLoaded(messageId, size.height)
+    Column(modifier = modifier) {
+        WebView(
+            onCreated = {
+                it.settings.builtInZoomControls = true
+                it.settings.displayZoomControls = false
+                it.settings.javaScriptEnabled = false
+                if (SDK_INT >= VERSION_CODES.O) {
+                    it.settings.safeBrowsingEnabled = true
+                }
+                if (SDK_INT >= VERSION_CODES.TIRAMISU) {
+                    it.settings.isAlgorithmicDarkeningAllowed = true
+                } else if (SDK_INT >= VERSION_CODES.Q) {
+                    it.settings.forceDark = if (isSystemInDarkTheme) FORCE_DARK_ON else FORCE_DARK_OFF
+                }
+            },
+            captureBackPresses = false,
+            state = state,
+            modifier = with(
+                Modifier
+                    .testTag(MessageBodyTestTags.WebView)
+                    .fillMaxWidth()
+            ) {
+                if (webViewHeight == null) {
+                    onSizeChanged { size ->
+                        if (messageId != null && size.height >= 0 && contentLoaded) {
+                            scope.launch {
+                                delay(WEB_PAGE_CONTENT_LOAD_TIMEOUT)
+                                onMessageBodyLoaded(messageId, size.height)
+                            }
                         }
                     }
+                } else if (webViewHeight < WEB_VIEW_FIXED_MAX_HEIGHT) {
+                    height(webViewHeight.pxToDp())
+                } else {
+                    this
                 }
-            } else {
-                height(webViewHeight.pxToDp())
-            }
-        },
-        client = client,
-        chromeClient = chromeClient
-    )
-    if (messageBodyUiModel.attachments != null && messageBodyUiModel.attachments.attachments.isNotEmpty()) {
-        AttachmentFooter(
-            modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
-            messageBodyAttachmentsUiModel = messageBodyUiModel.attachments,
-            onShowAllAttachments = actions.onShowAllAttachments
+            },
+            client = client,
+            chromeClient = chromeClient
         )
+        if (messageBodyUiModel.attachments != null && messageBodyUiModel.attachments.attachments.isNotEmpty()) {
+            AttachmentFooter(
+                modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
+                messageBodyAttachmentsUiModel = messageBodyUiModel.attachments,
+                onShowAllAttachments = actions.onShowAllAttachments
+            )
+        }
     }
 }
 
@@ -259,3 +267,8 @@ object MessageBodyTestTags {
 }
 
 private const val WEB_PAGE_CONTENT_LOAD_TIMEOUT = 500L
+
+// Max constraint for WebView height. If the height is greater
+// than this value, we will not fix the height of the WebView or it will crash.
+// (Limit set in androidx.compose.ui.unit.Constraints)
+private const val WEB_VIEW_FIXED_MAX_HEIGHT = 262_143

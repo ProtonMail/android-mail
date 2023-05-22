@@ -335,7 +335,12 @@ private fun MessagesContent(
         items(uiModels, key = { it.messageId.id }) { uiModel ->
             ConversationDetailItem(
                 uiModel = uiModel,
-                modifier = Modifier.animateItemPlacement(),
+                modifier = when (uiModel) {
+                    is ConversationDetailMessageUiModel.Collapsed,
+                    is ConversationDetailMessageUiModel.Expanding -> Modifier.animateItemPlacement()
+
+                    else -> Modifier
+                },
                 actions = actions,
                 onMessageBodyLoadFinished = { messageId, height ->
                     Timber.d("onMessageBodyLoadFinished: $messageId, $height. loadedItemsChanged: $loadedItemsChanged")
