@@ -16,35 +16,8 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-}
+package ch.protonmail.android.mailcomposer.presentation.model
 
-setAsHiltModule()
+internal sealed interface ComposerOperation
 
-android {
-    compileSdk = Config.compileSdk
-
-    defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
-}
-
-dependencies {
-    implementation(Dependencies.moduleDomainLibs)
-    implementation(project(":mail-message:domain"))
-
-    testImplementation(Dependencies.testLibs)
-}
+internal sealed interface ComposerAction : ComposerOperation

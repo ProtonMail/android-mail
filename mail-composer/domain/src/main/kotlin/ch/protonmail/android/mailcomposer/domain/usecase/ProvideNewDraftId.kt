@@ -16,35 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-}
+package ch.protonmail.android.mailcomposer.domain.usecase
 
-setAsHiltModule()
+import java.util.UUID
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import javax.inject.Inject
 
-android {
-    compileSdk = Config.compileSdk
+class ProvideNewDraftId @Inject constructor() {
 
-    defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
-}
-
-dependencies {
-    implementation(Dependencies.moduleDomainLibs)
-    implementation(project(":mail-message:domain"))
-
-    testImplementation(Dependencies.testLibs)
+    operator fun invoke(): MessageId = MessageId(UUID.randomUUID().toString())
 }

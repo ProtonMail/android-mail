@@ -16,35 +16,25 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-}
+package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
-setAsHiltModule()
+import androidx.lifecycle.ViewModel
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
+import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
+import javax.inject.Inject
 
-android {
-    compileSdk = Config.compileSdk
+@HiltViewModel
+class ComposerViewModel @Inject constructor(
+    private val provideNewDraftId: ProvideNewDraftId
+) : ViewModel() {
 
-    defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
+    init {
+        Timber.d(provideNewDraftId().toString())
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+    internal fun submit(action: ComposerAction) {
+        Timber.d(action.toString())
     }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
-}
-
-dependencies {
-    implementation(Dependencies.moduleDomainLibs)
-    implementation(project(":mail-message:domain"))
-
-    testImplementation(Dependencies.testLibs)
 }

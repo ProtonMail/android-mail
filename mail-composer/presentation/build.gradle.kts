@@ -18,8 +18,11 @@
 
 plugins {
     id("com.android.library")
+    kotlin("kapt")
     kotlin("android")
 }
+
+setAsHiltModule()
 
 android {
     compileSdk = Config.compileSdk
@@ -61,6 +64,7 @@ dependencies {
 
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-composer:domain"))
+    implementation(project(":mail-message:domain"))
 
     testImplementation(Dependencies.testLibs)
 }
