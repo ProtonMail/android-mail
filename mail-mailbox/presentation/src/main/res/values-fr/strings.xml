@@ -33,5 +33,5 @@
   </plurals>
   <string name="mailbox_default_recipient">(aucun destinataire)</string>
   <string name="mailbox_default_sender">(aucun expéditeur)</string>
-  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
+  <string name="mailbox_error_message_offline">Vous êtes hors ligne, il n\'est pas possible de récupérer les éléments.</string>
 </resources>

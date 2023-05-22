@@ -32,5 +32,5 @@
   </plurals>
   <string name="mailbox_default_recipient">(宛先なし)</string>
   <string name="mailbox_default_sender">(差出人なし)</string>
-  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
+  <string name="mailbox_error_message_offline">インターネットに接続できないため、メールを取得できませんでした。</string>
 </resources>

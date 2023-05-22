@@ -30,7 +30,7 @@
   <plurals name="filter_unread_button_text">
     <item quantity="other">%d 則未讀</item>
   </plurals>
-  <string name="mailbox_default_recipient">（無收件者）</string>
-  <string name="mailbox_default_sender">（無寄件者）</string>
-  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
+  <string name="mailbox_default_recipient">(無收件者)</string>
+  <string name="mailbox_default_sender">(無寄件者)</string>
+  <string name="mailbox_error_message_offline">您目前為離線狀態，因此無法擷取項目</string>
 </resources>

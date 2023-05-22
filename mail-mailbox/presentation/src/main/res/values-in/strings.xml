@@ -32,5 +32,5 @@
   </plurals>
   <string name="mailbox_default_recipient">(Tanpa Penerima)</string>
   <string name="mailbox_default_sender">(Tanpa Pengirim)</string>
-  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
+  <string name="mailbox_error_message_offline">Anda sedang offline. Item tidak dapat diterima</string>
 </resources>

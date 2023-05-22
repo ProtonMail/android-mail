@@ -31,7 +31,7 @@
     <item quantity="one">%d αδιάβαστο</item>
     <item quantity="other">%d αδιάβαστα</item>
   </plurals>
-  <string name="mailbox_default_recipient">(Κανένας παραλήπτης)</string>
-  <string name="mailbox_default_sender">(Κανένας Αποστολέας)</string>
+  <string name="mailbox_default_recipient">(Δεν υπάρχουν παραλήπτες)</string>
+  <string name="mailbox_default_sender">(Χωρίς αποστολέα)</string>
   <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
 </resources>

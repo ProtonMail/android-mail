@@ -33,5 +33,5 @@
   </plurals>
   <string name="mailbox_default_recipient">(Ingen mottagare)</string>
   <string name="mailbox_default_sender">(Ingen avsändare)</string>
-  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
+  <string name="mailbox_error_message_offline">Du är offline, kan inte hämta objekt</string>
 </resources>

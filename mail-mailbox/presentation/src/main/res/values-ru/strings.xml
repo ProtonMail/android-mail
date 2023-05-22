@@ -35,5 +35,5 @@
   </plurals>
   <string name="mailbox_default_recipient">(Нет получателя)</string>
   <string name="mailbox_default_sender">(Нет отправителя)</string>
-  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
+  <string name="mailbox_error_message_offline">Вы офлайн, не удалось получить элементы</string>
 </resources>

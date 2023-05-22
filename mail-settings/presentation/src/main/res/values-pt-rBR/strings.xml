@@ -71,7 +71,7 @@
   <string name="mail_settings_swipe_action_archive_title">Arquivar</string>
   <string name="mail_settings_swipe_action_read_title">Não lida</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
-  <string name="mail_settings_swipe_action_star_title">Favorito</string>
+  <string name="mail_settings_swipe_action_star_title">Favoritar</string>
   <string name="mail_settings_swipe_action_trash_title">Lixeira</string>
   <string name="mail_settings_swipe_action_archive_description">Mover para arquivo</string>
   <string name="mail_settings_swipe_action_read_description">Marcar como não lida/lida</string>

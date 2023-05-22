@@ -34,5 +34,5 @@
   </plurals>
   <string name="mailbox_default_recipient">(Fără destinatar)</string>
   <string name="mailbox_default_sender">(Fără expeditor)</string>
-  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
+  <string name="mailbox_error_message_offline">Nu aveți conexiune. Nu se pot prelua datele.</string>
 </resources>

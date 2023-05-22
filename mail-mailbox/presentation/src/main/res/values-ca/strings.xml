@@ -33,5 +33,5 @@
   </plurals>
   <string name="mailbox_default_recipient">(Cap Destinatari)</string>
   <string name="mailbox_default_sender">(Cap remitent)</string>
-  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
+  <string name="mailbox_error_message_offline">Esteu fora de línia. No s\'han pogut recuperar els elements.</string>
 </resources>
