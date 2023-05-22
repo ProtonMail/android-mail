@@ -186,7 +186,7 @@ internal class MessageBodyFileStorageTest {
     }
 
     @Test
-    fun `should delete all message bodies from internal storage and return false on success`() = runTest {
+    fun `should delete all message bodies from internal storage and return false on failure`() = runTest {
         // Given
         coEvery {
             internalFileStorageMock.deleteFolder(UserIdSample.Primary, InternalFileStorage.Folder.MessageBodies)
