@@ -1,0 +1,218 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.mailmessage.data.local
+
+import java.io.File
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentMetaDataDao
+import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
+import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import io.mockk.Called
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.coVerifyOrder
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
+import me.proton.core.util.kotlin.sha256
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+@Suppress("BlockingMethodInNonBlockingContext")
+class AttachmentLocalDataSourceImplTest {
+
+    private val userId = UserIdSample.Primary
+    private val messageId = MessageIdSample.Invoice
+    private val attachmentId = AttachmentId("attachmentId")
+    private val file = File.createTempFile("test", "test")
+    private val hash = file.sha256()
+
+    private val messageAttachmentMetadataEntity = MessageAttachmentMetadataEntity(
+        userId = userId,
+        messageId = messageId,
+        attachmentId = attachmentId,
+        hash = hash,
+        path = file.path,
+        status = AttachmentWorkerStatus.Running
+    )
+
+    private val attachmentDao = mockk<MessageAttachmentMetaDataDao>(relaxUnitFun = true)
+    private val attachmentFileStorage = mockk<AttachmentFileStorage>()
+    private val messageDatabase = mockk<MessageDatabase> {
+        every { storedMessageAttachmentMetaDataDao() } returns attachmentDao
+    }
+    private val attachmentLocalDataSource = AttachmentLocalDataSourceImpl(
+        db = messageDatabase,
+        attachmentFileStorage = attachmentFileStorage,
+        ioDispatcher = Dispatchers.Unconfined
+    )
+
+    @Test
+    fun `should return file when meta data and file are stored locally and hashes are matching`() = runTest {
+        // Given
+
+        coEvery {
+            attachmentDao.observeAttachment(userId, messageId, attachmentId)
+        } returns flowOf(messageAttachmentMetadataEntity)
+        coEvery {
+            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+        } returns file
+
+        // When
+        val result = attachmentLocalDataSource.getAttachment(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId
+        )
+
+        // Then
+        assertEquals(messageAttachmentMetadataEntity.toMessageAttachmentMetadata().right(), result)
+    }
+
+    @Test
+    fun `should return null when meta data and file are stored locally and hashes do not matching`() = runTest {
+        // Given
+        val metaDataFile = File.createTempFile("metadata", "test")
+        val file = File.createTempFile("test", "test")
+
+        metaDataFile.outputStream().bufferedWriter().use { it.write("I'm a metadata content file") }
+        file.outputStream().bufferedWriter().use { it.write("I'm a content file") }
+        val attachmentId = AttachmentId("attachmentId")
+        coEvery {
+            attachmentDao.observeAttachment(userId, messageId, attachmentId)
+        } returns flowOf(messageAttachmentMetadataEntity)
+        coEvery {
+            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+        } returns file
+
+        // When
+        val result = attachmentLocalDataSource.getAttachment(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = AttachmentId("attachmentId")
+        )
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
+
+    @Test
+    fun `should return null when file is not stored locally`() = runTest {
+        // Given
+        coEvery {
+            attachmentDao.observeAttachment(userId, messageId, attachmentId)
+        } returns flowOf(messageAttachmentMetadataEntity)
+        coEvery {
+            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+        } throws AttachmentFileReadException
+
+        // When
+        val result = attachmentLocalDataSource.getAttachment(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId
+        )
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
+
+    @Test
+    fun `should store attachment meta data locally when file storing was successful`() = runTest {
+        // Given
+        val attachmentContent = "I'm the content of a file"
+        val attachmentContentByteArray = attachmentContent.toByteArray()
+        val file = File.createTempFile("test", "test")
+        file.outputStream().bufferedWriter().use { it.write(attachmentContent) }
+        val attachmentToStore = MessageAttachmentMetadataEntity(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId,
+            hash = file.sha256(),
+            path = file.path,
+            status = AttachmentWorkerStatus.Success
+        )
+        coEvery {
+            attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, attachmentContentByteArray)
+        } returns file
+
+        // When
+        attachmentLocalDataSource.upsertAttachment(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId,
+            attachment = attachmentContentByteArray,
+            status = AttachmentWorkerStatus.Success
+        )
+
+        // Then
+        coVerifyOrder {
+            attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, attachmentContentByteArray)
+            attachmentDao.insertOrUpdate(attachmentToStore)
+        }
+    }
+
+    @Test
+    fun `should not store attachment metadata when file storing was not successful`() = runTest {
+        // Given
+        val attachmentContent = "I'm the content of a file"
+        val attachmentContentByteArray = attachmentContent.toByteArray()
+        coEvery {
+            attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, attachmentContentByteArray)
+        } returns null
+
+        // When
+        attachmentLocalDataSource.upsertAttachment(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId,
+            attachment = attachmentContentByteArray,
+            status = AttachmentWorkerStatus.Failed
+        )
+
+        // Then
+        coVerify {
+            attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, attachmentContentByteArray)
+        }
+        verify { attachmentDao wasNot Called }
+    }
+
+    @Test
+    fun `should delete attachment files and metadata from db`() = runTest {
+        // Given
+        coEvery { attachmentDao.deleteAttachmentMetaDataForMessage(userId, messageId) } returns Unit
+        coEvery { attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id) } returns true
+
+        // When
+        attachmentLocalDataSource.deleteAttachments(userId, messageId)
+
+        // Then
+        coVerify { attachmentDao.deleteAttachmentMetaDataForMessage(userId, messageId) }
+        coVerify { attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id) }
+    }
+}
