@@ -24,6 +24,7 @@ import androidx.room.Index
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.UserEntity
 
@@ -47,7 +48,7 @@ data class ConversationEntity(
     val conversationId: ConversationId,
     val order: Long,
     val subject: String,
-    val senders: List<Recipient>,
+    val senders: List<Sender>,
     val recipients: List<Recipient>,
     val expirationTime: Long,
     val numMessages: Int,

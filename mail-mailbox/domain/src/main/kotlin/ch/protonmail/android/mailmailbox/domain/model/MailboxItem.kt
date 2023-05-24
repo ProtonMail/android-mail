@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.domain.model
 
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.mailpagination.domain.model.PageItem
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
@@ -48,7 +49,7 @@ data class MailboxItem(
     val conversationId: ConversationId,
     val labels: List<Label>,
     val subject: String,
-    val senders: List<Recipient>,
+    val senders: List<Sender>,
     val recipients: List<Recipient>,
     val isReplied: Boolean,
     val isRepliedAll: Boolean,

@@ -27,6 +27,7 @@ import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.AddressId
@@ -145,7 +146,7 @@ object MessageSample {
         labelIds: List<LabelId> = listOf(LabelIdSample.build()),
         numAttachments: Int = 0,
         order: Long = messageId.id.first().code.toLong(),
-        sender: Recipient = RecipientSample.John,
+        sender: Sender = RecipientSample.John,
         subject: String = "subject",
         time: Long = 1000,
         toList: List<Recipient> = emptyList(),

@@ -21,8 +21,11 @@ package ch.protonmail.android.mailmessage.domain.entity
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Recipient(
+data class Participant(
     val address: String,
     val name: String,
     val group: String? = null
 )
+
+typealias Sender = Participant
+typealias Recipient = Participant

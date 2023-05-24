@@ -25,6 +25,7 @@ import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.mailmessage.domain.sample.AttachmentCountSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import me.proton.core.domain.entity.UserId
@@ -55,7 +56,7 @@ object ConversationSample {
         conversationId: ConversationId = ConversationIdSample.build(),
         labels: List<ConversationLabel> = listOf(ConversationLabelSample.build()),
         recipients: List<Recipient> = listOf(RecipientSample.Doe),
-        senders: List<Recipient> = listOf(RecipientSample.John),
+        senders: List<Sender> = listOf(RecipientSample.John),
         subject: String = "subject",
         userId: UserId = UserIdSample.Primary,
         numMessages: Int = 0

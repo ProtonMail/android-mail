@@ -24,7 +24,7 @@ import ch.protonmail.android.mailmessage.data.local.entity.MimeTypeEntity
 import ch.protonmail.android.mailmessage.data.local.entity.UnsubscribeMethodsEntity
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Participant
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import me.proton.core.util.kotlin.deserialize
@@ -63,10 +63,10 @@ class MessageConverters {
     fun fromStringToAttachmentCount(value: String?): AttachmentCountEntity? = value?.deserialize()
 
     @TypeConverter
-    fun fromRecipientToString(value: Recipient?): String? = value?.serialize()
+    fun fromParticipantToString(value: Participant?): String? = value?.serialize()
 
     @TypeConverter
-    fun fromStringToRecipient(value: String?): Recipient? = value?.deserialize()
+    fun fromStringToParticipant(value: String?): Participant? = value?.deserialize()
 
     @TypeConverter
     fun fromUnsubscribeMethodsToString(value: UnsubscribeMethodsEntity?): String? = value?.serialize()

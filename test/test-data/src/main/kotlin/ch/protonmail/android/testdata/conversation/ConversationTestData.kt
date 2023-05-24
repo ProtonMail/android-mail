@@ -23,7 +23,7 @@ import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -127,7 +127,7 @@ object ConversationTestData {
         order = 0,
         labels = labelIds.map { buildConversationLabel(id, it, numMessages = numMessages) },
         subject = subject,
-        senders = listOf(Recipient("address", "name")),
+        senders = listOf(Sender("address", "name")),
         recipients = emptyList(),
         expirationTime = expirationTime,
         numMessages = numMessages,
@@ -151,7 +151,7 @@ object ConversationTestData {
         order = 0,
         labels = conversationLabels,
         subject = subject,
-        senders = listOf(Recipient("address", "name")),
+        senders = listOf(Sender("address", "name")),
         recipients = emptyList(),
         expirationTime = expirationTime,
         numMessages = numMessages,

@@ -23,6 +23,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.mailmailbox.domain.usecase.ParticipantsResolvedNamesResult
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
@@ -41,8 +42,8 @@ class GetParticipantsResolvedNamesTest {
         // Given
         val senderName = "sender"
         val sender1Name = "sender1"
-        val sender = Recipient("sender@proton.ch", senderName)
-        val sender1 = Recipient("sender1@proton.ch", sender1Name)
+        val sender = Sender("sender@proton.ch", senderName)
+        val sender1 = Sender("sender1@proton.ch", sender1Name)
         val senders = listOf(sender, sender1)
         val mailboxItem = buildMailboxItem(
             labelIds = listOf(SystemLabelId.Inbox.labelId),

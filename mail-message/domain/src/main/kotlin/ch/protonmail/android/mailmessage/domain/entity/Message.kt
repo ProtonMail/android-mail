@@ -44,7 +44,7 @@ data class Message(
     override val labelIds: List<LabelId>,
     val subject: String,
     val unread: Boolean,
-    val sender: Recipient,
+    val sender: Sender,
     val toList: List<Recipient>,
     val ccList: List<Recipient>,
     val bccList: List<Recipient>,

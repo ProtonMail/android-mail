@@ -23,6 +23,7 @@ import ch.protonmail.android.mailmessage.data.local.entity.AttachmentCountEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.AddressId
@@ -38,7 +39,7 @@ object MessageEntityTestData {
         time: Long = 1000,
         size: Long = 0,
         subject: String = "subject",
-        sender: Recipient = Recipient("address", "name"),
+        sender: Sender = Sender("address", "name"),
         numAttachments: Int = 0,
         expirationTime: Long = 0,
         attachmentCount: AttachmentCountEntity = AttachmentCountEntity(0),

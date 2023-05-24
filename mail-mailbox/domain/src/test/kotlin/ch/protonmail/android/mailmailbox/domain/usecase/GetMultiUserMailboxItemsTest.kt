@@ -25,7 +25,7 @@ import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Message
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -136,7 +136,7 @@ class GetMultiUserMailboxItemsTest {
         coVerify { labelRepository.getLabels(userId1, LabelType.MessageFolder) }
         coVerify { messageRepository.getLocalMessages(userId, pageKey) }
         coVerify { messageRepository.getLocalMessages(userId1, pageKey) }
-        val senders = listOf(Recipient("address", "name"))
+        val senders = listOf(Sender("address", "name"))
         val mailboxItemsOrderedByTimeAscending = listOf(
             buildMailboxItem(
                 userId = userId,

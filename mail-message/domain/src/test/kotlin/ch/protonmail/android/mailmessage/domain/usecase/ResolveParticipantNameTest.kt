@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailmessage.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName.FallbackType
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -42,7 +42,7 @@ class ResolveParticipantNameTest {
             )
         )
         val userContacts = listOf(contact, ContactTestData.contact2)
-        val participant = Recipient("sender@proton.ch", "")
+        val participant = Participant("sender@proton.ch", "")
         // When
         val actual = resolveParticipantName(participant, userContacts)
         // Then
@@ -53,7 +53,7 @@ class ResolveParticipantNameTest {
     @Test
     fun `when a participant has display name then display name is returned`() {
         // Given
-        val participant = Recipient("sender@proton.ch", "Sender")
+        val participant = Participant("sender@proton.ch", "Sender")
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
         // Then
@@ -64,7 +64,7 @@ class ResolveParticipantNameTest {
     @Test
     fun `when a participant has no display name and fallback is address then address is returned`() {
         // Given
-        val participant = Recipient("sender@proton.ch", "")
+        val participant = Participant("sender@proton.ch", "")
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.ADDRESS)
         // Then
@@ -75,7 +75,7 @@ class ResolveParticipantNameTest {
     @Test
     fun `when a participant has no display name and fallback is username then username is returned`() {
         // Given
-        val participant = Recipient("sender@proton.ch", "")
+        val participant = Participant("sender@proton.ch", "")
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.USERNAME)
         // Then
@@ -86,7 +86,7 @@ class ResolveParticipantNameTest {
     @Test
     fun `when a participant has no display name and no fall back then empty string is returned`() {
         // Given
-        val participant = Recipient("sender@proton.ch", "")
+        val participant = Participant("sender@proton.ch", "")
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.NONE)
         // Then
@@ -97,7 +97,7 @@ class ResolveParticipantNameTest {
     @Test
     fun `when a participant's name is the same as the address and no fall back is set then empty string is returned`() {
         // Given
-        val participant = Recipient("sender@proton.ch", "sender@proton.ch")
+        val participant = Participant("sender@proton.ch", "sender@proton.ch")
 
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.NONE)
@@ -110,7 +110,7 @@ class ResolveParticipantNameTest {
     @Test
     fun `when a participant's name is the same as the address and fallback is username then username is returned`() {
         // Given
-        val participant = Recipient("sender@proton.ch", "sender@proton.ch")
+        val participant = Participant("sender@proton.ch", "sender@proton.ch")
 
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.USERNAME)
@@ -123,7 +123,7 @@ class ResolveParticipantNameTest {
     @Test
     fun `when a participant has blank name and fallback is address then address is returned`() {
         // Given
-        val participant = Recipient("sender@proton.ch", " ")
+        val participant = Participant("sender@proton.ch", " ")
 
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
@@ -136,7 +136,7 @@ class ResolveParticipantNameTest {
     @Test
     fun `when a participant has an empty address and fallback is address then empty string is returned`() {
         // Given
-        val participant = Recipient("", "")
+        val participant = Participant("", "")
 
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
@@ -149,7 +149,7 @@ class ResolveParticipantNameTest {
     @Test
     fun `when a participant has an empty address and fallback is username then empty string is returned`() {
         // Given
-        val participant = Recipient("", "")
+        val participant = Participant("", "")
 
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.USERNAME)

@@ -25,6 +25,7 @@ import androidx.room.Index
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.AddressEntity
 import me.proton.core.user.data.entity.UserEntity
@@ -60,7 +61,7 @@ data class MessageEntity(
     val subject: String,
     val unread: Boolean,
     @Embedded(prefix = "sender_")
-    val sender: Recipient,
+    val sender: Sender,
     val toList: List<Recipient>,
     val ccList: List<Recipient>,
     val bccList: List<Recipient>,

@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.entity.Message
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import me.proton.core.domain.entity.UserId
@@ -36,7 +37,7 @@ object MessageTestData {
     const val RAW_MESSAGE_ID = "rawMessageId"
     const val RAW_SUBJECT = "Here's a new message"
 
-    val sender = Recipient("sender@pm.me", "Sender")
+    val sender = Sender("sender@pm.me", "Sender")
     val recipient1 = Recipient("recipient1@pm.me", "Recipient1")
     val recipient2 = Recipient("recipient2@pm.me", "Recipient2")
     val recipient3 = Recipient("recipient3@pm.me", "Recipient3")
@@ -182,7 +183,7 @@ object MessageTestData {
         size: Long = 0,
         labelIds: List<String> = listOf(SystemLabelId.Inbox.labelId.id),
         subject: String = "subject",
-        sender: Recipient = Recipient("address", "name"),
+        sender: Sender = Sender("address", "name"),
         numAttachments: Int = 0,
         expirationTime: Long = 0,
         attachmentCount: AttachmentCount = AttachmentCount(0),

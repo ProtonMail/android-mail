@@ -31,6 +31,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.testdata.R
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -63,7 +64,7 @@ object MailboxTestData {
         labelIds: List<LabelId> = listOf(MailLabelId.System.Inbox.labelId),
         labels: List<Label> = labelIds.map { buildLabel(userId = userId, id = it.id) },
         type: MailboxItemType = MailboxItemType.Message,
-        senders: List<Recipient> = emptyList(),
+        senders: List<Sender> = emptyList(),
         recipients: List<Recipient> = emptyList(),
         numMessages: Int = 1,
         hasAttachments: Boolean = false,
@@ -112,7 +113,7 @@ object MailboxTestData {
         conversationId = ConversationId("2"),
         labels = labels,
         subject = "First message",
-        senders = listOf(Recipient("address", "name")),
+        senders = listOf(Sender("address", "name")),
         recipients = emptyList(),
         isReplied = isReplied,
         isRepliedAll = isRepliedAll,
@@ -135,7 +136,7 @@ object MailboxTestData {
         conversationId = ConversationId("2"),
         labels = emptyList(),
         subject = "First message",
-        senders = listOf(Recipient("address", "name")),
+        senders = listOf(Sender("address", "name")),
         recipients = emptyList(),
         isReplied = false,
         isRepliedAll = false,
