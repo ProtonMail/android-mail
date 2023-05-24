@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestT
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 import ch.protonmail.android.uitest.util.awaitDisplayed
+import kotlin.time.Duration.Companion.seconds
 
 internal interface MailboxRobotInterface {
 
@@ -38,7 +39,7 @@ internal interface MailboxRobotInterface {
 
     fun scrollToBottom() = apply {
         composeTestRule.onNodeWithTag(MailboxScreenTestTags.List)
-            .awaitDisplayed(composeTestRule)
+            .awaitDisplayed(composeTestRule, timeout = 5.seconds)
             .performTouchInput { swipeUp() }
     }
 
