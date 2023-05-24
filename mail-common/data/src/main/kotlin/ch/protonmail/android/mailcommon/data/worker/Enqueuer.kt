@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcommon.data.worker
 
 import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
@@ -32,18 +33,28 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
         enqueue(T::class.java, params)
     }
 
+    inline fun <reified T : ListenableWorker> enqueueUniqueWork(workerId: String, params: Map<String, Any>) {
+        enqueueUniqueWork(workerId, T::class.java, params)
+    }
+
     fun enqueue(worker: Class<out ListenableWorker>, params: Map<String, Any>) {
+        workManager.enqueue(createRequest(worker, params))
+    }
+
+    fun enqueueUniqueWork(workerId: String, worker: Class<out ListenableWorker>, params: Map<String, Any>) {
+        workManager.enqueueUniqueWork(workerId, ExistingWorkPolicy.KEEP, createRequest(worker, params))
+    }
+
+    private fun createRequest(worker: Class<out ListenableWorker>, params: Map<String, Any>): OneTimeWorkRequest {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
         val data = workDataOf(*params.map { Pair(it.key, it.value) }.toTypedArray())
 
-        val request = OneTimeWorkRequest.Builder(worker)
+        return OneTimeWorkRequest.Builder(worker)
             .setConstraints(constraints)
             .setInputData(data)
             .build()
-
-        workManager.enqueue(request)
     }
 }
