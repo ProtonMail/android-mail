@@ -19,6 +19,7 @@
 package ch.protonmail.android.networkmocks.mockwebserver
 
 import java.util.logging.Logger
+import ch.protonmail.android.networkmocks.assets.RawAssets
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequest
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateAssetNotFoundResponse
 import ch.protonmail.android.networkmocks.mockwebserver.response.generateResponse
@@ -114,13 +115,8 @@ class MockNetworkDispatcher(
         knownRequests.addAll(requests)
     }
 
-    private fun getBodyFromLocalAsset(path: String): String? {
-        val fullPath = assetsRootPath + path
-        val byteStream = this.javaClass.classLoader.getResourceAsStream(fullPath)
-
-        // Propagate the nullability and handle it at the call site.
-        return byteStream?.readBytes()?.toString(Charsets.UTF_8)
-    }
+    private fun getBodyFromLocalAsset(path: String): String? =
+        RawAssets.getRawStringForFilePath(assetsRootPath + path)
 
     private fun String.stripQueryParams(): String = substringBefore("?")
 
