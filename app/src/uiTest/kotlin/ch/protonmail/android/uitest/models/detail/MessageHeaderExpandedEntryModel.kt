@@ -23,12 +23,19 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailItemTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
 import ch.protonmail.android.uitest.models.labels.LabelEntry
 import ch.protonmail.android.uitest.models.labels.LabelEntryModel
 import ch.protonmail.android.uitest.util.child
 
 internal class MessageHeaderExpandedEntryModel(composeTestRule: ComposeTestRule) {
+
+    // In the layout, it's outside of the root item
+    private val collapseAnchor = composeTestRule.onNodeWithTag(
+        testTag = ConversationDetailItemTestTags.CollapseAnchor
+    )
 
     private val rootItem = composeTestRule.onNodeWithTag(
         testTag = MessageDetailHeaderTestTags.RootItem,
@@ -55,6 +62,12 @@ internal class MessageHeaderExpandedEntryModel(composeTestRule: ComposeTestRule)
     private val hideDetailsButton = rootItem.child {
         hasTestTag(MessageDetailHeaderTestTags.ExtendedHideDetails)
     }
+
+    // region actions
+    fun collapse() = apply {
+        collapseAnchor.performClick()
+    }
+    // endregion
 
     // region verification
     fun hasRecipients(vararg recipients: ExtendedHeaderRecipientEntry) = apply {

@@ -327,7 +327,7 @@ private fun MessagesContent(
     }
 
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.testTag(ConversationDetailScreenTestTags.MessagesList),
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(ProtonDimens.SmallSpacing),
         state = listState
@@ -424,4 +424,5 @@ private fun ConversationDetailScreenPreview(
 object ConversationDetailScreenTestTags {
 
     const val RootItem = "ConversationDetailScreenRootItem"
+    const val MessagesList = "ConversationDetailMessagesList"
 }

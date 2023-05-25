@@ -24,14 +24,18 @@ import ch.protonmail.android.uitest.models.detail.MessageHeaderExpandedEntryMode
 import ch.protonmail.android.uitest.models.labels.LabelEntry
 
 internal class MessageExpandedHeaderSection(
-    private val composeTestRule: ComposeContentTestRule
+    composeTestRule: ComposeContentTestRule
 ) {
+
+    private val expandedHeader = MessageHeaderExpandedEntryModel(composeTestRule)
+
+    fun collapse() = apply {
+        expandedHeader.collapse()
+    }
 
     fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 
     internal inner class Verify {
-
-        private val expandedHeader = MessageHeaderExpandedEntryModel(composeTestRule)
 
         fun hasRecipients(vararg recipients: ExtendedHeaderRecipientEntry) = apply {
             expandedHeader.hasRecipients(*recipients)

@@ -19,12 +19,26 @@
 package ch.protonmail.android.uitest.robot.detail.section.conversation
 
 import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreenTestTags
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.robot.detail.model.conversation.MessageCollapsedItemEntryModel
 
 internal class ConversationDetailCollapsedMessagesSection(
     private val composeTestRule: ComposeTestRule
 ) {
+
+    private val messagesList = composeTestRule.onNodeWithTag(ConversationDetailScreenTestTags.MessagesList)
+
+    fun scrollToTop() = apply {
+        messagesList.performTouchInput { swipeUp() }
+    }
+
+    fun openMessageAtIndex(index: Int) = withEntryModel(index) {
+        click()
+    }
 
     internal fun verify(func: Verify.() -> Unit) = Verify().apply(func)
 

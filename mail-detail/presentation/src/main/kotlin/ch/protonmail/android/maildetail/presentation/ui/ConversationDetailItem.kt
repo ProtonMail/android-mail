@@ -28,6 +28,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -106,6 +107,7 @@ private fun ConversationDetailExpandedItem(
     Column(modifier = modifier) {
         Box(
             modifier = Modifier
+                .testTag(ConversationDetailItemTestTags.CollapseAnchor)
                 .clickable { actions.onCollapse(uiModel.messageId) }
                 .fillMaxWidth()
                 .height(MailDimens.ConversationMessageCollapseBarHeight)
@@ -137,4 +139,9 @@ object ConversationDetailItem {
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     )
+}
+
+object ConversationDetailItemTestTags {
+
+    const val CollapseAnchor = "ConversationDetailItemCollapseAnchor"
 }

@@ -23,6 +23,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeaderTestTags
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
@@ -86,6 +87,12 @@ internal data class MessageCollapsedItemEntryModel(
     private val time = rootItem.child {
         hasTestTag(ConversationDetailCollapsedMessageHeaderTestTags.Time)
     }
+
+    // region actions
+    fun click() = apply {
+        rootItem.performClick()
+    }
+    // endregion
 
     // region verification
     fun isNotDisplayed() = apply {
