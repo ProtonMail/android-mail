@@ -24,7 +24,7 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Sair do modo de seleção</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Pesquisar</string>
-  <string name="mailbox_toolbar_selected_count">%d Selecionados</string>
+  <string name="mailbox_toolbar_selected_count">%d Selecionado</string>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Não lidos</string>
   <plurals name="filter_unread_button_text">
@@ -33,5 +33,5 @@
   </plurals>
   <string name="mailbox_default_recipient">(Nenhum destinatário)</string>
   <string name="mailbox_default_sender">(Nenhum remetente)</string>
-  <string name="mailbox_error_message_offline">Você está sem conexão, incapaz de recuperar itens</string>
+  <string name="mailbox_error_message_offline">Você está desconectado, não é possível recuperar os itens</string>
 </resources>

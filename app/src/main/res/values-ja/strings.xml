@@ -19,8 +19,8 @@
 <resources>
   <string name="title_remove">削除</string>
   <string name="title_remove_account">アカウントの削除</string>
-  <string name="description_remove_account">自動的にサインアウトされ、このアカウントのすべて情報が削除されます。</string>
-  <string name="user_select_other_account_content_description">別のアカウントを選択</string>
+  <string name="description_remove_account">サインアウトして、このアカウントに関連するすべての情報を削除することになります。</string>
+  <string name="user_select_other_account_content_description">別のアカウントを選択する</string>
   <string name="you_are_offline">オフラインです</string>
-  <string name="feature_coming_soon">この機能は近日実装予定です...</string>
+  <string name="feature_coming_soon">近日公開予定です。</string>
 </resources>

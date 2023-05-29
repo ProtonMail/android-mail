@@ -29,9 +29,9 @@
   <string name="action_forward_content_description">Reenvia</string>
   <string name="action_mark_read_content_description">Marca com a llegit</string>
   <string name="action_mark_unread_content_description">Marca com a no llegit</string>
-  <string name="action_star_content_description">Destacat</string>
+  <string name="action_star_content_description">Destaca</string>
   <string name="action_unstar_content_description">Treure de destacats</string>
-  <string name="action_label_content_description">Etiqueta com</string>
+  <string name="action_label_content_description">Etiqueta com a</string>
   <string name="action_move_content_description">Mou a</string>
   <string name="action_trash_content_description">Brossa</string>
   <string name="action_delete_content_description">Elimina</string>

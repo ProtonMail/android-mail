@@ -20,7 +20,7 @@
   <string name="from_prefix">De:</string>
   <string name="to_prefix">Para:</string>
   <string name="subject_placeholder">Assunto</string>
-  <string name="compose_message_placeholder">Escrever email</string>
-  <string name="close_composer_content_description">Fechar compositor</string>
+  <string name="compose_message_placeholder">Escrever e-mail</string>
+  <string name="close_composer_content_description">Fechar aba</string>
   <string name="send_message_content_description">Enviar mensagem</string>
 </resources>
