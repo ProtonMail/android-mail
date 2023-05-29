@@ -20,7 +20,7 @@ object Versions {
 
     object Accompanist {
 
-        const val accompanist = "0.29.1-alpha"
+        const val accompanist = "0.30.1"
     }
 
     object AndroidTools {
@@ -33,17 +33,17 @@ object Versions {
         const val activity = "1.7.0-beta01"
         const val annotation = "1.2.0"
         const val appCompat = "1.6.1"
-        const val compose = "1.4.0-beta01"
-        const val composeCompiler = "1.4.2"
-        const val composeFoundation = "1.4.0-beta01"
-        const val composeMaterial = "1.4.0-beta01"
+        const val compose = "1.4.3"
+        const val composeCompiler = "1.4.3"
+        const val composeFoundation = "1.4.3"
+        const val composeMaterial = "1.4.3"
         const val constraintLayoutCompose = "1.0.1"
         const val customView = "1.2.0-alpha02"
         const val customViewPoolingContainer = "1.0.0"
         const val datastore = "1.0.0"
         const val hilt = "1.0.0"
-        const val material3 = "1.1.0-beta02"
-        const val navigation = "2.5.3"
+        const val material3 = "1.1.0"
+        const val navigation = "2.6.0-rc02"
         const val paging = "3.1.1"
         const val pagingCompose = "1.0.0-alpha17"
         const val room = "2.4.3"
@@ -71,7 +71,7 @@ object Versions {
 
     object Dagger {
 
-        const val dagger = "2.44.2"
+        const val dagger = "2.46.1"
     }
 
     object Detekt {
@@ -81,7 +81,7 @@ object Versions {
 
     object Gradle {
 
-        const val androidGradlePlugin = "7.4.2"
+        const val androidGradlePlugin = "8.0.2"
         const val benManesVersionsPlugin = "0.45.0"
         const val hiltAndroidGradlePlugin = Dagger.dagger
         const val kotlinGradlePlugin = Kotlin.kotlin
@@ -138,7 +138,7 @@ object Versions {
 
     object Mockk {
 
-        const val mockk = "1.13.2"
+        const val mockk = "1.13.3"
     }
 
     object Proton {

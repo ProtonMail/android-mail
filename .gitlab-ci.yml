@@ -1,5 +1,5 @@
 default:
-  image: $CI_REGISTRY/android/shared/docker-android:v1.1.0
+  image: $CI_REGISTRY/android/shared/docker-android:v1.2.0
   interruptible: true
 
 before_script:

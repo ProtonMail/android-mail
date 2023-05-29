@@ -22,11 +22,21 @@ plugins {
 }
 
 android {
+    namespace = "ch.protonmail.android.testdata"
     compileSdk = Config.compileSdk
 
     defaultConfig {
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 }
 

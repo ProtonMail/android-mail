@@ -22,6 +22,7 @@ plugins {
 }
 
 android {
+    namespace = "ch.protonmail.android.mailpagination"
     compileSdk = Config.compileSdk
 
     defaultConfig {

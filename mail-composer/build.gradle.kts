@@ -22,6 +22,7 @@ plugins {
 }
 
 android {
+    namespace = "ch.protonmail.android.mailcomposer"
     compileSdk = Config.compileSdk
 
     defaultConfig {

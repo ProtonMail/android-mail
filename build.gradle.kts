@@ -58,9 +58,11 @@ subprojects {
 
     afterEvaluate {
         dependencies {
-            add("detektPlugins", project(":detekt-rules"))
+            configurations.findByName("detektPlugins")?.let {
+                add("detektPlugins", project(":detekt-rules"))
+            }
         }
-        tasks.named("detekt").dependsOn(":detekt-rules:assemble")
+        tasks.findByName("detekt")?.dependsOn(":detekt-rules:assemble")
     }
 }
 
