@@ -29,7 +29,7 @@ internal class MessageExpandedHeaderSection(
 
     private val expandedHeader = MessageHeaderExpandedEntryModel(composeTestRule)
 
-    fun collapse() = apply {
+    fun collapse() {
         expandedHeader.collapse()
     }
 
@@ -37,23 +37,23 @@ internal class MessageExpandedHeaderSection(
 
     internal inner class Verify {
 
-        fun hasRecipients(vararg recipients: ExtendedHeaderRecipientEntry) = apply {
+        fun hasRecipients(vararg recipients: ExtendedHeaderRecipientEntry) {
             expandedHeader.hasRecipients(*recipients)
         }
 
-        fun hasLabels(vararg labels: LabelEntry) = apply {
+        fun hasLabels(vararg labels: LabelEntry) {
             expandedHeader.hasLabels(*labels)
         }
 
-        fun hasTime(value: String) = apply {
+        fun hasTime(value: String) {
             expandedHeader.hasTime(value)
         }
 
-        fun hasLocation(value: String) = apply {
+        fun hasLocation(value: String) {
             expandedHeader.hasLocation(value)
         }
 
-        fun hasSize(value: String) = apply {
+        fun hasSize(value: String) {
             expandedHeader.hasSize(value)
         }
     }

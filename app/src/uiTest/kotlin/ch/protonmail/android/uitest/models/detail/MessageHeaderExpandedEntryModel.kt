@@ -64,13 +64,13 @@ internal class MessageHeaderExpandedEntryModel(composeTestRule: ComposeTestRule)
     }
 
     // region actions
-    fun collapse() = apply {
+    fun collapse() {
         collapseAnchor.performClick()
     }
     // endregion
 
     // region verification
-    fun hasRecipients(vararg recipients: ExtendedHeaderRecipientEntry) = apply {
+    fun hasRecipients(vararg recipients: ExtendedHeaderRecipientEntry) {
         recipients.forEach {
             val model = it.asEntryModel()
             model.hasName(it.name)
@@ -78,7 +78,7 @@ internal class MessageHeaderExpandedEntryModel(composeTestRule: ComposeTestRule)
         }
     }
 
-    fun hasLabels(vararg entries: LabelEntry) = apply {
+    fun hasLabels(vararg entries: LabelEntry) {
         labels.child { hasTestTag(MessageDetailHeaderTestTags.LabelIcon) }.assertExists()
 
         entries.forEach {
@@ -87,22 +87,22 @@ internal class MessageHeaderExpandedEntryModel(composeTestRule: ComposeTestRule)
         }
     }
 
-    fun hasTime(value: String) = apply {
+    fun hasTime(value: String) {
         time.hasIcon()
             .hasText(value)
     }
 
-    fun hasLocation(value: String) = apply {
+    fun hasLocation(value: String) {
         location.hasIcon()
             .hasText(value)
     }
 
-    fun hasSize(value: String) = apply {
+    fun hasSize(value: String) {
         size.hasIcon()
             .hasText(value)
     }
 
-    fun hasHideDetailsButton() = apply {
+    fun hasHideDetailsButton() {
         hideDetailsButton.assertIsDisplayed()
     }
     // endregion

@@ -50,7 +50,7 @@ internal class MessageBodySection(private val composeTestRule: ComposeContentTes
         }
     }
 
-    fun waitUntilMessageIsShown(timeout: Duration = 30.seconds) = apply {
+    fun waitUntilMessageIsShown(timeout: Duration = 30.seconds) {
         composeTestRule.waitForIdle()
 
         // Wait for the WebView to appear.

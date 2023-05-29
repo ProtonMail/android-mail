@@ -89,57 +89,57 @@ internal data class MessageCollapsedItemEntryModel(
     }
 
     // region actions
-    fun click() = apply {
+    fun click(): MessageCollapsedItemEntryModel = apply {
         rootItem.performClick()
     }
     // endregion
 
     // region verification
-    fun isNotDisplayed() = apply {
+    fun isNotDisplayed(): MessageCollapsedItemEntryModel = apply {
         rootItem.assertDoesNotExist()
     }
 
-    fun hasAvatar(initial: AvatarInitial) = apply {
+    fun hasAvatar(initial: AvatarInitial): MessageCollapsedItemEntryModel = apply {
         when (initial) {
             is AvatarInitial.WithText -> avatar.assertTextEquals(initial.text)
             is AvatarInitial.Draft -> avatarDraft.assertIsDisplayed()
         }
     }
 
-    fun hasAttachmentIcon() = apply {
+    fun hasAttachmentIcon(): MessageCollapsedItemEntryModel = apply {
         attachmentIcon.assertIsDisplayed()
     }
 
-    fun hasRepliedIcon() = apply {
+    fun hasRepliedIcon(): MessageCollapsedItemEntryModel = apply {
         repliedIcon.assertIsDisplayed()
     }
 
-    fun hasRepliedAllIcon() = apply {
+    fun hasRepliedAllIcon(): MessageCollapsedItemEntryModel = apply {
         repliedAllIcon.assertIsDisplayed()
     }
 
-    fun hasForwardedIcon() = apply {
+    fun hasForwardedIcon(): MessageCollapsedItemEntryModel = apply {
         forwardedIcon.assertIsDisplayed()
     }
 
-    fun hasStarIcon() = apply {
+    fun hasStarIcon(): MessageCollapsedItemEntryModel = apply {
         starIcon.assertIsDisplayed()
     }
 
-    fun hasSender(value: String) = apply {
+    fun hasSender(value: String): MessageCollapsedItemEntryModel = apply {
         sender.assertTextEquals(value)
     }
 
-    fun hasExpiration(value: String) = apply {
+    fun hasExpiration(value: String): MessageCollapsedItemEntryModel = apply {
         expirationIcon.assertIsDisplayed()
         expirationText.assertTextEquals(value)
     }
 
-    fun hasLocationIcon() = apply {
+    fun hasLocationIcon(): MessageCollapsedItemEntryModel = apply {
         locationIcon.assertIsDisplayed()
     }
 
-    fun hasTime(value: String) = apply {
+    fun hasTime(value: String): MessageCollapsedItemEntryModel = apply {
         time.assertTextEquals(value)
     }
     // endregion

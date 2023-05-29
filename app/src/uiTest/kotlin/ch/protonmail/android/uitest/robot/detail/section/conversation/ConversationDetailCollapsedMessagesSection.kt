@@ -32,7 +32,7 @@ internal class ConversationDetailCollapsedMessagesSection(
 
     private val messagesList = composeTestRule.onNodeWithTag(ConversationDetailScreenTestTags.MessagesList)
 
-    fun scrollToTop() = apply {
+    fun scrollToTop() {
         messagesList.performTouchInput { swipeUp() }
     }
 
@@ -93,8 +93,8 @@ internal class ConversationDetailCollapsedMessagesSection(
     private fun withEntryModel(
         index: Int,
         block: MessageCollapsedItemEntryModel.() -> MessageCollapsedItemEntryModel
-    ): MessageCollapsedItemEntryModel {
+    ) {
         val entryModel = MessageCollapsedItemEntryModel(index, composeTestRule)
-        return block(entryModel)
+        block(entryModel)
     }
 }
