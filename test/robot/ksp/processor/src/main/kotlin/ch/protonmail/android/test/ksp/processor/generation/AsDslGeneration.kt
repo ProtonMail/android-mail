@@ -20,6 +20,7 @@ package ch.protonmail.android.test.ksp.processor.generation
 
 import ch.protonmail.android.test.ksp.processor.destructured
 import com.google.devtools.ksp.processing.CodeGenerator
+import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -28,12 +29,24 @@ import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.UNIT
+import com.squareup.kotlinpoet.ksp.addOriginatingKSFile
 import com.squareup.kotlinpoet.ksp.writeTo
 
-internal fun generateAsDslExtension(annotatedElement: KSClassDeclaration, codeGenerator: CodeGenerator) {
+internal fun generateAsDslExtension(
+    annotatedElement: KSClassDeclaration,
+    codeGenerator: CodeGenerator,
+    logger: KSPLogger
+) {
     val (annotatedClass, annotatedClassPkg) = annotatedElement.destructured
 
+    logger.info("Generating shorthand DSL helper for $annotatedClass.")
+
+    val originatingFile = requireNotNull(annotatedElement.containingFile) {
+        logger.error("Originating file for $annotatedClass is null.")
+    }
+
     val shortHandDslExtensionFunction = FunSpec.builder(annotatedClass.replaceFirstChar { it.lowercase() })
+        .addOriginatingKSFile(originatingFile)
         .addModifiers(KModifier.INTERNAL)
         .addParameter(
             ParameterSpec.builder(
@@ -56,5 +69,7 @@ internal fun generateAsDslExtension(annotatedElement: KSClassDeclaration, codeGe
         .addFunction(shortHandDslExtensionFunction)
         .build()
 
-    targetFile.writeTo(codeGenerator, true)
+    targetFile.writeTo(codeGenerator, aggregating = false).also {
+        logger.info("Annotation processed -> ${targetFile.name}.")
+    }
 }

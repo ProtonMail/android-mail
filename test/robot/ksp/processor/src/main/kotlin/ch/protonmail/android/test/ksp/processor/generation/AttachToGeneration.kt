@@ -20,7 +20,9 @@ package ch.protonmail.android.test.ksp.processor.generation
 
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.processor.destructured
+import com.google.devtools.ksp.containingFile
 import com.google.devtools.ksp.processing.CodeGenerator
+import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
@@ -32,9 +34,14 @@ import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.UNIT
+import com.squareup.kotlinpoet.ksp.addOriginatingKSFile
 import com.squareup.kotlinpoet.ksp.writeTo
 
-internal fun generateAttachToExtension(annotatedElement: KSClassDeclaration, codeGenerator: CodeGenerator) {
+internal fun generateAttachToExtension(
+    annotatedElement: KSClassDeclaration,
+    codeGenerator: CodeGenerator,
+    logger: KSPLogger
+) {
     val annotationElement = annotatedElement.annotations.first {
         it.shortName.asString() == AttachTo::class.simpleName
     }
@@ -47,7 +54,14 @@ internal fun generateAttachToExtension(annotatedElement: KSClassDeclaration, cod
         val (targetClass, targetPkg) = target.declaration.destructured
         val extensionIdentifier = identifier.ifEmpty { annotatedClass }.replaceFirstChar { it.lowercase() }
 
+        logger.info("Attaching $annotatedClass to $targetClass.")
+
+        val originatingFile = requireNotNull(annotationElement.containingFile) {
+            logger.error("Originating file for $annotatedClass on $targetClass is null.")
+        }
+
         val attachToExtensionFunction = FunSpec.builder(extensionIdentifier)
+            .addOriginatingKSFile(originatingFile)
             .addModifiers(KModifier.INTERNAL)
             .receiver(ClassName(targetPkg, targetClass))
             .addParameter(
@@ -71,7 +85,9 @@ internal fun generateAttachToExtension(annotatedElement: KSClassDeclaration, cod
             .addFunction(attachToExtensionFunction)
             .build()
 
-        targetFile.writeTo(codeGenerator, true)
+        targetFile.writeTo(codeGenerator, aggregating = false).also {
+            logger.info("Annotation processed -> ${targetFile.name}.")
+        }
     }
 }
 

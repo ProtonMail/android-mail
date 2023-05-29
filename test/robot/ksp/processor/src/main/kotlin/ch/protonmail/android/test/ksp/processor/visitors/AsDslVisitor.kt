@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.test.ksp.processor.visitors
 
-import ch.protonmail.android.test.ksp.processor.classNameWithPackage
 import ch.protonmail.android.test.ksp.processor.generation.generateAsDslExtension
 import com.google.devtools.ksp.isAbstract
 import com.google.devtools.ksp.processing.CodeGenerator
@@ -44,8 +43,6 @@ internal class AsDslVisitor(
             return
         }
 
-        logger.info("Generating shorthand DSL helper for ${classDeclaration.classNameWithPackage}...")
-
-        generateAsDslExtension(classDeclaration, codeGenerator)
+        generateAsDslExtension(classDeclaration, codeGenerator, logger)
     }
 }

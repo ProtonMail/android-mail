@@ -19,7 +19,6 @@
 package ch.protonmail.android.test.ksp.processor.visitors
 
 import ch.protonmail.android.test.ksp.processor.generation.generateVerifyOuterExtension
-import ch.protonmail.android.test.ksp.processor.stringClassName
 import com.google.devtools.ksp.isAbstract
 import com.google.devtools.ksp.outerType
 import com.google.devtools.ksp.processing.CodeGenerator
@@ -49,8 +48,6 @@ internal class VerifiesOuterVisitor(
             return
         }
 
-        logger.info("Generating inner class extension for ${classDeclaration.stringClassName}...")
-
-        generateVerifyOuterExtension(classDeclaration, codeGenerator)
+        generateVerifyOuterExtension(classDeclaration, codeGenerator, logger)
     }
 }

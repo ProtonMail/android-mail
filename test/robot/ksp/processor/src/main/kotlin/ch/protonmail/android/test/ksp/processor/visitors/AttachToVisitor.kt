@@ -19,8 +19,8 @@
 package ch.protonmail.android.test.ksp.processor.visitors
 
 import ch.protonmail.android.test.ksp.processor.generation.generateAttachToExtension
-import ch.protonmail.android.test.ksp.processor.stringClassName
 import ch.protonmail.android.test.robot.ProtonMailSectionRobot
+import com.google.devtools.ksp.getAllSuperTypes
 import com.google.devtools.ksp.isAbstract
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
@@ -46,13 +46,14 @@ internal class AttachToVisitor(
             return
         }
 
-        classDeclaration.superTypes.find { it.toTypeName() == ProtonMailSectionRobot::class.asTypeName() } ?: run {
+        // Use `getAllSuperTypes`, as the actual annotated class might not implement the interface directly.
+        classDeclaration.getAllSuperTypes().find {
+            it.toTypeName() == ProtonMailSectionRobot::class.asTypeName()
+        } ?: run {
             logger.error("Annotated object needs to be a ProtonMailSectionRobot.")
             return
         }
 
-        logger.info("Attaching ${classDeclaration.stringClassName} to Robots...")
-
-        generateAttachToExtension(classDeclaration, codeGenerator)
+        generateAttachToExtension(classDeclaration, codeGenerator, logger)
     }
 }

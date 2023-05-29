@@ -63,8 +63,10 @@ internal class VerifiesOuterProcessingTests {
                 |
                 |import kotlin.Unit
                 |
-                |internal fun Section.verify(block: Section.Verify.() -> Unit): Section.Verify =
-                |    Verify().apply(block)
+                |internal fun Section.verify(block: Section.Verify.() -> Unit): Section {
+                |  Verify().apply(block)
+                |  return Section()
+                |}
                 |
             """.trimMargin(),
             sourceCode

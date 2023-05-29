@@ -22,6 +22,7 @@ import ch.protonmail.android.test.ksp.processor.destructured
 import ch.protonmail.android.test.ksp.processor.stringClassName
 import com.google.devtools.ksp.outerType
 import com.google.devtools.ksp.processing.CodeGenerator
+import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
@@ -31,16 +32,28 @@ import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.TypeVariableName
 import com.squareup.kotlinpoet.UNIT
+import com.squareup.kotlinpoet.ksp.addOriginatingKSFile
 import com.squareup.kotlinpoet.ksp.writeTo
 
-internal fun generateVerifyOuterExtension(annotatedElement: KSClassDeclaration, codeGenerator: CodeGenerator) {
+internal fun generateVerifyOuterExtension(
+    annotatedElement: KSClassDeclaration,
+    codeGenerator: CodeGenerator,
+    logger: KSPLogger
+) {
     val (annotatedClass, annotatedClassPkg) = annotatedElement.destructured
     val outerClass = requireNotNull(annotatedElement.asStarProjectedType().outerType).declaration
 
     val targetClass = outerClass.stringClassName
     val extensionIdentifier = annotatedClass.replaceFirstChar { it.lowercase() }
 
+    logger.info("Attaching outer verification to $targetClass.")
+
+    val originatingFile = requireNotNull(annotatedElement.containingFile) {
+        logger.error("Originating file for $annotatedClass on $targetClass is null.")
+    }
+
     val verifiesOuterExtensionFunction = FunSpec.builder(extensionIdentifier)
+        .addOriginatingKSFile(originatingFile)
         .addModifiers(KModifier.INTERNAL)
         .receiver(
             TypeVariableName.invoke(targetClass)
@@ -59,13 +72,17 @@ internal fun generateVerifyOuterExtension(annotatedElement: KSClassDeclaration, 
             ).build()
         )
         .addStatement(
-            """return %L().apply(block)""",
+            """%L().apply(block)""",
             TypeVariableName.invoke(annotatedClass)
+        )
+        .addStatement(
+            """return %L()""",
+            TypeVariableName.invoke(targetClass)
         )
         .returns(
             ClassName(
                 packageName = annotatedClassPkg,
-                simpleNames = listOf(targetClass, annotatedClass)
+                targetClass
             )
         )
         .build()
@@ -77,5 +94,7 @@ internal fun generateVerifyOuterExtension(annotatedElement: KSClassDeclaration, 
         .addFunction(verifiesOuterExtensionFunction)
         .build()
 
-    targetFile.writeTo(codeGenerator, true)
+    targetFile.writeTo(codeGenerator, aggregating = false).also {
+        logger.info("Annotation processed -> ${targetFile.name}.")
+    }
 }
