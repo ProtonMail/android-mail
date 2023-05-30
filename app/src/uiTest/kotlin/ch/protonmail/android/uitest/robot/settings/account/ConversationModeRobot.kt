@@ -19,24 +19,19 @@ package ch.protonmail.android.uitest.robot.settings.account
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onFirst
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
+import ch.protonmail.android.test.ksp.annotations.AsDsl
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.util.assertions.assertTextContains
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 
-/**
- * Class represents Change Conversation Mode view.
- */
-class ConversationModeRobot(val composeTestRule: ComposeTestRule) {
+@AsDsl
+internal class ConversationModeRobot : ComposeRobot() {
 
-    inline fun verify(block: Verify.() -> Unit): ConversationModeRobot =
-        also { Verify().apply(block) }
-
-    /**
-     * Contains all the validations that can be performed by [ConversationModeRobot].
-     */
+    @VerifiesOuter
     inner class Verify {
 
         fun conversationModeToggleIsDisplayedAndEnabled() {

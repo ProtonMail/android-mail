@@ -19,13 +19,22 @@
 package ch.protonmail.android.uitest.robot.composer.section
 
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.util.child
 
-internal class ComposerTopBarAppSection(composeTestRule: ComposeTestRule) {
+@AttachTo(
+    targets = [
+        ComposerRobot::class
+    ],
+    identifier = "topAppBarSection"
+)
+internal class ComposerTopBarAppSection : ComposeSectionRobot() {
 
     private val rootItem = composeTestRule.onNodeWithTag(
         ComposerTestTags.TopAppBar
@@ -47,6 +56,7 @@ internal class ComposerTopBarAppSection(composeTestRule: ComposeTestRule) {
         sendButton.performClick()
     }
 
+    @VerifiesOuter
     inner class Verify {
 
         fun hasCloseButton() = apply {

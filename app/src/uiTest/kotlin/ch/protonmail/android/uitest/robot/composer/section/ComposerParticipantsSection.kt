@@ -18,18 +18,20 @@
 
 package ch.protonmail.android.uitest.robot.composer.section
 
-import androidx.compose.ui.test.junit4.ComposeTestRule
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.composer.model.SenderParticipantEntryModel
 import ch.protonmail.android.uitest.robot.composer.model.ToParticipantEntryModel
 import ch.protonmail.android.uitest.util.getTestString
 import ch.protonmail.android.test.R as testR
 
-internal class ComposerParticipantsSection(composeTestRule: ComposeTestRule) {
+@AttachTo(targets = [ComposerRobot::class], identifier = "participantsSection")
+internal class ComposerParticipantsSection : ComposeSectionRobot() {
 
     private val senderField by lazy { SenderParticipantEntryModel(composeTestRule) }
     private val recipientField by lazy { ToParticipantEntryModel(composeTestRule) }
-
-    fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 
     fun typeSender(sender: String) = apply {
         senderField.typeValue(sender)
@@ -39,6 +41,7 @@ internal class ComposerParticipantsSection(composeTestRule: ComposeTestRule) {
         recipientField.typeValue(recipient)
     }
 
+    @VerifiesOuter
     inner class Verify {
 
         fun hasEmptySender() = apply {

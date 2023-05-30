@@ -23,7 +23,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -32,12 +31,11 @@ import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.language.TEST_TAG_LANG_SETTINGS_SCREEN_SCROLL_COL
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.util.onNodeWithText
 
-/**
- * [LanguageRobot] class contains actions and verifications for LanguageSettingsScreen
- */
-class LanguageRobot(val composeTestRule: ComposeTestRule) {
+internal class LanguageRobot : ComposeRobot() {
 
     fun selectBrazilianPortuguese(): LanguageRobot {
         composeTestRule
@@ -78,12 +76,7 @@ class LanguageRobot(val composeTestRule: ComposeTestRule) {
         return this
     }
 
-    inline fun verify(block: Verify.() -> Unit): LanguageRobot =
-        also { Verify().apply(block) }
-
-    /**
-     * Contains all the validations that can be performed by [LanguageRobot].
-     */
+    @VerifiesOuter
     inner class Verify {
 
         fun appLanguageChangedToPortuguese() {

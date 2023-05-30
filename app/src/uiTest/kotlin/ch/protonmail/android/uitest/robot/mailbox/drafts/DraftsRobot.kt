@@ -20,16 +20,17 @@ package ch.protonmail.android.uitest.robot.mailbox.drafts
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onFirst
 import ch.protonmail.android.maillabel.presentation.R
-import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
+import ch.protonmail.android.test.ksp.annotations.AsDsl
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 
-internal class DraftsRobot : MailboxRobotInterface {
+@AsDsl
+internal class DraftsRobot : ComposeRobot() {
 
-    /**
-     * Contains all the validations that can be performed by [DraftsRobot].
-     */
-    class Verify : MailboxRobotInterface.Verify {
+    @VerifiesOuter
+    inner class Verify {
 
         fun draftsScreenDisplayed(composeRule: ComposeTestRule) {
             composeRule
@@ -38,6 +39,4 @@ internal class DraftsRobot : MailboxRobotInterface {
                 .awaitDisplayed(composeRule)
         }
     }
-
-    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 }

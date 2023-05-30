@@ -20,7 +20,6 @@ package ch.protonmail.android.uitest.robot.detail.section
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
@@ -34,6 +33,11 @@ import androidx.test.espresso.web.webdriver.DriverAtoms.getText
 import androidx.test.espresso.web.webdriver.Locator
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onNodeWithText
 import org.hamcrest.CoreMatchers.containsString
@@ -42,7 +46,13 @@ import org.hamcrest.core.Is.`is`
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-internal class MessageBodySection(private val composeTestRule: ComposeTestRule) {
+@AttachTo(
+    targets = [
+        ConversationDetailRobot::class,
+        MessageDetailRobot::class
+    ]
+)
+internal class MessageBodySection : ComposeSectionRobot() {
 
     private val webView: Web.WebInteraction<*> by lazy {
         onWebView(withClassName(equalTo("android.webkit.WebView"))).apply {
@@ -57,8 +67,7 @@ internal class MessageBodySection(private val composeTestRule: ComposeTestRule) 
         composeTestRule.onNodeWithTag(MessageBodyTestTags.WebView).awaitDisplayed(composeTestRule, timeout)
     }
 
-    internal fun verify(func: Verify.() -> Unit) = Verify().apply(func)
-
+    @VerifiesOuter
     internal inner class Verify {
 
         fun messageInWebViewContains(messageBody: String, tagName: String = "html") {

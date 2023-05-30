@@ -32,13 +32,13 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.test.espresso.action.ViewActions.swipeDown
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
-import ch.protonmail.android.uitest.robot.common.section.SnackbarSection
-import ch.protonmail.android.uitest.robot.mailbox.section.MailboxTopBarSection
+import ch.protonmail.android.test.ksp.annotations.AsDsl
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
-class MailboxRobot internal constructor(
-    private val composeTestRule: ComposeTestRule
-) {
+@AsDsl
+internal class MailboxRobot : ComposeRobot() {
 
     fun pullDownToRefresh(): MailboxRobot {
         composeTestRule.onList()
@@ -58,12 +58,8 @@ class MailboxRobot internal constructor(
         return this
     }
 
-    fun verify(block: Verify.() -> Unit): MailboxRobot =
-        this.also { Verify(composeTestRule).apply(block) }
-
-    class Verify internal constructor(
-        private val composeTestRule: ComposeTestRule
-    ) {
+    @VerifiesOuter
+    inner class Verify {
 
         fun emptyMailboxIsDisplayed() {
             composeTestRule.onEmptyMailbox()
@@ -109,11 +105,3 @@ private fun ComposeTestRule.onEmptyMailbox(): SemanticsNodeInteraction =
 
 private fun emptyMailboxMatcher(): SemanticsMatcher =
     hasTestTag(MailboxScreenTestTags.MailboxEmpty)
-
-internal fun MailboxRobotInterface.topAppBarSection(
-    func: MailboxTopBarSection.() -> Unit
-) = MailboxTopBarSection(composeTestRule).apply(func)
-
-internal fun MailboxRobotInterface.snackbarSection(
-    func: SnackbarSection.() -> Unit
-) = SnackbarSection(composeTestRule).apply(func)

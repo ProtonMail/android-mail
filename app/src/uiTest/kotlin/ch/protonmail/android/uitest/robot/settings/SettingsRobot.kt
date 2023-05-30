@@ -26,16 +26,14 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM
+import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.robot.settings.account.AccountSettingsRobot
 import ch.protonmail.android.uitest.robot.settings.swipeactions.SwipeActionsRobot
 import ch.protonmail.android.uitest.util.awaitProgressIsHidden
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
 
-/**
- * [SettingsRobot] class contains actions and verifications for Settings view.
- */
-internal class SettingsRobot(private val composeTestRule: ComposeTestRule) {
+internal class SettingsRobot : ComposeRobot() {
 
     fun openLanguageSettings(): LanguageRobot {
         composeTestRule
@@ -43,7 +41,7 @@ internal class SettingsRobot(private val composeTestRule: ComposeTestRule) {
             .performClick()
         composeTestRule.waitForIdle()
 
-        return LanguageRobot(composeTestRule)
+        return LanguageRobot()
     }
 
     fun openSwipeActions(): SwipeActionsRobot {
@@ -57,7 +55,7 @@ internal class SettingsRobot(private val composeTestRule: ComposeTestRule) {
 
         composeTestRule.waitForIdle()
 
-        return SwipeActionsRobot(composeTestRule)
+        return SwipeActionsRobot()
     }
 
     fun openUserAccountSettings(): AccountSettingsRobot {
@@ -67,7 +65,7 @@ internal class SettingsRobot(private val composeTestRule: ComposeTestRule) {
 
         composeTestRule.awaitProgressIsHidden()
 
-        return AccountSettingsRobot(composeTestRule)
+        return AccountSettingsRobot()
     }
 
     fun openThemeSettings(): ThemeRobot {
@@ -76,7 +74,7 @@ internal class SettingsRobot(private val composeTestRule: ComposeTestRule) {
             .performClick()
         composeTestRule.waitForIdle()
 
-        return ThemeRobot(composeTestRule)
+        return ThemeRobot()
     }
 
     fun openCombinedContactsSettings(): CombinedContactsRobot {
@@ -85,7 +83,7 @@ internal class SettingsRobot(private val composeTestRule: ComposeTestRule) {
             .performClick()
         composeTestRule.waitForIdle()
 
-        return CombinedContactsRobot(composeTestRule)
+        return CombinedContactsRobot()
     }
 
     fun openAlternativeRoutingSettings(): AlternativeRoutingRobot {
@@ -94,7 +92,7 @@ internal class SettingsRobot(private val composeTestRule: ComposeTestRule) {
             .performClick()
         composeTestRule.waitForIdle()
 
-        return AlternativeRoutingRobot(composeTestRule)
+        return AlternativeRoutingRobot()
     }
 
     private fun ComposeTestRule.onList(): SemanticsNodeInteraction =

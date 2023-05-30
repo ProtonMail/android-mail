@@ -15,21 +15,37 @@
  * You should have received a copy of the GNU General Public License
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
-package ch.protonmail.android.uitest.robot.mailbox
 
-import androidx.compose.ui.test.junit4.ComposeTestRule
+package ch.protonmail.android.uitest.robot.mailbox.section
+
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.swipeUp
+import androidx.test.espresso.action.ViewActions.swipeUp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.allmail.AllMailRobot
+import ch.protonmail.android.uitest.robot.mailbox.drafts.DraftsRobot
+import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import kotlin.time.Duration.Companion.seconds
 
-internal interface MailboxRobotInterface {
+@AttachTo(
+    targets = [
+        AllMailRobot::class,
+        InboxRobot::class,
+        DraftsRobot::class,
+        MailboxRobot::class
+    ],
+    identifier = "listSection"
+)
+internal class MailboxListSection : ComposeSectionRobot() {
 
-    val composeTestRule: ComposeTestRule get() = TODO("Override in subclass")
+    private val messagesList = composeTestRule.onNodeWithTag(MailboxScreenTestTags.List)
 
     fun clickMessageByPosition(position: Int) = apply {
         val model = MailboxListItemEntryModel(position)
@@ -38,12 +54,12 @@ internal interface MailboxRobotInterface {
     }
 
     fun scrollToBottom() = apply {
-        composeTestRule.onNodeWithTag(MailboxScreenTestTags.List)
-            .awaitDisplayed(composeTestRule, timeout = 5.seconds)
+        messagesList.awaitDisplayed(composeTestRule, timeout = 5.seconds)
             .performTouchInput { swipeUp() }
     }
 
-    interface Verify {
+    @VerifiesOuter
+    inner class Verify {
 
         fun listItemsAreShown(vararg mailboxItemEntries: MailboxListItemEntry) {
             for (entry in mailboxItemEntries) {

@@ -19,16 +19,18 @@
 package ch.protonmail.android.uitest.robot.composer.section
 
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTextInput
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.util.getTestString
 import ch.protonmail.android.test.R as testR
 
-internal class ComposerMessageBodySection(
-    composeTestRule: ComposeTestRule
-) {
+@AttachTo(targets = [ComposerRobot::class], identifier = "messageBodySection")
+internal class ComposerMessageBodySection : ComposeSectionRobot() {
 
     private val messageBodyText = composeTestRule.onNodeWithTag(
         testTag = ComposerTestTags.MessageBody,
@@ -44,8 +46,8 @@ internal class ComposerMessageBodySection(
         messageBodyText.performTextInput(value)
     }
 
-    fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 
+    @VerifiesOuter
     inner class Verify {
 
         fun hasPlaceholderText() = apply {

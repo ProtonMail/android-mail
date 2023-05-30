@@ -18,14 +18,13 @@
 
 package ch.protonmail.android.uitest.robot.detail.section
 
-import androidx.compose.ui.test.junit4.ComposeTestRule
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.models.detail.ExtendedHeaderRecipientEntry
 import ch.protonmail.android.uitest.models.detail.MessageHeaderExpandedEntryModel
 import ch.protonmail.android.uitest.models.labels.LabelEntry
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 
-internal class MessageExpandedHeaderSection(
-    composeTestRule: ComposeTestRule
-) {
+internal class MessageExpandedHeaderSection : ComposeSectionRobot() {
 
     private val expandedHeader = MessageHeaderExpandedEntryModel(composeTestRule)
 
@@ -33,8 +32,7 @@ internal class MessageExpandedHeaderSection(
         expandedHeader.collapse()
     }
 
-    fun verify(block: Verify.() -> Unit) = Verify().apply(block)
-
+    @VerifiesOuter
     internal inner class Verify {
 
         fun hasRecipients(vararg recipients: ExtendedHeaderRecipientEntry) {

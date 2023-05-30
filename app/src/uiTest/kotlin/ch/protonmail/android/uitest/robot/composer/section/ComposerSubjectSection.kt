@@ -19,15 +19,18 @@
 package ch.protonmail.android.uitest.robot.composer.section
 
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTextInput
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.util.assertions.assertEmptyText
 import ch.protonmail.android.uitest.util.getTestString
 import ch.protonmail.android.test.R as testR
 
-internal class ComposerSubjectSection(composeTestRule: ComposeTestRule) {
+@AttachTo(targets = [ComposerRobot::class], identifier = "subjectSection")
+internal class ComposerSubjectSection : ComposeSectionRobot() {
 
     private val subject = composeTestRule.onNodeWithTag(ComposerTestTags.Subject, useUnmergedTree = true)
     private val subjectPlaceholder = composeTestRule.onNodeWithTag(

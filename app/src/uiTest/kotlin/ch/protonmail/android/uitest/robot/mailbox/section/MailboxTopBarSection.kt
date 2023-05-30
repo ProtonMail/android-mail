@@ -19,13 +19,27 @@
 package ch.protonmail.android.uitest.robot.mailbox.section
 
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.allmail.AllMailRobot
+import ch.protonmail.android.uitest.robot.mailbox.drafts.DraftsRobot
+import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.child
 
-internal class MailboxTopBarSection(composeTestRule: ComposeTestRule) {
+@AttachTo(
+    targets = [
+        AllMailRobot::class,
+        DraftsRobot::class,
+        InboxRobot::class,
+        MailboxRobot::class
+    ],
+    identifier = "topAppBarSection"
+)
+internal class MailboxTopBarSection : ComposeSectionRobot() {
 
     private val rootItem = composeTestRule.onNodeWithTag(MailboxTopAppBarTestTags.RootItem, useUnmergedTree = true)
     private val composerButton = rootItem.child {

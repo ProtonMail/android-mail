@@ -18,18 +18,20 @@
 
 package ch.protonmail.android.uitest.robot.detail
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreenTestTags
+import ch.protonmail.android.test.ksp.annotations.AsDsl
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
-internal class ConversationDetailRobot(val composeTestRule: ComposeTestRule) {
+@AsDsl
+internal class ConversationDetailRobot : ComposeRobot() {
 
-    fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 
-    inner class Verify {
+    @VerifiesOuter
+    inner class Verify : ComposeSectionRobot() {
 
         fun conversationDetailScreenIsShown() {
             composeTestRule.onNodeWithTag(ConversationDetailScreenTestTags.RootItem)
@@ -37,9 +39,4 @@ internal class ConversationDetailRobot(val composeTestRule: ComposeTestRule) {
                 .assertExists()
         }
     }
-}
-
-internal fun ComposeContentTestRule.ConversationDetailRobot(content: @Composable () -> Unit): ConversationDetailRobot {
-    setContent(content)
-    return ConversationDetailRobot(this)
 }

@@ -19,26 +19,23 @@
 package ch.protonmail.android.uitest.robot.settings
 
 import androidx.compose.ui.test.assertIsOn
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
 
-class CombinedContactsRobot(
-    val composeTestRule: ComposeTestRule
-) {
+internal class CombinedContactsRobot : ComposeRobot() {
 
     fun turnOnCombinedContacts(): CombinedContactsRobot {
         composeTestRule
             .onNodeWithTag(TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM)
             .performClick()
-        composeTestRule.waitUntil { combinedContactsSettingIsToggled(composeTestRule) }
+        composeTestRule.waitUntil { combinedContactsSettingIsToggled() }
         return this
     }
 
-    private fun combinedContactsSettingIsToggled(
-        composeTestRule: ComposeTestRule
-    ): Boolean {
+    private fun combinedContactsSettingIsToggled(): Boolean {
         try {
             composeTestRule
                 .onNodeWithTag(TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM)
@@ -49,9 +46,7 @@ class CombinedContactsRobot(
         return true
     }
 
-    inline fun verify(block: Verify.() -> Unit): CombinedContactsRobot =
-        also { Verify().apply(block) }
-
+    @VerifiesOuter
     inner class Verify {
 
         fun combinedContactsSettingIsToggled() {

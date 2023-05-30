@@ -24,11 +24,13 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.presentation.R.string
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.util.assertions.assertTextContains
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onNodeWithText
 
-class SwipeActionsRobot(val composeTestRule: ComposeTestRule) {
+internal class SwipeActionsRobot : ComposeRobot() {
 
     fun openSwipeLeft(): EditSwipeActionRobot {
         composeTestRule
@@ -36,7 +38,7 @@ class SwipeActionsRobot(val composeTestRule: ComposeTestRule) {
             .awaitDisplayed(composeTestRule)
             .performClick()
 
-        return EditSwipeActionRobot(composeTestRule)
+        return EditSwipeActionRobot()
     }
 
     fun openSwipeRight(): EditSwipeActionRobot {
@@ -45,15 +47,11 @@ class SwipeActionsRobot(val composeTestRule: ComposeTestRule) {
             .awaitDisplayed(composeTestRule)
             .performClick()
 
-        return EditSwipeActionRobot(composeTestRule)
+        return EditSwipeActionRobot()
     }
 
-    inline fun verify(block: Verify.() -> Unit): SwipeActionsRobot {
-        Verify(composeTestRule).apply(block)
-        return this
-    }
-
-    class Verify(val composeTestRule: ComposeTestRule) {
+    @VerifiesOuter
+    inner class Verify {
 
         inline fun swipeLeft(block: VerifySwipeAction.() -> Unit): VerifySwipeAction =
             VerifySwipeAction(composeTestRule, composeTestRule.onNodeWithText(string.mail_settings_swipe_left_name))
@@ -63,7 +61,7 @@ class SwipeActionsRobot(val composeTestRule: ComposeTestRule) {
             VerifySwipeAction(composeTestRule, composeTestRule.onNodeWithText(string.mail_settings_swipe_right_name))
                 .apply(block)
 
-        class VerifySwipeAction(
+        inner class VerifySwipeAction(
             private val composeTestRule: ComposeTestRule,
             private val interaction: SemanticsNodeInteraction
         ) {

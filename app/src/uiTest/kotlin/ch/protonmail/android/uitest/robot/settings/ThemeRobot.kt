@@ -25,12 +25,14 @@ import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.presentation.R.string
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.util.onNodeWithText
 
 /**
  * [ThemeRobot] class contains actions and verifications for ThemeSettingScreen
  */
-class ThemeRobot(val composeTestRule: ComposeTestRule) {
+internal class ThemeRobot : ComposeRobot() {
 
     fun selectDarkTheme(): ThemeRobot {
         composeTestRule
@@ -62,12 +64,7 @@ class ThemeRobot(val composeTestRule: ComposeTestRule) {
         return true
     }
 
-    inline fun verify(block: Verify.() -> Unit): ThemeRobot =
-        also { Verify().apply(block) }
-
-    /**
-     * Contains all the validations that can be performed by [ThemeRobot].
-     */
+    @VerifiesOuter
     inner class Verify {
 
         fun darkThemeIsSelected() {

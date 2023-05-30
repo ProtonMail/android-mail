@@ -21,15 +21,17 @@ package ch.protonmail.android.uitest.robot.mailbox.allmail
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onFirst
 import ch.protonmail.android.maillabel.presentation.R
-import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
+import ch.protonmail.android.test.ksp.annotations.AsDsl
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 
-internal class AllMailRobot(
-    override val composeTestRule: ComposeTestRule
-) : MailboxRobotInterface {
+@AsDsl
+internal class AllMailRobot : ComposeRobot() {
 
-    internal inner class Verify : MailboxRobotInterface.Verify {
+    @VerifiesOuter
+    inner class Verify {
 
         fun allMailScreenDisplayed(composeRule: ComposeTestRule) {
             composeRule
@@ -38,6 +40,4 @@ internal class AllMailRobot(
                 .awaitDisplayed(composeRule)
         }
     }
-
-    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 }

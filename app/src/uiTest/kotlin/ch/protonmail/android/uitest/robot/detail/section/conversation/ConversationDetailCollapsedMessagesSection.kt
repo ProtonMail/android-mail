@@ -18,17 +18,19 @@
 
 package ch.protonmail.android.uitest.robot.detail.section.conversation
 
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreenTestTags
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.model.conversation.MessageCollapsedItemEntryModel
 
-internal class ConversationDetailCollapsedMessagesSection(
-    private val composeTestRule: ComposeTestRule
-) {
+@AttachTo(targets = [ConversationDetailRobot::class], identifier = "messagesCollapsedSection")
+internal class ConversationDetailCollapsedMessagesSection : ComposeSectionRobot() {
 
     private val messagesList = composeTestRule.onNodeWithTag(ConversationDetailScreenTestTags.MessagesList)
 
@@ -40,10 +42,8 @@ internal class ConversationDetailCollapsedMessagesSection(
         click()
     }
 
-    internal fun verify(func: Verify.() -> Unit) = Verify().apply(func)
-
-    @Suppress("TooManyFunctions")
-    internal inner class Verify {
+    @VerifiesOuter
+    inner class Verify {
 
         fun collapsedHeaderIsNotDisplayed() = withEntryModel(index = 0) {
             isNotDisplayed()

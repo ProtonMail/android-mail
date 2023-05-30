@@ -16,24 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.composer
+package ch.protonmail.android.uitest.robot
 
-import androidx.compose.ui.test.onNodeWithTag
-import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
-import ch.protonmail.android.test.ksp.annotations.AsDsl
-import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
-import ch.protonmail.android.uitest.robot.ComposeRobot
+import androidx.compose.ui.test.junit4.ComposeTestRule
+import ch.protonmail.android.test.robot.ProtonMailSectionRobot
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 
-@AsDsl
-internal class ComposerRobot : ComposeRobot() {
-
-    private val rootItem = composeTestRule.onNodeWithTag(ComposerTestTags.RootItem)
-
-    @VerifiesOuter
-    inner class Verify {
-
-        fun composerIsShown() = apply {
-            rootItem.assertExists()
-        }
-    }
-}
+/**
+ * A base [ProtonMailSectionRobot] for Compose screens.
+ */
+internal abstract class ComposeSectionRobot(
+    val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule
+) : ProtonMailSectionRobot

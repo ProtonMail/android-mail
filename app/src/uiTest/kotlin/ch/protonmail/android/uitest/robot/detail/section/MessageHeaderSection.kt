@@ -18,14 +18,17 @@
 
 package ch.protonmail.android.uitest.robot.detail.section
 
-import androidx.compose.ui.test.junit4.ComposeTestRule
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.detail.MessageHeaderEntryModel
 import ch.protonmail.android.uitest.models.labels.LabelEntry
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 
-internal class MessageHeaderSection(
-    private val composeTestRule: ComposeTestRule
-) {
+@AttachTo(targets = [ConversationDetailRobot::class, MessageDetailRobot::class])
+internal class MessageHeaderSection : ComposeSectionRobot() {
 
     private val headerModel = MessageHeaderEntryModel(composeTestRule)
 
@@ -34,13 +37,10 @@ internal class MessageHeaderSection(
     }
 
     // The `expanded` subsection is an exception, but necessary to split the header checks reasonably.
-    fun expanded(block: MessageExpandedHeaderSection.() -> Unit) = MessageExpandedHeaderSection(
-        composeTestRule
-    ).apply(block)
+    fun expanded(block: MessageExpandedHeaderSection.() -> Unit) = MessageExpandedHeaderSection().apply(block)
 
-    fun verify(block: Verify.() -> Unit) = Verify().apply(block)
-
-    internal inner class Verify {
+    @VerifiesOuter
+    inner class Verify {
 
         private val headerModel = MessageHeaderEntryModel(composeTestRule)
 

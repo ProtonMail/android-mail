@@ -19,7 +19,6 @@ package ch.protonmail.android.uitest.robot.settings.account
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
@@ -28,28 +27,25 @@ import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_LIST
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_SCREEN
+import ch.protonmail.android.test.ksp.annotations.AsDsl
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.test.android.robots.settings.PasswordManagementRobot
 
-/**
- * [AccountSettingsRobot] class contains actions and verifications for
- * Account settings functionality.
- */
-class AccountSettingsRobot(val composeTestRule: ComposeTestRule) {
+@AsDsl
+internal class AccountSettingsRobot : ComposeRobot() {
 
     fun openConversationMode(): ConversationModeRobot {
         clickOnAccountListItemWithText(string.mail_settings_conversation_mode)
-        return ConversationModeRobot(composeTestRule)
+        return ConversationModeRobot()
     }
 
     fun openPasswordManagement(): PasswordManagementRobot {
         clickOnAccountListItemWithText(string.mail_settings_password_management)
         return PasswordManagementRobot()
     }
-
-    inline fun verify(block: Verify.() -> Unit): AccountSettingsRobot =
-        also { Verify().apply(block) }
 
     private fun clickOnAccountListItemWithText(@StringRes itemNameRes: Int) {
         composeTestRule
@@ -64,9 +60,8 @@ class AccountSettingsRobot(val composeTestRule: ComposeTestRule) {
         composeTestRule.waitForIdle()
     }
 
-    /**
-     * Contains all the validations that can be performed by [AccountSettingsRobot].
-     */
+
+    @VerifiesOuter
     inner class Verify {
 
         fun accountSettingsScreenIsDisplayed() {

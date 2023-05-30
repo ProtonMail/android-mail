@@ -19,16 +19,20 @@
 package ch.protonmail.android.uitest.robot.common.section
 
 import androidx.test.espresso.Espresso
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.test.robot.ProtonMailSectionRobot
+import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 
-internal class KeyboardSection {
+@AttachTo(targets = [ComposerRobot::class])
+internal class KeyboardSection : ProtonMailSectionRobot {
 
     fun dismissKeyboard() = apply {
         Espresso.closeSoftKeyboard()
     }
 
-    fun verify(block: Verify.() -> Unit) = Verify().apply(block)
-
+    @VerifiesOuter
     inner class Verify {
 
         fun keyboardIsShown() = assertKeyboardShown(true)

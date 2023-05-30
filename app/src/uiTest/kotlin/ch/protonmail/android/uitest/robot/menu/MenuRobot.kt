@@ -19,7 +19,6 @@ package ch.protonmail.android.uitest.robot.menu
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
@@ -28,8 +27,11 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import ch.protonmail.android.mailmailbox.presentation.sidebar.TEST_TAG_SIDEBAR_MENU
+import ch.protonmail.android.test.ksp.annotations.AsDsl
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry
 import ch.protonmail.android.uitest.models.folders.SidebarItemCustomFolderEntryModel
+import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.robot.mailbox.allmail.AllMailRobot
 import ch.protonmail.android.uitest.robot.mailbox.drafts.DraftsRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
@@ -39,12 +41,10 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.presentation.compose.R.string
 import ch.protonmail.android.maillabel.presentation.R.string as mailLabelStrings
 
-/**
- * [MenuRobot] class contains actions and verifications for menu functionality.
- */
-internal class MenuRobot(private val composeTestRule: ComposeTestRule) {
+@AsDsl
+internal class MenuRobot : ComposeRobot() {
 
-    fun openInbox(): InboxRobot = InboxRobot(composeTestRule)
+    fun openInbox(): InboxRobot = InboxRobot()
 
     fun openDrafts(): DraftsRobot {
         tapSidebarMenuItemWithText(mailLabelStrings.label_title_drafts)
@@ -58,19 +58,17 @@ internal class MenuRobot(private val composeTestRule: ComposeTestRule) {
 
     fun openAllMail(): AllMailRobot {
         tapSidebarMenuItemWithText(mailLabelStrings.label_title_all_mail)
-        return AllMailRobot(composeTestRule)
+        return AllMailRobot()
     }
 
     fun openSettings(): SettingsRobot {
         tapSidebarMenuItemWithText(string.presentation_menu_item_title_settings)
-        return SettingsRobot(composeTestRule)
+        return SettingsRobot()
     }
 
     fun openReportBugs() {
         tapSidebarMenuItemWithText(string.presentation_menu_item_title_report_a_bug)
     }
-
-    internal inline fun verify(block: Verify.() -> Unit): MenuRobot = also { Verify().apply(block) }
 
     private fun tapSidebarMenuItemWithText(@StringRes menuItemName: Int) {
         composeTestRule
@@ -94,10 +92,8 @@ internal class MenuRobot(private val composeTestRule: ComposeTestRule) {
         return this
     }
 
-    /**
-     * Contains all the validations that can be performed by [MenuRobot].
-     */
-    internal class Verify {
+    @VerifiesOuter
+    inner class Verify {
 
         fun customFoldersAreDisplayed(vararg folders: SidebarCustomItemEntry) {
             folders.forEach {

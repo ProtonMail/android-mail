@@ -18,16 +18,20 @@
 
 package ch.protonmail.android.uitest.robot.detail.section
 
-import androidx.compose.ui.test.junit4.ComposeTestRule
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import ch.protonmail.android.uitest.robot.detail.model.DetailScreenTopBarEntryModel
 
-internal class DetailTopBarSection(composeTestRule: ComposeTestRule) {
+@AttachTo(targets = [ConversationDetailRobot::class, MessageDetailRobot::class])
+internal class DetailTopBarSection : ComposeSectionRobot() {
 
     private val topBarDetailModel = DetailScreenTopBarEntryModel(composeTestRule)
 
-    fun verify(block: Verify.() -> Unit) = Verify().apply(block)
-
-    internal inner class Verify {
+    @VerifiesOuter
+    inner class Verify {
 
         fun hasSubject(subject: String) = apply {
             topBarDetailModel.hasSubject(subject)
