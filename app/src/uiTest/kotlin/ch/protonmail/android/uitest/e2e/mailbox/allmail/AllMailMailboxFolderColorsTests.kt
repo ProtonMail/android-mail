@@ -35,6 +35,9 @@ import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.MailFolderEntry
 import ch.protonmail.android.uitest.models.folders.Tint
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.robot.mailbox.allmail.verify
+import ch.protonmail.android.uitest.robot.mailbox.section.listSection
+import ch.protonmail.android.uitest.robot.mailbox.section.verify
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -313,6 +316,6 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest(loginStrategy
         menuRobot
             .swipeOpenSidebarMenu()
             .openAllMail()
-            .verify { listItemsAreShown(*expectedMailboxEntries) }
+            .listSection { verify { listItemsAreShown(*expectedMailboxEntries) } }
     }
 }

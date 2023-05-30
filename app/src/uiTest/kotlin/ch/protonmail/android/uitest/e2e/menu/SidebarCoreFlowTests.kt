@@ -4,8 +4,9 @@ import ch.protonmail.android.test.annotations.suite.CoreLibraryTest
 import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.di.LocalhostApi
 import ch.protonmail.android.uitest.di.LocalhostApiModule
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
-import ch.protonmail.android.uitest.robot.menu.MenuRobot
+import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.inbox.verify
+import ch.protonmail.android.uitest.robot.menu.menuRobot
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -23,23 +24,21 @@ class SidebarCoreFlowTests : BaseTest(), MinimalReportInternalTests {
     @LocalhostApi
     val localhostApi = false
 
-    private val inboxRobot = InboxRobot(composeTestRule)
-    private val menuRobot = MenuRobot(composeTestRule)
-
     override val quark: Quark = BaseTest.quark
     override val users: User.Users = BaseTest.users
 
     override fun verifyBefore() {
-        inboxRobot.verify { mailboxScreenDisplayed() }
+        inboxRobot { verify { mailboxScreenDisplayed() } }
     }
 
     override fun startReport() {
-        menuRobot
-            .swipeOpenSidebarMenu()
-            .openReportBugs()
+        menuRobot {
+            swipeOpenSidebarMenu()
+            openReportBugs()
+        }
     }
 
     override fun verifyAfter() {
-        inboxRobot.verify { mailboxScreenDisplayed() }
+        inboxRobot { verify { mailboxScreenDisplayed() } }
     }
 }

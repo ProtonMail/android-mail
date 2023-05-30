@@ -33,11 +33,15 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
-import ch.protonmail.android.uitest.robot.detail.bottomSheetSection
-import ch.protonmail.android.uitest.robot.detail.messageBodySection
-import ch.protonmail.android.uitest.robot.detail.messageHeaderSection
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.section.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.section.verify
+import ch.protonmail.android.uitest.robot.detail.verify
+import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.section.listSection
+
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -50,9 +54,6 @@ import org.junit.Test
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
 internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
-
-    private val inboxRobot = InboxRobot(composeTestRule)
-    private val conversationDetailRobot = ConversationDetailRobot(composeTestRule)
 
     @JvmField
     @BindValue
@@ -88,9 +89,11 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {
@@ -102,7 +105,7 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
         // Physical/soft key press is required by this test case.
         uiDevice.pressBack()
 
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             verify { conversationDetailScreenIsShown() }
 
             bottomSheetSection {
@@ -141,9 +144,11 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {
@@ -155,7 +160,7 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
         // Physical/soft key press is required by this test case.
         uiDevice.pressBack()
 
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             verify { conversationDetailScreenIsShown() }
 
             bottomSheetSection {
@@ -194,9 +199,11 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {
@@ -248,9 +255,11 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {

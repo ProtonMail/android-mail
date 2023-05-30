@@ -20,7 +20,6 @@ package ch.protonmail.android.uitest.screen.mailbox
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import arrow.core.nonEmptyListOf
@@ -40,6 +39,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.verify
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.ManagedState
 import ch.protonmail.android.uitest.util.StateManager
 import kotlinx.collections.immutable.persistentListOf
@@ -52,7 +54,7 @@ import org.junit.Test
 internal class MailboxScreenTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @Test
     fun whenLoadingThenProgressIsDisplayed() {
@@ -161,7 +163,7 @@ internal class MailboxScreenTest {
         }
 
         val stateManager = StateManager.of(states)
-        val robot = composeTestRule.MailboxRobot {
+        val robot = setupManagedState {
             ManagedState(stateManager = stateManager) { mailboxState ->
                 MailboxScreen(
                     mailboxState = mailboxState,
@@ -187,11 +189,15 @@ internal class MailboxScreenTest {
             .verify { itemWithSubjectIsDisplayed(subject = "1") }
     }
 
+    private fun setupManagedState(content: @Composable () -> Unit): MailboxRobot = mailboxRobot {
+        this@MailboxScreenTest.composeTestRule.setContent(content)
+    }
+
     private fun setupScreen(
         state: MailboxState = MailboxStateSampleData.Loading,
         items: List<MailboxItemUiModel> = emptyList()
-    ): MailboxRobot =
-        composeTestRule.MailboxRobot {
+    ): MailboxRobot = mailboxRobot {
+        this@MailboxScreenTest.composeTestRule.setContent {
             val mailboxItems = flowOf(PagingData.from(items)).collectAsLazyPagingItems()
 
             MailboxScreen(
@@ -200,8 +206,5 @@ internal class MailboxScreenTest {
                 actions = MailboxScreen.Actions.Empty
             )
         }
-
-    private fun ComposeContentTestRule.MailboxRobot(content: @Composable () -> Unit) =
-        MailboxRobot(this).also { setContent(content) }
+    }
 }
-

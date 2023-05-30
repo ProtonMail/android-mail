@@ -31,7 +31,9 @@ import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.section.listSection
+import ch.protonmail.android.uitest.robot.mailbox.section.verify
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -43,8 +45,6 @@ import org.junit.Test
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
 internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
-
-    private val inboxRobot = InboxRobot(composeTestRule)
 
     @JvmField
     @BindValue
@@ -98,7 +98,11 @@ internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = Login
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.verify { listItemsAreShown(*expectedInboxListEntries) }
+        inboxRobot {
+            listSection {
+                verify { listItemsAreShown(*expectedInboxListEntries) }
+            }
+        }
     }
 
     @Test
@@ -125,6 +129,10 @@ internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = Login
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.verify { listItemsAreShown(*expectedInboxListEntries) }
+        inboxRobot {
+            listSection {
+                verify { listItemsAreShown(*expectedInboxListEntries) }
+            }
+        }
     }
 }

@@ -33,15 +33,19 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
-import ch.protonmail.android.uitest.robot.composer.ComposerRobot
-import ch.protonmail.android.uitest.robot.composer.keyboardSection
-import ch.protonmail.android.uitest.robot.composer.messageSection
-import ch.protonmail.android.uitest.robot.composer.participantsSection
-import ch.protonmail.android.uitest.robot.composer.subjectSection
-import ch.protonmail.android.uitest.robot.composer.topAppBarSection
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.snackbarSection
-import ch.protonmail.android.uitest.robot.mailbox.topAppBarSection
+import ch.protonmail.android.uitest.robot.common.section.keyboardSection
+import ch.protonmail.android.uitest.robot.common.section.snackbarSection
+import ch.protonmail.android.uitest.robot.common.section.verify
+import ch.protonmail.android.uitest.robot.composer.composerRobot
+import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
+import ch.protonmail.android.uitest.robot.composer.section.participantsSection
+import ch.protonmail.android.uitest.robot.composer.section.subjectSection
+import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
+import ch.protonmail.android.uitest.robot.composer.section.verify
+import ch.protonmail.android.uitest.robot.composer.verify
+import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.inbox.verify
+import ch.protonmail.android.uitest.robot.mailbox.section.topAppBarSection
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -58,9 +62,6 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
     @JvmField
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
-
-    private val inboxRobot = InboxRobot(composeTestRule)
-    private val composerRobot = ComposerRobot(composeTestRule)
 
     @TemporaryTest
     @Test
@@ -81,7 +82,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.run {
+        inboxRobot {
             topAppBarSection { tapComposerIcon() }
 
             snackbarSection {
@@ -109,8 +110,13 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.topAppBarSection { tapComposerIcon() }
-        composerRobot.verify { composerIsShown() }
+        inboxRobot {
+            topAppBarSection { tapComposerIcon() }
+        }
+
+        composerRobot {
+            verify { composerIsShown() }
+        }
     }
 
     @TemporaryTest
@@ -137,9 +143,11 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.topAppBarSection { tapComposerIcon() }
+        inboxRobot {
+            topAppBarSection { tapComposerIcon() }
+        }
 
-        composerRobot.run {
+        composerRobot {
             verify { composerIsShown() }
 
             participantsSection {
@@ -172,7 +180,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             }
 
             // Message body field
-            messageSection {
+            messageBodySection {
                 verify { hasPlaceholderText() }
                 typeMessageBody(expectedBody)
                 verify { hasText(expectedBody) }
@@ -198,10 +206,17 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.topAppBarSection { tapComposerIcon() }
-        composerRobot.topAppBarSection { tapCloseButton() }
+        inboxRobot {
+            topAppBarSection { tapComposerIcon() }
+        }
 
-        inboxRobot.verify { mailboxScreenDisplayed() }
+        composerRobot {
+            topAppBarSection { tapCloseButton() }
+        }
+
+        inboxRobot {
+            verify { mailboxScreenDisplayed() }
+        }
     }
 
     @Test
@@ -222,11 +237,19 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.topAppBarSection { tapComposerIcon() }
-        composerRobot.keyboardSection { dismissKeyboard() }
+        inboxRobot {
+            topAppBarSection { tapComposerIcon() }
+        }
+
+        composerRobot {
+            keyboardSection { dismissKeyboard() }
+        }
+
         uiDevice.pressBack()
 
-        inboxRobot.verify { mailboxScreenDisplayed() }
+        inboxRobot {
+            verify { mailboxScreenDisplayed() }
+        }
     }
 
     @Test
@@ -247,12 +270,16 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.topAppBarSection { tapComposerIcon() }
+        inboxRobot {
+            topAppBarSection { tapComposerIcon() }
+        }
 
-        composerRobot.keyboardSection {
-            dismissKeyboard()
+        composerRobot {
+            keyboardSection {
+                dismissKeyboard()
 
-            verify { keyboardIsNotShown() }
+                verify { keyboardIsNotShown() }
+            }
         }
     }
 }

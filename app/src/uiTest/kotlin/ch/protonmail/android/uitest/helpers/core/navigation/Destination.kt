@@ -24,4 +24,7 @@ package ch.protonmail.android.uitest.helpers.core.navigation
 internal sealed class Destination {
 
     object Inbox : Destination()
+    object Drafts : Destination()
+
+    class MailDetail(val messagePosition: Int) : Destination()
 }

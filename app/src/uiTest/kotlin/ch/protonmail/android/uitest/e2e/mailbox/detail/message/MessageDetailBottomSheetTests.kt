@@ -33,11 +33,12 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
-import ch.protonmail.android.uitest.robot.detail.bottomSheetSection
-import ch.protonmail.android.uitest.robot.detail.headerSection
-import ch.protonmail.android.uitest.robot.detail.messageBodySection
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.section.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.section.verify
+import ch.protonmail.android.uitest.robot.detail.verify
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -50,9 +51,6 @@ import org.junit.Test
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
 internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
-
-    private val inboxRobot = InboxRobot(composeTestRule)
-    private val messageDetailRobot = MessageDetailRobot(composeTestRule)
 
     @JvmField
     @BindValue
@@ -79,12 +77,10 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
         }
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.MailDetail(messagePosition = 0))
         }
 
-        inboxRobot.clickMessageByPosition(0)
-
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {
@@ -97,7 +93,7 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
         // Physical/soft key press is required by this test case.
         uiDevice.pressBack()
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             bottomSheetSection {
                 verify { moveToBottomSheetIsDismissed() }
             }
@@ -127,12 +123,10 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
         }
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.MailDetail(messagePosition = 0))
         }
 
-        inboxRobot.clickMessageByPosition(0)
-
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {
@@ -144,7 +138,7 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
 
         uiDevice.pressBack()
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             bottomSheetSection {
                 verify { labelAsBottomSheetIsDismissed() }
             }
@@ -174,12 +168,10 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
         }
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.MailDetail(messagePosition = 0))
         }
 
-        inboxRobot.clickMessageByPosition(0)
-
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
             bottomSheetSection {
@@ -189,7 +181,7 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
             }
 
             // Tap outside the view.
-            headerSection { expandHeader() }
+            messageHeaderSection { expandHeader() }
 
             bottomSheetSection {
                 verify { moveToBottomSheetIsDismissed() }
@@ -220,12 +212,10 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
         }
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.MailDetail(messagePosition = 0))
         }
 
-        inboxRobot.clickMessageByPosition(0)
-
-        messageDetailRobot.run {
+        messageDetailRobot {
             bottomSheetSection {
                 openLabelAsBottomSheet()
 
@@ -233,7 +223,7 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
             }
 
             // Tap outside the view.
-            headerSection { expandHeader() }
+            messageHeaderSection { expandHeader() }
 
             bottomSheetSection {
                 verify { labelAsBottomSheetIsDismissed() }

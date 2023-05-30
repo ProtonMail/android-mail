@@ -22,6 +22,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.assertions.hasAnyChildWith
@@ -33,8 +34,7 @@ internal class SnackbarSection : ComposeSectionRobot() {
 
     private val snackbarHost = composeTestRule.onNodeWithTag(CommonTestTags.SnackbarHost)
 
-    fun verify(block: Verify.() -> Unit) = Verify().apply(block)
-
+    @VerifiesOuter
     inner class Verify {
 
         fun hasMessage(value: String) = apply {

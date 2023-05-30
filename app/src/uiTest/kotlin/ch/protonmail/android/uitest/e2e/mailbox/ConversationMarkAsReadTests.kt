@@ -35,9 +35,12 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
-import ch.protonmail.android.uitest.robot.detail.messageBodySection
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.section.verify
+import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.inbox.verify
+import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -59,9 +62,6 @@ internal class ConversationMarkAsReadTests : MockedNetworkTest(loginStrategy = L
 
     @Inject
     lateinit var themeHelper: AppThemeHelper
-
-    private val inboxRobot = InboxRobot(composeTestRule)
-    private val messageDetailRobot = MessageDetailRobot(composeTestRule)
 
     @Before
     fun forceLightTheme() {
@@ -100,9 +100,11 @@ internal class ConversationMarkAsReadTests : MockedNetworkTest(loginStrategy = L
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -113,6 +115,8 @@ internal class ConversationMarkAsReadTests : MockedNetworkTest(loginStrategy = L
         // Idling is currently not automatically handled when coming from UI Automator interactions.
         uiDevice.pressBack().also { composeTestRule.waitForIdle() }
 
-        inboxRobot.verify { readItemAtPosition(0) }
+        inboxRobot {
+            verify { readItemAtPosition(0) }
+        }
     }
 }

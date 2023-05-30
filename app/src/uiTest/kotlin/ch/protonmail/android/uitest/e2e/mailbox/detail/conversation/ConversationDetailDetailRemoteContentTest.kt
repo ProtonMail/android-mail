@@ -38,11 +38,11 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
-import ch.protonmail.android.uitest.robot.detail.messageBodySection
-import ch.protonmail.android.uitest.robot.detail.messageHeaderSection
-import ch.protonmail.android.uitest.robot.detail.messagesCollapsedSection
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.section.conversation.messagesCollapsedSection
+import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.section.verify
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -58,8 +58,6 @@ internal class ConversationDetailDetailRemoteContentTest :
     MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut),
     DetailRemoteContentTest {
 
-    private val inboxRobot = InboxRobot(composeTestRule)
-    private val conversationDetailRobot = ConversationDetailRobot(composeTestRule)
     private val expectedBodyText = "Various img elements"
     private val expectedBodyTextSecondMessage = "Various img elements (2)"
 
@@ -108,12 +106,10 @@ internal class ConversationDetailDetailRemoteContentTest :
         }
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.MailDetail(0))
         }
 
-        inboxRobot.clickMessageByPosition(0)
-
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -155,9 +151,11 @@ internal class ConversationDetailDetailRemoteContentTest :
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        navigator {
+            navigateTo(Destination.MailDetail(0))
+        }
 
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -196,12 +194,10 @@ internal class ConversationDetailDetailRemoteContentTest :
         }
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.MailDetail(0))
         }
 
-        inboxRobot.clickMessageByPosition(0)
-
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -269,12 +265,10 @@ internal class ConversationDetailDetailRemoteContentTest :
         }
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.MailDetail(0))
         }
 
-        inboxRobot.clickMessageByPosition(0)
-
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -313,12 +307,10 @@ internal class ConversationDetailDetailRemoteContentTest :
         }
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.MailDetail(0))
         }
 
-        inboxRobot.clickMessageByPosition(0)
-
-        conversationDetailRobot.run {
+        conversationDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 

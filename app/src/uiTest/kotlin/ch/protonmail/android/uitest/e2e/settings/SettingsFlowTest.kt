@@ -20,8 +20,13 @@ package ch.protonmail.android.uitest.e2e.settings
 
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
+import ch.protonmail.android.uitest.helpers.core.navigation.Destination
+import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
+import ch.protonmail.android.uitest.robot.settings.account.verify
+import ch.protonmail.android.uitest.robot.settings.swipeactions.verify
+import ch.protonmail.android.uitest.robot.settings.verify
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Test
@@ -30,11 +35,12 @@ import org.junit.Test
 @HiltAndroidTest
 internal class SettingsFlowTest : MockedNetworkTest() {
 
-    private val menuRobot = MenuRobot(composeTestRule)
+    private val menuRobot = MenuRobot()
 
     @Before
     fun setupDispatcher() {
         mockWebServer.dispatcher = mockNetworkDispatcher()
+        navigator { navigateTo(Destination.Inbox, performLoginViaUI = false) }
     }
 
     @Test

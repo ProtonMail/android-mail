@@ -18,7 +18,13 @@
 
 package ch.protonmail.android.uitest.helpers.core.navigation
 
+import androidx.test.core.app.ActivityScenario
+import ch.protonmail.android.MainActivity
+import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
+import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.section.listSection
+import ch.protonmail.android.uitest.robot.menu.menuRobot
 import ch.protonmail.android.uitest.util.extensions.waitUntilSignInScreenIsGone
 import me.proton.core.test.android.robots.auth.AddAccountRobot
 import me.proton.core.test.android.robots.auth.login.LoginRobot
@@ -26,6 +32,7 @@ import me.proton.core.test.android.robots.auth.login.LoginRobot
 /**
  * An abstraction to help navigating the app in UI tests to reduce the overall verbosity.
  */
+@AsDsl
 internal class Navigator {
 
     private val addAccountRobot = AddAccountRobot()
@@ -37,13 +44,24 @@ internal class Navigator {
      * will always either be the "Add account" screen (from the Core library) or the Inbox.
      *
      * @param destination the destination
+     * @param launchApp whether the app shall be launched.
      * @param performLoginViaUI whether the login flow shall be performed via UI
      */
-    fun navigateTo(destination: Destination, performLoginViaUI: Boolean = true) {
+    fun navigateTo(destination: Destination, launchApp: Boolean = true, performLoginViaUI: Boolean = true) {
+        if (launchApp) ActivityScenario.launch(MainActivity::class.java)
+
         if (performLoginViaUI) login()
 
         when (destination) {
             is Destination.Inbox -> Unit // It's the default screen post-login, nothing to do.
+            is Destination.Drafts -> menuRobot {
+                swipeOpenSidebarMenu()
+                openDrafts()
+            }
+
+            is Destination.MailDetail -> inboxRobot {
+                listSection { clickMessageByPosition(destination.messagePosition) }
+            }
         }
     }
 
@@ -54,5 +72,3 @@ internal class Navigator {
             .waitUntilSignInScreenIsGone()
     }
 }
-
-internal fun navigator(func: Navigator.() -> Unit) = Navigator().apply(func)

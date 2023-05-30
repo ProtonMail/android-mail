@@ -31,7 +31,8 @@ import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry
 import ch.protonmail.android.uitest.models.folders.Tint
-import ch.protonmail.android.uitest.robot.menu.MenuRobot
+import ch.protonmail.android.uitest.robot.menu.menuRobot
+import ch.protonmail.android.uitest.robot.menu.verify
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -43,8 +44,6 @@ import org.junit.Test
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
 internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
-
-    private val menuRobot = MenuRobot(composeTestRule)
 
     @JvmField
     @BindValue
@@ -79,9 +78,11 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
             navigateTo(Destination.Inbox)
         }
 
-        menuRobot
-            .swipeOpenSidebarMenu()
-            .verify { customFoldersAreDisplayed(*expectedFolders) }
+        menuRobot {
+            swipeOpenSidebarMenu()
+
+            verify { customFoldersAreDisplayed(*expectedFolders) }
+        }
     }
 
     @Test
@@ -113,9 +114,10 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
             navigateTo(Destination.Inbox)
         }
 
-        menuRobot
-            .swipeOpenSidebarMenu()
-            .verify { customFoldersAreDisplayed(*expectedFolders) }
+        menuRobot {
+            swipeOpenSidebarMenu()
+            verify { customFoldersAreDisplayed(*expectedFolders) }
+        }
     }
 
     @Test
@@ -147,8 +149,9 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
             navigateTo(Destination.Inbox)
         }
 
-        menuRobot
-            .swipeOpenSidebarMenu()
-            .verify { customFoldersAreDisplayed(*expectedFolders) }
+        menuRobot {
+            swipeOpenSidebarMenu()
+            verify { customFoldersAreDisplayed(*expectedFolders) }
+        }
     }
 }

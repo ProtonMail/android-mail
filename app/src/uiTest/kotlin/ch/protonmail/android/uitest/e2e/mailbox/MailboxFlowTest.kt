@@ -20,9 +20,16 @@ package ch.protonmail.android.uitest.e2e.mailbox
 
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
+import ch.protonmail.android.uitest.helpers.core.navigation.Destination
+import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
-import ch.protonmail.android.uitest.robot.menu.MenuRobot
+import ch.protonmail.android.uitest.robot.mailbox.allmail.allMailRobot
+import ch.protonmail.android.uitest.robot.mailbox.allmail.verify
+import ch.protonmail.android.uitest.robot.mailbox.drafts.draftsRobot
+import ch.protonmail.android.uitest.robot.mailbox.drafts.verify
+import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.inbox.verify
+import ch.protonmail.android.uitest.robot.menu.menuRobot
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Test
@@ -31,27 +38,35 @@ import org.junit.Test
 @HiltAndroidTest
 internal class MailboxFlowTest : MockedNetworkTest() {
 
-    private val mailboxRobot = InboxRobot(composeTestRule)
-    private val menuRobot = MenuRobot(composeTestRule)
-
     @Before
     fun setupDispatcher() {
         mockWebServer.dispatcher = mockNetworkDispatcher()
+        navigator { navigateTo(Destination.Inbox, performLoginViaUI = false) }
     }
 
     @Test
     fun openMailboxAndSwitchLocation() {
-        mailboxRobot.verify { mailboxScreenDisplayed() }
+        inboxRobot {
+            verify { mailboxScreenDisplayed() }
+        }
 
-        menuRobot
-            .swipeOpenSidebarMenu()
-            .openDrafts()
-            .verify { draftsScreenDisplayed(composeTestRule) }
+        menuRobot {
+            swipeOpenSidebarMenu()
+            openDrafts()
+        }
 
-        menuRobot
-            .swipeOpenSidebarMenu()
-            .openAllMail()
-            .verify { allMailScreenDisplayed(composeTestRule) }
+        draftsRobot {
+            verify { draftsScreenDisplayed(composeTestRule) }
+        }
+
+        menuRobot {
+            swipeOpenSidebarMenu()
+            openAllMail()
+        }
+
+        allMailRobot {
+            verify { allMailScreenDisplayed(composeTestRule) }
+        }
     }
 
     /*
@@ -60,11 +75,17 @@ internal class MailboxFlowTest : MockedNetworkTest() {
      */
     @Test
     fun filterUnreadMessages() {
-        mailboxRobot.verify { mailboxScreenDisplayed() }
-        mailboxRobot.verify { unreadFilterIsDisplayed() }
+        inboxRobot {
+            verify {
+                mailboxScreenDisplayed()
+                unreadFilterIsDisplayed()
+            }
 
-        mailboxRobot
-            .filterUnreadMessages()
-            .verify { unreadFilterIsSelected() }
+            filterUnreadMessages()
+
+            verify {
+                unreadFilterIsSelected()
+            }
+        }
     }
 }

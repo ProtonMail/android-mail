@@ -33,9 +33,11 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
-import ch.protonmail.android.uitest.robot.detail.messageBodySection
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.section.verify
+import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -48,9 +50,6 @@ import org.junit.Test
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
 internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
-
-    private val inboxRobot = InboxRobot(composeTestRule)
-    private val messageDetailRobot = MessageDetailRobot(composeTestRule)
 
     @JvmField
     @BindValue
@@ -82,9 +81,11 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -94,9 +95,11 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         uiDevice.pressBack()
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -137,9 +140,11 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -149,9 +154,11 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         uiDevice.pressBack()
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -186,9 +193,11 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -198,9 +207,11 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         uiDevice.pressBack()
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -241,9 +252,11 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -253,9 +266,11 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         uiDevice.pressBack()
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -296,9 +311,11 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot.clickMessageByPosition(0)
+        inboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
 
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 

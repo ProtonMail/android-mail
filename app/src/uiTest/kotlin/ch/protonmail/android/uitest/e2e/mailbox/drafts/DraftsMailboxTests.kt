@@ -33,7 +33,9 @@ import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
-import ch.protonmail.android.uitest.robot.menu.MenuRobot
+import ch.protonmail.android.uitest.robot.mailbox.drafts.draftsRobot
+import ch.protonmail.android.uitest.robot.mailbox.section.listSection
+import ch.protonmail.android.uitest.robot.mailbox.section.verify
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -45,8 +47,6 @@ import org.junit.Test
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
 internal class DraftsMailboxTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
-
-    private val menuRobot = MenuRobot(composeTestRule)
 
     @JvmField
     @BindValue
@@ -78,13 +78,14 @@ internal class DraftsMailboxTests : MockedNetworkTest(loginStrategy = LoginStrat
         )
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.Drafts)
         }
 
-        menuRobot
-            .swipeOpenSidebarMenu()
-            .openDrafts()
-            .verify { listItemsAreShown(expectedMailboxEntry) }
+        draftsRobot {
+            listSection {
+                verify { listItemsAreShown(expectedMailboxEntry) }
+            }
+        }
     }
 
     @Test
@@ -119,13 +120,14 @@ internal class DraftsMailboxTests : MockedNetworkTest(loginStrategy = LoginStrat
         )
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.Drafts)
         }
 
-        menuRobot
-            .swipeOpenSidebarMenu()
-            .openDrafts()
-            .verify { listItemsAreShown(expectedMailboxEntry) }
+        draftsRobot {
+            listSection {
+                verify { listItemsAreShown(expectedMailboxEntry) }
+            }
+        }
     }
 
     @Test
@@ -160,12 +162,13 @@ internal class DraftsMailboxTests : MockedNetworkTest(loginStrategy = LoginStrat
         )
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.Drafts)
         }
 
-        menuRobot
-            .swipeOpenSidebarMenu()
-            .openDrafts()
-            .verify { listItemsAreShown(expectedMailboxEntry) }
+        draftsRobot {
+            listSection {
+                verify { listItemsAreShown(expectedMailboxEntry) }
+            }
+        }
     }
 }

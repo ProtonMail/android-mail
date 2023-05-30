@@ -23,6 +23,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTextInput
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.util.assertions.assertEmptyText
@@ -42,8 +43,7 @@ internal class ComposerSubjectSection : ComposeSectionRobot() {
         subject.performTextInput(value)
     }
 
-    fun verify(block: Verify.() -> Unit) = Verify().apply(block)
-
+    @VerifiesOuter
     inner class Verify {
 
         fun hasEmptySubject() = apply {

@@ -37,9 +37,9 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
-import ch.protonmail.android.uitest.robot.detail.messageBodySection
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.section.verify
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -56,8 +56,6 @@ internal class MessageDetailDetailRemoteContentTest :
     MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut),
     DetailRemoteContentTest {
 
-    private val inboxRobot = InboxRobot(composeTestRule)
-    private val messageDetailRobot = MessageDetailRobot(composeTestRule)
     private val expectedBodyText = "Various img elements"
 
     @JvmField
@@ -98,12 +96,10 @@ internal class MessageDetailDetailRemoteContentTest :
         }
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.MailDetail(0))
         }
 
-        inboxRobot.clickMessageByPosition(0)
-
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
@@ -136,12 +132,10 @@ internal class MessageDetailDetailRemoteContentTest :
         }
 
         navigator {
-            navigateTo(Destination.Inbox)
+            navigateTo(Destination.MailDetail(0))
         }
 
-        inboxRobot.clickMessageByPosition(0)
-
-        messageDetailRobot.run {
+        messageDetailRobot {
             messageBodySection {
                 waitUntilMessageIsShown()
 
