@@ -21,20 +21,21 @@ package ch.protonmail.android.uitest.screen.detail
 import java.util.UUID
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities.Capabilities
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.maildetail.presentation.sample.MessageDetailBodyUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.MessageBody
 import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import org.junit.Rule
 import org.junit.Test
 
 class MessageBodyTest {
 
     @get:Rule
-    val rule = createComposeRule()
+    val rule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @Test
     fun shouldDisplayWebViewIfAvailable() {

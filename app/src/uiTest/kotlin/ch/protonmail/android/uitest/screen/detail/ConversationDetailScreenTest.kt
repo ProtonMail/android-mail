@@ -33,11 +33,15 @@ import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
-import ch.protonmail.android.uitest.robot.detail.bottomSheetSection
-import ch.protonmail.android.uitest.robot.detail.detailTopBarSection
-import ch.protonmail.android.uitest.robot.detail.messageBodySection
-import ch.protonmail.android.uitest.robot.detail.messageHeaderSection
-import ch.protonmail.android.uitest.robot.detail.messagesCollapsedSection
+import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.section.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.section.conversation.messagesCollapsedSection
+import ch.protonmail.android.uitest.robot.detail.section.conversation.verify
+import ch.protonmail.android.uitest.robot.detail.section.detailTopBarSection
+import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.section.verify
+import ch.protonmail.android.uitest.robot.detail.verify
 import ch.protonmail.android.uitest.util.getString
 import org.junit.Ignore
 import org.junit.Rule
@@ -460,7 +464,9 @@ internal class ConversationDetailScreenTest {
     private fun setupScreen(
         state: ConversationDetailState,
         actions: ConversationDetailScreen.Actions = ConversationDetailScreen.Actions.Empty
-    ): ConversationDetailRobot = composeTestRule.ConversationDetailRobot {
-        ConversationDetailScreen(state = state, actions = actions, scrollToMessageId = null)
+    ): ConversationDetailRobot = conversationDetailRobot {
+        this@ConversationDetailScreenTest.composeTestRule.setContent {
+            ConversationDetailScreen(state = state, actions = actions, scrollToMessageId = null)
+        }
     }
 }

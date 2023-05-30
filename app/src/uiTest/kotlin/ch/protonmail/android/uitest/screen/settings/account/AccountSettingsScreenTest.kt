@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.screen.settings.account
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollToNode
@@ -29,6 +29,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSe
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_LIST
 import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertTextContains
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
@@ -41,7 +42,7 @@ import org.junit.Test
 internal class AccountSettingsScreenTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     private val settingsState = Data(
         recoveryEmail = "recovery-email@protonmail.com",

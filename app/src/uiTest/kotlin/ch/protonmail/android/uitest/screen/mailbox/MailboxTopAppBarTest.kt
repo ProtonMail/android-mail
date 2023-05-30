@@ -22,7 +22,7 @@ import android.content.Context
 import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState.Data
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import org.junit.Test
@@ -42,7 +43,7 @@ import org.junit.Test
 internal class MailboxTopAppBarTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
     private val context = ApplicationProvider.getApplicationContext<Context>()
 
     @Test

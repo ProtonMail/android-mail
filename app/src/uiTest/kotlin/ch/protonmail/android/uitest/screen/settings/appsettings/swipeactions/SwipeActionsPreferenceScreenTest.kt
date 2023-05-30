@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.screen.settings.appsettings.swipeactions
 
 import androidx.compose.ui.test.assertAny
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onParent
@@ -30,6 +30,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.Swi
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Loading
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceUiModel
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
@@ -43,7 +44,7 @@ import me.proton.core.presentation.R as CoreR
 internal class SwipeActionsPreferenceScreenTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @Test
     fun progressIsShownWhileDataLoading() {

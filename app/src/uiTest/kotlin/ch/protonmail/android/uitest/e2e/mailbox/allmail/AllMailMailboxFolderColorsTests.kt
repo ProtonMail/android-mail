@@ -48,7 +48,7 @@ import org.junit.Test
 @UninstallModules(ServerProofModule::class)
 internal class AllMailMailboxFolderColorsTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
 
-    private val menuRobot = MenuRobot(composeTestRule)
+    private val menuRobot = MenuRobot()
 
     @JvmField
     @BindValue

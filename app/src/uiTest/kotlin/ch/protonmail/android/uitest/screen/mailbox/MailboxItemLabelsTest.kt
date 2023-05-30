@@ -19,12 +19,13 @@
 package ch.protonmail.android.uitest.screen.mailbox
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithText
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.MailboxItemLabelsPreviewData
 import ch.protonmail.android.maillabel.presentation.ui.LabelsList
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Rule
 import kotlin.test.Test
@@ -33,7 +34,7 @@ import kotlin.test.Test
 internal class MailboxItemLabelsTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @Test
     fun whenAllLabelsCanFitTheScreenShowsThemEntirely() {

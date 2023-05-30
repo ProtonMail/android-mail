@@ -19,7 +19,7 @@
 package ch.protonmail.android.uitest.screen.detail
 
 import android.net.Uri
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -36,10 +36,12 @@ import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.detail.ExtendedHeaderRecipientEntry
 import ch.protonmail.android.uitest.models.labels.LabelEntry
-import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
-import ch.protonmail.android.uitest.robot.detail.bottomSheetSection
-import ch.protonmail.android.uitest.robot.detail.headerSection
-import ch.protonmail.android.uitest.robot.detail.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.section.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.section.verify
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -48,7 +50,7 @@ import kotlin.test.assertTrue
 internal class MessageDetailScreenTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @Test
     fun whenMessageIsLoadedThenMessageHeaderIsDisplayed() {
@@ -56,10 +58,10 @@ internal class MessageDetailScreenTest {
         val state = MessageDetailsPreviewData.Message
 
         // when
-        val robot = setUpScreen(state = state)
+        val robot = messageDetailRobot { setUpScreen(state = state) }
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             verify { headerIsDisplayed() }
         }
     }
@@ -77,7 +79,7 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             verify { hasAvatarInitial(avatarInitial) }
         }
     }
@@ -92,7 +94,7 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             verify { hasSenderName(messageState.messageDetailHeader.sender.participantName) }
         }
     }
@@ -107,7 +109,7 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             verify { hasSenderAddress(messageState.messageDetailHeader.sender.participantAddress) }
         }
     }
@@ -123,7 +125,7 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             verify { hasTime(time.value) }
         }
     }
@@ -139,7 +141,7 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             verify { hasRecipient(recipients.value) }
         }
     }
@@ -156,10 +158,10 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // when
-        robot.headerSection { expandHeader() }
+        robot.messageHeaderSection { expandHeader() }
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             expanded {
                 verify { hasRecipients(*recipients) }
             }
@@ -175,10 +177,10 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // when
-        robot.headerSection { expandHeader() }
+        robot.messageHeaderSection { expandHeader() }
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             expanded {
                 verify { hasTime(time.value) }
             }
@@ -193,10 +195,10 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // when
-        robot.headerSection { expandHeader() }
+        robot.messageHeaderSection { expandHeader() }
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             expanded {
                 verify { hasLocation(messageState.messageDetailHeader.location.name) }
             }
@@ -211,10 +213,10 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // when
-        robot.headerSection { expandHeader() }
+        robot.messageHeaderSection { expandHeader() }
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             expanded {
                 verify { hasSize(messageState.messageDetailHeader.size) }
             }
@@ -257,7 +259,7 @@ internal class MessageDetailScreenTest {
         val robot = setUpScreen(state = state)
 
         // then
-        robot.headerSection {
+        robot.messageHeaderSection {
             verify { hasLabels(labelEntry) }
         }
     }
@@ -424,7 +426,9 @@ internal class MessageDetailScreenTest {
     private fun setUpScreen(
         state: MessageDetailState,
         actions: MessageDetailScreen.Actions = MessageDetailScreen.Actions.Empty
-    ): MessageDetailRobot = composeTestRule.MessageDetailRobot {
-        MessageDetailScreen(state = state, actions = actions)
+    ) = messageDetailRobot {
+        this@MessageDetailScreenTest.composeTestRule.setContent {
+            MessageDetailScreen(state = state, actions = actions)
+        }
     }
 }

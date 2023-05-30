@@ -19,16 +19,8 @@
 package ch.protonmail.android.uitest.util
 
 import android.app.Instrumentation
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import ch.protonmail.android.MainActivity
-
-internal object ComposeTestRuleHolder {
-
-    val rule: ComposeContentTestRule by lazy { createAndroidComposeRule<MainActivity>() }
-}
 
 internal object InstrumentationHolder {
 

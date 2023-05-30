@@ -24,7 +24,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -33,6 +33,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.alternativerouti
 import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.TEST_TAG_ALTERNATIVE_ROUTING_SNACKBAR
 import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.TEST_TAG_ALTERNATIVE_ROUTING_TOGGLE_ITEM
 import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
@@ -44,7 +45,7 @@ import kotlin.test.assertEquals
 internal class AlternativeRoutingSettingScreenTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @Test
     fun testProgressIsShownWhenStateIsLoading() {

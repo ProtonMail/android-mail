@@ -22,14 +22,15 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.ComposeTestRule
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceScreen
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.EditSwipeActionPreferenceState
 import ch.protonmail.android.mailsettings.presentation.testdata.SwipeActionsTestData
 import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 import me.proton.core.compose.theme.ProtonTheme
@@ -42,7 +43,7 @@ import ch.protonmail.android.mailsettings.presentation.R.string as settingsStrin
 internal class EditSwipeActionPreferenceScreenTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @Test
     fun whenRightSwipeIsSelectedCorrectTitleIsShown() {

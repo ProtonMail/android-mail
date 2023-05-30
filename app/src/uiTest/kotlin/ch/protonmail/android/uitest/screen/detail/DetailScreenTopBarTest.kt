@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.uitest.screen.detail
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
@@ -30,14 +30,18 @@ import ch.protonmail.android.maildetail.presentation.ui.DetailScreenTopBar
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
-import ch.protonmail.android.uitest.robot.detail.detailTopBarSection
+import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
+import ch.protonmail.android.uitest.robot.detail.section.detailTopBarSection
+import ch.protonmail.android.uitest.robot.detail.section.verify
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder.createAndGetComposeRule
 import org.junit.Rule
 import org.junit.Test
 
-class DetailScreenTopBarTest {
+internal class DetailScreenTopBarTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule: ComposeContentTestRule = createAndGetComposeRule()
 
     @Test
     fun whenConversationIsLoadingThenSubjectContainsABlankString() {
@@ -100,14 +104,18 @@ class DetailScreenTopBarTest {
     private fun setupScreen(
         state: ConversationDetailState,
         actions: ConversationDetailScreen.Actions = ConversationDetailScreen.Actions.Empty
-    ): ConversationDetailRobot = composeTestRule.ConversationDetailRobot {
-        ConversationDetailScreen(state = state, actions = actions, scrollToMessageId = null)
+    ): ConversationDetailRobot = conversationDetailRobot {
+        this@DetailScreenTopBarTest.composeTestRule.setContent {
+            ConversationDetailScreen(state = state, actions = actions, scrollToMessageId = null)
+        }
     }
 
     private fun setupScreen(
         state: MessageDetailState,
         actions: MessageDetailScreen.Actions = MessageDetailScreen.Actions.Empty
-    ): MessageDetailRobot = composeTestRule.MessageDetailRobot {
-        MessageDetailScreen(state = state, actions = actions)
+    ): MessageDetailRobot = messageDetailRobot {
+        this@DetailScreenTopBarTest.composeTestRule.setContent {
+            MessageDetailScreen(state = state, actions = actions)
+        }
     }
 }
