@@ -21,7 +21,7 @@ package ch.protonmail.android.uitest.models.folders
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarCustomLabelTestTags
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertTintColor
@@ -30,7 +30,7 @@ import ch.protonmail.android.uitest.util.child
 internal sealed class SidebarItemEntryModel(
     position: Int,
     matcher: SemanticsMatcher,
-    composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.rule
+    composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule
 ) {
 
     private val rootItem = composeTestRule.onAllNodes(

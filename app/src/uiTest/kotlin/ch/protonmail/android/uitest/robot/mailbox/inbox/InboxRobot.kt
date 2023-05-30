@@ -21,7 +21,7 @@ package ch.protonmail.android.uitest.robot.mailbox.inbox
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maillabel.R
@@ -30,11 +30,10 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.UnreadItemsFilterT
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
 import ch.protonmail.android.uitest.util.onAllNodesWithText
-import me.proton.core.test.android.robots.CoreRobot
 
 class InboxRobot(
-    override val composeTestRule: ComposeContentTestRule
-) : CoreRobot(), MailboxRobotInterface {
+    override val composeTestRule: ComposeTestRule
+) : MailboxRobotInterface {
 
     fun filterUnreadMessages(): InboxRobot {
         composeTestRule
@@ -47,27 +46,27 @@ class InboxRobot(
     /**
      * Contains all the validations that can be performed by [InboxRobot].
      */
-    inner class Verify(private val composeRule: ComposeContentTestRule) : MailboxRobotInterface.Verify {
+    inner class Verify : MailboxRobotInterface.Verify {
 
         fun mailboxScreenDisplayed() {
-            composeRule.waitUntil(timeoutMillis = 60_000) {
-                composeRule.onAllNodesWithText(R.string.label_title_inbox)
+            composeTestRule.waitUntil(timeoutMillis = 60_000) {
+                composeTestRule.onAllNodesWithText(R.string.label_title_inbox)
                     .fetchSemanticsNodes(false)
                     .isNotEmpty()
             }
 
-            composeRule.onNodeWithTag(MailboxScreenTestTags.Root).assertIsDisplayed()
+            composeTestRule.onNodeWithTag(MailboxScreenTestTags.Root).assertIsDisplayed()
         }
 
         fun unreadFilterIsDisplayed() {
-            composeRule
+            composeTestRule
                 .onNodeWithTag(UnreadItemsFilterTestTags.UnreadFilterChip)
                 .assertIsDisplayed()
                 .assertIsNotSelected()
         }
 
         fun unreadFilterIsSelected() {
-            composeRule
+            composeTestRule
                 .onNodeWithTag(UnreadItemsFilterTestTags.UnreadFilterChip)
                 .assertIsDisplayed()
                 .assertIsSelected()
@@ -86,5 +85,5 @@ class InboxRobot(
         }
     }
 
-    inline fun verify(block: Verify.() -> Unit) = Verify(composeTestRule).apply(block)
+    inline fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 }

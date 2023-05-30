@@ -19,13 +19,13 @@
 package ch.protonmail.android.uitest.robot.settings
 
 import androidx.compose.ui.test.assertIsOn
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM
 
 class CombinedContactsRobot(
-    val composeTestRule: ComposeContentTestRule
+    val composeTestRule: ComposeTestRule
 ) {
 
     fun turnOnCombinedContacts(): CombinedContactsRobot {
@@ -37,7 +37,7 @@ class CombinedContactsRobot(
     }
 
     private fun combinedContactsSettingIsToggled(
-        composeTestRule: ComposeContentTestRule
+        composeTestRule: ComposeTestRule
     ): Boolean {
         try {
             composeTestRule
@@ -50,9 +50,9 @@ class CombinedContactsRobot(
     }
 
     inline fun verify(block: Verify.() -> Unit): CombinedContactsRobot =
-        also { Verify(composeTestRule).apply(block) }
+        also { Verify().apply(block) }
 
-    class Verify(private val composeTestRule: ComposeContentTestRule) {
+    inner class Verify {
 
         fun combinedContactsSettingIsToggled() {
             composeTestRule

@@ -19,7 +19,7 @@ package ch.protonmail.android.uitest.robot.menu
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
@@ -42,7 +42,7 @@ import ch.protonmail.android.maillabel.presentation.R.string as mailLabelStrings
 /**
  * [MenuRobot] class contains actions and verifications for menu functionality.
  */
-internal class MenuRobot(private val composeTestRule: ComposeContentTestRule) {
+internal class MenuRobot(private val composeTestRule: ComposeTestRule) {
 
     fun openInbox(): InboxRobot = InboxRobot(composeTestRule)
 

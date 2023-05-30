@@ -17,7 +17,7 @@
  */
 package ch.protonmail.android.uitest.robot.mailbox
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
@@ -29,7 +29,7 @@ import kotlin.time.Duration.Companion.seconds
 
 internal interface MailboxRobotInterface {
 
-    val composeTestRule: ComposeContentTestRule get() = TODO("Override in subclass")
+    val composeTestRule: ComposeTestRule get() = TODO("Override in subclass")
 
     fun clickMessageByPosition(position: Int) = apply {
         val model = MailboxListItemEntryModel(position)

@@ -19,7 +19,7 @@ package ch.protonmail.android.uitest.robot.settings
 
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.hasScrollAction
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -35,7 +35,7 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 /**
  * [SettingsRobot] class contains actions and verifications for Settings view.
  */
-internal class SettingsRobot(private val composeTestRule: ComposeContentTestRule) {
+internal class SettingsRobot(private val composeTestRule: ComposeTestRule) {
 
     fun openLanguageSettings(): LanguageRobot {
         composeTestRule
@@ -97,6 +97,6 @@ internal class SettingsRobot(private val composeTestRule: ComposeContentTestRule
         return AlternativeRoutingRobot(composeTestRule)
     }
 
-    private fun ComposeContentTestRule.onList(): SemanticsNodeInteraction =
+    private fun ComposeTestRule.onList(): SemanticsNodeInteraction =
         onAllNodes(hasScrollAction()).onFirst() // second is drawer
 }

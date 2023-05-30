@@ -19,13 +19,13 @@
 package ch.protonmail.android.uitest.robot.settings
 
 import androidx.compose.ui.test.assertIsOff
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.presentation.settings.alternativerouting.TEST_TAG_ALTERNATIVE_ROUTING_TOGGLE_ITEM
 
 class AlternativeRoutingRobot(
-    val composeTestRule: ComposeContentTestRule
+    val composeTestRule: ComposeTestRule
 ) {
 
     fun turnOffAlternativeRouting(): AlternativeRoutingRobot {
@@ -37,7 +37,7 @@ class AlternativeRoutingRobot(
     }
 
     private fun AlternativeRoutingSettingIsToggled(
-        composeTestRule: ComposeContentTestRule
+        composeTestRule: ComposeTestRule
     ): Boolean {
         try {
             composeTestRule
@@ -50,9 +50,9 @@ class AlternativeRoutingRobot(
     }
 
     inline fun verify(block: Verify.() -> Unit): AlternativeRoutingRobot =
-        also { Verify(composeTestRule).apply(block) }
+        also { Verify().apply(block) }
 
-    class Verify(private val composeTestRule: ComposeContentTestRule) {
+    inner class Verify {
 
         fun alternativeRoutingSettingIsToggled() {
             composeTestRule

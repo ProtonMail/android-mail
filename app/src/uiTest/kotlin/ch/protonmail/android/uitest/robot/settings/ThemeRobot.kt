@@ -22,7 +22,7 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.uitest.util.onNodeWithText
@@ -30,7 +30,7 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 /**
  * [ThemeRobot] class contains actions and verifications for ThemeSettingScreen
  */
-class ThemeRobot(val composeTestRule: ComposeContentTestRule) {
+class ThemeRobot(val composeTestRule: ComposeTestRule) {
 
     fun selectDarkTheme(): ThemeRobot {
         composeTestRule
@@ -49,7 +49,7 @@ class ThemeRobot(val composeTestRule: ComposeContentTestRule) {
     }
 
     private fun optionWithTextIsSelected(
-        composeTestRule: ComposeContentTestRule,
+        composeTestRule: ComposeTestRule,
         @StringRes text: Int
     ): Boolean {
         try {
@@ -63,12 +63,12 @@ class ThemeRobot(val composeTestRule: ComposeContentTestRule) {
     }
 
     inline fun verify(block: Verify.() -> Unit): ThemeRobot =
-        also { Verify(composeTestRule).apply(block) }
+        also { Verify().apply(block) }
 
     /**
      * Contains all the validations that can be performed by [ThemeRobot].
      */
-    class Verify(private val composeTestRule: ComposeContentTestRule) {
+    inner class Verify {
 
         fun darkThemeIsSelected() {
             composeTestRule

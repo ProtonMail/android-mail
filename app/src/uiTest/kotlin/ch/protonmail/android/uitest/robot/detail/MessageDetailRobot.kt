@@ -20,11 +20,12 @@ package ch.protonmail.android.uitest.robot.detail
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreenTestTags
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
-class MessageDetailRobot(val composeTestRule: ComposeContentTestRule) {
+class MessageDetailRobot(val composeTestRule: ComposeTestRule) {
 
     fun verify(block: Verify.() -> Unit): MessageDetailRobot = also { Verify().apply(block) }
 

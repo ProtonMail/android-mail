@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.uitest.robot.detail.section
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maildetail.presentation.R
@@ -30,7 +30,7 @@ import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import kotlin.time.Duration.Companion.seconds
 
 internal class DetailBottomSheetSection(
-    private val composeTestRule: ComposeContentTestRule
+    private val composeTestRule: ComposeTestRule
 ) {
 
     fun markAsUnread() = apply {

@@ -22,7 +22,7 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
@@ -115,18 +115,18 @@ internal class EditSwipeActionPreferenceScreenTest {
         }
     }
 
-    private fun ComposeContentTestRule.onArchive(): SemanticsNodeInteraction =
+    private fun ComposeTestRule.onArchive(): SemanticsNodeInteraction =
         onNodeWithText(settingsString.mail_settings_swipe_action_archive_description)
 
-    private fun ComposeContentTestRule.onRead(): SemanticsNodeInteraction =
+    private fun ComposeTestRule.onRead(): SemanticsNodeInteraction =
         onNodeWithText(settingsString.mail_settings_swipe_action_read_description)
 
-    private fun ComposeContentTestRule.onSpam(): SemanticsNodeInteraction =
+    private fun ComposeTestRule.onSpam(): SemanticsNodeInteraction =
         onNodeWithText(settingsString.mail_settings_swipe_action_spam_description)
 
-    private fun ComposeContentTestRule.onStar(): SemanticsNodeInteraction =
+    private fun ComposeTestRule.onStar(): SemanticsNodeInteraction =
         onNodeWithText(settingsString.mail_settings_swipe_action_star_description)
 
-    private fun ComposeContentTestRule.onTrash(): SemanticsNodeInteraction =
+    private fun ComposeTestRule.onTrash(): SemanticsNodeInteraction =
         onNodeWithText(settingsString.mail_settings_swipe_action_trash_description)
 }

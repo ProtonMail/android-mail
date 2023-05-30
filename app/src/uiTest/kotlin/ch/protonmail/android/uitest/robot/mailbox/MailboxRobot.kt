@@ -18,14 +18,13 @@
 
 package ch.protonmail.android.uitest.robot.mailbox
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToIndex
@@ -38,7 +37,7 @@ import ch.protonmail.android.uitest.robot.mailbox.section.MailboxTopBarSection
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
 class MailboxRobot internal constructor(
-    private val composeTestRule: ComposeContentTestRule
+    private val composeTestRule: ComposeTestRule
 ) {
 
     fun pullDownToRefresh(): MailboxRobot {
@@ -63,7 +62,7 @@ class MailboxRobot internal constructor(
         this.also { Verify(composeTestRule).apply(block) }
 
     class Verify internal constructor(
-        private val composeTestRule: ComposeContentTestRule
+        private val composeTestRule: ComposeTestRule
     ) {
 
         fun emptyMailboxIsDisplayed() {
@@ -102,18 +101,14 @@ class MailboxRobot internal constructor(
     }
 }
 
-private fun ComposeContentTestRule.onList(): SemanticsNodeInteraction =
+private fun ComposeTestRule.onList(): SemanticsNodeInteraction =
     onNode(hasScrollAction())
 
-private fun ComposeContentTestRule.onEmptyMailbox(): SemanticsNodeInteraction =
+private fun ComposeTestRule.onEmptyMailbox(): SemanticsNodeInteraction =
     onNode(emptyMailboxMatcher())
 
 private fun emptyMailboxMatcher(): SemanticsMatcher =
     hasTestTag(MailboxScreenTestTags.MailboxEmpty)
-
-fun ComposeContentTestRule.MailboxRobot(content: @Composable () -> Unit) =
-    MailboxRobot(this).also { setContent(content) }
-
 
 internal fun MailboxRobotInterface.topAppBarSection(
     func: MailboxTopBarSection.() -> Unit

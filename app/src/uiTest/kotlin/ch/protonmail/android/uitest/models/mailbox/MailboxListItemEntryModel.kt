@@ -23,7 +23,7 @@ import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.performClick
@@ -39,7 +39,7 @@ import ch.protonmail.android.uitest.util.extensions.peek
 
 internal class MailboxListItemEntryModel(
     position: Int,
-    private val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.rule
+    private val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule
 ) {
 
     init {

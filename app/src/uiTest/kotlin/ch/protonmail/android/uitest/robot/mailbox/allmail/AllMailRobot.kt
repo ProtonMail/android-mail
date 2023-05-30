@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.uitest.robot.mailbox.allmail
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onFirst
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobotInterface
@@ -26,12 +26,12 @@ import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 
 internal class AllMailRobot(
-    override val composeTestRule: ComposeContentTestRule
+    override val composeTestRule: ComposeTestRule
 ) : MailboxRobotInterface {
 
     internal inner class Verify : MailboxRobotInterface.Verify {
 
-        fun allMailScreenDisplayed(composeRule: ComposeContentTestRule) {
+        fun allMailScreenDisplayed(composeRule: ComposeTestRule) {
             composeRule
                 .onAllNodesWithText(R.string.label_title_all_mail)
                 .onFirst() // Both "TopBar" and "sidebar" are found as match of "All Mail". Only TopBar is displayed.

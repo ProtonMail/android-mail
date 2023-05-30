@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.uitest.robot.detail.section
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import ch.protonmail.android.uitest.robot.detail.model.DetailScreenTopBarEntryModel
 
-internal class DetailTopBarSection(composeTestRule: ComposeContentTestRule) {
+internal class DetailTopBarSection(composeTestRule: ComposeTestRule) {
 
     private val topBarDetailModel = DetailScreenTopBarEntryModel(composeTestRule)
 

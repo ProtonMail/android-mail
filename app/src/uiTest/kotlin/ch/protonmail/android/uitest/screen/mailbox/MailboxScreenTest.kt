@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.uitest.screen.mailbox
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -198,5 +200,8 @@ internal class MailboxScreenTest {
                 actions = MailboxScreen.Actions.Empty
             )
         }
+
+    private fun ComposeContentTestRule.MailboxRobot(content: @Composable () -> Unit) =
+        MailboxRobot(this).also { setContent(content) }
 }
 

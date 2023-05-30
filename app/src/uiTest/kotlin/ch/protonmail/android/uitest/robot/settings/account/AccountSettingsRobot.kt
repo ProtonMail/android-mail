@@ -19,7 +19,7 @@ package ch.protonmail.android.uitest.robot.settings.account
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
@@ -36,7 +36,7 @@ import me.proton.core.test.android.robots.settings.PasswordManagementRobot
  * [AccountSettingsRobot] class contains actions and verifications for
  * Account settings functionality.
  */
-class AccountSettingsRobot(val composeTestRule: ComposeContentTestRule) {
+class AccountSettingsRobot(val composeTestRule: ComposeTestRule) {
 
     fun openConversationMode(): ConversationModeRobot {
         clickOnAccountListItemWithText(string.mail_settings_conversation_mode)
@@ -49,7 +49,7 @@ class AccountSettingsRobot(val composeTestRule: ComposeContentTestRule) {
     }
 
     inline fun verify(block: Verify.() -> Unit): AccountSettingsRobot =
-        also { Verify(composeTestRule).apply(block) }
+        also { Verify().apply(block) }
 
     private fun clickOnAccountListItemWithText(@StringRes itemNameRes: Int) {
         composeTestRule
@@ -67,7 +67,7 @@ class AccountSettingsRobot(val composeTestRule: ComposeContentTestRule) {
     /**
      * Contains all the validations that can be performed by [AccountSettingsRobot].
      */
-    class Verify(private val composeTestRule: ComposeContentTestRule) {
+    inner class Verify {
 
         fun accountSettingsScreenIsDisplayed() {
             composeTestRule.waitUntil(timeoutMillis = 5000) {

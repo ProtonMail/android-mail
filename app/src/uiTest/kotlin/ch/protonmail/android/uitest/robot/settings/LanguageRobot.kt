@@ -23,7 +23,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -37,7 +37,7 @@ import ch.protonmail.android.uitest.util.onNodeWithText
 /**
  * [LanguageRobot] class contains actions and verifications for LanguageSettingsScreen
  */
-class LanguageRobot(val composeTestRule: ComposeContentTestRule) {
+class LanguageRobot(val composeTestRule: ComposeTestRule) {
 
     fun selectBrazilianPortuguese(): LanguageRobot {
         composeTestRule
@@ -79,12 +79,12 @@ class LanguageRobot(val composeTestRule: ComposeContentTestRule) {
     }
 
     inline fun verify(block: Verify.() -> Unit): LanguageRobot =
-        also { Verify(composeTestRule).apply(block) }
+        also { Verify().apply(block) }
 
     /**
      * Contains all the validations that can be performed by [LanguageRobot].
      */
-    class Verify(private val composeTestRule: ComposeContentTestRule) {
+    inner class Verify {
 
         fun appLanguageChangedToPortuguese() {
             verifyScreenTitleMatchesText("Idioma do aplicativo")

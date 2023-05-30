@@ -21,14 +21,14 @@ package ch.protonmail.android.uitest.robot.settings.swipeactions
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.uitest.util.assertions.assertTextContains
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.onNodeWithText
 
-class SwipeActionsRobot(val composeTestRule: ComposeContentTestRule) {
+class SwipeActionsRobot(val composeTestRule: ComposeTestRule) {
 
     fun openSwipeLeft(): EditSwipeActionRobot {
         composeTestRule
@@ -53,7 +53,7 @@ class SwipeActionsRobot(val composeTestRule: ComposeContentTestRule) {
         return this
     }
 
-    class Verify(val composeTestRule: ComposeContentTestRule) {
+    class Verify(val composeTestRule: ComposeTestRule) {
 
         inline fun swipeLeft(block: VerifySwipeAction.() -> Unit): VerifySwipeAction =
             VerifySwipeAction(composeTestRule, composeTestRule.onNodeWithText(string.mail_settings_swipe_left_name))
@@ -64,7 +64,7 @@ class SwipeActionsRobot(val composeTestRule: ComposeContentTestRule) {
                 .apply(block)
 
         class VerifySwipeAction(
-            private val composeTestRule: ComposeContentTestRule,
+            private val composeTestRule: ComposeTestRule,
             private val interaction: SemanticsNodeInteraction
         ) {
 

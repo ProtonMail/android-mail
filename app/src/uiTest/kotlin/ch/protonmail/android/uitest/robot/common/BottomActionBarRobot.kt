@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.robot.common
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.presentation.R
@@ -29,14 +30,14 @@ import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import ch.protonmail.android.uitest.util.onNodeWithText
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 
-class BottomActionBarRobot(private val composeTestRule: ComposeContentTestRule) {
+class BottomActionBarRobot(private val composeTestRule: ComposeTestRule) {
 
     fun verify(block: Verify.() -> Unit): BottomActionBarRobot {
-        Verify(composeTestRule).apply(block)
+        Verify().apply(block)
         return this
     }
 
-    class Verify(private val composeTestRule: ComposeContentTestRule) {
+    inner class Verify {
 
         fun loaderIsDisplayed() {
             onLoaderNode().assertIsDisplayed()

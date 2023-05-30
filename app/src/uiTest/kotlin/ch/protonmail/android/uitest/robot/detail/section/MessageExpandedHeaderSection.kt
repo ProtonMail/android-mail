@@ -18,13 +18,13 @@
 
 package ch.protonmail.android.uitest.robot.detail.section
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import ch.protonmail.android.uitest.models.detail.ExtendedHeaderRecipientEntry
 import ch.protonmail.android.uitest.models.detail.MessageHeaderExpandedEntryModel
 import ch.protonmail.android.uitest.models.labels.LabelEntry
 
 internal class MessageExpandedHeaderSection(
-    composeTestRule: ComposeContentTestRule
+    composeTestRule: ComposeTestRule
 ) {
 
     private val expandedHeader = MessageHeaderExpandedEntryModel(composeTestRule)

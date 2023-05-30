@@ -18,14 +18,14 @@
 
 package ch.protonmail.android.uitest.robot.settings.swipeactions
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.uitest.util.onAllNodesWithText
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
 import me.proton.core.presentation.compose.R.string as coreString
 
-class EditSwipeActionRobot(val composeTestRule: ComposeContentTestRule) {
+class EditSwipeActionRobot(val composeTestRule: ComposeTestRule) {
 
     fun navigateUpToSwipeActions(): SwipeActionsRobot {
         composeTestRule

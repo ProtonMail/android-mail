@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.robot.detail.section
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
@@ -42,7 +42,7 @@ import org.hamcrest.core.Is.`is`
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-internal class MessageBodySection(private val composeTestRule: ComposeContentTestRule) {
+internal class MessageBodySection(private val composeTestRule: ComposeTestRule) {
 
     private val webView: Web.WebInteraction<*> by lazy {
         onWebView(withClassName(equalTo("android.webkit.WebView"))).apply {

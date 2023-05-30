@@ -18,13 +18,13 @@
 
 package ch.protonmail.android.uitest.robot.detail.section
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.detail.MessageHeaderEntryModel
 import ch.protonmail.android.uitest.models.labels.LabelEntry
 
 internal class MessageHeaderSection(
-    private val composeTestRule: ComposeContentTestRule
+    private val composeTestRule: ComposeTestRule
 ) {
 
     private val headerModel = MessageHeaderEntryModel(composeTestRule)

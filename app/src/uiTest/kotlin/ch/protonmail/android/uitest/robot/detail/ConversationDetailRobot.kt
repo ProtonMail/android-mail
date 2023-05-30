@@ -20,15 +20,16 @@ package ch.protonmail.android.uitest.robot.detail
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreenTestTags
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
-internal class ConversationDetailRobot(val composeTestRule: ComposeContentTestRule) {
+internal class ConversationDetailRobot(val composeTestRule: ComposeTestRule) {
 
-    fun verify(block: Verify.() -> Unit) = Verify(composeTestRule).apply(block)
+    fun verify(block: Verify.() -> Unit) = Verify().apply(block)
 
-    internal class Verify(private val composeTestRule: ComposeContentTestRule) {
+    inner class Verify {
 
         fun conversationDetailScreenIsShown() {
             composeTestRule.onNodeWithTag(ConversationDetailScreenTestTags.RootItem)
