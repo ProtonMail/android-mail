@@ -99,17 +99,7 @@ fun ChipsListTextField(
                 .thenIf(focusRequester != null) {
                     focusRequester(focusRequester!!)
                 }
-                .padding(
-                    start = 8.dp,
-                    top = if (state
-                        .getItems()
-                        .isEmpty()
-                    ) {
-                        16.dp
-                    } else {
-                        0.dp
-                    }
-                )
+                .padding(start = 8.dp)
                 .onKeyEvent { keyEvent ->
                     if (keyEvent.key == Key.Backspace) {
                         state.onDelete()

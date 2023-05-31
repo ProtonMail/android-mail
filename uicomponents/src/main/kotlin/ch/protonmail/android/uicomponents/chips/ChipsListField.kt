@@ -31,7 +31,7 @@ fun ChipsListField(
             text = label,
             modifier = Modifier
                 .align(Alignment.Top)
-                .padding(top = 16.dp)
+                .padding(top = 16.dp, bottom = 16.dp)
         )
         ChipsListTextField(
             chipValidator = chipValidator,
