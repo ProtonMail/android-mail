@@ -79,6 +79,8 @@ include(":mail-settings:data")
 include(":mail-settings:domain")
 include(":mail-settings:presentation")
 
+include(":uicomponents")
+
 include(":test:annotations")
 include(":test:network-mocks")
 include(":test:robot:core")
