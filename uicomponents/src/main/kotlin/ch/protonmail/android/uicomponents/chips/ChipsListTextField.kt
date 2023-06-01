@@ -85,8 +85,7 @@ fun ChipsListTextField(
     val focusManager = LocalFocusManager.current
     FlowRow(
         modifier = modifier
-            .defaultMinSize(minWidth = 50.dp)
-            .fillMaxWidth(),
+            .defaultMinSize(minWidth = 50.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
