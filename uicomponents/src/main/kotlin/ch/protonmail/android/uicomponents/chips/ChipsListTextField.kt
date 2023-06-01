@@ -17,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,6 +44,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Stable
@@ -156,6 +158,7 @@ private fun FocusedChipsList(
             onClick = { onDeleteItem(index) },
             label = {
                 Text(
+                    modifier = Modifier.fillMaxWidth(CONTENT_MAX_WIDTH_OVERFLOW),
                     text = s.value,
                     color = when (s) {
                         is ChipItem.Invalid -> Color.Red
@@ -163,7 +166,7 @@ private fun FocusedChipsList(
                     }
                 )
             },
-            shape = RoundedCornerShape(16.dp),
+            shape = chipShape,
             trailingIcon = {
                 Icon(
                     Icons.Default.Clear,
@@ -181,17 +184,17 @@ private fun FocusedChipsList(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UnFocusedChipsList(chipItems: List<ChipItem>) {
     chipItems.forEach { s ->
-        InputChip(
+        SuggestionChip(
             modifier = Modifier
                 .padding(horizontal = 4.dp),
-            selected = false,
             onClick = { },
             label = {
                 Text(
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     text = s.value,
                     color = when (s) {
                         is ChipItem.Invalid -> Color.Red
@@ -199,7 +202,7 @@ private fun UnFocusedChipsList(chipItems: List<ChipItem>) {
                     }
                 )
             },
-            shape = RoundedCornerShape(16.dp)
+            shape = chipShape
         )
     }
 }
@@ -300,3 +303,7 @@ private fun Modifier.thenIf(condition: Boolean, modifier: Modifier.() -> Modifie
         this
     }
 }
+
+private val chipShape = RoundedCornerShape(16.dp)
+
+private const val CONTENT_MAX_WIDTH_OVERFLOW = 0.8f
