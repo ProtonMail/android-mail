@@ -21,8 +21,11 @@ package ch.protonmail.android.mailmailbox.presentation.paging
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
+import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
 
 fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(): MailboxScreenState {
     return when {
@@ -33,15 +36,31 @@ fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(): MailboxScreenState {
                 MailboxScreenState.LoadingWithData(this)
             }
         }
-        this.loadState.refresh is LoadState.Error -> {
-            if (this.itemCount == 0) {
-                MailboxScreenState.Error
-            } else {
-                MailboxScreenState.ErrorWithData(this)
-            }
-        }
+        this.loadState.refresh is LoadState.Error -> refreshErrorToUiState(this)
         this.itemCount == 0 -> MailboxScreenState.Empty
         else -> MailboxScreenState.Data(this)
+    }
+}
+
+private fun refreshErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
+    val exception = (pagingItems.loadState.refresh as? LoadState.Error)?.error
+    val listHasItems = pagingItems.itemCount > 0
+
+    if (exception !is DataErrorException) {
+        return MailboxScreenState.UnexpectedError
+    }
+
+    val dataError = exception.error
+    if (listHasItems) {
+        return when {
+            dataError.isOfflineError() -> MailboxScreenState.OfflineWithData(pagingItems)
+            else -> MailboxScreenState.ErrorWithData(pagingItems)
+        }
+    }
+
+    return when {
+        exception.error.isOfflineError() -> MailboxScreenState.Offline
+        else -> MailboxScreenState.Error
     }
 }
 

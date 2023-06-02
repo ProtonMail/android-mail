@@ -234,17 +234,16 @@ private fun MailboxSwipeRefresh(
                 modifier = Modifier.testTag(MailboxScreenTestTags.ListProgress)
             )
             is MailboxScreenState.Error -> MailboxError(
-                modifier = Modifier.scrollable(
-                    rememberScrollableState(consumeScrollDelta = { 0f }),
-                    orientation = Orientation.Vertical
-                )
+                errorMessage = stringResource(id = R.string.mailbox_error_message_generic)
             )
-            is MailboxScreenState.Empty -> MailboxEmpty(
-                modifier = Modifier.scrollable(
-                    rememberScrollableState(consumeScrollDelta = { 0f }),
-                    orientation = Orientation.Vertical
-                )
+            is MailboxScreenState.UnexpectedError -> MailboxError(
+                errorMessage = stringResource(id = R.string.mailbox_error_message_unexpected)
             )
+            is MailboxScreenState.Offline -> MailboxError(
+                errorMessage = stringResource(id = R.string.mailbox_error_message_offline)
+            )
+            is MailboxScreenState.OfflineWithData -> actions.showOfflineSnackbar
+            is MailboxScreenState.Empty -> MailboxEmpty()
             is MailboxScreenState.LoadingWithData,
             is MailboxScreenState.ErrorWithData,
             is MailboxScreenState.Data -> MailboxItemsList(listState, items, actions)
@@ -299,7 +298,11 @@ private fun MailboxEmpty(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .testTag(MailboxScreenTestTags.MailboxEmpty)
-            .fillMaxSize(),
+            .fillMaxSize()
+            .scrollable(
+                rememberScrollableState(consumeScrollDelta = { 0f }),
+                orientation = Orientation.Vertical
+            ),
         contentAlignment = Alignment.Center
     ) {
         Text("Empty mailbox")
@@ -307,14 +310,18 @@ private fun MailboxEmpty(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun MailboxError(modifier: Modifier = Modifier) {
+private fun MailboxError(modifier: Modifier = Modifier, errorMessage: String) {
     Box(
         modifier = modifier
             .testTag(MailboxScreenTestTags.MailboxError)
-            .fillMaxSize(),
+            .fillMaxSize()
+            .scrollable(
+                rememberScrollableState(consumeScrollDelta = { 0f }),
+                orientation = Orientation.Vertical
+            ),
         contentAlignment = Alignment.Center
     ) {
-        Text(stringResource(id = R.string.mailbox_error_message_offline))
+        Text(errorMessage)
     }
 }
 

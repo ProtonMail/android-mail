@@ -24,8 +24,12 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemU
 sealed class MailboxScreenState {
     object Loading : MailboxScreenState()
     object Empty : MailboxScreenState()
+    object UnexpectedError : MailboxScreenState()
     object Error : MailboxScreenState()
+    object Offline : MailboxScreenState()
+
     data class LoadingWithData(val data: LazyPagingItems<MailboxItemUiModel>) : MailboxScreenState()
     data class Data(val data: LazyPagingItems<MailboxItemUiModel>) : MailboxScreenState()
     data class ErrorWithData(val data: LazyPagingItems<MailboxItemUiModel>) : MailboxScreenState()
+    data class OfflineWithData(val data: LazyPagingItems<MailboxItemUiModel>) : MailboxScreenState()
 }

@@ -20,8 +20,11 @@ package ch.protonmail.android.mailmailbox.presentation.paging
 
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
+import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
@@ -82,10 +85,24 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when loadState is error and item count is 0 then Error is returned`() {
+    fun `when loadState is an unknown error then UnexpectedError is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 0
-            every { loadState.refresh } returns LoadState.Error(Exception())
+            every { loadState.refresh } returns LoadState.Error(Exception("Not a DataErrorException"))
+            every { loadState.source.refresh } returns LoadState.NotLoading(false)
+            every { loadState.mediator } returns mockk(relaxed = true)
+            every { loadState.append } returns LoadState.NotLoading(false)
+        }
+        assertEquals(MailboxScreenState.UnexpectedError, items.mapToUiStates())
+    }
+
+    @Test
+    fun `when loadState is a known error and item count is 0 then Error is returned`() {
+        val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
+            every { itemCount } returns 0
+            every { loadState.refresh } returns LoadState.Error(
+                DataErrorException(DataError.Remote.Http(NetworkError.ServerError))
+            )
             every { loadState.source.refresh } returns LoadState.NotLoading(false)
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.append } returns LoadState.NotLoading(false)
@@ -94,15 +111,45 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when loadState is error and item count larger than 0 then ErrorWithData is returned`() {
+    fun `when refresh loadState is offline error and item count is 0 then Offline is returned`() {
+        val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
+            every { itemCount } returns 0
+            every { loadState.refresh } returns LoadState.Error(
+                DataErrorException(DataError.Remote.Http(NetworkError.NoNetwork))
+            )
+            every { loadState.source.refresh } returns LoadState.NotLoading(false)
+            every { loadState.mediator } returns mockk(relaxed = true)
+            every { loadState.append } returns LoadState.NotLoading(false)
+        }
+        assertEquals(MailboxScreenState.Offline, items.mapToUiStates())
+    }
+
+    @Test
+    fun `when loadState is a known error and item count larger than 0 then ErrorWithData is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
-            every { loadState.refresh } returns LoadState.Error(Exception())
+            every { loadState.refresh } returns LoadState.Error(
+                DataErrorException(DataError.Remote.Http(NetworkError.Unreachable))
+            )
             every { loadState.source.refresh } returns LoadState.NotLoading(false)
             every { loadState.mediator } returns mockk(relaxed = true)
             every { loadState.append } returns LoadState.NotLoading(false)
         }
         assertEquals(MailboxScreenState.ErrorWithData(items), items.mapToUiStates())
+    }
+
+    @Test
+    fun `when refresh loadState is offline error and item count larger than 0 then OfflineWithData is returned`() {
+        val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
+            every { itemCount } returns 10
+            every { loadState.refresh } returns LoadState.Error(
+                DataErrorException(DataError.Remote.Http(NetworkError.NoNetwork))
+            )
+            every { loadState.source.refresh } returns LoadState.NotLoading(false)
+            every { loadState.mediator } returns mockk(relaxed = true)
+            every { loadState.append } returns LoadState.NotLoading(false)
+        }
+        assertEquals(MailboxScreenState.OfflineWithData(items), items.mapToUiStates())
     }
 
     @Test
