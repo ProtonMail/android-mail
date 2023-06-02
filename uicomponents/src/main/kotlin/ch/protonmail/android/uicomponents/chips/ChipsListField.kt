@@ -1,5 +1,6 @@
 package ch.protonmail.android.uicomponents.chips
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,7 +26,8 @@ fun ChipsListField(
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
     ) {
         Text(
             text = label,
@@ -34,6 +36,7 @@ fun ChipsListField(
                 .padding(top = 16.dp, bottom = 16.dp)
         )
         ChipsListTextField(
+            modifier = Modifier.weight(1f),
             chipValidator = chipValidator,
             onListChanged = onListChanged,
             value = value,

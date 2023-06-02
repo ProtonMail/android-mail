@@ -4,9 +4,9 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -42,9 +43,12 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Stable
@@ -83,14 +87,21 @@ fun ChipsListTextField(
         mutableStateOf(ChipsListState(chipValidator, onListChanged, value))
     }
     val focusManager = LocalFocusManager.current
+    val localDensity = LocalDensity.current
+    var textMaxWidth by remember { mutableStateOf(Dp.Unspecified) }
     FlowRow(
         modifier = modifier
-            .defaultMinSize(minWidth = 50.dp),
+            .defaultMinSize(minWidth = 50.dp)
+            .onSizeChanged { size ->
+                if (textMaxWidth == Dp.Unspecified) {
+                    textMaxWidth = with(localDensity) { size.width.toDp() }
+                }
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         if (state.isFocused()) {
-            FocusedChipsList(state.getItems(), animateChipsCreation) { state.onDelete(it) }
+            FocusedChipsList(state.getItems(), animateChipsCreation, textMaxWidth) { state.onDelete(it) }
         } else {
             UnFocusedChipsList(state.getItems())
         }
@@ -100,7 +111,7 @@ fun ChipsListTextField(
                 .thenIf(focusRequester != null) {
                     focusRequester(focusRequester!!)
                 }
-                .padding(start = 8.dp)
+                .padding(16.dp)
                 .onKeyEvent { keyEvent ->
                     if (keyEvent.key == Key.Backspace) {
                         state.onDelete()
@@ -141,9 +152,10 @@ fun ChipsListTextField(
 private fun FocusedChipsList(
     chipItems: List<ChipItem>,
     animateChipsCreation: Boolean = true,
+    textMaxWidth: Dp,
     onDeleteItem: (Int) -> Unit
 ) {
-    chipItems.forEachIndexed { index, s ->
+    chipItems.forEachIndexed { index, chipItem ->
         val scale by remember { mutableStateOf(Animatable(0F)) }
         val alpha by remember { mutableStateOf(Animatable(0F)) }
         InputChip(
@@ -157,9 +169,10 @@ private fun FocusedChipsList(
             onClick = { onDeleteItem(index) },
             label = {
                 Text(
-                    modifier = Modifier.fillMaxWidth(CONTENT_MAX_WIDTH_OVERFLOW),
-                    text = s.value,
-                    color = when (s) {
+                    modifier = Modifier
+                        .widthIn(max = textMaxWidth - 64.dp),
+                    text = chipItem.value,
+                    color = when (chipItem) {
                         is ChipItem.Invalid -> Color.Red
                         else -> Color.Unspecified
                     }
@@ -304,5 +317,3 @@ private fun Modifier.thenIf(condition: Boolean, modifier: Modifier.() -> Modifie
 }
 
 private val chipShape = RoundedCornerShape(16.dp)
-
-private const val CONTENT_MAX_WIDTH_OVERFLOW = 0.8f
