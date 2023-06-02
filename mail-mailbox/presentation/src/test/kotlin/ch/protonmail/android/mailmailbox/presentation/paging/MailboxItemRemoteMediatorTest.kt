@@ -76,25 +76,24 @@ class MailboxItemRemoteMediatorTest {
     }
 
     @Test
-    fun `returns success when mediator is called with refresh for message, then data is marked as stale`() =
-        runTest {
-            // Given
-            coEvery {
-                messageRepository.getRemoteMessages(userId, mailboxPageKey.pageKey)
-            } returns listOf(MessageTestData.message).right()
+    fun `returns success when mediator is called with refresh for message, then data is marked as stale`() = runTest {
+        // Given
+        coEvery {
+            messageRepository.getRemoteMessages(userId, mailboxPageKey.pageKey)
+        } returns listOf(MessageTestData.message).right()
 
-            // When
-            val result = mailboxItemRemoteMediator.load(
-                loadType = LoadType.REFRESH,
-                state = buildPagingState()
-            )
+        // When
+        val result = mailboxItemRemoteMediator.load(
+            loadType = LoadType.REFRESH,
+            state = buildPagingState()
+        )
 
-            // Then
-            coVerify { messageRepository.markAsStale(userId, mailboxPageKey.pageKey.filter.labelId) }
-            coVerify(exactly = 0) { conversationRepository.markAsStale(any(), any()) }
-            assertIs<RemoteMediator.MediatorResult.Success>(result)
-            assertFalse(result.endOfPaginationReached)
-        }
+        // Then
+        coVerify { messageRepository.markAsStale(userId, mailboxPageKey.pageKey.filter.labelId) }
+        coVerify(exactly = 0) { conversationRepository.markAsStale(any(), any()) }
+        assertIs<RemoteMediator.MediatorResult.Success>(result)
+        assertFalse(result.endOfPaginationReached)
+    }
 
     @Test
     fun `returns success when mediator is called with refresh for conversation, then data is marked as stale`() =
@@ -119,104 +118,101 @@ class MailboxItemRemoteMediatorTest {
         }
 
     @Test
-    fun `given the mediator is called with append, then data is not marked as stale`() =
-        runTest {
-            // Given
-            val pageKey = mailboxPageKey.pageKey.copy(
-                orderDirection = OrderDirection.Ascending
+    fun `given the mediator is called with append, then data is not marked as stale`() = runTest {
+        // Given
+        val pageKey = mailboxPageKey.pageKey.copy(
+            orderDirection = OrderDirection.Ascending
+        )
+        val pages = emptyList<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>()
+        val items = pages.flatMap { it.data }
+        val pageSize = PageKey.defaultPageSize
+        coEvery { getAdjacentPageKeys(items, mailboxPageKey.pageKey, pageSize) } returns AdjacentPageKeys(
+            prev = PageKey(),
+            current = mailboxPageKey.pageKey,
+            next = pageKey
+        )
+        coEvery {
+            messageRepository.getRemoteMessages(
+                userId,
+                pageKey
             )
-            val pages = emptyList<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>()
-            val items = pages.flatMap { it.data }
-            val pageSize = PageKey.defaultPageSize
-            coEvery { getAdjacentPageKeys(items, mailboxPageKey.pageKey, pageSize) } returns AdjacentPageKeys(
-                prev = PageKey(),
-                current = mailboxPageKey.pageKey,
-                next = pageKey
-            )
-            coEvery {
-                messageRepository.getRemoteMessages(
-                    userId,
-                    pageKey
-                )
-            } returns listOf(MessageTestData.message).right()
+        } returns listOf(MessageTestData.message).right()
 
-            // When
-            mailboxItemRemoteMediator.load(
-                loadType = LoadType.APPEND,
-                state = buildPagingState(pages, pageSize)
-            )
+        // When
+        mailboxItemRemoteMediator.load(
+            loadType = LoadType.APPEND,
+            state = buildPagingState(pages, pageSize)
+        )
 
-            // Then
-            coVerify(exactly = 0) { messageRepository.markAsStale(any(), any()) }
-            coVerify { messageRepository.getRemoteMessages(userId, pageKey) }
-        }
-
-    @Test
-    fun `returns error when mediator is called with append and message api call fails`() =
-        runTest {
-            // Given
-            val expectedRemoteError = DataError.Remote.Http(NetworkError.Unreachable)
-            val pageKey = mailboxPageKey.pageKey.copy(
-                orderDirection = OrderDirection.Ascending
-            )
-            val pages = emptyList<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>()
-            val items = pages.flatMap { it.data }
-            val pageSize = PageKey.defaultPageSize
-            coEvery { getAdjacentPageKeys(items, mailboxPageKey.pageKey, pageSize) } returns AdjacentPageKeys(
-                prev = PageKey(),
-                current = mailboxPageKey.pageKey,
-                next = pageKey
-            )
-            coEvery {
-                messageRepository.getRemoteMessages(userId, pageKey)
-            } returns expectedRemoteError.left()
-
-            // When
-            val result = mailboxItemRemoteMediator.load(
-                loadType = LoadType.APPEND,
-                state = buildPagingState(pages, pageSize)
-            )
-
-            // Then
-            coVerify(exactly = 0) { messageRepository.markAsStale(any(), any()) }
-            coVerify { messageRepository.getRemoteMessages(userId, pageKey) }
-            assertIs<RemoteMediator.MediatorResult.Error>(result)
-            assertEquals(expectedRemoteError.toString(), result.throwable.message)
-        }
+        // Then
+        coVerify(exactly = 0) { messageRepository.markAsStale(any(), any()) }
+        coVerify { messageRepository.getRemoteMessages(userId, pageKey) }
+    }
 
     @Test
-    fun `returns error when mediator is called with append and conversation api call fails`() =
-        runTest {
-            // Given
-            val expectedRemoteError = DataError.Remote.Http(NetworkError.Unreachable)
-            val pageKey = mailboxPageKey.pageKey.copy(
-                orderDirection = OrderDirection.Ascending
-            )
-            val pages = emptyList<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>()
-            val items = pages.flatMap { it.data }
-            val pageSize = PageKey.defaultPageSize
-            coEvery { getAdjacentPageKeys(items, mailboxPageKey.pageKey, pageSize) } returns AdjacentPageKeys(
-                prev = PageKey(),
-                current = mailboxPageKey.pageKey,
-                next = pageKey
-            )
-            mailboxItemType = MailboxItemType.Conversation
-            coEvery {
-                conversationRepository.getRemoteConversations(userId, pageKey)
-            } returns expectedRemoteError.left()
+    fun `returns error when mediator is called with append and message api call fails`() = runTest {
+        // Given
+        val expectedRemoteError = DataError.Remote.Http(NetworkError.Unreachable)
+        val pageKey = mailboxPageKey.pageKey.copy(
+            orderDirection = OrderDirection.Ascending
+        )
+        val pages = emptyList<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>()
+        val items = pages.flatMap { it.data }
+        val pageSize = PageKey.defaultPageSize
+        coEvery { getAdjacentPageKeys(items, mailboxPageKey.pageKey, pageSize) } returns AdjacentPageKeys(
+            prev = PageKey(),
+            current = mailboxPageKey.pageKey,
+            next = pageKey
+        )
+        coEvery {
+            messageRepository.getRemoteMessages(userId, pageKey)
+        } returns expectedRemoteError.left()
 
-            // When
-            val result = mailboxItemRemoteMediator.load(
-                loadType = LoadType.APPEND,
-                state = buildPagingState(pages, pageSize)
-            )
+        // When
+        val result = mailboxItemRemoteMediator.load(
+            loadType = LoadType.APPEND,
+            state = buildPagingState(pages, pageSize)
+        )
 
-            // Then
-            coVerify(exactly = 0) { conversationRepository.markAsStale(any(), any()) }
-            coVerify { conversationRepository.getRemoteConversations(userId, pageKey) }
-            assertIs<RemoteMediator.MediatorResult.Error>(result)
-            assertEquals(expectedRemoteError.toString(), result.throwable.message)
-        }
+        // Then
+        coVerify(exactly = 0) { messageRepository.markAsStale(any(), any()) }
+        coVerify { messageRepository.getRemoteMessages(userId, pageKey) }
+        assertIs<RemoteMediator.MediatorResult.Error>(result)
+        assertEquals(expectedRemoteError.toString(), result.throwable.message)
+    }
+
+    @Test
+    fun `returns error when mediator is called with append and conversation api call fails`() = runTest {
+        // Given
+        val expectedRemoteError = DataError.Remote.Http(NetworkError.Unreachable)
+        val pageKey = mailboxPageKey.pageKey.copy(
+            orderDirection = OrderDirection.Ascending
+        )
+        val pages = emptyList<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>()
+        val items = pages.flatMap { it.data }
+        val pageSize = PageKey.defaultPageSize
+        coEvery { getAdjacentPageKeys(items, mailboxPageKey.pageKey, pageSize) } returns AdjacentPageKeys(
+            prev = PageKey(),
+            current = mailboxPageKey.pageKey,
+            next = pageKey
+        )
+        mailboxItemType = MailboxItemType.Conversation
+        coEvery {
+            conversationRepository.getRemoteConversations(userId, pageKey)
+        } returns expectedRemoteError.left()
+
+        // When
+        val result = mailboxItemRemoteMediator.load(
+            loadType = LoadType.APPEND,
+            state = buildPagingState(pages, pageSize)
+        )
+
+        // Then
+        coVerify(exactly = 0) { conversationRepository.markAsStale(any(), any()) }
+        coVerify { conversationRepository.getRemoteConversations(userId, pageKey) }
+        assertIs<RemoteMediator.MediatorResult.Error>(result)
+        assertEquals(expectedRemoteError.toString(), result.throwable.message)
+    }
 
     @Test
     fun `given the remote mediator is called with append and and state contains next key, then this key is used`() =

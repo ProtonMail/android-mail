@@ -38,10 +38,7 @@ import timber.log.Timber
 @AssistedFactory
 interface MailboxItemRemoteMediatorFactory {
 
-    fun create(
-        mailboxPageKey: MailboxPageKey,
-        type: MailboxItemType
-    ): MailboxItemRemoteMediator
+    fun create(mailboxPageKey: MailboxPageKey, type: MailboxItemType): MailboxItemRemoteMediator
 }
 
 @OptIn(ExperimentalPagingApi::class)
@@ -96,7 +93,7 @@ class MailboxItemRemoteMediator @AssistedInject constructor(
     private suspend fun fetchMessages(userId: UserId, pageKey: MailboxPageKey): MediatorResult {
         return messageRepository.getRemoteMessages(
             userId = userId,
-            pageKey = pageKey.pageKey,
+            pageKey = pageKey.pageKey
         ).fold(
             ifRight = {
                 Timber.d("Paging: endOfPaginationReached: ${it.size}")
@@ -112,7 +109,7 @@ class MailboxItemRemoteMediator @AssistedInject constructor(
     private suspend fun fetchConversations(userId: UserId, pageKey: MailboxPageKey): MediatorResult {
         return conversationRepository.getRemoteConversations(
             userId = userId,
-            pageKey = pageKey.pageKey,
+            pageKey = pageKey.pageKey
         ).fold(
             ifRight = {
                 MediatorResult.Success(endOfPaginationReached = it.isEmpty())

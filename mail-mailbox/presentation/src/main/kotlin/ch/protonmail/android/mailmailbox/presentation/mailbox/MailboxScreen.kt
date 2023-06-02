@@ -357,18 +357,10 @@ object MailboxScreen {
  * Note: The preview won't show mailbox items because this: https://issuetracker.google.com/issues/194544557
  *  Start preview in Interactive Mode to correctly see the mailbox items
  */
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showBackground = true
-)
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
-)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
-private fun MailboxScreenPreview(
-    @PreviewParameter(MailboxPreviewProvider::class) mailboxPreview: MailboxPreview
-) {
+private fun MailboxScreenPreview(@PreviewParameter(MailboxPreviewProvider::class) mailboxPreview: MailboxPreview) {
     ProtonTheme {
         MailboxScreen(
             mailboxListItems = mailboxPreview.items.collectAsLazyPagingItems(),

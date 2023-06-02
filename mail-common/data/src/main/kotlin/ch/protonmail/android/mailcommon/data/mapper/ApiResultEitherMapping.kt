@@ -33,8 +33,7 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
     is ApiResult.Error.Connection -> DataError.Remote.Http(toNetworkError(this)).left()
 }
 
-private fun toNetworkError(apiResult: ApiResult.Error.Connection): NetworkError =
-    when (apiResult) {
-        is ApiResult.Error.NoInternet -> NetworkError.NoNetwork
-        else -> NetworkError.Unreachable
-    }
+private fun toNetworkError(apiResult: ApiResult.Error.Connection): NetworkError = when (apiResult) {
+    is ApiResult.Error.NoInternet -> NetworkError.NoNetwork
+    else -> NetworkError.Unreachable
+}
