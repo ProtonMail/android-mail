@@ -24,11 +24,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -151,7 +151,7 @@ fun ChipsListTextField(
 @Composable
 private fun FocusedChipsList(
     chipItems: List<ChipItem>,
-    animateChipsCreation: Boolean = true,
+    animateChipsCreation: Boolean = false,
     textMaxWidth: Dp,
     onDeleteItem: (Int) -> Unit
 ) {
@@ -198,7 +198,7 @@ private fun FocusedChipsList(
 
 @Composable
 private fun UnFocusedChipsList(chipItems: List<ChipItem>) {
-    chipItems.forEach { s ->
+    chipItems.forEach { chipItem ->
         SuggestionChip(
             modifier = Modifier
                 .padding(horizontal = 4.dp),
@@ -207,8 +207,8 @@ private fun UnFocusedChipsList(chipItems: List<ChipItem>) {
                 Text(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    text = s.value,
-                    color = when (s) {
+                    text = chipItem.value,
+                    color = when (chipItem) {
                         is ChipItem.Invalid -> Color.Red
                         else -> Color.Unspecified
                     }
@@ -226,19 +226,8 @@ internal class ChipsListState(
     initialValue: List<ChipItem>
 ) {
 
-    @Suppress("SpreadOperator")
-    private val items: SnapshotStateList<ChipItem> = mutableStateListOf(
-        *initialValue.map {
-            when (it) {
-                is ChipItem.Invalid -> ChipItem.Invalid(it.value)
-                is ChipItem.Valid -> ChipItem.Valid(it.value)
-                is ChipItem.Counter -> ChipItem.Counter(it.value)
-            }
-        }.toTypedArray()
-    )
-
+    private val items: SnapshotStateList<ChipItem> = initialValue.toMutableStateList()
     private val typedText: MutableState<String> = mutableStateOf("")
-
     private val focusedState: MutableState<Boolean> = mutableStateOf(false)
 
     fun getItems(): List<ChipItem> = when {
@@ -310,7 +299,7 @@ internal class ChipsListState(
 
 private fun Modifier.thenIf(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {
     return if (condition) {
-        then(modifier(Modifier))
+        then(modifier())
     } else {
         this
     }

@@ -137,6 +137,52 @@ class ChipsListStateTest {
         assertThat(state.isFocused(), equalTo(false))
     }
 
+    @Test
+    fun `Should set the correct text in the items when changing it and the element is focused`() {
+        // Given
+        val state = buildState()
+        state.setFocusState(true)
+
+        // When
+        state.typeWord("hello")
+        state.typeWord("world")
+        state.type("!")
+        state.type(" ")
+
+        // Then
+        assertThat(state.getItems()[0], equalTo(ChipItem.Valid("hello")))
+        assertThat(state.getItems()[1], equalTo(ChipItem.Valid("world")))
+        assertThat(state.getItems()[2], equalTo(ChipItem.Valid("!")))
+    }
+
+    @Test
+    fun `Should set the correct text in the items when changing it and the element is not focused`() {
+        // Given
+        val state = buildState()
+        state.setFocusState(false)
+
+        // When
+        state.typeWord("hello")
+
+        // Then
+        assertThat(state.getItems()[0], equalTo(ChipItem.Valid("hello")))
+
+        // When
+        state.typeWord("world")
+
+        // Then
+        assertThat(state.getItems().first(), equalTo(ChipItem.Valid("hello")))
+        assertThat(state.getItems().last(), equalTo(ChipItem.Counter("+1")))
+
+        // When
+        state.type("!")
+        state.type(" ")
+
+        // Then
+        assertThat(state.getItems().first(), equalTo(ChipItem.Valid("hello")))
+        assertThat(state.getItems().last(), equalTo(ChipItem.Counter("+2")))
+    }
+
     private fun buildState(isValid: (String) -> Boolean = { true }) = ChipsListState(
         isValid = isValid,
         onListChanged = {},
