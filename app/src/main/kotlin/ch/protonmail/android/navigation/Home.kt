@@ -76,12 +76,15 @@ fun Home(
     val state = rememberAsState(flow = viewModel.state, initial = HomeState.Initial)
 
     val offlineSnackbarMessage = stringResource(id = R.string.you_are_offline)
+    fun showOfflineSnackbar() = scope.launch {
+        snackbarHostState.showSnackbar(
+            message = offlineSnackbarMessage,
+            type = ProtonSnackbarType.WARNING
+        )
+    }
     ConsumableLaunchedEffect(state.value.networkStatusEffect) {
         if (it == NetworkStatus.Disconnected) {
-            snackbarHostState.showSnackbar(
-                message = offlineSnackbarMessage,
-                type = ProtonSnackbarType.WARNING
-            )
+            showOfflineSnackbar()
         }
     }
 
@@ -90,6 +93,13 @@ fun Home(
         snackbarHostState.showSnackbar(
             message = featureMissingSnackbarMessage,
             type = ProtonSnackbarType.NORM
+        )
+    }
+    val refreshMailboxErrorMessage = stringResource(id = R.string.mailbox_error_message_generic)
+    fun showRefreshErrorSnackbar() = scope.launch {
+        snackbarHostState.showSnackbar(
+            message = refreshMailboxErrorMessage,
+            type = ProtonSnackbarType.ERROR
         )
     }
 
@@ -136,17 +146,9 @@ fun Home(
                 addMailbox(
                     navController,
                     openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } },
-                    showOfflineSnackbar = {
-                        scope.launch {
-                            snackbarHostState.showSnackbar(
-                                message = offlineSnackbarMessage,
-                                type = ProtonSnackbarType.WARNING
-                            )
-                        }
-                    },
-                    showFeatureMissingSnackbar = {
-                        showFeatureMissingSnackbar()
-                    }
+                    showOfflineSnackbar = { showOfflineSnackbar() },
+                    showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
+                    showRefreshErrorSnackbar = { showRefreshErrorSnackbar() }
                 )
                 addMessageDetail(
                     navController = navController,

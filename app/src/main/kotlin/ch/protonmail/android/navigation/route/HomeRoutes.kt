@@ -64,7 +64,8 @@ internal fun NavGraphBuilder.addMailbox(
     navController: NavHostController,
     openDrawerMenu: () -> Unit,
     showOfflineSnackbar: () -> Unit,
-    showFeatureMissingSnackbar: () -> Unit
+    showFeatureMissingSnackbar: () -> Unit,
+    showRefreshErrorSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.Mailbox.route) {
         MailboxScreen(
@@ -81,6 +82,7 @@ internal fun NavGraphBuilder.addMailbox(
                 navigateToComposer = { navController.navigate(Destination.Screen.Composer.route) },
                 openDrawerMenu = openDrawerMenu,
                 showOfflineSnackbar = showOfflineSnackbar,
+                showRefreshErrorSnackbar = showRefreshErrorSnackbar,
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar
             )
         )

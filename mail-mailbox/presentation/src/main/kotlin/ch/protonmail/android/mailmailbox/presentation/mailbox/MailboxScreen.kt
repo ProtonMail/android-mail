@@ -244,8 +244,8 @@ private fun MailboxSwipeRefresh(
             )
             is MailboxScreenState.OfflineWithData -> actions.showOfflineSnackbar
             is MailboxScreenState.Empty -> MailboxEmpty()
+            is MailboxScreenState.ErrorWithData -> actions.showRefreshErrorSnackbar
             is MailboxScreenState.LoadingWithData,
-            is MailboxScreenState.ErrorWithData,
             is MailboxScreenState.Data -> MailboxItemsList(listState, items, actions)
         }
     }
@@ -338,6 +338,7 @@ object MailboxScreen {
         val onRefreshList: () -> Unit,
         val openDrawerMenu: () -> Unit,
         val showOfflineSnackbar: () -> Unit,
+        val showRefreshErrorSnackbar: () -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     ) {
 
@@ -354,6 +355,7 @@ object MailboxScreen {
                 onRefreshList = {},
                 openDrawerMenu = {},
                 showOfflineSnackbar = {},
+                showRefreshErrorSnackbar = {},
                 showFeatureMissingSnackbar = {}
             )
         }
