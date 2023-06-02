@@ -21,7 +21,6 @@ package ch.protonmail.android.mailmailbox.presentation.paging
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -33,7 +32,7 @@ fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(): MailboxScreenState {
             if (this.itemCount == 0) {
                 MailboxScreenState.Loading
             } else {
-                MailboxScreenState.LoadingWithData(this)
+                MailboxScreenState.LoadingWithData
             }
         }
         this.loadState.refresh is LoadState.Error -> refreshErrorToUiState(this)
@@ -53,8 +52,8 @@ private fun refreshErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiMode
     val dataError = exception.error
     if (listHasItems) {
         return when {
-            dataError.isOfflineError() -> MailboxScreenState.OfflineWithData(pagingItems)
-            else -> MailboxScreenState.ErrorWithData(pagingItems)
+            dataError.isOfflineError() -> MailboxScreenState.OfflineWithData
+            else -> MailboxScreenState.ErrorWithData
         }
     }
 

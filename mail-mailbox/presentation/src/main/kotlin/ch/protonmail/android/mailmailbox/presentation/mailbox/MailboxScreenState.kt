@@ -28,8 +28,9 @@ sealed class MailboxScreenState {
     object Error : MailboxScreenState()
     object Offline : MailboxScreenState()
 
-    data class LoadingWithData(val data: LazyPagingItems<MailboxItemUiModel>) : MailboxScreenState()
+    object LoadingWithData : MailboxScreenState()
+    object ErrorWithData : MailboxScreenState()
+    object OfflineWithData : MailboxScreenState()
+
     data class Data(val data: LazyPagingItems<MailboxItemUiModel>) : MailboxScreenState()
-    data class ErrorWithData(val data: LazyPagingItems<MailboxItemUiModel>) : MailboxScreenState()
-    data class OfflineWithData(val data: LazyPagingItems<MailboxItemUiModel>) : MailboxScreenState()
 }
