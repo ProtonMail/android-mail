@@ -26,6 +26,7 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationRepo
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
+import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.AdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
@@ -101,7 +102,7 @@ class MailboxItemRemoteMediator @AssistedInject constructor(
             },
             ifLeft = {
                 Timber.d("Paging: fetchItems: Mediator failed to load messages: $it")
-                MediatorResult.Error(Exception(it.toString()))
+                MediatorResult.Error(DataErrorException(it))
             }
         )
     }
@@ -116,7 +117,7 @@ class MailboxItemRemoteMediator @AssistedInject constructor(
             },
             ifLeft = {
                 Timber.d("Paging: Mediator failed to load conversations: $it")
-                MediatorResult.Error(Exception(it.toString()))
+                MediatorResult.Error(DataErrorException(it))
             }
         )
     }

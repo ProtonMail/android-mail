@@ -36,6 +36,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.AdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
+import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
@@ -178,13 +179,15 @@ class MailboxItemRemoteMediatorTest {
         coVerify(exactly = 0) { messageRepository.markAsStale(any(), any()) }
         coVerify { messageRepository.getRemoteMessages(userId, pageKey) }
         assertIs<RemoteMediator.MediatorResult.Error>(result)
-        assertEquals(expectedRemoteError.toString(), result.throwable.message)
+        val actualException = result.throwable
+        assertIs<DataErrorException>(actualException)
+        assertEquals(expectedRemoteError, actualException.error)
     }
 
     @Test
     fun `returns error when mediator is called with append and conversation api call fails`() = runTest {
         // Given
-        val expectedRemoteError = DataError.Remote.Http(NetworkError.Unreachable)
+        val expectedRemoteError = DataError.Remote.Http(NetworkError.NoNetwork)
         val pageKey = mailboxPageKey.pageKey.copy(
             orderDirection = OrderDirection.Ascending
         )
@@ -211,7 +214,9 @@ class MailboxItemRemoteMediatorTest {
         coVerify(exactly = 0) { conversationRepository.markAsStale(any(), any()) }
         coVerify { conversationRepository.getRemoteConversations(userId, pageKey) }
         assertIs<RemoteMediator.MediatorResult.Error>(result)
-        assertEquals(expectedRemoteError.toString(), result.throwable.message)
+        val actualException = result.throwable
+        assertIs<DataErrorException>(actualException)
+        assertEquals(expectedRemoteError, actualException.error)
     }
 
     @Test
