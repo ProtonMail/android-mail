@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.model.isOfflineError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
+import timber.log.Timber
 
 fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(): MailboxScreenState {
     return when {
@@ -35,24 +36,37 @@ fun LazyPagingItems<MailboxItemUiModel>.mapToUiStates(): MailboxScreenState {
                 MailboxScreenState.LoadingWithData
             }
         }
+        this.loadState.isAppendLoading() -> MailboxScreenState.AppendLoading
+        this.loadState.append is LoadState.Error -> appendErrorToUiState(this)
         this.loadState.refresh is LoadState.Error -> refreshErrorToUiState(this)
         this.itemCount == 0 -> MailboxScreenState.Empty
         else -> MailboxScreenState.Data(this)
     }
 }
 
-private fun refreshErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
-    val exception = (pagingItems.loadState.refresh as? LoadState.Error)?.error
-    val listHasItems = pagingItems.itemCount > 0
-
+private fun appendErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
+    val exception = (pagingItems.loadState.append as? LoadState.Error)?.error
     if (exception !is DataErrorException) {
         return MailboxScreenState.UnexpectedError
     }
 
-    val dataError = exception.error
+    return when {
+        exception.error.isOfflineError() -> MailboxScreenState.AppendOfflineError
+        else -> MailboxScreenState.AppendError
+    }
+}
+
+private fun refreshErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
+    val exception = (pagingItems.loadState.refresh as? LoadState.Error)?.error
+    if (exception !is DataErrorException) {
+        return MailboxScreenState.UnexpectedError
+    }
+
+    Timber.d("Refresh error being mapped to UI state: ${exception.error}")
+    val listHasItems = pagingItems.itemCount > 0
     if (listHasItems) {
         return when {
-            dataError.isOfflineError() -> MailboxScreenState.OfflineWithData
+            exception.error.isOfflineError() -> MailboxScreenState.OfflineWithData
             else -> MailboxScreenState.ErrorWithData
         }
     }
@@ -63,8 +77,7 @@ private fun refreshErrorToUiState(pagingItems: LazyPagingItems<MailboxItemUiMode
     }
 }
 
-private fun CombinedLoadStates.isLoading() =
-    this.isSourceLoading() || this.isMediatorLoading() || this.isAppendLoading()
+private fun CombinedLoadStates.isLoading() = this.isSourceLoading() || this.isMediatorLoading()
 
 private fun CombinedLoadStates.isSourceLoading() = this.source.refresh is LoadState.Loading
 private fun CombinedLoadStates.isMediatorLoading() = this.mediator?.refresh is LoadState.Loading

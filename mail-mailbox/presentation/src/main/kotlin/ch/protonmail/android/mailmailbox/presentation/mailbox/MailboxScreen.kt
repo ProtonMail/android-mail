@@ -49,7 +49,6 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -76,6 +75,7 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.network.domain.NetworkStatus
+import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -219,6 +219,7 @@ private fun MailboxSwipeRefresh(
 ) {
 
     val currentViewState = items.mapToUiStates()
+    Timber.d("view state = $currentViewState")
 
     SwipeRefresh(
         modifier = modifier,
@@ -242,11 +243,14 @@ private fun MailboxSwipeRefresh(
             is MailboxScreenState.Offline -> MailboxError(
                 errorMessage = stringResource(id = R.string.mailbox_error_message_offline)
             )
-            is MailboxScreenState.OfflineWithData -> actions.showOfflineSnackbar
+            is MailboxScreenState.OfflineWithData -> actions.showOfflineSnackbar()
             is MailboxScreenState.Empty -> MailboxEmpty()
-            is MailboxScreenState.ErrorWithData -> actions.showRefreshErrorSnackbar
+            is MailboxScreenState.ErrorWithData -> actions.showRefreshErrorSnackbar()
             is MailboxScreenState.LoadingWithData,
-            is MailboxScreenState.Data -> MailboxItemsList(listState, items, actions)
+            is MailboxScreenState.AppendLoading,
+            is MailboxScreenState.AppendError,
+            is MailboxScreenState.AppendOfflineError,
+            is MailboxScreenState.Data -> MailboxItemsList(listState, currentViewState, items, actions)
         }
     }
 }
@@ -255,6 +259,7 @@ private fun MailboxSwipeRefresh(
 @OptIn(ExperimentalFoundationApi::class)
 private fun MailboxItemsList(
     listState: LazyListState,
+    viewState: MailboxScreenState,
     items: LazyPagingItems<MailboxItemUiModel>,
     actions: MailboxScreen.Actions
 ) {
@@ -279,16 +284,40 @@ private fun MailboxItemsList(
             Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
         }
         item {
-            when (items.loadState.append) {
-                is LoadState.NotLoading -> Unit
-                is LoadState.Loading -> ProtonCenteredProgress(Modifier.fillMaxWidth())
-                is LoadState.Error -> Button(
-                    onClick = { items.retry() },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = stringResource(id = commonString.retry))
-                }
+            when (viewState) {
+                is MailboxScreenState.AppendLoading -> ProtonCenteredProgress(Modifier.fillMaxWidth())
+                is MailboxScreenState.AppendOfflineError -> AppendError(
+                    message = stringResource(id = R.string.mailbox_error_message_offline),
+                    onClick = { items.retry() }
+                )
+                is MailboxScreenState.AppendError -> AppendError(
+                    message = stringResource(id = R.string.mailbox_error_message_generic),
+                    onClick = { items.retry() }
+                )
+                else -> Unit
             }
+        }
+    }
+}
+
+@Composable
+private fun AppendError(
+    modifier: Modifier = Modifier,
+    message: String,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag(MailboxScreenTestTags.MailboxAppendError),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(message)
+        Button(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = stringResource(id = commonString.retry))
         }
     }
 }
@@ -385,5 +414,6 @@ object MailboxScreenTestTags {
     const val ListProgress = "MailboxListProgress"
     const val MailboxEmpty = "MailboxEmpty"
     const val MailboxError = "MailboxError"
+    const val MailboxAppendError = "MailboxAppendError"
     const val Root = "MailboxScreen"
 }

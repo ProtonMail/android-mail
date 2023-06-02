@@ -32,5 +32,9 @@ sealed class MailboxScreenState {
     object ErrorWithData : MailboxScreenState()
     object OfflineWithData : MailboxScreenState()
 
+    object AppendLoading : MailboxScreenState()
+    object AppendError : MailboxScreenState()
+    object AppendOfflineError : MailboxScreenState()
+
     data class Data(val data: LazyPagingItems<MailboxItemUiModel>) : MailboxScreenState()
 }

@@ -53,18 +53,6 @@ class PagingLoadingStateMapperKtTest {
     }
 
     @Test
-    fun `when append is loading and itemCount is 0 then Loading is returned`() {
-        val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
-            every { loadState.mediator } returns mockk(relaxed = true)
-            every { itemCount } returns 0
-            every { loadState.source.refresh } returns LoadState.NotLoading(false)
-            every { loadState.mediator!!.refresh } returns LoadState.NotLoading(false)
-            every { loadState.append } returns LoadState.Loading
-        }
-        assertEquals(MailboxScreenState.Loading, items.mapToUiStates())
-    }
-
-    @Test
     fun `when source is loading and itemCount is larger than 0 then LoadingWithData is returned`() {
         val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
             every { itemCount } returns 10
@@ -176,5 +164,57 @@ class PagingLoadingStateMapperKtTest {
             every { loadState.prepend } returns LoadState.NotLoading(false)
         }
         assertEquals(MailboxScreenState.Data(items), items.mapToUiStates())
+    }
+
+    @Test
+    fun `when append loadState is loading then AppendLoading is returned`() {
+        val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
+            every { itemCount } returns 10
+            every { loadState.refresh } returns LoadState.NotLoading(false)
+            every { loadState.source.refresh } returns LoadState.NotLoading(false)
+            every { loadState.mediator } returns mockk(relaxed = true)
+            every { loadState.append } returns LoadState.Loading
+        }
+        assertEquals(MailboxScreenState.AppendLoading, items.mapToUiStates())
+    }
+
+    @Test
+    fun `when append loadState is an unknown error then UnexpectedError is returned`() {
+        val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
+            every { itemCount } returns 10
+            every { loadState.refresh } returns LoadState.NotLoading(false)
+            every { loadState.source.refresh } returns LoadState.NotLoading(false)
+            every { loadState.mediator } returns mockk(relaxed = true)
+            every { loadState.append } returns LoadState.Error(Exception("Not a known DataErrorException"))
+        }
+        assertEquals(MailboxScreenState.UnexpectedError, items.mapToUiStates())
+    }
+
+    @Test
+    fun `when append loadState is a known error then AppendError is returned`() {
+        val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
+            every { itemCount } returns 10
+            every { loadState.refresh } returns LoadState.NotLoading(false)
+            every { loadState.source.refresh } returns LoadState.NotLoading(false)
+            every { loadState.mediator } returns mockk(relaxed = true)
+            every { loadState.append } returns LoadState.Error(
+                DataErrorException(DataError.Remote.Http(NetworkError.ServerError))
+            )
+        }
+        assertEquals(MailboxScreenState.AppendError, items.mapToUiStates())
+    }
+
+    @Test
+    fun `when append loadState is offline error then AppendOfflineError is returned`() {
+        val items = mockk<LazyPagingItems<MailboxItemUiModel>> {
+            every { itemCount } returns 10
+            every { loadState.refresh } returns LoadState.NotLoading(false)
+            every { loadState.source.refresh } returns LoadState.NotLoading(false)
+            every { loadState.mediator } returns mockk(relaxed = true)
+            every { loadState.append } returns LoadState.Error(
+                DataErrorException(DataError.Remote.Http(NetworkError.NoNetwork))
+            )
+        }
+        assertEquals(MailboxScreenState.AppendOfflineError, items.mapToUiStates())
     }
 }
