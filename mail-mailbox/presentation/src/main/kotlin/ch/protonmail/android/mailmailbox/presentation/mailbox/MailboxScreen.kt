@@ -74,7 +74,6 @@ import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 

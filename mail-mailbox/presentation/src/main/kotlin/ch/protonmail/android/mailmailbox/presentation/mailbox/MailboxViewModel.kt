@@ -74,7 +74,6 @@ import kotlinx.coroutines.withContext
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ViewMode
-import me.proton.core.network.domain.NetworkManager
 import me.proton.core.util.kotlin.DispatcherProvider
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
@@ -92,7 +91,6 @@ class MailboxViewModel @Inject constructor(
     private val mailboxItemMapper: MailboxItemUiModelMapper,
     private val getContacts: GetContacts,
     private val mailboxReducer: MailboxReducer,
-    private val networkManager: NetworkManager,
     private val observeMailFeature: ObserveMailFeature,
     private val dispatchersProvider: DispatcherProvider
 ) : ViewModel() {

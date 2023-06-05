@@ -89,8 +89,6 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
-import me.proton.core.network.domain.NetworkManager
-import me.proton.core.network.domain.NetworkStatus
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Test
 import kotlin.test.AfterTest
@@ -135,10 +133,6 @@ class MailboxViewModelTest {
         coEvery { this@mockk.invoke(userId) } returns Either.Right(ContactTestData.contacts)
     }
 
-    private val networkManager = mockk<NetworkManager> {
-        every { networkStatus } returns NetworkStatus.Disconnected
-    }
-
     private val pagerFactory = mockk<MailboxPagerFactory>()
 
     private val mailboxItemMapper = mockk<MailboxItemUiModelMapper>()
@@ -163,7 +157,6 @@ class MailboxViewModelTest {
             mailboxItemMapper = mailboxItemMapper,
             getContacts = getContacts,
             mailboxReducer = mailboxReducer,
-            networkManager = networkManager,
             observeMailFeature = observeMailFeature,
             dispatchersProvider = TestDispatcherProvider()
         )

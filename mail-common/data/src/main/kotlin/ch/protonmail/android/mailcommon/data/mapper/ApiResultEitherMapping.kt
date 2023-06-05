@@ -30,7 +30,7 @@ import me.proton.core.network.domain.ApiResult
 fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this) {
     is ApiResult.Success -> value.right()
     is ApiResult.Error.Http -> DataError.Remote.Http(NetworkError.fromHttpCode(httpCode)).left()
-    is ApiResult.Error.Parse -> throw cause ?: RuntimeException("Parse error without cause")
+    is ApiResult.Error.Parse -> DataError.Remote.Http(NetworkError.Parse).left()
     is ApiResult.Error.Connection -> DataError.Remote.Http(toNetworkError(this)).left()
 }
 

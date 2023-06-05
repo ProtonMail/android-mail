@@ -29,7 +29,6 @@ import me.proton.core.network.domain.ApiResult
 import org.json.JSONException
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class ApiResultEitherMappingTest {
 
@@ -46,24 +45,16 @@ class ApiResultEitherMappingTest {
     }
 
     @Test
-    fun `throws exception on parse error`() {
+    fun `returns Parse Network Error on parse error`() {
         // given
         val cause = JSONException("message")
         val apiResult = ApiResult.Error.Parse(cause)
 
-        // when / then
-        val actualException = assertFailsWith<JSONException> { apiResult.toEither() }
-        assertEquals(cause, actualException)
-    }
+        // when
+        val actual = apiResult.toEither()
 
-    @Test
-    fun `throws runtime exception on parse error without a cause`() {
-        // given
-        val apiResult = ApiResult.Error.Parse(null)
-
-        // when / then
-        val actualException = assertFailsWith<RuntimeException> { apiResult.toEither() }
-        assertEquals("Parse error without cause", actualException.message)
+        // then
+        assertEquals(DataError.Remote.Http(NetworkError.Parse).left(), actual)
     }
 
     @Test
