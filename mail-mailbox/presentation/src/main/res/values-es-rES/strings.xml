@@ -33,5 +33,5 @@
   </plurals>
   <string name="mailbox_default_recipient">(Sin destinatario)</string>
   <string name="mailbox_default_sender">(Sin remitente)</string>
-  <string name="mailbox_error_message_offline">No hay conexión. No se pueden recuperar los elementos.</string>
+  <string name="mailbox_error_message_offline">Sin conexión. No se pueden recuperar los elementos</string>
 </resources>

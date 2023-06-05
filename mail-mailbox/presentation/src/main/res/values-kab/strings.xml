@@ -31,7 +31,7 @@
     <item quantity="one">%d ur yettwaɣer ara</item>
     <item quantity="other">%d ur ttwaɣren ara</item>
   </plurals>
-  <string name="mailbox_default_recipient">(No Recipient)</string>
+  <string name="mailbox_default_recipient">(Ulac iɣerwaḍen)</string>
   <string name="mailbox_default_sender">(No Sender)</string>
   <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
 </resources>
