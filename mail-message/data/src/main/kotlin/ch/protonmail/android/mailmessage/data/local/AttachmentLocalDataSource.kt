@@ -45,6 +45,11 @@ interface AttachmentLocalDataSource {
     ): Either<DataError.Local, MessageAttachmentMetadata>
 
     /**
+     * Get the attachment for the given [attachmentHash].
+     */
+    suspend fun getAttachmentMetadataByHash(attachmentHash: String): Either<DataError, MessageAttachmentMetadata>
+
+    /**
      * Upsert the attachment for the given [userId], [messageId] and [attachmentId].
      */
     suspend fun upsertAttachment(

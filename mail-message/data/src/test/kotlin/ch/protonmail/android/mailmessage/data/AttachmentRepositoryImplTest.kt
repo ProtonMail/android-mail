@@ -38,7 +38,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class AttachmentRepositoryTest {
+class AttachmentRepositoryImplTest {
 
     private val userId = UserIdSample.Primary
     private val messageId = MessageIdSample.Invoice
@@ -112,6 +112,36 @@ class AttachmentRepositoryTest {
 
         // Then
         assertEquals(DataError.Remote.Unknown.left(), result)
+    }
+
+    @Test
+    fun `should return local stored attachment metadata when found by hash`() = runTest {
+        // Given
+        val attachmentHash = "attachmentHash"
+        coEvery { localDataSource.getAttachmentMetadataByHash(attachmentHash) } returns attachmentMetaData.right()
+
+        // When
+        val result = repository.getAttachmentMetadataByHash(attachmentHash)
+
+        // Then
+        assertEquals(attachmentMetaData.right(), result)
+        coVerify { remoteDataSource wasNot Called }
+    }
+
+    @Test
+    fun `should return no data cached when no message metadata was found by hash`() = runTest {
+        // Given
+        val attachmentHash = "attachmentHash"
+        coEvery {
+            localDataSource.getAttachmentMetadataByHash(attachmentHash)
+        } returns DataError.Local.NoDataCached.left()
+
+        // When
+        val result = repository.getAttachmentMetadataByHash(attachmentHash)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
+        coVerify { remoteDataSource wasNot Called }
     }
 
 }

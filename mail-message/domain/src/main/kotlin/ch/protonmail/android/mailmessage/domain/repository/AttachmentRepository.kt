@@ -36,4 +36,5 @@ interface AttachmentRepository {
         attachmentId: AttachmentId
     ): Either<DataError, MessageAttachmentMetadata>
 
+    suspend fun getAttachmentMetadataByHash(attachmentHash: String): Either<DataError, MessageAttachmentMetadata>
 }

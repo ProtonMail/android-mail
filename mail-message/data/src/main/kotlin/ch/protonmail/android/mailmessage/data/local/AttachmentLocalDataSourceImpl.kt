@@ -74,6 +74,15 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getAttachmentMetadataByHash(
+        attachmentHash: String
+    ): Either<DataError, MessageAttachmentMetadata> {
+        return attachmentDao.getMessageAttachmentMetadataByHash(attachmentHash)
+            ?.toMessageAttachmentMetadata()
+            ?.right()
+            ?: DataError.Local.NoDataCached.left()
+    }
+
     override suspend fun upsertAttachment(
         userId: UserId,
         messageId: MessageId,

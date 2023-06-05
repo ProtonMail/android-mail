@@ -233,4 +233,28 @@ class AttachmentLocalDataSourceImplTest {
         coVerify { attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId) }
         coVerify { attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id) }
     }
+
+    @Test
+    fun `should return metadata when it is found by hash`() = runTest {
+        // Given
+        coEvery { attachmentDao.getMessageAttachmentMetadataByHash(hash) } returns messageAttachmentMetadataEntity
+
+        // When
+        val result = attachmentLocalDataSource.getAttachmentMetadataByHash(hash)
+
+        // Then
+        assertEquals(messageAttachmentMetadataEntity.toMessageAttachmentMetadata().right(), result)
+    }
+
+    @Test
+    fun `should return no data cached when metadata is not found by hash`() = runTest {
+        // Given
+        coEvery { attachmentDao.getMessageAttachmentMetadataByHash(hash) } returns null
+
+        // When
+        val result = attachmentLocalDataSource.getAttachmentMetadataByHash(hash)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
 }

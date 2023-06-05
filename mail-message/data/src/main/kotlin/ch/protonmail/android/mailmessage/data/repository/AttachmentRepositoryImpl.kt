@@ -59,4 +59,6 @@ class AttachmentRepositoryImpl @Inject constructor(
             ?: DataError.Remote.Unknown.left()
     }
 
+    override suspend fun getAttachmentMetadataByHash(attachmentHash: String) =
+        localDataSource.getAttachmentMetadataByHash(attachmentHash)
 }
