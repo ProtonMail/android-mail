@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcommon.data.mapper
 
+import java.net.UnknownHostException
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
@@ -35,5 +36,9 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
 
 private fun toNetworkError(apiResult: ApiResult.Error.Connection): NetworkError = when (apiResult) {
     is ApiResult.Error.NoInternet -> NetworkError.NoNetwork
-    else -> NetworkError.Unreachable
+    else -> if (apiResult.cause is UnknownHostException) {
+        NetworkError.NoNetwork
+    } else {
+        NetworkError.Unreachable
+    }
 }

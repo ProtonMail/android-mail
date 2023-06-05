@@ -17,6 +17,7 @@
  */
 package ch.protonmail.android.mailcommon.data.mapper
 
+import java.net.UnknownHostException
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.fromHttpCode
@@ -87,6 +88,23 @@ class ApiResultEitherMappingTest {
 
         // then
         assertEquals(DataError.Remote.Http(NetworkError.Unreachable).left(), result)
+    }
+
+    @Test
+    fun `returns no network on connection error due to unknown host exception`() {
+        // given
+        val apiResult = ApiResult.Error.Connection(
+            potentialBlock = false,
+            cause = UnknownHostException(
+                "Unable to resolve host \"mail-api.proton.me\": No address associated with hostname"
+            )
+        )
+
+        // when
+        val result = apiResult.toEither()
+
+        // then
+        assertEquals(DataError.Remote.Http(NetworkError.NoNetwork).left(), result)
     }
 
     @Test
