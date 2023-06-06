@@ -25,14 +25,12 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingTopAppBar
     sealed interface AffectingUnreadFilter
     sealed interface AffectingMailboxList
-    sealed interface AffectingNetworkStatus
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
     object EnterSelectionMode : MailboxViewAction, MailboxOperation.AffectingTopAppBar
     object ExitSelectionMode : MailboxViewAction, MailboxOperation.AffectingTopAppBar
     data class OpenItemDetails(val item: MailboxItemUiModel) : MailboxViewAction
-    object Refresh : MailboxViewAction
     object EnableUnreadFilter : MailboxViewAction, MailboxOperation.AffectingUnreadFilter
     object DisableUnreadFilter : MailboxViewAction, MailboxOperation.AffectingUnreadFilter
 }
@@ -62,11 +60,6 @@ internal sealed interface MailboxEvent : MailboxOperation {
         val selectedLabelCount: Int
     ) : MailboxEvent,
         MailboxOperation.AffectingUnreadFilter
-
-    data class NetworkStatusRefreshed(
-        val networkStatus: NetworkStatus
-    ) : MailboxEvent,
-        MailboxOperation.AffectingNetworkStatus
 
     data class ComposerDisabledChanged(
         val composerDisabled: Boolean

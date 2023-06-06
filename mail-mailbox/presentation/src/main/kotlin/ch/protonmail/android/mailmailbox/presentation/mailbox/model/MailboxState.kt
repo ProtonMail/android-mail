@@ -19,13 +19,10 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import androidx.compose.runtime.Stable
-import ch.protonmail.android.mailcommon.presentation.Effect
-import me.proton.core.network.domain.NetworkStatus
 
 @Stable
 data class MailboxState(
     val mailboxListState: MailboxListState,
     val topAppBarState: MailboxTopAppBarState,
-    val unreadFilterState: UnreadFilterState,
-    val networkStatusEffect: Effect<NetworkStatus>
+    val unreadFilterState: UnreadFilterState
 )

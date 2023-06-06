@@ -188,8 +188,7 @@ class MailboxViewModelTest {
             val expected = MailboxState(
                 mailboxListState = MailboxListState.Loading,
                 topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
-                unreadFilterState = UnreadFilterState.Loading,
-                networkStatusEffect = Effect.empty()
+                unreadFilterState = UnreadFilterState.Loading
             )
 
             assertEquals(expected, actual)
@@ -514,27 +513,6 @@ class MailboxViewModelTest {
             differ.submitData(pagingData)
 
             coVerify { mailboxItemMapper.toUiModel(any(), ContactTestData.contacts, defaultFolderColorSettings) }
-        }
-    }
-
-    @Test
-    fun `on refresh call, new state is produced and emitted`() = runTest {
-        // Given
-        val expectedState = MailboxStateSampleData.Loading.copy(
-            networkStatusEffect = Effect.of(NetworkStatus.Disconnected)
-        )
-        every {
-            mailboxReducer.newStateFrom(
-                MailboxStateSampleData.Loading,
-                MailboxEvent.NetworkStatusRefreshed(NetworkStatus.Disconnected)
-            )
-        } returns expectedState
-
-        // When
-        mailboxViewModel.submit(MailboxViewAction.Refresh)
-        mailboxViewModel.state.test {
-            // Then
-            assertEquals(expectedState, awaitItem())
         }
     }
 

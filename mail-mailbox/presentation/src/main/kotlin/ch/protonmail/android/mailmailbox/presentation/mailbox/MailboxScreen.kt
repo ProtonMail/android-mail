@@ -96,8 +96,7 @@ fun MailboxScreen(
         onOpenSelectionMode = {
             viewModel.submit(MailboxViewAction.EnterSelectionMode)
             actions.showFeatureMissingSnackbar()
-        },
-        onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) }
+        }
     )
 
     MailboxScreen(
@@ -118,12 +117,6 @@ fun MailboxScreen(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val lazyListState = mailboxListItems.rememberLazyListState()
-
-    ConsumableLaunchedEffect(mailboxState.networkStatusEffect) {
-        if (it == NetworkStatus.Disconnected) {
-            actions.showOfflineSnackbar()
-        }
-    }
 
     Scaffold(
         modifier = modifier.testTag(MailboxScreenTestTags.Root),
@@ -224,10 +217,7 @@ private fun MailboxSwipeRefresh(
     SwipeRefresh(
         modifier = modifier,
         state = rememberSwipeRefreshState(currentViewState is MailboxScreenState.LoadingWithData),
-        onRefresh = {
-            actions.onRefreshList()
-            items.refresh()
-        }
+        onRefresh = { items.refresh() }
     ) {
 
         when (currentViewState) {
@@ -356,7 +346,6 @@ object MailboxScreen {
         val onExitSelectionMode: () -> Unit,
         val onNavigateToMailboxItem: (MailboxItemUiModel) -> Unit,
         val onOpenSelectionMode: () -> Unit,
-        val onRefreshList: () -> Unit,
         val openDrawerMenu: () -> Unit,
         val showOfflineSnackbar: () -> Unit,
         val showRefreshErrorSnackbar: () -> Unit,
@@ -373,7 +362,6 @@ object MailboxScreen {
                 onExitSelectionMode = {},
                 onNavigateToMailboxItem = {},
                 onOpenSelectionMode = {},
-                onRefreshList = {},
                 openDrawerMenu = {},
                 showOfflineSnackbar = {},
                 showRefreshErrorSnackbar = {},

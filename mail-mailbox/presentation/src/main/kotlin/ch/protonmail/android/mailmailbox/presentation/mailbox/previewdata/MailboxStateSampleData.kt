@@ -32,8 +32,7 @@ object MailboxStateSampleData {
     val Loading = MailboxState(
         mailboxListState = MailboxListState.Loading,
         topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
-        unreadFilterState = UnreadFilterState.Loading,
-        networkStatusEffect = Effect.empty()
+        unreadFilterState = UnreadFilterState.Loading
     )
 
     val Inbox = MailboxState(
@@ -49,8 +48,7 @@ object MailboxStateSampleData {
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1
-        ),
-        networkStatusEffect = Effect.empty()
+        )
     )
 
     val AllMail = MailboxState(
@@ -66,7 +64,6 @@ object MailboxStateSampleData {
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1
-        ),
-        networkStatusEffect = Effect.empty()
+        )
     )
 }

@@ -177,8 +177,7 @@ internal class MailboxScreenTest {
                     currentLabelName = MailLabel.System(systemLabel).text(),
                     isComposerDisabled = false
                 ),
-                unreadFilterState = UnreadFilterState.Loading,
-                networkStatusEffect = Effect.empty()
+                unreadFilterState = UnreadFilterState.Loading
             )
         }
 

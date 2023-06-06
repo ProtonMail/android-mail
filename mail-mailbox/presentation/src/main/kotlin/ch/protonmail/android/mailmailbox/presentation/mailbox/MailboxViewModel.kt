@@ -28,7 +28,6 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -140,7 +139,6 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.ExitSelectionMode,
                 is MailboxViewAction.DisableUnreadFilter,
                 is MailboxViewAction.EnableUnreadFilter -> emitNewStateFrom(viewAction)
-                is MailboxViewAction.Refresh -> onRefresh()
                 is MailboxViewAction.OpenItemDetails -> onOpenItemDetails(viewAction.item)
             }.exhaustive
         }
@@ -148,10 +146,6 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun onOpenItemDetails(item: MailboxItemUiModel) {
         emitNewStateFrom(MailboxEvent.ItemDetailsOpenedInViewMode(item, getPreferredViewMode()))
-    }
-
-    private fun onRefresh() {
-        emitNewStateFrom(MailboxEvent.NetworkStatusRefreshed(networkManager.networkStatus))
     }
 
     private fun observePagingData(): Flow<PagingData<MailboxItemUiModel>> =
@@ -274,8 +268,7 @@ class MailboxViewModel @Inject constructor(
         val initialState = MailboxState(
             mailboxListState = MailboxListState.Loading,
             topAppBarState = MailboxTopAppBarState.Loading(isComposerDisabled = false),
-            unreadFilterState = UnreadFilterState.Loading,
-            networkStatusEffect = Effect.empty()
+            unreadFilterState = UnreadFilterState.Loading
         )
     }
 }

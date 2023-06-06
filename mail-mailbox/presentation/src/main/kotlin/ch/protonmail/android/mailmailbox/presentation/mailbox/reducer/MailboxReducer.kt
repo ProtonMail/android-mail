@@ -37,8 +37,7 @@ class MailboxReducer @Inject constructor(
     ): MailboxState = currentState.copy(
         mailboxListState = currentState.toNewMailboxListStateFrom(operation),
         topAppBarState = currentState.toNewTopAppBarStateFrom(operation),
-        unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
-        networkStatusEffect = getNetworkStatusEffect(operation)
+        unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation)
     )
 
     private fun MailboxState.toNewMailboxListStateFrom(
@@ -68,16 +67,6 @@ class MailboxReducer @Inject constructor(
             unreadFilterReducer.newStateFrom(unreadFilterState, operation)
         } else {
             unreadFilterState
-        }
-    }
-
-    private fun getNetworkStatusEffect(
-        operation: MailboxOperation
-    ): Effect<NetworkStatus> {
-        return if (operation is MailboxOperation.AffectingNetworkStatus) {
-            Effect.of((operation as MailboxEvent.NetworkStatusRefreshed).networkStatus)
-        } else {
-            Effect.empty()
         }
     }
 }
