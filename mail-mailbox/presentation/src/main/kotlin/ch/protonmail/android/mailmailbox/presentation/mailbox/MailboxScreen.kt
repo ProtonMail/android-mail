@@ -246,8 +246,14 @@ private fun MailboxSwipeRefresh(
             is MailboxScreenState.Empty -> MailboxError(
                 errorMessage = stringResource(id = R.string.mailbox_is_empty_message)
             )
-            is MailboxScreenState.OfflineWithData,
-            is MailboxScreenState.ErrorWithData,
+            is MailboxScreenState.OfflineWithData -> {
+                actions.showOfflineSnackbar()
+                MailboxItemsList(listState, currentViewState, items, actions)
+            }
+            is MailboxScreenState.ErrorWithData -> {
+                actions.showRefreshErrorSnackbar()
+                MailboxItemsList(listState, currentViewState, items, actions)
+            }
             is MailboxScreenState.LoadingWithData,
             is MailboxScreenState.AppendLoading,
             is MailboxScreenState.AppendError,
@@ -296,8 +302,6 @@ private fun MailboxItemsList(
                     message = stringResource(id = R.string.mailbox_error_message_generic),
                     onClick = { items.retry() }
                 )
-                is MailboxScreenState.OfflineWithData -> actions.showOfflineSnackbar()
-                is MailboxScreenState.ErrorWithData -> actions.showRefreshErrorSnackbar()
                 else -> Unit
             }
         }
