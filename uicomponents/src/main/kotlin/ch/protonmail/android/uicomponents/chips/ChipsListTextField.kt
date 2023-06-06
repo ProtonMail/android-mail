@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -103,13 +104,15 @@ fun ChipsListTextField(
         if (state.isFocused()) {
             FocusedChipsList(state.getItems(), animateChipsCreation, textMaxWidth) { state.onDelete(it) }
         } else {
-            UnFocusedChipsList(state.getItems())
+            UnFocusedChipsList(state.getItems()) { focusRequester?.requestFocus() }
         }
         BasicTextField(
             modifier = Modifier
-                .defaultMinSize(minWidth = 50.dp)
                 .thenIf(focusRequester != null) {
                     focusRequester(focusRequester!!)
+                }
+                .thenIf(!state.isFocused()) {
+                    height(0.dp)
                 }
                 .padding(16.dp)
                 .onKeyEvent { keyEvent ->
@@ -197,12 +200,12 @@ private fun FocusedChipsList(
 }
 
 @Composable
-private fun UnFocusedChipsList(chipItems: List<ChipItem>) {
+private fun UnFocusedChipsList(chipItems: List<ChipItem>, onChipClick: () -> Unit = {}) {
     chipItems.forEach { chipItem ->
         SuggestionChip(
             modifier = Modifier
                 .padding(horizontal = 4.dp),
-            onClick = { },
+            onClick = onChipClick,
             label = {
                 Text(
                     maxLines = 1,
@@ -294,14 +297,6 @@ internal class ChipsListState(
 
         private const val WORD_SEPARATOR = " "
         private const val EMPTY_STRING = ""
-    }
-}
-
-private fun Modifier.thenIf(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {
-    return if (condition) {
-        then(modifier())
-    } else {
-        this
     }
 }
 
