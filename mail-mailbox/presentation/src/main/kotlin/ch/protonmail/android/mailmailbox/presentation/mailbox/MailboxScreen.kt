@@ -46,6 +46,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -70,6 +71,7 @@ import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollba
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
+import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
@@ -307,13 +309,13 @@ private fun AppendError(
     message: String,
     onClick: () -> Unit
 ) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .testTag(MailboxScreenTestTags.MailboxAppendError),
-        contentAlignment = Alignment.Center
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(message)
+        Text(text = message, textAlign = TextAlign.Center)
         Button(
             onClick = onClick,
             modifier = Modifier.fillMaxWidth()
@@ -351,7 +353,7 @@ private fun MailboxError(modifier: Modifier = Modifier, errorMessage: String) {
             ),
         contentAlignment = Alignment.Center
     ) {
-        Text(errorMessage)
+        Text(text = errorMessage, textAlign = TextAlign.Center)
     }
 }
 
@@ -406,6 +408,22 @@ private fun MailboxScreenPreview(@PreviewParameter(MailboxPreviewProvider::class
             mailboxState = mailboxPreview.state,
             actions = MailboxScreen.Actions.Empty
         )
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Composable
+private fun MailboxErrorPreview() {
+    ProtonTheme {
+        MailboxError(errorMessage = stringResource(id = R.string.mailbox_error_message_offline))
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Composable
+private fun MailboxAppendErrorPreview() {
+    ProtonTheme {
+        AppendError(message = stringResource(id = R.string.mailbox_error_message_offline), onClick = {})
     }
 }
 
