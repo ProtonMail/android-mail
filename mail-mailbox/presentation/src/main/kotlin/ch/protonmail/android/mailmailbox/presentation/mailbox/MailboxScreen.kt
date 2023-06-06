@@ -38,6 +38,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -237,11 +238,11 @@ private fun MailboxSwipeRefresh(
                 errorMessage = stringResource(id = R.string.mailbox_is_empty_message)
             )
             is MailboxScreenState.OfflineWithData -> {
-                actions.showOfflineSnackbar()
+                LaunchedEffect(currentViewState) { actions.showOfflineSnackbar() }
                 MailboxItemsList(listState, currentViewState, items, actions)
             }
             is MailboxScreenState.ErrorWithData -> {
-                actions.showRefreshErrorSnackbar()
+                LaunchedEffect(currentViewState) { actions.showRefreshErrorSnackbar() }
                 MailboxItemsList(listState, currentViewState, items, actions)
             }
             is MailboxScreenState.LoadingWithData,
