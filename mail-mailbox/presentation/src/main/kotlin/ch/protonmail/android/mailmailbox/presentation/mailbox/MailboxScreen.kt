@@ -71,7 +71,6 @@ import ch.protonmail.android.mailpagination.presentation.paging.verticalScrollba
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.launch
-import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
@@ -244,7 +243,9 @@ private fun MailboxSwipeRefresh(
             is MailboxScreenState.Offline -> MailboxError(
                 errorMessage = stringResource(id = R.string.mailbox_error_message_offline)
             )
-            is MailboxScreenState.Empty -> MailboxEmpty()
+            is MailboxScreenState.Empty -> MailboxError(
+                errorMessage = stringResource(id = R.string.mailbox_is_empty_message)
+            )
             is MailboxScreenState.OfflineWithData,
             is MailboxScreenState.ErrorWithData,
             is MailboxScreenState.LoadingWithData,
@@ -322,22 +323,6 @@ private fun AppendError(
         ) {
             Text(text = stringResource(id = commonString.retry))
         }
-    }
-}
-
-@Composable
-private fun MailboxEmpty(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .testTag(MailboxScreenTestTags.MailboxEmpty)
-            .fillMaxSize()
-            .scrollable(
-                rememberScrollableState(consumeScrollDelta = { 0f }),
-                orientation = Orientation.Vertical
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Empty mailbox")
     }
 }
 
