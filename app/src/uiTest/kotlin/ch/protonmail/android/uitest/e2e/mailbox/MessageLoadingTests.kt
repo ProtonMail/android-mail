@@ -19,12 +19,10 @@
 package ch.protonmail.android.uitest.e2e.mailbox
 
 import ch.protonmail.android.di.ServerProofModule
-import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
-import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
@@ -68,10 +66,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
                     withStatusCode 200 ignoreQueryParams true,
                 "/mail/v4/messages/*"
                     respondWith "/mail/v4/messages/message-id/message-id_66392.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
@@ -124,13 +119,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
                     withStatusCode 200 matchWildcards true,
                 "/mail/v4/messages/*"
                     respondWith "/mail/v4/messages/message-id/message-id_66393.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest,
-                "/mail/v4/conversations/read"
-                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
@@ -180,10 +169,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
                     withStatusCode 200 ignoreQueryParams true,
                 "/mail/v4/messages/*"
                     respondWith "/mail/v4/messages/message-id/message-id_66394.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
@@ -236,13 +222,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
                     withStatusCode 200 matchWildcards true,
                 "/mail/v4/messages/*"
                     respondWith "/mail/v4/messages/message-id/message-id_66395.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest,
-                "/mail/v4/conversations/read"
-                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
@@ -295,13 +275,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
                     withStatusCode 200 matchWildcards true,
                 "/mail/v4/messages/*"
                     respondWith "/mail/v4/messages/message-id/message-id_78993.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest,
-                "/mail/v4/conversations/read"
-                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 

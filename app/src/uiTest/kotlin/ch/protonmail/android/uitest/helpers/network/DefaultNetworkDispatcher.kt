@@ -21,9 +21,11 @@
 package ch.protonmail.android.uitest.helpers.network
 
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
+import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 
 /**
@@ -39,6 +41,7 @@ internal fun mockNetworkDispatcher(
     useDefaultLabels: Boolean = true,
     useDefaultCustomFolders: Boolean = true,
     useDefaultPaymentSettings: Boolean = true,
+    useDefaultMailReadResponses: Boolean = true,
     ignoreEvents: Boolean = true,
     additionalMockDefinitions: MockNetworkDispatcher.() -> Unit = {}
 ) = MockNetworkDispatcher().apply {
@@ -81,7 +84,7 @@ internal fun mockNetworkDispatcher(
 
     if (useDefaultLabels) {
         addMockRequests(
-            "/core/v4/labels?Type=1" respondWith "/core/v4/labels/labels-type1_base_placeholder.json" withStatusCode 200,
+            "/core/v4/labels?Type=1" respondWith "/core/v4/labels/labels-type1_base_placeholder.json" withStatusCode 200
         )
     }
 
@@ -94,6 +97,17 @@ internal fun mockNetworkDispatcher(
     if (useDefaultPaymentSettings) {
         addMockRequests(
             "/payments/v4/status/google" respondWith "/payments/v4/status/google/payments_empty.json" withStatusCode 200
+        )
+    }
+
+    if (useDefaultMailReadResponses) {
+        addMockRequests(
+            "/mail/v4/messages/read"
+                respondWith "/mail/v4/messages/read/read_base_placeholder.json"
+                withStatusCode 200 withPriority MockPriority.Highest,
+            "/mail/v4/conversations/read"
+                respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
+                withStatusCode 200 withPriority MockPriority.Highest
         )
     }
 
