@@ -36,6 +36,7 @@ import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.model.bottomsheet.MoveToBottomSheetFolderEntry.SystemFolders.Trash
 import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
+import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.moveToBottomSheetSection
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
@@ -110,9 +111,8 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest(loginStrat
         }
 
         conversationDetailRobot {
-            bottomBarSection {
-                openMoveToBottomSheet()
-            }
+            messageBodySection { waitUntilMessageIsShown() }
+            bottomBarSection { openMoveToBottomSheet() }
 
             moveToBottomSheetSection {
                 selectFolderWithName(Trash.name)
@@ -170,9 +170,8 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest(loginStrat
         }
 
         conversationDetailRobot {
-            bottomBarSection {
-                openMoveToBottomSheet()
-            }
+            messageBodySection { waitUntilMessageIsShown() }
+            bottomBarSection { openMoveToBottomSheet() }
 
             moveToBottomSheetSection {
                 selectFolderWithName(Trash.name)

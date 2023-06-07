@@ -138,8 +138,11 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest(loginStrat
                 "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1"
                     respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200,
-                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=childid&Sort=Time&Desc=1"
+                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=testid&Sort=Time&Desc=1"
                     respondWith "/mail/v4/conversations/conversations_185419.json"
+                    withStatusCode 200,
+                "/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=childid&Sort=Time&Desc=1"
+                    respondWith "/mail/v4/conversations/conversations_185419_2.json"
                     withStatusCode 200,
                 "/mail/v4/conversations/*"
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_185419.json"
