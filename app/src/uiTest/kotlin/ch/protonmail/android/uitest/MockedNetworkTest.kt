@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.uitest
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import ch.protonmail.android.uitest.helpers.core.TestIdWatcher
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.rule.MainInitializerRule
@@ -48,7 +48,7 @@ internal open class MockedNetworkTest(
 
     private val hiltAndroidRule = HiltAndroidRule(this)
 
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+    val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @Inject
     lateinit var accountManager: AccountManager
