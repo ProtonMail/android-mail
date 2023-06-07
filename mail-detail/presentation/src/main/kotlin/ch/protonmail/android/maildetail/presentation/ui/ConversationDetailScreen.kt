@@ -55,6 +55,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
+import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -204,7 +205,10 @@ fun ConversationDetailScreen(
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = ProtonTheme.colors.backgroundDeep,
         snackbarHost = {
-            ProtonSnackbarHost(hostState = snackbarHostState)
+            ProtonSnackbarHost(
+                modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
+                hostState = snackbarHostState
+            )
         },
         topBar = {
             val uiModel = (state.conversationState as? ConversationDetailMetadataState.Data)?.conversationUiModel

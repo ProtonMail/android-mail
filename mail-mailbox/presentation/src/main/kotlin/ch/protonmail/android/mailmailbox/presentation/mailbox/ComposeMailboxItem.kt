@@ -331,7 +331,10 @@ private fun ExpirationLabel(modifier: Modifier = Modifier, hasExpirationTime: Bo
 
 @Composable
 private fun Labels(modifier: Modifier = Modifier, labels: ImmutableList<LabelUiModel>) {
-    LabelsList(modifier = modifier, labels = labels)
+    LabelsList(
+        modifier = modifier.testTag(MailboxItemTestTags.LabelsList),
+        labels = labels
+    )
 }
 
 @Composable
@@ -430,6 +433,7 @@ object MailboxItemTestTags {
     const val ItemRow = "MailboxItemRow"
     const val Participants = "Participants"
     const val LocationIcons = "LocationIcons"
+    const val LabelsList = "LabelsList"
     const val Subject = "Subject"
     const val Date = "Date"
     const val Count = "Count"
