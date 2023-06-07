@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.models.mailbox
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
@@ -31,6 +32,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.MailFolderEntry
+import ch.protonmail.android.uitest.models.folders.MailLabelEntry
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertTextColor
 import ch.protonmail.android.uitest.util.assertions.assertTintColor
@@ -63,6 +65,10 @@ internal class MailboxListItemEntryModel(
 
     private val locations = rootItem.child {
         hasTestTag(MailboxItemTestTags.LocationIcons)
+    }
+
+    private val labels = rootItem.child {
+        hasTestTag(MailboxItemTestTags.LabelsList)
     }
 
     private val subject = rootItem.child {
@@ -108,6 +114,17 @@ internal class MailboxListItemEntryModel(
 
     fun hasSubject(text: String) = apply {
         subject.assertTextEquals(text)
+    }
+
+    fun hasLabels(entries: List<MailLabelEntry>) = apply {
+        for (entry in entries) {
+            val label = labels.onChildAt(entry.index)
+            label.assertTextEquals(entry.name)
+        }
+    }
+
+    fun hasNoLabels() = apply {
+        labels.assertIsNotDisplayed()
     }
 
     fun hasDate(text: String) = apply {
