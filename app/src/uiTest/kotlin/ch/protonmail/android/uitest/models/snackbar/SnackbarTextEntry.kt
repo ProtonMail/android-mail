@@ -21,7 +21,12 @@ package ch.protonmail.android.uitest.models.snackbar
 import ch.protonmail.android.uitest.util.getTestString
 import ch.protonmail.android.test.R as testR
 
-internal object SnackbarTextEntry {
+internal sealed class SnackbarTextEntry(val value: String) {
+    object FeatureComingSoon : SnackbarTextEntry(
+        getTestString(testR.string.test_feature_coming_soon)
+    )
 
-    val FeatureComingSoon = getTestString(testR.string.test_feature_coming_soon)
+    class ConversationMovedToFolder(folder: String) : SnackbarTextEntry(
+        getTestString(testR.string.test_conversation_moved_to_selected_destination, folder)
+    )
 }

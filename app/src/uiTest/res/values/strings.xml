@@ -16,6 +16,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
+
     <!-- Mailbox -->
     <string name="test_label_title_inbox">Inbox</string>
     <string name="test_label_title_drafts">Drafts</string>
@@ -26,15 +27,22 @@
     <string name="test_label_title_trash">Trash</string>
     <string name="test_label_title_all_mail">All mail</string>
 
-    <!-- Settings -->
-    <string name="test_mail_settings_settings">Settings</string>
-    <string name="test_report_a_problem">Report a problem</string>
-
-    <string name="test_feature_coming_soon">Feature coming soon...</string>
-
     <!-- Composer -->
     <string name="test_composer_sender_label">From:</string>
     <string name="test_composer_recipient_label">To:</string>
     <string name="test_composer_subject_placeholder">Subject</string>
     <string name="test_composer_body_placeholder">Compose email</string>
+
+    <!-- Bottom sheets -->
+    <string name="test_bottom_sheet_done_action">Done</string>
+
+    <!-- Move To bottom sheet -->
+    <string name="test_bottom_sheet_move_to_title">Move to...</string>
+
+    <string name="test_feature_coming_soon">Feature coming soon...</string>
+    <string name="test_conversation_moved_to_selected_destination">Conversation moved to %1$s</string>
+
+    <!-- Settings -->
+    <string name="test_mail_settings_settings">Settings</string>
+    <string name="test_report_a_problem">Report a problem</string>
 </resources>

@@ -23,6 +23,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.assertions.hasAnyChildWith
@@ -35,9 +36,9 @@ internal class SnackbarSection : ComposeSectionRobot() {
     @VerifiesOuter
     inner class Verify {
 
-        fun hasMessage(value: String) = apply {
+        fun hasMessage(text: SnackbarTextEntry) = apply {
             // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
-            snackbarHost.hasAnyChildWith(hasText(value))
+            snackbarHost.hasAnyChildWith(hasText(text.value))
         }
     }
 }

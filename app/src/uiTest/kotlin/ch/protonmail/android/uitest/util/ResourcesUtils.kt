@@ -30,10 +30,10 @@ fun getString(text: TextUiModel): String = when (text) {
     is TextUiModel.TextResWithArgs -> getString(text.value, *text.formatArgs.toTypedArray())
 }
 
-fun getString(@StringRes resId: Int): String =
-    ApplicationProvider.getApplicationContext<Application>().getString(resId)
+fun getString(@StringRes resId: Int): String = ApplicationProvider.getApplicationContext<Application>().getString(resId)
 
 fun getString(@StringRes resId: Int, vararg formatArgs: Any): String =
     ApplicationProvider.getApplicationContext<Application>().getString(resId, formatArgs)
 
-fun getTestString(@StringRes resId: Int): String = instrumentation.context.getString(resId)
+fun getTestString(@StringRes resId: Int, vararg formatArgs: Any): String =
+    instrumentation.context.getString(resId, *formatArgs)
