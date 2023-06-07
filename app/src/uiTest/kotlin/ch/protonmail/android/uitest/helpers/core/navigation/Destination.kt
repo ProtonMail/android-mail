@@ -25,6 +25,7 @@ internal sealed class Destination {
 
     object Inbox : Destination()
     object Drafts : Destination()
+    object Archive : Destination()
 
     class MailDetail(val messagePosition: Int) : Destination()
 }

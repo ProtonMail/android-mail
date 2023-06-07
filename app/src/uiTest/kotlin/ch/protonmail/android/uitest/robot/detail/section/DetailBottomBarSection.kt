@@ -38,9 +38,9 @@ import kotlin.time.Duration.Companion.seconds
         ConversationDetailRobot::class,
         MessageDetailRobot::class
     ],
-    identifier = "bottomSheetSection"
+    identifier = "bottomBarSection"
 )
-internal class DetailBottomSheetSection : ComposeSectionRobot() {
+internal class DetailBottomBarSection : ComposeSectionRobot() {
 
     fun markAsUnread() = apply {
         composeTestRule.onNodeWithContentDescription(R.string.action_mark_unread_content_description).performClick()

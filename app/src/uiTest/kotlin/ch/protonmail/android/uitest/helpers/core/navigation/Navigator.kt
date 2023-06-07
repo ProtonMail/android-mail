@@ -62,6 +62,10 @@ internal class Navigator {
                 swipeOpenSidebarMenu()
                 openDrafts()
             }
+            is Destination.Archive -> menuRobot {
+                swipeOpenSidebarMenu()
+                openArchive()
+            }
 
             is Destination.MailDetail -> mailboxRobot {
                 listSection { clickMessageByPosition(destination.messagePosition) }

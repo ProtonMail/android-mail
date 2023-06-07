@@ -52,13 +52,23 @@ internal class MenuRobot : ComposeRobot() {
 
     fun openDrafts() = openMailbox(getTestString(testR.string.test_label_title_drafts))
 
+    fun openArchive() = openMailbox(getTestString(testR.string.test_label_title_archive))
+
     fun openSent() = openMailbox(getTestString(testR.string.test_label_title_sent))
+
+    fun openSpam() = openMailbox(getTestString(testR.string.test_label_title_spam))
+
+    fun openTrash() = openMailbox(getTestString(testR.string.test_label_title_trash))
 
     fun openAllMail() = openMailbox(getTestString(testR.string.test_label_title_all_mail))
 
     fun openSettings(): SettingsRobot {
         tapSidebarMenuItemWithText(getTestString(testR.string.test_mail_settings_settings))
         return SettingsRobot()
+    }
+
+    fun openFolderWithName(folderName: String) {
+        tapSidebarMenuItemWithText(folderName)
     }
 
     fun openReportBugs() {
@@ -70,6 +80,8 @@ internal class MenuRobot : ComposeRobot() {
             .apply { performScrollToNode(hasText(value)) }
             .child { hasText(value) }
             .performClick()
+
+        composeTestRule.waitForIdle()
     }
 
     private fun openMailbox(sidebarTextMenu: String): MailboxRobot {

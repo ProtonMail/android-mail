@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.util
 
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
@@ -31,15 +32,24 @@ fun ComposeTestRule.awaitProgressIsHidden() {
 }
 
 fun SemanticsNodeInteraction.awaitDisplayed(
-    composeTestRule: ComposeTestRule,
+    composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule,
     timeout: Duration = 1.seconds
 ): SemanticsNodeInteraction = also {
     composeTestRule.waitUntil(timeout.inWholeMilliseconds) { nodeIsDisplayed(this) }
 }
 
 fun SemanticsNodeInteraction.awaitHidden(
-    composeTestRule: ComposeTestRule,
+    composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule,
     timeout: Duration = 1.seconds
 ): SemanticsNodeInteraction = also {
     composeTestRule.waitUntil(timeout.inWholeMilliseconds) { nodeIsNotDisplayed(this) }
+}
+
+fun SemanticsNodeInteraction.awaitEnabled(
+    composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule,
+    timeout: Duration = 5.seconds
+): SemanticsNodeInteraction = apply {
+    composeTestRule.waitUntil(timeout.inWholeMilliseconds) {
+        runCatching { assertIsEnabled() }.isSuccess
+    }
 }

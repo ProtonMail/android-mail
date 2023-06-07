@@ -34,7 +34,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
-import ch.protonmail.android.uitest.robot.detail.section.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
 import ch.protonmail.android.uitest.robot.detail.section.conversation.messagesCollapsedSection
 import ch.protonmail.android.uitest.robot.detail.section.conversation.verify
 import ch.protonmail.android.uitest.robot.detail.section.detailTopBarSection
@@ -314,7 +314,7 @@ internal class ConversationDetailScreenTest {
             )
         )
 
-        robot.bottomSheetSection { moveToTrash() }
+        robot.bottomBarSection { moveToTrash() }
 
         // then
         assertTrue(trashClicked)
@@ -355,7 +355,7 @@ internal class ConversationDetailScreenTest {
             )
         )
 
-        robot.bottomSheetSection { markAsUnread() }
+        robot.bottomBarSection { markAsUnread() }
 
         // then
         assertTrue(unreadClicked)

@@ -65,6 +65,7 @@ internal class MailboxListSection : ComposeSectionRobot() {
                     .hasDate(entry.date)
 
                 entry.locationIcons?.let { model.hasLocationIcons(it) } ?: model.hasNoLocationIcons()
+                entry.labels?.let { model.hasLabels(it) } ?: model.hasNoLabels()
                 entry.count?.let { model.hasCount(it) } ?: model.hasNoCount()
             }
         }

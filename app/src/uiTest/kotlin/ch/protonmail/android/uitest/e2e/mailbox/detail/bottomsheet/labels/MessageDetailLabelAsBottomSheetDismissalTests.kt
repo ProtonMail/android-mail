@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.e2e.mailbox.detail.message
+package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.labels
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
@@ -34,7 +34,7 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
-import ch.protonmail.android.uitest.robot.detail.section.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
@@ -50,57 +50,12 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
+internal class MessageDetailLabelAsBottomSheetDismissalTests :
+    MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
 
     @JvmField
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
-
-    @Test
-    @TestId("79354")
-    fun checkMessageMoveToBottomSheetDismissalWithBackButton() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
-            addMockRequests(
-                "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_79354.json"
-                    withStatusCode 200,
-                "/mail/v4/messages"
-                    respondWith "/mail/v4/messages/messages_79354.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
-                    respondWith "/mail/v4/messages/message-id/message-id_79354.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
-            )
-        }
-
-        navigator {
-            navigateTo(Destination.MailDetail(messagePosition = 0))
-        }
-
-        messageDetailRobot {
-            messageBodySection { waitUntilMessageIsShown() }
-
-            bottomSheetSection {
-                openMoveToBottomSheet()
-
-                verify { moveToBottomSheetExists() }
-            }
-        }
-
-        // Physical/soft key press is required by this test case.
-        uiDevice.pressBack()
-
-        messageDetailRobot {
-            bottomSheetSection {
-                verify { moveToBottomSheetIsDismissed() }
-            }
-
-            verify { messageDetailScreenIsShown() }
-        }
-    }
 
     @Test
     @TestId("79354/2")
@@ -129,7 +84,7 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
         messageDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
-            bottomSheetSection {
+            bottomBarSection {
                 openLabelAsBottomSheet()
 
                 verify { labelAsBottomSheetExists() }
@@ -139,52 +94,8 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
         uiDevice.pressBack()
 
         messageDetailRobot {
-            bottomSheetSection {
+            bottomBarSection {
                 verify { labelAsBottomSheetIsDismissed() }
-            }
-
-            verify { messageDetailScreenIsShown() }
-        }
-    }
-
-    @Test
-    @TestId("79356")
-    fun checkMessageMoveToBottomSheetDismissalWithExternalTap() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
-            addMockRequests(
-                "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_79356.json"
-                    withStatusCode 200,
-                "/mail/v4/messages"
-                    respondWith "/mail/v4/messages/messages_79356.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/messages/*"
-                    respondWith "/mail/v4/messages/message-id/message-id_79356.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
-            )
-        }
-
-        navigator {
-            navigateTo(Destination.MailDetail(messagePosition = 0))
-        }
-
-        messageDetailRobot {
-            messageBodySection { waitUntilMessageIsShown() }
-
-            bottomSheetSection {
-                openMoveToBottomSheet()
-
-                verify { moveToBottomSheetExists() }
-            }
-
-            // Tap outside the view.
-            messageHeaderSection { expandHeader() }
-
-            bottomSheetSection {
-                verify { moveToBottomSheetIsDismissed() }
             }
 
             verify { messageDetailScreenIsShown() }
@@ -216,7 +127,7 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
         }
 
         messageDetailRobot {
-            bottomSheetSection {
+            bottomBarSection {
                 openLabelAsBottomSheet()
 
                 verify { labelAsBottomSheetExists() }
@@ -225,7 +136,7 @@ internal class MessageDetailBottomSheetTests : MockedNetworkTest(loginStrategy =
             // Tap outside the view.
             messageHeaderSection { expandHeader() }
 
-            bottomSheetSection {
+            bottomBarSection {
                 verify { labelAsBottomSheetIsDismissed() }
             }
 

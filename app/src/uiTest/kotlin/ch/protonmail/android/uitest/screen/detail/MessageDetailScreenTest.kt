@@ -37,7 +37,7 @@ import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.detail.ExtendedHeaderRecipientEntry
 import ch.protonmail.android.uitest.models.labels.LabelEntry
 import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
-import ch.protonmail.android.uitest.robot.detail.section.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
@@ -242,7 +242,7 @@ internal class MessageDetailScreenTest {
         )
 
         // when
-        robot.bottomSheetSection { moveToTrash() }
+        robot.bottomBarSection { moveToTrash() }
 
         // then
         assertTrue(trashClicked)
@@ -282,7 +282,7 @@ internal class MessageDetailScreenTest {
             )
         )
 
-        robot.bottomSheetSection { markAsUnread() }
+        robot.bottomBarSection { markAsUnread() }
 
         // then
         assertTrue(unreadClicked)

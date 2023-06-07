@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.e2e.mailbox.detail.conversation
+package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.labels
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
@@ -34,14 +34,13 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
-import ch.protonmail.android.uitest.robot.detail.section.bottomSheetSection
+import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
 import ch.protonmail.android.uitest.robot.detail.verify
-import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
-
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -53,7 +52,9 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
+internal class ConversationDetailMoveToBottomSheetDismissalTests : MockedNetworkTest(
+    loginStrategy = LoginStrategy.LoggedOut
+) {
 
     @JvmField
     @BindValue
@@ -89,14 +90,14 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
             navigateTo(Destination.Inbox)
         }
 
-        mailboxRobot {
+        inboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 
         conversationDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
-            bottomSheetSection {
+            bottomBarSection {
                 openMoveToBottomSheet()
                 verify { moveToBottomSheetExists() }
             }
@@ -108,63 +109,8 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
         conversationDetailRobot {
             verify { conversationDetailScreenIsShown() }
 
-            bottomSheetSection {
+            bottomBarSection {
                 verify { moveToBottomSheetIsDismissed() }
-            }
-        }
-    }
-
-    @Test
-    @TestId("79353/2")
-    fun checkConversationLabelAsBottomSheetDismissalWithBackButton() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
-            addMockRequests(
-                "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_79353.json"
-                    withStatusCode 200,
-                "/mail/v4/conversations"
-                    respondWith "/mail/v4/conversations/conversations_79353.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*"
-                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_79353.json"
-                    withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*"
-                    respondWith "/mail/v4/messages/message-id/message-id_79353.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest,
-                "/mail/v4/conversations/read"
-                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
-            )
-        }
-
-        navigator {
-            navigateTo(Destination.Inbox)
-        }
-
-        mailboxRobot {
-            listSection { clickMessageByPosition(0) }
-        }
-
-        conversationDetailRobot {
-            messageBodySection { waitUntilMessageIsShown() }
-
-            bottomSheetSection {
-                openLabelAsBottomSheet()
-                verify { labelAsBottomSheetExists() }
-            }
-        }
-
-        // Physical/soft key press is required by this test case.
-        uiDevice.pressBack()
-
-        conversationDetailRobot {
-            verify { conversationDetailScreenIsShown() }
-
-            bottomSheetSection {
-                verify { labelAsBottomSheetIsDismissed() }
             }
         }
     }
@@ -199,14 +145,14 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
             navigateTo(Destination.Inbox)
         }
 
-        mailboxRobot {
+        inboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 
         conversationDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
 
-            bottomSheetSection {
+            bottomBarSection {
                 openMoveToBottomSheet()
 
                 verify { moveToBottomSheetExists() }
@@ -219,64 +165,8 @@ internal class ConversationDetailBottomSheetTests : MockedNetworkTest(loginStrat
 
             verify { conversationDetailScreenIsShown() }
 
-            bottomSheetSection {
+            bottomBarSection {
                 verify { moveToBottomSheetIsDismissed() }
-            }
-        }
-    }
-
-    @Test
-    @TestId("79355/2")
-    fun checkConversationLabelAsBottomSheetDismissalWithExternalTap() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
-            addMockRequests(
-                "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_79355.json"
-                    withStatusCode 200,
-                "/mail/v4/conversations"
-                    respondWith "/mail/v4/conversations/conversations_79355.json"
-                    withStatusCode 200 ignoreQueryParams true,
-                "/mail/v4/conversations/*"
-                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_79355.json"
-                    withStatusCode 200 matchWildcards true,
-                "/mail/v4/messages/*"
-                    respondWith "/mail/v4/messages/message-id/message-id_79355.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest,
-                "/mail/v4/conversations/read"
-                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
-            )
-        }
-
-        navigator {
-            navigateTo(Destination.Inbox)
-        }
-
-        mailboxRobot {
-            listSection { clickMessageByPosition(0) }
-        }
-
-        conversationDetailRobot {
-            messageBodySection { waitUntilMessageIsShown() }
-
-            bottomSheetSection {
-                openLabelAsBottomSheet()
-
-                verify { labelAsBottomSheetExists() }
-            }
-
-            // Tap outside the view.
-            messageHeaderSection {
-                expandHeader()
-            }
-
-            verify { conversationDetailScreenIsShown() }
-
-            bottomSheetSection {
-                verify { labelAsBottomSheetIsDismissed() }
             }
         }
     }
