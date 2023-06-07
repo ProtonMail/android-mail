@@ -144,20 +144,19 @@ internal class DataResultEitherMappingsTest {
     }
 
     @Test
-    fun `does log and return unknown remote error for unhandled remote error`() =
-        runTest {
-            // given
-            val message = "an error occurred"
-            val dataResult = DataResult.Error.Remote(message = message, cause = Exception("Unknown exception"))
-            val input = flowOf(dataResult)
-            // when
-            input.mapToEither().test {
-                // then
-                assertEquals(DataError.Remote.Unknown.left(), awaitItem())
-                verifyErrorLogged("UNHANDLED REMOTE ERROR caused by result: $dataResult")
-                awaitComplete()
-            }
+    fun `does log and return unknown remote error for unhandled remote error`() = runTest {
+        // given
+        val message = "an error occurred"
+        val dataResult = DataResult.Error.Remote(message = message, cause = Exception("Unknown exception"))
+        val input = flowOf(dataResult)
+        // when
+        input.mapToEither().test {
+            // then
+            assertEquals(DataError.Remote.Unknown.left(), awaitItem())
+            verifyErrorLogged("UNHANDLED REMOTE ERROR caused by result: $dataResult")
+            awaitComplete()
         }
+    }
 
     @Test
     fun `does log and return Unknown remote error nested exception is unknown`() = runTest {

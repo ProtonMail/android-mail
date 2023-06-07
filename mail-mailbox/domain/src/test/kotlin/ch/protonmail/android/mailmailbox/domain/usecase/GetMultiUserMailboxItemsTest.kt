@@ -19,7 +19,9 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import arrow.core.getOrHandle
+import arrow.core.right
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maillabel.domain.usecase.GetLabels
 import ch.protonmail.android.mailmailbox.domain.mapper.ConversationMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType.Conversation
@@ -42,7 +44,6 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.LabelType.MessageLabel
-import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -77,28 +78,28 @@ class GetMultiUserMailboxItemsTest {
             ConversationWithContextTestData.User2.conversation3Labeled
         )
     }
-    private val labelRepository = mockk<LabelRepository> {
-        coEvery { this@mockk.getLabels(userId, any()) } returns listOf(
+    private val getLabels = mockk<GetLabels> {
+        coEvery { this@mockk(userId, any()) } returns listOf(
             buildLabel(userId = userId, type = MessageLabel, id = "0"),
             buildLabel(userId = userId, type = MessageLabel, id = "1"),
             buildLabel(userId = userId, type = MessageLabel, id = "2"),
             buildLabel(userId = userId, type = MessageLabel, id = "3"),
             buildLabel(userId = userId, type = MessageLabel, id = "4")
-        )
-        coEvery { this@mockk.getLabels(userId, any()) } returns listOf(
+        ).right()
+        coEvery { this@mockk(userId, any()) } returns listOf(
             buildLabel(userId = userId, type = MessageLabel, id = "0"),
             buildLabel(userId = userId, type = MessageLabel, id = "1"),
             buildLabel(userId = userId, type = MessageLabel, id = "2"),
             buildLabel(userId = userId, type = MessageLabel, id = "3"),
             buildLabel(userId = userId, type = MessageLabel, id = "4")
-        )
-        coEvery { this@mockk.getLabels(userId1, any()) } returns listOf(
+        ).right()
+        coEvery { this@mockk(userId1, any()) } returns listOf(
             buildLabel(userId = userId1, type = MessageLabel, id = "0"),
             buildLabel(userId = userId1, type = MessageLabel, id = "1"),
             buildLabel(userId = userId1, type = MessageLabel, id = "2"),
             buildLabel(userId = userId1, type = MessageLabel, id = "3"),
             buildLabel(userId = userId1, type = MessageLabel, id = "4")
-        )
+        ).right()
     }
 
     private val messageMailboxItemMapper = MessageMailboxItemMapper()
@@ -110,7 +111,7 @@ class GetMultiUserMailboxItemsTest {
     fun setUp() {
         usecase = GetMultiUserMailboxItems(
             GetMailboxItems(
-                labelRepository,
+                getLabels,
                 messageRepository,
                 conversationRepository,
                 messageMailboxItemMapper,
@@ -130,10 +131,10 @@ class GetMultiUserMailboxItemsTest {
             .getOrHandle(::error)
 
         // Then
-        coVerify { labelRepository.getLabels(userId, MessageLabel) }
-        coVerify { labelRepository.getLabels(userId1, MessageLabel) }
-        coVerify { labelRepository.getLabels(userId, LabelType.MessageFolder) }
-        coVerify { labelRepository.getLabels(userId1, LabelType.MessageFolder) }
+        coVerify { getLabels(userId, MessageLabel) }
+        coVerify { getLabels(userId1, MessageLabel) }
+        coVerify { getLabels(userId, LabelType.MessageFolder) }
+        coVerify { getLabels(userId1, LabelType.MessageFolder) }
         coVerify { messageRepository.getLocalMessages(userId, pageKey) }
         coVerify { messageRepository.getLocalMessages(userId1, pageKey) }
         val senders = listOf(Sender("address", "name"))
@@ -201,10 +202,10 @@ class GetMultiUserMailboxItemsTest {
             .getOrHandle(::error)
 
         // Then
-        coVerify { labelRepository.getLabels(userId, MessageLabel) }
-        coVerify { labelRepository.getLabels(userId1, MessageLabel) }
-        coVerify { labelRepository.getLabels(userId, LabelType.MessageFolder) }
-        coVerify { labelRepository.getLabels(userId1, LabelType.MessageFolder) }
+        coVerify { getLabels(userId, MessageLabel) }
+        coVerify { getLabels(userId1, MessageLabel) }
+        coVerify { getLabels(userId, LabelType.MessageFolder) }
+        coVerify { getLabels(userId1, LabelType.MessageFolder) }
         coVerify { conversationRepository.getLocalConversations(userId, pageKey) }
         coVerify { conversationRepository.getLocalConversations(userId1, pageKey) }
         val mailboxItemsOrderedByTimeAscending = listOf(

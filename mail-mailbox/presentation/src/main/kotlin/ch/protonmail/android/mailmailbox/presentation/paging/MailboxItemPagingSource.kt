@@ -60,7 +60,7 @@ class MailboxItemPagingSource @AssistedInject constructor(
         val pageKey = key.pageKey.copy(size = size)
 
         val items = getMailboxItems(type, key.copy(pageKey = pageKey)).getOrElse {
-            Timber.e("Paging: loadItems: Error")
+            Timber.e("Paging: loadItems: Error $it")
             return LoadResult.Page(emptyList(), null, null)
         }
         Timber.d("Paging: loadItems: ${items.size}/$size (${params.javaClass.simpleName})-> $pageKey")

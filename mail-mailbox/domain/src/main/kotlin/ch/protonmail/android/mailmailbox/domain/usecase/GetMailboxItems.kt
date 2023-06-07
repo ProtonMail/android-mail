@@ -19,9 +19,10 @@
 package ch.protonmail.android.mailmailbox.domain.usecase
 
 import arrow.core.Either
-import arrow.core.right
+import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.maillabel.domain.usecase.GetLabels
 import ch.protonmail.android.mailmailbox.domain.mapper.ConversationMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.mapper.MessageMailboxItemMapper
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
@@ -30,7 +31,6 @@ import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 /**
@@ -39,7 +39,7 @@ import javax.inject.Inject
  * @see GetMultiUserMailboxItems
  */
 class GetMailboxItems @Inject constructor(
-    private val labelRepository: LabelRepository,
+    private val getLabels: GetLabels,
     private val messageRepository: MessageRepository,
     private val conversationRepository: ConversationRepository,
     private val messageMailboxItemMapper: MessageMailboxItemMapper,
@@ -49,16 +49,17 @@ class GetMailboxItems @Inject constructor(
         userId: UserId,
         type: MailboxItemType,
         pageKey: PageKey = PageKey()
-    ): Either<DataError, List<MailboxItem>> {
-        val folders = labelRepository.getLabels(userId, LabelType.MessageFolder)
-        val labels = labelRepository.getLabels(userId, LabelType.MessageLabel)
+    ): Either<DataError, List<MailboxItem>> = either {
+        val folders = getLabels(userId, LabelType.MessageFolder).bind()
+        val labels = getLabels(userId, LabelType.MessageLabel).bind()
         val labelsMaps = (labels + folders).associateBy { it.labelId }
-        return when (type) {
+        return@either when (type) {
             MailboxItemType.Message -> messageRepository.getLocalMessages(userId, pageKey).let { list ->
-                list.map { messageMailboxItemMapper.toMailboxItem(it, labelsMaps) }.right()
+                list.map { messageMailboxItemMapper.toMailboxItem(it, labelsMaps) }
             }
+
             MailboxItemType.Conversation -> conversationRepository.getLocalConversations(userId, pageKey).let { list ->
-                list.map { conversationMailboxItemMapper.toMailboxItem(it, labelsMaps) }.right()
+                list.map { conversationMailboxItemMapper.toMailboxItem(it, labelsMaps) }
             }
         }
     }
