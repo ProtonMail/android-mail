@@ -18,19 +18,30 @@
 package ch.protonmail.android.mailcommon.data.mapper
 
 import java.net.UnknownHostException
+import android.util.Log
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.fromHttpCode
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
+import ch.protonmail.android.test.utils.TestTree
 import io.mockk.every
 import io.mockk.mockkStatic
 import me.proton.core.network.domain.ApiResult
 import org.json.JSONException
+import timber.log.Timber
 import kotlin.test.Test
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class ApiResultEitherMappingTest {
+
+    private val testTree = TestTree()
+
+    @BeforeTest
+    fun setUp() {
+        Timber.plant(testTree)
+    }
 
     @Test
     fun `returns Right on success`() {
@@ -45,7 +56,7 @@ class ApiResultEitherMappingTest {
     }
 
     @Test
-    fun `returns Parse Network Error on parse error`() {
+    fun `returns and logs Parse Network Error on parse error`() {
         // given
         val cause = JSONException("message")
         val apiResult = ApiResult.Error.Parse(cause)
@@ -55,6 +66,9 @@ class ApiResultEitherMappingTest {
 
         // then
         assertEquals(DataError.Remote.Http(NetworkError.Parse).left(), actual)
+        val message = "Unexpected parse error, caused by: $cause"
+        val expectedLog = TestTree.Log(Log.ERROR, null, message, null)
+        assertEquals(expectedLog, testTree.logs.lastOrNull())
     }
 
     @Test

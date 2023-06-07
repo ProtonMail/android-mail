@@ -26,7 +26,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.model.ProtonError
-import ch.protonmail.android.mailcommon.domain.util.TestTree
+import ch.protonmail.android.test.utils.TestTree
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf

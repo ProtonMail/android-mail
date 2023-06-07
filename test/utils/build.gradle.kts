@@ -16,26 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain.util
+plugins {
+    id("com.android.library")
+    kotlin("android")
+}
 
-import timber.log.Timber
+android {
+    compileSdk = Config.compileSdk
 
-class TestTree : Timber.Tree() {
-    val logs = mutableListOf<Log>()
-
-    override fun log(
-        priority: Int,
-        tag: String?,
-        message: String,
-        t: Throwable?
-    ) {
-        logs.add(Log(priority, tag, message, t))
+    defaultConfig {
+        minSdk = Config.minSdk
+        targetSdk = Config.targetSdk
     }
+}
 
-    data class Log(
-        val priority: Int,
-        val tag: String?,
-        val message: String,
-        val t: Throwable?
-    )
+dependencies {
+    implementation(JakeWharton.timber)
 }

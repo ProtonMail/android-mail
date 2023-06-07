@@ -87,6 +87,7 @@ include(":test:robot:core")
 include(":test:robot:ksp:annotations")
 include(":test:robot:ksp:processor")
 include(":test:test-data")
+include(":test:utils")
 
 buildCache {
     local {
