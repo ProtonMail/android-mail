@@ -22,7 +22,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.ui.LabelAsBottomSheetTestTags
-import ch.protonmail.android.maildetail.presentation.ui.MoveToBottomSheetTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
@@ -60,23 +59,10 @@ internal class DetailBottomBarSection : ComposeSectionRobot() {
 
     @VerifiesOuter
     inner class Verify {
-
-        fun moveToBottomSheetExists() {
-            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem, useUnmergedTree = true)
-                .awaitDisplayed(composeTestRule, timeout = 5.seconds)
-                .assertExists()
-        }
-
         fun labelAsBottomSheetExists() {
             composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
                 .awaitDisplayed(composeTestRule, timeout = 5.seconds)
                 .assertExists()
-        }
-
-        fun moveToBottomSheetIsDismissed() {
-            composeTestRule.onNodeWithTag(MoveToBottomSheetTestTags.RootItem, useUnmergedTree = true)
-                .awaitHidden(composeTestRule)
-                .assertDoesNotExist()
         }
 
         fun labelAsBottomSheetIsDismissed() {

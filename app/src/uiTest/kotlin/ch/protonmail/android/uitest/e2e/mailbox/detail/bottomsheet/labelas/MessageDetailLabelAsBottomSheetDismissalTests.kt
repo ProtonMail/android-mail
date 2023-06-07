@@ -19,12 +19,10 @@
 package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.labelas
 
 import ch.protonmail.android.di.ServerProofModule
-import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
-import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.MockedNetworkTest
@@ -71,9 +69,6 @@ internal class MessageDetailLabelAsBottomSheetDismissalTests :
                 "/mail/v4/messages/*"
                     respondWith "/mail/v4/messages/message-id/message-id_79354.json"
                     withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
             )
         }
 
@@ -115,10 +110,7 @@ internal class MessageDetailLabelAsBottomSheetDismissalTests :
                     withStatusCode 200 ignoreQueryParams true,
                 "/mail/v4/messages/*"
                     respondWith "/mail/v4/messages/message-id/message-id_79356.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 

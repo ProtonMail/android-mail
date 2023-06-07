@@ -32,10 +32,12 @@ import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import ch.protonmail.android.uitest.robot.detail.model.bottomsheet.MoveToBottomSheetFolderEntry
 import ch.protonmail.android.uitest.robot.detail.model.bottomsheet.MoveToBottomSheetFolderEntryModel
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.awaitEnabled
 import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.getTestString
+import kotlin.time.Duration.Companion.seconds
 import ch.protonmail.android.test.R as testR
 
 @AttachTo(targets = [ConversationDetailRobot::class, MessageDetailRobot::class])
@@ -77,8 +79,12 @@ internal class MoveToBottomSheetSection : ComposeSectionRobot() {
     @VerifiesOuter
     inner class Verify {
 
+        fun isShown() {
+            rootItem.awaitDisplayed(timeout = 5.seconds).assertExists()
+        }
+
         fun isHidden() {
-            rootItem.awaitHidden().assertDoesNotExist()
+            rootItem.awaitHidden(timeout = 5.seconds).assertDoesNotExist()
         }
 
         fun headerTextIsShown() {

@@ -16,15 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.labels
+package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.labelas
 
 import ch.protonmail.android.di.ServerProofModule
-import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
-import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.MockedNetworkTest
@@ -37,6 +35,7 @@ import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.section.moveToBottomSheetSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
 import ch.protonmail.android.uitest.robot.detail.verify
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
@@ -76,13 +75,7 @@ internal class ConversationDetailMoveToBottomSheetDismissalTests : MockedNetwork
                     withStatusCode 200 matchWildcards true,
                 "/mail/v4/messages/*"
                     respondWith "/mail/v4/messages/message-id/message-id_79353.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest,
-                "/mail/v4/conversations/read"
-                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
@@ -96,10 +89,10 @@ internal class ConversationDetailMoveToBottomSheetDismissalTests : MockedNetwork
 
         conversationDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
+            bottomBarSection { openMoveToBottomSheet() }
 
-            bottomBarSection {
-                openMoveToBottomSheet()
-                verify { moveToBottomSheetExists() }
+            moveToBottomSheetSection {
+                verify { isShown() }
             }
         }
 
@@ -109,8 +102,8 @@ internal class ConversationDetailMoveToBottomSheetDismissalTests : MockedNetwork
         conversationDetailRobot {
             verify { conversationDetailScreenIsShown() }
 
-            bottomBarSection {
-                verify { moveToBottomSheetIsDismissed() }
+            moveToBottomSheetSection {
+                verify { isHidden() }
             }
         }
     }
@@ -131,13 +124,7 @@ internal class ConversationDetailMoveToBottomSheetDismissalTests : MockedNetwork
                     withStatusCode 200 matchWildcards true,
                 "/mail/v4/messages/*"
                     respondWith "/mail/v4/messages/message-id/message-id_79355.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                "/mail/v4/messages/read"
-                    respondWith "/mail/v4/messages/read/read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest,
-                "/mail/v4/conversations/read"
-                    respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
-                    withStatusCode 200 withPriority MockPriority.Highest
+                    withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
@@ -151,11 +138,10 @@ internal class ConversationDetailMoveToBottomSheetDismissalTests : MockedNetwork
 
         conversationDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
+            bottomBarSection { openMoveToBottomSheet() }
 
-            bottomBarSection {
-                openMoveToBottomSheet()
-
-                verify { moveToBottomSheetExists() }
+            moveToBottomSheetSection {
+                verify { isShown() }
             }
 
             // Tap outside the view.
@@ -165,8 +151,8 @@ internal class ConversationDetailMoveToBottomSheetDismissalTests : MockedNetwork
 
             verify { conversationDetailScreenIsShown() }
 
-            bottomBarSection {
-                verify { moveToBottomSheetIsDismissed() }
+            moveToBottomSheetSection {
+                verify { isHidden() }
             }
         }
     }

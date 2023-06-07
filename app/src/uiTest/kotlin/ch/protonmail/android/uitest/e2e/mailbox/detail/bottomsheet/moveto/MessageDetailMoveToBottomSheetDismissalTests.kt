@@ -35,6 +35,7 @@ import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
 import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
+import ch.protonmail.android.uitest.robot.detail.section.moveToBottomSheetSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
 import ch.protonmail.android.uitest.robot.detail.verify
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
@@ -78,11 +79,10 @@ internal class MessageDetailMoveToBottomSheetDismissalTests :
 
         messageDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
+            bottomBarSection { openMoveToBottomSheet() }
 
-            bottomBarSection {
-                openMoveToBottomSheet()
-
-                verify { moveToBottomSheetExists() }
+            moveToBottomSheetSection {
+                verify { isShown() }
             }
         }
 
@@ -90,8 +90,8 @@ internal class MessageDetailMoveToBottomSheetDismissalTests :
         uiDevice.pressBack()
 
         messageDetailRobot {
-            bottomBarSection {
-                verify { moveToBottomSheetIsDismissed() }
+            moveToBottomSheetSection {
+                verify { isHidden() }
             }
 
             verify { messageDetailScreenIsShown() }
@@ -121,18 +121,17 @@ internal class MessageDetailMoveToBottomSheetDismissalTests :
 
         messageDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
+            bottomBarSection { openMoveToBottomSheet() }
 
-            bottomBarSection {
-                openMoveToBottomSheet()
-
-                verify { moveToBottomSheetExists() }
+            moveToBottomSheetSection {
+                verify { isShown() }
             }
 
             // Tap outside the view.
             messageHeaderSection { expandHeader() }
 
-            bottomBarSection {
-                verify { moveToBottomSheetIsDismissed() }
+            moveToBottomSheetSection {
+                verify { isHidden() }
             }
 
             verify { messageDetailScreenIsShown() }
