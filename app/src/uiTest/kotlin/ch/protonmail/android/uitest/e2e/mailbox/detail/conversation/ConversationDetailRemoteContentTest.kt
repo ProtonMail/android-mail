@@ -54,7 +54,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ConversationDetailDetailRemoteContentTest :
+internal class ConversationDetailRemoteContentTest :
     MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut),
     DetailRemoteContentTest {
 
@@ -145,10 +145,6 @@ internal class ConversationDetailDetailRemoteContentTest :
                     respondWith "/mail/v4/conversations/read/conversations_read_base_placeholder.json"
                     withStatusCode 200 withPriority MockPriority.Highest
             )
-        }
-
-        navigator {
-            navigateTo(Destination.Inbox)
         }
 
         navigator {
