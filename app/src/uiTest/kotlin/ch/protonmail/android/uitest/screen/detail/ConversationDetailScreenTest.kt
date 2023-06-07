@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.uitest.screen.detail
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -42,6 +42,7 @@ import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
 import ch.protonmail.android.uitest.robot.detail.verify
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder.createAndGetComposeRule
 import ch.protonmail.android.uitest.util.getString
 import org.junit.Ignore
 import org.junit.Rule
@@ -53,7 +54,7 @@ import kotlin.test.assertTrue
 internal class ConversationDetailScreenTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule: ComposeContentTestRule = createAndGetComposeRule()
 
     @Test
     fun whenConversationIsLoadedThenSubjectIsDisplayed() {
