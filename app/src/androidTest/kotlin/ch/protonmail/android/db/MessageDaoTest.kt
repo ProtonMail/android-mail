@@ -29,12 +29,14 @@ import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
 import ch.protonmail.android.mailmessage.data.sample.MessageEntitySample
 import ch.protonmail.android.mailmessage.data.sample.MessageLabelEntitySample
 import ch.protonmail.android.mailmessage.data.sample.MessageWithLabelIdsSample
+import ch.protonmail.android.test.annotations.suite.SmokeTest
 import kotlinx.coroutines.runBlocking
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 
-class MessageDaoTest : BaseDatabaseTest() {
+@SmokeTest
+internal class MessageDaoTest : BaseDatabaseTest() {
 
     private val allMessages = listOf(
         MessageWithLabelIdsSample.AugWeatherForecast,

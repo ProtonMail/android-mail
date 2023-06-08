@@ -149,11 +149,6 @@ run_unit_test:
   script:
     - bundle exec fastlane unitTest
 
-run_firebase_instrumentation_tests:
-  extends: .firebase_test_job
-  script:
-    - bundle exec fastlane instrumentedTest
-
 run_firebase_proton_core_libs_tests:
   extends: .firebase_test_job
   allow_failure: true # Temporary, as long as we don't have a more specific test environment.

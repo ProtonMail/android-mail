@@ -19,6 +19,7 @@
 package ch.protonmail.android.feature.forceupdate
 
 import android.content.Context
+import ch.protonmail.android.test.annotations.suite.SmokeTest
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -28,7 +29,8 @@ import me.proton.core.presentation.app.AppLifecycleProvider
 import org.junit.Before
 import org.junit.Test
 
-class ForceUpdateHandlerTest {
+@SmokeTest
+internal class ForceUpdateHandlerTest {
 
     private val context = mockk<Context>(relaxed = true)
     private val appState = MutableStateFlow(AppLifecycleProvider.State.Background)
@@ -37,7 +39,7 @@ class ForceUpdateHandlerTest {
         every { state } returns appState
     }
 
-    lateinit var forceUpdateHandler: ForceUpdateHandler
+    private lateinit var forceUpdateHandler: ForceUpdateHandler
 
     @Before
     fun setUp() {

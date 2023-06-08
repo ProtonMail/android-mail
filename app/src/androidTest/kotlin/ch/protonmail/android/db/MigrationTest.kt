@@ -21,10 +21,12 @@ package ch.protonmail.android.db
 import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
 import androidx.test.platform.app.InstrumentationRegistry
+import ch.protonmail.android.test.annotations.suite.SmokeTest
 import org.junit.Rule
 import org.junit.Test
 
-class MigrationTest {
+@SmokeTest
+internal class MigrationTest {
 
     private val testDb = "migration-test"
 
