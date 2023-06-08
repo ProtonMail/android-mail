@@ -23,12 +23,12 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.mailbox.allmail.allMailRobot
-import ch.protonmail.android.uitest.robot.mailbox.allmail.verify
-import ch.protonmail.android.uitest.robot.mailbox.drafts.draftsRobot
-import ch.protonmail.android.uitest.robot.mailbox.drafts.verify
 import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.verify
+import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.section.MailboxType
+import ch.protonmail.android.uitest.robot.mailbox.section.topAppBarSection
+import ch.protonmail.android.uitest.robot.mailbox.section.verify
 import ch.protonmail.android.uitest.robot.menu.menuRobot
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -55,8 +55,8 @@ internal class MailboxFlowTest : MockedNetworkTest() {
             openDrafts()
         }
 
-        draftsRobot {
-            verify { draftsScreenDisplayed(composeTestRule) }
+        mailboxRobot {
+            topAppBarSection { verify { isMailbox(MailboxType.Drafts) } }
         }
 
         menuRobot {
@@ -64,8 +64,8 @@ internal class MailboxFlowTest : MockedNetworkTest() {
             openAllMail()
         }
 
-        allMailRobot {
-            verify { allMailScreenDisplayed(composeTestRule) }
+        mailboxRobot {
+            topAppBarSection { verify { isMailbox(MailboxType.AllMail) } }
         }
     }
 

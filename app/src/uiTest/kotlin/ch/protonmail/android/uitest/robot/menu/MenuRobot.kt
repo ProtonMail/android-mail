@@ -17,8 +17,7 @@
  */
 package ch.protonmail.android.uitest.robot.menu
 
-import androidx.annotation.StringRes
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onRoot
@@ -26,70 +25,56 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
-import ch.protonmail.android.mailmailbox.presentation.sidebar.TEST_TAG_SIDEBAR_MENU
+import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarMenuTestTags
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry
 import ch.protonmail.android.uitest.models.folders.SidebarItemCustomFolderEntryModel
 import ch.protonmail.android.uitest.robot.ComposeRobot
-import ch.protonmail.android.uitest.robot.mailbox.allmail.AllMailRobot
-import ch.protonmail.android.uitest.robot.mailbox.drafts.DraftsRobot
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.robot.settings.SettingsRobot
-import ch.protonmail.android.uitest.util.hasText
-import ch.protonmail.android.uitest.util.onNodeWithText
-import me.proton.core.presentation.compose.R.string
-import ch.protonmail.android.maillabel.presentation.R.string as mailLabelStrings
+import ch.protonmail.android.uitest.util.child
+import ch.protonmail.android.uitest.util.getTestString
+import ch.protonmail.android.test.R as testR
 
 @AsDsl
 internal class MenuRobot : ComposeRobot() {
 
-    fun openInbox(): InboxRobot = InboxRobot()
+    private val rootItem = composeTestRule.onNodeWithTag(SidebarMenuTestTags.Root)
 
-    fun openDrafts(): DraftsRobot {
-        tapSidebarMenuItemWithText(mailLabelStrings.label_title_drafts)
-        return DraftsRobot()
+    fun swipeOpenSidebarMenu(): MenuRobot = apply {
+        composeTestRule
+            .onRoot()
+            .performTouchInput { swipeRight() }
     }
 
-    fun openSent(): DraftsRobot {
-        tapSidebarMenuItemWithText(mailLabelStrings.label_title_sent)
-        return DraftsRobot()
-    }
+    fun openInbox() = openMailbox(getTestString(testR.string.test_label_title_inbox))
 
-    fun openAllMail(): AllMailRobot {
-        tapSidebarMenuItemWithText(mailLabelStrings.label_title_all_mail)
-        return AllMailRobot()
-    }
+    fun openDrafts() = openMailbox(getTestString(testR.string.test_label_title_drafts))
+
+    fun openSent() = openMailbox(getTestString(testR.string.test_label_title_sent))
+
+    fun openAllMail() = openMailbox(getTestString(testR.string.test_label_title_all_mail))
 
     fun openSettings(): SettingsRobot {
-        tapSidebarMenuItemWithText(string.presentation_menu_item_title_settings)
+        tapSidebarMenuItemWithText(getTestString(testR.string.test_mail_settings_settings))
         return SettingsRobot()
     }
 
     fun openReportBugs() {
-        tapSidebarMenuItemWithText(string.presentation_menu_item_title_report_a_bug)
+        tapSidebarMenuItemWithText(getTestString(testR.string.test_report_a_problem))
     }
 
-    private fun tapSidebarMenuItemWithText(@StringRes menuItemName: Int) {
-        composeTestRule
-            .onNodeWithTag(TEST_TAG_SIDEBAR_MENU)
-            .onChild()
-            .performScrollToNode(hasText(menuItemName))
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithText(menuItemName)
+    private fun tapSidebarMenuItemWithText(value: String) {
+        rootItem.onChild()
+            .apply { performScrollToNode(hasText(value)) }
+            .child { hasText(value) }
             .performClick()
-
-        composeTestRule.waitForIdle()
     }
 
-    fun swipeOpenSidebarMenu(): MenuRobot {
-        composeTestRule
-            .onRoot()
-            .performTouchInput { swipeRight() }
-
-        return this
+    private fun openMailbox(sidebarTextMenu: String): MailboxRobot {
+        tapSidebarMenuItemWithText(sidebarTextMenu)
+        return MailboxRobot()
     }
 
     @VerifiesOuter

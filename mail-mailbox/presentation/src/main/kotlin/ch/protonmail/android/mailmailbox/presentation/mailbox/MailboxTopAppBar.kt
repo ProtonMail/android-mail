@@ -73,7 +73,14 @@ fun MailboxTopAppBar(
 
     ProtonTopAppBar(
         modifier = modifier.testTag(MailboxTopAppBarTestTags.RootItem),
-        title = { Text(modifier = Modifier.clickable(onClick = actions.onTitleClick), text = uiModel.title) },
+        title = {
+            Text(
+                modifier = Modifier
+                    .testTag(MailboxTopAppBarTestTags.LocationLabel)
+                    .clickable(onClick = actions.onTitleClick),
+                text = uiModel.title
+            )
+        },
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
                 Icon(
@@ -165,6 +172,7 @@ fun LoadingMailboxTopAppBarPreview() {
 object MailboxTopAppBarTestTags {
 
     const val RootItem = "TopAppBarRootItem"
+    const val LocationLabel = "LocationLabel"
     const val SearchButton = "SearchButton"
     const val ComposerButton = "ComposerButton"
 }

@@ -18,20 +18,13 @@
 
 package ch.protonmail.android.uitest.robot.mailbox
 
-import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasScrollAction
-import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeTestRule
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performScrollToIndex
-import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
-import androidx.test.espresso.action.ViewActions.swipeDown
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
+import androidx.compose.ui.test.swipeDown
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeRobot
@@ -46,26 +39,8 @@ internal class MailboxRobot : ComposeRobot() {
         return this
     }
 
-    fun scrollToItem(index: Int): MailboxRobot {
-        composeTestRule.onList()
-            .performScrollToIndex(index)
-        return this
-    }
-
-    fun scrollToItem(subject: String): MailboxRobot {
-        composeTestRule.onList()
-            .performScrollToNode(hasText(subject))
-        return this
-    }
-
     @VerifiesOuter
     inner class Verify {
-
-        fun emptyMailboxIsDisplayed() {
-            composeTestRule.onEmptyMailbox()
-                .awaitDisplayed(composeTestRule)
-                .assertIsDisplayed()
-        }
 
         fun itemLabelIsDisplayed(label: String) {
             composeTestRule.onNodeWithText(label)
@@ -73,20 +48,9 @@ internal class MailboxRobot : ComposeRobot() {
                 .assertIsDisplayed()
         }
 
-        fun itemLabelIsNotDisplayed(label: String) {
-            composeTestRule.onNodeWithText(label)
-                .assertDoesNotExist()
-        }
-
         fun itemWithSubjectIsDisplayed(subject: String) {
             composeTestRule.onNodeWithText(subject)
                 .awaitDisplayed(composeTestRule)
-                .assertIsDisplayed()
-        }
-
-        fun listProgressIsDisplayed() {
-            composeTestRule
-                .onNodeWithTag(MailboxScreenTestTags.ListProgress)
                 .assertIsDisplayed()
         }
 
@@ -99,9 +63,3 @@ internal class MailboxRobot : ComposeRobot() {
 
 private fun ComposeTestRule.onList(): SemanticsNodeInteraction =
     onNode(hasScrollAction())
-
-private fun ComposeTestRule.onEmptyMailbox(): SemanticsNodeInteraction =
-    onNode(emptyMailboxMatcher())
-
-private fun emptyMailboxMatcher(): SemanticsMatcher =
-    hasTestTag(MailboxScreenTestTags.MailboxEmpty)

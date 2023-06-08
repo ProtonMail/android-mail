@@ -18,62 +18,40 @@
 
 package ch.protonmail.android.uitest.robot.mailbox.section
 
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTouchInput
-import androidx.test.espresso.action.ViewActions.swipeUp
+import androidx.compose.ui.test.swipeDown
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
-import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
-import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
-import kotlin.time.Duration.Companion.seconds
 
 @AttachTo(
     targets = [
         InboxRobot::class,
         MailboxRobot::class
     ],
-    identifier = "listSection"
+    identifier = "emptyListSection"
 )
-internal class MailboxListSection : ComposeSectionRobot() {
+internal class MailboxEmptyListSection : ComposeSectionRobot() {
 
-    private val messagesList = composeTestRule.onNodeWithTag(MailboxScreenTestTags.List)
+    private val emptyList = composeTestRule.onNodeWithTag(MailboxScreenTestTags.MailboxEmpty)
 
-    fun clickMessageByPosition(position: Int) = apply {
-        val model = MailboxListItemEntryModel(position)
-
-        model.click()
-    }
-
-    fun scrollToItemAtIndex(index: Int) {
-        messagesList.performScrollToIndex(index)
-    }
-
-    fun scrollToBottom() = apply {
-        messagesList.awaitDisplayed(composeTestRule, timeout = 5.seconds)
-            .performTouchInput { swipeUp() }
+    fun pullDownToRefresh(): MailboxEmptyListSection = apply {
+        emptyList.performTouchInput { swipeDown() }
     }
 
     @VerifiesOuter
     inner class Verify {
 
-        fun listItemsAreShown(vararg mailboxItemEntries: MailboxListItemEntry) {
-            for (entry in mailboxItemEntries) {
-                val model = MailboxListItemEntryModel(entry.index)
-
-                model.hasAvatar(entry.avatarInitial)
-                    .hasParticipants(entry.participants)
-                    .hasSubject(entry.subject)
-                    .hasDate(entry.date)
-
-                entry.locationIcons?.let { model.hasLocationIcons(it) } ?: model.hasNoLocationIcons()
-                entry.count?.let { model.hasCount(it) } ?: model.hasNoCount()
-            }
+        fun isShown() {
+            emptyList
+                .awaitDisplayed(composeTestRule)
+                .assertIsDisplayed()
         }
     }
 }

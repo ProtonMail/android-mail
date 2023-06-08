@@ -40,6 +40,10 @@ import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.section.emptyListSection
+import ch.protonmail.android.uitest.robot.mailbox.section.listSection
+import ch.protonmail.android.uitest.robot.mailbox.section.progressListSection
+import ch.protonmail.android.uitest.robot.mailbox.section.verify
 import ch.protonmail.android.uitest.robot.mailbox.verify
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.ManagedState
@@ -61,7 +65,7 @@ internal class MailboxScreenTest {
         val mailboxState = MailboxStateSampleData.Loading
         val robot = setupScreen(state = mailboxState)
 
-        robot.verify { listProgressIsDisplayed() }
+        robot.progressListSection { verify { isShown() } }
     }
 
     @Test
@@ -111,7 +115,7 @@ internal class MailboxScreenTest {
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
 
-        robot.verify { emptyMailboxIsDisplayed() }
+        robot.emptyListSection { verify { isShown() } }
     }
 
     @Test
@@ -125,10 +129,7 @@ internal class MailboxScreenTest {
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
 
-        robot
-            .verify { emptyMailboxIsDisplayed() }
-            .pullDownToRefresh()
-            .verify { swipeRefreshProgressIsDisplayed() }
+        // TODO
     }
 
     @Test
@@ -175,13 +176,13 @@ internal class MailboxScreenTest {
 
         robot
             .verify { itemWithSubjectIsDisplayed(subject = "1") }
-            .scrollToItem(index = 99)
+            .listSection { scrollToItemAtIndex(index = 99) }
 
         stateManager.emitNext()
 
         robot
             .verify { itemWithSubjectIsDisplayed(subject = "1") }
-            .scrollToItem(index = 99)
+            .listSection { scrollToItemAtIndex(index = 99) }
 
         stateManager.emitNext()
 

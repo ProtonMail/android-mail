@@ -16,28 +16,36 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.mailbox.allmail
+package ch.protonmail.android.uitest.robot.mailbox.section
 
-import androidx.compose.ui.test.junit4.ComposeTestRule
-import androidx.compose.ui.test.onFirst
-import ch.protonmail.android.maillabel.presentation.R
-import ch.protonmail.android.test.ksp.annotations.AsDsl
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.onNodeWithTag
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
+import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
-import ch.protonmail.android.uitest.robot.ComposeRobot
+import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
-import ch.protonmail.android.uitest.util.onAllNodesWithText
 
-@AsDsl
-internal class AllMailRobot : ComposeRobot() {
+@AttachTo(
+    targets = [
+        InboxRobot::class,
+        MailboxRobot::class
+    ],
+    identifier = "progressListSection"
+)
+internal class MailboxProgressListSection : ComposeSectionRobot() {
+
+    private val progressList = composeTestRule.onNodeWithTag(MailboxScreenTestTags.ListProgress)
 
     @VerifiesOuter
     inner class Verify {
 
-        fun allMailScreenDisplayed(composeRule: ComposeTestRule) {
-            composeRule
-                .onAllNodesWithText(R.string.label_title_all_mail)
-                .onFirst() // Both "TopBar" and "sidebar" are found as match of "All Mail". Only TopBar is displayed.
-                .awaitDisplayed(composeRule)
+        fun isShown() {
+            progressList
+                .awaitDisplayed(composeTestRule)
+                .assertIsDisplayed()
         }
     }
 }

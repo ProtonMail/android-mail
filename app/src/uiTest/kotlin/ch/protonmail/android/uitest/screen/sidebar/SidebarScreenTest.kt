@@ -35,8 +35,8 @@ import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
+import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarMenuTestTags
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarState
-import ch.protonmail.android.mailmailbox.presentation.sidebar.TEST_TAG_SIDEBAR_MENU
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.onNodeWithText
@@ -112,7 +112,7 @@ internal class SidebarScreenTest {
 
     private fun scrollToSidebarBottom(): SemanticsNodeInteraction {
         return composeTestRule
-            .onNodeWithTag(TEST_TAG_SIDEBAR_MENU)
+            .onNodeWithTag(SidebarMenuTestTags.Root)
             .onChild()
             .performScrollToNode(hasText(APP_VERSION_FOOTER, true))
     }

@@ -33,7 +33,7 @@ import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
-import ch.protonmail.android.uitest.robot.mailbox.drafts.draftsRobot
+import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
 import dagger.hilt.android.testing.BindValue
@@ -81,7 +81,7 @@ internal class DraftsMailboxTests : MockedNetworkTest(loginStrategy = LoginStrat
             navigateTo(Destination.Drafts)
         }
 
-        draftsRobot {
+        mailboxRobot {
             listSection {
                 verify { listItemsAreShown(expectedMailboxEntry) }
             }
@@ -123,7 +123,7 @@ internal class DraftsMailboxTests : MockedNetworkTest(loginStrategy = LoginStrat
             navigateTo(Destination.Drafts)
         }
 
-        draftsRobot {
+        mailboxRobot {
             listSection {
                 verify { listItemsAreShown(expectedMailboxEntry) }
             }
@@ -165,7 +165,7 @@ internal class DraftsMailboxTests : MockedNetworkTest(loginStrategy = LoginStrat
             navigateTo(Destination.Drafts)
         }
 
-        draftsRobot {
+        mailboxRobot {
             listSection {
                 verify { listItemsAreShown(expectedMailboxEntry) }
             }
