@@ -22,7 +22,7 @@ import androidx.test.core.app.ActivityScenario
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
-import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.menu.menuRobot
 import ch.protonmail.android.uitest.util.extensions.waitUntilSignInScreenIsGone
@@ -47,7 +47,11 @@ internal class Navigator {
      * @param launchApp whether the app shall be launched.
      * @param performLoginViaUI whether the login flow shall be performed via UI
      */
-    fun navigateTo(destination: Destination, launchApp: Boolean = true, performLoginViaUI: Boolean = true) {
+    fun navigateTo(
+        destination: Destination,
+        launchApp: Boolean = true,
+        performLoginViaUI: Boolean = true
+    ) {
         if (launchApp) ActivityScenario.launch(MainActivity::class.java)
 
         if (performLoginViaUI) login()
@@ -59,7 +63,7 @@ internal class Navigator {
                 openDrafts()
             }
 
-            is Destination.MailDetail -> inboxRobot {
+            is Destination.MailDetail -> mailboxRobot {
                 listSection { clickMessageByPosition(destination.messagePosition) }
             }
         }

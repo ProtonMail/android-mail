@@ -25,16 +25,9 @@ import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
-@AttachTo(
-    targets = [
-        InboxRobot::class,
-        MailboxRobot::class
-    ],
-    identifier = "progressListSection"
-)
+@AttachTo(targets = [MailboxRobot::class], identifier = "progressListSection")
 internal class MailboxProgressListSection : ComposeSectionRobot() {
 
     private val progressList = composeTestRule.onNodeWithTag(MailboxScreenTestTags.ListProgress)

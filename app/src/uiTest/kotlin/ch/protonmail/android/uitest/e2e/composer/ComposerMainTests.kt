@@ -43,9 +43,9 @@ import ch.protonmail.android.uitest.robot.composer.section.subjectSection
 import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.composer.section.verify
 import ch.protonmail.android.uitest.robot.composer.verify
-import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.inbox.verify
+import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.topAppBarSection
+import ch.protonmail.android.uitest.robot.mailbox.verify
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -82,7 +82,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             topAppBarSection { tapComposerIcon() }
 
             snackbarSection {
@@ -110,7 +110,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             topAppBarSection { tapComposerIcon() }
         }
 
@@ -143,7 +143,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             topAppBarSection { tapComposerIcon() }
         }
 
@@ -206,7 +206,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             topAppBarSection { tapComposerIcon() }
         }
 
@@ -214,8 +214,8 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             topAppBarSection { tapCloseButton() }
         }
 
-        inboxRobot {
-            verify { mailboxScreenDisplayed() }
+        mailboxRobot {
+            verify { isShown() }
         }
     }
 
@@ -237,7 +237,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             topAppBarSection { tapComposerIcon() }
         }
 
@@ -247,8 +247,8 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
 
         uiDevice.pressBack()
 
-        inboxRobot {
-            verify { mailboxScreenDisplayed() }
+        mailboxRobot {
+            verify { isShown() }
         }
     }
 
@@ -270,7 +270,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             topAppBarSection { tapComposerIcon() }
         }
 

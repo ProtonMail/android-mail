@@ -23,12 +23,12 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
-import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.inbox.verify
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.MailboxType
+import ch.protonmail.android.uitest.robot.mailbox.section.stickyHeaderSection
 import ch.protonmail.android.uitest.robot.mailbox.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
+import ch.protonmail.android.uitest.robot.mailbox.verify
 import ch.protonmail.android.uitest.robot.menu.menuRobot
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -46,8 +46,8 @@ internal class MailboxFlowTest : MockedNetworkTest() {
 
     @Test
     fun openMailboxAndSwitchLocation() {
-        inboxRobot {
-            verify { mailboxScreenDisplayed() }
+        mailboxRobot {
+            verify { isShown() }
         }
 
         menuRobot {
@@ -75,16 +75,12 @@ internal class MailboxFlowTest : MockedNetworkTest() {
      */
     @Test
     fun filterUnreadMessages() {
-        inboxRobot {
-            verify {
-                mailboxScreenDisplayed()
-                unreadFilterIsDisplayed()
-            }
-
-            filterUnreadMessages()
-
-            verify {
-                unreadFilterIsSelected()
+        mailboxRobot {
+            verify { isShown() }
+            stickyHeaderSection {
+                verify { unreadFilterIsDisplayed() }
+                filterUnreadMessages()
+                verify { unreadFilterIsSelected() }
             }
         }
     }

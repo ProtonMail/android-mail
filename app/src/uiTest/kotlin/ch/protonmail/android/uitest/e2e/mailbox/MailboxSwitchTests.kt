@@ -31,7 +31,6 @@ import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
-import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
@@ -81,7 +80,7 @@ internal class MailboxSwitchTests : MockedNetworkTest(loginStrategy = LoginStrat
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             listSection { scrollToBottom() }
         }
 

@@ -27,16 +27,9 @@ import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
-@AttachTo(
-    targets = [
-        InboxRobot::class,
-        MailboxRobot::class
-    ],
-    identifier = "emptyListSection"
-)
+@AttachTo(targets = [MailboxRobot::class], identifier = "emptyListSection")
 internal class MailboxEmptyListSection : ComposeSectionRobot() {
 
     private val emptyList = composeTestRule.onNodeWithTag(MailboxScreenTestTags.MailboxEmpty)

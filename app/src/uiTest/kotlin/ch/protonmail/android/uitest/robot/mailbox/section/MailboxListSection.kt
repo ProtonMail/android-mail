@@ -29,17 +29,10 @@ import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import kotlin.time.Duration.Companion.seconds
 
-@AttachTo(
-    targets = [
-        InboxRobot::class,
-        MailboxRobot::class
-    ],
-    identifier = "listSection"
-)
+@AttachTo(targets = [MailboxRobot::class], identifier = "listSection")
 internal class MailboxListSection : ComposeSectionRobot() {
 
     private val messagesList = composeTestRule.onNodeWithTag(MailboxScreenTestTags.List)
@@ -74,6 +67,18 @@ internal class MailboxListSection : ComposeSectionRobot() {
                 entry.locationIcons?.let { model.hasLocationIcons(it) } ?: model.hasNoLocationIcons()
                 entry.count?.let { model.hasCount(it) } ?: model.hasNoCount()
             }
+        }
+
+        fun unreadItemAtPosition(position: Int) {
+            val model = MailboxListItemEntryModel(position)
+
+            model.assertUnread()
+        }
+
+        fun readItemAtPosition(position: Int) {
+            val model = MailboxListItemEntryModel(position)
+
+            model.assertRead()
         }
     }
 }

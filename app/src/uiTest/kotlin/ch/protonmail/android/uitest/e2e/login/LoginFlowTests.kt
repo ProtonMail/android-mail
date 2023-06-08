@@ -22,8 +22,8 @@ import ch.protonmail.android.test.annotations.suite.CoreLibraryTest
 import ch.protonmail.android.uitest.BaseTest
 import ch.protonmail.android.uitest.di.LocalhostApi
 import ch.protonmail.android.uitest.di.LocalhostApiModule
-import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.inbox.verify
+import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.verify
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -61,8 +61,6 @@ class LoginFlowTests : BaseTest(), MinimalSignInInternalTests {
     override fun verifyAfter() {
         waitForPrimaryAccount()
 
-        inboxRobot {
-            verify { mailboxScreenDisplayed() }
-        }
+        mailboxRobot { verify { isShown() } }
     }
 }

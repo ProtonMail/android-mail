@@ -36,7 +36,7 @@ import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.verify
-import ch.protonmail.android.uitest.robot.mailbox.inbox.inboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
@@ -81,7 +81,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 
@@ -95,7 +95,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         uiDevice.pressBack()
 
-        inboxRobot {
+        mailboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 
@@ -140,7 +140,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 
@@ -154,7 +154,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         uiDevice.pressBack()
 
-        inboxRobot {
+        mailboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 
@@ -193,7 +193,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 
@@ -207,7 +207,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         uiDevice.pressBack()
 
-        inboxRobot {
+        mailboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 
@@ -252,7 +252,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 
@@ -266,7 +266,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
 
         uiDevice.pressBack()
 
-        inboxRobot {
+        mailboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 
@@ -311,7 +311,7 @@ internal class MessageLoadingTests : MockedNetworkTest(loginStrategy = LoginStra
             navigateTo(Destination.Inbox)
         }
 
-        inboxRobot {
+        mailboxRobot {
             listSection { clickMessageByPosition(0) }
         }
 

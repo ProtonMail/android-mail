@@ -27,18 +27,11 @@ import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.getTestString
 import ch.protonmail.android.test.R as testR
 
-@AttachTo(
-    targets = [
-        InboxRobot::class,
-        MailboxRobot::class
-    ],
-    identifier = "topAppBarSection"
-)
+@AttachTo(targets = [MailboxRobot::class], identifier = "topAppBarSection")
 internal class MailboxTopBarSection : ComposeSectionRobot() {
 
     private val rootItem = composeTestRule.onNodeWithTag(MailboxTopAppBarTestTags.RootItem, useUnmergedTree = true)

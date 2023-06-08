@@ -24,12 +24,10 @@ import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
-import ch.protonmail.android.uitest.robot.mailbox.inbox.InboxRobot
+import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.assertions.hasAnyChildWith
 
-@AttachTo(
-    targets = [InboxRobot::class]
-)
+@AttachTo(targets = [MailboxRobot::class])
 internal class SnackbarSection : ComposeSectionRobot() {
 
     private val snackbarHost = composeTestRule.onNodeWithTag(CommonTestTags.SnackbarHost)

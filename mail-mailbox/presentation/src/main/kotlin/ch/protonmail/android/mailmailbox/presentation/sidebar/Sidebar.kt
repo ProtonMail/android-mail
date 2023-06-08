@@ -56,8 +56,6 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 
-const val TEST_TAG_SIDEBAR_MENU = "SidebarMenuTestTag"
-
 @Composable
 @Suppress("ComplexMethod")
 fun Sidebar(
@@ -90,10 +88,12 @@ fun Sidebar(
                             close()
                             navigationActions.onLabelsSettings()
                         }
+
                         is SidebarLabelAction.Select -> {
                             close()
                             viewModel.submit(SidebarViewModel.Action.LabelAction(sidebarLabelAction))
                         }
+
                         is SidebarLabelAction.Collapse,
                         is SidebarLabelAction.Expand -> {
                             viewModel.submit(SidebarViewModel.Action.LabelAction(sidebarLabelAction))
@@ -133,7 +133,7 @@ fun Sidebar(
     }
 
     ProtonSidebarLazy(
-        modifier = modifier.testTag(TEST_TAG_SIDEBAR_MENU),
+        modifier = modifier.testTag(SidebarMenuTestTags.Root),
         drawerState = viewState.drawerState
     ) {
         sidebarSystemLabelItems(viewState.mailLabels.systems, actions.onLabelAction)
@@ -297,4 +297,9 @@ fun PreviewSidebar() {
             actions = Sidebar.Actions.Empty
         )
     }
+}
+
+object SidebarMenuTestTags {
+
+    const val Root = "SidebarMenu"
 }

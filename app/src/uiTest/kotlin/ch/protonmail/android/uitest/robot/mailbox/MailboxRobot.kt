@@ -18,13 +18,10 @@
 
 package ch.protonmail.android.uitest.robot.mailbox
 
-import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasScrollAction
-import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.swipeDown
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeRobot
@@ -33,33 +30,27 @@ import ch.protonmail.android.uitest.util.awaitDisplayed
 @AsDsl
 internal class MailboxRobot : ComposeRobot() {
 
-    fun pullDownToRefresh(): MailboxRobot {
-        composeTestRule.onList()
-            .performTouchInput { swipeDown() }
-        return this
-    }
+    private val rootItem = composeTestRule.onNodeWithTag(MailboxScreenTestTags.Root)
 
     @VerifiesOuter
     inner class Verify {
 
+        fun isShown() {
+            rootItem.awaitDisplayed(composeTestRule).assertIsDisplayed()
+        }
+
+        // TODO remove as part of MAILANDR-578
         fun itemLabelIsDisplayed(label: String) {
             composeTestRule.onNodeWithText(label)
                 .awaitDisplayed(composeTestRule)
                 .assertIsDisplayed()
         }
 
+        // TODO remove as part of MAILANDR-578
         fun itemWithSubjectIsDisplayed(subject: String) {
             composeTestRule.onNodeWithText(subject)
                 .awaitDisplayed(composeTestRule)
                 .assertIsDisplayed()
         }
-
-        fun swipeRefreshProgressIsDisplayed() {
-            composeTestRule
-            // TODO MAILANDR-271
-        }
     }
 }
-
-private fun ComposeTestRule.onList(): SemanticsNodeInteraction =
-    onNode(hasScrollAction())
