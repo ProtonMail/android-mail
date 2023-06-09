@@ -46,7 +46,7 @@ platform :android do
 
   desc "Runs Unit Tests"
   lane :unitTest do
-    gradle(tasks: ["testDevDebugUnitTest", "testDebugUnitTest"])
+    gradle(tasks: ["testDevDebugUnitTest", "testDebugUnitTest", "testUtilsUnitTest"])
   end
 
   desc "Setup UI Tests mocked network assets"
@@ -76,7 +76,7 @@ platform :android do
 
   desc "Generate test coverage report based on the last test run"
   lane :coverageReport do
-    gradle(task: "-Pci --console=plain coberturaCoverageReport -x testAlphaDebugUnitTest -x testProdDebugUnitTest")
+    gradle(task: "-Pci --console=plain coberturaCoverageReport")
   end
 
   desc "Publish alpha build to firebase dev group"

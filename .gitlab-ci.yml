@@ -30,7 +30,6 @@ stages:
   - build
   - startReview
   - test
-  - report
   - deploy
   - stopReview
 
@@ -148,6 +147,16 @@ run_unit_test:
     - build_dev_debug
   script:
     - bundle exec fastlane unitTest
+    - bundle exec fastlane coverageReport
+  coverage: /Total.*?(\d{1,3}\.\d{0,2})%/
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - build/reports
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: build/reports/cobertura-coverage.xml
 
 run_firebase_proton_core_libs_tests:
   extends: .firebase_test_job
@@ -181,23 +190,6 @@ run_firebase_full_regression_tests:
     - bundle exec fastlane fullRegressionTest
   rules:
     - if: $CI_COMMIT_BRANCH == "master" && $NIGHTLY_ALPHA_BUILD == "true"
-
-coverage report:
-  stage: report
-  extends: .base_job
-  tags:
-    - xlarge-k8s
-  script:
-    - bundle exec fastlane coverageReport
-  coverage: /Total.*?(\d{1,3}\.\d{0,2})%/
-  artifacts:
-    expire_in: 1 week
-    paths:
-      - build/reports
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: build/reports/cobertura-coverage.xml
 
 deploy_to_firebase_dev:
   extends: .firebase_deploy_job

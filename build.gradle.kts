@@ -65,6 +65,7 @@ subprojects {
 }
 
 protonCoverageMultiModuleOptions {
+    runTestTasksBefore = false
     sharedExcludes = listOf("**/me/proton/core/**")
     coverageConversionScript = { "$rootDir/../proton-libs/plugins/jacoco/scripts/cover2cover.py" }
 }
