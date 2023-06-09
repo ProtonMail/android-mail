@@ -16,7 +16,6 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
