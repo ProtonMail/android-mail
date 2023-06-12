@@ -73,5 +73,5 @@
   <string name="attachment_type_excel">Excel</string>
   <string name="attachment_type_presentation">Prezentáció</string>
   <string name="attachment_type_description">%1$s fájl</string>
-  <string name="message_body_error_no_webview">You need to have the Android System WebView installed to see this message\'s content.</string>
+  <string name="message_body_error_no_webview">Az üzenet a megjelenítéséhez az Android System WebView telepítve kell legyen.</string>
 </resources>

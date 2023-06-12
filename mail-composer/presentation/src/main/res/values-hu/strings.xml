@@ -17,10 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="from_prefix">From:</string>
+  <string name="from_prefix">Feladó:</string>
   <string name="to_prefix">Címzett:</string>
-  <string name="subject_placeholder">Subject</string>
-  <string name="compose_message_placeholder">Compose email</string>
-  <string name="close_composer_content_description">Close composer</string>
-  <string name="send_message_content_description">Send message</string>
+  <string name="subject_placeholder">Tárgy</string>
+  <string name="compose_message_placeholder">E-mail írása</string>
+  <string name="close_composer_content_description">Szerkesztő bezárása</string>
+  <string name="send_message_content_description">Üzenet küldése</string>
 </resources>

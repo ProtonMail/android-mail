@@ -29,7 +29,7 @@
   <string name="mail_settings_app_language">Idioma da aplicação</string>
   <string name="mail_settings_combined_contacts">Contactos combinados</string>
   <string name="mail_settings_swipe_actions">Acções ao deslizar</string>
-  <string name="mail_settings_combined_contacts_hint">Ative esta funcionalidade para preencher automaticamente endereços electrónicos utilizando contactos de todas as suas contas ligadas.</string>
+  <string name="mail_settings_combined_contacts_hint">Ative esta funcionalidade para preencher automaticamente endereços eletrónicos utilizando contactos de todas as suas contas ligadas.</string>
   <string name="mail_settings_alternative_routing_hint">Caso as páginas do Proton estejam bloqueadas, esta definição permite à aplicação tentar redirecionar o tráfego para ligar ao Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos que mantenha esta definição para maior confiança.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Predefinição do sistema</string>
@@ -51,7 +51,7 @@
   <string name="mail_settings_recovery_email">Endereço de recuperação</string>
   <string name="mail_settings_mailbox_size">Tamanho da caixa de correio</string>
   <string name="mail_settings_addresses">Endereços</string>
-  <string name="mail_settings_default_email_address">Endereço de correio electrónico predefinido</string>
+  <string name="mail_settings_default_email_address">Endereço de correio eletrónico predefinido</string>
   <string name="mail_settings_display_name_and_signature">Nome a mostrar e assinatura</string>
   <string name="mail_settings_mailbox">Caixa de correio</string>
   <string name="mail_settings_privacy">Privacidade</string>
@@ -65,7 +65,7 @@
   <string name="mail_settings_conversation_mode_hint">Agrupe correios eletrónicos na mesma conversa na sua caixa de entrada ou veja-os separadamente</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Acções de deslizar</string>
-  <string name="mail_settings_swipe_actions_subtitle">Configure gestos de deslize para aceder às acções mais usadas.</string>
+  <string name="mail_settings_swipe_actions_subtitle">Configure gestos de deslize para aceder às ações mais usadas.</string>
   <string name="mail_settings_swipe_right_name">Da esquerda para a direita</string>
   <string name="mail_settings_swipe_left_name">Da direita para a esquerda</string>
   <string name="mail_settings_swipe_action_archive_title">Arquivo</string>

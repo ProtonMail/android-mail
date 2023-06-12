@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">Falha ao carregar os contactos</string>
-  <string name="detail_error_loading_conversation">Falha ao carregar a conversa</string>
-  <string name="detail_error_loading_messages">Falha ao carregar as mensagens</string>
+  <string name="detail_error_loading_contacts">Erro ao carregar os contactos</string>
+  <string name="detail_error_loading_conversation">Erro ao carregar a conversa</string>
+  <string name="detail_error_loading_messages">Erro ao carregar as mensagens</string>
   <string name="error_mark_unread_failed">Falha ao marcar como não lido. Tente novamente.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d mensagem</item>
@@ -56,10 +56,10 @@
   <string name="bottom_sheet_done_action">Concluído</string>
   <string name="bottom_sheet_archive_action">Arquivar também?</string>
   <string name="bottom_sheet_label_as_title">Etiquetar como...</string>
-  <string name="error_relabel_message_failed">Falha ao etiquetar de novo a mensagem. Tente novamente.</string>
-  <string name="error_relabel_conversation_failed">Falha ao etiquetar de novo a conversa. Tente novamente.</string>
+  <string name="error_relabel_message_failed">Erro ao etiquetar de novo a mensagem. Tente novamente.</string>
+  <string name="error_relabel_conversation_failed">Erro ao etiquetar de novo a conversa. Tente novamente.</string>
   <string name="please_go_back_online_to_load_messages">Está offline. Volte online para carregar mensagens.</string>
-  <string name="decryption_error">Falha ao desencriptar mensagem.</string>
+  <string name="decryption_error">Erro ao desencriptar mensagem.</string>
   <string name="detail_error_retrieving_message_body">Impossível recuperar mensagem</string>
   <!-- Attachment Types -->
   <string name="attachment_type_image">Imagem</string>
