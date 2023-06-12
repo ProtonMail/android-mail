@@ -39,6 +39,7 @@ import ch.protonmail.android.uitest.robot.detail.section.verify
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -105,7 +106,7 @@ internal class ConversationMarkAsReadTests : MockedNetworkTest(loginStrategy = L
         }
 
         // Idling is currently not automatically handled when coming from UI Automator interactions.
-        uiDevice.pressBack().also { composeTestRule.waitForIdle() }
+        uiDevice.pressBack().also { ComposeTestRuleHolder.rule.waitForIdle() }
 
         mailboxRobot {
             listSection { verify { readItemAtPosition(0) } }

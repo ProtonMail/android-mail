@@ -27,6 +27,7 @@ import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import ch.protonmail.android.uitest.robot.settings.account.verify
 import ch.protonmail.android.uitest.robot.settings.swipeactions.verify
 import ch.protonmail.android.uitest.robot.settings.verify
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Test
@@ -94,7 +95,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
                 appLanguageChangedToPortuguese()
             }
 
-        composeTestRule.waitForIdle()
+        ComposeTestRuleHolder.rule.waitForIdle()
 
         /*
          * Once Brazilian was selected, we can't just use `selectSystemDefault` to go back to default language,

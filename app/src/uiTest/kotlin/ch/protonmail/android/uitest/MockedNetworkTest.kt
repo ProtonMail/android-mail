@@ -48,7 +48,7 @@ internal open class MockedNetworkTest(
 
     private val hiltAndroidRule = HiltAndroidRule(this)
 
-    val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+    private val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @Inject
     lateinit var accountManager: AccountManager
