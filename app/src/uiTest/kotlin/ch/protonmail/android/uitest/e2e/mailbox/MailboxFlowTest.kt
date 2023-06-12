@@ -23,8 +23,8 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
+import ch.protonmail.android.uitest.models.mailbox.MailboxType
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
-import ch.protonmail.android.uitest.robot.mailbox.section.MailboxType
 import ch.protonmail.android.uitest.robot.mailbox.section.stickyHeaderSection
 import ch.protonmail.android.uitest.robot.mailbox.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
@@ -77,6 +77,7 @@ internal class MailboxFlowTest : MockedNetworkTest() {
     fun filterUnreadMessages() {
         mailboxRobot {
             verify { isShown() }
+
             stickyHeaderSection {
                 verify { unreadFilterIsDisplayed() }
                 filterUnreadMessages()
