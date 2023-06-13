@@ -41,6 +41,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.util.kotlin.sha256
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 @Suppress("BlockingMethodInNonBlockingContext")
@@ -73,7 +75,7 @@ class AttachmentLocalDataSourceImplTest {
     )
 
     @Test
-    fun `should return file when meta data and file are stored locally and hashes are matching`() = runTest {
+    fun `should return file when metadata and file are stored locally and hashes are matching`() = runTest {
         // Given
 
         coEvery {
@@ -95,7 +97,7 @@ class AttachmentLocalDataSourceImplTest {
     }
 
     @Test
-    fun `should return null when meta data and file are stored locally and hashes do not matching`() = runTest {
+    fun `should return null when metadata and file are stored locally and hashes do not matching`() = runTest {
         // Given
         val metaDataFile = File.createTempFile("metadata", "test")
         val file = File.createTempFile("test", "test")
@@ -143,7 +145,7 @@ class AttachmentLocalDataSourceImplTest {
     }
 
     @Test
-    fun `should store attachment meta data locally when file storing was successful`() = runTest {
+    fun `should store attachment metadata locally when file storing was successful`() = runTest {
         // Given
         val attachmentContent = "I'm the content of a file"
         val attachmentContentByteArray = attachmentContent.toByteArray()
@@ -203,15 +205,31 @@ class AttachmentLocalDataSourceImplTest {
     }
 
     @Test
-    fun `should delete attachment files and metadata from db`() = runTest {
+    fun `should return true when deleting attachment files and metadata from db was successful`() = runTest {
         // Given
         coEvery { attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId) } returns Unit
         coEvery { attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id) } returns true
 
         // When
-        attachmentLocalDataSource.deleteAttachments(userId, messageId)
+        val result = attachmentLocalDataSource.deleteAttachments(userId, messageId)
 
         // Then
+        assertTrue(result)
+        coVerify { attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId) }
+        coVerify { attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id) }
+    }
+
+    @Test
+    fun `should return false when deleting attachment files and metadata from db failed`() = runTest {
+        // Given
+        coEvery { attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId) } returns Unit
+        coEvery { attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id) } returns false
+
+        // When
+        val result = attachmentLocalDataSource.deleteAttachments(userId, messageId)
+
+        // Then
+        assertFalse(result)
         coVerify { attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId) }
         coVerify { attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id) }
     }

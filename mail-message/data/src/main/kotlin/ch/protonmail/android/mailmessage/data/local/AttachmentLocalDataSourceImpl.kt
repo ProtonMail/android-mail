@@ -81,7 +81,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         attachment: ByteArray,
         status: AttachmentWorkerStatus
     ) {
-        return withContext(ioDispatcher) {
+        withContext(ioDispatcher) {
             attachmentFileStorage.saveAttachment(
                 userId = userId,
                 messageId = messageId.id,
