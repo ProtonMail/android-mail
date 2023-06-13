@@ -97,7 +97,8 @@ fun MailboxScreen(
         onOpenSelectionMode = {
             viewModel.submit(MailboxViewAction.EnterSelectionMode)
             actions.showFeatureMissingSnackbar()
-        }
+        },
+        onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) }
     )
 
     MailboxScreen(
@@ -218,7 +219,10 @@ private fun MailboxSwipeRefresh(
     SwipeRefresh(
         modifier = modifier,
         state = rememberSwipeRefreshState(currentViewState is MailboxScreenState.LoadingWithData),
-        onRefresh = { items.refresh() }
+        onRefresh = {
+            actions.onRefreshList()
+            items.refresh()
+        }
     ) {
 
         when (currentViewState) {
@@ -364,6 +368,7 @@ object MailboxScreen {
         val onExitSelectionMode: () -> Unit,
         val onNavigateToMailboxItem: (MailboxItemUiModel) -> Unit,
         val onOpenSelectionMode: () -> Unit,
+        val onRefreshList: () -> Unit,
         val openDrawerMenu: () -> Unit,
         val showOfflineSnackbar: () -> Unit,
         val showRefreshErrorSnackbar: () -> Unit,
@@ -380,6 +385,7 @@ object MailboxScreen {
                 onExitSelectionMode = {},
                 onNavigateToMailboxItem = {},
                 onOpenSelectionMode = {},
+                onRefreshList = {},
                 openDrawerMenu = {},
                 showOfflineSnackbar = {},
                 showRefreshErrorSnackbar = {},

@@ -139,6 +139,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.ExitSelectionMode,
                 is MailboxViewAction.DisableUnreadFilter,
                 is MailboxViewAction.EnableUnreadFilter -> emitNewStateFrom(viewAction)
+                is MailboxViewAction.Refresh -> onRefresh()
                 is MailboxViewAction.OpenItemDetails -> onOpenItemDetails(viewAction.item)
             }.exhaustive
         }
@@ -146,6 +147,10 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun onOpenItemDetails(item: MailboxItemUiModel) {
         emitNewStateFrom(MailboxEvent.ItemDetailsOpenedInViewMode(item, getPreferredViewMode()))
+    }
+
+    private fun onRefresh() {
+        
     }
 
     private fun observePagingData(): Flow<PagingData<MailboxItemUiModel>> =
