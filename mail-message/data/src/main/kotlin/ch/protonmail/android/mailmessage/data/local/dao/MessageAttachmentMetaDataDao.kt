@@ -28,7 +28,7 @@ import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
 
 @Dao
-abstract class MessageAttachmentMetaDataDao : BaseDao<MessageAttachmentMetadataEntity>() {
+abstract class MessageAttachmentMetadataDao : BaseDao<MessageAttachmentMetadataEntity>() {
 
     @Query(
         """
@@ -38,7 +38,7 @@ abstract class MessageAttachmentMetaDataDao : BaseDao<MessageAttachmentMetadataE
             AND attachmentId = :attachmentId
         """
     )
-    abstract fun observeAttachment(
+    abstract fun observeAttachmentMetadata(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
@@ -51,6 +51,6 @@ abstract class MessageAttachmentMetaDataDao : BaseDao<MessageAttachmentMetadataE
             AND messageId = :messageId
         """
     )
-    abstract suspend fun deleteAttachmentMetaDataForMessage(userId: UserId, messageId: MessageId)
+    abstract suspend fun deleteAttachmentMetadataForMessage(userId: UserId, messageId: MessageId)
 
 }

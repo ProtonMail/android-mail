@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmessage.data.local
 
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentDao
-import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentMetaDataDao
+import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentMetadataDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageBodyDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageDao
 import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
@@ -35,7 +35,7 @@ interface MessageDatabase : Database, PageIntervalDatabase {
     fun messageLabelDao(): MessageLabelDao
     fun messageBodyDao(): MessageBodyDao
     fun messageAttachmentDao(): MessageAttachmentDao
-    fun storedMessageAttachmentMetaDataDao(): MessageAttachmentMetaDataDao
+    fun messageAttachmentMetadataDao(): MessageAttachmentMetadataDao
 
     companion object {
 

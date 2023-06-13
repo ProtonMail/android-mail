@@ -23,7 +23,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentMetaDataDao
+import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentMetadataDao
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
@@ -61,10 +61,10 @@ class AttachmentLocalDataSourceImplTest {
         status = AttachmentWorkerStatus.Running
     )
 
-    private val attachmentDao = mockk<MessageAttachmentMetaDataDao>(relaxUnitFun = true)
+    private val attachmentDao = mockk<MessageAttachmentMetadataDao>(relaxUnitFun = true)
     private val attachmentFileStorage = mockk<AttachmentFileStorage>()
     private val messageDatabase = mockk<MessageDatabase> {
-        every { storedMessageAttachmentMetaDataDao() } returns attachmentDao
+        every { messageAttachmentMetadataDao() } returns attachmentDao
     }
     private val attachmentLocalDataSource = AttachmentLocalDataSourceImpl(
         db = messageDatabase,
@@ -77,7 +77,7 @@ class AttachmentLocalDataSourceImplTest {
         // Given
 
         coEvery {
-            attachmentDao.observeAttachment(userId, messageId, attachmentId)
+            attachmentDao.observeAttachmentMetadata(userId, messageId, attachmentId)
         } returns flowOf(messageAttachmentMetadataEntity)
         coEvery {
             attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
@@ -104,7 +104,7 @@ class AttachmentLocalDataSourceImplTest {
         file.outputStream().bufferedWriter().use { it.write("I'm a content file") }
         val attachmentId = AttachmentId("attachmentId")
         coEvery {
-            attachmentDao.observeAttachment(userId, messageId, attachmentId)
+            attachmentDao.observeAttachmentMetadata(userId, messageId, attachmentId)
         } returns flowOf(messageAttachmentMetadataEntity)
         coEvery {
             attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
@@ -125,7 +125,7 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return null when file is not stored locally`() = runTest {
         // Given
         coEvery {
-            attachmentDao.observeAttachment(userId, messageId, attachmentId)
+            attachmentDao.observeAttachmentMetadata(userId, messageId, attachmentId)
         } returns flowOf(messageAttachmentMetadataEntity)
         coEvery {
             attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
@@ -205,14 +205,14 @@ class AttachmentLocalDataSourceImplTest {
     @Test
     fun `should delete attachment files and metadata from db`() = runTest {
         // Given
-        coEvery { attachmentDao.deleteAttachmentMetaDataForMessage(userId, messageId) } returns Unit
+        coEvery { attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId) } returns Unit
         coEvery { attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id) } returns true
 
         // When
         attachmentLocalDataSource.deleteAttachments(userId, messageId)
 
         // Then
-        coVerify { attachmentDao.deleteAttachmentMetaDataForMessage(userId, messageId) }
+        coVerify { attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId) }
         coVerify { attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id) }
     }
 }

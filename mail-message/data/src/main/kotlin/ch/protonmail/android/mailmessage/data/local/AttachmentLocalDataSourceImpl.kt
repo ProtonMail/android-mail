@@ -44,13 +44,13 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AttachmentLocalDataSource {
 
-    private val attachmentDao by lazy { db.storedMessageAttachmentMetaDataDao() }
+    private val attachmentDao by lazy { db.messageAttachmentMetadataDao() }
 
     override suspend fun observeAttachmentMetadata(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
-    ) = attachmentDao.observeAttachment(userId, messageId, attachmentId)
+    ) = attachmentDao.observeAttachmentMetadata(userId, messageId, attachmentId)
         .mapLatest { it?.toMessageAttachmentMetadata() }
 
 
@@ -121,7 +121,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteAttachments(userId: UserId, messageId: MessageId): Boolean {
-        attachmentDao.deleteAttachmentMetaDataForMessage(userId, messageId)
+        attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId)
         return attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id)
     }
 }
