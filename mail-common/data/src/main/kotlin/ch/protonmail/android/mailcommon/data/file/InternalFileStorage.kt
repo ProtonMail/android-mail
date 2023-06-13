@@ -19,14 +19,13 @@
 package ch.protonmail.android.mailcommon.data.file
 
 import java.io.File
-import java.security.MessageDigest
 import android.content.Context
-import android.util.Base64
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
+import me.proton.core.util.kotlin.HashUtils
 import javax.inject.Inject
 
 class InternalFileStorage @Inject constructor(
@@ -39,71 +38,65 @@ class InternalFileStorage @Inject constructor(
         userId: UserId,
         folder: Folder,
         fileIdentifier: FileIdentifier
-    ): String? = withContext(ioDispatcher) {
-        fileHelper.readFromFile(
-            folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
-            filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
-        )
-    }
+    ): String? = fileHelper.readFromFile(
+        folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
+    )
+
 
     suspend fun getFile(
         userId: UserId,
         folder: Folder,
         fileIdentifier: FileIdentifier
-    ): File? = withContext(ioDispatcher) {
-        fileHelper.getFile(
-            folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
-            filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
-        )
-    }
+    ): File? = fileHelper.getFile(
+        folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
+    )
+
 
     suspend fun writeToFile(
         userId: UserId,
         folder: Folder,
         fileIdentifier: FileIdentifier,
         content: String
-    ): Boolean = withContext(ioDispatcher) {
-        fileHelper.writeToFile(
-            folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
-            filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
-            content = content
-        )
-    }
+    ): Boolean = fileHelper.writeToFile(
+        folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
+        content = content
+    )
+
 
     suspend fun writeFile(
         userId: UserId,
         folder: Folder,
         fileIdentifier: FileIdentifier,
         content: ByteArray
-    ): File? = withContext(ioDispatcher) {
-        fileHelper.writeToFile(
-            folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
-            filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
-            content = content
-        )
-    }
+    ): File? = fileHelper.writeToFile(
+        folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath()),
+        content = content
+    )
+
 
     suspend fun deleteFile(
         userId: UserId,
         folder: Folder,
         fileIdentifier: FileIdentifier
-    ): Boolean = withContext(ioDispatcher) {
-        fileHelper.deleteFile(
-            folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
-            filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
-        )
-    }
+    ): Boolean = fileHelper.deleteFile(
+        folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}"),
+        filename = FileHelper.Filename(fileIdentifier.value.asSanitisedPath())
+    )
+
 
     suspend fun deleteFolder(userId: UserId, folder: Folder): Boolean = fileHelper.deleteFolder(
         folder = FileHelper.Folder("${userId.asRootDirectory()}${folder.path}")
     )
 
-    private fun UserId.asRootDirectory() = "${applicationContext.filesDir}/${id.asSanitisedPath()}/"
-
-    private fun String.asSanitisedPath(): String {
-        val digest = MessageDigest.getInstance("SHA256").digest(this.toByteArray())
-        return Base64.encodeToString(digest, Base64.URL_SAFE or Base64.NO_WRAP)
+    private suspend fun UserId.asRootDirectory() = withContext(ioDispatcher) {
+        "${applicationContext.filesDir}/${id.asSanitisedPath()}/"
     }
+
+    private fun String.asSanitisedPath() = HashUtils.sha256(this)
 
     @JvmInline
     value class FileIdentifier(val value: String)

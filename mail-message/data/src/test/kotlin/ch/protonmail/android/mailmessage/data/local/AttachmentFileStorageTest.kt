@@ -147,7 +147,7 @@ internal class AttachmentFileStorageTest {
     }
 
     @Test
-    fun `should delete all files connected to a message from internal storage and return false on failure`() = runTest {
+    fun `should return false when deleting all files connected to a message from internal fails`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.Invoice.id

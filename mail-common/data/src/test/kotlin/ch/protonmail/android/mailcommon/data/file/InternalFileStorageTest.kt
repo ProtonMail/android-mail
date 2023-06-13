@@ -19,14 +19,12 @@
 package ch.protonmail.android.mailcommon.data.file
 
 import java.io.File
-import java.security.MessageDigest
 import android.content.Context
-import android.util.Base64
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
+import io.mockk.mockkObject
+import io.mockk.unmockkObject
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNull
@@ -34,6 +32,7 @@ import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
+import me.proton.core.util.kotlin.HashUtils
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -48,26 +47,14 @@ class InternalFileStorageTest {
 
     @Before
     fun setUp() {
-        mockkStatic(MessageDigest::class)
-        mockkStatic(Base64::class)
-
-        val messageDigestMock = mockk<MessageDigest> {
-            every { digest(MessageId.Raw.toByteArray()) } returns MessageId.Digest.toByteArray()
-            every { digest(UserId.Raw.toByteArray()) } returns UserId.Digest.toByteArray()
-        }
-        every { MessageDigest.getInstance("SHA256") } returns messageDigestMock
-        every {
-            Base64.encodeToString(MessageId.Digest.toByteArray(), Base64.URL_SAFE or Base64.NO_WRAP)
-        } returns MessageId.EncodedDigest
-        every {
-            Base64.encodeToString(UserId.Digest.toByteArray(), Base64.URL_SAFE or Base64.NO_WRAP)
-        } returns UserId.EncodedDigest
+        mockkObject(HashUtils)
+        every { HashUtils.sha256(MessageId.Raw) } returns MessageId.EncodedDigest
+        every { HashUtils.sha256(UserId.Raw) } returns UserId.EncodedDigest
     }
 
     @After
     fun tearDown() {
-        unmockkStatic(MessageDigest::class)
-        unmockkStatic(Base64::class)
+        unmockkObject(HashUtils)
     }
 
     @Test

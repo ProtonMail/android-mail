@@ -76,23 +76,25 @@ internal class AllowedFoldersFileHelperTest(folderPath: String) : FileHelperTest
     }
 
     @Test
+    @Suppress("BlockingMethodInNonBlockingContext")
     fun `should read a file`() = runTest(testDispatcherProvider.Main) {
         // Given
-        val expectedFile = run { File.createTempFile("test", "test") }
+        val expectedFile = File.createTempFile("test", "test")
         every { fileFactoryMock.fileFrom(folder, filename) } returns expectedFile
 
         // When
-        val expected = fileHelper.getFile(folder, filename)
+        val actual = fileHelper.getFile(folder, filename)
 
         // Then
-        assertEquals(expectedFile, expected)
+        assertEquals(expectedFile, actual)
     }
 
     @Test
     fun `should return null when file doesn't exist`() = runTest(testDispatcherProvider.Main) {
         // Given
-        val file = File(folder.path, filename.value)
-        every { fileFactoryMock.fileFrom(folder, filename) } returns file
+        val nonExistentFile = File(folder.path, filename.value)
+        check(nonExistentFile.exists().not())
+        every { fileFactoryMock.fileFrom(folder, filename) } returns nonExistentFile
 
         // When
         val result = fileHelper.getFile(folder, filename)
