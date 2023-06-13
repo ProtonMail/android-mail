@@ -36,86 +36,109 @@ class MailboxListReducer @Inject constructor() {
         operation: MailboxOperation.AffectingMailboxList
     ): MailboxListState {
         return when (operation) {
-            is MailboxEvent.SelectedLabelChanged -> {
-                val currentMailLabel = operation.selectedLabel
-                when (currentState) {
-                    is MailboxListState.Loading -> MailboxListState.Data(
-                        currentMailLabel,
-                        openItemEffect = Effect.empty(),
-                        scrollToMailboxTop = Effect.empty(),
-                        offlineEffect = Effect.empty(),
-                        refreshErrorEffect = Effect.empty(),
-                        refreshRequested = false
-                    )
-                    is MailboxListState.Data -> currentState.copy(
-                        currentMailLabel = currentMailLabel
-                    )
-                }
-            }
-            is MailboxEvent.NewLabelSelected -> {
-                val currentMailLabel = operation.selectedLabel
-                when (currentState) {
-                    is MailboxListState.Loading -> MailboxListState.Data(
-                        currentMailLabel,
-                        openItemEffect = Effect.empty(),
-                        scrollToMailboxTop = Effect.empty(),
-                        offlineEffect = Effect.empty(),
-                        refreshErrorEffect = Effect.empty(),
-                        refreshRequested = false
-                    )
-                    is MailboxListState.Data -> currentState.copy(
-                        currentMailLabel = currentMailLabel,
-                        scrollToMailboxTop = Effect.of(currentMailLabel.id)
-                    )
-                }
-            }
-            is MailboxEvent.ItemDetailsOpenedInViewMode -> {
-                val request = when (operation.preferredViewMode) {
-                    ViewMode.ConversationGrouping -> {
-                        OpenMailboxItemRequest(
-                            itemId = MailboxItemId(operation.item.conversationId.id),
-                            itemType = MailboxItemType.Conversation
-                        )
-                    }
-                    ViewMode.NoConversationGrouping -> {
-                        OpenMailboxItemRequest(
-                            itemId = MailboxItemId(operation.item.id),
-                            itemType = operation.item.type
-                        )
-                    }
-                }
-                when (currentState) {
-                    is MailboxListState.Loading -> currentState
-                    is MailboxListState.Data -> currentState.copy(openItemEffect = Effect.of(request))
-                }
+            is MailboxEvent.SelectedLabelChanged -> reduceSelectedLabelChanged(operation, currentState)
+            is MailboxEvent.NewLabelSelected -> reduceNewLabelSelected(operation, currentState)
+            is MailboxEvent.ItemDetailsOpenedInViewMode -> reduceItemDetailOpened(operation, currentState)
+            is MailboxViewAction.OnOfflineWithData -> reduceOfflineWithData(currentState)
+            is MailboxViewAction.OnErrorWithData -> reduceErrorWithData(currentState)
+            is MailboxViewAction.Refresh -> reduceRefresh(currentState)
+        }
+    }
+
+    private fun reduceSelectedLabelChanged(
+        operation: MailboxEvent.SelectedLabelChanged,
+        currentState: MailboxListState
+    ): MailboxListState.Data {
+        val currentMailLabel = operation.selectedLabel
+        return when (currentState) {
+            is MailboxListState.Loading -> MailboxListState.Data(
+                currentMailLabel,
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false
+            )
+
+            is MailboxListState.Data -> currentState.copy(
+                currentMailLabel = currentMailLabel
+            )
+        }
+    }
+
+    private fun reduceNewLabelSelected(
+        operation: MailboxEvent.NewLabelSelected,
+        currentState: MailboxListState
+    ): MailboxListState.Data {
+        val currentMailLabel = operation.selectedLabel
+        return when (currentState) {
+            is MailboxListState.Loading -> MailboxListState.Data(
+                currentMailLabel,
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false
+            )
+
+            is MailboxListState.Data -> currentState.copy(
+                currentMailLabel = currentMailLabel,
+                scrollToMailboxTop = Effect.of(currentMailLabel.id)
+            )
+        }
+    }
+
+    private fun reduceItemDetailOpened(
+        operation: MailboxEvent.ItemDetailsOpenedInViewMode,
+        currentState: MailboxListState
+    ): MailboxListState {
+        val request = when (operation.preferredViewMode) {
+            ViewMode.ConversationGrouping -> {
+                OpenMailboxItemRequest(
+                    itemId = MailboxItemId(operation.item.conversationId.id),
+                    itemType = MailboxItemType.Conversation
+                )
             }
 
-            is MailboxViewAction.OnOfflineWithData -> when (currentState) {
-                is MailboxListState.Data -> {
-                    if (currentState.refreshRequested) {
-                        currentState.copy(offlineEffect = Effect.of(Unit), refreshRequested = false)
-                    } else {
-                        currentState
-                    }
-                }
-                is MailboxListState.Loading -> currentState
-            }
-
-            is MailboxViewAction.OnErrorWithData -> when (currentState) {
-                is MailboxListState.Data -> {
-                    if (currentState.refreshRequested) {
-                        currentState.copy(refreshErrorEffect = Effect.of(Unit), refreshRequested = false)
-                    } else {
-                        currentState
-                    }
-                }
-                is MailboxListState.Loading -> currentState
-            }
-
-            is MailboxViewAction.Refresh -> when (currentState) {
-                is MailboxListState.Data -> currentState.copy(refreshRequested = true)
-                is MailboxListState.Loading -> currentState
+            ViewMode.NoConversationGrouping -> {
+                OpenMailboxItemRequest(
+                    itemId = MailboxItemId(operation.item.id),
+                    itemType = operation.item.type
+                )
             }
         }
+        return when (currentState) {
+            is MailboxListState.Loading -> currentState
+            is MailboxListState.Data -> currentState.copy(openItemEffect = Effect.of(request))
+        }
+    }
+
+    private fun reduceOfflineWithData(currentState: MailboxListState) = when (currentState) {
+        is MailboxListState.Data -> {
+            if (currentState.refreshRequested) {
+                currentState.copy(offlineEffect = Effect.of(Unit), refreshRequested = false)
+            } else {
+                currentState
+            }
+        }
+
+        is MailboxListState.Loading -> currentState
+    }
+
+    private fun reduceRefresh(currentState: MailboxListState) = when (currentState) {
+        is MailboxListState.Data -> currentState.copy(refreshRequested = true)
+        is MailboxListState.Loading -> currentState
+    }
+
+    private fun reduceErrorWithData(currentState: MailboxListState) = when (currentState) {
+        is MailboxListState.Data -> {
+            if (currentState.refreshRequested) {
+                currentState.copy(refreshErrorEffect = Effect.of(Unit), refreshRequested = false)
+            } else {
+                currentState
+            }
+        }
+
+        is MailboxListState.Loading -> currentState
     }
 }
