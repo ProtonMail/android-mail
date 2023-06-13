@@ -39,7 +39,10 @@ object MailboxStateSampleData {
         mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
-            scrollToMailboxTop = Effect.empty()
+            scrollToMailboxTop = Effect.empty(),
+            offlineEffect = Effect.empty(),
+            refreshErrorEffect = Effect.empty(),
+            refreshRequested = false
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),
@@ -55,7 +58,10 @@ object MailboxStateSampleData {
         mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.AllMail),
             openItemEffect = Effect.empty(),
-            scrollToMailboxTop = Effect.empty()
+            scrollToMailboxTop = Effect.empty(),
+            offlineEffect = Effect.empty(),
+            refreshErrorEffect = Effect.empty(),
+            refreshRequested = false
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text(),

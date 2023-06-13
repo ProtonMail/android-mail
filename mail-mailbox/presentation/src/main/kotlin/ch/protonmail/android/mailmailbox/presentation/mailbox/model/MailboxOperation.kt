@@ -31,9 +31,11 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object EnterSelectionMode : MailboxViewAction, MailboxOperation.AffectingTopAppBar
     object ExitSelectionMode : MailboxViewAction, MailboxOperation.AffectingTopAppBar
     data class OpenItemDetails(val item: MailboxItemUiModel) : MailboxViewAction
-    object Refresh : MailboxViewAction
+    object Refresh : MailboxViewAction, MailboxOperation.AffectingMailboxList
     object EnableUnreadFilter : MailboxViewAction, MailboxOperation.AffectingUnreadFilter
     object DisableUnreadFilter : MailboxViewAction, MailboxOperation.AffectingUnreadFilter
+    object OnOfflineWithData : MailboxViewAction, MailboxOperation.AffectingMailboxList
+    object OnErrorWithData : MailboxViewAction, MailboxOperation.AffectingMailboxList
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {

@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
@@ -41,7 +42,10 @@ class MailboxListReducer @Inject constructor() {
                     is MailboxListState.Loading -> MailboxListState.Data(
                         currentMailLabel,
                         openItemEffect = Effect.empty(),
-                        scrollToMailboxTop = Effect.empty()
+                        scrollToMailboxTop = Effect.empty(),
+                        offlineEffect = Effect.empty(),
+                        refreshErrorEffect = Effect.empty(),
+                        refreshRequested = false
                     )
                     is MailboxListState.Data -> currentState.copy(
                         currentMailLabel = currentMailLabel
@@ -54,7 +58,10 @@ class MailboxListReducer @Inject constructor() {
                     is MailboxListState.Loading -> MailboxListState.Data(
                         currentMailLabel,
                         openItemEffect = Effect.empty(),
-                        scrollToMailboxTop = Effect.empty()
+                        scrollToMailboxTop = Effect.empty(),
+                        offlineEffect = Effect.empty(),
+                        refreshErrorEffect = Effect.empty(),
+                        refreshRequested = false
                     )
                     is MailboxListState.Data -> currentState.copy(
                         currentMailLabel = currentMailLabel,
@@ -81,6 +88,33 @@ class MailboxListReducer @Inject constructor() {
                     is MailboxListState.Loading -> currentState
                     is MailboxListState.Data -> currentState.copy(openItemEffect = Effect.of(request))
                 }
+            }
+
+            is MailboxViewAction.OnOfflineWithData -> when (currentState) {
+                is MailboxListState.Data -> {
+                    if (currentState.refreshRequested) {
+                        currentState.copy(offlineEffect = Effect.of(Unit), refreshRequested = false)
+                    } else {
+                        currentState
+                    }
+                }
+                is MailboxListState.Loading -> currentState
+            }
+
+            is MailboxViewAction.OnErrorWithData -> when (currentState) {
+                is MailboxListState.Data -> {
+                    if (currentState.refreshRequested) {
+                        currentState.copy(refreshErrorEffect = Effect.of(Unit), refreshRequested = false)
+                    } else {
+                        currentState
+                    }
+                }
+                is MailboxListState.Loading -> currentState
+            }
+
+            is MailboxViewAction.Refresh -> when (currentState) {
+                is MailboxListState.Data -> currentState.copy(refreshRequested = true)
+                is MailboxListState.Loading -> currentState
             }
         }
     }

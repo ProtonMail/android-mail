@@ -28,7 +28,10 @@ sealed interface MailboxListState {
     data class Data(
         val currentMailLabel: MailLabel,
         val openItemEffect: Effect<OpenMailboxItemRequest>,
-        val scrollToMailboxTop: Effect<MailLabelId>
+        val scrollToMailboxTop: Effect<MailLabelId>,
+        val offlineEffect: Effect<Unit>,
+        val refreshErrorEffect: Effect<Unit>,
+        val refreshRequested: Boolean
     ) : MailboxListState
 
     object Loading : MailboxListState

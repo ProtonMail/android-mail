@@ -139,18 +139,16 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.ExitSelectionMode,
                 is MailboxViewAction.DisableUnreadFilter,
                 is MailboxViewAction.EnableUnreadFilter -> emitNewStateFrom(viewAction)
-                is MailboxViewAction.Refresh -> onRefresh()
+                is MailboxViewAction.Refresh -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.OpenItemDetails -> onOpenItemDetails(viewAction.item)
+                is MailboxViewAction.OnOfflineWithData -> emitNewStateFrom(viewAction)
+                is MailboxViewAction.OnErrorWithData -> emitNewStateFrom(viewAction)
             }.exhaustive
         }
     }
 
     private suspend fun onOpenItemDetails(item: MailboxItemUiModel) {
         emitNewStateFrom(MailboxEvent.ItemDetailsOpenedInViewMode(item, getPreferredViewMode()))
-    }
-
-    private fun onRefresh() {
-        
     }
 
     private fun observePagingData(): Flow<PagingData<MailboxItemUiModel>> =
@@ -192,12 +190,11 @@ class MailboxViewModel @Inject constructor(
         }
         .filterNotNull()
 
-    private fun Flow<MailLabelId>.mapToExistingLabel() =
-        map {
-            observeMailLabels().firstOrNull()?.let { mailLabels ->
-                mailLabels.allById[selectedMailLabelId.flow.value]
-            }
-        }.filterNotNull()
+    private fun Flow<MailLabelId>.mapToExistingLabel() = map {
+        observeMailLabels().firstOrNull()?.let { mailLabels ->
+            mailLabels.allById[selectedMailLabelId.flow.value]
+        }
+    }.filterNotNull()
 
     private fun observeUnreadCounters(): Flow<List<UnreadCounter>> = primaryUserId.flatMapLatest { userId ->
         if (userId == null) {

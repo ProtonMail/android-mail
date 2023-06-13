@@ -206,7 +206,10 @@ class MailboxViewModelTest {
             mailboxListState = MailboxListState.Data(
                 currentMailLabel = expectedMailLabel,
                 openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.of(expectedMailLabel.id)
+                scrollToMailboxTop = Effect.of(expectedMailLabel.id),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false
             )
         )
         val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
@@ -237,7 +240,10 @@ class MailboxViewModelTest {
             mailboxListState = MailboxListState.Data(
                 currentMailLabel = modifiedMailLabel,
                 openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.of(initialMailLabel.id)
+                scrollToMailboxTop = Effect.of(initialMailLabel.id),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -463,7 +469,7 @@ class MailboxViewModelTest {
             mailboxItemMapper.toUiModel(unreadMailboxItemWithLabel, ContactTestData.contacts, updatedFolderColorSetting)
         } returns unreadMailboxItemUiModelWithLabel
 
-        every { pagerFactory.create(listOf(userId), MailLabelId.System.Archive, false, any()) } returns mockk {
+        every { pagerFactory.create(listOf(userId), Archive, false, any()) } returns mockk {
             val pagingData = PagingData.from(listOf(unreadMailboxItemWithLabel))
             every { this@mockk.flow } returns flowOf(pagingData)
         }
@@ -524,7 +530,10 @@ class MailboxViewModelTest {
             mailboxListState = MailboxListState.Data(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Message)),
-                scrollToMailboxTop = Effect.empty()
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false
             )
         )
         every { observeCurrentViewMode(userId = any()) } returns flowOf(NoConversationGrouping)
@@ -544,6 +553,90 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when on offline with data is submitted, new state is produced and emitted`() = runTest {
+        // Given
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            mailboxListState = MailboxListState.Data(
+                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.of(Unit),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false
+            )
+        )
+        every {
+            mailboxReducer.newStateFrom(
+                MailboxStateSampleData.Loading,
+                MailboxViewAction.OnOfflineWithData
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.OnOfflineWithData)
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `when on error with data is submitted, new state is produced and emitted`() = runTest {
+        // Given
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            mailboxListState = MailboxListState.Data(
+                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.of(Unit),
+                refreshRequested = false
+            )
+        )
+        every {
+            mailboxReducer.newStateFrom(
+                MailboxStateSampleData.Loading,
+                MailboxViewAction.OnErrorWithData
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.OnErrorWithData)
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `when refresh action is submitted, new state is produced and emitted`() = runTest {
+        // Given
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            mailboxListState = MailboxListState.Data(
+                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.of(Unit),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = true
+            )
+        )
+        every {
+            mailboxReducer.newStateFrom(
+                MailboxStateSampleData.Loading,
+                MailboxViewAction.Refresh
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.Refresh)
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
     fun `when open item action submitted in conversation mode, new state is produced and emitted`() = runTest {
         // Given
         val item = buildMailboxUiModelItem("id", Conversation)
@@ -551,7 +644,10 @@ class MailboxViewModelTest {
             mailboxListState = MailboxListState.Data(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.of(OpenMailboxItemRequest(MailboxItemId(item.id), Conversation)),
-                scrollToMailboxTop = Effect.empty()
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false
             )
         )
         every { observeCurrentViewMode(userId = any()) } returns flowOf(ConversationGrouping)
@@ -794,7 +890,10 @@ class MailboxViewModelTest {
             mailboxListState = MailboxListState.Data(
                 currentMailLabel = MailLabel.System(selectedMailLabelId),
                 openItemEffect = openEffect,
-                scrollToMailboxTop = Effect.empty()
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false
             ),
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = UnreadCountersTestData.labelToCounterMap[initialLocationMailLabelId.labelId]!!,

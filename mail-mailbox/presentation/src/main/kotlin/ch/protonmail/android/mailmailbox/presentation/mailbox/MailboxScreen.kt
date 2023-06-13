@@ -38,7 +38,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -93,6 +92,8 @@ fun MailboxScreen(
         onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
         onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },
         onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
+        onOfflineWithData = { viewModel.submit(MailboxViewAction.OnOfflineWithData) },
+        onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
         onNavigateToMailboxItem = { item -> viewModel.submit(MailboxViewAction.OpenItemDetails(item)) },
         onOpenSelectionMode = {
             viewModel.submit(MailboxViewAction.EnterSelectionMode)
@@ -164,6 +165,14 @@ fun MailboxScreen(
 
                 ConsumableLaunchedEffect(mailboxListState.openItemEffect) { itemId ->
                     actions.navigateToMailboxItem(itemId)
+                }
+
+                ConsumableLaunchedEffect(mailboxListState.offlineEffect) {
+                    actions.showOfflineSnackbar()
+                }
+
+                ConsumableLaunchedEffect(mailboxListState.refreshErrorEffect) {
+                    actions.showRefreshErrorSnackbar()
                 }
 
                 MailboxSwipeRefresh(
@@ -247,12 +256,12 @@ private fun MailboxSwipeRefresh(
             )
 
             is MailboxScreenState.OfflineWithData -> {
-                LaunchedEffect(currentViewState) { actions.showOfflineSnackbar() }
+                actions.onOfflineWithData()
                 MailboxItemsList(listState, currentViewState, items, actions)
             }
 
             is MailboxScreenState.ErrorWithData -> {
-                LaunchedEffect(currentViewState) { actions.showRefreshErrorSnackbar() }
+                actions.onErrorWithData()
                 MailboxItemsList(listState, currentViewState, items, actions)
             }
 
@@ -372,7 +381,9 @@ object MailboxScreen {
         val openDrawerMenu: () -> Unit,
         val showOfflineSnackbar: () -> Unit,
         val showRefreshErrorSnackbar: () -> Unit,
-        val showFeatureMissingSnackbar: () -> Unit
+        val showFeatureMissingSnackbar: () -> Unit,
+        val onOfflineWithData: () -> Unit,
+        val onErrorWithData: () -> Unit
     ) {
 
         companion object {
@@ -389,7 +400,9 @@ object MailboxScreen {
                 openDrawerMenu = {},
                 showOfflineSnackbar = {},
                 showRefreshErrorSnackbar = {},
-                showFeatureMissingSnackbar = {}
+                showFeatureMissingSnackbar = {},
+                onOfflineWithData = {},
+                onErrorWithData = {}
             )
         }
     }

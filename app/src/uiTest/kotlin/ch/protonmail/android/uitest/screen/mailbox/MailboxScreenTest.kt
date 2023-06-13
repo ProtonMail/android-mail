@@ -83,7 +83,10 @@ internal class MailboxScreenTest {
         val mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
-            scrollToMailboxTop = Effect.empty()
+            scrollToMailboxTop = Effect.empty(),
+            offlineEffect = Effect.empty(),
+            refreshErrorEffect = Effect.empty(),
+            refreshRequested = false
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val items = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
@@ -101,7 +104,10 @@ internal class MailboxScreenTest {
         val mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
-            scrollToMailboxTop = Effect.empty()
+            scrollToMailboxTop = Effect.empty(),
+            offlineEffect = Effect.empty(),
+            refreshErrorEffect = Effect.empty(),
+            refreshRequested = false
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val label = LabelUiModelSample.News
@@ -129,7 +135,10 @@ internal class MailboxScreenTest {
         val mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
-            scrollToMailboxTop = Effect.empty()
+            scrollToMailboxTop = Effect.empty(),
+            offlineEffect = Effect.empty(),
+            refreshErrorEffect = Effect.empty(),
+            refreshRequested = false
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -143,7 +152,10 @@ internal class MailboxScreenTest {
         val mailboxListState = MailboxListState.Data(
             currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
-            scrollToMailboxTop = Effect.empty()
+            scrollToMailboxTop = Effect.empty(),
+            offlineEffect = Effect.empty(),
+            refreshErrorEffect = Effect.empty(),
+            refreshRequested = false
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -171,7 +183,10 @@ internal class MailboxScreenTest {
                 mailboxListState = MailboxListState.Data(
                     currentMailLabel = MailLabel.System(systemLabel),
                     openItemEffect = Effect.empty(),
-                    scrollToMailboxTop = scrollToTopEffect
+                    scrollToMailboxTop = scrollToTopEffect,
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = MailLabel.System(systemLabel).text(),

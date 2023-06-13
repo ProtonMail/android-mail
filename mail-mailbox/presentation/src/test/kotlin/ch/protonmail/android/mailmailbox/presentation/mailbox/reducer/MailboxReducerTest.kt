@@ -111,7 +111,10 @@ internal class MailboxReducerTest(
             mailboxListState = MailboxListState.Data(
                 currentMailLabel = spamLabel,
                 openItemEffect = Effect.empty(),
-                scrollToMailboxTop = Effect.empty()
+                scrollToMailboxTop = Effect.empty(),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false
             ),
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                 currentLabelName = spamLabel.text(),
