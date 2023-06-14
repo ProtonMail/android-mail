@@ -46,7 +46,9 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class MessageMoveToBottomSheetMainTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
+internal class MessageDetailMoveToBottomSheetMainTests : MockedNetworkTest(
+    loginStrategy = LoginStrategy.LoggedOut
+) {
 
     @JvmField
     @BindValue
