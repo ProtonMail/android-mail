@@ -19,12 +19,14 @@
 package ch.protonmail.android.uitest
 
 import android.content.Context
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.test.BuildConfig
 import ch.protonmail.android.uitest.rule.HiltInjectRule
 import ch.protonmail.android.uitest.rule.MainInitializerRule
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import kotlinx.coroutines.runBlocking
 import me.proton.core.auth.domain.entity.SessionInfo
@@ -61,7 +63,7 @@ open class BaseTest(
     val hiltInjectRule = HiltInjectRule(hiltRule)
 
     @get:Rule(order = RuleOrder_30_ActivityLaunch)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+    val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @Inject
     lateinit var loginTestHelper: LoginTestHelper
@@ -73,6 +75,8 @@ open class BaseTest(
     open fun setup() {
         setupDeviceForAutomation(true)
         loginTestHelper.logoutAll()
+
+        ActivityScenario.launch(MainActivity::class.java)
     }
 
     @After
