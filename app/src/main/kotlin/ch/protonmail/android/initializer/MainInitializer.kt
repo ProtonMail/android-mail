@@ -50,7 +50,8 @@ class MainInitializer : Initializer<Unit> {
         EventManagerInitializer::class.java,
         LoggerInitializer::class.java,
         StrictModeInitializer::class.java,
-        ThemeObserverInitializer::class.java
+        ThemeObserverInitializer::class.java,
+        NotificationInitializer::class.java
     )
 
     private fun releaseOnlyDependenciesIfNeeded() =

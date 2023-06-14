@@ -16,22 +16,32 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.dagger
+package ch.protonmail.android.initializer
 
-import android.app.NotificationManager
 import android.content.Context
-import dagger.Module
-import dagger.Provides
+import androidx.startup.Initializer
+import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
+import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 
-@Module
-@InstallIn(SingletonComponent::class)
-object NotificationCommonModule {
+class NotificationInitializer : Initializer<Unit> {
 
-    @Provides
-    fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager =
-        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    override fun create(context: Context) {
+        EntryPointAccessors.fromApplication(
+            context.applicationContext,
+            NotificationInitializerEntryPoint::class.java
+        ).notificationProvider().initNotificationChannels()
+    }
+
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface NotificationInitializerEntryPoint {
+
+        fun notificationProvider(): NotificationProvider
+    }
 
 }

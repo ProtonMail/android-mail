@@ -20,54 +20,38 @@ package ch.protonmail.android.mailcommon.presentation.system
 
 import android.app.Notification
 import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import ch.protonmail.android.mailcommon.presentation.R
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
 typealias ChannelId = String
 
-interface NotificationProvider {
+@Singleton
+class NotificationProvider @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val notificationManager: NotificationManager
+) {
 
-    fun provideNotificationChannel(
-        context: Context,
-        channelId: ChannelId,
-        @StringRes channelName: Int,
-        @StringRes channelDescription: Int,
-        importance: Int = NotificationManagerCompat.IMPORTANCE_DEFAULT
-    ): NotificationChannel
+    fun initNotificationChannels() {
+        // Attachments
+        createNotificationChannel(
+            context = context,
+            channelId = ATTACHMENT_CHANNEL_ID,
+            channelName = R.string.attachment_download_notification_channel_name,
+            channelDescription = R.string.attachment_download_notification_channel_description
+        )
+    }
+
+    fun provideNotificationChannel(channelId: ChannelId): NotificationChannel =
+        notificationManager.getNotificationChannel(channelId)
+
 
     fun provideNotification(
-        context: Context,
-        channel: NotificationChannel,
-        @StringRes title: Int
-    ): Notification
-
-    companion object {
-
-        const val ATTACHMENT_CHANNEL_ID: ChannelId = "attachment_channel_id"
-    }
-
-}
-
-class NotificationProviderImpl : NotificationProvider {
-
-    override fun provideNotificationChannel(
-        context: Context,
-        channelId: ChannelId,
-        @StringRes channelName: Int,
-        @StringRes channelDescription: Int,
-        importance: Int
-    ): NotificationChannel {
-        val channelNameString = context.getString(channelName)
-        val channelDescriptionString = context.getString(channelDescription)
-        return NotificationChannel(channelId, channelNameString, importance).apply {
-            description = channelDescriptionString
-        }
-    }
-
-    override fun provideNotification(
         context: Context,
         channel: NotificationChannel,
         @StringRes title: Int
@@ -77,5 +61,25 @@ class NotificationProviderImpl : NotificationProvider {
             setSmallIcon(R.drawable.ic_logo_mail_no_bg)
             setOngoing(true)
         }.build()
+    }
+
+    private fun createNotificationChannel(
+        context: Context,
+        channelId: ChannelId,
+        @StringRes channelName: Int,
+        @StringRes channelDescription: Int,
+        importance: Int = NotificationManager.IMPORTANCE_DEFAULT
+    ) {
+        val channelNameString = context.getString(channelName)
+        val channelDescriptionString = context.getString(channelDescription)
+        val notificationChannel = NotificationChannel(channelId, channelNameString, importance).apply {
+            description = channelDescriptionString
+        }
+        notificationManager.createNotificationChannel(notificationChannel)
+    }
+
+    companion object {
+
+        const val ATTACHMENT_CHANNEL_ID: ChannelId = "attachment_channel_id"
     }
 }

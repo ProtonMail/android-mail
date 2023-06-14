@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmessage.data.remote.worker
 
 import android.app.Notification
 import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
@@ -30,9 +29,9 @@ import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailmessage.data.R
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
-import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.data.remote.AttachmentApi
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -47,7 +46,6 @@ class GetAttachmentWorker @AssistedInject constructor(
     @Assisted private val workerParameters: WorkerParameters,
     private val apiProvider: ApiProvider,
     private val attachmentLocalDataSource: AttachmentLocalDataSource,
-    private val notificationManager: NotificationManager,
     private val notificationProvider: NotificationProvider
 ) : CoroutineWorker(context, workerParameters) {
 
@@ -104,20 +102,8 @@ class GetAttachmentWorker @AssistedInject constructor(
     }
 
     private fun createForegroundInfo(attachmentId: AttachmentId): ForegroundInfo {
-        val notificationChannel = createNotificationChannel()
-        notificationManager.createNotificationChannel(notificationChannel)
-        return ForegroundInfo(attachmentId.id.hashCode(), createNotification(notificationChannel))
-    }
-
-    private fun createNotificationChannel(): NotificationChannel {
-        val channelName = R.string.attachment_download_notification_channel_name
-        val channelDescription = R.string.attachment_download_notification_channel_description
-        return notificationProvider.provideNotificationChannel(
-            context = context,
-            channelId = NotificationProvider.ATTACHMENT_CHANNEL_ID,
-            channelName = channelName,
-            channelDescription = channelDescription
-        )
+        val channel = notificationProvider.provideNotificationChannel(NotificationProvider.ATTACHMENT_CHANNEL_ID)
+        return ForegroundInfo(attachmentId.id.hashCode(), createNotification(channel))
     }
 
     private fun createNotification(notificationChannel: NotificationChannel): Notification {

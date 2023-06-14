@@ -22,7 +22,6 @@ import java.net.UnknownHostException
 import java.util.UUID
 import android.app.Notification
 import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import androidx.work.ListenableWorker.Result
 import androidx.work.OneTimeWorkRequest
@@ -83,14 +82,10 @@ class GetAttachmentWorkerTest {
         every { getString(any()) } returns "test"
     }
 
-    private val notificationManager = mockk<NotificationManager>(relaxUnitFun = true)
     private val notificationProvider = mockk<NotificationProvider>(relaxUnitFun = true) {
         every {
             provideNotificationChannel(
-                context = context,
-                channelId = NotificationProvider.ATTACHMENT_CHANNEL_ID,
-                channelName = R.string.attachment_download_notification_channel_name,
-                channelDescription = R.string.attachment_download_notification_channel_description
+                channelId = NotificationProvider.ATTACHMENT_CHANNEL_ID
             )
         } returns mockedChannel
         every {
@@ -188,12 +183,7 @@ class GetAttachmentWorkerTest {
                 attachmentId = attachmentId,
                 status = AttachmentWorkerStatus.Running
             )
-            notificationProvider.provideNotificationChannel(
-                context = context,
-                channelId = NotificationProvider.ATTACHMENT_CHANNEL_ID,
-                channelName = R.string.attachment_download_notification_channel_name,
-                channelDescription = R.string.attachment_download_notification_channel_description
-            )
+            notificationProvider.provideNotificationChannel(channelId = NotificationProvider.ATTACHMENT_CHANNEL_ID)
             notificationProvider.provideNotification(
                 context = context,
                 channel = mockedChannel,
@@ -227,12 +217,7 @@ class GetAttachmentWorkerTest {
                 attachmentId,
                 AttachmentWorkerStatus.Running
             )
-            notificationProvider.provideNotificationChannel(
-                context = context,
-                channelId = NotificationProvider.ATTACHMENT_CHANNEL_ID,
-                channelName = R.string.attachment_download_notification_channel_name,
-                channelDescription = R.string.attachment_download_notification_channel_description
-            )
+            notificationProvider.provideNotificationChannel(channelId = NotificationProvider.ATTACHMENT_CHANNEL_ID)
             notificationProvider.provideNotification(
                 context = context,
                 channel = mockedChannel,
@@ -252,7 +237,6 @@ class GetAttachmentWorkerTest {
         parameters,
         apiProvider,
         attachmentLocalDataSource,
-        notificationManager,
         notificationProvider
     )
 }
