@@ -18,10 +18,27 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model
 
-internal sealed interface ComposerOperation
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
-internal sealed interface ComposerAction : ComposerOperation {
-    data class RecipientsToChanged(val recipients: List<RecipientUiModel>) : ComposerAction
-    data class RecipientsCcChanged(val recipients: List<RecipientUiModel>) : ComposerAction
-    data class RecipientsBccChanged(val recipients: List<RecipientUiModel>) : ComposerAction
+sealed class ComposerDraftState {
+    data class Submittable(
+        val draftId: MessageId,
+        val to: List<RecipientUiModel>,
+        val cc: List<RecipientUiModel>,
+        val bcc: List<RecipientUiModel>,
+        val subject: String,
+        val body: String
+    ) : ComposerDraftState()
+
+    companion object {
+
+        fun empty(draftId: MessageId): ComposerDraftState = Submittable(
+            draftId = draftId,
+            to = emptyList(),
+            cc = emptyList(),
+            bcc = emptyList(),
+            subject = "",
+            body = ""
+        )
+    }
 }

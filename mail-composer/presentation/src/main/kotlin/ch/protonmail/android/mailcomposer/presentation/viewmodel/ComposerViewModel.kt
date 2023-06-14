@@ -21,20 +21,52 @@ package ch.protonmail.android.mailcomposer.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
+import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
-    private val provideNewDraftId: ProvideNewDraftId
+    provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
 
+    private val mutableState = MutableStateFlow(ComposerDraftState.empty(provideNewDraftId()))
+    val state: StateFlow<ComposerDraftState> = mutableState
+
     init {
-        Timber.d(provideNewDraftId().toString())
+        Timber.d(state.value.toString())
     }
 
     internal fun submit(action: ComposerAction) {
-        Timber.d(action.toString())
+        when (action) {
+            is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(action.recipients)
+            is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(action.recipients)
+            is ComposerAction.RecipientsToChanged -> updateRecipientsTo(action.recipients)
+        }
+    }
+
+    private fun updateRecipientsTo(recipients: List<RecipientUiModel>) {
+        val currentState = state.value
+        mutableState.value = when (currentState) {
+            is ComposerDraftState.Submittable -> currentState.copy(to = recipients)
+        }
+    }
+
+    private fun updateRecipientsCc(recipients: List<RecipientUiModel>) {
+        val currentState = state.value
+        mutableState.value = when (currentState) {
+            is ComposerDraftState.Submittable -> currentState.copy(cc = recipients)
+        }
+    }
+
+    private fun updateRecipientsBcc(recipients: List<RecipientUiModel>) {
+        val currentState = state.value
+        mutableState.value = when (currentState) {
+            is ComposerDraftState.Submittable -> currentState.copy(bcc = recipients)
+        }
     }
 }

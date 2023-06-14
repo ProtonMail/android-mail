@@ -18,10 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model
 
-internal sealed interface ComposerOperation
-
-internal sealed interface ComposerAction : ComposerOperation {
-    data class RecipientsToChanged(val recipients: List<RecipientUiModel>) : ComposerAction
-    data class RecipientsCcChanged(val recipients: List<RecipientUiModel>) : ComposerAction
-    data class RecipientsBccChanged(val recipients: List<RecipientUiModel>) : ComposerAction
+sealed class RecipientUiModel {
+    data class Valid(val address: String) : RecipientUiModel()
+    data class Invalid(val address: String) : RecipientUiModel()
 }

@@ -26,7 +26,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -42,45 +41,52 @@ import androidx.compose.ui.focus.onFocusChanged
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun <FocusedField> FocusableForm(
+    fieldList: List<FocusedField>,
     initialFocus: FocusedField,
-    content: @Composable FocusableFormScope<FocusedField>.() -> Unit
+    content: @Composable FocusableFormScope<FocusedField>.(Map<FocusedField, FocusRequester>) -> Unit
 ) {
     var focusedField by rememberSaveable(inputs = emptyArray()) { mutableStateOf(initialFocus) }
-    val focusRequester = remember { FocusRequester() }
-    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    val focusRequesters: Map<FocusedField, FocusRequester> = fieldList.associateWith { FocusRequester() }
+    val bringIntoViewRequesters: Map<FocusedField, BringIntoViewRequester> =
+        fieldList.associateWith { BringIntoViewRequester() }
     val isKeyboardVisible by keyboardVisibilityAsState()
     val onFieldFocused: (FocusedField) -> Unit = { focusedField = it }
 
-    FocusableFormScope(focusedField, focusRequester, bringIntoViewRequester, onFieldFocused).content()
+    FocusableFormScope(focusRequesters, bringIntoViewRequesters, onFieldFocused).content(focusRequesters)
 
     LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
+        if (focusedField != initialFocus) {
+            focusRequesters[focusedField]?.requestFocus()
+        } else {
+            focusRequesters[initialFocus]?.requestFocus()
+        }
     }
 
     // This is a workaround as the keyboard needs to be fully visible before the composable can be brought into
     // the view, otherwise the bringIntoView() call has no effect.
     // See https://kotlinlang.slack.com/archives/CJLTWPH7S/p1683542940483379 for more context.
     LaunchedEffect(isKeyboardVisible) {
-        bringIntoViewRequester.bringIntoView()
+        bringIntoViewRequesters[focusedField]?.bringIntoView()
     }
 }
 
 class FocusableFormScope<FocusedField> @OptIn(ExperimentalFoundationApi::class) constructor(
-    private val currentFocus: FocusedField,
-    private val focusRequester: FocusRequester,
-    private val bringIntoViewRequester: BringIntoViewRequester,
+    private val focusRequesters: Map<FocusedField, FocusRequester>,
+    private val bringIntoViewRequesters: Map<FocusedField, BringIntoViewRequester>,
     private val onFieldFocused: (focusedField: FocusedField) -> Unit
 ) {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Stable
-    fun Modifier.retainFieldFocusOnConfigurationChange(fieldType: FocusedField): Modifier =
-        if (currentFocus == fieldType) {
-            focusRequester(focusRequester)
-                .bringIntoViewRequester(bringIntoViewRequester)
+    fun Modifier.retainFieldFocusOnConfigurationChange(fieldType: FocusedField): Modifier {
+        val focusRequester = focusRequesters[fieldType]
+        val bringIntoViewRequester = bringIntoViewRequesters[fieldType]
+        return if (focusRequester != null && bringIntoViewRequester != null) {
+            focusRequester(focusRequester).bringIntoViewRequester(bringIntoViewRequester)
         } else {
             this
         }.onFocusChanged {
             if (it.isFocused) onFieldFocused(fieldType)
         }
+    }
 }
