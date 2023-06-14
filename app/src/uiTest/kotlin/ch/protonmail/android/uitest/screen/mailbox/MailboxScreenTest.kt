@@ -38,13 +38,15 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
+import ch.protonmail.android.uitest.models.avatar.AvatarInitial
+import ch.protonmail.android.uitest.models.folders.MailLabelEntry
+import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.emptyListSection
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.progressListSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
-import ch.protonmail.android.uitest.robot.mailbox.verify
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.ManagedState
 import ch.protonmail.android.uitest.util.StateManager
@@ -59,6 +61,14 @@ internal class MailboxScreenTest {
 
     @get:Rule
     val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+
+    private val topMailboxItem = MailboxListItemEntry(
+        index = 0,
+        avatarInitial = AvatarInitial.WithText("T"),
+        participants = "",
+        subject = "1",
+        date = "10:42"
+    )
 
     @Test
     fun whenLoadingThenProgressIsDisplayed() {
@@ -79,7 +89,11 @@ internal class MailboxScreenTest {
         val items = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
         val robot = setupScreen(state = mailboxState, items = items)
 
-        robot.verify { itemWithSubjectIsDisplayed(items.first().subject) }
+        robot.listSection {
+            verify {
+                listItemsAreShown(topMailboxItem.copy(subject = items.first().subject))
+            }
+        }
     }
 
     @Test
@@ -94,9 +108,14 @@ internal class MailboxScreenTest {
         val item = MailboxItemUiModelTestData.buildMailboxUiModelItem(
             labels = persistentListOf(label)
         )
+        val mailboxItem = topMailboxItem.copy(
+            labels = listOf(MailLabelEntry(index = 0, name = label.name)),
+            subject = "0"
+        )
+
         val robot = setupScreen(state = mailboxState, items = listOf(item))
 
-        robot.verify { itemLabelIsDisplayed(label.name) }
+        robot.listSection { verify { listItemsAreShown(mailboxItem) } }
     }
 
     @Test
@@ -174,20 +193,19 @@ internal class MailboxScreenTest {
             }
         }
 
-        robot
-            .verify { itemWithSubjectIsDisplayed(subject = "1") }
-            .listSection { scrollToItemAtIndex(index = 99) }
+        robot.listSection {
+            verify { listItemsAreShown(topMailboxItem) }
+            scrollToItemAtIndex(99)
 
-        stateManager.emitNext()
+            stateManager.emitNext()
 
-        robot
-            .verify { itemWithSubjectIsDisplayed(subject = "1") }
-            .listSection { scrollToItemAtIndex(index = 99) }
+            verify { listItemsAreShown(topMailboxItem) }
+            scrollToItemAtIndex(99)
 
-        stateManager.emitNext()
+            stateManager.emitNext()
 
-        robot
-            .verify { itemWithSubjectIsDisplayed(subject = "1") }
+            verify { listItemsAreShown(topMailboxItem) }
+        }
     }
 
     private fun setupManagedState(content: @Composable () -> Unit): MailboxRobot = mailboxRobot {

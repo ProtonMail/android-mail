@@ -20,7 +20,6 @@ package ch.protonmail.android.uitest.robot.mailbox
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
@@ -37,20 +36,6 @@ internal class MailboxRobot : ComposeRobot() {
 
         fun isShown() {
             rootItem.awaitDisplayed(composeTestRule).assertIsDisplayed()
-        }
-
-        // TODO remove as part of MAILANDR-578
-        fun itemLabelIsDisplayed(label: String) {
-            composeTestRule.onNodeWithText(label)
-                .awaitDisplayed(composeTestRule)
-                .assertIsDisplayed()
-        }
-
-        // TODO remove as part of MAILANDR-578
-        fun itemWithSubjectIsDisplayed(subject: String) {
-            composeTestRule.onNodeWithText(subject)
-                .awaitDisplayed(composeTestRule)
-                .assertIsDisplayed()
         }
     }
 }
