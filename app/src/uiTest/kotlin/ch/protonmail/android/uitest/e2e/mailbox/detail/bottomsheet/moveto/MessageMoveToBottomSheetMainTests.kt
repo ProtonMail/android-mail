@@ -54,7 +54,7 @@ internal class MessageMoveToBottomSheetMainTests : MockedNetworkTest(loginStrate
 
     @Test
     @TestId("185410")
-    fun checkMoveToBottomSheetComponentsInConversationMode() {
+    fun checkMoveToBottomSheetComponentsInMessageMode() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
