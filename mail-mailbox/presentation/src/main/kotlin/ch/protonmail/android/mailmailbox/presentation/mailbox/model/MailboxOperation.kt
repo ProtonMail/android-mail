@@ -34,6 +34,11 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object Refresh : MailboxViewAction, MailboxOperation.AffectingMailboxList
     object EnableUnreadFilter : MailboxViewAction, MailboxOperation.AffectingUnreadFilter
     object DisableUnreadFilter : MailboxViewAction, MailboxOperation.AffectingUnreadFilter
+    /*
+     *`OnOfflineWithData` and `OnErrorWithData` are not actual Actions which are actively performed by the user
+     * but rather "Events" which happen when loading mailbox items. They are represented as actions due to
+     * limitations of the paging library, which delivers such events on the Composable. See commit 7c3f88 for more.
+     */
     object OnOfflineWithData : MailboxViewAction, MailboxOperation.AffectingMailboxList
     object OnErrorWithData : MailboxViewAction, MailboxOperation.AffectingMailboxList
 }
