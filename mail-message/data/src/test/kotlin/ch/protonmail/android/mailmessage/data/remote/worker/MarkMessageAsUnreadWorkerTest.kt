@@ -55,7 +55,7 @@ internal class MarkMessageAsUnreadWorkerTest {
 
     private val apiProvider: ApiProvider = mockk {
         coEvery { get<MessageApi>(userId).invoke<MarkUnreadResponse>(block = any()) } coAnswers {
-            val block = secondArg<suspend MessageApi.() -> MarkUnreadResponse>()
+            val block = firstArg<suspend MessageApi.() -> MarkUnreadResponse>()
             try {
                 ApiResult.Success(block(messageApi))
             } catch (e: Exception) {

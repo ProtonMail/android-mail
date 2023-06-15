@@ -73,6 +73,7 @@ object UserTestData {
         services = 1,
         subscribed = subscribed,
         usedSpace = USED_SPACE_RAW,
-        userId = userId
+        userId = userId,
+        recovery = null
     )
 }

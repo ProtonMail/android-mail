@@ -48,6 +48,7 @@ object UserSample {
         services = 1,
         subscribed = 1,
         usedSpace = 512,
-        userId = userId
+        userId = userId,
+        recovery = null
     )
 }

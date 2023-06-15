@@ -41,6 +41,7 @@ object UserEntitySample {
         services = user.services,
         subscribed = user.subscribed,
         usedSpace = user.usedSpace,
-        userId = user.userId
+        userId = user.userId,
+        recovery = null
     )
 }
