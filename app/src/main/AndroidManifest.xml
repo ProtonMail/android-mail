@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2022 Proton Technologies AG
   ~ This file is part of Proton Technologies AG and Proton Mail.
   ~
@@ -58,55 +57,60 @@
             <meta-data
                 android:name="ch.protonmail.android.initializer.AccountStateHandlerInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.SentryInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.EventManagerInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.LoggerInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.MainInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.strictmode.StrictModeInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.ThemeObserverInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
             <meta-data
                 android:name="ch.protonmail.android.initializer.WorkManagerInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
 
             <meta-data
                 android:name="me.proton.core.auth.presentation.MissingScopeInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
 
             <meta-data
                 android:name="me.proton.core.humanverification.presentation.HumanVerificationInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
 
             <meta-data
                 android:name="me.proton.core.network.presentation.init.UnAuthSessionFetcherInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
 
             <meta-data
                 android:name="me.proton.core.plan.presentation.UnredeemedPurchaseInitializer"
                 android:value="androidx.startup"
-                tools:node="remove"/>
+                tools:node="remove" />
+
+            <meta-data
+                android:name="ch.protonmail.android.initializer.NotificationInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
 
             <!--
              Left Initializers:
@@ -140,7 +144,7 @@
         <activity
             android:name="me.proton.core.auth.presentation.ui.AddAccountActivity"
             android:theme="@style/ProtonTheme.Mail.AddAccount"
-            tools:replace="theme"/>
+            tools:replace="theme" />
         <activity
             android:name="me.proton.core.payment.presentation.ui.BillingActivity"
             android:theme="@style/ProtonTheme.Mail" />
