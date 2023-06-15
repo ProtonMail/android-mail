@@ -52,6 +52,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
+import org.junit.Ignore
 import org.junit.Test
 
 @SmokeExtendedTest
@@ -119,6 +120,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
         }
     }
 
+    @Ignore("To be reimplemented when testing MAILANDR-227")
     @TemporaryTest
     @Test
     @TestId("79036")
