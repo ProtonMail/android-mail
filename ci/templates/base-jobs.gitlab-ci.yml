@@ -30,6 +30,7 @@ cache: &cache
     *cache
 
 .firebase_deploy_job:
+  interruptible: false
   stage: deploy
   dependencies:
     - build_alpha_release
