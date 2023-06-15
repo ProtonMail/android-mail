@@ -86,7 +86,7 @@ class ApiResultEitherMappingTest {
     @Test
     fun `returns unreachable on connection error`() {
         // given
-        val apiResult = ApiResult.Error.Connection(potentialBlock = false)
+        val apiResult = ApiResult.Error.Connection(isConnectedToNetwork = false)
 
         // when
         val result = apiResult.toEither()
@@ -99,7 +99,7 @@ class ApiResultEitherMappingTest {
     fun `returns no network on connection error due to unknown host exception`() {
         // given
         val apiResult = ApiResult.Error.Connection(
-            potentialBlock = false,
+            isConnectedToNetwork = false,
             cause = UnknownHostException(
                 "Unable to resolve host \"mail-api.proton.me\": No address associated with hostname"
             )

@@ -24,7 +24,8 @@ object SessionSample {
 
     val Primary = build()
 
-    fun build() = Session(
+    fun build() = Session.Authenticated(
+        userId = UserIdSample.Primary,
         accessToken = "accessToken",
         refreshToken = "refreshToken",
         scopes = listOf("Mail"),
