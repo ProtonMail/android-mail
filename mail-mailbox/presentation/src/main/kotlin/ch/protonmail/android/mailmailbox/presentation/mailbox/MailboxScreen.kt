@@ -225,26 +225,33 @@ private fun MailboxSwipeRefresh(
             is MailboxScreenState.Loading -> ProtonCenteredProgress(
                 modifier = Modifier.testTag(MailboxScreenTestTags.ListProgress)
             )
+
             is MailboxScreenState.Error -> MailboxError(
                 errorMessage = stringResource(id = R.string.mailbox_error_message_generic)
             )
+
             is MailboxScreenState.UnexpectedError -> MailboxError(
                 errorMessage = stringResource(id = R.string.mailbox_error_message_unexpected)
             )
+
             is MailboxScreenState.Offline -> MailboxError(
                 errorMessage = stringResource(id = R.string.mailbox_error_message_offline)
             )
+
             is MailboxScreenState.Empty -> MailboxError(
                 errorMessage = stringResource(id = R.string.mailbox_is_empty_message)
             )
+
             is MailboxScreenState.OfflineWithData -> {
                 LaunchedEffect(currentViewState) { actions.showOfflineSnackbar() }
                 MailboxItemsList(listState, currentViewState, items, actions)
             }
+
             is MailboxScreenState.ErrorWithData -> {
                 LaunchedEffect(currentViewState) { actions.showRefreshErrorSnackbar() }
                 MailboxItemsList(listState, currentViewState, items, actions)
             }
+
             is MailboxScreenState.LoadingWithData,
             is MailboxScreenState.AppendLoading,
             is MailboxScreenState.AppendError,
@@ -284,15 +291,20 @@ private fun MailboxItemsList(
         }
         item {
             when (viewState) {
-                is MailboxScreenState.AppendLoading -> ProtonCenteredProgress(Modifier.fillMaxWidth())
+                is MailboxScreenState.AppendLoading -> ProtonCenteredProgress(
+                    Modifier.padding(ProtonDimens.DefaultSpacing)
+                )
+
                 is MailboxScreenState.AppendOfflineError -> AppendError(
                     message = stringResource(id = R.string.mailbox_error_message_offline),
                     onClick = { items.retry() }
                 )
+
                 is MailboxScreenState.AppendError -> AppendError(
                     message = stringResource(id = R.string.mailbox_error_message_generic),
                     onClick = { items.retry() }
                 )
+
                 else -> Unit
             }
         }
@@ -308,6 +320,11 @@ private fun AppendError(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .padding(
+                top = ProtonDimens.DefaultSpacing,
+                start = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing
+            )
             .testTag(MailboxScreenTestTags.MailboxAppendError),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
