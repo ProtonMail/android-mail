@@ -19,35 +19,58 @@
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcomposer.domain.usecase.HandleDraftBodyChange
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
-import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
+import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
+import me.proton.core.user.domain.UserAddressManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import timber.log.Timber
+import kotlinx.coroutines.flow.first
+import me.proton.core.user.domain.entity.UserAddress
 import javax.inject.Inject
 
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
-    provideNewDraftId: ProvideNewDraftId,
     private val reducer: ComposerReducer,
-    private val isValidEmailAddress: IsValidEmailAddress
+    private val isValidEmailAddress: IsValidEmailAddress,
+    private val handleEditedDraftBodyChange: HandleDraftBodyChange,
+    private val observePrimaryUserId: ObservePrimaryUserId,
+    private val userAddressManager: UserAddressManager,
+    provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
+
+    private val messageId = MessageId(provideNewDraftId().id)
 
     private val mutableState = MutableStateFlow(ComposerDraftState.empty(provideNewDraftId()))
     val state: StateFlow<ComposerDraftState> = mutableState
 
-    init {
-        Timber.d(state.value.toString())
-    }
-
     internal fun submit(action: ComposerAction) {
+        if (action is ComposerAction.DraftBodyChanged) {
+            viewModelScope.launch {
+                handleEditedDraftBodyChange(messageId, action.draftBody, senderAddress())
+            }
+        }
         val currentState = state.value
         mutableState.value = reducer.newStateFrom(currentState, action)
     }
 
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
+
+    // This is a temp code till we implement senders properly
+    private suspend fun senderAddress(): UserAddress = observePrimaryUserId()
+        .filterNotNull()
+        .flatMapLatest { userId -> userAddressManager.observeAddresses(userId) }
+        .filterNotNull()
+        .first()
+        .first()
 }

@@ -59,13 +59,14 @@ android {
 
 dependencies {
     implementation(Dependencies.modulePresentationLibs)
-
-    debugImplementation(Dependencies.composeDebugLibs)
-
+    implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-composer:domain"))
     implementation(project(":mail-message:domain"))
     implementation(project(":uicomponents"))
 
+    debugImplementation(Dependencies.composeDebugLibs)
+
     testImplementation(Dependencies.testLibs)
+    testImplementation(project(":test:utils"))
 }
