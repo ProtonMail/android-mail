@@ -19,7 +19,9 @@
 package ch.protonmail.android.mailcommon.data.dagger
 
 import ch.protonmail.android.mailcommon.data.system.DeviceCapabilitiesImpl
+import ch.protonmail.android.mailcommon.data.system.ParcelFileDescriptorProviderImpl
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
+import ch.protonmail.android.mailcommon.domain.system.ParcelFileDescriptorProvider
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -35,5 +37,8 @@ object MailCommonDataModule {
 
         @Binds
         fun bindDeviceCapabilities(impl: DeviceCapabilitiesImpl): DeviceCapabilities
+
+        @Binds
+        fun bindParcelFileDescriptorProvider(impl: ParcelFileDescriptorProviderImpl): ParcelFileDescriptorProvider
     }
 }

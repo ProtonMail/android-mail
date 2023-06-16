@@ -48,6 +48,9 @@ dependencies {
     implementation(Proton.Core.label)
     implementation(KotlinX.serializationJson)
 
+    implementation(Dagger.hiltAndroid)
+    kapt(Dagger.hiltDaggerCompiler)
+
     implementation(project(":mail-pagination:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-label:domain"))

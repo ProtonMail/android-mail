@@ -29,7 +29,7 @@ object MessageAttachmentTestData {
         size = 5678,
         mimeType = "application/pdf",
         disposition = null,
-        keyPackets = null,
+        keyPackets = "keyPackets",
         signature = null,
         encSignature = null,
         headers = emptyMap()
