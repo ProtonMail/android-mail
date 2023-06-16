@@ -284,7 +284,8 @@ private fun MailboxItemsList(
 ) {
     LazyColumn(
         state = listState,
-        modifier = Modifier.testTag(MailboxScreenTestTags.List)
+        modifier = Modifier
+            .testTag(MailboxScreenTestTags.List)
             .fillMaxSize()
             .let { if (BuildConfig.DEBUG) it.verticalScrollbar(listState) else it }
     ) {
@@ -363,7 +364,11 @@ private fun MailboxError(modifier: Modifier = Modifier, errorMessage: String) {
             ),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = errorMessage, textAlign = TextAlign.Center)
+        Text(
+            modifier = Modifier.testTag(MailboxScreenTestTags.MailboxErrorMessage),
+            text = errorMessage,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -445,8 +450,8 @@ object MailboxScreenTestTags {
 
     const val List = "MailboxList"
     const val ListProgress = "MailboxListProgress"
-    const val MailboxEmpty = "MailboxEmpty"
     const val MailboxError = "MailboxError"
+    const val MailboxErrorMessage = "MailboxErrorMessage"
     const val MailboxAppendError = "MailboxAppendError"
     const val Root = "MailboxScreen"
 }

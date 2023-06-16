@@ -27,6 +27,9 @@
     <string name="test_label_title_trash">Trash</string>
     <string name="test_label_title_all_mail">All mail</string>
 
+    <!-- Mailbox messages -->
+    <string name="test_mailbox_is_empty_message">This mailbox is empty</string>
+
     <!-- Composer -->
     <string name="test_composer_sender_label">From:</string>
     <string name="test_composer_recipient_label">To:</string>
