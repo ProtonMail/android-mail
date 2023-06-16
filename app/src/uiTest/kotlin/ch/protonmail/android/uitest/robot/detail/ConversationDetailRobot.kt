@@ -29,7 +29,6 @@ import ch.protonmail.android.uitest.util.awaitDisplayed
 @AsDsl
 internal class ConversationDetailRobot : ComposeRobot() {
 
-
     @VerifiesOuter
     inner class Verify : ComposeSectionRobot() {
 

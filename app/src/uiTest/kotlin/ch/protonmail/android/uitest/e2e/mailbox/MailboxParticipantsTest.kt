@@ -90,7 +90,7 @@ internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = Login
                     withStatusCode 200 ignoreQueryParams true,
                 "/mail/v4/messages"
                     respondWith "/mail/v4/messages/messages_77426.json"
-                    withStatusCode 200 ignoreQueryParams true,
+                    withStatusCode 200 ignoreQueryParams true
             )
         }
 

@@ -60,7 +60,6 @@ internal class AccountSettingsRobot : ComposeRobot() {
         composeTestRule.waitForIdle()
     }
 
-
     @VerifiesOuter
     inner class Verify {
 

@@ -70,7 +70,10 @@ internal class AlternativeRoutingSettingScreenTest {
     @Test
     fun testSwitchIsNotCheckedIfAlternativeRoutingSettingIsNotEnabled() {
         setupScreenWithState(
-            AlternativeRoutingSettingState.Data(isEnabled = false, alternativeRoutingSettingErrorEffect = Effect.empty())
+            AlternativeRoutingSettingState.Data(
+                isEnabled = false,
+                alternativeRoutingSettingErrorEffect = Effect.empty()
+            )
         )
 
         composeTestRule

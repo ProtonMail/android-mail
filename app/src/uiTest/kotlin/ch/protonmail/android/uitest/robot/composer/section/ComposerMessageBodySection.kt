@@ -46,7 +46,6 @@ internal class ComposerMessageBodySection : ComposeSectionRobot() {
         messageBodyText.performTextInput(value)
     }
 
-
     @VerifiesOuter
     inner class Verify {
 

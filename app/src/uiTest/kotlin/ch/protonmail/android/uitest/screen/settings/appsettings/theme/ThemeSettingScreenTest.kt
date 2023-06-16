@@ -126,7 +126,6 @@ internal class ThemeSettingScreenTest {
         assertEquals(DARK, selectedTheme)
     }
 
-
     private fun setupScreenWithLightTheme() {
         setupScreenWithState(
             Data(
@@ -162,7 +161,6 @@ internal class ThemeSettingScreenTest {
         ThemeUiModel(DARK, string.mail_settings_theme_dark, isDark)
     )
 
-
     private fun setupScreenWithState(
         state: Data,
         onThemeSelected: (Theme) -> Unit = {}
@@ -177,5 +175,4 @@ internal class ThemeSettingScreenTest {
             }
         }
     }
-
 }

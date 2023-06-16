@@ -156,10 +156,9 @@ internal class MailboxTopAppBarTest {
     private fun SemanticsNodeInteractionsProvider.onHamburgerIconButton() =
         onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_menu_button_content_description))
 
-    private fun SemanticsNodeInteractionsProvider.onExitSelectionModeIconButton() =
-        onNodeWithContentDescription(
-            context.getString(R.string.mailbox_toolbar_exit_selection_mode_button_content_description)
-        )
+    private fun SemanticsNodeInteractionsProvider.onExitSelectionModeIconButton() = onNodeWithContentDescription(
+        context.getString(R.string.mailbox_toolbar_exit_selection_mode_button_content_description)
+    )
 
     private fun SemanticsNodeInteractionsProvider.onSearchIconButton() =
         onNodeWithContentDescription(context.getString(R.string.mailbox_toolbar_search_button_content_description))
@@ -174,4 +173,3 @@ internal class MailboxTopAppBarTest {
         const val SELECTED_COUNT_TEN = 10
     }
 }
-

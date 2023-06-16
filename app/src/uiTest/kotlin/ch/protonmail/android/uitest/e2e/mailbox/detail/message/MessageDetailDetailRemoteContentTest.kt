@@ -46,7 +46,6 @@ import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Test
 
-
 @SmokeTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)

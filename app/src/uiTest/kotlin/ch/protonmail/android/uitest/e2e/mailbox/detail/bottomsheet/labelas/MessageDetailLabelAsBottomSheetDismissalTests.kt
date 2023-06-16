@@ -68,7 +68,7 @@ internal class MessageDetailLabelAsBottomSheetDismissalTests :
                     withStatusCode 200 ignoreQueryParams true,
                 "/mail/v4/messages/*"
                     respondWith "/mail/v4/messages/message-id/message-id_79354.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
+                    withStatusCode 200 matchWildcards true serveOnce true
             )
         }
 
