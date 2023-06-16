@@ -20,9 +20,11 @@ package ch.protonmail.android.mailmessage.dagger
 
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSourceImpl
+import ch.protonmail.android.mailmessage.data.local.provider.AttachmentFileUriProviderImpl
 import ch.protonmail.android.mailmessage.data.remote.AttachmentRemoteDataSource
 import ch.protonmail.android.mailmessage.data.remote.AttachmentRemoteDataSourceImpl
 import ch.protonmail.android.mailmessage.data.repository.AttachmentRepositoryImpl
+import ch.protonmail.android.mailmessage.domain.AttachmentFileUriProvider
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import dagger.Binds
 import dagger.Module
@@ -49,4 +51,10 @@ abstract class MailAttachmentModule {
     @Binds
     @Singleton
     abstract fun bindAttachmentRepository(attachmentRepositoryImpl: AttachmentRepositoryImpl): AttachmentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAttachmentFileUriProvider(
+        attachmentFileUriProviderImpl: AttachmentFileUriProviderImpl
+    ): AttachmentFileUriProvider
 }
