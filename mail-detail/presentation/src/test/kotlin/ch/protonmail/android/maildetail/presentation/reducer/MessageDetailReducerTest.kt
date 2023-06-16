@@ -35,6 +35,8 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
@@ -62,7 +64,7 @@ class MessageDetailReducerTest(
     }
 
     private val messageBodyReducer: MessageBodyReducer = mockk {
-        every { newStateFrom(any()) } returns reducedState.messageBodyState
+        every { newStateFrom(any(), any()) } returns reducedState.messageBodyState
     }
 
     private val bottomBarReducer: BottomBarReducer = mockk {
@@ -98,6 +100,7 @@ class MessageDetailReducerTest(
         if (shouldReduceMessageBodyState) {
             verify {
                 messageBodyReducer.newStateFrom(
+                    currentState.messageBodyState,
                     operation as MessageDetailOperation.AffectingMessageBody
                 )
             }
@@ -411,6 +414,19 @@ class MessageDetailReducerTest(
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true,
+                shouldReduceOpenMessageBodyLinkEffect = false
+            ),
+            TestInput(
+                MessageDetailEvent.AttachmentStatusChanged(
+                    attachmentId = AttachmentId("attachmentId"),
+                    status = AttachmentWorkerStatus.Running
+                ),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = true,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false,
                 shouldReduceOpenMessageBodyLinkEffect = false
             )
         )

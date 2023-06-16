@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class MessageBodyReducer @Inject constructor() {
 
     fun newStateFrom(
+        messageBodyState: MessageBodyState,
         event: MessageDetailOperation.AffectingMessageBody
     ): MessageBodyState {
         return when (event) {
@@ -34,6 +36,34 @@ class MessageBodyReducer @Inject constructor() {
             is MessageDetailEvent.MessageBodyEvent -> MessageBodyState.Data(event.messageBody)
             is MessageDetailEvent.ErrorGettingMessageBody -> MessageBodyState.Error.Data(event.isNetworkError)
             is MessageDetailEvent.ErrorDecryptingMessageBody -> MessageBodyState.Error.Decryption(event.messageBody)
+            is MessageDetailEvent.AttachmentStatusChanged ->
+                messageBodyState.newMessageBodyStateFromAttachmentStatus(event)
         }
     }
+
+    private fun MessageBodyState.newMessageBodyStateFromAttachmentStatus(
+        operation: MessageDetailEvent.AttachmentStatusChanged
+    ): MessageBodyState {
+        return when (this) {
+            is MessageBodyState.Data -> createMessageBodyState(messageBodyUiModel, operation)
+            else -> this
+        }
+    }
+
+    private fun createMessageBodyState(
+        messageBodyUiModel: MessageBodyUiModel,
+        operation: MessageDetailEvent.AttachmentStatusChanged
+    ) = MessageBodyState.Data(
+        messageBodyUiModel.copy(
+            attachments = messageBodyUiModel.attachments?.copy(
+                attachments = messageBodyUiModel.attachments.attachments.map { attachment ->
+                    if (attachment.attachmentId == operation.attachmentId.id) {
+                        attachment.copy(status = operation.status)
+                    } else {
+                        attachment
+                    }
+                }
+            )
+        )
+    )
 }

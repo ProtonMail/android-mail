@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+
 data class MessageBodyUiModel(
     val messageBody: String,
     val mimeType: MimeTypeUiModel,
@@ -42,5 +44,6 @@ data class AttachmentUiModel(
     val fileName: String,
     val extension: String,
     val size: Long,
-    val mimeType: String
+    val mimeType: String,
+    val status: AttachmentWorkerStatus? = null
 )

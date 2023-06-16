@@ -22,6 +22,8 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,7 +41,7 @@ class MessageBodyReducerTest(
     @Test
     fun `should produce the expected new state`() = with(testInput) {
         // When
-        val newState = messageBodyReducer.newStateFrom(operation)
+        val newState = messageBodyReducer.newStateFrom(currentState, operation)
 
         // Then
         assertEquals(expectedState, newState, testName)
@@ -49,32 +51,66 @@ class MessageBodyReducerTest(
 
         private val actions = listOf(
             TestInput(
+                MessageBodyState.Loading,
                 MessageViewAction.Reload,
                 MessageBodyState.Loading
             )
         )
         private val events = listOf(
             TestInput(
+                MessageBodyState.Loading,
                 MessageDetailEvent.MessageBodyEvent(
                     messageBody = MessageBodyUiModelTestData.plainTextMessageBodyUiModel
                 ),
                 MessageBodyState.Data(MessageBodyUiModelTestData.plainTextMessageBodyUiModel)
             ),
             TestInput(
+                MessageBodyState.Loading,
                 MessageDetailEvent.ErrorGettingMessageBody(isNetworkError = true),
                 MessageBodyState.Error.Data(true)
             ),
             TestInput(
+                MessageBodyState.Loading,
                 MessageDetailEvent.ErrorGettingMessageBody(isNetworkError = false),
                 MessageBodyState.Error.Data(false)
             ),
             TestInput(
+                MessageBodyState.Loading,
                 MessageDetailEvent.ErrorDecryptingMessageBody(
                     MessageBodyUiModelTestData.plainTextMessageBodyUiModel
                 ),
                 MessageBodyState.Error.Decryption(
                     MessageBodyUiModelTestData.plainTextMessageBodyUiModel
                 )
+            ),
+            TestInput(
+                MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel),
+                MessageDetailEvent.AttachmentStatusChanged(
+                    attachmentId = AttachmentId("invoice"),
+                    status = AttachmentWorkerStatus.Running
+                ),
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel.copy(
+                        attachments = MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel.attachments?.copy(
+                            attachments =
+                            MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel.attachments?.attachments?.map {
+                                if (it.attachmentId == "invoice") {
+                                    it.copy(status = AttachmentWorkerStatus.Running)
+                                } else {
+                                    it
+                                }
+                            } ?: emptyList()
+                        )
+                    )
+                )
+            ),
+            TestInput(
+                MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel),
+                MessageDetailEvent.AttachmentStatusChanged(
+                    attachmentId = AttachmentId("attachmentId"),
+                    status = AttachmentWorkerStatus.Running
+                ),
+                MessageBodyState.Data(MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel)
             )
         )
 
@@ -93,6 +129,7 @@ class MessageBodyReducerTest(
     }
 
     data class TestInput(
+        val currentState: MessageBodyState,
         val operation: MessageDetailOperation.AffectingMessageBody,
         val expectedState: MessageBodyState
     )

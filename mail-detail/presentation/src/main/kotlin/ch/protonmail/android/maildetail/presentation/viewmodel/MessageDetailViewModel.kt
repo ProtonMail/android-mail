@@ -33,6 +33,7 @@ import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
@@ -58,6 +59,7 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinatio
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
+import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -91,6 +93,7 @@ class MessageDetailViewModel @Inject constructor(
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
     private val observeCustomMailLabels: ObserveCustomMailLabels,
+    private val observeMessageAttachmentStatus: ObserveMessageAttachmentStatus,
     private val markUnread: MarkMessageAsUnread,
     private val markRead: MarkMessageAsRead,
     private val getContacts: GetContacts,
@@ -252,6 +255,7 @@ class MessageDetailViewModel @Inject constructor(
                                 )
                             )
                         }
+
                         is GetDecryptedMessageBodyError.Data -> {
                             MessageDetailEvent.ErrorGettingMessageBody(
                                 isNetworkError = getDecryptedMessageBodyError.dataError == DataError.Remote.Http(
@@ -261,7 +265,10 @@ class MessageDetailViewModel @Inject constructor(
                         }
                     }
                 },
-                ifRight = { MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(userId, it)) }
+                ifRight = {
+                    observeAttachments(messageId, it.attachments)
+                    MessageDetailEvent.MessageBodyEvent(messageBodyUiModelMapper.toUiModel(userId, it))
+                }
             )
             emitNewStateFrom(event)
         }
@@ -288,6 +295,18 @@ class MessageDetailViewModel @Inject constructor(
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)
+    }
+
+    private suspend fun observeAttachments(messageId: MessageId, attachments: List<MessageAttachment>) {
+        attachments.map { it.attachmentId }.forEach { attachmentId ->
+            primaryUserId.flatMapLatest { userId ->
+                observeMessageAttachmentStatus(userId, messageId, attachmentId).mapLatest {
+                    MessageDetailEvent.AttachmentStatusChanged(attachmentId, it.status)
+                }
+            }.onEach { event ->
+                emitNewStateFrom(event)
+            }.launchIn(viewModelScope)
+        }
     }
 
     private fun showMoveToBottomSheetAndLoadData(initialEvent: MessageViewAction) {

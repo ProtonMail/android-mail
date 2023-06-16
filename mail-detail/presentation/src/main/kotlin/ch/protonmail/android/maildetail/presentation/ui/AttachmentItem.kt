@@ -24,7 +24,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,6 +42,7 @@ import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 import ch.protonmail.android.maildetail.presentation.model.getContentDescriptionForMimeTpye
 import ch.protonmail.android.maildetail.presentation.model.getDrawableForMimeType
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionHint
@@ -59,13 +62,17 @@ fun AttachmentItem(attachmentUiModel: AttachmentUiModel) {
             .padding(ProtonDimens.SmallSpacing),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(id = getDrawableForMimeType(attachmentUiModel.mimeType)),
-            contentDescription = stringResource(
-                id = R.string.attachment_type_description,
-                stringResource(id = getContentDescriptionForMimeTpye(attachmentUiModel.mimeType))
+        if (attachmentUiModel.status == AttachmentWorkerStatus.Running) {
+            CircularProgressIndicator(modifier = Modifier.size(ProtonDimens.DefaultIconSize))
+        } else {
+            Image(
+                painter = painterResource(id = getDrawableForMimeType(attachmentUiModel.mimeType)),
+                contentDescription = stringResource(
+                    id = R.string.attachment_type_description,
+                    stringResource(id = getContentDescriptionForMimeTpye(attachmentUiModel.mimeType))
+                )
             )
-        )
+        }
         Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
         Text(
             modifier = Modifier.weight(1f, fill = false),

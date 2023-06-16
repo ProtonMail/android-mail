@@ -43,6 +43,7 @@ import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
@@ -74,6 +75,9 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -92,6 +96,7 @@ import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
@@ -124,6 +129,14 @@ class MessageDetailViewModelTest {
         BottomSheetReducer(MoveToBottomSheetReducer(), LabelAsBottomSheetReducer())
     )
     private val defaultFolderColorSettings = FolderColorSettings()
+    private val defaultAttachmentMetadata = MessageAttachmentMetadata(
+        userId = userId,
+        messageId = MessageId(rawMessageId),
+        attachmentId = AttachmentId("attachmentId"),
+        hash = "hash",
+        path = "path",
+        status = AttachmentWorkerStatus.Running
+    )
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
@@ -168,6 +181,15 @@ class MessageDetailViewModelTest {
                 MailLabelTestData.customLabelTwo
             ).right()
         )
+    }
+    private val observeAttachmentWorkerStatus = mockk<ObserveMessageAttachmentStatus> {
+        coEvery {
+            this@mockk.invoke(
+                userId,
+                MessageId(rawMessageId),
+                AttachmentId("attachmentId")
+            )
+        } returns flowOf(defaultAttachmentMetadata)
     }
     private val markUnread = mockk<MarkMessageAsUnread> {
         coEvery { this@mockk(userId, MessageId(rawMessageId)) } returns MessageSample.Invoice.right()
@@ -240,6 +262,7 @@ class MessageDetailViewModelTest {
             observeDestinationMailLabels = observeMailLabels,
             observeFolderColor = observeFolderColorSettings,
             observeCustomMailLabels = observeCustomMailLabels,
+            observeMessageAttachmentStatus = observeAttachmentWorkerStatus,
             markUnread = markUnread,
             markRead = markRead,
             getContacts = getContacts,
@@ -888,6 +911,47 @@ class MessageDetailViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `attachment metadata of all attachments is observed when messagebody with attachment loaded successfully`() =
+        runTest {
+            // Given
+            val expectedMessageBody = DecryptedMessageBody(
+                value = "Plain message body",
+                mimeType = MimeType.PlainText,
+                attachments = listOf(
+                    MessageAttachmentTestData.invoice,
+                    MessageAttachmentTestData.document,
+                    MessageAttachmentTestData.documentWithMultipleDots,
+                    MessageAttachmentTestData.image
+                )
+            )
+            coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
+            coEvery {
+                messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
+            } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
+
+
+            viewModel.state.test {
+                initialStateEmitted()
+                // When
+                messageBodyWithAttachmentEmitted()
+
+                // Then
+                coVerifyOrder {
+                    observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), AttachmentId("invoice"))
+                    observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), AttachmentId("document"))
+                    observeAttachmentWorkerStatus(
+                        userId,
+                        MessageId(rawMessageId),
+                        AttachmentId("complicated.document.name")
+                    )
+                    observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), AttachmentId("image"))
+                }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {
         assertEquals(MessageDetailState.Loading, awaitItem())

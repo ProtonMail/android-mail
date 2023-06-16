@@ -80,10 +80,12 @@ class MessageDetailReducer @Inject constructor(
         is MessageViewAction.MoveToDestinationConfirmed -> Effect.of(
             TextUiModel(R.string.message_moved_to_selected_destination, operation.mailLabelText)
         )
+
         is MessageViewAction.LabelAsConfirmed -> when (operation.archiveSelected) {
             true -> Effect.of(TextUiModel(R.string.message_moved_to_archive))
             else -> exitScreenWithMessageEffect
         }
+
         else -> exitScreenWithMessageEffect
     }
 
@@ -96,7 +98,7 @@ class MessageDetailReducer @Inject constructor(
 
     private fun MessageDetailState.toNewMessageBodyStateFrom(operation: MessageDetailOperation) =
         if (operation is MessageDetailOperation.AffectingMessageBody) {
-            messageBodyReducer.newStateFrom(operation)
+            messageBodyReducer.newStateFrom(messageBodyState, operation)
         } else {
             messageBodyState
         }
