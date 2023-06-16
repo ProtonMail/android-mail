@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.e2e.mailbox
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
+import ch.protonmail.android.networkmocks.mockwebserver.requests.withNetworkDelay
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
@@ -72,7 +73,7 @@ internal class MailboxSwitchTests : MockedNetworkTest(loginStrategy = LoginStrat
                     withStatusCode 200 serveOnce true,
                 "/mail/v4/messages?Page=0&PageSize=75&Limit=75&LabelID=7&Sort=Time&Desc=1"
                     respondWith "/mail/v4/messages/messages_183527.json"
-                    withStatusCode 200 serveOnce true
+                    withStatusCode 200 serveOnce true withNetworkDelay 2000
             )
         }
 
