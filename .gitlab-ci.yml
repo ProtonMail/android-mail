@@ -104,6 +104,11 @@ build_prod_debug:
   extends: .build_job
   script:
     - bundle exec fastlane assembleProdDebug
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    # We only build prodDebug for merge requests
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: never
 
 build_alpha_release:
   extends: .build_job
