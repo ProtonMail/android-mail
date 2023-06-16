@@ -35,7 +35,7 @@ internal class MessageDetailRobot : ComposeRobot() {
 
         fun messageDetailScreenIsShown() {
             composeTestRule.onNodeWithTag(MessageDetailScreenTestTags.RootItem)
-                .awaitDisplayed(composeTestRule)
+                .awaitDisplayed()
                 .assertExists()
         }
     }

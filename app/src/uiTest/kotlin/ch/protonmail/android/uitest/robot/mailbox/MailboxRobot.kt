@@ -35,7 +35,9 @@ internal class MailboxRobot : ComposeRobot() {
     inner class Verify {
 
         fun isShown() {
-            rootItem.awaitDisplayed(composeTestRule).assertIsDisplayed()
+            rootItem
+                .awaitDisplayed()
+                .assertIsDisplayed()
         }
     }
 }

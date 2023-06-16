@@ -87,8 +87,6 @@ internal class MailboxSwitchTests : MockedNetworkTest(loginStrategy = LoginStrat
         menuRobot {
             swipeOpenSidebarMenu()
             openSent()
-
-            composeTestRule.waitForIdle() // TODO
         }
 
         mailboxRobot {

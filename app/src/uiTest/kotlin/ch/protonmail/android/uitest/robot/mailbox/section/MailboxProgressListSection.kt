@@ -37,7 +37,7 @@ internal class MailboxProgressListSection : ComposeSectionRobot() {
 
         fun isShown() {
             progressList
-                .awaitDisplayed(composeTestRule)
+                .awaitDisplayed()
                 .assertIsDisplayed()
         }
     }

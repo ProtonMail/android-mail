@@ -64,7 +64,8 @@ internal class MessageBodySection : ComposeSectionRobot() {
         composeTestRule.waitForIdle()
 
         // Wait for the WebView to appear.
-        composeTestRule.onNodeWithTag(MessageBodyTestTags.WebView).awaitDisplayed(composeTestRule, timeout)
+        composeTestRule.onNodeWithTag(MessageBodyTestTags.WebView)
+            .awaitDisplayed(timeout = timeout)
     }
 
     @VerifiesOuter

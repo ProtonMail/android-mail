@@ -37,7 +37,6 @@ import ch.protonmail.android.uitest.util.awaitEnabled
 import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.getTestString
-import kotlin.time.Duration.Companion.seconds
 import ch.protonmail.android.test.R as testR
 
 @AttachTo(targets = [ConversationDetailRobot::class, MessageDetailRobot::class])
@@ -80,11 +79,15 @@ internal class MoveToBottomSheetSection : ComposeSectionRobot() {
     inner class Verify {
 
         fun isShown() {
-            rootItem.awaitDisplayed(timeout = 5.seconds).assertExists()
+            rootItem
+                .awaitDisplayed()
+                .assertExists()
         }
 
         fun isHidden() {
-            rootItem.awaitHidden(timeout = 5.seconds).assertDoesNotExist()
+            rootItem
+                .awaitHidden()
+                .assertDoesNotExist()
         }
 
         fun headerTextIsShown() {

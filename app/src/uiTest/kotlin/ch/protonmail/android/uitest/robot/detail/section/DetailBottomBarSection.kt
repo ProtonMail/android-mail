@@ -30,7 +30,6 @@ import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.onNodeWithContentDescription
-import kotlin.time.Duration.Companion.seconds
 
 @AttachTo(
     targets = [
@@ -61,13 +60,13 @@ internal class DetailBottomBarSection : ComposeSectionRobot() {
     inner class Verify {
         fun labelAsBottomSheetExists() {
             composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
-                .awaitDisplayed(composeTestRule, timeout = 5.seconds)
+                .awaitDisplayed()
                 .assertExists()
         }
 
         fun labelAsBottomSheetIsDismissed() {
             composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
-                .awaitHidden(composeTestRule)
+                .awaitHidden()
                 .assertDoesNotExist()
         }
     }

@@ -35,7 +35,7 @@ internal class SwipeActionsRobot : ComposeRobot() {
     fun openSwipeLeft(): EditSwipeActionRobot {
         composeTestRule
             .onNodeWithText(string.mail_settings_swipe_left_name)
-            .awaitDisplayed(composeTestRule)
+            .awaitDisplayed()
             .performClick()
 
         return EditSwipeActionRobot()
@@ -44,7 +44,7 @@ internal class SwipeActionsRobot : ComposeRobot() {
     fun openSwipeRight(): EditSwipeActionRobot {
         composeTestRule
             .onNodeWithText(string.mail_settings_swipe_right_name)
-            .awaitDisplayed(composeTestRule)
+            .awaitDisplayed()
             .performClick()
 
         return EditSwipeActionRobot()
@@ -76,7 +76,7 @@ internal class SwipeActionsRobot : ComposeRobot() {
 
             private fun assertHasText(@StringRes textRes: Int) {
                 interaction
-                    .awaitDisplayed(composeTestRule)
+                    .awaitDisplayed()
                     .assertTextContains(textRes)
                     .assertIsDisplayed()
             }

@@ -30,7 +30,6 @@ import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntryModel
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
-import kotlin.time.Duration.Companion.seconds
 
 @AttachTo(targets = [MailboxRobot::class], identifier = "listSection")
 internal class MailboxListSection : ComposeSectionRobot() {
@@ -48,7 +47,8 @@ internal class MailboxListSection : ComposeSectionRobot() {
     }
 
     fun scrollToBottom() = apply {
-        messagesList.awaitDisplayed(composeTestRule, timeout = 5.seconds)
+        messagesList
+            .awaitDisplayed()
             .performTouchInput { swipeUp() }
     }
 
