@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import kotlinx.coroutines.flow.Flow
 import me.proton.core.domain.entity.UserId
 
 interface AttachmentRepository {
@@ -37,4 +38,10 @@ interface AttachmentRepository {
     ): Either<DataError, MessageAttachmentMetadata>
 
     suspend fun getAttachmentMetadataByHash(attachmentHash: String): Either<DataError, MessageAttachmentMetadata>
+
+    suspend fun observeAttachmentMetadata(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Flow<MessageAttachmentMetadata?>
 }

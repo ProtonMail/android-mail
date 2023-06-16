@@ -30,6 +30,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.finished
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
@@ -61,4 +62,10 @@ class AttachmentRepositoryImpl @Inject constructor(
 
     override suspend fun getAttachmentMetadataByHash(attachmentHash: String) =
         localDataSource.getAttachmentMetadataByHash(attachmentHash)
+
+    override suspend fun observeAttachmentMetadata(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Flow<MessageAttachmentMetadata?> = localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId)
 }

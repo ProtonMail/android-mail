@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data
 
+import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -37,8 +38,10 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class AttachmentRepositoryImplTest {
+
 
     private val userId = UserIdSample.Primary
     private val messageId = MessageIdSample.Invoice
@@ -142,6 +145,36 @@ class AttachmentRepositoryImplTest {
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), result)
         coVerify { remoteDataSource wasNot Called }
+    }
+
+    @Test
+    fun `observe local stored attachment metadata emits attachment metadata when existing`() = runTest {
+        // Given
+        coEvery { localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId) } returns flowOf(
+            attachmentMetaData
+        )
+
+        // When
+        repository.observeAttachmentMetadata(userId, messageId, attachmentId).test {
+            // Then
+            assertEquals(attachmentMetaData, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `observe local stored attachment metadata emits null when attachment metadata isn't stored`() = runTest {
+        // Given
+        coEvery { localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId) } returns flowOf(
+            null
+        )
+
+        // When
+        repository.observeAttachmentMetadata(userId, messageId, attachmentId).test {
+            // Then
+            assertNull(awaitItem())
+            awaitComplete()
+        }
     }
 
 }
