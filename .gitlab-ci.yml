@@ -114,6 +114,8 @@ build_alpha_release:
     - bundle exec fastlane assembleAlphaRelease
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
+      # Always build on merge requests
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
 
