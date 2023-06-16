@@ -38,6 +38,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.MessageBodyTestData
@@ -831,5 +832,18 @@ class MessageRepositoryImplTest {
 
         // Then
         assertFalse(actual)
+    }
+
+    @Test
+    fun `should upsert the message with body`() = runTest {
+        // Given
+        val expectedUserId = UserIdSample.Primary
+        val expectedMessageWithBody = MessageWithBodySample.EmptyDraft
+
+        // When
+        messageRepository.upsertMessageWithBody(expectedUserId, expectedMessageWithBody)
+
+        // Then
+        coVerify { localDataSource.upsertMessageWithBody(expectedUserId, expectedMessageWithBody) }
     }
 }

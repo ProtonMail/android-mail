@@ -16,21 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-}
+package ch.protonmail.android.mailcomposer.domain.model
 
-android {
-    compileSdk = Config.compileSdk
-
-    defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
-    }
-}
-
-dependencies {
-    implementation(JakeWharton.timber)
-    implementation(Dependencies.testLibs)
-}
+@JvmInline
+value class DraftBody(val value: String)

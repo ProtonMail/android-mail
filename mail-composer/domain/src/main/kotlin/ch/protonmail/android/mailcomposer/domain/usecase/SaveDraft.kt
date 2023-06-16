@@ -16,21 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-}
+package ch.protonmail.android.mailcomposer.domain.usecase
 
-android {
-    compileSdk = Config.compileSdk
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import me.proton.core.domain.entity.UserId
+import javax.inject.Inject
 
-    defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
+class SaveDraft @Inject constructor(
+    private val messageRepository: MessageRepository
+) {
+
+    suspend operator fun invoke(messageWithBody: MessageWithBody, userId: UserId) {
+        messageRepository.upsertMessageWithBody(userId, messageWithBody)
     }
-}
-
-dependencies {
-    implementation(JakeWharton.timber)
-    implementation(Dependencies.testLibs)
 }

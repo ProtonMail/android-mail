@@ -123,6 +123,10 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun getMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody> =
         observeMessageWithBody(userId, messageId).first()
 
+    override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody) {
+        localDataSource.upsertMessageWithBody(userId, messageWithBody)
+    }
+
     override suspend fun addLabel(
         userId: UserId,
         messageId: MessageId,
