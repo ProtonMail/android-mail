@@ -18,27 +18,46 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model
 
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
-sealed class ComposerDraftState {
+sealed class ComposerDraftState(
+    open val fields: ComposerFields
+) {
+
     data class Submittable(
-        val draftId: MessageId,
-        val to: List<RecipientUiModel>,
-        val cc: List<RecipientUiModel>,
-        val bcc: List<RecipientUiModel>,
-        val subject: String,
-        val body: String
-    ) : ComposerDraftState()
+        override val fields: ComposerFields
+    ) : ComposerDraftState(fields)
+
+    data class NotSubmittable(
+        override val fields: ComposerFields,
+        val error: Effect<TextUiModel>
+    ) : ComposerDraftState(fields)
 
     companion object {
 
-        fun empty(draftId: MessageId): ComposerDraftState = Submittable(
-            draftId = draftId,
-            to = emptyList(),
-            cc = emptyList(),
-            bcc = emptyList(),
-            subject = "",
-            body = ""
+        fun empty(draftId: MessageId): ComposerDraftState = NotSubmittable(
+            fields = ComposerFields(
+                draftId = draftId,
+                from = "",
+                to = emptyList(),
+                cc = emptyList(),
+                bcc = emptyList(),
+                subject = "",
+                body = ""
+            ),
+            error = Effect.empty()
         )
     }
 }
+
+data class ComposerFields(
+    val draftId: MessageId,
+    val from: String,
+    val to: List<RecipientUiModel>,
+    val cc: List<RecipientUiModel>,
+    val bcc: List<RecipientUiModel>,
+    val subject: String,
+    val body: String
+)

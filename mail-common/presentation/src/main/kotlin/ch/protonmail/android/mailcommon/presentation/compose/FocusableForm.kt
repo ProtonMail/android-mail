@@ -43,6 +43,7 @@ import androidx.compose.ui.focus.onFocusChanged
 fun <FocusedField> FocusableForm(
     fieldList: List<FocusedField>,
     initialFocus: FocusedField,
+    onFocusedField: (FocusedField) -> Unit = {},
     content: @Composable FocusableFormScope<FocusedField>.(Map<FocusedField, FocusRequester>) -> Unit
 ) {
     var focusedField by rememberSaveable(inputs = emptyArray()) { mutableStateOf(initialFocus) }
@@ -50,7 +51,10 @@ fun <FocusedField> FocusableForm(
     val bringIntoViewRequesters: Map<FocusedField, BringIntoViewRequester> =
         fieldList.associateWith { BringIntoViewRequester() }
     val isKeyboardVisible by keyboardVisibilityAsState()
-    val onFieldFocused: (FocusedField) -> Unit = { focusedField = it }
+    val onFieldFocused: (FocusedField) -> Unit = {
+        focusedField = it
+        onFocusedField(it)
+    }
 
     FocusableFormScope(focusRequesters, bringIntoViewRequesters, onFieldFocused).content(focusRequesters)
 

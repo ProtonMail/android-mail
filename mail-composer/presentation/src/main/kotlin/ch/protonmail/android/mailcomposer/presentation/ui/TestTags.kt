@@ -16,15 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.presentation.model
+package ch.protonmail.android.mailcomposer.presentation.ui
 
-sealed interface ComposerOperation
+object ComposerTestTags {
 
-sealed interface ComposerAction : ComposerOperation {
-    data class FromChanged(val from: String) : ComposerAction
-    data class RecipientsToChanged(val recipients: List<RecipientUiModel>) : ComposerAction
-    data class RecipientsCcChanged(val recipients: List<RecipientUiModel>) : ComposerAction
-    data class RecipientsBccChanged(val recipients: List<RecipientUiModel>) : ComposerAction
-    data class SubjectChanged(val subject: String) : ComposerAction
-    data class BodyChanged(val body: String) : ComposerAction
+    const val RootItem = "ComposerScreenRootItem"
+    const val TopAppBar = "ComposerTopAppBar"
+    const val FieldPrefix = "FieldPrefix"
+    const val FromSender = "FromTextField"
+    const val ToRecipient = "ToTextField"
+    const val CcRecipient = "CcTextField"
+    const val BccRecipient = "BccTextField"
+    const val Subject = "Subject"
+    const val SubjectPlaceholder = "SubjectPlaceholder"
+    const val MessageBody = "MessageBody"
+    const val MessageBodyPlaceholder = "MessageBodyPlaceholder"
+    const val CloseButton = "CloseButton"
+    const val SendButton = "SendButton"
 }
