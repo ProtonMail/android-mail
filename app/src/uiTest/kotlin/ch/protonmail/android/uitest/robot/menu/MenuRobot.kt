@@ -33,6 +33,7 @@ import ch.protonmail.android.uitest.models.folders.SidebarItemCustomFolderEntryM
 import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.robot.settings.SettingsRobot
+import ch.protonmail.android.uitest.util.awaitHidden
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.getTestString
 import ch.protonmail.android.test.R as testR
@@ -86,6 +87,8 @@ internal class MenuRobot : ComposeRobot() {
 
     private fun openMailbox(sidebarTextMenu: String): MailboxRobot {
         tapSidebarMenuItemWithText(sidebarTextMenu)
+        rootItem.awaitHidden()
+
         return MailboxRobot()
     }
 
