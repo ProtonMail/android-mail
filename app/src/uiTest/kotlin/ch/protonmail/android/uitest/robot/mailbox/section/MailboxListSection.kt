@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.robot.mailbox.section
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
 import androidx.test.espresso.action.ViewActions.swipeUp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
@@ -32,9 +33,13 @@ import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
 @AttachTo(targets = [MailboxRobot::class], identifier = "listSection")
-internal class MailboxListSection : ComposeSectionRobot() {
+internal class MailboxListSection : ComposeSectionRobot(), RefreshableSection {
 
     private val messagesList = composeTestRule.onNodeWithTag(MailboxScreenTestTags.List)
+
+    override fun pullDownToRefresh() {
+        messagesList.performTouchInput { swipeDown() }
+    }
 
     fun clickMessageByPosition(position: Int) = apply {
         val model = MailboxListItemEntryModel(position)
