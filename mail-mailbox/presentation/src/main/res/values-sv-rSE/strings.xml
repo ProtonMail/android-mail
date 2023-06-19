@@ -34,4 +34,7 @@
   <string name="mailbox_default_recipient">(Ingen mottagare)</string>
   <string name="mailbox_default_sender">(Ingen avsändare)</string>
   <string name="mailbox_error_message_offline">Du är offline, kan inte hämta objekt</string>
+  <string name="mailbox_error_message_generic">Misslyckades att ladda brevlåda</string>
+  <string name="mailbox_error_message_unexpected">Något gick oväntat fel</string>
+  <string name="mailbox_is_empty_message">Denna brevlåda är tom</string>
 </resources>

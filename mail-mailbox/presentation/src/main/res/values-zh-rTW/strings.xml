@@ -33,4 +33,7 @@
   <string name="mailbox_default_recipient">(無收件者)</string>
   <string name="mailbox_default_sender">(無寄件者)</string>
   <string name="mailbox_error_message_offline">您目前為離線狀態，因此無法擷取項目</string>
+  <string name="mailbox_error_message_generic">載入電子信箱失敗</string>
+  <string name="mailbox_error_message_unexpected">預期之外的錯誤</string>
+  <string name="mailbox_is_empty_message">電子郵件信箱是空的。</string>
 </resources>

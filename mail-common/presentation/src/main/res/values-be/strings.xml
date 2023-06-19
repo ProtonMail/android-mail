@@ -18,9 +18,9 @@
   -->
 <resources>
   <string name="expiration_expired">Пратэрмінавана</string>
-  <string name="expiration_days_arg">%dдз</string>
+  <string name="expiration_days_arg">%d дз</string>
   <string name="expiration_hours_arg">%dг</string>
-  <string name="expiration_minutes_arg">%dхв</string>
+  <string name="expiration_minutes_arg">%d хв</string>
   <string name="retry">Паўтарыць</string>
   <string name="toolbar_back_content_description">Вярнуцца на папярэдні экран</string>
   <string name="x_error_not_logged_in">Уваход не выкананы</string>
@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Захаваць далучэнні</string>
   <string name="common_error_loading_actions">Не ўдалося загрузіць дзеянні</string>
   <string name="yesterday">Учора</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Далучэнні</string>
+  <string name="attachment_download_notification_channel_description">Апавяшчэнні аб спампоўванні далучэнняў</string>
 </resources>

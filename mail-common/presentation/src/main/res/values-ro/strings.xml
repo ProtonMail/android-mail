@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Salvare atașamente</string>
   <string name="common_error_loading_actions">Încărcarea acțiunilor a eșuat.</string>
   <string name="yesterday">Ieri</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Fișiere atașate</string>
+  <string name="attachment_download_notification_channel_description">Notificări pentru descărcări atașamente</string>
 </resources>

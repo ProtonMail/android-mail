@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Gem vedhæftninger</string>
   <string name="common_error_loading_actions">Kunne ikke indlæse handlinger</string>
   <string name="yesterday">I går</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Attachments</string>
+  <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
 </resources>

@@ -36,4 +36,7 @@
   <string name="mailbox_default_recipient">(Немає отримувача)</string>
   <string name="mailbox_default_sender">(Немає відправника)</string>
   <string name="mailbox_error_message_offline">Не вдалося завантажити елементи, тому що ви офлайн</string>
+  <string name="mailbox_error_message_generic">Не вдалося завантажити поштову скриньку</string>
+  <string name="mailbox_error_message_unexpected">Щось пішло не так</string>
+  <string name="mailbox_is_empty_message">Ця поштова скринька порожня</string>
 </resources>

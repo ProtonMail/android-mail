@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Desar adjunts</string>
   <string name="common_error_loading_actions">Error carregant les accions</string>
   <string name="yesterday">Ahir</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Adjunts</string>
+  <string name="attachment_download_notification_channel_description">Notificacions per a baixades d\'adjunts</string>
 </resources>

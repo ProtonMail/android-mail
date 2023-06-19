@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Vista viðhengi</string>
   <string name="common_error_loading_actions">Mistókst að hlaða inn aðgerðum</string>
   <string name="yesterday">Í gær</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Attachments</string>
+  <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
 </resources>

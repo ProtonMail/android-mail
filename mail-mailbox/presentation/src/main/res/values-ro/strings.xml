@@ -35,4 +35,7 @@
   <string name="mailbox_default_recipient">(Fără destinatar)</string>
   <string name="mailbox_default_sender">(Fără expeditor)</string>
   <string name="mailbox_error_message_offline">Nu aveți conexiune. Nu se pot prelua datele.</string>
+  <string name="mailbox_error_message_generic">Eroare la încărcarea mesajelor.</string>
+  <string name="mailbox_error_message_unexpected">Ceva nu a funcționat bine.</string>
+  <string name="mailbox_is_empty_message">Acest cont nu are mesaje</string>
 </resources>

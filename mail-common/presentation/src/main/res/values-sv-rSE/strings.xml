@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Spara bilagorna</string>
   <string name="common_error_loading_actions">Misslyckades ladda åtgärder</string>
   <string name="yesterday">Igår</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Bilagor</string>
+  <string name="attachment_download_notification_channel_description">Aviseringar för nedladdning av bilagor</string>
 </resources>

@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Anhänge speichern</string>
   <string name="common_error_loading_actions">Aktionen konnten nicht geladen werden</string>
   <string name="yesterday">Gestern</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Anhänge</string>
+  <string name="attachment_download_notification_channel_description">Benachrichtigungen für das Herunterladen von Anhängen</string>
 </resources>

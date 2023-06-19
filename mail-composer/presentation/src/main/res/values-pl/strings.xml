@@ -19,8 +19,11 @@
 <resources>
   <string name="from_prefix">Od:</string>
   <string name="to_prefix">Do:</string>
+  <string name="cc_prefix">Dw:</string>
+  <string name="bcc_prefix">Udw:</string>
   <string name="subject_placeholder">Temat</string>
   <string name="compose_message_placeholder">Napisz wiadomość</string>
   <string name="close_composer_content_description">Zamknij edytor</string>
   <string name="send_message_content_description">Wyślij wiadomość</string>
+  <string name="composer_expand_recipients_button">Pokaż innych odbiorców</string>
 </resources>

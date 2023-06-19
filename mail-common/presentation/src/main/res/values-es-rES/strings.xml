@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Guardar adjuntos</string>
   <string name="common_error_loading_actions">Error al cargar las acciones</string>
   <string name="yesterday">Ayer</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Archivos adjuntos</string>
+  <string name="attachment_download_notification_channel_description">Notificaciones de descargas de archivos adjuntos</string>
 </resources>

@@ -36,4 +36,7 @@
   <string name="mailbox_default_recipient">(Нет получателя)</string>
   <string name="mailbox_default_sender">(Нет отправителя)</string>
   <string name="mailbox_error_message_offline">Вы офлайн, не удалось получить элементы</string>
+  <string name="mailbox_error_message_generic">Загрузка почтового ящика не удалась</string>
+  <string name="mailbox_error_message_unexpected">Что-то неожиданно пошло не так</string>
+  <string name="mailbox_is_empty_message">Этот почтовый ящик пуст</string>
 </resources>

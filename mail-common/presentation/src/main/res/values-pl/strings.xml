@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Zapisz załączniki</string>
   <string name="common_error_loading_actions">Ładowanie akcji nie powiodło się</string>
   <string name="yesterday">Wczoraj</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Załączniki</string>
+  <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
 </resources>

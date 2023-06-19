@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Ek dosyaları kaydet</string>
   <string name="common_error_loading_actions">İşlemler yüklenemedi</string>
   <string name="yesterday">Dün</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Ek dosyalar</string>
+  <string name="attachment_download_notification_channel_description">Ek dosya indirmeleri için bildirimler</string>
 </resources>

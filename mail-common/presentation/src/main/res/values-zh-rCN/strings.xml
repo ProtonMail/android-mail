@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">保存附件</string>
   <string name="common_error_loading_actions">加载操作失败</string>
   <string name="yesterday">昨天</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">附件</string>
+  <string name="attachment_download_notification_channel_description">附件下载通知</string>
 </resources>

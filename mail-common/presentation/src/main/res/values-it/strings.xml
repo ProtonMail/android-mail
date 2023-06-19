@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Salva allegati</string>
   <string name="common_error_loading_actions">Il caricamento delle azioni non è andato a buon fine</string>
   <string name="yesterday">Ieri</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Allegati</string>
+  <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
 </resources>

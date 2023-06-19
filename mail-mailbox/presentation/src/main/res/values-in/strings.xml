@@ -33,4 +33,7 @@
   <string name="mailbox_default_recipient">(Tanpa Penerima)</string>
   <string name="mailbox_default_sender">(Tanpa Pengirim)</string>
   <string name="mailbox_error_message_offline">Anda sedang offline. Item tidak dapat diterima</string>
+  <string name="mailbox_error_message_generic">Loading mailbox failed</string>
+  <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
+  <string name="mailbox_is_empty_message">This mailbox is empty</string>
 </resources>

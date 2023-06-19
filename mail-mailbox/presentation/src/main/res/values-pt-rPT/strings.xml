@@ -23,7 +23,7 @@
   <string name="mailbox_toolbar_compose_button_content_description">Compor nova mensagem</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Sair do modo de seleção</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
-  <string name="mailbox_toolbar_search_button_content_description">Procurar</string>
+  <string name="mailbox_toolbar_search_button_content_description">Pesquisar</string>
   <string name="mailbox_toolbar_selected_count">%d seleccionado</string>
   <!-- A temporary string used only till we show the unread message counter. Remove once https://jira.protontech.ch/browse/MAILANDR-142 is implemented -->
   <string name="filter_unread_button_text_without_counter">Não lido</string>
@@ -34,4 +34,7 @@
   <string name="mailbox_default_recipient">(sem destinatário)</string>
   <string name="mailbox_default_sender">(Sem remetente)</string>
   <string name="mailbox_error_message_offline">Está offline. Impossível recuperar itens.</string>
+  <string name="mailbox_error_message_generic">Loading mailbox failed</string>
+  <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
+  <string name="mailbox_is_empty_message">This mailbox is empty</string>
 </resources>

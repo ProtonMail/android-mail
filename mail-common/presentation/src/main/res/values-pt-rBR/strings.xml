@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Salvar anexos</string>
   <string name="common_error_loading_actions">Falha ao carregar ações</string>
   <string name="yesterday">Ontem</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Anexos</string>
+  <string name="attachment_download_notification_channel_description">Notificação para downloads de anexos</string>
 </resources>

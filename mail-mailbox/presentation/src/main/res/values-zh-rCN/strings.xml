@@ -33,4 +33,7 @@
   <string name="mailbox_default_recipient">（无收件人）</string>
   <string name="mailbox_default_sender">（无发件人）</string>
   <string name="mailbox_error_message_offline">网络未连接，无法获取数据</string>
+  <string name="mailbox_error_message_generic">Loading mailbox failed</string>
+  <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
+  <string name="mailbox_is_empty_message">此邮箱为空</string>
 </resources>

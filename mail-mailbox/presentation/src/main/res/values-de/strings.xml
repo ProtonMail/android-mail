@@ -34,4 +34,7 @@
   <string name="mailbox_default_recipient">(Kein Empfänger)</string>
   <string name="mailbox_default_sender">(Kein Absender)</string>
   <string name="mailbox_error_message_offline">Du bist offline und kannst keine Einträge abrufen.</string>
+  <string name="mailbox_error_message_generic">Fehler beim Laden des Postfachs.</string>
+  <string name="mailbox_error_message_unexpected">Etwas ging unerwartet schief</string>
+  <string name="mailbox_is_empty_message">Dieses Postfach ist leer.</string>
 </resources>

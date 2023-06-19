@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Αποθήκευση συνημμένων</string>
   <string name="common_error_loading_actions">Αποτυχία φόρτωσης ενεργειών</string>
   <string name="yesterday">Χθες</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Συνημμένα</string>
+  <string name="attachment_download_notification_channel_description">Ειδοποιήσεις για λήψεις συνημμένων</string>
 </resources>

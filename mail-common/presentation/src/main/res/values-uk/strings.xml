@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Зберегти вкладення</string>
   <string name="common_error_loading_actions">Не вдалося завантажити дії</string>
   <string name="yesterday">Учора</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Вкладення</string>
+  <string name="attachment_download_notification_channel_description">Сповіщення про завантаження вкладень</string>
 </resources>

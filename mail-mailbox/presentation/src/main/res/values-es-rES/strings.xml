@@ -34,4 +34,7 @@
   <string name="mailbox_default_recipient">(Sin destinatario)</string>
   <string name="mailbox_default_sender">(Sin remitente)</string>
   <string name="mailbox_error_message_offline">Sin conexión. No se pueden recuperar los elementos</string>
+  <string name="mailbox_error_message_generic">Error al cargar el buzón</string>
+  <string name="mailbox_error_message_unexpected">Se ha producido un error imprevisto.</string>
+  <string name="mailbox_is_empty_message">Este buzón está vacío</string>
 </resources>

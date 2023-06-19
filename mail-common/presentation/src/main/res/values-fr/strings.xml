@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Enregistrer les pièces jointes</string>
   <string name="common_error_loading_actions">Les actions n\'ont pu être chargées.</string>
   <string name="yesterday">Hier</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Pièces jointes</string>
+  <string name="attachment_download_notification_channel_description">Notifications pour les téléchargements de pièces jointes</string>
 </resources>

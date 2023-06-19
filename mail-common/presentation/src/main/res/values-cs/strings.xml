@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Uložit přílohy</string>
   <string name="common_error_loading_actions">Načtení akcí selhalo</string>
   <string name="yesterday">Včera</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Přílohy</string>
+  <string name="attachment_download_notification_channel_description">Upozornění na stahování příloh</string>
 </resources>

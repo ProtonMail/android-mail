@@ -34,4 +34,7 @@
   <string name="mailbox_default_recipient">(Δεν υπάρχουν παραλήπτες)</string>
   <string name="mailbox_default_sender">(Χωρίς αποστολέα)</string>
   <string name="mailbox_error_message_offline">Είστε αποσυνδεδεμένοι, δεν μπορείτε να ανακτήσετε στοιχεία</string>
+  <string name="mailbox_error_message_generic">Η φόρτωση του γραμματοκιβωτίου απέτυχε</string>
+  <string name="mailbox_error_message_unexpected">Κάτι πήγε απροσδόκητα στραβά</string>
+  <string name="mailbox_is_empty_message">Αυτό το γραμματοκιβώτιο είναι κενό</string>
 </resources>

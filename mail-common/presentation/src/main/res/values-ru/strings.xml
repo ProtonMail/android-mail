@@ -49,4 +49,7 @@
   <string name="action_save_attachments_content_description">Сохранить вложения</string>
   <string name="common_error_loading_actions">Неудачные действия при скачивании</string>
   <string name="yesterday">Вчера</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Вложения</string>
+  <string name="attachment_download_notification_channel_description">Уведомления о скачивании вложений</string>
 </resources>
