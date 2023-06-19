@@ -29,4 +29,8 @@ internal sealed class SnackbarTextEntry(val value: String) {
     class ConversationMovedToFolder(folder: String) : SnackbarTextEntry(
         getTestString(testR.string.test_conversation_moved_to_selected_destination, folder)
     )
+
+    object FailedToLoadNewItems : SnackbarTextEntry(
+        getTestString(testR.string.test_mailbox_error_message_generic)
+    )
 }

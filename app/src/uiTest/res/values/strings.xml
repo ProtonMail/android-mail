@@ -29,6 +29,7 @@
 
     <!-- Mailbox messages -->
     <string name="test_mailbox_is_empty_message">This mailbox is empty</string>
+    <string name="test_mailbox_error_message_generic">Loading mailbox failed</string>
 
     <!-- Composer -->
     <string name="test_composer_sender_label">From:</string>

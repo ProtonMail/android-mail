@@ -28,6 +28,7 @@ import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.assertions.hasAnyChildWith
+import ch.protonmail.android.uitest.util.awaitDisplayed
 
 @AttachTo(targets = [MailboxRobot::class, ConversationDetailRobot::class])
 internal class SnackbarSection : ComposeSectionRobot() {
@@ -39,7 +40,9 @@ internal class SnackbarSection : ComposeSectionRobot() {
 
         fun hasMessage(text: SnackbarTextEntry) = apply {
             // The actual text node is not an immediate child, so the hierarchy needs to be traversed.
-            snackbarHost.hasAnyChildWith(hasText(text.value))
+            snackbarHost
+                .awaitDisplayed()
+                .hasAnyChildWith(hasText(text.value))
         }
     }
 }
