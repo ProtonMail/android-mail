@@ -56,6 +56,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.extensions.isRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
@@ -184,7 +185,8 @@ internal fun MessageBodyWebView(
             AttachmentFooter(
                 modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
                 messageBodyAttachmentsUiModel = messageBodyUiModel.attachments,
-                onShowAllAttachments = actions.onShowAllAttachments
+                onShowAllAttachments = actions.onShowAllAttachments,
+                onAttachmentClicked = actions.onAttachmentClicked
             )
         }
     }
@@ -254,7 +256,8 @@ object MessageBody {
 
     data class Actions(
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
-        val onShowAllAttachments: () -> Unit
+        val onShowAllAttachments: () -> Unit,
+        val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit
     )
 }
 

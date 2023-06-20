@@ -27,6 +27,7 @@ import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.RemoveAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
@@ -93,6 +94,7 @@ internal fun NavGraphBuilder.addMessageDetail(
     navController: NavHostController,
     showSnackbar: (notifyUserMessage: String) -> Unit,
     openMessageBodyLink: (uri: Uri) -> Unit,
+    openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
     showFeatureMissingSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.Message.route) {
@@ -103,6 +105,7 @@ internal fun NavGraphBuilder.addMessageDetail(
                     notifyUserMessage?.let(showSnackbar)
                 },
                 openMessageBodyLink = openMessageBodyLink,
+                openAttachment = openAttachment,
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar
             )
         )

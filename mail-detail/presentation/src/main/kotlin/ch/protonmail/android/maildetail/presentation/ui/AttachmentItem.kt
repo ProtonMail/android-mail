@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.ui
 import android.text.format.Formatter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -42,6 +43,7 @@ import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 import ch.protonmail.android.maildetail.presentation.model.getContentDescriptionForMimeTpye
 import ch.protonmail.android.maildetail.presentation.model.getDrawableForMimeType
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -49,7 +51,10 @@ import me.proton.core.compose.theme.captionHint
 import me.proton.core.compose.theme.defaultSmall
 
 @Composable
-fun AttachmentItem(attachmentUiModel: AttachmentUiModel) {
+fun AttachmentItem(
+    attachmentUiModel: AttachmentUiModel,
+    onAttachmentItemClicked: (attachmentId: AttachmentId) -> Unit
+) {
     Row(
         modifier = Modifier
             .padding(horizontal = ProtonDimens.SmallSpacing, vertical = ProtonDimens.ExtraSmallSpacing)
@@ -59,6 +64,7 @@ fun AttachmentItem(attachmentUiModel: AttachmentUiModel) {
                 color = ProtonTheme.colors.interactionWeakNorm,
                 shape = ProtonTheme.shapes.large
             )
+            .clickable { onAttachmentItemClicked(AttachmentId(attachmentUiModel.attachmentId)) }
             .padding(ProtonDimens.SmallSpacing),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -97,7 +103,10 @@ fun AttachmentItem(attachmentUiModel: AttachmentUiModel) {
 @Preview(showBackground = true)
 fun AttachmentItemPreview() {
     ProtonTheme {
-        AttachmentItem(AttachmentUiModelSample.invoice)
+        AttachmentItem(
+            attachmentUiModel = AttachmentUiModelSample.invoice,
+            onAttachmentItemClicked = {}
+        )
     }
 }
 
@@ -105,6 +114,9 @@ fun AttachmentItemPreview() {
 @Preview(showBackground = true)
 fun AttachmentItemTruncationPreview() {
     ProtonTheme {
-        AttachmentItem(AttachmentUiModelSample.documentWithReallyLongFileName)
+        AttachmentItem(
+            attachmentUiModel = AttachmentUiModelSample.documentWithReallyLongFileName,
+            onAttachmentItemClicked = {}
+        )
     }
 }

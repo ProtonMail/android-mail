@@ -161,6 +161,7 @@ fun Home(
                         }
                     },
                     openMessageBodyLink = activityActions.openInActivityInNewTask,
+                    openAttachment = activityActions.openIntentChooser,
                     showFeatureMissingSnackbar = { showFeatureMissingSnackbar() }
                 )
                 addComposer(navController)
@@ -191,16 +192,14 @@ fun Home(
     }
 }
 
-private fun buildSidebarActions(
-    navController: NavHostController,
-    launcherActions: Launcher.Actions
-) = Sidebar.NavigationActions(
-    onSignIn = launcherActions.onSignIn,
-    onSignOut = launcherActions.onSignOut,
-    onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
-    onSwitchAccount = launcherActions.onSwitchAccount,
-    onSettings = { navController.navigate(Screen.Settings.route) },
-    onLabelsSettings = {},
-    onSubscription = launcherActions.onSubscription,
-    onReportBug = launcherActions.onReportBug
-)
+private fun buildSidebarActions(navController: NavHostController, launcherActions: Launcher.Actions) =
+    Sidebar.NavigationActions(
+        onSignIn = launcherActions.onSignIn,
+        onSignOut = launcherActions.onSignOut,
+        onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
+        onSwitchAccount = launcherActions.onSwitchAccount,
+        onSettings = { navController.navigate(Screen.Settings.route) },
+        onLabelsSettings = {},
+        onSubscription = launcherActions.onSubscription,
+        onReportBug = launcherActions.onReportBug
+    )

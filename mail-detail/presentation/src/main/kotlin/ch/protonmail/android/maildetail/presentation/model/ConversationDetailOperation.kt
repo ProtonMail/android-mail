@@ -24,6 +24,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.label.domain.entity.LabelId
 
@@ -114,4 +115,6 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class MessageBodyLinkClicked(val url: String) : ConversationDetailViewAction
     data class RequestScrollTo(val messageId: MessageId) : ConversationDetailViewAction
     data class ShowAllAttachmentsForMessage(val messageId: MessageId) : ConversationDetailViewAction
+    data class OnAttachmentClicked(val messageId: MessageId, val attachmentId: AttachmentId) :
+        ConversationDetailViewAction
 }

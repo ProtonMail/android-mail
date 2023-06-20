@@ -32,7 +32,6 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
@@ -46,6 +45,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetail
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
+import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.mapper.ActionUiModelMapper
@@ -175,6 +175,7 @@ class ConversationDetailViewModel @Inject constructor(
             is MessageBodyLinkClicked -> onMessageBodyLinkClicked(action)
             is RequestScrollTo -> onRequestScrollTo(action)
             is ShowAllAttachmentsForMessage -> showAllAttachmentsForMessage(action.messageId)
+            is ConversationDetailViewAction.OnAttachmentClicked -> {}
         }
     }
 

@@ -46,6 +46,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
@@ -56,6 +57,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
@@ -142,6 +144,8 @@ fun MessageDetailScreen(
                 onReplyAllClick = { actions.showFeatureMissingSnackbar() },
                 onDeleteClick = { actions.showFeatureMissingSnackbar() },
                 onShowAllAttachmentsClicked = { viewModel.submit(MessageViewAction.ShowAllAttachments) },
+                onAttachmentClicked = { viewModel.submit(MessageViewAction.OnAttachmentClicked(it)) },
+                openAttachment = actions.openAttachment,
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
             )
         )
@@ -167,6 +171,9 @@ fun MessageDetailScreen(
     }
     ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) {
         actions.onOpenMessageBodyLink(it)
+    }
+    ConsumableLaunchedEffect(effect = state.openAttachmentEffect) {
+        actions.openAttachment(it)
     }
 
     Scaffold(
@@ -236,6 +243,7 @@ fun MessageDetailScreen(
                     onReload = actions.onReload,
                     onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                     onShowAllAttachmentsClicked = actions.onShowAllAttachmentsClicked,
+                    onAttachmentClicked = actions.onAttachmentClicked,
                     showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
                 )
                 MessageDetailContent(
@@ -278,7 +286,8 @@ private fun MessageDetailContent(
                     messageBodyUiModel = messageBodyState.messageBodyUiModel,
                     actions = MessageBody.Actions(
                         onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
-                        onShowAllAttachments = actions.onShowAllAttachmentsClicked
+                        onShowAllAttachments = actions.onShowAllAttachmentsClicked,
+                        onAttachmentClicked = actions.onAttachmentClicked
                     )
                 )
 
@@ -293,7 +302,8 @@ private fun MessageDetailContent(
                         messageBodyUiModel = messageBodyState.encryptedMessageBody,
                         actions = MessageBody.Actions(
                             onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
-                            onShowAllAttachments = actions.onShowAllAttachmentsClicked
+                            onShowAllAttachments = actions.onShowAllAttachmentsClicked,
+                            onAttachmentClicked = actions.onAttachmentClicked
                         )
                     )
                 }
@@ -307,6 +317,7 @@ object MessageDetail {
     data class Actions(
         val onExit: (message: String?) -> Unit,
         val openMessageBodyLink: (uri: Uri) -> Unit,
+        val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     )
 }
@@ -330,6 +341,8 @@ object MessageDetailScreen {
         val onReplyAllClick: () -> Unit,
         val onDeleteClick: () -> Unit,
         val onShowAllAttachmentsClicked: () -> Unit,
+        val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
+        val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     ) {
 
@@ -350,6 +363,8 @@ object MessageDetailScreen {
                 onReplyAllClick = {},
                 onDeleteClick = {},
                 onShowAllAttachmentsClicked = {},
+                onAttachmentClicked = {},
+                openAttachment = {},
                 showFeatureMissingSnackbar = {}
             )
         }
@@ -362,6 +377,7 @@ object MessageDetailContent {
         val onReload: () -> Unit,
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onShowAllAttachmentsClicked: () -> Unit,
+        val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     )
 }

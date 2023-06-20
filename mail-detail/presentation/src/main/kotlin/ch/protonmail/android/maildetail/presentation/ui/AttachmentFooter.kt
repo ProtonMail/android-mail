@@ -44,6 +44,7 @@ import ch.protonmail.android.maildetail.presentation.R.plurals
 import ch.protonmail.android.maildetail.presentation.extensions.getTotalAttachmentByteSizeReadable
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmall
@@ -54,7 +55,8 @@ import me.proton.core.presentation.R.drawable
 fun AttachmentFooter(
     modifier: Modifier = Modifier,
     messageBodyAttachmentsUiModel: MessageBodyAttachmentsUiModel,
-    onShowAllAttachments: () -> Unit
+    onShowAllAttachments: () -> Unit,
+    onAttachmentClicked: (attachmentId: AttachmentId) -> Unit
 ) {
     val attachments = messageBodyAttachmentsUiModel.attachments
     Column(modifier = modifier.fillMaxWidth()) {
@@ -87,7 +89,7 @@ fun AttachmentFooter(
             )
         }
         attachments.take(messageBodyAttachmentsUiModel.limit).forEach {
-            AttachmentItem(attachmentUiModel = it)
+            AttachmentItem(attachmentUiModel = it, onAttachmentItemClicked = onAttachmentClicked)
         }
         if (attachments.size > messageBodyAttachmentsUiModel.limit) {
             Box(
@@ -123,7 +125,8 @@ fun AttachmentFooterMultiAttachmentsPreview() {
                 AttachmentUiModelSample.document
             )
         ),
-        onShowAllAttachments = {}
+        onShowAllAttachments = {},
+        onAttachmentClicked = {}
     )
 }
 
@@ -138,6 +141,7 @@ fun AttachmentFooterSingleAttachmentPreview() {
                 AttachmentUiModelSample.invoice
             )
         ),
-        onShowAllAttachments = {}
+        onShowAllAttachments = {},
+        onAttachmentClicked = {}
     )
 }

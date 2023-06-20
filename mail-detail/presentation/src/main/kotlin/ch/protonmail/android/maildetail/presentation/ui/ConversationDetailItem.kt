@@ -35,6 +35,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanded
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanding
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
@@ -124,7 +125,8 @@ private fun ConversationDetailExpandedItem(
             messageId = uiModel.messageId,
             actions = MessageBody.Actions(
                 onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) },
-                onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) }
+                onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },
+                onAttachmentClicked = { actions.onAttachmentClicked(uiModel.messageId, it) },
             )
         )
     }
@@ -137,6 +139,7 @@ object ConversationDetailItem {
         val onMessageBodyLinkClicked: (url: String) -> Unit,
         val onOpenMessageBodyLink: (url: String) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
+        val onAttachmentClicked: (MessageId, AttachmentId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     )
 }

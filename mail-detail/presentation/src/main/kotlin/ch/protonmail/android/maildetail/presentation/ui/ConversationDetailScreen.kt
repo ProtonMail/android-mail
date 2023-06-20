@@ -67,6 +67,7 @@ import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetSta
 import ch.protonmail.android.maildetail.presentation.model.MoveToBottomSheetState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
@@ -158,6 +159,11 @@ fun ConversationDetailScreen(
                 onRequestScrollTo = { viewModel.submit(ConversationDetailViewAction.RequestScrollTo(it)) },
                 onShowAllAttachmentsForMessage = {
                     viewModel.submit(ConversationDetailViewAction.ShowAllAttachmentsForMessage(it))
+                },
+                onAttachmentClicked = { messageId, attachmentId ->
+                    viewModel.submit(
+                        ConversationDetailViewAction.OnAttachmentClicked(messageId, attachmentId)
+                    )
                 },
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
             ),
@@ -263,6 +269,7 @@ fun ConversationDetailScreen(
                     onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                     onOpenMessageBodyLink = actions.onOpenMessageBodyLink,
                     onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage,
+                    onAttachmentClicked = actions.onAttachmentClicked,
                     showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
                 )
                 MessagesContent(
@@ -384,6 +391,7 @@ object ConversationDetailScreen {
         val onOpenMessageBodyLink: (url: String) -> Unit,
         val onRequestScrollTo: (MessageId) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
+        val onAttachmentClicked: (MessageId, AttachmentId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     ) {
 
@@ -403,6 +411,7 @@ object ConversationDetailScreen {
                 onOpenMessageBodyLink = {},
                 onRequestScrollTo = {},
                 onShowAllAttachmentsForMessage = {},
+                onAttachmentClicked = { _, _ -> },
                 showFeatureMissingSnackbar = {}
             )
         }

@@ -28,6 +28,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.navigation.Launcher
 import ch.protonmail.android.navigation.LauncherViewModel
 import ch.protonmail.android.navigation.model.LauncherState
@@ -58,7 +59,10 @@ class MainActivity : AppCompatActivity() {
                     LocalDeviceCapabilitiesProvider provides deviceCapabilities.getCapabilities()
                 ) {
                     Launcher(
-                        Actions { openInActivityInNewTask(it) },
+                        Actions(
+                            openInActivityInNewTask = { openInActivityInNewTask(it) },
+                            openIntentChooser = { openIntentChooser(it) }
+                        ),
                         launcherViewModel
                     )
                 }
@@ -72,7 +76,16 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun openIntentChooser(intentValues: OpenAttachmentIntentValues) {
+        val intent = Intent(Intent.ACTION_VIEW)
+            .setDataAndType(intentValues.uri, intentValues.mimeType)
+            .putExtra(Intent.EXTRA_STREAM, intentValues.uri)
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        startActivity(Intent.createChooser(intent, null))
+    }
+
     data class Actions(
-        val openInActivityInNewTask: (uri: Uri) -> Unit
+        val openInActivityInNewTask: (uri: Uri) -> Unit,
+        val openIntentChooser: (values: OpenAttachmentIntentValues) -> Unit
     )
 }
