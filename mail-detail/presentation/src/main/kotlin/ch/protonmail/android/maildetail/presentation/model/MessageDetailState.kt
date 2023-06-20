@@ -22,6 +22,7 @@ import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 
 data class MessageDetailState(
     val messageMetadataState: MessageMetadataState,
@@ -31,7 +32,8 @@ data class MessageDetailState(
     val exitScreenEffect: Effect<Unit>,
     val exitScreenWithMessageEffect: Effect<TextUiModel>,
     val error: Effect<TextUiModel>,
-    val openMessageBodyLinkEffect: Effect<Uri>
+    val openMessageBodyLinkEffect: Effect<Uri>,
+    val openAttachmentEffect: Effect<OpenAttachmentIntentValues>
 ) {
 
     companion object {
@@ -44,7 +46,8 @@ data class MessageDetailState(
             exitScreenEffect = Effect.empty(),
             exitScreenWithMessageEffect = Effect.empty(),
             error = Effect.empty(),
-            openMessageBodyLinkEffect = Effect.empty()
+            openMessageBodyLinkEffect = Effect.empty(),
+            openAttachmentEffect = Effect.empty()
         )
     }
 }

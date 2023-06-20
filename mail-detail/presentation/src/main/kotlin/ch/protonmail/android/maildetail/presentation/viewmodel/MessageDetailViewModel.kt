@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
+import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
@@ -59,6 +60,8 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinatio
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -104,7 +107,8 @@ class MessageDetailViewModel @Inject constructor(
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper,
     private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper,
     private val moveMessage: MoveMessage,
-    private val relabelMessage: RelabelMessage
+    private val relabelMessage: RelabelMessage,
+    private val getAttachmentIntentValues: GetAttachmentIntentValues
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -137,6 +141,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
             is MessageViewAction.MessageBodyLinkClicked -> onMessageBodyLinkClicked(action.uri)
             is MessageViewAction.ShowAllAttachments -> onShowAllAttachmentsClicked()
+            is MessageViewAction.OnAttachmentClicked -> onOpenAttachmentClicked(action.attachmentId)
         }.exhaustive
     }
 
@@ -428,6 +433,21 @@ class MessageDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(MessageViewAction.MessageBodyLinkClicked(uri)) }
     }
 
+    private fun onOpenAttachmentClicked(attachmentId: AttachmentId) {
+        // Only one download is allowed at a time
+        if (isAttachmentDownloadInProgress()) return
+        viewModelScope.launch {
+            val userId = primaryUserId.first()
+            getAttachmentIntentValues(userId, requireMessageId(), attachmentId).fold(
+                ifLeft = {
+                    Timber.d("Failed to download attachment")
+                    emitNewStateFrom(MessageDetailEvent.ErrorGettingAttachment)
+                },
+                ifRight = { values -> emitNewStateFrom(MessageDetailEvent.OpenAttachmentEvent(values)) }
+            )
+        }
+    }
+
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {
         val updatedState = messageDetailReducer.newStateFrom(state.value, operation)
         mutableDetailState.emit(updatedState)
@@ -438,6 +458,15 @@ class MessageDetailViewModel @Inject constructor(
             ?: throw IllegalStateException("No Message id given")
 
         return MessageId(messageIdParam)
+    }
+
+    private fun isAttachmentDownloadInProgress(): Boolean {
+        val messageBodyState = state.value.messageBodyState
+        return if (messageBodyState is MessageBodyState.Data) {
+            val downloadingAttachment = messageBodyState.messageBodyUiModel.attachments?.attachments
+                ?.firstOrNull { it.status == AttachmentWorkerStatus.Running }
+            downloadingAttachment != null
+        } else false
     }
 
     companion object {

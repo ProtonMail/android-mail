@@ -172,7 +172,8 @@ class MessageDetailReducerTest(
             exitScreenEffect = Effect.empty(),
             exitScreenWithMessageEffect = Effect.empty(),
             error = Effect.empty(),
-            openMessageBodyLinkEffect = Effect.empty()
+            openMessageBodyLinkEffect = Effect.empty(),
+            openAttachmentEffect = Effect.empty()
         )
 
         private val actions = listOf(

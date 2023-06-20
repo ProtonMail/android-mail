@@ -22,6 +22,7 @@ import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
@@ -48,7 +49,8 @@ class MessageDetailReducer @Inject constructor(
             bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
             exitScreenEffect = currentState.toNewExitStateFrom(operation),
             exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation),
-            openMessageBodyLinkEffect = currentState.toNewOpenMessageBodyLinkStateFrom(operation)
+            openMessageBodyLinkEffect = currentState.toNewOpenMessageBodyLinkStateFrom(operation),
+            openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation)
         )
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
@@ -58,10 +60,14 @@ class MessageDetailReducer @Inject constructor(
                 is MessageDetailEvent.ErrorAddingStar -> Effect.of(TextUiModel(R.string.error_star_operation_failed))
                 is MessageDetailEvent.ErrorRemovingStar ->
                     Effect.of(TextUiModel(R.string.error_unstar_operation_failed))
+
                 is MessageDetailEvent.ErrorMovingToTrash -> Effect.of(TextUiModel(R.string.error_move_to_trash_failed))
                 is MessageDetailEvent.ErrorMovingMessage -> Effect.of(TextUiModel(R.string.error_move_message_failed))
                 is MessageDetailEvent.ErrorLabelingMessage ->
                     Effect.of(TextUiModel(R.string.error_relabel_message_failed))
+
+                is MessageDetailEvent.ErrorGettingAttachment ->
+                    Effect.of(TextUiModel(R.string.error_get_attachment_failed))
             }
         } else {
             error
@@ -118,6 +124,7 @@ class MessageDetailReducer @Inject constructor(
                 is MessageViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
                 is MessageViewAction.RequestLabelAsBottomSheet,
                 is MessageViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
+
                 is MessageViewAction.LabelAsConfirmed,
                 is MessageViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
@@ -131,4 +138,11 @@ class MessageDetailReducer @Inject constructor(
             is MessageViewAction.MessageBodyLinkClicked -> Effect.of(operation.uri)
             else -> openMessageBodyLinkEffect
         }
+
+    private fun MessageDetailState.toNewOpenAttachmentStateFrom(
+        operation: MessageDetailOperation
+    ): Effect<OpenAttachmentIntentValues> = when (operation) {
+        is MessageDetailEvent.OpenAttachmentEvent -> Effect.of(operation.values)
+        else -> openAttachmentEffect
+    }
 }

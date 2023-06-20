@@ -44,6 +44,7 @@
     <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
     <string name="error_loading_message">Something went wrong, please try again.</string>
     <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>
+    <string name="error_get_attachment_failed">Failed to get attachment</string>
     <string name="reload">Reload</string>
     <plurals name="attachment_count_label">
         <item quantity="one">%d file</item>

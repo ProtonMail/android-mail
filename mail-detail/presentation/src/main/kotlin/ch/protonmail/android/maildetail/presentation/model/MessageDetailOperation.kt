@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.model
 
 import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingMessage
@@ -65,6 +66,8 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
         val bottomSheetOperation: BottomSheetOperation
     ) : MessageDetailEvent, AffectingBottomSheet
 
+    data class OpenAttachmentEvent(val values: OpenAttachmentIntentValues) : MessageDetailEvent
+
     data class AttachmentStatusChanged(
         val attachmentId: AttachmentId,
         val status: AttachmentWorkerStatus
@@ -78,6 +81,7 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     object ErrorMovingToTrash : MessageDetailEvent, AffectingErrorBar
     object ErrorMovingMessage : MessageDetailEvent, AffectingErrorBar
     object ErrorLabelingMessage : MessageDetailEvent, AffectingErrorBar
+    object ErrorGettingAttachment : MessageDetailEvent, AffectingErrorBar
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {
@@ -95,4 +99,5 @@ sealed interface MessageViewAction : MessageDetailOperation {
     data class LabelAsConfirmed(val archiveSelected: Boolean) : MessageViewAction, AffectingBottomSheet
     data class MessageBodyLinkClicked(val uri: Uri) : MessageViewAction
     object ShowAllAttachments : MessageViewAction
+    data class OnAttachmentClicked(val attachmentId: AttachmentId) : MessageViewAction
 }
