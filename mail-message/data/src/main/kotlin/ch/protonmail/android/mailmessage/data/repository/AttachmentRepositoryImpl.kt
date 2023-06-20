@@ -48,6 +48,9 @@ class AttachmentRepositoryImpl @Inject constructor(
         val attachment = localDataSource.getAttachment(userId, messageId, attachmentId)
         if (attachment.isRight()) return attachment
 
+        // Resets the status to running so that in case of a failure
+        // observing is not emitting directly failure when retrying
+        localDataSource.updateAttachmentDownloadStatus(userId, messageId, attachmentId, AttachmentWorkerStatus.Running)
         remoteDataSource.getAttachment(userId, messageId, attachmentId)
         return localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId)
             .firstOrNull { it?.status?.finished() == true }

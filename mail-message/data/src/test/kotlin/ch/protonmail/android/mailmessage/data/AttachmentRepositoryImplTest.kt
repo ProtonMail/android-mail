@@ -31,8 +31,10 @@ import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.Called
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -87,12 +89,28 @@ class AttachmentRepositoryImplTest {
         coEvery { localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId) } returns flowOf(
             attachmentMetaData
         )
+        coEvery {
+            localDataSource.updateAttachmentDownloadStatus(
+                userId = userId,
+                messageId = messageId,
+                attachmentId = attachmentId,
+                status = AttachmentWorkerStatus.Running
+            )
+        } just Runs
 
         // When
         val result = repository.getAttachment(userId, messageId, attachmentId)
 
         // Then
         assertEquals(attachmentMetaData.right(), result)
+        coVerify {
+            localDataSource.updateAttachmentDownloadStatus(
+                userId = userId,
+                messageId = messageId,
+                attachmentId = attachmentId,
+                status = AttachmentWorkerStatus.Running
+            )
+        }
     }
 
     @Test
@@ -109,6 +127,14 @@ class AttachmentRepositoryImplTest {
                 status = AttachmentWorkerStatus.Failed
             )
         )
+        coEvery {
+            localDataSource.updateAttachmentDownloadStatus(
+                userId = userId,
+                messageId = messageId,
+                attachmentId = attachmentId,
+                status = AttachmentWorkerStatus.Running
+            )
+        } just Runs
 
         // When
         val result = repository.getAttachment(userId, messageId, attachmentId)

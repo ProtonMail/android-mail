@@ -36,7 +36,8 @@ class AttachmentRemoteDataSourceImpl @Inject constructor(
     ) {
         enqueuer.enqueueUniqueWork<GetAttachmentWorker>(
             workerId = attachmentId.id,
-            params = GetAttachmentWorker.params(userId, messageId, attachmentId)
+            params = GetAttachmentWorker.params(userId, messageId, attachmentId),
+            constraints = null
         )
     }
 }

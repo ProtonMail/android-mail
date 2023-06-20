@@ -36,6 +36,7 @@ class ObserveMessageAttachmentStatus @Inject constructor(
         messageId: MessageId,
         attachmentId: AttachmentId
     ): Flow<MessageAttachmentMetadata> =
-        attachmentLocalDataSource.observeAttachmentMetadata(userId, messageId, attachmentId).filterNotNull()
+        attachmentLocalDataSource.observeAttachmentMetadata(userId, messageId, attachmentId)
+            .filterNotNull()
 
 }

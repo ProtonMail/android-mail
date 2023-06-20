@@ -33,28 +33,46 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
         enqueue(T::class.java, params)
     }
 
-    inline fun <reified T : ListenableWorker> enqueueUniqueWork(workerId: String, params: Map<String, Any>) {
-        enqueueUniqueWork(workerId, T::class.java, params)
+    inline fun <reified T : ListenableWorker> enqueueUniqueWork(
+        workerId: String,
+        params: Map<String, Any>,
+        constraints: Constraints? = buildDefaultConstraints()
+    ) {
+        enqueueUniqueWork(workerId, T::class.java, params, constraints)
     }
 
     fun enqueue(worker: Class<out ListenableWorker>, params: Map<String, Any>) {
-        workManager.enqueue(createRequest(worker, params))
+        workManager.enqueue(createRequest(worker, params, buildDefaultConstraints()))
     }
 
-    fun enqueueUniqueWork(workerId: String, worker: Class<out ListenableWorker>, params: Map<String, Any>) {
-        workManager.enqueueUniqueWork(workerId, ExistingWorkPolicy.KEEP, createRequest(worker, params))
+    fun enqueueUniqueWork(
+        workerId: String,
+        worker: Class<out ListenableWorker>,
+        params: Map<String, Any>,
+        constraints: Constraints?
+    ) {
+        workManager.enqueueUniqueWork(workerId, ExistingWorkPolicy.KEEP, createRequest(worker, params, constraints))
     }
 
-    private fun createRequest(worker: Class<out ListenableWorker>, params: Map<String, Any>): OneTimeWorkRequest {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
+
+    private fun createRequest(
+        worker: Class<out ListenableWorker>,
+        params: Map<String, Any>,
+        constraints: Constraints?
+    ): OneTimeWorkRequest {
 
         val data = workDataOf(*params.map { Pair(it.key, it.value) }.toTypedArray())
 
-        return OneTimeWorkRequest.Builder(worker)
-            .setConstraints(constraints)
-            .setInputData(data)
+        return OneTimeWorkRequest.Builder(worker).run {
+            setInputData(data)
+            if (constraints != null) setConstraints(constraints)
+            build()
+        }
+    }
+
+    fun buildDefaultConstraints(): Constraints {
+        return Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
     }
 }

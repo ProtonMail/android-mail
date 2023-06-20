@@ -40,7 +40,8 @@ class AttachmentRemoteDataSourceImplTest {
         every {
             this@mockk.enqueueUniqueWork<GetAttachmentWorker>(
                 workerId = attachmentId.id,
-                params = GetAttachmentWorker.params(userId, messageId, attachmentId)
+                params = GetAttachmentWorker.params(userId, messageId, attachmentId),
+                constraints = null
             )
         } returns mockk()
     }
@@ -55,7 +56,8 @@ class AttachmentRemoteDataSourceImplTest {
         coVerify {
             enqueuer.enqueueUniqueWork<GetAttachmentWorker>(
                 workerId = attachmentId.id,
-                params = GetAttachmentWorker.params(userId, messageId, attachmentId)
+                params = GetAttachmentWorker.params(userId, messageId, attachmentId),
+                constraints = null
             )
         }
     }
