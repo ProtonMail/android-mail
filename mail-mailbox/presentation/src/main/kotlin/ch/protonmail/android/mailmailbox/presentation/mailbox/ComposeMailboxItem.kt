@@ -73,7 +73,6 @@ fun MailboxItem(
 ) {
     Row(
         modifier = modifier
-            .testTag(MailboxItemTestTags.ItemRow)
             .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
             .padding(
                 start = ProtonDimens.DefaultSpacing,

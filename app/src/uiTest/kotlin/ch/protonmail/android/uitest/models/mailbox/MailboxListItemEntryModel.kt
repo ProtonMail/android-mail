@@ -18,74 +18,85 @@
 
 package ch.protonmail.android.uitest.models.mailbox
 
-import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onChildAt
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.MailFolderEntry
 import ch.protonmail.android.uitest.models.folders.MailLabelEntry
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertTextColor
 import ch.protonmail.android.uitest.util.assertions.assertTintColor
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.extensions.peek
+import kotlin.time.Duration.Companion.seconds
 
 internal class MailboxListItemEntryModel(
-    position: Int,
-    private val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule
+    private val position: Int,
+    composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule
 ) {
+
+    private val parent: SemanticsNodeInteraction = composeTestRule.onNodeWithTag(
+        MailboxScreenTestTags.List,
+        useUnmergedTree = true
+    )
+
+    // Consider the item as a computed property, as it might not always be there.
+    private val item: SemanticsNodeInteraction
+        get() = parent.child {
+            hasTestTag("${MailboxItemTestTags.ItemRow}$position")
+        }
+
+    private val avatar = item.child {
+        hasTestTag(AvatarTestTags.Avatar)
+    }
+
+    private val avatarDraft = item.child {
+        hasTestTag(AvatarTestTags.AvatarDraft)
+    }
+
+    private val participants = item.child {
+        hasTestTag(MailboxItemTestTags.Participants)
+    }
+
+    private val locations = item.child {
+        hasTestTag(MailboxItemTestTags.LocationIcons)
+    }
+
+    private val labels = item.child {
+        hasTestTag(MailboxItemTestTags.LabelsList)
+    }
+
+    private val subject = item.child {
+        hasTestTag(MailboxItemTestTags.Subject)
+    }
+
+    private val date = item.child {
+        hasTestTag(MailboxItemTestTags.Date)
+    }
+
+    private val count = item.child {
+        hasTestTag(MailboxItemTestTags.Count)
+    }
 
     init {
         waitForItemToBeShown()
     }
 
-    private val rootItem: SemanticsNodeInteraction = composeTestRule
-        .onAllNodesWithTag(MailboxItemTestTags.ItemRow, useUnmergedTree = true)[position]
-
-    private val avatar = rootItem.child {
-        hasTestTag(AvatarTestTags.Avatar)
-    }
-
-    private val avatarDraft = rootItem.child {
-        hasTestTag(AvatarTestTags.AvatarDraft)
-    }
-
-    private val participants = rootItem.child {
-        hasTestTag(MailboxItemTestTags.Participants)
-    }
-
-    private val locations = rootItem.child {
-        hasTestTag(MailboxItemTestTags.LocationIcons)
-    }
-
-    private val labels = rootItem.child {
-        hasTestTag(MailboxItemTestTags.LabelsList)
-    }
-
-    private val subject = rootItem.child {
-        hasTestTag(MailboxItemTestTags.Subject)
-    }
-
-    private val date = rootItem.child {
-        hasTestTag(MailboxItemTestTags.Date)
-    }
-
-    private val count = rootItem.child {
-        hasTestTag(MailboxItemTestTags.Count)
-    }
-
     // region actions
     fun click() = apply {
-        rootItem.performClick()
+        item.performClick()
     }
     // endregion
 
@@ -157,12 +168,12 @@ internal class MailboxListItemEntryModel(
     // endregion
 
     // region helpers
-    @OptIn(ExperimentalTestApi::class)
     private fun waitForItemToBeShown() = apply {
-        composeTestRule.waitUntilAtLeastOneExists(
-            matcher = hasTestTag(MailboxItemTestTags.ItemRow),
-            timeoutMillis = 30_000
-        )
+        parent
+            .awaitDisplayed(timeout = 30.seconds)
+            .performScrollToIndex(position)
+
+        item.awaitDisplayed()
     }
     // endregion
 

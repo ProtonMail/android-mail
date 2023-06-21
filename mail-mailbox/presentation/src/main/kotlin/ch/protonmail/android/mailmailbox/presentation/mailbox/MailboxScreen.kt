@@ -52,7 +52,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemsIndexed
 import androidx.viewbinding.BuildConfig
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
@@ -289,13 +289,15 @@ private fun MailboxItemsList(
             .fillMaxSize()
             .let { if (BuildConfig.DEBUG) it.verticalScrollbar(listState) else it }
     ) {
-        items(
+        itemsIndexed(
             items = items,
-            key = { it.id }
-        ) { item ->
+            key = { _, item -> item.id }
+        ) { index, item ->
             item?.let {
                 MailboxItem(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier
+                        .testTag("${MailboxItemTestTags.ItemRow}$index")
+                        .animateItemPlacement(),
                     item = item,
                     onItemClicked = actions.onNavigateToMailboxItem,
                     onOpenSelectionMode = actions.onOpenSelectionMode
@@ -306,7 +308,9 @@ private fun MailboxItemsList(
         item {
             when (viewState) {
                 is MailboxScreenState.AppendLoading -> ProtonCenteredProgress(
-                    Modifier.padding(ProtonDimens.DefaultSpacing)
+                    modifier = Modifier
+                        .testTag(MailboxScreenTestTags.MailboxAppendLoader)
+                        .padding(ProtonDimens.DefaultSpacing)
                 )
 
                 is MailboxScreenState.AppendOfflineError -> AppendError(
@@ -333,19 +337,25 @@ private fun AppendError(
 ) {
     Column(
         modifier = modifier
+            .testTag(MailboxScreenTestTags.MailboxAppendError)
             .fillMaxWidth()
             .padding(
                 top = ProtonDimens.DefaultSpacing,
                 start = ProtonDimens.DefaultSpacing,
                 end = ProtonDimens.DefaultSpacing
-            )
-            .testTag(MailboxScreenTestTags.MailboxAppendError),
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = message, textAlign = TextAlign.Center)
+        Text(
+            modifier = Modifier.testTag(MailboxScreenTestTags.MailboxAppendErrorText),
+            text = message,
+            textAlign = TextAlign.Center
+        )
         Button(
             onClick = onClick,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .testTag(MailboxScreenTestTags.MailboxAppendErrorButton)
+                .fillMaxWidth()
         ) {
             Text(text = stringResource(id = commonString.retry))
         }
@@ -452,6 +462,9 @@ object MailboxScreenTestTags {
     const val ListProgress = "MailboxListProgress"
     const val MailboxError = "MailboxError"
     const val MailboxErrorMessage = "MailboxErrorMessage"
+    const val MailboxAppendLoader = "MailboxAppendLoader"
     const val MailboxAppendError = "MailboxAppendError"
+    const val MailboxAppendErrorText = "MailboxAppendErrorText"
+    const val MailboxAppendErrorButton = "MailboxAppendErrorButton"
     const val Root = "MailboxScreen"
 }
