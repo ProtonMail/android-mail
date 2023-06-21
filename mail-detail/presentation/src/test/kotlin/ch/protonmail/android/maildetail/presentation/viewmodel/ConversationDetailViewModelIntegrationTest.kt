@@ -88,6 +88,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.MoveToBottomSheetRe
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryptedMessageBody
+import ch.protonmail.android.maildetail.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
@@ -223,6 +224,7 @@ class ConversationDetailViewModelIntegrationTest {
         }
     }
     private val injectCssIntoDecryptedMessageBody = InjectCssIntoDecryptedMessageBody(context)
+    private val sanitizeHtmlOfDecryptedMessageBody = SanitizeHtmlOfDecryptedMessageBody()
 
     private val conversationMessageMapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = DetailAvatarUiModelMapper(getInitial),
@@ -241,7 +243,11 @@ class ConversationDetailViewModelIntegrationTest {
             participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName),
             resolveParticipantName = resolveParticipantName
         ),
-        messageBodyUiModelMapper = MessageBodyUiModelMapper(injectCssIntoDecryptedMessageBody, shouldShowRemoteContent)
+        messageBodyUiModelMapper = MessageBodyUiModelMapper(
+            injectCssIntoDecryptedMessageBody,
+            sanitizeHtmlOfDecryptedMessageBody,
+            shouldShowRemoteContent
+        )
     )
 
     private val conversationMetadataMapper = ConversationDetailMetadataUiModelMapper()

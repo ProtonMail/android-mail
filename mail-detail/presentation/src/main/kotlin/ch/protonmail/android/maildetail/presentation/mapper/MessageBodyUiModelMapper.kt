@@ -25,36 +25,44 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachment
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryptedMessageBody
+import ch.protonmail.android.maildetail.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MessageBodyUiModelMapper @Inject constructor(
     private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody,
+    private val sanitizeHtmlOfDecryptedMessageBody: SanitizeHtmlOfDecryptedMessageBody,
     private val shouldShowRemoteContent: ShouldShowRemoteContent
 ) {
 
-    suspend fun toUiModel(userId: UserId, decryptedMessageBody: DecryptedMessageBody) = MessageBodyUiModel(
-        messageBody = injectCssIntoDecryptedMessageBody(
+    suspend fun toUiModel(userId: UserId, decryptedMessageBody: DecryptedMessageBody): MessageBodyUiModel {
+        val sanitizedMessageBody = sanitizeHtmlOfDecryptedMessageBody(
             decryptedMessageBody.value,
             decryptedMessageBody.mimeType.toMimeTypeUiModel()
-        ),
-        mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
-        shouldShowRemoteContent = shouldShowRemoteContent(userId),
-        attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
-            MessageBodyAttachmentsUiModel(
-                attachments = decryptedMessageBody.attachments.map {
-                    AttachmentUiModel(
-                        attachmentId = it.attachmentId.id,
-                        fileName = it.name.split(".").dropLast(1).joinToString("."),
-                        extension = it.name.split(".").last(),
-                        size = it.size,
-                        mimeType = it.mimeType
-                    )
-                }
-            )
-        } else null
-    )
+        )
+        return MessageBodyUiModel(
+            messageBody = injectCssIntoDecryptedMessageBody(
+                sanitizedMessageBody,
+                decryptedMessageBody.mimeType.toMimeTypeUiModel()
+            ),
+            mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
+            shouldShowRemoteContent = shouldShowRemoteContent(userId),
+            attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
+                MessageBodyAttachmentsUiModel(
+                    attachments = decryptedMessageBody.attachments.map {
+                        AttachmentUiModel(
+                            attachmentId = it.attachmentId.id,
+                            fileName = it.name.split(".").dropLast(1).joinToString("."),
+                            extension = it.name.split(".").last(),
+                            size = it.size,
+                            mimeType = it.mimeType
+                        )
+                    }
+                )
+            } else null
+        )
+    }
 
     fun toUiModel(encryptedMessageBody: String) = MessageBodyUiModel(
         messageBody = encryptedMessageBody,
