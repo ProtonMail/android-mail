@@ -49,4 +49,7 @@
     <!-- Settings -->
     <string name="test_mail_settings_settings">Settings</string>
     <string name="test_report_a_problem">Report a problem</string>
+
+    <!-- Misc -->
+    <string name="test_retry">Retry</string>
 </resources>

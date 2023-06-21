@@ -33,7 +33,7 @@ fun ComposeTestRule.awaitProgressIsHidden() {
 
 fun SemanticsNodeInteraction.awaitDisplayed(
     composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule,
-    timeout: Duration = 5.seconds
+    timeout: Duration = 10.seconds
 ): SemanticsNodeInteraction = also {
     composeTestRule.waitUntil(timeout.inWholeMilliseconds) { nodeIsDisplayed(this) }
 }
