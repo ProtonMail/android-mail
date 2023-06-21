@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.e2e.mailbox.errors
+package ch.protonmail.android.uitest.e2e.mailbox.errors.pulltorefresh
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
@@ -42,7 +42,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class MessageModeMailboxPullToRefreshErrorTests :
+internal class ConversationModeMailboxPullToRefreshErrorTests :
     MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut), MailboxPullToRefreshErrorTests {
 
     @JvmField
@@ -50,17 +50,17 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
     @Test
-    @TestId("188899")
-    fun checkMessagesLoadingErrorToError() {
+    @TestId("188892")
+    fun checkConversationsLoadingErrorToError() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
+                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                "/mail/v4/conversations"
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true serveOnce true,
-                "/mail/v4/messages"
+                "/mail/v4/conversations"
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
@@ -74,17 +74,17 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
     }
 
     @Test
-    @TestId("188900")
-    fun checkMessagesLoadingContentToError() {
+    @TestId("188893")
+    fun checkConversationsLoadingContentToError() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
+                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
-                    respondWith "/mail/v4/messages/messages_base_placeholder.json"
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_base_placeholder.json"
                     withStatusCode 200 ignoreQueryParams true serveOnce true,
-                "/mail/v4/messages"
+                "/mail/v4/conversations"
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
@@ -99,18 +99,18 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
 
     @Test
     @SmokeTest
-    @TestId("188901")
-    fun checkMessagesLoadingErrorToContent() {
+    @TestId("188894")
+    fun checkConversationsLoadingErrorToContent() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
+                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                "/mail/v4/conversations"
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true serveOnce true,
-                "/mail/v4/messages"
-                    respondWith "/mail/v4/messages/messages_base_placeholder.json"
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_base_placeholder.json"
                     withStatusCode 200 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
         }
@@ -123,17 +123,17 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
     }
 
     @Test
-    @TestId("188902")
-    fun checkMessagesLoadingEmptyToError() {
+    @TestId("188895")
+    fun checkConversationsLoadingEmptyToError() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
+                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
-                    respondWith "/mail/v4/messages/messages_empty.json"
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true serveOnce true,
-                "/mail/v4/messages"
+                "/mail/v4/conversations"
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
@@ -147,18 +147,18 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
     }
 
     @Test
-    @TestId("188903")
-    fun checkMessagesLoadingErrorToEmpty() {
+    @TestId("188896")
+    fun checkConversationsLoadingErrorToEmpty() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
+                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
+                "/mail/v4/conversations"
                     respondWith "/global/errors/error_mock.json"
                     withStatusCode 503 ignoreQueryParams true serveOnce true,
-                "/mail/v4/messages"
-                    respondWith "/mail/v4/messages/messages_empty.json"
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
         }
@@ -172,18 +172,18 @@ internal class MessageModeMailboxPullToRefreshErrorTests :
 
     @Test
     @SmokeTest
-    @TestId("188904")
-    fun checkMessagesLoadingEmptyToContent() {
+    @TestId("188897")
+    fun checkConversationsLoadingEmptyToContent() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
+                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
-                "/mail/v4/messages"
-                    respondWith "/mail/v4/messages/messages_empty.json"
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_empty.json"
                     withStatusCode 200 ignoreQueryParams true serveOnce true,
-                "/mail/v4/messages"
-                    respondWith "/mail/v4/messages/messages_base_placeholder.json"
+                "/mail/v4/conversations"
+                    respondWith "/mail/v4/conversations/conversations_base_placeholder.json"
                     withStatusCode 200 ignoreQueryParams true withNetworkDelay 2000 serveOnce true
             )
         }

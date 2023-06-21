@@ -48,7 +48,9 @@ internal class MailboxListSection : ComposeSectionRobot(), RefreshableSection {
     }
 
     fun scrollToItemAtIndex(index: Int) {
-        messagesList.performScrollToIndex(index)
+        messagesList
+            .awaitDisplayed()
+            .performScrollToIndex(index)
     }
 
     fun scrollToBottom() = apply {

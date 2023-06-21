@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.e2e.mailbox.errors
+package ch.protonmail.android.uitest.e2e.mailbox.errors.pulltorefresh
 
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
@@ -39,20 +39,6 @@ internal interface MailboxPullToRefreshErrorTests {
             subject = "Test message",
             date = "Mar 6, 2023"
         )
-
-    fun verifyContentToEmpty() {
-        mailboxRobot {
-            listSection {
-                verify { listItemsAreShown(baseItem) }
-
-                pullDownToRefresh()
-            }
-
-            emptyListSection {
-                verify { isShown() }
-            }
-        }
-    }
 
     fun verifyEmptyToContent() {
         mailboxRobot {
