@@ -29,284 +29,187 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState.NotSubmittable
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState.Submittable
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
+import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Invalid
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Valid
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
 
-class ComposerReducerTest {
+@RunWith(Parameterized::class)
+class ComposerReducerTest(
+    private val testName: String,
+    private val testTransition: TestTransition
+) {
+
+    private val composerReducer = ComposerReducer()
 
     @Test
-    fun `Should generate submittable state when adding a new valid email address in the to field`() {
-        // Given
-        val messageId = MessageId(UUID.randomUUID().toString())
-        val emailAddress = "a@b.c"
-        val reducer = ComposerReducer()
-        val currentState = ComposerDraftState.empty(messageId)
-        val operation = RecipientsToChanged(listOf(Valid(emailAddress)))
+    fun `Test composer transition states`() = with(testTransition) {
+        val actualState = composerReducer.newStateFrom(currentState, operation)
 
-        // When
-        val newState = reducer.newStateFrom(currentState, operation)
+        assertEquals(expectedState, actualState, testName)
+    }
 
-        // Then
-        assertEquals(
-            Submittable(
-                fields = ComposerFields(
+    companion object {
+
+        private val messageId = MessageId(UUID.randomUUID().toString())
+
+        private val EmptyToSubmittableToField = with("a@b.c") {
+            TestTransition(
+                name = "Should generate submittable state when adding a new valid email address in the to field",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsToChanged(listOf(Valid(this))),
+                expectedState = aSubmittableState(messageId, listOf(Valid(this)))
+            )
+        }
+
+        private val EmptyToNotSubmittableToField = with(UUID.randomUUID().toString()) {
+            TestTransition(
+                name = "Should generate not submittable error state when adding invalid email address in the to field",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsToChanged(listOf(Invalid(this))),
+                expectedState = aNotSubmittableState(messageId, to = listOf(Invalid(this)))
+            )
+        }
+
+        private val EmptyToSubmittableCcField = with("a@b.c") {
+            TestTransition(
+                name = "Should generate submittable state when adding a new valid email address in the cc field",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsCcChanged(listOf(Valid(this))),
+                expectedState = aSubmittableState(messageId, cc = listOf(Valid(this)))
+            )
+        }
+
+        private val EmptyToNotSubmittableCcField = with(UUID.randomUUID().toString()) {
+            TestTransition(
+                name = "Should generate not submittable error state when adding invalid email address in the cc field",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsCcChanged(listOf(Invalid(this))),
+                expectedState = aNotSubmittableState(messageId, cc = listOf(Invalid(this)))
+            )
+        }
+
+        private val EmptyToSubmittableBccField = with("a@b.c") {
+            TestTransition(
+                name = "Should generate submittable state when adding a new valid email address in the bcc field",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsBccChanged(listOf(Valid(this))),
+                expectedState = aSubmittableState(messageId, bcc = listOf(Valid(this)))
+            )
+        }
+
+        private val EmptyToNotSubmittableBccField = with(UUID.randomUUID().toString()) {
+            TestTransition(
+                name = "Should generate not submittable error state when adding invalid email address in the bcc field",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsBccChanged(listOf(Invalid(this))),
+                expectedState = aNotSubmittableState(messageId, bcc = listOf(Invalid(this)))
+            )
+        }
+
+        private val NotSubmittableToWithoutErrorToField = with("a@b.c") {
+            val invalidEmail = UUID.randomUUID().toString()
+            TestTransition(
+                name = "Should generate not submittable non error state when adding valid email to current error",
+                currentState = aNotSubmittableState(messageId, to = listOf(Invalid(invalidEmail))),
+                operation = RecipientsToChanged(listOf(Invalid(invalidEmail), Valid(this))),
+                expectedState = aNotSubmittableState(
                     draftId = messageId,
-                    from = "",
-                    to = listOf(Valid(emailAddress)),
-                    cc = emptyList(),
-                    bcc = emptyList(),
-                    subject = "",
-                    body = ""
+                    to = listOf(Invalid(invalidEmail), Valid(this)),
+                    error = Effect.empty()
                 )
-            ),
-            newState
-        )
-    }
+            )
+        }
 
-    @Test
-    fun `Should generate not submittable state with error when adding a new invalid email address in the to field`() {
-        // Given
-        val messageId = MessageId(UUID.randomUUID().toString())
-        val emailAddress = UUID.randomUUID().toString()
-        val reducer = ComposerReducer()
-        val currentState = ComposerDraftState.empty(messageId)
-        val operation = RecipientsToChanged(listOf(Invalid(emailAddress)))
-
-        // When
-        val newState = reducer.newStateFrom(currentState, operation)
-
-        // Then
-        assertEquals(
-            NotSubmittable(
-                fields = ComposerFields(
+        private val NotSubmittableToWithErrorToField = with("a@b.c") {
+            val invalidEmail = UUID.randomUUID().toString()
+            TestTransition(
+                name = "Should generate not submittable error state when adding invalid followed by invalid address",
+                currentState = aNotSubmittableState(messageId, to = listOf(Invalid(invalidEmail))),
+                operation = RecipientsToChanged(listOf(Invalid(invalidEmail), Invalid(this))),
+                expectedState = aNotSubmittableState(
                     draftId = messageId,
-                    from = "",
-                    to = listOf(Invalid(emailAddress)),
-                    cc = emptyList(),
-                    bcc = emptyList(),
-                    subject = "",
-                    body = ""
-                ),
-                error = Effect.of(TextUiModel(R.string.composer_error_invalid_email))
-            ),
-            newState
-        )
-    }
-
-    @Test
-    fun `Should generate submittable state when adding a new valid email address in the cc field`() {
-        // Given
-        val messageId = MessageId(UUID.randomUUID().toString())
-        val emailAddress = "a@b.c"
-        val reducer = ComposerReducer()
-        val currentState = ComposerDraftState.empty(messageId)
-        val operation = RecipientsCcChanged(listOf(Valid(emailAddress)))
-
-        // When
-        val newState = reducer.newStateFrom(currentState, operation)
-
-        // Then
-        assertEquals(
-            Submittable(
-                fields = ComposerFields(
-                    draftId = messageId,
-                    from = "",
-                    to = emptyList(),
-                    cc = listOf(Valid(emailAddress)),
-                    bcc = emptyList(),
-                    subject = "",
-                    body = ""
+                    to = listOf(Invalid(invalidEmail), Invalid(this))
                 )
-            ),
-            newState
-        )
-    }
+            )
+        }
 
-    @Test
-    fun `Should generate not submittable state with error when adding a new invalid email address in the cc field`() {
-        // Given
-        val messageId = MessageId(UUID.randomUUID().toString())
-        val emailAddress = UUID.randomUUID().toString()
-        val reducer = ComposerReducer()
-        val currentState = ComposerDraftState.empty(messageId)
-        val operation = RecipientsCcChanged(listOf(Invalid(emailAddress)))
-
-        // When
-        val newState = reducer.newStateFrom(currentState, operation)
-
-        // Then
-        assertEquals(
-            NotSubmittable(
-                fields = ComposerFields(
+        private val NotSubmittableWithoutErrorWhenRemoving = with("a@b.c") {
+            val invalidEmail = UUID.randomUUID().toString()
+            TestTransition(
+                name = "Should generate not submittable state without error when removing invalid address",
+                currentState = aNotSubmittableState(messageId, to = listOf(Invalid(invalidEmail), Invalid(this))),
+                operation = RecipientsToChanged(listOf(Invalid(invalidEmail))),
+                expectedState = aNotSubmittableState(
                     draftId = messageId,
-                    from = "",
-                    to = emptyList(),
-                    cc = listOf(Invalid(emailAddress)),
-                    bcc = emptyList(),
-                    subject = "",
-                    body = ""
-                ),
-                error = Effect.of(TextUiModel(R.string.composer_error_invalid_email))
-            ),
-            newState
-        )
-    }
-
-    @Test
-    fun `Should generate submittable state when adding a new valid email address in the bcc field`() {
-        // Given
-        val messageId = MessageId(UUID.randomUUID().toString())
-        val emailAddress = "a@b.c"
-        val reducer = ComposerReducer()
-        val currentState = ComposerDraftState.empty(messageId)
-        val operation = RecipientsBccChanged(listOf(Valid(emailAddress)))
-
-        // When
-        val newState = reducer.newStateFrom(currentState, operation)
-
-        // Then
-        assertEquals(
-            Submittable(
-                fields = ComposerFields(
-                    draftId = messageId,
-                    from = "",
-                    to = emptyList(),
-                    cc = emptyList(),
-                    bcc = listOf(Valid(emailAddress)),
-                    subject = "",
-                    body = ""
+                    to = listOf(Invalid(invalidEmail)),
+                    error = Effect.empty()
                 )
-            ),
-            newState
+            )
+        }
+
+        private val transitions = listOf(
+            EmptyToSubmittableToField,
+            EmptyToNotSubmittableToField,
+            EmptyToSubmittableCcField,
+            EmptyToNotSubmittableCcField,
+            EmptyToSubmittableBccField,
+            EmptyToNotSubmittableBccField,
+            NotSubmittableToWithoutErrorToField,
+            NotSubmittableToWithErrorToField,
+            NotSubmittableWithoutErrorWhenRemoving
         )
-    }
 
-    @Test
-    fun `Should generate not submittable state with error when adding a new invalid email address in the bcc field`() {
-        // Given
-        val messageId = MessageId(UUID.randomUUID().toString())
-        val emailAddress = UUID.randomUUID().toString()
-        val reducer = ComposerReducer()
-        val currentState = ComposerDraftState.empty(messageId)
-        val operation = RecipientsBccChanged(listOf(Invalid(emailAddress)))
-
-        // When
-        val newState = reducer.newStateFrom(currentState, operation)
-
-        // Then
-        assertEquals(
-            NotSubmittable(
-                fields = ComposerFields(
-                    draftId = messageId,
-                    from = "",
-                    to = emptyList(),
-                    cc = emptyList(),
-                    bcc = listOf(Invalid(emailAddress)),
-                    subject = "",
-                    body = ""
-                ),
-                error = Effect.of(TextUiModel(R.string.composer_error_invalid_email))
-            ),
-            newState
+        private fun aSubmittableState(
+            draftId: MessageId,
+            to: List<RecipientUiModel> = emptyList(),
+            cc: List<RecipientUiModel> = emptyList(),
+            bcc: List<RecipientUiModel> = emptyList()
+        ) = Submittable(
+            fields = ComposerFields(
+                draftId = draftId,
+                from = "",
+                to = to,
+                cc = cc,
+                bcc = bcc,
+                subject = "",
+                body = ""
+            )
         )
-    }
 
-    @Test
-    fun `Should generate not submittable state without error when adding invalid followed by valid address`() {
-        // Given
-        val messageId = MessageId(UUID.randomUUID().toString())
-        val emailAddress = UUID.randomUUID().toString()
-        val reducer = ComposerReducer()
-        val currentState = ComposerDraftState.empty(messageId)
-        val operation1 = RecipientsToChanged(listOf(Invalid(emailAddress)))
-        val operation2 = RecipientsToChanged(listOf(Invalid(emailAddress), Valid(emailAddress)))
-
-        // When
-        var newState = reducer.newStateFrom(currentState, operation1)
-        newState = reducer.newStateFrom(newState, operation2)
-
-        // Then
-        assertEquals(
-            NotSubmittable(
-                fields = ComposerFields(
-                    draftId = messageId,
-                    from = "",
-                    to = listOf(Invalid(emailAddress), Valid(emailAddress)),
-                    cc = emptyList(),
-                    bcc = emptyList(),
-                    subject = "",
-                    body = ""
-                ),
-                error = Effect.empty()
+        private fun aNotSubmittableState(
+            draftId: MessageId,
+            to: List<RecipientUiModel> = emptyList(),
+            cc: List<RecipientUiModel> = emptyList(),
+            bcc: List<RecipientUiModel> = emptyList(),
+            error: Effect<TextUiModel> = Effect.of(TextUiModel(R.string.composer_error_invalid_email))
+        ) = NotSubmittable(
+            fields = ComposerFields(
+                draftId = draftId,
+                from = "",
+                to = to,
+                cc = cc,
+                bcc = bcc,
+                subject = "",
+                body = ""
             ),
-            newState
+            error = error
         )
-    }
 
-    @Test
-    fun `Should generate not submittable state with error when adding invalid followed by invalid address`() {
-        // Given
-        val messageId = MessageId(UUID.randomUUID().toString())
-        val emailAddress = UUID.randomUUID().toString()
-        val reducer = ComposerReducer()
-        val currentState = ComposerDraftState.empty(messageId)
-        val operation1 = RecipientsToChanged(listOf(Invalid(emailAddress)))
-        val operation2 = RecipientsToChanged(listOf(Invalid(emailAddress), Invalid(emailAddress)))
+        @JvmStatic
+        @Parameterized.Parameters(name = "{0}")
+        fun data(): Collection<Array<Any>> = transitions.map { test -> arrayOf(test.name, test) }
 
-        // When
-        var newState = reducer.newStateFrom(currentState, operation1)
-        newState = reducer.newStateFrom(newState, operation2)
-
-        // Then
-        assertEquals(
-            NotSubmittable(
-                fields = ComposerFields(
-                    draftId = messageId,
-                    from = "",
-                    to = listOf(Invalid(emailAddress), Invalid(emailAddress)),
-                    cc = emptyList(),
-                    bcc = emptyList(),
-                    subject = "",
-                    body = ""
-                ),
-                error = Effect.of(TextUiModel(R.string.composer_error_invalid_email))
-            ),
-            newState
-        )
-    }
-
-    @Test
-    fun `Should generate not submittable state without error when removing invalid address`() {
-        // Given
-        val messageId = MessageId(UUID.randomUUID().toString())
-        val emailAddress = UUID.randomUUID().toString()
-        val reducer = ComposerReducer()
-        val currentState = ComposerDraftState.empty(messageId)
-        val operation1 = RecipientsToChanged(listOf(Invalid(emailAddress), Invalid(emailAddress)))
-        val operation2 = RecipientsToChanged(listOf(Invalid(emailAddress)))
-
-        // When
-        var newState = reducer.newStateFrom(currentState, operation1)
-        newState = reducer.newStateFrom(newState, operation2)
-
-        // Then
-        assertEquals(
-            NotSubmittable(
-                fields = ComposerFields(
-                    draftId = messageId,
-                    from = "",
-                    to = listOf(Invalid(emailAddress)),
-                    cc = emptyList(),
-                    bcc = emptyList(),
-                    subject = "",
-                    body = ""
-                ),
-                error = Effect.empty()
-            ),
-            newState
+        data class TestTransition(
+            val name: String,
+            val currentState: ComposerDraftState,
+            val operation: ComposerOperation,
+            val expectedState: ComposerDraftState
         )
     }
 }
