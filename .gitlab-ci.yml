@@ -162,6 +162,7 @@ run_unit_test:
     paths:
       - build/reports
     reports:
+      junit: ./**/build/test-results/test*/TEST-*.xml
       coverage_report:
         coverage_format: cobertura
         path: build/reports/cobertura-coverage.xml
