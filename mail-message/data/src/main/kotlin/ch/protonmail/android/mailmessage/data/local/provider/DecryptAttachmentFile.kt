@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.usecase
+package ch.protonmail.android.mailmessage.data.local.provider
 
 import java.io.File
 import java.io.IOException
@@ -96,11 +96,11 @@ class DecryptAttachmentFile @Inject constructor(
         userAddress: UserAddress,
         messageAttachment: MessageAttachment
     ): File {
-        requireNotNull(attachmentDetails.path) { "Attachment path not found" }
-        requireNotNull(messageAttachment.keyPackets) { "Key packets not found" }
+        val path = requireNotNull(attachmentDetails.path) { "Attachment path not found" }
+        val keyPackets = requireNotNull(messageAttachment.keyPackets) { "Key packets not found" }
 
         val fileExtension = messageAttachment.name.split(".").last()
-        val encryptedFile = File(attachmentDetails.path)
+        val encryptedFile = File(path)
         val decryptedFile = runCatching {
             File.createTempFile(attachmentDetails.attachmentId.id, fileExtension, context.cacheDir)
         }.getOrNull() ?: throw IOException("Decrypted temporary file could not be created")
@@ -109,7 +109,7 @@ class DecryptAttachmentFile @Inject constructor(
             this.decryptFile(
                 source = encryptedFile,
                 destination = decryptedFile,
-                keyPacket = cryptoContext.pgpCrypto.getBase64Decoded(messageAttachment.keyPackets)
+                keyPacket = cryptoContext.pgpCrypto.getBase64Decoded(keyPackets)
             )
         }
         return decryptedFile

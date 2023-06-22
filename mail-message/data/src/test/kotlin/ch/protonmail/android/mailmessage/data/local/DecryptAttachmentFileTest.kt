@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.usecase
+package ch.protonmail.android.mailmessage.data.local
 
 import java.io.File
 import java.io.IOException
@@ -258,14 +258,15 @@ class DecryptAttachmentFileTest {
         every { pgpCryptoMock.decryptFile(encryptedFile, decryptedFile, sessionKeyMocked) } throws CryptoException()
     }
 
-    private fun buildDecryptAttachmentFile() = DecryptAttachmentFile(
-        context,
-        attachmentRepo,
-        messageRepo,
-        cryptoContext,
-        mockUserAddressManager,
-        mockParcelFileDescriptorProvider,
-        UnconfinedTestDispatcher()
-    )
+    private fun buildDecryptAttachmentFile() =
+        ch.protonmail.android.mailmessage.data.local.provider.DecryptAttachmentFile(
+            context,
+            attachmentRepo,
+            messageRepo,
+            cryptoContext,
+            mockUserAddressManager,
+            mockParcelFileDescriptorProvider,
+            UnconfinedTestDispatcher()
+        )
 
 }

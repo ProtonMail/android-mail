@@ -16,14 +16,4 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.protonmail.android.mailmessage.domain">
-
-    <application>
-        <provider
-            android:name="ch.protonmail.android.mailmessage.domain.AttachmentFileProvider"
-            android:authorities="${applicationId}.attachments"
-            android:exported="false"
-            android:grantUriPermissions="true" />
-    </application>
-</manifest>
+<manifest package="ch.protonmail.android.mailmessage.domain" />

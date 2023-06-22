@@ -16,14 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain
+package ch.protonmail.android.mailmessage.data.local.provider
 
 import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import ch.protonmail.android.mailmessage.domain.usecase.DecryptAttachmentFile
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
