@@ -29,7 +29,7 @@ class SanitizeHtmlOfDecryptedMessageBody @Inject constructor() {
 
     private val blacklistedElements = arrayOf(
         "meta", "audio", "video", "iframe", "object", "picture",
-        "form", "map", "area", "input", "embed", "script", "style"
+        "form", "map", "area", "input", "embed", "script"
     )
 
     operator fun invoke(messageBody: String, mimeType: MimeTypeUiModel): String {
