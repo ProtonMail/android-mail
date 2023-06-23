@@ -28,7 +28,6 @@ import javax.inject.Inject
 
 class ConversationDetailMetadataReducer @Inject constructor() {
 
-    @SuppressWarnings("UnusedPrivateMember", "NotImplementedDeclaration")
     fun newStateFrom(
         currentState: ConversationDetailMetadataState,
         event: ConversationDetailOperation.AffectingConversation
@@ -41,27 +40,24 @@ class ConversationDetailMetadataReducer @Inject constructor() {
         is ConversationDetailViewAction.UnStar -> currentState.toNewStateForUnStarredConversation()
     }
 
-    private fun ConversationDetailMetadataState.toNewStateForStarredConversation() =
-        when (this) {
-            is ConversationDetailMetadataState.Data -> copy(conversationUiModel.copy(isStarred = true))
-            is ConversationDetailMetadataState.Error -> this
-            is ConversationDetailMetadataState.Loading -> this
-        }
+    private fun ConversationDetailMetadataState.toNewStateForStarredConversation() = when (this) {
+        is ConversationDetailMetadataState.Data -> copy(conversationUiModel.copy(isStarred = true))
+        is ConversationDetailMetadataState.Error -> this
+        is ConversationDetailMetadataState.Loading -> this
+    }
 
-    private fun ConversationDetailMetadataState.toNewStateForUnStarredConversation() =
-        when (this) {
-            is ConversationDetailMetadataState.Data -> copy(conversationUiModel.copy(isStarred = false))
-            is ConversationDetailMetadataState.Error -> this
-            is ConversationDetailMetadataState.Loading -> this
-        }
+    private fun ConversationDetailMetadataState.toNewStateForUnStarredConversation() = when (this) {
+        is ConversationDetailMetadataState.Data -> copy(conversationUiModel.copy(isStarred = false))
+        is ConversationDetailMetadataState.Error -> this
+        is ConversationDetailMetadataState.Loading -> this
+    }
 
-    private fun ConversationDetailMetadataState.toNewStateForErrorLoading() =
-        when (this) {
-            is ConversationDetailMetadataState.Data -> this
-            is ConversationDetailMetadataState.Loading,
-            is ConversationDetailMetadataState.Error -> ConversationDetailMetadataState.Error(
-                message = TextUiModel(string.detail_error_loading_conversation)
-            )
-        }
+    private fun ConversationDetailMetadataState.toNewStateForErrorLoading() = when (this) {
+        is ConversationDetailMetadataState.Data -> this
+        is ConversationDetailMetadataState.Loading,
+        is ConversationDetailMetadataState.Error -> ConversationDetailMetadataState.Error(
+            message = TextUiModel(string.detail_error_loading_conversation)
+        )
+    }
 
 }

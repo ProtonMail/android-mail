@@ -163,11 +163,10 @@ class ConversationDetailReducer @Inject constructor(
         else -> openMessageBodyLinkEffect
     }
 
-    private fun ConversationDetailState.toScrollToMessageState(
-        operation: ConversationDetailOperation
-    ): MessageId? = when (operation) {
-        is ConversationDetailViewAction.RequestScrollTo -> operation.messageId
-        is ConversationDetailEvent.MessagesData -> operation.requestScrollToMessageId
-        else -> scrollToMessage
-    }
+    private fun ConversationDetailState.toScrollToMessageState(operation: ConversationDetailOperation): MessageId? =
+        when (operation) {
+            is ConversationDetailViewAction.RequestScrollTo -> operation.messageId
+            is ConversationDetailEvent.MessagesData -> operation.requestScrollToMessageId
+            else -> scrollToMessage
+        }
 }

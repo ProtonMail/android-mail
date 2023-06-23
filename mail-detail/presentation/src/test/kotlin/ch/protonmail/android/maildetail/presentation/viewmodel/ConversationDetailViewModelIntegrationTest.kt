@@ -499,7 +499,7 @@ class ConversationDetailViewModelIntegrationTest {
         val expectedExpanded = MessageWithLabelsSample.InvoiceWithLabel
         val messages = nonEmptyListOf(
             defaultExpanded,
-            expectedExpanded,
+            expectedExpanded
         )
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
 
@@ -534,7 +534,7 @@ class ConversationDetailViewModelIntegrationTest {
         val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
         val messages = nonEmptyListOf(
             defaultExpanded,
-            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.InvoiceWithLabel
         )
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
 
@@ -563,7 +563,7 @@ class ConversationDetailViewModelIntegrationTest {
         val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
         val messages = nonEmptyListOf(
             defaultExpanded,
-            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.InvoiceWithLabel
         )
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
 
@@ -626,7 +626,7 @@ class ConversationDetailViewModelIntegrationTest {
         val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
         val messages = nonEmptyListOf(
             defaultExpanded,
-            MessageWithLabelsSample.EmptyDraft,
+            MessageWithLabelsSample.EmptyDraft
         )
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
         coEvery { getDecryptedMessageBody(any(), any()) } returns
@@ -683,7 +683,7 @@ class ConversationDetailViewModelIntegrationTest {
         decryptedMessageBody: GetDecryptedMessageBody = getDecryptedMessageBody,
         markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead =
             markMessageAndConversationReadIfAllRead,
-        ioDispatcher: CoroutineDispatcher = testDispatcher!!,
+        ioDispatcher: CoroutineDispatcher = testDispatcher!!
     ) = ConversationDetailViewModel(
         observePrimaryUserId = observePrimaryUser,
         actionUiModelMapper = actionMapper,
@@ -710,16 +710,15 @@ class ConversationDetailViewModelIntegrationTest {
         ioDispatcher = ioDispatcher
     )
 
-    private fun aMessageAttachment(id: String): MessageAttachment =
-        MessageAttachment(
-            attachmentId = AttachmentId(id),
-            name = "name",
-            size = 0,
-            mimeType = MimeType.MultipartMixed.value,
-            disposition = null,
-            keyPackets = null,
-            signature = null,
-            encSignature = null,
-            headers = emptyMap()
-        )
+    private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(
+        attachmentId = AttachmentId(id),
+        name = "name",
+        size = 0,
+        mimeType = MimeType.MultipartMixed.value,
+        disposition = null,
+        keyPackets = null,
+        signature = null,
+        encSignature = null,
+        headers = emptyMap()
+    )
 }

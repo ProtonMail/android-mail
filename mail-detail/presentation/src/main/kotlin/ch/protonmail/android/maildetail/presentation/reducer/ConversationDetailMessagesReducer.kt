@@ -32,124 +32,118 @@ class ConversationDetailMessagesReducer @Inject constructor() {
     fun newStateFrom(
         currentState: ConversationDetailsMessagesState,
         operation: ConversationDetailOperation.AffectingMessages
-    ): ConversationDetailsMessagesState =
-        when (operation) {
-            ConversationDetailEvent.ErrorLoadingContacts -> ConversationDetailsMessagesState.Error(
-                message = TextUiModel(string.detail_error_loading_contacts)
+    ): ConversationDetailsMessagesState = when (operation) {
+        ConversationDetailEvent.ErrorLoadingContacts -> ConversationDetailsMessagesState.Error(
+            message = TextUiModel(string.detail_error_loading_contacts)
+        )
+        is ConversationDetailEvent.ErrorLoadingMessages -> ConversationDetailsMessagesState.Error(
+            message = TextUiModel(string.detail_error_loading_messages)
+        )
+        is ConversationDetailEvent.MessagesData -> ConversationDetailsMessagesState.Data(
+            messages = operation.messagesUiModels
+        )
+        is ConversationDetailEvent.NoNetworkError -> currentState.toNewStateForNoNetworkError()
+        is ConversationDetailEvent.ErrorLoadingConversation -> currentState.toNewStateForErrorLoadingConversation()
+        is ConversationDetailEvent.CollapseDecryptedMessage ->
+            currentState.toNewExpandCollapseState(
+                operation.messageId,
+                operation.conversationDetailMessageUiModel
             )
-            is ConversationDetailEvent.ErrorLoadingMessages -> ConversationDetailsMessagesState.Error(
-                message = TextUiModel(string.detail_error_loading_messages)
+
+        is ConversationDetailEvent.ExpandDecryptedMessage ->
+            currentState.toNewExpandCollapseState(
+                operation.messageId,
+                operation.conversationDetailMessageUiModel
             )
-            is ConversationDetailEvent.MessagesData -> ConversationDetailsMessagesState.Data(
-                messages = operation.messagesUiModels
+
+        is ConversationDetailEvent.ExpandingMessage ->
+            currentState.toNewExpandingState(
+                operation.messageId,
+                operation.conversationDetailMessageUiModel
             )
-            is ConversationDetailEvent.NoNetworkError -> currentState.toNewStateForNoNetworkError()
-            is ConversationDetailEvent.ErrorLoadingConversation -> currentState.toNewStateForErrorLoadingConversation()
-            is ConversationDetailEvent.CollapseDecryptedMessage ->
-                currentState.toNewExpandCollapseState(
-                    operation.messageId,
-                    operation.conversationDetailMessageUiModel
-                )
 
-            is ConversationDetailEvent.ExpandDecryptedMessage ->
-                currentState.toNewExpandCollapseState(
-                    operation.messageId,
-                    operation.conversationDetailMessageUiModel
-                )
+        is ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline ->
+            currentState.toCollapsedState(operation.messageId)
 
-            is ConversationDetailEvent.ExpandingMessage ->
-                currentState.toNewExpandingState(
-                    operation.messageId,
-                    operation.conversationDetailMessageUiModel
-                )
+        is ConversationDetailEvent.ErrorExpandingRetrieveMessageError ->
+            currentState.toCollapsedState(operation.messageId)
 
-            is ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline ->
-                currentState.toCollapsedState(operation.messageId)
+        is ConversationDetailEvent.ErrorExpandingDecryptMessageError ->
+            currentState.toCollapsedState(operation.messageId)
 
-            is ConversationDetailEvent.ErrorExpandingRetrieveMessageError ->
-                currentState.toCollapsedState(operation.messageId)
-
-            is ConversationDetailEvent.ErrorExpandingDecryptMessageError ->
-                currentState.toCollapsedState(operation.messageId)
-
-            is ConversationDetailEvent.ShowAllAttachmentsForMessage ->
-                currentState.toNewExpandCollapseState(
-                    operation.messageId,
-                    operation.conversationDetailMessageUiModel
-                )
-        }
-
-    private fun ConversationDetailsMessagesState.toNewStateForNoNetworkError() =
-        when (this) {
-            is ConversationDetailsMessagesState.Data -> this
-            is ConversationDetailsMessagesState.Offline,
-            is ConversationDetailsMessagesState.Loading,
-            is ConversationDetailsMessagesState.Error -> ConversationDetailsMessagesState.Offline
-        }
-
-    private fun ConversationDetailsMessagesState.toNewStateForErrorLoadingConversation() =
-        when (this) {
-            is ConversationDetailsMessagesState.Data -> this
-            is ConversationDetailsMessagesState.Offline,
-            is ConversationDetailsMessagesState.Loading,
-            is ConversationDetailsMessagesState.Error -> ConversationDetailsMessagesState.Error(
-                message = TextUiModel(string.detail_error_loading_messages)
+        is ConversationDetailEvent.ShowAllAttachmentsForMessage ->
+            currentState.toNewExpandCollapseState(
+                operation.messageId,
+                operation.conversationDetailMessageUiModel
             )
-        }
+    }
+
+    private fun ConversationDetailsMessagesState.toNewStateForNoNetworkError() = when (this) {
+        is ConversationDetailsMessagesState.Data -> this
+        is ConversationDetailsMessagesState.Offline,
+        is ConversationDetailsMessagesState.Loading,
+        is ConversationDetailsMessagesState.Error -> ConversationDetailsMessagesState.Offline
+    }
+
+    private fun ConversationDetailsMessagesState.toNewStateForErrorLoadingConversation() = when (this) {
+        is ConversationDetailsMessagesState.Data -> this
+        is ConversationDetailsMessagesState.Offline,
+        is ConversationDetailsMessagesState.Loading,
+        is ConversationDetailsMessagesState.Error -> ConversationDetailsMessagesState.Error(
+            message = TextUiModel(string.detail_error_loading_messages)
+        )
+    }
 
     private fun ConversationDetailsMessagesState.toNewExpandCollapseState(
         messageId: MessageId,
         conversationDetailMessageUiModel: ConversationDetailMessageUiModel
-    ): ConversationDetailsMessagesState =
-        when (this) {
-            is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
-                messages = messages.map {
-                    if (it.messageId == messageId) {
-                        conversationDetailMessageUiModel
-                    } else {
-                        it
-                    }
+    ): ConversationDetailsMessagesState = when (this) {
+        is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
+            messages = messages.map {
+                if (it.messageId == messageId) {
+                    conversationDetailMessageUiModel
+                } else {
+                    it
                 }
-            )
+            }
+        )
 
-            else -> this
-        }
+        else -> this
+    }
 
     private fun ConversationDetailsMessagesState.toNewExpandingState(
         messageId: MessageId,
         conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed
-    ): ConversationDetailsMessagesState =
-        when (this) {
-            is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
-                messages = messages.map {
-                    if (it.messageId == messageId) {
-                        ConversationDetailMessageUiModel.Expanding(
-                            messageId = messageId,
-                            collapsed = conversationDetailMessageUiModel
-                        )
-                    } else {
-                        it
-                    }
+    ): ConversationDetailsMessagesState = when (this) {
+        is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
+            messages = messages.map {
+                if (it.messageId == messageId) {
+                    ConversationDetailMessageUiModel.Expanding(
+                        messageId = messageId,
+                        collapsed = conversationDetailMessageUiModel
+                    )
+                } else {
+                    it
                 }
-            )
+            }
+        )
 
-            else -> this
-        }
+        else -> this
+    }
 
     private fun ConversationDetailsMessagesState.toCollapsedState(
         messageId: MessageId
-    ): ConversationDetailsMessagesState =
-        when (this) {
-            is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
-                messages = messages.map {
-                    if (it.messageId == messageId && it is ConversationDetailMessageUiModel.Expanding) {
-                        it.collapsed
-                    } else {
-                        it
-                    }
+    ): ConversationDetailsMessagesState = when (this) {
+        is ConversationDetailsMessagesState.Data -> ConversationDetailsMessagesState.Data(
+            messages = messages.map {
+                if (it.messageId == messageId && it is ConversationDetailMessageUiModel.Expanding) {
+                    it.collapsed
+                } else {
+                    it
                 }
-            )
+            }
+        )
 
-            else -> this
-        }
+        else -> this
+    }
 }
