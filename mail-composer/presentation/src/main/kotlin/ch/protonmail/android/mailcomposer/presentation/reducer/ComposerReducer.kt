@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
@@ -40,7 +41,22 @@ class ComposerReducer @Inject constructor() {
             is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState.fields, operation.recipients)
             is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState.fields, operation.recipients)
             is ComposerAction.SubjectChanged -> TODO()
+            is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, operation.address)
+            is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
         }
+
+    private fun updateStateToSenderError(currentState: ComposerDraftState) = when (currentState) {
+        is ComposerDraftState.Submittable,
+        is ComposerDraftState.NotSubmittable -> ComposerDraftState.NotSubmittable(
+            currentState.fields.copy(from = ""),
+            Effect.of(TextUiModel(R.string.composer_error_invalid_sender))
+        )
+    }
+
+    private fun updateSenderTo(currentState: ComposerDraftState, address: String) = when (currentState) {
+        is ComposerDraftState.Submittable -> currentState.copy(currentState.fields.copy(from = address))
+        is ComposerDraftState.NotSubmittable -> currentState.copy(currentState.fields.copy(from = address))
+    }
 
     private fun updateRecipientsTo(
         currentFields: ComposerFields,

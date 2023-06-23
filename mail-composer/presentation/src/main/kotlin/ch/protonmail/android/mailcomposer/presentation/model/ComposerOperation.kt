@@ -31,3 +31,8 @@ internal sealed interface ComposerAction : ComposerOperation {
     data class SubjectChanged(val subject: String) : ComposerAction
     data class DraftBodyChanged(val draftBody: DraftBody) : ComposerAction
 }
+
+sealed interface ComposerEvent : ComposerOperation {
+    data class DefaultSenderReceived(val address: String) : ComposerEvent
+    object GetDefaultSenderError : ComposerEvent
+}

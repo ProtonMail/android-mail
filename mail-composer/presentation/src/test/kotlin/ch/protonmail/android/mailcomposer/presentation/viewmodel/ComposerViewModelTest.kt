@@ -18,29 +18,38 @@
 
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
-import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
+import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
-import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
+import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
-import me.proton.core.user.domain.UserAddressManager
 import me.proton.core.user.domain.entity.UserAddress
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
 
 class ComposerViewModelTest {
 
@@ -50,17 +59,16 @@ class ComposerViewModelTest {
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>(relaxUnitFun = true)
     private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
     private val isValidEmailAddressMock = mockk<IsValidEmailAddress>()
-    private val userAddressManagerMock = mockk<UserAddressManager> {
-        every { observeAddresses(any()) } returns emptyFlow()
-    }
+    private val getPrimaryAddressMock = mockk<GetPrimaryAddress>()
     private val provideNewDraftIdMock = mockk<ProvideNewDraftId>()
+
     private val viewModel
         get() = ComposerViewModel(
             storeDraftWithBodyMock,
-            observePrimaryUserIdMock,
-            userAddressManagerMock,
             ComposerReducer(),
             isValidEmailAddressMock,
+            getPrimaryAddressMock,
+            observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
 
@@ -87,6 +95,35 @@ class ComposerViewModelTest {
         }
     }
 
+    @Test
+    fun `emits state with primary sender address when available`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        expectedMessageId { MessageIdSample.EmptyDraft }
+        val primaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.primaryAddress }
+
+        // When
+        val actual = viewModel.state.value
+
+        // Then
+        assertEquals(primaryAddress.email, actual.fields.from)
+    }
+
+    @Test
+    fun `emits state with sender address error when not available`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedPrimaryAddressError(expectedUserId) { DataError.Local.NoDataCached }
+
+        // When
+        val actual = viewModel.state.value
+
+        // Then
+        assertIs<ComposerDraftState.NotSubmittable>(actual)
+        assertEquals(TextUiModel(R.string.composer_error_invalid_sender), actual.error.consume())
+    }
+
     private fun expectedMessageId(messageId: () -> MessageId): MessageId = messageId().also {
         every { provideNewDraftIdMock() } returns it
     }
@@ -95,10 +132,16 @@ class ComposerViewModelTest {
         coEvery { observePrimaryUserIdMock() } returns flowOf(it)
     }
 
+    private fun expectedPrimaryAddress(userId: UserId, userAddress: () -> UserAddress) = userAddress().also {
+        coEvery { getPrimaryAddressMock(userId) } returns it.right()
+    }
+
+    private fun expectedPrimaryAddressError(userId: UserId, dataError: () -> DataError) = dataError().also {
+        coEvery { getPrimaryAddressMock(userId) } returns it.left()
+    }
+
     private fun expectedSenderAddress(userId: UserId, senderAddress: () -> UserAddress): UserAddress =
-        senderAddress().also {
-            coEvery { userAddressManagerMock.observeAddresses(userId) } returns flowOf(listOf(it))
-        }
+        senderAddress().also { UserAddressSample.primaryAddress }
 
     companion object TestData {
 
