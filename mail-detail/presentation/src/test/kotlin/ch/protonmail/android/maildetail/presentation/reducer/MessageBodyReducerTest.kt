@@ -18,10 +18,12 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
@@ -90,16 +92,15 @@ class MessageBodyReducerTest(
                     status = AttachmentWorkerStatus.Running
                 ),
                 MessageBodyState.Data(
-                    MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel.copy(
-                        attachments = MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel.attachments?.copy(
-                            attachments =
-                            MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel.attachments?.attachments?.map {
-                                if (it.attachmentId == "invoice") {
-                                    it.copy(status = AttachmentWorkerStatus.Running)
-                                } else {
-                                    it
-                                }
-                            } ?: emptyList()
+                    MessageBodyUiModelTestData.buildMessageBodyUiModel(
+                        attachments = MessageBodyAttachmentsUiModel(
+                            limit = 3,
+                            attachments = listOf(
+                                AttachmentUiModelSample.invoiceStatusRunning,
+                                AttachmentUiModelSample.document,
+                                AttachmentUiModelSample.documentWithMultipleDots,
+                                AttachmentUiModelSample.image
+                            )
                         )
                     )
                 )

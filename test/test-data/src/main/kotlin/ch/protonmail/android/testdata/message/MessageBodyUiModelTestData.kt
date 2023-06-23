@@ -22,6 +22,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachment
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.mailmessage.domain.entity.MessageBody
 
 object MessageBodyUiModelTestData {
 
@@ -60,4 +61,18 @@ object MessageBodyUiModelTestData {
         shouldShowRemoteContent = false,
         attachments = null
     )
+
+    fun buildMessageBodyUiModel(
+        messageBody: MessageBody = MessageBodyTestData.messageBody,
+        mimeType: MimeTypeUiModel = MimeTypeUiModel.PlainText,
+        shouldShowRemoteContent: Boolean = false,
+        attachments: MessageBodyAttachmentsUiModel? = null
+    ): MessageBodyUiModel {
+        return MessageBodyUiModel(
+            messageBody.body,
+            mimeType,
+            shouldShowRemoteContent,
+            attachments
+        )
+    }
 }

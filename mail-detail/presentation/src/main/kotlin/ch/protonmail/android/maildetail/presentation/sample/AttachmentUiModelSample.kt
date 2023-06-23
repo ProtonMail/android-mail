@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.sample
 
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 
 object AttachmentUiModelSample {
 
@@ -28,6 +29,15 @@ object AttachmentUiModelSample {
         extension = "pdf",
         size = 5678,
         mimeType = "application/pdf"
+    )
+
+    val invoiceStatusRunning = AttachmentUiModel(
+        attachmentId = "invoice",
+        fileName = "invoice",
+        extension = "pdf",
+        size = 5678,
+        mimeType = "application/pdf",
+        status = AttachmentWorkerStatus.Running
     )
 
     val document = AttachmentUiModel(

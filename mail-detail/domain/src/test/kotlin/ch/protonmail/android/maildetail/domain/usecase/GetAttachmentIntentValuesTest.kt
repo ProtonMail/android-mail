@@ -24,6 +24,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailmessage.domain.AttachmentFileUriProvider
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
@@ -44,7 +45,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class GetAttachmentIntentValuesTest {
@@ -108,11 +108,7 @@ class GetAttachmentIntentValuesTest {
         val result = getAttachmentIntentValues(userId, messageId, attachmentId)
 
         // Then
-        assertTrue(result.isRight())
-        assertNotNull(result.getOrNull())
-        val values = result.getOrNull()!!
-        assertEquals(uri, values.uri)
-        assertEquals(messageWithBody.messageBody.attachments.first().mimeType, values.mimeType)
+        assertEquals(OpenAttachmentIntentValues("application/pdf", uri).right(), result)
     }
 
     @Test
