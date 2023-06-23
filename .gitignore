@@ -110,3 +110,5 @@ scripts/uitests/AssetsFile.lock.bak
 # Git Toolbox plugin
 .idea/git_toolbox_prj.xml
 
+# Platform specific files
+.idea/.name
