@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.e2e.mailbox.detail.conversation
+package ch.protonmail.android.uitest.e2e.mailbox.detail.bodycontent
 
 import arrow.core.Either
 import ch.protonmail.android.di.ServerProofModule
@@ -52,7 +52,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ConversationDetailRemoteContentTest :
+internal class ConversationDetailRemoteContentTests :
     MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut),
     DetailRemoteContentTest {
 

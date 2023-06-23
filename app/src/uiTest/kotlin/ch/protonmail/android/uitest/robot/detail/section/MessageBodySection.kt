@@ -97,8 +97,6 @@ internal class MessageBodySection : ComposeSectionRobot() {
         }
 
         fun hasRemoteImageLoaded(expected: Boolean) {
-            composeTestRule.waitForIdle()
-
             val jsSnippet = """
                 |var image = document.querySelector('img');
                 |var isLoaded = image.complete && image.naturalWidth != 0 && image.naturalHeight != 0;
@@ -106,6 +104,19 @@ internal class MessageBodySection : ComposeSectionRobot() {
             """.trimMargin()
 
             runAndMatchJsCodeOutput(jsSnippet, expected)
+        }
+
+        fun hasHtmlContentSanitised() {
+            val jsSnippet = """
+                |var onLoad = document.querySelector('body').onload;
+                |var form = document.querySelector('form');
+                |var relLinks = document.querySelector('link');
+                |var iframe = document.querySelector('iframe');
+                |var ping = document.querySelector('a').ping;
+                |return onLoad == null && form == null && relLinks == null && iframe == null && ping == "";
+            """.trimMargin()
+
+            runAndMatchJsCodeOutput(jsSnippet, true)
         }
 
         private fun runAndMatchJsCodeOutput(script: String, expected: Boolean) {

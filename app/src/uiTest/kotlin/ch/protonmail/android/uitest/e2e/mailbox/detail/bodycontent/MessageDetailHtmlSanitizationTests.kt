@@ -16,12 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.e2e.mailbox.detail.message
+package ch.protonmail.android.uitest.e2e.mailbox.detail.bodycontent
 
-import arrow.core.Either
 import ch.protonmail.android.di.ServerProofModule
-import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -29,7 +26,6 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
-import ch.protonmail.android.uitest.e2e.mailbox.detail.DetailRemoteContentTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
@@ -41,7 +37,6 @@ import ch.protonmail.android.uitest.robot.detail.section.verify
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import io.mockk.coEvery
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Test
@@ -49,42 +44,25 @@ import org.junit.Test
 @SmokeTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class MessageDetailDetailRemoteContentTest :
-    MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut),
-    DetailRemoteContentTest {
-
-    private val expectedBodyText = "Various img elements"
+internal class MessageDetailHtmlSanitizationTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
 
     @JvmField
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
-    @JvmField
-    @BindValue // GetDecryptedMessageBody needs to be mocked to make sure content is passed as expected to the WebView.
-    val decryptedMessageBody: GetDecryptedMessageBody = mockk {
-        coEvery {
-            this@mockk.invoke(any(), any())
-        } returns Either.Right(
-            getFakeDecryptedMessageBodyWithRemoteContent(
-                assetName = "html_remote_content_placeholder.html",
-                mimeType = MimeType.Html
-            )
-        )
-    }
-
     @Test
-    @TestId("184207")
-    fun checkRemoteContentNotBlockedWhenConversationModeIsDisabled() {
+    @TestId("189700")
+    fun checkHtmlSanitizationInMessageMode() {
         mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_184207.json"
+                    respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"
                     withStatusCode 200,
                 "/mail/v4/messages"
-                    respondWith "/mail/v4/messages/messages_184207.json"
+                    respondWith "/mail/v4/messages/messages_189700.json"
                     withStatusCode 200 matchWildcards true ignoreQueryParams true,
                 "/mail/v4/messages/*"
-                    respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
+                    respondWith "/mail/v4/messages/message-id/message-id_189700.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
         }
@@ -97,43 +75,7 @@ internal class MessageDetailDetailRemoteContentTest :
             messageBodySection {
                 waitUntilMessageIsShown()
 
-                verify {
-                    messageInWebViewContains(expectedBodyText)
-                    hasRemoteImageLoaded(true)
-                }
-            }
-        }
-    }
-
-    @Test
-    @TestId("184210")
-    fun checkRemoteContentBlockedWhenConversationModeIsDisabled() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
-            addMockRequests(
-                "/mail/v4/settings"
-                    respondWith "/mail/v4/settings/mail-v4-settings_184210.json"
-                    withStatusCode 200,
-                "/mail/v4/messages"
-                    respondWith "/mail/v4/messages/messages_184210.json"
-                    withStatusCode 200 matchWildcards true ignoreQueryParams true,
-                "/mail/v4/messages/*"
-                    respondWith "/mail/v4/messages/message-id/message-id_base_placeholder.json"
-                    withStatusCode 200 matchWildcards true serveOnce true
-            )
-        }
-
-        navigator {
-            navigateTo(Destination.MailDetail(0))
-        }
-
-        messageDetailRobot {
-            messageBodySection {
-                waitUntilMessageIsShown()
-
-                verify {
-                    messageInWebViewContains(expectedBodyText)
-                    hasRemoteImageLoaded(false)
-                }
+                verify { hasHtmlContentSanitised() }
             }
         }
     }
