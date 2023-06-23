@@ -138,8 +138,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead,
     private val setMessageViewState: SetMessageViewState,
     private val observeConversationViewState: ObserveConversationViewState,
-    @IODispatcher
-    private val ioDispatcher: CoroutineDispatcher
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -245,12 +244,11 @@ class ConversationDetailViewModel @Inject constructor(
     private fun allCollapsed(viewState: Map<MessageId, InMemoryConversationStateRepository.MessageState>): Boolean =
         viewState.values.all { it == InMemoryConversationStateRepository.MessageState.Collapsed }
 
-    private fun getFirstNonDraftMessageId(messages: List<MessageWithLabels>): MessageId? =
-        messages
-            .filterNot { it.message.isDraft() }
-            .maxByOrNull { it.message.time }
-            ?.message
-            ?.messageId
+    private fun getFirstNonDraftMessageId(messages: List<MessageWithLabels>): MessageId? = messages
+        .filterNot { it.message.isDraft() }
+        .maxByOrNull { it.message.time }
+        ?.message
+        ?.messageId
 
     private suspend fun buildMessagesUiModels(
         messages: NonEmptyList<MessageWithLabels>,
@@ -302,7 +300,7 @@ class ConversationDetailViewModel @Inject constructor(
     )
 
     private fun buildExpandingMessage(
-        collapsedMessage: ConversationDetailMessageUiModel.Collapsed,
+        collapsedMessage: ConversationDetailMessageUiModel.Collapsed
     ): ConversationDetailMessageUiModel.Expanding = conversationMessageMapper.toUiModel(
         collapsedMessage
     )
@@ -363,11 +361,11 @@ class ConversationDetailViewModel @Inject constructor(
             val color = observeFolderColor(userId).first()
             val conversationWithMessagesAndLabels = observeConversationMessages(userId, conversationId).first()
 
-            val mappedLabels = labels.tapLeft {
+            val mappedLabels = labels.onLeft {
                 Timber.e("Error while observing custom labels")
             }.getOrElse { emptyList() }
 
-            val messagesWithLabels = conversationWithMessagesAndLabels.tapLeft {
+            val messagesWithLabels = conversationWithMessagesAndLabels.onLeft {
                 Timber.e("Error while observing conversation messages")
             }.getOrElse { emptyList() }
 
@@ -391,10 +389,10 @@ class ConversationDetailViewModel @Inject constructor(
     private fun onLabelAsConfirmed(archiveSelected: Boolean) {
         viewModelScope.launch {
             val userId = primaryUserId.first()
-            val labels = observeCustomMailLabels(userId).first().tapLeft {
+            val labels = observeCustomMailLabels(userId).first().onLeft {
                 Timber.e("Error while observing custom labels when relabeling got confirmed: $it")
             }.getOrElse { emptyList() }
-            val messagesWithLabels = observeConversationMessages(userId, conversationId).first().tapLeft {
+            val messagesWithLabels = observeConversationMessages(userId, conversationId).first().onLeft {
                 Timber.e("Error while observing conversation message when relabeling got confirmed: $it")
             }.getOrElse { emptyList() }
 
@@ -410,7 +408,7 @@ class ConversationDetailViewModel @Inject constructor(
                     userId = userId,
                     conversationId = conversationId,
                     labelId = SystemLabelId.Archive.labelId
-                ).tapLeft { Timber.e("Error while archiving conversation when relabeling got confirmed: $it") }
+                ).onLeft { Timber.e("Error while archiving conversation when relabeling got confirmed: $it") }
             }
             val operation = relabelConversation(
                 userId = userId,
@@ -580,10 +578,7 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 
-    private suspend fun emitMessageBodyDecryptError(
-        error: GetDecryptedMessageBodyError,
-        messageId: MessageId
-    ) {
+    private suspend fun emitMessageBodyDecryptError(error: GetDecryptedMessageBodyError, messageId: MessageId) {
         val errorState = when (error) {
             is GetDecryptedMessageBodyError.Data -> if (error.dataError.isOfflineError()) {
                 ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline(messageId)
@@ -633,9 +628,10 @@ class ConversationDetailViewModel @Inject constructor(
  *  done on the conversation flow.
  */
 private fun Flow<Either<DataError, NonEmptyList<MessageWithLabels>>>.ignoreLocalErrors():
-    Flow<Either<DataError, NonEmptyList<MessageWithLabels>>> = filter { either ->
-    either.fold(
-        ifLeft = { error -> error !is DataError.Local },
-        ifRight = { true }
-    )
-}
+    Flow<Either<DataError, NonEmptyList<MessageWithLabels>>> =
+    filter { either ->
+        either.fold(
+            ifLeft = { error -> error !is DataError.Local },
+            ifRight = { true }
+        )
+    }
