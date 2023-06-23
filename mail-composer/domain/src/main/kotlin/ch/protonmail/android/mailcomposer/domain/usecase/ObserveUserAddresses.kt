@@ -16,36 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.domain.sample
+package ch.protonmail.android.mailcomposer.domain.usecase
 
-import me.proton.core.user.domain.entity.AddressId
+import kotlinx.coroutines.flow.Flow
+import me.proton.core.domain.entity.UserId
+import me.proton.core.user.domain.UserManager
 import me.proton.core.user.domain.entity.UserAddress
+import javax.inject.Inject
 
-object UserAddressSample {
+class ObserveUserAddresses @Inject constructor(
+    private val userManager: UserManager
+) {
 
-    val primaryAddress = build()
+    operator fun invoke(userId: UserId): Flow<List<UserAddress>> = userManager.observeAddresses(userId)
 
-    val secondaryAddress = build(
-        addressId = AddressIdSample.Alias,
-        email = "alias@protonmail.ch",
-        order = 1
-    )
-
-    fun build(
-        addressId: AddressId = AddressIdSample.Primary,
-        email: String = "primary-email@pm.me",
-        order: Int = 0
-    ) = UserAddress(
-        addressId = addressId,
-        canReceive = true,
-        canSend = true,
-        displayName = "name",
-        email = email,
-        enabled = true,
-        keys = emptyList(),
-        order = order,
-        signature = "signature",
-        signedKeyList = null,
-        userId = UserIdSample.Primary
-    )
 }

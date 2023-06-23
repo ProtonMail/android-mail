@@ -23,4 +23,6 @@ import me.proton.core.user.domain.entity.AddressId
 object AddressIdSample {
 
     val Primary = AddressId("primary")
+
+    val Alias = AddressId("alias")
 }

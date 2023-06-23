@@ -43,6 +43,8 @@ android {
 }
 
 dependencies {
+    implementation(Proton.Core.user)
+
     implementation(Dependencies.moduleDomainLibs)
     implementation(Proton.Core.user)
     implementation(Proton.Core.label)
@@ -51,4 +53,7 @@ dependencies {
     implementation(project(":mail-label:domain"))
 
     testImplementation(Dependencies.testLibs)
+    // Used to access sample test data (here instead of test-data as shared with compose previews / android tests)
+    testImplementation(project(":mail-common:domain"))
+    testImplementation(project(":test:test-data"))
 }
