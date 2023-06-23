@@ -25,6 +25,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.label.domain.entity.LabelId
 
@@ -71,7 +72,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
 
     data class CollapseDecryptedMessage(
         val messageId: MessageId,
-        val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed,
+        val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed
     ) : ConversationDetailEvent, AffectingMessages
 
     data class ShowAllAttachmentsForMessage(
@@ -92,6 +93,12 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val messageId: MessageId,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Collapsed
     ) : ConversationDetailEvent, AffectingMessages
+
+    data class AttachmentStatusChanged(
+        val messageId: MessageId,
+        val attachmentId: AttachmentId,
+        val status: AttachmentWorkerStatus
+    ) : MessageDetailEvent, AffectingMessages
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {

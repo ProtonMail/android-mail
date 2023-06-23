@@ -45,7 +45,6 @@ import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
@@ -57,7 +56,9 @@ import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
+import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
@@ -105,6 +106,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import io.mockk.coEvery
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -178,6 +180,7 @@ class ConversationDetailViewModelIntegrationTest {
             MailLabelTestData.listOfCustomLabels.right()
         )
     }
+    private val observeAttachmentStatus = mockk<ObserveMessageAttachmentStatus>()
     // endregion
 
     // region mock action use cases
@@ -290,6 +293,7 @@ class ConversationDetailViewModelIntegrationTest {
         val messages = nonEmptyListOf(
             ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3)
         )
+        val messageId = messages.first().messageId
 
         coEvery { getDecryptedMessageBody.invoke(userId, any()) } returns DecryptedMessageBody(
             value = "",
@@ -301,6 +305,7 @@ class ConversationDetailViewModelIntegrationTest {
                 MessageAttachmentTestData.image
             )
         ).right()
+        coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
 
         buildConversationDetailViewModel().state.test {
             // when
@@ -314,6 +319,16 @@ class ConversationDetailViewModelIntegrationTest {
                 messages.first().messageBodyUiModel.attachments,
                 expandedMessage.messageBodyUiModel.attachments
             )
+            coVerifyOrder {
+                observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentTestData.document.attachmentId)
+                observeAttachmentStatus.invoke(
+                    userId,
+                    messageId,
+                    MessageAttachmentTestData.documentWithReallyLongFileName.attachmentId
+                )
+                observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentTestData.invoice.attachmentId)
+                observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentTestData.image.attachmentId)
+            }
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -676,6 +691,7 @@ class ConversationDetailViewModelIntegrationTest {
         observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels = observeMailLabels,
         observeFolderColor: ObserveFolderColorSettings = observeFolderColorSettings,
         observeCustomMailLabels: ObserveCustomMailLabels = observeCustomMailLabelsUseCase,
+        observeMessageAttachmentStatus: ObserveMessageAttachmentStatus = observeAttachmentStatus,
         detailReducer: ConversationDetailReducer = reducer,
         savedState: SavedStateHandle = savedStateHandle,
         star: StarConversation = starConversation,
@@ -699,6 +715,7 @@ class ConversationDetailViewModelIntegrationTest {
         observeDestinationMailLabels = observeDestinationMailLabels,
         observeFolderColor = observeFolderColor,
         observeCustomMailLabels = observeCustomMailLabels,
+        observeMessageAttachmentStatus = observeMessageAttachmentStatus,
         reducer = detailReducer,
         savedStateHandle = savedState,
         starConversation = star,

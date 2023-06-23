@@ -41,7 +41,6 @@ import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
-import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
@@ -53,8 +52,10 @@ import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
+import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
 import ch.protonmail.android.maildetail.domain.usecase.UnStarConversation
 import ch.protonmail.android.maildetail.presentation.R.string
@@ -217,6 +218,7 @@ class ConversationDetailViewModelTest {
             MailLabelTestData.listOfCustomLabels.right()
         )
     }
+    private val observeAttachmentStatus = mockk<ObserveMessageAttachmentStatus>()
     private val reducer: ConversationDetailReducer = mockk {
         every { newStateFrom(currentState = any(), operation = any()) } returns ConversationDetailState.Loading
     }
@@ -260,6 +262,7 @@ class ConversationDetailViewModelTest {
             observeDestinationMailLabels = observeMailLabels,
             observeFolderColor = observeFolderColorSettings,
             observeCustomMailLabels = observeCustomMailLabels,
+            observeMessageAttachmentStatus = observeAttachmentStatus,
             reducer = reducer,
             savedStateHandle = savedStateHandle,
             starConversation = starConversation,

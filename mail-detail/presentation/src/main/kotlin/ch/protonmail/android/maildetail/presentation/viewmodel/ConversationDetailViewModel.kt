@@ -44,6 +44,7 @@ import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.usecase.StarConversation
@@ -85,6 +86,7 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinatio
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
+import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -130,6 +132,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
     private val observeCustomMailLabels: ObserveCustomMailLabels,
+    private val observeMessageAttachmentStatus: ObserveMessageAttachmentStatus,
     private val reducer: ConversationDetailReducer,
     private val starConversation: StarConversation,
     private val unStarConversation: UnStarConversation,
@@ -555,6 +558,7 @@ class ConversationDetailViewModel @Inject constructor(
             setMessageViewState.expanding(messageId)
             getDecryptedMessageBody(primaryUserId.first(), messageId)
                 .onRight {
+                    observeAttachments(messageId, it.attachments)
                     markMessageAndConversationReadIfAllMessagesRead(primaryUserId.first(), messageId, conversationId)
                     setMessageViewState.expanded(messageId, it)
                 }
@@ -615,6 +619,18 @@ class ConversationDetailViewModel @Inject constructor(
                 )
                 viewModelScope.launch { emitNewStateFrom(operation) }
             }
+    }
+
+    private suspend fun observeAttachments(messageId: MessageId, attachments: List<MessageAttachment>) {
+        attachments.map { it.attachmentId }.forEach { attachmentId ->
+            primaryUserId.flatMapLatest { userId ->
+                observeMessageAttachmentStatus(userId, messageId, attachmentId).mapLatest {
+                    ConversationDetailEvent.AttachmentStatusChanged(messageId, attachmentId, it.status)
+                }
+            }.onEach { event ->
+                emitNewStateFrom(event)
+            }.launchIn(viewModelScope)
+        }
     }
 
     companion object {

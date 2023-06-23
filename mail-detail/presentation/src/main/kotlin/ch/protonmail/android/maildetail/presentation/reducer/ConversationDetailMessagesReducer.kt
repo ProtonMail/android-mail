@@ -24,6 +24,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
+import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import javax.inject.Inject
 
@@ -36,12 +37,15 @@ class ConversationDetailMessagesReducer @Inject constructor() {
         ConversationDetailEvent.ErrorLoadingContacts -> ConversationDetailsMessagesState.Error(
             message = TextUiModel(string.detail_error_loading_contacts)
         )
+
         is ConversationDetailEvent.ErrorLoadingMessages -> ConversationDetailsMessagesState.Error(
             message = TextUiModel(string.detail_error_loading_messages)
         )
+
         is ConversationDetailEvent.MessagesData -> ConversationDetailsMessagesState.Data(
             messages = operation.messagesUiModels
         )
+
         is ConversationDetailEvent.NoNetworkError -> currentState.toNewStateForNoNetworkError()
         is ConversationDetailEvent.ErrorLoadingConversation -> currentState.toNewStateForErrorLoadingConversation()
         is ConversationDetailEvent.CollapseDecryptedMessage ->
@@ -76,6 +80,9 @@ class ConversationDetailMessagesReducer @Inject constructor() {
                 operation.messageId,
                 operation.conversationDetailMessageUiModel
             )
+
+        is ConversationDetailEvent.AttachmentStatusChanged ->
+            currentState.newStateFromMessageAttachmentStatus(operation)
     }
 
     private fun ConversationDetailsMessagesState.toNewStateForNoNetworkError() = when (this) {
@@ -145,5 +152,43 @@ class ConversationDetailMessagesReducer @Inject constructor() {
         )
 
         else -> this
+    }
+
+    private fun ConversationDetailsMessagesState.newStateFromMessageAttachmentStatus(
+        operation: ConversationDetailEvent.AttachmentStatusChanged
+    ): ConversationDetailsMessagesState {
+        return when (this) {
+            is ConversationDetailsMessagesState.Data -> {
+                this.copy(
+                    messages = this.messages.map {
+                        if (it.messageId == operation.messageId) {
+                            (it as ConversationDetailMessageUiModel.Expanded).copy(
+                                messageBodyUiModel = createMessageBodyState(it.messageBodyUiModel, operation)
+                            )
+                        } else
+                            it
+                    }
+                )
+            }
+
+            else -> this
+        }
+    }
+
+    private fun createMessageBodyState(
+        messageBodyUiModel: MessageBodyUiModel,
+        operation: ConversationDetailEvent.AttachmentStatusChanged
+    ): MessageBodyUiModel {
+        return messageBodyUiModel.copy(
+            attachments = messageBodyUiModel.attachments?.copy(
+                attachments = messageBodyUiModel.attachments.attachments.map { attachment ->
+                    if (attachment.attachmentId == operation.attachmentId.id) {
+                        attachment.copy(status = operation.status)
+                    } else {
+                        attachment
+                    }
+                }
+            )
+        )
     }
 }
