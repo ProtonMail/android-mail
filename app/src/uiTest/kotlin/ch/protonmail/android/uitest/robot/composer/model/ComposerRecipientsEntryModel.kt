@@ -21,59 +21,41 @@ package ch.protonmail.android.uitest.robot.composer.model
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
-import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.performTextInput
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
+import ch.protonmail.android.uicomponents.chips.ChipsTestTags
+import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertEmptyText
 
-internal sealed class ComposerParticipantEntryModel(
+internal sealed class ComposerRecipientsEntryModel(
     matcher: SemanticsMatcher,
-    index: Int,
-    composeTestRule: ComposeTestRule
-) {
+    composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule
+) : ComposerParticipantsEntryModel(matcher, composeTestRule) {
 
-    private val prefix = composeTestRule.onAllNodesWithTag(
-        testTag = ComposerTestTags.FieldPrefix,
-        useUnmergedTree = true
-    )[index]
+    private val textField = composeTestRule.onNode(
+        matcher = hasTestTag(ChipsTestTags.BasicTextField) and hasAnyAncestor(matcher)
+    )
 
-    private val field = composeTestRule.onNode(matcher, useUnmergedTree = true)
-
-    // region actions
-    fun typeValue(value: String) = apply {
-        field.performTextInput(value)
-    }
-    // endregion
-
-    // region verification
-    fun isFocused() = apply {
-        field.assertIsFocused()
+    override fun typeValue(value: String) = withParentFocused {
+        textField.performTextInput(value)
     }
 
-    fun hasPrefix(value: String) = apply {
-        prefix.assertTextEquals(value)
+    override fun isFocused() = apply {
+        textField.assertIsFocused()
     }
 
-    fun hasEmptyValue() = apply {
-        field.assertEmptyText()
+    override fun hasEmptyValue() = withParentFocused {
+        textField.assertEmptyText()
     }
 
-    fun hasValue(value: String) = apply {
-        field.assertTextEquals(value)
+    override fun hasValue(value: String) = withParentFocused {
+        textField.assertTextEquals(value)
     }
-    // endregion
 }
 
-internal class SenderParticipantEntryModel(composeTestRule: ComposeTestRule) : ComposerParticipantEntryModel(
-    matcher = hasTestTag(ComposerTestTags.FromSender),
-    index = 0,
-    composeTestRule = composeTestRule
-)
-
-internal class ToParticipantEntryModel(composeTestRule: ComposeTestRule) : ComposerParticipantEntryModel(
-    matcher = hasTestTag(ComposerTestTags.ToRecipient),
-    index = 1,
-    composeTestRule = composeTestRule
-)
+internal object ToRecipientEntryModel : ComposerRecipientsEntryModel(hasTestTag(ComposerTestTags.ToRecipient))
+internal object CcRecipientEntryModel : ComposerRecipientsEntryModel(hasTestTag(ComposerTestTags.CcRecipient))
+internal object BccRecipientEntryModel : ComposerRecipientsEntryModel(hasTestTag(ComposerTestTags.BccRecipient))

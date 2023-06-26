@@ -22,16 +22,16 @@ import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.composer.ComposerRobot
-import ch.protonmail.android.uitest.robot.composer.model.SenderParticipantEntryModel
-import ch.protonmail.android.uitest.robot.composer.model.ToParticipantEntryModel
+import ch.protonmail.android.uitest.robot.composer.model.ComposerSenderEntryModel
+import ch.protonmail.android.uitest.robot.composer.model.ToRecipientEntryModel
 import ch.protonmail.android.uitest.util.getTestString
 import ch.protonmail.android.test.R as testR
 
 @AttachTo(targets = [ComposerRobot::class], identifier = "participantsSection")
 internal class ComposerParticipantsSection : ComposeSectionRobot() {
 
-    private val senderField by lazy { SenderParticipantEntryModel(composeTestRule) }
-    private val recipientField by lazy { ToParticipantEntryModel(composeTestRule) }
+    private val senderField by lazy { ComposerSenderEntryModel }
+    private val recipientField by lazy { ToRecipientEntryModel }
 
     fun typeSender(sender: String) = apply {
         senderField.typeValue(sender)

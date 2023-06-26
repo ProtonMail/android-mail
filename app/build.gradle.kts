@@ -210,6 +210,7 @@ dependencies {
     androidTestImplementation(project(":test:robot:ksp:annotations"))
     androidTestImplementation(project(":test:test-data"))
     androidTestImplementation(project(":test:network-mocks"))
+    androidTestImplementation(project(":uicomponents")) // Needed for shared test tags.
 
     androidTestUtil(AndroidX.Test.orchestrator)
     kspAndroidTest(project(":test:robot:ksp:processor"))
