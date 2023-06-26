@@ -18,6 +18,7 @@
 
 package ch.protonmail.android
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -34,6 +35,7 @@ import ch.protonmail.android.navigation.LauncherViewModel
 import ch.protonmail.android.navigation.model.LauncherState
 import dagger.hilt.android.AndroidEntryPoint
 import me.proton.core.compose.theme.ProtonTheme
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -81,7 +83,12 @@ class MainActivity : AppCompatActivity() {
             .setDataAndType(intentValues.uri, intentValues.mimeType)
             .putExtra(Intent.EXTRA_STREAM, intentValues.uri)
             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        startActivity(Intent.createChooser(intent, null))
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Timber.d(e, "Failed to open intent for file type")
+            startActivity(Intent.createChooser(intent, null))
+        }
     }
 
     data class Actions(
