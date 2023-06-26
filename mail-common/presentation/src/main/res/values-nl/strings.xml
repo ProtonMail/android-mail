@@ -50,6 +50,6 @@
   <string name="common_error_loading_actions">Acties laden mislukt</string>
   <string name="yesterday">Gisteren</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">Attachments</string>
+  <string name="attachment_download_notification_channel_name">Bijlagen</string>
   <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
 </resources>

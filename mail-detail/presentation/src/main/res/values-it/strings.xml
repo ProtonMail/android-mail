@@ -45,6 +45,7 @@
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito. Riprova.</string>
   <string name="error_loading_message">Qualcosa è andato storto, si prega di riprovare.</string>
   <string name="error_offline_loading_message">Sei offline. Una connessione a Internet è necessaria per mostrare i contenuti di questo messaggio.</string>
+  <string name="error_get_attachment_failed">Failed to get attachment</string>
   <string name="reload">Ricarica</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d file</item>

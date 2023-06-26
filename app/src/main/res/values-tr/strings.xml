@@ -21,6 +21,6 @@
   <string name="title_remove_account">Hesabı kaldır</string>
   <string name="description_remove_account">Oturumunuz kapatılacak ve bu hesapla ilişkili tüm bilgileriniz silinecek.</string>
   <string name="user_select_other_account_content_description">Başka bir hesap seçin</string>
-  <string name="you_are_offline">Çevrimdışısınız</string>
+  <string name="you_are_offline">Çevrim dışısınız</string>
   <string name="feature_coming_soon">Özellik yakında kullanılabilecek...</string>
 </resources>

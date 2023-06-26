@@ -45,6 +45,7 @@
   <string name="error_move_conversation_failed">No s\'ha pogut moure la conversa. Proveu de nou.</string>
   <string name="error_loading_message">S\'ha produït un error. Intenta-ho més tard.</string>
   <string name="error_offline_loading_message">No està connectat. Es necessita una connexió a internet per a mostrar el contingut d\'aquest missatge.</string>
+  <string name="error_get_attachment_failed">Error obtenint l\'adjunt</string>
   <string name="reload">Recarrega</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d fitxer</item>

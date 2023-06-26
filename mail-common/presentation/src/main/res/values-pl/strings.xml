@@ -51,5 +51,5 @@
   <string name="yesterday">Wczoraj</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Załączniki</string>
-  <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
+  <string name="attachment_download_notification_channel_description">Powiadomienia o pobieraniu załączników</string>
 </resources>

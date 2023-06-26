@@ -34,7 +34,7 @@
   <string name="mailbox_default_recipient">(Nessun Destinatario)</string>
   <string name="mailbox_default_sender">(Nessun Mittente)</string>
   <string name="mailbox_error_message_offline">Connessione assente, impossibile recuperare gli elementi</string>
-  <string name="mailbox_error_message_generic">Loading mailbox failed</string>
-  <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
-  <string name="mailbox_is_empty_message">This mailbox is empty</string>
+  <string name="mailbox_error_message_generic">Caricamento della casella email non riuscito</string>
+  <string name="mailbox_error_message_unexpected">Si è verificato un errore imprevisto.</string>
+  <string name="mailbox_is_empty_message">Questa casella email è vuota.</string>
 </resources>

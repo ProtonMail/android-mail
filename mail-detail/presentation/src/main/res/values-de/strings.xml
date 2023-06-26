@@ -45,6 +45,7 @@
   <string name="error_move_conversation_failed">Verschieben der Unterhaltung fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="error_loading_message">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
   <string name="error_offline_loading_message">Du bist offline. Um den Inhalt dieser Nachricht anzuzeigen, ist eine Internetverbindung erforderlich.</string>
+  <string name="error_get_attachment_failed">Anhang kann nicht abgerufen werden</string>
   <string name="reload">Neu laden</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d Datei</item>

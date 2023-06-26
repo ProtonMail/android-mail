@@ -45,6 +45,7 @@
   <string name="error_move_conversation_failed">Asenkez n udiwenni yecceḍ. Ttxil ɛawed-as.</string>
   <string name="error_loading_message">Yella kra i yeḍran, ttxil ɛreḍ tikkelt-nniḍen.</string>
   <string name="error_offline_loading_message">Ur teqqineḍ ara. Tlaq tuqqna ɣer internet akken ad twaliḍ agbur n yizen-a.</string>
+  <string name="error_get_attachment_failed">Failed to get attachment</string>
   <string name="reload">Smiren</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d afaylu</item>

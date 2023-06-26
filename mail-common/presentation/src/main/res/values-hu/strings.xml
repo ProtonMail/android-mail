@@ -50,6 +50,6 @@
   <string name="common_error_loading_actions">Töltés sikertelen</string>
   <string name="yesterday">Tegnap</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">Attachments</string>
-  <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
+  <string name="attachment_download_notification_channel_name">Mellékletek</string>
+  <string name="attachment_download_notification_channel_description">Értesítések a melléklet letöltésekhez</string>
 </resources>

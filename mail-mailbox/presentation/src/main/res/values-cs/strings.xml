@@ -36,7 +36,7 @@
   <string name="mailbox_default_recipient">(Žádný příjemce)</string>
   <string name="mailbox_default_sender">(Žádný odesílatel)</string>
   <string name="mailbox_error_message_offline">Jste offline, položky nelze načíst</string>
-  <string name="mailbox_error_message_generic">Načítání e-mailové schránky se nezdařilo</string>
-  <string name="mailbox_error_message_unexpected">Něco se neočekávaně pokazilo</string>
+  <string name="mailbox_error_message_generic">Načítání e-mailové schránky selhalo</string>
+  <string name="mailbox_error_message_unexpected">Něco se nečekaně zvrtlo</string>
   <string name="mailbox_is_empty_message">Tato e-mailová schránka je prázdná</string>
 </resources>

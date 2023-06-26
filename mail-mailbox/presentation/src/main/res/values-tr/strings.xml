@@ -33,7 +33,7 @@
   </plurals>
   <string name="mailbox_default_recipient">(Alıcı yok)</string>
   <string name="mailbox_default_sender">(Gönderici yok)</string>
-  <string name="mailbox_error_message_offline">Çevrimdışı olduğunuzda ögeler alınamadı</string>
+  <string name="mailbox_error_message_offline">Çevrim dışı olduğunuzda ögeler alınamadı</string>
   <string name="mailbox_error_message_generic">E-posta kutusu yüklenemedi</string>
   <string name="mailbox_error_message_unexpected">Beklenmeyen bir sorun çıktı</string>
   <string name="mailbox_is_empty_message">Bu e-posta kutusu boş</string>

@@ -44,7 +44,8 @@
   <string name="conversation_moved_to_archive">Yazışma arşiv klasörüne taşındı</string>
   <string name="error_move_conversation_failed">Yazışma taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="error_loading_message">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
-  <string name="error_offline_loading_message">Çevrimdışısınız. Bu iletinin içeriğini görüntüleyebilmek için internete bağlı olmalısınız.</string>
+  <string name="error_offline_loading_message">Çevrim dışısınız. Bu iletinin içeriğini görüntüleyebilmek için internete bağlı olmalısınız.</string>
+  <string name="error_get_attachment_failed">Ek dosya alınamadı</string>
   <string name="reload">Yeniden yükle</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d dosya</item>
@@ -58,7 +59,7 @@
   <string name="bottom_sheet_label_as_title">Etiketle...</string>
   <string name="error_relabel_message_failed">İleti yeniden etiketlenemedi. Lütfen yeniden deneyin</string>
   <string name="error_relabel_conversation_failed">Yazışma yeniden etiketlenemedi. Lütfen yeniden deneyin</string>
-  <string name="please_go_back_online_to_load_messages">Çevrimdışısınız. İletilerin yüklenmesi için lütfen çevrimiçi olun</string>
+  <string name="please_go_back_online_to_load_messages">Çevrim dışısınız. İletilerin yüklenmesi için lütfen çevrim içi olun</string>
   <string name="decryption_error">İletinin kodu çözülemedi.</string>
   <string name="detail_error_retrieving_message_body">İletiler alınamadı</string>
   <!-- Attachment Types -->

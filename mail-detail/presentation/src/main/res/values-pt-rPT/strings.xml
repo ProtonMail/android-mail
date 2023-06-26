@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">Erro ao carregar os contactos</string>
+  <string name="detail_error_loading_contacts">Erro ao carregar os contatos</string>
   <string name="detail_error_loading_conversation">Erro ao carregar a conversa</string>
   <string name="detail_error_loading_messages">Erro ao carregar as mensagens</string>
   <string name="error_mark_unread_failed">Erro ao marcar como não lido. Tente novamente.</string>
@@ -45,6 +45,7 @@
   <string name="error_move_conversation_failed">Erro ao mover a conversa. Tente novamente.</string>
   <string name="error_loading_message">Ocorreu um erro. Tente mais tarde.</string>
   <string name="error_offline_loading_message">Está offline. A ligação à internet é necessária para mostrar o conteúdo desta mensagem.</string>
+  <string name="error_get_attachment_failed">Erro ao obter o anexo</string>
   <string name="reload">Recarregar</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d ficheiro</item>
@@ -60,7 +61,7 @@
   <string name="error_relabel_conversation_failed">Falha ao etiquetar a conversa. Por favor, tente novamente.</string>
   <string name="please_go_back_online_to_load_messages">Está offline. Por favor, volte a estar online para carregar as mensagens.</string>
   <string name="decryption_error">Erro ao desencriptar a mensagem.</string>
-  <string name="detail_error_retrieving_message_body">Não foi possível recuperar a mensagem</string>
+  <string name="detail_error_retrieving_message_body">Não é possível recuperar a mensagem</string>
   <!-- Attachment Types -->
   <string name="attachment_type_image">Imagem</string>
   <string name="attachment_type_video">Vídeo</string>

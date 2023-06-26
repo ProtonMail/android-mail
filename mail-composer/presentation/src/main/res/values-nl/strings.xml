@@ -26,4 +26,5 @@
   <string name="close_composer_content_description">Opstelvenster sluiten</string>
   <string name="send_message_content_description">Verzend bericht</string>
   <string name="composer_expand_recipients_button">Show other recipients</string>
+  <string name="composer_error_invalid_email">Email address is invalid</string>
 </resources>

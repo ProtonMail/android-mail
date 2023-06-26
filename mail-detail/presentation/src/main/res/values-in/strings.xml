@@ -44,6 +44,7 @@
   <string name="error_move_conversation_failed">Percakapan gagal dipindahkan. Silakan coba lagi.</string>
   <string name="error_loading_message">Terjadi suatu kesalahan. Silakan coba lagi.</string>
   <string name="error_offline_loading_message">Anda sedang offline. Koneksi internet diperlukan untuk menampilkan konten pesan ini.</string>
+  <string name="error_get_attachment_failed">Lampiran gagal diperoleh</string>
   <string name="reload">Muat ulang</string>
   <plurals name="attachment_count_label">
     <item quantity="other">%d berkas</item>

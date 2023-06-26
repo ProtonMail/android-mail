@@ -45,6 +45,7 @@
   <string name="error_move_conversation_failed">A beszélgetés áthelyezése sikertelen. Próbálja újra.</string>
   <string name="error_loading_message">Nem meghatározott hiba történt, kérjük próbálja meg újra.</string>
   <string name="error_offline_loading_message">Ön jelenleg offline. Internet kapcsolat szükséges az üzenet tartalmának betöltéséhez.</string>
+  <string name="error_get_attachment_failed">A melléklet letöltése sikertelen</string>
   <string name="reload">Újratöltés</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d fájl</item>

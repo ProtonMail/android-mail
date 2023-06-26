@@ -34,7 +34,7 @@
   <string name="mailbox_default_recipient">(Nincs címzett)</string>
   <string name="mailbox_default_sender">(Nincs feladó)</string>
   <string name="mailbox_error_message_offline">Jelenleg offline, az elemek így nem tölthetők be</string>
-  <string name="mailbox_error_message_generic">Loading mailbox failed</string>
-  <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
-  <string name="mailbox_is_empty_message">This mailbox is empty</string>
+  <string name="mailbox_error_message_generic">A postafiók betöltése sikertelen</string>
+  <string name="mailbox_error_message_unexpected">Valami váratlanul rosszul történt</string>
+  <string name="mailbox_is_empty_message">A postafiók üres</string>
 </resources>

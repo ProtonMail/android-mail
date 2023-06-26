@@ -26,4 +26,5 @@
   <string name="close_composer_content_description">Stäng redigeringsfönstret</string>
   <string name="send_message_content_description">Skicka meddelande</string>
   <string name="composer_expand_recipients_button">Visa andra mottagare</string>
+  <string name="composer_error_invalid_email">E-postadress är ogiltig</string>
 </resources>

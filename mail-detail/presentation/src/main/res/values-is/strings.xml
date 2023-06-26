@@ -45,6 +45,7 @@
   <string name="error_move_conversation_failed">Ekki tókst að færa samtal. Vinsamlegast reyndu aftur.</string>
   <string name="error_loading_message">Eitthvað fór úrskeiðis, vinsamlegast reyndu aftur.</string>
   <string name="error_offline_loading_message">Þú ert ótengdur. Nettenging er nauðsynleg til að birta innihald þessarar skilaboða.</string>
+  <string name="error_get_attachment_failed">Failed to get attachment</string>
   <string name="reload">Endurhlaða</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d skrá</item>

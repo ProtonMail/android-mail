@@ -36,7 +36,7 @@
   <string name="mailbox_default_recipient">(brak odbiorcy)</string>
   <string name="mailbox_default_sender">(brak nadawcy)</string>
   <string name="mailbox_error_message_offline">Jesteś w trybie offline. Nie można odzyskać elementów</string>
-  <string name="mailbox_error_message_generic">Loading mailbox failed</string>
+  <string name="mailbox_error_message_generic">Ładowanie skrzynki pocztowej nie powiodło się</string>
   <string name="mailbox_error_message_unexpected">Coś poszło nie tak</string>
   <string name="mailbox_is_empty_message">Skrzynka pocztowa jest pusta</string>
 </resources>

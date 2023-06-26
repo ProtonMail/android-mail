@@ -19,11 +19,12 @@
 <resources>
   <string name="from_prefix">寄件者：</string>
   <string name="to_prefix">收件者：</string>
-  <string name="cc_prefix">Cc:</string>
-  <string name="bcc_prefix">Bcc:</string>
+  <string name="cc_prefix">副本：</string>
+  <string name="bcc_prefix">副本</string>
   <string name="subject_placeholder">主旨</string>
   <string name="compose_message_placeholder">撰寫電子郵件</string>
   <string name="close_composer_content_description">關閉撰寫工具</string>
   <string name="send_message_content_description">傳送郵件訊息</string>
-  <string name="composer_expand_recipients_button">Show other recipients</string>
+  <string name="composer_expand_recipients_button">顯示其他收件者</string>
+  <string name="composer_error_invalid_email">電子郵件地址無效</string>
 </resources>
