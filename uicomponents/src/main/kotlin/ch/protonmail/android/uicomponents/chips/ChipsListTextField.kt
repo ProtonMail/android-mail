@@ -47,6 +47,7 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -108,6 +109,7 @@ fun ChipsListTextField(
         }
         BasicTextField(
             modifier = Modifier
+                .testTag(ChipsTestTags.BasicTextField)
                 .thenIf(focusRequester != null) {
                     focusRequester(focusRequester!!)
                 }
@@ -163,6 +165,7 @@ private fun FocusedChipsList(
         val alpha by remember { mutableStateOf(Animatable(0F)) }
         InputChip(
             modifier = Modifier
+                .testTag("${ChipsTestTags.InputChip}$index")
                 .padding(horizontal = 4.dp)
                 .thenIf(animateChipsCreation) {
                     scale(scale.value)
@@ -173,6 +176,7 @@ private fun FocusedChipsList(
             label = {
                 Text(
                     modifier = Modifier
+                        .testTag(ChipsTestTags.InputChipText)
                         .widthIn(max = textMaxWidth - 64.dp),
                     text = chipItem.value,
                     color = when (chipItem) {
@@ -185,7 +189,9 @@ private fun FocusedChipsList(
             trailingIcon = {
                 Icon(
                     Icons.Default.Clear,
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier
+                        .testTag(ChipsTestTags.InputChipIcon)
+                        .size(16.dp),
                     contentDescription = ""
                 )
             }

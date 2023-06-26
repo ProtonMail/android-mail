@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 /*
@@ -37,6 +38,7 @@ fun ChipsListField(
         Text(
             text = label,
             modifier = Modifier
+                .testTag(ChipsTestTags.FieldPrefix)
                 .align(Alignment.Top)
                 .padding(top = 16.dp, bottom = 16.dp, start = 0.dp)
         )

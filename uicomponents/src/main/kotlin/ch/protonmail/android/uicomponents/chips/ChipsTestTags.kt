@@ -16,21 +16,13 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.presentation.ui
+package ch.protonmail.android.uicomponents.chips
 
-object ComposerTestTags {
+object ChipsTestTags {
 
-    const val RootItem = "ComposerScreenRootItem"
-    const val TopAppBar = "ComposerTopAppBar"
+    const val BasicTextField = "BasicTextField"
     const val FieldPrefix = "FieldPrefix"
-    const val FromSender = "FromTextField"
-    const val ToRecipient = "ToTextField"
-    const val CcRecipient = "CcTextField"
-    const val BccRecipient = "BccTextField"
-    const val Subject = "Subject"
-    const val SubjectPlaceholder = "SubjectPlaceholder"
-    const val MessageBody = "MessageBody"
-    const val MessageBodyPlaceholder = "MessageBodyPlaceholder"
-    const val CloseButton = "CloseButton"
-    const val SendButton = "SendButton"
+    const val InputChip = "InputChip"
+    const val InputChipIcon = "InputChipIcon"
+    const val InputChipText = "InputChipText"
 }
