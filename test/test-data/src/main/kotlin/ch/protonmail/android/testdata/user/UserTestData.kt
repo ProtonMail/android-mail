@@ -22,6 +22,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.Delinquent
 import me.proton.core.user.domain.entity.Role
 import me.proton.core.user.domain.entity.User
+import me.proton.core.user.domain.extension.hasSubscription
 
 object UserTestData {
 
@@ -48,11 +49,16 @@ object UserTestData {
         userId = UserIdTestData.adminUserId
     )
 
+    val freeUser = build(subscribed = 0)
+
+    val paidUser = build(subscribed = 2)
+
     fun build(
         displayName: String = USER_DISPLAY_NAME_RAW,
         name: String = USER_NAME_RAW,
         role: Role = Role.NoOrganization,
-        userId: UserId = UserIdTestData.Primary
+        userId: UserId = UserIdTestData.Primary,
+        subscribed: Int = 1
     ) = User(
         credit = 1,
         currency = "CHF",
@@ -66,7 +72,7 @@ object UserTestData {
         private = true,
         role = role,
         services = 1,
-        subscribed = 1,
+        subscribed = subscribed,
         usedSpace = USED_SPACE_RAW,
         userId = userId
     )

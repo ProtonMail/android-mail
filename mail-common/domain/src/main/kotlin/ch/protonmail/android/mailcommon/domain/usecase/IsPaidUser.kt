@@ -16,16 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.testdata.user
+package ch.protonmail.android.mailcommon.domain.usecase
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
+import me.proton.core.user.domain.extension.hasSubscription
+import javax.inject.Inject
 
-object UserIdTestData {
+class IsPaidUser @Inject constructor(
+    private val observeUser: ObserveUser
+) {
 
-    val Primary = UserId("primary")
-    val userId = UserId("userId")
-    val userId1 = UserId("userId1")
-    val adminUserId = UserId("adminUserId")
-    val paidUserid = UserId("paidUserId")
-    val freeUserId = UserId("freeUserId")
+    suspend operator fun invoke(userId: UserId): Either<DataError, Boolean> {
+        val user = observeUser(userId).first() ?: return DataError.Local.Unknown.left()
+        return user.hasSubscription().right()
+    }
 }
