@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.first
 import me.proton.core.user.domain.entity.UserAddress
 import javax.inject.Inject
 
-class HandleDraftBodyChange @Inject constructor(
+class StoreDraftWithBody @Inject constructor(
     private val createEmptyDraft: CreateEmptyDraft,
     private val encryptDraftBody: EncryptDraftBody,
     private val saveDraft: SaveDraft,

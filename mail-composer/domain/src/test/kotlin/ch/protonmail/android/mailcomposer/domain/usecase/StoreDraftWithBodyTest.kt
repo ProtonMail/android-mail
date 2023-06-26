@@ -24,14 +24,14 @@ import me.proton.core.user.domain.entity.UserAddress
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class HandleDraftBodyChangeTest {
+class StoreDraftWithBodyTest {
 
     private val createEmptyDraftMock = mockk<CreateEmptyDraft>()
     private val encryptDraftBodyMock = mockk<EncryptDraftBody>()
     private val saveDraftMock = mockk<SaveDraft>(relaxUnitFun = true)
     private val messageRepositoryMock = mockk<MessageRepository>()
     private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
-    private val handleDraftBodyChange = HandleDraftBodyChange(
+    private val storeDraftWithBody = StoreDraftWithBody(
         createEmptyDraftMock,
         encryptDraftBodyMock,
         saveDraftMock,
@@ -57,7 +57,7 @@ class HandleDraftBodyChangeTest {
         )
 
         // When
-        val actualEither = handleDraftBodyChange(draftMessageId, plaintextDraftBody, senderAddress)
+        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress)
 
         // Then
         coVerify { saveDraftMock(expectedSavedDraft, expectedUserId) }
@@ -84,7 +84,7 @@ class HandleDraftBodyChangeTest {
         )
 
         // When
-        val actualEither = handleDraftBodyChange(draftMessageId, plaintextDraftBody, senderAddress)
+        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress)
 
         // Then
         coVerify { saveDraftMock(expectedSavedDraft, expectedUserId) }
@@ -102,7 +102,7 @@ class HandleDraftBodyChangeTest {
         expectEncryptionFailure()
 
         // When
-        val actualEither = handleDraftBodyChange(draftMessageId, plaintextDraftBody, senderAddress)
+        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress)
 
         // Then
         coVerify { saveDraftMock wasNot called }

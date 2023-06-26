@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
-import ch.protonmail.android.mailcomposer.domain.usecase.HandleDraftBodyChange
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -45,7 +45,7 @@ class ComposerViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val handleDraftBodyChangeMock = mockk<HandleDraftBodyChange>(relaxUnitFun = true)
+    private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>(relaxUnitFun = true)
     private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId> {
         coEvery { this@mockk() } returns flowOf(UserIdSample.Primary)
     }
@@ -55,7 +55,7 @@ class ComposerViewModelTest {
     private val provideNewDraftIdMock = mockk<ProvideNewDraftId>()
     private val viewModel
         get() = ComposerViewModel(
-            handleDraftBodyChangeMock,
+            storeDraftWithBodyMock,
             observePrimaryUserIdMock,
             userAddressManagerMock,
             provideNewDraftIdMock
@@ -74,7 +74,7 @@ class ComposerViewModelTest {
 
         // Then
         coVerify {
-            handleDraftBodyChangeMock(
+            storeDraftWithBodyMock(
                 expectedMessageId,
                 expectedDraftBody,
                 expectedUserAddress

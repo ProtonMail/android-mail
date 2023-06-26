@@ -21,7 +21,7 @@ package ch.protonmail.android.mailcomposer.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcomposer.domain.usecase.HandleDraftBodyChange
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
@@ -41,11 +41,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
-    private val reducer: ComposerReducer,
-    private val isValidEmailAddress: IsValidEmailAddress,
-    private val handleEditedDraftBodyChange: HandleDraftBodyChange,
+    private val storeDraftWithBody: StoreDraftWithBody,
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val userAddressManager: UserAddressManager,
+    private val reducer: ComposerReducer,
+    private val isValidEmailAddress: IsValidEmailAddress,
     provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
 
@@ -57,7 +57,7 @@ class ComposerViewModel @Inject constructor(
     internal fun submit(action: ComposerAction) {
         if (action is ComposerAction.DraftBodyChanged) {
             viewModelScope.launch {
-                handleEditedDraftBodyChange(messageId, action.draftBody, senderAddress())
+                storeDraftWithBody(messageId, action.draftBody, senderAddress())
             }
         }
         val currentState = state.value
