@@ -22,7 +22,6 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.Delinquent
 import me.proton.core.user.domain.entity.Role
 import me.proton.core.user.domain.entity.User
-import me.proton.core.user.domain.extension.hasSubscription
 
 object UserTestData {
 

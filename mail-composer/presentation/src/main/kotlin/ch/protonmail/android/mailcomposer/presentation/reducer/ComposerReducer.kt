@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
@@ -29,11 +30,13 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import javax.inject.Inject
 
-class ComposerReducer @Inject constructor() {
+class ComposerReducer @Inject constructor(
+    private val getChangeSenderAddresses: GetChangeSenderAddresses
+) {
 
     @Suppress("NotImplementedDeclaration", "ForbiddenComment")
     // TODO the from, subject and body are not considered here yet, we'll add it to the draft model later
-    fun newStateFrom(currentState: ComposerDraftState, operation: ComposerOperation): ComposerDraftState =
+    suspend fun newStateFrom(currentState: ComposerDraftState, operation: ComposerOperation): ComposerDraftState =
         when (operation) {
             is ComposerAction.DraftBodyChanged -> currentState
             is ComposerAction.SenderChanged -> TODO()
@@ -43,14 +46,35 @@ class ComposerReducer @Inject constructor() {
             is ComposerAction.SubjectChanged -> TODO()
             is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, operation.address)
             is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
-            is ComposerAction.OnChangeSender -> TODO()
+            is ComposerAction.OnChangeSender -> updateStateForChangeSender(currentState)
+        }
+
+    private suspend fun updateStateForChangeSender(currentState: ComposerDraftState) = getChangeSenderAddresses().fold(
+        ifLeft = {
+            when (it) {
+                GetChangeSenderAddresses.Error.UpgradeToChangeSender -> updateStateToPaidFeatureError(
+                    currentState,
+                    TextUiModel(R.string.composer_change_sender_paid_feature)
+                )
+                GetChangeSenderAddresses.Error.FailedDeterminingUserSubscription,
+                GetChangeSenderAddresses.Error.FailedGettingPrimaryUser -> TODO()
+            }
+        },
+        ifRight = { TODO() }
+    )
+
+    private fun updateStateToPaidFeatureError(currentState: ComposerDraftState, message: TextUiModel) =
+        when (currentState) {
+            is ComposerDraftState.Submittable -> currentState.copy(premiumFeatureMessage = Effect.of(message))
+            is ComposerDraftState.NotSubmittable -> currentState.copy(premiumFeatureMessage = Effect.of(message))
         }
 
     private fun updateStateToSenderError(currentState: ComposerDraftState) = when (currentState) {
         is ComposerDraftState.Submittable,
         is ComposerDraftState.NotSubmittable -> ComposerDraftState.NotSubmittable(
-            currentState.fields.copy(from = ""),
-            Effect.of(TextUiModel(R.string.composer_error_invalid_sender))
+            fields = currentState.fields.copy(from = ""),
+            premiumFeatureMessage = currentState.premiumFeatureMessage,
+            error = Effect.of(TextUiModel(R.string.composer_error_invalid_sender))
         )
     }
 
@@ -101,11 +125,12 @@ class ComposerReducer @Inject constructor() {
     ): ComposerDraftState {
         val allValid = (to + cc + bcc).all { it is RecipientUiModel.Valid }
         return if (allValid) {
-            ComposerDraftState.Submittable(currentFields.copy(to = to, cc = cc, bcc = bcc))
+            ComposerDraftState.Submittable(currentFields.copy(to = to, cc = cc, bcc = bcc), Effect.empty())
         } else {
             ComposerDraftState.NotSubmittable(
-                currentFields.copy(to = to, cc = cc, bcc = bcc),
-                if (hasError) Effect.of(TextUiModel(R.string.composer_error_invalid_email)) else Effect.empty()
+                fields = currentFields.copy(to = to, cc = cc, bcc = bcc),
+                premiumFeatureMessage = Effect.empty(),
+                error = if (hasError) Effect.of(TextUiModel(R.string.composer_error_invalid_email)) else Effect.empty()
             )
         }
     }

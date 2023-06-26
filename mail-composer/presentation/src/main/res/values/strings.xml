@@ -29,4 +29,5 @@
     <string name="composer_error_invalid_email">Email address is invalid</string>
     <string name="composer_error_invalid_sender">Sender address is invalid</string>
     <string name="change_sender_button_content_description">Change sender</string>
+    <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
 </resources>

@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -35,12 +36,16 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState.NotSubmittable
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState.Submittable
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
+import me.proton.core.compose.component.ProtonSnackbarHost
+import me.proton.core.compose.component.ProtonSnackbarHostState
+import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme3
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -52,6 +57,7 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
     val state by viewModel.state.collectAsState()
     var recipientsOpen by rememberSaveable { mutableStateOf(false) }
     var focusedField by rememberSaveable { mutableStateOf(FocusedFieldType.TO) }
+    val snackbarHostState = remember { ProtonSnackbarHostState() }
 
     Column(
         modifier = Modifier
@@ -81,6 +87,12 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
                 actions = buildActions(viewModel, { recipientsOpen = it }, { focusedField = it })
             )
         }
+    }
+
+    ProtonSnackbarHost(snackbarHostState)
+
+    ConsumableTextEffect(effect = state.premiumFeatureMessage) { message ->
+        snackbarHostState.showSnackbar(type = ProtonSnackbarType.NORM, message = message)
     }
 }
 

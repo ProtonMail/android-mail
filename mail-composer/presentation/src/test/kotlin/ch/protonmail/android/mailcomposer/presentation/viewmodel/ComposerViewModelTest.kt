@@ -36,6 +36,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -60,11 +61,16 @@ class ComposerViewModelTest {
     private val isValidEmailAddressMock = mockk<IsValidEmailAddress>()
     private val getPrimaryAddressMock = mockk<GetPrimaryAddress>()
     private val provideNewDraftIdMock = mockk<ProvideNewDraftId>()
+    private val getChangeSenderAddresses = mockk<GetChangeSenderAddresses> {
+        coEvery { this@mockk.invoke() } returns GetChangeSenderAddresses.Error.UpgradeToChangeSender.left()
+    }
+    private val reducer = ComposerReducer(getChangeSenderAddresses)
+
 
     private val viewModel
         get() = ComposerViewModel(
             storeDraftWithBodyMock,
-            ComposerReducer(),
+            reducer,
             isValidEmailAddressMock,
             getPrimaryAddressMock,
             observePrimaryUserIdMock,

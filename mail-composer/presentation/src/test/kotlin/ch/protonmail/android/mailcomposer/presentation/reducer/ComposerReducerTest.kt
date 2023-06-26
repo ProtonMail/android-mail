@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcomposer.presentation.reducer
 
 import java.util.UUID
+import arrow.core.left
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -33,7 +34,11 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Invalid
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Valid
+import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -45,13 +50,18 @@ class ComposerReducerTest(
     private val testTransition: TestTransition
 ) {
 
-    private val composerReducer = ComposerReducer()
+    private val getChangeSenderAddresses = mockk<GetChangeSenderAddresses> {
+        coEvery { this@mockk.invoke() } returns GetChangeSenderAddresses.Error.UpgradeToChangeSender.left()
+    }
+    private val composerReducer = ComposerReducer(getChangeSenderAddresses)
 
     @Test
-    fun `Test composer transition states`() = with(testTransition) {
-        val actualState = composerReducer.newStateFrom(currentState, operation)
+    fun `Test composer transition states`() = runTest {
+        with(testTransition) {
+            val actualState = composerReducer.newStateFrom(currentState, operation)
 
-        assertEquals(expectedState, actualState, testName)
+            assertEquals(expectedState, actualState, testName)
+        }
     }
 
     companion object {
@@ -179,7 +189,8 @@ class ComposerReducerTest(
                 bcc = bcc,
                 subject = "",
                 body = ""
-            )
+            ),
+            premiumFeatureMessage = Effect.empty()
         )
 
         private fun aNotSubmittableState(
@@ -198,7 +209,8 @@ class ComposerReducerTest(
                 subject = "",
                 body = ""
             ),
-            error = error
+            error = error,
+            premiumFeatureMessage = Effect.empty()
         )
 
         @JvmStatic

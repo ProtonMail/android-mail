@@ -68,12 +68,12 @@ class ComposerViewModel @Inject constructor(
     }
 
     internal fun submit(action: ComposerAction) {
-        if (action is ComposerAction.DraftBodyChanged) {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            if (action is ComposerAction.DraftBodyChanged) {
                 storeDraftWithBody(messageId, action.draftBody, senderAddress(), primaryUserId.first())
             }
+            emitNewStateFor(action)
         }
-        emitNewStateFor(action)
     }
 
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
@@ -81,7 +81,7 @@ class ComposerViewModel @Inject constructor(
     // This is a temp code till we implement senders properly
     private fun senderAddress(): UserAddress = UserAddressSample.primaryAddress
 
-    private fun emitNewStateFor(operation: ComposerOperation) {
+    private suspend fun emitNewStateFor(operation: ComposerOperation) {
         val currentState = state.value
         mutableState.value = reducer.newStateFrom(currentState, operation)
     }
