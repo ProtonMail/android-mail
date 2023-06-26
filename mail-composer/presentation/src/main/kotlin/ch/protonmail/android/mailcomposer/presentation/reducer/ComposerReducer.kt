@@ -43,6 +43,7 @@ class ComposerReducer @Inject constructor() {
             is ComposerAction.SubjectChanged -> TODO()
             is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, operation.address)
             is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
+            is ComposerAction.OnChangeSender -> TODO()
         }
 
     private fun updateStateToSenderError(currentState: ComposerDraftState) = when (currentState) {

@@ -96,7 +96,8 @@ private fun buildActions(
     onSubjectChanged = { viewModel.submit(ComposerAction.SubjectChanged(it)) },
     onBodyChanged = { viewModel.submit(ComposerAction.DraftBodyChanged(DraftBody(it))) },
     onToggleRecipients = onToggleRecipients,
-    onFocusChanged = onFocusChanged
+    onFocusChanged = onFocusChanged,
+    onChangeSender = { viewModel.submit(ComposerAction.OnChangeSender) }
 )
 
 @Composable

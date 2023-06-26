@@ -30,6 +30,8 @@ internal sealed interface ComposerAction : ComposerOperation {
     data class RecipientsBccChanged(val recipients: List<RecipientUiModel>) : ComposerAction
     data class SubjectChanged(val subject: String) : ComposerAction
     data class DraftBodyChanged(val draftBody: DraftBody) : ComposerAction
+
+    object OnChangeSender : ComposerAction
 }
 
 sealed interface ComposerEvent : ComposerOperation {

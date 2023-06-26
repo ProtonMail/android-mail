@@ -28,4 +28,5 @@
     <string name="composer_expand_recipients_button">Show other recipients</string>
     <string name="composer_error_invalid_email">Email address is invalid</string>
     <string name="composer_error_invalid_sender">Sender address is invalid</string>
+    <string name="change_sender_button_content_description">Change sender</string>
 </resources>

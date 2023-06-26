@@ -88,7 +88,8 @@ internal fun ComposerForm(
             PrefixedEmailSelector(
                 prefixStringResource = R.string.from_prefix,
                 modifier = maxWidthModifier.testTag(ComposerTestTags.FromSender),
-                selectedEmail = fields.from
+                selectedEmail = fields.from,
+                actions.onChangeSender
             )
             MailDivider()
             Row(

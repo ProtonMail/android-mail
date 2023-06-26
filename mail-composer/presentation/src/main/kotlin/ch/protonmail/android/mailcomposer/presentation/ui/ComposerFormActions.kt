@@ -28,5 +28,6 @@ internal data class ComposerFormActions(
     val onCcChanged: (List<RecipientUiModel>) -> Unit,
     val onBccChanged: (List<RecipientUiModel>) -> Unit,
     val onSubjectChanged: (String) -> Unit,
-    val onBodyChanged: (String) -> Unit
+    val onBodyChanged: (String) -> Unit,
+    val onChangeSender: () -> Unit
 )
