@@ -158,7 +158,7 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         ObservabilityEventEntity::class,
         // key transparency
         AddressChangeEntity::class,
-        SelfAuditResultEntity::class,
+        SelfAuditResultEntity::class
     ],
     version = AppDatabase.version,
     exportSchema = true
@@ -210,7 +210,7 @@ abstract class AppDatabase :
     companion object {
 
         const val name = "db-mail"
-        const val version = 8
+        const val version = 9
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -220,10 +220,10 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_5_6,
             AppDatabaseMigrations.MIGRATION_6_7,
             AppDatabaseMigrations.MIGRATION_7_8,
+            AppDatabaseMigrations.MIGRATION_8_9
         )
-        fun buildDatabase(context: Context): AppDatabase =
-            databaseBuilder<AppDatabase>(context, name)
-                .apply { migrations.forEach { addMigrations(it) } }
-                .build()
+        fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)
+            .apply { migrations.forEach { addMigrations(it) } }
+            .build()
     }
 }

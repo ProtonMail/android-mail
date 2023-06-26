@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data.remote.resource
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import me.proton.core.util.kotlin.toBooleanOrFalse
 
 @Serializable
 data class RecipientResource(
@@ -28,12 +29,15 @@ data class RecipientResource(
     val address: String,
     @SerialName("Name")
     val name: String,
+    @SerialName("IsProton")
+    val isProton: Int? = null,
     @SerialName("Group")
     val group: String? = null
 ) {
     fun toRecipient() = Recipient(
         address = address,
         name = name,
+        isProton = isProton?.toBooleanOrFalse() ?: false,
         group = group
     )
 }

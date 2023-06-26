@@ -24,6 +24,7 @@ import kotlinx.serialization.Serializable
 data class Participant(
     val address: String,
     val name: String,
+    val isProton: Boolean = false,
     val group: String? = null
 )
 
