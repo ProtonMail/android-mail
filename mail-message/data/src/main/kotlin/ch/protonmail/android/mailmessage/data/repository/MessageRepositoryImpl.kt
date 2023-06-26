@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.domain.extension.isSpam
 import ch.protonmail.android.maillabel.domain.extension.isTrash
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmessage.data.local.MessageBodyFileWriteException
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
@@ -51,6 +52,8 @@ import me.proton.core.data.arch.toDataResult
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.CoroutineScopeProvider
+import okio.IOException
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.min
@@ -123,8 +126,17 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun getMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody> =
         observeMessageWithBody(userId, messageId).first()
 
-    override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody) {
-        localDataSource.upsertMessageWithBody(userId, messageWithBody)
+    override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean {
+        return try {
+            localDataSource.upsertMessageWithBody(userId, messageWithBody)
+            true
+        } catch (e: IOException) {
+            Timber.w("Failed to save draft", e)
+            false
+        } catch (e: MessageBodyFileWriteException) {
+            Timber.w("Failed to save draft", e)
+            false
+        }
     }
 
     override suspend fun addLabel(

@@ -26,7 +26,7 @@ class StoreDraftWithBodyTest {
 
     private val createEmptyDraftMock = mockk<CreateEmptyDraft>()
     private val encryptDraftBodyMock = mockk<EncryptDraftBody>()
-    private val saveDraftMock = mockk<SaveDraft>(relaxUnitFun = true)
+    private val saveDraftMock = mockk<SaveDraft>()
     private val messageRepositoryMock = mockk<MessageRepository>()
     private val storeDraftWithBody = StoreDraftWithBody(
         createEmptyDraftMock,
@@ -51,6 +51,7 @@ class StoreDraftWithBodyTest {
                 body = expectedEncryptedDraftBody.value
             )
         )
+        givenSaveDraftSucceeds(expectedSavedDraft, expectedUserId)
 
         // When
         val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress, expectedUserId)
@@ -78,6 +79,7 @@ class StoreDraftWithBodyTest {
                 body = expectedEncryptedDraftBody.value
             )
         )
+        givenSaveDraftSucceeds(expectedSavedDraft, expectedUserId)
 
         // When
         val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress, expectedUserId)
@@ -95,14 +97,39 @@ class StoreDraftWithBodyTest {
         val userId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
         expectedExistingDraft(userId, draftMessageId) { MessageWithBodySample.EmptyDraft }
-        expectEncryptionFailure()
+        givenDraftBodyEncryptionFails()
 
         // When
         val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress, userId)
 
         // Then
         coVerify { saveDraftMock wasNot called }
-        assertEquals(DraftBodyEncryptionFailure.left(), actualEither)
+        assertEquals(StoreDraftWithBodyError.DraftBodyEncryptionError.left(), actualEither)
+    }
+
+    @Test
+    fun `should return error when saving fails`() = runTest {
+        // Given
+        val plaintextDraftBody = DraftBody("I am plaintext")
+        val senderAddress = UserAddressSample.build()
+        val expectedUserId = UserIdSample.Primary
+        val draftMessageId = MessageIdSample.build()
+        val existingDraft = expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
+        val expectedEncryptedDraftBody = expectedEncryptedDraftBody(plaintextDraftBody, senderAddress) {
+            DraftBody("I am encrypted")
+        }
+        val expectedSavedDraft = existingDraft.copy(
+            messageBody = existingDraft.messageBody.copy(
+                body = expectedEncryptedDraftBody.value
+            )
+        )
+        givenSaveDraftFails(expectedSavedDraft, expectedUserId)
+
+        // When
+        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress, expectedUserId)
+
+        // Then
+        assertEquals(StoreDraftWithBodyError.DraftSaveError.left(), actualEither)
     }
 
     private fun expectedExistingDraft(
@@ -131,7 +158,15 @@ class StoreDraftWithBodyTest {
         coEvery { encryptDraftBodyMock(plaintextDraftBody, senderAddress) } returns it.right()
     }
 
-    private fun expectEncryptionFailure() {
-        coEvery { encryptDraftBodyMock(any(), any()) } returns DraftBodyEncryptionFailure.left()
+    private fun givenDraftBodyEncryptionFails() {
+        coEvery { encryptDraftBodyMock(any(), any()) } returns Unit.left()
+    }
+
+    private fun givenSaveDraftSucceeds(messageWithBody: MessageWithBody, userId: UserId) {
+        coEvery { saveDraftMock(messageWithBody, userId) } returns true
+    }
+
+    private fun givenSaveDraftFails(messageWithBody: MessageWithBody, userId: UserId) {
+        coEvery { saveDraftMock(messageWithBody, userId) } returns false
     }
 }

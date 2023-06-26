@@ -81,7 +81,7 @@ interface MessageRepository {
      */
     suspend fun getMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
 
-    suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody)
+    suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean
 
     /**
      * Adds the given [labelId] to the message with the given [messageId]

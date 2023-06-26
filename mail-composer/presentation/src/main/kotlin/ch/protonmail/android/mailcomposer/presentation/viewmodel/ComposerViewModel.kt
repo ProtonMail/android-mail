@@ -30,7 +30,6 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import me.proton.core.user.domain.UserAddressManager
 import kotlinx.coroutines.flow.MutableStateFlow

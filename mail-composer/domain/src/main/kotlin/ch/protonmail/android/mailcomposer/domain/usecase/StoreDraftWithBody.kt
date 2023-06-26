@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 import arrow.core.Either
 import arrow.core.continuations.either
 import arrow.core.getOrElse
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -41,15 +42,27 @@ class StoreDraftWithBody @Inject constructor(
         draftBody: DraftBody,
         senderAddress: UserAddress,
         userId: UserId
-    ): Either<DraftBodyEncryptionFailure, Unit> = either {
+    ): Either<StoreDraftWithBodyError, Unit> = either {
         val draftWithBody = messageRepository.getMessageWithBody(userId, messageId)
             .getOrElse { createEmptyDraft(messageId, userId, senderAddress) }
-        val encryptedDraftBody = encryptDraftBody(draftBody, senderAddress).bind()
+        val encryptedDraftBody = encryptDraftBody(draftBody, senderAddress)
+            .mapLeft { StoreDraftWithBodyError.DraftBodyEncryptionError }
+            .bind()
         val updatedDraft = draftWithBody.copy(
             messageBody = draftWithBody.messageBody.copy(
                 body = encryptedDraftBody.value
             )
         )
-        saveDraft(updatedDraft, userId).right()
+        saveDraft(updatedDraft, userId)
+            .mapFalse { StoreDraftWithBodyError.DraftSaveError }
+            .bind()
     }
+
+    private fun Boolean.mapFalse(block: () -> StoreDraftWithBodyError): Either<StoreDraftWithBodyError, Unit> =
+        if (this) Unit.right() else block().left()
+}
+
+sealed interface StoreDraftWithBodyError {
+    object DraftBodyEncryptionError : StoreDraftWithBodyError
+    object DraftSaveError : StoreDraftWithBodyError
 }

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data
 
+import java.io.IOException
 import java.util.UUID
 import app.cash.turbine.test
 import arrow.core.getOrElse
@@ -31,6 +32,7 @@ import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmessage.data.local.MessageBodyFileWriteException
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.mailmessage.data.repository.MessageRepositoryImpl
@@ -841,9 +843,39 @@ class MessageRepositoryImplTest {
         val expectedMessageWithBody = MessageWithBodySample.EmptyDraft
 
         // When
-        messageRepository.upsertMessageWithBody(expectedUserId, expectedMessageWithBody)
+        val messageSaved = messageRepository.upsertMessageWithBody(expectedUserId, expectedMessageWithBody)
 
         // Then
-        coVerify { localDataSource.upsertMessageWithBody(expectedUserId, expectedMessageWithBody) }
+        assertTrue(messageSaved)
+    }
+
+    @Test
+    fun `should return false when saving draft fails with IO exception`() = runTest {
+        // Given
+        val expectedUserId = UserIdSample.Primary
+        val expectedMessageWithBody = MessageWithBodySample.EmptyDraft
+        coEvery { localDataSource.upsertMessageWithBody(expectedUserId, expectedMessageWithBody) } throws IOException()
+
+        // When
+        val messageSaved = messageRepository.upsertMessageWithBody(expectedUserId, expectedMessageWithBody)
+
+        // Then
+        assertFalse(messageSaved)
+    }
+
+    @Test
+    fun `should return false when saving draft fails while writing to file`() = runTest {
+        // Given
+        val expectedUserId = UserIdSample.Primary
+        val expectedMessageWithBody = MessageWithBodySample.EmptyDraft
+        coEvery {
+            localDataSource.upsertMessageWithBody(expectedUserId, expectedMessageWithBody)
+        } throws MessageBodyFileWriteException
+
+        // When
+        val messageSaved = messageRepository.upsertMessageWithBody(expectedUserId, expectedMessageWithBody)
+
+        // Then
+        assertFalse(messageSaved)
     }
 }

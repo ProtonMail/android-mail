@@ -67,7 +67,7 @@ class EncryptDraftBodyTest {
         val encryptionResultEither = encryptDraftBody(draftBody, senderAddress)
 
         // Then
-        assertEquals(DraftBodyEncryptionFailure.left(), encryptionResultEither)
+        assertEquals(Unit.left(), encryptionResultEither)
     }
 
     @Test

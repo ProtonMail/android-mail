@@ -1,12 +1,16 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
-import io.mockk.coVerify
+import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import org.junit.Test
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class SaveDraftTest {
 
@@ -18,11 +22,34 @@ class SaveDraftTest {
         // Given
         val expectedUserId = UserIdSample.Primary
         val expectedMessageWithBody = MessageWithBodySample.EmptyDraft
+        givenRepositorySucceeds(expectedMessageWithBody, expectedUserId)
 
         // When
-        saveDraft(expectedMessageWithBody, expectedUserId)
+        val draftSaved = saveDraft(expectedMessageWithBody, expectedUserId)
 
         // Then
-        coVerify { messageRepositoryMock.upsertMessageWithBody(expectedUserId, expectedMessageWithBody) }
+        assertTrue(draftSaved)
+    }
+
+    @Test
+    fun `should return false when saving a draft fails`() = runTest {
+        // Given
+        val expectedUserId = UserIdSample.Primary
+        val expectedMessageWithBody = MessageWithBodySample.EmptyDraft
+        givenRepositoryFails(expectedMessageWithBody, expectedUserId)
+
+        // When
+        val draftSaved = saveDraft(expectedMessageWithBody, expectedUserId)
+
+        // Then
+        assertFalse(draftSaved)
+    }
+
+    private fun givenRepositoryFails(messageWithBody: MessageWithBody, userId: UserId) {
+        coEvery { messageRepositoryMock.upsertMessageWithBody(userId, messageWithBody) } returns false
+    }
+
+    private fun givenRepositorySucceeds(messageWithBody: MessageWithBody, userId: UserId) {
+        coEvery { messageRepositoryMock.upsertMessageWithBody(userId, messageWithBody) } returns true
     }
 }

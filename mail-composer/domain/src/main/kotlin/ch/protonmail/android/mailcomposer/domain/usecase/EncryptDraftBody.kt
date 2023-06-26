@@ -38,21 +38,16 @@ class EncryptDraftBody @Inject constructor(
     @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(
-        draftBody: DraftBody,
-        senderAddress: UserAddress
-    ): Either<DraftBodyEncryptionFailure, DraftBody> {
+    suspend operator fun invoke(draftBody: DraftBody, senderAddress: UserAddress): Either<Unit, DraftBody> {
         return withContext(defaultDispatcher) {
             senderAddress.useKeys(cryptoContext) {
                 try {
                     DraftBody(encryptAndSignText(draftBody.value)).right()
                 } catch (cryptoException: CryptoException) {
                     Timber.e("Failed to encrypt the message body", cryptoException)
-                    DraftBodyEncryptionFailure.left()
+                    Unit.left()
                 }
             }
         }
     }
 }
-
-object DraftBodyEncryptionFailure

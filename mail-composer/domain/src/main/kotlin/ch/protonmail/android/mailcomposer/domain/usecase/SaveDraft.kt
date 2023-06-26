@@ -27,7 +27,6 @@ class SaveDraft @Inject constructor(
     private val messageRepository: MessageRepository
 ) {
 
-    suspend operator fun invoke(messageWithBody: MessageWithBody, userId: UserId) {
+    suspend operator fun invoke(messageWithBody: MessageWithBody, userId: UserId): Boolean =
         messageRepository.upsertMessageWithBody(userId, messageWithBody)
-    }
 }
