@@ -69,7 +69,6 @@ internal fun ComposerForm(
 
     FocusableForm(
         fieldList = listOf(
-            FocusedFieldType.FROM,
             FocusedFieldType.TO,
             FocusedFieldType.CC,
             FocusedFieldType.BCC,
@@ -85,11 +84,10 @@ internal fun ComposerForm(
         Column(
             modifier = maxWidthModifier
         ) {
-            PrefixedEmailTextField(
+            PrefixedEmailSelector(
                 prefixStringResource = R.string.from_prefix,
-                modifier = maxWidthModifier
-                    .testTag(ComposerTestTags.FromSender)
-                    .retainFieldFocusOnConfigurationChange(FocusedFieldType.FROM)
+                modifier = maxWidthModifier.testTag(ComposerTestTags.FromSender),
+                selectedEmail = fields.from
             )
             MailDivider()
             Row(

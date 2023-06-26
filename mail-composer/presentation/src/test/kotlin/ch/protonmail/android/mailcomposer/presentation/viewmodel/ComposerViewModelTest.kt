@@ -37,7 +37,6 @@ import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
-import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -77,7 +76,7 @@ class ComposerViewModelTest {
         // Given
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedDraftBody = DraftBody(RawDraftBody)
-        val expectedUserAddress = expectedSenderAddress(UserIdSample.Primary) { UserAddressSample.build() }
+        val expectedUserAddress = expectedSenderAddress { UserAddressSample.build() }
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val action = ComposerAction.DraftBodyChanged(expectedDraftBody)
 
@@ -140,7 +139,7 @@ class ComposerViewModelTest {
         coEvery { getPrimaryAddressMock(userId) } returns it.left()
     }
 
-    private fun expectedSenderAddress(userId: UserId, senderAddress: () -> UserAddress): UserAddress =
+    private fun expectedSenderAddress(senderAddress: () -> UserAddress): UserAddress =
         senderAddress().also { UserAddressSample.primaryAddress }
 
     companion object TestData {

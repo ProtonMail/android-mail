@@ -51,7 +51,7 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
     val keyboardController = LocalSoftwareKeyboardController.current
     val state by viewModel.state.collectAsState()
     var recipientsOpen by rememberSaveable { mutableStateOf(false) }
-    var focusedField by rememberSaveable { mutableStateOf(FocusedFieldType.FROM) }
+    var focusedField by rememberSaveable { mutableStateOf(FocusedFieldType.TO) }
 
     Column(
         modifier = Modifier

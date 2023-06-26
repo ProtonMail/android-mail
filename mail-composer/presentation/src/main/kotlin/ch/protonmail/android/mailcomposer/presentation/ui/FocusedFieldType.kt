@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailcomposer.presentation.ui
 
 internal enum class FocusedFieldType {
-    FROM,
     TO,
     CC,
     BCC,
