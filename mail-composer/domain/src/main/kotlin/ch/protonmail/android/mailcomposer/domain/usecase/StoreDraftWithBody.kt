@@ -22,12 +22,10 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import arrow.core.getOrElse
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
+import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
 import javax.inject.Inject
 
@@ -35,16 +33,15 @@ class StoreDraftWithBody @Inject constructor(
     private val createEmptyDraft: CreateEmptyDraft,
     private val encryptDraftBody: EncryptDraftBody,
     private val saveDraft: SaveDraft,
-    private val messageRepository: MessageRepository,
-    private val observePrimaryUserId: ObservePrimaryUserId
+    private val messageRepository: MessageRepository
 ) {
 
     suspend operator fun invoke(
         messageId: MessageId,
         draftBody: DraftBody,
-        senderAddress: UserAddress
+        senderAddress: UserAddress,
+        userId: UserId
     ): Either<DraftBodyEncryptionFailure, Unit> = either {
-        val userId = observePrimaryUserId().filterNotNull().first()
         val draftWithBody = messageRepository.getMessageWithBody(userId, messageId)
             .getOrElse { createEmptyDraft(messageId, userId, senderAddress) }
         val encryptedDraftBody = encryptDraftBody(draftBody, senderAddress).bind()

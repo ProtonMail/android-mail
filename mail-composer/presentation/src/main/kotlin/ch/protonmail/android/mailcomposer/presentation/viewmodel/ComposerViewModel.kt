@@ -36,6 +36,7 @@ import me.proton.core.user.domain.UserAddressManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
 import javax.inject.Inject
 
@@ -57,7 +58,7 @@ class ComposerViewModel @Inject constructor(
     internal fun submit(action: ComposerAction) {
         if (action is ComposerAction.DraftBodyChanged) {
             viewModelScope.launch {
-                storeDraftWithBody(messageId, action.draftBody, senderAddress())
+                storeDraftWithBody(messageId, action.draftBody, senderAddress(), primaryUserId())
             }
         }
         val currentState = state.value
@@ -67,10 +68,10 @@ class ComposerViewModel @Inject constructor(
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
 
     // This is a temp code till we implement senders properly
-    private suspend fun senderAddress(): UserAddress = observePrimaryUserId()
-        .filterNotNull()
-        .flatMapLatest { userId -> userAddressManager.observeAddresses(userId) }
+    private suspend fun senderAddress(): UserAddress = userAddressManager.observeAddresses(primaryUserId())
         .filterNotNull()
         .first()
         .first()
+
+    private suspend fun primaryUserId(): UserId = observePrimaryUserId().filterNotNull().first()
 }

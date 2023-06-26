@@ -46,9 +46,7 @@ class ComposerViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>(relaxUnitFun = true)
-    private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId> {
-        coEvery { this@mockk() } returns flowOf(UserIdSample.Primary)
-    }
+    private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
     private val userAddressManagerMock = mockk<UserAddressManager> {
         every { observeAddresses(any()) } returns emptyFlow()
     }
@@ -67,6 +65,7 @@ class ComposerViewModelTest {
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedDraftBody = DraftBody(RawDraftBody)
         val expectedUserAddress = expectedSenderAddress(UserIdSample.Primary) { UserAddressSample.build() }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
         val action = ComposerAction.DraftBodyChanged(expectedDraftBody)
 
         // When
@@ -77,13 +76,18 @@ class ComposerViewModelTest {
             storeDraftWithBodyMock(
                 expectedMessageId,
                 expectedDraftBody,
-                expectedUserAddress
+                expectedUserAddress,
+                expectedUserId
             )
         }
     }
 
     private fun expectedMessageId(messageId: () -> MessageId): MessageId = messageId().also {
         every { provideNewDraftIdMock() } returns it
+    }
+
+    private fun expectedUserId(userId: () -> UserId): UserId = userId().also {
+        coEvery { observePrimaryUserIdMock() } returns flowOf(it)
     }
 
     private fun expectedSenderAddress(userId: UserId, senderAddress: () -> UserAddress): UserAddress =

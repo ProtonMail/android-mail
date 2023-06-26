@@ -5,7 +5,6 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
@@ -17,7 +16,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
@@ -30,13 +28,11 @@ class StoreDraftWithBodyTest {
     private val encryptDraftBodyMock = mockk<EncryptDraftBody>()
     private val saveDraftMock = mockk<SaveDraft>(relaxUnitFun = true)
     private val messageRepositoryMock = mockk<MessageRepository>()
-    private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
     private val storeDraftWithBody = StoreDraftWithBody(
         createEmptyDraftMock,
         encryptDraftBodyMock,
         saveDraftMock,
-        messageRepositoryMock,
-        observePrimaryUserIdMock
+        messageRepositoryMock
     )
 
     @Test
@@ -44,7 +40,7 @@ class StoreDraftWithBodyTest {
         // Given
         val plaintextDraftBody = DraftBody("I am plaintext")
         val senderAddress = UserAddressSample.build()
-        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedUserId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
         val existingDraft = expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
         val expectedEncryptedDraftBody = expectedEncryptedDraftBody(plaintextDraftBody, senderAddress) {
@@ -57,7 +53,7 @@ class StoreDraftWithBodyTest {
         )
 
         // When
-        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress)
+        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress, expectedUserId)
 
         // Then
         coVerify { saveDraftMock(expectedSavedDraft, expectedUserId) }
@@ -69,7 +65,7 @@ class StoreDraftWithBodyTest {
         // Given
         val plaintextDraftBody = DraftBody("I am plaintext")
         val senderAddress = UserAddressSample.build()
-        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedUserId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
         val newDraft = expectedNewDraft(expectedUserId, draftMessageId, senderAddress) {
             MessageWithBodySample.EmptyDraft
@@ -84,7 +80,7 @@ class StoreDraftWithBodyTest {
         )
 
         // When
-        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress)
+        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress, expectedUserId)
 
         // Then
         coVerify { saveDraftMock(expectedSavedDraft, expectedUserId) }
@@ -96,21 +92,17 @@ class StoreDraftWithBodyTest {
         // Given
         val plaintextDraftBody = DraftBody("I am plaintext")
         val senderAddress = UserAddressSample.build()
-        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val userId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
-        expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
+        expectedExistingDraft(userId, draftMessageId) { MessageWithBodySample.EmptyDraft }
         expectEncryptionFailure()
 
         // When
-        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress)
+        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderAddress, userId)
 
         // Then
         coVerify { saveDraftMock wasNot called }
         assertEquals(DraftBodyEncryptionFailure.left(), actualEither)
-    }
-
-    private fun expectedUserId(userId: () -> UserId): UserId = userId().also {
-        coEvery { observePrimaryUserIdMock() } returns flowOf(it)
     }
 
     private fun expectedExistingDraft(
