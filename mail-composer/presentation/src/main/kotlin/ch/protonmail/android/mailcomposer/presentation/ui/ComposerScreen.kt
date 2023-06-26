@@ -89,7 +89,7 @@ private fun buildActions(
     onToggleRecipients: (Boolean) -> Unit,
     onFocusChanged: (FocusedFieldType) -> Unit
 ): ComposerFormActions = ComposerFormActions(
-    onFromChanged = { viewModel.submit(ComposerAction.FromChanged(it)) },
+    onSenderChanged = { viewModel.submit(ComposerAction.SenderChanged(it)) },
     onToChanged = { viewModel.submit(ComposerAction.RecipientsToChanged(it)) },
     onCcChanged = { viewModel.submit(ComposerAction.RecipientsCcChanged(it)) },
     onBccChanged = { viewModel.submit(ComposerAction.RecipientsBccChanged(it)) },
