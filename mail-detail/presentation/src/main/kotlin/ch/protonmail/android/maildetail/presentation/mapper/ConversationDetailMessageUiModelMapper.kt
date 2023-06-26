@@ -58,7 +58,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         return ConversationDetailMessageUiModel.Collapsed(
             avatar = avatarUiModelMapper(
                 message,
-                senderResolvedName = senderResolvedName
+                senderResolvedName = senderResolvedName.name
             ),
             expiration = message.expirationTimeOrNull()?.let(expirationTimeMapper::toUiModel),
             forwardedIcon = getForwardedIcon(isForwarded = message.isForwarded),
@@ -67,7 +67,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             isUnread = message.unread,
             locationIcon = messageLocationUiModelMapper(message.labelIds, labels, folderColorSettings),
             repliedIcon = getRepliedIcon(isReplied = message.isReplied, isRepliedAll = message.isRepliedAll),
-            sender = senderResolvedName,
+            sender = senderResolvedName.name,
             shortTime = formatShortTime(message.time.seconds),
             labels = toLabelUiModels(messageWithLabels.labels),
             messageId = message.messageId

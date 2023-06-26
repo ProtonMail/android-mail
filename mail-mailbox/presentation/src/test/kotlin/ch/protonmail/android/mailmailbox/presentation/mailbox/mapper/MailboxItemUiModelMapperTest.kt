@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedN
 import ch.protonmail.android.mailmailbox.domain.usecase.ParticipantsResolvedNamesResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
@@ -73,7 +74,14 @@ class MailboxItemUiModelMapperTest {
     private val getParticipantsResolvedNames = mockk<GetParticipantsResolvedNames> {
         every {
             this@mockk.invoke(any(), any())
-        } returns ParticipantsResolvedNamesResult.Senders(listOf("default mocked name"))
+        } returns ParticipantsResolvedNamesResult.Senders(
+            listOf(
+                ResolveParticipantName.Result(
+                    "default mocked name",
+                    isProton = false
+                )
+            )
+        )
     }
 
     private val mapper = MailboxItemUiModelMapper(
@@ -142,7 +150,10 @@ class MailboxItemUiModelMapperTest {
     fun `participant names are correctly resolved in the ui model`() = runTest {
         // Given
         val mailboxItem = buildMailboxItem()
-        val resolvedNames = listOf("contact name", "display name")
+        val resolvedNames = listOf(
+            ResolveParticipantName.Result("contact name", isProton = false),
+            ResolveParticipantName.Result("display name", isProton = false)
+        )
         val expected = TextUiModel(resolvedNames.joinToString())
         every {
             getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts)
@@ -157,7 +168,7 @@ class MailboxItemUiModelMapperTest {
     fun `empty recipient is correctly resolved to No Recipient in the ui model`() = runTest {
         // Given
         val mailboxItem = buildMailboxItem()
-        val resolvedNames = listOf("")
+        val resolvedNames = listOf(ResolveParticipantName.Result("", isProton = false))
         val expected = TextUiModel(ch.protonmail.android.mailmailbox.presentation.R.string.mailbox_default_recipient)
         every {
             getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts)
@@ -172,7 +183,7 @@ class MailboxItemUiModelMapperTest {
     fun `empty sender is correctly resolved to No Sender in the ui model`() = runTest {
         // Given
         val mailboxItem = buildMailboxItem()
-        val resolvedNames = listOf("")
+        val resolvedNames = listOf(ResolveParticipantName.Result("", isProton = false))
         val expected = TextUiModel(ch.protonmail.android.mailmailbox.presentation.R.string.mailbox_default_sender)
         every {
             getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts)
@@ -291,11 +302,14 @@ class MailboxItemUiModelMapperTest {
         // Given
         val avatarUiModel = AvatarUiModel.ParticipantInitial(value = "T")
         val mailboxItem = buildMailboxItem()
-        val resolvedNames = listOf("contact name", "display name")
+        val resolvedNames = listOf(
+            ResolveParticipantName.Result("contact name", isProton = false),
+            ResolveParticipantName.Result("display name", isProton = false)
+        )
         every {
             getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts)
         } returns ParticipantsResolvedNamesResult.Senders(resolvedNames)
-        every { mailboxAvatarUiModelMapper(mailboxItem, resolvedNames) } returns avatarUiModel
+        every { mailboxAvatarUiModelMapper(mailboxItem, resolvedNames.map { it.name }) } returns avatarUiModel
         // When
         val actual = mapper.toUiModel(mailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
         // Then

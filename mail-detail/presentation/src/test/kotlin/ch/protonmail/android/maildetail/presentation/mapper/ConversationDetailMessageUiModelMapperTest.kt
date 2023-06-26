@@ -78,10 +78,15 @@ internal class ConversationDetailMessageUiModelMapperTest {
         } returns MessageLocationUiModelSample.AllMail
     }
     private val resolveParticipantName: ResolveParticipantName = mockk {
-        every { this@mockk(contacts = any(), participant = RecipientSample.Doe) } returns ContactSample.Doe.name
-        every { this@mockk(contacts = any(), participant = RecipientSample.John) } returns ContactSample.John.name
-        every { this@mockk(contacts = any(), participant = RecipientSample.PreciWeather) } returns
-            RecipientSample.PreciWeather.name
+        every {
+            this@mockk(contacts = any(), participant = RecipientSample.Doe)
+        } returns ResolveParticipantName.Result(ContactSample.Doe.name, isProton = false)
+        every {
+            this@mockk(contacts = any(), participant = RecipientSample.John)
+        } returns ResolveParticipantName.Result(ContactSample.John.name, isProton = false)
+        every {
+            this@mockk(contacts = any(), participant = RecipientSample.PreciWeather)
+        } returns ResolveParticipantName.Result(RecipientSample.PreciWeather.name, isProton = false)
     }
     private val messageDetailHeaderUiModelMapper = spyk(
         MessageDetailHeaderUiModelMapper(

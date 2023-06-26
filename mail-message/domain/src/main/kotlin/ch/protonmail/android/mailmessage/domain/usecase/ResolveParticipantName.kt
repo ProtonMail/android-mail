@@ -30,14 +30,19 @@ class ResolveParticipantName @Inject constructor() {
         participant: Participant,
         contacts: List<Contact>,
         fallbackType: FallbackType = FallbackType.ADDRESS
-    ): String {
+    ): Result {
         val contactEmail = contacts.firstNotNullOfOrNull { contact ->
             contact.contactEmails.find { it.email == participant.address }
         }
 
-        return contactEmail?.name?.takeIfNotBlank()
+        val participantName = contactEmail?.name?.takeIfNotBlank()
             ?: participant.name.takeIf { it != participant.address && it.isNotBlank() }
             ?: getFallbackName(participant, fallbackType)
+
+        return Result(
+            name = participantName,
+            isProton = participant.isProton
+        )
     }
 
     private fun getFallbackName(participant: Participant, fallbackType: FallbackType): String {
@@ -47,6 +52,11 @@ class ResolveParticipantName @Inject constructor() {
             FallbackType.NONE -> EMPTY_STRING
         }
     }
+
+    data class Result(
+        val name: String,
+        val isProton: Boolean
+    )
 
     enum class FallbackType {
         ADDRESS,

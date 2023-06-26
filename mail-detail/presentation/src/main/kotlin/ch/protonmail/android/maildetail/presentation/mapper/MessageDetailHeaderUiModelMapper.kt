@@ -62,7 +62,7 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
         val senderResolvedName = resolveParticipantName(messageWithLabels.message.sender, contacts)
 
         return MessageDetailHeaderUiModel(
-            avatar = detailAvatarUiModelMapper(messageWithLabels.message, senderResolvedName),
+            avatar = detailAvatarUiModelMapper(messageWithLabels.message, senderResolvedName.name),
             sender = participantUiModelMapper.senderToUiModel(messageWithLabels.message.sender, contacts),
             shouldShowTrackerProtectionIcon = true,
             shouldShowAttachmentIcon = messageWithLabels.message.hasNonCalendarAttachments(),
@@ -102,7 +102,7 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
         val allRecipientsList = toList + ccList + bccList
 
         return if (allRecipientsList.isNotEmpty()) {
-            TextUiModel.Text(allRecipientsList.joinToString { resolveParticipantName(it, contacts) })
+            TextUiModel.Text(allRecipientsList.joinToString { resolveParticipantName(it, contacts).name })
         } else {
             TextUiModel.TextRes(R.string.undisclosed_recipients)
         }

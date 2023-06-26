@@ -43,10 +43,12 @@ class ResolveParticipantNameTest {
         )
         val userContacts = listOf(contact, ContactTestData.contact2)
         val participant = Participant("sender@proton.ch", "")
+
         // When
         val actual = resolveParticipantName(participant, userContacts)
+
         // Then
-        val expected = "contact email name"
+        val expected = ResolveParticipantName.Result("contact email name", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -54,10 +56,12 @@ class ResolveParticipantNameTest {
     fun `when a participant has display name then display name is returned`() {
         // Given
         val participant = Participant("sender@proton.ch", "Sender")
+
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
+
         // Then
-        val expected = "Sender"
+        val expected = ResolveParticipantName.Result("Sender", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -65,10 +69,12 @@ class ResolveParticipantNameTest {
     fun `when a participant has no display name and fallback is address then address is returned`() {
         // Given
         val participant = Participant("sender@proton.ch", "")
+
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.ADDRESS)
+
         // Then
-        val expected = "sender@proton.ch"
+        val expected = ResolveParticipantName.Result("sender@proton.ch", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -76,10 +82,12 @@ class ResolveParticipantNameTest {
     fun `when a participant has no display name and fallback is username then username is returned`() {
         // Given
         val participant = Participant("sender@proton.ch", "")
+
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.USERNAME)
+
         // Then
-        val expected = "sender"
+        val expected = ResolveParticipantName.Result("sender", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -87,10 +95,12 @@ class ResolveParticipantNameTest {
     fun `when a participant has no display name and no fall back then empty string is returned`() {
         // Given
         val participant = Participant("sender@proton.ch", "")
+
         // When
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.NONE)
+
         // Then
-        val expected = ""
+        val expected = ResolveParticipantName.Result("", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -103,7 +113,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.NONE)
 
         // Then
-        val expected = ""
+        val expected = ResolveParticipantName.Result("", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -116,7 +126,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.USERNAME)
 
         // Then
-        val expected = "sender"
+        val expected = ResolveParticipantName.Result("sender", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -129,7 +139,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
 
         // Then
-        val expected = "sender@proton.ch"
+        val expected = ResolveParticipantName.Result("sender@proton.ch", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -142,7 +152,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
 
         // Then
-        val expected = ""
+        val expected = ResolveParticipantName.Result("", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -155,7 +165,33 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.USERNAME)
 
         // Then
-        val expected = ""
+        val expected = ResolveParticipantName.Result("", isProton = false)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `when a participant is an official proton account true should be returned`() {
+        // Given
+        val participant = Participant("sender@proton.ch", "Sender", isProton = true)
+
+        // When
+        val actual = resolveParticipantName(participant, ContactTestData.contacts)
+
+        // Then
+        val expected = ResolveParticipantName.Result(name = "Sender", isProton = true)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `when a participant is not an official proton account false should be returned`() {
+        // Given
+        val participant = Participant("sender@proton.ch", "Sender", isProton = false)
+
+        // When
+        val actual = resolveParticipantName(participant, ContactTestData.contacts)
+
+        // Then
+        val expected = ResolveParticipantName.Result(name = "Sender", isProton = false)
         assertEquals(expected, actual)
     }
 }

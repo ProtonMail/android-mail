@@ -46,7 +46,7 @@ class ParticipantUiModelMapper @Inject constructor(
             participant,
             contacts,
             fallbackType = fallbackType
-        ),
+        ).name,
         participantAddress = participant.address,
         participantPadlock = R.drawable.ic_proton_lock
     )

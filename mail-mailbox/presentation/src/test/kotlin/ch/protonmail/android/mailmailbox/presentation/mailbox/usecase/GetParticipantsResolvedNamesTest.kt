@@ -40,43 +40,57 @@ class GetParticipantsResolvedNamesTest {
     @Test
     fun `when mailbox item is not in all sent or all drafts ui model shows senders names as participants`() {
         // Given
-        val senderName = "sender"
         val sender1Name = "sender1"
-        val sender = Sender("sender@proton.ch", senderName)
-        val sender1 = Sender("sender1@proton.ch", sender1Name)
+        val sender2Name = "sender2"
+        val resolveParticipant1NameResult = ResolveParticipantName.Result(sender1Name, isProton = true)
+        val resolveParticipant2NameResult = ResolveParticipantName.Result(sender2Name, isProton = false)
+        val sender = Sender("sender@proton.ch", sender1Name)
+        val sender1 = Sender("sender1@proton.ch", sender2Name)
         val senders = listOf(sender, sender1)
         val mailboxItem = buildMailboxItem(
             labelIds = listOf(SystemLabelId.Inbox.labelId),
             senders = senders
         )
-        every { resolveParticipantName(sender, ContactTestData.contacts) } returns senderName
-        every { resolveParticipantName(sender1, ContactTestData.contacts) } returns sender1Name
+        every { resolveParticipantName(sender, ContactTestData.contacts) } returns resolveParticipant1NameResult
+        every { resolveParticipantName(sender1, ContactTestData.contacts) } returns resolveParticipant2NameResult
         // When
         val actual = useCase(mailboxItem, ContactTestData.contacts)
         // Then
-        val expected = ParticipantsResolvedNamesResult.Senders(listOf(senderName, sender1Name))
+        val expected = ParticipantsResolvedNamesResult.Senders(
+            listOf(
+                resolveParticipant1NameResult,
+                resolveParticipant2NameResult
+            )
+        )
         assertEquals(expected, actual)
     }
 
     @Test
     fun `when message is in all sent or all drafts ui model shows recipients names as participants`() {
         // Given
-        val recipientName = "recipient"
-        val recipient1Name = "recipient1"
-        val recipient = Recipient("recipient@proton.ch", recipientName)
-        val recipient1 = Recipient("recipient1@proton.ch", recipient1Name)
+        val recipient1Name = "recipient"
+        val recipient2Name = "recipient1"
+        val resolveParticipant1NameResult = ResolveParticipantName.Result(recipient1Name, isProton = false)
+        val resolveParticipant2NameResult = ResolveParticipantName.Result(recipient2Name, isProton = true)
+        val recipient = Recipient("recipient@proton.ch", recipient1Name)
+        val recipient1 = Recipient("recipient1@proton.ch", recipient2Name)
         val recipients = listOf(recipient, recipient1)
         val mailboxItem = buildMailboxItem(
             type = MailboxItemType.Message,
             labelIds = listOf(SystemLabelId.AllSent.labelId),
             recipients = recipients
         )
-        every { resolveParticipantName(recipient, ContactTestData.contacts) } returns recipientName
-        every { resolveParticipantName(recipient1, ContactTestData.contacts) } returns recipient1Name
+        every { resolveParticipantName(recipient, ContactTestData.contacts) } returns resolveParticipant1NameResult
+        every { resolveParticipantName(recipient1, ContactTestData.contacts) } returns resolveParticipant2NameResult
         // When
         val actual = useCase(mailboxItem, ContactTestData.contacts)
         // Then
-        val expected = ParticipantsResolvedNamesResult.Recipients(listOf(recipientName, recipient1Name))
+        val expected = ParticipantsResolvedNamesResult.Recipients(
+            listOf(
+                resolveParticipant1NameResult,
+                resolveParticipant2NameResult
+            )
+        )
         assertEquals(expected, actual)
     }
 }

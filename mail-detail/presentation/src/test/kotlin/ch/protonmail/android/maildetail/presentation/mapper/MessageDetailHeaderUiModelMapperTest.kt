@@ -130,25 +130,25 @@ class MessageDetailHeaderUiModelMapperTest {
                 MessageTestData.sender,
                 ContactTestData.contacts
             )
-        } returns MessageTestData.sender.name
+        } returns ResolveParticipantName.Result(MessageTestData.sender.name, isProton = false)
         every {
             this@mockk.invoke(
                 MessageTestData.recipient1,
                 ContactTestData.contacts
             )
-        } returns MessageTestData.recipient1.name
+        } returns ResolveParticipantName.Result(MessageTestData.recipient1.name, isProton = false)
         every {
             this@mockk.invoke(
                 MessageTestData.recipient2,
                 ContactTestData.contacts
             )
-        } returns MessageTestData.recipient2.name
+        } returns ResolveParticipantName.Result(MessageTestData.recipient2.name, isProton = false)
         every {
             this@mockk.invoke(
                 MessageTestData.recipient3,
                 ContactTestData.contacts
             )
-        } returns MessageTestData.recipient3.name
+        } returns ResolveParticipantName.Result(MessageTestData.recipient3.name, isProton = false)
     }
 
     private val messageDetailHeaderUiModelMapper = MessageDetailHeaderUiModelMapper(

@@ -46,7 +46,11 @@ class GetParticipantsResolvedNames @Inject constructor(
     }
 }
 
-sealed class ParticipantsResolvedNamesResult(open val list: List<String>) {
-    data class Recipients(override val list: List<String>) : ParticipantsResolvedNamesResult(list)
-    data class Senders(override val list: List<String>) : ParticipantsResolvedNamesResult(list)
+sealed class ParticipantsResolvedNamesResult(open val list: List<ResolveParticipantName.Result>) {
+    data class Recipients(
+        override val list: List<ResolveParticipantName.Result>
+    ) : ParticipantsResolvedNamesResult(list)
+    data class Senders(
+        override val list: List<ResolveParticipantName.Result>
+    ) : ParticipantsResolvedNamesResult(list)
 }

@@ -58,7 +58,7 @@ class MailboxItemUiModelMapper @Inject constructor(
         val result = getParticipantsResolvedNames(mailboxItem, contacts)
 
         return MailboxItemUiModel(
-            avatar = mailboxAvatarUiModelMapper(mailboxItem, result.list),
+            avatar = mailboxAvatarUiModelMapper(mailboxItem, result.list.map { it.name }),
             type = mailboxItem.type,
             id = mailboxItem.id,
             userId = mailboxItem.userId,
@@ -125,7 +125,7 @@ class MailboxItemUiModelMapper @Inject constructor(
         }.toImmutableList()
 
     private fun ParticipantsResolvedNamesResult.formatParticipants(): TextUiModel {
-        return if (this.list.any { it.isNotBlank() }) {
+        return if (this.list.any { it.name.isNotBlank() }) {
             TextUiModel(this.list.joinToString())
         } else {
             when (this) {

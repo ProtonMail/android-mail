@@ -34,7 +34,9 @@ class ParticipantUiModelMapperTest {
     private val participant = Participant(address = "test@protonmail.com", name = "Test")
 
     private val resolveParticipantName: ResolveParticipantName = mockk {
-        every { this@mockk.invoke(participant, ContactTestData.contacts, any()) } returns "Test"
+        every {
+            this@mockk.invoke(participant, ContactTestData.contacts, any())
+        } returns ResolveParticipantName.Result("Test", isProton = false)
     }
 
     private val participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName)
