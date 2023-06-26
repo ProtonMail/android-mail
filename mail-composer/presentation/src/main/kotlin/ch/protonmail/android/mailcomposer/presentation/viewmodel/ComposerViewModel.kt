@@ -61,7 +61,7 @@ class ComposerViewModel @Inject constructor(
 
     init {
         primaryUserId.onEach { userId ->
-            getPrimaryAddress.invoke(userId)
+            getPrimaryAddress(userId)
                 .onLeft { emitNewStateFor(ComposerEvent.GetDefaultSenderError) }
                 .onRight { emitNewStateFor(ComposerEvent.DefaultSenderReceived(it.email)) }
         }.launchIn(viewModelScope)
