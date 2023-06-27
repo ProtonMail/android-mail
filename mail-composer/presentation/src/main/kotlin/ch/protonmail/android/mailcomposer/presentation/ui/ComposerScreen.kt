@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
@@ -31,6 +33,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -72,28 +75,29 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
         },
         sheetState = changeSenderBottomSheetState
     ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState(), reverseScrolling = true)
+                    .testTag(ComposerTestTags.RootItem)
+            ) {
+                ComposerTopBar(
+                    onCloseComposerClick = {
+                        dismissKeyboard(context, view, keyboardController)
+                        onCloseComposerClick()
+                    }
+                )
+                ComposerForm(
+                    emailValidator = viewModel::validateEmailAddress,
+                    recipientsOpen = recipientsOpen,
+                    initialFocus = focusedField,
+                    fields = state.fields,
+                    actions = buildActions(viewModel, { recipientsOpen = it }, { focusedField = it })
+                )
+            }
 
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState(), reverseScrolling = true)
-                .testTag(ComposerTestTags.RootItem)
-        ) {
-            ComposerTopBar(
-                onCloseComposerClick = {
-                    dismissKeyboard(context, view, keyboardController)
-                    onCloseComposerClick()
-                }
-            )
-            ComposerForm(
-                emailValidator = viewModel::validateEmailAddress,
-                recipientsOpen = recipientsOpen,
-                initialFocus = focusedField,
-                fields = state.fields,
-                actions = buildActions(viewModel, { recipientsOpen = it }, { focusedField = it })
-            )
+            ProtonSnackbarHost(modifier = Modifier.align(Alignment.BottomCenter), hostState = snackbarHostState)
         }
-
-        ProtonSnackbarHost(snackbarHostState)
     }
 
     ConsumableTextEffect(effect = state.premiumFeatureMessage) { message ->
