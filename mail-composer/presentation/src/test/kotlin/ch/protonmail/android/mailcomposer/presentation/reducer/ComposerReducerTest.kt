@@ -20,9 +20,12 @@ package ch.protonmail.android.mailcomposer.presentation.reducer
 
 import java.util.UUID
 import arrow.core.left
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.presentation.R
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsBccChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsCcChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsToChanged
@@ -47,10 +50,15 @@ class ComposerReducerTest(
     private val testName: String,
     private val testTransition: TestTransition
 ) {
-
     private val getChangeSenderAddresses = mockk<GetChangeSenderAddresses> {
-        coEvery { this@mockk.invoke() } returns GetChangeSenderAddresses.Error.UpgradeToChangeSender.left()
+        val result = when (testTransition.mockSenderAddress) {
+            MockSenderAddress.Error -> GetChangeSenderAddresses.Error.FailedDeterminingUserSubscription.left()
+            MockSenderAddress.NotAllowed -> GetChangeSenderAddresses.Error.UpgradeToChangeSender.left()
+            MockSenderAddress.Success -> addresses.right()
+        }
+        coEvery { this@mockk.invoke() } returns result
     }
+
     private val composerReducer = ComposerReducer(getChangeSenderAddresses)
 
     @Test
@@ -65,6 +73,8 @@ class ComposerReducerTest(
     companion object {
 
         private val messageId = MessageId(UUID.randomUUID().toString())
+        private val addresses = listOf(UserAddressSample.primaryAddress, UserAddressSample.secondaryAddress)
+
 
         private val EmptyToSubmittableToField = with("a@b.c") {
             TestTransition(
@@ -161,6 +171,67 @@ class ComposerReducerTest(
             )
         }
 
+        private val EmptyToUpgradePlan = with(UUID.randomUUID().toString()) {
+            val premiumFeatureMessage = Effect.of(TextUiModel(R.string.composer_change_sender_paid_feature))
+            TestTransition(
+                name = "Should generate a state showing 'upgrade plan' message when free user tries to change sender",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = ComposerAction.OnChangeSender,
+                expectedState = aNotSubmittableState(
+                    draftId = messageId,
+                    premiumFeatureMessage = premiumFeatureMessage,
+                    error = Effect.empty()
+                ),
+                mockSenderAddress = MockSenderAddress.NotAllowed
+            )
+        }
+
+        private val EmptyToSenderAddressesList = with(UUID.randomUUID().toString()) {
+            TestTransition(
+                name = "Should generate a state showing change sender bottom sheet when paid tries to change sender",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = ComposerAction.OnChangeSender,
+                expectedState = aNotSubmittableState(
+                    draftId = messageId,
+                    error = Effect.empty(),
+                    senderAddresses = addresses.map { it.email },
+                    changeSenderBottomSheetVisibility = Effect.of(true)
+                ),
+                mockSenderAddress = MockSenderAddress.Success
+            )
+        }
+
+        private val EmptyToErrorWhenUserPlanUnknown = with(UUID.randomUUID().toString()) {
+            val error = TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription)
+
+            TestTransition(
+                name = "Should generate an error state when failing to determine if user can change sender",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = ComposerAction.OnChangeSender,
+                expectedState = aNotSubmittableState(
+                    draftId = messageId,
+                    error = Effect.of(error)
+                ),
+                mockSenderAddress = MockSenderAddress.Error
+            )
+        }
+
+        private val EmptyToUpdatedSender = with(UUID.randomUUID().toString()) {
+            val sender = "updated-sender@proton.ch"
+            TestTransition(
+                name = "Should update the state with the new sender and close bottom sheet when address changes",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = ComposerAction.SenderChanged(sender),
+                expectedState = aNotSubmittableState(
+                    draftId = messageId,
+                    sender = sender,
+                    error = Effect.empty(),
+                    changeSenderBottomSheetVisibility = Effect.of(false)
+                )
+            )
+        }
+
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -170,7 +241,11 @@ class ComposerReducerTest(
             EmptyToNotSubmittableBccField,
             NotSubmittableToWithoutErrorToField,
             NotSubmittableToWithErrorToField,
-            NotSubmittableWithoutErrorWhenRemoving
+            NotSubmittableWithoutErrorWhenRemoving,
+            EmptyToUpgradePlan,
+            EmptyToSenderAddressesList,
+            EmptyToErrorWhenUserPlanUnknown,
+            EmptyToUpdatedSender
         )
 
         private fun aSubmittableState(
@@ -190,19 +265,25 @@ class ComposerReducerTest(
             ),
             premiumFeatureMessage = Effect.empty(),
             error = Effect.empty(),
-            isSubmittable = true
+            isSubmittable = true,
+            senderAddresses = emptyList(),
+            changeSenderBottomSheetVisibility = Effect.empty()
         )
 
         private fun aNotSubmittableState(
             draftId: MessageId,
+            sender: String = "",
             to: List<RecipientUiModel> = emptyList(),
             cc: List<RecipientUiModel> = emptyList(),
             bcc: List<RecipientUiModel> = emptyList(),
-            error: Effect<TextUiModel> = Effect.of(TextUiModel(R.string.composer_error_invalid_email))
+            error: Effect<TextUiModel> = Effect.of(TextUiModel(R.string.composer_error_invalid_email)),
+            premiumFeatureMessage: Effect<TextUiModel> = Effect.empty(),
+            senderAddresses: List<String> = emptyList(),
+            changeSenderBottomSheetVisibility: Effect<Boolean> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
-                from = "",
+                from = sender,
                 to = to,
                 cc = cc,
                 bcc = bcc,
@@ -210,8 +291,10 @@ class ComposerReducerTest(
                 body = ""
             ),
             error = error,
-            premiumFeatureMessage = Effect.empty(),
-            isSubmittable = false
+            premiumFeatureMessage = premiumFeatureMessage,
+            isSubmittable = false,
+            senderAddresses = senderAddresses,
+            changeSenderBottomSheetVisibility = changeSenderBottomSheetVisibility
         )
 
         @JvmStatic
@@ -222,7 +305,14 @@ class ComposerReducerTest(
             val name: String,
             val currentState: ComposerDraftState,
             val operation: ComposerOperation,
-            val expectedState: ComposerDraftState
+            val expectedState: ComposerDraftState,
+            val mockSenderAddress: MockSenderAddress = MockSenderAddress.Success
         )
+
+        sealed interface MockSenderAddress {
+            object Success : MockSenderAddress
+            object NotAllowed : MockSenderAddress
+            object Error : MockSenderAddress
+        }
     }
 }
