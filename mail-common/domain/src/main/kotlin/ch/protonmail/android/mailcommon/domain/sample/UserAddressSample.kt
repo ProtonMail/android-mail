@@ -23,9 +23,9 @@ import me.proton.core.user.domain.entity.UserAddress
 
 object UserAddressSample {
 
-    val primaryAddress = build()
+    val PrimaryAddress = build()
 
-    val secondaryAddress = build(
+    val AliasAddress = build(
         addressId = AddressIdSample.Alias,
         email = "alias@protonmail.ch",
         order = 1

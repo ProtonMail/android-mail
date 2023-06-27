@@ -37,7 +37,7 @@ import org.junit.Test
 class GetChangeSenderAddressesTest {
 
     private val userId = UserIdTestData.userId
-    private val addresses = listOf(UserAddressSample.primaryAddress, UserAddressSample.secondaryAddress)
+    private val addresses = listOf(UserAddressSample.PrimaryAddress, UserAddressSample.AliasAddress)
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)

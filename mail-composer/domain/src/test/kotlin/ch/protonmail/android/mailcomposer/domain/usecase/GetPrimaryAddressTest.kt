@@ -42,14 +42,14 @@ internal class GetPrimaryAddressTest {
     @Test
     fun `returns primary user address when list contains more than one`() = runTest {
         // Given
-        val addresses = listOf(UserAddressSample.secondaryAddress, UserAddressSample.primaryAddress)
+        val addresses = listOf(UserAddressSample.AliasAddress, UserAddressSample.PrimaryAddress)
         every { observeUserAddresses.invoke(userId) } returns flowOf(addresses)
 
         // When
         val actual = getPrimaryAddress(userId)
 
         // Then
-        assertEquals(UserAddressSample.primaryAddress.right(), actual)
+        assertEquals(UserAddressSample.PrimaryAddress.right(), actual)
     }
 
     @Test

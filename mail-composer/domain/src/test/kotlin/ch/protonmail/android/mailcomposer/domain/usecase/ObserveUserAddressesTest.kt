@@ -45,7 +45,7 @@ internal class ObserveUserAddressesTest {
     fun `returns user addresses when user manager returns addresses`() = runTest {
         observeUserAddresses.invoke(userId).test {
             // Given
-            val addresses = listOf(UserAddressSample.primaryAddress, UserAddressSample.secondaryAddress)
+            val addresses = listOf(UserAddressSample.PrimaryAddress, UserAddressSample.AliasAddress)
             userManagerSuccessfullyReturns(addresses)
 
             // Then

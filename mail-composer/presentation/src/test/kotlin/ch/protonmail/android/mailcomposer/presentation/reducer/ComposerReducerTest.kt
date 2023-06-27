@@ -73,7 +73,7 @@ class ComposerReducerTest(
     companion object {
 
         private val messageId = MessageId(UUID.randomUUID().toString())
-        private val addresses = listOf(UserAddressSample.primaryAddress, UserAddressSample.secondaryAddress)
+        private val addresses = listOf(UserAddressSample.PrimaryAddress, UserAddressSample.AliasAddress)
 
 
         private val EmptyToSubmittableToField = with("a@b.c") {

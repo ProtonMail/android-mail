@@ -64,7 +64,6 @@ class ComposerViewModelTest {
     }
     private val reducer = ComposerReducer(getChangeSenderAddresses)
 
-
     private val viewModel
         get() = ComposerViewModel(
             storeDraftWithBodyMock,
@@ -103,7 +102,7 @@ class ComposerViewModelTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedMessageId { MessageIdSample.EmptyDraft }
-        val primaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.primaryAddress }
+        val primaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
 
         // When
         val actual = viewModel.state.value
