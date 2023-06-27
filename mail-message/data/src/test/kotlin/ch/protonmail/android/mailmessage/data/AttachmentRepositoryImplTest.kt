@@ -203,4 +203,28 @@ class AttachmentRepositoryImplTest {
         }
     }
 
+    @Test
+    fun `should return local stored attachment metadata when status is running`() = runTest {
+        // Given
+        coEvery { localDataSource.getRunningAttachmentsForUser(userId) } returns listOf(attachmentMetaData)
+
+        // When
+        val result = repository.getRunningAttachmentsForUser(userId)
+
+        // Then
+        assertEquals(listOf(attachmentMetaData), result)
+    }
+
+    @Test
+    fun `should return empty list when locally no attachment metadata is in running state`() = runTest {
+        // Given
+        coEvery { localDataSource.getRunningAttachmentsForUser(userId) } returns emptyList()
+
+        // When
+        val result = repository.getRunningAttachmentsForUser(userId)
+
+        // Then
+        assertEquals(emptyList(), result)
+    }
+
 }

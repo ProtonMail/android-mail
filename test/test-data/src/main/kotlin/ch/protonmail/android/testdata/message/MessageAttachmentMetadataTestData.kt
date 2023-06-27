@@ -16,34 +16,31 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.repository
+package ch.protonmail.android.testdata.message
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import kotlinx.coroutines.flow.Flow
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import me.proton.core.domain.entity.UserId
 
-interface AttachmentRepository {
+object MessageAttachmentMetadataTestData {
 
-    /**
-     * Get the attachment for the given [userId], [messageId] and [attachmentId].
-     */
-    suspend fun getAttachment(
-        userId: UserId,
-        messageId: MessageId,
-        attachmentId: AttachmentId
-    ): Either<DataError, MessageAttachmentMetadata>
-
-    suspend fun getAttachmentMetadataByHash(attachmentHash: String): Either<DataError, MessageAttachmentMetadata>
-
-    suspend fun getRunningAttachmentsForUser(userId: UserId): List<MessageAttachmentMetadata>
-
-    suspend fun observeAttachmentMetadata(
-        userId: UserId,
-        messageId: MessageId,
-        attachmentId: AttachmentId
-    ): Flow<MessageAttachmentMetadata?>
+    fun buildMessageAttachmentMetadata(
+        userId: UserId = UserIdSample.Primary,
+        messageId: MessageId = MessageIdSample.Invoice,
+        attachmentId: AttachmentId = AttachmentId("attachmentId"),
+        hash: String = "hash",
+        path: String = "path",
+        status: AttachmentWorkerStatus = AttachmentWorkerStatus.Running
+    ) = MessageAttachmentMetadata(
+        userId = userId,
+        messageId = messageId,
+        attachmentId = attachmentId,
+        hash = hash,
+        path = path,
+        status = status
+    )
 }

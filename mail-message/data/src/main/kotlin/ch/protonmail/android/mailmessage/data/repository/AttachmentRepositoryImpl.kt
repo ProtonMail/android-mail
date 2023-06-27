@@ -66,6 +66,9 @@ class AttachmentRepositoryImpl @Inject constructor(
     override suspend fun getAttachmentMetadataByHash(attachmentHash: String) =
         localDataSource.getAttachmentMetadataByHash(attachmentHash)
 
+    override suspend fun getRunningAttachmentsForUser(userId: UserId) =
+        localDataSource.getRunningAttachmentsForUser(userId)
+
     override suspend fun observeAttachmentMetadata(
         userId: UserId,
         messageId: MessageId,

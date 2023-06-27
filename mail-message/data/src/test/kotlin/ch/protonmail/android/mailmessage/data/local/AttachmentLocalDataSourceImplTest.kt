@@ -29,6 +29,7 @@ import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.testdata.message.MessageAttachmentMetadataEntityTestData.buildMessageAttachmentMetadataEntity
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -54,14 +55,11 @@ class AttachmentLocalDataSourceImplTest {
     private val file = File.createTempFile("test", "test")
     private val hash = file.sha256()
 
-    private val messageAttachmentMetadataEntity = MessageAttachmentMetadataEntity(
-        userId = userId,
-        messageId = messageId,
-        attachmentId = attachmentId,
+    private val messageAttachmentMetadataEntity = buildMessageAttachmentMetadataEntity(
         hash = hash,
-        path = file.path,
-        status = AttachmentWorkerStatus.Running
+        path = file.path
     )
+
 
     private val attachmentDao = mockk<MessageAttachmentMetadataDao>(relaxUnitFun = true)
     private val attachmentFileStorage = mockk<AttachmentFileStorage>()
@@ -256,5 +254,48 @@ class AttachmentLocalDataSourceImplTest {
 
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), result)
+    }
+
+    @Test
+    fun `should return list of metadata when multiple attachments are downloading for a user`() = runTest {
+        // Given
+        val attachment1 = buildMessageAttachmentMetadataEntity(attachmentId = AttachmentId("attachmentId1"))
+        val attachment2 = buildMessageAttachmentMetadataEntity(attachmentId = AttachmentId("attachmentId2"))
+        val attachment3 = buildMessageAttachmentMetadataEntity(attachmentId = AttachmentId("attachmentId3"))
+
+        coEvery {
+            attachmentDao.getAllAttachmentsForUserAndStatus(userId, AttachmentWorkerStatus.Running)
+        } returns listOf(
+            attachment1,
+            attachment2,
+            attachment3
+        )
+
+        // When
+        val result = attachmentLocalDataSource.getRunningAttachmentsForUser(userId)
+
+        // Then
+        assertEquals(
+            listOf(
+                attachment1.toMessageAttachmentMetadata(),
+                attachment2.toMessageAttachmentMetadata(),
+                attachment3.toMessageAttachmentMetadata()
+            ),
+            result
+        )
+    }
+
+    @Test
+    fun `should return empty list when no attachments are downloading for a user`() = runTest {
+        // Given
+        coEvery {
+            attachmentDao.getAllAttachmentsForUserAndStatus(userId, AttachmentWorkerStatus.Running)
+        } returns emptyList()
+
+        // When
+        val result = attachmentLocalDataSource.getRunningAttachmentsForUser(userId)
+
+        // Then
+        assertTrue(result.isEmpty())
     }
 }

@@ -22,6 +22,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import kotlinx.coroutines.flow.Flow
 import me.proton.core.data.room.db.BaseDao
@@ -51,6 +52,18 @@ abstract class MessageAttachmentMetadataDao : BaseDao<MessageAttachmentMetadataE
         """
     )
     abstract fun getMessageAttachmentMetadataByHash(hash: String): MessageAttachmentMetadataEntity?
+
+    @Query(
+        """
+            SELECT * FROM MessageAttachmentMetadataEntity 
+            WHERE userId = :userId 
+            AND status = :status
+        """
+    )
+    abstract suspend fun getAllAttachmentsForUserAndStatus(
+        userId: UserId,
+        status: AttachmentWorkerStatus
+    ): List<MessageAttachmentMetadataEntity>
 
     @Query(
         """
