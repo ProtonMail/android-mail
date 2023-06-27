@@ -38,7 +38,7 @@ class ComposerReducer @Inject constructor(
     suspend fun newStateFrom(currentState: ComposerDraftState, operation: ComposerOperation): ComposerDraftState =
         when (operation) {
             is ComposerAction.DraftBodyChanged -> currentState
-            is ComposerAction.SenderChanged -> TODO()
+            is ComposerAction.SenderChanged -> updateSenderTo(currentState, operation.sender)
             is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(currentState, operation.recipients)
             is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, operation.recipients)
             is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, operation.recipients)
@@ -62,7 +62,12 @@ class ComposerReducer @Inject constructor(
                 )
             }
         },
-        ifRight = { TODO() }
+        ifRight = { userAddresses ->
+            currentState.copy(
+                senderAddresses = userAddresses.map { it.email },
+                changeSenderBottomSheetVisibility = Effect.of(true)
+            )
+        }
     )
 
     private fun updateStateToError(currentState: ComposerDraftState, message: TextUiModel) =
@@ -76,8 +81,10 @@ class ComposerReducer @Inject constructor(
         error = Effect.of(TextUiModel(R.string.composer_error_invalid_sender))
     )
 
-    private fun updateSenderTo(currentState: ComposerDraftState, address: String) =
-        currentState.copy(fields = currentState.fields.copy(from = address))
+    private fun updateSenderTo(currentState: ComposerDraftState, address: String) = currentState.copy(
+        fields = currentState.fields.copy(from = address),
+        changeSenderBottomSheetVisibility = Effect.of(false)
+    )
 
     private fun updateRecipientsTo(
         currentState: ComposerDraftState,

@@ -26,7 +26,9 @@ data class ComposerDraftState(
     val fields: ComposerFields,
     val premiumFeatureMessage: Effect<TextUiModel>,
     val error: Effect<TextUiModel>,
-    val isSubmittable: Boolean
+    val isSubmittable: Boolean,
+    val senderAddresses: List<String>,
+    val changeSenderBottomSheetVisibility: Effect<Boolean>
 ) {
 
     companion object {
@@ -43,7 +45,9 @@ data class ComposerDraftState(
             ),
             premiumFeatureMessage = Effect.empty(),
             error = Effect.empty(),
-            isSubmittable = false
+            isSubmittable = false,
+            senderAddresses = emptyList(),
+            changeSenderBottomSheetVisibility = Effect.empty()
         )
     }
 }

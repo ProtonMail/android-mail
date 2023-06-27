@@ -21,6 +21,9 @@ package ch.protonmail.android.mailcomposer.presentation.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -36,17 +39,19 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
+import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme3
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewModel = hiltViewModel()) {
     val context = LocalContext.current
@@ -56,28 +61,40 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
     var recipientsOpen by rememberSaveable { mutableStateOf(false) }
     var focusedField by rememberSaveable { mutableStateOf(FocusedFieldType.TO) }
     val snackbarHostState = remember { ProtonSnackbarHostState() }
+    val changeSenderBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState(), reverseScrolling = true)
-            .testTag(ComposerTestTags.RootItem)
+    ProtonModalBottomSheetLayout(
+        sheetContent = {
+            ChangeSenderBottomSheetContent(
+                state.senderAddresses,
+                { sender -> viewModel.submit(ComposerAction.SenderChanged(sender)) }
+            )
+        },
+        sheetState = changeSenderBottomSheetState
     ) {
-        ComposerTopBar(
-            onCloseComposerClick = {
-                dismissKeyboard(context, view, keyboardController)
-                onCloseComposerClick()
-            }
-        )
-        ComposerForm(
-            emailValidator = viewModel::validateEmailAddress,
-            recipientsOpen = recipientsOpen,
-            initialFocus = focusedField,
-            fields = state.fields,
-            actions = buildActions(viewModel, { recipientsOpen = it }, { focusedField = it })
-        )
-    }
 
-    ProtonSnackbarHost(snackbarHostState)
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState(), reverseScrolling = true)
+                .testTag(ComposerTestTags.RootItem)
+        ) {
+            ComposerTopBar(
+                onCloseComposerClick = {
+                    dismissKeyboard(context, view, keyboardController)
+                    onCloseComposerClick()
+                }
+            )
+            ComposerForm(
+                emailValidator = viewModel::validateEmailAddress,
+                recipientsOpen = recipientsOpen,
+                initialFocus = focusedField,
+                fields = state.fields,
+                actions = buildActions(viewModel, { recipientsOpen = it }, { focusedField = it })
+            )
+        }
+
+        ProtonSnackbarHost(snackbarHostState)
+    }
 
     ConsumableTextEffect(effect = state.premiumFeatureMessage) { message ->
         snackbarHostState.showSnackbar(type = ProtonSnackbarType.NORM, message = message)
@@ -85,6 +102,14 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
 
     ConsumableTextEffect(effect = state.error) { error ->
         snackbarHostState.showSnackbar(type = ProtonSnackbarType.ERROR, message = error)
+    }
+
+    ConsumableLaunchedEffect(effect = state.changeSenderBottomSheetVisibility) { show ->
+        if (show) {
+            changeSenderBottomSheetState.show()
+        } else {
+            changeSenderBottomSheetState.hide()
+        }
     }
 }
 

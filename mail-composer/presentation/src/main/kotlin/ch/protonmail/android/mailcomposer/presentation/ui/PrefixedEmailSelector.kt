@@ -55,7 +55,7 @@ internal fun PrefixedEmailSelector(
         TextField(
             value = selectedEmail,
             onValueChange = { },
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier.align(Alignment.CenterVertically).weight(1f),
             readOnly = true,
             textStyle = ProtonTheme.typography.defaultNorm,
             prefix = {
@@ -75,8 +75,6 @@ internal fun PrefixedEmailSelector(
                 keyboardType = KeyboardType.Email
             )
         )
-
-        Spacer(modifier = Modifier.weight(1f))
 
         ChangeSenderButton(Modifier.align(Alignment.CenterVertically), onChangeSender)
     }
