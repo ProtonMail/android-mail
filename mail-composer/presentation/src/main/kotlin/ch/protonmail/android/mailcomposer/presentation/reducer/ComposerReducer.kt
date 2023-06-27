@@ -34,7 +34,7 @@ class ComposerReducer @Inject constructor() {
     // TODO the from, subject and body are not considered here yet, we'll add it to the draft model later
     fun newStateFrom(currentState: ComposerDraftState, operation: ComposerOperation): ComposerDraftState =
         when (operation) {
-            is ComposerAction.BodyChanged -> TODO()
+            is ComposerAction.DraftBodyChanged -> currentState
             is ComposerAction.FromChanged -> TODO()
             is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(currentState.fields, operation.recipients)
             is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState.fields, operation.recipients)

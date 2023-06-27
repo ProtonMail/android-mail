@@ -168,7 +168,8 @@ internal fun ComposerForm(
             )
             MailDivider()
             BodyTextField(
-                maxWidthModifier
+                onBodyChange = actions.onBodyChanged,
+                modifier = maxWidthModifier
                     .testTag(ComposerTestTags.MessageBody)
                     .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
             )

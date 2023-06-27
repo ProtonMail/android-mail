@@ -22,9 +22,11 @@ import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
+import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -47,6 +49,7 @@ class ComposerViewModelTest {
 
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>(relaxUnitFun = true)
     private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
+    private val isValidEmailAddressMock = mockk<IsValidEmailAddress>()
     private val userAddressManagerMock = mockk<UserAddressManager> {
         every { observeAddresses(any()) } returns emptyFlow()
     }
@@ -56,11 +59,13 @@ class ComposerViewModelTest {
             storeDraftWithBodyMock,
             observePrimaryUserIdMock,
             userAddressManagerMock,
+            ComposerReducer(),
+            isValidEmailAddressMock,
             provideNewDraftIdMock
         )
 
     @Test
-    fun `should handle the draft body edited action`() {
+    fun `should store the draft body when the body changes`() {
         // Given
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedDraftBody = DraftBody(RawDraftBody)

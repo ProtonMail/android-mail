@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
+import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState.NotSubmittable
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState.Submittable
@@ -93,7 +94,7 @@ private fun buildActions(
     onCcChanged = { viewModel.submit(ComposerAction.RecipientsCcChanged(it)) },
     onBccChanged = { viewModel.submit(ComposerAction.RecipientsBccChanged(it)) },
     onSubjectChanged = { viewModel.submit(ComposerAction.SubjectChanged(it)) },
-    onBodyChanged = { viewModel.submit(ComposerAction.BodyChanged(it)) },
+    onBodyChanged = { viewModel.submit(ComposerAction.DraftBodyChanged(DraftBody(it))) },
     onToggleRecipients = onToggleRecipients,
     onFocusChanged = onFocusChanged
 )

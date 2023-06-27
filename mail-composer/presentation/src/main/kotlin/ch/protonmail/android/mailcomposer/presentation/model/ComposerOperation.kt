@@ -23,6 +23,8 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 sealed interface ComposerOperation
 
 internal sealed interface ComposerAction : ComposerOperation {
+
+    data class FromChanged(val from: String) : ComposerAction
     data class RecipientsToChanged(val recipients: List<RecipientUiModel>) : ComposerAction
     data class RecipientsCcChanged(val recipients: List<RecipientUiModel>) : ComposerAction
     data class RecipientsBccChanged(val recipients: List<RecipientUiModel>) : ComposerAction
