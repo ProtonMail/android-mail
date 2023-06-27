@@ -74,6 +74,50 @@ internal class VerifiesOuterProcessingTests {
     }
 
     @Test
+    fun `test @VerifiesOuter annotation processing, outer class is abstract`() {
+        // GIVEN
+        val sectionSource = SourceFile.kotlin(
+            "Section.kt",
+            """
+                |package test.packageName.section
+                |
+                |import ch.protonmail.android.test.robot.ProtonMailSectionRobot
+                |import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
+                |
+                |internal abstract class Section : ProtonMailSectionRobot {
+                |
+                |    @VerifiesOuter
+                |    inner class Verify {
+                |        fun someMethod() = Unit
+                |    }
+                |}
+            """.trimMargin()
+        )
+
+        val targetSourceFileWithPath = "test/packageName/section/Section\$Verify\$VerifyOuterExtension.kt"
+
+        // WHEN
+        val result = getKotlinCompilation(listOf(sectionSource)).compile()
+        val sourceCode = result.getGeneratedSourceFile(targetSourceFileWithPath).readText()
+
+        // THEN
+        assertEquals(result.exitCode, KotlinCompilation.ExitCode.OK)
+        assertEquals(
+            """
+                |package test.packageName.section
+                |
+                |import kotlin.Unit
+                |
+                |internal fun Section.verify(block: Section.Verify.() -> Unit): Unit {
+                |  Verify().apply(block)
+                |}
+                |
+            """.trimMargin(),
+            sourceCode
+        )
+    }
+
+    @Test
     fun `test @VerifiesOuter annotation processing failure when applied on an abstract class`() {
         // GIVEN
         val sectionSource = SourceFile.kotlin(

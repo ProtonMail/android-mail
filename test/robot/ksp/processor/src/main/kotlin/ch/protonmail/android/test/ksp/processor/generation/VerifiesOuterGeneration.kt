@@ -24,6 +24,8 @@ import com.google.devtools.ksp.outerType
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSDeclaration
+import com.google.devtools.ksp.symbol.Modifier
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -75,16 +77,23 @@ internal fun generateVerifyOuterExtension(
             """%L().apply(block)""",
             TypeVariableName.invoke(annotatedClass)
         )
-        .addStatement(
-            """return %L()""",
-            TypeVariableName.invoke(targetClass)
-        )
-        .returns(
-            ClassName(
-                packageName = annotatedClassPkg,
-                targetClass
-            )
-        )
+        .also {
+            // If outer class is abstract, do not return a new instance of it.
+            if (!outerClass.isAbstract()) {
+                it.addStatement(
+                    """return %L()""",
+                    TypeVariableName.invoke(targetClass)
+                )
+                    .returns(
+                        ClassName(
+                            packageName = annotatedClassPkg,
+                            targetClass
+                        )
+                    )
+            } else {
+                logger.info("$targetClass is abstract, extension function won't return a new instance of it.")
+            }
+        }
         .build()
 
     val targetFile = FileSpec.Companion.builder(
@@ -98,3 +107,6 @@ internal fun generateVerifyOuterExtension(
         logger.info("Annotation processed -> ${targetFile.name}.")
     }
 }
+
+private fun KSDeclaration.isAbstract(): Boolean = modifiers.any { it == Modifier.ABSTRACT }
+
