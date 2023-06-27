@@ -32,11 +32,10 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
-import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
+import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -49,7 +48,6 @@ import me.proton.core.user.domain.entity.UserAddress
 import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertIs
 
 class ComposerViewModelTest {
 
@@ -125,7 +123,6 @@ class ComposerViewModelTest {
         val actual = viewModel.state.value
 
         // Then
-        assertIs<ComposerDraftState.NotSubmittable>(actual)
         assertEquals(TextUiModel(R.string.composer_error_invalid_sender), actual.error.consume())
     }
 

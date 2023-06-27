@@ -27,8 +27,6 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.Reci
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsCcChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsToChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
-import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState.NotSubmittable
-import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState.Submittable
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
@@ -180,7 +178,7 @@ class ComposerReducerTest(
             to: List<RecipientUiModel> = emptyList(),
             cc: List<RecipientUiModel> = emptyList(),
             bcc: List<RecipientUiModel> = emptyList()
-        ) = Submittable(
+        ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
                 from = "",
@@ -191,7 +189,8 @@ class ComposerReducerTest(
                 body = ""
             ),
             premiumFeatureMessage = Effect.empty(),
-            error = Effect.empty()
+            error = Effect.empty(),
+            isSubmittable = true
         )
 
         private fun aNotSubmittableState(
@@ -200,7 +199,7 @@ class ComposerReducerTest(
             cc: List<RecipientUiModel> = emptyList(),
             bcc: List<RecipientUiModel> = emptyList(),
             error: Effect<TextUiModel> = Effect.of(TextUiModel(R.string.composer_error_invalid_email))
-        ) = NotSubmittable(
+        ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
                 from = "",
@@ -211,7 +210,8 @@ class ComposerReducerTest(
                 body = ""
             ),
             error = error,
-            premiumFeatureMessage = Effect.empty()
+            premiumFeatureMessage = Effect.empty(),
+            isSubmittable = false
         )
 
         @JvmStatic

@@ -22,27 +22,16 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 
-sealed class ComposerDraftState(
-    open val fields: ComposerFields,
-    open val premiumFeatureMessage: Effect<TextUiModel>,
-    open val error: Effect<TextUiModel>
+data class ComposerDraftState(
+    val fields: ComposerFields,
+    val premiumFeatureMessage: Effect<TextUiModel>,
+    val error: Effect<TextUiModel>,
+    val isSubmittable: Boolean
 ) {
-
-    data class Submittable(
-        override val fields: ComposerFields,
-        override val premiumFeatureMessage: Effect<TextUiModel>,
-        override val error: Effect<TextUiModel>
-    ) : ComposerDraftState(fields, premiumFeatureMessage, error)
-
-    data class NotSubmittable(
-        override val fields: ComposerFields,
-        override val premiumFeatureMessage: Effect<TextUiModel>,
-        override val error: Effect<TextUiModel>
-    ) : ComposerDraftState(fields, premiumFeatureMessage, error)
 
     companion object {
 
-        fun empty(draftId: MessageId): ComposerDraftState = NotSubmittable(
+        fun empty(draftId: MessageId): ComposerDraftState = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
                 from = "",
@@ -53,7 +42,8 @@ sealed class ComposerDraftState(
                 body = ""
             ),
             premiumFeatureMessage = Effect.empty(),
-            error = Effect.empty()
+            error = Effect.empty(),
+            isSubmittable = false
         )
     }
 }

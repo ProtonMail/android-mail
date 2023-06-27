@@ -40,8 +40,6 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
-import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState.NotSubmittable
-import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState.Submittable
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -70,23 +68,13 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
                 onCloseComposerClick()
             }
         )
-        when (val currentState = state) {
-            is NotSubmittable -> NotSubmittableComposerForm(
-                emailValidator = viewModel::validateEmailAddress,
-                recipientsOpen = recipientsOpen,
-                initialFocus = focusedField,
-                state = currentState,
-                actions = buildActions(viewModel, { recipientsOpen = it }, { focusedField = it })
-            )
-
-            is Submittable -> SubmittableComposerForm(
-                emailValidator = viewModel::validateEmailAddress,
-                recipientsOpen = recipientsOpen,
-                initialFocus = focusedField,
-                state = currentState,
-                actions = buildActions(viewModel, { recipientsOpen = it }, { focusedField = it })
-            )
-        }
+        ComposerForm(
+            emailValidator = viewModel::validateEmailAddress,
+            recipientsOpen = recipientsOpen,
+            initialFocus = focusedField,
+            fields = state.fields,
+            actions = buildActions(viewModel, { recipientsOpen = it }, { focusedField = it })
+        )
     }
 
     ProtonSnackbarHost(snackbarHostState)

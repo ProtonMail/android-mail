@@ -20,14 +20,13 @@ package ch.protonmail.android.mailcomposer.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
-import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
+import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
 import javax.inject.Inject
 
 class ComposerReducer @Inject constructor(
@@ -40,9 +39,9 @@ class ComposerReducer @Inject constructor(
         when (operation) {
             is ComposerAction.DraftBodyChanged -> currentState
             is ComposerAction.SenderChanged -> TODO()
-            is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(currentState.fields, operation.recipients)
-            is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState.fields, operation.recipients)
-            is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState.fields, operation.recipients)
+            is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(currentState, operation.recipients)
+            is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, operation.recipients)
+            is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, operation.recipients)
             is ComposerAction.SubjectChanged -> TODO()
             is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, operation.address)
             is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
@@ -66,85 +65,68 @@ class ComposerReducer @Inject constructor(
         ifRight = { TODO() }
     )
 
-    private fun updateStateToError(currentState: ComposerDraftState, message: TextUiModel) = when (currentState) {
-        is ComposerDraftState.Submittable -> currentState.copy(error = Effect.of(message))
-        is ComposerDraftState.NotSubmittable -> currentState.copy(error = Effect.of(message))
-    }
+    private fun updateStateToError(currentState: ComposerDraftState, message: TextUiModel) =
+        currentState.copy(error = Effect.of(message))
 
     private fun updateStateToPaidFeatureError(currentState: ComposerDraftState, message: TextUiModel) =
-        when (currentState) {
-            is ComposerDraftState.Submittable -> currentState.copy(premiumFeatureMessage = Effect.of(message))
-            is ComposerDraftState.NotSubmittable -> currentState.copy(premiumFeatureMessage = Effect.of(message))
-        }
+        currentState.copy(premiumFeatureMessage = Effect.of(message))
 
-    private fun updateStateToSenderError(currentState: ComposerDraftState) = when (currentState) {
-        is ComposerDraftState.Submittable,
-        is ComposerDraftState.NotSubmittable -> ComposerDraftState.NotSubmittable(
-            fields = currentState.fields.copy(from = ""),
-            premiumFeatureMessage = currentState.premiumFeatureMessage,
-            error = Effect.of(TextUiModel(R.string.composer_error_invalid_sender))
-        )
-    }
+    private fun updateStateToSenderError(currentState: ComposerDraftState) = currentState.copy(
+        fields = currentState.fields.copy(from = ""),
+        error = Effect.of(TextUiModel(R.string.composer_error_invalid_sender))
+    )
 
-    private fun updateSenderTo(currentState: ComposerDraftState, address: String) = when (currentState) {
-        is ComposerDraftState.Submittable -> currentState.copy(currentState.fields.copy(from = address))
-        is ComposerDraftState.NotSubmittable -> currentState.copy(currentState.fields.copy(from = address))
-    }
+    private fun updateSenderTo(currentState: ComposerDraftState, address: String) =
+        currentState.copy(fields = currentState.fields.copy(from = address))
 
     private fun updateRecipientsTo(
-        currentFields: ComposerFields,
+        currentState: ComposerDraftState,
         recipients: List<RecipientUiModel>
     ): ComposerDraftState = updateRecipients(
-        currentFields = currentFields,
+        currentState = currentState,
         to = recipients,
-        cc = currentFields.cc,
-        bcc = currentFields.bcc,
-        hasError = hasError(recipients, currentFields.to)
+        cc = currentState.fields.cc,
+        bcc = currentState.fields.bcc,
+        hasError = hasError(recipients, currentState.fields.to)
     )
 
     private fun updateRecipientsCc(
-        currentFields: ComposerFields,
+        currentState: ComposerDraftState,
         recipients: List<RecipientUiModel>
     ): ComposerDraftState = updateRecipients(
-        currentFields = currentFields,
-        to = currentFields.to,
+        currentState = currentState,
+        to = currentState.fields.to,
         cc = recipients,
-        bcc = currentFields.bcc,
-        hasError = hasError(recipients, currentFields.cc)
+        bcc = currentState.fields.bcc,
+        hasError = hasError(recipients, currentState.fields.cc)
     )
 
     private fun updateRecipientsBcc(
-        currentFields: ComposerFields,
+        currentState: ComposerDraftState,
         recipients: List<RecipientUiModel>
     ): ComposerDraftState = updateRecipients(
-        currentFields = currentFields,
-        to = currentFields.to,
-        cc = currentFields.cc,
+        currentState = currentState,
+        to = currentState.fields.to,
+        cc = currentState.fields.cc,
         bcc = recipients,
-        hasError = hasError(recipients, currentFields.bcc)
+        hasError = hasError(recipients, currentState.fields.bcc)
     )
 
     private fun updateRecipients(
-        currentFields: ComposerFields,
+        currentState: ComposerDraftState,
         to: List<RecipientUiModel>,
         cc: List<RecipientUiModel>,
         bcc: List<RecipientUiModel>,
         hasError: Boolean
     ): ComposerDraftState {
         val allValid = (to + cc + bcc).all { it is RecipientUiModel.Valid }
-        return if (allValid) {
-            ComposerDraftState.Submittable(
-                fields = currentFields.copy(to = to, cc = cc, bcc = bcc),
-                premiumFeatureMessage = Effect.empty(),
-                error = Effect.empty()
-            )
-        } else {
-            ComposerDraftState.NotSubmittable(
-                fields = currentFields.copy(to = to, cc = cc, bcc = bcc),
-                premiumFeatureMessage = Effect.empty(),
-                error = if (hasError) Effect.of(TextUiModel(R.string.composer_error_invalid_email)) else Effect.empty()
-            )
-        }
+        val error = if (hasError) Effect.of(TextUiModel(R.string.composer_error_invalid_email)) else Effect.empty()
+
+        return currentState.copy(
+            fields = currentState.fields.copy(to = to, cc = cc, bcc = bcc),
+            error = error,
+            isSubmittable = allValid
+        )
     }
 
     // For now we consider an error state if the last recipient is invalid and we have not deleted a recipient
