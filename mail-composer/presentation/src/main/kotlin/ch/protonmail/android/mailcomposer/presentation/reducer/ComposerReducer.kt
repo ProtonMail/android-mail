@@ -57,11 +57,19 @@ class ComposerReducer @Inject constructor(
                     TextUiModel(R.string.composer_change_sender_paid_feature)
                 )
                 GetChangeSenderAddresses.Error.FailedDeterminingUserSubscription,
-                GetChangeSenderAddresses.Error.FailedGettingPrimaryUser -> TODO()
+                GetChangeSenderAddresses.Error.FailedGettingPrimaryUser -> updateStateToError(
+                    currentState,
+                    TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription)
+                )
             }
         },
         ifRight = { TODO() }
     )
+
+    private fun updateStateToError(currentState: ComposerDraftState, message: TextUiModel) = when (currentState) {
+        is ComposerDraftState.Submittable -> currentState.copy(error = Effect.of(message))
+        is ComposerDraftState.NotSubmittable -> currentState.copy(error = Effect.of(message))
+    }
 
     private fun updateStateToPaidFeatureError(currentState: ComposerDraftState, message: TextUiModel) =
         when (currentState) {
@@ -125,7 +133,11 @@ class ComposerReducer @Inject constructor(
     ): ComposerDraftState {
         val allValid = (to + cc + bcc).all { it is RecipientUiModel.Valid }
         return if (allValid) {
-            ComposerDraftState.Submittable(currentFields.copy(to = to, cc = cc, bcc = bcc), Effect.empty())
+            ComposerDraftState.Submittable(
+                fields = currentFields.copy(to = to, cc = cc, bcc = bcc),
+                premiumFeatureMessage = Effect.empty(),
+                error = Effect.empty()
+            )
         } else {
             ComposerDraftState.NotSubmittable(
                 fields = currentFields.copy(to = to, cc = cc, bcc = bcc),

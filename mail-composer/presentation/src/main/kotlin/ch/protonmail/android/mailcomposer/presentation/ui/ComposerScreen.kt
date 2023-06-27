@@ -94,6 +94,10 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
     ConsumableTextEffect(effect = state.premiumFeatureMessage) { message ->
         snackbarHostState.showSnackbar(type = ProtonSnackbarType.NORM, message = message)
     }
+
+    ConsumableTextEffect(effect = state.error) { error ->
+        snackbarHostState.showSnackbar(type = ProtonSnackbarType.ERROR, message = error)
+    }
 }
 
 private fun buildActions(

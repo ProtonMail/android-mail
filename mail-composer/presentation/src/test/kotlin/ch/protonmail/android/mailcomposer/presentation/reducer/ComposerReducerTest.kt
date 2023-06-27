@@ -190,7 +190,8 @@ class ComposerReducerTest(
                 subject = "",
                 body = ""
             ),
-            premiumFeatureMessage = Effect.empty()
+            premiumFeatureMessage = Effect.empty(),
+            error = Effect.empty()
         )
 
         private fun aNotSubmittableState(
