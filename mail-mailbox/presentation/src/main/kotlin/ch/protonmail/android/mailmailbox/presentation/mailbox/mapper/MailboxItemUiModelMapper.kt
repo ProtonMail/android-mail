@@ -31,6 +31,8 @@ import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedN
 import ch.protonmail.android.mailmailbox.domain.usecase.ParticipantsResolvedNamesResult
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import kotlinx.collections.immutable.ImmutableList
@@ -55,10 +57,10 @@ class MailboxItemUiModelMapper @Inject constructor(
         contacts: List<Contact>,
         folderColorSettings: FolderColorSettings
     ): MailboxItemUiModel {
-        val result = getParticipantsResolvedNames(mailboxItem, contacts)
+        val participantsResolvedNamesResult = getParticipantsResolvedNames(mailboxItem, contacts)
 
         return MailboxItemUiModel(
-            avatar = mailboxAvatarUiModelMapper(mailboxItem, result.list.map { it.name }),
+            avatar = mailboxAvatarUiModelMapper(mailboxItem, participantsResolvedNamesResult.list.map { it.name }),
             type = mailboxItem.type,
             id = mailboxItem.id,
             userId = mailboxItem.userId,
@@ -67,7 +69,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             isRead = mailboxItem.read,
             labels = toLabelUiModels(mailboxItem.labels),
             subject = mailboxItem.subject,
-            participants = result.formatParticipants(),
+            participants = participantsResolvedNamesResult.toParticipantsUiModel(),
             shouldShowRepliedIcon = shouldShowRepliedIcon(mailboxItem),
             shouldShowRepliedAllIcon = shouldShowRepliedAllIcon(mailboxItem),
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
@@ -124,13 +126,17 @@ class MailboxItemUiModelMapper @Inject constructor(
             )
         }.toImmutableList()
 
-    private fun ParticipantsResolvedNamesResult.formatParticipants(): TextUiModel {
+    private fun ParticipantsResolvedNamesResult.toParticipantsUiModel(): ParticipantsUiModel {
         return if (this.list.any { it.name.isNotBlank() }) {
-            TextUiModel(this.list.joinToString())
+            ParticipantsUiModel.Participants(this.list.map { ParticipantUiModel(it.name, it.isProton) })
         } else {
             when (this) {
-                is ParticipantsResolvedNamesResult.Recipients -> TextUiModel(R.string.mailbox_default_recipient)
-                is ParticipantsResolvedNamesResult.Senders -> TextUiModel(R.string.mailbox_default_sender)
+                is ParticipantsResolvedNamesResult.Recipients -> ParticipantsUiModel.NoParticipants(
+                    TextUiModel(R.string.mailbox_default_recipient)
+                )
+                is ParticipantsResolvedNamesResult.Senders -> ParticipantsUiModel.NoParticipants(
+                    TextUiModel(R.string.mailbox_default_sender)
+                )
             }
         }
     }

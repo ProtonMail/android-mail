@@ -27,6 +27,8 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantsUiModel
 import kotlinx.collections.immutable.persistentListOf
 import me.proton.core.domain.entity.UserId
 
@@ -47,7 +49,9 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             locations = persistentListOf(MailboxItemLocationUiModel(R.drawable.ic_proton_archive_box)),
             numMessages = 2,
-            participants = TextUiModel(persistentListOf("DroidCon").joinToString()),
+            participants = ParticipantsUiModel.Participants(
+                listOf(ParticipantUiModel(name = "DroidCon", shouldShowOfficialBadge = false))
+            ),
             shouldShowAttachmentIcon = true,
             shouldShowCalendarIcon = true,
             shouldShowExpirationLabel = false,
@@ -69,7 +73,9 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             locations = persistentListOf(),
             numMessages = null,
-            participants = TextUiModel(persistentListOf("DroidCon").joinToString()),
+            participants = ParticipantsUiModel.Participants(
+                listOf(ParticipantUiModel(name = "DroidCon", shouldShowOfficialBadge = false))
+            ),
             shouldShowAttachmentIcon = false,
             shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,
@@ -94,7 +100,9 @@ object MailboxItemUiModelPreviewData {
                 MailboxItemLocationUiModel(R.drawable.ic_proton_trash)
             ),
             numMessages = 2,
-            participants = TextUiModel(persistentListOf(AccuWeatherName).joinToString()),
+            participants = ParticipantsUiModel.Participants(
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+            ),
             shouldShowAttachmentIcon = true,
             shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,
@@ -123,12 +131,12 @@ object MailboxItemUiModelPreviewData {
             ),
             locations = persistentListOf(),
             numMessages = 2,
-            participants = TextUiModel(
-                persistentListOf(
-                    "FirstRecipient",
-                    "SecondRecipient",
-                    "ThirdRecipient"
-                ).joinToString()
+            participants = ParticipantsUiModel.Participants(
+                listOf(
+                    ParticipantUiModel(name = "FirstRecipient", shouldShowOfficialBadge = false),
+                    ParticipantUiModel(name = "SecondRecipient", shouldShowOfficialBadge = false),
+                    ParticipantUiModel(name = "ThirdRecipient", shouldShowOfficialBadge = false)
+                )
             ),
             shouldShowAttachmentIcon = true,
             shouldShowCalendarIcon = true,
@@ -154,7 +162,9 @@ object MailboxItemUiModelPreviewData {
                 MailboxItemLocationUiModel(R.drawable.ic_proton_trash)
             ),
             numMessages = 2,
-            participants = TextUiModel(persistentListOf(AccuWeatherName).joinToString()),
+            participants = ParticipantsUiModel.Participants(
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+            ),
             shouldShowAttachmentIcon = false,
             shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,
@@ -176,7 +186,9 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             locations = persistentListOf(),
             numMessages = 2,
-            participants = TextUiModel(persistentListOf(AccuWeatherName).joinToString()),
+            participants = ParticipantsUiModel.Participants(
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+            ),
             shouldShowAttachmentIcon = false,
             shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,
@@ -198,7 +210,7 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             locations = persistentListOf(),
             numMessages = 2,
-            participants = TextUiModel(persistentListOf<String>().joinToString()),
+            participants = ParticipantsUiModel.NoParticipants(message = TextUiModel(R.string.mailbox_default_sender)),
             shouldShowAttachmentIcon = false,
             shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,
@@ -223,7 +235,9 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             locations = persistentListOf(),
             numMessages = 1,
-            participants = TextUiModel(persistentListOf(AccuWeatherName).joinToString()),
+            participants = ParticipantsUiModel.Participants(
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+            ),
             shouldShowAttachmentIcon = true,
             shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,
@@ -245,7 +259,9 @@ object MailboxItemUiModelPreviewData {
             labels = persistentListOf(),
             locations = persistentListOf(),
             numMessages = 1,
-            participants = TextUiModel(persistentListOf(AccuWeatherName).joinToString()),
+            participants = ParticipantsUiModel.Participants(
+                listOf(ParticipantUiModel(name = AccuWeatherName, shouldShowOfficialBadge = false))
+            ),
             shouldShowAttachmentIcon = true,
             shouldShowCalendarIcon = false,
             shouldShowExpirationLabel = false,

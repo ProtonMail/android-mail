@@ -32,6 +32,8 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetParticipantsResolvedNames
 import ch.protonmail.android.mailmailbox.domain.usecase.ParticipantsResolvedNamesResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.GetMailboxItemLocationIcons
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -152,9 +154,14 @@ class MailboxItemUiModelMapperTest {
         val mailboxItem = buildMailboxItem()
         val resolvedNames = listOf(
             ResolveParticipantName.Result("contact name", isProton = false),
-            ResolveParticipantName.Result("display name", isProton = false)
+            ResolveParticipantName.Result("display name", isProton = true)
         )
-        val expected = TextUiModel(resolvedNames.joinToString())
+        val expected = ParticipantsUiModel.Participants(
+            listOf(
+                ParticipantUiModel("contact name", shouldShowOfficialBadge = false),
+                ParticipantUiModel("display name", shouldShowOfficialBadge = true)
+            )
+        )
         every {
             getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts)
         } returns ParticipantsResolvedNamesResult.Recipients(resolvedNames)
@@ -169,7 +176,9 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = buildMailboxItem()
         val resolvedNames = listOf(ResolveParticipantName.Result("", isProton = false))
-        val expected = TextUiModel(ch.protonmail.android.mailmailbox.presentation.R.string.mailbox_default_recipient)
+        val expected = ParticipantsUiModel.NoParticipants(
+            TextUiModel(ch.protonmail.android.mailmailbox.presentation.R.string.mailbox_default_recipient)
+        )
         every {
             getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts)
         } returns ParticipantsResolvedNamesResult.Recipients(resolvedNames)
@@ -184,7 +193,9 @@ class MailboxItemUiModelMapperTest {
         // Given
         val mailboxItem = buildMailboxItem()
         val resolvedNames = listOf(ResolveParticipantName.Result("", isProton = false))
-        val expected = TextUiModel(ch.protonmail.android.mailmailbox.presentation.R.string.mailbox_default_sender)
+        val expected = ParticipantsUiModel.NoParticipants(
+            TextUiModel(ch.protonmail.android.mailmailbox.presentation.R.string.mailbox_default_sender)
+        )
         every {
             getParticipantsResolvedNames.invoke(mailboxItem, ContactTestData.contacts)
         } returns ParticipantsResolvedNamesResult.Senders(resolvedNames)

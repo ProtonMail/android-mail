@@ -55,6 +55,7 @@ import ch.protonmail.android.maillabel.presentation.ui.LabelsList
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxItemUiModelPreviewData
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
@@ -188,13 +189,16 @@ private fun ActionIcons(
 @Composable
 private fun Participants(
     modifier: Modifier = Modifier,
-    participants: TextUiModel,
+    participants: ParticipantsUiModel,
     fontWeight: FontWeight,
     fontColor: Color
 ) {
     Text(
         modifier = modifier.testTag(MailboxItemTestTags.Participants),
-        text = participants.string(),
+        text = when (participants) {
+            is ParticipantsUiModel.Participants -> participants.list.joinToString { it.name }
+            is ParticipantsUiModel.NoParticipants -> participants.message.string()
+        },
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
         style = ProtonTheme.typography.default.copy(fontWeight = fontWeight, color = fontColor)
