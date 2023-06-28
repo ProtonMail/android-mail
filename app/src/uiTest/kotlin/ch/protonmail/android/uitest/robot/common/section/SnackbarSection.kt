@@ -19,21 +19,29 @@
 package ch.protonmail.android.uitest.robot.common.section
 
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onFirst
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
+import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.assertions.hasAnyChildWith
 import ch.protonmail.android.uitest.util.awaitDisplayed
 
-@AttachTo(targets = [MailboxRobot::class, ConversationDetailRobot::class])
+@AttachTo(
+    targets = [
+        ComposerRobot::class,
+        ConversationDetailRobot::class,
+        MailboxRobot::class
+    ]
+)
 internal class SnackbarSection : ComposeSectionRobot() {
 
-    private val snackbarHost = composeTestRule.onNodeWithTag(CommonTestTags.SnackbarHost)
+    private val snackbarHost = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHost).onFirst()
 
     @VerifiesOuter
     inner class Verify {

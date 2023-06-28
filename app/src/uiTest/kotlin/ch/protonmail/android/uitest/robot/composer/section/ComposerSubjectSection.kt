@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.robot.composer.section
 
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
@@ -38,6 +39,10 @@ internal class ComposerSubjectSection : ComposeSectionRobot() {
         testTag = ComposerTestTags.SubjectPlaceholder,
         useUnmergedTree = true
     )
+
+    fun focusField() {
+        subject.performClick()
+    }
 
     fun typeSubject(value: String) = apply {
         subject.performTextInput(value)

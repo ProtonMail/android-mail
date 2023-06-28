@@ -38,7 +38,8 @@ import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
-import ch.protonmail.android.uitest.robot.composer.section.participantsSection
+import ch.protonmail.android.uitest.robot.composer.section.recipients.toRecipientSection
+import ch.protonmail.android.uitest.robot.composer.section.recipients.verify
 import ch.protonmail.android.uitest.robot.composer.section.subjectSection
 import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.composer.section.verify
@@ -136,7 +137,6 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
             )
         }
 
-        val expectedSender = "Sender"
         val expectedRecipient = "Recipient"
         val expectedSubject = "Subject"
         val expectedBody = "Text message"
@@ -152,24 +152,17 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
         composerRobot {
             verify { composerIsShown() }
 
-            participantsSection {
-                verify { hasRecipientFieldFocused() }
+            toRecipientSection {
+                verify { isFieldFocused() }
             }
 
             keyboardSection {
                 verify { keyboardIsShown() }
             }
 
-            // Sender field
-            participantsSection {
-                verify { hasEmptySender() }
-                typeSender(expectedSender)
-                verify { hasSender(expectedSender) }
-            }
-
             // Recipient field
-            participantsSection {
-                verify { hasEmptyRecipient() }
+            toRecipientSection {
+                verify { isEmptyField() }
                 typeRecipient(expectedRecipient)
                 verify { hasRecipient(expectedRecipient) }
             }
