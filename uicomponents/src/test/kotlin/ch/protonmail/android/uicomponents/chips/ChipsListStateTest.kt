@@ -17,7 +17,7 @@ class ChipsListStateTest {
         state.type(" ")
 
         // Then
-        assertThat(state.getItems().isEmpty(), equalTo(true))
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
     }
 
     @Test
@@ -36,7 +36,7 @@ class ChipsListStateTest {
         )
 
         // Then
-        assertThat(state.getItems().isEmpty(), equalTo(true))
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
     }
 
     @Test
@@ -48,7 +48,7 @@ class ChipsListStateTest {
         state.typeWord(" ")
 
         // Then
-        assertThat(state.getItems().isEmpty(), equalTo(true))
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
     }
 
     @Test
@@ -67,7 +67,7 @@ class ChipsListStateTest {
         )
 
         // Then
-        assertThat(state.getItems().isEmpty(), equalTo(true))
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
     }
 
     @Test
@@ -80,8 +80,8 @@ class ChipsListStateTest {
         state.typeWord(theWord)
 
         // Then
-        assertThat(state.getItems().size, equalTo(1))
-        assertThat(state.getItems().first(), equalTo(ChipItem.Valid(theWord)))
+        val itemsList = state.getItems() as ChipItemsList.Unfocused.Single
+        assertThat(itemsList.item, equalTo(ChipItem.Valid(theWord)))
     }
 
     @Test
@@ -94,8 +94,8 @@ class ChipsListStateTest {
         state.typeWord(theWord)
 
         // Then
-        assertThat(state.getItems().size, equalTo(1))
-        assertThat(state.getItems().first(), equalTo(ChipItem.Invalid(theWord)))
+        val itemsList = state.getItems() as ChipItemsList.Unfocused.Single
+        assertThat(itemsList.item, equalTo(ChipItem.Invalid(theWord)))
     }
 
     @Test
@@ -105,18 +105,18 @@ class ChipsListStateTest {
 
         // When
         state.type("w")
-        assertThat(state.getItems().isEmpty(), equalTo(true))
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
         state.type("wo")
-        assertThat(state.getItems().isEmpty(), equalTo(true))
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
         state.type("wor")
-        assertThat(state.getItems().isEmpty(), equalTo(true))
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
         state.type("word")
-        assertThat(state.getItems().isEmpty(), equalTo(true))
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
         state.type(" ")
 
         // Then
-        assertThat(state.getItems().isEmpty(), equalTo(false))
-        assertThat(state.getItems().first(), equalTo(ChipItem.Valid("word")))
+        val itemsList = state.getItems() as ChipItemsList.Unfocused.Single
+        assertThat(itemsList.item, equalTo(ChipItem.Valid("word")))
     }
 
     @Test
@@ -150,9 +150,10 @@ class ChipsListStateTest {
         state.type(" ")
 
         // Then
-        assertThat(state.getItems()[0], equalTo(ChipItem.Valid("hello")))
-        assertThat(state.getItems()[1], equalTo(ChipItem.Valid("world")))
-        assertThat(state.getItems()[2], equalTo(ChipItem.Valid("!")))
+        val itemsList = state.getItems() as ChipItemsList.Focused
+        assertThat(itemsList.items[0], equalTo(ChipItem.Valid("hello")))
+        assertThat(itemsList.items[1], equalTo(ChipItem.Valid("world")))
+        assertThat(itemsList.items[2], equalTo(ChipItem.Valid("!")))
     }
 
     @Test
@@ -165,22 +166,25 @@ class ChipsListStateTest {
         state.typeWord("hello")
 
         // Then
-        assertThat(state.getItems()[0], equalTo(ChipItem.Valid("hello")))
+        val itemsListUnfocusedSingle = state.getItems() as ChipItemsList.Unfocused.Single
+        assertThat(itemsListUnfocusedSingle.item, equalTo(ChipItem.Valid("hello")))
 
         // When
         state.typeWord("world")
 
         // Then
-        assertThat(state.getItems().first(), equalTo(ChipItem.Valid("hello")))
-        assertThat(state.getItems().last(), equalTo(ChipItem.Counter("+1")))
+        var itemsListUnfocusedMultiple = state.getItems() as ChipItemsList.Unfocused.Multiple
+        assertThat(itemsListUnfocusedMultiple.item, equalTo(ChipItem.Valid("hello")))
+        assertThat(itemsListUnfocusedMultiple.counter, equalTo(ChipItem.Counter("+1")))
 
         // When
         state.type("!")
         state.type(" ")
 
         // Then
-        assertThat(state.getItems().first(), equalTo(ChipItem.Valid("hello")))
-        assertThat(state.getItems().last(), equalTo(ChipItem.Counter("+2")))
+        itemsListUnfocusedMultiple = state.getItems() as ChipItemsList.Unfocused.Multiple
+        assertThat(itemsListUnfocusedMultiple.item, equalTo(ChipItem.Valid("hello")))
+        assertThat(itemsListUnfocusedMultiple.counter, equalTo(ChipItem.Counter("+2")))
     }
 
     private fun buildState(isValid: (String) -> Boolean = { true }) = ChipsListState(

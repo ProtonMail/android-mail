@@ -1,8 +1,11 @@
 package ch.protonmail.android.uicomponents.chips
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -102,10 +105,20 @@ fun ChipsListTextField(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        if (state.isFocused()) {
-            FocusedChipsList(state.getItems(), animateChipsCreation, textMaxWidth) { state.onDelete(it) }
-        } else {
-            UnFocusedChipsList(state.getItems()) { focusRequester?.requestFocus() }
+        when (val items = state.getItems()) {
+            ChipItemsList.Empty -> Unit
+            is ChipItemsList.Focused -> FocusedChipsList(
+                items.items,
+                animateChipsCreation,
+                textMaxWidth
+            ) { state.onDelete(it) }
+
+            is ChipItemsList.Unfocused.Multiple -> UnFocusedChipsList(
+                items.item,
+                items.counter
+            ) { focusRequester?.requestFocus() }
+
+            is ChipItemsList.Unfocused.Single -> UnFocusedChipsList(items.item) { focusRequester?.requestFocus() }
         }
         BasicTextField(
             modifier = Modifier
@@ -206,25 +219,58 @@ private fun FocusedChipsList(
 }
 
 @Composable
-private fun UnFocusedChipsList(chipItems: List<ChipItem>, onChipClick: () -> Unit = {}) {
-    chipItems.forEach { chipItem ->
+@Suppress("MagicNumber")
+private fun UnFocusedChipsList(
+    itemChip: ChipItem,
+    counterChip: ChipItem? = null,
+    onChipClick: () -> Unit = {}
+) {
+    var spacerRequired by remember { mutableStateOf(true) }
+
+    Row {
         SuggestionChip(
             modifier = Modifier
+                .thenIf(!spacerRequired) { weight(2F) }
                 .padding(horizontal = 4.dp),
             onClick = onChipClick,
             label = {
                 Text(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    text = chipItem.value,
-                    color = when (chipItem) {
+                    text = itemChip.value,
+                    color = when (itemChip) {
                         is ChipItem.Invalid -> Color.Red
                         else -> Color.Unspecified
+                    },
+                    onTextLayout = { textLayoutResult ->
+                        spacerRequired = !textLayoutResult.isLineEllipsized(0)
                     }
                 )
             },
             shape = chipShape
         )
+        if (counterChip != null) {
+            SuggestionChip(
+                modifier = Modifier
+                    .padding(horizontal = 4.dp),
+                onClick = onChipClick,
+                label = {
+                    Text(
+                        maxLines = 1,
+                        text = counterChip.value,
+                        color = Color.Unspecified
+                    )
+                },
+                shape = chipShape
+            )
+        }
+        if (spacerRequired) {
+            Spacer(
+                modifier = Modifier
+                    .weight(1F)
+                    .background(Color.Red)
+            )
+        }
     }
 }
 
@@ -239,13 +285,14 @@ internal class ChipsListState(
     private val typedText: MutableState<String> = mutableStateOf("")
     private val focusedState: MutableState<Boolean> = mutableStateOf(false)
 
-    fun getItems(): List<ChipItem> = when {
-        items.isEmpty() -> emptyList()
+    fun getItems(): ChipItemsList = when {
+        items.isEmpty() -> ChipItemsList.Empty
+        items.size == 1 && !focusedState.value -> ChipItemsList.Unfocused.Single(items.first())
         items.size > 1 && !focusedState.value -> {
-            listOf(items.first(), ChipItem.Counter("+${items.size - 1}"))
+            ChipItemsList.Unfocused.Multiple(items.first(), ChipItem.Counter("+${items.size - 1}"))
         }
 
-        else -> items
+        else -> ChipItemsList.Focused(items)
     }
 
     fun getTypedText(): String = typedText.value
@@ -307,3 +354,18 @@ internal class ChipsListState(
 }
 
 private val chipShape = RoundedCornerShape(16.dp)
+
+@Stable
+internal sealed class ChipItemsList {
+
+    object Empty : ChipItemsList()
+
+    data class Focused(val items: List<ChipItem>) : ChipItemsList()
+
+    @Stable
+    sealed class Unfocused : ChipItemsList() {
+
+        data class Single(val item: ChipItem) : Unfocused()
+        data class Multiple(val item: ChipItem, val counter: ChipItem) : Unfocused()
+    }
+}
