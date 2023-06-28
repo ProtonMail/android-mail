@@ -80,6 +80,25 @@ class GetChangeSenderAddressesTest {
     }
 
     @Test
+    fun `excludes disabled and external accounts from the returned list`() = runTest {
+        // Given
+        val disabledExternalAddresses = listOf(
+            UserAddressSample.PrimaryAddress,
+            UserAddressSample.DisabledAddress,
+            UserAddressSample.ExternalAddress
+        )
+        coEvery { isPaidUser(userId) } returns true.right()
+        coEvery { observeUserAddresses(userId) } returns flowOf(disabledExternalAddresses)
+
+        // When
+        val actual = getChangeSenderAddresses()
+
+        // Then
+        val expected = listOf(UserAddressSample.PrimaryAddress)
+        assertEquals(expected.right(), actual)
+    }
+
+    @Test
     fun `returns failed getting primary user error when no primary user exists`() = runTest {
         // Given
         every { observePrimaryUserId() } returns flowOf(null)

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcommon.domain.sample
 
 import me.proton.core.user.domain.entity.AddressId
+import me.proton.core.user.domain.entity.AddressType
 import me.proton.core.user.domain.entity.UserAddress
 
 object UserAddressSample {
@@ -27,22 +28,41 @@ object UserAddressSample {
 
     val AliasAddress = build(
         addressId = AddressIdSample.Alias,
+        addressType = AddressType.Alias,
         email = "alias@protonmail.ch",
         order = 1
+    )
+
+    val DisabledAddress = build(
+        addressId = AddressIdSample.DisabledAddressId,
+        addressType = AddressType.Alias,
+        email = "disabled@protonmail.ch",
+        order = 2,
+        enabled = false
+    )
+
+    val ExternalAddress = build(
+        addressId = AddressIdSample.ExternalAddressId,
+        addressType = AddressType.External,
+        email = "external@gmail.com",
+        order = 2
     )
 
     fun build(
         addressId: AddressId = AddressIdSample.Primary,
         email: String = "primary-email@pm.me",
-        order: Int = 0
+        order: Int = 0,
+        enabled: Boolean = true,
+        addressType: AddressType = AddressType.Original
     ) = UserAddress(
         addressId = addressId,
         canReceive = true,
         canSend = true,
         displayName = "name",
         email = email,
-        enabled = true,
+        enabled = enabled,
         keys = emptyList(),
+        type = addressType,
         order = order,
         signature = "signature",
         signedKeyList = null,

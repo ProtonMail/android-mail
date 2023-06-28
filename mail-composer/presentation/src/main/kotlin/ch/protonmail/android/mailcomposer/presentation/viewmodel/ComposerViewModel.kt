@@ -79,7 +79,7 @@ class ComposerViewModel @Inject constructor(
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
 
     // This is a temp code till we implement senders properly
-    private fun senderAddress(): UserAddress = UserAddressSample.primaryAddress
+    private fun senderAddress(): UserAddress = UserAddressSample.PrimaryAddress
 
     private suspend fun emitNewStateFor(operation: ComposerOperation) {
         val currentState = state.value

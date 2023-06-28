@@ -142,7 +142,7 @@ class ComposerViewModelTest {
     }
 
     private fun expectedSenderAddress(senderAddress: () -> UserAddress): UserAddress =
-        senderAddress().also { UserAddressSample.primaryAddress }
+        senderAddress().also { UserAddressSample.PrimaryAddress }
 
     companion object TestData {
 

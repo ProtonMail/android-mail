@@ -25,4 +25,8 @@ object AddressIdSample {
     val Primary = AddressId("primary")
 
     val Alias = AddressId("alias")
+
+    val DisabledAddressId = AddressId("disabledAddress")
+
+    val ExternalAddressId = AddressId("externalAddress")
 }

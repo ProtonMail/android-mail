@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveUserAddresses
 import kotlinx.coroutines.flow.first
 import me.proton.core.user.domain.entity.UserAddress
+import me.proton.core.user.domain.entity.isExternal
 import javax.inject.Inject
 
 class GetChangeSenderAddresses @Inject constructor(
@@ -40,12 +41,14 @@ class GetChangeSenderAddresses @Inject constructor(
         return isPaidUser(userId).fold(
             ifLeft = { Error.FailedDeterminingUserSubscription.left() },
             ifRight = { isPaid ->
-                if (isPaid) {
-                    val addresses = observeUserAddresses(userId).first()
-                    addresses.right()
-                } else {
-                    Error.UpgradeToChangeSender.left()
+                if (!isPaid) {
+                    return Error.UpgradeToChangeSender.left()
                 }
+
+                observeUserAddresses(userId).first()
+                    .filter { it.enabled }
+                    .filterNot { it.isExternal() }
+                    .right()
             }
         )
     }
