@@ -24,6 +24,7 @@ import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
+import ch.protonmail.android.uitest.robot.mailbox.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.menu.menuRobot
 import ch.protonmail.android.uitest.util.extensions.waitUntilSignInScreenIsGone
 import me.proton.core.test.android.robots.auth.AddAccountRobot
@@ -62,9 +63,14 @@ internal class Navigator {
                 swipeOpenSidebarMenu()
                 openDrafts()
             }
+
             is Destination.Archive -> menuRobot {
                 swipeOpenSidebarMenu()
                 openArchive()
+            }
+
+            is Destination.Composer -> mailboxRobot {
+                topAppBarSection { tapComposerIcon() }
             }
 
             is Destination.MailDetail -> mailboxRobot {
