@@ -16,25 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.models.snackbar
+package ch.protonmail.android.uitest.robot.composer.model
 
 import ch.protonmail.android.uitest.util.getTestString
 import ch.protonmail.android.test.R as testR
 
-internal sealed class SnackbarTextEntry(val value: String) {
-    object FeatureComingSoon : SnackbarTextEntry(
-        getTestString(testR.string.test_feature_coming_soon)
-    )
+internal object ComposerFieldPrefixes {
 
-    class ConversationMovedToFolder(folder: String) : SnackbarTextEntry(
-        getTestString(testR.string.test_conversation_moved_to_selected_destination, folder)
-    )
-
-    object FailedToLoadNewItems : SnackbarTextEntry(
-        getTestString(testR.string.test_mailbox_error_message_generic)
-    )
-
-    object InvalidEmailAddress : SnackbarTextEntry(
-        getTestString(testR.string.test_composer_error_invalid_email)
-    )
+    val From = Prefix(getTestString(testR.string.test_composer_sender_label))
+    val To = Prefix(getTestString(testR.string.test_composer_to_recipient_label))
+    val Cc = Prefix(getTestString(testR.string.test_composer_cc_recipient_label))
+    val Bcc = Prefix(getTestString(testR.string.test_composer_bcc_recipient_label))
 }
+
+@JvmInline
+internal value class Prefix(val value: String)

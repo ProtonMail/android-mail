@@ -18,44 +18,120 @@
 
 package ch.protonmail.android.uitest.robot.composer.model
 
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
+import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.pressKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
 import ch.protonmail.android.uicomponents.chips.ChipsTestTags
+import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
+import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntryModel
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertEmptyText
+import ch.protonmail.android.uitest.util.awaitHidden
 
 internal sealed class ComposerRecipientsEntryModel(
-    matcher: SemanticsMatcher,
+    private val parentMatcher: SemanticsMatcher,
+    private val prefix: Prefix,
     composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule
-) : ComposerParticipantsEntryModel(matcher, composeTestRule) {
+) {
 
-    private val textField = composeTestRule.onNode(
-        matcher = hasTestTag(ChipsTestTags.BasicTextField) and hasAnyAncestor(matcher)
+    private val parent = composeTestRule.onNode(parentMatcher, useUnmergedTree = true)
+
+    private val prefixField = composeTestRule.onNode(
+        matcher = hasTestTag(ComposerTestTags.FieldPrefix) and hasAnyAncestor(parentMatcher),
+        useUnmergedTree = true
     )
 
-    override fun typeValue(value: String) = withParentFocused {
+    private val textField = composeTestRule.onNode(
+        // use hasAnyAncestor as the TextField is not a direct child of the parent.
+        matcher = hasTestTag(ChipsTestTags.BasicTextField) and hasAnyAncestor(parentMatcher)
+    )
+
+    // region actions
+    fun typeValue(value: String) = withParentFocused {
         textField.performTextInput(value)
     }
 
-    override fun isFocused() = apply {
+    @OptIn(ExperimentalTestApi::class)
+    fun tapKey(key: Key) {
+        textField.performKeyInput { this.pressKey(key) }
+    }
+
+    fun performImeAction() {
+        textField.performImeAction()
+    }
+
+    fun focus() {
+        parent.performClick()
+    }
+
+    fun tapChipDeletionIconAt(position: Int) {
+        val model = RecipientChipEntryModel(position, parentMatcher)
+        model.tapDeleteIcon()
+    }
+    // endregion
+
+    // region verification
+    fun isHidden() {
+        parent.awaitHidden().assertDoesNotExist()
+    }
+
+    fun isFocused() = apply {
         textField.assertIsFocused()
     }
 
-    override fun hasEmptyValue() = withParentFocused {
+    fun hasEmptyValue() = withParentFocused {
+        hasPrefix()
         textField.assertEmptyText()
+
+        // Check that chip at index 0 does not exist, as recomposition will always populate index 0 if there's a chip.
+        RecipientChipEntryModel(0, parentMatcher).doesNotExist()
     }
 
-    override fun hasValue(value: String) = withParentFocused {
+    fun hasValue(value: String) = withParentFocused {
+        hasPrefix()
         textField.assertTextEquals(value)
     }
-}
 
-internal object ToRecipientEntryModel : ComposerRecipientsEntryModel(hasTestTag(ComposerTestTags.ToRecipient))
-internal object CcRecipientEntryModel : ComposerRecipientsEntryModel(hasTestTag(ComposerTestTags.CcRecipient))
-internal object BccRecipientEntryModel : ComposerRecipientsEntryModel(hasTestTag(ComposerTestTags.BccRecipient))
+    fun hasChips(vararg chips: RecipientChipEntry) {
+        for (chip in chips) {
+            val model = RecipientChipEntryModel(chip.index, parentMatcher)
+            model
+                .hasText(chip.text)
+                .hasEmailValidationState(chip.state)
+                .also { if (chip.hasDeleteIcon) model.hasDeleteIcon() else model.hasNoDeleteIcon() }
+        }
+    }
+
+    fun hasNoChip(chip: RecipientChipEntry) {
+        val model = RecipientChipEntryModel(chip.index, parentMatcher)
+        model.doesNotExist()
+    }
+
+    private fun hasPrefix() = apply {
+        prefixField.assertTextEquals(prefix.value)
+    }
+    // endregion
+
+    // region utility methods
+    private fun withParentFocused(block: ComposerRecipientsEntryModel.() -> Unit) = apply {
+        // This is needed as even though the correct textField is located, the automation might fill the wrong field.
+        if (!peekIsFocused()) {
+            parent.performClick()
+        }
+        block()
+    }
+
+    private fun peekIsFocused(): Boolean = runCatching { isFocused() }.isSuccess
+    // endregion
+}

@@ -18,31 +18,24 @@
 
 package ch.protonmail.android.uitest.robot.composer.model
 
-import androidx.compose.ui.test.assertIsFocused
-import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.performTextInput
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
-import ch.protonmail.android.uitest.util.assertions.assertEmptyText
+import ch.protonmail.android.uitest.robot.composer.model.ComposerFieldPrefixes.Bcc
+import ch.protonmail.android.uitest.robot.composer.model.ComposerFieldPrefixes.Cc
+import ch.protonmail.android.uitest.robot.composer.model.ComposerFieldPrefixes.To
 
-// This implementation is temporary, as the final version of the Sender Field won't allow direct input in the TextField.
-internal object ComposerSenderEntryModel : ComposerParticipantsEntryModel(
-    parentMatcher = hasTestTag(ComposerTestTags.FromSender)
-) {
+internal object ToRecipientEntryModel : ComposerRecipientsEntryModel(
+    parentMatcher = hasTestTag(ComposerTestTags.ToRecipient),
+    prefix = To
+)
 
-    override fun typeValue(value: String) = withParentFocused {
-        parent.performTextInput(value)
-    }
+internal object CcRecipientEntryModel : ComposerRecipientsEntryModel(
+    parentMatcher = hasTestTag(ComposerTestTags.CcRecipient),
+    prefix = Cc
+)
 
-    override fun isFocused() = apply {
-        parent.assertIsFocused()
-    }
+internal object BccRecipientEntryModel : ComposerRecipientsEntryModel(
+    parentMatcher = hasTestTag(ComposerTestTags.BccRecipient),
+    prefix = Bcc
+)
 
-    override fun hasEmptyValue() = withParentFocused {
-        parent.assertEmptyText()
-    }
-
-    override fun hasValue(value: String) = withParentFocused {
-        parent.assertTextEquals(value)
-    }
-}

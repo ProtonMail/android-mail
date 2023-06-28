@@ -33,9 +33,14 @@
 
     <!-- Composer -->
     <string name="test_composer_sender_label">From:</string>
-    <string name="test_composer_recipient_label">To:</string>
+    <string name="test_composer_to_recipient_label">To:</string>
+    <string name="test_composer_cc_recipient_label">Cc:</string>
+    <string name="test_composer_bcc_recipient_label">Bcc:</string>
     <string name="test_composer_subject_placeholder">Subject</string>
     <string name="test_composer_body_placeholder">Compose email</string>
+    <string name="test_composer_expand_recipients_button">Show other recipients</string>
+    <string name="test_composer_collapse_recipients_button">Hide other recipients</string>
+    <string name="test_composer_error_invalid_email">Email address is invalid</string>
 
     <!-- Bottom sheets -->
     <string name="test_bottom_sheet_done_action">Done</string>
