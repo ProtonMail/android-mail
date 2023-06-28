@@ -64,13 +64,13 @@ class MessageDetailHeaderUiModelMapperTest {
     private val shortTimeTextUiModel = TextUiModel.Text("08/11/2022")
     private val extendedTimeTestUiModel = TextUiModel.Text("08/11/2022, 17:16")
     private val senderUiModel =
-        ParticipantUiModel("Sender", "sender@pm.com", ic_proton_lock)
+        ParticipantUiModel("Sender", "sender@pm.com", ic_proton_lock, shouldShowOfficialBadge = false)
     private val participant1UiModel =
-        ParticipantUiModel("Recipient1", "recipient1@pm.com", ic_proton_lock)
+        ParticipantUiModel("Recipient1", "recipient1@pm.com", ic_proton_lock, shouldShowOfficialBadge = false)
     private val participant2UiModel =
-        ParticipantUiModel("Recipient2", "recipient2@pm.com", ic_proton_lock)
+        ParticipantUiModel("Recipient2", "recipient2@pm.com", ic_proton_lock, shouldShowOfficialBadge = false)
     private val participant3UiModel =
-        ParticipantUiModel("Recipient3", "recipient3@pm.com", ic_proton_lock)
+        ParticipantUiModel("Recipient3", "recipient3@pm.com", ic_proton_lock, shouldShowOfficialBadge = false)
 
     private val message = MessageTestData.starredMessageInArchiveWithAttachments
     private val labels = listOf(

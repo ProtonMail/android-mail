@@ -47,10 +47,13 @@ class ParticipantUiModelMapperTest {
         val expectedResult = ParticipantUiModel(
             participantName = "Test",
             participantAddress = "test@protonmail.com",
-            participantPadlock = R.drawable.ic_proton_lock
+            participantPadlock = R.drawable.ic_proton_lock,
+            shouldShowOfficialBadge = false
         )
+
         // When
         val result = participantUiModelMapper.senderToUiModel(participant, ContactTestData.contacts)
+
         // Then
         assertEquals(expectedResult, result)
         verify {
@@ -64,10 +67,13 @@ class ParticipantUiModelMapperTest {
         val expectedResult = ParticipantUiModel(
             participantName = "Test",
             participantAddress = "test@protonmail.com",
-            participantPadlock = R.drawable.ic_proton_lock
+            participantPadlock = R.drawable.ic_proton_lock,
+            shouldShowOfficialBadge = false
         )
+
         // When
         val result = participantUiModelMapper.recipientToUiModel(participant, ContactTestData.contacts)
+
         // Then
         assertEquals(expectedResult, result)
         verify {

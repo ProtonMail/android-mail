@@ -41,13 +41,18 @@ class ParticipantUiModelMapper @Inject constructor(
         participant: Participant,
         contacts: List<Contact>,
         fallbackType: ResolveParticipantName.FallbackType
-    ) = ParticipantUiModel(
-        participantName = resolveParticipantName(
+    ): ParticipantUiModel {
+        val resolveParticipantNameResult = resolveParticipantName(
             participant,
             contacts,
             fallbackType = fallbackType
-        ).name,
-        participantAddress = participant.address,
-        participantPadlock = R.drawable.ic_proton_lock
-    )
+        )
+
+        return ParticipantUiModel(
+            participantName = resolveParticipantNameResult.name,
+            participantAddress = participant.address,
+            participantPadlock = R.drawable.ic_proton_lock,
+            shouldShowOfficialBadge = resolveParticipantNameResult.isProton
+        )
+    }
 }

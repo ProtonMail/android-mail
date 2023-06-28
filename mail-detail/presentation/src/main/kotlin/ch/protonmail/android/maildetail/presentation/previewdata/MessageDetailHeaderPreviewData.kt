@@ -35,7 +35,8 @@ object MessageDetailHeaderPreviewData {
         sender = ParticipantUiModel(
             participantName = "Proton Test Account",
             participantAddress = "proton.test@protonmail.com",
-            participantPadlock = R.drawable.ic_proton_lock
+            participantPadlock = R.drawable.ic_proton_lock,
+            shouldShowOfficialBadge = false
         ),
         shouldShowTrackerProtectionIcon = true,
         shouldShowAttachmentIcon = true,
@@ -49,26 +50,30 @@ object MessageDetailHeaderPreviewData {
             ParticipantUiModel(
                 participantName = "Recipient One",
                 participantAddress = "recipient1@protonmail.com",
-                participantPadlock = R.drawable.ic_proton_lock
+                participantPadlock = R.drawable.ic_proton_lock,
+                shouldShowOfficialBadge = false
             ),
             ParticipantUiModel(
                 participantName = "Recipient Two",
                 participantAddress = "recipient2@protonmail.com",
-                participantPadlock = R.drawable.ic_proton_lock
+                participantPadlock = R.drawable.ic_proton_lock,
+                shouldShowOfficialBadge = false
             )
         ),
         ccRecipients = listOf(
             ParticipantUiModel(
                 participantName = "Recipient Three",
                 participantAddress = "recipient3@protonmail.com",
-                participantPadlock = R.drawable.ic_proton_lock
+                participantPadlock = R.drawable.ic_proton_lock,
+                shouldShowOfficialBadge = false
             )
         ),
         bccRecipients = listOf(
             ParticipantUiModel(
                 participantName = "Recipient Four",
                 participantAddress = "recipient4@protonmail.com",
-                participantPadlock = R.drawable.ic_proton_lock
+                participantPadlock = R.drawable.ic_proton_lock,
+                shouldShowOfficialBadge = false
             )
         ),
         labels = persistentListOf(),

@@ -247,7 +247,8 @@ class ConversationDetailViewModelIntegrationTest {
             injectCssIntoDecryptedMessageBody,
             sanitizeHtmlOfDecryptedMessageBody,
             shouldShowRemoteContent
-        )
+        ),
+        participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName)
     )
 
     private val conversationMetadataMapper = ConversationDetailMetadataUiModelMapper()

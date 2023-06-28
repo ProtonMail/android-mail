@@ -30,7 +30,12 @@ object MessageDetailHeaderUiModelTestData {
 
     val messageDetailHeaderUiModel = MessageDetailHeaderUiModel(
         avatar = AvatarUiModel.ParticipantInitial("S"),
-        sender = ParticipantUiModel("Sender", "sender@pm.com", R.drawable.ic_proton_lock),
+        sender = ParticipantUiModel(
+            "Sender",
+            "sender@pm.com",
+            R.drawable.ic_proton_lock,
+            shouldShowOfficialBadge = false
+        ),
         shouldShowTrackerProtectionIcon = true,
         shouldShowAttachmentIcon = true,
         shouldShowStar = true,
@@ -40,10 +45,27 @@ object MessageDetailHeaderUiModelTestData {
         shouldShowUndisclosedRecipients = false,
         allRecipients = TextUiModel.Text("Recipient1, Recipient2, Recipient3"),
         toRecipients = listOf(
-            ParticipantUiModel("Recipient1", "recipient1@pm.com", R.drawable.ic_proton_lock),
-            ParticipantUiModel("Recipient2", "recipient2@pm.com", R.drawable.ic_proton_lock)
+            ParticipantUiModel(
+                "Recipient1",
+                "recipient1@pm.com",
+                R.drawable.ic_proton_lock,
+                shouldShowOfficialBadge = false
+            ),
+            ParticipantUiModel(
+                "Recipient2",
+                "recipient2@pm.com",
+                R.drawable.ic_proton_lock,
+                shouldShowOfficialBadge = false
+            )
         ),
-        ccRecipients = listOf(ParticipantUiModel("Recipient3", "recipient3@pm.com", R.drawable.ic_proton_lock)),
+        ccRecipients = listOf(
+            ParticipantUiModel(
+                "Recipient3",
+                "recipient3@pm.com",
+                R.drawable.ic_proton_lock,
+                shouldShowOfficialBadge = false
+            )
+        ),
         bccRecipients = emptyList(),
         labels = persistentListOf(),
         size = "12 MB",

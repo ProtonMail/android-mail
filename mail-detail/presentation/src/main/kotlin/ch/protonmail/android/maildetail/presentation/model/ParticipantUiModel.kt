@@ -23,5 +23,6 @@ import androidx.annotation.DrawableRes
 data class ParticipantUiModel(
     val participantName: String,
     val participantAddress: String,
-    @DrawableRes val participantPadlock: Int
+    @DrawableRes val participantPadlock: Int,
+    val shouldShowOfficialBadge: Boolean
 )

@@ -300,7 +300,7 @@ private fun Sender(
         modifier = modifier
             .testTag(ConversationDetailCollapsedMessageHeaderTestTags.Sender)
             .padding(horizontal = MailDimens.TinySpacing),
-        text = uiModel.sender,
+        text = uiModel.sender.participantName,
         fontWeight = fontWeight,
         color = fontColor,
         style = ProtonTheme.typography.default,

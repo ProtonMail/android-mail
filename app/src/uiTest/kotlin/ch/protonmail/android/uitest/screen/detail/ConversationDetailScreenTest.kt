@@ -221,7 +221,7 @@ internal class ConversationDetailScreenTest {
             when (val firstMessage = messagesState.messages.first()) {
                 is ConversationDetailMessageUiModel.Collapsed ->
                     messagesCollapsedSection {
-                        verify { senderNameIsDisplayed(index = 0, value = firstMessage.sender) }
+                        verify { senderNameIsDisplayed(index = 0, value = firstMessage.sender.participantName) }
                     }
 
                 is ConversationDetailMessageUiModel.Expanded -> verify {

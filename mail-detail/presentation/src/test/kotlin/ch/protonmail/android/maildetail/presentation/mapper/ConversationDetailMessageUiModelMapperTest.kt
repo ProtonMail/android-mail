@@ -103,6 +103,20 @@ internal class ConversationDetailMessageUiModelMapperTest {
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper = mockk {
         coEvery { toUiModel(any(), any<DecryptedMessageBody>()) } returns mockk()
     }
+    private val participantUiModelMapper: ParticipantUiModelMapper = mockk {
+        every {
+            senderToUiModel(RecipientSample.Doe, any())
+        } returns ConversationDetailMessageUiModelSample
+            .InvoiceWithoutLabelsCustomFolderExpanded
+            .messageDetailHeaderUiModel
+            .sender
+        every {
+            senderToUiModel(RecipientSample.John, any())
+        } returns ConversationDetailMessageUiModelSample.ExpiringInvitation.sender
+        every {
+            senderToUiModel(RecipientSample.PreciWeather, any())
+        } returns ConversationDetailMessageUiModelSample.AugWeatherForecast.sender
+    }
     private val mapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = avatarUiModelMapper,
         expirationTimeMapper = expirationTimeMapper,
@@ -111,7 +125,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
         messageLocationUiModelMapper = messageLocationUiModelMapper,
         resolveParticipantName = resolveParticipantName,
         messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
-        messageBodyUiModelMapper = messageBodyUiModelMapper
+        messageBodyUiModelMapper = messageBodyUiModelMapper,
+        participantUiModelMapper = participantUiModelMapper
     )
 
     @BeforeTest

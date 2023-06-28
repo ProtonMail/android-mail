@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
@@ -154,7 +155,7 @@ object ConversationDetailMessageUiModelSample {
         isUnread = message.unread,
         locationIcon = MessageLocationUiModelSample.AllMail,
         repliedIcon = repliedIcon,
-        sender = message.sender.name,
+        sender = ParticipantUiModel(message.sender.name, message.sender.address, R.drawable.ic_proton_lock, false),
         shortTime = TextUiModel("10:00"),
         labels = emptyList(),
         messageId = message.messageId
@@ -175,7 +176,8 @@ object ConversationDetailMessageUiModelSample {
             sender = ParticipantUiModel(
                 participantName = message.sender.name,
                 participantAddress = message.sender.address,
-                participantPadlock = 0
+                participantPadlock = 0,
+                shouldShowOfficialBadge = false
             ),
             isStarred = isStarred,
             location = locationUiModel,
@@ -187,7 +189,7 @@ object ConversationDetailMessageUiModelSample {
             bccRecipients = emptyList(),
             labels = persistentListOf()
         ),
-        messageBodyUiModel = messageBodyUiModel,
+        messageBodyUiModel = messageBodyUiModel
     )
 
     private fun buildExpanding(

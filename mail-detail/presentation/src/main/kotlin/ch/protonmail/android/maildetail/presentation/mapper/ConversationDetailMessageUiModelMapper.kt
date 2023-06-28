@@ -45,7 +45,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper,
     private val resolveParticipantName: ResolveParticipantName,
     private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
-    private val messageBodyUiModelMapper: MessageBodyUiModelMapper
+    private val messageBodyUiModelMapper: MessageBodyUiModelMapper,
+    private val participantUiModelMapper: ParticipantUiModelMapper
 ) {
 
     suspend fun toUiModel(
@@ -67,7 +68,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             isUnread = message.unread,
             locationIcon = messageLocationUiModelMapper(message.labelIds, labels, folderColorSettings),
             repliedIcon = getRepliedIcon(isReplied = message.isReplied, isRepliedAll = message.isRepliedAll),
-            sender = senderResolvedName.name,
+            sender = participantUiModelMapper.senderToUiModel(message.sender, contacts),
             shortTime = formatShortTime(message.time.seconds),
             labels = toLabelUiModels(messageWithLabels.labels),
             messageId = message.messageId

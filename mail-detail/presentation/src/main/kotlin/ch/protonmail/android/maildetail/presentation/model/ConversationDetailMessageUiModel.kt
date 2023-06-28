@@ -38,7 +38,7 @@ sealed interface ConversationDetailMessageUiModel {
         override val isUnread: Boolean,
         val locationIcon: MessageLocationUiModel,
         val repliedIcon: RepliedIcon,
-        val sender: String,
+        val sender: ParticipantUiModel,
         val shortTime: TextUiModel,
         val labels: List<LabelUiModel>
     ) : ConversationDetailMessageUiModel
@@ -46,7 +46,7 @@ sealed interface ConversationDetailMessageUiModel {
     data class Expanding(
         override val messageId: MessageId,
         val collapsed: Collapsed,
-        override val isUnread: Boolean = collapsed.isUnread,
+        override val isUnread: Boolean = collapsed.isUnread
     ) : ConversationDetailMessageUiModel
 
     data class Expanded(
