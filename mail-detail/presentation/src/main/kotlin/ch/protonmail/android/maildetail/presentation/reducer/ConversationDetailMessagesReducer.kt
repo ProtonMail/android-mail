@@ -161,10 +161,8 @@ class ConversationDetailMessagesReducer @Inject constructor() {
             is ConversationDetailsMessagesState.Data -> {
                 this.copy(
                     messages = this.messages.map {
-                        if (it.messageId == operation.messageId) {
-                            (it as ConversationDetailMessageUiModel.Expanded).copy(
-                                messageBodyUiModel = createMessageBodyState(it.messageBodyUiModel, operation)
-                            )
+                        if (it.messageId == operation.messageId && it is ConversationDetailMessageUiModel.Expanded) {
+                            it.copy(messageBodyUiModel = createMessageBodyState(it.messageBodyUiModel, operation))
                         } else
                             it
                     }

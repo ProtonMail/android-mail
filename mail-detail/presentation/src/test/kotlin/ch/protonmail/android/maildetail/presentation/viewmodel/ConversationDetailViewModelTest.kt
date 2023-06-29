@@ -45,6 +45,8 @@ import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.usecase.GetConversationMessagesAttachmentsStatus
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
@@ -219,6 +221,8 @@ class ConversationDetailViewModelTest {
         )
     }
     private val observeAttachmentStatus = mockk<ObserveMessageAttachmentStatus>()
+    private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
+    private val getAttachmentDownloadStatus = mockk<GetConversationMessagesAttachmentsStatus>()
     private val reducer: ConversationDetailReducer = mockk {
         every { newStateFrom(currentState = any(), operation = any()) } returns ConversationDetailState.Loading
     }
@@ -263,6 +267,7 @@ class ConversationDetailViewModelTest {
             observeFolderColor = observeFolderColorSettings,
             observeCustomMailLabels = observeCustomMailLabels,
             observeMessageAttachmentStatus = observeAttachmentStatus,
+            getConversationMessagesAttachmentsStatus = getAttachmentDownloadStatus,
             reducer = reducer,
             savedStateHandle = savedStateHandle,
             starConversation = starConversation,
@@ -271,6 +276,7 @@ class ConversationDetailViewModelTest {
             markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllRead,
             setMessageViewState = setMessageViewState,
             observeConversationViewState = observeConversationViewState,
+            getAttachmentIntentValues = getAttachmentIntentValues,
             ioDispatcher = Dispatchers.Unconfined
         )
     }

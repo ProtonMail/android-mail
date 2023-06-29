@@ -56,6 +56,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -165,6 +166,7 @@ fun ConversationDetailScreen(
                         ConversationDetailViewAction.OnAttachmentClicked(messageId, attachmentId)
                     )
                 },
+                openAttachment = actions.openAttachment,
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -193,6 +195,9 @@ fun ConversationDetailScreen(
     }
     ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) {
         actions.onOpenMessageBodyLink(it)
+    }
+    ConsumableLaunchedEffect(effect = state.openAttachmentEffect) {
+        actions.openAttachment(it)
     }
 
     if (state.conversationState is ConversationDetailMetadataState.Error) {
@@ -369,6 +374,7 @@ object ConversationDetail {
     data class Actions(
         val onExit: (notifyUserMessage: String?) -> Unit,
         val openMessageBodyLink: (url: String) -> Unit,
+        val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     )
 }
@@ -392,6 +398,7 @@ object ConversationDetailScreen {
         val onRequestScrollTo: (MessageId) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
         val onAttachmentClicked: (MessageId, AttachmentId) -> Unit,
+        val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     ) {
 
@@ -412,6 +419,7 @@ object ConversationDetailScreen {
                 onRequestScrollTo = {},
                 onShowAllAttachmentsForMessage = {},
                 onAttachmentClicked = { _, _ -> },
+                openAttachment = {},
                 showFeatureMissingSnackbar = {}
             )
         }

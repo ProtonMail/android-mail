@@ -37,6 +37,8 @@ import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyErro
 import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
+import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.usecase.GetConversationMessagesAttachmentsStatus
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
@@ -86,6 +88,7 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinatio
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
+import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -133,6 +136,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeFolderColor: ObserveFolderColorSettings,
     private val observeCustomMailLabels: ObserveCustomMailLabels,
     private val observeMessageAttachmentStatus: ObserveMessageAttachmentStatus,
+    private val getConversationMessagesAttachmentsStatus: GetConversationMessagesAttachmentsStatus,
     private val reducer: ConversationDetailReducer,
     private val starConversation: StarConversation,
     private val unStarConversation: UnStarConversation,
@@ -141,12 +145,14 @@ class ConversationDetailViewModel @Inject constructor(
     private val markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead,
     private val setMessageViewState: SetMessageViewState,
     private val observeConversationViewState: ObserveConversationViewState,
+    private val getAttachmentIntentValues: GetAttachmentIntentValues,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
     private val mutableDetailState = MutableStateFlow(initialState)
     private val conversationId = requireConversationId()
+    private val observedAttachments = mutableListOf<AttachmentId>()
 
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
 
@@ -177,7 +183,9 @@ class ConversationDetailViewModel @Inject constructor(
             is MessageBodyLinkClicked -> onMessageBodyLinkClicked(action)
             is RequestScrollTo -> onRequestScrollTo(action)
             is ShowAllAttachmentsForMessage -> showAllAttachmentsForMessage(action.messageId)
-            is ConversationDetailViewAction.OnAttachmentClicked -> {}
+            is ConversationDetailViewAction.OnAttachmentClicked -> {
+                onOpenAttachmentClicked(action.messageId, action.attachmentId)
+            }
         }
     }
 
@@ -622,8 +630,9 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private suspend fun observeAttachments(messageId: MessageId, attachments: List<MessageAttachment>) {
-        attachments.map { it.attachmentId }.forEach { attachmentId ->
+        attachments.map { it.attachmentId }.filterNot { observedAttachments.contains(it) }.forEach { attachmentId ->
             primaryUserId.flatMapLatest { userId ->
+                observedAttachments.add(attachmentId)
                 observeMessageAttachmentStatus(userId, messageId, attachmentId).mapLatest {
                     ConversationDetailEvent.AttachmentStatusChanged(messageId, attachmentId, it.status)
                 }
@@ -631,6 +640,31 @@ class ConversationDetailViewModel @Inject constructor(
                 emitNewStateFrom(event)
             }.launchIn(viewModelScope)
         }
+    }
+
+    private fun onOpenAttachmentClicked(messageId: MessageId, attachmentId: AttachmentId) {
+        viewModelScope.launch {
+            if (isAttachmentDownloadInProgress().not()) {
+                val userId = primaryUserId.first()
+                getAttachmentIntentValues(userId, messageId, attachmentId).fold(
+                    ifLeft = {
+                        Timber.d("Failed to download attachment")
+                        emitNewStateFrom(ConversationDetailEvent.ErrorGettingAttachment)
+                    },
+                    ifRight = { emitNewStateFrom(ConversationDetailEvent.OpenAttachmentEvent(it)) }
+                )
+            } else {
+                emitNewStateFrom(ConversationDetailEvent.ErrorAttachmentDownloadInProgress)
+            }
+        }
+    }
+
+    private suspend fun isAttachmentDownloadInProgress(): Boolean {
+        val userId = primaryUserId.first()
+        val messagesState = mutableDetailState.value.messagesState
+        return if (messagesState is ConversationDetailsMessagesState.Data) {
+            getConversationMessagesAttachmentsStatus(userId, messagesState.messages.map { it.messageId }).isNotEmpty()
+        } else false
     }
 
     companion object {

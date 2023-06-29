@@ -67,6 +67,7 @@ object ConversationDetailsPreviewData {
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty(),
         openMessageBodyLinkEffect = Effect.empty(),
+        openAttachmentEffect = Effect.empty(),
         scrollToMessage = null
     )
 
@@ -87,7 +88,7 @@ object ConversationDetailsPreviewData {
                 ),
                 ConversationDetailMessageUiModelSample.ExpiringInvitation.copy(
                     messageId = MessageId(UUID.randomUUID().toString())
-                ),
+                )
             )
         ),
         bottomBarState = BottomBarState.Data(
@@ -106,6 +107,7 @@ object ConversationDetailsPreviewData {
         exitScreenWithMessageEffect = Effect.empty(),
         error = Effect.empty(),
         openMessageBodyLinkEffect = Effect.empty(),
+        openAttachmentEffect = Effect.empty(),
         scrollToMessage = null
     )
 
@@ -118,6 +120,7 @@ object ConversationDetailsPreviewData {
         error = Effect.empty(),
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         openMessageBodyLinkEffect = Effect.empty(),
+        openAttachmentEffect = Effect.empty(),
         scrollToMessage = null
     )
 
@@ -130,6 +133,7 @@ object ConversationDetailsPreviewData {
         error = Effect.empty(),
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         openMessageBodyLinkEffect = Effect.empty(),
+        openAttachmentEffect = Effect.empty(),
         scrollToMessage = null
     )
 
@@ -142,6 +146,7 @@ object ConversationDetailsPreviewData {
         error = Effect.empty(),
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         openMessageBodyLinkEffect = Effect.empty(),
+        openAttachmentEffect = Effect.empty(),
         scrollToMessage = null
     )
 
@@ -154,6 +159,7 @@ object ConversationDetailsPreviewData {
         error = Effect.empty(),
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         openMessageBodyLinkEffect = Effect.empty(),
+        openAttachmentEffect = Effect.empty(),
         scrollToMessage = null
     )
 
@@ -166,6 +172,7 @@ object ConversationDetailsPreviewData {
         error = Effect.empty(),
         bottomSheetState = BottomSheetState(MoveToBottomSheetState.Loading),
         openMessageBodyLinkEffect = Effect.empty(),
+        openAttachmentEffect = Effect.empty(),
         scrollToMessage = null
     )
 }

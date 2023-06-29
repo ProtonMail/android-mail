@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
@@ -52,6 +53,7 @@ class ConversationDetailReducer @Inject constructor(
             exitScreenEffect = currentState.toExitState(operation),
             exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation),
             openMessageBodyLinkEffect = currentState.toOpenMessageBodyLinkState(operation),
+            openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation),
             scrollToMessage = currentState.toScrollToMessageState(operation)
         )
     }
@@ -83,9 +85,11 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailEvent.ConversationBottomSheetEvent -> operation.bottomSheetOperation
                 is ConversationDetailViewAction.MoveToDestinationSelected ->
                     MoveToDestinationSelected(operation.mailLabelId)
+
                 is ConversationDetailViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
                 is ConversationDetailViewAction.RequestLabelAsBottomSheet,
                 is ConversationDetailViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
+
                 is ConversationDetailViewAction.LabelAsConfirmed,
                 is ConversationDetailViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
             }
@@ -101,12 +105,15 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailEvent.ErrorRemoveStar -> Effect.of(
                     TextUiModel(R.string.error_unstar_operation_failed)
                 )
+
                 is ConversationDetailEvent.ErrorMarkingAsUnread -> Effect.of(
                     TextUiModel(R.string.error_mark_as_unread_failed)
                 )
+
                 is ConversationDetailEvent.ErrorMovingToTrash -> Effect.of(
                     TextUiModel(R.string.error_move_to_trash_failed)
                 )
+
                 is ConversationDetailEvent.ErrorMovingConversation -> Effect.of(
                     TextUiModel(R.string.error_move_conversation_failed)
                 )
@@ -125,6 +132,14 @@ class ConversationDetailReducer @Inject constructor(
 
                 is ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline -> Effect.of(
                     TextUiModel(R.string.error_offline_loading_message)
+                )
+
+                is ConversationDetailEvent.ErrorGettingAttachment -> Effect.of(
+                    TextUiModel(R.string.error_get_attachment_failed)
+                )
+
+                ConversationDetailEvent.ErrorAttachmentDownloadInProgress -> Effect.of(
+                    TextUiModel(R.string.error_attachment_download_in_progress)
                 )
             }
         } else {
@@ -148,6 +163,7 @@ class ConversationDetailReducer @Inject constructor(
                 operation.mailLabelText
             )
         )
+
         is ConversationDetailViewAction.LabelAsConfirmed -> when (operation.archiveSelected) {
             true -> Effect.of(TextUiModel(R.string.conversation_moved_to_archive))
             false -> exitScreenWithMessageEffect
@@ -169,4 +185,11 @@ class ConversationDetailReducer @Inject constructor(
             is ConversationDetailEvent.MessagesData -> operation.requestScrollToMessageId
             else -> scrollToMessage
         }
+
+    private fun ConversationDetailState.toNewOpenAttachmentStateFrom(
+        operation: ConversationDetailOperation
+    ): Effect<OpenAttachmentIntentValues> = when (operation) {
+        is ConversationDetailEvent.OpenAttachmentEvent -> Effect.of(operation.values)
+        else -> openAttachmentEffect
+    }
 }

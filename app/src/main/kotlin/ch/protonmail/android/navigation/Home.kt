@@ -139,6 +139,7 @@ fun Home(
                         }
                     },
                     openMessageBodyLink = activityActions.openInActivityInNewTask,
+                    openAttachment = activityActions.openIntentChooser,
                     showFeatureMissingSnackbar = {
                         showFeatureMissingSnackbar()
                     }

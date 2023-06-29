@@ -30,11 +30,13 @@ import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetCurrentEpochTimeDuration
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -49,6 +51,8 @@ import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.usecase.GetConversationMessagesAttachmentsStatus
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
@@ -77,6 +81,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ExpandMessage
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.OnAttachmentClicked
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ShowAllAttachmentsForMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
@@ -104,8 +109,11 @@ import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
+import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentTestData
+import io.mockk.Called
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
@@ -181,6 +189,8 @@ class ConversationDetailViewModelIntegrationTest {
         )
     }
     private val observeAttachmentStatus = mockk<ObserveMessageAttachmentStatus>()
+    private val getConversationMessagesAttachmentsStatus = mockk<GetConversationMessagesAttachmentsStatus>()
+    private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
     // endregion
 
     // region mock action use cases
@@ -636,6 +646,149 @@ class ConversationDetailViewModelIntegrationTest {
     }
 
     @Test
+    fun `verify get attachment is called when attachment is clicked`() = runTest {
+        // given
+        val expectedAttachmentCount = Random().nextInt(100)
+        val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
+        val expectedExpanded = MessageWithLabelsSample.InvoiceWithLabel
+        val messages = nonEmptyListOf(
+            defaultExpanded,
+            expectedExpanded
+        )
+        val expandedMessageId = expectedExpanded.message.messageId
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery { getDecryptedMessageBody.invoke(any(), expandedMessageId) } returns
+            DecryptedMessageBody(
+                value = "",
+                MimeType.Html,
+                attachments = (0 until expectedAttachmentCount).map {
+                    aMessageAttachment(id = it.toString())
+                }
+            ).right()
+        coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
+        coEvery {
+            getConversationMessagesAttachmentsStatus(
+                userId,
+                listOf(defaultExpanded.message.messageId, expandedMessageId)
+            )
+        } returns listOf()
+
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.state.test {
+            skipItems(4)
+            viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+
+            // When
+            viewModel.submit(OnAttachmentClicked(expectedExpanded.message.messageId, AttachmentId(0.toString())))
+            awaitItem()
+
+            // Then
+            val expectedMessageId = expectedExpanded.message.messageId
+
+            coVerify { getAttachmentIntentValues(userId, expectedMessageId, AttachmentId(0.toString())) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `verify get attachment is not called and error is shown when other attachment is currently downloaded`() =
+        runTest {
+            // given
+            val expectedAttachmentCount = Random().nextInt(100)
+            val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
+            val expectedExpanded = MessageWithLabelsSample.InvoiceWithLabel
+            val messages = nonEmptyListOf(
+                defaultExpanded,
+                expectedExpanded
+            )
+            val expandedMessageId = expectedExpanded.message.messageId
+            coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+            coEvery { getDecryptedMessageBody.invoke(any(), expandedMessageId) } returns
+                DecryptedMessageBody(
+                    value = "",
+                    MimeType.Html,
+                    attachments = (0 until expectedAttachmentCount).map {
+                        aMessageAttachment(id = it.toString())
+                    }
+                ).right()
+            coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
+            coEvery {
+                getConversationMessagesAttachmentsStatus(
+                    userId,
+                    listOf(defaultExpanded.message.messageId, expandedMessageId)
+                )
+            } returns listOf(MessageAttachmentMetadataTestData.buildMessageAttachmentMetadata())
+
+            val viewModel = buildConversationDetailViewModel()
+
+            viewModel.state.test {
+                skipItems(4)
+                viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+                skipItems(1)
+                // When
+                viewModel.submit(OnAttachmentClicked(expectedExpanded.message.messageId, AttachmentId(0.toString())))
+                val actualState = awaitItem()
+
+                // Then
+                assertEquals(Effect.of(TextUiModel(R.string.error_attachment_download_in_progress)), actualState.error)
+                coVerify { getAttachmentIntentValues wasNot Called }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `verify error is shown when getting attachment failed`() = runTest {
+        // given
+        val expectedAttachmentCount = Random().nextInt(100)
+        val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
+        val expectedExpanded = MessageWithLabelsSample.InvoiceWithLabel
+        val messages = nonEmptyListOf(
+            defaultExpanded,
+            expectedExpanded
+        )
+        val expandedMessageId = expectedExpanded.message.messageId
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery { getDecryptedMessageBody.invoke(any(), expandedMessageId) } returns
+            DecryptedMessageBody(
+                value = "",
+                MimeType.Html,
+                attachments = (0 until expectedAttachmentCount).map {
+                    aMessageAttachment(id = it.toString())
+                }
+            ).right()
+        coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
+        coEvery {
+            getConversationMessagesAttachmentsStatus(
+                userId,
+                listOf(defaultExpanded.message.messageId, expandedMessageId)
+            )
+        } returns listOf()
+        coEvery {
+            getAttachmentIntentValues(userId, expandedMessageId, AttachmentId(0.toString()))
+        } returns DataError.Local.NoDataCached.left()
+
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.state.test {
+            skipItems(4)
+            viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+            skipItems(1)
+
+            // When
+            viewModel.submit(OnAttachmentClicked(expectedExpanded.message.messageId, AttachmentId(0.toString())))
+            val actualState = awaitItem()
+
+            // Then
+            val expectedMessageId = expectedExpanded.message.messageId
+
+            coVerify { getAttachmentIntentValues(userId, expectedMessageId, AttachmentId(0.toString())) }
+            assertEquals(Effect.of(TextUiModel(R.string.error_get_attachment_failed)), actualState.error)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `Should emit expanding and then collapse state if the message is not decrypted`() = runTest {
         // Given
         val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
@@ -692,6 +845,7 @@ class ConversationDetailViewModelIntegrationTest {
         observeFolderColor: ObserveFolderColorSettings = observeFolderColorSettings,
         observeCustomMailLabels: ObserveCustomMailLabels = observeCustomMailLabelsUseCase,
         observeMessageAttachmentStatus: ObserveMessageAttachmentStatus = observeAttachmentStatus,
+        getAttachmentStatus: GetConversationMessagesAttachmentsStatus = getConversationMessagesAttachmentsStatus,
         detailReducer: ConversationDetailReducer = reducer,
         savedState: SavedStateHandle = savedStateHandle,
         star: StarConversation = starConversation,
@@ -699,6 +853,7 @@ class ConversationDetailViewModelIntegrationTest {
         decryptedMessageBody: GetDecryptedMessageBody = getDecryptedMessageBody,
         markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead =
             markMessageAndConversationReadIfAllRead,
+        getIntentValues: GetAttachmentIntentValues = getAttachmentIntentValues,
         ioDispatcher: CoroutineDispatcher = testDispatcher!!
     ) = ConversationDetailViewModel(
         observePrimaryUserId = observePrimaryUser,
@@ -716,6 +871,7 @@ class ConversationDetailViewModelIntegrationTest {
         observeFolderColor = observeFolderColor,
         observeCustomMailLabels = observeCustomMailLabels,
         observeMessageAttachmentStatus = observeMessageAttachmentStatus,
+        getConversationMessagesAttachmentsStatus = getAttachmentStatus,
         reducer = detailReducer,
         savedStateHandle = savedState,
         starConversation = star,
@@ -724,6 +880,7 @@ class ConversationDetailViewModelIntegrationTest {
         markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllMessagesRead,
         setMessageViewState = setMessageViewState,
         observeConversationViewState = observeConversationViewState,
+        getAttachmentIntentValues = getIntentValues,
         ioDispatcher = ioDispatcher
     )
 

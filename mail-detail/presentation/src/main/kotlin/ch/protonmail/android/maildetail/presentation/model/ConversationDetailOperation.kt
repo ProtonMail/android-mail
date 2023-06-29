@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingErrorBar
@@ -65,6 +66,9 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorMovingToTrash : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingConversation : ConversationDetailEvent, AffectingErrorBar
     object ErrorLabelingConversation : ConversationDetailEvent, AffectingErrorBar
+    object ErrorGettingAttachment : ConversationDetailEvent, AffectingErrorBar
+    object ErrorAttachmentDownloadInProgress : ConversationDetailEvent, AffectingErrorBar
+
     data class ExpandDecryptedMessage(
         val messageId: MessageId,
         val conversationDetailMessageUiModel: ConversationDetailMessageUiModel.Expanded
@@ -99,6 +103,8 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val attachmentId: AttachmentId,
         val status: AttachmentWorkerStatus
     ) : MessageDetailEvent, AffectingMessages
+
+    data class OpenAttachmentEvent(val values: OpenAttachmentIntentValues) : ConversationDetailEvent
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {

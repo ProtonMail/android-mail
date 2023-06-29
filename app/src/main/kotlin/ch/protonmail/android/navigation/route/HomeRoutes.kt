@@ -45,6 +45,7 @@ internal fun NavGraphBuilder.addConversationDetail(
     navController: NavHostController,
     showSnackbar: (message: String) -> Unit,
     openMessageBodyLink: (uri: Uri) -> Unit,
+    openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
     showFeatureMissingSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.Conversation.route) {
@@ -55,6 +56,7 @@ internal fun NavGraphBuilder.addConversationDetail(
                     notifyUserMessage?.let(showSnackbar)
                 },
                 openMessageBodyLink = { url -> openMessageBodyLink(Uri.parse(url)) },
+                openAttachment = openAttachment,
                 showFeatureMissingSnackbar = showFeatureMissingSnackbar
             )
         )
