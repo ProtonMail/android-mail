@@ -66,15 +66,15 @@ import okhttp3.mockwebserver.RecordedRequest
  * @param assetsRootPath a custom root path for the assets.
  */
 class MockNetworkDispatcher(
-    private val assetsRootPath: String = DEFAULT_ASSETS_ROOT_PATH
+    private val assetsRootPath: String = DefaultAssetsRootPath
 ) : Dispatcher() {
 
     private val knownRequests = mutableListOf<MockRequest>()
 
     override fun dispatch(request: RecordedRequest): MockResponse {
-        // This should never happen, just leveraging smart cast with Elvis operator here.
-        val remotePath = request.path
-            ?: throw UnsupportedMockNetworkDispatcherException("❌ Handling requests with `null` path is unsupported.")
+        val remotePath = checkNotNull(request.path) {
+            "❌ Handling requests with `null` path is unsupported."
+        }
 
         val validRequest = knownRequests
             .asSequence()
@@ -99,13 +99,16 @@ class MockNetworkDispatcher(
         if (validRequest.serveOnce) knownRequests.remove(validRequest)
         logger.info("✅ Match found for '$remotePath'.")
 
-        val body = getBodyFromLocalAsset(validRequest.localFilePath) ?: run {
+        val content = getRawContentFromLocalAsset(validRequest.localFilePath) ?: run {
             logger.severe("⚠️ Unable to retrieve content for asset '${validRequest.localFilePath}.")
             return generateAssetNotFoundResponse(validRequest.localFilePath)
         }
 
         logger.info("➡️ Serving ${request.method} $remotePath with $validRequest.")
-        return generateResponse(validRequest.statusCode, body, validRequest.networkDelay)
+
+        return generateResponse(
+            validRequest.statusCode, content, validRequest.mimeType, validRequest.networkDelay
+        )
     }
 
     /**
@@ -115,8 +118,8 @@ class MockNetworkDispatcher(
         knownRequests.addAll(requests)
     }
 
-    private fun getBodyFromLocalAsset(path: String): String? =
-        RawAssets.getRawStringForFilePath(assetsRootPath + path)
+    private fun getRawContentFromLocalAsset(path: String): ByteArray? =
+        RawAssets.getRawContentForPath(assetsRootPath + path)
 
     private fun String.stripQueryParams(): String = substringBefore("?")
 
@@ -137,6 +140,6 @@ class MockNetworkDispatcher(
     companion object {
 
         private val logger = Logger.getLogger(this::class.java.name)
-        private const val DEFAULT_ASSETS_ROOT_PATH = "assets/network-mocks"
+        private const val DefaultAssetsRootPath = "assets/network-mocks"
     }
 }

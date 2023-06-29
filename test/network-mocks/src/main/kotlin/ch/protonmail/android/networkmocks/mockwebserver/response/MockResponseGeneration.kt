@@ -19,8 +19,10 @@
 package ch.protonmail.android.networkmocks.mockwebserver.response
 
 import java.util.concurrent.TimeUnit
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
 import okhttp3.Headers
 import okhttp3.mockwebserver.MockResponse
+import okio.Buffer
 
 /**
  * Delegate to [MockResponse] creation that will force custom JSON content
@@ -34,7 +36,7 @@ internal fun generateAssetNotFoundResponse(forPath: String): MockResponse {
         }
     """.trimIndent()
 
-    return generateResponse(statusCode = 404, body = body)
+    return generateResponse(statusCode = 404, content = body.toByteArray(), mimeType = MimeType.Json)
 }
 
 /**
@@ -49,7 +51,7 @@ internal fun generateUnhandledPathResponse(forPath: String): MockResponse {
         }
     """.trimIndent()
 
-    return generateResponse(statusCode = 404, body = body)
+    return generateResponse(statusCode = 404, content = body.toByteArray(), mimeType = MimeType.Json)
 }
 
 /**
@@ -61,7 +63,8 @@ internal fun generateUnhandledPathResponse(forPath: String): MockResponse {
  */
 internal fun generateResponse(
     statusCode: Int,
-    body: String,
+    content: ByteArray,
+    mimeType: MimeType,
     networkDelay: Long = 0L
 ): MockResponse {
     return MockResponse().apply {
@@ -71,16 +74,20 @@ internal fun generateResponse(
             // If it's a 204, do not set headers/body.
             204 -> setHeadersDelay(networkDelay, TimeUnit.MILLISECONDS)
             else -> {
-                // Content-Type is always JSON, for the time being.
                 val headers = Headers.headersOf(
-                    "Content-Type", "application/json",
-                    "Content-Length", body.length.toString()
+                    "Content-Type", mimeType.value,
+                    "Content-Length", content.size.toString()
                 )
+
+                val bufferedContent = Buffer().write(content)
 
                 setHeaders(headers)
                 setBodyDelay(networkDelay, TimeUnit.MILLISECONDS)
-                setBody(body)
+
+                // Make sure the buffer is closed.
+                bufferedContent.use { setBody(it) }
             }
         }
     }
 }
+

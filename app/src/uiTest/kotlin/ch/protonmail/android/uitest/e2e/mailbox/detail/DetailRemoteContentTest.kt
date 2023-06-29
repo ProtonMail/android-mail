@@ -25,11 +25,11 @@ import ch.protonmail.android.networkmocks.assets.RawAssets
 internal interface DetailRemoteContentTest {
 
     fun getFakeDecryptedMessageBodyWithRemoteContent(assetName: String, mimeType: MimeType): DecryptedMessageBody {
-        val item = requireNotNull(RawAssets.getRawStringForFilePath(htmlAssetsPath + assetName)) {
+        val content = requireNotNull(RawAssets.getRawContentForPath(htmlAssetsPath + assetName)) {
             "Unable to retrieve content for file '$assetName'."
         }
 
-        return DecryptedMessageBody(item, mimeType)
+        return DecryptedMessageBody(String(content), mimeType)
     }
 
     private companion object {

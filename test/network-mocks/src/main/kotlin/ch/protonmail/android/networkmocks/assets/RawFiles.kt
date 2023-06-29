@@ -20,10 +20,10 @@ package ch.protonmail.android.networkmocks.assets
 
 object RawAssets {
 
-    fun getRawStringForFilePath(path: String): String? {
+    fun getRawContentForPath(path: String): ByteArray? {
         val byteStream = this.javaClass.classLoader?.getResourceAsStream(path)
 
         // Propagate the nullability and handle it at the call site.
-        return byteStream?.readBytes()?.toString(Charsets.UTF_8)
+        return byteStream?.readBytes()
     }
 }
