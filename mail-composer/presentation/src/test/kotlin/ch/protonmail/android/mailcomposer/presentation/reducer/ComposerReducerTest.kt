@@ -256,7 +256,7 @@ class ComposerReducerTest(
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
-                from = "",
+                sender = "",
                 to = to,
                 cc = cc,
                 bcc = bcc,
@@ -283,7 +283,7 @@ class ComposerReducerTest(
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
-                from = sender,
+                sender = sender,
                 to = to,
                 cc = cc,
                 bcc = bcc,

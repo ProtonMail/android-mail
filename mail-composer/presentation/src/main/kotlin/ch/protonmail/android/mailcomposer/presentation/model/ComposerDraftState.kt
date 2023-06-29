@@ -36,7 +36,7 @@ data class ComposerDraftState(
         fun empty(draftId: MessageId): ComposerDraftState = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
-                from = "",
+                sender = "",
                 to = emptyList(),
                 cc = emptyList(),
                 bcc = emptyList(),
@@ -54,7 +54,7 @@ data class ComposerDraftState(
 
 data class ComposerFields(
     val draftId: MessageId,
-    val from: String,
+    val sender: String,
     val to: List<RecipientUiModel>,
     val cc: List<RecipientUiModel>,
     val bcc: List<RecipientUiModel>,

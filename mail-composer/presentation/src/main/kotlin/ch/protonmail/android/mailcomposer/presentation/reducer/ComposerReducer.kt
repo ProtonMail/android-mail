@@ -77,12 +77,12 @@ class ComposerReducer @Inject constructor(
         currentState.copy(premiumFeatureMessage = Effect.of(message))
 
     private fun updateStateToSenderError(currentState: ComposerDraftState) = currentState.copy(
-        fields = currentState.fields.copy(from = ""),
+        fields = currentState.fields.copy(sender = ""),
         error = Effect.of(TextUiModel(R.string.composer_error_invalid_sender))
     )
 
     private fun updateSenderTo(currentState: ComposerDraftState, address: String) = currentState.copy(
-        fields = currentState.fields.copy(from = address),
+        fields = currentState.fields.copy(sender = address),
         changeSenderBottomSheetVisibility = Effect.of(false)
     )
 

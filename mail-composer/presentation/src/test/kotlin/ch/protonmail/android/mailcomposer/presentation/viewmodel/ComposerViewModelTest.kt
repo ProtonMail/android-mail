@@ -108,7 +108,7 @@ class ComposerViewModelTest {
         val actual = viewModel.state.value
 
         // Then
-        assertEquals(primaryAddress.email, actual.fields.from)
+        assertEquals(primaryAddress.email, actual.fields.sender)
     }
 
     @Test
