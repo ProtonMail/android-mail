@@ -25,7 +25,9 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSender
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
@@ -47,9 +49,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
     private val storeDraftWithBody: StoreDraftWithBody,
+    private val storeDraftWithSender: StoreDraftWithSender,
     private val reducer: ComposerReducer,
     private val isValidEmailAddress: IsValidEmailAddress,
     private val getPrimaryAddress: GetPrimaryAddress,
+    private val resolveUserAddress: ResolveUserAddress,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
@@ -70,10 +74,23 @@ class ComposerViewModel @Inject constructor(
 
     internal fun submit(action: ComposerAction) {
         viewModelScope.launch {
-            if (action is ComposerAction.DraftBodyChanged) {
-                storeDraftWithBody(messageId, action.draftBody, senderAddress(), primaryUserId.first())
+            val userId = primaryUserId.first()
+            when (action) {
+                is ComposerAction.DraftBodyChanged -> storeDraftWithBody(
+                    messageId, action.draftBody, senderAddress(), userId
+                )
+                is ComposerAction.SenderChanged -> {
+                    val event = resolveUserAddress(userId, action.sender.email).fold(
+                        ifLeft = { ComposerEvent.ChangeSenderFailed },
+                        ifRight = { userAddress ->
+                            storeDraftWithSender(messageId, userAddress, userId)
+                            action
+                        }
+                    )
+                    emitNewStateFor(event)
+                }
+                else -> emitNewStateFor(action)
             }
-            emitNewStateFor(action)
         }
     }
 

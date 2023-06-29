@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-label:domain"))
+    implementation(project(":mail-pagination:domain"))
 
     testImplementation(Dependencies.testLibs)
     // Used to access sample test data (here instead of test-data as shared with compose previews / android tests)

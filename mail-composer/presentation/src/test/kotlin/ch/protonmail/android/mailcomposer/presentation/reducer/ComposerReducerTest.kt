@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.Reci
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsCcChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsToChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
@@ -230,6 +231,21 @@ class ComposerReducerTest(
             )
         }
 
+        private val DefaultSenderToChangeSenderFailed = TestTransition(
+            name = "Should update the state showing an error and preserving the previous sender address",
+            currentState = aNotSubmittableState(
+                draftId = messageId,
+                sender = SenderUiModel("default@pm.me")
+            ),
+            operation = ComposerEvent.ChangeSenderFailed,
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                sender = SenderUiModel("default@pm.me"),
+                error = Effect.of(TextUiModel(R.string.composer_error_resolving_sender_address)),
+                changeSenderBottomSheetVisibility = Effect.of(false)
+            )
+        )
+
 
         private val transitions = listOf(
             EmptyToSubmittableToField,
@@ -244,7 +260,8 @@ class ComposerReducerTest(
             EmptyToUpgradePlan,
             EmptyToSenderAddressesList,
             EmptyToErrorWhenUserPlanUnknown,
-            EmptyToUpdatedSender
+            EmptyToUpdatedSender,
+            DefaultSenderToChangeSenderFailed
         )
 
         private fun aSubmittableState(

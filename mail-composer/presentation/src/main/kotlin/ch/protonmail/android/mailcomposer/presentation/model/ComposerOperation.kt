@@ -36,4 +36,5 @@ internal sealed interface ComposerAction : ComposerOperation {
 sealed interface ComposerEvent : ComposerOperation {
     data class DefaultSenderReceived(val sender: SenderUiModel) : ComposerEvent
     object GetDefaultSenderError : ComposerEvent
+    object ChangeSenderFailed : ComposerEvent
 }

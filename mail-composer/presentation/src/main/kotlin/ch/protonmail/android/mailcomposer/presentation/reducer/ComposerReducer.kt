@@ -47,7 +47,13 @@ class ComposerReducer @Inject constructor(
             is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, operation.sender)
             is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
             is ComposerAction.OnChangeSender -> updateStateForChangeSender(currentState)
+            is ComposerEvent.ChangeSenderFailed -> updateStateForChangeSenderFailed(currentState)
         }
+
+    private fun updateStateForChangeSenderFailed(currentState: ComposerDraftState) = currentState.copy(
+        changeSenderBottomSheetVisibility = Effect.of(false),
+        error = Effect.of(TextUiModel(R.string.composer_error_resolving_sender_address))
+    )
 
     private suspend fun updateStateForChangeSender(currentState: ComposerDraftState) = getChangeSenderAddresses().fold(
         ifLeft = {

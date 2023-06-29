@@ -29,7 +29,9 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSender
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
@@ -55,11 +57,13 @@ class ComposerViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>(relaxUnitFun = true)
+    private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
+    private val storeDraftWithSenderMock = mockk<StoreDraftWithSender>()
     private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
     private val isValidEmailAddressMock = mockk<IsValidEmailAddress>()
     private val getPrimaryAddressMock = mockk<GetPrimaryAddress>()
     private val provideNewDraftIdMock = mockk<ProvideNewDraftId>()
+    private val resolveUserAddressMock = mockk<ResolveUserAddress>()
     private val getChangeSenderAddresses = mockk<GetChangeSenderAddresses> {
         coEvery { this@mockk.invoke() } returns GetChangeSenderAddresses.Error.UpgradeToChangeSender.left()
     }
@@ -68,9 +72,11 @@ class ComposerViewModelTest {
     private val viewModel
         get() = ComposerViewModel(
             storeDraftWithBodyMock,
+            storeDraftWithSenderMock,
             reducer,
             isValidEmailAddressMock,
             getPrimaryAddressMock,
+            resolveUserAddressMock,
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
@@ -80,9 +86,15 @@ class ComposerViewModelTest {
         // Given
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedDraftBody = DraftBody(RawDraftBody)
-        val expectedUserAddress = expectedSenderAddress { UserAddressSample.build() }
         val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedPrimaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         val action = ComposerAction.DraftBodyChanged(expectedDraftBody)
+        expectStoreDraftBodyCalled(
+            expectedMessageId,
+            expectedDraftBody,
+            expectedPrimaryAddress,
+            expectedUserId
+        )
 
         // When
         viewModel.submit(action)
@@ -92,7 +104,33 @@ class ComposerViewModelTest {
             storeDraftWithBodyMock(
                 expectedMessageId,
                 expectedDraftBody,
-                expectedUserAddress,
+                expectedPrimaryAddress,
+                expectedUserId
+            )
+        }
+    }
+
+    @Test
+    fun `should store draft sender when sender address changes`() = runTest {
+        // Given
+        val expectedSenderEmail = UserAddressSample.AliasAddress.email
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedSenderAddress = expectedSenderAddress(expectedUserId, expectedSenderEmail) {
+            UserAddressSample.AliasAddress
+        }
+        val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail))
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStoreDraftSenderCalled(expectedMessageId, expectedSenderAddress, expectedUserId)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        coVerify {
+            storeDraftWithSenderMock(
+                expectedMessageId,
+                expectedSenderAddress,
                 expectedUserId
             )
         }
@@ -142,8 +180,44 @@ class ComposerViewModelTest {
         coEvery { getPrimaryAddressMock(userId) } returns it.left()
     }
 
-    private fun expectedSenderAddress(senderAddress: () -> UserAddress): UserAddress =
-        senderAddress().also { UserAddressSample.PrimaryAddress }
+    private fun expectedSenderAddress(
+        userId: UserId,
+        email: String,
+        senderAddress: () -> UserAddress
+    ): UserAddress = senderAddress().also {
+        coEvery { resolveUserAddressMock(userId, email) } returns it.right()
+    }
+
+    private fun expectStoreDraftBodyCalled(
+        expectedMessageId: MessageId,
+        expectedDraftBody: DraftBody,
+        expectedPrimaryAddress: UserAddress,
+        expectedUserId: UserId
+    ) {
+        coEvery {
+            storeDraftWithBodyMock(
+                expectedMessageId,
+                expectedDraftBody,
+                expectedPrimaryAddress,
+                expectedUserId
+            )
+        } returns Unit.right()
+    }
+
+    private fun expectStoreDraftSenderCalled(
+        expectedMessageId: MessageId,
+        expectedSenderAddress: UserAddress,
+        expectedUserId: UserId
+    ) {
+        coEvery {
+            storeDraftWithSenderMock(
+                expectedMessageId,
+                expectedSenderAddress,
+                expectedUserId
+            )
+        } returns Unit.right()
+    }
+
 
     companion object TestData {
 
