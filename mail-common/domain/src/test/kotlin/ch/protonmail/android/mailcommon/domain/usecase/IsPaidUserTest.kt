@@ -67,7 +67,6 @@ internal class IsPaidUserTest {
         // Given
         every { observeUser.invoke(userId) } returns flowOf(null)
 
-
         // When
         val actual = isPaidUser(userId)
 

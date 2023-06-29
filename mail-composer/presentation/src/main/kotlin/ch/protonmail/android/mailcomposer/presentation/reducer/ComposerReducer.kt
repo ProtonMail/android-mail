@@ -27,11 +27,11 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
-import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
+import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import javax.inject.Inject
 
 class ComposerReducer @Inject constructor(
-    private val getChangeSenderAddresses: GetChangeSenderAddresses
+    private val getComposerSenderAddresses: GetComposerSenderAddresses
 ) {
 
     @Suppress("NotImplementedDeclaration", "ForbiddenComment")
@@ -55,32 +55,33 @@ class ComposerReducer @Inject constructor(
         error = Effect.of(TextUiModel(R.string.composer_error_resolving_sender_address))
     )
 
-    private suspend fun updateStateForChangeSender(currentState: ComposerDraftState) = getChangeSenderAddresses().fold(
-        ifLeft = {
-            when (it) {
-                GetChangeSenderAddresses.Error.UpgradeToChangeSender -> updateStateToPaidFeatureError(
-                    currentState,
-                    TextUiModel(R.string.composer_change_sender_paid_feature)
-                )
-                GetChangeSenderAddresses.Error.FailedDeterminingUserSubscription,
-                GetChangeSenderAddresses.Error.FailedGettingPrimaryUser -> updateStateToError(
-                    currentState,
-                    TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription)
+    private suspend fun updateStateForChangeSender(currentState: ComposerDraftState) = getComposerSenderAddresses()
+        .fold(
+            ifLeft = {
+                when (it) {
+                    GetComposerSenderAddresses.Error.UpgradeToChangeSender -> updateStateToPaidFeatureMessage(
+                        currentState,
+                        TextUiModel(R.string.composer_change_sender_paid_feature)
+                    )
+                    GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription,
+                    GetComposerSenderAddresses.Error.FailedGettingPrimaryUser -> updateStateToError(
+                        currentState,
+                        TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription)
+                    )
+                }
+            },
+            ifRight = { userAddresses ->
+                currentState.copy(
+                    senderAddresses = userAddresses.map { SenderUiModel(it.email) },
+                    changeSenderBottomSheetVisibility = Effect.of(true)
                 )
             }
-        },
-        ifRight = { userAddresses ->
-            currentState.copy(
-                senderAddresses = userAddresses.map { SenderUiModel(it.email) },
-                changeSenderBottomSheetVisibility = Effect.of(true)
-            )
-        }
-    )
+        )
 
     private fun updateStateToError(currentState: ComposerDraftState, message: TextUiModel) =
         currentState.copy(error = Effect.of(message))
 
-    private fun updateStateToPaidFeatureError(currentState: ComposerDraftState, message: TextUiModel) =
+    private fun updateStateToPaidFeatureMessage(currentState: ComposerDraftState, message: TextUiModel) =
         currentState.copy(premiumFeatureMessage = Effect.of(message))
 
     private fun updateStateToSenderError(currentState: ComposerDraftState) = currentState.copy(

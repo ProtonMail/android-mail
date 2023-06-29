@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.presentation.usecase
+package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
@@ -24,17 +24,16 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcomposer.domain.usecase.ObserveUserAddresses
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
+import org.junit.Assert
 import org.junit.Test
 
-class GetChangeSenderAddressesTest {
+class GetComposerSenderAddressesTest {
 
     private val userId = UserIdTestData.userId
     private val addresses = listOf(UserAddressSample.PrimaryAddress, UserAddressSample.AliasAddress)
@@ -42,14 +41,12 @@ class GetChangeSenderAddressesTest {
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
-    private val isPaidUser = mockk<IsPaidUser> {
-        coEvery { this@mockk(userId) } returns true.right()
-    }
+    private val isPaidUser = mockk<IsPaidUser>()
     private val observeUserAddresses = mockk<ObserveUserAddresses> {
         coEvery { this@mockk(userId) } returns flowOf(addresses)
     }
 
-    private val getChangeSenderAddresses = GetChangeSenderAddresses(
+    private val getComposerSenderAddresses = GetComposerSenderAddresses(
         observePrimaryUserId,
         isPaidUser,
         observeUserAddresses
@@ -61,10 +58,10 @@ class GetChangeSenderAddressesTest {
         coEvery { isPaidUser(userId) } returns false.right()
 
         // When
-        val actual = getChangeSenderAddresses()
+        val actual = getComposerSenderAddresses()
 
         // Then
-        assertEquals(GetChangeSenderAddresses.Error.UpgradeToChangeSender.left(), actual)
+        Assert.assertEquals(GetComposerSenderAddresses.Error.UpgradeToChangeSender.left(), actual)
     }
 
     @Test
@@ -73,10 +70,10 @@ class GetChangeSenderAddressesTest {
         coEvery { isPaidUser(userId) } returns true.right()
 
         // When
-        val actual = getChangeSenderAddresses()
+        val actual = getComposerSenderAddresses()
 
         // Then
-        assertEquals(addresses.right(), actual)
+        Assert.assertEquals(addresses.right(), actual)
     }
 
     @Test
@@ -91,11 +88,11 @@ class GetChangeSenderAddressesTest {
         coEvery { observeUserAddresses(userId) } returns flowOf(disabledExternalAddresses)
 
         // When
-        val actual = getChangeSenderAddresses()
+        val actual = getComposerSenderAddresses()
 
         // Then
         val expected = listOf(UserAddressSample.PrimaryAddress)
-        assertEquals(expected.right(), actual)
+        Assert.assertEquals(expected.right(), actual)
     }
 
     @Test
@@ -104,10 +101,10 @@ class GetChangeSenderAddressesTest {
         every { observePrimaryUserId() } returns flowOf(null)
 
         // When
-        val actual = getChangeSenderAddresses()
+        val actual = getComposerSenderAddresses()
 
         // Then
-        assertEquals(GetChangeSenderAddresses.Error.FailedGettingPrimaryUser.left(), actual)
+        Assert.assertEquals(GetComposerSenderAddresses.Error.FailedGettingPrimaryUser.left(), actual)
     }
 
     @Test
@@ -116,9 +113,9 @@ class GetChangeSenderAddressesTest {
         coEvery { isPaidUser(userId) } returns DataError.Local.NoDataCached.left()
 
         // When
-        val actual = getChangeSenderAddresses()
+        val actual = getComposerSenderAddresses()
 
         // Then
-        assertEquals(GetChangeSenderAddresses.Error.FailedDeterminingUserSubscription.left(), actual)
+        Assert.assertEquals(GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription.left(), actual)
     }
 }

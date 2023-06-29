@@ -37,7 +37,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Invalid
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Valid
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
-import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
+import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -52,16 +52,16 @@ class ComposerReducerTest(
     private val testName: String,
     private val testTransition: TestTransition
 ) {
-    private val getChangeSenderAddresses = mockk<GetChangeSenderAddresses> {
+    private val getComposerSenderAddresses = mockk<GetComposerSenderAddresses> {
         val result = when (testTransition.mockSenderAddress) {
-            MockSenderAddress.Error -> GetChangeSenderAddresses.Error.FailedDeterminingUserSubscription.left()
-            MockSenderAddress.NotAllowed -> GetChangeSenderAddresses.Error.UpgradeToChangeSender.left()
+            MockSenderAddress.Error -> GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription.left()
+            MockSenderAddress.NotAllowed -> GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
             MockSenderAddress.Success -> addresses.right()
         }
         coEvery { this@mockk.invoke() } returns result
     }
 
-    private val composerReducer = ComposerReducer(getChangeSenderAddresses)
+    private val composerReducer = ComposerReducer(getComposerSenderAddresses)
 
     @Test
     fun `Test composer transition states`() = runTest {

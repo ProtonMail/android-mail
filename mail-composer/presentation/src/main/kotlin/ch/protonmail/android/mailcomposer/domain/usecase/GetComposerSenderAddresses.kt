@@ -16,20 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.presentation.usecase
+package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcomposer.domain.usecase.ObserveUserAddresses
 import kotlinx.coroutines.flow.first
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.user.domain.entity.isExternal
 import javax.inject.Inject
 
-class GetChangeSenderAddresses @Inject constructor(
+class GetComposerSenderAddresses @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val isPaidUser: IsPaidUser,
     private val observeUserAddresses: ObserveUserAddresses
