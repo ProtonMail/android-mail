@@ -34,12 +34,18 @@ data class MockRequest(
     val remotePath: String,
     val localFilePath: String,
     val statusCode: Int,
+    val mimeType: MimeType = MimeType.Json,
     val ignoreQueryParams: Boolean = false,
     val wildcardMatch: Boolean = false,
     val serveOnce: Boolean = false,
     val networkDelay: Long = 0L,
     val priority: MockPriority = MockPriority.Lowest
 )
+
+/**
+ * Returns a new [MockRequest] with an updated `mimeType` value.
+ */
+infix fun MockRequest.withMimeType(mimeType: MimeType) = this.copy(mimeType = mimeType)
 
 /**
  * Returns a new [MockRequest] with an updated `ignoreQueryParams` value.
