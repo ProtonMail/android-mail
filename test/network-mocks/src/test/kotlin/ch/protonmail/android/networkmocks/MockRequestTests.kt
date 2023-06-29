@@ -18,12 +18,14 @@
 
 package ch.protonmail.android.networkmocks
 
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockRequest
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
+import ch.protonmail.android.networkmocks.mockwebserver.requests.withMimeType
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withNetworkDelay
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
@@ -32,6 +34,32 @@ import org.junit.Test
 
 @Suppress("MaxLineLength")
 internal class MockRequestTests {
+
+    @Test
+    fun `when mimeType is set on a MockRequest, then the request is updated properly`() {
+        // Given
+        val expected = MockRequest(
+            remotePath = "dummy-path",
+            localFilePath = "dummy-path-local",
+            statusCode = 200,
+            mimeType = MimeType.OctetStream,
+            ignoreQueryParams = true
+        )
+
+        val request = MockRequest(
+            remotePath = "dummy-path",
+            localFilePath = "dummy-path-local",
+            statusCode = 200,
+            mimeType = MimeType.Json,
+            ignoreQueryParams = true
+        )
+
+        // When
+        val actual = request withMimeType MimeType.OctetStream
+
+        // Then
+        assertEquals(expected, actual)
+    }
 
     @Test
     fun `when ignoreQueryParams is set on a MockRequest, then the request is updated properly`() {
@@ -159,6 +187,7 @@ internal class MockRequestTests {
             remotePath = "dummy-path",
             localFilePath = "dummy-path-local",
             statusCode = 201,
+            mimeType = MimeType.Json,
             ignoreQueryParams = true,
             wildcardMatch = false,
             serveOnce = true,

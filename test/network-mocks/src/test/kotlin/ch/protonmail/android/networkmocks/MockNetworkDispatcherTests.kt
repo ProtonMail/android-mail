@@ -19,11 +19,13 @@
 package ch.protonmail.android.networkmocks
 
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
+import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
+import ch.protonmail.android.networkmocks.mockwebserver.requests.withMimeType
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +54,7 @@ internal class MockNetworkDispatcherTests {
     }
 
     @Test
-    fun `when the dispatcher handles a mock request, the response content type is always application json`() {
+    fun `when the dispatcher handles a mock request, the response content type defaults to application json`() {
         // Given
         val expectedContentType = "application/json"
         val request = buildRequest("api/v1/test")
@@ -60,6 +62,27 @@ internal class MockNetworkDispatcherTests {
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
                 "/api/v1/test" respondWith "/api/v1/test_1.json" withStatusCode 200
+            )
+        }
+
+        // When
+        val response = runBlocking { performRequest(request) }
+
+        // Then
+        assertEquals(expectedContentType, response.headers["Content-Type"])
+    }
+
+    @Test
+    fun `when the dispatcher handles a mock request with a custom mime type, the response headers are consistent`() {
+        // Given
+        val expectedContentType = "application/octet-stream"
+        val request = buildRequest("api/v1/test")
+
+        mockWebServer.dispatcher = mockNetworkDispatcher {
+            addMockRequests(
+                "/api/v1/test"
+                    respondWith "/api/v1/test_no_json.zip"
+                    withStatusCode 200 withMimeType MimeType.OctetStream
             )
         }
 
