@@ -27,7 +27,7 @@ data class ComposerDraftState(
     val premiumFeatureMessage: Effect<TextUiModel>,
     val error: Effect<TextUiModel>,
     val isSubmittable: Boolean,
-    val senderAddresses: List<String>,
+    val senderAddresses: List<SenderUiModel>,
     val changeSenderBottomSheetVisibility: Effect<Boolean>
 ) {
 
@@ -36,7 +36,7 @@ data class ComposerDraftState(
         fun empty(draftId: MessageId): ComposerDraftState = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
-                sender = "",
+                sender = SenderUiModel(""),
                 to = emptyList(),
                 cc = emptyList(),
                 bcc = emptyList(),
@@ -54,7 +54,7 @@ data class ComposerDraftState(
 
 data class ComposerFields(
     val draftId: MessageId,
-    val sender: String,
+    val sender: SenderUiModel,
     val to: List<RecipientUiModel>,
     val cc: List<RecipientUiModel>,
     val bcc: List<RecipientUiModel>,

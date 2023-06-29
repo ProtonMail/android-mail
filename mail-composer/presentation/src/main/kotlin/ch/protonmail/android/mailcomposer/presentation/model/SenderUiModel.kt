@@ -16,19 +16,8 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.presentation.ui
+package ch.protonmail.android.mailcomposer.presentation.model
 
-import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
-import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
-
-internal data class ComposerFormActions(
-    val onToggleRecipients: (Boolean) -> Unit,
-    val onFocusChanged: (FocusedFieldType) -> Unit,
-    val onSenderChanged: (SenderUiModel) -> Unit,
-    val onToChanged: (List<RecipientUiModel>) -> Unit,
-    val onCcChanged: (List<RecipientUiModel>) -> Unit,
-    val onBccChanged: (List<RecipientUiModel>) -> Unit,
-    val onSubjectChanged: (String) -> Unit,
-    val onBodyChanged: (String) -> Unit,
-    val onChangeSender: () -> Unit
+data class SenderUiModel(
+    val email: String
 )

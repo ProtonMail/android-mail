@@ -23,7 +23,7 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 sealed interface ComposerOperation
 
 internal sealed interface ComposerAction : ComposerOperation {
-    data class SenderChanged(val sender: String) : ComposerAction
+    data class SenderChanged(val sender: SenderUiModel) : ComposerAction
     data class RecipientsToChanged(val recipients: List<RecipientUiModel>) : ComposerAction
     data class RecipientsCcChanged(val recipients: List<RecipientUiModel>) : ComposerAction
     data class RecipientsBccChanged(val recipients: List<RecipientUiModel>) : ComposerAction
@@ -34,6 +34,6 @@ internal sealed interface ComposerAction : ComposerOperation {
 }
 
 sealed interface ComposerEvent : ComposerOperation {
-    data class DefaultSenderReceived(val address: String) : ComposerEvent
+    data class DefaultSenderReceived(val sender: SenderUiModel) : ComposerEvent
     object GetDefaultSenderError : ComposerEvent
 }

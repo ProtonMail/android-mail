@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
+import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -108,7 +109,7 @@ class ComposerViewModelTest {
         val actual = viewModel.state.value
 
         // Then
-        assertEquals(primaryAddress.email, actual.fields.sender)
+        assertEquals(SenderUiModel(primaryAddress.email), actual.fields.sender)
     }
 
     @Test

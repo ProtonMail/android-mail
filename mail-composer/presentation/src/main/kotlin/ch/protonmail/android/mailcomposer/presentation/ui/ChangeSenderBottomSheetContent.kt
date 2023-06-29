@@ -29,13 +29,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import me.proton.core.compose.component.ProtonRawListItem
 import me.proton.core.compose.theme.ProtonDimens
 
 @Composable
 fun ChangeSenderBottomSheetContent(
-    addresses: List<String>,
-    onSenderSelected: (String) -> Unit,
+    addresses: List<SenderUiModel>,
+    onSenderSelected: (SenderUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
@@ -48,7 +49,7 @@ fun ChangeSenderBottomSheetContent(
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = it,
+                    text = it.email,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

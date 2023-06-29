@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
+import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,7 +64,7 @@ class ComposerViewModel @Inject constructor(
         primaryUserId.onEach { userId ->
             getPrimaryAddress(userId)
                 .onLeft { emitNewStateFor(ComposerEvent.GetDefaultSenderError) }
-                .onRight { emitNewStateFor(ComposerEvent.DefaultSenderReceived(it.email)) }
+                .onRight { emitNewStateFor(ComposerEvent.DefaultSenderReceived(SenderUiModel(it.email))) }
         }.launchIn(viewModelScope)
     }
 

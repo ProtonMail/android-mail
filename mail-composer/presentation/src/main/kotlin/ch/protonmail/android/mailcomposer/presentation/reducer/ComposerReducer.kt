@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.usecase.GetChangeSenderAddresses
 import javax.inject.Inject
 
@@ -43,7 +44,7 @@ class ComposerReducer @Inject constructor(
             is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, operation.recipients)
             is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, operation.recipients)
             is ComposerAction.SubjectChanged -> TODO()
-            is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, operation.address)
+            is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, operation.sender)
             is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
             is ComposerAction.OnChangeSender -> updateStateForChangeSender(currentState)
         }
@@ -64,7 +65,7 @@ class ComposerReducer @Inject constructor(
         },
         ifRight = { userAddresses ->
             currentState.copy(
-                senderAddresses = userAddresses.map { it.email },
+                senderAddresses = userAddresses.map { SenderUiModel(it.email) },
                 changeSenderBottomSheetVisibility = Effect.of(true)
             )
         }
@@ -77,12 +78,12 @@ class ComposerReducer @Inject constructor(
         currentState.copy(premiumFeatureMessage = Effect.of(message))
 
     private fun updateStateToSenderError(currentState: ComposerDraftState) = currentState.copy(
-        fields = currentState.fields.copy(sender = ""),
+        fields = currentState.fields.copy(sender = SenderUiModel("")),
         error = Effect.of(TextUiModel(R.string.composer_error_invalid_sender))
     )
 
-    private fun updateSenderTo(currentState: ComposerDraftState, address: String) = currentState.copy(
-        fields = currentState.fields.copy(sender = address),
+    private fun updateSenderTo(currentState: ComposerDraftState, sender: SenderUiModel) = currentState.copy(
+        fields = currentState.fields.copy(sender = sender),
         changeSenderBottomSheetVisibility = Effect.of(false)
     )
 
