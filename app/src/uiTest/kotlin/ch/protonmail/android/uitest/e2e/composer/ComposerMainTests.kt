@@ -38,6 +38,8 @@ import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
+import ch.protonmail.android.uitest.robot.composer.section.recipients.bccRecipientSection
+import ch.protonmail.android.uitest.robot.composer.section.recipients.ccRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.toRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.verify
 import ch.protonmail.android.uitest.robot.composer.section.subjectSection
@@ -59,7 +61,7 @@ import org.junit.Test
 @SmokeExtendedTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
+internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut), ComposerTests {
 
     @JvmField
     @BindValue
@@ -274,6 +276,43 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
                 dismissKeyboard()
 
                 verify { keyboardIsNotShown() }
+            }
+        }
+    }
+
+    @Test
+    @TestId("190226 - 190227")
+    fun testCollapseExpandChevron() {
+        mockWebServer.dispatcher = composerMockNetworkDispatcher()
+
+        navigator {
+            navigateTo(Destination.Composer)
+        }
+
+        composerRobot {
+            toRecipientSection {
+                expandCcAndBccFields()
+                verify { isEmptyField() }
+            }
+
+            ccRecipientSection {
+                verify { isEmptyField() }
+            }
+
+            bccRecipientSection {
+                verify { isEmptyField() }
+            }
+
+            toRecipientSection {
+                hideCcAndBccFields()
+            }
+
+            ccRecipientSection {
+                verify { isHidden() }
+            }
+
+            bccRecipientSection {
+                verify { isHidden() }
             }
         }
     }

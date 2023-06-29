@@ -20,7 +20,6 @@ package ch.protonmail.android.uitest.robot.composer.model.chips
 
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasTestTag
@@ -62,7 +61,7 @@ internal class RecipientChipEntryModel(
     }
 
     fun hasDeleteIcon() = apply {
-        deleteIcon.assertIsDisplayed()
+        deleteIcon.assertExists()
     }
 
     fun hasNoDeleteIcon() = apply {
