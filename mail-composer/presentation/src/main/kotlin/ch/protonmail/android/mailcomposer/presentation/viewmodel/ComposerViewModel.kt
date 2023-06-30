@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
+import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
@@ -54,6 +56,7 @@ class ComposerViewModel @Inject constructor(
     private val isValidEmailAddress: IsValidEmailAddress,
     private val getPrimaryAddress: GetPrimaryAddress,
     private val resolveUserAddress: ResolveUserAddress,
+    private val getComposerSenderAddresses: GetComposerSenderAddresses,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
 ) : ViewModel() {
@@ -89,6 +92,7 @@ class ComposerViewModel @Inject constructor(
                     )
                     emitNewStateFor(event)
                 }
+                is ComposerAction.OnChangeSender -> emitNewStateFor(onChangeSender())
                 else -> emitNewStateFor(action)
             }
         }
@@ -96,10 +100,23 @@ class ComposerViewModel @Inject constructor(
 
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
 
+    private suspend fun onChangeSender() = getComposerSenderAddresses().fold(
+        ifLeft = { changeSenderError ->
+            when (changeSenderError) {
+                Error.UpgradeToChangeSender -> ComposerEvent.UpgradeToChangeSender
+                Error.FailedDeterminingUserSubscription,
+                Error.FailedGettingPrimaryUser -> ComposerEvent.ErrorGettingSubscriptionToChangeSender
+            }
+        },
+        ifRight = { userAddresses ->
+            ComposerEvent.SenderAddressesReceived(userAddresses.map { SenderUiModel(it.email) })
+        }
+    )
+
     // This is a temp code till we implement senders properly
     private fun senderAddress(): UserAddress = UserAddressSample.PrimaryAddress
 
-    private suspend fun emitNewStateFor(operation: ComposerOperation) {
+    private fun emitNewStateFor(operation: ComposerOperation) {
         val currentState = state.value
         mutableState.value = reducer.newStateFrom(currentState, operation)
     }

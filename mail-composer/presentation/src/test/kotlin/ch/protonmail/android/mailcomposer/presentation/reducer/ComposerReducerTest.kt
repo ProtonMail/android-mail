@@ -19,8 +19,6 @@
 package ch.protonmail.android.mailcomposer.presentation.reducer
 
 import java.util.UUID
-import arrow.core.left
-import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -37,10 +35,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Invalid
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel.Valid
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
-import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -52,16 +47,7 @@ class ComposerReducerTest(
     private val testName: String,
     private val testTransition: TestTransition
 ) {
-    private val getComposerSenderAddresses = mockk<GetComposerSenderAddresses> {
-        val result = when (testTransition.mockSenderAddress) {
-            MockSenderAddress.Error -> GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription.left()
-            MockSenderAddress.NotAllowed -> GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
-            MockSenderAddress.Success -> addresses.right()
-        }
-        coEvery { this@mockk.invoke() } returns result
-    }
-
-    private val composerReducer = ComposerReducer(getComposerSenderAddresses)
+    private val composerReducer = ComposerReducer()
 
     @Test
     fun `Test composer transition states`() = runTest {
@@ -178,27 +164,25 @@ class ComposerReducerTest(
             TestTransition(
                 name = "Should generate a state showing 'upgrade plan' message when free user tries to change sender",
                 currentState = ComposerDraftState.empty(messageId),
-                operation = ComposerAction.OnChangeSender,
+                operation = ComposerEvent.UpgradeToChangeSender,
                 expectedState = aNotSubmittableState(
                     draftId = messageId,
                     premiumFeatureMessage = premiumFeatureMessage,
                     error = Effect.empty()
-                ),
-                mockSenderAddress = MockSenderAddress.NotAllowed
+                )
             )
         }
 
         private val EmptyToSenderAddressesList = TestTransition(
             name = "Should generate a state showing change sender bottom sheet when paid tries to change sender",
             currentState = ComposerDraftState.empty(messageId),
-            operation = ComposerAction.OnChangeSender,
+            operation = ComposerEvent.SenderAddressesReceived(addresses.map { SenderUiModel(it.email) }),
             expectedState = aNotSubmittableState(
                 draftId = messageId,
                 error = Effect.empty(),
                 senderAddresses = addresses.map { SenderUiModel(it.email) },
                 changeSenderBottomSheetVisibility = Effect.of(true)
-            ),
-            mockSenderAddress = MockSenderAddress.Success
+            )
         )
 
         private val EmptyToErrorWhenUserPlanUnknown = with(UUID.randomUUID().toString()) {
@@ -207,12 +191,11 @@ class ComposerReducerTest(
             TestTransition(
                 name = "Should generate an error state when failing to determine if user can change sender",
                 currentState = ComposerDraftState.empty(messageId),
-                operation = ComposerAction.OnChangeSender,
+                operation = ComposerEvent.ErrorGettingSubscriptionToChangeSender,
                 expectedState = aNotSubmittableState(
                     draftId = messageId,
                     error = Effect.of(error)
-                ),
-                mockSenderAddress = MockSenderAddress.Error
+                )
             )
         }
 
@@ -321,14 +304,7 @@ class ComposerReducerTest(
             val name: String,
             val currentState: ComposerDraftState,
             val operation: ComposerOperation,
-            val expectedState: ComposerDraftState,
-            val mockSenderAddress: MockSenderAddress = MockSenderAddress.Success
+            val expectedState: ComposerDraftState
         )
-
-        sealed interface MockSenderAddress {
-            object Success : MockSenderAddress
-            object NotAllowed : MockSenderAddress
-            object Error : MockSenderAddress
-        }
     }
 }

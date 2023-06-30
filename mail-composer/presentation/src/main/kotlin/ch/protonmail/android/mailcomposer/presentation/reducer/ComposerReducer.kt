@@ -27,18 +27,14 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
-import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import javax.inject.Inject
 
-class ComposerReducer @Inject constructor(
-    private val getComposerSenderAddresses: GetComposerSenderAddresses
-) {
+class ComposerReducer @Inject constructor() {
 
     @Suppress("NotImplementedDeclaration", "ForbiddenComment")
     // TODO the from, subject and body are not considered here yet, we'll add it to the draft model later
-    suspend fun newStateFrom(currentState: ComposerDraftState, operation: ComposerOperation): ComposerDraftState =
+    fun newStateFrom(currentState: ComposerDraftState, operation: ComposerOperation): ComposerDraftState =
         when (operation) {
-            is ComposerAction.DraftBodyChanged -> currentState
             is ComposerAction.SenderChanged -> updateSenderTo(currentState, operation.sender)
             is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(currentState, operation.recipients)
             is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, operation.recipients)
@@ -46,8 +42,18 @@ class ComposerReducer @Inject constructor(
             is ComposerAction.SubjectChanged -> TODO()
             is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, operation.sender)
             is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
-            is ComposerAction.OnChangeSender -> updateStateForChangeSender(currentState)
             is ComposerEvent.ChangeSenderFailed -> updateStateForChangeSenderFailed(currentState)
+            is ComposerEvent.ErrorGettingSubscriptionToChangeSender -> currentState.copy(
+                error = Effect.of(TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription))
+            )
+            is ComposerEvent.UpgradeToChangeSender -> updateStateToPaidFeatureMessage(currentState)
+            is ComposerEvent.SenderAddressesReceived -> currentState.copy(
+                senderAddresses = operation.senders,
+                changeSenderBottomSheetVisibility = Effect.of(true)
+            )
+
+            is ComposerAction.OnChangeSender,
+            is ComposerAction.DraftBodyChanged -> currentState
         }
 
     private fun updateStateForChangeSenderFailed(currentState: ComposerDraftState) = currentState.copy(
@@ -55,34 +61,8 @@ class ComposerReducer @Inject constructor(
         error = Effect.of(TextUiModel(R.string.composer_error_resolving_sender_address))
     )
 
-    private suspend fun updateStateForChangeSender(currentState: ComposerDraftState) = getComposerSenderAddresses()
-        .fold(
-            ifLeft = {
-                when (it) {
-                    GetComposerSenderAddresses.Error.UpgradeToChangeSender -> updateStateToPaidFeatureMessage(
-                        currentState,
-                        TextUiModel(R.string.composer_change_sender_paid_feature)
-                    )
-                    GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription,
-                    GetComposerSenderAddresses.Error.FailedGettingPrimaryUser -> updateStateToError(
-                        currentState,
-                        TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription)
-                    )
-                }
-            },
-            ifRight = { userAddresses ->
-                currentState.copy(
-                    senderAddresses = userAddresses.map { SenderUiModel(it.email) },
-                    changeSenderBottomSheetVisibility = Effect.of(true)
-                )
-            }
-        )
-
-    private fun updateStateToError(currentState: ComposerDraftState, message: TextUiModel) =
-        currentState.copy(error = Effect.of(message))
-
-    private fun updateStateToPaidFeatureMessage(currentState: ComposerDraftState, message: TextUiModel) =
-        currentState.copy(premiumFeatureMessage = Effect.of(message))
+    private fun updateStateToPaidFeatureMessage(currentState: ComposerDraftState) =
+        currentState.copy(premiumFeatureMessage = Effect.of(TextUiModel(R.string.composer_change_sender_paid_feature)))
 
     private fun updateStateToSenderError(currentState: ComposerDraftState) = currentState.copy(
         fields = currentState.fields.copy(sender = SenderUiModel("")),

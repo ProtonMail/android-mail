@@ -67,7 +67,7 @@ class ComposerViewModelTest {
     private val getComposerSenderAddresses = mockk<GetComposerSenderAddresses> {
         coEvery { this@mockk.invoke() } returns GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
     }
-    private val reducer = ComposerReducer(getComposerSenderAddresses)
+    private val reducer = ComposerReducer()
 
     private val viewModel
         get() = ComposerViewModel(
@@ -77,6 +77,7 @@ class ComposerViewModelTest {
             isValidEmailAddressMock,
             getPrimaryAddressMock,
             resolveUserAddressMock,
+            getComposerSenderAddresses,
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
@@ -134,6 +135,19 @@ class ComposerViewModelTest {
                 expectedUserId
             )
         }
+    }
+
+    @Test
+    fun `should get composer sender addresses when user requires changing sender`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+
+        // When
+        viewModel.submit(ComposerAction.OnChangeSender)
+
+        // Then
+        coVerify { getComposerSenderAddresses() }
     }
 
     @Test
