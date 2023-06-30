@@ -26,6 +26,7 @@
     <string name="close_composer_content_description">Close composer</string>
     <string name="send_message_content_description">Send message</string>
     <string name="composer_expand_recipients_button">Show other recipients</string>
+    <string name="composer_collapse_recipients_button">Hide other recipients</string>
     <string name="composer_error_invalid_email">Email address is invalid</string>
     <string name="composer_error_invalid_sender">Sender address is invalid</string>
 </resources>

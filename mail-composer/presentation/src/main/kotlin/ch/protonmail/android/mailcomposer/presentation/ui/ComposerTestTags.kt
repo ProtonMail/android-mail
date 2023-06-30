@@ -25,6 +25,8 @@ object ComposerTestTags {
     const val FieldPrefix = "FieldPrefix"
     const val FromSender = "FromField"
     const val ToRecipient = "ToField"
+    const val ExpandCollapseArrow = "ExpandCollapseArrow"
+    const val CollapseExpandArrow = "CollapseExpandArrow"
     const val CcRecipient = "CcField"
     const val BccRecipient = "BccField"
     const val Subject = "Subject"

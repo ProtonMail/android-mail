@@ -25,4 +25,6 @@ object ChipsTestTags {
     const val InputChip = "InputChip"
     const val InputChipIcon = "InputChipIcon"
     const val InputChipText = "InputChipText"
+    const val BaseSuggestionChip = "InputChip0"
+    const val AdditionalSuggestionChip = "InputChip1"
 }

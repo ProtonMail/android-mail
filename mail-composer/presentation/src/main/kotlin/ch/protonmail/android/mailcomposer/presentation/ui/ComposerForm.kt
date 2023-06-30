@@ -49,6 +49,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.uicomponents.chips.ChipItem
 import ch.protonmail.android.uicomponents.chips.ChipsListField
+import ch.protonmail.android.uicomponents.chips.thenIf
 import me.proton.core.compose.theme.ProtonDimens
 import timber.log.Timber
 
@@ -115,7 +116,14 @@ internal fun ComposerForm(
                     onClick = { actions.onToggleRecipients(!recipientsOpen) }
                 ) {
                     Icon(
-                        modifier = Modifier.rotate(recipientsButtonRotation.value),
+                        modifier = Modifier
+                            .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues.Closed) {
+                                testTag(ComposerTestTags.ExpandCollapseArrow)
+                            }
+                            .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues.Open) {
+                                testTag(ComposerTestTags.CollapseExpandArrow)
+                            }
+                            .rotate(recipientsButtonRotation.value),
                         imageVector = Icons.Filled.KeyboardArrowUp,
                         contentDescription = stringResource(id = R.string.composer_expand_recipients_button)
                     )
@@ -176,13 +184,16 @@ internal fun ComposerForm(
 
     LaunchedEffect(key1 = recipientsOpen) {
         recipientsButtonRotation.animateTo(
-            if (recipientsOpen) RECIPIENTS_OPEN_ROTATION else RECIPIENTS_CLOSED_ROTATION
+            if (recipientsOpen) RecipientsButtonRotationValues.Open else RecipientsButtonRotationValues.Closed
         )
     }
 }
 
-private const val RECIPIENTS_OPEN_ROTATION = 180f
-private const val RECIPIENTS_CLOSED_ROTATION = 0F
+private object RecipientsButtonRotationValues {
+
+    const val Open = 180f
+    const val Closed = 0f
+}
 
 private fun ChipItem.toRecipientUiModel(): RecipientUiModel? = when (this) {
     is ChipItem.Counter -> null

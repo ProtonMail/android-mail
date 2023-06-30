@@ -51,6 +51,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -179,6 +180,7 @@ private fun FocusedChipsList(
         InputChip(
             modifier = Modifier
                 .testTag("${ChipsTestTags.InputChip}$index")
+                .semantics { isValidField = chipItem !is ChipItem.Invalid }
                 .padding(horizontal = 4.dp)
                 .thenIf(animateChipsCreation) {
                     scale(scale.value)
@@ -230,11 +232,14 @@ private fun UnFocusedChipsList(
     Row {
         SuggestionChip(
             modifier = Modifier
+                .testTag(ChipsTestTags.BaseSuggestionChip)
+                .semantics { isValidField = itemChip !is ChipItem.Invalid }
                 .thenIf(!spacerRequired) { weight(2F) }
                 .padding(horizontal = 4.dp),
             onClick = onChipClick,
             label = {
                 Text(
+                    modifier = Modifier.testTag(ChipsTestTags.InputChipText),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     text = itemChip.value,
@@ -252,10 +257,13 @@ private fun UnFocusedChipsList(
         if (counterChip != null) {
             SuggestionChip(
                 modifier = Modifier
+                    .testTag(ChipsTestTags.AdditionalSuggestionChip)
+                    .semantics { isValidField = itemChip !is ChipItem.Invalid }
                     .padding(horizontal = 4.dp),
                 onClick = onChipClick,
                 label = {
                     Text(
+                        modifier = Modifier.testTag(ChipsTestTags.InputChipText),
                         maxLines = 1,
                         text = counterChip.value,
                         color = Color.Unspecified

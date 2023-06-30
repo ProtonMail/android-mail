@@ -21,4 +21,5 @@ package ch.protonmail.android.uitest.util.assertions
 internal object CustomSemanticsPropertyKeyNames {
 
     const val TintColorKey = "TintColorKey"
+    const val IsValidFieldKey = "IsValidFieldKey"
 }

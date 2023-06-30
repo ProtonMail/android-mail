@@ -20,7 +20,10 @@ package ch.protonmail.android.mailcomposer.presentation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -44,7 +47,7 @@ internal fun NotSubmittableComposerForm(
         actions = actions
     )
 
-    ProtonSnackbarHost(snackbarHostState)
+    ProtonSnackbarHost(modifier = Modifier.testTag(CommonTestTags.SnackbarHost), hostState = snackbarHostState)
 
     ConsumableTextEffect(effect = state.error) { message ->
         snackbarHostState.showSnackbar(
