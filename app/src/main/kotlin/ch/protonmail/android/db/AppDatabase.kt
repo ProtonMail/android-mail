@@ -75,10 +75,16 @@ import me.proton.core.label.data.local.LabelDatabase
 import me.proton.core.label.data.local.LabelEntity
 import me.proton.core.mailsettings.data.db.MailSettingsDatabase
 import me.proton.core.mailsettings.data.entity.MailSettingsEntity
+import me.proton.core.notification.data.local.db.NotificationConverters
+import me.proton.core.notification.data.local.db.NotificationDatabase
+import me.proton.core.notification.data.local.db.NotificationEntity
 import me.proton.core.observability.data.db.ObservabilityDatabase
 import me.proton.core.observability.data.entity.ObservabilityEventEntity
 import me.proton.core.payment.data.local.db.PaymentDatabase
 import me.proton.core.payment.data.local.entity.GooglePurchaseEntity
+import me.proton.core.push.data.local.db.PushConverters
+import me.proton.core.push.data.local.db.PushDatabase
+import me.proton.core.push.data.local.db.PushEntity
 import me.proton.core.user.data.db.AddressDatabase
 import me.proton.core.user.data.db.UserConverters
 import me.proton.core.user.data.db.UserDatabase
@@ -131,6 +137,10 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         FeatureFlagEntity::class,
         // challenge
         ChallengeFrameEntity::class,
+        // notification
+        NotificationEntity::class,
+        // push
+        PushEntity::class,
         // mail-pagination
         PageIntervalEntity::class,
         // mail-message
@@ -164,6 +174,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
     EventManagerConverters::class,
     LabelConverters::class,
     ChallengeConverters::class,
+    NotificationConverters::class,
+    PushConverters::class,
     MessageConverters::class,
     ConversationConverters::class,
     MapConverters::class,
@@ -191,12 +203,14 @@ abstract class AppDatabase :
     ConversationDatabase,
     PaymentDatabase,
     ObservabilityDatabase,
-    KeyTransparencyDatabase {
+    KeyTransparencyDatabase,
+    NotificationDatabase,
+    PushDatabase {
 
     companion object {
 
         const val name = "db-mail"
-        const val version = 6
+        const val version = 7
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -204,6 +218,7 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_3_4,
             AppDatabaseMigrations.MIGRATION_4_5,
             AppDatabaseMigrations.MIGRATION_5_6,
+            AppDatabaseMigrations.MIGRATION_6_7,
         )
         fun buildDatabase(context: Context): AppDatabase =
             databaseBuilder<AppDatabase>(context, name)
