@@ -75,20 +75,9 @@ class ComposerViewModel @Inject constructor(
 
     internal fun submit(action: ComposerAction) {
         viewModelScope.launch {
-            val userId = primaryUserId.first()
             when (action) {
-                is ComposerAction.DraftBodyChanged -> resolveUserAddress(userId, state.value.fields.sender.email)
-                    .mapLeft { emitNewStateFor(ComposerEvent.ErrorSavingDraftBodyUnresolvedSender) }
-                    .map { userAddress ->
-                        storeDraftWithBody(messageId, action.draftBody, userAddress, userId)
-                        emitNewStateFor(action)
-                    }
-                is ComposerAction.SenderChanged -> resolveUserAddress(userId, action.sender.email)
-                    .mapLeft { emitNewStateFor(ComposerEvent.ChangeSenderFailed) }
-                    .map { userAddress ->
-                        storeDraftWithSender(messageId, userAddress, userId)
-                        emitNewStateFor(action)
-                    }
+                is ComposerAction.DraftBodyChanged -> emitNewStateFor(onDraftBodyChanged(action))
+                is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
                 is ComposerAction.OnChangeSender -> emitNewStateFor(onChangeSender())
                 else -> emitNewStateFor(action)
             }
@@ -96,6 +85,29 @@ class ComposerViewModel @Inject constructor(
     }
 
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
+
+    private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation {
+        val userId = primaryUserId.first()
+        return resolveUserAddress(userId, action.sender.email).fold(
+            ifLeft = { ComposerEvent.ChangeSenderFailed },
+            ifRight = { userAddress ->
+                storeDraftWithSender(messageId, userAddress, userId)
+                action
+            }
+        )
+    }
+
+    private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged): ComposerOperation {
+        val userId = primaryUserId.first()
+        val email = state.value.fields.sender.email
+        return resolveUserAddress(userId, email).fold(
+            ifLeft = { ComposerEvent.ErrorSavingDraftBodyUnresolvedSender },
+            ifRight = { userAddress ->
+                storeDraftWithBody(messageId, action.draftBody, userAddress, userId)
+                action
+            }
+        )
+    }
 
     private suspend fun onChangeSender() = getComposerSenderAddresses().fold(
         ifLeft = { changeSenderError ->

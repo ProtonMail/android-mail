@@ -53,8 +53,7 @@ class StoreDraftWithSender @Inject constructor(
 
     }
 
-    private fun Boolean.mapFalse(block: () -> Error): Either<Error, Unit> =
-        if (this) Unit.right() else block().left()
+    private fun Boolean.mapFalse(block: () -> Error): Either<Error, Unit> = if (this) Unit.right() else block().left()
 
     sealed interface Error {
         object DraftSaveError : Error
