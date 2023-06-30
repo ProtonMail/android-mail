@@ -45,6 +45,7 @@ import com.dropbox.android.external.store4.StoreRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.data.arch.ProtonStore
 import me.proton.core.data.arch.buildProtonStore
@@ -125,6 +126,9 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun getMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody> =
         observeMessageWithBody(userId, messageId).first()
+
+    override suspend fun getLocalMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody? =
+        localDataSource.observeMessageWithBody(userId, messageId).firstOrNull()
 
     override suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean {
         return try {

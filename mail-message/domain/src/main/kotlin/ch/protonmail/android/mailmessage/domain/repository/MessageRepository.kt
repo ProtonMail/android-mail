@@ -81,6 +81,11 @@ interface MessageRepository {
      */
     suspend fun getMessageWithBody(userId: UserId, messageId: MessageId): Either<DataError, MessageWithBody>
 
+    /**
+     * Get the [MessageWithBody] for a given [MessageId] and [userId] from the local storage.
+     */
+    suspend fun getLocalMessageWithBody(userId: UserId, messageId: MessageId): MessageWithBody?
+
     suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean
 
     /**

@@ -2,7 +2,6 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
@@ -137,7 +136,7 @@ class StoreDraftWithBodyTest {
         messageId: MessageId,
         existingDraft: () -> MessageWithBody
     ): MessageWithBody = existingDraft().also {
-        coEvery { messageRepositoryMock.getMessageWithBody(userId, messageId) } returns it.right()
+        coEvery { messageRepositoryMock.getLocalMessageWithBody(userId, messageId) } returns it
     }
 
     private fun expectedNewDraft(
@@ -146,7 +145,7 @@ class StoreDraftWithBodyTest {
         senderAddress: UserAddress,
         existingDraft: () -> MessageWithBody
     ): MessageWithBody = existingDraft().also {
-        coEvery { messageRepositoryMock.getMessageWithBody(userId, messageId) } returns DataError.Local.Unknown.left()
+        coEvery { messageRepositoryMock.getLocalMessageWithBody(userId, messageId) } returns null
         every { createEmptyDraftMock(messageId, userId, senderAddress) } returns it
     }
 

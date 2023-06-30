@@ -53,6 +53,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -63,6 +64,7 @@ import me.proton.core.test.kotlin.TestDispatcherProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class MessageRepositoryImplTest {
@@ -877,5 +879,44 @@ class MessageRepositoryImplTest {
 
         // Then
         assertFalse(messageSaved)
+    }
+
+    @Test
+    fun `should read the message with body from local storage`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val expectedMessageWithBody = MessageWithBodySample.EmptyDraft
+        val expectedMessageId = expectedMessageWithBody.message.messageId
+        coEvery {
+            localDataSource.observeMessageWithBody(
+                userId,
+                expectedMessageId
+            )
+        } returns flowOf(expectedMessageWithBody)
+
+        // When
+        val actualMessageWithBody = messageRepository.getLocalMessageWithBody(userId, expectedMessageId)
+
+        // Then
+        assertEquals(expectedMessageWithBody, actualMessageWithBody)
+    }
+
+    @Test
+    fun `should return a null when reading message with body from local storage fails`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageWithBodySample.EmptyDraft.message.messageId
+        coEvery {
+            localDataSource.observeMessageWithBody(
+                userId,
+                messageId
+            )
+        } returns emptyFlow()
+
+        // When
+        val actualMessageWithBody = messageRepository.getLocalMessageWithBody(userId, messageId)
+
+        // Then
+        assertNull(actualMessageWithBody)
     }
 }
