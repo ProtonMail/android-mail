@@ -69,8 +69,8 @@ class ComposerViewModelTest {
     }
     private val reducer = ComposerReducer()
 
-    private val viewModel
-        get() = ComposerViewModel(
+    private val viewModel by lazy {
+        ComposerViewModel(
             storeDraftWithBodyMock,
             storeDraftWithSenderMock,
             reducer,
@@ -81,6 +81,7 @@ class ComposerViewModelTest {
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
+    }
 
     @Test
     fun `should store the draft body when the body changes`() {
@@ -183,6 +184,128 @@ class ComposerViewModelTest {
         assertEquals(TextUiModel(R.string.composer_error_invalid_sender), actual.error.consume())
     }
 
+    @Test
+    fun `emits state with user addresses when sender can be changed`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val addresses = listOf(UserAddressSample.PrimaryAddress, UserAddressSample.AliasAddress)
+        val expectedPrimaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedSenderAddress(expectedUserId, expectedPrimaryAddress.email) {
+            UserAddressSample.AliasAddress
+        }
+        expectedGetComposerSenderAddresses { addresses }
+
+        // When
+        viewModel.submit(ComposerAction.OnChangeSender)
+
+        // Then
+        val currentState = viewModel.state.value
+        val expected = addresses.map { SenderUiModel(it.email) }
+        assertEquals(expected, currentState.senderAddresses)
+    }
+
+    @Test
+    fun `emits state with upgrade plan to change sender when user cannot change sender`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedPrimaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedSenderAddress(expectedUserId, expectedPrimaryAddress.email) {
+            UserAddressSample.AliasAddress
+        }
+        expectedGetComposerSenderAddressesError { GetComposerSenderAddresses.Error.UpgradeToChangeSender }
+
+        // When
+        viewModel.submit(ComposerAction.OnChangeSender)
+
+        // Then
+        val currentState = viewModel.state.value
+        val expected = TextUiModel(R.string.composer_change_sender_paid_feature)
+        assertEquals(expected, currentState.premiumFeatureMessage.consume())
+    }
+
+    @Test
+    fun `emits state with error when cannot determine if user can change sender`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedPrimaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedSenderAddress(expectedUserId, expectedPrimaryAddress.email) {
+            UserAddressSample.AliasAddress
+        }
+        expectedGetComposerSenderAddressesError { GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription }
+
+        // When
+        viewModel.submit(ComposerAction.OnChangeSender)
+
+        // Then
+        val currentState = viewModel.state.value
+        val expected = TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription)
+        assertEquals(expected, currentState.error.consume())
+    }
+
+    @Test
+    fun `emits state with new sender address when sender changed`() = runTest {
+        // Given
+        val expectedSenderEmail = UserAddressSample.AliasAddress.email
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedSenderAddress = expectedSenderAddress(expectedUserId, expectedSenderEmail) {
+            UserAddressSample.AliasAddress
+        }
+        val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail))
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStoreDraftSenderCalled(expectedMessageId, expectedSenderAddress, expectedUserId)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        val currentState = viewModel.state.value
+        assertEquals(SenderUiModel(expectedSenderEmail), currentState.fields.sender)
+    }
+
+    @Test
+    fun `emits state with change sender error when resolve user address returns error`() = runTest {
+        // Given
+        val expectedSenderEmail = UserAddressSample.AliasAddress.email
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail))
+        expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectedSenderAddressError(expectedUserId, expectedSenderEmail) {
+            ResolveUserAddress.Error.UserAddressNotFound
+        }
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        val currentState = viewModel.state.value
+        assertEquals(TextUiModel(R.string.composer_error_resolving_sender_address), currentState.error.consume())
+    }
+
+    @Test
+    fun `emits state with save draft failed resolving sender when resolve user address returns error`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val action = ComposerAction.DraftBodyChanged(DraftBody("updated-draft"))
+        val expectedPrimaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedSenderAddressError(expectedUserId, expectedPrimaryAddress.email) {
+            ResolveUserAddress.Error.UserAddressNotFound
+        }
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        val currentState = viewModel.state.value
+        val expected = TextUiModel(R.string.composer_error_save_draft_could_not_resolve_sender)
+        assertEquals(expected, currentState.error.consume())
+    }
+
     private fun expectedMessageId(messageId: () -> MessageId): MessageId = messageId().also {
         every { provideNewDraftIdMock() } returns it
     }
@@ -206,6 +329,21 @@ class ComposerViewModelTest {
     ): UserAddress = senderAddress().also {
         coEvery { resolveUserAddressMock(userId, email) } returns it.right()
     }
+
+    private fun expectedSenderAddressError(
+        userId: UserId,
+        email: String,
+        error: () -> ResolveUserAddress.Error
+    ): ResolveUserAddress.Error = error().also {
+        coEvery { resolveUserAddressMock(userId, email) } returns it.left()
+    }
+
+    private fun expectedGetComposerSenderAddresses(addresses: () -> List<UserAddress>): List<UserAddress> =
+        addresses().also { coEvery { getComposerSenderAddresses() } returns it.right() }
+
+    private fun expectedGetComposerSenderAddressesError(
+        error: () -> GetComposerSenderAddresses.Error
+    ): GetComposerSenderAddresses.Error = error().also { coEvery { getComposerSenderAddresses() } returns it.left() }
 
     private fun expectStoreDraftBodyCalled(
         expectedMessageId: MessageId,
