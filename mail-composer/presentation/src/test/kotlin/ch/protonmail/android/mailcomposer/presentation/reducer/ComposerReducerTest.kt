@@ -229,6 +229,22 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToUnresolvedSenderSavingDraft = TestTransition(
+            name = "Should update state showing an error presenting the senders bottomSheet when sender not resolved",
+            currentState = aNotSubmittableState(
+                draftId = messageId,
+                sender = SenderUiModel("default@pm.me")
+            ),
+            operation = ComposerEvent.ErrorSavingDraftBodyUnresolvedSender,
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                sender = SenderUiModel("default@pm.me"),
+                error = Effect.of(TextUiModel(R.string.composer_error_save_draft_could_not_resolve_sender)),
+                changeSenderBottomSheetVisibility = Effect.of(true)
+            )
+        )
+
+
 
         private val transitions = listOf(
             EmptyToSubmittableToField,
@@ -244,7 +260,8 @@ class ComposerReducerTest(
             EmptyToSenderAddressesList,
             EmptyToErrorWhenUserPlanUnknown,
             EmptyToUpdatedSender,
-            DefaultSenderToChangeSenderFailed
+            DefaultSenderToChangeSenderFailed,
+            EmptyToUnresolvedSenderSavingDraft
         )
 
         private fun aSubmittableState(

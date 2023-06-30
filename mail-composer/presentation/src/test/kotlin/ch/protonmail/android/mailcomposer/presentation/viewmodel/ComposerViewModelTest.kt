@@ -85,15 +85,19 @@ class ComposerViewModelTest {
     @Test
     fun `should store the draft body when the body changes`() {
         // Given
+        val primaryAddress = UserAddressSample.PrimaryAddress
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedDraftBody = DraftBody(RawDraftBody)
         val expectedUserId = expectedUserId { UserIdSample.Primary }
-        val expectedPrimaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        val expectedSenderAddress = expectedSenderAddress(expectedUserId, primaryAddress.email) {
+            primaryAddress
+        }
         val action = ComposerAction.DraftBodyChanged(expectedDraftBody)
+        expectedPrimaryAddress(expectedUserId) { primaryAddress }
         expectStoreDraftBodyCalled(
             expectedMessageId,
             expectedDraftBody,
-            expectedPrimaryAddress,
+            expectedSenderAddress,
             expectedUserId
         )
 
@@ -105,7 +109,7 @@ class ComposerViewModelTest {
             storeDraftWithBodyMock(
                 expectedMessageId,
                 expectedDraftBody,
-                expectedPrimaryAddress,
+                expectedSenderAddress,
                 expectedUserId
             )
         }
@@ -141,6 +145,7 @@ class ComposerViewModelTest {
     fun `should get composer sender addresses when user requires changing sender`() = runTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
+        expectedMessageId { MessageIdSample.EmptyDraft }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
 
         // When

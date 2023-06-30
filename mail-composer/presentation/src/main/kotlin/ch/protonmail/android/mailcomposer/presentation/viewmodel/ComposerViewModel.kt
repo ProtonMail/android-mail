@@ -20,7 +20,6 @@ package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
@@ -45,7 +44,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import me.proton.core.user.domain.entity.UserAddress
 import javax.inject.Inject
 
 @HiltViewModel
@@ -79,19 +77,18 @@ class ComposerViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = primaryUserId.first()
             when (action) {
-                is ComposerAction.DraftBodyChanged -> storeDraftWithBody(
-                    messageId, action.draftBody, senderAddress(), userId
-                )
-                is ComposerAction.SenderChanged -> {
-                    val event = resolveUserAddress(userId, action.sender.email).fold(
-                        ifLeft = { ComposerEvent.ChangeSenderFailed },
-                        ifRight = { userAddress ->
-                            storeDraftWithSender(messageId, userAddress, userId)
-                            action
-                        }
-                    )
-                    emitNewStateFor(event)
-                }
+                is ComposerAction.DraftBodyChanged -> resolveUserAddress(userId, state.value.fields.sender.email)
+                    .mapLeft { emitNewStateFor(ComposerEvent.ErrorSavingDraftBodyUnresolvedSender) }
+                    .map { userAddress ->
+                        storeDraftWithBody(messageId, action.draftBody, userAddress, userId)
+                        emitNewStateFor(action)
+                    }
+                is ComposerAction.SenderChanged -> resolveUserAddress(userId, action.sender.email)
+                    .mapLeft { emitNewStateFor(ComposerEvent.ChangeSenderFailed) }
+                    .map { userAddress ->
+                        storeDraftWithSender(messageId, userAddress, userId)
+                        emitNewStateFor(action)
+                    }
                 is ComposerAction.OnChangeSender -> emitNewStateFor(onChangeSender())
                 else -> emitNewStateFor(action)
             }
@@ -112,9 +109,6 @@ class ComposerViewModel @Inject constructor(
             ComposerEvent.SenderAddressesReceived(userAddresses.map { SenderUiModel(it.email) })
         }
     )
-
-    // This is a temp code till we implement senders properly
-    private fun senderAddress(): UserAddress = UserAddressSample.PrimaryAddress
 
     private fun emitNewStateFor(operation: ComposerOperation) {
         val currentState = state.value
