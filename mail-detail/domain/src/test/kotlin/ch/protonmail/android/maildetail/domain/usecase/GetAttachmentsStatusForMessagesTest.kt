@@ -29,13 +29,13 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class GetConversationMessagesAttachmentsStatusTest {
+class GetAttachmentsStatusForMessagesTest {
 
     private val userId = UserIdSample.Primary
 
     private val attachmentRepo = mockk<AttachmentRepository>()
 
-    private val getConversationMessagesAttachmentsStatus = GetConversationMessagesAttachmentsStatus(attachmentRepo)
+    private val getAttachmentsStatusForMessages = GetAttachmentsStatusForMessages(attachmentRepo)
 
     @Test
     fun `should return only attachment metadata of requested messages when multiple messages are affected`() = runTest {
@@ -58,7 +58,7 @@ class GetConversationMessagesAttachmentsStatusTest {
         )
 
         // When
-        val result = getConversationMessagesAttachmentsStatus(userId, messageIds)
+        val result = getAttachmentsStatusForMessages(userId, messageIds)
 
         // Then
         assertEquals(listOf(attachment1, attachment2), result)
@@ -71,7 +71,7 @@ class GetConversationMessagesAttachmentsStatusTest {
         coEvery { attachmentRepo.getDownloadingAttachmentsForUser(userId, messageIds) } returns emptyList()
 
         // When
-        val result = getConversationMessagesAttachmentsStatus(userId, messageIds)
+        val result = getAttachmentsStatusForMessages(userId, messageIds)
 
         // Then
         assertEquals(emptyList(), result)

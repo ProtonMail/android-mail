@@ -23,7 +23,7 @@ import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class GetConversationMessagesAttachmentsStatus @Inject constructor(
+class GetAttachmentsStatusForMessages @Inject constructor(
     private val attachmentLocalDataSource: AttachmentRepository
 ) {
 

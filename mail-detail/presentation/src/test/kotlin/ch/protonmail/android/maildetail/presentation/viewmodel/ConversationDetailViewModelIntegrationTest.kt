@@ -52,7 +52,7 @@ import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyErro
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
-import ch.protonmail.android.maildetail.domain.usecase.GetConversationMessagesAttachmentsStatus
+import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentsStatusForMessages
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
@@ -189,7 +189,7 @@ class ConversationDetailViewModelIntegrationTest {
         )
     }
     private val observeAttachmentStatus = mockk<ObserveMessageAttachmentStatus>()
-    private val getConversationMessagesAttachmentsStatus = mockk<GetConversationMessagesAttachmentsStatus>()
+    private val getAttachmentsStatusForMessages = mockk<GetAttachmentsStatusForMessages>()
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
     // endregion
 
@@ -667,7 +667,7 @@ class ConversationDetailViewModelIntegrationTest {
             ).right()
         coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
         coEvery {
-            getConversationMessagesAttachmentsStatus(
+            getAttachmentsStatusForMessages(
                 userId,
                 listOf(defaultExpanded.message.messageId, expandedMessageId)
             )
@@ -714,7 +714,7 @@ class ConversationDetailViewModelIntegrationTest {
                 ).right()
             coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
             coEvery {
-                getConversationMessagesAttachmentsStatus(
+                getAttachmentsStatusForMessages(
                     userId,
                     listOf(defaultExpanded.message.messageId, expandedMessageId)
                 )
@@ -759,7 +759,7 @@ class ConversationDetailViewModelIntegrationTest {
             ).right()
         coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
         coEvery {
-            getConversationMessagesAttachmentsStatus(
+            getAttachmentsStatusForMessages(
                 userId,
                 listOf(defaultExpanded.message.messageId, expandedMessageId)
             )
@@ -845,7 +845,7 @@ class ConversationDetailViewModelIntegrationTest {
         observeFolderColor: ObserveFolderColorSettings = observeFolderColorSettings,
         observeCustomMailLabels: ObserveCustomMailLabels = observeCustomMailLabelsUseCase,
         observeMessageAttachmentStatus: ObserveMessageAttachmentStatus = observeAttachmentStatus,
-        getAttachmentStatus: GetConversationMessagesAttachmentsStatus = getConversationMessagesAttachmentsStatus,
+        getAttachmentStatus: GetAttachmentsStatusForMessages = getAttachmentsStatusForMessages,
         detailReducer: ConversationDetailReducer = reducer,
         savedState: SavedStateHandle = savedStateHandle,
         star: StarConversation = starConversation,
@@ -871,7 +871,7 @@ class ConversationDetailViewModelIntegrationTest {
         observeFolderColor = observeFolderColor,
         observeCustomMailLabels = observeCustomMailLabels,
         observeMessageAttachmentStatus = observeMessageAttachmentStatus,
-        getConversationMessagesAttachmentsStatus = getAttachmentStatus,
+        getAttachmentsStatusForMessages = getAttachmentStatus,
         reducer = detailReducer,
         savedStateHandle = savedState,
         starConversation = star,
