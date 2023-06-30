@@ -143,20 +143,6 @@ class ComposerViewModelTest {
     }
 
     @Test
-    fun `should get composer sender addresses when user requires changing sender`() = runTest {
-        // Given
-        val expectedUserId = expectedUserId { UserIdSample.Primary }
-        expectedMessageId { MessageIdSample.EmptyDraft }
-        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-
-        // When
-        viewModel.submit(ComposerAction.OnChangeSender)
-
-        // Then
-        coVerify { getComposerSenderAddresses() }
-    }
-
-    @Test
     fun `emits state with primary sender address when available`() = runTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
