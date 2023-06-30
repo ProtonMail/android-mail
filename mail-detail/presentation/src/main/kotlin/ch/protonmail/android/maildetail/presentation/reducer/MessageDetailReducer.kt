@@ -68,6 +68,9 @@ class MessageDetailReducer @Inject constructor(
 
                 is MessageDetailEvent.ErrorGettingAttachment ->
                     Effect.of(TextUiModel(R.string.error_get_attachment_failed))
+
+                MessageDetailEvent.ErrorAttachmentDownloadInProgress ->
+                    Effect.of(TextUiModel(R.string.error_attachment_download_in_progress))
             }
         } else {
             error

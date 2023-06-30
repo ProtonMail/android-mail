@@ -41,6 +41,7 @@ import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyErro
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentsStatusForMessages
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
@@ -88,12 +89,14 @@ import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
+import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
@@ -234,6 +237,7 @@ class MessageDetailViewModelTest {
         }.right()
     }
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
+    private val getAttachmentsStatusForMessages = mockk<GetAttachmentsStatusForMessages>()
 
     private val viewModel by lazy {
         MessageDetailViewModel(
@@ -258,7 +262,8 @@ class MessageDetailViewModelTest {
             messageDetailActionBarUiModelMapper = messageDetailActionBarUiModelMapper,
             moveMessage = moveMessage,
             relabelMessage = relabelMessage,
-            getAttachmentIntentValues = getAttachmentIntentValues
+            getAttachmentIntentValues = getAttachmentIntentValues,
+            getAttachmentsStatusForMessages = getAttachmentsStatusForMessages
         )
     }
 
@@ -961,6 +966,7 @@ class MessageDetailViewModelTest {
         coEvery {
             getAttachmentIntentValues(userId, MessageId(rawMessageId), AttachmentId("invoice"))
         } returns expectedIntentValues.right()
+        coEvery { getAttachmentsStatusForMessages(userId, listOf(MessageId(rawMessageId))) } returns listOf()
 
         viewModel.state.test {
             initialStateEmitted()
@@ -998,6 +1004,7 @@ class MessageDetailViewModelTest {
             observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), any())
         } returns flowOf()
         coEvery { getAttachmentIntentValues(any(), any(), any()) } returns DataError.Local.NoDataCached.left()
+        coEvery { getAttachmentsStatusForMessages(userId, listOf(MessageId(rawMessageId))) } returns listOf()
 
         viewModel.state.test {
             initialStateEmitted()
@@ -1012,6 +1019,51 @@ class MessageDetailViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `verify get attachment is not called and error is shown when other attachment is currently downloading`() =
+        runTest {
+            // Given
+            val expectedIntentValues = OpenAttachmentIntentValues(mimeType = "application/pdf", uri = mockk())
+            val expectedMessageBody = DecryptedMessageBody(
+                value = "Plain message body",
+                mimeType = MimeType.PlainText,
+                attachments = listOf(
+                    MessageAttachmentTestData.invoice,
+                    MessageAttachmentTestData.document,
+                    MessageAttachmentTestData.documentWithMultipleDots,
+                    MessageAttachmentTestData.image
+                )
+            )
+            coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
+            coEvery {
+                messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
+            } returns MessageBodyUiModelTestData.messageBodyWithAttachmentsUiModel
+            coEvery {
+                observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), any())
+            } returns flowOf(MessageAttachmentMetadataTestData.buildMessageAttachmentMetadata())
+            coEvery {
+                getAttachmentIntentValues(userId, MessageId(rawMessageId), AttachmentId("invoice"))
+            } returns expectedIntentValues.right()
+            coEvery {
+                getAttachmentsStatusForMessages(userId, listOf(MessageId(rawMessageId)))
+            } returns listOf(MessageAttachmentMetadataTestData.buildMessageAttachmentMetadata())
+
+            viewModel.state.test {
+                initialStateEmitted()
+                messageBodyWithAttachmentEmitted()
+                skipItems(6) // skip emitted attachment worker status
+
+                // When
+                viewModel.submit(MessageViewAction.OnAttachmentClicked(AttachmentId("invoice")))
+                val actualState = awaitItem()
+
+                // Then
+                coVerify { getAttachmentIntentValues wasNot Called }
+                assertEquals(Effect.of(TextUiModel(R.string.error_attachment_download_in_progress)), actualState.error)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {
         assertEquals(MessageDetailState.Loading, awaitItem())

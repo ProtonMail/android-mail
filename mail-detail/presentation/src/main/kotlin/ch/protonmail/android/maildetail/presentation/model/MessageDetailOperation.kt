@@ -82,6 +82,7 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     object ErrorMovingMessage : MessageDetailEvent, AffectingErrorBar
     object ErrorLabelingMessage : MessageDetailEvent, AffectingErrorBar
     object ErrorGettingAttachment : MessageDetailEvent, AffectingErrorBar
+    object ErrorAttachmentDownloadInProgress : MessageDetailEvent, AffectingErrorBar
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {
