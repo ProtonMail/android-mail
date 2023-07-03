@@ -49,16 +49,11 @@ object UserSettingsTestData {
         news = null,
         locale = null,
         logAuth = null,
-        invoiceText = null,
         density = null,
-        theme = null,
-        themeType = null,
         weekStart = null,
         dateFormat = null,
         timeFormat = null,
-        welcome = null,
-        earlyAccess = null,
-        flags = null
+        earlyAccess = null
     )
 
     val emptyUserSettings = UserSettings(
@@ -83,15 +78,10 @@ object UserSettingsTestData {
         news = null,
         locale = null,
         logAuth = null,
-        invoiceText = null,
         density = null,
-        theme = null,
-        themeType = null,
         weekStart = null,
         dateFormat = null,
         timeFormat = null,
-        welcome = null,
-        earlyAccess = null,
-        flags = null
+        earlyAccess = null
     )
 }
