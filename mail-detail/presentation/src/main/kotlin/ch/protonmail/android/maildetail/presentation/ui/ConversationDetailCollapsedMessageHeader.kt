@@ -45,6 +45,7 @@ import androidx.constraintlayout.compose.atLeast
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadge
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -293,17 +294,25 @@ private fun Sender(
     fontColor: Color,
     modifier: Modifier
 ) {
-    Text(
-        modifier = modifier
-            .testTag(ConversationDetailCollapsedMessageHeaderTestTags.Sender)
-            .padding(horizontal = MailDimens.TinySpacing),
-        text = uiModel.sender.participantName,
-        fontWeight = fontWeight,
-        color = fontColor,
-        style = ProtonTheme.typography.defaultNorm,
-        overflow = TextOverflow.Ellipsis,
-        maxLines = 1
-    )
+    Row(
+        modifier = modifier.padding(horizontal = MailDimens.TinySpacing),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = modifier
+                .testTag(ConversationDetailCollapsedMessageHeaderTestTags.Sender)
+                .weight(1f, fill = false),
+            text = uiModel.sender.participantName,
+            fontWeight = fontWeight,
+            color = fontColor,
+            style = ProtonTheme.typography.defaultNorm,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1
+        )
+        if (uiModel.sender.shouldShowOfficialBadge) {
+            OfficialBadge()
+        }
+    }
 }
 
 @Composable

@@ -64,6 +64,7 @@ import androidx.constraintlayout.compose.Visibility
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadge
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
@@ -428,13 +429,20 @@ private fun MessageDetailHeaderLayout(
 
 @Composable
 private fun SenderName(modifier: Modifier = Modifier, participantUiModel: ParticipantUiModel) {
-    Text(
-        modifier = modifier.testTag(MessageDetailHeaderTestTags.SenderName),
-        text = participantUiModel.participantName,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        style = ProtonTheme.typography.defaultSmallStrongNorm
-    )
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            modifier = modifier
+                .testTag(MessageDetailHeaderTestTags.SenderName)
+                .weight(1f, fill = false),
+            text = participantUiModel.participantName,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            style = ProtonTheme.typography.defaultSmallStrongNorm
+        )
+        if (participantUiModel.shouldShowOfficialBadge) {
+            OfficialBadge()
+        }
+    }
 }
 
 @Composable
