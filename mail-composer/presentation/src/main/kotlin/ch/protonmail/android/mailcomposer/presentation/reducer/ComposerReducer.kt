@@ -65,6 +65,9 @@ class ComposerReducer @Inject constructor() {
             currentState,
             TextUiModel(R.string.composer_error_save_draft_with_new_sender)
         )
+        is ComposerEvent.ErrorSavingDraftBodyDbFailure -> currentState.copy(
+            error = Effect.of(TextUiModel(R.string.composer_error_store_draft_body_DB_failure))
+        )
         is ComposerEvent.SenderAddressesReceived -> currentState.copy(
             senderAddresses = this.senders,
             changeSenderBottomSheetVisibility = Effect.of(true)

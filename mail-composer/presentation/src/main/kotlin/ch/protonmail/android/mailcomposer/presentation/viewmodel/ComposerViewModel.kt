@@ -109,8 +109,13 @@ class ComposerViewModel @Inject constructor(
         return resolveUserAddress(userId, email).fold(
             ifLeft = { ComposerEvent.ErrorSavingDraftBodyUnresolvedSender },
             ifRight = { userAddress ->
-                storeDraftWithBody(messageId, action.draftBody, userAddress, userId)
-                action
+                storeDraftWithBody(messageId, action.draftBody, userAddress, userId).fold(
+                    ifLeft = {
+                        Timber.e("Store draft $messageId body to local DB failed")
+                        ComposerEvent.ErrorSavingDraftBodyDbFailure
+                    },
+                    ifRight = { action }
+                )
             }
         )
     }

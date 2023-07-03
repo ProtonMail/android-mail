@@ -38,6 +38,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBodyError
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.test.utils.TestTree
@@ -324,6 +325,28 @@ class ComposerViewModelTest {
         assertEquals(expected, currentState.error.consume())
     }
 
+    @Test
+    fun `emits state with saving draft body error when save draft body returns error`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftBody = DraftBody("updated-draft")
+        val action = ComposerAction.DraftBodyChanged(expectedDraftBody)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectedSenderAddress(expectedUserId, expectedUserAddress.email) { expectedUserAddress }
+        expectStoreDraftBodyFails(expectedMessageId, expectedDraftBody, expectedUserAddress, expectedUserId) {
+            StoreDraftWithBodyError.DraftSaveError
+        }
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        val currentState = viewModel.state.value
+        assertEquals(TextUiModel(R.string.composer_error_store_draft_body_DB_failure), currentState.error.consume())
+        assertErrorLogged("Store draft $expectedMessageId body to local DB failed")
+    }
+
     private fun expectedMessageId(messageId: () -> MessageId): MessageId = messageId().also {
         every { provideNewDraftIdMock() } returns it
     }
@@ -377,6 +400,23 @@ class ComposerViewModelTest {
                 expectedUserId
             )
         } returns Unit.right()
+    }
+
+    private fun expectStoreDraftBodyFails(
+        expectedMessageId: MessageId,
+        expectedDraftBody: DraftBody,
+        expectedPrimaryAddress: UserAddress,
+        expectedUserId: UserId,
+        error: () -> StoreDraftWithBodyError
+    ) = error().also {
+        coEvery {
+            storeDraftWithBodyMock(
+                expectedMessageId,
+                expectedDraftBody,
+                expectedPrimaryAddress,
+                expectedUserId
+            )
+        } returns it.left()
     }
 
     private fun expectStoreDraftSenderSucceeds(
