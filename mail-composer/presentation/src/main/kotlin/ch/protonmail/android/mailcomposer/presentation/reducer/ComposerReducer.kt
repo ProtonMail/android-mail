@@ -31,38 +31,46 @@ import javax.inject.Inject
 
 class ComposerReducer @Inject constructor() {
 
-    @Suppress("NotImplementedDeclaration", "ForbiddenComment")
-    // TODO the from, subject and body are not considered here yet, we'll add it to the draft model later
     fun newStateFrom(currentState: ComposerDraftState, operation: ComposerOperation): ComposerDraftState =
         when (operation) {
-            is ComposerAction.SenderChanged -> updateSenderTo(currentState, operation.sender)
-            is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(currentState, operation.recipients)
-            is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, operation.recipients)
-            is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, operation.recipients)
-            is ComposerAction.SubjectChanged -> TODO()
-            is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, operation.sender)
-            is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
-            is ComposerEvent.ChangeSenderFailed -> updateStateForChangeSenderFailed(
-                currentState,
-                TextUiModel(R.string.composer_error_resolving_sender_address)
-            )
-            is ComposerEvent.ErrorSavingDraftBodyUnresolvedSender -> updateStateToUnresolvedSender(currentState)
-            is ComposerEvent.ErrorGettingSubscriptionToChangeSender -> currentState.copy(
-                error = Effect.of(TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription))
-            )
-            is ComposerEvent.UpgradeToChangeSender -> updateStateToPaidFeatureMessage(currentState)
-            is ComposerEvent.ErrorSavingDraftSender -> updateStateForChangeSenderFailed(
-                currentState,
-                TextUiModel(R.string.composer_error_save_draft_with_new_sender)
-            )
-            is ComposerEvent.SenderAddressesReceived -> currentState.copy(
-                senderAddresses = operation.senders,
-                changeSenderBottomSheetVisibility = Effect.of(true)
-            )
-
-            is ComposerAction.OnChangeSender,
-            is ComposerAction.DraftBodyChanged -> currentState
+            is ComposerAction -> operation.newStateForAction(currentState)
+            is ComposerEvent -> operation.newStateForEvent(currentState)
         }
+
+    @Suppress("NotImplementedDeclaration", "ForbiddenComment")
+    // TODO the subject is not considered here yet, we'll add it to the draft model later
+    private fun ComposerAction.newStateForAction(currentState: ComposerDraftState) = when (this) {
+        is ComposerAction.SenderChanged -> updateSenderTo(currentState, this.sender)
+        is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(currentState, this.recipients)
+        is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, this.recipients)
+        is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, this.recipients)
+        is ComposerAction.SubjectChanged -> TODO()
+        is ComposerAction.OnChangeSender,
+        is ComposerAction.DraftBodyChanged -> currentState
+    }
+
+    private fun ComposerEvent.newStateForEvent(currentState: ComposerDraftState) = when (this) {
+        is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, this.sender)
+        is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
+        is ComposerEvent.ChangeSenderFailed -> updateStateForChangeSenderFailed(
+            currentState,
+            TextUiModel(R.string.composer_error_resolving_sender_address)
+        )
+        is ComposerEvent.ErrorSavingDraftBodyUnresolvedSender -> updateStateToUnresolvedSender(currentState)
+        is ComposerEvent.ErrorGettingSubscriptionToChangeSender -> currentState.copy(
+            error = Effect.of(TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription))
+        )
+        is ComposerEvent.UpgradeToChangeSender -> updateStateToPaidFeatureMessage(currentState)
+        is ComposerEvent.ErrorSavingDraftSender -> updateStateForChangeSenderFailed(
+            currentState,
+            TextUiModel(R.string.composer_error_save_draft_with_new_sender)
+        )
+        is ComposerEvent.SenderAddressesReceived -> currentState.copy(
+            senderAddresses = this.senders,
+            changeSenderBottomSheetVisibility = Effect.of(true)
+        )
+    }
+
 
     private fun updateStateForChangeSenderFailed(currentState: ComposerDraftState, errorMessage: TextUiModel) =
         currentState.copy(changeSenderBottomSheetVisibility = Effect.of(false), error = Effect.of(errorMessage))
