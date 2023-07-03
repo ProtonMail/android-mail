@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
+import android.util.Log
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -39,6 +40,7 @@ import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.test.utils.TestTree
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -49,7 +51,9 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
 import org.junit.Rule
-import org.junit.Test
+import timber.log.Timber
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ComposerViewModelTest {
@@ -68,6 +72,7 @@ class ComposerViewModelTest {
         coEvery { this@mockk.invoke() } returns GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
     }
     private val reducer = ComposerReducer()
+    private val testTree = TestTree()
 
     private val viewModel by lazy {
         ComposerViewModel(
@@ -81,6 +86,11 @@ class ComposerViewModelTest {
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
+    }
+
+    @BeforeTest
+    fun setUp() {
+        Timber.plant(testTree)
     }
 
     @Test
@@ -253,6 +263,28 @@ class ComposerViewModelTest {
     }
 
     @Test
+    fun `emits state with saving draft with new sender error when save draft with sender returns error`() = runTest {
+        // Given
+        val expectedUserAddress = UserAddressSample.AliasAddress
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val action = ComposerAction.SenderChanged(SenderUiModel(expectedUserAddress.email))
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectedSenderAddress(expectedUserId, expectedUserAddress.email) { expectedUserAddress }
+        expectStoreDraftSenderFails(expectedMessageId, expectedUserAddress, expectedUserId) {
+            StoreDraftWithSender.Error.DraftSaveError
+        }
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        val currentState = viewModel.state.value
+        assertEquals(TextUiModel(R.string.composer_error_save_draft_with_new_sender), currentState.error.consume())
+        assertErrorLogged("Store draft $expectedMessageId with new sender ${expectedUserAddress.addressId} failed")
+    }
+
+    @Test
     fun `emits state with change sender error when resolve user address returns error`() = runTest {
         // Given
         val expectedSenderEmail = UserAddressSample.AliasAddress.email
@@ -361,6 +393,25 @@ class ComposerViewModelTest {
         } returns Unit.right()
     }
 
+    private fun expectStoreDraftSenderFails(
+        expectedMessageId: MessageId,
+        expectedSenderAddress: UserAddress,
+        expectedUserId: UserId,
+        error: () -> StoreDraftWithSender.Error
+    ) = error().also {
+        coEvery {
+            storeDraftWithSenderMock(
+                expectedMessageId,
+                expectedSenderAddress,
+                expectedUserId
+            )
+        } returns it.left()
+    }
+
+    private fun assertErrorLogged(message: String) {
+        val expectedLog = TestTree.Log(Log.ERROR, null, message, null)
+        assertEquals(expectedLog, testTree.logs.lastOrNull())
+    }
 
     companion object TestData {
 

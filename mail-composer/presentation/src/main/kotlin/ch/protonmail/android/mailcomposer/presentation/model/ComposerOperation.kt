@@ -42,4 +42,5 @@ sealed interface ComposerEvent : ComposerOperation {
     object UpgradeToChangeSender : ComposerEvent
     object ErrorGettingSubscriptionToChangeSender : ComposerEvent
     object ErrorSavingDraftBodyUnresolvedSender : ComposerEvent
+    object ErrorSavingDraftSender : ComposerEvent
 }

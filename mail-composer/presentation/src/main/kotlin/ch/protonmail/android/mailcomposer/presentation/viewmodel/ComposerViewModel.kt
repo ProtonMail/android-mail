@@ -44,6 +44,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -91,8 +92,13 @@ class ComposerViewModel @Inject constructor(
         return resolveUserAddress(userId, action.sender.email).fold(
             ifLeft = { ComposerEvent.ChangeSenderFailed },
             ifRight = { userAddress ->
-                storeDraftWithSender(messageId, userAddress, userId)
-                action
+                storeDraftWithSender(messageId, userAddress, userId).fold(
+                    ifLeft = {
+                        Timber.e("Store draft $messageId with new sender ${userAddress.addressId} failed")
+                        ComposerEvent.ErrorSavingDraftSender
+                    },
+                    ifRight = { action }
+                )
             }
         )
     }

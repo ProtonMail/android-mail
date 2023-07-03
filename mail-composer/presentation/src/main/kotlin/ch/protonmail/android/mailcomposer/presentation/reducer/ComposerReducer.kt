@@ -42,12 +42,19 @@ class ComposerReducer @Inject constructor() {
             is ComposerAction.SubjectChanged -> TODO()
             is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, operation.sender)
             is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
-            is ComposerEvent.ChangeSenderFailed -> updateStateForChangeSenderFailed(currentState)
+            is ComposerEvent.ChangeSenderFailed -> updateStateForChangeSenderFailed(
+                currentState,
+                TextUiModel(R.string.composer_error_resolving_sender_address)
+            )
             is ComposerEvent.ErrorSavingDraftBodyUnresolvedSender -> updateStateToUnresolvedSender(currentState)
             is ComposerEvent.ErrorGettingSubscriptionToChangeSender -> currentState.copy(
                 error = Effect.of(TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription))
             )
             is ComposerEvent.UpgradeToChangeSender -> updateStateToPaidFeatureMessage(currentState)
+            is ComposerEvent.ErrorSavingDraftSender -> updateStateForChangeSenderFailed(
+                currentState,
+                TextUiModel(R.string.composer_error_save_draft_with_new_sender)
+            )
             is ComposerEvent.SenderAddressesReceived -> currentState.copy(
                 senderAddresses = operation.senders,
                 changeSenderBottomSheetVisibility = Effect.of(true)
@@ -57,10 +64,8 @@ class ComposerReducer @Inject constructor() {
             is ComposerAction.DraftBodyChanged -> currentState
         }
 
-    private fun updateStateForChangeSenderFailed(currentState: ComposerDraftState) = currentState.copy(
-        changeSenderBottomSheetVisibility = Effect.of(false),
-        error = Effect.of(TextUiModel(R.string.composer_error_resolving_sender_address))
-    )
+    private fun updateStateForChangeSenderFailed(currentState: ComposerDraftState, errorMessage: TextUiModel) =
+        currentState.copy(changeSenderBottomSheetVisibility = Effect.of(false), error = Effect.of(errorMessage))
 
     private fun updateStateToPaidFeatureMessage(currentState: ComposerDraftState) =
         currentState.copy(premiumFeatureMessage = Effect.of(TextUiModel(R.string.composer_change_sender_paid_feature)))
