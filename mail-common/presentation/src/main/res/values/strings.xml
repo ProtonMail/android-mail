@@ -53,4 +53,6 @@
     <!-- notification channels -->
     <string name="attachment_download_notification_channel_name">Attachments</string>
     <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
+
+    <string name="auth_badge_official">Official</string>
 </resources>

@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -52,6 +53,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.ui.LabelsList
+import ch.protonmail.android.mailmailbox.presentation.ParticipantsList
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemLocationUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
@@ -60,9 +62,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.caption
-import me.proton.core.compose.theme.default
-import me.proton.core.compose.theme.defaultSmall
+import me.proton.core.compose.theme.captionNorm
+import me.proton.core.compose.theme.defaultNorm
+import me.proton.core.compose.theme.defaultSmallNorm
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -193,16 +195,27 @@ private fun Participants(
     fontWeight: FontWeight,
     fontColor: Color
 ) {
-    Text(
-        modifier = modifier.testTag(MailboxItemTestTags.Participants),
-        text = when (participants) {
-            is ParticipantsUiModel.Participants -> participants.list.joinToString { it.name }
-            is ParticipantsUiModel.NoParticipants -> participants.message.string()
-        },
-        overflow = TextOverflow.Ellipsis,
-        maxLines = 1,
-        style = ProtonTheme.typography.default.copy(fontWeight = fontWeight, color = fontColor)
-    )
+    when (participants) {
+        is ParticipantsUiModel.Participants -> {
+            ParticipantsList(
+                modifier = modifier
+                    .testTag(MailboxItemTestTags.Participants)
+                    .wrapContentSize(),
+                participants = participants,
+                fontWeight = fontWeight,
+                fontColor = fontColor
+            )
+        }
+        is ParticipantsUiModel.NoParticipants -> {
+            Text(
+                modifier = modifier.testTag(MailboxItemTestTags.Participants),
+                text = participants.message.string(),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                style = ProtonTheme.typography.defaultNorm.copy(fontWeight = fontWeight, color = fontColor)
+            )
+        }
+    }
 }
 
 @Composable
@@ -217,7 +230,7 @@ private fun Time(
         text = time.string(),
         maxLines = 1,
         textAlign = TextAlign.End,
-        style = ProtonTheme.typography.caption.copy(fontWeight = fontWeight, color = fontColor)
+        style = ProtonTheme.typography.captionNorm.copy(fontWeight = fontWeight, color = fontColor)
     )
 }
 
@@ -257,7 +270,7 @@ private fun Subject(
         text = subject,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
-        style = ProtonTheme.typography.defaultSmall.copy(fontWeight = fontWeight, color = fontColor)
+        style = ProtonTheme.typography.defaultSmallNorm.copy(fontWeight = fontWeight, color = fontColor)
     )
 }
 
@@ -284,7 +297,7 @@ private fun Count(
                 .padding(horizontal = ProtonDimens.ExtraSmallSpacing),
             text = count.toString(),
             overflow = TextOverflow.Ellipsis,
-            style = ProtonTheme.typography.caption.copy(fontWeight = fontWeight, color = fontColor)
+            style = ProtonTheme.typography.captionNorm.copy(fontWeight = fontWeight, color = fontColor)
         )
     }
 }
