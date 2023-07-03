@@ -95,7 +95,7 @@ class ComposerViewModelTest {
         }
         val action = ComposerAction.DraftBodyChanged(expectedDraftBody)
         expectedPrimaryAddress(expectedUserId) { primaryAddress }
-        expectStoreDraftBodyCalled(
+        expectStoreDraftBodySucceeds(
             expectedMessageId,
             expectedDraftBody,
             expectedSenderAddress,
@@ -127,7 +127,7 @@ class ComposerViewModelTest {
         }
         val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail))
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        expectStoreDraftSenderCalled(expectedMessageId, expectedSenderAddress, expectedUserId)
+        expectStoreDraftSenderSucceeds(expectedMessageId, expectedSenderAddress, expectedUserId)
 
         // When
         viewModel.submit(action)
@@ -242,7 +242,7 @@ class ComposerViewModelTest {
         }
         val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail))
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        expectStoreDraftSenderCalled(expectedMessageId, expectedSenderAddress, expectedUserId)
+        expectStoreDraftSenderSucceeds(expectedMessageId, expectedSenderAddress, expectedUserId)
 
         // When
         viewModel.submit(action)
@@ -331,7 +331,7 @@ class ComposerViewModelTest {
         error: () -> GetComposerSenderAddresses.Error
     ): GetComposerSenderAddresses.Error = error().also { coEvery { getComposerSenderAddresses() } returns it.left() }
 
-    private fun expectStoreDraftBodyCalled(
+    private fun expectStoreDraftBodySucceeds(
         expectedMessageId: MessageId,
         expectedDraftBody: DraftBody,
         expectedPrimaryAddress: UserAddress,
@@ -347,7 +347,7 @@ class ComposerViewModelTest {
         } returns Unit.right()
     }
 
-    private fun expectStoreDraftSenderCalled(
+    private fun expectStoreDraftSenderSucceeds(
         expectedMessageId: MessageId,
         expectedSenderAddress: UserAddress,
         expectedUserId: UserId
