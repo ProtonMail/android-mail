@@ -34,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -72,24 +73,32 @@ fun AttachmentFooter(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.size(ProtonDimens.SmallIconSize),
+                modifier = Modifier
+                    .testTag(AttachmentFooterTestTags.PaperClipIcon)
+                    .size(ProtonDimens.SmallIconSize),
                 painter = painterResource(id = drawable.ic_proton_paper_clip),
                 tint = ProtonTheme.colors.iconWeak,
                 contentDescription = ""
             )
             Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
             Text(
+                modifier = Modifier.testTag(AttachmentFooterTestTags.SummaryText),
                 text = pluralStringResource(plurals.attachment_count_label, attachments.size, attachments.size),
                 style = ProtonTheme.typography.defaultSmall
             )
             Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
             Text(
+                modifier = Modifier.testTag(AttachmentFooterTestTags.SummarySize),
                 text = attachments.getTotalAttachmentByteSizeReadable(LocalContext.current),
                 style = ProtonTheme.typography.defaultSmall.copy(color = ProtonTheme.colors.textHint)
             )
         }
-        attachments.take(messageBodyAttachmentsUiModel.limit).forEach {
-            AttachmentItem(attachmentUiModel = it, onAttachmentItemClicked = onAttachmentClicked)
+        attachments.take(messageBodyAttachmentsUiModel.limit).forEachIndexed { index, item ->
+            AttachmentItem(
+                modifier = Modifier.testTag("${AttachmentFooterTestTags.Item}$index"),
+                attachmentUiModel = item,
+                onAttachmentItemClicked = onAttachmentClicked
+            )
         }
         if (attachments.size > messageBodyAttachmentsUiModel.limit) {
             Box(
@@ -99,6 +108,7 @@ fun AttachmentFooter(
             ) {
                 Text(
                     modifier = Modifier
+                        .testTag(AttachmentFooterTestTags.ShowMoreItems)
                         .clickable { onShowAllAttachments() }
                         .padding(ProtonDimens.SmallSpacing),
                     text = stringResource(
@@ -144,4 +154,13 @@ fun AttachmentFooterSingleAttachmentPreview() {
         onShowAllAttachments = {},
         onAttachmentClicked = {}
     )
+}
+
+object AttachmentFooterTestTags {
+
+    const val PaperClipIcon = "AttachmentsPaperClipIcon"
+    const val SummaryText = "AttachmentsSummaryText"
+    const val SummarySize = "AttachmentsSummarySize"
+    const val Item = "AttachmentItem"
+    const val ShowMoreItems = "AttachmentsShowMoreItems"
 }

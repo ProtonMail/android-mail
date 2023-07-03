@@ -33,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,11 +53,12 @@ import me.proton.core.compose.theme.defaultSmall
 
 @Composable
 fun AttachmentItem(
+    modifier: Modifier = Modifier,
     attachmentUiModel: AttachmentUiModel,
     onAttachmentItemClicked: (attachmentId: AttachmentId) -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = ProtonDimens.SmallSpacing, vertical = ProtonDimens.ExtraSmallSpacing)
             .padding(horizontal = ProtonDimens.ExtraSmallSpacing)
             .border(
@@ -69,9 +71,14 @@ fun AttachmentItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (attachmentUiModel.status == AttachmentWorkerStatus.Running) {
-            CircularProgressIndicator(modifier = Modifier.size(ProtonDimens.DefaultIconSize))
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .testTag(AttachmentItemTestTags.Loader)
+                    .size(ProtonDimens.DefaultIconSize)
+            )
         } else {
             Image(
+                modifier = Modifier.testTag(AttachmentItemTestTags.Icon),
                 painter = painterResource(id = getDrawableForMimeType(attachmentUiModel.mimeType)),
                 contentDescription = stringResource(
                     id = R.string.attachment_type_description,
@@ -81,18 +88,23 @@ fun AttachmentItem(
         }
         Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
         Text(
-            modifier = Modifier.weight(1f, fill = false),
+            modifier = Modifier
+                .testTag(AttachmentItemTestTags.Name)
+                .weight(1f, fill = false),
             style = ProtonTheme.typography.defaultSmall,
             text = attachmentUiModel.fileName,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         Text(
-            modifier = Modifier.padding(end = ProtonDimens.SmallSpacing),
+            modifier = Modifier
+                .testTag(AttachmentItemTestTags.Extension)
+                .padding(end = ProtonDimens.SmallSpacing),
             text = ".${attachmentUiModel.extension}",
             style = ProtonTheme.typography.defaultSmall
         )
         Text(
+            modifier = Modifier.testTag(AttachmentItemTestTags.Size),
             text = Formatter.formatShortFileSize(LocalContext.current, attachmentUiModel.size),
             style = ProtonTheme.typography.captionHint
         )
@@ -119,4 +131,13 @@ fun AttachmentItemTruncationPreview() {
             onAttachmentItemClicked = {}
         )
     }
+}
+
+object AttachmentItemTestTags {
+
+    const val Loader = "AttachmentLoader"
+    const val Icon = "AttachmentIcon"
+    const val Name = "AttachmentName"
+    const val Extension = "AttachmentExtension"
+    const val Size = "AttachmentSize"
 }
