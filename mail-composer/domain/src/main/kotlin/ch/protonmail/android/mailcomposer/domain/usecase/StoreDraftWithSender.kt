@@ -20,7 +20,6 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
 import arrow.core.continuations.either
-import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -40,8 +39,8 @@ class StoreDraftWithSender @Inject constructor(
         senderAddress: UserAddress,
         userId: UserId
     ): Either<Error, Unit> = either {
-        val draftWithBody = messageRepository.getMessageWithBody(userId, messageId)
-            .getOrElse { createEmptyDraft(messageId, userId, senderAddress) }
+        val draftWithBody = messageRepository.getLocalMessageWithBody(userId, messageId)
+            ?: createEmptyDraft(messageId, userId, senderAddress)
         val updatedDraft = draftWithBody.copy(
             message = draftWithBody.message.copy(
                 sender = Sender(senderAddress.email, senderAddress.displayName.orEmpty())
