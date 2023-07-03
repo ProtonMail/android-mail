@@ -43,7 +43,8 @@ class StoreDraftWithSender @Inject constructor(
             ?: createEmptyDraft(messageId, userId, senderAddress)
         val updatedDraft = draftWithBody.copy(
             message = draftWithBody.message.copy(
-                sender = Sender(senderAddress.email, senderAddress.displayName.orEmpty())
+                sender = Sender(senderAddress.email, senderAddress.displayName.orEmpty()),
+                addressId = senderAddress.addressId
             )
         )
         saveDraft(updatedDraft, userId)

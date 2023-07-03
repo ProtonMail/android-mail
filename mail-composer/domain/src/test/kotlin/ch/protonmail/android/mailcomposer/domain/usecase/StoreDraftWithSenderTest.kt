@@ -51,7 +51,7 @@ class StoreDraftWithSenderTest {
     )
 
     @Test
-    fun `should save an existing draft with sender when draft already exists`() = runTest {
+    fun `should save an existing draft with sender and address ID when draft already exists`() = runTest {
         // Given
         val senderAddress = UserAddressSample.AliasAddress
         val expectedUserId = UserIdSample.Primary
@@ -59,7 +59,8 @@ class StoreDraftWithSenderTest {
         val existingDraft = expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
         val expectedSavedDraft = existingDraft.copy(
             message = existingDraft.message.copy(
-                sender = Sender(senderAddress.email, senderAddress.displayName!!)
+                sender = Sender(senderAddress.email, senderAddress.displayName!!),
+                addressId = senderAddress.addressId
             )
         )
         givenSaveDraftSucceeds(expectedSavedDraft, expectedUserId)
@@ -73,7 +74,7 @@ class StoreDraftWithSenderTest {
     }
 
     @Test
-    fun `should save a new draft with sender when draft does not exist yet`() = runTest {
+    fun `should save a new draft with sender and address ID when draft does not exist yet`() = runTest {
         // Given
         val senderAddress = UserAddressSample.AliasAddress
         val expectedUserId = UserIdSample.Primary
@@ -83,7 +84,8 @@ class StoreDraftWithSenderTest {
         }
         val expectedSavedDraft = newDraft.copy(
             message = newDraft.message.copy(
-                sender = Sender(senderAddress.email, senderAddress.displayName!!)
+                sender = Sender(senderAddress.email, senderAddress.displayName!!),
+                addressId = senderAddress.addressId
             )
         )
         givenSaveDraftSucceeds(expectedSavedDraft, expectedUserId)
@@ -105,7 +107,8 @@ class StoreDraftWithSenderTest {
         val existingDraft = expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
         val expectedSavedDraft = existingDraft.copy(
             message = existingDraft.message.copy(
-                sender = Sender(senderAddress.email, senderAddress.displayName!!)
+                sender = Sender(senderAddress.email, senderAddress.displayName!!),
+                addressId = senderAddress.addressId
             )
         )
         givenSaveDraftFails(expectedSavedDraft, expectedUserId)
