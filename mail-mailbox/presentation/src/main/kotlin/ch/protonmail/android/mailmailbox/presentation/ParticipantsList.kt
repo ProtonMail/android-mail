@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -28,11 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.SubcomposeMeasureScope
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
-import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadge
 import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.minLengthParticipantName
 import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.participantNameId
 import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.participantWithBadgeAndSeparatorId
@@ -44,7 +42,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.Participants
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
-import me.proton.core.compose.theme.overlineStrongNorm
 
 @Composable
 fun ParticipantsList(
@@ -175,7 +172,7 @@ private fun ParticipantRow(
             fontColor = displayData.fontColor
         )
         if (participant.shouldShowOfficialBadge) {
-            OfficialBadge(Modifier.padding(start = ProtonDimens.ExtraSmallSpacing))
+            OfficialBadge()
         }
     }
 }
@@ -193,18 +190,6 @@ private fun ParticipantName(
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
         style = ProtonTheme.typography.defaultNorm.copy(fontWeight = fontWeight, color = fontColor)
-    )
-}
-
-@Composable
-fun OfficialBadge(modifier: Modifier = Modifier) {
-    Text(
-        modifier = modifier
-            .background(color = ProtonTheme.colors.backgroundSecondary, shape = ProtonTheme.shapes.medium)
-            .padding(horizontal = ProtonDimens.ExtraSmallSpacing, vertical = MailDimens.TinySpacing),
-        text = stringResource(id = R.string.auth_badge_official),
-        maxLines = 1,
-        style = ProtonTheme.typography.overlineStrongNorm.copy(color = ProtonTheme.colors.textAccent)
     )
 }
 
