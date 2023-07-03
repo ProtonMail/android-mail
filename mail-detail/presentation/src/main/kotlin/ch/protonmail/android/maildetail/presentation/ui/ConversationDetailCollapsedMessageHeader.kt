@@ -52,9 +52,9 @@ import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDet
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
-import me.proton.core.compose.theme.caption
-import me.proton.core.compose.theme.default
-import me.proton.core.compose.theme.overline
+import me.proton.core.compose.theme.captionNorm
+import me.proton.core.compose.theme.defaultNorm
+import me.proton.core.compose.theme.overlineNorm
 import me.proton.core.presentation.R.drawable
 import me.proton.core.util.kotlin.EMPTY_STRING
 import me.proton.core.util.kotlin.exhaustive
@@ -189,10 +189,7 @@ internal fun ConversationDetailCollapsedMessageHeader(
 }
 
 @Composable
-private fun AttachmentIcon(
-    fontColor: Color,
-    modifier: Modifier
-) {
+private fun AttachmentIcon(fontColor: Color, modifier: Modifier) {
     Icon(
         modifier = modifier
             .testTag(ConversationDetailCollapsedMessageHeaderTestTags.AttachmentIcon)
@@ -226,7 +223,7 @@ private fun Expiration(uiModel: ConversationDetailMessageUiModel.Collapsed, modi
         Text(
             modifier = Modifier.testTag(ConversationDetailCollapsedMessageHeaderTestTags.ExpirationText),
             text = uiModel.expiration?.string() ?: EMPTY_STRING,
-            style = ProtonTheme.typography.overline
+            style = ProtonTheme.typography.overlineNorm
         )
     }
 }
@@ -303,7 +300,7 @@ private fun Sender(
         text = uiModel.sender.participantName,
         fontWeight = fontWeight,
         color = fontColor,
-        style = ProtonTheme.typography.default,
+        style = ProtonTheme.typography.defaultNorm,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1
     )
@@ -335,7 +332,7 @@ private fun Time(
         text = uiModel.shortTime.string(),
         fontWeight = fontWeight,
         color = fontColor,
-        style = ProtonTheme.typography.caption,
+        style = ProtonTheme.typography.captionNorm,
         maxLines = 1
     )
 }

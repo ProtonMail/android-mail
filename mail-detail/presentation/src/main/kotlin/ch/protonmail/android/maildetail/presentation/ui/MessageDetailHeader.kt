@@ -77,10 +77,10 @@ import ch.protonmail.android.maillabel.presentation.ui.LabelsList
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.caption
+import me.proton.core.compose.theme.captionNorm
 import me.proton.core.compose.theme.captionWeak
-import me.proton.core.compose.theme.defaultSmall
-import me.proton.core.compose.theme.defaultSmallStrong
+import me.proton.core.compose.theme.defaultSmallNorm
+import me.proton.core.compose.theme.defaultSmallStrongNorm
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -88,7 +88,7 @@ fun MessageDetailHeader(
     modifier: Modifier = Modifier,
     uiModel: MessageDetailHeaderUiModel,
     initiallyExpanded: Boolean = false,
-    showFeatureMissingSnackbar: () -> Unit = { },
+    showFeatureMissingSnackbar: () -> Unit = { }
 ) {
     val isExpanded = rememberSaveable(inputs = arrayOf()) {
         mutableStateOf(initiallyExpanded)
@@ -107,7 +107,7 @@ fun MessageDetailHeader(
             uiModel = uiModel,
             isExpanded = targetState,
             onClick = { isExpanded.value = !isExpanded.value },
-            showFeatureMissingSnackbar = showFeatureMissingSnackbar,
+            showFeatureMissingSnackbar = showFeatureMissingSnackbar
         )
     }
 }
@@ -118,7 +118,7 @@ private fun MessageDetailHeaderLayout(
     uiModel: MessageDetailHeaderUiModel,
     isExpanded: Boolean,
     onClick: () -> Unit,
-    showFeatureMissingSnackbar: () -> Unit,
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     ConstraintLayout(
         modifier = modifier
@@ -427,16 +427,13 @@ private fun MessageDetailHeaderLayout(
 }
 
 @Composable
-private fun SenderName(
-    modifier: Modifier = Modifier,
-    participantUiModel: ParticipantUiModel
-) {
+private fun SenderName(modifier: Modifier = Modifier, participantUiModel: ParticipantUiModel) {
     Text(
         modifier = modifier.testTag(MessageDetailHeaderTestTags.SenderName),
         text = participantUiModel.participantName,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        style = ProtonTheme.typography.defaultSmallStrong
+        style = ProtonTheme.typography.defaultSmallStrongNorm
     )
 }
 
@@ -492,10 +489,7 @@ private fun Icons(
 }
 
 @Composable
-private fun Time(
-    modifier: Modifier = Modifier,
-    time: TextUiModel
-) {
+private fun Time(modifier: Modifier = Modifier, time: TextUiModel) {
     Text(
         modifier = modifier.testTag(MessageDetailHeaderTestTags.Time),
         text = time.string(),
@@ -505,10 +499,7 @@ private fun Time(
 }
 
 @Composable
-private fun MoreButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
-) {
+private fun MoreButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Icon(
         modifier = modifier
             .testTag(MessageDetailHeaderTestTags.MoreButton)
@@ -524,17 +515,14 @@ private fun MoreButton(
 }
 
 @Composable
-private fun AllRecipients(
-    modifier: Modifier = Modifier,
-    allRecipients: TextUiModel
-) {
+private fun AllRecipients(modifier: Modifier = Modifier, allRecipients: TextUiModel) {
     Row(modifier = modifier) {
         Text(
             modifier = Modifier
                 .testTag(MessageDetailHeaderTestTags.AllRecipientsText)
                 .padding(end = ProtonDimens.ExtraSmallSpacing),
             text = stringResource(R.string.to),
-            style = ProtonTheme.typography.caption
+            style = ProtonTheme.typography.captionNorm
         )
         Text(
             modifier = Modifier.testTag(MessageDetailHeaderTestTags.AllRecipientsValue),
@@ -592,11 +580,8 @@ private fun Recipients(
 }
 
 @Composable
-private fun RecipientsTitle(
-    modifier: Modifier = Modifier,
-    @StringRes recipientsTitle: Int
-) {
-    Text(modifier = modifier, text = stringResource(id = recipientsTitle), style = ProtonTheme.typography.caption)
+private fun RecipientsTitle(modifier: Modifier = Modifier, @StringRes recipientsTitle: Int) {
+    Text(modifier = modifier, text = stringResource(id = recipientsTitle), style = ProtonTheme.typography.captionNorm)
 }
 
 @Composable
@@ -619,7 +604,7 @@ private fun ParticipantText(
         color = textColor,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        style = ProtonTheme.typography.caption
+        style = ProtonTheme.typography.captionNorm
     )
 }
 
@@ -685,14 +670,12 @@ private fun ExtendedHeaderRow(
 }
 
 @Composable
-private fun HideDetails(
-    modifier: Modifier = Modifier
-) {
+private fun HideDetails(modifier: Modifier = Modifier) {
     Text(
         modifier = modifier.testTag(MessageDetailHeaderTestTags.ExtendedHideDetails),
         text = stringResource(id = R.string.hide_details),
         color = ProtonTheme.colors.interactionNorm,
-        style = ProtonTheme.typography.defaultSmall
+        style = ProtonTheme.typography.defaultSmallNorm
     )
 }
 
@@ -753,7 +736,7 @@ fun MessageDetailHeaderPreview(
     ProtonTheme {
         MessageDetailHeader(
             uiModel = preview.uiModel,
-            initiallyExpanded = preview.initiallyExpanded,
+            initiallyExpanded = preview.initiallyExpanded
         )
     }
 }

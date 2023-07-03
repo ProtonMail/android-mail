@@ -83,10 +83,7 @@ fun ConversationDetailItem(
 }
 
 @Composable
-private fun ConversationDetailExpandingItem(
-    uiModel: Expanding,
-    modifier: Modifier = Modifier
-) {
+private fun ConversationDetailExpandingItem(uiModel: Expanding, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -126,7 +123,7 @@ private fun ConversationDetailExpandedItem(
             actions = MessageBody.Actions(
                 onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) },
                 onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },
-                onAttachmentClicked = { actions.onAttachmentClicked(uiModel.messageId, it) },
+                onAttachmentClicked = { actions.onAttachmentClicked(uiModel.messageId, it) }
             )
         )
     }
