@@ -31,7 +31,7 @@ class CreateEmptyDraftTest {
     }
 
     @Test
-    fun `should create an empty draft with the current timestamp`() {
+    fun `should create an empty draft with the current timestamp and the given sender`() {
         // Given
         val expectedCurrentTimestamp = expectedCurrentTimestamp { 42L }
         val expectedMessageId = MessageIdSample.EmptyDraft
@@ -45,7 +45,7 @@ class CreateEmptyDraftTest {
                 order = 0,
                 subject = EMPTY_STRING,
                 unread = false,
-                sender = Sender(EMPTY_STRING, EMPTY_STRING),
+                sender = Sender(expectedUserAddress.email, expectedUserAddress.displayName!!),
                 toList = emptyList(),
                 ccList = emptyList(),
                 bccList = emptyList(),
