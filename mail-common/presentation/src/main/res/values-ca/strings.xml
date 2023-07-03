@@ -33,7 +33,7 @@
   <string name="action_unstar_content_description">Treure de destacats</string>
   <string name="action_label_content_description">Etiqueta com a</string>
   <string name="action_move_content_description">Mou a</string>
-  <string name="action_trash_content_description">Brossa</string>
+  <string name="action_trash_content_description">Paperera</string>
   <string name="action_delete_content_description">Elimina</string>
   <string name="action_archive_content_description">Arxiva</string>
   <string name="action_spam_content_description">Correu brossa</string>
@@ -41,7 +41,7 @@
   <string name="action_view_in_dark_mode_content_description">Veure missatges en mode fosc</string>
   <string name="action_print_content_description">Imprimeix</string>
   <string name="action_view_headers_content_description">Mostrar les capçaleres</string>
-  <string name="action_view_html_content_description">Visualitza HTML</string>
+  <string name="action_view_html_content_description">Mostra el codi HTML</string>
   <string name="action_report_phishing_content_description">Denunciar suplantació d\'identitat</string>
   <string name="action_remind_content_description">Recorda-m\'ho</string>
   <string name="action_save_pdf_content_description">Desa com a PDF</string>

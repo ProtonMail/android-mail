@@ -27,4 +27,5 @@
   <string name="send_message_content_description">Trimitere mesaj</string>
   <string name="composer_expand_recipients_button">Afișare alți destinatari</string>
   <string name="composer_error_invalid_email">Adresa de e-mail nu este validă.</string>
+  <string name="composer_error_invalid_sender">Adresa expeditorului nu este validă.</string>
 </resources>

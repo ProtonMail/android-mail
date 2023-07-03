@@ -31,9 +31,9 @@
     <item quantity="one">%d sense llegir</item>
     <item quantity="other">%d sense llegir</item>
   </plurals>
-  <string name="mailbox_default_recipient">(Cap Destinatari)</string>
+  <string name="mailbox_default_recipient">(Cap destinatari)</string>
   <string name="mailbox_default_sender">(Cap remitent)</string>
-  <string name="mailbox_error_message_offline">Esteu fora de línia. No s\'han pogut recuperar els elements.</string>
+  <string name="mailbox_error_message_offline">Esteu fora de línia. No s\'han pogut recuperar els elements</string>
   <string name="mailbox_error_message_generic">No s\'ha pogut carregar la bústia de correu</string>
   <string name="mailbox_error_message_unexpected">Alguna cosa ha anat malament</string>
   <string name="mailbox_is_empty_message">Aquesta bústia de correu està buida</string>

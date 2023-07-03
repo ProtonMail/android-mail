@@ -26,5 +26,6 @@
   <string name="close_composer_content_description">Κλείσιμο συντάκτη</string>
   <string name="send_message_content_description">Αποστολή μηνύματος</string>
   <string name="composer_expand_recipients_button">Εμφάνιση άλλων παραληπτών</string>
-  <string name="composer_error_invalid_email">Email address is invalid</string>
+  <string name="composer_error_invalid_email">Η διεύθυνση email δεν είναι έγκυρη</string>
+  <string name="composer_error_invalid_sender">Η διεύθυνση αποστολέα δεν είναι έγκυρη</string>
 </resources>

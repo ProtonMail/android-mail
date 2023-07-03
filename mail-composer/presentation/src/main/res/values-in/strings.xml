@@ -27,4 +27,5 @@
   <string name="send_message_content_description">Kirim pesan</string>
   <string name="composer_expand_recipients_button">Tampilkan penerima lainnya</string>
   <string name="composer_error_invalid_email">Alamat email tidak valid</string>
+  <string name="composer_error_invalid_sender">Sender address is invalid</string>
 </resources>

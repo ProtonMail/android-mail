@@ -45,7 +45,7 @@
   <string name="error_move_conversation_failed">Error al mover la conversación. Inténtalo de nuevo.</string>
   <string name="error_loading_message">Se ha detectado un problema. Inténtalo de nuevo más tarde.</string>
   <string name="error_offline_loading_message">No estás conectado. Se necesita una conexión a internet para mostrar el contenido de este mensaje.</string>
-  <string name="error_get_attachment_failed">Failed to get attachment</string>
+  <string name="error_get_attachment_failed">Error al obtener el archivo adjunto</string>
   <string name="reload">Recargar</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d archivo</item>

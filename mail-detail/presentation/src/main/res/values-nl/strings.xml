@@ -45,7 +45,7 @@
   <string name="error_move_conversation_failed">Gesprek verplaatsen mislukt. Probeer opnieuw.</string>
   <string name="error_loading_message">Er ging iets mis. Probeer opnieuw.</string>
   <string name="error_offline_loading_message">U bent offline. Een internetverbinding is verplicht om de inhoud van dit bericht te tonen.</string>
-  <string name="error_get_attachment_failed">Failed to get attachment</string>
+  <string name="error_get_attachment_failed">Het is niet gelukt om de bijlage op te halen</string>
   <string name="reload">Opnieuw laden</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d bestand</item>

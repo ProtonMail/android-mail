@@ -27,4 +27,5 @@
   <string name="send_message_content_description">İleti gönder</string>
   <string name="composer_expand_recipients_button">Diğer alıcıları görüntüle</string>
   <string name="composer_error_invalid_email">E-posta adresi geçersiz</string>
+  <string name="composer_error_invalid_sender">Gönderici adresi geçersiz</string>
 </resources>

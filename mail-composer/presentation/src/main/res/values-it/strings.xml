@@ -26,5 +26,6 @@
   <string name="close_composer_content_description">Chiudi il compositore</string>
   <string name="send_message_content_description">Invia messaggio</string>
   <string name="composer_expand_recipients_button">Mostra altri destinatari</string>
-  <string name="composer_error_invalid_email">Email address is invalid</string>
+  <string name="composer_error_invalid_email">L\'indirizzo email non è valido.</string>
+  <string name="composer_error_invalid_sender">L\'indirizzo del mittente non è valido</string>
 </resources>

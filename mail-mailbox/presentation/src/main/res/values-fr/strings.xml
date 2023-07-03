@@ -34,7 +34,7 @@
   <string name="mailbox_default_recipient">(aucun destinataire)</string>
   <string name="mailbox_default_sender">(aucun expéditeur)</string>
   <string name="mailbox_error_message_offline">Vous êtes hors ligne, il n\'est pas possible de récupérer les éléments.</string>
-  <string name="mailbox_error_message_generic">Le chargement de la boite aux lettres n\'a pas abouti.</string>
+  <string name="mailbox_error_message_generic">Le chargement de la messagerie n\'a pas abouti.</string>
   <string name="mailbox_error_message_unexpected">Une erreur imprévue s\'est produite.</string>
   <string name="mailbox_is_empty_message">Cette messagerie est vide.</string>
 </resources>

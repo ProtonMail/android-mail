@@ -34,7 +34,7 @@
   <string name="mailbox_default_recipient">(Ingen modtager)</string>
   <string name="mailbox_default_sender">(Ingen afsender)</string>
   <string name="mailbox_error_message_offline">Du er offline, kunne ikke hente elementer</string>
-  <string name="mailbox_error_message_generic">At loade postkassen fejlede</string>
-  <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
+  <string name="mailbox_error_message_generic">Indlæsning af postkasse mislykkedes</string>
+  <string name="mailbox_error_message_unexpected">Noget gik uventet galt</string>
   <string name="mailbox_is_empty_message">Denne postkasse er tom</string>
 </resources>

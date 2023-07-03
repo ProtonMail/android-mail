@@ -27,4 +27,5 @@
   <string name="send_message_content_description">发送邮件</string>
   <string name="composer_expand_recipients_button">显示其余收件人</string>
   <string name="composer_error_invalid_email">电子邮箱地址无效</string>
+  <string name="composer_error_invalid_sender">发件人地址无效</string>
 </resources>

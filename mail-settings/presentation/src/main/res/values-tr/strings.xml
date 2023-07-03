@@ -73,7 +73,7 @@
   <string name="mail_settings_swipe_action_spam_title">İstenmeyen</string>
   <string name="mail_settings_swipe_action_star_title">Yıldız koy</string>
   <string name="mail_settings_swipe_action_trash_title">Çöpe at</string>
-  <string name="mail_settings_swipe_action_archive_description">Arşive taşı</string>
+  <string name="mail_settings_swipe_action_archive_description">Arşivle</string>
   <string name="mail_settings_swipe_action_read_description">Okunmamış/okunmuş olarak işaretle</string>
   <string name="mail_settings_swipe_action_spam_description">İstenmeyen kutusuna taşı</string>
   <string name="mail_settings_swipe_action_star_description">Yıldız koy/kaldır</string>

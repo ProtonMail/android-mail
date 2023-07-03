@@ -22,5 +22,5 @@
   <string name="description_remove_account">Es tancarà la sessió i s\'eliminarà tota la informació associada a ella.</string>
   <string name="user_select_other_account_content_description">Seleccioneu un altre compte</string>
   <string name="you_are_offline">Esteu fora de línia</string>
-  <string name="feature_coming_soon">Funció disponible properament...</string>
+  <string name="feature_coming_soon">Aquesta característica arribarà aviat...</string>
 </resources>

@@ -51,5 +51,5 @@
   <string name="yesterday">Gisteren</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Bijlagen</string>
-  <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
+  <string name="attachment_download_notification_channel_description">Meldingen voor downloads van bijlagen</string>
 </resources>

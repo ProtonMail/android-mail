@@ -29,10 +29,10 @@
   <string name="mail_settings_app_language">Idioma de l\'aplicació</string>
   <string name="mail_settings_combined_contacts">Contactes combinats</string>
   <string name="mail_settings_swipe_actions">Accions de lliscament</string>
-  <string name="mail_settings_combined_contacts_hint">Activeu aquesta funcionalitat per completar automàticament les adreces de correu electrònic utilitzant els contactes de tots els vostres comptes amb sessió iniciada.</string>
+  <string name="mail_settings_combined_contacts_hint">Activeu aquesta característica per a completar automàticament les adreces de correu electrònic utilitzant els contactes de tots els vostres comptes amb la sessió iniciada.</string>
   <string name="mail_settings_alternative_routing_hint">En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l\'aplicació provar l\'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat.</string>
   <!-- Theme settings -->
-  <string name="mail_settings_system_default">Valors per defecte del sistema</string>
+  <string name="mail_settings_system_default">Valor per defecte del sistema</string>
   <string name="mail_settings_theme_light">Clar</string>
   <string name="mail_settings_theme_dark">Fosc</string>
   <!-- Settings item states -->
@@ -74,7 +74,7 @@
   <string name="mail_settings_swipe_action_star_title">Destaca</string>
   <string name="mail_settings_swipe_action_trash_title">Paperera</string>
   <string name="mail_settings_swipe_action_archive_description">Mou a l\'arxiu</string>
-  <string name="mail_settings_swipe_action_read_description">Marca com a llegit/no llegit</string>
+  <string name="mail_settings_swipe_action_read_description">Marca com a llegit / no llegit</string>
   <string name="mail_settings_swipe_action_spam_description">Mou al correu brossa</string>
   <string name="mail_settings_swipe_action_star_description">Destaca/no destaquis</string>
   <string name="mail_settings_swipe_action_trash_description">Mou a la paperera</string>

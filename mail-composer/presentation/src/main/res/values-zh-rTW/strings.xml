@@ -27,4 +27,5 @@
   <string name="send_message_content_description">傳送郵件訊息</string>
   <string name="composer_expand_recipients_button">顯示其他收件者</string>
   <string name="composer_error_invalid_email">電子郵件地址無效</string>
+  <string name="composer_error_invalid_sender">寄件者電子郵件地址無效</string>
 </resources>

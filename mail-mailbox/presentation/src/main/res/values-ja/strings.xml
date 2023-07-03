@@ -33,7 +33,7 @@
   <string name="mailbox_default_recipient">(宛先なし)</string>
   <string name="mailbox_default_sender">(差出人なし)</string>
   <string name="mailbox_error_message_offline">インターネットに接続できないため、メールを取得できませんでした。</string>
-  <string name="mailbox_error_message_generic">Loading mailbox failed</string>
-  <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
-  <string name="mailbox_is_empty_message">This mailbox is empty</string>
+  <string name="mailbox_error_message_generic">メールボックスの読み込みに失敗しました</string>
+  <string name="mailbox_error_message_unexpected">予期せぬ問題が発生しました</string>
+  <string name="mailbox_is_empty_message">このメールボックスは空です</string>
 </resources>

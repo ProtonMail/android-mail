@@ -29,7 +29,7 @@
   <string name="more_button_content_description">Detalii</string>
   <string name="to">Către:</string>
   <string name="cc">C:</string>
-  <string name="bcc">CA:</string>
+  <string name="bcc">Ca:</string>
   <string name="hide_details">Ascundere detalii</string>
   <string name="undisclosed_recipients">Destinatari confidențiali</string>
   <string name="error_mark_as_unread_failed">Operația de marcare ca mesaj citit a eșuat. Reîncercați.</string>

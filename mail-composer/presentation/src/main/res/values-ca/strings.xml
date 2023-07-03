@@ -27,4 +27,5 @@
   <string name="send_message_content_description">Envia missatge</string>
   <string name="composer_expand_recipients_button">Mostra els altres destinataris</string>
   <string name="composer_error_invalid_email">L\'adreça de correu electrònic no és vàlida</string>
+  <string name="composer_error_invalid_sender">L\'adreça del remitent no és vàlida</string>
 </resources>

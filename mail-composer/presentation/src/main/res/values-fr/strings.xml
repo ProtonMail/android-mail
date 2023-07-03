@@ -26,5 +26,6 @@
   <string name="close_composer_content_description">Fermer l\'éditeur</string>
   <string name="send_message_content_description">Envoyez le message</string>
   <string name="composer_expand_recipients_button">Afficher les autres destinataires</string>
-  <string name="composer_error_invalid_email">L\'adresse e-mail n\'est pas valide</string>
+  <string name="composer_error_invalid_email">L\'adresse e-mail n\'est pas valide.</string>
+  <string name="composer_error_invalid_sender">L\'adresse de l\'expéditeur n\'est pas valide.</string>
 </resources>

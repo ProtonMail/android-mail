@@ -50,6 +50,6 @@
   <string name="common_error_loading_actions">動作の読み込みに失敗</string>
   <string name="yesterday">昨日</string>
   <!-- notification channels -->
-  <string name="attachment_download_notification_channel_name">Attachments</string>
-  <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
+  <string name="attachment_download_notification_channel_name">添付ファイル</string>
+  <string name="attachment_download_notification_channel_description">添付ファイルのダウンロードに関する通知</string>
 </resources>

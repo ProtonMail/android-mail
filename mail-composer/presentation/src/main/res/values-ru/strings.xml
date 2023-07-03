@@ -27,4 +27,5 @@
   <string name="send_message_content_description">Отправить сообщение</string>
   <string name="composer_expand_recipients_button">Показать других получателей</string>
   <string name="composer_error_invalid_email">Недействительный адрес эл. почты</string>
+  <string name="composer_error_invalid_sender">Адрес отправителя недействителен</string>
 </resources>

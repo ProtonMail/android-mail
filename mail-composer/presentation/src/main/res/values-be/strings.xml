@@ -27,4 +27,5 @@
   <string name="send_message_content_description">Адправіць ліст</string>
   <string name="composer_expand_recipients_button">Паказаць іншых удзельнікаў</string>
   <string name="composer_error_invalid_email">Памылковы адрас электроннай пошты</string>
+  <string name="composer_error_invalid_sender">Памылковы адрас адпраўніка</string>
 </resources>

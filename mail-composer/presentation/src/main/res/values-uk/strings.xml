@@ -27,4 +27,5 @@
   <string name="send_message_content_description">Надіслати повідомлення</string>
   <string name="composer_expand_recipients_button">Показати інших отримувачів</string>
   <string name="composer_error_invalid_email">Недійсна адреса е-пошти</string>
+  <string name="composer_error_invalid_sender">Адреса відправника неправильна</string>
 </resources>

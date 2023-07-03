@@ -27,4 +27,5 @@
   <string name="send_message_content_description">Odeslat zprávu</string>
   <string name="composer_expand_recipients_button">Zobrazit ostatní příjemce</string>
   <string name="composer_error_invalid_email">E-mailová adresa je neplatná</string>
+  <string name="composer_error_invalid_sender">Sender address is invalid</string>
 </resources>

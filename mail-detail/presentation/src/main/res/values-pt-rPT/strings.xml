@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">Erro ao carregar os contatos</string>
+  <string name="detail_error_loading_contacts">Erro ao carregar os contactos</string>
   <string name="detail_error_loading_conversation">Erro ao carregar a conversa</string>
   <string name="detail_error_loading_messages">Erro ao carregar as mensagens</string>
   <string name="error_mark_unread_failed">Erro ao marcar como não lido. Tente novamente.</string>
