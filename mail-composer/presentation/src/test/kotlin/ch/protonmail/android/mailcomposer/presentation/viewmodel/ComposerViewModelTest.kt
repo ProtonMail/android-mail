@@ -347,6 +347,31 @@ class ComposerViewModelTest {
         assertErrorLogged("Store draft $expectedMessageId body to local DB failed")
     }
 
+    @Test
+    fun `emits state with encrypting draft body error when save draft body returns encryption error`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftBody = DraftBody("updated-draft")
+        val action = ComposerAction.DraftBodyChanged(expectedDraftBody)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectedSenderAddress(expectedUserId, expectedUserAddress.email) { expectedUserAddress }
+        expectStoreDraftBodyFails(expectedMessageId, expectedDraftBody, expectedUserAddress, expectedUserId) {
+            StoreDraftWithBodyError.DraftBodyEncryptionError
+        }
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        val currentState = viewModel.state.value
+        assertEquals(
+            TextUiModel(R.string.composer_error_store_draft_body_encryption_failure),
+            currentState.error.consume()
+        )
+        assertErrorLogged("Encrypt draft $expectedMessageId body for storing to local DB failed")
+    }
+
     private fun expectedMessageId(messageId: () -> MessageId): MessageId = messageId().also {
         every { provideNewDraftIdMock() } returns it
     }
