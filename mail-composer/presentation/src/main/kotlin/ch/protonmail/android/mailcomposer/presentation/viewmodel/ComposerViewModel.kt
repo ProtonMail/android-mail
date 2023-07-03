@@ -73,7 +73,7 @@ class ComposerViewModel @Inject constructor(
     init {
         primaryUserId.onEach { userId ->
             getPrimaryAddress(userId)
-                .onLeft { emitNewStateFor(ComposerEvent.GetDefaultSenderError) }
+                .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingDefaultSenderAddress) }
                 .onRight { emitNewStateFor(ComposerEvent.DefaultSenderReceived(SenderUiModel(it.email))) }
         }.launchIn(viewModelScope)
     }
@@ -83,7 +83,7 @@ class ComposerViewModel @Inject constructor(
             when (action) {
                 is ComposerAction.DraftBodyChanged -> emitNewStateFor(onDraftBodyChanged(action))
                 is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
-                is ComposerAction.OnChangeSender -> emitNewStateFor(onChangeSender())
+                is ComposerAction.ChangeSenderRequested -> emitNewStateFor(onChangeSender())
                 else -> emitNewStateFor(action)
             }
         }
@@ -94,12 +94,12 @@ class ComposerViewModel @Inject constructor(
     private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation {
         val userId = primaryUserId.first()
         return resolveUserAddress(userId, action.sender.email).fold(
-            ifLeft = { ComposerEvent.ChangeSenderFailed },
+            ifLeft = { ComposerEvent.ErrorChangingSenderUnresolvedAddress },
             ifRight = { userAddress ->
                 storeDraftWithSender(messageId, userAddress, userId).fold(
                     ifLeft = {
                         Timber.e("Store draft $messageId with new sender ${userAddress.addressId} failed")
-                        ComposerEvent.ErrorSavingDraftSender
+                        ComposerEvent.ErrorStoringDraftWithNewSenderDbFailure
                     },
                     ifRight = { action }
                 )
@@ -125,12 +125,12 @@ class ComposerViewModel @Inject constructor(
             when (error) {
                 StoreDraftWithBodyError.DraftBodyEncryptionError -> {
                     Timber.e("Encrypt draft $messageId body for storing to local DB failed")
-                    ComposerEvent.ErrorSavingDraftBodyEncryptionFailure
+                    ComposerEvent.ErrorStoringDraftWithBodyEncryptFailure
                 }
 
                 StoreDraftWithBodyError.DraftSaveError -> {
                     Timber.e("Store draft $messageId body to local DB failed")
-                    ComposerEvent.ErrorSavingDraftBodyDbFailure
+                    ComposerEvent.ErrorStoringDraftWithBodyDbFailure
                 }
             }
         },
@@ -140,9 +140,9 @@ class ComposerViewModel @Inject constructor(
     private suspend fun onChangeSender() = getComposerSenderAddresses().fold(
         ifLeft = { changeSenderError ->
             when (changeSenderError) {
-                Error.UpgradeToChangeSender -> ComposerEvent.UpgradeToChangeSender
+                Error.UpgradeToChangeSender -> ComposerEvent.ErrorFreeUserCannotChangeSender
                 Error.FailedDeterminingUserSubscription,
-                Error.FailedGettingPrimaryUser -> ComposerEvent.ErrorGettingSubscriptionToChangeSender
+                Error.FailedGettingPrimaryUser -> ComposerEvent.ErrorVerifyingPermissionsToChangeSender
             }
         },
         ifRight = { userAddresses ->

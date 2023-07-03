@@ -30,7 +30,6 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.Reci
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.SenderChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
-import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent.ErrorGettingSubscriptionToChangeSender
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
@@ -164,7 +163,7 @@ class ComposerReducerTest(
         private val EmptyToUpgradePlan = TestTransition(
             name = "Should generate a state showing 'upgrade plan' message when free user tries to change sender",
             currentState = ComposerDraftState.empty(messageId),
-            operation = ComposerEvent.UpgradeToChangeSender,
+            operation = ComposerEvent.ErrorFreeUserCannotChangeSender,
             expectedState = aNotSubmittableState(
                 draftId = messageId,
                 premiumFeatureMessage = Effect.of(TextUiModel(R.string.composer_change_sender_paid_feature)),
@@ -187,7 +186,7 @@ class ComposerReducerTest(
         private val EmptyToErrorWhenUserPlanUnknown = TestTransition(
             name = "Should generate an error state when failing to determine if user can change sender",
             currentState = ComposerDraftState.empty(messageId),
-            operation = ErrorGettingSubscriptionToChangeSender,
+            operation = ComposerEvent.ErrorVerifyingPermissionsToChangeSender,
             expectedState = aNotSubmittableState(
                 draftId = messageId,
                 error = Effect.of(TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription))
@@ -214,7 +213,7 @@ class ComposerReducerTest(
                 draftId = messageId,
                 sender = SenderUiModel("default@pm.me")
             ),
-            operation = ComposerEvent.ChangeSenderFailed,
+            operation = ComposerEvent.ErrorChangingSenderUnresolvedAddress,
             expectedState = aNotSubmittableState(
                 draftId = messageId,
                 sender = SenderUiModel("default@pm.me"),

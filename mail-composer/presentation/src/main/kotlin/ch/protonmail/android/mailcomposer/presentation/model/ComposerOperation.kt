@@ -30,20 +30,19 @@ internal sealed interface ComposerAction : ComposerOperation {
     data class SubjectChanged(val subject: String) : ComposerAction
     data class DraftBodyChanged(val draftBody: DraftBody) : ComposerAction
 
-    object OnChangeSender : ComposerAction
+    object ChangeSenderRequested : ComposerAction
 }
 
 sealed interface ComposerEvent : ComposerOperation {
     data class DefaultSenderReceived(val sender: SenderUiModel) : ComposerEvent
     data class SenderAddressesReceived(val senders: List<SenderUiModel>) : ComposerEvent
 
-    object GetDefaultSenderError : ComposerEvent
-    object ChangeSenderFailed : ComposerEvent
-    object UpgradeToChangeSender : ComposerEvent
-    object ErrorGettingSubscriptionToChangeSender : ComposerEvent
+    object ErrorLoadingDefaultSenderAddress : ComposerEvent
+    object ErrorChangingSenderUnresolvedAddress : ComposerEvent
+    object ErrorFreeUserCannotChangeSender : ComposerEvent
+    object ErrorVerifyingPermissionsToChangeSender : ComposerEvent
     object ErrorSavingDraftBodyUnresolvedSender : ComposerEvent
-    object ErrorSavingDraftSender : ComposerEvent
-
-    object ErrorSavingDraftBodyDbFailure : ComposerEvent
-    object ErrorSavingDraftBodyEncryptionFailure : ComposerEvent
+    object ErrorStoringDraftWithNewSenderDbFailure : ComposerEvent
+    object ErrorStoringDraftWithBodyDbFailure : ComposerEvent
+    object ErrorStoringDraftWithBodyEncryptFailure : ComposerEvent
 }

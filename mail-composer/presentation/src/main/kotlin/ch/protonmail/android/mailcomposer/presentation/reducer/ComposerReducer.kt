@@ -45,30 +45,30 @@ class ComposerReducer @Inject constructor() {
         is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, this.recipients)
         is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, this.recipients)
         is ComposerAction.SubjectChanged -> TODO()
-        is ComposerAction.OnChangeSender,
+        is ComposerAction.ChangeSenderRequested,
         is ComposerAction.DraftBodyChanged -> currentState
     }
 
     private fun ComposerEvent.newStateForEvent(currentState: ComposerDraftState) = when (this) {
         is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, this.sender)
-        is ComposerEvent.GetDefaultSenderError -> updateStateToSenderError(currentState)
-        is ComposerEvent.ChangeSenderFailed -> updateStateForChangeSenderFailed(
+        is ComposerEvent.ErrorLoadingDefaultSenderAddress -> updateStateToSenderError(currentState)
+        is ComposerEvent.ErrorChangingSenderUnresolvedAddress -> updateStateForChangeSenderFailed(
             currentState,
             TextUiModel(R.string.composer_error_resolving_sender_address)
         )
         is ComposerEvent.ErrorSavingDraftBodyUnresolvedSender -> updateStateToUnresolvedSender(currentState)
-        is ComposerEvent.ErrorGettingSubscriptionToChangeSender -> currentState.copy(
+        is ComposerEvent.ErrorVerifyingPermissionsToChangeSender -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription))
         )
-        is ComposerEvent.UpgradeToChangeSender -> updateStateToPaidFeatureMessage(currentState)
-        is ComposerEvent.ErrorSavingDraftSender -> updateStateForChangeSenderFailed(
+        is ComposerEvent.ErrorFreeUserCannotChangeSender -> updateStateToPaidFeatureMessage(currentState)
+        is ComposerEvent.ErrorStoringDraftWithNewSenderDbFailure -> updateStateForChangeSenderFailed(
             currentState,
             TextUiModel(R.string.composer_error_save_draft_with_new_sender)
         )
-        is ComposerEvent.ErrorSavingDraftBodyDbFailure -> currentState.copy(
+        is ComposerEvent.ErrorStoringDraftWithBodyDbFailure -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_store_draft_body_DB_failure))
         )
-        is ComposerEvent.ErrorSavingDraftBodyEncryptionFailure -> currentState.copy(
+        is ComposerEvent.ErrorStoringDraftWithBodyEncryptFailure -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_store_draft_body_encryption_failure))
         )
         is ComposerEvent.SenderAddressesReceived -> currentState.copy(

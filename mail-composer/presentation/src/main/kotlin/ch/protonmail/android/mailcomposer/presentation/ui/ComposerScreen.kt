@@ -135,7 +135,7 @@ private fun buildActions(
     onBccChanged = { viewModel.submit(ComposerAction.RecipientsBccChanged(it)) },
     onSubjectChanged = { viewModel.submit(ComposerAction.SubjectChanged(it)) },
     onBodyChanged = { viewModel.submit(ComposerAction.DraftBodyChanged(DraftBody(it))) },
-    onChangeSender = { viewModel.submit(ComposerAction.OnChangeSender) }
+    onChangeSender = { viewModel.submit(ComposerAction.ChangeSenderRequested) }
 )
 
 @Composable

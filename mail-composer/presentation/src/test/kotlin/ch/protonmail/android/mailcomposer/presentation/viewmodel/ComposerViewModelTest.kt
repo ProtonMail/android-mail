@@ -194,7 +194,7 @@ class ComposerViewModelTest {
         expectedGetComposerSenderAddresses { addresses }
 
         // When
-        viewModel.submit(ComposerAction.OnChangeSender)
+        viewModel.submit(ComposerAction.ChangeSenderRequested)
 
         // Then
         val currentState = viewModel.state.value
@@ -214,7 +214,7 @@ class ComposerViewModelTest {
         expectedGetComposerSenderAddressesError { GetComposerSenderAddresses.Error.UpgradeToChangeSender }
 
         // When
-        viewModel.submit(ComposerAction.OnChangeSender)
+        viewModel.submit(ComposerAction.ChangeSenderRequested)
 
         // Then
         val currentState = viewModel.state.value
@@ -234,7 +234,7 @@ class ComposerViewModelTest {
         expectedGetComposerSenderAddressesError { GetComposerSenderAddresses.Error.FailedDeterminingUserSubscription }
 
         // When
-        viewModel.submit(ComposerAction.OnChangeSender)
+        viewModel.submit(ComposerAction.ChangeSenderRequested)
 
         // Then
         val currentState = viewModel.state.value
