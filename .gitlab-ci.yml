@@ -199,6 +199,10 @@ run_firebase_full_regression_tests:
     - bundle exec fastlane fullRegressionTest
   rules:
     - if: $CI_COMMIT_BRANCH == "master" && $NIGHTLY_ALPHA_BUILD == "true"
+    # Allow manual regression test runs on MRs if needed.
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: manual
+      allow_failure: true
 
 deploy_to_firebase_dev:
   extends: .firebase_deploy_job
