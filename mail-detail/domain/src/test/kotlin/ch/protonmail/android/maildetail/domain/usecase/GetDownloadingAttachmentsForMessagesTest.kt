@@ -29,13 +29,13 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class GetAttachmentsStatusForMessagesTest {
+class GetDownloadingAttachmentsForMessagesTest {
 
     private val userId = UserIdSample.Primary
 
     private val attachmentRepo = mockk<AttachmentRepository>()
 
-    private val getAttachmentsStatusForMessages = GetAttachmentsStatusForMessages(attachmentRepo)
+    private val getDownloadingAttachmentsForMessages = GetDownloadingAttachmentsForMessages(attachmentRepo)
 
     @Test
     fun `should return only attachment metadata of requested messages when multiple messages are affected`() = runTest {
@@ -51,14 +51,14 @@ class GetAttachmentsStatusForMessagesTest {
 
         val messageIds = listOf(MessageIdSample.Invoice)
         coEvery {
-            attachmentRepo.getDownloadingAttachmentsForUser(userId, messageIds)
+            attachmentRepo.getDownloadingAttachmentsForMessages(userId, messageIds)
         } returns listOf(
             attachment1,
             attachment2
         )
 
         // When
-        val result = getAttachmentsStatusForMessages(userId, messageIds)
+        val result = getDownloadingAttachmentsForMessages(userId, messageIds)
 
         // Then
         assertEquals(listOf(attachment1, attachment2), result)
@@ -68,10 +68,10 @@ class GetAttachmentsStatusForMessagesTest {
     fun `should return empty list when no attachments are running`() = runTest {
         // Given
         val messageIds = listOf(MessageIdSample.Invoice)
-        coEvery { attachmentRepo.getDownloadingAttachmentsForUser(userId, messageIds) } returns emptyList()
+        coEvery { attachmentRepo.getDownloadingAttachmentsForMessages(userId, messageIds) } returns emptyList()
 
         // When
-        val result = getAttachmentsStatusForMessages(userId, messageIds)
+        val result = getDownloadingAttachmentsForMessages(userId, messageIds)
 
         // Then
         assertEquals(emptyList(), result)

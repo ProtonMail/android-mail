@@ -216,11 +216,11 @@ class AttachmentRepositoryImplTest {
             messageId = MessageIdSample.Invoice
         )
         coEvery {
-            localDataSource.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
+            localDataSource.getDownloadingAttachmentsForMessages(userId, listOf(MessageIdSample.Invoice))
         } returns listOf(attachment1, attachment2)
 
         // When
-        val result = repository.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
+        val result = repository.getDownloadingAttachmentsForMessages(userId, listOf(MessageIdSample.Invoice))
 
         // Then
         assertEquals(listOf(attachment1, attachment2), result)
@@ -230,11 +230,11 @@ class AttachmentRepositoryImplTest {
     fun `should return empty list when locally no attachment metadata is in running state`() = runTest {
         // Given
         coEvery {
-            localDataSource.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
+            localDataSource.getDownloadingAttachmentsForMessages(userId, listOf(MessageIdSample.Invoice))
         } returns emptyList()
 
         // When
-        val result = repository.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
+        val result = repository.getDownloadingAttachmentsForMessages(userId, listOf(MessageIdSample.Invoice))
 
         // Then
         assertEquals(emptyList(), result)

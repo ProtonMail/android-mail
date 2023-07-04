@@ -23,11 +23,11 @@ import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class GetAttachmentsStatusForMessages @Inject constructor(
+class GetDownloadingAttachmentsForMessages @Inject constructor(
     private val attachmentLocalDataSource: AttachmentRepository
 ) {
 
     suspend operator fun invoke(userId: UserId, messages: List<MessageId>) =
-        attachmentLocalDataSource.getDownloadingAttachmentsForUser(userId, messages)
+        attachmentLocalDataSource.getDownloadingAttachmentsForMessages(userId, messages)
 
 }

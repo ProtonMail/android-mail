@@ -41,8 +41,8 @@ import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyErro
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
-import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentsStatusForMessages
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
@@ -237,7 +237,7 @@ class MessageDetailViewModelTest {
         }.right()
     }
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
-    private val getAttachmentsStatusForMessages = mockk<GetAttachmentsStatusForMessages>()
+    private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
 
     private val viewModel by lazy {
         MessageDetailViewModel(
@@ -263,7 +263,7 @@ class MessageDetailViewModelTest {
             moveMessage = moveMessage,
             relabelMessage = relabelMessage,
             getAttachmentIntentValues = getAttachmentIntentValues,
-            getAttachmentsStatusForMessages = getAttachmentsStatusForMessages
+            getDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages
         )
     }
 
@@ -966,7 +966,7 @@ class MessageDetailViewModelTest {
         coEvery {
             getAttachmentIntentValues(userId, MessageId(rawMessageId), AttachmentId("invoice"))
         } returns expectedIntentValues.right()
-        coEvery { getAttachmentsStatusForMessages(userId, listOf(MessageId(rawMessageId))) } returns listOf()
+        coEvery { getDownloadingAttachmentsForMessages(userId, listOf(MessageId(rawMessageId))) } returns listOf()
 
         viewModel.state.test {
             initialStateEmitted()
@@ -1004,7 +1004,7 @@ class MessageDetailViewModelTest {
             observeAttachmentWorkerStatus(userId, MessageId(rawMessageId), any())
         } returns flowOf()
         coEvery { getAttachmentIntentValues(any(), any(), any()) } returns DataError.Local.NoDataCached.left()
-        coEvery { getAttachmentsStatusForMessages(userId, listOf(MessageId(rawMessageId))) } returns listOf()
+        coEvery { getDownloadingAttachmentsForMessages(userId, listOf(MessageId(rawMessageId))) } returns listOf()
 
         viewModel.state.test {
             initialStateEmitted()
@@ -1046,7 +1046,7 @@ class MessageDetailViewModelTest {
                 getAttachmentIntentValues(userId, MessageId(rawMessageId), AttachmentId("invoice"))
             } returns expectedIntentValues.right()
             coEvery {
-                getAttachmentsStatusForMessages(userId, listOf(MessageId(rawMessageId)))
+                getDownloadingAttachmentsForMessages(userId, listOf(MessageId(rawMessageId)))
             } returns listOf(MessageAttachmentMetadataTestData.buildMessageAttachmentMetadata())
 
             viewModel.state.test {

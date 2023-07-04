@@ -30,8 +30,8 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
-import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentsStatusForMessages
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
@@ -109,7 +109,7 @@ class MessageDetailViewModel @Inject constructor(
     private val moveMessage: MoveMessage,
     private val relabelMessage: RelabelMessage,
     private val getAttachmentIntentValues: GetAttachmentIntentValues,
-    private val getAttachmentsStatusForMessages: GetAttachmentsStatusForMessages
+    private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -465,7 +465,7 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private suspend fun isAttachmentDownloadInProgress() =
-        getAttachmentsStatusForMessages(primaryUserId.first(), listOf(messageId)).isNotEmpty()
+        getDownloadingAttachmentsForMessages(primaryUserId.first(), listOf(messageId)).isNotEmpty()
 
     companion object {
 

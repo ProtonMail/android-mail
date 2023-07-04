@@ -38,8 +38,8 @@ import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
-import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentsStatusForMessages
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
@@ -136,7 +136,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeFolderColor: ObserveFolderColorSettings,
     private val observeCustomMailLabels: ObserveCustomMailLabels,
     private val observeMessageAttachmentStatus: ObserveMessageAttachmentStatus,
-    private val getAttachmentsStatusForMessages: GetAttachmentsStatusForMessages,
+    private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages,
     private val reducer: ConversationDetailReducer,
     private val starConversation: StarConversation,
     private val unStarConversation: UnStarConversation,
@@ -663,7 +663,7 @@ class ConversationDetailViewModel @Inject constructor(
         val userId = primaryUserId.first()
         val messagesState = mutableDetailState.value.messagesState
         return if (messagesState is ConversationDetailsMessagesState.Data) {
-            getAttachmentsStatusForMessages(userId, messagesState.messages.map { it.messageId }).isNotEmpty()
+            getDownloadingAttachmentsForMessages(userId, messagesState.messages.map { it.messageId }).isNotEmpty()
         } else false
     }
 

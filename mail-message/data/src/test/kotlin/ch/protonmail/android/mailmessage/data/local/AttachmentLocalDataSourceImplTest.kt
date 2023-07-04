@@ -273,13 +273,14 @@ class AttachmentLocalDataSourceImplTest {
         )
 
         coEvery {
-            attachmentDao.getAllAttachmentsForUserAndStatus(
+            attachmentDao.getAttachmentsForUserMessagesAndStatus(
                 userId, listOf(MessageIdSample.Invoice), AttachmentWorkerStatus.Running
             )
         } returns listOf(attachment1, attachment2, attachment3)
 
         // When
-        val result = attachmentLocalDataSource.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
+        val result =
+            attachmentLocalDataSource.getDownloadingAttachmentsForMessages(userId, listOf(MessageIdSample.Invoice))
 
         // Then
         assertEquals(
@@ -296,13 +297,14 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return empty list when no attachments are downloading for a user`() = runTest {
         // Given
         coEvery {
-            attachmentDao.getAllAttachmentsForUserAndStatus(
+            attachmentDao.getAttachmentsForUserMessagesAndStatus(
                 userId, listOf(MessageIdSample.Invoice), AttachmentWorkerStatus.Running
             )
         } returns emptyList()
 
         // When
-        val result = attachmentLocalDataSource.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
+        val result =
+            attachmentLocalDataSource.getDownloadingAttachmentsForMessages(userId, listOf(MessageIdSample.Invoice))
 
         // Then
         assertTrue(result.isEmpty())

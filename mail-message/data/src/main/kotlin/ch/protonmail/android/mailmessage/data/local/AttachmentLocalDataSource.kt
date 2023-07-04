@@ -54,7 +54,7 @@ interface AttachmentLocalDataSource {
      * @param userId The id of the attachments belonging to the user.
      * @param messageIds The ids of the affected messages
      */
-    suspend fun getDownloadingAttachmentsForUser(
+    suspend fun getDownloadingAttachmentsForMessages(
         userId: UserId,
         messageIds: List<MessageId>
     ): List<MessageAttachmentMetadata>

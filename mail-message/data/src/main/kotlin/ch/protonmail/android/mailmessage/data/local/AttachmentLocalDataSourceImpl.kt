@@ -83,8 +83,8 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
             ?: DataError.Local.NoDataCached.left()
     }
 
-    override suspend fun getDownloadingAttachmentsForUser(userId: UserId, messageIds: List<MessageId>) =
-        attachmentDao.getAllAttachmentsForUserAndStatus(userId, messageIds, AttachmentWorkerStatus.Running)
+    override suspend fun getDownloadingAttachmentsForMessages(userId: UserId, messageIds: List<MessageId>) =
+        attachmentDao.getAttachmentsForUserMessagesAndStatus(userId, messageIds, AttachmentWorkerStatus.Running)
             .map { it.toMessageAttachmentMetadata() }
 
     override suspend fun upsertAttachment(

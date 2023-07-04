@@ -61,7 +61,7 @@ abstract class MessageAttachmentMetadataDao : BaseDao<MessageAttachmentMetadataE
             AND status = :status
         """
     )
-    abstract suspend fun getAllAttachmentsForUserAndStatus(
+    abstract suspend fun getAttachmentsForUserMessagesAndStatus(
         userId: UserId,
         messages: List<MessageId>,
         status: AttachmentWorkerStatus

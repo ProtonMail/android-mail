@@ -46,8 +46,8 @@ import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyErro
 import ch.protonmail.android.maildetail.domain.model.LabelSelectionList
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
-import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentsStatusForMessages
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
@@ -222,7 +222,7 @@ class ConversationDetailViewModelTest {
     }
     private val observeAttachmentStatus = mockk<ObserveMessageAttachmentStatus>()
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
-    private val getAttachmentDownloadStatus = mockk<GetAttachmentsStatusForMessages>()
+    private val getAttachmentDownloadStatus = mockk<GetDownloadingAttachmentsForMessages>()
     private val reducer: ConversationDetailReducer = mockk {
         every { newStateFrom(currentState = any(), operation = any()) } returns ConversationDetailState.Loading
     }
@@ -267,7 +267,7 @@ class ConversationDetailViewModelTest {
             observeFolderColor = observeFolderColorSettings,
             observeCustomMailLabels = observeCustomMailLabels,
             observeMessageAttachmentStatus = observeAttachmentStatus,
-            getAttachmentsStatusForMessages = getAttachmentDownloadStatus,
+            getDownloadingAttachmentsForMessages = getAttachmentDownloadStatus,
             reducer = reducer,
             savedStateHandle = savedStateHandle,
             starConversation = starConversation,
