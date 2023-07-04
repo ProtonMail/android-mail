@@ -27,6 +27,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
+import timber.log.Timber
 import javax.inject.Inject
 
 class StoreDraftWithBody @Inject constructor(
@@ -45,7 +46,10 @@ class StoreDraftWithBody @Inject constructor(
         val draftWithBody = messageRepository.getLocalMessageWithBody(userId, messageId)
             ?: createEmptyDraft(messageId, userId, senderAddress)
         val encryptedDraftBody = encryptDraftBody(draftBody, senderAddress)
-            .mapLeft { StoreDraftWithBodyError.DraftBodyEncryptionError }
+            .mapLeft {
+                Timber.e("Encrypt draft $messageId body to store to local DB failed")
+                StoreDraftWithBodyError.DraftBodyEncryptionError
+            }
             .bind()
         val updatedDraft = draftWithBody.copy(
             messageBody = draftWithBody.messageBody.copy(
@@ -53,7 +57,10 @@ class StoreDraftWithBody @Inject constructor(
             )
         )
         saveDraft(updatedDraft, userId)
-            .mapFalse { StoreDraftWithBodyError.DraftSaveError }
+            .mapFalse {
+                Timber.e("Store draft $messageId body to local DB failed")
+                StoreDraftWithBodyError.DraftSaveError
+            }
             .bind()
     }
 

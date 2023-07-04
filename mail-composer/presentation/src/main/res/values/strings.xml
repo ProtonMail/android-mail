@@ -35,6 +35,5 @@
     <string name="composer_error_save_draft_could_not_resolve_sender">Automatic draft saving failed as sender address could not be resolved. Please select an address.</string>
     <string name="composer_error_save_draft_with_new_sender">Error saving the draft with a new sender.</string>
     <string name="composer_error_store_draft_body_DB_failure">Storing this draft\'s body in the local cache failed.</string>
-    <string name="composer_error_store_draft_body_encryption_failure">Encrypting this draft\'s body for storing to local DB failed.</string>
     <string name="composer_error_duplicate_recipient">Removed duplicate recipient: %1$s</string>
 </resources>

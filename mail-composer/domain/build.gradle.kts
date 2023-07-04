@@ -58,4 +58,5 @@ dependencies {
     // Used to access sample test data (here instead of test-data as shared with compose previews / android tests)
     testImplementation(project(":mail-common:domain"))
     testImplementation(project(":test:test-data"))
+    testImplementation(project(":test:utils"))
 }

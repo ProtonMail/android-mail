@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcomposer.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
@@ -29,7 +28,6 @@ import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
-import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBodyError
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSender
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
@@ -46,8 +44,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import me.proton.core.domain.entity.UserId
-import me.proton.core.user.domain.entity.UserAddress
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -112,30 +108,14 @@ class ComposerViewModel @Inject constructor(
         val email = state.value.fields.sender.email
         return resolveUserAddress(userId, email).fold(
             ifLeft = { ComposerEvent.ErrorSavingDraftBodyUnresolvedSender },
-            ifRight = { userAddress -> storeDraftBody(action.draftBody, userAddress, userId) }
+            ifRight = { userAddress ->
+                storeDraftWithBody(messageId, action.draftBody, userAddress, userId).fold(
+                    ifLeft = { ComposerEvent.ErrorStoringDraftBody },
+                    ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
+                )
+            }
         )
     }
-
-    private suspend fun storeDraftBody(
-        draftBody: DraftBody,
-        userAddress: UserAddress,
-        userId: UserId
-    ) = storeDraftWithBody(messageId, draftBody, userAddress, userId).fold(
-        ifLeft = { error ->
-            when (error) {
-                StoreDraftWithBodyError.DraftBodyEncryptionError -> {
-                    Timber.e("Encrypt draft $messageId body for storing to local DB failed")
-                    ComposerEvent.ErrorStoringDraftWithBodyEncryptFailure
-                }
-
-                StoreDraftWithBodyError.DraftSaveError -> {
-                    Timber.e("Store draft $messageId body to local DB failed")
-                    ComposerEvent.ErrorStoringDraftWithBodyDbFailure
-                }
-            }
-        },
-        ifRight = { ComposerAction.DraftBodyChanged(draftBody) }
-    )
 
     private suspend fun onChangeSender() = getComposerSenderAddresses().fold(
         ifLeft = { changeSenderError ->
