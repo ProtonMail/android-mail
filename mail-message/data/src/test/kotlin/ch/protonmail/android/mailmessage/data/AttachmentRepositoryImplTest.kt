@@ -30,6 +30,7 @@ import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData.buildMessageAttachmentMetadata
 import io.mockk.Called
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -206,22 +207,34 @@ class AttachmentRepositoryImplTest {
     @Test
     fun `should return local stored attachment metadata when status is running`() = runTest {
         // Given
-        coEvery { localDataSource.getRunningAttachmentsForUser(userId) } returns listOf(attachmentMetaData)
+        val attachment1 = buildMessageAttachmentMetadata(
+            attachmentId = AttachmentId("attachment1"),
+            messageId = MessageIdSample.Invoice
+        )
+        val attachment2 = buildMessageAttachmentMetadata(
+            attachmentId = AttachmentId("attachment2"),
+            messageId = MessageIdSample.Invoice
+        )
+        coEvery {
+            localDataSource.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
+        } returns listOf(attachment1, attachment2)
 
         // When
-        val result = repository.getRunningAttachmentsForUser(userId)
+        val result = repository.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
 
         // Then
-        assertEquals(listOf(attachmentMetaData), result)
+        assertEquals(listOf(attachment1, attachment2), result)
     }
 
     @Test
     fun `should return empty list when locally no attachment metadata is in running state`() = runTest {
         // Given
-        coEvery { localDataSource.getRunningAttachmentsForUser(userId) } returns emptyList()
+        coEvery {
+            localDataSource.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
+        } returns emptyList()
 
         // When
-        val result = repository.getRunningAttachmentsForUser(userId)
+        val result = repository.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
 
         // Then
         assertEquals(emptyList(), result)

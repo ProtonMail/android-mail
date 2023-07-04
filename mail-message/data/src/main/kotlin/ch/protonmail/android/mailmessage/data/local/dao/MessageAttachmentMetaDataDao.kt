@@ -56,12 +56,14 @@ abstract class MessageAttachmentMetadataDao : BaseDao<MessageAttachmentMetadataE
     @Query(
         """
             SELECT * FROM MessageAttachmentMetadataEntity 
-            WHERE userId = :userId 
+            WHERE userId = :userId
+            AND messageId IN (:messages)
             AND status = :status
         """
     )
     abstract suspend fun getAllAttachmentsForUserAndStatus(
         userId: UserId,
+        messages: List<MessageId>,
         status: AttachmentWorkerStatus
     ): List<MessageAttachmentMetadataEntity>
 

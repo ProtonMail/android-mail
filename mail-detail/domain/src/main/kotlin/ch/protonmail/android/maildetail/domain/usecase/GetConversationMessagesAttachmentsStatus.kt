@@ -28,6 +28,6 @@ class GetConversationMessagesAttachmentsStatus @Inject constructor(
 ) {
 
     suspend operator fun invoke(userId: UserId, messages: List<MessageId>) =
-        attachmentLocalDataSource.getRunningAttachmentsForUser(userId).filter { messages.contains(it.messageId) }
+        attachmentLocalDataSource.getDownloadingAttachmentsForUser(userId, messages)
 
 }

@@ -39,7 +39,10 @@ interface AttachmentRepository {
 
     suspend fun getAttachmentMetadataByHash(attachmentHash: String): Either<DataError, MessageAttachmentMetadata>
 
-    suspend fun getRunningAttachmentsForUser(userId: UserId): List<MessageAttachmentMetadata>
+    suspend fun getDownloadingAttachmentsForUser(
+        userId: UserId,
+        messageIds: List<MessageId>
+    ): List<MessageAttachmentMetadata>
 
     suspend fun observeAttachmentMetadata(
         userId: UserId,

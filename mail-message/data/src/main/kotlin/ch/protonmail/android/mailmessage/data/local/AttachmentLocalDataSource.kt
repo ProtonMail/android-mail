@@ -50,9 +50,14 @@ interface AttachmentLocalDataSource {
     suspend fun getAttachmentMetadataByHash(attachmentHash: String): Either<DataError, MessageAttachmentMetadata>
 
     /**
-     * Get all running attachment metadata for the given [userId].
+     * Get all running attachment metadata for the given [userId] and [messageIds].
+     * @param userId The id of the attachments belonging to the user.
+     * @param messageIds The ids of the affected messages
      */
-    suspend fun getRunningAttachmentsForUser(userId: UserId): List<MessageAttachmentMetadata>
+    suspend fun getDownloadingAttachmentsForUser(
+        userId: UserId,
+        messageIds: List<MessageId>
+    ): List<MessageAttachmentMetadata>
 
     /**
      * Upsert the attachment for the given [userId], [messageId] and [attachmentId].

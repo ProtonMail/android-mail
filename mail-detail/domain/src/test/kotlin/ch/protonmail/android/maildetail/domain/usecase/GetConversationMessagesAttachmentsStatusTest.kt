@@ -40,21 +40,25 @@ class GetConversationMessagesAttachmentsStatusTest {
     @Test
     fun `should return only attachment metadata of requested messages when multiple messages are affected`() = runTest {
         // Given
-        val attachment1 = buildMessageAttachmentMetadata(attachmentId = AttachmentId("attachment1"))
-        val attachment2 = buildMessageAttachmentMetadata(attachmentId = AttachmentId("attachment2"))
-        val attachmentOfDifferentMessage = buildMessageAttachmentMetadata(
-            messageId = MessageIdSample.EmptyDraft,
-            attachmentId = AttachmentId("attachmentOfDifferentMessage")
+        val attachment1 = buildMessageAttachmentMetadata(
+            attachmentId = AttachmentId("attachment1"),
+            messageId = MessageIdSample.Invoice
+        )
+        val attachment2 = buildMessageAttachmentMetadata(
+            attachmentId = AttachmentId("attachment2"),
+            messageId = MessageIdSample.Invoice
         )
 
-        coEvery { attachmentRepo.getRunningAttachmentsForUser(userId) } returns listOf(
+        val messageIds = listOf(MessageIdSample.Invoice)
+        coEvery {
+            attachmentRepo.getDownloadingAttachmentsForUser(userId, messageIds)
+        } returns listOf(
             attachment1,
-            attachment2,
-            attachmentOfDifferentMessage
+            attachment2
         )
 
         // When
-        val result = getConversationMessagesAttachmentsStatus(userId, listOf(MessageIdSample.Invoice))
+        val result = getConversationMessagesAttachmentsStatus(userId, messageIds)
 
         // Then
         assertEquals(listOf(attachment1, attachment2), result)
@@ -63,10 +67,11 @@ class GetConversationMessagesAttachmentsStatusTest {
     @Test
     fun `should return empty list when no attachments are running`() = runTest {
         // Given
-        coEvery { attachmentRepo.getRunningAttachmentsForUser(userId) } returns emptyList()
+        val messageIds = listOf(MessageIdSample.Invoice)
+        coEvery { attachmentRepo.getDownloadingAttachmentsForUser(userId, messageIds) } returns emptyList()
 
         // When
-        val result = getConversationMessagesAttachmentsStatus(userId, listOf(MessageIdSample.Invoice))
+        val result = getConversationMessagesAttachmentsStatus(userId, messageIds)
 
         // Then
         assertEquals(emptyList(), result)

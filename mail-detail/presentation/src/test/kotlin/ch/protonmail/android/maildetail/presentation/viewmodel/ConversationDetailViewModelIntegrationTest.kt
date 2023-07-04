@@ -608,7 +608,7 @@ class ConversationDetailViewModelIntegrationTest {
     @Test
     fun `should emit show all attachment when view action is triggered`() = runTest {
         // given
-        val expectedAttachmentCount = Random().nextInt(100)
+        val expectedAttachmentCount = 5
         val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
         val expectedExpanded = MessageWithLabelsSample.InvoiceWithLabel
         val messages = nonEmptyListOf(
@@ -648,7 +648,7 @@ class ConversationDetailViewModelIntegrationTest {
     @Test
     fun `verify get attachment is called when attachment is clicked`() = runTest {
         // given
-        val expectedAttachmentCount = Random().nextInt(100)
+        val expectedAttachmentCount = 5
         val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
         val expectedExpanded = MessageWithLabelsSample.InvoiceWithLabel
         val messages = nonEmptyListOf(
@@ -695,7 +695,7 @@ class ConversationDetailViewModelIntegrationTest {
     fun `verify get attachment is not called and error is shown when other attachment is currently downloaded`() =
         runTest {
             // given
-            val expectedAttachmentCount = Random().nextInt(100)
+            val expectedAttachmentCount = 5
             val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
             val expectedExpanded = MessageWithLabelsSample.InvoiceWithLabel
             val messages = nonEmptyListOf(

@@ -259,20 +259,27 @@ class AttachmentLocalDataSourceImplTest {
     @Test
     fun `should return list of metadata when multiple attachments are downloading for a user`() = runTest {
         // Given
-        val attachment1 = buildMessageAttachmentMetadataEntity(attachmentId = AttachmentId("attachmentId1"))
-        val attachment2 = buildMessageAttachmentMetadataEntity(attachmentId = AttachmentId("attachmentId2"))
-        val attachment3 = buildMessageAttachmentMetadataEntity(attachmentId = AttachmentId("attachmentId3"))
-
-        coEvery {
-            attachmentDao.getAllAttachmentsForUserAndStatus(userId, AttachmentWorkerStatus.Running)
-        } returns listOf(
-            attachment1,
-            attachment2,
-            attachment3
+        val attachment1 = buildMessageAttachmentMetadataEntity(
+            attachmentId = AttachmentId("attachmentId1"),
+            messageId = MessageIdSample.Invoice
+        )
+        val attachment2 = buildMessageAttachmentMetadataEntity(
+            attachmentId = AttachmentId("attachmentId2"),
+            messageId = MessageIdSample.Invoice
+        )
+        val attachment3 = buildMessageAttachmentMetadataEntity(
+            attachmentId = AttachmentId("attachmentId3"),
+            messageId = MessageIdSample.Invoice
         )
 
+        coEvery {
+            attachmentDao.getAllAttachmentsForUserAndStatus(
+                userId, listOf(MessageIdSample.Invoice), AttachmentWorkerStatus.Running
+            )
+        } returns listOf(attachment1, attachment2, attachment3)
+
         // When
-        val result = attachmentLocalDataSource.getRunningAttachmentsForUser(userId)
+        val result = attachmentLocalDataSource.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
 
         // Then
         assertEquals(
@@ -289,11 +296,13 @@ class AttachmentLocalDataSourceImplTest {
     fun `should return empty list when no attachments are downloading for a user`() = runTest {
         // Given
         coEvery {
-            attachmentDao.getAllAttachmentsForUserAndStatus(userId, AttachmentWorkerStatus.Running)
+            attachmentDao.getAllAttachmentsForUserAndStatus(
+                userId, listOf(MessageIdSample.Invoice), AttachmentWorkerStatus.Running
+            )
         } returns emptyList()
 
         // When
-        val result = attachmentLocalDataSource.getRunningAttachmentsForUser(userId)
+        val result = attachmentLocalDataSource.getDownloadingAttachmentsForUser(userId, listOf(MessageIdSample.Invoice))
 
         // Then
         assertTrue(result.isEmpty())
