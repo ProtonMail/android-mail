@@ -56,7 +56,6 @@ class ComposerReducer @Inject constructor() {
             currentState,
             TextUiModel(R.string.composer_error_resolving_sender_address)
         )
-        is ComposerEvent.ErrorSavingDraftBodyUnresolvedSender -> updateStateToUnresolvedSender(currentState)
         is ComposerEvent.ErrorVerifyingPermissionsToChangeSender -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription))
         )
@@ -66,7 +65,7 @@ class ComposerReducer @Inject constructor() {
             TextUiModel(R.string.composer_error_save_draft_with_new_sender)
         )
         is ComposerEvent.ErrorStoringDraftBody -> currentState.copy(
-            error = Effect.of(TextUiModel(R.string.composer_error_store_draft_body_DB_failure))
+            error = Effect.of(TextUiModel(R.string.composer_error_store_draft_body_in_DB_failed))
         )
         is ComposerEvent.SenderAddressesReceived -> currentState.copy(
             senderAddresses = this.senders,
@@ -80,11 +79,6 @@ class ComposerReducer @Inject constructor() {
 
     private fun updateStateToPaidFeatureMessage(currentState: ComposerDraftState) =
         currentState.copy(premiumFeatureMessage = Effect.of(TextUiModel(R.string.composer_change_sender_paid_feature)))
-
-    private fun updateStateToUnresolvedSender(currentState: ComposerDraftState) = currentState.copy(
-        error = Effect.of(TextUiModel(R.string.composer_error_save_draft_could_not_resolve_sender)),
-        changeSenderBottomSheetVisibility = Effect.of(true)
-    )
 
     private fun updateStateToSenderError(currentState: ComposerDraftState) = currentState.copy(
         fields = currentState.fields.copy(sender = SenderUiModel("")),

@@ -306,7 +306,7 @@ class ComposerViewModelTest {
     }
 
     @Test
-    fun `emits state with save draft failed resolving sender when resolve user address returns error`() = runTest {
+    fun `emits state with save draft failed when resolve user address returns error`() = runTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val action = ComposerAction.DraftBodyChanged(DraftBody("updated-draft"))
@@ -321,7 +321,7 @@ class ComposerViewModelTest {
 
         // Then
         val currentState = viewModel.state.value
-        val expected = TextUiModel(R.string.composer_error_save_draft_could_not_resolve_sender)
+        val expected = TextUiModel(R.string.composer_error_store_draft_body_in_DB_failed)
         assertEquals(expected, currentState.error.consume())
     }
 
@@ -343,7 +343,7 @@ class ComposerViewModelTest {
 
         // Then
         val currentState = viewModel.state.value
-        assertEquals(TextUiModel(R.string.composer_error_store_draft_body_DB_failure), currentState.error.consume())
+        assertEquals(TextUiModel(R.string.composer_error_store_draft_body_in_DB_failed), currentState.error.consume())
     }
 
     private fun expectedMessageId(messageId: () -> MessageId): MessageId = messageId().also {

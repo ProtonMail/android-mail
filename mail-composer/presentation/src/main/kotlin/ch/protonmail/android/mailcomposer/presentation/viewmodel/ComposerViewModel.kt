@@ -107,7 +107,7 @@ class ComposerViewModel @Inject constructor(
         val userId = primaryUserId.first()
         val email = state.value.fields.sender.email
         return resolveUserAddress(userId, email).fold(
-            ifLeft = { ComposerEvent.ErrorSavingDraftBodyUnresolvedSender },
+            ifLeft = { ComposerEvent.ErrorStoringDraftBody },
             ifRight = { userAddress ->
                 storeDraftWithBody(messageId, action.draftBody, userAddress, userId).fold(
                     ifLeft = { ComposerEvent.ErrorStoringDraftBody },

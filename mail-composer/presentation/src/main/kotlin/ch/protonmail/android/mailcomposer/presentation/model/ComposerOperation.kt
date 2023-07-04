@@ -41,7 +41,6 @@ sealed interface ComposerEvent : ComposerOperation {
     object ErrorChangingSenderUnresolvedAddress : ComposerEvent
     object ErrorFreeUserCannotChangeSender : ComposerEvent
     object ErrorVerifyingPermissionsToChangeSender : ComposerEvent
-    object ErrorSavingDraftBodyUnresolvedSender : ComposerEvent
     object ErrorStoringDraftWithNewSenderDbFailure : ComposerEvent
     object ErrorStoringDraftBody : ComposerEvent
 }

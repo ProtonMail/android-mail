@@ -222,21 +222,6 @@ class ComposerReducerTest(
             )
         )
 
-        private val EmptyToUnresolvedSenderSavingDraft = TestTransition(
-            name = "Should update state showing an error presenting the senders bottomSheet when sender not resolved",
-            currentState = aNotSubmittableState(
-                draftId = messageId,
-                sender = SenderUiModel("default@pm.me")
-            ),
-            operation = ComposerEvent.ErrorSavingDraftBodyUnresolvedSender,
-            expectedState = aNotSubmittableState(
-                draftId = messageId,
-                sender = SenderUiModel("default@pm.me"),
-                error = Effect.of(TextUiModel(R.string.composer_error_save_draft_could_not_resolve_sender)),
-                changeSenderBottomSheetVisibility = Effect.of(true)
-            )
-        )
-
         private val DuplicateToToNotDuplicateWithError = with(aMultipleRandomRange().map { "a@b.c" }) {
             TestTransition(
                 name = "Should remove duplicate TO recipients and contain error if there are",
@@ -369,7 +354,6 @@ class ComposerReducerTest(
             EmptyToErrorWhenUserPlanUnknown,
             EmptyToUpdatedSender,
             DefaultSenderToChangeSenderFailed,
-            EmptyToUnresolvedSenderSavingDraft,
             DuplicateToToNotDuplicateWithError,
             DuplicateCcToNotDuplicateWithError,
             DuplicateBccToNotDuplicateWithError,

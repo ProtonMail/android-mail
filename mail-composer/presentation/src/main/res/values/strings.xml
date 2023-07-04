@@ -32,8 +32,7 @@
     <string name="change_sender_button_content_description">Change sender</string>
     <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
     <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
-    <string name="composer_error_save_draft_could_not_resolve_sender">Automatic draft saving failed as sender address could not be resolved. Please select an address.</string>
     <string name="composer_error_save_draft_with_new_sender">Error saving the draft with a new sender.</string>
-    <string name="composer_error_store_draft_body_DB_failure">Storing this draft\'s body in the local cache failed.</string>
+    <string name="composer_error_store_draft_body_in_DB_failed">Storing this draft\'s body in the local cache failed.</string>
     <string name="composer_error_duplicate_recipient">Removed duplicate recipient: %1$s</string>
 </resources>
