@@ -38,9 +38,8 @@ sealed interface ComposerEvent : ComposerOperation {
     data class SenderAddressesReceived(val senders: List<SenderUiModel>) : ComposerEvent
 
     object ErrorLoadingDefaultSenderAddress : ComposerEvent
-    object ErrorChangingSenderUnresolvedAddress : ComposerEvent
     object ErrorFreeUserCannotChangeSender : ComposerEvent
     object ErrorVerifyingPermissionsToChangeSender : ComposerEvent
-    object ErrorStoringDraftWithNewSenderDbFailure : ComposerEvent
+    object ErrorStoringDraftSenderAddress : ComposerEvent
     object ErrorStoringDraftBody : ComposerEvent
 }

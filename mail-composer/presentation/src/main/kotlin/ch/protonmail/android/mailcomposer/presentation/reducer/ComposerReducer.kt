@@ -52,20 +52,16 @@ class ComposerReducer @Inject constructor() {
     private fun ComposerEvent.newStateForEvent(currentState: ComposerDraftState) = when (this) {
         is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, this.sender)
         is ComposerEvent.ErrorLoadingDefaultSenderAddress -> updateStateToSenderError(currentState)
-        is ComposerEvent.ErrorChangingSenderUnresolvedAddress -> updateStateForChangeSenderFailed(
-            currentState,
-            TextUiModel(R.string.composer_error_resolving_sender_address)
-        )
         is ComposerEvent.ErrorVerifyingPermissionsToChangeSender -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription))
         )
         is ComposerEvent.ErrorFreeUserCannotChangeSender -> updateStateToPaidFeatureMessage(currentState)
-        is ComposerEvent.ErrorStoringDraftWithNewSenderDbFailure -> updateStateForChangeSenderFailed(
+        is ComposerEvent.ErrorStoringDraftSenderAddress -> updateStateForChangeSenderFailed(
             currentState,
-            TextUiModel(R.string.composer_error_save_draft_with_new_sender)
+            TextUiModel(R.string.composer_error_store_draft_sender_address)
         )
         is ComposerEvent.ErrorStoringDraftBody -> currentState.copy(
-            error = Effect.of(TextUiModel(R.string.composer_error_store_draft_body_in_DB_failed))
+            error = Effect.of(TextUiModel(R.string.composer_error_store_draft_body))
         )
         is ComposerEvent.SenderAddressesReceived -> currentState.copy(
             senderAddresses = this.senders,

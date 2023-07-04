@@ -90,12 +90,12 @@ class ComposerViewModel @Inject constructor(
     private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation {
         val userId = primaryUserId.first()
         return resolveUserAddress(userId, action.sender.email).fold(
-            ifLeft = { ComposerEvent.ErrorChangingSenderUnresolvedAddress },
+            ifLeft = { ComposerEvent.ErrorStoringDraftSenderAddress },
             ifRight = { userAddress ->
                 storeDraftWithSender(messageId, userAddress, userId).fold(
                     ifLeft = {
                         Timber.e("Store draft $messageId with new sender ${userAddress.addressId} failed")
-                        ComposerEvent.ErrorStoringDraftWithNewSenderDbFailure
+                        ComposerEvent.ErrorStoringDraftSenderAddress
                     },
                     ifRight = { action }
                 )

@@ -275,7 +275,7 @@ class ComposerViewModelTest {
 
         // Then
         val currentState = viewModel.state.value
-        assertEquals(TextUiModel(R.string.composer_error_save_draft_with_new_sender), currentState.error.consume())
+        assertEquals(TextUiModel(R.string.composer_error_store_draft_sender_address), currentState.error.consume())
         loggingTestRule.assertErrorLogged(
             "Store draft $expectedMessageId with new sender ${expectedUserAddress.addressId} failed"
         )
@@ -298,7 +298,7 @@ class ComposerViewModelTest {
 
         // Then
         val currentState = viewModel.state.value
-        assertEquals(TextUiModel(R.string.composer_error_resolving_sender_address), currentState.error.consume())
+        assertEquals(TextUiModel(R.string.composer_error_store_draft_sender_address), currentState.error.consume())
     }
 
     @Test
@@ -317,7 +317,7 @@ class ComposerViewModelTest {
 
         // Then
         val currentState = viewModel.state.value
-        val expected = TextUiModel(R.string.composer_error_store_draft_body_in_DB_failed)
+        val expected = TextUiModel(R.string.composer_error_store_draft_body)
         assertEquals(expected, currentState.error.consume())
     }
 
@@ -339,7 +339,7 @@ class ComposerViewModelTest {
 
         // Then
         val currentState = viewModel.state.value
-        assertEquals(TextUiModel(R.string.composer_error_store_draft_body_in_DB_failed), currentState.error.consume())
+        assertEquals(TextUiModel(R.string.composer_error_store_draft_body), currentState.error.consume())
     }
 
     private fun expectedMessageId(messageId: () -> MessageId): MessageId = messageId().also {

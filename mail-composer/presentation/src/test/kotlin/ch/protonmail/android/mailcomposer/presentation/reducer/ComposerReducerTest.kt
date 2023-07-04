@@ -213,11 +213,11 @@ class ComposerReducerTest(
                 draftId = messageId,
                 sender = SenderUiModel("default@pm.me")
             ),
-            operation = ComposerEvent.ErrorChangingSenderUnresolvedAddress,
+            operation = ComposerEvent.ErrorStoringDraftSenderAddress,
             expectedState = aNotSubmittableState(
                 draftId = messageId,
                 sender = SenderUiModel("default@pm.me"),
-                error = Effect.of(TextUiModel(R.string.composer_error_resolving_sender_address)),
+                error = Effect.of(TextUiModel(R.string.composer_error_store_draft_sender_address)),
                 changeSenderBottomSheetVisibility = Effect.of(false)
             )
         )
