@@ -193,7 +193,10 @@ internal class ComposerRecipientsChipsDeletionTests :
         composerRobot {
             toRecipientSection {
                 typeMultipleRecipients(*rawRecipients)
-                repeat(times = rawRecipients.size) { deleteChipAt(position = 0) }
+
+                for (index in 1..rawRecipients.size) {
+                    deleteChipAt(rawRecipients.size - index)
+                }
 
                 verify { isEmptyField() }
             }
