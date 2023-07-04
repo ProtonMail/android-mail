@@ -19,14 +19,13 @@
 package ch.protonmail.android.mailcommon.domain.mapper
 
 import java.net.UnknownHostException
-import android.util.Log
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.model.ProtonError
-import ch.protonmail.android.test.utils.TestTree
+import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -37,20 +36,15 @@ import me.proton.core.network.data.ProtonErrorException
 import me.proton.core.network.domain.ApiException
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.util.kotlin.EMPTY_STRING
+import org.junit.Rule
 import retrofit2.HttpException
-import timber.log.Timber
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class DataResultEitherMappingsTest {
 
-    private val testTree = TestTree()
-
-    @BeforeTest
-    fun setUp() {
-        Timber.plant(testTree)
-    }
+    @get:Rule
+    val loggingTestRule = LoggingTestRule()
 
     @Test
     fun `emits data result value on success`() = runTest {
@@ -96,7 +90,7 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
             // then
             assertEquals(DataError.Local.Unknown.left(), awaitItem())
-            verifyErrorLogged("UNHANDLED LOCAL ERROR caused by result: $dataResult")
+            loggingTestRule.assertErrorLogged("UNHANDLED LOCAL ERROR caused by result: $dataResult")
             awaitComplete()
         }
     }
@@ -123,7 +117,7 @@ internal class DataResultEitherMappingsTest {
             // then
             val expected = DataError.Remote.Http(NetworkError.Unknown).left()
             assertEquals(expected, awaitItem())
-            verifyErrorLogged("UNHANDLED NETWORK ERROR caused by result: $dataResult")
+            loggingTestRule.assertErrorLogged("UNHANDLED NETWORK ERROR caused by result: $dataResult")
             awaitComplete()
         }
     }
@@ -138,7 +132,7 @@ internal class DataResultEitherMappingsTest {
             // then
             val expected = DataError.Remote.Proton(ProtonError.Unknown).left()
             assertEquals(expected, awaitItem())
-            verifyErrorLogged("UNHANDLED PROTON ERROR caused by result: $dataResult")
+            loggingTestRule.assertErrorLogged("UNHANDLED PROTON ERROR caused by result: $dataResult")
             awaitComplete()
         }
     }
@@ -153,7 +147,7 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
             // then
             assertEquals(DataError.Remote.Unknown.left(), awaitItem())
-            verifyErrorLogged("UNHANDLED REMOTE ERROR caused by result: $dataResult")
+            loggingTestRule.assertErrorLogged("UNHANDLED REMOTE ERROR caused by result: $dataResult")
             awaitComplete()
         }
     }
@@ -175,7 +169,7 @@ internal class DataResultEitherMappingsTest {
         input.mapToEither().test {
             // then
             assertEquals(expectedError.left(), awaitItem())
-            verifyErrorLogged("UNHANDLED REMOTE ERROR caused by result: $dataResult")
+            loggingTestRule.assertErrorLogged("UNHANDLED REMOTE ERROR caused by result: $dataResult")
             awaitComplete()
         }
     }
@@ -249,15 +243,5 @@ internal class DataResultEitherMappingsTest {
             assertEquals(DataError.Remote.Proton(ProtonError.Base64Format).left(), awaitItem())
             awaitComplete()
         }
-    }
-
-    private fun verifyErrorLogged(message: String) {
-        val loggedError = TestTree.Log(
-            priority = Log.ERROR,
-            message = message,
-            tag = null,
-            t = null
-        )
-        assertEquals(loggedError, testTree.logs.lastOrNull())
     }
 }

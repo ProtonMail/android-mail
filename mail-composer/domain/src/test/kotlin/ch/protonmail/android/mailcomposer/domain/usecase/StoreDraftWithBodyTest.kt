@@ -1,6 +1,5 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
-import android.util.Log
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
@@ -11,7 +10,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
-import ch.protonmail.android.test.utils.TestTree
+import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,14 +19,14 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
+import org.junit.Rule
 import kotlin.test.Test
-import kotlin.test.BeforeTest
-import timber.log.Timber
 import kotlin.test.assertEquals
 
 class StoreDraftWithBodyTest {
 
-    private val testTree = TestTree()
+    @get:Rule
+    val loggingTestRule = LoggingTestRule()
 
     private val createEmptyDraftMock = mockk<CreateEmptyDraft>()
     private val encryptDraftBodyMock = mockk<EncryptDraftBody>()
@@ -39,11 +38,6 @@ class StoreDraftWithBodyTest {
         saveDraftMock,
         messageRepositoryMock
     )
-
-    @BeforeTest
-    fun setUp() {
-        Timber.plant(testTree)
-    }
 
     @Test
     fun `should save an existing draft with encrypted body when draft already exists`() = runTest {
@@ -115,7 +109,7 @@ class StoreDraftWithBodyTest {
         // Then
         coVerify { saveDraftMock wasNot called }
         assertEquals(StoreDraftWithBodyError.DraftBodyEncryptionError.left(), actualEither)
-        assertErrorLogged("Encrypt draft $draftMessageId body to store to local DB failed")
+        loggingTestRule.assertErrorLogged("Encrypt draft $draftMessageId body to store to local DB failed")
     }
 
     @Test
@@ -141,12 +135,7 @@ class StoreDraftWithBodyTest {
 
         // Then
         assertEquals(StoreDraftWithBodyError.DraftSaveError.left(), actualEither)
-        assertErrorLogged("Store draft $draftMessageId body to local DB failed")
-    }
-
-    private fun assertErrorLogged(message: String) {
-        val expectedLog = TestTree.Log(Log.ERROR, null, message, null)
-        assertEquals(expectedLog, testTree.logs.lastOrNull())
+        loggingTestRule.assertErrorLogged("Store draft $draftMessageId body to local DB failed")
     }
 
     private fun expectedExistingDraft(

@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailcomposer.presentation.viewmodel
 
-import android.util.Log
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -27,21 +26,21 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBodyError
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSender
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
-import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
-import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBodyError
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import ch.protonmail.android.test.utils.TestTree
+import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -52,8 +51,6 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
 import org.junit.Rule
-import timber.log.Timber
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -61,6 +58,9 @@ class ComposerViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
+
+    @get:Rule
+    val loggingTestRule = LoggingTestRule()
 
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
     private val storeDraftWithSenderMock = mockk<StoreDraftWithSender>()
@@ -73,7 +73,6 @@ class ComposerViewModelTest {
         coEvery { this@mockk.invoke() } returns GetComposerSenderAddresses.Error.UpgradeToChangeSender.left()
     }
     private val reducer = ComposerReducer()
-    private val testTree = TestTree()
 
     private val viewModel by lazy {
         ComposerViewModel(
@@ -87,11 +86,6 @@ class ComposerViewModelTest {
             observePrimaryUserIdMock,
             provideNewDraftIdMock
         )
-    }
-
-    @BeforeTest
-    fun setUp() {
-        Timber.plant(testTree)
     }
 
     @Test
@@ -282,7 +276,9 @@ class ComposerViewModelTest {
         // Then
         val currentState = viewModel.state.value
         assertEquals(TextUiModel(R.string.composer_error_save_draft_with_new_sender), currentState.error.consume())
-        assertErrorLogged("Store draft $expectedMessageId with new sender ${expectedUserAddress.addressId} failed")
+        loggingTestRule.assertErrorLogged(
+            "Store draft $expectedMessageId with new sender ${expectedUserAddress.addressId} failed"
+        )
     }
 
     @Test
@@ -445,11 +441,6 @@ class ComposerViewModelTest {
                 expectedUserId
             )
         } returns it.left()
-    }
-
-    private fun assertErrorLogged(message: String) {
-        val expectedLog = TestTree.Log(Log.ERROR, null, message, null)
-        assertEquals(expectedLog, testTree.logs.lastOrNull())
     }
 
     companion object TestData {

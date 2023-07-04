@@ -20,12 +20,11 @@ package ch.protonmail.android.maillabel.domain.usecase
 
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import android.util.Log
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
-import ch.protonmail.android.test.utils.TestTree
+import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
@@ -34,14 +33,14 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
+import org.junit.Rule
 import kotlin.test.Test
-import kotlin.test.BeforeTest
-import timber.log.Timber
 import kotlin.test.assertEquals
 
 internal class GetLabelsTest {
 
-    private val testTree = TestTree()
+    @get:Rule
+    val loggingTestRule = LoggingTestRule()
 
     private val messageLabels = listOf(
         buildLabel(userId = userId, type = LabelType.MessageLabel, id = "0"),
@@ -59,11 +58,6 @@ internal class GetLabelsTest {
     }
 
     private val getLabels = GetLabels(labelRepository)
-
-    @BeforeTest
-    fun setUp() {
-        Timber.plant(testTree)
-    }
 
     @Test
     fun `returns labels when repository succeeds`() = runTest {
@@ -114,10 +108,7 @@ internal class GetLabelsTest {
         val networkError = DataError.Remote.Http(NetworkError.Unknown)
         val loggedError = "Unknown error while getting labels: $exception"
         assertEquals(networkError.left(), actual)
-        assertEquals(
-            TestTree.Log(priority = Log.ERROR, message = loggedError, tag = null, t = null),
-            testTree.logs.lastOrNull()
-        )
+        loggingTestRule.assertErrorLogged(loggedError)
     }
 
     @Test

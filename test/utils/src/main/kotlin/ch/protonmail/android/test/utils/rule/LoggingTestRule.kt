@@ -16,27 +16,29 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.test.utils
+package ch.protonmail.android.test.utils.rule
 
 import android.util.Log
+import ch.protonmail.android.test.utils.TestTree
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
 import timber.log.Timber
+import kotlin.test.assertEquals
 
-class TestTree : Timber.Tree() {
-    val logs = mutableListOf<Log>()
+class LoggingTestRule(
+    private val testTree: TestTree = TestTree()
+) : TestWatcher() {
 
-    override fun log(
-        priority: Int,
-        tag: String?,
-        message: String,
-        t: Throwable?
-    ) {
-        logs.add(Log(priority, tag, message, t))
+    override fun starting(description: Description) {
+        Timber.plant(testTree)
     }
 
-    data class Log(
-        val priority: Int,
-        val tag: String?,
-        val message: String,
-        val t: Throwable?
-    )
+    override fun finished(description: Description) {
+        Timber.uproot(testTree)
+    }
+
+    fun assertErrorLogged(message: String) {
+        val expectedLog = TestTree.Log(Log.ERROR, null, message, null)
+        assertEquals(expectedLog, testTree.logs.lastOrNull())
+    }
 }

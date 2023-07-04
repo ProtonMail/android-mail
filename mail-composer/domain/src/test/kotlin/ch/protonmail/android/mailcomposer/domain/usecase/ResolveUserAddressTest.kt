@@ -18,24 +18,24 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
-import android.util.Log
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
-import ch.protonmail.android.test.utils.TestTree
+import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import kotlin.test.Test
-import kotlin.test.BeforeTest
-import timber.log.Timber
 import kotlin.test.assertEquals
 
 class ResolveUserAddressTest {
 
-    private val testTree = TestTree()
+    @get:Rule
+    val loggingTestRule = LoggingTestRule()
+
     private val userId = UserIdTestData.userId
     private val userAddresses = listOf(UserAddressSample.PrimaryAddress, UserAddressSample.AliasAddress)
 
@@ -44,11 +44,6 @@ class ResolveUserAddressTest {
     }
 
     private val resolveUserAddress = ResolveUserAddress(observeUserAddresses)
-
-    @BeforeTest
-    fun setUp() {
-        Timber.plant(testTree)
-    }
 
     @Test
     fun `returns user address by email when found in user addresses`() = runTest {
@@ -73,11 +68,6 @@ class ResolveUserAddressTest {
 
         // Then
         assertEquals(expectedResult.left(), actual)
-        assertErrorLogged("Could not resolve user address for ${notFoundUserAddress.email}")
-    }
-
-    private fun assertErrorLogged(message: String) {
-        val expectedLog = TestTree.Log(Log.ERROR, null, message, null)
-        assertEquals(expectedLog, testTree.logs.lastOrNull())
+        loggingTestRule.assertErrorLogged("Could not resolve user address for ${notFoundUserAddress.email}")
     }
 }
