@@ -34,6 +34,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.Participants
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.testdata.R
+import ch.protonmail.android.mailmailbox.R.string as mailboxStrings
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -191,7 +192,7 @@ object MailboxItemUiModelTestData {
         isRead = isRead,
         labels = labels,
         subject = subject,
-        participants = ParticipantsUiModel.NoParticipants(TextUiModel(R.string.mailbox_default_sender)),
+        participants = ParticipantsUiModel.NoParticipants(TextUiModel(mailboxStrings.mailbox_default_sender)),
         shouldShowRepliedIcon = false,
         shouldShowRepliedAllIcon = false,
         shouldShowForwardedIcon = false,

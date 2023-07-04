@@ -65,7 +65,7 @@ internal class MailboxScreenTest {
     private val topMailboxItem = MailboxListItemEntry(
         index = 0,
         avatarInitial = AvatarInitial.WithText("T"),
-        participants = "",
+        participants = "(No Sender)",
         subject = "1",
         date = "10:42"
     )

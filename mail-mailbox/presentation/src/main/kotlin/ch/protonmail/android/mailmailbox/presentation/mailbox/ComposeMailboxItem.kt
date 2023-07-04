@@ -198,9 +198,7 @@ private fun Participants(
     when (participants) {
         is ParticipantsUiModel.Participants -> {
             ParticipantsList(
-                modifier = modifier
-                    .testTag(MailboxItemTestTags.Participants)
-                    .wrapContentSize(),
+                modifier = modifier.wrapContentSize(),
                 participants = participants,
                 fontWeight = fontWeight,
                 fontColor = fontColor

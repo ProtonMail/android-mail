@@ -22,21 +22,19 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.SemanticsNodeInteractionCollection
 import androidx.compose.ui.test.filter
-import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.onChildren
+import androidx.compose.ui.test.onFirst
 
 /**
  * Returns a child [SemanticsNodeInteraction] from another [SemanticsNodeInteraction]
  * by filtering the parent's children with the given [SemanticsMatcher].
  */
-fun SemanticsNodeInteraction.child(matcher: () -> SemanticsMatcher): SemanticsNodeInteraction {
-    return onChildren().filterToOne(matcher.invoke())
-}
+fun SemanticsNodeInteraction.child(matcher: () -> SemanticsMatcher): SemanticsNodeInteraction =
+    onChildren().filter(matcher.invoke()).onFirst()
 
 /**
  * Returns a [SemanticsNodeInteractionCollection] from a [SemanticsNodeInteraction]
  * by filtering the parent's children with the given [SemanticsMatcher].
  */
-fun SemanticsNodeInteraction.children(matcher: () -> SemanticsMatcher): SemanticsNodeInteractionCollection {
-    return onChildren().filter(matcher.invoke())
-}
+fun SemanticsNodeInteraction.children(matcher: () -> SemanticsMatcher): SemanticsNodeInteractionCollection =
+    onChildren().filter(matcher.invoke())

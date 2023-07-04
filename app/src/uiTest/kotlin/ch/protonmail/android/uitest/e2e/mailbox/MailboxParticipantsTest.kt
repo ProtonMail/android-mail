@@ -71,7 +71,7 @@ internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = Login
             participants = "UI Tests Contact 1",
             subject = "From contact with no sender name",
             date = "Mar 20, 2023"
-        ),
+        )
     )
 
     @Test

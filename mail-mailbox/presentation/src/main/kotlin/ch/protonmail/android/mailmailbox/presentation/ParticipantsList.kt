@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.SubcomposeMeasureScope
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
@@ -37,6 +38,7 @@ import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.participa
 import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.participantWithBadgeId
 import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.participantWithSeparatorId
 import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.threeDotsSlotId
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantsUiModel
 import me.proton.core.compose.theme.ProtonDimens
@@ -166,7 +168,9 @@ private fun ParticipantRow(
             Separator(fontWeight = displayData.fontWeight, fontColor = displayData.fontColor)
         }
         ParticipantName(
-            modifier = Modifier.weight(1f, fill = false),
+            modifier = Modifier
+                .testTag(MailboxItemTestTags.Participants)
+                .weight(1f, fill = false),
             participantName = participant.name,
             fontWeight = displayData.fontWeight,
             fontColor = displayData.fontColor
@@ -226,6 +230,7 @@ data class ParticipantRowDisplayData(
 )
 
 object ParticipantsList {
+
     const val participantWithBadgeAndSeparatorId = "participantWithBadgeAndSeparator"
     const val participantWithBadgeId = "participantWithBadge"
     const val participantWithSeparatorId = "participantWithSeparator"
