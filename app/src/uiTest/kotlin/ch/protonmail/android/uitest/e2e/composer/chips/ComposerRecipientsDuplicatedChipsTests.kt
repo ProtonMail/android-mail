@@ -25,6 +25,9 @@ import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.login.LoginStrategy
+import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
+import ch.protonmail.android.uitest.robot.common.section.snackbarSection
+import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipValidationState
@@ -39,7 +42,6 @@ import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
@@ -100,7 +102,6 @@ internal class ComposerRecipientsDuplicatedChipsTests :
 
     @Test
     @TestId("190256")
-    @Ignore("Duplication currently not handled with MAILANDR-227")
     fun testSameAddressInSameFieldIsDiscarded() {
         val expectedFocusedRecipientChip = expectedRecipientChip.copy(hasDeleteIcon = true)
         val expectedNotExistsChip = expectedFocusedRecipientChip.copy(index = 1)
@@ -113,6 +114,10 @@ internal class ComposerRecipientsDuplicatedChipsTests :
                     hasRecipientChips(expectedFocusedRecipientChip)
                     recipientChipIsNotDisplayed(expectedNotExistsChip)
                 }
+            }
+
+            snackbarSection {
+                verify { hasMessage(SnackbarTextEntry.DuplicateEmailAddress(expectedFocusedRecipientChip.text)) }
             }
         }
     }
