@@ -189,7 +189,6 @@ class ChipsListStateTest {
 
     private fun buildState(isValid: (String) -> Boolean = { true }) = ChipsListState(
         isValid = isValid,
-        onListChanged = {},
-        initialValue = emptyList()
+        onListChanged = {}
     )
 }

@@ -18,17 +18,19 @@
 
 package ch.protonmail.android.mailcomposer.presentation.reducer
 
+import java.util.Random
 import java.util.UUID
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.presentation.R
-import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsBccChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsCcChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsToChanged
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.SenderChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent.ErrorGettingSubscriptionToChangeSender
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
@@ -159,19 +161,16 @@ class ComposerReducerTest(
             )
         }
 
-        private val EmptyToUpgradePlan = with(UUID.randomUUID().toString()) {
-            val premiumFeatureMessage = Effect.of(TextUiModel(R.string.composer_change_sender_paid_feature))
-            TestTransition(
-                name = "Should generate a state showing 'upgrade plan' message when free user tries to change sender",
-                currentState = ComposerDraftState.empty(messageId),
-                operation = ComposerEvent.UpgradeToChangeSender,
-                expectedState = aNotSubmittableState(
-                    draftId = messageId,
-                    premiumFeatureMessage = premiumFeatureMessage,
-                    error = Effect.empty()
-                )
+        private val EmptyToUpgradePlan = TestTransition(
+            name = "Should generate a state showing 'upgrade plan' message when free user tries to change sender",
+            currentState = ComposerDraftState.empty(messageId),
+            operation = ComposerEvent.UpgradeToChangeSender,
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                premiumFeatureMessage = Effect.of(TextUiModel(R.string.composer_change_sender_paid_feature)),
+                error = Effect.empty()
             )
-        }
+        )
 
         private val EmptyToSenderAddressesList = TestTransition(
             name = "Should generate a state showing change sender bottom sheet when paid tries to change sender",
@@ -185,29 +184,24 @@ class ComposerReducerTest(
             )
         )
 
-        private val EmptyToErrorWhenUserPlanUnknown = with(UUID.randomUUID().toString()) {
-            val error = TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription)
-
-            TestTransition(
-                name = "Should generate an error state when failing to determine if user can change sender",
-                currentState = ComposerDraftState.empty(messageId),
-                operation = ComposerEvent.ErrorGettingSubscriptionToChangeSender,
-                expectedState = aNotSubmittableState(
-                    draftId = messageId,
-                    error = Effect.of(error)
-                )
+        private val EmptyToErrorWhenUserPlanUnknown = TestTransition(
+            name = "Should generate an error state when failing to determine if user can change sender",
+            currentState = ComposerDraftState.empty(messageId),
+            operation = ErrorGettingSubscriptionToChangeSender,
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                error = Effect.of(TextUiModel(R.string.composer_error_change_sender_failed_getting_subscription))
             )
-        }
+        )
 
-        private val EmptyToUpdatedSender = with(UUID.randomUUID().toString()) {
-            val sender = SenderUiModel("updated-sender@proton.ch")
+        private val EmptyToUpdatedSender = with(SenderUiModel("updated-sender@proton.ch")) {
             TestTransition(
                 name = "Should update the state with the new sender and close bottom sheet when address changes",
                 currentState = ComposerDraftState.empty(messageId),
-                operation = ComposerAction.SenderChanged(sender),
+                operation = SenderChanged(this),
                 expectedState = aNotSubmittableState(
                     draftId = messageId,
-                    sender = sender,
+                    sender = this,
                     error = Effect.empty(),
                     changeSenderBottomSheetVisibility = Effect.of(false)
                 )
@@ -244,7 +238,122 @@ class ComposerReducerTest(
             )
         )
 
+        private val DuplicateToToNotDuplicateWithError = with(aMultipleRandomRange().map { "a@b.c" }) {
+            TestTransition(
+                name = "Should remove duplicate TO recipients and contain error if there are",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsToChanged(this.map { Valid(it) }),
+                expectedState = aSubmittableState(
+                    draftId = messageId,
+                    to = listOf(Valid(this.first())),
+                    error = Effect.of(
+                        TextUiModel(
+                            R.string.composer_error_duplicate_recipient,
+                            this.first()
+                        )
+                    )
+                )
+            )
+        }
 
+        private val DuplicateCcToNotDuplicateWithError = with(aMultipleRandomRange().map { "a@b.c" }) {
+            TestTransition(
+                name = "Should remove duplicate CC recipients and contain error if there are",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsCcChanged(this.map { Valid(it) }),
+                expectedState = aSubmittableState(
+                    draftId = messageId,
+                    cc = listOf(Valid(this.first())),
+                    error = Effect.of(
+                        TextUiModel(
+                            R.string.composer_error_duplicate_recipient,
+                            this.first()
+                        )
+                    )
+                )
+            )
+        }
+
+        private val DuplicateBccToNotDuplicateWithError = with(aMultipleRandomRange().map { "a@b.c" }) {
+            TestTransition(
+                name = "Should remove duplicate BCC recipients and contain error if there are",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsBccChanged(this.map { Valid(it) }),
+                expectedState = aSubmittableState(
+                    draftId = messageId,
+                    bcc = listOf(Valid(this.first())),
+                    error = Effect.of(
+                        TextUiModel(
+                            R.string.composer_error_duplicate_recipient,
+                            this.first()
+                        )
+                    )
+                )
+            )
+        }
+
+        private val ManyDuplicatesToToNotDuplicateWithError = with(
+            aMultipleRandomRange().map { "a@b.c" } + aMultipleRandomRange().map { "d@e.f" }
+        ) {
+            val expected = listOf(Valid("a@b.c"), Valid("d@e.f"))
+            TestTransition(
+                name = "Should remove multiple duplicate To recipients and contain error if there are",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsToChanged(this.map { Valid(it) }),
+                expectedState = aSubmittableState(
+                    draftId = messageId,
+                    to = expected,
+                    error = Effect.of(
+                        TextUiModel(
+                            R.string.composer_error_duplicate_recipient,
+                            expected.joinToString(", ") { it.address }
+                        )
+                    )
+                )
+            )
+        }
+
+        private val ManyDuplicatesCcToNotDuplicateWithError = with(
+            aMultipleRandomRange().map { "a@b.c" } + aMultipleRandomRange().map { "d@e.f" }
+        ) {
+            val expected = listOf(Valid("a@b.c"), Valid("d@e.f"))
+            TestTransition(
+                name = "Should remove multiple duplicate CC recipients and contain error if there are",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsCcChanged(this.map { Valid(it) }),
+                expectedState = aSubmittableState(
+                    draftId = messageId,
+                    cc = expected,
+                    error = Effect.of(
+                        TextUiModel(
+                            R.string.composer_error_duplicate_recipient,
+                            expected.joinToString(", ") { it.address }
+                        )
+                    )
+                )
+            )
+        }
+
+        private val ManyDuplicatesBccToNotDuplicateWithError = with(
+            aMultipleRandomRange().map { "a@b.c" } + aMultipleRandomRange().map { "d@e.f" }
+        ) {
+            val expected = listOf(Valid("a@b.c"), Valid("d@e.f"))
+            TestTransition(
+                name = "Should remove multiple duplicate BCC recipients and contain error if there are",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = RecipientsBccChanged(this.map { Valid(it) }),
+                expectedState = aSubmittableState(
+                    draftId = messageId,
+                    bcc = expected,
+                    error = Effect.of(
+                        TextUiModel(
+                            R.string.composer_error_duplicate_recipient,
+                            expected.joinToString(", ") { it.address }
+                        )
+                    )
+                )
+            )
+        }
 
         private val transitions = listOf(
             EmptyToSubmittableToField,
@@ -261,14 +370,21 @@ class ComposerReducerTest(
             EmptyToErrorWhenUserPlanUnknown,
             EmptyToUpdatedSender,
             DefaultSenderToChangeSenderFailed,
-            EmptyToUnresolvedSenderSavingDraft
+            EmptyToUnresolvedSenderSavingDraft,
+            DuplicateToToNotDuplicateWithError,
+            DuplicateCcToNotDuplicateWithError,
+            DuplicateBccToNotDuplicateWithError,
+            ManyDuplicatesToToNotDuplicateWithError,
+            ManyDuplicatesCcToNotDuplicateWithError,
+            ManyDuplicatesBccToNotDuplicateWithError
         )
 
         private fun aSubmittableState(
             draftId: MessageId,
             to: List<RecipientUiModel> = emptyList(),
             cc: List<RecipientUiModel> = emptyList(),
-            bcc: List<RecipientUiModel> = emptyList()
+            bcc: List<RecipientUiModel> = emptyList(),
+            error: Effect<TextUiModel> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -280,7 +396,7 @@ class ComposerReducerTest(
                 body = ""
             ),
             premiumFeatureMessage = Effect.empty(),
-            error = Effect.empty(),
+            error = error,
             isSubmittable = true,
             senderAddresses = emptyList(),
             changeSenderBottomSheetVisibility = Effect.empty()
@@ -312,6 +428,11 @@ class ComposerReducerTest(
             senderAddresses = senderAddresses,
             changeSenderBottomSheetVisibility = changeSenderBottomSheetVisibility
         )
+
+        private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)
+
+        private fun aMultipleRandomRange(lowerBound: Int = 2, upperBound: Int = 10) =
+            lowerBound until aPositiveRandomInt(upperBound) + 2 * lowerBound
 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")

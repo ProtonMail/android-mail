@@ -28,11 +28,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -89,9 +89,10 @@ fun ChipsListTextField(
     ),
     animateChipsCreation: Boolean = false
 ) {
-    val state by remember {
-        mutableStateOf(ChipsListState(chipValidator, onListChanged, value))
-    }
+    val state by remember { mutableStateOf(ChipsListState(chipValidator, onListChanged)) }
+
+    state.updateItems(value)
+
     val focusManager = LocalFocusManager.current
     val localDensity = LocalDensity.current
     var textMaxWidth by remember { mutableStateOf(Dp.Unspecified) }
@@ -285,13 +286,19 @@ private fun UnFocusedChipsList(
 @Stable
 internal class ChipsListState(
     private val isValid: (String) -> Boolean,
-    private val onListChanged: (List<ChipItem>) -> Unit,
-    initialValue: List<ChipItem>
+    private val onListChanged: (List<ChipItem>) -> Unit
 ) {
 
-    private val items: SnapshotStateList<ChipItem> = initialValue.toMutableStateList()
+    private val items: SnapshotStateList<ChipItem> = mutableStateListOf()
     private val typedText: MutableState<String> = mutableStateOf("")
     private val focusedState: MutableState<Boolean> = mutableStateOf(false)
+
+    fun updateItems(newItems: List<ChipItem>) {
+        if (newItems != items.toList()) {
+            items.clear()
+            items.addAll(newItems)
+        }
+    }
 
     fun getItems(): ChipItemsList = when {
         items.isEmpty() -> ChipItemsList.Empty
