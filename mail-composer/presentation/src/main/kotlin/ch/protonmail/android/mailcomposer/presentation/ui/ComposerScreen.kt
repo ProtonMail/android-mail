@@ -45,6 +45,7 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
+import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
@@ -96,7 +97,12 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
                 )
             }
 
-            ProtonSnackbarHost(modifier = Modifier.align(Alignment.BottomCenter), hostState = snackbarHostState)
+            ProtonSnackbarHost(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .testTag(CommonTestTags.SnackbarHost),
+                hostState = snackbarHostState
+            )
         }
     }
 
