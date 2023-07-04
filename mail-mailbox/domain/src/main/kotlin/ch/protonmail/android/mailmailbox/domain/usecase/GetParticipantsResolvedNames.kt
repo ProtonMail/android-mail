@@ -22,6 +22,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import me.proton.core.contact.domain.entity.Contact
 import javax.inject.Inject
 
@@ -46,11 +47,11 @@ class GetParticipantsResolvedNames @Inject constructor(
     }
 }
 
-sealed class ParticipantsResolvedNamesResult(open val list: List<ResolveParticipantName.Result>) {
+sealed class ParticipantsResolvedNamesResult(open val list: List<ResolveParticipantNameResult>) {
     data class Recipients(
-        override val list: List<ResolveParticipantName.Result>
+        override val list: List<ResolveParticipantNameResult>
     ) : ParticipantsResolvedNamesResult(list)
     data class Senders(
-        override val list: List<ResolveParticipantName.Result>
+        override val list: List<ResolveParticipantNameResult>
     ) : ParticipantsResolvedNamesResult(list)
 }

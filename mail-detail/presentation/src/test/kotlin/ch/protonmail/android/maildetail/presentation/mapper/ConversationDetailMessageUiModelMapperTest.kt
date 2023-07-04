@@ -44,6 +44,7 @@ import io.mockk.spyk
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.test.runTest
 import java.util.UUID
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -80,13 +81,13 @@ internal class ConversationDetailMessageUiModelMapperTest {
     private val resolveParticipantName: ResolveParticipantName = mockk {
         every {
             this@mockk(contacts = any(), participant = RecipientSample.Doe)
-        } returns ResolveParticipantName.Result(ContactSample.Doe.name, isProton = false)
+        } returns ResolveParticipantNameResult(ContactSample.Doe.name, isProton = false)
         every {
             this@mockk(contacts = any(), participant = RecipientSample.John)
-        } returns ResolveParticipantName.Result(ContactSample.John.name, isProton = false)
+        } returns ResolveParticipantNameResult(ContactSample.John.name, isProton = false)
         every {
             this@mockk(contacts = any(), participant = RecipientSample.PreciWeather)
-        } returns ResolveParticipantName.Result(RecipientSample.PreciWeather.name, isProton = false)
+        } returns ResolveParticipantNameResult(RecipientSample.PreciWeather.name, isProton = false)
     }
     private val messageDetailHeaderUiModelMapper = spyk(
         MessageDetailHeaderUiModelMapper(

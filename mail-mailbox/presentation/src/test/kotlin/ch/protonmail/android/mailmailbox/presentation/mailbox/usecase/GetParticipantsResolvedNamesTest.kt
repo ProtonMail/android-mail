@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ParticipantsResolvedName
 import ch.protonmail.android.mailmessage.domain.entity.Recipient
 import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData.buildMailboxItem
 import io.mockk.every
@@ -42,8 +43,8 @@ class GetParticipantsResolvedNamesTest {
         // Given
         val sender1Name = "sender1"
         val sender2Name = "sender2"
-        val resolveParticipant1NameResult = ResolveParticipantName.Result(sender1Name, isProton = true)
-        val resolveParticipant2NameResult = ResolveParticipantName.Result(sender2Name, isProton = false)
+        val resolveParticipant1NameResult = ResolveParticipantNameResult(sender1Name, isProton = true)
+        val resolveParticipant2NameResult = ResolveParticipantNameResult(sender2Name, isProton = false)
         val sender = Sender("sender@proton.ch", sender1Name)
         val sender1 = Sender("sender1@proton.ch", sender2Name)
         val senders = listOf(sender, sender1)
@@ -70,8 +71,8 @@ class GetParticipantsResolvedNamesTest {
         // Given
         val recipient1Name = "recipient"
         val recipient2Name = "recipient1"
-        val resolveParticipant1NameResult = ResolveParticipantName.Result(recipient1Name, isProton = false)
-        val resolveParticipant2NameResult = ResolveParticipantName.Result(recipient2Name, isProton = true)
+        val resolveParticipant1NameResult = ResolveParticipantNameResult(recipient1Name, isProton = false)
+        val resolveParticipant2NameResult = ResolveParticipantNameResult(recipient2Name, isProton = true)
         val recipient = Recipient("recipient@proton.ch", recipient1Name)
         val recipient1 = Recipient("recipient1@proton.ch", recipient2Name)
         val recipients = listOf(recipient, recipient1)

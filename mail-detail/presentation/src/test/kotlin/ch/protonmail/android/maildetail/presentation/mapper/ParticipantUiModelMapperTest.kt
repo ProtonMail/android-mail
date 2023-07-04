@@ -22,6 +22,7 @@ import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.mailmessage.domain.entity.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.testdata.contact.ContactTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -36,7 +37,7 @@ class ParticipantUiModelMapperTest {
     private val resolveParticipantName: ResolveParticipantName = mockk {
         every {
             this@mockk.invoke(participant, ContactTestData.contacts, any())
-        } returns ResolveParticipantName.Result("Test", isProton = false)
+        } returns ResolveParticipantNameResult("Test", isProton = false)
     }
 
     private val participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName)

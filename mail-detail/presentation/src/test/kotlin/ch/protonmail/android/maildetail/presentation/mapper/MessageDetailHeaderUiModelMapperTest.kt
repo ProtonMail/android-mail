@@ -39,6 +39,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
@@ -130,25 +131,25 @@ class MessageDetailHeaderUiModelMapperTest {
                 MessageTestData.sender,
                 ContactTestData.contacts
             )
-        } returns ResolveParticipantName.Result(MessageTestData.sender.name, isProton = false)
+        } returns ResolveParticipantNameResult(MessageTestData.sender.name, isProton = false)
         every {
             this@mockk.invoke(
                 MessageTestData.recipient1,
                 ContactTestData.contacts
             )
-        } returns ResolveParticipantName.Result(MessageTestData.recipient1.name, isProton = false)
+        } returns ResolveParticipantNameResult(MessageTestData.recipient1.name, isProton = false)
         every {
             this@mockk.invoke(
                 MessageTestData.recipient2,
                 ContactTestData.contacts
             )
-        } returns ResolveParticipantName.Result(MessageTestData.recipient2.name, isProton = false)
+        } returns ResolveParticipantNameResult(MessageTestData.recipient2.name, isProton = false)
         every {
             this@mockk.invoke(
                 MessageTestData.recipient3,
                 ContactTestData.contacts
             )
-        } returns ResolveParticipantName.Result(MessageTestData.recipient3.name, isProton = false)
+        } returns ResolveParticipantNameResult(MessageTestData.recipient3.name, isProton = false)
     }
 
     private val messageDetailHeaderUiModelMapper = MessageDetailHeaderUiModelMapper(

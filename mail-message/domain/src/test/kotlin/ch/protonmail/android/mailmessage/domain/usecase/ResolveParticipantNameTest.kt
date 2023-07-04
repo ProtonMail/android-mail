@@ -48,7 +48,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, userContacts)
 
         // Then
-        val expected = ResolveParticipantName.Result("contact email name", isProton = false)
+        val expected = ResolveParticipantNameResult("contact email name", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -61,7 +61,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
 
         // Then
-        val expected = ResolveParticipantName.Result("Sender", isProton = false)
+        val expected = ResolveParticipantNameResult("Sender", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -74,7 +74,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.ADDRESS)
 
         // Then
-        val expected = ResolveParticipantName.Result("sender@proton.ch", isProton = false)
+        val expected = ResolveParticipantNameResult("sender@proton.ch", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -87,7 +87,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.USERNAME)
 
         // Then
-        val expected = ResolveParticipantName.Result("sender", isProton = false)
+        val expected = ResolveParticipantNameResult("sender", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -100,7 +100,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.NONE)
 
         // Then
-        val expected = ResolveParticipantName.Result("", isProton = false)
+        val expected = ResolveParticipantNameResult("", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -113,7 +113,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.NONE)
 
         // Then
-        val expected = ResolveParticipantName.Result("", isProton = false)
+        val expected = ResolveParticipantNameResult("", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -126,7 +126,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.USERNAME)
 
         // Then
-        val expected = ResolveParticipantName.Result("sender", isProton = false)
+        val expected = ResolveParticipantNameResult("sender", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -139,7 +139,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
 
         // Then
-        val expected = ResolveParticipantName.Result("sender@proton.ch", isProton = false)
+        val expected = ResolveParticipantNameResult("sender@proton.ch", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -152,7 +152,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
 
         // Then
-        val expected = ResolveParticipantName.Result("", isProton = false)
+        val expected = ResolveParticipantNameResult("", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -165,7 +165,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts, FallbackType.USERNAME)
 
         // Then
-        val expected = ResolveParticipantName.Result("", isProton = false)
+        val expected = ResolveParticipantNameResult("", isProton = false)
         assertEquals(expected, actual)
     }
 
@@ -178,7 +178,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
 
         // Then
-        val expected = ResolveParticipantName.Result(name = "Sender", isProton = true)
+        val expected = ResolveParticipantNameResult(name = "Sender", isProton = true)
         assertEquals(expected, actual)
     }
 
@@ -191,7 +191,7 @@ class ResolveParticipantNameTest {
         val actual = resolveParticipantName(participant, ContactTestData.contacts)
 
         // Then
-        val expected = ResolveParticipantName.Result(name = "Sender", isProton = false)
+        val expected = ResolveParticipantNameResult(name = "Sender", isProton = false)
         assertEquals(expected, actual)
     }
 }
