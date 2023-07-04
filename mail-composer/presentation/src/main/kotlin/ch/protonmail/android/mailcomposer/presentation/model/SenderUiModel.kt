@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model
 
-data class SenderUiModel(
+@JvmInline
+value class SenderUiModel(
     val email: String
 )
