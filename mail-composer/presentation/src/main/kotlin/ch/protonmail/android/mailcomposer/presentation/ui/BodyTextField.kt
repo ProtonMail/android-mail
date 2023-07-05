@@ -38,10 +38,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
 @Composable
-internal fun BodyTextField(
-    onBodyChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
+internal fun BodyTextField(onBodyChange: (String) -> Unit, modifier: Modifier = Modifier) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(""))
     }

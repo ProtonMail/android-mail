@@ -31,18 +31,12 @@ interface MessageRemoteDataSource {
     /**
      * Get all [Message] for [userId].
      */
-    suspend fun getMessages(
-        userId: UserId,
-        pageKey: PageKey
-    ): Either<DataError.Remote, List<Message>>
+    suspend fun getMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>>
 
     /**
      * Get a [Message] for [userId], by [messageId].
      */
-    suspend fun getMessage(
-        userId: UserId,
-        messageId: MessageId
-    ): MessageWithBody
+    suspend fun getMessage(userId: UserId, messageId: MessageId): MessageWithBody
 
     /**
      * Add a [LabelId] to the given [MessageId]

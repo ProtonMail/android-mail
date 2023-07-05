@@ -57,8 +57,8 @@ class ComposerReducer @Inject constructor() {
         )
         is ComposerEvent.ErrorFreeUserCannotChangeSender -> updateStateToPaidFeatureMessage(currentState)
         is ComposerEvent.ErrorStoringDraftSenderAddress -> updateStateForChangeSenderFailed(
-            currentState,
-            TextUiModel(R.string.composer_error_store_draft_sender_address)
+            currentState = currentState,
+            errorMessage = TextUiModel(R.string.composer_error_store_draft_sender_address)
         )
         is ComposerEvent.ErrorStoringDraftBody -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_store_draft_body))
