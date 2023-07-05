@@ -30,6 +30,7 @@ import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxType
+import ch.protonmail.android.uitest.robot.common.section.keyboardSection
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.toRecipientSection
@@ -150,7 +151,11 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(loginStrategy = Login
                 subjectSection { typeSubject(it) }
             }
 
-            messageBodySection { typeMessageBody(body) }
+            messageBodySection {
+                typeMessageBody(body)
+            }
+
+            keyboardSection { dismissKeyboard() }
 
             topAppBarSection { tapCloseButton() }
         }
