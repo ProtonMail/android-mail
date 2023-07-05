@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
@@ -31,10 +32,10 @@ class ResolveUserAddress @Inject constructor(
     private val observeUserAddresses: ObserveUserAddresses
 ) {
 
-    suspend operator fun invoke(userId: UserId, email: String): Either<Error, UserAddress> {
-        val userAddress = observeUserAddresses(userId).first().find { it.email == email }
+    suspend operator fun invoke(userId: UserId, email: SenderEmail): Either<Error, UserAddress> {
+        val userAddress = observeUserAddresses(userId).first().find { it.email == email.value }
         if (userAddress == null) {
-            Timber.e("Could not resolve user address for $email")
+            Timber.e("Could not resolve user address for ${email.value}")
             return Error.UserAddressNotFound.left()
         }
 

@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
@@ -89,7 +90,7 @@ class ComposerViewModel @Inject constructor(
 
     private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation {
         val userId = primaryUserId.first()
-        return resolveUserAddress(userId, action.sender.email).fold(
+        return resolveUserAddress(userId, SenderEmail(action.sender.email)).fold(
             ifLeft = { ComposerEvent.ErrorStoringDraftSenderAddress },
             ifRight = { userAddress ->
                 storeDraftWithSender(messageId, userAddress, userId).fold(
@@ -106,7 +107,7 @@ class ComposerViewModel @Inject constructor(
     private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged): ComposerOperation {
         val userId = primaryUserId.first()
         val email = state.value.fields.sender.email
-        return resolveUserAddress(userId, email).fold(
+        return resolveUserAddress(userId, SenderEmail(email)).fold(
             ifLeft = { ComposerEvent.ErrorStoringDraftBody },
             ifRight = { userAddress ->
                 storeDraftWithBody(messageId, action.draftBody, userAddress, userId).fold(

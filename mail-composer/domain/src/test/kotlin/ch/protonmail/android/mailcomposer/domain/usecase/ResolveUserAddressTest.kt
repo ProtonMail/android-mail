@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
@@ -51,7 +52,7 @@ class ResolveUserAddressTest {
         val expectedUserAddress = UserAddressSample.AliasAddress
 
         // When
-        val actual = resolveUserAddress(userId, expectedUserAddress.email)
+        val actual = resolveUserAddress(userId, SenderEmail(expectedUserAddress.email))
 
         // Then
         assertEquals(UserAddressSample.AliasAddress.right(), actual)
@@ -64,7 +65,7 @@ class ResolveUserAddressTest {
         val notFoundUserAddress = UserAddressSample.DisabledAddress
 
         // When
-        val actual = resolveUserAddress(userId, notFoundUserAddress.email)
+        val actual = resolveUserAddress(userId, SenderEmail(notFoundUserAddress.email))
 
         // Then
         assertEquals(expectedResult.left(), actual)
