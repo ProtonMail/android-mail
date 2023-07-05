@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -32,13 +32,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadge
-import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.minLengthParticipantName
-import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.participantNameId
-import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.participantWithBadgeAndSeparatorId
-import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.participantWithBadgeId
-import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.participantWithSeparatorId
-import ch.protonmail.android.mailmailbox.presentation.ParticipantsList.threeDotsSlotId
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
+import ch.protonmail.android.mailmailbox.presentation.mailbox.ParticipantsList.minLengthParticipantName
+import ch.protonmail.android.mailmailbox.presentation.mailbox.ParticipantsList.participantNameId
+import ch.protonmail.android.mailmailbox.presentation.mailbox.ParticipantsList.participantWithBadgeAndSeparatorId
+import ch.protonmail.android.mailmailbox.presentation.mailbox.ParticipantsList.participantWithBadgeId
+import ch.protonmail.android.mailmailbox.presentation.mailbox.ParticipantsList.participantWithSeparatorId
+import ch.protonmail.android.mailmailbox.presentation.mailbox.ParticipantsList.threeDotsSlotId
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.ParticipantsUiModel
 import me.proton.core.compose.theme.ProtonDimens
