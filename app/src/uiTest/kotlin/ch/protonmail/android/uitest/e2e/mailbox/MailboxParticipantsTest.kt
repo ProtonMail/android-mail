@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.e2e.mailbox
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
@@ -27,7 +28,6 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
@@ -44,7 +44,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
+internal class MailboxParticipantsTest : MockedNetworkTest() {
 
     @JvmField
     @BindValue
@@ -77,7 +77,10 @@ internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = Login
     @Test
     @TestId("77426")
     fun checkAvatarInitialsWithMissingParticipantDetailsInMessageMode() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false, useDefaultContacts = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(
+            useDefaultMailSettings = false,
+            useDefaultContacts = false
+        ) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_77426.json"
@@ -108,7 +111,10 @@ internal class MailboxParticipantsTest : MockedNetworkTest(loginStrategy = Login
     @Test
     @TestId("77427")
     fun checkAvatarInitialsWithMissingParticipantDetailsInConversationMode() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false, useDefaultContacts = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(
+            useDefaultMailSettings = false,
+            useDefaultContacts = false
+        ) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_77427.json"

@@ -19,13 +19,13 @@
 package ch.protonmail.android.uitest.e2e.composer.chips
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipValidationState
@@ -45,9 +45,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ComposerRecipientsCollapsedChipsTests :
-    MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut),
-    ComposerChipsTests {
+internal class ComposerRecipientsCollapsedChipsTests : MockedNetworkTest(), ComposerChipsTests {
 
     @JvmField
     @BindValue
@@ -83,7 +81,7 @@ internal class ComposerRecipientsCollapsedChipsTests :
 
     @Before
     fun navigateToComposer() {
-        mockWebServer.dispatcher = composerMockNetworkDispatcher()
+        mockWebServer.dispatcher combineWith composerMockNetworkDispatcher()
         navigator { navigateTo(Destination.Composer) }
     }
 

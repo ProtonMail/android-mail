@@ -18,27 +18,8 @@
 
 package ch.protonmail.android.uitest.helpers.login
 
-import ch.protonmail.android.mailcommon.domain.sample.AccountSample
-import ch.protonmail.android.mailcommon.domain.sample.SessionSample
-import ch.protonmail.android.mailcommon.domain.sample.UserSample
-import me.proton.core.account.domain.entity.Account
-import me.proton.core.network.domain.session.Session
-import me.proton.core.user.domain.entity.User
+sealed class LoginType {
 
-internal sealed class LoginStrategy {
-
-    sealed class LoggedIn(
-        val account: Account,
-        val session: Session,
-        val user: User
-    ) : LoginStrategy() {
-
-        object PrimaryUser : LoggedIn(
-            account = AccountSample.Primary,
-            session = SessionSample.Primary,
-            user = UserSample.Primary
-        )
-    }
-
-    object LoggedOut : LoginStrategy()
+    class LoggedIn(val id: String) : LoginType()
+    object LoggedOut : LoginType()
 }

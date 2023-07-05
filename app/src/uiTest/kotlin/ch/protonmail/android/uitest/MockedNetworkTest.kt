@@ -20,18 +20,15 @@ package ch.protonmail.android.uitest
 
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import ch.protonmail.android.uitest.helpers.core.TestIdWatcher
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
+import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
+import ch.protonmail.android.uitest.helpers.login.LoginType
+import ch.protonmail.android.uitest.helpers.network.authenticationDispatcher
 import ch.protonmail.android.uitest.rule.MainInitializerRule
 import ch.protonmail.android.uitest.rule.MockTimeRule
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.user.domain.UserManager
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.RuleChain
@@ -40,22 +37,16 @@ import javax.inject.Inject
 /**
  * A base test class used in UI tests that require complete network isolation.
  *
- * @param loginStrategy the login strategy to follow for a given test suite.
+ * @param loginType the login type to use for a given test suite.
  */
 @HiltAndroidTest
 internal open class MockedNetworkTest(
-    private val loginStrategy: LoginStrategy = LoginStrategy.LoggedIn.PrimaryUser
+    private val loginType: LoginType = LoginTestUserTypes.Deprecated.GrumpyCat
 ) {
 
     private val hiltAndroidRule = HiltAndroidRule(this)
 
     private val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
-
-    @Inject
-    lateinit var accountManager: AccountManager
-
-    @Inject
-    lateinit var userManager: UserManager
 
     @Inject
     lateinit var mockWebServer: MockWebServer
@@ -76,37 +67,6 @@ internal open class MockedNetworkTest(
     @Before
     fun setup() {
         hiltAndroidRule.inject()
-
-        handleLogin()
-    }
-
-    @After
-    fun tearDown() {
-        handleLogout()
-    }
-
-    private fun handleLogin() {
-        when (loginStrategy) {
-            is LoginStrategy.LoggedIn.PrimaryUser -> {
-                runBlocking(Dispatchers.IO) {
-                    accountManager.addAccount(loginStrategy.account, loginStrategy.session)
-                    userManager.addUser(loginStrategy.user, emptyList())
-                }
-            }
-
-            else -> Unit
-        }
-    }
-
-    private fun handleLogout() {
-        when (loginStrategy) {
-            is LoginStrategy.LoggedIn.PrimaryUser -> {
-                runBlocking(Dispatchers.IO) {
-                    accountManager.removeAccount(loginStrategy.account.userId)
-                }
-            }
-
-            else -> Unit
-        }
+        mockWebServer.dispatcher = authenticationDispatcher(loginType)
     }
 }

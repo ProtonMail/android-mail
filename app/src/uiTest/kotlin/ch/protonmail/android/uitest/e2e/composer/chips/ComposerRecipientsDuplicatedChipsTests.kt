@@ -19,12 +19,12 @@
 package ch.protonmail.android.uitest.e2e.composer.chips
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
@@ -47,9 +47,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ComposerRecipientsDuplicatedChipsTests :
-    MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut),
-    ComposerChipsTests {
+internal class ComposerRecipientsDuplicatedChipsTests : MockedNetworkTest(), ComposerChipsTests {
 
     @JvmField
     @BindValue
@@ -63,7 +61,7 @@ internal class ComposerRecipientsDuplicatedChipsTests :
 
     @Before
     fun navigateToComposer() {
-        mockWebServer.dispatcher = composerMockNetworkDispatcher()
+        mockWebServer.dispatcher combineWith composerMockNetworkDispatcher()
         navigator { navigateTo(Destination.Composer) }
     }
 

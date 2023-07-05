@@ -33,7 +33,6 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
  * with default values that can be easily overridden.
  */
 internal fun mockNetworkDispatcher(
-    useDefaultAuth: Boolean = true,
     useDefaultCoreSettings: Boolean = true,
     useDefaultMailSettings: Boolean = true,
     useDefaultContacts: Boolean = true,
@@ -45,17 +44,6 @@ internal fun mockNetworkDispatcher(
     ignoreEvents: Boolean = true,
     additionalMockDefinitions: MockNetworkDispatcher.() -> Unit = {}
 ) = MockNetworkDispatcher().apply {
-    if (useDefaultAuth) {
-        addMockRequests(
-            "/auth/v4" respondWith "/auth/v4/auth-v4_base_placeholder.json" withStatusCode 200,
-            "/auth/v4/info" respondWith "/auth/v4/info/info_base_placeholder.json" withStatusCode 200,
-            "/auth/v4/sessions" respondWith "/auth/v4/sessions/sessions_base_placeholder.json" withStatusCode 200,
-            "/core/v4/users" respondWith "/core/v4/users/users_base_placeholder.json" withStatusCode 200,
-            "/core/v4/addresses" respondWith "/core/v4/addresses/addresses_base_placeholder.json" withStatusCode 200,
-            "/core/v4/keys/salts" respondWith "/core/v4/keys/salts/salts_base_placeholder.json" withStatusCode 200,
-            "/auth/v4/scopes" respondWith "/auth/v4/scopes/scopes_base_placeholder.json" withStatusCode 200
-        )
-    }
 
     if (useDefaultCoreSettings) {
         addMockRequests(

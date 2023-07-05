@@ -22,6 +22,7 @@ import arrow.core.Either
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -34,7 +35,6 @@ import ch.protonmail.android.uitest.e2e.mailbox.detail.DetailRemoteContentTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.section.conversation.messagesCollapsedSection
@@ -52,9 +52,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ConversationDetailRemoteContentTests :
-    MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut),
-    DetailRemoteContentTest {
+internal class ConversationDetailRemoteContentTests : MockedNetworkTest(), DetailRemoteContentTest {
 
     private val expectedBodyText = "Various img elements"
     private val expectedBodyTextSecondMessage = "Various img elements (2)"
@@ -80,7 +78,7 @@ internal class ConversationDetailRemoteContentTests :
     @SmokeTest
     @TestId("184206")
     fun checkRemoteContentNotBlockedWhenConversationModeIsEnabled() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_184206.json"
@@ -116,7 +114,7 @@ internal class ConversationDetailRemoteContentTests :
     @Test
     @TestId("184208")
     fun checkRemoteContentNotBlockedWithMultipleMessagesWhenConversationModeIsEnabled() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_184208.json"
@@ -152,7 +150,7 @@ internal class ConversationDetailRemoteContentTests :
     @Test
     @TestId("184209")
     fun checkRemoteContentNotBlockedOnMultipleMessagesWhenConversationModeIsEnabled() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_184209.json"
@@ -217,7 +215,7 @@ internal class ConversationDetailRemoteContentTests :
     @SmokeTest
     @TestId("184211")
     fun checkRemoteContentBlockedWhenConversationModeIsEnabled() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_184211.json"
@@ -253,7 +251,7 @@ internal class ConversationDetailRemoteContentTests :
     @Test
     @TestId("184212")
     fun checkRemoteContentBlockedWithMultipleMessagesWhenConversationModeIsEnabled() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_184212.json"

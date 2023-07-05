@@ -50,7 +50,7 @@ import okhttp3.mockwebserver.RecordedRequest
  *    @Test
  *    fun testCase() {
  *        // Simple usage and definition of a custom dispatcher.
- *        mockWebServer.dispatcher = MockNetworkDispatcher().apply {
+ *        mockWebServer.dispatcher extendWith MockNetworkDispatcher().apply {
  *            addMockRequests(
  *                 "/api/v1/path" respondWith "/api/v1/localPath" withStatusCode 200,
  *                 "/api/v1/path2" respondWith "/api/v1/localPath2" withStatusCode 401
@@ -70,6 +70,7 @@ class MockNetworkDispatcher(
 ) : Dispatcher() {
 
     private val knownRequests = mutableListOf<MockRequest>()
+    val requestsList: List<MockRequest> = knownRequests
 
     override fun dispatch(request: RecordedRequest): MockResponse {
         val remotePath = checkNotNull(request.path) {
@@ -142,4 +143,18 @@ class MockNetworkDispatcher(
         private val logger = Logger.getLogger(this::class.java.name)
         private const val DefaultAssetsRootPath = "assets/network-mocks"
     }
+}
+
+/**
+ * Allows combining the current list of mocked requests with the one from another [MockNetworkDispatcher].
+ *
+ * @param dispatcher a [MockNetworkDispatcher] instance.
+ *
+ * @throws IllegalArgumentException if the receiver is not a [MockNetworkDispatcher].
+ */
+infix fun Dispatcher.combineWith(dispatcher: MockNetworkDispatcher) {
+    require(this is MockNetworkDispatcher) {
+        "Receiver needs to be a MockNetworkDispatcher instance."
+    }
+    addMockRequests(*dispatcher.requestsList.toTypedArray())
 }

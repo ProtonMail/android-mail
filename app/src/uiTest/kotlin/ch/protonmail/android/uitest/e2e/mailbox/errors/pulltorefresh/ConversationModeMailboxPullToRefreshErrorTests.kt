@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.e2e.mailbox.errors.pulltorefresh
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
@@ -30,7 +31,6 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -43,7 +43,7 @@ import org.junit.Test
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
 internal class ConversationModeMailboxPullToRefreshErrorTests :
-    MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut), MailboxPullToRefreshErrorTests {
+    MockedNetworkTest(), MailboxPullToRefreshErrorTests {
 
     @JvmField
     @BindValue
@@ -52,7 +52,7 @@ internal class ConversationModeMailboxPullToRefreshErrorTests :
     @Test
     @TestId("188892")
     fun checkConversationsLoadingErrorToError() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
@@ -76,7 +76,7 @@ internal class ConversationModeMailboxPullToRefreshErrorTests :
     @Test
     @TestId("188893")
     fun checkConversationsLoadingContentToError() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
@@ -101,7 +101,7 @@ internal class ConversationModeMailboxPullToRefreshErrorTests :
     @SmokeTest
     @TestId("188894")
     fun checkConversationsLoadingErrorToContent() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
@@ -125,7 +125,7 @@ internal class ConversationModeMailboxPullToRefreshErrorTests :
     @Test
     @TestId("188895")
     fun checkConversationsLoadingEmptyToError() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
@@ -149,7 +149,7 @@ internal class ConversationModeMailboxPullToRefreshErrorTests :
     @Test
     @TestId("188896")
     fun checkConversationsLoadingErrorToEmpty() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
@@ -174,7 +174,7 @@ internal class ConversationModeMailboxPullToRefreshErrorTests :
     @SmokeTest
     @TestId("188897")
     fun checkConversationsLoadingEmptyToContent() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"

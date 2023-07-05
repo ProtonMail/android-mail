@@ -19,6 +19,7 @@
 package ch.protonmail.android.networkmocks
 
 import ch.protonmail.android.networkmocks.mockwebserver.MockNetworkDispatcher
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
@@ -228,7 +229,7 @@ internal class MockNetworkDispatcherTests {
         val firstExpectedStatusCode = 200
         val firstExpectedBody = """{ "a": 1 }"""
         val secondExpectedStatusCode = 500
-        val secondExpectedBody = """{ "b" : 2 }"""
+        val secondExpectedBody = """{ "b": 2 }"""
 
         val request = buildRequest("api/v1/test")
 
@@ -247,7 +248,7 @@ internal class MockNetworkDispatcherTests {
         assertEquals(firstExpectedStatusCode, firstResponse.code)
         assertEquals(firstExpectedBody, firstResponse.body?.string())
         assertEquals(secondExpectedStatusCode, secondResponse.code)
-        assertNotEquals(secondExpectedBody, secondResponse.body?.string())
+        assertEquals(secondExpectedBody, secondResponse.body?.string())
     }
 
     @Test
@@ -310,6 +311,43 @@ internal class MockNetworkDispatcherTests {
         // Then
         assertEquals(expectedStatusCode, response.code)
         assertEquals(expectedBody, response.body?.string())
+    }
+
+    @Test
+    fun `when the dispatcher is extended, then it contains all the requests and serves the additional definitions`() {
+        // Given
+        val firstExpectedStatusCode = 200
+        val firstExpectedBody = """{ "a": 1 }"""
+        val secondExpectedStatusCode = 200
+        val secondExpectedBody = """{ "b": 2 }"""
+
+        val firstMockDefinition = "/api/v1/test1" respondWith "/api/v1/test_1.json" withStatusCode 200
+        val secondMockDefinition = "/api/v1/test2" respondWith "/api/v1/test_2.json" withStatusCode 200
+
+        val request = buildRequest("api/v1/test1")
+        val secondRequest = buildRequest("api/v1/test2")
+
+        mockWebServer.dispatcher = mockNetworkDispatcher {
+            addMockRequests(firstMockDefinition)
+        }
+
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher {
+            addMockRequests(secondMockDefinition)
+        }
+
+        // When
+        val firstResponse = runBlocking { performRequest(request) }
+        val secondResponse = runBlocking { performRequest(secondRequest) }
+
+        // Then
+        assertEquals(firstExpectedStatusCode, firstResponse.code)
+        assertEquals(firstExpectedBody, firstResponse.body?.string())
+        assertEquals(secondExpectedStatusCode, secondResponse.code)
+        assertEquals(secondExpectedBody, secondResponse.body?.string())
+        assertEquals(
+            listOf(firstMockDefinition, secondMockDefinition),
+            (mockWebServer.dispatcher as MockNetworkDispatcher).requestsList
+        )
     }
 
     private fun mockNetworkDispatcher(func: MockNetworkDispatcher.() -> Unit) =

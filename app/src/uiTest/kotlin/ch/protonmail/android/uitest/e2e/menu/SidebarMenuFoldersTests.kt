@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.e2e.menu
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
@@ -27,7 +28,6 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry
 import ch.protonmail.android.uitest.models.folders.Tint
@@ -43,7 +43,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
+internal class SidebarMenuFoldersTests : MockedNetworkTest() {
 
     @JvmField
     @BindValue
@@ -52,7 +52,7 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
     @Test
     @TestId("68718")
     fun checkShortHexAndStandardColorFolderAreDisplayedInSidebarMenu() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultCustomFolders = false,
             useDefaultMailSettings = false
         ) {
@@ -88,7 +88,7 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
     @Test
     @TestId("79096")
     fun checkFoldersColorWhenSettingIsOffWithNoParentInheritingInSidebarMenu() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultCustomFolders = false,
             useDefaultMailSettings = false
         ) {
@@ -123,7 +123,7 @@ internal class SidebarMenuFoldersTests : MockedNetworkTest(loginStrategy = Login
     @Test
     @TestId("79097")
     fun checkFoldersColorWhenSettingIsOffWithParentInheritingInSidebarMenu() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultCustomFolders = false,
             useDefaultMailSettings = false
         ) {

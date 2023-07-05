@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.moveto
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
@@ -28,7 +29,6 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.Tint
@@ -59,7 +59,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
+internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
 
     @JvmField
     @BindValue
@@ -83,7 +83,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest(loginStrat
     @Test
     @TestId("185418")
     fun checkMoveToBottomSheetSystemToSystemFolder() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_185418.json"
@@ -123,7 +123,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest(loginStrat
     @Test
     @TestId("185419")
     fun checkMoveToBottomSheetCustomToCustomFolder() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultMailSettings = false,
             useDefaultCustomFolders = false,
             useDefaultMailReadResponses = true
@@ -166,7 +166,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest(loginStrat
     @Test
     @TestId("185419/2 - 185421")
     fun checkMoveToBottomSheetCustomToSystemFolder() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultMailSettings = false,
             useDefaultCustomFolders = false,
             useDefaultMailReadResponses = true
@@ -209,7 +209,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest(loginStrat
     @Test
     @TestId("185419/3 - 185423")
     fun checkMoveToBottomSheetSystemToCustomFolder() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultMailSettings = false,
             useDefaultCustomFolders = false,
             useDefaultMailReadResponses = true

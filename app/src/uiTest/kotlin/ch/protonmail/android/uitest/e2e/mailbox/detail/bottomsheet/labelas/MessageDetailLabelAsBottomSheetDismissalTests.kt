@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.labelas
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -29,7 +30,6 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
 import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
@@ -48,8 +48,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class MessageDetailLabelAsBottomSheetDismissalTests :
-    MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
+internal class MessageDetailLabelAsBottomSheetDismissalTests : MockedNetworkTest() {
 
     @JvmField
     @BindValue
@@ -58,7 +57,7 @@ internal class MessageDetailLabelAsBottomSheetDismissalTests :
     @Test
     @TestId("79354/2")
     fun checkMessageLabelAsBottomSheetDismissalWithBackButton() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_79354.json"
@@ -100,7 +99,7 @@ internal class MessageDetailLabelAsBottomSheetDismissalTests :
     @Test
     @TestId("79356/2")
     fun checkMessageLabelAsBottomSheetDismissalWithExternalTap() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_79356.json"

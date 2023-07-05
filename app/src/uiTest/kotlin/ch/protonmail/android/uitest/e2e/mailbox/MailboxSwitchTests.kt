@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.e2e.mailbox
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withNetworkDelay
@@ -28,7 +29,6 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
@@ -46,7 +46,7 @@ import org.junit.Test
 @SmokeTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class MailboxSwitchTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
+internal class MailboxSwitchTests : MockedNetworkTest() {
 
     @JvmField
     @BindValue
@@ -63,7 +63,7 @@ internal class MailboxSwitchTests : MockedNetworkTest(loginStrategy = LoginStrat
     @Test
     @TestId("183527")
     fun checkMailboxSwitchConversationToMessageMode() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_183527.json"

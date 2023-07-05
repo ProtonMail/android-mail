@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.e2e.composer
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MockPriority
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -30,7 +31,6 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.keyboardSection
@@ -61,7 +61,7 @@ import org.junit.Test
 @SmokeExtendedTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut), ComposerTests {
+internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
 
     @JvmField
     @BindValue
@@ -71,7 +71,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
     @Test
     @TestId("79034")
     fun checkNavigationToComposerIsDisabledWhenFeatureToggleIsEnabled() {
-        mockWebServer.dispatcher = mockNetworkDispatcher {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher {
             addMockRequests(
                 "/mail/v4/messages"
                     respondWith "/mail/v4/messages/messages_empty.json"
@@ -99,7 +99,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
     @Test
     @TestId("79035")
     fun checkNavigationToComposerIsEnabledWhenFeatureToggleIsDisabled() {
-        mockWebServer.dispatcher = mockNetworkDispatcher {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher {
             addMockRequests(
                 "/mail/v4/messages"
                     respondWith "/mail/v4/messages/messages_empty.json"
@@ -128,7 +128,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
     @Test
     @TestId("79036")
     fun checkComposerMainFieldsAndInteractions() {
-        mockWebServer.dispatcher = mockNetworkDispatcher {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher {
             addMockRequests(
                 "/mail/v4/messages"
                     respondWith "/mail/v4/messages/messages_empty.json"
@@ -188,7 +188,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
     @Test
     @TestId("79037")
     fun checkComposerCloseNavigation() {
-        mockWebServer.dispatcher = mockNetworkDispatcher {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher {
             addMockRequests(
                 "/mail/v4/messages"
                     respondWith "/mail/v4/messages/messages_empty.json"
@@ -219,7 +219,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
     @Test
     @TestId("79038")
     fun checkComposerBackButtonNavigation() {
-        mockWebServer.dispatcher = mockNetworkDispatcher {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher {
             addMockRequests(
                 "/mail/v4/messages"
                     respondWith "/mail/v4/messages/messages_empty.json"
@@ -252,7 +252,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
     @Test
     @TestId("79039")
     fun checkComposerKeyboardDismissalWithBackButton() {
-        mockWebServer.dispatcher = mockNetworkDispatcher {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher {
             addMockRequests(
                 "/mail/v4/messages"
                     respondWith "/mail/v4/messages/messages_empty.json"
@@ -283,7 +283,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginStrategy = LoginStrate
     @Test
     @TestId("190226 - 190227")
     fun testCollapseExpandChevron() {
-        mockWebServer.dispatcher = composerMockNetworkDispatcher()
+        mockWebServer.dispatcher combineWith composerMockNetworkDispatcher()
 
         navigator {
             navigateTo(Destination.Composer)

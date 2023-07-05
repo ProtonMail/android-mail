@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.e2e.settings
 
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
@@ -40,7 +41,7 @@ internal class SettingsFlowTest : MockedNetworkTest() {
 
     @Before
     fun setupDispatcher() {
-        mockWebServer.dispatcher = mockNetworkDispatcher()
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher()
         navigator { navigateTo(Destination.Inbox, performLoginViaUI = false) }
     }
 

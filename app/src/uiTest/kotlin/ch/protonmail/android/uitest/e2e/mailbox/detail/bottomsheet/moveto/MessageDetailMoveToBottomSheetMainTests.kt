@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.e2e.mailbox.detail.bottomsheet.moveto
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -29,7 +30,6 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
 import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
@@ -46,9 +46,7 @@ import org.junit.Test
 @RegressionTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class MessageDetailMoveToBottomSheetMainTests : MockedNetworkTest(
-    loginStrategy = LoginStrategy.LoggedOut
-) {
+internal class MessageDetailMoveToBottomSheetMainTests : MockedNetworkTest() {
 
     @JvmField
     @BindValue
@@ -57,7 +55,7 @@ internal class MessageDetailMoveToBottomSheetMainTests : MockedNetworkTest(
     @Test
     @TestId("185410")
     fun checkMoveToBottomSheetComponentsInMessageMode() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_185410.json"

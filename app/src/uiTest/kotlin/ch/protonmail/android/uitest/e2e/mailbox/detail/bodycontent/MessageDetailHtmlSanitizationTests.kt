@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.e2e.mailbox.detail.bodycontent
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
 import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
@@ -29,7 +30,6 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.detail.messageDetailRobot
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
@@ -44,7 +44,7 @@ import org.junit.Test
 @SmokeTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class MessageDetailHtmlSanitizationTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut) {
+internal class MessageDetailHtmlSanitizationTests : MockedNetworkTest() {
 
     @JvmField
     @BindValue
@@ -53,7 +53,7 @@ internal class MessageDetailHtmlSanitizationTests : MockedNetworkTest(loginStrat
     @Test
     @TestId("189700")
     fun checkHtmlSanitizationInMessageMode() {
-        mockWebServer.dispatcher = mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
             addMockRequests(
                 "/mail/v4/settings"
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_messages.json"

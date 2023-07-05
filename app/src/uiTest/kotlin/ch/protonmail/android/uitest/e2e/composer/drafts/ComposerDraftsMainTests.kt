@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.e2e.composer.drafts
 
 import ch.protonmail.android.di.ServerProofModule
+import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.test.annotations.suite.TemporaryTest
 import ch.protonmail.android.uitest.MockedNetworkTest
@@ -26,7 +27,6 @@ import ch.protonmail.android.uitest.e2e.composer.ComposerTests
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.helpers.login.LoginStrategy
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxType
@@ -55,7 +55,7 @@ import org.junit.Test
 @SmokeTest
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ComposerDraftsMainTests : MockedNetworkTest(loginStrategy = LoginStrategy.LoggedOut), ComposerTests {
+internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerTests {
 
     @JvmField
     @BindValue
@@ -63,7 +63,7 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(loginStrategy = Login
 
     @Before
     fun navigateToComposer() {
-        mockWebServer.dispatcher = composerMockNetworkDispatcher()
+        mockWebServer.dispatcher combineWith composerMockNetworkDispatcher()
         navigator { navigateTo(Destination.Composer) }
     }
 
