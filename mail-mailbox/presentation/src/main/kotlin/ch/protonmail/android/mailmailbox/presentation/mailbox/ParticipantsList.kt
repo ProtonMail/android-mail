@@ -80,7 +80,7 @@ fun ParticipantsList(
         )
 
         val measurables = participants.list.mapIndexed { index, participantUiModel ->
-            subcompose(participantUiModel.name) {
+            subcompose("${participantUiModel.name}$index") {
                 val displayData = ParticipantRowDisplayData(
                     shouldShowSeparator = shouldShowSeparator(index),
                     fontWeight = fontWeight,
