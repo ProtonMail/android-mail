@@ -109,13 +109,13 @@ fun ParticipantsList(
 
         var availableWidth = constraints.maxWidth
 
+        val threeDotsPlaceable = threeDotsMeasurable.measure(constraints)
         val placeables = measurables.mapIndexedNotNull { index, measurable ->
             val participant = participants.list[index]
             val shouldShowSeparator = shouldShowSeparator(index)
             val minWidth = minWidth(participant.shouldShowOfficialBadge, shouldShowSeparator)
 
             if (minWidth > availableWidth) {
-                val threeDotsPlaceable = threeDotsMeasurable.measure(constraints)
                 if (availableWidth >= threeDotsPlaceable.width) {
                     // Make sure no more placeables are placed after the three dots
                     availableWidth = 0
