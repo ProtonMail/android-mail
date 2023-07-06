@@ -277,7 +277,7 @@ private fun MessageDetailContent(
         item {
             MessageDetailHeader(
                 uiModel = messageMetadataState.messageDetailHeader,
-                showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
+                showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
             )
             MailDivider()
             when (messageBodyState) {

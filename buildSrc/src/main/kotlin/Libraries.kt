@@ -22,6 +22,7 @@ object Accompanist {
 
     const val swipeRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
     const val webview = "com.google.accompanist:accompanist-webview:$version"
+    const val permissions = "com.google.accompanist:accompanist-permissions:$version"
 }
 
 object AndroidTools {

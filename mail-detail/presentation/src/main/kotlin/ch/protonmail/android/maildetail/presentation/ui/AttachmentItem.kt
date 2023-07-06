@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.os.Build
 import android.text.format.Formatter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -46,17 +47,28 @@ import ch.protonmail.android.maildetail.presentation.model.getDrawableForMimeTyp
 import ch.protonmail.android.maildetail.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionHint
 import me.proton.core.compose.theme.defaultSmall
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AttachmentItem(
     modifier: Modifier = Modifier,
     attachmentUiModel: AttachmentUiModel,
     onAttachmentItemClicked: (attachmentId: AttachmentId) -> Unit
 ) {
+    val externalStoragePermission = rememberPermissionState(
+        permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        onPermissionResult = { result ->
+            if (result) onAttachmentItemClicked(AttachmentId(attachmentUiModel.attachmentId))
+        }
+    )
+
     Row(
         modifier = modifier
             .padding(horizontal = ProtonDimens.SmallSpacing, vertical = ProtonDimens.ExtraSmallSpacing)
@@ -66,7 +78,13 @@ fun AttachmentItem(
                 color = ProtonTheme.colors.interactionWeakNorm,
                 shape = ProtonTheme.shapes.large
             )
-            .clickable { onAttachmentItemClicked(AttachmentId(attachmentUiModel.attachmentId)) }
+            .clickable {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || externalStoragePermission.status.isGranted) {
+                    onAttachmentItemClicked(AttachmentId(attachmentUiModel.attachmentId))
+                } else {
+                    externalStoragePermission.launchPermissionRequest()
+                }
+            }
             .padding(ProtonDimens.SmallSpacing),
         verticalAlignment = Alignment.CenterVertically
     ) {
