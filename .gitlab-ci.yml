@@ -100,16 +100,6 @@ build_dev_debug:
     - bundle exec fastlane assembleDevDebug
     - bundle exec fastlane assembleDevDebugAndroidTest
 
-build_prod_debug:
-  extends: .build_job
-  script:
-    - bundle exec fastlane assembleProdDebug
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    # We only build prodDebug for merge requests
-    - if: $CI_COMMIT_BRANCH == "master"
-      when: never
-
 build_alpha_release:
   extends: .build_job
   script:
@@ -127,11 +117,11 @@ build_alpha_release:
 startReview:
   stage: startReview
   before_script:
-    - export REVIEW_APP_ARTIFACT_PATH="app/build/outputs/apk/prod/debug/app-prod-debug.apk"
+    - export REVIEW_APP_ARTIFACT_PATH="app/build/outputs/apk/alpha/release/app-alpha-release.apk"
     - echo ${REVIEW_APP_ARTIFACT_PATH}
   extends: .startReview
   dependencies:
-    - build_prod_debug
+    - build_alpha_release
   only:
     - merge_requests
 

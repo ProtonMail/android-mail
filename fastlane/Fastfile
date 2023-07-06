@@ -24,11 +24,6 @@ platform :android do
     gradle(task: "assembleDevDebug")
   end
 
-  desc "Assemble the prodDebug APK"
-  lane :assembleProdDebug do
-    gradle(task: "assembleProdDebug")
-  end
-
   desc "Assemble the androidTest APK"
   lane :assembleDevDebugAndroidTest do
     gradle(task: "assembleDevDebugAndroidTest")
