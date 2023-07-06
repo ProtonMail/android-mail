@@ -25,14 +25,12 @@ import arrow.core.right
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Sender
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class StoreDraftWithSender @Inject constructor(
-    private val createEmptyDraft: CreateEmptyDraft,
+    private val getLocalDraft: GetLocalDraft,
     private val saveDraft: SaveDraft,
-    private val messageRepository: MessageRepository,
     private val resolveUserAddress: ResolveUserAddress
 ) {
     suspend operator fun invoke(
@@ -40,12 +38,14 @@ class StoreDraftWithSender @Inject constructor(
         senderEmail: SenderEmail,
         userId: UserId
     ): Either<Error, Unit> = either {
+        val draftWithBody = getLocalDraft(userId, messageId, senderEmail)
+            .mapLeft { Error.DraftReadError }
+            .bind()
+
         val senderAddress = resolveUserAddress(userId, senderEmail)
             .mapLeft { Error.ResolveUserAddressError }
             .bind()
 
-        val draftWithBody = messageRepository.getLocalMessageWithBody(userId, messageId)
-            ?: createEmptyDraft(messageId, userId, senderAddress)
         val updatedDraft = draftWithBody.copy(
             message = draftWithBody.message.copy(
                 sender = Sender(senderAddress.email, senderAddress.displayName.orEmpty()),
@@ -55,7 +55,6 @@ class StoreDraftWithSender @Inject constructor(
         saveDraft(updatedDraft, userId)
             .mapFalse { Error.DraftSaveError }
             .bind()
-
     }
 
     private fun Boolean.mapFalse(block: () -> Error): Either<Error, Unit> = if (this) Unit.right() else block().left()
@@ -63,5 +62,6 @@ class StoreDraftWithSender @Inject constructor(
     sealed interface Error {
         object DraftSaveError : Error
         object ResolveUserAddressError : Error
+        object DraftReadError : Error
     }
 }

@@ -26,12 +26,10 @@ import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.entity.Sender
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -41,51 +39,24 @@ import kotlin.test.assertEquals
 
 class StoreDraftWithSenderTest {
 
-    private val createEmptyDraftMock = mockk<CreateEmptyDraft>()
     private val saveDraftMock = mockk<SaveDraft>()
-    private val messageRepositoryMock = mockk<MessageRepository>()
     private val resolveUserAddressMock = mockk<ResolveUserAddress>()
+    private val getLocalDraftMock = mockk<GetLocalDraft>()
 
     private val storeDraftWithSender = StoreDraftWithSender(
-        createEmptyDraftMock,
+        getLocalDraftMock,
         saveDraftMock,
-        messageRepositoryMock,
         resolveUserAddressMock
     )
 
     @Test
-    fun `should save an existing draft with sender and address ID when draft already exists`() = runTest {
+    fun `should save a draft with sender and address ID`() = runTest {
         // Given
         val senderAddress = UserAddressSample.AliasAddress
         val senderEmail = SenderEmail(senderAddress.email)
         val expectedUserId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
-        val existingDraft = expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
-        val expectedSavedDraft = existingDraft.copy(
-            message = existingDraft.message.copy(
-                sender = Sender(senderAddress.email, senderAddress.displayName!!),
-                addressId = senderAddress.addressId
-            )
-        )
-        expectedResolvedUserAddress(expectedUserId, senderEmail) { senderAddress }
-        givenSaveDraftSucceeds(expectedSavedDraft, expectedUserId)
-
-        // When
-        val actualEither = storeDraftWithSender(draftMessageId, senderEmail, expectedUserId)
-
-        // Then
-        coVerify { saveDraftMock(expectedSavedDraft, expectedUserId) }
-        assertEquals(Unit.right(), actualEither)
-    }
-
-    @Test
-    fun `should save a new draft with sender and address ID when draft does not exist yet`() = runTest {
-        // Given
-        val senderAddress = UserAddressSample.AliasAddress
-        val senderEmail = SenderEmail(senderAddress.email)
-        val expectedUserId = UserIdSample.Primary
-        val draftMessageId = MessageIdSample.build()
-        val newDraft = expectedNewDraft(expectedUserId, draftMessageId, senderAddress) {
+        val newDraft = expectedGetLocalDraft(expectedUserId, draftMessageId, senderEmail) {
             MessageWithBodySample.EmptyDraft
         }
         val expectedSavedDraft = newDraft.copy(
@@ -112,7 +83,9 @@ class StoreDraftWithSenderTest {
         val senderEmail = SenderEmail(senderAddress.email)
         val expectedUserId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
-        val existingDraft = expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
+        val existingDraft = expectedGetLocalDraft(expectedUserId, draftMessageId, senderEmail) {
+            MessageWithBodySample.EmptyDraft
+        }
         val expectedSavedDraft = existingDraft.copy(
             message = existingDraft.message.copy(
                 sender = Sender(senderAddress.email, senderAddress.displayName!!),
@@ -132,35 +105,53 @@ class StoreDraftWithSenderTest {
     @Test
     fun `should return error when resolving the draft sender address fails`() = runTest {
         // Given
-        val expectedSenderEmail = SenderEmail("unresolvable@sender.email")
+        val senderEmail = SenderEmail("unresolvable@sender.email")
         val expectedUserId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
-        expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
-        expectResolveUserAddressFailure(expectedUserId, expectedSenderEmail)
+        expectedGetLocalDraft(expectedUserId, draftMessageId, senderEmail) { MessageWithBodySample.EmptyDraft }
+        expectResolveUserAddressFailure(expectedUserId, senderEmail)
 
         // When
-        val actualEither = storeDraftWithSender(draftMessageId, expectedSenderEmail, expectedUserId)
+        val actualEither = storeDraftWithSender(draftMessageId, senderEmail, expectedUserId)
 
         // Then
         assertEquals(StoreDraftWithSender.Error.ResolveUserAddressError.left(), actualEither)
     }
 
-    private fun expectedExistingDraft(
-        userId: UserId,
-        messageId: MessageId,
-        existingDraft: () -> MessageWithBody
-    ): MessageWithBody = existingDraft().also {
-        coEvery { messageRepositoryMock.getLocalMessageWithBody(userId, messageId) } returns it
+    @Test
+    fun `should return error when reading the draft fails`() = runTest {
+        // Given
+        val senderAddress = UserAddressSample.AliasAddress
+        val senderEmail = SenderEmail(senderAddress.email)
+        val expectedUserId = UserIdSample.Primary
+        val draftMessageId = MessageIdSample.build()
+        expectedGetLocalDraftFails(expectedUserId, draftMessageId, senderEmail) {
+            GetLocalDraft.Error.ResolveUserAddressError
+        }
+
+        // When
+        val actualEither = storeDraftWithSender(draftMessageId, senderEmail, expectedUserId)
+
+        // Then
+        assertEquals(StoreDraftWithSender.Error.DraftReadError.left(), actualEither)
     }
 
-    private fun expectedNewDraft(
+    private fun expectedGetLocalDraft(
         userId: UserId,
         messageId: MessageId,
-        senderAddress: UserAddress,
-        existingDraft: () -> MessageWithBody
-    ): MessageWithBody = existingDraft().also {
-        coEvery { messageRepositoryMock.getLocalMessageWithBody(userId, messageId) } returns null
-        every { createEmptyDraftMock(messageId, userId, senderAddress) } returns it
+        senderEmail: SenderEmail,
+        localDraft: () -> MessageWithBody
+    ): MessageWithBody = localDraft().also {
+        coEvery { getLocalDraftMock.invoke(userId, messageId, senderEmail) } returns it.right()
+    }
+
+    private fun expectedGetLocalDraftFails(
+        userId: UserId,
+        messageId: MessageId,
+        senderEmail: SenderEmail,
+        error: () -> GetLocalDraft.Error
+    ): GetLocalDraft.Error = error().also {
+        coEvery { getLocalDraftMock.invoke(userId, messageId, senderEmail) } returns it.left()
     }
 
     private fun givenSaveDraftSucceeds(messageWithBody: MessageWithBody, userId: UserId) {
