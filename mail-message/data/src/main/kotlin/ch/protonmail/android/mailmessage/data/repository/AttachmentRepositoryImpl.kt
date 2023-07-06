@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class AttachmentRepositoryImpl @Inject constructor(
@@ -55,9 +56,17 @@ class AttachmentRepositoryImpl @Inject constructor(
         return localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId)
             .firstOrNull { it?.status?.finished() == true }
             ?.let {
+                Timber.d("Attachment download status: ${it.status}")
                 when (it.status) {
                     AttachmentWorkerStatus.Success -> it.right()
-                    else -> DataError.Remote.Unknown.left()
+                    else -> {
+                        if (it.status is AttachmentWorkerStatus.Failed.OutOfMemory) {
+                            DataError.Local.OutOfMemory.left()
+                        } else {
+                            DataError.Remote.Unknown.left()
+                        }
+                    }
+
                 }
             }
             ?: DataError.Remote.Unknown.left()

@@ -51,7 +51,7 @@ import me.proton.core.network.domain.session.SessionId
 import me.proton.core.network.domain.session.SessionProvider
 import me.proton.core.test.android.api.TestApiManager
 import me.proton.core.util.kotlin.DefaultDispatcherProvider
-import okhttp3.ResponseBody.Companion.toResponseBody
+import okhttp3.ResponseBody
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -62,6 +62,7 @@ class GetAttachmentWorkerTest {
     private val messageId = MessageIdSample.Invoice
     private val attachmentId = AttachmentId("attachmentId")
     private val attachmentContent = "This is a content"
+    private val responseBody = mockk<ResponseBody>()
     private val workParameterId = UUID.randomUUID()
     private val mockedChannel = mockk<NotificationChannel>()
     private val mockedNotification = mockk<Notification>()
@@ -101,7 +102,7 @@ class GetAttachmentWorkerTest {
         coEvery { getSessionId(userId) } returns SessionId("testSessionId")
     }
     private val attachmentApi = mockk<AttachmentApi> {
-        coEvery { getAttachment(attachmentId.id) } returns attachmentContent.toResponseBody()
+        coEvery { getAttachment(attachmentId.id) } returns responseBody
     }
     private val apiManagerFactory = mockk<ApiManagerFactory> {
         every { create(any(), AttachmentApi::class) } returns TestApiManager(attachmentApi)
@@ -169,6 +170,7 @@ class GetAttachmentWorkerTest {
     @Test
     fun `worker returns success and stores attachment when api call was successful`() = runTest {
         // Given
+        coEvery { responseBody.bytes() } returns attachmentContent.toByteArray()
         val getAttachmentWorker = createWorker()
 
         // When
@@ -227,7 +229,40 @@ class GetAttachmentWorkerTest {
                 userId,
                 messageId,
                 attachmentId,
-                AttachmentWorkerStatus.Failed
+                AttachmentWorkerStatus.Failed.Generic
+            )
+        }
+    }
+
+    @Test
+    fun `worker returns failure when response can not be processed due to insufficient storage`() = runTest {
+        // Given
+        coEvery { responseBody.bytes() } throws OutOfMemoryError()
+        val getAttachmentWorker = createWorker()
+
+        // When
+        val result = getAttachmentWorker.doWork()
+
+        // Then
+        assertEquals(Result.failure(), result)
+        coVerifyOrder {
+            attachmentLocalDataSource.updateAttachmentDownloadStatus(
+                userId,
+                messageId,
+                attachmentId,
+                AttachmentWorkerStatus.Running
+            )
+            notificationProvider.provideNotificationChannel(channelId = NotificationProvider.ATTACHMENT_CHANNEL_ID)
+            notificationProvider.provideNotification(
+                context = context,
+                channel = mockedChannel,
+                title = R.string.attachment_download_notification_title
+            )
+            attachmentLocalDataSource.updateAttachmentDownloadStatus(
+                userId,
+                messageId,
+                attachmentId,
+                AttachmentWorkerStatus.Failed.OutOfMemory
             )
         }
     }

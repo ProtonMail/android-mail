@@ -53,7 +53,7 @@ class GetAttachmentWorker @AssistedInject constructor(
     private val messageId = MessageId(extractStringFromWorkerParams(RawMessageIdKey, "Message id"))
     private val attachmentId = AttachmentId(extractStringFromWorkerParams(RawAttachmentIdKey, "Attachment id"))
 
-    @Suppress("TooGenericExceptionCaught")
+    @Suppress("TooGenericExceptionCaught", "ReturnCount")
     override suspend fun doWork(): Result {
 
         Timber.d("Start downloading attachment $attachmentId")
@@ -69,15 +69,19 @@ class GetAttachmentWorker @AssistedInject constructor(
             }
         } catch (e: Exception) {
             Timber.w(e, "Failed to get attachment")
-            setWorkerStatusToDb(AttachmentWorkerStatus.Failed)
+            setWorkerStatusToDb(AttachmentWorkerStatus.Failed.Generic)
             return Result.failure()
         }
 
-        val responseBody = try {
-            result.valueOrThrow
+        val encryptedByteArray = try {
+            result.valueOrThrow.bytes()
+        } catch (e: OutOfMemoryError) {
+            Timber.w(e, "Not enough memory to process attachment from response")
+            setWorkerStatusToDb(AttachmentWorkerStatus.Failed.OutOfMemory)
+            return Result.failure()
         } catch (e: Exception) {
             Timber.w(e, "Failed to extract attachment from response")
-            setWorkerStatusToDb(AttachmentWorkerStatus.Failed)
+            setWorkerStatusToDb(AttachmentWorkerStatus.Failed.Generic)
             return Result.failure()
         }
 
@@ -88,14 +92,15 @@ class GetAttachmentWorker @AssistedInject constructor(
                     userId = userId,
                     messageId = messageId,
                     attachmentId = attachmentId,
-                    encryptedAttachment = responseBody.bytes(),
+                    encryptedAttachment = encryptedByteArray,
                     status = AttachmentWorkerStatus.Success
                 )
                 Result.success()
             }
+
             else -> {
                 Timber.d("Failed to get attachment")
-                setWorkerStatusToDb(AttachmentWorkerStatus.Failed)
+                setWorkerStatusToDb(AttachmentWorkerStatus.Failed.Generic)
                 Result.failure()
             }
         }

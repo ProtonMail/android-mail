@@ -27,7 +27,14 @@ sealed class AttachmentWorkerStatus {
     object Running : AttachmentWorkerStatus()
 
     @Serializable
-    object Failed : AttachmentWorkerStatus()
+    sealed class Failed : AttachmentWorkerStatus() {
+
+        @Serializable
+        object OutOfMemory : Failed()
+
+        @Serializable
+        object Generic : Failed()
+    }
 
     @Serializable
     object Success : AttachmentWorkerStatus()

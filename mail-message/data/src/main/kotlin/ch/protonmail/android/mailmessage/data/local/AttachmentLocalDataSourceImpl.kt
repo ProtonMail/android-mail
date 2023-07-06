@@ -102,7 +102,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
                         messageId = messageId,
                         attachmentId = attachmentId,
                         uri = null,
-                        status = AttachmentWorkerStatus.Failed
+                        status = AttachmentWorkerStatus.Failed.Generic
                     )
                 )
             },
@@ -117,7 +117,11 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
                         messageId = messageId,
                         attachmentId = attachmentId,
                         uri = uri,
-                        status = if (uri != null) AttachmentWorkerStatus.Success else AttachmentWorkerStatus.Failed
+                        status = if (uri != null) {
+                            AttachmentWorkerStatus.Success
+                        } else {
+                            AttachmentWorkerStatus.Failed.Generic
+                        }
                     )
                 )
             }

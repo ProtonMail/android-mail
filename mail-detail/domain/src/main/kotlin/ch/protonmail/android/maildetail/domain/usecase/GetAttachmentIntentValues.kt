@@ -19,8 +19,7 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.Either
-import arrow.core.left
-import arrow.core.right
+import arrow.core.continuations.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
@@ -39,23 +38,18 @@ class GetAttachmentIntentValues @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
-    ): Either<DataError, OpenAttachmentIntentValues> {
-        val attachmentHash =
-            attachmentRepository.getAttachment(userId, messageId, attachmentId).getOrNull()
-        val attachment = messageRepository.getMessageWithBody(userId, messageId).getOrNull()
-            ?.messageBody
-            ?.attachments
-            ?.firstOrNull { it.attachmentId == attachmentId }
+    ): Either<DataError, OpenAttachmentIntentValues> = either {
+        val attachmentMetadata = attachmentRepository.getAttachment(userId, messageId, attachmentId).bind()
+        val messageWithBody = messageRepository.getMessageWithBody(userId, messageId).bind()
 
-        if (attachmentHash == null || attachment == null) {
-            return DataError.Local.NoDataCached.left()
-        }
+        val attachment = messageWithBody.messageBody.attachments.firstOrNull { it.attachmentId == attachmentId }
+            ?: shift(DataError.Local.NoDataCached)
 
-        val uri = attachmentHash.uri!!
-
-        return OpenAttachmentIntentValues(
-            mimeType = attachment.mimeType,
-            uri = uri
-        ).right()
+        return@either attachmentMetadata.uri?.let {
+            OpenAttachmentIntentValues(
+                mimeType = attachment.mimeType,
+                uri = it
+            )
+        } ?: shift(DataError.Local.NoDataCached)
     }
 }

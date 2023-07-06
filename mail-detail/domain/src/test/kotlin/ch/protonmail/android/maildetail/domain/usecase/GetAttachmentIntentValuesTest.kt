@@ -145,4 +145,22 @@ class GetAttachmentIntentValuesTest {
         assertEquals(DataError.Local.NoDataCached.left(), result)
     }
 
+    @Test
+    fun `should return attachment repository error when getting attachment fails`() = runTest {
+        // Given
+        coEvery {
+            attachmentRepository.getAttachment(
+                userId = userId,
+                messageId = messageId,
+                attachmentId = attachmentId
+            )
+        } returns DataError.Local.OutOfMemory.left()
+
+        // When
+        val result = getAttachmentIntentValues(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.OutOfMemory.left(), result)
+    }
+
 }

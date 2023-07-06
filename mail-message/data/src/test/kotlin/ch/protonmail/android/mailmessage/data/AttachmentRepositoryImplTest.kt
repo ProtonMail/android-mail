@@ -130,7 +130,7 @@ class AttachmentRepositoryImplTest {
     }
 
     @Test
-    fun `should return null when remote call fails`() = runTest {
+    fun `should return remote error when remote call fails`() = runTest {
         // Given
         coEvery {
             localDataSource.getAttachment(userId, messageId, attachmentId)
@@ -139,7 +139,7 @@ class AttachmentRepositoryImplTest {
         coEvery { localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId) } returns flowOf(
             attachmentMetaData.copy(
                 uri = null,
-                status = AttachmentWorkerStatus.Failed
+                status = AttachmentWorkerStatus.Failed.Generic
             )
         )
         coEvery {
@@ -156,6 +156,35 @@ class AttachmentRepositoryImplTest {
 
         // Then
         assertEquals(DataError.Remote.Unknown.left(), result)
+    }
+
+    @Test
+    fun `should return not enough space error when worker fails due insufficient storage`() = runTest {
+        // Given
+        coEvery {
+            localDataSource.getAttachment(userId, messageId, attachmentId)
+        } returns DataError.Local.NoDataCached.left()
+        coEvery { remoteDataSource.getAttachment(userId, messageId, attachmentId) } returns Unit
+        coEvery { localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId) } returns flowOf(
+            attachmentMetaData.copy(
+                uri = null,
+                status = AttachmentWorkerStatus.Failed.OutOfMemory
+            )
+        )
+        coEvery {
+            localDataSource.updateAttachmentDownloadStatus(
+                userId = userId,
+                messageId = messageId,
+                attachmentId = attachmentId,
+                status = AttachmentWorkerStatus.Running
+            )
+        } just Runs
+
+        // When
+        val result = repository.getAttachment(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.OutOfMemory.left(), result)
     }
 
     @Test

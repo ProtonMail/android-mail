@@ -207,7 +207,7 @@ class AttachmentLocalDataSourceImplTest {
             messageId = messageId,
             attachmentId = attachmentId,
             uri = null,
-            status = AttachmentWorkerStatus.Failed
+            status = AttachmentWorkerStatus.Failed.Generic
         )
 
         // When
