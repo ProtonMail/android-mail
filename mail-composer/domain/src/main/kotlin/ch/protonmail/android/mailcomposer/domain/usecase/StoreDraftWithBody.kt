@@ -25,16 +25,14 @@ import arrow.core.right
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
 class StoreDraftWithBody @Inject constructor(
-    private val createEmptyDraft: CreateEmptyDraft,
+    private val getLocalDraft: GetLocalDraft,
     private val encryptDraftBody: EncryptDraftBody,
     private val saveDraft: SaveDraft,
-    private val messageRepository: MessageRepository,
     private val resolveUserAddress: ResolveUserAddress
 ) {
 
@@ -44,12 +42,14 @@ class StoreDraftWithBody @Inject constructor(
         senderEmail: SenderEmail,
         userId: UserId
     ): Either<StoreDraftWithBodyError, Unit> = either {
+        val draftWithBody = getLocalDraft(userId, messageId, senderEmail)
+            .mapLeft { StoreDraftWithBodyError.DraftReadError }
+            .bind()
+
         val senderAddress = resolveUserAddress(userId, senderEmail)
             .mapLeft { StoreDraftWithBodyError.DraftResolveUserAddressError }
             .bind()
 
-        val draftWithBody = messageRepository.getLocalMessageWithBody(userId, messageId)
-            ?: createEmptyDraft(messageId, userId, senderAddress)
         val encryptedDraftBody = encryptDraftBody(draftBody, senderAddress)
             .mapLeft {
                 Timber.e("Encrypt draft $messageId body to store to local DB failed")
@@ -76,5 +76,6 @@ class StoreDraftWithBody @Inject constructor(
 sealed interface StoreDraftWithBodyError {
     object DraftBodyEncryptionError : StoreDraftWithBodyError
     object DraftSaveError : StoreDraftWithBodyError
+    object DraftReadError : StoreDraftWithBodyError
     object DraftResolveUserAddressError : StoreDraftWithBodyError
 }

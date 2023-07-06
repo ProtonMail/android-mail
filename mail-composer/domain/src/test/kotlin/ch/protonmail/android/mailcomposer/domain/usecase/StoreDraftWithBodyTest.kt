@@ -8,14 +8,12 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -29,64 +27,34 @@ class StoreDraftWithBodyTest {
     @get:Rule
     val loggingTestRule = LoggingTestRule()
 
-    private val createEmptyDraftMock = mockk<CreateEmptyDraft>()
     private val encryptDraftBodyMock = mockk<EncryptDraftBody>()
     private val saveDraftMock = mockk<SaveDraft>()
-    private val messageRepositoryMock = mockk<MessageRepository>()
+    private val getLocalDraftMock = mockk<GetLocalDraft>()
     private val resolveUserAddressMock = mockk<ResolveUserAddress>()
 
     private val storeDraftWithBody = StoreDraftWithBody(
-        createEmptyDraftMock,
+        getLocalDraftMock,
         encryptDraftBodyMock,
         saveDraftMock,
-        messageRepositoryMock,
         resolveUserAddressMock
     )
 
     @Test
-    fun `should save an existing draft with encrypted body when draft already exists`() = runTest {
+    fun `should save a draft with encrypted body`() = runTest {
         // Given
         val plaintextDraftBody = DraftBody("I am plaintext")
         val senderAddress = UserAddressSample.build()
         val senderEmail = SenderEmail(senderAddress.email)
         val expectedUserId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
-        val existingDraft = expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
-        val expectedEncryptedDraftBody = expectedEncryptedDraftBody(plaintextDraftBody, senderAddress) {
-            DraftBody("I am encrypted")
-        }
-        val expectedSavedDraft = existingDraft.copy(
-            messageBody = existingDraft.messageBody.copy(
-                body = expectedEncryptedDraftBody.value
-            )
-        )
-        expectedResolvedUserAddress(expectedUserId, senderEmail) { senderAddress }
-        givenSaveDraftSucceeds(expectedSavedDraft, expectedUserId)
-
-        // When
-        val actualEither = storeDraftWithBody(draftMessageId, plaintextDraftBody, senderEmail, expectedUserId)
-
-        // Then
-        coVerify { saveDraftMock(expectedSavedDraft, expectedUserId) }
-        assertEquals(Unit.right(), actualEither)
-    }
-
-    @Test
-    fun `should save a new draft with encrypted body when draft does not yet exist`() = runTest {
-        // Given
-        val plaintextDraftBody = DraftBody("I am plaintext")
-        val senderAddress = UserAddressSample.build()
-        val senderEmail = SenderEmail(senderAddress.email)
-        val expectedUserId = UserIdSample.Primary
-        val draftMessageId = MessageIdSample.build()
-        val newDraft = expectedNewDraft(expectedUserId, draftMessageId, senderAddress) {
+        val existingDraft = expectedGetLocalDraft(expectedUserId, draftMessageId, senderEmail) {
             MessageWithBodySample.EmptyDraft
         }
         val expectedEncryptedDraftBody = expectedEncryptedDraftBody(plaintextDraftBody, senderAddress) {
             DraftBody("I am encrypted")
         }
-        val expectedSavedDraft = newDraft.copy(
-            messageBody = newDraft.messageBody.copy(
+        val expectedSavedDraft = existingDraft.copy(
+            messageBody = existingDraft.messageBody.copy(
                 body = expectedEncryptedDraftBody.value
             )
         )
@@ -109,7 +77,7 @@ class StoreDraftWithBodyTest {
         val senderEmail = SenderEmail(senderAddress.email)
         val userId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
-        expectedExistingDraft(userId, draftMessageId) { MessageWithBodySample.EmptyDraft }
+        expectedGetLocalDraft(userId, draftMessageId, senderEmail) { MessageWithBodySample.EmptyDraft }
         expectedResolvedUserAddress(userId, senderEmail) { senderAddress }
         givenDraftBodyEncryptionFails()
 
@@ -130,7 +98,9 @@ class StoreDraftWithBodyTest {
         val senderEmail = SenderEmail(senderAddress.email)
         val expectedUserId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
-        val existingDraft = expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
+        val existingDraft = expectedGetLocalDraft(expectedUserId, draftMessageId, senderEmail) {
+            MessageWithBodySample.EmptyDraft
+        }
         val expectedEncryptedDraftBody = expectedEncryptedDraftBody(plaintextDraftBody, senderAddress) {
             DraftBody("I am encrypted")
         }
@@ -157,7 +127,7 @@ class StoreDraftWithBodyTest {
         val expectedUserId = UserIdSample.Primary
         val expectedDraftBody = DraftBody("I am plaintext")
         val draftMessageId = MessageIdSample.build()
-        expectedExistingDraft(expectedUserId, draftMessageId) { MessageWithBodySample.EmptyDraft }
+        expectedGetLocalDraft(expectedUserId, draftMessageId, expectedSenderEmail) { MessageWithBodySample.EmptyDraft }
         expectResolveUserAddressFailure(expectedUserId, expectedSenderEmail)
 
         // When
@@ -167,22 +137,41 @@ class StoreDraftWithBodyTest {
         assertEquals(StoreDraftWithBodyError.DraftResolveUserAddressError.left(), actualEither)
     }
 
-    private fun expectedExistingDraft(
-        userId: UserId,
-        messageId: MessageId,
-        existingDraft: () -> MessageWithBody
-    ): MessageWithBody = existingDraft().also {
-        coEvery { messageRepositoryMock.getLocalMessageWithBody(userId, messageId) } returns it
+    @Test
+    fun `should return error when reading the local draft fails`() = runTest {
+        // Given
+        val expectedSenderEmail = SenderEmail("unresolvable@sender.email")
+        val expectedUserId = UserIdSample.Primary
+        val expectedDraftBody = DraftBody("I am plaintext")
+        val draftMessageId = MessageIdSample.build()
+        expectedResolvedUserAddress(expectedUserId, expectedSenderEmail) { UserAddressSample.PrimaryAddress }
+        expectedGetLocalDraftFails(expectedUserId, draftMessageId, expectedSenderEmail) {
+            GetLocalDraft.Error.ResolveUserAddressError
+        }
+
+        // When
+        val actualEither = storeDraftWithBody(draftMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
+
+        // Then
+        assertEquals(StoreDraftWithBodyError.DraftReadError.left(), actualEither)
     }
 
-    private fun expectedNewDraft(
+    private fun expectedGetLocalDraft(
         userId: UserId,
         messageId: MessageId,
-        senderAddress: UserAddress,
-        existingDraft: () -> MessageWithBody
-    ): MessageWithBody = existingDraft().also {
-        coEvery { messageRepositoryMock.getLocalMessageWithBody(userId, messageId) } returns null
-        every { createEmptyDraftMock(messageId, userId, senderAddress) } returns it
+        senderEmail: SenderEmail,
+        localDraft: () -> MessageWithBody
+    ): MessageWithBody = localDraft().also {
+        coEvery { getLocalDraftMock.invoke(userId, messageId, senderEmail) } returns it.right()
+    }
+
+    private fun expectedGetLocalDraftFails(
+        userId: UserId,
+        messageId: MessageId,
+        senderEmail: SenderEmail,
+        error: () -> GetLocalDraft.Error
+    ): GetLocalDraft.Error = error().also {
+        coEvery { getLocalDraftMock.invoke(userId, messageId, senderEmail) } returns it.left()
     }
 
     private fun expectedEncryptedDraftBody(
