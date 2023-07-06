@@ -88,21 +88,14 @@ class ComposerViewModel @Inject constructor(
 
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
 
-    private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation {
-        val userId = primaryUserId.first()
-        return resolveUserAddress(userId, SenderEmail(action.sender.email)).fold(
-            ifLeft = { ComposerEvent.ErrorStoringDraftSenderAddress },
-            ifRight = { userAddress ->
-                storeDraftWithSender(messageId, userAddress, userId).fold(
-                    ifLeft = {
-                        Timber.e("Store draft $messageId with new sender ${userAddress.addressId} failed")
-                        ComposerEvent.ErrorStoringDraftSenderAddress
-                    },
-                    ifRight = { action }
-                )
-            }
+    private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation =
+        storeDraftWithSender(messageId, SenderEmail(action.sender.email), primaryUserId.first()).fold(
+            ifLeft = {
+                Timber.e("Store draft $messageId with new sender ${action.sender.email} failed")
+                ComposerEvent.ErrorStoringDraftSenderAddress
+            },
+            ifRight = { action }
         )
-    }
 
     private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged): ComposerOperation {
         val userId = primaryUserId.first()

@@ -22,23 +22,28 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
-import me.proton.core.user.domain.entity.UserAddress
 import javax.inject.Inject
 
 class StoreDraftWithSender @Inject constructor(
     private val createEmptyDraft: CreateEmptyDraft,
     private val saveDraft: SaveDraft,
-    private val messageRepository: MessageRepository
+    private val messageRepository: MessageRepository,
+    private val resolveUserAddress: ResolveUserAddress
 ) {
     suspend operator fun invoke(
         messageId: MessageId,
-        senderAddress: UserAddress,
+        senderEmail: SenderEmail,
         userId: UserId
     ): Either<Error, Unit> = either {
+        val senderAddress = resolveUserAddress(userId, senderEmail)
+            .mapLeft { Error.ResolveUserAddressError }
+            .bind()
+
         val draftWithBody = messageRepository.getLocalMessageWithBody(userId, messageId)
             ?: createEmptyDraft(messageId, userId, senderAddress)
         val updatedDraft = draftWithBody.copy(
@@ -57,5 +62,6 @@ class StoreDraftWithSender @Inject constructor(
 
     sealed interface Error {
         object DraftSaveError : Error
+        object ResolveUserAddressError : Error
     }
 }
