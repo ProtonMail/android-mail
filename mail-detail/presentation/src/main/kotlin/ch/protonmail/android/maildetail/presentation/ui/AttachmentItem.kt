@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.text.format.Formatter
 import androidx.compose.foundation.Image
@@ -31,6 +33,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -50,6 +54,9 @@ import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import me.proton.core.compose.component.ProtonAlertDialog
+import me.proton.core.compose.component.ProtonAlertDialogButton
+import me.proton.core.compose.component.ProtonAlertDialogText
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionHint
@@ -62,12 +69,42 @@ fun AttachmentItem(
     attachmentUiModel: AttachmentUiModel,
     onAttachmentItemClicked: (attachmentId: AttachmentId) -> Unit
 ) {
+    val currentContext = LocalContext.current
+    val shouldShowPermissionRationaleDialog = remember { mutableStateOf(false) }
     val externalStoragePermission = rememberPermissionState(
         permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
         onPermissionResult = { result ->
-            if (result) onAttachmentItemClicked(AttachmentId(attachmentUiModel.attachmentId))
+            if (result) {
+                onAttachmentItemClicked(AttachmentId(attachmentUiModel.attachmentId))
+            } else {
+                shouldShowPermissionRationaleDialog.value = true
+            }
         }
     )
+
+    if (shouldShowPermissionRationaleDialog.value) {
+        ProtonAlertDialog(
+            title = stringResource(id = R.string.attachment_permission_dialog_title),
+            text = { ProtonAlertDialogText(R.string.attachment_permission_dialog_message) },
+            dismissButton = {
+                ProtonAlertDialogButton(R.string.attachment_permission_dialog_dismiss_button) {
+                    shouldShowPermissionRationaleDialog.value = false
+                }
+            },
+            confirmButton = {
+                ProtonAlertDialogButton(R.string.attachment_permission_dialog_action_button) {
+                    shouldShowPermissionRationaleDialog.value = false
+                    currentContext.startActivity(
+                        Intent().apply {
+                            action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            data = Uri.fromParts("package", currentContext.packageName, null)
+                        }
+                    )
+                }
+            },
+            onDismissRequest = { shouldShowPermissionRationaleDialog.value = false }
+        )
+    }
 
     Row(
         modifier = modifier
