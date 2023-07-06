@@ -18,17 +18,23 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import java.io.FileNotFoundException
+import android.content.Context
+import android.net.Uri
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
+import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
+import ch.protonmail.android.mailmessage.data.local.usecase.PrepareAttachmentForSharing
 import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapLatest
@@ -39,7 +45,9 @@ import javax.inject.Inject
 
 class AttachmentLocalDataSourceImpl @Inject constructor(
     db: MessageDatabase,
-    private val attachmentFileStorage: AttachmentFileStorage,
+    @ApplicationContext private val context: Context,
+    private val decryptAttachmentByteArray: DecryptAttachmentByteArray,
+    private val prepareAttachmentForSharing: PrepareAttachmentForSharing,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AttachmentLocalDataSource {
 
@@ -62,6 +70,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
             Timber.d("Get local attachment for AttachmentId: $attachmentId")
             try {
                 observeAttachmentMetadata(userId, messageId, attachmentId).firstOrNull()
+                    ?.takeIf { metadata -> metadata.uri?.let { isAttachmentFileAvailable(it) } ?: false }
                     ?.right()
                     ?: DataError.Local.NoDataCached.left()
             } catch (e: AttachmentFileReadException) {
@@ -79,12 +88,33 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId,
-        attachment: ByteArray,
+        encryptedAttachment: ByteArray,
         status: AttachmentWorkerStatus
     ) {
-        withContext(ioDispatcher) {
-
+        @Suppress("TooGenericExceptionCaught")
+        val messageAttachmentEntity = try {
+            val decryptAttachmentByteArray =
+                decryptAttachmentByteArray(userId, messageId, attachmentId, encryptedAttachment)
+            val uriToAttachment =
+                prepareAttachmentForSharing(userId, messageId, attachmentId, decryptAttachmentByteArray)
+            MessageAttachmentMetadataEntity(
+                userId = userId,
+                messageId = messageId,
+                attachmentId = attachmentId,
+                uri = uriToAttachment,
+                status = status
+            )
+        } catch (e: Exception) {
+            Timber.e("Failed to process attachment", e)
+            MessageAttachmentMetadataEntity(
+                userId = userId,
+                messageId = messageId,
+                attachmentId = attachmentId,
+                uri = null,
+                status = AttachmentWorkerStatus.Failed
+            )
         }
+        attachmentDao.insertOrUpdate(messageAttachmentEntity)
     }
 
     override suspend fun updateAttachmentDownloadStatus(
@@ -106,6 +136,20 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
 
     override suspend fun deleteAttachments(userId: UserId, messageId: MessageId): Boolean {
         attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId)
-        return attachmentFileStorage.deleteAttachmentsOfMessage(userId, messageId.id)
+        return true
+    }
+
+    private fun isAttachmentFileAvailable(uri: Uri): Boolean {
+        val doesFileExist = try {
+            context.contentResolver.openInputStream(uri)?.use {
+                it.close()
+                true
+            } ?: false
+        } catch (fileException: FileNotFoundException) {
+            Timber.v(fileException, "Uri not found")
+            false
+        }
+        Timber.d("doesFileExist: $doesFileExist")
+        return doesFileExist
     }
 }

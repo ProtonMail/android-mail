@@ -30,27 +30,23 @@ import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentMetadat
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.data.local.usecase.PrepareAttachmentForSharing
+import ch.protonmail.android.testdata.message.MessageAttachmentMetadataEntityTestData
 import ch.protonmail.android.mailmessage.data.mapper.toMessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import ch.protonmail.android.testdata.message.MessageAttachmentMetadataEntityTestData
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.crypto.common.pgp.exception.CryptoException
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 
 class AttachmentLocalDataSourceImplTest {
@@ -92,17 +88,6 @@ class AttachmentLocalDataSourceImplTest {
         prepareAttachmentForSharing = prepareAttachmentForSharing,
         ioDispatcher = Dispatchers.Unconfined
     )
-
-    @Before
-    fun setUp() {
-        mockkStatic(Uri::class)
-        every { Uri.parse(any()) } returns mockUri
-    }
-
-    @After
-    fun tearDown() {
-        unmockkStatic(Uri::class)
-    }
 
     @Test
     fun `should return attachment metadata when file is stored locally`() = runTest {

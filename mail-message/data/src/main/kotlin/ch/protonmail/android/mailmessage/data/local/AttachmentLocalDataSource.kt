@@ -61,7 +61,7 @@ interface AttachmentLocalDataSource {
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId,
-        attachment: ByteArray,
+        encryptedAttachment: ByteArray,
         status: AttachmentWorkerStatus
     )
 

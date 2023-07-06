@@ -88,7 +88,7 @@ class GetAttachmentWorker @AssistedInject constructor(
                     userId = userId,
                     messageId = messageId,
                     attachmentId = attachmentId,
-                    attachment = responseBody.bytes(),
+                    encryptedAttachment = responseBody.bytes(),
                     status = AttachmentWorkerStatus.Success
                 )
                 Result.success()

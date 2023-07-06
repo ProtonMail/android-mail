@@ -193,7 +193,7 @@ class GetAttachmentWorkerTest {
                 userId = userId,
                 messageId = messageId,
                 attachmentId = attachmentId,
-                attachment = attachmentContent.toByteArray(),
+                encryptedAttachment = attachmentContent.toByteArray(),
                 status = AttachmentWorkerStatus.Success
             )
         }
