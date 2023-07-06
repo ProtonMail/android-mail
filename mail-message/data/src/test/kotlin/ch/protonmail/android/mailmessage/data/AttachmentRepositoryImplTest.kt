@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data
 
+import android.net.Uri
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -37,8 +38,12 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -53,8 +58,7 @@ class AttachmentRepositoryImplTest {
         userId = userId,
         messageId = messageId,
         attachmentId = attachmentId,
-        hash = "hash",
-        path = "path",
+        uri = null,
         status = AttachmentWorkerStatus.Success
     )
 
@@ -63,6 +67,17 @@ class AttachmentRepositoryImplTest {
     private val remoteDataSource: AttachmentRemoteDataSource = mockk()
 
     private val repository = AttachmentRepositoryImpl(remoteDataSource, localDataSource)
+
+    @Before
+    fun setUp() {
+        mockkStatic(Uri::class)
+        coEvery { Uri.parse(any()) } returns mockk()
+    }
+
+    @After
+    fun tearDown() {
+        unmockkStatic(Uri::class)
+    }
 
     @Test
     fun `should return attachment from local data source if available`() = runTest {
@@ -123,8 +138,7 @@ class AttachmentRepositoryImplTest {
         coEvery { remoteDataSource.getAttachment(userId, messageId, attachmentId) } returns Unit
         coEvery { localDataSource.observeAttachmentMetadata(userId, messageId, attachmentId) } returns flowOf(
             attachmentMetaData.copy(
-                hash = null,
-                path = null,
+                uri = null,
                 status = AttachmentWorkerStatus.Failed
             )
         )
@@ -142,36 +156,6 @@ class AttachmentRepositoryImplTest {
 
         // Then
         assertEquals(DataError.Remote.Unknown.left(), result)
-    }
-
-    @Test
-    fun `should return local stored attachment metadata when found by hash`() = runTest {
-        // Given
-        val attachmentHash = "attachmentHash"
-        coEvery { localDataSource.getAttachmentMetadataByHash(attachmentHash) } returns attachmentMetaData.right()
-
-        // When
-        val result = repository.getAttachmentMetadataByHash(attachmentHash)
-
-        // Then
-        assertEquals(attachmentMetaData.right(), result)
-        coVerify { remoteDataSource wasNot Called }
-    }
-
-    @Test
-    fun `should return no data cached when no message metadata was found by hash`() = runTest {
-        // Given
-        val attachmentHash = "attachmentHash"
-        coEvery {
-            localDataSource.getAttachmentMetadataByHash(attachmentHash)
-        } returns DataError.Local.NoDataCached.left()
-
-        // When
-        val result = repository.getAttachmentMetadataByHash(attachmentHash)
-
-        // Then
-        assertEquals(DataError.Local.NoDataCached.left(), result)
-        coVerify { remoteDataSource wasNot Called }
     }
 
     @Test

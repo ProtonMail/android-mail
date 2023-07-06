@@ -27,6 +27,7 @@ import ch.protonmail.android.mailmessage.data.local.dao.MessageLabelDao
 import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import me.proton.core.data.room.db.Database
 import me.proton.core.data.room.db.extension.addTableColumn
+import me.proton.core.data.room.db.extension.dropTable
 import me.proton.core.data.room.db.migration.DatabaseMigration
 
 @Suppress("MaxLineLength")
@@ -69,6 +70,16 @@ interface MessageDatabase : Database, PageIntervalDatabase {
                     type = "INTEGER NOT NULL",
                     defaultValue = "0"
                 )
+            }
+        }
+
+        val MIGRATION_3 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.dropTable("MessageAttachmentMetadataEntity")
+                database.execSQL("CREATE TABLE IF NOT EXISTS `MessageAttachmentMetadataEntity` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `attachmentId` TEXT NOT NULL, `uri` TEXT, `status` TEXT NOT NULL, PRIMARY KEY(`userId`,`messageId`,`attachmentId`), FOREIGN KEY(`userId`, `messageId`, `attachmentId`) REFERENCES `MessageAttachmentEntity`(`userId`,`messageId`,`attachmentId`) ON UPDATE NO ACTION ON DELETE CASCADE)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentMetadataEntity_userId` ON `MessageAttachmentMetadataEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentMetadataEntity_messageId` ON `MessageAttachmentMetadataEntity` (`messageId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageAttachmentMetadataEntity_attachmentId` ON `MessageAttachmentMetadataEntity` (`attachmentId`)")
             }
         }
     }

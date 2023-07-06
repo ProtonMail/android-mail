@@ -34,7 +34,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
-import me.proton.core.util.kotlin.sha256
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -62,9 +61,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         return withContext(ioDispatcher) {
             Timber.d("Get local attachment for AttachmentId: $attachmentId")
             try {
-                val storedAttachmentFile = attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
                 observeAttachmentMetadata(userId, messageId, attachmentId).firstOrNull()
-                    ?.takeIf { it.hash == storedAttachmentFile.sha256() }
                     ?.right()
                     ?: DataError.Local.NoDataCached.left()
             } catch (e: AttachmentFileReadException) {
@@ -72,15 +69,6 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
                 DataError.Local.NoDataCached.left()
             }
         }
-    }
-
-    override suspend fun getAttachmentMetadataByHash(
-        attachmentHash: String
-    ): Either<DataError, MessageAttachmentMetadata> {
-        return attachmentDao.getMessageAttachmentMetadataByHash(attachmentHash)
-            ?.toMessageAttachmentMetadata()
-            ?.right()
-            ?: DataError.Local.NoDataCached.left()
     }
 
     override suspend fun getDownloadingAttachmentsForMessages(userId: UserId, messageIds: List<MessageId>) =
@@ -95,23 +83,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         status: AttachmentWorkerStatus
     ) {
         withContext(ioDispatcher) {
-            attachmentFileStorage.saveAttachment(
-                userId = userId,
-                messageId = messageId.id,
-                attachmentId = attachmentId.id,
-                content = attachment
-            )?.also { savedFile ->
-                attachmentDao.insertOrUpdate(
-                    MessageAttachmentMetadataEntity(
-                        userId = userId,
-                        messageId = messageId,
-                        attachmentId = attachmentId,
-                        hash = savedFile.sha256(),
-                        path = savedFile.path,
-                        status = status
-                    )
-                )
-            }
+
         }
     }
 
@@ -127,8 +99,7 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
                 messageId = messageId,
                 attachmentId = attachmentId,
                 status = status,
-                hash = null,
-                path = null
+                uri = null
             )
         )
     }

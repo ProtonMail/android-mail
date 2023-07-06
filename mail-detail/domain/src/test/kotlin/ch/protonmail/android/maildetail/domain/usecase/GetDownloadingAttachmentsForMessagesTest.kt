@@ -18,14 +18,20 @@
 
 package ch.protonmail.android.maildetail.domain.usecase
 
+import android.net.Uri
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData.buildMessageAttachmentMetadata
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -36,6 +42,17 @@ class GetDownloadingAttachmentsForMessagesTest {
     private val attachmentRepo = mockk<AttachmentRepository>()
 
     private val getDownloadingAttachmentsForMessages = GetDownloadingAttachmentsForMessages(attachmentRepo)
+
+    @Before
+    fun setUp() {
+        mockkStatic(Uri::class)
+        every { Uri.parse(any()) } returns mockk()
+    }
+
+    @After
+    fun tearDown() {
+        unmockkStatic(Uri::class)
+    }
 
     @Test
     fun `should return only attachment metadata of requested messages when multiple messages are affected`() = runTest {

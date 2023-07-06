@@ -16,15 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.entity
+package ch.protonmail.android.mailmessage.data.local.converters
 
 import android.net.Uri
-import me.proton.core.domain.entity.UserId
+import androidx.room.TypeConverter
 
-data class MessageAttachmentMetadata(
-    val userId: UserId,
-    val messageId: MessageId,
-    val attachmentId: AttachmentId,
-    val uri: Uri?,
-    val status: AttachmentWorkerStatus
-)
+class UriConverter {
+
+    @TypeConverter
+    fun fromString(value: String?): Uri? = value?.let { Uri.parse(it) }
+
+    @TypeConverter
+    fun toString(uri: Uri?): String = uri.toString()
+}

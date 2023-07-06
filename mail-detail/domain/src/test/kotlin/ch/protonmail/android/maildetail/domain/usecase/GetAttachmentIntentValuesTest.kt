@@ -18,14 +18,12 @@
 
 package ch.protonmail.android.maildetail.domain.usecase
 
-import android.content.Context
 import android.net.Uri
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
-import ch.protonmail.android.mailmessage.domain.AttachmentFileUriProvider
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
@@ -53,32 +51,29 @@ class GetAttachmentIntentValuesTest {
     private val messageId = MessageIdSample.Invoice
     private val attachmentId = AttachmentId("invoice")
 
-    private val hash = "hash"
     private val extension = "txt"
     private val uri = mockk<Uri>()
 
-    private val messageAttachmentMetadata = MessageAttachmentMetadata(
-        userId = userId,
-        messageId = messageId,
-        attachmentId = attachmentId,
-        hash = hash,
-        path = "/test/tmp.$extension",
-        status = AttachmentWorkerStatus.Success
-    )
+    private val messageAttachmentMetadata by lazy {
+        MessageAttachmentMetadata(
+            userId = userId,
+            messageId = messageId,
+            attachmentId = attachmentId,
+            uri = Uri.parse("/test/tmp.$extension"),
+            status = AttachmentWorkerStatus.Success
+        )
+    }
+
     private val messageWithBody = MessageWithBody(
         message = MessageTestData.message,
         messageBody = MessageBodyTestData.messageBodyWithAttachment
     )
 
-    private val context = mockk<Context> {
-        every { packageName } returns "test-package"
-    }
     private val attachmentRepository = mockk<AttachmentRepository>()
     private val messageRepository = mockk<MessageRepository>()
-    private val fileUriProvider = mockk<AttachmentFileUriProvider>()
 
     private val getAttachmentIntentValues =
-        GetAttachmentIntentValues(context, attachmentRepository, messageRepository, fileUriProvider)
+        GetAttachmentIntentValues(attachmentRepository, messageRepository)
 
     @Before
     fun setUp() {
@@ -102,7 +97,6 @@ class GetAttachmentIntentValuesTest {
             )
         } returns messageAttachmentMetadata.right()
         coEvery { messageRepository.getMessageWithBody(userId, messageId) } returns messageWithBody.right()
-        coEvery { fileUriProvider.getAttachmentFileUri(context, hash, "pdf") } returns uri
 
         // When
         val result = getAttachmentIntentValues(userId, messageId, attachmentId)
@@ -142,26 +136,6 @@ class GetAttachmentIntentValuesTest {
             )
         } returns messageAttachmentMetadata.right()
         coEvery { messageRepository.getMessageWithBody(userId, messageId) } returns DataError.Local.NoDataCached.left()
-
-        // When
-        val result = getAttachmentIntentValues(userId, messageId, attachmentId)
-
-        // Then
-        assertTrue(result.isLeft())
-        assertEquals(DataError.Local.NoDataCached.left(), result)
-    }
-
-    @Test
-    fun `should return no data cached when attachment hash is not stored in metadata`() = runTest {
-        // Given
-        coEvery {
-            attachmentRepository.getAttachment(
-                userId = userId,
-                messageId = messageId,
-                attachmentId = attachmentId
-            )
-        } returns messageAttachmentMetadata.copy(hash = null).right()
-        coEvery { messageRepository.getMessageWithBody(userId, messageId) } returns messageWithBody.right()
 
         // When
         val result = getAttachmentIntentValues(userId, messageId, attachmentId)

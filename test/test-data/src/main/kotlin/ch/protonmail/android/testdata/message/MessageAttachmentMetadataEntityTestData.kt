@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.testdata.message
 
+import android.net.Uri
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
@@ -32,15 +33,13 @@ object MessageAttachmentMetadataEntityTestData {
         userId: UserId = UserIdSample.Primary,
         messageId: MessageId = MessageIdSample.Invoice,
         attachmentId: AttachmentId = AttachmentId("attachmentId"),
-        hash: String = "hash",
-        path: String = "path",
+        uri: Uri = Uri.parse("uri"),
         status: AttachmentWorkerStatus = AttachmentWorkerStatus.Running
     ) = MessageAttachmentMetadataEntity(
         userId = userId,
         messageId = messageId,
         attachmentId = attachmentId,
-        hash = hash,
-        path = path,
+        uri = uri,
         status = status
     )
 }

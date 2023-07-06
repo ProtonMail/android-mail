@@ -48,14 +48,6 @@ abstract class MessageAttachmentMetadataDao : BaseDao<MessageAttachmentMetadataE
     @Query(
         """
             SELECT * FROM MessageAttachmentMetadataEntity 
-            WHERE hash = :hash
-        """
-    )
-    abstract fun getMessageAttachmentMetadataByHash(hash: String): MessageAttachmentMetadataEntity?
-
-    @Query(
-        """
-            SELECT * FROM MessageAttachmentMetadataEntity 
             WHERE userId = :userId
             AND messageId IN (:messages)
             AND status = :status

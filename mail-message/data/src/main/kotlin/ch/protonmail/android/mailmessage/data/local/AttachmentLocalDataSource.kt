@@ -45,11 +45,6 @@ interface AttachmentLocalDataSource {
     ): Either<DataError.Local, MessageAttachmentMetadata>
 
     /**
-     * Get the attachment for the given [attachmentHash].
-     */
-    suspend fun getAttachmentMetadataByHash(attachmentHash: String): Either<DataError, MessageAttachmentMetadata>
-
-    /**
      * Get all running attachment metadata for the given [userId] and [messageIds].
      * @param userId The id of the attachments belonging to the user.
      * @param messageIds The ids of the affected messages

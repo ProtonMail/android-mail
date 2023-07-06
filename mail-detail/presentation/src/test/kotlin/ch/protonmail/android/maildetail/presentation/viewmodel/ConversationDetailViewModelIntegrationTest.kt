@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 import java.io.ByteArrayInputStream
 import java.util.Random
 import android.content.Context
+import android.net.Uri
 import android.text.format.Formatter
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
@@ -289,12 +290,16 @@ class ConversationDetailViewModelIntegrationTest {
         }
         mockkStatic(Formatter::formatShortFileSize)
         every { Formatter.formatShortFileSize(any(), any()) } returns "0"
+
+        mockkStatic(Uri::class)
+        every { Uri.parse(any()) } returns mockk()
     }
 
     @AfterTest
     fun teardown() {
         Dispatchers.resetMain()
         unmockkStatic(Formatter::formatShortFileSize)
+        unmockkStatic(Uri::class)
     }
 
     @Test

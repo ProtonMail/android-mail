@@ -29,6 +29,7 @@ import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabe
 import ch.protonmail.android.mailmessage.data.local.MessageConverters
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.converters.AttachmentWorkerStatusConverters
+import ch.protonmail.android.mailmessage.data.local.converters.UriConverter
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
@@ -179,7 +180,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
     MessageConverters::class,
     ConversationConverters::class,
     MapConverters::class,
-    AttachmentWorkerStatusConverters::class
+    AttachmentWorkerStatusConverters::class,
+    UriConverter::class
 )
 @Suppress("UnnecessaryAbstractClass")
 abstract class AppDatabase :
@@ -210,7 +212,7 @@ abstract class AppDatabase :
     companion object {
 
         const val name = "db-mail"
-        const val version = 9
+        const val version = 10
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -220,7 +222,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_5_6,
             AppDatabaseMigrations.MIGRATION_6_7,
             AppDatabaseMigrations.MIGRATION_7_8,
-            AppDatabaseMigrations.MIGRATION_8_9
+            AppDatabaseMigrations.MIGRATION_8_9,
+            AppDatabaseMigrations.MIGRATION_9_10
         )
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)
             .apply { migrations.forEach { addMigrations(it) } }

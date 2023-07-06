@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.local.entity
 
+import android.net.Uri
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -46,7 +47,6 @@ data class MessageAttachmentMetadataEntity(
     val userId: UserId,
     val messageId: MessageId,
     val attachmentId: AttachmentId,
-    val hash: String?,
-    val path: String?,
+    val uri: Uri?,
     val status: AttachmentWorkerStatus
 )

@@ -25,7 +25,6 @@ fun MessageAttachmentMetadataEntity.toMessageAttachmentMetadata() = MessageAttac
     userId = userId,
     messageId = messageId,
     attachmentId = attachmentId,
-    hash = hash,
-    path = path,
+    uri = uri,
     status = status
 )

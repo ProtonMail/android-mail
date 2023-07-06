@@ -103,12 +103,15 @@ import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertThrows
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -270,6 +273,13 @@ class MessageDetailViewModelTest {
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(StandardTestDispatcher())
+        mockkStatic(Uri::class)
+        every { Uri.parse(any()) } returns mockk()
+    }
+
+    @After
+    fun tearDown() {
+        unmockkStatic(Uri::class)
     }
 
     @Test

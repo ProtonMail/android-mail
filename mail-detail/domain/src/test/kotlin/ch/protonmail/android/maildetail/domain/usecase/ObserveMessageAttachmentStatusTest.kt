@@ -54,8 +54,7 @@ class ObserveMessageAttachmentStatusTest {
             userId = userId,
             messageId = messageId,
             attachmentId = attachmentId,
-            hash = "",
-            path = "",
+            uri = null,
             status = AttachmentWorkerStatus.Running
         )
 

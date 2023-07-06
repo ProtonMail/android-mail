@@ -18,26 +18,21 @@
 
 package ch.protonmail.android.maildetail.domain.usecase
 
-import android.content.Context
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
-import ch.protonmail.android.mailmessage.domain.AttachmentFileUriProvider
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class GetAttachmentIntentValues @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val attachmentRepository: AttachmentRepository,
-    private val messageRepository: MessageRepository,
-    private val uriProvider: AttachmentFileUriProvider
+    private val messageRepository: MessageRepository
 ) {
 
     suspend operator fun invoke(
@@ -46,7 +41,7 @@ class GetAttachmentIntentValues @Inject constructor(
         attachmentId: AttachmentId
     ): Either<DataError, OpenAttachmentIntentValues> {
         val attachmentHash =
-            attachmentRepository.getAttachment(userId, messageId, attachmentId).map { it.hash }.getOrNull()
+            attachmentRepository.getAttachment(userId, messageId, attachmentId).getOrNull()
         val attachment = messageRepository.getMessageWithBody(userId, messageId).getOrNull()
             ?.messageBody
             ?.attachments
@@ -56,7 +51,7 @@ class GetAttachmentIntentValues @Inject constructor(
             return DataError.Local.NoDataCached.left()
         }
 
-        val uri = uriProvider.getAttachmentFileUri(context, attachmentHash, attachment.name.split(".").last())
+        val uri = attachmentHash.uri!!
 
         return OpenAttachmentIntentValues(
             mimeType = attachment.mimeType,
