@@ -69,6 +69,9 @@ class MessageDetailReducer @Inject constructor(
                 is MessageDetailEvent.ErrorGettingAttachment ->
                     Effect.of(TextUiModel(R.string.error_get_attachment_failed))
 
+                is MessageDetailEvent.ErrorGettingAttachmentNotEnoughSpace ->
+                    Effect.of(TextUiModel(R.string.error_get_attachment_not_enough_memory))
+
                 MessageDetailEvent.ErrorAttachmentDownloadInProgress ->
                     Effect.of(TextUiModel(R.string.error_attachment_download_in_progress))
             }

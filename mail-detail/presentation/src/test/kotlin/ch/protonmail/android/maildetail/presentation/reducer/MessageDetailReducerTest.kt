@@ -429,6 +429,26 @@ class MessageDetailReducerTest(
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
                 shouldReduceOpenMessageBodyLinkEffect = false
+            ),
+            TestInput(
+                MessageDetailEvent.ErrorGettingAttachment,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = true,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false
+            ),
+            TestInput(
+                MessageDetailEvent.ErrorGettingAttachmentNotEnoughSpace,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = true,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false
             )
         )
 

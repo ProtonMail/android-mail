@@ -441,8 +441,12 @@ class MessageDetailViewModel @Inject constructor(
                 val userId = primaryUserId.first()
                 getAttachmentIntentValues(userId, requireMessageId(), attachmentId).fold(
                     ifLeft = {
-                        Timber.d("Failed to download attachment")
-                        emitNewStateFrom(MessageDetailEvent.ErrorGettingAttachment)
+                        Timber.d("Failed to download attachment: $it")
+                        val event = when (it) {
+                            is DataError.Local.OutOfMemory -> MessageDetailEvent.ErrorGettingAttachmentNotEnoughSpace
+                            else -> MessageDetailEvent.ErrorGettingAttachment
+                        }
+                        emitNewStateFrom(event)
                     },
                     ifRight = { values -> emitNewStateFrom(MessageDetailEvent.OpenAttachmentEvent(values)) }
                 )
