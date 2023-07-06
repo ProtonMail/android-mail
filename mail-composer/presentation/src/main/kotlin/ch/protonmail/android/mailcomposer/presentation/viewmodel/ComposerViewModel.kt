@@ -97,19 +97,13 @@ class ComposerViewModel @Inject constructor(
             ifRight = { action }
         )
 
-    private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged): ComposerOperation {
-        val userId = primaryUserId.first()
-        val email = state.value.fields.sender.email
-        return resolveUserAddress(userId, SenderEmail(email)).fold(
+    private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged): ComposerOperation =
+        storeDraftWithBody(messageId, action.draftBody, currentSenderEmail(), primaryUserId.first()).fold(
             ifLeft = { ComposerEvent.ErrorStoringDraftBody },
-            ifRight = { userAddress ->
-                storeDraftWithBody(messageId, action.draftBody, userAddress, userId).fold(
-                    ifLeft = { ComposerEvent.ErrorStoringDraftBody },
-                    ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
-                )
-            }
+            ifRight = { ComposerAction.DraftBodyChanged(action.draftBody) }
         )
-    }
+
+    private fun currentSenderEmail() = SenderEmail(state.value.fields.sender.email)
 
     private suspend fun onChangeSender() = getComposerSenderAddresses().fold(
         ifLeft = { changeSenderError ->
