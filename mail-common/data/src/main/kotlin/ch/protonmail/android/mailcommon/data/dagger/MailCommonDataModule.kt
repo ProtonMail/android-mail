@@ -18,7 +18,11 @@
 
 package ch.protonmail.android.mailcommon.data.dagger
 
+import ch.protonmail.android.mailcommon.data.system.BuildVersionProviderImpl
+import ch.protonmail.android.mailcommon.data.system.ContentValuesProviderImpl
 import ch.protonmail.android.mailcommon.data.system.DeviceCapabilitiesImpl
+import ch.protonmail.android.mailcommon.domain.system.BuildVersionProvider
+import ch.protonmail.android.mailcommon.domain.system.ContentValuesProvider
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
 import dagger.Binds
 import dagger.Module
@@ -37,5 +41,9 @@ object MailCommonDataModule {
         fun bindDeviceCapabilities(impl: DeviceCapabilitiesImpl): DeviceCapabilities
 
         @Binds
+        fun bindBuildVersionProvider(impl: BuildVersionProviderImpl): BuildVersionProvider
+
+        @Binds
+        fun bindContentValuesProvider(impl: ContentValuesProviderImpl): ContentValuesProvider
     }
 }
