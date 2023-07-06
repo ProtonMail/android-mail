@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
@@ -50,6 +51,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
     private val storeDraftWithBody: StoreDraftWithBody,
+    private val storeDraftWithSubject: StoreDraftWithSubject,
     private val reducer: ComposerReducer,
     private val isValidEmailAddress: IsValidEmailAddress,
     private val getPrimaryAddress: GetPrimaryAddress,
@@ -77,6 +79,7 @@ class ComposerViewModel @Inject constructor(
             when (action) {
                 is ComposerAction.DraftBodyChanged -> emitNewStateFor(onDraftBodyChanged(action))
                 is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
+                is ComposerAction.SubjectChanged -> emitNewStateFor(onSubjectChanged(action))
                 is ComposerAction.ChangeSenderRequested -> emitNewStateFor(onChangeSender())
                 else -> emitNewStateFor(action)
             }
@@ -84,6 +87,15 @@ class ComposerViewModel @Inject constructor(
     }
 
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
+
+    private suspend fun onSubjectChanged(action: ComposerAction.SubjectChanged): ComposerOperation =
+        storeDraftWithSubject(primaryUserId.first(), messageId, currentSenderEmail(), action.subject).fold(
+            ifLeft = {
+                Timber.e("Store draft $messageId with new subject ${action.subject} failed")
+                ComposerEvent.ErrorStoringDraftSubject
+            },
+            ifRight = { action }
+        )
 
     private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation =
         storeDraftWithBody(messageId, currentDraftBody(), SenderEmail(action.sender.email), primaryUserId()).fold(

@@ -34,4 +34,5 @@
     <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
     <string name="composer_error_store_draft_body">Storing this draft\'s body failed</string>
     <string name="composer_error_duplicate_recipient">Removed duplicate recipient: %1$s</string>
+    <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
 </resources>

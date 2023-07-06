@@ -209,6 +209,16 @@ class ComposerReducerTest(
             )
         }
 
+        private val EmptyToChangeSubjectError = TestTransition(
+            name = "Should update the state showing an error when error storing draft subject",
+            currentState = aNotSubmittableState(draftId = messageId),
+            operation = ComposerEvent.ErrorStoringDraftSubject,
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                error = Effect.of(TextUiModel(R.string.composer_error_store_draft_subject))
+            )
+        )
+
         private val DefaultSenderToChangeSenderFailed = TestTransition(
             name = "Should update the state showing an error and preserving the previous sender address",
             currentState = aNotSubmittableState(
@@ -369,6 +379,7 @@ class ComposerReducerTest(
             EmptyToSenderAddressesList,
             EmptyToErrorWhenUserPlanUnknown,
             EmptyToUpdatedSender,
+            EmptyToChangeSubjectError,
             DefaultSenderToChangeSenderFailed,
             DuplicateToToNotDuplicateWithError,
             DuplicateCcToNotDuplicateWithError,

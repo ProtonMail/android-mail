@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcomposer.presentation.model
 
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.Subject
 
 sealed interface ComposerOperation
 
@@ -27,7 +28,7 @@ internal sealed interface ComposerAction : ComposerOperation {
     data class RecipientsToChanged(val recipients: List<RecipientUiModel>) : ComposerAction
     data class RecipientsCcChanged(val recipients: List<RecipientUiModel>) : ComposerAction
     data class RecipientsBccChanged(val recipients: List<RecipientUiModel>) : ComposerAction
-    data class SubjectChanged(val subject: String) : ComposerAction
+    data class SubjectChanged(val subject: Subject) : ComposerAction
     data class DraftBodyChanged(val draftBody: DraftBody) : ComposerAction
 
     object ChangeSenderRequested : ComposerAction
@@ -42,4 +43,5 @@ sealed interface ComposerEvent : ComposerOperation {
     object ErrorVerifyingPermissionsToChangeSender : ComposerEvent
     object ErrorStoringDraftSenderAddress : ComposerEvent
     object ErrorStoringDraftBody : ComposerEvent
+    object ErrorStoringDraftSubject : ComposerEvent
 }

@@ -46,7 +46,7 @@ class ComposerReducer @Inject constructor() {
         is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, this.recipients)
         is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, this.recipients)
         is ComposerAction.DraftBodyChanged -> updateDraftBodyTo(currentState, this.draftBody)
-        is ComposerAction.SubjectChanged -> TODO()
+        is ComposerAction.SubjectChanged,
         is ComposerAction.ChangeSenderRequested -> currentState
     }
 
@@ -63,6 +63,9 @@ class ComposerReducer @Inject constructor() {
         )
         is ComposerEvent.ErrorStoringDraftBody -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_store_draft_body))
+        )
+        is ComposerEvent.ErrorStoringDraftSubject -> currentState.copy(
+            error = Effect.of(TextUiModel(R.string.composer_error_store_draft_subject))
         )
         is ComposerEvent.SenderAddressesReceived -> currentState.copy(
             senderAddresses = this.senders,

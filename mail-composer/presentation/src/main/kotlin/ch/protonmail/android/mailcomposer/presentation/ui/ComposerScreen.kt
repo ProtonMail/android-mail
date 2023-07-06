@@ -47,6 +47,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
@@ -133,7 +134,7 @@ private fun buildActions(
     onToChanged = { viewModel.submit(ComposerAction.RecipientsToChanged(it)) },
     onCcChanged = { viewModel.submit(ComposerAction.RecipientsCcChanged(it)) },
     onBccChanged = { viewModel.submit(ComposerAction.RecipientsBccChanged(it)) },
-    onSubjectChanged = { viewModel.submit(ComposerAction.SubjectChanged(it)) },
+    onSubjectChanged = { viewModel.submit(ComposerAction.SubjectChanged(Subject(it))) },
     onBodyChanged = { viewModel.submit(ComposerAction.DraftBodyChanged(DraftBody(it))) },
     onChangeSender = { viewModel.submit(ComposerAction.ChangeSenderRequested) }
 )
