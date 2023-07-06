@@ -24,7 +24,6 @@ import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntr
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipValidationState
 import ch.protonmail.android.uitest.robot.composer.section.recipients.ComposerRecipientsSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.verify
-import kotlin.random.Random
 
 internal interface ComposerChipsTests : ComposerTests {
 
@@ -51,17 +50,13 @@ internal interface ComposerChipsTests : ComposerTests {
         }
     }
 
-    fun withRandomRecipients(
+    fun withMultipleRecipients(
         size: Int,
         state: RecipientChipValidationState,
         block: (RecipientChipEntry) -> Any
     ) {
-        val allowedRange = 'a'..'z'
-
         (0 until size).forEach { index ->
-            val recipient = StringBuilder(
-                allowedRange.shuffled().take(Random.nextInt(from = 2, until = 6)).joinToString(separator = "")
-            ).apply {
+            val recipient = StringBuilder("test$index").apply {
                 if (state == RecipientChipValidationState.Valid) append("@email.com")
             }.toString()
 

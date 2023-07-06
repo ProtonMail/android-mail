@@ -141,7 +141,7 @@ internal class ComposerRecipientsValidChipsTests :
     fun testMultipleValidRecipientChipsOnSpacebarTap() {
         composerRobot {
             toRecipientSection {
-                withRandomRecipients(size = 100, state = RecipientChipValidationState.Valid) {
+                withMultipleRecipients(size = 100, state = RecipientChipValidationState.Valid) {
                     typeRecipient(it.text, autoConfirm = true)
 
                     verify { hasRecipientChips(it) }
