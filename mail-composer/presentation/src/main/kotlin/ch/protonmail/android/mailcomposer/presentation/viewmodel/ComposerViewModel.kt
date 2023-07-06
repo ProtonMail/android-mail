@@ -27,7 +27,6 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddres
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
-import ch.protonmail.android.mailcomposer.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSender
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -55,7 +54,6 @@ class ComposerViewModel @Inject constructor(
     private val reducer: ComposerReducer,
     private val isValidEmailAddress: IsValidEmailAddress,
     private val getPrimaryAddress: GetPrimaryAddress,
-    private val resolveUserAddress: ResolveUserAddress,
     private val getComposerSenderAddresses: GetComposerSenderAddresses,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId
