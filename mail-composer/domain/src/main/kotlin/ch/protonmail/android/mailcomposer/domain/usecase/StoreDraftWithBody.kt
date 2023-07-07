@@ -25,7 +25,10 @@ import arrow.core.right
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
+import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import me.proton.core.domain.entity.UserId
+import me.proton.core.user.domain.entity.UserAddress
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -56,11 +59,8 @@ class StoreDraftWithBody @Inject constructor(
                 StoreDraftWithBodyError.DraftBodyEncryptionError
             }
             .bind()
-        val updatedDraft = draftWithBody.copy(
-            messageBody = draftWithBody.messageBody.copy(
-                body = encryptedDraftBody.value
-            )
-        )
+
+        val updatedDraft = draftWithBody.updateWith(senderAddress, encryptedDraftBody)
         saveDraft(updatedDraft, userId)
             .mapFalse {
                 Timber.e("Store draft $messageId body to local DB failed")
@@ -68,6 +68,16 @@ class StoreDraftWithBody @Inject constructor(
             }
             .bind()
     }
+
+    private fun MessageWithBody.updateWith(senderAddress: UserAddress, encryptedDraftBody: DraftBody) = this.copy(
+        message = this.message.copy(
+            sender = Sender(senderAddress.email, senderAddress.displayName.orEmpty()),
+            addressId = senderAddress.addressId
+        ),
+        messageBody = this.messageBody.copy(
+            body = encryptedDraftBody.value
+        )
+    )
 
     private fun Boolean.mapFalse(block: () -> StoreDraftWithBodyError): Either<StoreDraftWithBodyError, Unit> =
         if (this) Unit.right() else block().left()

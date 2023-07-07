@@ -8,6 +8,7 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.entity.Sender
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
@@ -40,7 +41,7 @@ class StoreDraftWithBodyTest {
     )
 
     @Test
-    fun `should save a draft with encrypted body`() = runTest {
+    fun `should save a draft with encrypted body and sender details`() = runTest {
         // Given
         val plaintextDraftBody = DraftBody("I am plaintext")
         val senderAddress = UserAddressSample.build()
@@ -54,6 +55,10 @@ class StoreDraftWithBodyTest {
             DraftBody("I am encrypted")
         }
         val expectedSavedDraft = existingDraft.copy(
+            message = existingDraft.message.copy(
+                sender = Sender(senderAddress.email, senderAddress.displayName!!),
+                addressId = senderAddress.addressId
+            ),
             messageBody = existingDraft.messageBody.copy(
                 body = expectedEncryptedDraftBody.value
             )
@@ -105,6 +110,10 @@ class StoreDraftWithBodyTest {
             DraftBody("I am encrypted")
         }
         val expectedSavedDraft = existingDraft.copy(
+            message = existingDraft.message.copy(
+                sender = Sender(senderAddress.email, senderAddress.displayName!!),
+                addressId = senderAddress.addressId
+            ),
             messageBody = existingDraft.messageBody.copy(
                 body = expectedEncryptedDraftBody.value
             )
