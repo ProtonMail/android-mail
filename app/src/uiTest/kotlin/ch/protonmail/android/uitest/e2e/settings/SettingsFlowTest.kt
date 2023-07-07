@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.e2e.settings
 
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
-import ch.protonmail.android.test.annotations.suite.SmokeTest
+import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
@@ -38,7 +38,7 @@ import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Before
 import org.junit.Test
 
-@SmokeTest
+@RegressionTest
 @UninstallModules(ServerProofModule::class)
 @HiltAndroidTest
 internal class SettingsFlowTest : MockedNetworkTest() {

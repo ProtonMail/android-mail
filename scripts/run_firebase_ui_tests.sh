@@ -24,7 +24,7 @@ case $1 in
 
 'smoke-test')
   device_config=smokeTest
-  shards=1
+  shards=2
   test_targets='filter ch.protonmail.android.uitest.filters.SmokeTestFilter'
   timeout=15m
   ;;

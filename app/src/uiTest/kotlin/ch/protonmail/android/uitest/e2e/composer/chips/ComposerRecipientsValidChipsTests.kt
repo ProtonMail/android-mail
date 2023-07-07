@@ -76,7 +76,6 @@ internal class ComposerRecipientsValidChipsTests : MockedNetworkTest(), Composer
     }
 
     @Test
-    @SmokeTest
     @TestId("190229")
     fun testValidCcRecipientChip() {
         composerRobot {
@@ -91,7 +90,6 @@ internal class ComposerRecipientsValidChipsTests : MockedNetworkTest(), Composer
     }
 
     @Test
-    @SmokeTest
     @TestId("190230")
     fun testValidBccRecipientChip() {
         composerRobot {
