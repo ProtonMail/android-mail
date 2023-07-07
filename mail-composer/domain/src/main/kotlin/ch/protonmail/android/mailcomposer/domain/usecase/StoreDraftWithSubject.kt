@@ -20,8 +20,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
 import arrow.core.continuations.either
-import arrow.core.left
-import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.util.mapFalse
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -49,8 +48,6 @@ class StoreDraftWithSubject @Inject constructor(
             .mapFalse { Error.DraftSaveError }
             .bind()
     }
-
-    private fun Boolean.mapFalse(block: () -> Error): Either<Error, Unit> = if (this) Unit.right() else block().left()
 
     sealed interface Error {
         object DraftSaveError : Error
