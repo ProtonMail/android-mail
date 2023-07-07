@@ -23,7 +23,9 @@ import java.util.UUID
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.presentation.R
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsBccChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsCcChanged
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsToChanged
@@ -339,6 +341,20 @@ class ComposerReducerTest(
             )
         }
 
+        private val EmptyToUpdatedDraftBody = with(DraftBody("Updated draft body")) {
+            TestTransition(
+                name = "Should update the state with the new draft body when it changes",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = ComposerAction.DraftBodyChanged(this),
+                expectedState = aNotSubmittableState(
+                    draftId = messageId,
+                    error = Effect.empty(),
+                    draftBody = this.value
+                )
+            )
+        }
+
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -359,7 +375,8 @@ class ComposerReducerTest(
             DuplicateBccToNotDuplicateWithError,
             ManyDuplicatesToToNotDuplicateWithError,
             ManyDuplicatesCcToNotDuplicateWithError,
-            ManyDuplicatesBccToNotDuplicateWithError
+            ManyDuplicatesBccToNotDuplicateWithError,
+            EmptyToUpdatedDraftBody
         )
 
         private fun aSubmittableState(
@@ -394,7 +411,8 @@ class ComposerReducerTest(
             error: Effect<TextUiModel> = Effect.of(TextUiModel(R.string.composer_error_invalid_email)),
             premiumFeatureMessage: Effect<TextUiModel> = Effect.empty(),
             senderAddresses: List<SenderUiModel> = emptyList(),
-            changeSenderBottomSheetVisibility: Effect<Boolean> = Effect.empty()
+            changeSenderBottomSheetVisibility: Effect<Boolean> = Effect.empty(),
+            draftBody: String = ""
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -403,7 +421,7 @@ class ComposerReducerTest(
                 cc = cc,
                 bcc = bcc,
                 subject = "",
-                body = ""
+                body = draftBody
             ),
             error = error,
             premiumFeatureMessage = premiumFeatureMessage,
