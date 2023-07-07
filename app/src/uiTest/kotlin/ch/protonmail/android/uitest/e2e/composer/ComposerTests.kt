@@ -49,5 +49,7 @@ interface ComposerTests {
                     withStatusCode 200 ignoreQueryParams true
             )
         }
+
+        mockDefinitions()
     }
 }

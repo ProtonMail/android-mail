@@ -29,6 +29,11 @@ object LoginTestUserTypes {
         val FancyCapybara = LoginType.LoggedIn("fncyra")
     }
 
+    object External {
+
+        val StrangeWalrus = LoginType.LoggedIn("stgwrs")
+    }
+
     object Deprecated {
 
         val GrumpyCat = LoginType.LoggedIn("gmpcat")
