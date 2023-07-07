@@ -42,6 +42,7 @@ import ch.protonmail.android.uitest.robot.composer.section.recipients.bccRecipie
 import ch.protonmail.android.uitest.robot.composer.section.recipients.ccRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.toRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.verify
+import ch.protonmail.android.uitest.robot.composer.section.senderSection
 import ch.protonmail.android.uitest.robot.composer.section.subjectSection
 import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.composer.section.verify
@@ -55,7 +56,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import org.junit.Ignore
 import org.junit.Test
 
 @SmokeExtendedTest
@@ -123,8 +123,6 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
         }
     }
 
-    @Ignore("To be reimplemented when testing MAILANDR-227")
-    @TemporaryTest
     @Test
     @TestId("79036")
     fun checkComposerMainFieldsAndInteractions() {
@@ -139,6 +137,7 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
             )
         }
 
+        val expectedSender = "mobile.apps.uitesting@proton.black"
         val expectedRecipient = "Recipient"
         val expectedSubject = "Subject"
         val expectedBody = "Text message"
@@ -154,8 +153,9 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
         composerRobot {
             verify { composerIsShown() }
 
-            toRecipientSection {
-                verify { isFieldFocused() }
+            // Sender field
+            senderSection {
+                verify { hasValue(expectedSender) }
             }
 
             keyboardSection {
@@ -164,7 +164,11 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
 
             // Recipient field
             toRecipientSection {
-                verify { isEmptyField() }
+                verify {
+                    isFieldFocused()
+                    isEmptyField()
+                }
+
                 typeRecipient(expectedRecipient)
                 verify { hasRecipient(expectedRecipient) }
             }
@@ -281,7 +285,7 @@ internal class ComposerMainTests : MockedNetworkTest(), ComposerTests {
     }
 
     @Test
-    @TestId("190226 - 190227")
+    @TestId("190226", "190227")
     fun testCollapseExpandChevron() {
         mockWebServer.dispatcher combineWith composerMockNetworkDispatcher()
 
