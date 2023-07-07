@@ -41,4 +41,8 @@ internal sealed class SnackbarTextEntry(val value: String) {
     object InvalidEmailAddress : SnackbarTextEntry(
         getTestString(testR.string.test_composer_error_invalid_email)
     )
+
+    object UpgradePlanToChangeSender : SnackbarTextEntry(
+        getTestString(testR.string.composer_change_sender_paid_feature)
+    )
 }
