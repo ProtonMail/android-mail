@@ -24,4 +24,4 @@ package ch.protonmail.android.uitest.helpers.core
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
-annotation class TestId(val value: String)
+annotation class TestId(vararg val values: String)

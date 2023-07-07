@@ -164,7 +164,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
     }
 
     @Test
-    @TestId("185419/2 - 185421")
+    @TestId("185419/2", "185421")
     fun checkMoveToBottomSheetCustomToSystemFolder() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultMailSettings = false,
@@ -207,7 +207,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
     }
 
     @Test
-    @TestId("185419/3 - 185423")
+    @TestId("185419/3", "185423")
     fun checkMoveToBottomSheetSystemToCustomFolder() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultMailSettings = false,

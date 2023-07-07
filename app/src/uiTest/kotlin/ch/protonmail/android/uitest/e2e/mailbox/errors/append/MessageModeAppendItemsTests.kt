@@ -90,7 +90,7 @@ internal class MessageModeAppendItemsTests : MockedNetworkTest(), MailboxAppendI
     }
 
     @Test
-    @TestId("189114/2 - 189159")
+    @TestId("189114/2", "189159")
     @Suppress("MaxLineLength")
     fun checkAppendItemsInMessageMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {

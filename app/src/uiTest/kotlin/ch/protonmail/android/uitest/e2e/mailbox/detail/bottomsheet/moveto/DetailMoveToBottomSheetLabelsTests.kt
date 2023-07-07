@@ -133,7 +133,7 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest() {
     }
 
     @Test
-    @TestId("185425/2 - 185426")
+    @TestId("185425/2", "185426")
     fun checkMoveToBottomSheetMoveToSpamFolder() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultMailSettings = false,
