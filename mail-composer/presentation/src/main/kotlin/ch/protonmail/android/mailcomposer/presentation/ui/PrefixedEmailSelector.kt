@@ -55,7 +55,10 @@ internal fun PrefixedEmailSelector(
         TextField(
             value = selectedEmail,
             onValueChange = { },
-            modifier = Modifier.align(Alignment.CenterVertically).weight(1f),
+            modifier = Modifier
+                .testTag(PrefixedEmailSelectorTestTags.TextField)
+                .align(Alignment.CenterVertically)
+                .weight(1f),
             readOnly = true,
             textStyle = ProtonTheme.typography.defaultNorm,
             prefix = {
@@ -83,7 +86,8 @@ internal fun PrefixedEmailSelector(
 @Composable
 private fun ChangeSenderButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Icon(
-        modifier = modifier.padding(horizontal = ProtonDimens.MediumSpacing)
+        modifier = modifier
+            .padding(horizontal = ProtonDimens.MediumSpacing)
             .testTag(ComposerTestTags.ChangeSenderButton)
             .clickable(
                 onClickLabel = stringResource(id = R.string.change_sender_button_content_description),
@@ -94,4 +98,9 @@ private fun ChangeSenderButton(modifier: Modifier = Modifier, onClick: () -> Uni
         tint = ProtonTheme.colors.iconWeak,
         contentDescription = NO_CONTENT_DESCRIPTION
     )
+}
+
+object PrefixedEmailSelectorTestTags {
+
+    const val TextField = "TextField"
 }

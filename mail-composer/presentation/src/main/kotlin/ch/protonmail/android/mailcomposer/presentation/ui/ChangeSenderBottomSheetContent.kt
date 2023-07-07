@@ -24,10 +24,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import me.proton.core.compose.component.ProtonRawListItem
@@ -39,17 +40,18 @@ fun ChangeSenderBottomSheetContent(
     onSenderSelected: (SenderUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
-        items(addresses) {
+    LazyColumn(modifier = modifier.testTag(ChangeSenderBottomSheetTestTags.Root)) {
+        itemsIndexed(addresses) { index, item ->
             ProtonRawListItem(
                 modifier = Modifier
-                    .clickable { onSenderSelected(it) }
+                    .testTag("${ChangeSenderBottomSheetTestTags.Item}$index")
+                    .clickable { onSenderSelected(item) }
                     .height(ProtonDimens.ListItemHeight)
                     .padding(horizontal = ProtonDimens.DefaultSpacing)
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = it.email,
+                    text = item.email,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -59,5 +61,10 @@ fun ChangeSenderBottomSheetContent(
             }
         }
     }
+}
 
+object ChangeSenderBottomSheetTestTags {
+
+    const val Root = "ChangeSenderBottomSheet"
+    const val Item = "ChangeSenderItem"
 }
