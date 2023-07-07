@@ -205,6 +205,9 @@ deploy_to_firebase_dev:
     - if: $INTERNAL_ALPHA_RELEASE == "true"
       when: never
     - if: $CI_COMMIT_BRANCH == "master"
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: manual
+      allow_failure: true
 
 deploy_to_firebase_nightly:
   extends: .firebase_deploy_job
