@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.presentation.reducer
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
@@ -46,7 +47,7 @@ class ComposerReducer @Inject constructor() {
         is ComposerAction.RecipientsCcChanged -> updateRecipientsCc(currentState, this.recipients)
         is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, this.recipients)
         is ComposerAction.DraftBodyChanged -> updateDraftBodyTo(currentState, this.draftBody)
-        is ComposerAction.SubjectChanged,
+        is ComposerAction.SubjectChanged -> updateSubjectTo(currentState, this.subject)
         is ComposerAction.ChangeSenderRequested -> currentState
     }
 
@@ -75,6 +76,9 @@ class ComposerReducer @Inject constructor() {
 
     private fun updateDraftBodyTo(currentState: ComposerDraftState, draftBody: DraftBody): ComposerDraftState =
         currentState.copy(fields = currentState.fields.copy(body = draftBody.value))
+
+    private fun updateSubjectTo(currentState: ComposerDraftState, subject: Subject) =
+        currentState.copy(fields = currentState.fields.copy(subject = subject.value))
 
     private fun updateStateForChangeSenderFailed(currentState: ComposerDraftState, errorMessage: TextUiModel) =
         currentState.copy(changeSenderBottomSheetVisibility = Effect.of(false), error = Effect.of(errorMessage))

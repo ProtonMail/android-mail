@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction.RecipientsBccChanged
@@ -360,6 +361,20 @@ class ComposerReducerTest(
                     draftId = messageId,
                     error = Effect.empty(),
                     draftBody = this.value
+
+                )
+            )
+        }
+
+        private val EmptyToUpdatedSubject = with(Subject("This is a new subject")) {
+            TestTransition(
+                name = "Should update the state with the new subject when it changes",
+                currentState = ComposerDraftState.empty(messageId),
+                operation = ComposerAction.SubjectChanged(this),
+                expectedState = aNotSubmittableState(
+                    draftId = messageId,
+                    subject = this,
+                    error = Effect.empty()
                 )
             )
         }
@@ -387,7 +402,8 @@ class ComposerReducerTest(
             ManyDuplicatesToToNotDuplicateWithError,
             ManyDuplicatesCcToNotDuplicateWithError,
             ManyDuplicatesBccToNotDuplicateWithError,
-            EmptyToUpdatedDraftBody
+            EmptyToUpdatedDraftBody,
+            EmptyToUpdatedSubject
         )
 
         private fun aSubmittableState(
@@ -423,7 +439,8 @@ class ComposerReducerTest(
             premiumFeatureMessage: Effect<TextUiModel> = Effect.empty(),
             senderAddresses: List<SenderUiModel> = emptyList(),
             changeSenderBottomSheetVisibility: Effect<Boolean> = Effect.empty(),
-            draftBody: String = ""
+            draftBody: String = "",
+            subject: Subject = Subject("")
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -431,7 +448,7 @@ class ComposerReducerTest(
                 to = to,
                 cc = cc,
                 bcc = bcc,
-                subject = "",
+                subject = subject.value,
                 body = draftBody
             ),
             error = error,
