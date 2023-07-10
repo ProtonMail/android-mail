@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailcommon.presentation.R
 import me.proton.core.compose.theme.ProtonDimens
@@ -33,6 +34,7 @@ import me.proton.core.compose.theme.overlineStrongNorm
 fun OfficialBadge(modifier: Modifier = Modifier) {
     Text(
         modifier = modifier
+            .testTag(OfficialBadgeTestTags.Item)
             .padding(start = ProtonDimens.ExtraSmallSpacing)
             .background(color = ProtonTheme.colors.backgroundSecondary, shape = ProtonTheme.shapes.medium)
             .padding(horizontal = ProtonDimens.ExtraSmallSpacing, vertical = MailDimens.TinySpacing),
@@ -40,4 +42,9 @@ fun OfficialBadge(modifier: Modifier = Modifier) {
         maxLines = 1,
         style = ProtonTheme.typography.overlineStrongNorm.copy(color = ProtonTheme.colors.textAccent)
     )
+}
+
+object OfficialBadgeTestTags {
+
+    const val Item = "OfficialBadge"
 }

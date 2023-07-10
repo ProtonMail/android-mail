@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcommon.presentation.extension
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.SemanticsPropertyKey
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
+import ch.protonmail.android.mailcommon.presentation.extension.CustomSemanticsPropertyKeys.isItemReadKey
 import ch.protonmail.android.mailcommon.presentation.extension.CustomSemanticsPropertyKeys.tintColorKey
 
 /**
@@ -28,7 +29,13 @@ import ch.protonmail.android.mailcommon.presentation.extension.CustomSemanticsPr
  */
 var SemanticsPropertyReceiver.tintColor by tintColorKey
 
+/**
+ * Extension used to specify whether the current item is in the unread or read state.
+ */
+var SemanticsPropertyReceiver.isItemRead by isItemReadKey
+
 private object CustomSemanticsPropertyKeys {
 
     val tintColorKey = SemanticsPropertyKey<Color?>("TintColorKey")
+    val isItemReadKey = SemanticsPropertyKey<Boolean?>("IsItemReadKey")
 }

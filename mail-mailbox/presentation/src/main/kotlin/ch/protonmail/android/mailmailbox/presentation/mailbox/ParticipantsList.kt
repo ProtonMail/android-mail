@@ -162,13 +162,16 @@ private fun ParticipantRow(
     participant: ParticipantUiModel,
     displayData: ParticipantRowDisplayData
 ) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = modifier.testTag(ParticipantsListTestTags.ParticipantRow),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         if (displayData.shouldShowSeparator) {
             Separator(fontWeight = displayData.fontWeight, fontColor = displayData.fontColor)
         }
         ParticipantName(
             modifier = Modifier
-                .testTag(MailboxItemTestTags.Participants)
+                .testTag(ParticipantsListTestTags.Participant)
                 .weight(1f, fill = false),
             participantName = participant.name,
             fontWeight = displayData.fontWeight,
@@ -236,4 +239,11 @@ object ParticipantsList {
     const val participantNameId = "participantName"
     const val threeDotsSlotId = "threeDotsSlotId"
     const val minLengthParticipantName = "P..."
+}
+
+object ParticipantsListTestTags {
+
+    const val ParticipantRow = "ParticipantRow"
+    const val Participant = "Participant"
+    const val NoParticipant = "NoParticipant"
 }

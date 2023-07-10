@@ -48,7 +48,7 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
-import ch.protonmail.android.mailcommon.presentation.extension.tintColor
+import ch.protonmail.android.mailcommon.presentation.extension.isItemRead
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
@@ -76,6 +76,7 @@ fun MailboxItem(
     Row(
         modifier = modifier
             .combinedClickable(onClick = { onItemClicked(item) }, onLongClick = onOpenSelectionMode)
+            .semantics { isItemRead = item.isRead }
             .padding(
                 start = ProtonDimens.DefaultSpacing,
                 end = ProtonDimens.DefaultSpacing,
@@ -205,7 +206,7 @@ private fun Participants(
         }
         is ParticipantsUiModel.NoParticipants -> {
             Text(
-                modifier = modifier.testTag(MailboxItemTestTags.Participants),
+                modifier = modifier.testTag(ParticipantsListTestTags.NoParticipant),
                 text = participants.message.string(),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
@@ -247,7 +248,6 @@ private fun LocationIcons(
     ) {
         iconResIds.forEach {
             SmallNonClickableIcon(
-                modifier = Modifier.semantics { tintColor = it.color },
                 iconId = it.icon,
                 iconColor = it.color ?: iconColor
             )
@@ -444,7 +444,6 @@ private fun NoRecipientIconItemPreview() {
 object MailboxItemTestTags {
 
     const val ItemRow = "MailboxItemRow"
-    const val Participants = "Participants"
     const val LocationIcons = "LocationIcons"
     const val LabelsList = "LabelsList"
     const val Subject = "Subject"
