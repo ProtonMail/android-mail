@@ -28,10 +28,3 @@ fun SemanticsNodeInteraction.getKeyValueByName(key: String): Map.Entry<*, *>? {
         it.key.name == key
     }
 }
-
-/**
- * Returns a [Boolean] indicating whether the item exists or not, without throwing an exception.
- */
-fun SemanticsNodeInteraction.peek(): Boolean {
-    return runCatching { assertExists() }.isSuccess
-}

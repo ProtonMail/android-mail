@@ -25,8 +25,9 @@ import org.junit.Assert.assertEquals
 import kotlin.test.assertNull
 
 internal fun SemanticsNodeInteraction.assertTintColor(tint: Tint) = apply {
-    val tintColorProperty = getKeyValueByName(CustomSemanticsPropertyKeyNames.TintColorKey)
-        ?: throw AssertionError("Expected TintColorKey property was not found on this node.")
+    val tintColorProperty = requireNotNull(getKeyValueByName(CustomSemanticsPropertyKeyNames.TintColorKey)) {
+        "Expected TintColorKey property was not found on this node."
+    }
 
     when (tint) {
         is Tint.WithColor -> assertEquals(tint.value, tintColorProperty.value)

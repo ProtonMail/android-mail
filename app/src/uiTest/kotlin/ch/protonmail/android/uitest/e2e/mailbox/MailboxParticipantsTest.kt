@@ -31,6 +31,7 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
@@ -54,21 +55,23 @@ internal class MailboxParticipantsTest : MockedNetworkTest() {
         MailboxListItemEntry(
             index = 0,
             avatarInitial = AvatarInitial.WithText("M"),
-            participants = "mobileappsuitesting3@proton.black",
+            participants = listOf(
+                ParticipantEntry.WithParticipant("mobileappsuitesting3@proton.black")
+            ),
             subject = "Test no contact, empty sender name",
             date = "Mar 20, 2023"
         ),
         MailboxListItemEntry(
             index = 1,
             avatarInitial = AvatarInitial.WithText("?"),
-            participants = "(No Sender)",
+            participants = listOf(ParticipantEntry.NoSender),
             subject = "Test no contact, empty",
             date = "Mar 20, 2023"
         ),
         MailboxListItemEntry(
             index = 2,
             avatarInitial = AvatarInitial.WithText("U"),
-            participants = "UI Tests Contact 1",
+            participants = listOf(ParticipantEntry.WithParticipant("UI Tests Contact 1")),
             subject = "From contact with no sender name",
             date = "Mar 20, 2023"
         )

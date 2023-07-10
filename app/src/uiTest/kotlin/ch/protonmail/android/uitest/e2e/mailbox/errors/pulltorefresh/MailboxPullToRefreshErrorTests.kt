@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.e2e.mailbox.errors.pulltorefresh
 
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
@@ -35,7 +36,7 @@ internal interface MailboxPullToRefreshErrorTests {
         get() = MailboxListItemEntry(
             index = 0,
             avatarInitial = AvatarInitial.WithText("M"),
-            participants = "mobileappsuitesting2",
+            participants = listOf(ParticipantEntry.WithParticipant("mobileappsuitesting2")),
             subject = "Test message",
             date = "Mar 6, 2023"
         )

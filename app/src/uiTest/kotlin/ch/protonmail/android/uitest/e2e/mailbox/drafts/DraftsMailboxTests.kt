@@ -33,6 +33,7 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
@@ -72,7 +73,7 @@ internal class DraftsMailboxTests : MockedNetworkTest() {
         val expectedMailboxEntry = MailboxListItemEntry(
             index = 0,
             avatarInitial = AvatarInitial.Draft,
-            participants = "(No Recipient)",
+            participants = listOf(ParticipantEntry.NoRecipient),
             subject = "Test subject",
             date = "Apr 3, 2023"
         )
@@ -117,7 +118,7 @@ internal class DraftsMailboxTests : MockedNetworkTest() {
         val expectedMailboxEntry = MailboxListItemEntry(
             index = 0,
             avatarInitial = AvatarInitial.Draft,
-            participants = "UI Tests Contact 1",
+            participants = listOf(ParticipantEntry.WithParticipant("UI Tests Contact 1")),
             subject = "Test subject",
             date = "Apr 3, 2023"
         )
@@ -162,7 +163,7 @@ internal class DraftsMailboxTests : MockedNetworkTest() {
         val expectedMailboxEntry = MailboxListItemEntry(
             index = 0,
             avatarInitial = AvatarInitial.Draft,
-            participants = "Mobile Apps UI Testing 2",
+            participants = listOf(ParticipantEntry.WithParticipant("Mobile Apps UI Testing 2")),
             subject = "Test subject",
             date = "Apr 3, 2023"
         )

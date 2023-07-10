@@ -33,6 +33,7 @@ import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.MailLabelEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.model.bottomsheet.MoveToBottomSheetFolderEntry.SystemFolders.Trash
 import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
@@ -61,7 +62,7 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest() {
     private val startMailboxItem = MailboxListItemEntry(
         index = 0,
         avatarInitial = AvatarInitial.WithText("M"),
-        participants = "mobileappsuitesting2",
+        participants = listOf(ParticipantEntry.WithParticipant("mobileappsuitesting2")),
         labels = listOf(MailLabelEntry(index = 0, name = "Test Label")),
         subject = "Example test",
         date = "Mar 6, 2023"

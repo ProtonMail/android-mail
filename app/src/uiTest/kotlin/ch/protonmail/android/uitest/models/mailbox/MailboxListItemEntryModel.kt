@@ -35,11 +35,10 @@ import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.MailFolderEntry
 import ch.protonmail.android.uitest.models.folders.MailLabelEntry
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
-import ch.protonmail.android.uitest.util.assertions.assertTextColor
+import ch.protonmail.android.uitest.util.assertions.assertItemIsRead
 import ch.protonmail.android.uitest.util.assertions.assertTintColor
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.child
-import ch.protonmail.android.uitest.util.extensions.peek
 import kotlin.time.Duration.Companion.seconds
 
 internal class MailboxListItemEntryModel(
@@ -64,10 +63,6 @@ internal class MailboxListItemEntryModel(
 
     private val avatarDraft = item.child {
         hasTestTag(AvatarTestTags.AvatarDraft)
-    }
-
-    private val participants = item.child {
-        hasTestTag(MailboxItemTestTags.Participants)
     }
 
     private val locations = item.child {
@@ -108,8 +103,20 @@ internal class MailboxListItemEntryModel(
         }
     }
 
-    fun hasParticipants(text: String) = apply {
-        participants.assertTextEquals(text)
+    fun hasParticipants(participants: List<ParticipantEntry>) = apply {
+        participants.forEachIndexed { index, participant ->
+            val model = ParticipantEntryModel(index, item)
+
+            when (participant) {
+                is ParticipantEntry.NoSender,
+                is ParticipantEntry.NoRecipient -> model.hasNoParticipant(participant.value)
+
+                is ParticipantEntry.WithParticipant -> {
+                    model.hasParticipant(participant.value)
+                        .isProton(participant.isProton)
+                }
+            }
+        }
     }
 
     fun hasLocationIcons(entries: List<MailFolderEntry>) = apply {
@@ -151,19 +158,11 @@ internal class MailboxListItemEntryModel(
     }
 
     fun assertRead() = apply {
-        participants.assertTextColor(MessageReadTextColorHex)
-        subject.assertTextColor(MessageReadTextColorHex)
-        date.assertTextColor(MessageReadTextColorHex)
-
-        if (count.peek()) count.assertTextColor(MessageReadTextColorHex)
+        item.assertItemIsRead(expectedValue = true)
     }
 
     fun assertUnread() = apply {
-        participants.assertTextColor(MessageUnreadTextColorHex)
-        subject.assertTextColor(MessageUnreadTextColorHex)
-        date.assertTextColor(MessageUnreadTextColorHex)
-
-        if (count.peek()) count.assertTextColor(MessageUnreadTextColorHex)
+        item.assertItemIsRead(expectedValue = false)
     }
     // endregion
 
@@ -176,10 +175,4 @@ internal class MailboxListItemEntryModel(
         item.awaitDisplayed()
     }
     // endregion
-
-    private companion object {
-
-        const val MessageReadTextColorHex = 0xFF706D6B // Equivalent to ProtonPalette.Cinder
-        const val MessageUnreadTextColorHex = 0xFF0C0C14 // Equivalent to ProtonPalette.DoveGray
-    }
 }

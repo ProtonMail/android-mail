@@ -69,4 +69,3 @@ fun SemanticsNodeInteraction.assertEditableTextEquals(value: String) {
 
     assertEquals(value, editableText.value.toString())
 }
-

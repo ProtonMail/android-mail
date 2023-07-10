@@ -41,6 +41,7 @@ import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.MailLabelEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.emptyListSection
@@ -65,7 +66,7 @@ internal class MailboxScreenTest {
     private val topMailboxItem = MailboxListItemEntry(
         index = 0,
         avatarInitial = AvatarInitial.WithText("T"),
-        participants = "(No Sender)",
+        participants = listOf(ParticipantEntry.NoSender),
         subject = "1",
         date = "10:42"
     )

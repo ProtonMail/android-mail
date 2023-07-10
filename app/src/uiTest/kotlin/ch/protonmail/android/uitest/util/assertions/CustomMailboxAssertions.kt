@@ -23,8 +23,9 @@ import ch.protonmail.android.uitest.util.extensions.getKeyValueByName
 import org.junit.Assert.assertEquals
 
 internal fun SemanticsNodeInteraction.assertItemIsRead(expectedValue: Boolean) = apply {
-    val tintColorProperty = getKeyValueByName(CustomSemanticsPropertyKeyNames.IsItemReadKey)
-        ?: throw AssertionError("Expected IsItemReadKey property was not found on this node.")
+    val isItemReadProperty = requireNotNull(getKeyValueByName(CustomSemanticsPropertyKeyNames.IsItemReadKey)) {
+        "Expected IsItemReadKey property was not found on this node."
+    }
 
-    assertEquals(expectedValue, tintColorProperty.value)
+    assertEquals(expectedValue, isItemReadProperty.value)
 }

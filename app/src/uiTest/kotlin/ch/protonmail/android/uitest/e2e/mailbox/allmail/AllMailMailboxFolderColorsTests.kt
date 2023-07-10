@@ -35,6 +35,7 @@ import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.MailFolderEntry
 import ch.protonmail.android.uitest.models.folders.Tint
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
 import ch.protonmail.android.uitest.robot.menu.MenuRobot
@@ -59,7 +60,7 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
     private val firstMessageEntry = MailboxListItemEntry(
         index = 0,
         avatarInitial = AvatarInitial.WithText("M"),
-        participants = "mobileappsuitesting3",
+        participants = listOf(ParticipantEntry.WithParticipant("mobileappsuitesting3")),
         subject = "Parent folder message",
         date = "Mar 28, 2023"
     )
@@ -67,7 +68,7 @@ internal class AllMailMailboxFolderColorsTests : MockedNetworkTest() {
     private val secondMessageEntry = MailboxListItemEntry(
         index = 1,
         avatarInitial = AvatarInitial.WithText("M"),
-        participants = "mobileappsuitesting2",
+        participants = listOf(ParticipantEntry.WithParticipant("mobileappsuitesting2")),
         subject = "Child folder message",
         date = "Mar 21, 2023"
     )

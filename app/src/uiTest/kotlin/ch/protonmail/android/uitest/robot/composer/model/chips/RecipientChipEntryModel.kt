@@ -74,7 +74,7 @@ internal class RecipientChipEntryModel(
     // endregion
 
     private fun SemanticsNodeInteraction.assertFieldState(isValid: Boolean) = apply {
-        val isValidProperty = checkNotNull(getKeyValueByName(CustomSemanticsPropertyKeyNames.IsValidFieldKey)) {
+        val isValidProperty = requireNotNull(getKeyValueByName(CustomSemanticsPropertyKeyNames.IsValidFieldKey)) {
             "IsValidFieldKey property was not found on this node. Did you forget to set it?"
         }
 

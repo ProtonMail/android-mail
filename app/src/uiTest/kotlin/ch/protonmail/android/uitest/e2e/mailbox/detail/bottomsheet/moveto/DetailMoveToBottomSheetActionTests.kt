@@ -33,6 +33,7 @@ import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.Tint
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.common.section.snackbarSection
 import ch.protonmail.android.uitest.robot.common.section.verify
@@ -75,7 +76,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
     private val expectedMailboxItem = MailboxListItemEntry(
         index = 0,
         avatarInitial = AvatarInitial.WithText("M"),
-        participants = "mobileappsuitesting3",
+        participants = listOf(ParticipantEntry.WithParticipant("mobileappsuitesting3")),
         subject = "Move this somewhere else",
         date = "Mar 28, 2023"
     )

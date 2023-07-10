@@ -19,7 +19,6 @@
 package ch.protonmail.android.uitest.e2e.mailbox
 
 import ch.protonmail.android.di.ServerProofModule
-import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.ignoreQueryParams
 import ch.protonmail.android.networkmocks.mockwebserver.requests.matchWildcards
@@ -28,7 +27,6 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.SmokeExtendedTest
 import ch.protonmail.android.uitest.MockedNetworkTest
-import ch.protonmail.android.uitest.helpers.core.AppThemeHelper
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
@@ -46,9 +44,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import org.junit.Before
 import org.junit.Test
-import javax.inject.Inject
 
 @SmokeExtendedTest
 @HiltAndroidTest
@@ -58,14 +54,6 @@ internal class ConversationMarkAsReadTests : MockedNetworkTest() {
     @JvmField
     @BindValue
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
-
-    @Inject
-    lateinit var themeHelper: AppThemeHelper
-
-    @Before
-    fun forceLightTheme() {
-        themeHelper.applyTheme(Theme.LIGHT) // Night mode is currently not supported for this suite
-    }
 
     @Test
     @TestId("78994")

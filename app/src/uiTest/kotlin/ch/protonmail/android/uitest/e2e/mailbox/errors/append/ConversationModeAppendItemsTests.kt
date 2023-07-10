@@ -34,6 +34,7 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -53,7 +54,7 @@ internal class ConversationModeAppendItemsTests : MockedNetworkTest(), MailboxAp
     override val lastExpectedMailboxItem = MailboxListItemEntry(
         index = 101,
         avatarInitial = AvatarInitial.WithText("P"),
-        participants = "Proton",
+        participants = listOf(ParticipantEntry.WithParticipant("Proton", isProton = true)),
         subject = "Last Element!",
         date = "May 7, 2023"
     )

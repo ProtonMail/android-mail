@@ -30,6 +30,7 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxType
+import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.robot.common.section.keyboardSection
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
@@ -120,7 +121,7 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerTests {
         // Will be extracted once MAILANDR-495 is implemented.
         val expectedDraftItem = MailboxListItemEntry(
             index = 0,
-            participants = "(No Recipient)",
+            participants = listOf(ParticipantEntry.NoRecipient),
             avatarInitial = AvatarInitial.Draft,
             date = "Jul 1, 2023",
             subject = subject.orEmpty()

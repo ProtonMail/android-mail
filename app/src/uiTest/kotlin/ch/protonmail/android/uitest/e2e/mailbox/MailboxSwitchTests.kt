@@ -32,6 +32,7 @@ import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
+import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
@@ -55,7 +56,7 @@ internal class MailboxSwitchTests : MockedNetworkTest() {
     private val expectedFirstSentItem = MailboxListItemEntry(
         index = 0,
         avatarInitial = AvatarInitial.WithText("M"),
-        participants = "Mobile Apps UI Testing 2",
+        participants = listOf(ParticipantEntry.WithParticipant("Mobile Apps UI Testing 2")),
         subject = "Test message TOP",
         date = "Apr 3, 2023"
     )

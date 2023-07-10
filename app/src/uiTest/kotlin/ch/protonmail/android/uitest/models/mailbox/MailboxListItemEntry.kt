@@ -25,7 +25,7 @@ import ch.protonmail.android.uitest.models.folders.MailLabelEntry
 internal data class MailboxListItemEntry(
     val index: Int,
     val avatarInitial: AvatarInitial,
-    val participants: String,
+    val participants: List<ParticipantEntry>,
     val locationIcons: List<MailFolderEntry>? = null,
     val labels: List<MailLabelEntry>? = null,
     val subject: String,
