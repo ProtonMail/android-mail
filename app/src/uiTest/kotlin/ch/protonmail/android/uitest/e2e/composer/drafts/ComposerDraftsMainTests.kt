@@ -80,20 +80,8 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerTests {
     @Test
     @TemporaryTest
     @TestId("190296")
-    fun testNoDraftSavedUponEmptyBody() {
-        composerRobot {
-            toRecipientSection {
-                typeRecipient("rec@ipient.com", autoConfirm = true)
-            }
-
-            subjectSection {
-                typeSubject("Subject!")
-            }
-
-            topAppBarSection { tapCloseButton() }
-        }
-
-        verifyEmptyDrafts()
+    fun testDraftSavedWithSubjectOnlyUponEmptyBody() {
+        createAndVerifyDraft(recipient = "rec@ipient.com", subject = "Subject!", body = "")
     }
 
     @Test
@@ -135,7 +123,7 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerTests {
             participants = "(No Recipient)",
             avatarInitial = AvatarInitial.Draft,
             date = "Jul 1, 2023",
-            subject = ""
+            subject = subject.orEmpty()
         )
 
         mockRobot {
