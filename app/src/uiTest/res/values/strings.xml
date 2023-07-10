@@ -26,6 +26,9 @@
     <string name="test_label_title_spam">Spam</string>
     <string name="test_label_title_trash">Trash</string>
     <string name="test_label_title_all_mail">All mail</string>
+    <string name="test_mailbox_default_sender">(No Sender)</string>
+    <string name="test_mailbox_default_recipient">(No Recipient)</string>
+    <string name="test_auth_badge_official">Official</string>
 
     <!-- Mailbox messages -->
     <string name="test_mailbox_is_empty_message">This mailbox is empty</string>

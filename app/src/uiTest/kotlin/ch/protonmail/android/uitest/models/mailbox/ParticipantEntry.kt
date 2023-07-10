@@ -16,11 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.util.assertions
+package ch.protonmail.android.uitest.models.mailbox
 
-internal object CustomSemanticsPropertyKeyNames {
+import ch.protonmail.android.uitest.util.getTestString
+import ch.protonmail.android.test.R as testR
 
-    const val TintColorKey = "TintColorKey"
-    const val IsItemReadKey = "IsItemReadKey"
-    const val IsValidFieldKey = "IsValidFieldKey"
+internal sealed class ParticipantEntry(val value: String) {
+
+    class WithParticipant(val name: String, val isProton: Boolean = false) : ParticipantEntry(name)
+    object NoSender : ParticipantEntry(getTestString(testR.string.test_mailbox_default_sender))
+    object NoRecipient : ParticipantEntry(getTestString(testR.string.test_mailbox_default_recipient))
 }
