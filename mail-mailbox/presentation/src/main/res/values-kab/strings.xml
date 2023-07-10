@@ -32,7 +32,7 @@
     <item quantity="other">%d ur ttwaɣren ara</item>
   </plurals>
   <string name="mailbox_default_recipient">(Ulac iɣerwaḍen)</string>
-  <string name="mailbox_default_sender">(No Sender)</string>
+  <string name="mailbox_default_sender">(Ulac amazan)</string>
   <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
   <string name="mailbox_error_message_generic">Loading mailbox failed</string>
   <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>

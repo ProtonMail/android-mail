@@ -28,4 +28,10 @@
   <string name="composer_expand_recipients_button">Andere Empfänger anzeigen</string>
   <string name="composer_error_invalid_email">E-Mail-Adresse ist ungültig</string>
   <string name="composer_error_invalid_sender">Absenderadresse ist ungültig</string>
+  <string name="change_sender_button_content_description">Absender ändern</string>
+  <string name="composer_change_sender_paid_feature">Upgrade auf ein kostenpflichtiges Abonnement, um die Absenderadresse zu ändern.</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Fehler beim Ändern des Absenders, da das Abonnement des Benutzers nicht abgerufen werden konnte. Bitte versuche es erneut.</string>
+  <string name="composer_error_store_draft_sender_address">Das Speichern der Absenderadresse dieses Entwurfs ist fehlgeschlagen.</string>
+  <string name="composer_error_store_draft_body">Das Speichern des Inhalts dieses Entwurfs ist fehlgeschlagen.</string>
+  <string name="composer_error_duplicate_recipient">Doppelten Empfänger entfernt: %1$s</string>
 </resources>

@@ -51,5 +51,6 @@
   <string name="yesterday">Gestern</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Anhänge</string>
-  <string name="attachment_download_notification_channel_description">Benachrichtigungen für das Herunterladen von Anhängen</string>
+  <string name="attachment_download_notification_channel_description">Benachrichtigungen für Anhang-Downloads</string>
+  <string name="auth_badge_official">Offiziell</string>
 </resources>

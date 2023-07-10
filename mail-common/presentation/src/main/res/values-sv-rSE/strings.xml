@@ -52,4 +52,5 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Bilagor</string>
   <string name="attachment_download_notification_channel_description">Aviseringar för nedladdning av bilagor</string>
+  <string name="auth_badge_official">Officiell</string>
 </resources>

@@ -28,4 +28,10 @@
   <string name="composer_expand_recipients_button">Vis andre modtagere</string>
   <string name="composer_error_invalid_email">E-mailadresse er ugyldig</string>
   <string name="composer_error_invalid_sender">Afsenderadresse er ugyldig</string>
+  <string name="change_sender_button_content_description">Skift afsender</string>
+  <string name="composer_change_sender_paid_feature">Opgradér til et betalt abonnement for at ændre afsenderadresse</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Kan ikke ændre afsender, da hentning af brugerens abonnement mislykkedes. Prøv igen.</string>
+  <string name="composer_error_store_draft_sender_address">Lagring af denne kladdes afsenderadresse mislykkedes</string>
+  <string name="composer_error_store_draft_body">Opbevaring af denne kladdes indholdstekst mislykkedes</string>
+  <string name="composer_error_duplicate_recipient">Fjernet dobbelt modtager: %1$s</string>
 </resources>

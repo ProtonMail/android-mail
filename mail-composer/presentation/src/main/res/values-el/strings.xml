@@ -28,4 +28,10 @@
   <string name="composer_expand_recipients_button">Εμφάνιση άλλων παραληπτών</string>
   <string name="composer_error_invalid_email">Η διεύθυνση email δεν είναι έγκυρη</string>
   <string name="composer_error_invalid_sender">Η διεύθυνση αποστολέα δεν είναι έγκυρη</string>
+  <string name="change_sender_button_content_description">Αλλαγή αποστολέα</string>
+  <string name="composer_change_sender_paid_feature">Αναβάθμιση σε πρόγραμμα επί πληρωμή για αλλαγή της διεύθυνσης αποστολέα</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Δεν είναι δυνατή η αλλαγή αποστολέα καθώς απέτυχε η λήψη συνδρομής χρήστη. Δοκιμάστε ξανά.</string>
+  <string name="composer_error_store_draft_sender_address">Η αποθήκευση της διεύθυνσης αποστολέα αυτού του πρόχειρου απέτυχε</string>
+  <string name="composer_error_store_draft_body">Η αποθήκευση του σώματος αυτού του πρόχειρου απέτυχε</string>
+  <string name="composer_error_duplicate_recipient">Αφαιρέθηκε διπλότυπος παραλήπτης: %1$s</string>
 </resources>

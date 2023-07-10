@@ -28,4 +28,10 @@
   <string name="composer_expand_recipients_button">顯示其他收件者</string>
   <string name="composer_error_invalid_email">電子郵件地址無效</string>
   <string name="composer_error_invalid_sender">寄件者電子郵件地址無效</string>
+  <string name="change_sender_button_content_description">變更寄件人</string>
+  <string name="composer_change_sender_paid_feature">升級至付款方案後，您將能夠變更寄件者</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">因無法取得訂閱資料無法變更寄件者。請再試一次。</string>
+  <string name="composer_error_store_draft_sender_address">取的此草稿的寄件者地址失敗</string>
+  <string name="composer_error_store_draft_body">處存草稿內容失敗</string>
+  <string name="composer_error_duplicate_recipient">已移除重複的收件者：%1$s</string>
 </resources>

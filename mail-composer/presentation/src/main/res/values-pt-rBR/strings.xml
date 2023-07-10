@@ -28,4 +28,10 @@
   <string name="composer_expand_recipients_button">Mostrar outros destinatários</string>
   <string name="composer_error_invalid_email">Endereço de e-mail inválido</string>
   <string name="composer_error_invalid_sender">Endereço do remetente inválido</string>
+  <string name="change_sender_button_content_description">Alterar o remetente</string>
+  <string name="composer_change_sender_paid_feature">Para alterar o endereço do remetente, atualize para um plano pago</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Não é possível alterar o remetente, pois a assinatura do usuário não pôde ser obtida. Tente novamente.</string>
+  <string name="composer_error_store_draft_sender_address">Falha ao armazenar o endereço do remetente deste rascunho</string>
+  <string name="composer_error_store_draft_body">Falha ao armazenar a estrutura deste rascunho</string>
+  <string name="composer_error_duplicate_recipient">Destinatário duplicado removido: %1$s</string>
 </resources>

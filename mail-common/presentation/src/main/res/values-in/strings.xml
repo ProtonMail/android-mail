@@ -52,4 +52,5 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Lampiran</string>
   <string name="attachment_download_notification_channel_description">Notifikasi untuk penguduhan lampiran</string>
+  <string name="auth_badge_official">Resmi</string>
 </resources>

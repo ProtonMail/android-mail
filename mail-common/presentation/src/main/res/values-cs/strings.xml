@@ -52,4 +52,5 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Přílohy</string>
   <string name="attachment_download_notification_channel_description">Upozornění na stahování příloh</string>
+  <string name="auth_badge_official">Oficiální</string>
 </resources>

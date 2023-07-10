@@ -47,7 +47,8 @@
   <string name="error_move_conversation_failed">Не ўдалося перамясціць размову. Паўтарыце спробу.</string>
   <string name="error_loading_message">Нешта пайшло не так. Паспрабуйце яшчэ раз.</string>
   <string name="error_offline_loading_message">Вы па-за сеткай. Для адлюстравання змесціва гэтага паведамлення неабходна падключэнне да інтэрнэту.</string>
-  <string name="error_get_attachment_failed">Не ўдалося атрымаць далучэнне</string>
+  <string name="error_get_attachment_failed">Памылка пры атрыманні далучэння.</string>
+  <string name="error_attachment_download_in_progress">Каб пачаць наступнае спампаванне, наўперш патрэбна скончыць бягучае</string>
   <string name="reload">Перазагрузіць</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d файл</item>

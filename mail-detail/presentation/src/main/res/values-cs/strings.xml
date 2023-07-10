@@ -47,7 +47,8 @@
   <string name="error_move_conversation_failed">Přesunutí konverzace se nezdařilo. Zkuste to znovu.</string>
   <string name="error_loading_message">Něco se pokazilo, prosím zkuste to znovu.</string>
   <string name="error_offline_loading_message">Jste offline. Pro zobrazení obsahu této zprávy je nutné připojení k internetu.</string>
-  <string name="error_get_attachment_failed">Načtení přílohy se nezdařilo</string>
+  <string name="error_get_attachment_failed">Failed to get attachment.</string>
+  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <string name="reload">Znovu načíst</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d soubor</item>

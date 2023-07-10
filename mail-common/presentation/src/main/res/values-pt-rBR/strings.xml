@@ -52,4 +52,5 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Anexos</string>
   <string name="attachment_download_notification_channel_description">Notificação para downloads de anexos</string>
+  <string name="auth_badge_official">Oficial</string>
 </resources>

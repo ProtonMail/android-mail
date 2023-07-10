@@ -52,4 +52,5 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Załączniki</string>
   <string name="attachment_download_notification_channel_description">Powiadomienia o pobieraniu załączników</string>
+  <string name="auth_badge_official">Oficjalna</string>
 </resources>

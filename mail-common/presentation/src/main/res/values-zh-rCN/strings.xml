@@ -52,4 +52,5 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">附件</string>
   <string name="attachment_download_notification_channel_description">附件下载通知</string>
+  <string name="auth_badge_official">官方</string>
 </resources>

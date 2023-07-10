@@ -52,4 +52,5 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Bijlagen</string>
   <string name="attachment_download_notification_channel_description">Meldingen voor downloads van bijlagen</string>
+  <string name="auth_badge_official">Officieel</string>
 </resources>

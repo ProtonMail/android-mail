@@ -28,4 +28,10 @@
   <string name="composer_expand_recipients_button">Показать других получателей</string>
   <string name="composer_error_invalid_email">Недействительный адрес эл. почты</string>
   <string name="composer_error_invalid_sender">Адрес отправителя недействителен</string>
+  <string name="change_sender_button_content_description">Изменить отправителя</string>
+  <string name="composer_change_sender_paid_feature">Перейдите на платный тариф, чтобы изменить адрес отправителя</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Невозможно изменить отправителя, так как подписка пользователя не удалась. Попробуйте еще раз.</string>
+  <string name="composer_error_store_draft_sender_address">Сохранение адреса отправителя этого черновика не удалось</string>
+  <string name="composer_error_store_draft_body">Сохранение адреса отправителя этого черновика не удалось</string>
+  <string name="composer_error_duplicate_recipient">Удалено дубликатов получателя: %1$s</string>
 </resources>

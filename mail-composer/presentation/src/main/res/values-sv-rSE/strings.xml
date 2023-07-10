@@ -27,5 +27,11 @@
   <string name="send_message_content_description">Skicka meddelande</string>
   <string name="composer_expand_recipients_button">Visa andra mottagare</string>
   <string name="composer_error_invalid_email">E-postadress är ogiltig</string>
-  <string name="composer_error_invalid_sender">Sender address is invalid</string>
+  <string name="composer_error_invalid_sender">Avsändaradress är ogiltig</string>
+  <string name="change_sender_button_content_description">Ändra avsändare</string>
+  <string name="composer_change_sender_paid_feature">Uppgradera till ett betalt paket för att ändra avsändarens adress</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
+  <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
+  <string name="composer_error_store_draft_body">Storing this draft\'s body failed</string>
+  <string name="composer_error_duplicate_recipient">Tog bort duplicerad mottagare: %1$s</string>
 </resources>

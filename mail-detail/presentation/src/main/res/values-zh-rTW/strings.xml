@@ -44,7 +44,8 @@
   <string name="error_move_conversation_failed">無法移動對話。請再試一次。</string>
   <string name="error_loading_message">載入訊息時發生錯誤，請再試一次。</string>
   <string name="error_offline_loading_message">您目前是離線狀態。需要網際網路連線才能顯示此訊息的內容。</string>
-  <string name="error_get_attachment_failed">無法載入附件</string>
+  <string name="error_get_attachment_failed">Failed to get attachment.</string>
+  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <string name="reload">重新載入</string>
   <plurals name="attachment_count_label">
     <item quantity="other">%d 個檔案</item>

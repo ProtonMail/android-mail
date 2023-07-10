@@ -27,5 +27,11 @@
   <string name="send_message_content_description">Надіслати повідомлення</string>
   <string name="composer_expand_recipients_button">Показати інших отримувачів</string>
   <string name="composer_error_invalid_email">Недійсна адреса е-пошти</string>
-  <string name="composer_error_invalid_sender">Адреса відправника неправильна</string>
+  <string name="composer_error_invalid_sender">Адреса відправника недійсна</string>
+  <string name="change_sender_button_content_description">Змінити відправника</string>
+  <string name="composer_change_sender_paid_feature">Перейдіть на платний тарифний план, щоб змінити адресу відправника</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Неможливо змінити відправника, оскільки не вдалося отримати підписку користувача. Спробуйте ще раз.</string>
+  <string name="composer_error_store_draft_sender_address">Не вдалося зберегти адресу відправника цієї чернетки</string>
+  <string name="composer_error_store_draft_body">Не вдалося зберегти тіло цієї чернетки</string>
+  <string name="composer_error_duplicate_recipient">Видалено дублікат одержувача: %1$s</string>
 </resources>

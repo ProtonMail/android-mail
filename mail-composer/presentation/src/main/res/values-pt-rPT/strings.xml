@@ -28,4 +28,10 @@
   <string name="composer_expand_recipients_button">Mostrar os outros destinatários</string>
   <string name="composer_error_invalid_email">O endereço de email não é válido.</string>
   <string name="composer_error_invalid_sender">O endereço do remetente é inválido</string>
+  <string name="change_sender_button_content_description">Alterar o remetente</string>
+  <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
+  <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
+  <string name="composer_error_store_draft_body">Storing this draft\'s body failed</string>
+  <string name="composer_error_duplicate_recipient">Removed duplicate recipient: %1$s</string>
 </resources>

@@ -45,7 +45,8 @@
   <string name="error_move_conversation_failed">Erro ao mover a conversa. Tente novamente.</string>
   <string name="error_loading_message">Ocorreu um erro. Tente mais tarde.</string>
   <string name="error_offline_loading_message">Está offline. A ligação à internet é necessária para mostrar o conteúdo desta mensagem.</string>
-  <string name="error_get_attachment_failed">Erro ao obter o anexo</string>
+  <string name="error_get_attachment_failed">Erro ao obter o anexo.</string>
+  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <string name="reload">Recarregar</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d ficheiro</item>

@@ -45,7 +45,8 @@
   <string name="error_move_conversation_failed">Misslyckades att flytta konversation. Försök igen.</string>
   <string name="error_loading_message">Något gick fel, försök igen.</string>
   <string name="error_offline_loading_message">Du är offline. En Internetanslutning krävs för att visa innehållet i detta meddelande.</string>
-  <string name="error_get_attachment_failed">Misslyckades att hämta bilaga</string>
+  <string name="error_get_attachment_failed">Misslyckades att hämta bilaga.</string>
+  <string name="error_attachment_download_in_progress">Nuvarande nedladdning måste slutföras innan du startar en ny.</string>
   <string name="reload">Ladda om</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d fil</item>

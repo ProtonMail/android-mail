@@ -45,7 +45,8 @@
   <string name="error_move_conversation_failed">La conversation n\'a pas pu être déplacée. Veuillez réessayer.</string>
   <string name="error_loading_message">Un problème est survenu, veuillez réessayer.</string>
   <string name="error_offline_loading_message">Vous n\'êtes pas connecté. Une connexion internet est nécessaire pour afficher le contenu de ce message.</string>
-  <string name="error_get_attachment_failed">La pièce jointe n\'a pas pu être enregistrée.</string>
+  <string name="error_get_attachment_failed">La pièce jointe n\'a pas pu être obtenue.</string>
+  <string name="error_attachment_download_in_progress">Le téléchargement en cours doit être terminé avant d\'en commencer un nouveau.</string>
   <string name="reload">Recharger</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d fichier</item>

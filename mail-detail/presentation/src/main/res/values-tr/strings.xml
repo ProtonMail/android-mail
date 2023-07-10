@@ -45,7 +45,8 @@
   <string name="error_move_conversation_failed">Yazışma taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="error_loading_message">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
   <string name="error_offline_loading_message">Çevrim dışısınız. Bu iletinin içeriğini görüntüleyebilmek için internete bağlı olmalısınız.</string>
-  <string name="error_get_attachment_failed">Ek dosya alınamadı</string>
+  <string name="error_get_attachment_failed">Failed to get attachment.</string>
+  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
   <string name="reload">Yeniden yükle</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d dosya</item>

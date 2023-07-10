@@ -28,4 +28,10 @@
   <string name="composer_expand_recipients_button">Afficher les autres destinataires</string>
   <string name="composer_error_invalid_email">L\'adresse e-mail n\'est pas valide.</string>
   <string name="composer_error_invalid_sender">L\'adresse de l\'expéditeur n\'est pas valide.</string>
+  <string name="change_sender_button_content_description">Modifier l\'expéditeur</string>
+  <string name="composer_change_sender_paid_feature">Passez à un abonnement payant pour modifier l\'adresse de l\'expéditeur.</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Impossible de changer l\'expéditeur : l\'abonnement de l\'utilisateur n\'a pu être obtenu. Veuillez réessayer.</string>
+  <string name="composer_error_store_draft_sender_address">L\'enregistrement de l\'adresse de l\'expéditeur du brouillon n\'a pas abouti.</string>
+  <string name="composer_error_store_draft_body">L\'enregistrement du corps du brouillon n\'a pas abouti.</string>
+  <string name="composer_error_duplicate_recipient">Destinataire dupliqué supprimé : %1$s</string>
 </resources>
