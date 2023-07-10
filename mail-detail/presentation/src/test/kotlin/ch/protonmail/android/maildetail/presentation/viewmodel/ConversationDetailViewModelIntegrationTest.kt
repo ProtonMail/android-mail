@@ -27,6 +27,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
+import arrow.core.NonEmptyList
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
@@ -105,6 +106,7 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinatio
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.MimeType
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -753,25 +755,13 @@ class ConversationDetailViewModelIntegrationTest {
             expectedExpanded
         )
         val expandedMessageId = expectedExpanded.message.messageId
-        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
-        coEvery { getDecryptedMessageBody.invoke(any(), expandedMessageId) } returns
-            DecryptedMessageBody(
-                value = "",
-                MimeType.Html,
-                attachments = (0 until expectedAttachmentCount).map {
-                    aMessageAttachment(id = it.toString())
-                }
-            ).right()
-        coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
-        coEvery {
-            getDownloadingAttachmentsForMessages(
-                userId,
-                listOf(defaultExpanded.message.messageId, expandedMessageId)
-            )
-        } returns listOf()
-        coEvery {
-            getAttachmentIntentValues(userId, expandedMessageId, AttachmentId(0.toString()))
-        } returns DataError.Local.NoDataCached.left()
+        mockAttachmentDownload(
+            messages = messages,
+            expandedMessageId = expandedMessageId,
+            expectedAttachmentCount = expectedAttachmentCount,
+            defaultExpanded = defaultExpanded,
+            expectedError = DataError.Local.NoDataCached
+        )
 
         val viewModel = buildConversationDetailViewModel()
 
@@ -791,6 +781,74 @@ class ConversationDetailViewModelIntegrationTest {
             assertEquals(Effect.of(TextUiModel(R.string.error_get_attachment_failed)), actualState.error)
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    @Test
+    fun `verify not enough space error is shown when getting attachment failed due to insufficient storage`() =
+        runTest {
+            // given
+            val expectedAttachmentCount = Random().nextInt(100)
+            val defaultExpanded = MessageWithLabelsSample.AugWeatherForecast
+            val expectedExpanded = MessageWithLabelsSample.InvoiceWithLabel
+            val messages = nonEmptyListOf(
+                defaultExpanded,
+                expectedExpanded
+            )
+            val expandedMessageId = expectedExpanded.message.messageId
+            mockAttachmentDownload(
+                messages = messages,
+                expandedMessageId = expandedMessageId,
+                expectedAttachmentCount = expectedAttachmentCount,
+                defaultExpanded = defaultExpanded,
+                expectedError = DataError.Local.OutOfMemory
+            )
+
+            val viewModel = buildConversationDetailViewModel()
+
+            viewModel.state.test {
+                skipItems(4)
+                viewModel.submit(ExpandMessage(expectedExpanded.message.messageId))
+                skipItems(1)
+
+                // When
+                viewModel.submit(OnAttachmentClicked(expectedExpanded.message.messageId, AttachmentId(0.toString())))
+                val actualState = awaitItem()
+
+                // Then
+                val expectedMessageId = expectedExpanded.message.messageId
+
+                coVerify { getAttachmentIntentValues(userId, expectedMessageId, AttachmentId(0.toString())) }
+                assertEquals(Effect.of(TextUiModel(R.string.error_get_attachment_not_enough_memory)), actualState.error)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    private fun mockAttachmentDownload(
+        messages: NonEmptyList<MessageWithLabels>,
+        expandedMessageId: MessageId,
+        expectedAttachmentCount: Int,
+        defaultExpanded: MessageWithLabels,
+        expectedError: DataError.Local
+    ) {
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery { getDecryptedMessageBody.invoke(any(), expandedMessageId) } returns
+            DecryptedMessageBody(
+                value = "",
+                MimeType.Html,
+                attachments = (0 until expectedAttachmentCount).map {
+                    aMessageAttachment(id = it.toString())
+                }
+            ).right()
+        coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
+        coEvery {
+            getDownloadingAttachmentsForMessages(
+                userId,
+                listOf(defaultExpanded.message.messageId, expandedMessageId)
+            )
+        } returns listOf()
+        coEvery {
+            getAttachmentIntentValues(userId, expandedMessageId, AttachmentId(0.toString()))
+        } returns expectedError.left()
     }
 
     @Test

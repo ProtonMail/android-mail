@@ -138,6 +138,10 @@ class ConversationDetailReducer @Inject constructor(
                     TextUiModel(R.string.error_get_attachment_failed)
                 )
 
+                is ConversationDetailEvent.ErrorGettingAttachmentNotEnoughSpace -> Effect.of(
+                    TextUiModel(R.string.error_get_attachment_not_enough_memory)
+                )
+
                 ConversationDetailEvent.ErrorAttachmentDownloadInProgress -> Effect.of(
                     TextUiModel(R.string.error_attachment_download_in_progress)
                 )

@@ -67,6 +67,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorMovingConversation : ConversationDetailEvent, AffectingErrorBar
     object ErrorLabelingConversation : ConversationDetailEvent, AffectingErrorBar
     object ErrorGettingAttachment : ConversationDetailEvent, AffectingErrorBar
+    object ErrorGettingAttachmentNotEnoughSpace : ConversationDetailEvent, AffectingErrorBar
     object ErrorAttachmentDownloadInProgress : ConversationDetailEvent, AffectingErrorBar
 
     data class ExpandDecryptedMessage(

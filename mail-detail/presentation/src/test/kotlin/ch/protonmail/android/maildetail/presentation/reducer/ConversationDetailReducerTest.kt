@@ -196,7 +196,8 @@ class ConversationDetailReducerTest(
             ) affects listOf(ErrorBar, Messages),
             ConversationDetailEvent.ErrorExpandingRetrievingMessageOffline(
                 MessageId(UUID.randomUUID().toString())
-            ) affects listOf(ErrorBar, Messages)
+            ) affects listOf(ErrorBar, Messages),
+            ConversationDetailEvent.ErrorGettingAttachment affects ErrorBar
         )
 
         @JvmStatic
