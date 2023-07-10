@@ -1,0 +1,11 @@
+ciFailFast: true
+
+fastTrack:
+  allowList:
+    - amezcua
+    - ajodlows
+    - jprueller
+    - mmeneghel
+    - mwassell
+    - nforlini
+    - sboshkov
