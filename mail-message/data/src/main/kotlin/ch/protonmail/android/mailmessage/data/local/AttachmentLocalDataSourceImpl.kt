@@ -22,6 +22,7 @@ import java.io.FileNotFoundException
 import android.content.Context
 import android.net.Uri
 import arrow.core.Either
+import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
@@ -91,30 +92,36 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         encryptedAttachment: ByteArray,
         status: AttachmentWorkerStatus
     ) {
-        @Suppress("TooGenericExceptionCaught")
-        val messageAttachmentEntity = try {
-            val decryptAttachmentByteArray =
-                decryptAttachmentByteArray(userId, messageId, attachmentId, encryptedAttachment)
-            val uriToAttachment =
-                prepareAttachmentForSharing(userId, messageId, attachmentId, decryptAttachmentByteArray)
-            MessageAttachmentMetadataEntity(
-                userId = userId,
-                messageId = messageId,
-                attachmentId = attachmentId,
-                uri = uriToAttachment,
-                status = status
-            )
-        } catch (e: Exception) {
-            Timber.e("Failed to process attachment", e)
-            MessageAttachmentMetadataEntity(
-                userId = userId,
-                messageId = messageId,
-                attachmentId = attachmentId,
-                uri = null,
-                status = AttachmentWorkerStatus.Failed
-            )
-        }
-        attachmentDao.insertOrUpdate(messageAttachmentEntity)
+
+        decryptAttachmentByteArray(userId, messageId, attachmentId, encryptedAttachment).fold(
+            ifLeft = {
+                Timber.e("Failed to decrypt attachment: $it")
+                attachmentDao.insertOrUpdate(
+                    MessageAttachmentMetadataEntity(
+                        userId = userId,
+                        messageId = messageId,
+                        attachmentId = attachmentId,
+                        uri = null,
+                        status = AttachmentWorkerStatus.Failed
+                    )
+                )
+            },
+            ifRight = { decryptedByteArray ->
+                val uri = prepareAttachmentForSharing(userId, messageId, attachmentId, decryptedByteArray).getOrElse {
+                    Timber.e("Failed to prepare attachment for sharing: $it")
+                    null
+                }
+                attachmentDao.insertOrUpdate(
+                    MessageAttachmentMetadataEntity(
+                        userId = userId,
+                        messageId = messageId,
+                        attachmentId = attachmentId,
+                        uri = uri,
+                        status = if (uri != null) AttachmentWorkerStatus.Success else AttachmentWorkerStatus.Failed
+                    )
+                )
+            }
+        )
     }
 
     override suspend fun updateAttachmentDownloadStatus(

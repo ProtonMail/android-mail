@@ -26,6 +26,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.system.BuildVersionProvider
 import ch.protonmail.android.mailcommon.domain.system.ContentValuesProvider
@@ -52,28 +55,36 @@ class PrepareAttachmentForSharing @Inject constructor(
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
+    @Suppress("TooGenericExceptionCaught")
     suspend operator fun invoke(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId,
         decryptedByteArray: ByteArray
-    ): Uri? {
-        return withContext(ioDispatcher) {
-            val message = messageRepository.getLocalMessageWithBody(userId, messageId) ?: return@withContext null
-            val messageAttachment = message.messageBody.attachments.firstOrNull { it.attachmentId == attachmentId }
-            if (messageAttachment == null) {
-                Timber.d("Attachment with id: $attachmentId not found in message: $messageId")
-                return@withContext null
-            }
+    ): Either<PrepareAttachmentForSharingError, Uri> = withContext(ioDispatcher) {
+        val message =
+            messageRepository.getLocalMessageWithBody(userId, messageId)
+                ?: return@withContext PrepareAttachmentForSharingError.MessageNotFound.left()
+        val messageAttachment = message.messageBody.attachments.firstOrNull { it.attachmentId == attachmentId }
+            ?: return@withContext PrepareAttachmentForSharingError.AttachmentNotFound.left()
 
-            val contentResolver = context.contentResolver
-            val fileName = messageAttachment.name
-            val attachmentMimeType = messageAttachment.mimeType
-            return@withContext if (buildVersionProvider.sdkInt() >= Build.VERSION_CODES.Q) {
-                handleAttachmentForQAndLater(fileName, attachmentMimeType, contentResolver, decryptedByteArray)
+        val contentResolver = context.contentResolver
+        val fileName = messageAttachment.name
+        val attachmentMimeType = messageAttachment.mimeType
+        try {
+            if (buildVersionProvider.sdkInt() >= Build.VERSION_CODES.Q) {
+                return@withContext handleAttachmentForQAndLater(
+                    fileName,
+                    attachmentMimeType,
+                    contentResolver,
+                    decryptedByteArray
+                ).right()
             } else {
-                handleAttachmentBeforeQ(fileName, attachmentMimeType, decryptedByteArray)
+                return@withContext handleAttachmentBeforeQ(fileName, attachmentMimeType, decryptedByteArray)
             }
+        } catch (t: Throwable) {
+            Timber.e(t, "Preparing attachment failed")
+            return@withContext PrepareAttachmentForSharingError.PreparingAttachmentFailed.left()
         }
     }
 
@@ -112,13 +123,22 @@ class PrepareAttachmentForSharing @Inject constructor(
         fileName: String,
         attachmentMimeType: String,
         decryptedByteArray: ByteArray
-    ): Uri? {
+    ): Either<PrepareAttachmentForSharingError, Uri> {
         return File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName).let {
             if (!it.exists()) {
                 it.createNewFile()
             }
             it.sink().buffer().use { sink -> sink.write(decryptedByteArray) }
-            getUriFromMediaScanner(it, attachmentMimeType)
+            getUriFromMediaScanner(it, attachmentMimeType)?.right()
+                ?: PrepareAttachmentForSharingError.PreparingAttachmentFailed.left()
         }
     }
 }
+
+sealed interface PrepareAttachmentForSharingError {
+    object MessageNotFound : PrepareAttachmentForSharingError
+    object AttachmentNotFound : PrepareAttachmentForSharingError
+    object PreparingAttachmentFailed : PrepareAttachmentForSharingError
+}
+
+

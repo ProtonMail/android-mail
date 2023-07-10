@@ -26,6 +26,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.system.BuildVersionProvider
 import ch.protonmail.android.mailcommon.domain.system.ContentValuesProvider
@@ -52,8 +54,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertNull
 
 class PrepareAttachmentForSharingTest {
 
@@ -103,7 +103,7 @@ class PrepareAttachmentForSharingTest {
     }
 
     @Test
-    fun `return null when message body is not found`() = runTest {
+    fun `return message not found error when message body is not found`() = runTest {
         // Given
         coEvery { messageRepository.getLocalMessageWithBody(userId, messageId) } returns null
 
@@ -111,11 +111,11 @@ class PrepareAttachmentForSharingTest {
         val result = prepareAttachmentForSharing(userId, messageId, attachmentId, decryptedByteArray)
 
         // Then
-        assertNull(result)
+        assertEquals(PrepareAttachmentForSharingError.MessageNotFound.left(), result)
     }
 
     @Test
-    fun `return null when attachment is not found in message body`() = runTest {
+    fun `return attachment not found when attachment is not found in message body`() = runTest {
         // Given
         coEvery { messageRepository.getLocalMessageWithBody(userId, messageId) } returns messageWithBody.copy(
             messageBody = MessageBodyTestData.messageBody
@@ -125,7 +125,7 @@ class PrepareAttachmentForSharingTest {
         val result = prepareAttachmentForSharing(userId, messageId, attachmentId, decryptedByteArray)
 
         // Then
-        assertNull(result)
+        assertEquals(PrepareAttachmentForSharingError.AttachmentNotFound.left(), result)
     }
 
     @Test
@@ -153,7 +153,7 @@ class PrepareAttachmentForSharingTest {
         val result = prepareAttachmentForSharing(userId, messageId, attachmentId, decryptedByteArray)
 
         // Then
-        assertEquals(expectedUri, result)
+        assertEquals(expectedUri.right(), result)
     }
 
     @Test
@@ -173,10 +173,11 @@ class PrepareAttachmentForSharingTest {
             mockedContentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
         } returns null
 
-        // When - Then
-        assertFailsWith<IllegalStateException> {
-            prepareAttachmentForSharing(userId, messageId, attachmentId, decryptedByteArray)
-        }
+        // When
+        val result = prepareAttachmentForSharing(userId, messageId, attachmentId, decryptedByteArray)
+
+        // - Then
+        assertEquals(PrepareAttachmentForSharingError.PreparingAttachmentFailed.left(), result)
     }
 
 
@@ -191,7 +192,7 @@ class PrepareAttachmentForSharingTest {
         val result = prepareAttachmentForSharing(userId, messageId, attachmentId, decryptedByteArray)
 
         // Then
-        assertEquals(expectedUri, result)
+        assertEquals(expectedUri.right(), result)
     }
 
 

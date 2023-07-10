@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailmessage.data.local.usecase
 
 import java.io.File
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageWithBody
@@ -44,7 +46,6 @@ import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.user.domain.entity.UserAddressKey
 import org.junit.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class DecryptAttachmentByteArrayTest {
 
@@ -110,7 +111,7 @@ class DecryptAttachmentByteArrayTest {
         val result = decryptAttachmentFile(userId, messageId, attachmentId, encryptedFile)
 
         // Then
-        assertEquals(decryptedFile, result)
+        assertEquals(decryptedFile.right(), result)
     }
 
     @Test
@@ -123,8 +124,11 @@ class DecryptAttachmentByteArrayTest {
             messageRepo.getLocalMessageWithBody(userId, messageId)
         } returns MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBodyWithAttachment)
 
-        // When - Then
-        assertFailsWith<CryptoException> { decryptAttachmentFile(userId, messageId, attachmentId, encryptedFile) }
+        // When
+        val result = decryptAttachmentFile(userId, messageId, attachmentId, encryptedFile)
+
+        // Then
+        assertEquals(AttachmentDecryptionError.DecryptionFailed.left(), result)
     }
 
     @Test
@@ -135,10 +139,11 @@ class DecryptAttachmentByteArrayTest {
             messageRepo.getLocalMessageWithBody(userId, messageId)
         } returns null
 
-        // When - Then
-        assertFailsWith<IllegalArgumentException> {
-            decryptAttachmentFile(userId, messageId, attachmentId, encryptedFile)
-        }
+        // When
+        val result = decryptAttachmentFile(userId, messageId, attachmentId, encryptedFile)
+
+        // Then
+        assertEquals(AttachmentDecryptionError.MessageBodyNotFound.left(), result)
     }
 
     @Test
@@ -153,10 +158,11 @@ class DecryptAttachmentByteArrayTest {
             mockUserAddressManager.getAddress(UserIdSample.Primary, MessageTestData.message.addressId)
         } returns null
 
-        // When - Then
-        assertFailsWith<IllegalArgumentException> {
-            decryptAttachmentFile(userId, messageId, attachmentId, encryptedFile)
-        }
+        // When
+        val result = decryptAttachmentFile(userId, messageId, attachmentId, encryptedFile)
+
+        // Then
+        assertEquals(AttachmentDecryptionError.UserAddressNotFound.left(), result)
     }
 
     @Test
@@ -168,10 +174,11 @@ class DecryptAttachmentByteArrayTest {
             messageRepo.getLocalMessageWithBody(userId, messageId)
         } returns MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody)
 
-        // When - Then
-        assertFailsWith<IllegalArgumentException> {
-            decryptAttachmentFile(userId, messageId, attachmentId, encryptedFile)
-        }
+        // When
+        val result = decryptAttachmentFile(userId, messageId, attachmentId, encryptedFile)
+
+        // Then
+        assertEquals(AttachmentDecryptionError.MessageAttachmentNotFound.left(), result)
     }
 
     private fun mockDecryptionSuccessful() {
