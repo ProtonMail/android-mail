@@ -49,6 +49,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
 import ch.protonmail.android.mailcommon.presentation.extension.isItemRead
+import ch.protonmail.android.mailcommon.presentation.extension.tintColor
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
@@ -248,6 +249,7 @@ private fun LocationIcons(
     ) {
         iconResIds.forEach {
             SmallNonClickableIcon(
+                modifier = Modifier.semantics { tintColor = it.color },
                 iconId = it.icon,
                 iconColor = it.color ?: iconColor
             )
