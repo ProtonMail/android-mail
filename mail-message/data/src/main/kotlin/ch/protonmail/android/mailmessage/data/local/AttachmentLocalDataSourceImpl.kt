@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import java.io.File
 import java.io.FileNotFoundException
 import android.content.Context
 import android.net.Uri
@@ -46,6 +47,7 @@ import javax.inject.Inject
 
 class AttachmentLocalDataSourceImpl @Inject constructor(
     db: MessageDatabase,
+    private val attachmentFileStorage: AttachmentFileStorage,
     @ApplicationContext private val context: Context,
     private val decryptAttachmentByteArray: DecryptAttachmentByteArray,
     private val prepareAttachmentForSharing: PrepareAttachmentForSharing,
@@ -79,6 +81,19 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
                 DataError.Local.NoDataCached.left()
             }
         }
+    }
+
+    override suspend fun getEmbeddedImage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError.Local, File> {
+        return runCatching {
+            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+        }.fold(
+            onSuccess = { it.right() },
+            onFailure = { DataError.Local.NoDataCached.left() }
+        )
     }
 
     override suspend fun getDownloadingAttachmentsForMessages(userId: UserId, messageIds: List<MessageId>) =

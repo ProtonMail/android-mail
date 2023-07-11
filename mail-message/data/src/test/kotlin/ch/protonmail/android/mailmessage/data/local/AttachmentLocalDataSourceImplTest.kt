@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.local
 
+import java.io.File
 import java.io.InputStream
 import android.content.ContentResolver
 import android.content.Context
@@ -47,11 +48,11 @@ import io.mockk.unmockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 
 class AttachmentLocalDataSourceImplTest {
 
@@ -78,6 +79,7 @@ class AttachmentLocalDataSourceImplTest {
         status = AttachmentWorkerStatus.Running
     )
 
+    private val attachmentFileStorage = mockk<AttachmentFileStorage>()
     private val attachmentDao = mockk<MessageAttachmentMetadataDao>(relaxUnitFun = true)
     private val messageDatabase = mockk<MessageDatabase> {
         every { messageAttachmentMetadataDao() } returns attachmentDao
@@ -87,19 +89,20 @@ class AttachmentLocalDataSourceImplTest {
 
     private val attachmentLocalDataSource = AttachmentLocalDataSourceImpl(
         db = messageDatabase,
+        attachmentFileStorage = attachmentFileStorage,
         context = context,
         decryptAttachmentByteArray = decryptAttachmentByteArray,
         prepareAttachmentForSharing = prepareAttachmentForSharing,
         ioDispatcher = Dispatchers.Unconfined
     )
 
-    @Before
+    @BeforeTest
     fun setUp() {
         mockkStatic(Uri::class)
         every { Uri.parse(any()) } returns mockUri
     }
 
-    @After
+    @AfterTest
     fun tearDown() {
         unmockkStatic(Uri::class)
     }
@@ -288,5 +291,35 @@ class AttachmentLocalDataSourceImplTest {
 
         // Then
         assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `should return file when getting embedded image call was successful`() = runTest {
+        // Given
+        @Suppress("BlockingMethodInNonBlockingContext")
+        val file = File.createTempFile("test", "test")
+        coEvery { attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id) } returns file
+        val expected = file.right()
+
+        // When
+        val actual = attachmentLocalDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should return local error when getting embedded image call has failed`() = runTest {
+        // Given
+        coEvery {
+            attachmentFileStorage.readAttachment(userId, messageId.id, attachmentId.id)
+        } throws AttachmentFileReadException
+        val expected = DataError.Local.NoDataCached.left()
+
+        // When
+        val actual = attachmentLocalDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(expected, actual)
     }
 }
