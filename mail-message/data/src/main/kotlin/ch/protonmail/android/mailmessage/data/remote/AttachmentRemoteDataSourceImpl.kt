@@ -18,14 +18,19 @@
 
 package ch.protonmail.android.mailmessage.data.remote
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.remote.worker.GetAttachmentWorker
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import me.proton.core.domain.entity.UserId
+import me.proton.core.network.data.ApiProvider
 import javax.inject.Inject
 
 class AttachmentRemoteDataSourceImpl @Inject constructor(
+    private val apiProvider: ApiProvider,
     private val enqueuer: Enqueuer
 ) : AttachmentRemoteDataSource {
 
@@ -39,5 +44,15 @@ class AttachmentRemoteDataSourceImpl @Inject constructor(
             params = GetAttachmentWorker.params(userId, messageId, attachmentId),
             constraints = null
         )
+    }
+
+    override suspend fun getEmbeddedImage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError.Remote, ByteArray> {
+        return apiProvider.get<AttachmentApi>(userId).invoke {
+            getAttachment(attachmentId = attachmentId.id).bytes()
+        }.toEither()
     }
 }
