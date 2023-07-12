@@ -18,14 +18,13 @@
 
 package ch.protonmail.android.uitest.helpers.core.navigation
 
-import androidx.test.core.app.ActivityScenario
-import ch.protonmail.android.MainActivity
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.uitest.helpers.login.MockedLoginTestUsers
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.menu.menuRobot
+import ch.protonmail.android.uitest.util.ActivityScenarioHolder
 import ch.protonmail.android.uitest.util.extensions.waitUntilSignInScreenIsGone
 import me.proton.core.test.android.robots.auth.AddAccountRobot
 import me.proton.core.test.android.robots.auth.login.LoginRobot
@@ -53,7 +52,7 @@ internal class Navigator {
         launchApp: Boolean = true,
         performLoginViaUI: Boolean = true
     ) {
-        if (launchApp) ActivityScenario.launch(MainActivity::class.java)
+        if (launchApp) ActivityScenarioHolder.initialize()
 
         if (performLoginViaUI) login()
 
