@@ -40,6 +40,7 @@ import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationSt
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImage
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
@@ -146,6 +147,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val setMessageViewState: SetMessageViewState,
     private val observeConversationViewState: ObserveConversationViewState,
     private val getAttachmentIntentValues: GetAttachmentIntentValues,
+    private val getEmbeddedImage: GetEmbeddedImage,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -188,6 +190,9 @@ class ConversationDetailViewModel @Inject constructor(
             }
         }
     }
+
+    suspend fun loadEmbeddedImage(messageId: MessageId, contentId: String) =
+        getEmbeddedImage(primaryUserId.first(), messageId, contentId).getOrNull()
 
     private fun observeConversationMetadata(conversationId: ConversationId) {
         primaryUserId.flatMapLatest { userId ->

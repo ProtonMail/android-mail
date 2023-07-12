@@ -48,6 +48,7 @@ import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImage
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
@@ -223,6 +224,7 @@ class ConversationDetailViewModelTest {
     private val observeAttachmentStatus = mockk<ObserveMessageAttachmentStatus>()
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
     private val getAttachmentDownloadStatus = mockk<GetDownloadingAttachmentsForMessages>()
+    private val getEmbeddedImage = mockk<GetEmbeddedImage>()
     private val reducer: ConversationDetailReducer = mockk {
         every { newStateFrom(currentState = any(), operation = any()) } returns ConversationDetailState.Loading
     }
@@ -277,6 +279,7 @@ class ConversationDetailViewModelTest {
             setMessageViewState = setMessageViewState,
             observeConversationViewState = observeConversationViewState,
             getAttachmentIntentValues = getAttachmentIntentValues,
+            getEmbeddedImage = getEmbeddedImage,
             ioDispatcher = Dispatchers.Unconfined
         )
     }

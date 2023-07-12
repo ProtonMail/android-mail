@@ -56,6 +56,8 @@ import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImage
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
@@ -194,6 +196,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val observeAttachmentStatus = mockk<ObserveMessageAttachmentStatus>()
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
+    private val getEmbeddedImage = mockk<GetEmbeddedImage>()
     // endregion
 
     // region mock action use cases
@@ -886,6 +889,39 @@ class ConversationDetailViewModelIntegrationTest {
         }
     }
 
+    @Test
+    fun `returns get embedded image result when getting was successful`() = runTest {
+        // Given
+        val messageId = MessageId("rawMessageId")
+        val contentId = "contentId"
+        val byteArray = "I'm a byte array".toByteArray()
+        val expectedResult = GetEmbeddedImageResult(byteArray, "image/png")
+        coEvery { getEmbeddedImage(userId, messageId, contentId) } returns expectedResult.right()
+        val viewModel = buildConversationDetailViewModel()
+
+        // When
+        val actual = viewModel.loadEmbeddedImage(messageId, contentId)
+
+        // Then
+        assertEquals(expectedResult, actual)
+    }
+
+    @Test
+    fun `returns null when get embedded image returned an error`() = runTest {
+        // Given
+        val messageId = MessageId("rawMessageId")
+        val contentId = "contentId"
+        val expectedResult = DataError.Local.NoDataCached
+        coEvery { getEmbeddedImage(userId, messageId, contentId) } returns expectedResult.left()
+        val viewModel = buildConversationDetailViewModel()
+
+        // When
+        val actual = viewModel.loadEmbeddedImage(messageId, contentId)
+
+        // Then
+        assertNull(actual)
+    }
+
     private suspend fun ReceiveTurbine<ConversationDetailState>.lastEmittedItem(): ConversationDetailState {
         val events = cancelAndConsumeRemainingEvents()
         return (events.last() as Event.Item).value
@@ -944,6 +980,7 @@ class ConversationDetailViewModelIntegrationTest {
         setMessageViewState = setMessageViewState,
         observeConversationViewState = observeConversationViewState,
         getAttachmentIntentValues = getIntentValues,
+        getEmbeddedImage = getEmbeddedImage,
         ioDispatcher = ioDispatcher
     )
 
