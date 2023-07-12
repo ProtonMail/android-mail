@@ -322,4 +322,19 @@ class AttachmentLocalDataSourceImplTest {
         // Then
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `verify file is stored in attachment file storage when saving an embedded image`() = runTest {
+        // Given
+        @Suppress("BlockingMethodInNonBlockingContext")
+        val file = File.createTempFile("test", "test")
+        val byteArray = file.readBytes()
+        coEvery { attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, byteArray) } returns file
+
+        // When
+        attachmentLocalDataSource.storeEmbeddedImage(userId, messageId, attachmentId, byteArray)
+
+        // Then
+        coVerify { attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, byteArray) }
+    }
 }

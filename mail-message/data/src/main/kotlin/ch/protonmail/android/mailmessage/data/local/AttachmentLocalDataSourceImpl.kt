@@ -160,6 +160,16 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         )
     }
 
+    override suspend fun storeEmbeddedImage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        encryptedAttachment: ByteArray
+    ) {
+        runCatching { attachmentFileStorage.saveAttachment(userId, messageId.id, attachmentId.id, encryptedAttachment) }
+            .onFailure { Timber.d("Failed to store attachment: $attachmentId") }
+    }
+
     override suspend fun deleteAttachments(userId: UserId, messageId: MessageId): Boolean {
         attachmentDao.deleteAttachmentMetadataForMessage(userId, messageId)
         return true

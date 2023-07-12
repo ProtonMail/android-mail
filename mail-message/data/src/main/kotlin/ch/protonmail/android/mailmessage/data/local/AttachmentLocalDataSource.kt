@@ -83,6 +83,16 @@ interface AttachmentLocalDataSource {
     )
 
     /**
+     * Store the embedded image for the given [userId], [messageId] and [attachmentId].
+     */
+    suspend fun storeEmbeddedImage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId,
+        encryptedAttachment: ByteArray
+    )
+
+    /**
      * Delete the attachment for the given [userId] and [messageId].
      * @return true if deleting was successful, false otherwise.
      */
