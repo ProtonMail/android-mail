@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,6 +69,11 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
     val snackbarHostState = remember { ProtonSnackbarHostState() }
     val changeSenderBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
+    fun onCloseComposer() {
+        viewModel.submit(ComposerAction.OnCloseComposer)
+        onCloseComposerClick()
+    }
+
     ProtonModalBottomSheetLayout(
         sheetContent = {
             ChangeSenderBottomSheetContent(
@@ -86,7 +92,7 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
                 ComposerTopBar(
                     onCloseComposerClick = {
                         dismissKeyboard(context, view, keyboardController)
-                        onCloseComposerClick()
+                        onCloseComposer()
                     }
                 )
                 ComposerForm(
@@ -122,6 +128,8 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
             changeSenderBottomSheetState.hide()
         }
     }
+
+    BackHandler(true) { onCloseComposer() }
 }
 
 private fun buildActions(
