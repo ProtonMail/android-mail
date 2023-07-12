@@ -32,6 +32,7 @@ import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyErro
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImage
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
@@ -109,7 +110,8 @@ class MessageDetailViewModel @Inject constructor(
     private val moveMessage: MoveMessage,
     private val relabelMessage: RelabelMessage,
     private val getAttachmentIntentValues: GetAttachmentIntentValues,
-    private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages
+    private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages,
+    private val getEmbeddedImage: GetEmbeddedImage
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -145,6 +147,9 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.OnAttachmentClicked -> onOpenAttachmentClicked(action.attachmentId)
         }.exhaustive
     }
+
+    suspend fun loadEmbeddedImage(contentId: String) =
+        getEmbeddedImage(primaryUserId.first(), messageId, contentId).getOrNull()
 
     private fun starMessage() {
         primaryUserId.mapLatest { userId ->

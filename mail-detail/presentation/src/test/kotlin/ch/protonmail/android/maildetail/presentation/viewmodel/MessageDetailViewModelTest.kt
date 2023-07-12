@@ -43,6 +43,8 @@ import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImage
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
@@ -241,6 +243,7 @@ class MessageDetailViewModelTest {
     }
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
+    private val getEmbeddedImage = mockk<GetEmbeddedImage>()
 
     private val viewModel by lazy {
         MessageDetailViewModel(
@@ -266,7 +269,8 @@ class MessageDetailViewModelTest {
             moveMessage = moveMessage,
             relabelMessage = relabelMessage,
             getAttachmentIntentValues = getAttachmentIntentValues,
-            getDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages
+            getDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages,
+            getEmbeddedImage = getEmbeddedImage
         )
     }
 
@@ -1074,6 +1078,35 @@ class MessageDetailViewModelTest {
                 cancelAndIgnoreRemainingEvents()
             }
         }
+
+    @Test
+    fun `returns get embedded image result when getting was successful`() = runTest {
+        // Given
+        val contentId = "contentId"
+        val byteArray = "I'm a byte array".toByteArray()
+        val expectedResult = GetEmbeddedImageResult(byteArray, "image/png")
+        coEvery { getEmbeddedImage(userId, MessageId(rawMessageId), contentId) } returns expectedResult.right()
+
+        // When
+        val actual = viewModel.loadEmbeddedImage(contentId)
+
+        // Then
+        assertEquals(expectedResult, actual)
+    }
+
+    @Test
+    fun `returns null when get embedded image returned an error`() = runTest {
+        // Given
+        val contentId = "contentId"
+        val expectedResult = DataError.Local.NoDataCached
+        coEvery { getEmbeddedImage(userId, MessageId(rawMessageId), contentId) } returns expectedResult.left()
+
+        // When
+        val actual = viewModel.loadEmbeddedImage(contentId)
+
+        // Then
+        assertNull(actual)
+    }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {
         assertEquals(MessageDetailState.Loading, awaitItem())
