@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.repository
 
 import arrow.core.Either
+import arrow.core.continuations.either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -70,6 +71,21 @@ class AttachmentRepositoryImpl @Inject constructor(
                 }
             }
             ?: DataError.Remote.Unknown.left()
+    }
+
+    override suspend fun getEmbeddedImage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError, ByteArray> {
+        val embeddedImage = localDataSource.getEmbeddedImage(userId, messageId, attachmentId).getOrNull()
+        if (embeddedImage != null) return embeddedImage.readBytes().right()
+
+        return either {
+            remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId).bind().apply {
+                localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, this)
+            }
+        }
     }
 
     override suspend fun getDownloadingAttachmentsForMessages(userId: UserId, messageIds: List<MessageId>) =

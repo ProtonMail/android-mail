@@ -37,6 +37,18 @@ interface AttachmentRepository {
         attachmentId: AttachmentId
     ): Either<DataError, MessageAttachmentMetadata>
 
+    /**
+     * Get the embedded image for the given [userId], [messageId] and [attachmentId].
+     * This method will fetch and store the embedded image if it is not yet stored locally.
+     * Otherwise it will return the local file.
+     * @return If successful the encrypted bytearray of the embedded image.
+     */
+    suspend fun getEmbeddedImage(
+        userId: UserId,
+        messageId: MessageId,
+        attachmentId: AttachmentId
+    ): Either<DataError, ByteArray>
+
     suspend fun getDownloadingAttachmentsForMessages(
         userId: UserId,
         messageIds: List<MessageId>

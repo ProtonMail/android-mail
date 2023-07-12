@@ -18,11 +18,13 @@
 
 package ch.protonmail.android.mailmessage.data
 
+import java.io.File
 import android.net.Uri
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.AttachmentRemoteDataSource
@@ -36,15 +38,16 @@ import io.mockk.Called
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -68,15 +71,18 @@ class AttachmentRepositoryImplTest {
 
     private val repository = AttachmentRepositoryImpl(remoteDataSource, localDataSource)
 
-    @Before
+    @BeforeTest
     fun setUp() {
+        mockkStatic("kotlin.io.FilesKt__FileReadWriteKt")
+
         mockkStatic(Uri::class)
         coEvery { Uri.parse(any()) } returns mockk()
     }
 
-    @After
+    @AfterTest
     fun tearDown() {
         unmockkStatic(Uri::class)
+        unmockkStatic("kotlin.io.FilesKt__FileReadWriteKt")
     }
 
     @Test
@@ -185,6 +191,63 @@ class AttachmentRepositoryImplTest {
 
         // Then
         assertEquals(DataError.Local.OutOfMemory.left(), result)
+    }
+
+    @Test
+    fun `should return locally stored embedded image when it is locally available`() = runTest {
+        // Given
+        val expectedByteArray = "I'm an embedded image".toByteArray()
+
+        val expectedFile = mockk<File> {
+            every { readBytes() } returns expectedByteArray
+        }
+
+        coEvery { localDataSource.getEmbeddedImage(userId, messageId, attachmentId) } returns expectedFile.right()
+
+        // When
+        val actual = repository.getEmbeddedImage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(expectedByteArray.right(), actual)
+        coVerify { remoteDataSource wasNot Called }
+    }
+
+    @Test
+    fun `should store and return remote fetched embedded image when it is locally not available`() = runTest {
+        // Given
+        val expectedByteArray = "I'm an embedded image".toByteArray()
+
+        coEvery {
+            localDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+        } returns DataError.Local.NoDataCached.left()
+        coEvery { remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId) } returns expectedByteArray.right()
+        coEvery { localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, expectedByteArray) } just Runs
+
+        // When
+        val actual = repository.getEmbeddedImage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(expectedByteArray.right(), actual)
+        coVerify { localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, expectedByteArray) }
+    }
+
+    @Test
+    fun `should return remote error when fetching embedded image failed`() = runTest {
+        // Given
+        val expected = DataError.Remote.Http(NetworkError.NoNetwork).left()
+
+        coEvery {
+            localDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+        } returns DataError.Local.NoDataCached.left()
+        coEvery {
+            remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+        } returns expected
+
+        // When
+        val actual = repository.getEmbeddedImage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(expected, actual)
     }
 
     @Test
