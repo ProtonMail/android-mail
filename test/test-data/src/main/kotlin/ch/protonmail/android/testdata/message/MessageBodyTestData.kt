@@ -41,6 +41,24 @@ object MessageBodyTestData {
         )
     )
 
+    val messageBodyWithEmbeddedImage = buildMessageBody(
+        attachments = listOf(
+            MessageAttachmentTestData.embeddedImageAttachment
+        )
+    )
+
+    val messageBodyWithEmbeddedOctetStream = buildMessageBody(
+        attachments = listOf(
+            MessageAttachmentTestData.embeddedOctetStreamAttachment
+        )
+    )
+
+    val messageBodyWithInvalidEmbeddedAttachment = buildMessageBody(
+        attachments = listOf(
+            MessageAttachmentTestData.invalidEmbeddedImageAttachment
+        )
+    )
+
     val htmlMessageBody = buildMessageBody(
         mimeType = MimeType.Html
     )

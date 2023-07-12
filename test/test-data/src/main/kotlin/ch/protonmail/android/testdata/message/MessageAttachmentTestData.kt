@@ -83,4 +83,40 @@ object MessageAttachmentTestData {
         headers = emptyMap()
     )
 
+    val embeddedImageAttachment = MessageAttachment(
+        attachmentId = AttachmentId("embeddedImageId"),
+        name = "embeddedImage.png",
+        size = 1234,
+        mimeType = "image/png",
+        disposition = "inline",
+        keyPackets = null,
+        signature = null,
+        encSignature = null,
+        headers = mapOf("content-id" to "embeddedImageContentId")
+    )
+
+    val embeddedOctetStreamAttachment = MessageAttachment(
+        attachmentId = AttachmentId("embeddedImageId"),
+        name = "embeddedOctet.png",
+        size = 1234,
+        mimeType = "application/octet-stream",
+        disposition = "inline",
+        keyPackets = null,
+        signature = null,
+        encSignature = null,
+        headers = mapOf("content-id" to "embeddedImageContentId")
+    )
+
+    val invalidEmbeddedImageAttachment = MessageAttachment(
+        attachmentId = AttachmentId("embeddedImageId"),
+        name = "embeddedImage.png",
+        size = 1234,
+        mimeType = "application/pdf",
+        disposition = "inline",
+        keyPackets = null,
+        signature = null,
+        encSignature = null,
+        headers = mapOf("content-id" to "embeddedImageContentId")
+    )
+
 }
