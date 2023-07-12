@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.robot.composer.section
 
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTextInput
@@ -56,6 +57,10 @@ internal class ComposerMessageBodySection : ComposeSectionRobot() {
         fun hasText(value: String) = apply {
             messageBodyPlaceholder.assertDoesNotExist()
             messageBodyText.assertTextEquals(value)
+        }
+
+        fun hasFocus() = apply {
+            messageBodyText.assertIsFocused()
         }
     }
 }

@@ -21,6 +21,8 @@ package ch.protonmail.android.uitest.robot.composer.section
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
+import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
@@ -44,19 +46,27 @@ internal class ComposerSubjectSection : ComposeSectionRobot() {
         subject.performClick()
     }
 
-    fun typeSubject(value: String) = apply {
+    fun typeSubject(value: String) {
         subject.performTextInput(value)
+    }
+
+    fun clearField() {
+        subject.performTextClearance()
+    }
+
+    fun performImeAction() {
+        subject.performImeAction()
     }
 
     @VerifiesOuter
     inner class Verify {
 
-        fun hasEmptySubject() = apply {
+        fun hasEmptySubject() {
             subject.assertEmptyText()
             subjectPlaceholder.assertTextEquals(SubjectPlaceholder)
         }
 
-        fun hasSubject(value: String) = apply {
+        fun hasSubject(value: String) {
             subject.assertTextEquals(value)
             subjectPlaceholder.assertDoesNotExist()
         }
