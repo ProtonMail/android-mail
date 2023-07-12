@@ -26,4 +26,11 @@ internal sealed class ParticipantEntry(val value: String) {
     class WithParticipant(val name: String, val isProton: Boolean = false) : ParticipantEntry(name)
     object NoSender : ParticipantEntry(getTestString(testR.string.test_mailbox_default_sender))
     object NoRecipient : ParticipantEntry(getTestString(testR.string.test_mailbox_default_recipient))
+
+    object Common {
+
+        val ProtonOfficial = WithParticipant("Proton", isProton = true)
+        val ProtonUnofficial = WithParticipant("Proton", isProton = false)
+        val FreeUser = WithParticipant("sleepykoala@proton.black")
+    }
 }

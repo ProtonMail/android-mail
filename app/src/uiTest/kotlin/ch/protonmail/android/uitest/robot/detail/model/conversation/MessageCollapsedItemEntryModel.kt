@@ -25,9 +25,12 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
+import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadgeTestTags
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailCollapsedMessageHeaderTestTags
+import ch.protonmail.android.test.R
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.util.child
+import ch.protonmail.android.uitest.util.getTestString
 
 @Suppress("TooManyFunctions")
 internal data class MessageCollapsedItemEntryModel(
@@ -70,6 +73,10 @@ internal data class MessageCollapsedItemEntryModel(
 
     private val sender = rootItem.child {
         hasTestTag(ConversationDetailCollapsedMessageHeaderTestTags.Sender)
+    }
+
+    private val authenticityBadge = rootItem.child {
+        hasTestTag(OfficialBadgeTestTags.Item)
     }
 
     private val expirationIcon = rootItem.child {
@@ -128,6 +135,15 @@ internal data class MessageCollapsedItemEntryModel(
 
     fun hasSender(value: String): MessageCollapsedItemEntryModel = apply {
         sender.assertTextEquals(value)
+    }
+
+    fun hasAuthenticityBadge(expectedValue: Boolean): MessageCollapsedItemEntryModel = apply {
+        if (expectedValue) {
+            authenticityBadge.assertIsDisplayed()
+            authenticityBadge.assertTextEquals(getTestString(R.string.test_auth_badge_official))
+        } else {
+            authenticityBadge.assertDoesNotExist()
+        }
     }
 
     fun hasExpiration(value: String): MessageCollapsedItemEntryModel = apply {

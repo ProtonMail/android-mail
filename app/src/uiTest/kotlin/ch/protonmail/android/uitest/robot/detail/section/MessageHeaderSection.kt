@@ -60,6 +60,10 @@ internal class MessageHeaderSection : ComposeSectionRobot() {
             headerModel.hasSenderAddress(address)
         }
 
+        fun hasAuthenticityBadge(value: Boolean) {
+            headerModel.hasAuthenticityBadge(value)
+        }
+
         fun hasRecipient(value: String) {
             headerModel.hasRecipient(value)
         }

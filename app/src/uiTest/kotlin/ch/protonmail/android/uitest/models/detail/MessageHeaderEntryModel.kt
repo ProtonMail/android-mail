@@ -26,11 +26,14 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
+import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadgeTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
+import ch.protonmail.android.test.R
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.labels.LabelEntry
 import ch.protonmail.android.uitest.models.labels.LabelEntryModel
 import ch.protonmail.android.uitest.util.child
+import ch.protonmail.android.uitest.util.getTestString
 
 @Suppress("TooManyFunctions")
 internal class MessageHeaderEntryModel(
@@ -56,6 +59,10 @@ internal class MessageHeaderEntryModel(
 
     private val senderAddress = rootItem.child {
         hasTestTag(MessageDetailHeaderTestTags.SenderAddress)
+    }
+
+    private val authenticityBadge = rootItem.child {
+        hasTestTag(OfficialBadgeTestTags.Item)
     }
 
     private val icons = rootItem.child {
@@ -102,6 +109,15 @@ internal class MessageHeaderEntryModel(
 
     fun hasSenderName(name: String) = apply {
         senderName.assertTextEquals(name)
+    }
+
+    fun hasAuthenticityBadge(expectedValue: Boolean) {
+        if (expectedValue) {
+            authenticityBadge.assertIsDisplayed()
+            authenticityBadge.assertTextEquals(getTestString(R.string.test_auth_badge_official))
+        } else {
+            authenticityBadge.assertDoesNotExist()
+        }
     }
 
     fun hasSenderAddress(address: String) = apply {

@@ -19,6 +19,7 @@
 package ch.protonmail.android.uitest.models.mailbox
 
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadgeTestTags
@@ -62,6 +63,7 @@ internal class ParticipantEntryModel(
 
     fun isProton(value: Boolean) {
         if (value) {
+            badge.assertIsDisplayed()
             badge.assertTextEquals(getTestString(testR.string.test_auth_badge_official))
         } else {
             badge.assertDoesNotExist()

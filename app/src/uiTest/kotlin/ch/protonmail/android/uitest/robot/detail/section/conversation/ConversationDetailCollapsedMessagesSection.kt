@@ -77,6 +77,10 @@ internal class ConversationDetailCollapsedMessagesSection : ComposeSectionRobot(
             hasSender(value)
         }
 
+        fun authenticityBadgeIsDisplayed(index: Int, value: Boolean) = withEntryModel(index) {
+            hasAuthenticityBadge(value)
+        }
+
         fun expirationIsDisplayed(index: Int, value: String) = withEntryModel(index) {
             hasExpiration(value)
         }
@@ -90,10 +94,7 @@ internal class ConversationDetailCollapsedMessagesSection : ComposeSectionRobot(
         }
     }
 
-    private fun withEntryModel(
-        index: Int,
-        block: MessageCollapsedItemEntryModel.() -> MessageCollapsedItemEntryModel
-    ) {
+    private fun withEntryModel(index: Int, block: MessageCollapsedItemEntryModel.() -> MessageCollapsedItemEntryModel) {
         val entryModel = MessageCollapsedItemEntryModel(index, composeTestRule)
         block(entryModel)
     }
