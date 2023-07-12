@@ -22,4 +22,11 @@ data class DraftFields(
     val sender: SenderEmail,
     val subject: Subject,
     val body: DraftBody
-)
+) {
+
+    /**
+     * Returns true if all of the fields (except sender) are blank.
+     * Can be used to infer whether these fields should be used to store a draft or discarded.
+     */
+    fun areBlank() = subject.value.isBlank() && body.value.isBlank()
+}

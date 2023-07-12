@@ -48,6 +48,7 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
+import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -192,6 +193,42 @@ class ComposerViewModelTest {
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInternalState(expectedMessageId, expectedSenderEmail, expectedSubject, expectedDraftBody)
+
+        // When
+        viewModel.submit(ComposerAction.OnCloseComposer)
+
+        // Then
+        coVerify { storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields) }
+    }
+
+    @Test
+    fun `should not store draft when all fields are empty and composer is closed`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        expectedMessageId { MessageIdSample.EmptyDraft }
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+
+        // When
+        viewModel.submit(ComposerAction.OnCloseComposer)
+
+        // Then
+        coVerify { storeDraftWithAllFields wasNot Called }
+    }
+
+    @Test
+    fun `should store draft when any field which requires used input is not empty and composer is closed`() = runTest {
+        // Given
+        val expectedSubject = Subject("Added subject")
+        val expectedDraftBody = DraftBody("")
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        val expectedFields = DraftFields(expectedSenderEmail, expectedSubject, expectedDraftBody)
+        expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
+
+        // Change internal state of the View Model to simulate the existence of all fields before closing the composer
+        expectedViewModelInternalState(expectedMessageId, expectedSenderEmail, expectedSubject)
 
         // When
         viewModel.submit(ComposerAction.OnCloseComposer)

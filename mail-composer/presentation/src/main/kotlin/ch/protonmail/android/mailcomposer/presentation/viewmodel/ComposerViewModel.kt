@@ -97,7 +97,9 @@ class ComposerViewModel @Inject constructor(
 
     private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {
         val fields = DraftFields(currentSenderEmail(), currentSubject(), currentDraftBody())
-        storeDraftWithAllFields(primaryUserId(), messageId, fields)
+        if (!fields.areBlank()) {
+            storeDraftWithAllFields(primaryUserId(), messageId, fields)
+        }
         return action
     }
 
