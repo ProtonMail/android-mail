@@ -49,8 +49,8 @@ import javax.inject.Singleton
 @Suppress("LongParameterList")
 object NetworkModule {
 
-    const val HOST = BuildConfig.HOST
-    const val API_HOST = "mail-api.$HOST"
+    private const val HOST = BuildConfig.HOST
+    private const val API_HOST = "mail-api.$HOST"
     const val BASE_URL = "https://$API_HOST"
 
     @Provides
@@ -77,8 +77,7 @@ object NetworkModule {
     @Provides
     @Singleton
     @LocalDiskOpCoroutineScope
-    fun provideLocalDiskOpCoroutineScope(): CoroutineScope =
-        CoroutineScope(Dispatchers.IO + SupervisorJob())
+    fun provideLocalDiskOpCoroutineScope(): CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     @Provides
     @Singleton

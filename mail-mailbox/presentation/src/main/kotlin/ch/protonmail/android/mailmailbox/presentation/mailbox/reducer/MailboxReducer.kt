@@ -31,18 +31,14 @@ class MailboxReducer @Inject constructor(
     private val unreadFilterReducer: MailboxUnreadFilterReducer
 ) {
 
-    internal fun newStateFrom(
-        currentState: MailboxState,
-        operation: MailboxOperation
-    ): MailboxState = currentState.copy(
-        mailboxListState = currentState.toNewMailboxListStateFrom(operation),
-        topAppBarState = currentState.toNewTopAppBarStateFrom(operation),
-        unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation)
-    )
+    internal fun newStateFrom(currentState: MailboxState, operation: MailboxOperation): MailboxState =
+        currentState.copy(
+            mailboxListState = currentState.toNewMailboxListStateFrom(operation),
+            topAppBarState = currentState.toNewTopAppBarStateFrom(operation),
+            unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation)
+        )
 
-    private fun MailboxState.toNewMailboxListStateFrom(
-        operation: MailboxOperation
-    ): MailboxListState {
+    private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
         return if (operation is MailboxOperation.AffectingMailboxList) {
             mailboxListReducer.newStateFrom(mailboxListState, operation)
         } else {
@@ -50,9 +46,7 @@ class MailboxReducer @Inject constructor(
         }
     }
 
-    private fun MailboxState.toNewTopAppBarStateFrom(
-        operation: MailboxOperation
-    ): MailboxTopAppBarState {
+    private fun MailboxState.toNewTopAppBarStateFrom(operation: MailboxOperation): MailboxTopAppBarState {
         return if (operation is MailboxOperation.AffectingTopAppBar) {
             topAppBarReducer.newStateFrom(topAppBarState, operation)
         } else {
@@ -60,9 +54,7 @@ class MailboxReducer @Inject constructor(
         }
     }
 
-    private fun MailboxState.toNewUnreadFilterStateFrom(
-        operation: MailboxOperation
-    ): UnreadFilterState {
+    private fun MailboxState.toNewUnreadFilterStateFrom(operation: MailboxOperation): UnreadFilterState {
         return if (operation is MailboxOperation.AffectingUnreadFilter) {
             unreadFilterReducer.newStateFrom(unreadFilterState, operation)
         } else {

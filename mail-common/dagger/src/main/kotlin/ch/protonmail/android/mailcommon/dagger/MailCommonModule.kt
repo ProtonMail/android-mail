@@ -57,7 +57,5 @@ object MailCommonModule {
     @Provides
     @Singleton
     @AppScope
-    fun provideAppScope(
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): CoroutineScope = CoroutineScope(dispatcher)
+    fun provideAppScope(@DefaultDispatcher dispatcher: CoroutineDispatcher) = CoroutineScope(dispatcher)
 }

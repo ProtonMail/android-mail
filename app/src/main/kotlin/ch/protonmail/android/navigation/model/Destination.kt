@@ -38,8 +38,7 @@ sealed class Destination(val route: String) {
         }
 
         object Message : Destination("mailbox/message/${MESSAGE_ID_KEY.wrap()}") {
-            operator fun invoke(messageId: MessageId) =
-                route.replace(MESSAGE_ID_KEY.wrap(), messageId.id)
+            operator fun invoke(messageId: MessageId) = route.replace(MESSAGE_ID_KEY.wrap(), messageId.id)
         }
 
         object Composer : Destination("composer")
@@ -62,8 +61,7 @@ sealed class Destination(val route: String) {
     object Dialog {
         object RemoveAccount : Destination("remove/${USER_ID_KEY.wrap()}") {
 
-            operator fun invoke(userId: UserId?) =
-                route.replace(USER_ID_KEY.wrap(), userId?.id ?: " ")
+            operator fun invoke(userId: UserId?) = route.replace(USER_ID_KEY.wrap(), userId?.id ?: " ")
         }
     }
 }

@@ -39,9 +39,8 @@ class MailboxAvatarUiModelMapper @Inject constructor(
         }
     }
 
-    private fun MailboxItem.isDraftInMessageMode() =
-        type == MailboxItemType.Message &&
-            labelIds.any { it == SystemLabelId.AllDrafts.labelId }
+    private fun MailboxItem.isDraftInMessageMode() = type == MailboxItemType.Message &&
+        labelIds.any { it == SystemLabelId.AllDrafts.labelId }
 
     companion object {
         private const val UnknownParticipant = "?"
