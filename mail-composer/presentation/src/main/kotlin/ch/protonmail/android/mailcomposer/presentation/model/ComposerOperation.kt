@@ -32,6 +32,7 @@ internal sealed interface ComposerAction : ComposerOperation {
     data class DraftBodyChanged(val draftBody: DraftBody) : ComposerAction
 
     object ChangeSenderRequested : ComposerAction
+    object OnCloseComposer : ComposerAction
 }
 
 sealed interface ComposerEvent : ComposerOperation {

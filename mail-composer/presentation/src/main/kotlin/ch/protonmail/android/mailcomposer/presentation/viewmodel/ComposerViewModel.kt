@@ -22,12 +22,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -45,6 +48,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.jetbrains.annotations.VisibleForTesting
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -52,6 +56,7 @@ import javax.inject.Inject
 class ComposerViewModel @Inject constructor(
     private val storeDraftWithBody: StoreDraftWithBody,
     private val storeDraftWithSubject: StoreDraftWithSubject,
+    private val storeDraftWithAllFields: StoreDraftWithAllFields,
     private val reducer: ComposerReducer,
     private val isValidEmailAddress: IsValidEmailAddress,
     private val getPrimaryAddress: GetPrimaryAddress,
@@ -63,7 +68,8 @@ class ComposerViewModel @Inject constructor(
     private val messageId = MessageId(provideNewDraftId().id)
     private val primaryUserId = observePrimaryUserId().filterNotNull()
 
-    private val mutableState = MutableStateFlow(ComposerDraftState.empty(provideNewDraftId()))
+    @VisibleForTesting
+    val mutableState = MutableStateFlow(ComposerDraftState.empty(provideNewDraftId()))
     val state: StateFlow<ComposerDraftState> = mutableState
 
     init {
@@ -81,12 +87,19 @@ class ComposerViewModel @Inject constructor(
                 is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
                 is ComposerAction.SubjectChanged -> emitNewStateFor(onSubjectChanged(action))
                 is ComposerAction.ChangeSenderRequested -> emitNewStateFor(onChangeSender())
+                is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
                 else -> emitNewStateFor(action)
             }
         }
     }
 
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
+
+    private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {
+        val fields = DraftFields(currentSenderEmail(), currentSubject(), currentDraftBody())
+        storeDraftWithAllFields(primaryUserId(), messageId, fields)
+        return action
+    }
 
     private suspend fun onSubjectChanged(action: ComposerAction.SubjectChanged): ComposerOperation =
         storeDraftWithSubject(primaryUserId.first(), messageId, currentSenderEmail(), action.subject).fold(
@@ -113,6 +126,8 @@ class ComposerViewModel @Inject constructor(
         )
 
     private suspend fun primaryUserId() = primaryUserId.first()
+
+    private fun currentSubject() = Subject(state.value.fields.subject)
 
     private fun currentDraftBody() = DraftBody(state.value.fields.body)
 

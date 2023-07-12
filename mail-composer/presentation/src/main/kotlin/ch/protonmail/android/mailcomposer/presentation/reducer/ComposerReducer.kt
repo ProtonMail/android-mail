@@ -39,8 +39,6 @@ class ComposerReducer @Inject constructor() {
             is ComposerEvent -> operation.newStateForEvent(currentState)
         }
 
-    @Suppress("NotImplementedDeclaration", "ForbiddenComment")
-    // TODO the subject is not considered here yet, we'll add it to the draft model later
     private fun ComposerAction.newStateForAction(currentState: ComposerDraftState) = when (this) {
         is ComposerAction.SenderChanged -> updateSenderTo(currentState, this.sender)
         is ComposerAction.RecipientsBccChanged -> updateRecipientsBcc(currentState, this.recipients)
@@ -48,6 +46,7 @@ class ComposerReducer @Inject constructor() {
         is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, this.recipients)
         is ComposerAction.DraftBodyChanged -> updateDraftBodyTo(currentState, this.draftBody)
         is ComposerAction.SubjectChanged -> updateSubjectTo(currentState, this.subject)
+        is ComposerAction.OnCloseComposer,
         is ComposerAction.ChangeSenderRequested -> currentState
     }
 

@@ -24,19 +24,24 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
+import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBody
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithBodyError
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
@@ -63,6 +68,7 @@ class ComposerViewModelTest {
     @get:Rule
     val loggingTestRule = LoggingTestRule()
 
+    private val storeDraftWithAllFields = mockk<StoreDraftWithAllFields>()
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
     private val storeDraftWithSubjectMock = mockk<StoreDraftWithSubject>()
     private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
@@ -78,6 +84,7 @@ class ComposerViewModelTest {
         ComposerViewModel(
             storeDraftWithBodyMock,
             storeDraftWithSubjectMock,
+            storeDraftWithAllFields,
             reducer,
             isValidEmailAddressMock,
             getPrimaryAddressMock,
@@ -126,15 +133,11 @@ class ComposerViewModelTest {
         val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val action = ComposerAction.SenderChanged(SenderUiModel(expectedSenderEmail.value))
-        val primaryAddress = expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
 
-        // Trigger a DraftBodyChanged event to set a value for draft body before changing sender
-        val draftBodyChanged = ComposerAction.DraftBodyChanged(expectedDraftBody)
-        val senderEmailBeforeChange = SenderEmail(primaryAddress.email)
-        expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, senderEmailBeforeChange, expectedUserId)
-        viewModel.submit(draftBodyChanged)
-        assertEquals(expectedDraftBody.value, viewModel.state.value.fields.body)
+        // Change internal state of the View Model to simulate an existing draft body before changing sender
+        expectedViewModelInternalState(messageId = expectedMessageId, draftBody = expectedDraftBody)
 
         // When
         viewModel.submit(action)
@@ -173,6 +176,28 @@ class ComposerViewModelTest {
                 expectedSubject
             )
         }
+    }
+
+    @Test
+    fun `should store all draft fields when composer is closed`() = runTest {
+        // Given
+        val expectedSubject = Subject("Subject for the message")
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftBody = DraftBody("I am plaintext")
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        val expectedFields = DraftFields(expectedSenderEmail, expectedSubject, expectedDraftBody)
+        expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
+
+        // Change internal state of the View Model to simulate the existence of all fields before closing the composer
+        expectedViewModelInternalState(expectedMessageId, expectedSenderEmail, expectedSubject, expectedDraftBody)
+
+        // When
+        viewModel.submit(ComposerAction.OnCloseComposer)
+
+        // Then
+        coVerify { storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields) }
     }
 
     @Test
@@ -343,6 +368,30 @@ class ComposerViewModelTest {
         )
     }
 
+    private fun expectedViewModelInternalState(
+        messageId: MessageId,
+        senderEmail: SenderEmail = SenderEmail(""),
+        subject: Subject = Subject(""),
+        draftBody: DraftBody = DraftBody("")
+    ) {
+        viewModel.mutableState.value = ComposerDraftState(
+            fields = ComposerFields(
+                messageId,
+                SenderUiModel(senderEmail.value),
+                emptyList(),
+                emptyList(),
+                emptyList(),
+                subject.value,
+                draftBody.value
+            ),
+            premiumFeatureMessage = Effect.empty(),
+            error = Effect.empty(),
+            isSubmittable = false,
+            senderAddresses = emptyList(),
+            changeSenderBottomSheetVisibility = Effect.empty()
+        )
+    }
+
     private fun expectedMessageId(messageId: () -> MessageId): MessageId = messageId().also {
         every { provideNewDraftIdMock() } returns it
     }
@@ -430,6 +479,20 @@ class ComposerViewModelTest {
                 expectedSubject
             )
         } returns it.left()
+    }
+
+    private fun expectStoreAllDraftFieldsSucceeds(
+        expectedUserId: UserId,
+        expectedMessageId: MessageId,
+        expectedFields: DraftFields
+    ) {
+        coEvery {
+            storeDraftWithAllFields(
+                expectedUserId,
+                expectedMessageId,
+                expectedFields
+            )
+        } returns Unit
     }
 
     companion object TestData {
