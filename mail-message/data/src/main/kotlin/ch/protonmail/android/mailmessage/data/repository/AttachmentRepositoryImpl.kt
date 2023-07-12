@@ -22,8 +22,10 @@ import arrow.core.Either
 import arrow.core.continuations.either
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
+import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.data.remote.AttachmentRemoteDataSource
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
@@ -31,15 +33,19 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageAttachmentMetadata
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailmessage.domain.entity.finished
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
 class AttachmentRepositoryImpl @Inject constructor(
+    private val decryptAttachmentByteArray: DecryptAttachmentByteArray,
     private val remoteDataSource: AttachmentRemoteDataSource,
-    private val localDataSource: AttachmentLocalDataSource
+    private val localDataSource: AttachmentLocalDataSource,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AttachmentRepository {
 
     override suspend fun getAttachment(
@@ -78,12 +84,18 @@ class AttachmentRepositoryImpl @Inject constructor(
         messageId: MessageId,
         attachmentId: AttachmentId
     ): Either<DataError, ByteArray> {
-        val embeddedImage = localDataSource.getEmbeddedImage(userId, messageId, attachmentId).getOrNull()
-        if (embeddedImage != null) return embeddedImage.readBytes().right()
+        localDataSource.getEmbeddedImage(userId, messageId, attachmentId).getOrNull()?.let {
+            return withContext(ioDispatcher) {
+                decryptAttachmentByteArray(userId, messageId, attachmentId, it.readBytes())
+            }.mapLeft { DataError.Local.DecryptionError }
+        }
 
         return either {
-            remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId).bind().apply {
-                localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, this)
+            remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId).bind().let {
+                localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, it)
+                decryptAttachmentByteArray(userId, messageId, attachmentId, it).mapLeft {
+                    DataError.Local.DecryptionError
+                }.bind()
             }
         }
     }

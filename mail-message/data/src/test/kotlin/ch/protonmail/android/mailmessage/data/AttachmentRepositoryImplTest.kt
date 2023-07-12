@@ -27,6 +27,8 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.AttachmentLocalDataSource
+import ch.protonmail.android.mailmessage.data.local.usecase.AttachmentDecryptionError
+import ch.protonmail.android.mailmessage.data.local.usecase.DecryptAttachmentByteArray
 import ch.protonmail.android.mailmessage.data.remote.AttachmentRemoteDataSource
 import ch.protonmail.android.mailmessage.data.repository.AttachmentRepositoryImpl
 import ch.protonmail.android.mailmessage.domain.entity.AttachmentId
@@ -42,12 +44,14 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.runs
 import io.mockk.unmockkStatic
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -65,11 +69,16 @@ class AttachmentRepositoryImplTest {
         status = AttachmentWorkerStatus.Success
     )
 
-
+    private val decryptAttachmentByteArray: DecryptAttachmentByteArray = mockk()
     private val localDataSource: AttachmentLocalDataSource = mockk()
     private val remoteDataSource: AttachmentRemoteDataSource = mockk()
 
-    private val repository = AttachmentRepositoryImpl(remoteDataSource, localDataSource)
+    private val repository = AttachmentRepositoryImpl(
+        decryptAttachmentByteArray,
+        remoteDataSource,
+        localDataSource,
+        Dispatchers.Unconfined
+    )
 
     @BeforeTest
     fun setUp() {
@@ -196,13 +205,17 @@ class AttachmentRepositoryImplTest {
     @Test
     fun `should return locally stored embedded image when it is locally available`() = runTest {
         // Given
+        val encryptedByteArray = "I'm an encrypted embedded image".toByteArray()
         val expectedByteArray = "I'm an embedded image".toByteArray()
 
         val expectedFile = mockk<File> {
-            every { readBytes() } returns expectedByteArray
+            every { readBytes() } returns encryptedByteArray
         }
 
         coEvery { localDataSource.getEmbeddedImage(userId, messageId, attachmentId) } returns expectedFile.right()
+        coEvery {
+            decryptAttachmentByteArray(userId, messageId, attachmentId, encryptedByteArray)
+        } returns expectedByteArray.right()
 
         // When
         val actual = repository.getEmbeddedImage(userId, messageId, attachmentId)
@@ -215,20 +228,26 @@ class AttachmentRepositoryImplTest {
     @Test
     fun `should store and return remote fetched embedded image when it is locally not available`() = runTest {
         // Given
+        val encryptedByteArray = "I'm an encrypted embedded image".toByteArray()
         val expectedByteArray = "I'm an embedded image".toByteArray()
 
         coEvery {
             localDataSource.getEmbeddedImage(userId, messageId, attachmentId)
         } returns DataError.Local.NoDataCached.left()
-        coEvery { remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId) } returns expectedByteArray.right()
-        coEvery { localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, expectedByteArray) } just Runs
+        coEvery {
+            remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+        } returns encryptedByteArray.right()
+        coEvery { localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, encryptedByteArray) } just Runs
+        coEvery {
+            decryptAttachmentByteArray(userId, messageId, attachmentId, encryptedByteArray)
+        } returns expectedByteArray.right()
 
         // When
         val actual = repository.getEmbeddedImage(userId, messageId, attachmentId)
 
         // Then
         assertEquals(expectedByteArray.right(), actual)
-        coVerify { localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, expectedByteArray) }
+        coVerify { localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, encryptedByteArray) }
     }
 
     @Test
@@ -248,6 +267,31 @@ class AttachmentRepositoryImplTest {
 
         // Then
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should return decryption error when decrypting of an embedded image fails`() = runTest {
+        // Given
+        val encryptedByteArray = "I'm an encrypted embedded image".toByteArray()
+
+        coEvery {
+            localDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+        } returns DataError.Local.NoDataCached.left()
+        coEvery {
+            remoteDataSource.getEmbeddedImage(userId, messageId, attachmentId)
+        } returns encryptedByteArray.right()
+        coEvery {
+            localDataSource.storeEmbeddedImage(userId, messageId, attachmentId, encryptedByteArray)
+        } just runs
+        coEvery {
+            decryptAttachmentByteArray(userId, messageId, attachmentId, encryptedByteArray)
+        } returns AttachmentDecryptionError.DecryptionFailed.left()
+
+        // When
+        val actual = repository.getEmbeddedImage(userId, messageId, attachmentId)
+
+        // Then
+        assertEquals(DataError.Local.DecryptionError.left(), actual)
     }
 
     @Test
