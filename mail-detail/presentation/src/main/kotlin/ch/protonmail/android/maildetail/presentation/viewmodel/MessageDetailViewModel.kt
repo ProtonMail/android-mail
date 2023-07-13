@@ -33,6 +33,7 @@ import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImage
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
@@ -67,6 +68,8 @@ import ch.protonmail.android.mailmessage.domain.entity.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -79,6 +82,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.util.kotlin.exhaustive
@@ -117,6 +121,7 @@ class MessageDetailViewModel @Inject constructor(
     private val messageId = requireMessageId()
     private val primaryUserId = observePrimaryUserId().filterNotNull()
     private val mutableDetailState = MutableStateFlow(initialState)
+    private val loadEmbeddedImageJobMap = mutableMapOf<String, Deferred<GetEmbeddedImageResult?>>()
 
     val state: StateFlow<MessageDetailState> = mutableDetailState.asStateFlow()
 
@@ -148,8 +153,18 @@ class MessageDetailViewModel @Inject constructor(
         }.exhaustive
     }
 
-    suspend fun loadEmbeddedImage(contentId: String) =
-        getEmbeddedImage(primaryUserId.first(), messageId, contentId).getOrNull()
+    suspend fun loadEmbeddedImage(contentId: String): GetEmbeddedImageResult? {
+        return withContext(viewModelScope.coroutineContext) {
+            val deferred = if (loadEmbeddedImageJobMap[contentId]?.isActive == true) {
+                loadEmbeddedImageJobMap[contentId]
+            } else {
+                async { getEmbeddedImage(primaryUserId.first(), messageId, contentId).getOrNull() }.apply {
+                    loadEmbeddedImageJobMap[contentId] = this
+                }
+            }
+            deferred?.await()
+        }
+    }
 
     private fun starMessage() {
         primaryUserId.mapLatest { userId ->
