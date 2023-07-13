@@ -46,6 +46,7 @@ object MessageDetailsPreviewData {
             messageBodyUiModel = MessageBodyUiModel(
                 messageBody = "This is a message body.",
                 mimeType = MimeTypeUiModel.PlainText,
+                shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,
                 attachments = null
             )

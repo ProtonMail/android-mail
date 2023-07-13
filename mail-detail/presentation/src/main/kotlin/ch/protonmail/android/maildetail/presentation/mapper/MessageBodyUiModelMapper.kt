@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
@@ -33,6 +34,7 @@ import javax.inject.Inject
 class MessageBodyUiModelMapper @Inject constructor(
     private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody,
     private val sanitizeHtmlOfDecryptedMessageBody: SanitizeHtmlOfDecryptedMessageBody,
+    private val shouldShowEmbeddedImages: ShouldShowEmbeddedImages,
     private val shouldShowRemoteContent: ShouldShowRemoteContent
 ) {
 
@@ -47,6 +49,7 @@ class MessageBodyUiModelMapper @Inject constructor(
                 decryptedMessageBody.mimeType.toMimeTypeUiModel()
             ),
             mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
+            shouldShowEmbeddedImages = shouldShowEmbeddedImages(userId),
             shouldShowRemoteContent = shouldShowRemoteContent(userId),
             attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
                 MessageBodyAttachmentsUiModel(
@@ -67,6 +70,7 @@ class MessageBodyUiModelMapper @Inject constructor(
     fun toUiModel(encryptedMessageBody: String) = MessageBodyUiModel(
         messageBody = encryptedMessageBody,
         mimeType = MimeTypeUiModel.PlainText,
+        shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
         attachments = null
     )

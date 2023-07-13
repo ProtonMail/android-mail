@@ -29,6 +29,7 @@ object MessageBodyUiModelTestData {
     val plainTextMessageBodyUiModel = MessageBodyUiModel(
         MessageBodyTestData.messageBody.body,
         mimeType = MimeTypeUiModel.PlainText,
+        shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
         attachments = null
     )
@@ -36,6 +37,7 @@ object MessageBodyUiModelTestData {
     val messageBodyWithAttachmentsUiModel = MessageBodyUiModel(
         MessageBodyTestData.messageBody.body,
         mimeType = MimeTypeUiModel.PlainText,
+        shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
         attachments = MessageBodyAttachmentsUiModel(
             limit = 3,
@@ -58,6 +60,7 @@ object MessageBodyUiModelTestData {
             </div>
         """.trimIndent(),
         mimeType = MimeTypeUiModel.Html,
+        shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
         attachments = null
     )
@@ -65,12 +68,14 @@ object MessageBodyUiModelTestData {
     fun buildMessageBodyUiModel(
         messageBody: MessageBody = MessageBodyTestData.messageBody,
         mimeType: MimeTypeUiModel = MimeTypeUiModel.PlainText,
+        shouldShowEmbeddedImages: Boolean = false,
         shouldShowRemoteContent: Boolean = false,
         attachments: MessageBodyAttachmentsUiModel? = null
     ): MessageBodyUiModel {
         return MessageBodyUiModel(
             messageBody.body,
             mimeType,
+            shouldShowEmbeddedImages,
             shouldShowRemoteContent,
             attachments
         )

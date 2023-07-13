@@ -23,6 +23,7 @@ import ch.protonmail.android.mailmessage.domain.entity.AttachmentWorkerStatus
 data class MessageBodyUiModel(
     val messageBody: String,
     val mimeType: MimeTypeUiModel,
+    val shouldShowEmbeddedImages: Boolean,
     val shouldShowRemoteContent: Boolean,
     val attachments: MessageBodyAttachmentsUiModel?
 )
