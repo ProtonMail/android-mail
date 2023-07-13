@@ -114,9 +114,12 @@ internal fun NavGraphBuilder.addMessageDetail(
     }
 }
 
-internal fun NavGraphBuilder.addComposer(navController: NavHostController) {
+internal fun NavGraphBuilder.addComposer(navController: NavHostController, showDraftSavedSnackbar: () -> Unit) {
     composable(route = Destination.Screen.Composer.route) {
-        ComposerScreen(onCloseComposerClick = navController::popBackStack)
+        ComposerScreen(
+            onCloseComposerClick = navController::popBackStack,
+            showDraftSavedSnackbar = showDraftSavedSnackbar
+        )
     }
 }
 
@@ -130,10 +133,7 @@ internal fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostContro
     }
 }
 
-internal fun NavGraphBuilder.addSettings(
-    navController: NavHostController,
-    showFeatureMissingSnackbar: () -> Unit
-) {
+internal fun NavGraphBuilder.addSettings(navController: NavHostController, showFeatureMissingSnackbar: () -> Unit) {
     composable(route = Destination.Screen.Settings.route) {
         MainSettingsScreen(
             actions = MainSettingsScreen.Actions(

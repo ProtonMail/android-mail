@@ -59,7 +59,11 @@ import me.proton.core.compose.theme.ProtonTheme3
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewModel = hiltViewModel()) {
+fun ComposerScreen(
+    onCloseComposerClick: () -> Unit,
+    showDraftSavedSnackbar: () -> Unit,
+    viewModel: ComposerViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -68,11 +72,6 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
     var focusedField by rememberSaveable { mutableStateOf(FocusedFieldType.TO) }
     val snackbarHostState = remember { ProtonSnackbarHostState() }
     val changeSenderBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-
-    fun onCloseComposer() {
-        viewModel.submit(ComposerAction.OnCloseComposer)
-        onCloseComposerClick()
-    }
 
     ProtonModalBottomSheetLayout(
         sheetContent = {
@@ -91,8 +90,7 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
             ) {
                 ComposerTopBar(
                     onCloseComposerClick = {
-                        dismissKeyboard(context, view, keyboardController)
-                        onCloseComposer()
+                        viewModel.submit(ComposerAction.OnCloseComposer)
                     }
                 )
                 ComposerForm(
@@ -129,7 +127,20 @@ fun ComposerScreen(onCloseComposerClick: () -> Unit, viewModel: ComposerViewMode
         }
     }
 
-    BackHandler(true) { onCloseComposer() }
+    ConsumableLaunchedEffect(effect = state.closeComposer) {
+        dismissKeyboard(context, view, keyboardController)
+        onCloseComposerClick()
+    }
+
+    ConsumableLaunchedEffect(effect = state.closeComposerWithDraftSaved) {
+        dismissKeyboard(context, view, keyboardController)
+        onCloseComposerClick()
+        showDraftSavedSnackbar()
+    }
+
+    BackHandler(true) {
+        viewModel.submit(ComposerAction.OnCloseComposer)
+    }
 }
 
 private fun buildActions(
@@ -151,6 +162,6 @@ private fun buildActions(
 @AdaptivePreviews
 private fun MessageDetailScreenPreview() {
     ProtonTheme3 {
-        ComposerScreen(onCloseComposerClick = {})
+        ComposerScreen(onCloseComposerClick = {}, showDraftSavedSnackbar = {})
     }
 }

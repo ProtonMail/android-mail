@@ -102,6 +102,10 @@ fun Home(
             type = ProtonSnackbarType.ERROR
         )
     }
+    val draftSavedMessage = stringResource(id = R.string.mailbox_draft_saved_message)
+    fun showDraftSavedSnackbar() = scope.launch {
+        snackbarHostState.showSnackbar(message = draftSavedMessage, type = ProtonSnackbarType.SUCCESS)
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -165,7 +169,10 @@ fun Home(
                     openAttachment = activityActions.openIntentChooser,
                     showFeatureMissingSnackbar = { showFeatureMissingSnackbar() }
                 )
-                addComposer(navController)
+                addComposer(
+                    navController,
+                    showDraftSavedSnackbar = { showDraftSavedSnackbar() }
+                )
                 addRemoveAccountDialog(navController)
                 addSettings(
                     navController,

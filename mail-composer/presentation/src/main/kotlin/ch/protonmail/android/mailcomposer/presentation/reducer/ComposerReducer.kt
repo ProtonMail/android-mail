@@ -46,7 +46,7 @@ class ComposerReducer @Inject constructor() {
         is ComposerAction.RecipientsToChanged -> updateRecipientsTo(currentState, this.recipients)
         is ComposerAction.DraftBodyChanged -> updateDraftBodyTo(currentState, this.draftBody)
         is ComposerAction.SubjectChanged -> updateSubjectTo(currentState, this.subject)
-        is ComposerAction.OnCloseComposer,
+        is ComposerAction.OnCloseComposer -> updateCloseComposerState(currentState, false)
         is ComposerAction.ChangeSenderRequested -> currentState
     }
 
@@ -71,6 +71,13 @@ class ComposerReducer @Inject constructor() {
             senderAddresses = this.senders,
             changeSenderBottomSheetVisibility = Effect.of(true)
         )
+        is ComposerEvent.OnCloseWithDraftSaved -> updateCloseComposerState(currentState, true)
+    }
+
+    private fun updateCloseComposerState(currentState: ComposerDraftState, isDraftSaved: Boolean) = if (isDraftSaved) {
+        currentState.copy(closeComposerWithDraftSaved = Effect.of(Unit))
+    } else {
+        currentState.copy(closeComposer = Effect.of(Unit))
     }
 
     private fun updateDraftBodyTo(currentState: ComposerDraftState, draftBody: DraftBody): ComposerDraftState =

@@ -28,7 +28,9 @@ data class ComposerDraftState(
     val error: Effect<TextUiModel>,
     val isSubmittable: Boolean,
     val senderAddresses: List<SenderUiModel>,
-    val changeSenderBottomSheetVisibility: Effect<Boolean>
+    val changeSenderBottomSheetVisibility: Effect<Boolean>,
+    val closeComposer: Effect<Unit>,
+    val closeComposerWithDraftSaved: Effect<Unit>
 ) {
 
     companion object {
@@ -47,7 +49,9 @@ data class ComposerDraftState(
             error = Effect.empty(),
             isSubmittable = false,
             senderAddresses = emptyList(),
-            changeSenderBottomSheetVisibility = Effect.empty()
+            changeSenderBottomSheetVisibility = Effect.empty(),
+            closeComposer = Effect.empty(),
+            closeComposerWithDraftSaved = Effect.empty()
         )
     }
 }

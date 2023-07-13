@@ -199,6 +199,7 @@ class ComposerViewModelTest {
 
         // Then
         coVerify { storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields) }
+        assertEquals(Effect.of(Unit), viewModel.state.value.closeComposerWithDraftSaved)
     }
 
     @Test
@@ -213,6 +214,7 @@ class ComposerViewModelTest {
 
         // Then
         coVerify { storeDraftWithAllFields wasNot Called }
+        assertEquals(Effect.of(Unit), viewModel.state.value.closeComposer)
     }
 
     @Test
@@ -425,7 +427,9 @@ class ComposerViewModelTest {
             error = Effect.empty(),
             isSubmittable = false,
             senderAddresses = emptyList(),
-            changeSenderBottomSheetVisibility = Effect.empty()
+            changeSenderBottomSheetVisibility = Effect.empty(),
+            closeComposer = Effect.empty(),
+            closeComposerWithDraftSaved = Effect.empty()
         )
     }
 

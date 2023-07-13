@@ -379,6 +379,29 @@ class ComposerReducerTest(
             )
         }
 
+        private val EmptyToCloseComposer = TestTransition(
+            name = "Should close the composer",
+            currentState = ComposerDraftState.empty(messageId),
+            operation = ComposerAction.OnCloseComposer,
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                error = Effect.empty(),
+                closeComposer = Effect.of(Unit),
+                closeComposerWithDraftSaved = Effect.empty()
+            )
+        )
+
+        private val EmptyToCloseComposerWithDraftSaved = TestTransition(
+            name = "Should close the composer notifying draft saved",
+            currentState = ComposerDraftState.empty(messageId),
+            operation = ComposerEvent.OnCloseWithDraftSaved,
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                error = Effect.empty(),
+                closeComposer = Effect.empty(),
+                closeComposerWithDraftSaved = Effect.of(Unit)
+            )
+        )
 
         private val transitions = listOf(
             EmptyToSubmittableToField,
@@ -403,7 +426,9 @@ class ComposerReducerTest(
             ManyDuplicatesCcToNotDuplicateWithError,
             ManyDuplicatesBccToNotDuplicateWithError,
             EmptyToUpdatedDraftBody,
-            EmptyToUpdatedSubject
+            EmptyToUpdatedSubject,
+            EmptyToCloseComposer,
+            EmptyToCloseComposerWithDraftSaved
         )
 
         private fun aSubmittableState(
@@ -426,7 +451,9 @@ class ComposerReducerTest(
             error = error,
             isSubmittable = true,
             senderAddresses = emptyList(),
-            changeSenderBottomSheetVisibility = Effect.empty()
+            changeSenderBottomSheetVisibility = Effect.empty(),
+            closeComposer = Effect.empty(),
+            closeComposerWithDraftSaved = Effect.empty()
         )
 
         private fun aNotSubmittableState(
@@ -440,7 +467,9 @@ class ComposerReducerTest(
             senderAddresses: List<SenderUiModel> = emptyList(),
             changeSenderBottomSheetVisibility: Effect<Boolean> = Effect.empty(),
             draftBody: String = "",
-            subject: Subject = Subject("")
+            subject: Subject = Subject(""),
+            closeComposer: Effect<Unit> = Effect.empty(),
+            closeComposerWithDraftSaved: Effect<Unit> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -451,11 +480,13 @@ class ComposerReducerTest(
                 subject = subject.value,
                 body = draftBody
             ),
-            error = error,
             premiumFeatureMessage = premiumFeatureMessage,
+            error = error,
             isSubmittable = false,
             senderAddresses = senderAddresses,
-            changeSenderBottomSheetVisibility = changeSenderBottomSheetVisibility
+            changeSenderBottomSheetVisibility = changeSenderBottomSheetVisibility,
+            closeComposer = closeComposer,
+            closeComposerWithDraftSaved = closeComposerWithDraftSaved
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)
