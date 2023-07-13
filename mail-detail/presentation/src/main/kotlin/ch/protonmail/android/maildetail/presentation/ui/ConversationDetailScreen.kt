@@ -57,6 +57,7 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
@@ -167,7 +168,8 @@ fun ConversationDetailScreen(
                     )
                 },
                 openAttachment = actions.openAttachment,
-                showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
+                showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
+                loadEmbeddedImage = { messageId, contentId -> viewModel.loadEmbeddedImage(messageId, contentId) }
             ),
             scrollToMessageId = state.scrollToMessage?.id
         )
@@ -275,7 +277,8 @@ fun ConversationDetailScreen(
                     onOpenMessageBodyLink = actions.onOpenMessageBodyLink,
                     onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage,
                     onAttachmentClicked = actions.onAttachmentClicked,
-                    showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
+                    showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
+                    loadEmbeddedImage = actions.loadEmbeddedImage
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
@@ -399,7 +402,8 @@ object ConversationDetailScreen {
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
         val onAttachmentClicked: (MessageId, AttachmentId) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
-        val showFeatureMissingSnackbar: () -> Unit
+        val showFeatureMissingSnackbar: () -> Unit,
+        val loadEmbeddedImage: suspend (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?
     ) {
 
         companion object {
@@ -420,7 +424,8 @@ object ConversationDetailScreen {
                 onShowAllAttachmentsForMessage = {},
                 onAttachmentClicked = { _, _ -> },
                 openAttachment = {},
-                showFeatureMissingSnackbar = {}
+                showFeatureMissingSnackbar = {},
+                loadEmbeddedImage = { _, _ -> null }
             )
         }
     }

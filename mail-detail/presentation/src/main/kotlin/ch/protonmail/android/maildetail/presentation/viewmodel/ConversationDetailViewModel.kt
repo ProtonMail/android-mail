@@ -191,8 +191,9 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    suspend fun loadEmbeddedImage(messageId: MessageId, contentId: String) =
+    suspend fun loadEmbeddedImage(messageId: MessageId?, contentId: String) = messageId?.let {
         getEmbeddedImage(primaryUserId.first(), messageId, contentId).getOrNull()
+    }
 
     private fun observeConversationMetadata(conversationId: ConversationId) {
         primaryUserId.flatMapLatest { userId ->

@@ -49,7 +49,7 @@ class MessageBodyTest {
                 MessageBody(
                     modifier = Modifier,
                     messageBodyUiModel = state,
-                    actions = MessageBody.Actions({}, {}, {}),
+                    actions = MessageBody.Actions({}, {}, {}, { _, _ -> null })
                 )
             }
         }
@@ -71,7 +71,7 @@ class MessageBodyTest {
                 MessageBody(
                     modifier = Modifier,
                     messageBodyUiModel = state,
-                    actions = MessageBody.Actions({}, {}, {}),
+                    actions = MessageBody.Actions({}, {}, {}, { _, _ -> null })
                 )
             }
         }

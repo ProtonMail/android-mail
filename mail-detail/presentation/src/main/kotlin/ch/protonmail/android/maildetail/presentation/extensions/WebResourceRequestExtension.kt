@@ -24,3 +24,7 @@ import android.webkit.WebResourceRequest
 fun WebResourceRequest.isRemoteContent() = url.scheme?.let {
     Pattern.compile("https?").matcher(it).matches()
 } ?: false
+
+fun WebResourceRequest.isEmbeddedImage() = url.scheme?.let {
+    Pattern.compile("cid").matcher(it).matches()
+} ?: false

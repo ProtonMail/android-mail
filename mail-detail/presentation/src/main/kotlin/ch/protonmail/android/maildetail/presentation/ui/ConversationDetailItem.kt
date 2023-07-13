@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanded
@@ -123,7 +124,8 @@ private fun ConversationDetailExpandedItem(
             actions = MessageBody.Actions(
                 onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(it.toString()) },
                 onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },
-                onAttachmentClicked = { actions.onAttachmentClicked(uiModel.messageId, it) }
+                onAttachmentClicked = { actions.onAttachmentClicked(uiModel.messageId, it) },
+                loadEmbeddedImage = actions.loadEmbeddedImage
             )
         )
     }
@@ -137,7 +139,8 @@ object ConversationDetailItem {
         val onOpenMessageBodyLink: (url: String) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
         val onAttachmentClicked: (MessageId, AttachmentId) -> Unit,
-        val showFeatureMissingSnackbar: () -> Unit
+        val showFeatureMissingSnackbar: () -> Unit,
+        val loadEmbeddedImage: suspend (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?
     )
 }
 

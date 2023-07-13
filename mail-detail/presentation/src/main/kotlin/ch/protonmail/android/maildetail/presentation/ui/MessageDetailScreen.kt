@@ -47,6 +47,7 @@ import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.maildetail.presentation.model.LabelAsBottomSheetState
@@ -146,7 +147,8 @@ fun MessageDetailScreen(
                 onShowAllAttachmentsClicked = { viewModel.submit(MessageViewAction.ShowAllAttachments) },
                 onAttachmentClicked = { viewModel.submit(MessageViewAction.OnAttachmentClicked(it)) },
                 openAttachment = actions.openAttachment,
-                showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
+                showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
+                loadEmbeddedImage = { viewModel.loadEmbeddedImage(it) }
             )
         )
     }
@@ -244,7 +246,8 @@ fun MessageDetailScreen(
                     onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                     onShowAllAttachmentsClicked = actions.onShowAllAttachmentsClicked,
                     onAttachmentClicked = actions.onAttachmentClicked,
-                    showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
+                    showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
+                    loadEmbeddedImage = actions.loadEmbeddedImage
                 )
                 MessageDetailContent(
                     modifier = Modifier.padding(innerPadding),
@@ -287,7 +290,8 @@ private fun MessageDetailContent(
                     actions = MessageBody.Actions(
                         onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                         onShowAllAttachments = actions.onShowAllAttachmentsClicked,
-                        onAttachmentClicked = actions.onAttachmentClicked
+                        onAttachmentClicked = actions.onAttachmentClicked,
+                        loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) }
                     )
                 )
 
@@ -303,7 +307,8 @@ private fun MessageDetailContent(
                         actions = MessageBody.Actions(
                             onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                             onShowAllAttachments = actions.onShowAllAttachmentsClicked,
-                            onAttachmentClicked = actions.onAttachmentClicked
+                            onAttachmentClicked = actions.onAttachmentClicked,
+                            loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) }
                         )
                     )
                 }
@@ -343,7 +348,8 @@ object MessageDetailScreen {
         val onShowAllAttachmentsClicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
-        val showFeatureMissingSnackbar: () -> Unit
+        val showFeatureMissingSnackbar: () -> Unit,
+        val loadEmbeddedImage: suspend (contentId: String) -> GetEmbeddedImageResult?
     ) {
 
         companion object {
@@ -365,7 +371,8 @@ object MessageDetailScreen {
                 onShowAllAttachmentsClicked = {},
                 onAttachmentClicked = {},
                 openAttachment = {},
-                showFeatureMissingSnackbar = {}
+                showFeatureMissingSnackbar = {},
+                loadEmbeddedImage = { null }
             )
         }
     }
@@ -378,7 +385,8 @@ object MessageDetailContent {
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onShowAllAttachmentsClicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
-        val showFeatureMissingSnackbar: () -> Unit
+        val showFeatureMissingSnackbar: () -> Unit,
+        val loadEmbeddedImage: suspend (contentId: String) -> GetEmbeddedImageResult?
     )
 }
 

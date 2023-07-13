@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.ui
 
+import java.io.ByteArrayInputStream
 import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import android.os.Build.VERSION_CODES
@@ -52,7 +53,9 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
+import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.extensions.isEmbeddedImage
 import ch.protonmail.android.maildetail.presentation.extensions.isRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyUiModel
@@ -64,6 +67,7 @@ import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewStateWithHTMLData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -77,7 +81,7 @@ fun MessageBody(
     actions: MessageBody.Actions,
     messageId: MessageId? = null,
     webViewHeight: Int? = null,
-    onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
+    onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> }
 ) {
     val hasWebView = LocalDeviceCapabilitiesProvider.current.hasWebView
 
@@ -104,7 +108,7 @@ internal fun MessageBodyWebView(
     actions: MessageBody.Actions,
     messageId: MessageId? = null,
     webViewHeight: Int? = null,
-    onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
+    onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> }
 ) {
     val scope = rememberCoroutineScope()
     var contentLoaded by remember { mutableStateOf(false) }
@@ -123,6 +127,10 @@ internal fun MessageBodyWebView(
             override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
                 return if (!messageBodyUiModel.shouldShowRemoteContent && request?.isRemoteContent() == true) {
                     WebResourceResponse("", "", null)
+                } else if (messageBodyUiModel.shouldShowEmbeddedImages && request?.isEmbeddedImage() == true) {
+                    runBlocking {
+                        actions.loadEmbeddedImage(messageId, "<${request.url.schemeSpecificPart}>")
+                    }?.let { WebResourceResponse(it.mimeType, "", ByteArrayInputStream(it.data)) }
                 } else {
                     super.shouldInterceptRequest(view, request)
                 }
@@ -193,14 +201,12 @@ internal fun MessageBodyWebView(
 }
 
 @Composable
-internal fun MessageBodyNoWebView(
-    modifier: Modifier = Modifier
-) {
+internal fun MessageBodyNoWebView(modifier: Modifier = Modifier) {
     Text(
         modifier = modifier
             .testTag(MessageBodyTestTags.WebViewAlternative)
             .padding(ProtonDimens.MediumSpacing),
-        text = stringResource(id = R.string.message_body_error_no_webview),
+        text = stringResource(id = R.string.message_body_error_no_webview)
     )
 }
 
@@ -257,7 +263,8 @@ object MessageBody {
     data class Actions(
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onShowAllAttachments: () -> Unit,
-        val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit
+        val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
+        val loadEmbeddedImage: suspend (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?
     )
 }
 
