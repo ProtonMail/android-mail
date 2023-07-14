@@ -98,11 +98,13 @@ class ComposerViewModel @Inject constructor(
 
     private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {
         val fields = DraftFields(currentSenderEmail(), currentSubject(), currentDraftBody())
-        if (!fields.areBlank()) {
-            viewModelScope.async { storeDraftWithAllFields(primaryUserId(), messageId, fields) }
-            return ComposerEvent.OnCloseWithDraftSaved
+        return when {
+            fields.areBlank() -> action
+            else -> {
+                viewModelScope.async { storeDraftWithAllFields(primaryUserId(), messageId, fields) }
+                ComposerEvent.OnCloseWithDraftSaved
+            }
         }
-        return action
     }
 
     private suspend fun onSubjectChanged(action: ComposerAction.SubjectChanged): ComposerOperation =
