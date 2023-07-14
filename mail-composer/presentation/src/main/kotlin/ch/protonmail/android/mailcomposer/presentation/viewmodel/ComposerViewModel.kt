@@ -41,6 +41,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -98,7 +99,7 @@ class ComposerViewModel @Inject constructor(
     private suspend fun onCloseComposer(action: ComposerAction.OnCloseComposer): ComposerOperation {
         val fields = DraftFields(currentSenderEmail(), currentSubject(), currentDraftBody())
         if (!fields.areBlank()) {
-            storeDraftWithAllFields(primaryUserId(), messageId, fields)
+            viewModelScope.async { storeDraftWithAllFields(primaryUserId(), messageId, fields) }
             return ComposerEvent.OnCloseWithDraftSaved
         }
         return action
