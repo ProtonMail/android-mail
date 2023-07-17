@@ -24,6 +24,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcomposer.presentation.ui.ChangeSenderBottomSheetTestTags
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.util.awaitDisplayed
+import ch.protonmail.android.uitest.util.awaitHidden
 
 internal class ChangeSenderEntryModel(index: Int, composeTestRule: ComposeTestRule = ComposeTestRuleHolder.rule) {
 
@@ -31,7 +33,7 @@ internal class ChangeSenderEntryModel(index: Int, composeTestRule: ComposeTestRu
 
     // region action
     fun selectSender() {
-        item.performClick()
+        item.awaitDisplayed().performClick().awaitHidden()
     }
     // endregion
 
@@ -41,7 +43,7 @@ internal class ChangeSenderEntryModel(index: Int, composeTestRule: ComposeTestRu
     }
 
     fun hasText(value: String) {
-        item.assertTextEquals(value)
+        item.awaitDisplayed().assertTextEquals(value)
     }
     // endregion
 }
