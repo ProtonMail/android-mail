@@ -28,10 +28,11 @@
   <string name="composer_expand_recipients_button">他の受信者を表示する</string>
   <string name="composer_error_invalid_email">メールアドレスが無効です</string>
   <string name="composer_error_invalid_sender">送信者アドレスが無効</string>
-  <string name="change_sender_button_content_description">Change sender</string>
-  <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
-  <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
-  <string name="composer_error_store_draft_body">Storing this draft\'s body failed</string>
-  <string name="composer_error_duplicate_recipient">Removed duplicate recipient: %1$s</string>
+  <string name="change_sender_button_content_description">アプリケーションを変更</string>
+  <string name="composer_change_sender_paid_feature">差出人アドレスを変更するには有料プランにアップグレードしてください</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">ユーザーのサブスクリプションの取得に失敗したため、送信者を変更できませんでした。もう一度お試しください。</string>
+  <string name="composer_error_store_draft_sender_address">下書きの送信元アドレスの保存に失敗しました</string>
+  <string name="composer_error_store_draft_body">下書き本文の保存に失敗しました</string>
+  <string name="composer_error_duplicate_recipient">重複していた宛先を削除しました: %1$s</string>
+  <string name="composer_error_store_draft_subject">下書きのタイトルの保存に失敗しました</string>
 </resources>

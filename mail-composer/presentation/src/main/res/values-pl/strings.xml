@@ -30,8 +30,9 @@
   <string name="composer_error_invalid_sender">Adres nadawcy jest nieprawidłowy</string>
   <string name="change_sender_button_content_description">Zmień nadawcę</string>
   <string name="composer_change_sender_paid_feature">Ulepsz do płatnego planu, aby zmienić adres nadawcy</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
-  <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
-  <string name="composer_error_store_draft_body">Storing this draft\'s body failed</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Nie można zmienić nadawcy, ponieważ pobranie informacji o subskrypcji użytkownika nie powiodło się. Spróbuj ponownie.</string>
+  <string name="composer_error_store_draft_sender_address">Zapisanie adresu nadawcy szkicu nie powiodło się</string>
+  <string name="composer_error_store_draft_body">Zapisanie treści szkicu nie powiodło się</string>
   <string name="composer_error_duplicate_recipient">Zduplikowany odbiorca %1$s został usunięty</string>
+  <string name="composer_error_store_draft_subject">Zapisanie tematu szkicu nie powiodło się</string>
 </resources>

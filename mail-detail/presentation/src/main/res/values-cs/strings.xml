@@ -47,8 +47,13 @@
   <string name="error_move_conversation_failed">Přesunutí konverzace se nezdařilo. Zkuste to znovu.</string>
   <string name="error_loading_message">Něco se pokazilo, prosím zkuste to znovu.</string>
   <string name="error_offline_loading_message">Jste offline. Pro zobrazení obsahu této zprávy je nutné připojení k internetu.</string>
-  <string name="error_get_attachment_failed">Failed to get attachment.</string>
-  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="error_get_attachment_failed">Načtení přílohy se nezdařilo.</string>
+  <string name="error_attachment_download_in_progress">Před zahájením nového stahování je třeba dokončit stávající stahování.</string>
+  <string name="attachment_permission_dialog_title">Je vyžadováno oprávnění</string>
+  <string name="attachment_permission_dialog_message">Proton Mail potřebuje ke stažení přílohy oprávnění k přístupu do vašeho úložiště.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Nastavení</string>
+  <string name="error_get_attachment_not_enough_memory">Nepodařilo se načíst přílohu z důvodu nedostatku paměti</string>
   <string name="reload">Znovu načíst</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d soubor</item>

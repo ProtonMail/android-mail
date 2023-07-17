@@ -45,8 +45,13 @@
   <string name="error_move_conversation_failed">Yazışma taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="error_loading_message">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
   <string name="error_offline_loading_message">Çevrim dışısınız. Bu iletinin içeriğini görüntüleyebilmek için internete bağlı olmalısınız.</string>
-  <string name="error_get_attachment_failed">Failed to get attachment.</string>
-  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="error_get_attachment_failed">Ek dosya alınamadı.</string>
+  <string name="error_attachment_download_in_progress">Yeni bir indirme başlatılmadan önce süren indirme tamamlanmalıdır.</string>
+  <string name="attachment_permission_dialog_title">İzin gerekli</string>
+  <string name="attachment_permission_dialog_message">Proton Mail ek dosyayı indirmek için depolama alanınıza erişme izni istiyor.</string>
+  <string name="attachment_permission_dialog_dismiss_button">Tamam</string>
+  <string name="attachment_permission_dialog_action_button">Ayarlar</string>
+  <string name="error_get_attachment_not_enough_memory">Ek dosya yetersiz bellek nedeniyle alınamadı</string>
   <string name="reload">Yeniden yükle</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d dosya</item>

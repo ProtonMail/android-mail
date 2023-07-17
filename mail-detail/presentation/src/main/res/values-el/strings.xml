@@ -46,7 +46,12 @@
   <string name="error_loading_message">Κάτι πήγε στραβά, παρακαλούμε δοκιμάστε ξανά.</string>
   <string name="error_offline_loading_message">Βρίσκεστε εκτός σύνδεσης. Για εμφάνιση του περιεχομένου αυτού του μηνύματος, απαιτείται σύνδεση στο διαδίκτυο.</string>
   <string name="error_get_attachment_failed">Αποτυχία λήψης συνημμένου.</string>
-  <string name="error_attachment_download_in_progress">Η τρέχουσα λήψη πρέπει να ολοκληρωθεί πριν ξεκινήσετε μια νέα.</string>
+  <string name="error_attachment_download_in_progress">Η τρέχουσα λήψη πρέπει να ολοκληρωθεί πριν την έναρξη νέας.</string>
+  <string name="attachment_permission_dialog_title">Απαιτείται εξουσιοδότηση</string>
+  <string name="attachment_permission_dialog_message">Το Proton Mail χρειάζεται άδεια πρόσβασης στον αποθηκευτικό σας χώρο για λήψη του συνημμένου.</string>
+  <string name="attachment_permission_dialog_dismiss_button">ΟΚ</string>
+  <string name="attachment_permission_dialog_action_button">Ρυθμίσεις</string>
+  <string name="error_get_attachment_not_enough_memory">Αποτυχία λήψης συνημμένου λόγω ανεπαρκούς μνήμης</string>
   <string name="reload">Επαναφόρτωση</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d Αρχείο</item>

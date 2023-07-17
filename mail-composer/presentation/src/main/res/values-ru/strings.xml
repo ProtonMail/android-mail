@@ -34,4 +34,5 @@
   <string name="composer_error_store_draft_sender_address">Сохранение адреса отправителя этого черновика не удалось</string>
   <string name="composer_error_store_draft_body">Сохранение адреса отправителя этого черновика не удалось</string>
   <string name="composer_error_duplicate_recipient">Удалено дубликатов получателя: %1$s</string>
+  <string name="composer_error_store_draft_subject">Не удалось сохранить тему этого черновика</string>
 </resources>

@@ -46,7 +46,12 @@
   <string name="error_loading_message">Ocorreu um erro. Tente mais tarde.</string>
   <string name="error_offline_loading_message">Está offline. A ligação à internet é necessária para mostrar o conteúdo desta mensagem.</string>
   <string name="error_get_attachment_failed">Erro ao obter o anexo.</string>
-  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="error_attachment_download_in_progress">A transferência actual deve ser concluída antes de iniciar uma nova.</string>
+  <string name="attachment_permission_dialog_title">Permissão necessária</string>
+  <string name="attachment_permission_dialog_message">Proton Mail needs permission to access your storage to download the attachment.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Settings</string>
+  <string name="error_get_attachment_not_enough_memory">Failed to get attachment due to insufficient memory</string>
   <string name="reload">Recarregar</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d ficheiro</item>

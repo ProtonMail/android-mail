@@ -23,7 +23,7 @@
   <string name="bcc_prefix">Cco:</string>
   <string name="subject_placeholder">Assunto</string>
   <string name="compose_message_placeholder">Escrever e-mail</string>
-  <string name="close_composer_content_description">Fechar aba</string>
+  <string name="close_composer_content_description">Fechar compositor</string>
   <string name="send_message_content_description">Enviar mensagem</string>
   <string name="composer_expand_recipients_button">Mostrar outros destinatários</string>
   <string name="composer_error_invalid_email">Endereço de e-mail inválido</string>
@@ -34,4 +34,5 @@
   <string name="composer_error_store_draft_sender_address">Falha ao armazenar o endereço do remetente deste rascunho</string>
   <string name="composer_error_store_draft_body">Falha ao armazenar a estrutura deste rascunho</string>
   <string name="composer_error_duplicate_recipient">Destinatário duplicado removido: %1$s</string>
+  <string name="composer_error_store_draft_subject">Falha ao salvar o assunto deste rascunho</string>
 </resources>

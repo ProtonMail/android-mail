@@ -27,11 +27,12 @@
   <string name="send_message_content_description">Αποστολή μηνύματος</string>
   <string name="composer_expand_recipients_button">Εμφάνιση άλλων παραληπτών</string>
   <string name="composer_error_invalid_email">Η διεύθυνση email δεν είναι έγκυρη</string>
-  <string name="composer_error_invalid_sender">Η διεύθυνση αποστολέα δεν είναι έγκυρη</string>
+  <string name="composer_error_invalid_sender">Μη έγκυρη διεύθυνση αποστολέα</string>
   <string name="change_sender_button_content_description">Αλλαγή αποστολέα</string>
-  <string name="composer_change_sender_paid_feature">Αναβάθμιση σε πρόγραμμα επί πληρωμή για αλλαγή της διεύθυνσης αποστολέα</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">Δεν είναι δυνατή η αλλαγή αποστολέα καθώς απέτυχε η λήψη συνδρομής χρήστη. Δοκιμάστε ξανά.</string>
-  <string name="composer_error_store_draft_sender_address">Η αποθήκευση της διεύθυνσης αποστολέα αυτού του πρόχειρου απέτυχε</string>
-  <string name="composer_error_store_draft_body">Η αποθήκευση του σώματος αυτού του πρόχειρου απέτυχε</string>
+  <string name="composer_change_sender_paid_feature">Αναβαθμίστε σε πρόγραμμα επί πληρωμή ώστε να αλλάξετε τη διεύθυνση του αποστολέα</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Δεν είναι δυνατή η αλλαγή αποστολέα καθώς απέτυχε η λήψη της συνδρομής του χρήστη. Δοκιμάστε ξανά.</string>
+  <string name="composer_error_store_draft_sender_address">Αποτυχία αποθήκευσης της διεύθυνσης αποστολέα αυτού του πρόχειρου</string>
+  <string name="composer_error_store_draft_body">Αποτυχία αποθήκευσης του σώματος αυτού του πρόχειρου</string>
   <string name="composer_error_duplicate_recipient">Αφαιρέθηκε διπλότυπος παραλήπτης: %1$s</string>
+  <string name="composer_error_store_draft_subject">Η αποθήκευση αυτού του θέματος του πρόχειρου απέτυχε</string>
 </resources>

@@ -47,6 +47,11 @@
   <string name="error_offline_loading_message">No estás conectado. Se necesita una conexión a internet para mostrar el contenido de este mensaje.</string>
   <string name="error_get_attachment_failed">Error al obtener el archivo adjunto.</string>
   <string name="error_attachment_download_in_progress">La descarga actual debe completarse antes de iniciar una nueva.</string>
+  <string name="attachment_permission_dialog_title">Permiso requerido</string>
+  <string name="attachment_permission_dialog_message">Proton Mail necesita permiso para acceder a tu almacenamiento para descargar el adjunto.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Ajustes</string>
+  <string name="error_get_attachment_not_enough_memory">Error al obtener el adjunto por falta de memoria</string>
   <string name="reload">Recargar</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d archivo</item>

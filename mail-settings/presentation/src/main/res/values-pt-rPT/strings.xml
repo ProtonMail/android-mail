@@ -65,7 +65,7 @@
   <string name="mail_settings_conversation_mode_hint">Agrupe e-mails na mesma conversa na sua caixa de entrada ou veja-os separadamente</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Ações de deslizar</string>
-  <string name="mail_settings_swipe_actions_subtitle">Defina gestos de deslize para aceder às ações mais utilizadas.</string>
+  <string name="mail_settings_swipe_actions_subtitle">Defina gestos de deslize para aceder às acções mais utilizadas.</string>
   <string name="mail_settings_swipe_right_name">Da esquerda para a direita</string>
   <string name="mail_settings_swipe_left_name">Da direita para a esquerda</string>
   <string name="mail_settings_swipe_action_archive_title">Arquivo</string>

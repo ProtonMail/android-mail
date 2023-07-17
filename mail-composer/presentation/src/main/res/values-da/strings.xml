@@ -34,4 +34,5 @@
   <string name="composer_error_store_draft_sender_address">Lagring af denne kladdes afsenderadresse mislykkedes</string>
   <string name="composer_error_store_draft_body">Opbevaring af denne kladdes indholdstekst mislykkedes</string>
   <string name="composer_error_duplicate_recipient">Fjernet dobbelt modtager: %1$s</string>
+  <string name="composer_error_store_draft_subject">Lagring af denne kladdes emne mislykkedes</string>
 </resources>

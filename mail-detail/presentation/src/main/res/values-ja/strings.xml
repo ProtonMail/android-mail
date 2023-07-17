@@ -44,8 +44,13 @@
   <string name="error_move_conversation_failed">会話の移動に失敗しました。再度お試しください。</string>
   <string name="error_loading_message">問題が発生しました。再度お試しください。</string>
   <string name="error_offline_loading_message">現在、オフラインです。このメッセージの内容を表示するには、インターネット接続が必要です。</string>
-  <string name="error_get_attachment_failed">Failed to get attachment.</string>
-  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="error_get_attachment_failed">添付ファイルの取得に失敗しました</string>
+  <string name="error_attachment_download_in_progress">新しいダウンロードを開始する前に、現在のダウンロードを完了させる必要があります。</string>
+  <string name="attachment_permission_dialog_title">権限が必要です</string>
+  <string name="attachment_permission_dialog_message">Proton Mail は添付ファイルをダウンロードするためにストレージへのアクセス権限が必要です。</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">設定</string>
+  <string name="error_get_attachment_not_enough_memory">メモリ不足のため添付ファイルの取得に失敗しました</string>
   <string name="reload">再読み込み</string>
   <plurals name="attachment_count_label">
     <item quantity="other">%d 件のファイル</item>

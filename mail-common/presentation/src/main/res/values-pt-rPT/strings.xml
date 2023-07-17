@@ -45,9 +45,9 @@
   <string name="action_report_phishing_content_description">Reportar como phishing</string>
   <string name="action_remind_content_description">Lembre-me</string>
   <string name="action_save_pdf_content_description">Guardar como PDF</string>
-  <string name="action_sender_emails_content_description">Definir a ação para os futuros e-mails deste remetente</string>
+  <string name="action_sender_emails_content_description">Definir a acção para os futuros e-mails deste remetente</string>
   <string name="action_save_attachments_content_description">Guardar anexos</string>
-  <string name="common_error_loading_actions">Erro ao carregar as ações</string>
+  <string name="common_error_loading_actions">Erro ao carregar as acções</string>
   <string name="yesterday">Ontem</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Anexos</string>

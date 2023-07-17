@@ -42,12 +42,12 @@
   <string name="action_print_content_description">Imprimeix</string>
   <string name="action_view_headers_content_description">Mostrar les capçaleres</string>
   <string name="action_view_html_content_description">Mostra el codi HTML</string>
-  <string name="action_report_phishing_content_description">Denunciar suplantació d\'identitat</string>
+  <string name="action_report_phishing_content_description">Denuncia una suplantació d\'identitat</string>
   <string name="action_remind_content_description">Recorda-m\'ho</string>
   <string name="action_save_pdf_content_description">Desa com a PDF</string>
-  <string name="action_sender_emails_content_description">Establir l\'acció per a correus electrònics futurs d\'aquest remitent</string>
+  <string name="action_sender_emails_content_description">Estableix l\'acció per a correus electrònics futurs d\'aquest remitent</string>
   <string name="action_save_attachments_content_description">Desa els adjunts</string>
-  <string name="common_error_loading_actions">Error carregant les accions</string>
+  <string name="common_error_loading_actions">No s\'han pogut carregar les accions</string>
   <string name="yesterday">Ahir</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Adjunts</string>

@@ -46,7 +46,12 @@
   <string name="error_loading_message">Qualcosa è andato storto, si prega di riprovare.</string>
   <string name="error_offline_loading_message">Sei offline. Una connessione a Internet è necessaria per mostrare i contenuti di questo messaggio.</string>
   <string name="error_get_attachment_failed">Impossibile ottenere l\'allegato.</string>
-  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="error_attachment_download_in_progress">Il download corrente deve essere completato prima di avviarne uno nuovo.</string>
+  <string name="attachment_permission_dialog_title">Permesso richiesto</string>
+  <string name="attachment_permission_dialog_message">Per poter scaricare l\'allegato, Proton Mail richiede l\'autorizzazione di accesso alla memoria di archiviazione.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Impostazioni</string>
+  <string name="error_get_attachment_not_enough_memory">Impossibile scaricare l\'allegato a causa della memoria insufficiente</string>
   <string name="reload">Ricarica</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d file</item>

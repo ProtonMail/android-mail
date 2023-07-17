@@ -29,9 +29,10 @@
   <string name="composer_error_invalid_email">L\'indirizzo email non è valido.</string>
   <string name="composer_error_invalid_sender">L\'indirizzo del mittente non è valido</string>
   <string name="change_sender_button_content_description">Cambia il mittente</string>
-  <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
-  <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
-  <string name="composer_error_store_draft_body">Storing this draft\'s body failed</string>
+  <string name="composer_change_sender_paid_feature">Effettua l\'upgrade a un piano a pagamento per poter modificare l\'indirizzo mittente</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Impossibile modificare il mittente in quanto non è stato possibile recuperare lo stato dell\'abbonamento dell\'utente. Riprova.</string>
+  <string name="composer_error_store_draft_sender_address">L\'archiviazione dell\'indirizzo mittente di questa bozza non è riuscita</string>
+  <string name="composer_error_store_draft_body">L\'archiviazione del contenuto di questa bozza non è riuscita</string>
   <string name="composer_error_duplicate_recipient">Destinatario duplicato rimosso: %1$s</string>
+  <string name="composer_error_store_draft_subject">L\'archiviazione dell\'oggetto di questa bozza non è riuscita</string>
 </resources>

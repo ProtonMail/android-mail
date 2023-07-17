@@ -45,8 +45,13 @@
   <string name="error_move_conversation_failed">No s\'ha pogut moure la conversa. Proveu de nou.</string>
   <string name="error_loading_message">S\'ha produït un error. Intenta-ho més tard.</string>
   <string name="error_offline_loading_message">No està connectat. Es necessita una connexió a internet per a mostrar el contingut d\'aquest missatge.</string>
-  <string name="error_get_attachment_failed">Failed to get attachment.</string>
-  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="error_get_attachment_failed">No s\'ha pogut obtenir l\'adjunt.</string>
+  <string name="error_attachment_download_in_progress">S\'ha de completar la descàrrega actual abans de començar-ne una de nova.</string>
+  <string name="attachment_permission_dialog_title">Es requereix permís</string>
+  <string name="attachment_permission_dialog_message">Proton Mail necessita permís per accedir a l\'emmagatzematge per a descarregar l\'adjunt.</string>
+  <string name="attachment_permission_dialog_dismiss_button">D\'acord</string>
+  <string name="attachment_permission_dialog_action_button">Preferències</string>
+  <string name="error_get_attachment_not_enough_memory">No s\'ha pogut obtenir l\'adjunt a causa de memòria insuficient</string>
   <string name="reload">Recarrega</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d fitxer</item>
@@ -56,13 +61,13 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mou a...</string>
   <string name="bottom_sheet_done_action">Fet</string>
-  <string name="bottom_sheet_archive_action">Arxivar també?</string>
+  <string name="bottom_sheet_archive_action">Voleu arxivar també?</string>
   <string name="bottom_sheet_label_as_title">Etiqueta com a…</string>
-  <string name="error_relabel_message_failed">No s\'ha pogut tornar a etiquetar el missatge. Si us plau, torna-ho a provar</string>
-  <string name="error_relabel_conversation_failed">No s\'ha pogut tornar a etiquetar la conversa. Si us plau, torna-ho a provar</string>
-  <string name="please_go_back_online_to_load_messages">Està fora de línia. Torneu a connectar-vos per carregar missatges</string>
+  <string name="error_relabel_message_failed">No s\'ha pogut tornar a etiquetar el missatge. Torneu-ho a provar</string>
+  <string name="error_relabel_conversation_failed">No s\'ha pogut tornar a etiquetar la conversa. Torneu-ho a provar</string>
+  <string name="please_go_back_online_to_load_messages">Esteu fora de línia. Torneu a connectar-vos per carregar els missatges</string>
   <string name="decryption_error">No s\'ha pogut desxifrar el missatge.</string>
-  <string name="detail_error_retrieving_message_body">No s\'han pogut recuperar el missatge.</string>
+  <string name="detail_error_retrieving_message_body">No s\'ha pogut recuperar el missatge</string>
   <!-- Attachment Types -->
   <string name="attachment_type_image">Imatge</string>
   <string name="attachment_type_video">Vídeo</string>

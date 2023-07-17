@@ -47,6 +47,11 @@
   <string name="error_offline_loading_message">Vous n\'êtes pas connecté. Une connexion internet est nécessaire pour afficher le contenu de ce message.</string>
   <string name="error_get_attachment_failed">La pièce jointe n\'a pas pu être obtenue.</string>
   <string name="error_attachment_download_in_progress">Le téléchargement en cours doit être terminé avant d\'en commencer un nouveau.</string>
+  <string name="attachment_permission_dialog_title">Permission requise</string>
+  <string name="attachment_permission_dialog_message">Proton Mail a besoin de la permission d\'accès à votre stockage pour télécharger la pièce jointe.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Paramètres</string>
+  <string name="error_get_attachment_not_enough_memory">La pièce jointe n\'a pu être obtenue par manque de mémoire.</string>
   <string name="reload">Recharger</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d fichier</item>

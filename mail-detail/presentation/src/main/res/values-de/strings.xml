@@ -47,6 +47,11 @@
   <string name="error_offline_loading_message">Du bist offline. Um den Inhalt dieser Nachricht anzuzeigen, ist eine Internetverbindung erforderlich.</string>
   <string name="error_get_attachment_failed">Fehler beim Abrufen des Anhangs.</string>
   <string name="error_attachment_download_in_progress">Der aktuelle Download muss abgeschlossen sein, bevor ein neuer gestartet werden kann.</string>
+  <string name="attachment_permission_dialog_title">Berechtigung erforderlich</string>
+  <string name="attachment_permission_dialog_message">Proton Mail benötigt die Erlaubnis, auf deinen Speicher zuzugreifen, um den Anhang herunterzuladen.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Einstellungen</string>
+  <string name="error_get_attachment_not_enough_memory">Abruf des Anhangs fehlgeschlagen, da der Speicher nicht ausreicht</string>
   <string name="reload">Neu laden</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d Datei</item>

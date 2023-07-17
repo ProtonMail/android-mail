@@ -46,8 +46,13 @@
   <string name="error_move_conversation_failed">Mutarea conversației a eșuat. Reîncercați.</string>
   <string name="error_loading_message">Ceva nu a funcționat bine. Mai încercați.</string>
   <string name="error_offline_loading_message">Nu aveți conexiune. Pentru a afișa conținutul acestui mesaj aveți nevoie de conexiune la internet.</string>
-  <string name="error_get_attachment_failed">Failed to get attachment.</string>
-  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="error_get_attachment_failed">Eșuare preluare atașament.</string>
+  <string name="error_attachment_download_in_progress">Descărcarea actuală trebuie să se încheie înainte de a începe alta.</string>
+  <string name="attachment_permission_dialog_title">Permisiune necesară</string>
+  <string name="attachment_permission_dialog_message">Proton Mail are nevoie de permisiunea de a accesa spațiul de stocarea pentru a descărca atașamentul.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Setări</string>
+  <string name="error_get_attachment_not_enough_memory">Nu s-a reușit obținerea atașamentului datorită memoriei insuficiente.</string>
   <string name="reload">Reîncărcare</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d fișier</item>

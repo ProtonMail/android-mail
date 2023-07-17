@@ -28,10 +28,11 @@
   <string name="composer_expand_recipients_button">显示其余收件人</string>
   <string name="composer_error_invalid_email">电子邮箱地址无效</string>
   <string name="composer_error_invalid_sender">发件人地址无效</string>
-  <string name="change_sender_button_content_description">更改发送方</string>
-  <string name="composer_change_sender_paid_feature">升级到付费计划以更改发件人地址</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">由于获取用户订阅失败，无法更改发件人。再试一次。</string>
+  <string name="change_sender_button_content_description">更改发件地址</string>
+  <string name="composer_change_sender_paid_feature">开通付费账户方可更改发件地址</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">获取用户等级失败，无法更改发件人地址。请重试。</string>
   <string name="composer_error_store_draft_sender_address">存储此草稿的发件人地址失败</string>
   <string name="composer_error_store_draft_body">存储草稿正文失败</string>
-  <string name="composer_error_duplicate_recipient">已删除重复收件人:%1$s</string>
+  <string name="composer_error_duplicate_recipient">已删除重复收件人：%1$s</string>
+  <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
 </resources>

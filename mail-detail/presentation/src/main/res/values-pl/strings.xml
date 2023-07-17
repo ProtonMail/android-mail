@@ -48,7 +48,12 @@
   <string name="error_loading_message">Coś poszło nie tak. Spróbuj ponownie później.</string>
   <string name="error_offline_loading_message">Jesteś w trybie offline. Połączenie internetowe jest wymagane, aby wyświetlić zawartość wiadomości.</string>
   <string name="error_get_attachment_failed">Nie udało się pobrać załącznika.</string>
-  <string name="error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
+  <string name="error_attachment_download_in_progress">Przed rozpoczęciem nowego pobierania obecne musi zostać zakończone.</string>
+  <string name="attachment_permission_dialog_title">Uprawnienie jest wymagane</string>
+  <string name="attachment_permission_dialog_message">Proton Mail potrzebuje dostępu do pamięci wewnętrznej, aby pobrać załącznik.</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
+  <string name="attachment_permission_dialog_action_button">Ustawienia</string>
+  <string name="error_get_attachment_not_enough_memory">Nie udało się pobrać załącznika z powodu braku dostępu do pamięci wewnętrznej</string>
   <string name="reload">Odśwież</string>
   <plurals name="attachment_count_label">
     <item quantity="one">%d plik</item>
