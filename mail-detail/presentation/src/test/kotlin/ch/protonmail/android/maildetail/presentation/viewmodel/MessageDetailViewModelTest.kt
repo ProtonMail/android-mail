@@ -43,7 +43,6 @@ import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
-import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImage
 import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
@@ -73,6 +72,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetada
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MoveToBottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
@@ -243,7 +243,7 @@ class MessageDetailViewModelTest {
     }
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
-    private val getEmbeddedImage = mockk<GetEmbeddedImage>()
+    private val getEmbeddedImageAvoidDuplicatedExecution = mockk<GetEmbeddedImageAvoidDuplicatedExecution>()
 
     private val viewModel by lazy {
         MessageDetailViewModel(
@@ -270,7 +270,7 @@ class MessageDetailViewModelTest {
             relabelMessage = relabelMessage,
             getAttachmentIntentValues = getAttachmentIntentValues,
             getDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages,
-            getEmbeddedImage = getEmbeddedImage
+            getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution
         )
     }
 
@@ -1085,7 +1085,14 @@ class MessageDetailViewModelTest {
         val contentId = "contentId"
         val byteArray = "I'm a byte array".toByteArray()
         val expectedResult = GetEmbeddedImageResult(byteArray, "image/png")
-        coEvery { getEmbeddedImage(userId, MessageId(rawMessageId), contentId) } returns expectedResult.right()
+        coEvery {
+            getEmbeddedImageAvoidDuplicatedExecution(
+                userId,
+                MessageId(rawMessageId),
+                contentId,
+                any()
+            )
+        } returns expectedResult
 
         // When
         val actual = viewModel.loadEmbeddedImage(contentId)
@@ -1098,8 +1105,14 @@ class MessageDetailViewModelTest {
     fun `returns null when get embedded image returned an error`() = runTest {
         // Given
         val contentId = "contentId"
-        val expectedResult = DataError.Local.NoDataCached
-        coEvery { getEmbeddedImage(userId, MessageId(rawMessageId), contentId) } returns expectedResult.left()
+        coEvery {
+            getEmbeddedImageAvoidDuplicatedExecution(
+                userId,
+                MessageId(rawMessageId),
+                contentId,
+                any()
+            )
+        } returns null
 
         // When
         val actual = viewModel.loadEmbeddedImage(contentId)

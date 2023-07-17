@@ -140,7 +140,7 @@ object ConversationDetailItem {
         val onShowAllAttachmentsForMessage: (MessageId) -> Unit,
         val onAttachmentClicked: (MessageId, AttachmentId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
-        val loadEmbeddedImage: suspend (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?
+        val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?
     )
 }
 

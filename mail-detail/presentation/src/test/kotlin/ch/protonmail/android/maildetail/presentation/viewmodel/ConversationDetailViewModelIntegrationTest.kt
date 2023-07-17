@@ -56,7 +56,6 @@ import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
-import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImage
 import ch.protonmail.android.maildetail.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
@@ -98,6 +97,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.LabelAsBottomSheetR
 import ch.protonmail.android.maildetail.presentation.reducer.MoveToBottomSheetReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
 import ch.protonmail.android.maildetail.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.maildetail.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
 import ch.protonmail.android.maillabel.domain.model.MailLabel
@@ -197,7 +197,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val observeAttachmentStatus = mockk<ObserveMessageAttachmentStatus>()
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
-    private val getEmbeddedImage = mockk<GetEmbeddedImage>()
+    private val getEmbeddedImageAvoidDuplicatedExecution = mockk<GetEmbeddedImageAvoidDuplicatedExecution>()
     // endregion
 
     // region mock action use cases
@@ -901,7 +901,7 @@ class ConversationDetailViewModelIntegrationTest {
         val contentId = "contentId"
         val byteArray = "I'm a byte array".toByteArray()
         val expectedResult = GetEmbeddedImageResult(byteArray, "image/png")
-        coEvery { getEmbeddedImage(userId, messageId, contentId) } returns expectedResult.right()
+        coEvery { getEmbeddedImageAvoidDuplicatedExecution(userId, messageId, contentId, any()) } returns expectedResult
         val viewModel = buildConversationDetailViewModel()
 
         // When
@@ -916,8 +916,7 @@ class ConversationDetailViewModelIntegrationTest {
         // Given
         val messageId = MessageId("rawMessageId")
         val contentId = "contentId"
-        val expectedResult = DataError.Local.NoDataCached
-        coEvery { getEmbeddedImage(userId, messageId, contentId) } returns expectedResult.left()
+        coEvery { getEmbeddedImageAvoidDuplicatedExecution(userId, messageId, contentId, any()) } returns null
         val viewModel = buildConversationDetailViewModel()
 
         // When
@@ -985,7 +984,7 @@ class ConversationDetailViewModelIntegrationTest {
         setMessageViewState = setMessageViewState,
         observeConversationViewState = observeConversationViewState,
         getAttachmentIntentValues = getIntentValues,
-        getEmbeddedImage = getEmbeddedImage,
+        getEmbeddedImageAvoidDuplicatedExecution = getEmbeddedImageAvoidDuplicatedExecution,
         ioDispatcher = ioDispatcher
     )
 
