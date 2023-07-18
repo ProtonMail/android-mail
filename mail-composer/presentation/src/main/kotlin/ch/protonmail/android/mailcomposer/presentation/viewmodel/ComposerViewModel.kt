@@ -41,7 +41,6 @@ import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailmessage.domain.entity.MessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -68,7 +67,7 @@ class ComposerViewModel @Inject constructor(
     private val messageId = MessageId(provideNewDraftId().id)
     private val primaryUserId = observePrimaryUserId().filterNotNull()
 
-    private val mutableState = MutableStateFlow(ComposerDraftState.empty(provideNewDraftId()))
+    private val mutableState = MutableStateFlow(ComposerDraftState.initial(provideNewDraftId()))
     val state: StateFlow<ComposerDraftState> = mutableState
 
     init {
@@ -99,7 +98,7 @@ class ComposerViewModel @Inject constructor(
         return when {
             fields.areBlank() -> action
             else -> {
-                viewModelScope.async { storeDraftWithAllFields(primaryUserId(), messageId, fields) }
+                viewModelScope.launch { storeDraftWithAllFields(primaryUserId(), messageId, fields) }
                 ComposerEvent.OnCloseWithDraftSaved
             }
         }

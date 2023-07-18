@@ -71,7 +71,7 @@ class ComposerReducerTest(
         private val EmptyToSubmittableToField = with("a@b.c") {
             TestTransition(
                 name = "Should generate submittable state when adding a new valid email address in the to field",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsToChanged(listOf(Valid(this))),
                 expectedState = aSubmittableState(messageId, listOf(Valid(this)))
             )
@@ -80,7 +80,7 @@ class ComposerReducerTest(
         private val EmptyToNotSubmittableToField = with(UUID.randomUUID().toString()) {
             TestTransition(
                 name = "Should generate not submittable error state when adding invalid email address in the to field",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsToChanged(listOf(Invalid(this))),
                 expectedState = aNotSubmittableState(messageId, to = listOf(Invalid(this)))
             )
@@ -89,7 +89,7 @@ class ComposerReducerTest(
         private val EmptyToSubmittableCcField = with("a@b.c") {
             TestTransition(
                 name = "Should generate submittable state when adding a new valid email address in the cc field",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsCcChanged(listOf(Valid(this))),
                 expectedState = aSubmittableState(messageId, cc = listOf(Valid(this)))
             )
@@ -98,7 +98,7 @@ class ComposerReducerTest(
         private val EmptyToNotSubmittableCcField = with(UUID.randomUUID().toString()) {
             TestTransition(
                 name = "Should generate not submittable error state when adding invalid email address in the cc field",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsCcChanged(listOf(Invalid(this))),
                 expectedState = aNotSubmittableState(messageId, cc = listOf(Invalid(this)))
             )
@@ -107,7 +107,7 @@ class ComposerReducerTest(
         private val EmptyToSubmittableBccField = with("a@b.c") {
             TestTransition(
                 name = "Should generate submittable state when adding a new valid email address in the bcc field",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsBccChanged(listOf(Valid(this))),
                 expectedState = aSubmittableState(messageId, bcc = listOf(Valid(this)))
             )
@@ -116,7 +116,7 @@ class ComposerReducerTest(
         private val EmptyToNotSubmittableBccField = with(UUID.randomUUID().toString()) {
             TestTransition(
                 name = "Should generate not submittable error state when adding invalid email address in the bcc field",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsBccChanged(listOf(Invalid(this))),
                 expectedState = aNotSubmittableState(messageId, bcc = listOf(Invalid(this)))
             )
@@ -165,7 +165,7 @@ class ComposerReducerTest(
 
         private val EmptyToUpgradePlan = TestTransition(
             name = "Should generate a state showing 'upgrade plan' message when free user tries to change sender",
-            currentState = ComposerDraftState.empty(messageId),
+            currentState = ComposerDraftState.initial(messageId),
             operation = ComposerEvent.ErrorFreeUserCannotChangeSender,
             expectedState = aNotSubmittableState(
                 draftId = messageId,
@@ -176,7 +176,7 @@ class ComposerReducerTest(
 
         private val EmptyToSenderAddressesList = TestTransition(
             name = "Should generate a state showing change sender bottom sheet when paid tries to change sender",
-            currentState = ComposerDraftState.empty(messageId),
+            currentState = ComposerDraftState.initial(messageId),
             operation = ComposerEvent.SenderAddressesReceived(addresses.map { SenderUiModel(it.email) }),
             expectedState = aNotSubmittableState(
                 draftId = messageId,
@@ -188,7 +188,7 @@ class ComposerReducerTest(
 
         private val EmptyToErrorWhenUserPlanUnknown = TestTransition(
             name = "Should generate an error state when failing to determine if user can change sender",
-            currentState = ComposerDraftState.empty(messageId),
+            currentState = ComposerDraftState.initial(messageId),
             operation = ComposerEvent.ErrorVerifyingPermissionsToChangeSender,
             expectedState = aNotSubmittableState(
                 draftId = messageId,
@@ -199,7 +199,7 @@ class ComposerReducerTest(
         private val EmptyToUpdatedSender = with(SenderUiModel("updated-sender@proton.ch")) {
             TestTransition(
                 name = "Should update the state with the new sender and close bottom sheet when address changes",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = SenderChanged(this),
                 expectedState = aNotSubmittableState(
                     draftId = messageId,
@@ -238,7 +238,7 @@ class ComposerReducerTest(
         private val DuplicateToToNotDuplicateWithError = with(aMultipleRandomRange().map { "a@b.c" }) {
             TestTransition(
                 name = "Should remove duplicate TO recipients and contain error if there are",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsToChanged(this.map { Valid(it) }),
                 expectedState = aSubmittableState(
                     draftId = messageId,
@@ -256,7 +256,7 @@ class ComposerReducerTest(
         private val DuplicateCcToNotDuplicateWithError = with(aMultipleRandomRange().map { "a@b.c" }) {
             TestTransition(
                 name = "Should remove duplicate CC recipients and contain error if there are",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsCcChanged(this.map { Valid(it) }),
                 expectedState = aSubmittableState(
                     draftId = messageId,
@@ -274,7 +274,7 @@ class ComposerReducerTest(
         private val DuplicateBccToNotDuplicateWithError = with(aMultipleRandomRange().map { "a@b.c" }) {
             TestTransition(
                 name = "Should remove duplicate BCC recipients and contain error if there are",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsBccChanged(this.map { Valid(it) }),
                 expectedState = aSubmittableState(
                     draftId = messageId,
@@ -295,7 +295,7 @@ class ComposerReducerTest(
             val expected = listOf(Valid("a@b.c"), Valid("d@e.f"))
             TestTransition(
                 name = "Should remove multiple duplicate To recipients and contain error if there are",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsToChanged(this.map { Valid(it) }),
                 expectedState = aSubmittableState(
                     draftId = messageId,
@@ -316,7 +316,7 @@ class ComposerReducerTest(
             val expected = listOf(Valid("a@b.c"), Valid("d@e.f"))
             TestTransition(
                 name = "Should remove multiple duplicate CC recipients and contain error if there are",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsCcChanged(this.map { Valid(it) }),
                 expectedState = aSubmittableState(
                     draftId = messageId,
@@ -337,7 +337,7 @@ class ComposerReducerTest(
             val expected = listOf(Valid("a@b.c"), Valid("d@e.f"))
             TestTransition(
                 name = "Should remove multiple duplicate BCC recipients and contain error if there are",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = RecipientsBccChanged(this.map { Valid(it) }),
                 expectedState = aSubmittableState(
                     draftId = messageId,
@@ -355,7 +355,7 @@ class ComposerReducerTest(
         private val EmptyToUpdatedDraftBody = with(DraftBody("Updated draft body")) {
             TestTransition(
                 name = "Should update the state with the new draft body when it changes",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = ComposerAction.DraftBodyChanged(this),
                 expectedState = aNotSubmittableState(
                     draftId = messageId,
@@ -369,7 +369,7 @@ class ComposerReducerTest(
         private val EmptyToUpdatedSubject = with(Subject("This is a new subject")) {
             TestTransition(
                 name = "Should update the state with the new subject when it changes",
-                currentState = ComposerDraftState.empty(messageId),
+                currentState = ComposerDraftState.initial(messageId),
                 operation = ComposerAction.SubjectChanged(this),
                 expectedState = aNotSubmittableState(
                     draftId = messageId,
@@ -381,7 +381,7 @@ class ComposerReducerTest(
 
         private val EmptyToCloseComposer = TestTransition(
             name = "Should close the composer",
-            currentState = ComposerDraftState.empty(messageId),
+            currentState = ComposerDraftState.initial(messageId),
             operation = ComposerAction.OnCloseComposer,
             expectedState = aNotSubmittableState(
                 draftId = messageId,
@@ -393,7 +393,7 @@ class ComposerReducerTest(
 
         private val EmptyToCloseComposerWithDraftSaved = TestTransition(
             name = "Should close the composer notifying draft saved",
-            currentState = ComposerDraftState.empty(messageId),
+            currentState = ComposerDraftState.initial(messageId),
             operation = ComposerEvent.OnCloseWithDraftSaved,
             expectedState = aNotSubmittableState(
                 draftId = messageId,

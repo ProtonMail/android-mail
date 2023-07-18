@@ -35,7 +35,7 @@ data class ComposerDraftState(
 
     companion object {
 
-        fun empty(draftId: MessageId): ComposerDraftState = ComposerDraftState(
+        fun initial(draftId: MessageId): ComposerDraftState = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
                 sender = SenderUiModel(""),

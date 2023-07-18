@@ -441,7 +441,7 @@ class ComposerViewModelTest {
         )
 
         mockkObject(ComposerDraftState.Companion)
-        every { ComposerDraftState.empty(messageId) } returns expected
+        every { ComposerDraftState.initial(messageId) } returns expected
     }
 
     private fun expectedMessageId(messageId: () -> MessageId): MessageId = messageId().also {
