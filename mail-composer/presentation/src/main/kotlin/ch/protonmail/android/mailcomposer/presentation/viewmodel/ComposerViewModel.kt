@@ -49,7 +49,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.jetbrains.annotations.VisibleForTesting
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -69,8 +68,7 @@ class ComposerViewModel @Inject constructor(
     private val messageId = MessageId(provideNewDraftId().id)
     private val primaryUserId = observePrimaryUserId().filterNotNull()
 
-    @VisibleForTesting
-    val mutableState = MutableStateFlow(ComposerDraftState.empty(provideNewDraftId()))
+    private val mutableState = MutableStateFlow(ComposerDraftState.empty(provideNewDraftId()))
     val state: StateFlow<ComposerDraftState> = mutableState
 
     init {

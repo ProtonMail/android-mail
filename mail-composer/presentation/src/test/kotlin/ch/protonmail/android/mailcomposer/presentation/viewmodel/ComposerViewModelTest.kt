@@ -53,10 +53,13 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
+import io.mockk.unmockkObject
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.UserAddress
+import kotlin.test.AfterTest
 import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -138,7 +141,7 @@ class ComposerViewModelTest {
         expectStoreDraftBodySucceeds(expectedMessageId, expectedDraftBody, expectedSenderEmail, expectedUserId)
 
         // Change internal state of the View Model to simulate an existing draft body before changing sender
-        expectedViewModelInternalState(messageId = expectedMessageId, draftBody = expectedDraftBody)
+        expectedViewModelInitialState(messageId = expectedMessageId, draftBody = expectedDraftBody)
 
         // When
         viewModel.submit(action)
@@ -192,7 +195,7 @@ class ComposerViewModelTest {
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
-        expectedViewModelInternalState(expectedMessageId, expectedSenderEmail, expectedSubject, expectedDraftBody)
+        expectedViewModelInitialState(expectedMessageId, expectedSenderEmail, expectedSubject, expectedDraftBody)
 
         // When
         viewModel.submit(ComposerAction.OnCloseComposer)
@@ -230,7 +233,7 @@ class ComposerViewModelTest {
         expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
-        expectedViewModelInternalState(expectedMessageId, expectedSenderEmail, expectedSubject)
+        expectedViewModelInitialState(expectedMessageId, expectedSenderEmail, expectedSubject)
 
         // When
         viewModel.submit(ComposerAction.OnCloseComposer)
@@ -407,13 +410,18 @@ class ComposerViewModelTest {
         )
     }
 
-    private fun expectedViewModelInternalState(
+    @AfterTest
+    fun tearDown() {
+        unmockkObject(ComposerDraftState.Companion)
+    }
+
+    private fun expectedViewModelInitialState(
         messageId: MessageId,
         senderEmail: SenderEmail = SenderEmail(""),
         subject: Subject = Subject(""),
         draftBody: DraftBody = DraftBody("")
     ) {
-        viewModel.mutableState.value = ComposerDraftState(
+        val expected = ComposerDraftState(
             fields = ComposerFields(
                 messageId,
                 SenderUiModel(senderEmail.value),
@@ -431,6 +439,9 @@ class ComposerViewModelTest {
             closeComposer = Effect.empty(),
             closeComposerWithDraftSaved = Effect.empty()
         )
+
+        mockkObject(ComposerDraftState.Companion)
+        every { ComposerDraftState.empty(messageId) } returns expected
     }
 
     private fun expectedMessageId(messageId: () -> MessageId): MessageId = messageId().also {
