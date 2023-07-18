@@ -149,6 +149,22 @@ interface MessageLocalDataSource {
     ): Either<DataError.Local, Message>
 
     /**
+     * Relabels all affected [messageIds] for the given [userId]
+     * The operation will first remove the labels of the affected messages and then add the new ones
+     * @param userId the user id of the affected messages
+     * @param messageIds the ids of the affected messages
+     * @param labelIdsToAdd the ids of the labels to add
+     * @param labelIdsToAdd the ids of the labels to add
+     * @return either the list of affected messages or a [DataError.Local]
+     */
+    suspend fun relabelMessages(
+        userId: UserId,
+        messageIds: List<MessageId>,
+        labelIdsToRemove: Set<LabelId> = emptySet(),
+        labelIdsToAdd: Set<LabelId> = emptySet()
+    ): Either<DataError.Local, List<Message>>
+
+    /**
      * Marks as unread the message for the given [messageId] related to the same [userId]
      */
     suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message>

@@ -115,24 +115,40 @@ object MessageTestData {
             )
         )
     )
-    val starredMsgByConversationWithCustomLabel = listOf(
+
+    val starredMessagesWithPartiallySetLabels = listOf(
         buildMessage(
             id = "123",
-            conversationId = ConversationId("conversation"),
             labelIds = listOf(SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id, LabelId("11").id)
         ),
         buildMessage(
             id = "124",
-            conversationId = ConversationId("conversation"),
             labelIds = listOf(SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id, LabelId("11").id)
         ),
         buildMessage(
-            id = "125", conversationId = ConversationId("conversation"),
-            labelIds = listOf(
-                SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id, LabelId("11").id
-            )
+            id = "125",
+            labelIds = listOf(SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id)
         )
     )
+
+    val starredMessagesWithCustomLabel = listOf(
+        buildMessage(
+            id = "123",
+            labelIds = listOf(SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id, LabelId("11").id)
+        ),
+        buildMessage(
+            id = "124",
+            labelIds = listOf(SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id, LabelId("11").id)
+        ),
+        buildMessage(
+            id = "125",
+            labelIds = listOf(SystemLabelId.Inbox.labelId.id, SystemLabelId.Starred.labelId.id, LabelId("11").id)
+        )
+    )
+
+    val starredMsgByConversationWithCustomLabel = starredMessagesWithCustomLabel.map {
+        it.copy(conversationId = ConversationId("conversation"))
+    }
 
     val starredMessagesByConversation = listOf(
         buildMessage(

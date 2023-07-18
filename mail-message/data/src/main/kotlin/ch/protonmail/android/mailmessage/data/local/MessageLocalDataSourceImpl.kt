@@ -188,6 +188,23 @@ class MessageLocalDataSourceImpl @Inject constructor(
         return updatedMessage.right()
     }
 
+    override suspend fun relabelMessages(
+        userId: UserId,
+        messageIds: List<MessageId>,
+        labelIdsToRemove: Set<LabelId>,
+        labelIdsToAdd: Set<LabelId>
+    ): Either<DataError.Local, List<Message>> {
+        val messages = messageDao.getMessages(userId, messageIds)
+            .map { it.toMessage() }
+            .takeIf { it.isNotEmpty() }
+            ?: return DataError.Local.NoDataCached.left()
+        val updatedMessages = messages.map { message ->
+            message.copy(labelIds = message.labelIds - labelIdsToRemove + labelIdsToAdd)
+        }
+        upsertMessages(updatedMessages)
+        return updatedMessages.right()
+    }
+
     override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> {
         val message = observeMessage(userId, messageId).first()
             ?: return DataError.Local.NoDataCached.left()

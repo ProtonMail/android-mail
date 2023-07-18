@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.getMessage
 import ch.protonmail.android.mailmessage.data.getMessageWithLabels
 import ch.protonmail.android.mailmessage.data.local.dao.MessageAttachmentDao
@@ -532,6 +533,62 @@ class MessageLocalDataSourceImplTest {
         val actual = messageLocalDataSource.removeLabel(UserIdTestData.userId, MessageId(message.id), labelId)
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), actual)
+    }
+
+    @Test
+    fun `relabel removes and adds labels locally`() = runTest {
+        // Given
+        val messages = MessageTestData.starredMessagesWithCustomLabel
+        coEvery { messageDao.getMessages(userId1, messages.map { it.messageId }) } returns listOf(
+            MessageWithLabelIds(messages[0].toEntity(), messages[0].labelIds),
+            MessageWithLabelIds(messages[1].toEntity(), messages[1].labelIds),
+            MessageWithLabelIds(messages[2].toEntity(), messages[2].labelIds)
+        )
+
+        val labelsToBeRemoved = setOf(LabelId("10"), LabelId("11"))
+        val labelsToBeAdded = setOf(LabelId("12"), LabelId("13"))
+        val expected = messages.map {
+            it.copy(labelIds = listOf(SystemLabelId.Inbox.labelId, LabelId("12"), LabelId("13")))
+        }
+
+        // When
+        val actual = messageLocalDataSource.relabelMessages(
+            userId = userId1,
+            messageIds = messages.map { it.messageId },
+            labelIdsToRemove = labelsToBeRemoved,
+            labelIdsToAdd = labelsToBeAdded
+        )
+
+        // Then
+        assertEquals(expected.right(), actual)
+    }
+
+    @Test
+    fun `relabel removes and adds labels locally when not all affected messages have same labels applied`() = runTest {
+        // Given
+        val messages = MessageTestData.starredMessagesWithPartiallySetLabels
+        coEvery { messageDao.getMessages(userId1, messages.map { it.messageId }) } returns listOf(
+            MessageWithLabelIds(messages[0].toEntity(), messages[0].labelIds),
+            MessageWithLabelIds(messages[1].toEntity(), messages[1].labelIds),
+            MessageWithLabelIds(messages[2].toEntity(), messages[2].labelIds)
+        )
+
+        val labelsToBeRemoved = setOf(LabelId("10"), LabelId("11"))
+        val labelsToBeAdded = setOf(LabelId("12"), LabelId("13"))
+        val expected = messages.map {
+            it.copy(labelIds = listOf(SystemLabelId.Inbox.labelId, LabelId("12"), LabelId("13")))
+        }
+
+        // When
+        val actual = messageLocalDataSource.relabelMessages(
+            userId = userId1,
+            messageIds = messages.map { it.messageId },
+            labelIdsToRemove = labelsToBeRemoved,
+            labelIdsToAdd = labelsToBeAdded
+        )
+
+        // Then
+        assertEquals(expected.right(), actual)
     }
 
     @Test

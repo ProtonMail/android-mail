@@ -47,6 +47,9 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
     @Query("SELECT * FROM MessageEntity WHERE userId = :userId AND messageId = :messageId")
     abstract fun observe(userId: UserId, messageId: MessageId): Flow<MessageWithLabelIds?>
 
+    @Query("SELECT * FROM MessageEntity WHERE userId = :userId AND messageId IN (:messages) ")
+    abstract suspend fun getMessages(userId: UserId, messages: List<MessageId>): List<MessageWithLabelIds>
+
     fun observeAll(userId: UserId, pageKey: PageKey): Flow<List<MessageWithLabelIds>> {
         val labelId = pageKey.filter.labelId
         val keyword = pageKey.filter.keyword
@@ -75,6 +78,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
                 maxOrder = maxOrder,
                 size = size
             )
+
             OrderDirection.Descending -> observeAllOrderByTimeDesc(
                 userId = userId,
                 labelId = labelId,
