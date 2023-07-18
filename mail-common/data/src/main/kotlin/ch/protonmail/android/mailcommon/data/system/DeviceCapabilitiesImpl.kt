@@ -35,29 +35,33 @@ internal class DeviceCapabilitiesImpl @Inject constructor(
         hasWebView = hasWebView()
     )
 
-    private fun hasWebView(): Boolean = hasWebViewPackageEnabled() || hasWebViewGooglePackageEnabled()
+    private fun hasWebView(): Boolean =
+        hasWebViewPackageEnabled() || hasGoogleWebViewPackageEnabled() || hasChromeWebViewPackageEnabled()
 
     private fun hasWebViewPackageEnabled(): Boolean =
         context.packageManager.getPackageInfoCompat(WEB_VIEW_PACKAGE)?.applicationInfo?.enabled ?: false
 
-    private fun hasWebViewGooglePackageEnabled(): Boolean =
+    private fun hasGoogleWebViewPackageEnabled(): Boolean =
         context.packageManager.getPackageInfoCompat(WEB_VIEW_GOOGLE_PACKAGE)?.applicationInfo?.enabled ?: false
+
+    private fun hasChromeWebViewPackageEnabled(): Boolean =
+        context.packageManager.getPackageInfoCompat(WEB_VIEW_CHROME_PACKAGE)?.applicationInfo?.enabled ?: false
 
     internal companion object {
 
         const val WEB_VIEW_PACKAGE = "com.android.webview"
         const val WEB_VIEW_GOOGLE_PACKAGE = "com.google.android.webview"
+        const val WEB_VIEW_CHROME_PACKAGE = "com.android.chrome"
 
         @Suppress("SwallowedException")
-        fun PackageManager.getPackageInfoCompat(packageName: String, flags: Int = 0): PackageInfo? =
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
-                } else {
-                    @Suppress("DEPRECATION") getPackageInfo(packageName, flags)
-                }
-            } catch (e: NameNotFoundException) {
-                null
+        fun PackageManager.getPackageInfoCompat(packageName: String, flags: Int = 0): PackageInfo? = try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
+            } else {
+                @Suppress("DEPRECATION") getPackageInfo(packageName, flags)
             }
+        } catch (e: NameNotFoundException) {
+            null
+        }
     }
 }
