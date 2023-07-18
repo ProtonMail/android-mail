@@ -92,7 +92,7 @@ object MessageAttachmentTestData {
         keyPackets = null,
         signature = null,
         encSignature = null,
-        headers = mapOf("content-id" to "embeddedImageContentId")
+        headers = mapOf("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
     )
 
     val embeddedOctetStreamAttachment = MessageAttachment(
@@ -104,7 +104,7 @@ object MessageAttachmentTestData {
         keyPackets = null,
         signature = null,
         encSignature = null,
-        headers = mapOf("content-id" to "embeddedImageContentId")
+        headers = mapOf("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
     )
 
     val invalidEmbeddedImageAttachment = MessageAttachment(
@@ -116,7 +116,7 @@ object MessageAttachmentTestData {
         keyPackets = null,
         signature = null,
         encSignature = null,
-        headers = mapOf("content-id" to "embeddedImageContentId")
+        headers = mapOf("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
     )
 
 }
