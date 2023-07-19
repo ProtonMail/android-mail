@@ -152,6 +152,7 @@ object AndroidX {
         const val coreKtx = "androidx.test:core-ktx:${Versions.AndroidX.testCore}"
         const val espresso = "androidx.test.espresso:espresso-core:${Versions.AndroidX.testEspresso}"
         const val espressoWeb = "androidx.test.espresso:espresso-web:${Versions.AndroidX.testEspresso}"
+        const val espressoIntents = "androidx.test.espresso:espresso-intents:${Versions.AndroidX.testEspresso}"
         const val macroBenchmark = "androidx.benchmark:benchmark-macro-junit4:${Versions.AndroidX.testMacroBenchmark}"
         const val orchestrator = "androidx.test:orchestrator:${Versions.AndroidX.testOrchestrator}"
         const val runner = "androidx.test:runner:${Versions.AndroidX.testRunner}"

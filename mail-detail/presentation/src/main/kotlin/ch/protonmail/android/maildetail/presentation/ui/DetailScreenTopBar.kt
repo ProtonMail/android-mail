@@ -93,7 +93,11 @@ fun DetailScreenTopBar(
             },
             navigationIcon = {
                 IconButton(onClick = actions.onBackClick) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(id = string.presentation_back))
+                    Icon(
+                        modifier = Modifier.testTag(DetailScreenTopBarTestTags.BackButton),
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(id = string.presentation_back)
+                    )
                 }
             },
             actions = {
@@ -187,6 +191,7 @@ private fun DetailScreenTopBarPreview(
 object DetailScreenTopBarTestTags {
 
     const val RootItem = "DetailScreenTopBarRootItem"
+    const val BackButton = "BackButton"
     const val MessageCount = "MessageCount"
     const val Subject = "Subject"
 }

@@ -60,7 +60,11 @@ fun AttachmentFooter(
     onAttachmentClicked: (attachmentId: AttachmentId) -> Unit
 ) {
     val attachments = messageBodyAttachmentsUiModel.attachments
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(
+        modifier = modifier
+            .testTag(AttachmentFooterTestTags.Root)
+            .fillMaxWidth()
+    ) {
         MailDivider()
         Row(
             modifier = modifier
@@ -158,6 +162,7 @@ fun AttachmentFooterSingleAttachmentPreview() {
 
 object AttachmentFooterTestTags {
 
+    const val Root = "AttachmentsRootItem"
     const val PaperClipIcon = "AttachmentsPaperClipIcon"
     const val SummaryText = "AttachmentsSummaryText"
     const val SummarySize = "AttachmentsSummarySize"
