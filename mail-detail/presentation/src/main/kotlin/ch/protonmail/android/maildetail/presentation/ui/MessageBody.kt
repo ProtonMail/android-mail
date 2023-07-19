@@ -30,10 +30,13 @@ import android.webkit.WebView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -83,6 +86,10 @@ fun MessageBody(
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> }
 ) {
     val hasWebView = LocalDeviceCapabilitiesProvider.current.hasWebView
+
+    if (messageBodyUiModel.shouldShowEmbeddedImagesBanner) {
+        MessageBodyBanner(text = stringResource(id = R.string.message_body_embedded_images_banner_text))
+    }
 
     if (hasWebView) {
         MessageBodyWebView(
@@ -254,6 +261,24 @@ internal fun MessageBodyLoadingError(
                 Text(text = stringResource(id = R.string.reload))
             }
         }
+    }
+}
+
+@Composable
+private fun MessageBodyBanner(modifier: Modifier = Modifier, text: String) {
+    Row(
+        modifier = modifier
+            .padding(ProtonDimens.DefaultSpacing)
+            .background(color = ProtonTheme.colors.backgroundSecondary, shape = ProtonTheme.shapes.medium)
+            .padding(ProtonDimens.DefaultSpacing)
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_proton_image),
+            contentDescription = NO_CONTENT_DESCRIPTION,
+            tint = ProtonTheme.colors.iconWeak
+        )
+        Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
+        Text(text = text, style = ProtonTheme.typography.defaultSmallWeak)
     }
 }
 
