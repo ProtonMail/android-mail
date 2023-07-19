@@ -18,12 +18,15 @@
 
 package ch.protonmail.android.uitest
 
+import android.Manifest
 import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.test.rule.GrantPermissionRule
 import ch.protonmail.android.uitest.helpers.core.TestIdWatcher
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.login.LoginType
 import ch.protonmail.android.uitest.helpers.network.authenticationDispatcher
 import ch.protonmail.android.uitest.rule.MainInitializerRule
+import ch.protonmail.android.uitest.rule.MockIntentsRule
 import ch.protonmail.android.uitest.rule.MockTimeRule
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -41,12 +44,13 @@ import javax.inject.Inject
  */
 @HiltAndroidTest
 internal open class MockedNetworkTest(
+    captureIntents: Boolean = true,
     private val loginType: LoginType = LoginTestUserTypes.Deprecated.GrumpyCat
 ) {
 
     private val hiltAndroidRule = HiltAndroidRule(this)
-
     private val composeTestRule: ComposeTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+    private val writeExtStoragePermission = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     @Inject
     lateinit var mockWebServer: MockWebServer
@@ -56,6 +60,10 @@ internal open class MockedNetworkTest(
         hiltAndroidRule
     ).around(
         composeTestRule
+    ).around(
+        writeExtStoragePermission
+    ).around(
+        MockIntentsRule(captureIntents)
     ).around(
         MainInitializerRule()
     ).around(

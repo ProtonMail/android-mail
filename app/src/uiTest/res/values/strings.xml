@@ -60,4 +60,7 @@
 
     <!-- Misc -->
     <string name="test_retry">Retry</string>
+
+    <!-- Attachments -->
+    <string name="test_error_attachment_download_in_progress">Current download must complete before starting a new one.</string>
 </resources>

@@ -16,16 +16,19 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.helpers.core.navigation
+package ch.protonmail.android.uitest.robot.helpers.section
 
-/**
- * A [Destination] represents a screen of the Proton Mail app.
- */
-internal sealed class Destination {
+import ch.protonmail.android.test.ksp.annotations.AttachTo
+import ch.protonmail.android.test.robot.ProtonMailSectionRobot
+import ch.protonmail.android.uitest.robot.helpers.DeviceRobot
+import ch.protonmail.android.uitest.util.UiDeviceHolder
 
-    object Inbox : Destination()
-    object Drafts : Destination()
-    object Archive : Destination()
-    object Composer : Destination()
-    class MailDetail(val messagePosition: Int = 0) : Destination()
+@AttachTo(targets = [DeviceRobot::class], identifier = "deviceSoftKeys")
+internal class DeviceRobotSoftKeysSection : ProtonMailSectionRobot {
+
+    private val uiDevice = UiDeviceHolder.uiDevice
+
+    fun pressHomeButton() {
+        uiDevice.pressHome()
+    }
 }

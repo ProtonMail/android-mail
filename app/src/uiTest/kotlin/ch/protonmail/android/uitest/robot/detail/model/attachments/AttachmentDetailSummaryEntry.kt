@@ -16,16 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.helpers.core.navigation
+package ch.protonmail.android.uitest.robot.detail.model.attachments
 
-/**
- * A [Destination] represents a screen of the Proton Mail app.
- */
-internal sealed class Destination {
-
-    object Inbox : Destination()
-    object Drafts : Destination()
-    object Archive : Destination()
-    object Composer : Destination()
-    class MailDetail(val messagePosition: Int = 0) : Destination()
-}
+internal data class AttachmentDetailSummaryEntry(
+    val summary: String,
+    val size: String
+)
