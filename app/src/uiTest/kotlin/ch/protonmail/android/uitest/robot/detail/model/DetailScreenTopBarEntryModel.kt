@@ -22,6 +22,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maildetail.presentation.ui.DetailScreenTopBarTestTags
 import ch.protonmail.android.uitest.util.child
 
@@ -33,9 +34,20 @@ internal class DetailScreenTopBarEntryModel(composeTestRule: ComposeTestRule) {
             useUnmergedTree = true
         )
 
+    private val backButton = composeTestRule.onNodeWithTag(
+        testTag = DetailScreenTopBarTestTags.BackButton,
+        useUnmergedTree = true
+    )
+
     private val subject = rootItem.child {
         hasTestTag(DetailScreenTopBarTestTags.Subject)
     }
+
+    // region actions
+    fun tapBack() {
+        backButton.performClick()
+    }
+    // endregion
 
     // region verification
     fun hasSubject(value: String) = apply {

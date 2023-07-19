@@ -27,6 +27,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadgeTestTags
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailItemTestTags
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailHeaderTestTags
 import ch.protonmail.android.test.R
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
@@ -39,6 +40,10 @@ import ch.protonmail.android.uitest.util.getTestString
 internal class MessageHeaderEntryModel(
     composeTestRule: ComposeTestRule
 ) {
+
+    private val collapseAnchor = composeTestRule.onNodeWithTag(
+        testTag = ConversationDetailItemTestTags.CollapseAnchor
+    )
 
     private val rootItem = composeTestRule.onNodeWithTag(
         testTag = MessageDetailHeaderTestTags.RootItem,
@@ -92,6 +97,10 @@ internal class MessageHeaderEntryModel(
     // region actions
     fun click() = apply {
         rootItem.performClick()
+    }
+
+    fun collapseMessage() = apply {
+        collapseAnchor.performClick()
     }
     // endregion
 

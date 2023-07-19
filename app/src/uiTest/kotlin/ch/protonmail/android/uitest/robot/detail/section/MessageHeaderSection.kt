@@ -32,6 +32,10 @@ internal class MessageHeaderSection : ComposeSectionRobot() {
 
     private val headerModel = MessageHeaderEntryModel(composeTestRule)
 
+    fun collapseMessage() = apply {
+        headerModel.collapseMessage()
+    }
+
     fun expandHeader() = apply {
         headerModel.click()
     }

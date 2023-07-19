@@ -38,7 +38,7 @@ import ch.protonmail.android.uitest.robot.composer.section.recipients.toRecipien
 import ch.protonmail.android.uitest.robot.composer.section.subjectSection
 import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.helpers.mockRobot
-import ch.protonmail.android.uitest.robot.helpers.time
+import ch.protonmail.android.uitest.robot.helpers.section.time
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.emptyListSection
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection

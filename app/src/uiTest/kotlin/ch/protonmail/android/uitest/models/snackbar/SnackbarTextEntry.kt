@@ -30,6 +30,14 @@ internal sealed class SnackbarTextEntry(val value: String) {
         getTestString(testR.string.test_conversation_moved_to_selected_destination, folder)
     )
 
+    object FailedToGetAttachment : SnackbarTextEntry(
+        getTestString(testR.string.error_get_attachment_failed)
+    )
+
+    object MultipleDownloadsWarning : SnackbarTextEntry(
+        getTestString(testR.string.test_error_attachment_download_in_progress)
+    )
+
     object FailedToLoadNewItems : SnackbarTextEntry(
         getTestString(testR.string.test_mailbox_error_message_generic)
     )

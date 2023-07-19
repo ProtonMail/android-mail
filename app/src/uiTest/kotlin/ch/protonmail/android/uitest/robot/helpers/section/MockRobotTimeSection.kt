@@ -16,11 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.helpers
+package ch.protonmail.android.uitest.robot.helpers.section
 
 import java.time.Instant
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.robot.ProtonMailSectionRobot
+import ch.protonmail.android.uitest.robot.helpers.MockRobot
 import io.mockk.every
 import io.mockk.mockk
 

@@ -30,6 +30,10 @@ internal class DetailTopBarSection : ComposeSectionRobot() {
 
     private val topBarDetailModel = DetailScreenTopBarEntryModel(composeTestRule)
 
+    fun tapBackButton() {
+        topBarDetailModel.tapBack()
+    }
+
     @VerifiesOuter
     inner class Verify {
 

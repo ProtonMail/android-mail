@@ -28,20 +28,27 @@ import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
+import ch.protonmail.android.uitest.robot.detail.MessageDetailRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.assertions.hasAnyChildWith
 import ch.protonmail.android.uitest.util.awaitDisplayed
+import ch.protonmail.android.uitest.util.awaitHidden
 
 @AttachTo(
     targets = [
         ComposerRobot::class,
         ConversationDetailRobot::class,
+        MessageDetailRobot::class,
         MailboxRobot::class
     ]
 )
 internal class SnackbarSection : ComposeSectionRobot() {
 
     private val snackbarHost = composeTestRule.onAllNodesWithTag(CommonTestTags.SnackbarHost).onFirst()
+
+    fun waitUntilGone() {
+        snackbarHost.awaitHidden()
+    }
 
     @VerifiesOuter
     inner class Verify {
