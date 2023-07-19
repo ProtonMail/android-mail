@@ -21,10 +21,10 @@ package ch.protonmail.android.maildetail.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.testdata.message.MessageTestData
-import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -34,11 +34,16 @@ import kotlin.test.assertEquals
 
 internal class UnStarMessageTest {
 
+    private val userId = UserIdSample.Primary
+    private val messageId = MessageTestData.message.messageId
+    private val starredLabelId = SystemLabelId.Starred.labelId
+
     private val messageRepository: MessageRepository = mockk {
-        coEvery { removeLabel(any(), any(), any()) } returns MessageTestData.message.right()
+        coEvery {
+            relabel(userId, listOf(messageId), labelsToBeRemoved = listOf(starredLabelId))
+        } returns listOf(MessageTestData.message).right()
     }
 
-    private val messageId = MessageTestData.message.messageId
 
     private val unStarMessage = UnStarMessage(
         messageRepository
@@ -47,15 +52,23 @@ internal class UnStarMessageTest {
     @Test
     fun `calls message repository to remove starred label`() = runTest {
         // When
-        unStarMessage(UserIdTestData.userId, messageId)
+        unStarMessage(userId, messageId)
+
         // Then
-        coVerify { messageRepository.removeLabel(UserIdTestData.userId, messageId, SystemLabelId.Starred.labelId) }
+        coVerify {
+            messageRepository.relabel(
+                userId,
+                listOf(messageId),
+                labelsToBeRemoved = listOf(SystemLabelId.Starred.labelId)
+            )
+        }
     }
 
     @Test
     fun `returns unStarred message when repository succeeds`() = runTest {
         // When
-        val actual = unStarMessage(UserIdTestData.userId, messageId)
+        val actual = unStarMessage(userId, messageId)
+
         // Then
         assertEquals(MessageTestData.message.right(), actual)
     }
@@ -64,9 +77,13 @@ internal class UnStarMessageTest {
     fun `returns error when repository fails`() = runTest {
         // Given
         val localError = DataError.Local.NoDataCached
-        coEvery { messageRepository.removeLabel(any(), any(), any()) } returns localError.left()
+        coEvery {
+            messageRepository.relabel(userId, listOf(messageId), labelsToBeRemoved = listOf(starredLabelId))
+        } returns localError.left()
+
         // When
-        val actual = unStarMessage(UserIdTestData.userId, messageId)
+        val actual = unStarMessage(userId, messageId)
+
         // Then
         assertEquals(localError.left(), actual)
     }

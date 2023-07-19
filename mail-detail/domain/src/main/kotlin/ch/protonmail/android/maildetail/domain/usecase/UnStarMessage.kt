@@ -30,5 +30,10 @@ import javax.inject.Inject
 class UnStarMessage @Inject constructor(private val messageRepository: MessageRepository) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Message> =
-        messageRepository.removeLabel(userId, messageId, SystemLabelId.Starred.labelId)
+        messageRepository.relabel(
+            userId,
+            listOf(messageId),
+            labelsToBeRemoved = listOf(SystemLabelId.Starred.labelId),
+            labelsToBeAdded = listOf()
+        ).map { it.first() }
 }

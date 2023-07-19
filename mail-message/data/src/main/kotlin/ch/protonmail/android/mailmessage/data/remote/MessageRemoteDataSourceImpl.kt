@@ -77,35 +77,27 @@ class MessageRemoteDataSourceImpl @Inject constructor(
             ).message.toMessageWithBody(userId)
         }.valueOrThrow
 
-    override fun addLabel(
+    override fun addLabelsToMessages(
         userId: UserId,
-        messageId: MessageId,
-        labelId: LabelId
-    ) = addLabels(userId, messageId, listOf(labelId))
-
-    override fun addLabels(
-        userId: UserId,
-        messageId: MessageId,
+        messageIds: List<MessageId>,
         labelIds: List<LabelId>
     ) {
-        labelIds.forEach { labelId ->
-            enqueuer.enqueue<AddLabelMessageWorker>(AddLabelMessageWorker.params(userId, messageId, labelId))
+        messageIds.chunked(Enqueuer.MAX_PARAMETER_COUNT).forEach { messages ->
+            labelIds.forEach { labelId ->
+                enqueuer.enqueue<AddLabelMessageWorker>(AddLabelMessageWorker.params(userId, messages, labelId))
+            }
         }
     }
 
-    override fun removeLabel(
+    override fun removeLabelsFromMessages(
         userId: UserId,
-        messageId: MessageId,
-        labelId: LabelId
-    ) = removeLabels(userId, messageId, listOf(labelId))
-
-    override fun removeLabels(
-        userId: UserId,
-        messageId: MessageId,
+        messageIds: List<MessageId>,
         labelIds: List<LabelId>
     ) {
-        labelIds.forEach { labelId ->
-            enqueuer.enqueue<RemoveLabelMessageWorker>(RemoveLabelMessageWorker.params(userId, messageId, labelId))
+        messageIds.chunked(Enqueuer.MAX_PARAMETER_COUNT).forEach {
+            labelIds.forEach { labelIds ->
+                enqueuer.enqueue<RemoveLabelMessageWorker>(RemoveLabelMessageWorker.params(userId, it, labelIds))
+            }
         }
     }
 

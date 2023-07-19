@@ -34,6 +34,8 @@ import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.network.domain.isRetryable
+import me.proton.core.util.kotlin.deserializeList
+import me.proton.core.util.kotlin.serialize
 
 @HiltWorker
 class AddLabelMessageWorker @AssistedInject constructor(
@@ -45,14 +47,15 @@ class AddLabelMessageWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         val userId = requireNotBlank(inputData.getString(RawUserIdKey), fieldName = "User id")
-        val messageId = requireNotBlank(inputData.getString(RawMessageIdKey), fieldName = "Message id")
+        val messageIds = requireNotBlank(inputData.getString(RawMessageIdsKey), fieldName = "Message ids")
+            .deserializeList<String>()
         val labelId = requireNotBlank(inputData.getString(RawLabelIdKey), fieldName = "Label id")
 
         val result = apiProvider.get<MessageApi>(UserId(userId)).invoke {
             addLabel(
                 PutLabelBody(
                     labelId = labelId,
-                    messageIds = listOf(messageId)
+                    messageIds = messageIds
                 )
             )
         }
@@ -62,7 +65,12 @@ class AddLabelMessageWorker @AssistedInject constructor(
             is ApiResult.Error -> {
                 if (result.isRetryable()) return Result.retry()
 
-                messageLocalDataSource.removeLabel(UserId(userId), MessageId(messageId), LabelId(labelId))
+                messageLocalDataSource.relabelMessages(
+                    userId = UserId(id = userId),
+                    messageIds = messageIds.map { MessageId(it) },
+                    labelIdsToRemove = setOf(LabelId(labelId)),
+                    labelIdsToAdd = setOf()
+                )
                 Result.failure()
             }
         }
@@ -71,16 +79,16 @@ class AddLabelMessageWorker @AssistedInject constructor(
     companion object {
 
         internal const val RawUserIdKey = "addLabelWorkParamUserId"
-        internal const val RawMessageIdKey = "addLabelWorkParamMessageId"
+        internal const val RawMessageIdsKey = "addLabelWorkParamMessageId"
         internal const val RawLabelIdKey = "addLabelWorkParamLabelId"
 
         fun params(
             userId: UserId,
-            messageId: MessageId,
+            messageIds: List<MessageId>,
             labelId: LabelId
         ) = mapOf(
             RawUserIdKey to userId.id,
-            RawMessageIdKey to messageId.id,
+            RawMessageIdsKey to messageIds.map { it.id }.serialize(),
             RawLabelIdKey to labelId.id
         )
     }

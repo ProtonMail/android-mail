@@ -89,24 +89,6 @@ interface MessageRepository {
     suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean
 
     /**
-     * Adds the given [labelId] to the message with the given [messageId]
-     */
-    suspend fun addLabel(
-        userId: UserId,
-        messageId: MessageId,
-        labelId: LabelId
-    ): Either<DataError.Local, Message>
-
-    /**
-     * Removes the given [labelId] to the message with the given [messageId]
-     */
-    suspend fun removeLabel(
-        userId: UserId,
-        messageId: MessageId,
-        labelId: LabelId
-    ): Either<DataError.Local, Message>
-
-    /**
      * Moves the given [messageId] from the [fromLabel] to the [toLabel]
      */
     suspend fun moveTo(
@@ -133,8 +115,8 @@ interface MessageRepository {
      */
     suspend fun relabel(
         userId: UserId,
-        messageId: MessageId,
-        labelsToBeRemoved: List<LabelId>,
-        labelsToBeAdded: List<LabelId>
-    ): Either<DataError.Local, Message>
+        messageIds: List<MessageId>,
+        labelsToBeRemoved: List<LabelId> = emptyList(),
+        labelsToBeAdded: List<LabelId> = emptyList()
+    ): Either<DataError.Local, List<Message>>
 }

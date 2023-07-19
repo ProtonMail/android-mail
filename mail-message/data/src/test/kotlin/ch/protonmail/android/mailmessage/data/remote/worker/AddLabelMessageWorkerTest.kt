@@ -50,6 +50,7 @@ import me.proton.core.network.domain.session.SessionId
 import me.proton.core.network.domain.session.SessionProvider
 import me.proton.core.test.android.api.TestApiManager
 import me.proton.core.util.kotlin.DefaultDispatcherProvider
+import me.proton.core.util.kotlin.serialize
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -59,6 +60,7 @@ internal class AddLabelMessageWorkerTest {
 
     private val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
     private val labelId = LabelId("10")
+    private val expectedMessageListParam = listOf(messageId.id).serialize()
 
     private val workManager: WorkManager = mockk {
         coEvery { enqueue(any<OneTimeWorkRequest>()) } returns mockk()
@@ -66,7 +68,7 @@ internal class AddLabelMessageWorkerTest {
     private val parameters: WorkerParameters = mockk {
         every { getTaskExecutor() } returns mockk(relaxed = true)
         every { inputData.getString(AddLabelMessageWorker.RawUserIdKey) } returns userId.id
-        every { inputData.getString(AddLabelMessageWorker.RawMessageIdKey) } returns messageId.id
+        every { inputData.getString(AddLabelMessageWorker.RawMessageIdsKey) } returns expectedMessageListParam
         every { inputData.getString(AddLabelMessageWorker.RawLabelIdKey) } returns labelId.id
     }
     private val context: Context = mockk()
@@ -81,7 +83,9 @@ internal class AddLabelMessageWorkerTest {
         every { create(any(), MessageApi::class) } returns TestApiManager(messageApi)
     }
     private val messageLocalDataSource = mockk<MessageLocalDataSource> {
-        coEvery { removeLabel(userId, messageId, labelId) } returns MessageTestData.message.right()
+        coEvery {
+            relabelMessages(userId, listOf(messageId), labelIdsToRemove = setOf(labelId))
+        } returns listOf(MessageTestData.message).right()
     }
 
     private lateinit var apiProvider: ApiProvider
@@ -104,7 +108,7 @@ internal class AddLabelMessageWorkerTest {
         Enqueuer(workManager).enqueue<AddLabelMessageWorker>(
             AddLabelMessageWorker.params(
                 userId,
-                messageId,
+                listOf(messageId),
                 labelId
             )
         )
@@ -115,10 +119,10 @@ internal class AddLabelMessageWorkerTest {
         val constraints = workSpec.constraints
         val inputData = workSpec.input
         val actualUserId = inputData.getString(AddLabelMessageWorker.RawUserIdKey)
-        val actualMessageId = inputData.getString(AddLabelMessageWorker.RawMessageIdKey)
+        val actualMessageIds = inputData.getString(AddLabelMessageWorker.RawMessageIdsKey)
         val actualLabelId = inputData.getString(AddLabelMessageWorker.RawLabelIdKey)
         assertEquals(userId.id, actualUserId)
-        assertEquals(messageId.id, actualMessageId)
+        assertEquals(expectedMessageListParam, actualMessageIds)
         assertEquals(labelId.id, actualLabelId)
         assertEquals(NetworkType.CONNECTED, constraints.requiredNetworkType)
     }
@@ -141,9 +145,9 @@ internal class AddLabelMessageWorkerTest {
     }
 
     @Test
-    fun `worker fails when messageId worker parameter is empty`() = runTest {
+    fun `worker fails when messageIds worker parameter is empty`() = runTest {
         // Given
-        every { parameters.inputData.getString(AddLabelMessageWorker.RawMessageIdKey) } returns ""
+        every { parameters.inputData.getString(AddLabelMessageWorker.RawMessageIdsKey) } returns ""
         // When - Then
         assertFailsWith<IllegalArgumentException> { addLabelMessageWorker.doWork() }
         coVerify { messageApi wasNot Called }
@@ -193,6 +197,8 @@ internal class AddLabelMessageWorkerTest {
         // When
         addLabelMessageWorker.doWork()
         // Then
-        coVerify { messageLocalDataSource.removeLabel(userId, messageId, labelId) }
+        coVerify {
+            messageLocalDataSource.relabelMessages(userId, listOf(messageId), labelIdsToRemove = setOf(labelId))
+        }
     }
 }

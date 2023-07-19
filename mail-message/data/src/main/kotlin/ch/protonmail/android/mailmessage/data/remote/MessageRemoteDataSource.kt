@@ -39,38 +39,20 @@ interface MessageRemoteDataSource {
     suspend fun getMessage(userId: UserId, messageId: MessageId): MessageWithBody
 
     /**
-     * Add a [LabelId] to the given [MessageId]
-     */
-    fun addLabel(
-        userId: UserId,
-        messageId: MessageId,
-        labelId: LabelId
-    )
-
-    /**
      * Adds [labelIds] to the given [MessageId]
      */
-    fun addLabels(
+    fun addLabelsToMessages(
         userId: UserId,
-        messageId: MessageId,
+        messageIds: List<MessageId>,
         labelIds: List<LabelId>
-    )
-
-    /**
-     * Remove a [LabelId] from the given [MessageId]
-     */
-    fun removeLabel(
-        userId: UserId,
-        messageId: MessageId,
-        labelId: LabelId
     )
 
     /**
      * Removes [labelIds] from the given [MessageId]
      */
-    fun removeLabels(
+    fun removeLabelsFromMessages(
         userId: UserId,
-        messageId: MessageId,
+        messageIds: List<MessageId>,
         labelIds: List<LabelId>
     )
 

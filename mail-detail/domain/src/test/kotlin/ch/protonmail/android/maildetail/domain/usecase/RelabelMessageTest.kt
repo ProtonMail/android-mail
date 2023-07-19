@@ -64,7 +64,7 @@ internal class RelabelMessageTest {
         coEvery {
             messageRepository.relabel(
                 userId = UserIdSample.Primary,
-                messageId = MessageIdSample.Invoice,
+                messageIds = listOf(MessageIdSample.Invoice),
                 labelsToBeRemoved = removedLabels,
                 labelsToBeAdded = addedLabels
             )
@@ -77,7 +77,7 @@ internal class RelabelMessageTest {
         coVerify {
             messageRepository.relabel(
                 userId = UserIdSample.Primary,
-                messageId = MessageIdSample.Invoice,
+                messageIds = listOf(MessageIdSample.Invoice),
                 labelsToBeRemoved = removedLabels,
                 labelsToBeAdded = addedLabels
             )

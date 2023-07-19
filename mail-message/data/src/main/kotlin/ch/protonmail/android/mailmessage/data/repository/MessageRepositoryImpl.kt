@@ -85,8 +85,11 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun getLocalMessages(userId: UserId, pageKey: PageKey) =
         localDataSource.getMessages(userId, pageKey)
 
-    override suspend fun isLocalPageValid(userId: UserId, pageKey: PageKey, items: List<Message>): Boolean =
-        localDataSource.isLocalPageValid(userId, pageKey, items)
+    override suspend fun isLocalPageValid(
+        userId: UserId,
+        pageKey: PageKey,
+        items: List<Message>
+    ): Boolean = localDataSource.isLocalPageValid(userId, pageKey, items)
 
     override suspend fun getRemoteMessages(userId: UserId, pageKey: PageKey): Either<DataError.Remote, List<Message>> {
         val adaptedPageKey = localDataSource.getClippedPageKey(
@@ -143,29 +146,6 @@ class MessageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addLabel(
-        userId: UserId,
-        messageId: MessageId,
-        labelId: LabelId
-    ): Either<DataError.Local, Message> {
-        val messageEither = localDataSource.addLabel(userId, messageId, labelId)
-        return messageEither.onRight {
-            remoteDataSource.addLabel(userId, messageId, labelId)
-        }
-    }
-
-    override suspend fun removeLabel(
-        userId: UserId,
-        messageId: MessageId,
-        labelId: LabelId
-    ): Either<DataError.Local, Message> {
-        val messageEither = localDataSource.removeLabel(userId, messageId, labelId)
-
-        return messageEither.onRight {
-            remoteDataSource.removeLabel(userId, messageId, labelId)
-        }
-    }
-
     override suspend fun moveTo(
         userId: UserId,
         messageId: MessageId,
@@ -187,7 +167,7 @@ class MessageRepositoryImpl @Inject constructor(
         val updatedMessage = message.copy(labelIds = updatedLabels)
 
         localDataSource.upsertMessage(updatedMessage)
-        remoteDataSource.addLabel(userId, messageId, toLabel)
+        remoteDataSource.addLabelsToMessages(userId, listOf(messageId), listOf(toLabel))
         return updatedMessage.right()
     }
 
@@ -206,17 +186,18 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun relabel(
         userId: UserId,
-        messageId: MessageId,
+        messageIds: List<MessageId>,
         labelsToBeRemoved: List<LabelId>,
         labelsToBeAdded: List<LabelId>
-    ): Either<DataError.Local, Message> {
-        val removeOperation = localDataSource.removeLabels(userId, messageId, labelsToBeRemoved).onRight {
-            remoteDataSource.removeLabels(userId, messageId, labelsToBeRemoved)
-        }
-        if (removeOperation.isLeft()) return removeOperation
-
-        return localDataSource.addLabels(userId, messageId, labelsToBeAdded).onRight {
-            remoteDataSource.addLabels(userId, messageId, labelsToBeAdded)
+    ): Either<DataError.Local, List<Message>> {
+        return localDataSource.relabelMessages(
+            userId,
+            messageIds,
+            labelsToBeRemoved.toSet(),
+            labelsToBeAdded.toSet()
+        ).onRight {
+            remoteDataSource.removeLabelsFromMessages(userId, messageIds, labelsToBeRemoved)
+            remoteDataSource.addLabelsToMessages(userId, messageIds, labelsToBeAdded)
         }
     }
 
@@ -229,16 +210,18 @@ class MessageRepositoryImpl @Inject constructor(
 
         val message = localDataSource.observeMessage(userId, messageId).first()
             ?: return DataError.Local.NoDataCached.left()
-        val updatedMessage = run {
-            val persistentLabels = listOf(
-                SystemLabelId.AllDrafts.labelId,
-                SystemLabelId.AllMail.labelId,
-                SystemLabelId.AllSent.labelId
-            )
-            message.copy(labelIds = message.labelIds.filter { labelId -> labelId in persistentLabels })
-        }
-        localDataSource.upsertMessage(updatedMessage)
-        return addLabel(userId = userId, messageId = messageId, labelId = labelId)
+
+        val persistentLabels = listOf(
+            SystemLabelId.AllDrafts.labelId,
+            SystemLabelId.AllMail.labelId,
+            SystemLabelId.AllSent.labelId
+        )
+        return relabel(
+            userId = userId,
+            messageIds = listOf(messageId),
+            labelsToBeRemoved = message.labelIds.filterNot { it in persistentLabels },
+            labelsToBeAdded = listOf(labelId)
+        ).map { it.first() }
     }
 
     private suspend fun upsertMessages(

@@ -40,6 +40,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import io.mockk.verifySequence
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -261,12 +262,44 @@ class MessageRemoteDataSourceImplTest {
     fun `enqueues worker to perform add label API call when add label is called for message`() {
         // Given
         val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        val messageId2 = MessageIdSample.Invoice
         val labelId = LabelId("10")
+
+
         // When
-        messageRemoteDataSource.addLabel(userId, messageId, labelId)
+        messageRemoteDataSource.addLabelsToMessages(userId, listOf(messageId, messageId2), listOf(labelId))
+
         // Then
-        verify { enqueuer.enqueue<AddLabelMessageWorker>(AddLabelMessageWorker.params(userId, messageId, labelId)) }
+        verify {
+            enqueuer.enqueue<AddLabelMessageWorker>(
+                AddLabelMessageWorker.params(
+                    userId,
+                    listOf(messageId, messageId2),
+                    labelId
+                )
+            )
+        }
     }
+
+    @Test
+    fun `enqueues worker to perform add label API call twice when add label is called for massages above the limit`() =
+        runTest {
+            // Given
+            val messageIds = List(Enqueuer.MAX_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
+
+            // When
+            messageRemoteDataSource.addLabelsToMessages(userId, messageIds, listOf(LabelId("10")))
+
+            // Then
+            verifySequence {
+                enqueuer.enqueue<AddLabelMessageWorker>(
+                    AddLabelMessageWorker.params(userId, messageIds.take(Enqueuer.MAX_PARAMETER_COUNT), LabelId("10"))
+                )
+                enqueuer.enqueue<AddLabelMessageWorker>(
+                    AddLabelMessageWorker.params(userId, messageIds.drop(Enqueuer.MAX_PARAMETER_COUNT), LabelId("10"))
+                )
+            }
+        }
 
     @Test
     fun `enqueues workers to perform multiple add label API call when add labels is called for message`() {
@@ -275,10 +308,18 @@ class MessageRemoteDataSourceImplTest {
         val labelId = LabelId("10")
         val labelId2 = LabelId("11")
         // When
-        messageRemoteDataSource.addLabels(userId, messageId, listOf(labelId, labelId2))
+        messageRemoteDataSource.addLabelsToMessages(userId, listOf(messageId), listOf(labelId, labelId2))
         // Then
-        verify { enqueuer.enqueue<AddLabelMessageWorker>(AddLabelMessageWorker.params(userId, messageId, labelId)) }
-        verify { enqueuer.enqueue<AddLabelMessageWorker>(AddLabelMessageWorker.params(userId, messageId, labelId2)) }
+        verify {
+            enqueuer.enqueue<AddLabelMessageWorker>(
+                AddLabelMessageWorker.params(userId, listOf(messageId), labelId)
+            )
+        }
+        verify {
+            enqueuer.enqueue<AddLabelMessageWorker>(
+                AddLabelMessageWorker.params(userId, listOf(messageId), labelId2)
+            )
+        }
     }
 
     @Test
@@ -287,15 +328,11 @@ class MessageRemoteDataSourceImplTest {
         val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
         val labelId = LabelId("10")
         // When
-        messageRemoteDataSource.removeLabel(userId, messageId, labelId)
+        messageRemoteDataSource.removeLabelsFromMessages(userId, listOf(messageId), listOf(labelId))
         // Then
         verify {
             enqueuer.enqueue<RemoveLabelMessageWorker>(
-                RemoveLabelMessageWorker.params(
-                    userId,
-                    messageId,
-                    labelId
-                )
+                RemoveLabelMessageWorker.params(userId, listOf(messageId), labelId)
             )
         }
     }
@@ -307,24 +344,16 @@ class MessageRemoteDataSourceImplTest {
         val labelId = LabelId("10")
         val labelId2 = LabelId("11")
         // When
-        messageRemoteDataSource.removeLabels(userId, messageId, listOf(labelId, labelId2))
+        messageRemoteDataSource.removeLabelsFromMessages(userId, listOf(messageId), listOf(labelId, labelId2))
         // Then
         verify {
             enqueuer.enqueue<RemoveLabelMessageWorker>(
-                RemoveLabelMessageWorker.params(
-                    userId,
-                    messageId,
-                    labelId
-                )
+                RemoveLabelMessageWorker.params(userId, listOf(messageId), labelId)
             )
         }
         verify {
             enqueuer.enqueue<RemoveLabelMessageWorker>(
-                RemoveLabelMessageWorker.params(
-                    userId,
-                    messageId,
-                    labelId2
-                )
+                RemoveLabelMessageWorker.params(userId, listOf(messageId), labelId2)
             )
         }
     }

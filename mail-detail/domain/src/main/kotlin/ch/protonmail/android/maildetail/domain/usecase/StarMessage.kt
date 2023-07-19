@@ -32,5 +32,6 @@ class StarMessage @Inject constructor(
 ) {
 
     suspend operator fun invoke(userId: UserId, messageId: MessageId): Either<DataError, Message> =
-        messageRepository.addLabel(userId, messageId, SystemLabelId.Starred.labelId)
+        messageRepository.relabel(userId, listOf(messageId), emptyList(), listOf(SystemLabelId.Starred.labelId))
+            .map { it.first() }
 }
