@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyAttachmentsUiModel
@@ -44,11 +45,14 @@ class MessageBodyUiModelMapperTest {
     private val sanitizedDecryptedMessageBody = "Sanitized decrypted message body."
     private val sanitizedDecryptedMessageBodyWithCss = "Sanitized decrypted message body with CSS."
 
+    private val doesMessageBodyHaveEmbeddedImages = mockk<DoesMessageBodyHaveEmbeddedImages> {
+        every { this@mockk.invoke(any()) } returns false
+    }
     private val injectCssIntoDecryptedMessageBody = mockk<InjectCssIntoDecryptedMessageBody> {
-        every { this@mockk.invoke(decryptedMessageBody, MimeTypeUiModel.PlainText) } returns decryptedMessageBody
+        every { this@mockk.invoke(decryptedMessageBody, any()) } returns decryptedMessageBody
     }
     private val sanitizeHtmlOfDecryptedMessageBody = mockk<SanitizeHtmlOfDecryptedMessageBody> {
-        every { this@mockk.invoke(decryptedMessageBody, MimeTypeUiModel.PlainText) } returns decryptedMessageBody
+        every { this@mockk.invoke(decryptedMessageBody, any()) } returns decryptedMessageBody
     }
     private val shouldShowEmbeddedImages = mockk<ShouldShowEmbeddedImages> {
         coEvery { this@mockk.invoke(UserIdTestData.userId) } returns false
@@ -57,10 +61,11 @@ class MessageBodyUiModelMapperTest {
         coEvery { this@mockk.invoke(UserIdTestData.userId) } returns false
     }
     private val messageBodyUiModelMapper = MessageBodyUiModelMapper(
-        injectCssIntoDecryptedMessageBody,
-        sanitizeHtmlOfDecryptedMessageBody,
-        shouldShowEmbeddedImages,
-        shouldShowRemoteContent
+        doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages,
+        injectCssIntoDecryptedMessageBody = injectCssIntoDecryptedMessageBody,
+        sanitizeHtmlOfDecryptedMessageBody = sanitizeHtmlOfDecryptedMessageBody,
+        shouldShowEmbeddedImages = shouldShowEmbeddedImages,
+        shouldShowRemoteContent = shouldShowRemoteContent
     )
 
     @Test
@@ -72,6 +77,7 @@ class MessageBodyUiModelMapperTest {
             MimeTypeUiModel.PlainText,
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
+            shouldShowEmbeddedImagesBanner = false,
             attachments = null
         )
 
@@ -99,6 +105,7 @@ class MessageBodyUiModelMapperTest {
             MimeTypeUiModel.PlainText,
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
+            shouldShowEmbeddedImagesBanner = false,
             MessageBodyAttachmentsUiModel(
                 attachments = listOf(
                     AttachmentUiModelSample.invoice,
@@ -130,6 +137,7 @@ class MessageBodyUiModelMapperTest {
             MimeTypeUiModel.Html,
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
+            shouldShowEmbeddedImagesBanner = false,
             attachments = null
         )
 
@@ -144,12 +152,13 @@ class MessageBodyUiModelMapperTest {
     fun `message body is mapped to a ui model that allows showing remote content when setting value is true`() =
         runTest {
             // Given
-            val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.PlainText)
+            val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.Html)
             val expected = MessageBodyUiModel(
                 decryptedMessageBody,
-                MimeTypeUiModel.PlainText,
+                MimeTypeUiModel.Html,
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = true,
+                shouldShowEmbeddedImagesBanner = false,
                 attachments = null
             )
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns true
@@ -165,12 +174,13 @@ class MessageBodyUiModelMapperTest {
     fun `message body is mapped to a ui model that doesn't allow showing remote content when setting value is false`() =
         runTest {
             // Given
-            val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.PlainText)
+            val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.Html)
             val expected = MessageBodyUiModel(
                 decryptedMessageBody,
-                MimeTypeUiModel.PlainText,
+                MimeTypeUiModel.Html,
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,
+                shouldShowEmbeddedImagesBanner = false,
                 attachments = null
             )
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns false
@@ -186,14 +196,16 @@ class MessageBodyUiModelMapperTest {
     fun `message body is mapped to a ui model that allows showing embedded images when setting value is true`() =
         runTest {
             // Given
-            val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.PlainText)
+            val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.Html)
             val expected = MessageBodyUiModel(
                 decryptedMessageBody,
-                MimeTypeUiModel.PlainText,
+                MimeTypeUiModel.Html,
                 shouldShowEmbeddedImages = true,
                 shouldShowRemoteContent = false,
+                shouldShowEmbeddedImagesBanner = false,
                 attachments = null
             )
+            every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns true
 
             // When
@@ -207,14 +219,16 @@ class MessageBodyUiModelMapperTest {
     fun `message body is mapped to a ui model that doesn't allow showing embedded image when setting value is false`() =
         runTest {
             // Given
-            val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.PlainText)
+            val messageBody = DecryptedMessageBody(decryptedMessageBody, MimeType.Html)
             val expected = MessageBodyUiModel(
                 decryptedMessageBody,
-                MimeTypeUiModel.PlainText,
+                MimeTypeUiModel.Html,
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,
+                shouldShowEmbeddedImagesBanner = true,
                 attachments = null
             )
+            every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns false
 
             // When
@@ -233,6 +247,7 @@ class MessageBodyUiModelMapperTest {
             MimeTypeUiModel.PlainText,
             shouldShowEmbeddedImages = false,
             shouldShowRemoteContent = false,
+            shouldShowEmbeddedImagesBanner = false,
             attachments = null
         )
 

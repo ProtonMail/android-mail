@@ -31,6 +31,7 @@ object MessageBodyUiModelTestData {
         mimeType = MimeTypeUiModel.PlainText,
         shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
+        shouldShowEmbeddedImagesBanner = false,
         attachments = null
     )
 
@@ -39,6 +40,7 @@ object MessageBodyUiModelTestData {
         mimeType = MimeTypeUiModel.PlainText,
         shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
+        shouldShowEmbeddedImagesBanner = false,
         attachments = MessageBodyAttachmentsUiModel(
             limit = 3,
             attachments = listOf(
@@ -62,6 +64,7 @@ object MessageBodyUiModelTestData {
         mimeType = MimeTypeUiModel.Html,
         shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
+        shouldShowEmbeddedImagesBanner = false,
         attachments = null
     )
 
@@ -70,14 +73,16 @@ object MessageBodyUiModelTestData {
         mimeType: MimeTypeUiModel = MimeTypeUiModel.PlainText,
         shouldShowEmbeddedImages: Boolean = false,
         shouldShowRemoteContent: Boolean = false,
+        shouldShowEmbeddedImagesBanner: Boolean = false,
         attachments: MessageBodyAttachmentsUiModel? = null
     ): MessageBodyUiModel {
         return MessageBodyUiModel(
-            messageBody.body,
-            mimeType,
-            shouldShowEmbeddedImages,
-            shouldShowRemoteContent,
-            attachments
+            messageBody = messageBody.body,
+            mimeType = mimeType,
+            shouldShowEmbeddedImages = shouldShowEmbeddedImages,
+            shouldShowRemoteContent = shouldShowRemoteContent,
+            shouldShowEmbeddedImagesBanner = shouldShowEmbeddedImagesBanner,
+            attachments = attachments
         )
     }
 }

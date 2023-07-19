@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
+import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
 import ch.protonmail.android.maildetail.presentation.model.AttachmentUiModel
@@ -32,6 +33,7 @@ import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class MessageBodyUiModelMapper @Inject constructor(
+    private val doesMessageBodyHaveEmbeddedImages: DoesMessageBodyHaveEmbeddedImages,
     private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody,
     private val sanitizeHtmlOfDecryptedMessageBody: SanitizeHtmlOfDecryptedMessageBody,
     private val shouldShowEmbeddedImages: ShouldShowEmbeddedImages,
@@ -43,14 +45,18 @@ class MessageBodyUiModelMapper @Inject constructor(
             decryptedMessageBody.value,
             decryptedMessageBody.mimeType.toMimeTypeUiModel()
         )
+        val shouldShowEmbeddedImages = shouldShowEmbeddedImages(userId)
+        val doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages(decryptedMessageBody)
+
         return MessageBodyUiModel(
             messageBody = injectCssIntoDecryptedMessageBody(
                 sanitizedMessageBody,
                 decryptedMessageBody.mimeType.toMimeTypeUiModel()
             ),
             mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
-            shouldShowEmbeddedImages = shouldShowEmbeddedImages(userId),
+            shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent(userId),
+            shouldShowEmbeddedImagesBanner = !shouldShowEmbeddedImages && doesMessageBodyHaveEmbeddedImages,
             attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
                 MessageBodyAttachmentsUiModel(
                     attachments = decryptedMessageBody.attachments.map {
@@ -72,6 +78,7 @@ class MessageBodyUiModelMapper @Inject constructor(
         mimeType = MimeTypeUiModel.PlainText,
         shouldShowEmbeddedImages = false,
         shouldShowRemoteContent = false,
+        shouldShowEmbeddedImagesBanner = false,
         attachments = null
     )
 

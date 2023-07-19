@@ -53,6 +53,7 @@ import ch.protonmail.android.maildetail.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.maildetail.domain.model.MessageWithLabels
 import ch.protonmail.android.maildetail.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
@@ -227,6 +228,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val shouldShowRemoteContent = mockk<ShouldShowRemoteContent> {
         coEvery { this@mockk.invoke(userId) } returns true
     }
+    private val doesMessageBodyHaveEmbeddedImages = DoesMessageBodyHaveEmbeddedImages()
     // endregion
 
     // region mappers
@@ -267,10 +269,11 @@ class ConversationDetailViewModelIntegrationTest {
             resolveParticipantName = resolveParticipantName
         ),
         messageBodyUiModelMapper = MessageBodyUiModelMapper(
-            injectCssIntoDecryptedMessageBody,
-            sanitizeHtmlOfDecryptedMessageBody,
-            shouldShowEmbeddedImages,
-            shouldShowRemoteContent
+            doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages,
+            injectCssIntoDecryptedMessageBody = injectCssIntoDecryptedMessageBody,
+            sanitizeHtmlOfDecryptedMessageBody = sanitizeHtmlOfDecryptedMessageBody,
+            shouldShowEmbeddedImages = shouldShowEmbeddedImages,
+            shouldShowRemoteContent = shouldShowRemoteContent
         ),
         participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName)
     )

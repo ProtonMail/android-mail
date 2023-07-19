@@ -48,6 +48,7 @@ object MessageDetailsPreviewData {
                 mimeType = MimeTypeUiModel.PlainText,
                 shouldShowEmbeddedImages = false,
                 shouldShowRemoteContent = false,
+                shouldShowEmbeddedImagesBanner = false,
                 attachments = null
             )
         ),

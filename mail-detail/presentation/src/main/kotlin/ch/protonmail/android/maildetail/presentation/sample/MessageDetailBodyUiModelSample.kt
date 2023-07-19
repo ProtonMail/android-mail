@@ -29,12 +29,14 @@ object MessageDetailBodyUiModelSample {
         mimeType: MimeTypeUiModel = MimeTypeUiModel.Html,
         shouldShowEmbeddedImages: Boolean = false,
         shouldShowRemoteContent: Boolean = false,
+        shouldShowEmbeddedImagesBanner: Boolean = false,
         attachments: MessageBodyAttachmentsUiModel? = null
     ) = MessageBodyUiModel(
         messageBody = messageBody,
         mimeType = mimeType,
         shouldShowEmbeddedImages = shouldShowEmbeddedImages,
         shouldShowRemoteContent = shouldShowRemoteContent,
+        shouldShowEmbeddedImagesBanner = shouldShowEmbeddedImagesBanner,
         attachments = attachments
     )
 }
