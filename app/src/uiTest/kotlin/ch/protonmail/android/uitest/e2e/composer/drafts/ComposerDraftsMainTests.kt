@@ -31,7 +31,9 @@ import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.mailbox.MailboxListItemEntry
 import ch.protonmail.android.uitest.models.mailbox.MailboxType
 import ch.protonmail.android.uitest.models.mailbox.ParticipantEntry
-import ch.protonmail.android.uitest.robot.common.section.keyboardSection
+import ch.protonmail.android.uitest.models.snackbar.SnackbarTextEntry
+import ch.protonmail.android.uitest.robot.common.section.snackbarSection
+import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.toRecipientSection
@@ -144,9 +146,11 @@ internal class ComposerDraftsMainTests : MockedNetworkTest(), ComposerTests {
                 typeMessageBody(body)
             }
 
-            keyboardSection { dismissKeyboard() }
-
             topAppBarSection { tapCloseButton() }
+        }
+
+        mailboxRobot {
+            snackbarSection { verify { hasMessage(SnackbarTextEntry.DraftSaved) } }
         }
 
         menuRobot {

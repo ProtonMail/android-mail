@@ -42,6 +42,10 @@ internal sealed class SnackbarTextEntry(val value: String) {
         getTestString(testR.string.test_mailbox_error_message_generic)
     )
 
+    object DraftSaved : SnackbarTextEntry(
+        getTestString(testR.string.test_mailbox_draft_saved_message)
+    )
+
     class DuplicateEmailAddress(recipient: String) : SnackbarTextEntry(
         getTestString(testR.string.test_composer_error_duplicate_email, recipient)
     )
