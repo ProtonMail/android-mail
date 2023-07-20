@@ -390,7 +390,7 @@ class MessageRemoteDataSourceImplTest {
     @Test
     fun `enqueues worker to mark message as read`() {
         // given
-        val messageId = MessageIdSample.Invoice
+        val messageId = listOf(MessageIdSample.Invoice)
 
         // when
         messageRemoteDataSource.markRead(userId, messageId)
@@ -398,4 +398,24 @@ class MessageRemoteDataSourceImplTest {
         // then
         verify { enqueuer.enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId)) }
     }
+
+    @Test
+    fun `enqueues worker to mark messages as read twice if message id count exceeds limit`() {
+        // Given
+        val messageIds = List(Enqueuer.MAX_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
+
+        // When
+        messageRemoteDataSource.markRead(userId, messageIds)
+
+        // Then
+        verifySequence {
+            enqueuer.enqueue<MarkMessageAsReadWorker>(
+                MarkMessageAsReadWorker.params(userId, messageIds.take(Enqueuer.MAX_PARAMETER_COUNT))
+            )
+            enqueuer.enqueue<MarkMessageAsReadWorker>(
+                MarkMessageAsReadWorker.params(userId, messageIds.drop(Enqueuer.MAX_PARAMETER_COUNT))
+            )
+        }
+    }
+
 }

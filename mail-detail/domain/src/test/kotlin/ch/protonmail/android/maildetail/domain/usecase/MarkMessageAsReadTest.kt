@@ -33,6 +33,9 @@ import kotlin.test.assertEquals
 
 internal class MarkMessageAsReadTest {
 
+    private val userId = UserIdSample.Primary
+    private val messageId = MessageIdSample.Invoice
+
     private val messageRepository: MessageRepository = mockk()
     private val markRead = MarkMessageAsRead(messageRepository)
 
@@ -40,10 +43,10 @@ internal class MarkMessageAsReadTest {
     fun `when repository fails then error is returned`() = runTest {
         // given
         val error = DataError.Local.NoDataCached.left()
-        coEvery { messageRepository.markRead(any(), any()) } returns error
+        coEvery { messageRepository.markRead(userId, listOf(messageId)) } returns error
 
         // when
-        val result = markRead(UserIdSample.Primary, MessageIdSample.Invoice)
+        val result = markRead(userId, messageId)
 
         // then
         assertEquals(error, result)
@@ -52,13 +55,13 @@ internal class MarkMessageAsReadTest {
     @Test
     fun `when repository succeed then message is returned`() = runTest {
         // given
-        val message = MessageSample.Invoice.right()
-        coEvery { messageRepository.markRead(any(), any()) } returns message
+        val message = listOf(MessageSample.Invoice).right()
+        coEvery { messageRepository.markRead(userId, listOf(messageId)) } returns message
 
         // when
-        val result = markRead(UserIdSample.Primary, MessageIdSample.Invoice)
+        val result = markRead(userId, messageId)
 
         // then
-        assertEquals(message, result)
+        assertEquals(message.map { it.first() }, result)
     }
 }

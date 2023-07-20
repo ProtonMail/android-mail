@@ -64,8 +64,7 @@ class MarkMessageAsUnreadWorker @AssistedInject constructor(
                 if (result.isRetryable()) {
                     Result.retry()
                 } else {
-                    // TODO handle markRead as list
-                    messageLocalDataSource.markRead(userId, messageIds.first().let(::MessageId))
+                    messageLocalDataSource.markRead(userId, messageIds.map { MessageId(it) })
                     Result.failure()
                 }
             }

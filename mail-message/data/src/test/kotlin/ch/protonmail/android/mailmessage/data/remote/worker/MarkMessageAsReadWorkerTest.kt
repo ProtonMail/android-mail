@@ -43,6 +43,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.SerializationException
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
+import me.proton.core.util.kotlin.serialize
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -75,8 +76,8 @@ internal class MarkMessageAsReadWorkerTest {
         every { taskExecutor } returns mockk(relaxed = true)
         every { inputData.getString(MarkMessageAsReadWorker.RawUserIdKey) } returns userId.id
         every {
-            inputData.getString(MarkMessageAsReadWorker.RawMessageIdKey)
-        } returns messageId.id
+            inputData.getString(MarkMessageAsReadWorker.RawMessageIdsKey)
+        } returns listOf(messageId.id).serialize()
     }
     private val workManager: WorkManager = mockk {
         coEvery { enqueue(ofType<OneTimeWorkRequest>()) } returns mockk()
@@ -95,7 +96,9 @@ internal class MarkMessageAsReadWorkerTest {
         val expectedNetworkType = NetworkType.CONNECTED
 
         // when
-        Enqueuer(workManager).enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueue<MarkMessageAsReadWorker>(
+            MarkMessageAsReadWorker.params(userId, listOf(messageId))
+        )
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()
@@ -106,7 +109,9 @@ internal class MarkMessageAsReadWorkerTest {
     @Test
     fun `worker is enqueued with correct parameters`() {
         // when
-        Enqueuer(workManager).enqueue<MarkMessageAsReadWorker>(MarkMessageAsReadWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueue<MarkMessageAsReadWorker>(
+            MarkMessageAsReadWorker.params(userId, listOf(messageId))
+        )
 
         // then
         val requestSlot = slot<OneTimeWorkRequest>()
@@ -116,8 +121,8 @@ internal class MarkMessageAsReadWorkerTest {
             actual = requestSlot.captured.workSpec.input.getString(MarkMessageAsReadWorker.RawUserIdKey)
         )
         assertEquals(
-            expected = messageId.id,
-            actual = requestSlot.captured.workSpec.input.getString(MarkMessageAsReadWorker.RawMessageIdKey)
+            expected = listOf(messageId.id).serialize(),
+            actual = requestSlot.captured.workSpec.input.getString(MarkMessageAsReadWorker.RawMessageIdsKey)
         )
     }
 

@@ -663,22 +663,22 @@ class MessageLocalDataSourceImplTest {
                 unread = false
             )
         )
-        every { messageDao.observe(userId, messageId) } returns flowOf(message)
+        every { messageDao.observeMessages(userId, listOf(messageId)) } returns flowOf(listOf(message))
 
         // when
-        val result = messageLocalDataSource.markRead(userId, messageId)
+        val result = messageLocalDataSource.markRead(userId, listOf(messageId))
 
         // then
-        assertEquals(updatedMessage.toMessage().right(), result)
+        assertEquals(listOf(updatedMessage.toMessage()).right(), result)
     }
 
     @Test
     fun `mark read returns error if message not found`() = runTest {
         // given
         val userId = UserIdSample.Primary
-        val messageId = MessageIdSample.Invoice
+        val messageId = listOf(MessageIdSample.Invoice)
         val error = DataErrorSample.NoCache.left()
-        every { messageDao.observe(userId, messageId) } returns flowOf(null)
+        every { messageDao.observeMessages(userId, messageId) } returns flowOf(emptyList())
 
         // when
         val result = messageLocalDataSource.markRead(userId, messageId)

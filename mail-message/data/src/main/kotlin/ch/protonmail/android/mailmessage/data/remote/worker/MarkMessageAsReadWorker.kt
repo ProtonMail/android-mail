@@ -33,6 +33,8 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.network.domain.isRetryable
+import me.proton.core.util.kotlin.deserializeList
+import me.proton.core.util.kotlin.serialize
 
 @HiltWorker
 class MarkMessageAsReadWorker @AssistedInject constructor(
@@ -45,12 +47,12 @@ class MarkMessageAsReadWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         val userId = requireNotBlank(inputData.getString(RawUserIdKey), fieldName = "User id")
             .let(::UserId)
-        val messageId = requireNotBlank(inputData.getString(RawMessageIdKey), fieldName = "Message id")
-            .let(::MessageId)
+        val messageIds = requireNotBlank(inputData.getString(RawMessageIdsKey), fieldName = "Message id")
+            .deserializeList<String>()
 
         val api = apiProvider.get<MessageApi>(userId)
         val requestBody = MarkMessageAsReadBody(
-            messageIds = listOf(messageId.id)
+            messageIds = messageIds
         )
         val result = api {
             markAsRead(requestBody)
@@ -62,7 +64,7 @@ class MarkMessageAsReadWorker @AssistedInject constructor(
                 if (result.isRetryable()) {
                     Result.retry()
                 } else {
-                    messageLocalDataSource.markUnread(userId, listOf(messageId))
+                    messageLocalDataSource.markUnread(userId, messageIds.map { MessageId(it) })
                     Result.failure()
                 }
             }
@@ -72,11 +74,11 @@ class MarkMessageAsReadWorker @AssistedInject constructor(
     companion object {
 
         internal const val RawUserIdKey = "markReadWorkParamUserId"
-        internal const val RawMessageIdKey = "markReadWorkParamMessageId"
+        internal const val RawMessageIdsKey = "markReadWorkParamMessageId"
 
-        fun params(userId: UserId, messageId: MessageId) = mapOf(
+        fun params(userId: UserId, messageIds: List<MessageId>) = mapOf(
             RawUserIdKey to userId.id,
-            RawMessageIdKey to messageId.id
+            RawMessageIdsKey to messageIds.map { it.id }.serialize()
         )
     }
 }

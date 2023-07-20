@@ -718,8 +718,8 @@ class MessageRepositoryImplTest {
     @Test
     fun `mark read returns updated message when local data source succeed`() = runTest {
         // given
-        val messageId = MessageIdSample.Invoice
-        val message = MessageSample.Invoice.right()
+        val messageId = listOf(MessageIdSample.Invoice)
+        val message = listOf(MessageSample.Invoice).right()
         coEvery { localDataSource.markRead(userId, messageId) } returns message
 
         // When
@@ -733,7 +733,7 @@ class MessageRepositoryImplTest {
     @Test
     fun `mark read returns error when local data source fails`() = runTest {
         // given
-        val messageId = MessageIdSample.Invoice
+        val messageId = listOf(MessageIdSample.Invoice)
         val error = DataErrorSample.NoCache.left()
         coEvery { localDataSource.markRead(userId, messageId) } returns error
 
