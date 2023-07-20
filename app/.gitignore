@@ -1,4 +1,6 @@
 /build
 
+google-services.json
+
 # UI Tests Assets folder
 src/uiTest/assets/network-mocks
