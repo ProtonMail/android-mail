@@ -539,10 +539,12 @@ class MessageLocalDataSourceImplTest {
     fun `relabel removes and adds labels locally`() = runTest {
         // Given
         val messages = MessageTestData.starredMessagesWithCustomLabel
-        coEvery { messageDao.getMessages(userId1, messages.map { it.messageId }) } returns listOf(
-            MessageWithLabelIds(messages[0].toEntity(), messages[0].labelIds),
-            MessageWithLabelIds(messages[1].toEntity(), messages[1].labelIds),
-            MessageWithLabelIds(messages[2].toEntity(), messages[2].labelIds)
+        coEvery { messageDao.observeMessages(userId1, messages.map { it.messageId }) } returns flowOf(
+            listOf(
+                MessageWithLabelIds(messages[0].toEntity(), messages[0].labelIds),
+                MessageWithLabelIds(messages[1].toEntity(), messages[1].labelIds),
+                MessageWithLabelIds(messages[2].toEntity(), messages[2].labelIds)
+            )
         )
 
         val labelsToBeRemoved = setOf(LabelId("10"), LabelId("11"))
@@ -567,10 +569,12 @@ class MessageLocalDataSourceImplTest {
     fun `relabel removes and adds labels locally when not all affected messages have same labels applied`() = runTest {
         // Given
         val messages = MessageTestData.starredMessagesWithPartiallySetLabels
-        coEvery { messageDao.getMessages(userId1, messages.map { it.messageId }) } returns listOf(
-            MessageWithLabelIds(messages[0].toEntity(), messages[0].labelIds),
-            MessageWithLabelIds(messages[1].toEntity(), messages[1].labelIds),
-            MessageWithLabelIds(messages[2].toEntity(), messages[2].labelIds)
+        coEvery { messageDao.observeMessages(userId1, messages.map { it.messageId }) } returns flowOf(
+            listOf(
+                MessageWithLabelIds(messages[0].toEntity(), messages[0].labelIds),
+                MessageWithLabelIds(messages[1].toEntity(), messages[1].labelIds),
+                MessageWithLabelIds(messages[2].toEntity(), messages[2].labelIds)
+            )
         )
 
         val labelsToBeRemoved = setOf(LabelId("10"), LabelId("11"))

@@ -414,7 +414,7 @@ class MessageRepositoryImplTest {
         val trashedMessage = MessageSample.EmptyDraft.copy(
             labelIds = listOf(LabelIdSample.AllDraft, SystemLabelId.Trash.labelId)
         )
-        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(message)
+        coEvery { localDataSource.observeMessages(userId, listOf(messageId)) } returns flowOf(listOf(message))
         coEvery {
             localDataSource.relabelMessages(
                 userId,
@@ -425,10 +425,10 @@ class MessageRepositoryImplTest {
 
         // when
         val result =
-            messageRepository.moveTo(userId, messageId, LabelIdSample.AllDraft, SystemLabelId.Trash.labelId)
+            messageRepository.moveTo(userId, mapOf(messageId to LabelIdSample.AllDraft), SystemLabelId.Trash.labelId)
 
         // then
-        assertEquals(trashedMessage.right(), result)
+        assertEquals(listOf(trashedMessage).right(), result)
     }
 
     @Test
@@ -454,10 +454,10 @@ class MessageRepositoryImplTest {
         val trashedMessage = messageWithoutLabels.copy(
             labelIds = messageWithoutLabels.labelIds + SystemLabelId.Trash.labelId
         )
-        val messageFlow = MutableStateFlow(message)
-        every { localDataSource.observeMessage(userId, messageId) } returns messageFlow
+        val messageFlow = MutableStateFlow(listOf(message))
+        coEvery { localDataSource.observeMessages(userId, listOf(messageId)) } returns messageFlow
         coEvery { localDataSource.upsertMessage(messageWithoutLabels) } coAnswers {
-            messageFlow.emit(messageWithoutLabels)
+            messageFlow.emit(listOf(messageWithoutLabels))
         }
         coEvery {
             localDataSource.relabelMessages(
@@ -471,13 +471,12 @@ class MessageRepositoryImplTest {
         // when
         val result = messageRepository.moveTo(
             userId,
-            messageId,
-            SystemLabelId.Inbox.labelId,
+            mapOf(messageId to SystemLabelId.Inbox.labelId),
             SystemLabelId.Trash.labelId
         )
 
         // then
-        assertEquals(trashedMessage.right(), result)
+        assertEquals(listOf(trashedMessage).right(), result)
     }
 
     @Test
@@ -503,10 +502,10 @@ class MessageRepositoryImplTest {
         val spammedMessage = messageWithoutLabels.copy(
             labelIds = messageWithoutLabels.labelIds + SystemLabelId.Spam.labelId
         )
-        val messageFlow = MutableStateFlow(message)
-        every { localDataSource.observeMessage(userId, messageId) } returns messageFlow
+        val messageFlow = MutableStateFlow(listOf(message))
+        coEvery { localDataSource.observeMessages(userId, listOf(messageId)) } returns messageFlow
         coEvery { localDataSource.upsertMessage(messageWithoutLabels) } coAnswers {
-            messageFlow.emit(messageWithoutLabels)
+            messageFlow.emit(listOf(messageWithoutLabels))
         }
         coEvery {
             localDataSource.relabelMessages(
@@ -520,13 +519,12 @@ class MessageRepositoryImplTest {
         // when
         val result = messageRepository.moveTo(
             userId,
-            messageId,
-            SystemLabelId.Inbox.labelId,
+            mapOf(messageId to SystemLabelId.Inbox.labelId),
             SystemLabelId.Spam.labelId
         )
 
         // then
-        assertEquals(spammedMessage.right(), result)
+        assertEquals(listOf(spammedMessage).right(), result)
     }
 
     @Test
@@ -539,9 +537,18 @@ class MessageRepositoryImplTest {
                 SystemLabelId.Starred.labelId
             )
         )
-        coEvery { localDataSource.observeMessage(userId, message.messageId) } returns flowOf(message)
-        val destinationLabel = SystemLabelId.Archive.labelId
+        val message2 = MessageTestData.spamMessage.copy(
+            messageId = MessageIdSample.Invoice,
+            labelIds = listOf(
+                SystemLabelId.Spam.labelId,
+                SystemLabelId.AllMail.labelId
+            )
+        )
+        val messageList = listOf(message, message2)
+        val messageIdList = messageList.map { it.messageId }
+        coEvery { localDataSource.observeMessages(userId, messageIdList) } returns flowOf(messageList)
 
+        val destinationLabel = SystemLabelId.Archive.labelId
         val updatedMessage = message.copy(
             labelIds = listOf(
                 SystemLabelId.AllMail.labelId,
@@ -549,27 +556,33 @@ class MessageRepositoryImplTest {
                 destinationLabel
             )
         )
-
-        // When
-        val result =
-            messageRepository.moveTo(
-                userId,
-                message.messageId,
-                SystemLabelId.Inbox.labelId,
+        val updatedMessage2 = message2.copy(
+            labelIds = listOf(
+                SystemLabelId.AllMail.labelId,
                 destinationLabel
             )
+        )
+        val updatedMessageList = listOf(updatedMessage, updatedMessage2)
+
+        val map = mapOf(
+            message.messageId to SystemLabelId.Inbox.labelId,
+            message2.messageId to SystemLabelId.Spam.labelId
+        )
+
+        // When
+        val result = messageRepository.moveTo(userId, map, destinationLabel)
 
         // Then
-        coVerify { localDataSource.upsertMessage(updatedMessage) }
-        verify { remoteDataSource.addLabelsToMessages(userId, listOf(message.messageId), listOf(destinationLabel)) }
-        assertEquals(updatedMessage.right(), result)
+        coVerify { localDataSource.upsertMessages(updatedMessageList) }
+        verify { remoteDataSource.addLabelsToMessages(userId, messageIdList, listOf(destinationLabel)) }
+        assertEquals(updatedMessageList.right(), result)
     }
 
     @Test
     fun `move message without exclusive labels adds new label`() = runTest {
         // Given
         val message = MessageTestData.message.copy(labelIds = listOf(SystemLabelId.AllMail.labelId))
-        coEvery { localDataSource.observeMessage(userId, message.messageId) } returns flowOf(message)
+        coEvery { localDataSource.observeMessages(userId, listOf(message.messageId)) } returns flowOf(listOf(message))
         val destinationLabel = SystemLabelId.Archive.labelId
 
         val updatedMessage = message.copy(
@@ -580,12 +593,12 @@ class MessageRepositoryImplTest {
         )
 
         // When
-        val result = messageRepository.moveTo(userId, message.messageId, null, destinationLabel)
+        val result = messageRepository.moveTo(userId, mapOf(message.messageId to null), destinationLabel)
 
         // Then
-        coVerify { localDataSource.upsertMessage(updatedMessage) }
+        coVerify { localDataSource.upsertMessages(listOf(updatedMessage)) }
         verify { remoteDataSource.addLabelsToMessages(userId, listOf(message.messageId), listOf(destinationLabel)) }
-        assertEquals(updatedMessage.right(), result)
+        assertEquals(listOf(updatedMessage).right(), result)
     }
 
     @Test
@@ -596,7 +609,7 @@ class MessageRepositoryImplTest {
                 SystemLabelId.AllMail.labelId
             )
         )
-        coEvery { localDataSource.observeMessage(userId, message.messageId) } returns flowOf(message)
+        coEvery { localDataSource.observeMessages(userId, listOf(message.messageId)) } returns flowOf(listOf(message))
         val destinationLabel = SystemLabelId.Trash.labelId
 
         val updatedMessage = message.copy(labelIds = listOf(destinationLabel))
@@ -605,26 +618,27 @@ class MessageRepositoryImplTest {
         } returns listOf(updatedMessage).right()
 
         // When
-        val result = messageRepository.moveTo(userId, message.messageId, null, destinationLabel)
+        val result = messageRepository.moveTo(userId, mapOf(message.messageId to null), destinationLabel)
 
         // Then
         coVerify {
             localDataSource.relabelMessages(userId, listOf(message.messageId), labelIdsToAdd = setOf(destinationLabel))
         }
         verify { remoteDataSource.addLabelsToMessages(userId, listOf(message.messageId), listOf(destinationLabel)) }
-        assertEquals(updatedMessage.right(), result)
+        assertEquals(listOf(updatedMessage).right(), result)
     }
 
     @Test
     fun `move emits error when local data source fails`() = runTest {
         // Given
-        coEvery { localDataSource.observeMessage(userId, any()) } returns flowOf(null)
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        val messageList = listOf(messageId)
+        coEvery { localDataSource.observeMessages(userId, messageList) } returns flowOf(emptyList())
 
         // When
         val result = messageRepository.moveTo(
             userId,
-            MessageId(MessageTestData.RAW_MESSAGE_ID),
-            SystemLabelId.Inbox.labelId,
+            mapOf(messageId to SystemLabelId.Inbox.labelId),
             LabelId("42")
         )
 
@@ -650,7 +664,7 @@ class MessageRepositoryImplTest {
         )
 
         val messageId = MessageId(message.id)
-        every { localDataSource.observeMessage(userId, messageId) } returns flowOf(message)
+        coEvery { localDataSource.observeMessages(userId, listOf(messageId)) } returns flowOf(listOf(message))
         coEvery {
             localDataSource.relabelMessages(
                 userId = userId,
@@ -663,13 +677,12 @@ class MessageRepositoryImplTest {
         // When
         val actual = messageRepository.moveTo(
             userId,
-            messageId,
-            SystemLabelId.Inbox.labelId,
+            mapOf(messageId to SystemLabelId.Inbox.labelId),
             SystemLabelId.Trash.labelId
         )
 
         // Then
-        assertEquals(trashedMessage.right(), actual)
+        assertEquals(listOf(trashedMessage).right(), actual)
     }
 
     @Test

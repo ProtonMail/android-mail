@@ -91,8 +91,7 @@ class MoveMessageTest {
         coEvery {
             messageRepository.moveTo(
                 userId = userId,
-                messageId = messageId,
-                fromLabel = fromLabelId,
+                messageWithExclusiveLabel = mapOf(messageId to fromLabelId),
                 toLabel = toLabelId
             )
         } returns error
@@ -107,21 +106,14 @@ class MoveMessageTest {
     @Test
     fun `when move a message then repository is called with the given data`() = runTest {
         // Given
-        val message = MessageSample.AugWeatherForecast.right()
-        coEvery {
-            messageRepository.moveTo(
-                userId,
-                messageId,
-                fromLabelId,
-                toLabelId
-            )
-        } returns message
+        val message = listOf(MessageSample.AugWeatherForecast).right()
+        coEvery { messageRepository.moveTo(userId, mapOf(messageId to fromLabelId), toLabelId) } returns message
 
         // When
         val actual = move(userId, messageId, toLabelId)
 
         // Then
-        coVerify { messageRepository.moveTo(userId, messageId, fromLabelId, toLabelId) }
-        assertEquals(message, actual)
+        coVerify { messageRepository.moveTo(userId, mapOf(messageId to fromLabelId), toLabelId) }
+        assertEquals(message.map { it.first() }, actual)
     }
 }

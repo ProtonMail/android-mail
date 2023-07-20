@@ -89,14 +89,16 @@ interface MessageRepository {
     suspend fun upsertMessageWithBody(userId: UserId, messageWithBody: MessageWithBody): Boolean
 
     /**
-     * Moves the given [messageId] from the [fromLabel] to the [toLabel]
+     * Moves the given [messageIds] from the optional exclusive label to the [toLabel]
+     * @param userId the user id of the affected messages
+     * @param messageWithExclusiveLabel the messages to move with their optional exclusive label
+     * @param toLabel the label to move the messages to
      */
     suspend fun moveTo(
         userId: UserId,
-        messageId: MessageId,
-        fromLabel: LabelId?,
+        messageWithExclusiveLabel: Map<MessageId, LabelId?>,
         toLabel: LabelId
-    ): Either<DataError.Local, Message>
+    ): Either<DataError.Local, List<Message>>
 
     /**
      * Set the message with the given [messageId] as unread

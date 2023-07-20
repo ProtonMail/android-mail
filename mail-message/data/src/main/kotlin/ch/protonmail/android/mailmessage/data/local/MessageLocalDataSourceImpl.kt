@@ -97,6 +97,12 @@ class MessageLocalDataSourceImpl @Inject constructor(
         .observeAll(userId, pageKey)
         .mapLatest { list -> list.map { it.toMessage() } }
 
+    override fun observeMessages(userId: UserId, messageIds: List<MessageId>): Flow<List<Message>> =
+        messageDao.observeMessages(
+            userId = userId,
+            messages = messageIds
+        ).mapLatest { list -> list.mapNotNull { it?.toMessage() } }
+
     override suspend fun upsertMessage(message: Message) = db.inTransaction {
         upsertMessages(listOf(message))
     }
@@ -194,9 +200,7 @@ class MessageLocalDataSourceImpl @Inject constructor(
         labelIdsToRemove: Set<LabelId>,
         labelIdsToAdd: Set<LabelId>
     ): Either<DataError.Local, List<Message>> {
-        val messages = messageDao.getMessages(userId, messageIds)
-            .map { it.toMessage() }
-            .takeIf { it.isNotEmpty() }
+        val messages = observeMessages(userId, messageIds).first().takeIf { it.isNotEmpty() }
             ?: return DataError.Local.NoDataCached.left()
         val updatedMessages = messages.map { message ->
             message.copy(labelIds = message.labelIds - labelIdsToRemove + labelIdsToAdd)

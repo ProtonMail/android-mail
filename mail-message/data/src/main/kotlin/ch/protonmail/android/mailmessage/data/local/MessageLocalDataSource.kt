@@ -84,6 +84,11 @@ interface MessageLocalDataSource {
     fun observeMessages(userId: UserId, pageKey: PageKey): Flow<List<Message>>
 
     /**
+     * Observe all [Message] by [userId] for given [messageIds].
+     */
+    fun observeMessages(userId: UserId, messageIds: List<MessageId>): Flow<List<Message>>
+
+    /**
      * Update or insert [Message].
      */
     suspend fun upsertMessage(message: Message)

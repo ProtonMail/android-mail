@@ -148,27 +148,31 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun moveTo(
         userId: UserId,
-        messageId: MessageId,
-        fromLabel: LabelId?,
+        messageWithExclusiveLabel: Map<MessageId, LabelId?>,
         toLabel: LabelId
-    ): Either<DataError.Local, Message> {
+    ): Either<DataError.Local, List<Message>> {
+        val messageIds = messageWithExclusiveLabel.keys.toList()
         if (toLabel.isTrash() || toLabel.isSpam()) {
-            return moveToTrashOrSpam(userId, messageId, toLabel)
+            return moveToTrashOrSpam(userId, messageIds, toLabel)
         }
 
-        val message = localDataSource.observeMessage(userId, messageId).first()
+        val messages = localDataSource.observeMessages(userId, messageIds).first()
+            .takeIf { it.isNotEmpty() }
             ?: return DataError.Local.NoDataCached.left()
 
-        val updatedLabels = message.labelIds.toMutableList().apply {
-            fromLabel?.let { this.remove(it) }
-            this.add(toLabel)
+        val updatedMessages = messages.map { message ->
+            val labelList = message.labelIds.toMutableList().apply {
+                messageWithExclusiveLabel[message.messageId].let { fromLabel ->
+                    fromLabel?.let { this.remove(it) }
+                    this.add(toLabel)
+                }
+            }
+            message.copy(labelIds = labelList)
         }
 
-        val updatedMessage = message.copy(labelIds = updatedLabels)
-
-        localDataSource.upsertMessage(updatedMessage)
-        remoteDataSource.addLabelsToMessages(userId, listOf(messageId), listOf(toLabel))
-        return updatedMessage.right()
+        localDataSource.upsertMessages(updatedMessages)
+        remoteDataSource.addLabelsToMessages(userId, messageIds, listOf(toLabel))
+        return updatedMessages.right()
     }
 
     override suspend fun markUnread(userId: UserId, messageId: MessageId): Either<DataError.Local, Message> =
@@ -203,12 +207,12 @@ class MessageRepositoryImpl @Inject constructor(
 
     private suspend fun moveToTrashOrSpam(
         userId: UserId,
-        messageId: MessageId,
+        messageIds: List<MessageId>,
         labelId: LabelId
-    ): Either<DataError.Local, Message> {
+    ): Either<DataError.Local, List<Message>> {
         require(labelId.isTrash() || labelId.isSpam()) { "Invalid system label id: $labelId" }
 
-        val message = localDataSource.observeMessage(userId, messageId).first()
+        val messages = localDataSource.observeMessages(userId, messageIds).first().takeIf { it.isNotEmpty() }
             ?: return DataError.Local.NoDataCached.left()
 
         val persistentLabels = listOf(
@@ -218,10 +222,10 @@ class MessageRepositoryImpl @Inject constructor(
         )
         return relabel(
             userId = userId,
-            messageIds = listOf(messageId),
-            labelsToBeRemoved = message.labelIds.filterNot { it in persistentLabels },
+            messageIds = messageIds,
+            labelsToBeRemoved = messages.flatMap { it.labelIds }.filterNot { it in persistentLabels },
             labelsToBeAdded = listOf(labelId)
-        ).map { it.first() }
+        )
     }
 
     private suspend fun upsertMessages(
